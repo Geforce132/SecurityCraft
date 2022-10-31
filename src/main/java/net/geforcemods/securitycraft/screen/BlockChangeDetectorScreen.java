@@ -236,7 +236,10 @@ public class BlockChangeDetectorScreen extends ContainerScreen<BlockChangeDetect
 		if (colorChooser != null)
 			colorChooser.keyPressed(keyCode, scanCode, modifiers);
 
-		return super.keyPressed(keyCode, scanCode, modifiers);
+		if (!colorChooser.rgbHexBox.isFocused())
+			return super.keyPressed(keyCode, scanCode, modifiers);
+
+		return true;
 	}
 
 	@Override

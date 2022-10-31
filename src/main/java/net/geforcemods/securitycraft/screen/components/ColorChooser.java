@@ -41,7 +41,7 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 	private final HoverChecker colorFieldHoverChecker;
 	private float selectionX, selectionY;
 	private final int rgbColor;
-	private FixedTextFieldWidget rBox, gBox, bBox, rgbHexBox;
+	public FixedTextFieldWidget rBox, gBox, bBox, rgbHexBox;
 	public HueSlider hueSlider;
 
 	public ColorChooser(ITextComponent title, int xStart, int yStart, int rgbColor) {
@@ -270,7 +270,7 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 	}
 
 	//fixes focus when selecting boxes from last added to first added, as well as the highlight position sometimes being wrong when setting the value
-	class FixedTextFieldWidget extends TextFieldWidget {
+	public class FixedTextFieldWidget extends TextFieldWidget {
 		public FixedTextFieldWidget(FontRenderer font, int x, int y, int width, int height, ITextComponent message) {
 			super(font, x, y, width, height, message);
 		}
