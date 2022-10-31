@@ -139,13 +139,15 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 
 	@Override
 	public void tick() {
-		//this is validated here and not in the edit box' responder in order to allow for an empty box while typing
-		validateNotEmpty(rBox);
-		validateNotEmpty(gBox);
-		validateNotEmpty(bBox);
+		if (!disabled) {
+			//this is validated here and not in the edit box' responder in order to allow for an empty box while typing
+			validateNotEmpty(rBox);
+			validateNotEmpty(gBox);
+			validateNotEmpty(bBox);
 
-		if (rgbHexBox != null && !rgbHexBox.isFocused() && rgbHexBox.getValue().isEmpty())
-			rgbHexBox.setValue("000000");
+			if (rgbHexBox != null && !rgbHexBox.isFocused() && rgbHexBox.getValue().isEmpty())
+				rgbHexBox.setValue("000000");
+		}
 	}
 
 	@Override
@@ -274,7 +276,7 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 		}
 
 		@Override
-		public void setFocused(boolean focused) {
+		public void setFocus(boolean focused) {
 			if (focused) {
 				rBox.setFocused(false);
 				gBox.setFocused(false);
