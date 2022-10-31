@@ -91,7 +91,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	public void init() {
 		super.init();
 
-		int width = storage ? 123 : imageWidth;
+		int guiWidth = storage ? 123 : imageWidth;
 		int widgetWidth = storage ? 110 : 120;
 		int widgetOffset = widgetWidth / 2;
 		//@formatter:off
@@ -99,20 +99,24 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		//@formatter:on
 		int outlineY = topPos + imageHeight / 2 + yOffset[2];
 		Button colorChooserButton;
+		int colorChooserButtonX = leftPos + guiWidth / 2 - widgetOffset + (storage ? 0 : widgetWidth + 3);
+		int outlineButtonX = colorChooserButtonX + (storage ? 23 : -widgetWidth - 3);
+		int outlineButtonWidth = widgetWidth - (storage ? 23 : 0);
+		int colorChooserX = colorChooserButtonX + (storage ? -145 : 20);
 
-		addRenderableWidget(toggleButton = new ExtendedButton(leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[0], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager." + (!be.enabled ? "activate" : "deactivate")), this::toggleButtonClicked));
-		addRenderableWidget(sizeButton = new ToggleComponentButton(leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[1], widgetWidth, 20, this::updateSizeButtonText, ArrayUtils.indexOf(allowedSizes, size), allowedSizes.length, this::sizeButtonClicked));
-		addRenderableWidget(outlineButton = new ExtendedButton(leftPos + width / 2 - widgetOffset, outlineY, widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!be.showOutline ? "show" : "hide")), this::outlineButtonClicked));
-		addRenderableWidget(assembleButton = new ExtendedButton(leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[3], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.assemble"), this::assembleButtonClicked));
-		addRenderableWidget(offsetSlider = new CallbackSlider(leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), Component.empty(), (-size + 2) / 2, (size - 2) / 2, be.autoBuildOffset, true, this::offsetSliderReleased));
-		addRenderableWidget(colorChooser = new ColorChooser(Component.empty(), leftPos + width / 2 - widgetOffset + widgetWidth + 23, outlineY, be.getColor()) {
+		addRenderableWidget(toggleButton = new ExtendedButton(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[0], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager." + (!be.enabled ? "activate" : "deactivate")), this::toggleButtonClicked));
+		addRenderableWidget(sizeButton = new ToggleComponentButton(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[1], widgetWidth, 20, this::updateSizeButtonText, ArrayUtils.indexOf(allowedSizes, size), allowedSizes.length, this::sizeButtonClicked));
+		addRenderableWidget(outlineButton = new ExtendedButton(outlineButtonX, outlineY, outlineButtonWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!be.showOutline ? "show" : "hide")), this::outlineButtonClicked));
+		addRenderableWidget(assembleButton = new ExtendedButton(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[3], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.assemble"), this::assembleButtonClicked));
+		addRenderableWidget(offsetSlider = new CallbackSlider(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), Component.empty(), (-size + 2) / 2, (size - 2) / 2, be.autoBuildOffset, true, this::offsetSliderReleased));
+		addRenderableWidget(colorChooser = new ColorChooser(Component.empty(), colorChooserX, outlineY, be.getColor()) {
 			@Override
 			public void onColorChange() {
 				be.setColor(getRGBColor());
 			}
 		});
 		colorChooser.init(minecraft, width, height);
-		addRenderableWidget(colorChooserButton = new ColorChooserButton(leftPos + width / 2 - widgetOffset + widgetWidth + 3, outlineY, 20, 20, colorChooser));
+		addRenderableWidget(colorChooserButton = new ColorChooserButton(colorChooserButtonX, outlineY, 20, 20, colorChooser));
 
 		if (!be.getOwner().isOwner(Minecraft.getInstance().player))
 			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active = offsetSlider.active = colorChooserButton.active = false;
