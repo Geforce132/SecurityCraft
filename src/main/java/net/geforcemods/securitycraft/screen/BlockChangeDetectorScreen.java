@@ -223,7 +223,10 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		if (colorChooser != null)
 			colorChooser.keyPressed(keyCode, scanCode, modifiers);
 
-		return super.keyPressed(keyCode, scanCode, modifiers);
+		if (!colorChooser.rgbHexBox.isFocused())
+			return super.keyPressed(keyCode, scanCode, modifiers);
+
+		return true;
 	}
 
 	@Override
