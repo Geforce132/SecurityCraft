@@ -43,7 +43,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	private final HoverChecker colorFieldHoverChecker;
 	private float selectionX, selectionY;
 	private final int rgbColor;
-	private FixedEditBox rBox, gBox, bBox, rgbHexBox;
+	public FixedEditBox rBox, gBox, bBox, rgbHexBox;
 	private HueSlider hueSlider;
 
 	public ColorChooser(Component title, int xStart, int yStart, int rgbColor) {
@@ -278,7 +278,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	}
 
 	//fixes focus when selecting boxes from last added to first added, as well as the highlight position sometimes being wrong when setting the value
-	class FixedEditBox extends EditBox {
+	public class FixedEditBox extends EditBox {
 		public FixedEditBox(Font font, int x, int y, int width, int height, Component message) {
 			super(font, x, y, width, height, message);
 		}
