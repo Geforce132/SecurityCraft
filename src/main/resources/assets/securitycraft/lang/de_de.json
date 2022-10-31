@@ -802,6 +802,7 @@
 	"gui.securitycraft:block_change_detector.mode.both": "Zerbrechen & Platzieren",
 	"gui.securitycraft:block_change_detector.smart_module_hint": "Installiere ein schlaues Modul, damit der Detektor einen bestimmten Block detektieren kann!",
 	"gui.securitycraft:block_change_detector.show_all_checkbox": "Alle Einträge anzeigen",
+	"gui.securitycraft:block_change_detector.highlight_in_world_checkbox": "Angezeigte Blöcke in der Welt markieren",
 	"gui.securitycraft:choose_outline_color_tooltip": "Umrandungsfarbe auswählen",
 
 	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",
