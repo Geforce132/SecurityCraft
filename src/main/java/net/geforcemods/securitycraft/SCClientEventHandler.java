@@ -8,8 +8,12 @@ import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.camera.EntitySecurityCamera;
 import net.geforcemods.securitycraft.items.ItemSonicSecuritySystem;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.misc.TileEntityTracker;
 import net.geforcemods.securitycraft.network.ClientProxy;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector.ChangeEntry;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
@@ -37,6 +41,7 @@ import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -45,6 +50,39 @@ import net.minecraftforge.fml.relauncher.Side;
 @EventBusSubscriber(value = Side.CLIENT, modid = SecurityCraft.MODID)
 public class SCClientEventHandler {
 	public static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+
+	@SubscribeEvent
+	public static void onRenderLevelStage(RenderWorldLastEvent event) {
+		Minecraft mc = Minecraft.getMinecraft();
+		EntityPlayer player = mc.player;
+		World level = mc.world;
+		float partialTicks = event.getPartialTicks();
+		double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
+		double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
+		double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
+
+		for (BlockPos bcdPos : TileEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedTileEntities(level)) {
+			TileEntity be = level.getTileEntity(bcdPos);
+
+			if (!(be instanceof TileEntityBlockChangeDetector))
+				continue;
+
+			TileEntityBlockChangeDetector bcd = (TileEntityBlockChangeDetector) be;
+
+			if (bcd.isShowingHighlights() && bcd.getOwner().isOwner(mc.player)) {
+				for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
+					BlockPos pos = changeEntry.pos;
+
+					GlStateManager.pushMatrix();
+					GlStateManager.disableDepth();
+					GlStateManager.translate(pos.getX() - x, pos.getY() - y, pos.getZ() - z);
+					ClientUtils.renderBoxInLevel(0, 1, 0, 1, 1, bcd.getColor());
+					GlStateManager.enableDepth();
+					GlStateManager.popMatrix();
+				}
+			}
+		}
+	}
 
 	@SubscribeEvent
 	public static void onScreenshot(ScreenshotEvent event) {

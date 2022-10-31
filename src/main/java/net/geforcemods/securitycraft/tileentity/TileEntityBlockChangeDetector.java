@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.TileEntityTracker;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -24,6 +25,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants;
 
@@ -34,7 +36,10 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 	private EnumDetectionMode mode = EnumDetectionMode.BOTH;
 	private boolean tracked = false;
 	private List<ChangeEntry> entries = new ArrayList<>();
+	private final List<ChangeEntry> filteredEntries = new ArrayList<>();
 	private ItemStack filter = ItemStack.EMPTY;
+	private boolean showHighlights = false;
+	private int color = 0xFF0000FF;
 
 	public void log(EntityPlayer player, EnumDetectionMode action, BlockPos changedPos, IBlockState state) {
 		if (isDisabled())
@@ -93,6 +98,8 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 		tag.setInteger("mode", mode.ordinal());
 		tag.setTag("entries", entryList);
 		tag.setTag("filter", filter.writeToNBT(new NBTTagCompound()));
+		tag.setBoolean("ShowHighlights", showHighlights);
+		tag.setInteger("Color", color);
 		return tag;
 	}
 
@@ -109,6 +116,9 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 		entries = new ArrayList<>();
 		tag.getTagList("entries", Constants.NBT.TAG_COMPOUND).forEach(element -> entries.add(ChangeEntry.load((NBTTagCompound) element)));
 		filter = new ItemStack(tag.getCompoundTag("filter"));
+		showHighlights = tag.getBoolean("ShowHighlights");
+		setColor(tag.getInteger("Color"));
+		updateFilteredEntries();
 	}
 
 	@Override
@@ -124,7 +134,9 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 
 	public void setMode(EnumDetectionMode mode) {
 		this.mode = mode;
-		markDirty();
+
+		if (!world.isRemote)
+			markDirty();
 	}
 
 	public EnumDetectionMode getMode() {
@@ -141,6 +153,31 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 
 	public boolean isDisabled() {
 		return disabled.get();
+	}
+
+	public List<ChangeEntry> getFilteredEntries() {
+		return filteredEntries;
+	}
+
+	public void updateFilteredEntries() {
+		filteredEntries.clear();
+		entries.stream().filter(this::isEntryShown).forEach(filteredEntries::add);
+	}
+
+	public boolean isEntryShown(ChangeEntry entry) {
+		EnumDetectionMode mode = getMode();
+
+		if (mode == EnumDetectionMode.BOTH || mode == entry.action) {
+			if (filter.getItem() instanceof ItemBlock) {
+				Block block = entry.state.getBlock();
+
+				return ((ItemBlock) filter.getItem()).getBlock() == block && block.getMetaFromState(entry.state) == filter.getMetadata();
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
@@ -229,6 +266,22 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 		return isModuleEnabled(EnumModuleType.SMART) && stack.getItem() instanceof ItemBlock;
+	}
+
+	public void showHighlights(boolean showHighlights) {
+		this.showHighlights = showHighlights;
+	}
+
+	public boolean isShowingHighlights() {
+		return showHighlights;
+	}
+
+	public void setColor(int color) {
+		this.color = MathHelper.clamp(color, 0xFF000000, 0xFFFFFFFF);
+	}
+
+	public int getColor() {
+		return color;
 	}
 
 	public static enum EnumDetectionMode {

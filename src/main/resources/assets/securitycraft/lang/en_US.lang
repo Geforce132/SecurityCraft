@@ -582,6 +582,8 @@ gui.securitycraft:block_change_detector.mode.place=Place
 gui.securitycraft:block_change_detector.mode.both=Break & Place
 gui.securitycraft:block_change_detector.smart_module_hint=Install a Smart Module to allow the detector to only detect a specific block type!
 gui.securitycraft:block_change_detector.show_all_checkbox=Show all entries
+gui.securitycraft:block_change_detector.highlight_in_world_checkbox=Highlight listed blocks in the world
+gui.securitycraft:choose_outline_color_tooltip=Choose outline color
 
 messages.securitycraft:bugReport=Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please
 messages.securitycraft:retinalScanner.hello=Hello %s.

@@ -1,11 +1,17 @@
 package net.geforcemods.securitycraft.gui;
 
+import java.awt.Rectangle;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerBlockPocketManager;
+import net.geforcemods.securitycraft.gui.components.ClickButton;
+import net.geforcemods.securitycraft.gui.components.ColorChooser;
+import net.geforcemods.securitycraft.gui.components.ColorChooserButton;
 import net.geforcemods.securitycraft.gui.components.GuiSlider;
 import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
 import net.geforcemods.securitycraft.gui.components.StackHoverChecker;
@@ -14,6 +20,7 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.util.GuiUtils;
+import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -32,7 +39,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.items.IItemHandler;
 
-public class GuiBlockPocketManager extends GuiContainer implements ISlider {
+public class GuiBlockPocketManager extends GuiContainer implements ISlider, IHasExtraAreas {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager.png");
 	private static final ResourceLocation TEXTURE_STORAGE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager_storage.png");
 	private static final ItemStack BLOCK_POCKET_WALL = new ItemStack(SCContent.blockPocketWall);
@@ -53,12 +60,15 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider {
 	private GuiSlider offsetSlider;
 	private StackHoverChecker[] hoverCheckers = new StackHoverChecker[3];
 	private StringHoverChecker assembleHoverChecker;
+	private StringHoverChecker colorChooserButtonHoverChecker;
+	private ColorChooser colorChooser;
 	private int wallsNeededOverall = (size - 2) * (size - 2) * 6;
 	private int pillarsNeededOverall = (size - 2) * 12 - 1;
 	private final int chiseledNeededOverall = 8;
 	private int wallsStillNeeded;
 	private int pillarsStillNeeded;
 	private int chiseledStillNeeded;
+	private final int previousColor;
 
 	public GuiBlockPocketManager(InventoryPlayer inventory, TileEntityBlockPocketManager te) {
 		super(new ContainerBlockPocketManager(inventory, te));
@@ -73,28 +83,42 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider {
 			xSize = 256;
 
 		ySize = !storage ? 194 : 240;
+		previousColor = te.getColor();
 	}
 
 	@Override
 	public void initGui() {
 		super.initGui();
 
-		int width = storage ? 123 : xSize;
+		int guiWidth = storage ? 123 : xSize;
 		int widgetWidth = storage ? 110 : 120;
 		int widgetOffset = widgetWidth / 2;
 		//@formatter:off
 		int[] yOffset = storage ? new int[] {-76, -100, -52, -28, -4} : new int[] {-40, -70, 23, 47, 71};
 		//@formatter:on
+		int outlineY = guiTop + ySize / 2 + yOffset[2];
+		GuiButton colorChooserButton;
+		int colorChooserButtonX = guiLeft + guiWidth / 2 - widgetOffset + (storage ? 0 : widgetWidth + 3);
+		int outlineButtonX = colorChooserButtonX + (storage ? 23 : -widgetWidth - 3);
+		int outlineButtonWidth = widgetWidth - (storage ? 23 : 0);
+		int colorChooserX = colorChooserButtonX + (storage ? -145 : 20);
 
-		buttonList.add(toggleButton = new GuiButton(0, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[0], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager." + (!te.enabled ? "activate" : "deactivate")).getFormattedText()));
-		buttonList.add(sizeButton = new GuiButton(1, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[1], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText()));
-		buttonList.add(assembleButton = new GuiButton(2, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[2], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.assemble").getFormattedText()));
-		buttonList.add(outlineButton = new GuiButton(3, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[3], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!te.showOutline ? "show" : "hide")).getFormattedText()));
-		buttonList.add(offsetSlider = new GuiSlider(Utils.localize("gui.securitycraft:projector.offset", te.autoBuildOffset).getFormattedText(), "", 4, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", "").getFormattedText(), (-size + 2) / 2, (size - 2) / 2, te.autoBuildOffset, false, true, this));
-		offsetSlider.updateSlider();
+		buttonList.add(toggleButton = new GuiButton(0, guiLeft + guiWidth / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[0], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager." + (!te.enabled ? "activate" : "deactivate")).getFormattedText()));
+		buttonList.add(sizeButton = new GuiButton(1, guiLeft + guiWidth / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[1], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText()));
+		buttonList.add(outlineButton = new GuiButton(2, outlineButtonX, outlineY, outlineButtonWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!te.showOutline ? "show" : "hide")).getFormattedText()));
+		buttonList.add(assembleButton = new GuiButton(3, guiLeft + guiWidth / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[3], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.assemble").getFormattedText()));
+		buttonList.add(offsetSlider = new GuiSlider(Utils.localize("gui.securitycraft:projector.offset", te.autoBuildOffset).getFormattedText(), "", 4, guiLeft + guiWidth / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", "").getFormattedText(), (-size + 2) / 2, (size - 2) / 2, te.autoBuildOffset, false, true, this));
+		colorChooser = new ColorChooser(colorChooserX, outlineY, previousColor) {
+			@Override
+			public void onColorChange() {
+				te.setColor(getRGBColor());
+			}
+		};
+		colorChooser.setWorldAndResolution(mc, this.width, height);
+		addButton(colorChooserButton = new ColorChooserButton(5, colorChooserButtonX, outlineY, 20, 20, colorChooser));
 
 		if (!te.getOwner().isOwner(Minecraft.getMinecraft().player))
-			sizeButton.enabled = toggleButton.enabled = assembleButton.enabled = outlineButton.enabled = offsetSlider.enabled = false;
+			sizeButton.enabled = toggleButton.enabled = assembleButton.enabled = outlineButton.enabled = offsetSlider.enabled = colorChooserButton.enabled = false;
 		else {
 			updateMaterialInformation(true);
 			sizeButton.enabled = offsetSlider.enabled = !te.enabled;
@@ -112,6 +136,7 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider {
 		}
 
 		assembleHoverChecker = new StringHoverChecker(assembleButton, Arrays.asList(Utils.localize("gui.securitycraft:blockPocketManager.needStorageModule").getFormattedText(), Utils.localize("messages.securitycraft:blockpocket.notEnoughItems").getFormattedText()));
+		colorChooserButtonHoverChecker = new StringHoverChecker(colorChooserButton, Utils.localize("gui.securitycraft:choose_outline_color_tooltip").getFormattedText());
 	}
 
 	@Override
@@ -164,23 +189,58 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider {
 			}
 		}
 
-		if (!te.enabled && isOwner && !assembleButton.enabled && assembleHoverChecker.checkHover(mouseX, mouseY)) {
+		if (!assembleButton.enabled && assembleHoverChecker.checkHover(mouseX, mouseY)) {
 			if (!storage)
 				net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(assembleHoverChecker.getLines().subList(0, 1), mouseX, mouseY, width, height, -1, fontRenderer);
 			else
 				net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(assembleHoverChecker.getLines().subList(1, 2), mouseX, mouseY, width, height, -1, fontRenderer);
+
+			if (colorChooserButtonHoverChecker.checkHover(mouseX, mouseY))
+				net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(colorChooserButtonHoverChecker.getLines(), mouseX, mouseY, width, height, -1, fontRenderer);
 		}
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(storage ? TEXTURE_STORAGE : TEXTURE);
-		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+
+		if (colorChooser != null)
+			colorChooser.drawScreen(mouseX, mouseY, partialTicks);
+	}
+
+	@Override
+	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+		super.keyTyped(typedChar, keyCode);
+
+		if (colorChooser != null)
+			colorChooser.keyTyped(typedChar, keyCode);
+	}
+
+	@Override
+	public void updateScreen() {
+		super.updateScreen();
+
+		if (colorChooser != null)
+			colorChooser.updateScreen();
+	}
+
+	@Override
+	protected void mouseClicked(int mouseX, int mouseY, int button) throws IOException {
+		if (colorChooser != null)
+			colorChooser.mouseClicked(mouseX, mouseY, button);
+
+		super.mouseClicked(mouseX, mouseY, button);
+	}
+
+	@Override
+	protected void mouseReleased(int mouseX, int mouseY, int state) {
+		if (colorChooser != null)
+			colorChooser.mouseReleased(mouseX, mouseY, state);
+
+		super.mouseReleased(mouseX, mouseY, state);
 	}
 
 	@Override
@@ -253,10 +313,12 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider {
 			outlineButton.displayString = Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!te.showOutline ? "show" : "hide")).getFormattedText();
 			sync();
 		}
+		else if (button instanceof ClickButton)
+			((ClickButton) button).onClick();
 	}
 
 	private void sync() {
-		SecurityCraft.network.sendToServer(new SyncBlockPocketManager(te.getPos(), te.size, te.showOutline, te.autoBuildOffset));
+		SecurityCraft.network.sendToServer(new SyncBlockPocketManager(te.getPos(), te.size, te.showOutline, te.autoBuildOffset, te.getColor()));
 	}
 
 	@Override
@@ -302,5 +364,21 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider {
 	public void onChangeSliderValue(GuiSlider slider, String blockName, int id) {
 		if (slider.id == offsetSlider.id)
 			slider.displayString = slider.prefix + slider.getValueInt();
+	}
+
+	@Override
+	public List<Rectangle> getGuiExtraAreas() {
+		if (colorChooser != null)
+			return colorChooser.getGuiExtraAreas();
+		else
+			return new ArrayList<>();
+	}
+
+	@Override
+	public void onGuiClosed() {
+		super.onGuiClosed();
+
+		if (previousColor != te.getColor())
+			sync();
 	}
 }

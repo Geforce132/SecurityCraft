@@ -38,6 +38,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
@@ -53,6 +54,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE implements IT
 	private static final ItemStack REINFORCED_CRYSTAL_QUARTZ_PILLAR = new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 2);
 	public boolean enabled = false;
 	public boolean showOutline = false;
+	private int color = 0xFF0000FF;
 	public int autoBuildOffset = 0;
 	public int size = 5;
 	private List<BlockPos> blocks = new ArrayList<>();
@@ -668,6 +670,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE implements IT
 		tag.setBoolean("ShowOutline", showOutline);
 		tag.setInteger("Size", size);
 		tag.setInteger("AutoBuildOffset", autoBuildOffset);
+		tag.setInteger("Color", color);
 		ItemStackHelper.saveAllItems(tag, storage);
 
 		for (int i = 0; i < blocks.size(); i++) {
@@ -694,6 +697,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE implements IT
 		showOutline = tag.getBoolean("ShowOutline");
 		size = tag.getInteger("Size");
 		autoBuildOffset = tag.getInteger("AutoBuildOffset");
+		setColor(tag.getInteger("Color"));
 		ItemStackHelper.loadAllItems(tag, storage);
 
 		while (tag.hasKey("BlocksList" + i)) {
@@ -781,5 +785,13 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE implements IT
 		}
 
 		return false;
+	}
+
+	public void setColor(int color) {
+		this.color = MathHelper.clamp(color, 0xFF000000, 0xFFFFFFFF);
+	}
+
+	public int getColor() {
+		return color;
 	}
 }

@@ -12,6 +12,8 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.gui.GuiBlockChangeDetector;
+import net.geforcemods.securitycraft.gui.GuiBlockPocketManager;
 import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
 import net.geforcemods.securitycraft.gui.GuiDisguiseModule;
 import net.geforcemods.securitycraft.gui.GuiInventoryScanner;
@@ -32,7 +34,9 @@ public class SCJEIPlugin implements IModPlugin {
 		registry.addAdvancedGuiHandlers(
 				new SlotMover(GuiCustomizeBlock.class),
 				new SlotMover(GuiProjector.class),
-				new SlotMover(GuiDisguiseModule.class));
+				new SlotMover(GuiDisguiseModule.class),
+				new SlotMover(GuiBlockChangeDetector.class),
+				new SlotMover(GuiBlockPocketManager.class));
 		//@formatter:on
 		registry.addIngredientInfo(new ItemStack(SCContent.adminTool), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.adminTool");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypad), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad");

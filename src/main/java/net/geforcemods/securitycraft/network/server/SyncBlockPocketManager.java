@@ -18,14 +18,16 @@ public class SyncBlockPocketManager implements IMessage {
 	private int size;
 	private boolean showOutline;
 	private int autoBuildOffset;
+	private int color;
 
 	public SyncBlockPocketManager() {}
 
-	public SyncBlockPocketManager(BlockPos pos, int size, boolean showOutline, int autoBuildOffset) {
+	public SyncBlockPocketManager(BlockPos pos, int size, boolean showOutline, int autoBuildOffset, int color) {
 		this.pos = pos;
 		this.size = size;
 		this.showOutline = showOutline;
 		this.autoBuildOffset = autoBuildOffset;
+		this.color = color;
 	}
 
 	@Override
@@ -34,6 +36,7 @@ public class SyncBlockPocketManager implements IMessage {
 		size = ByteBufUtils.readVarInt(buf, 5);
 		showOutline = buf.readBoolean();
 		autoBuildOffset = ByteBufUtils.readVarInt(buf, 5);
+		color = buf.readInt();
 	}
 
 	@Override
@@ -42,6 +45,7 @@ public class SyncBlockPocketManager implements IMessage {
 		ByteBufUtils.writeVarInt(buf, size, 5);
 		buf.writeBoolean(showOutline);
 		ByteBufUtils.writeVarInt(buf, autoBuildOffset, 5);
+		buf.writeInt(color);
 	}
 
 	public static class Handler implements IMessageHandler<SyncBlockPocketManager, IMessage> {
@@ -60,6 +64,8 @@ public class SyncBlockPocketManager implements IMessage {
 					bpm.size = message.size;
 					bpm.showOutline = message.showOutline;
 					bpm.autoBuildOffset = message.autoBuildOffset;
+					bpm.setColor(message.color);
+					bpm.markDirty();
 					world.notifyBlockUpdate(pos, state, state, 2);
 				}
 			});

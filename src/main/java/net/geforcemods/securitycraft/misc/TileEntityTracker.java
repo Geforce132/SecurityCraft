@@ -81,7 +81,7 @@ public class TileEntityTracker<TE extends TileEntity> {
 	 *
 	 * @param world The world to get the tracked tile entities of
 	 */
-	private Collection<BlockPos> getTrackedTileEntities(World world) {
+	public Collection<BlockPos> getTrackedTileEntities(World world) {
 		Collection<BlockPos> tileEntities = trackedTileEntities.get(world.provider.getDimension());
 
 		if (tileEntities == null) {

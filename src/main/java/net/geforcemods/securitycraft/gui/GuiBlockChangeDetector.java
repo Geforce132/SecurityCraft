@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.gui;
 
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import java.util.Locale;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.lwjgl.input.Mouse;
 
@@ -20,6 +20,8 @@ import net.geforcemods.securitycraft.containers.ContainerBlockChangeDetector;
 import net.geforcemods.securitycraft.gui.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.gui.components.ClickButton;
 import net.geforcemods.securitycraft.gui.components.CollapsibleTextList;
+import net.geforcemods.securitycraft.gui.components.ColorChooser;
+import net.geforcemods.securitycraft.gui.components.ColorChooserButton;
 import net.geforcemods.securitycraft.gui.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.gui.components.IToggleableButton;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
@@ -30,9 +32,9 @@ import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector.ChangeEntry;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector.EnumDetectionMode;
 import net.geforcemods.securitycraft.util.GuiUtils;
+import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -44,7 +46,6 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -53,23 +54,30 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 
-public class GuiBlockChangeDetector extends GuiContainer implements IContainerListener {
+public class GuiBlockChangeDetector extends GuiContainer implements IContainerListener, IHasExtraAreas {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_change_detector.png");
 	private final String blockName = Utils.localize(SCContent.blockChangeDetector).getFormattedText();
 	private TileEntityBlockChangeDetector be;
 	private ChangeEntryList changeEntryList;
-	private StringHoverChecker[] hoverCheckers = new StringHoverChecker[3];
+	private StringHoverChecker[] hoverCheckers = new StringHoverChecker[5];
 	private StringHoverChecker smartModuleHoverChecker;
 	private ModeButton modeButton;
 	private CallbackCheckbox showAllCheckbox;
-	private EnumDetectionMode currentMode;
+	private CallbackCheckbox highlightInWorldCheckbox;
+	private ColorChooser colorChooser;
+	private final EnumDetectionMode previousMode;
+	private final boolean wasShowingHighlights;
+	private final int previousColor;
 
-	public GuiBlockChangeDetector(InventoryPlayer inv, TileEntityBlockChangeDetector te) {
-		super(new ContainerBlockChangeDetector(inv, te));
-		this.be = te;
+	public GuiBlockChangeDetector(InventoryPlayer inv, TileEntityBlockChangeDetector be) {
+		super(new ContainerBlockChangeDetector(inv, be));
+		this.be = be;
 		inventorySlots.addListener(this);
 		xSize = 200;
 		ySize = 256;
+		previousMode = be.getMode();
+		wasShowingHighlights = be.isShowingHighlights();
+		previousColor = be.getColor();
 	}
 
 	@Override
@@ -85,19 +93,33 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 		}));
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
 		boolean isOwner = be.getOwner().isOwner(mc.player);
+		int settingsX = guiLeft + 173;
+		GuiButton colorChooserButton;
 
-		currentMode = be.getMode();
-		addButton(modeButton = new ModeButton(1, guiLeft + 173, guiTop + 19, 20, 20, currentMode.ordinal(), EnumDetectionMode.values().length, b -> {
-			currentMode = EnumDetectionMode.values()[((ModeButton) b).getCurrentIndex()];
+		addButton(modeButton = new ModeButton(1, settingsX, guiTop + 19, 20, 20, previousMode.ordinal(), EnumDetectionMode.values().length, b -> {
+			be.setMode(EnumDetectionMode.values()[((ModeButton) b).getCurrentIndex()]);
 			changeEntryList.updateFilteredEntries();
+			be.updateFilteredEntries();
 		}));
-		addButton(showAllCheckbox = new CallbackCheckbox(2, guiLeft + 173, guiTop + 65, 20, 20, "", false, isSelected -> changeEntryList.updateFilteredEntries(), 0x404040));
+		addButton(showAllCheckbox = new CallbackCheckbox(2, settingsX, guiTop + 65, 20, 20, "", false, isSelected -> changeEntryList.updateFilteredEntries(), 0x404040));
+		addButton(highlightInWorldCheckbox = new CallbackCheckbox(3, settingsX, guiTop + 90, 20, 20, "", be.isShowingHighlights(), isSelected -> be.showHighlights(isSelected), 0x404040));
+		colorChooser = new ColorChooser(settingsX, guiTop + 135, previousColor) {
+			@Override
+			public void onColorChange() {
+				be.setColor(getRGBColor());
+			}
+		};
+		colorChooser.setWorldAndResolution(mc, width, height);
+		addButton(colorChooserButton = new ColorChooserButton(4, settingsX, guiTop + 115, 20, 20, colorChooser));
+
 		hoverCheckers[0] = new StringHoverChecker(clearButton, Utils.localize("gui.securitycraft:editModule.clear").getFormattedText());
 		hoverCheckers[1] = new StringHoverChecker(modeButton, Arrays.stream(EnumDetectionMode.values()).map(e -> Utils.localize(e.getDescriptionId()).getFormattedText()).collect(Collectors.toList()));
 		hoverCheckers[2] = new StringHoverChecker(showAllCheckbox, Utils.localize("gui.securitycraft:block_change_detector.show_all_checkbox").getFormattedText());
-		smartModuleHoverChecker = isOwner ? new StringHoverChecker(guiTop + 44, guiTop + 60, guiLeft + 174, guiLeft + 191, Utils.localize("gui.securitycraft:block_change_detector.smart_module_hint").getFormattedText()) : null;
+		hoverCheckers[3] = new StringHoverChecker(highlightInWorldCheckbox, Utils.localize("gui.securitycraft:block_change_detector.highlight_in_world_checkbox").getFormattedText());
+		hoverCheckers[4] = new StringHoverChecker(colorChooserButton, Utils.localize("gui.securitycraft:choose_outline_color_tooltip").getFormattedText());
+		smartModuleHoverChecker = isOwner ? new StringHoverChecker(guiTop + 44, guiTop + 60, settingsX + 1, guiLeft + 191, Utils.localize("gui.securitycraft:block_change_detector.smart_module_hint").getFormattedText()) : null;
 		changeEntryList = new ChangeEntryList(mc, 160, 150, guiTop + 20, guiLeft + 8);
-		clearButton.enabled = modeButton.enabled = isOwner;
+		clearButton.enabled = modeButton.enabled = colorChooserButton.enabled = isOwner;
 
 		for (ChangeEntry entry : be.getEntries()) {
 			String stateString;
@@ -127,12 +149,9 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 			else
 				blockName = Utils.localize(stack.getTranslationKey() + ".name").getFormattedText();
 
-			changeEntryList.addEntry(new ContentSavingCollapsibleTextList(-1, 0, 0, 154, blockName, list, b -> changeEntryList.setOpen((ContentSavingCollapsibleTextList) b), changeEntryList::isHovered, entry.action, entry.state));
+			changeEntryList.addEntry(new ContentSavingCollapsibleTextList(-1, 0, 0, 154, blockName, list, b -> changeEntryList.setOpen((ContentSavingCollapsibleTextList) b), changeEntryList::isHovered, entry));
 		}
 
-		ItemStack filteredStack = inventorySlots.getSlot(0).getStack();
-
-		changeEntryList.filteredStack = filteredStack;
 		changeEntryList.updateFilteredEntries();
 	}
 
@@ -167,6 +186,25 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 
 		if (changeEntryList != null)
 			changeEntryList.drawScreen(mouseX, mouseY, partialTicks);
+
+		if (colorChooser != null)
+			colorChooser.drawScreen(mouseX, mouseY, partialTicks);
+	}
+
+	@Override
+	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+		super.keyTyped(typedChar, keyCode);
+
+		if (colorChooser != null)
+			colorChooser.keyTyped(typedChar, keyCode);
+	}
+
+	@Override
+	public void updateScreen() {
+		super.updateScreen();
+
+		if (colorChooser != null)
+			colorChooser.updateScreen();
 	}
 
 	@Override
@@ -174,29 +212,39 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 		if (changeEntryList != null && changeEntryList.mouseClicked(mouseX, mouseY, button))
 			return;
 
+		if (colorChooser != null)
+			colorChooser.mouseClicked(mouseX, mouseY, button);
+
 		super.mouseClicked(mouseX, mouseY, button);
+	}
+
+	@Override
+	protected void mouseReleased(int mouseX, int mouseY, int state) {
+		if (colorChooser != null)
+			colorChooser.mouseReleased(mouseX, mouseY, state);
+
+		super.mouseReleased(mouseX, mouseY, state);
 	}
 
 	@Override
 	public void onGuiClosed() {
 		super.onGuiClosed();
-		sendModeChangeToServer();
-	}
 
-	private void sendModeChangeToServer() {
-		EnumDetectionMode mode = EnumDetectionMode.values()[modeButton.getCurrentIndex()];
+		EnumDetectionMode currentMode = be.getMode();
+		boolean isShowingHighlights = be.isShowingHighlights();
+		int currentColor = be.getColor();
 
-		if (mode != be.getMode()) {
-			be.setMode(mode);
-			SecurityCraft.network.sendToServer(new SyncBlockChangeDetector(be.getPos(), mode));
-		}
+		if (previousMode != currentMode || wasShowingHighlights != isShowingHighlights || previousColor != currentColor)
+			SecurityCraft.network.sendToServer(new SyncBlockChangeDetector(be.getPos(), currentMode, isShowingHighlights, currentColor));
+
+		be.updateFilteredEntries();
 	}
 
 	@Override
 	public void sendSlotContents(Container container, int slotIndex, ItemStack stack) {
 		if (slotIndex == 0 && changeEntryList != null) {
-			changeEntryList.filteredStack = stack;
 			changeEntryList.updateFilteredEntries();
+			be.updateFilteredEntries();
 		}
 	}
 
@@ -223,12 +271,19 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 	@Override
 	public void sendAllWindowProperties(Container container, IInventory inventory) {}
 
+	@Override
+	public List<Rectangle> getGuiExtraAreas() {
+		if (colorChooser != null)
+			return colorChooser.getGuiExtraAreas();
+		else
+			return new ArrayList<>();
+	}
+
 	class ChangeEntryList extends ColorableScrollPanel {
 		private List<ContentSavingCollapsibleTextList> allEntries = new ArrayList<>();
 		private List<ContentSavingCollapsibleTextList> filteredEntries = new ArrayList<>();
 		private ContentSavingCollapsibleTextList currentlyOpen = null;
 		private int contentHeight = 0;
-		private ItemStack filteredStack = ItemStack.EMPTY;
 
 		public ChangeEntryList(Minecraft client, int width, int height, int top, int left) {
 			super(client, width, height, top, top + height, left, 12, new Color(0x00, 0x00, 0x00, 0x00), new Color(0x00, 0x00, 0x00, 0x00));
@@ -298,24 +353,8 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 		public void updateFilteredEntries() {
 			allEntries.forEach(e -> e.enabled = false);
 
-			if (!showAllCheckbox.selected()) {
-				//@formatter:off
-				Stream<ContentSavingCollapsibleTextList> stream = allEntries
-						.stream()
-						.filter(e -> currentMode == EnumDetectionMode.BOTH || currentMode == e.getMode());
-				//@formatter:on
-
-				//no need for further filtering if no stack is present to filter by
-				if (!filteredStack.isEmpty()) {
-					//@formatter:off
-					stream = stream
-							.filter(e -> filteredStack.getItem() instanceof ItemBlock && ((ItemBlock) filteredStack.getItem()).getBlock() == e.getBlock())
-							.filter(e -> e.getBlock().getMetaFromState(e.getState()) == filteredStack.getMetadata());
-					//@formatter:on
-				}
-
-				filteredEntries = new ArrayList<>(stream.collect(Collectors.toList()));
-			}
+			if (!showAllCheckbox.selected())
+				filteredEntries = new ArrayList<>(allEntries.stream().filter(e -> be.isEntryShown(e.getChangeEntry())).collect(Collectors.toList()));
 			else
 				filteredEntries = new ArrayList<>(allEntries);
 
@@ -414,26 +453,16 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 	}
 
 	class ContentSavingCollapsibleTextList extends CollapsibleTextList {
-		private final EnumDetectionMode mode;
-		private final IBlockState state;
+		private final ChangeEntry changeEntry;
 
-		public ContentSavingCollapsibleTextList(int id, int xPos, int yPos, int width, String displayString, List<? extends ITextComponent> textLines, Consumer<CollapsibleTextList> onPress, BiPredicate<Integer, Integer> extraHoverCheck, EnumDetectionMode mode, IBlockState state) {
+		public ContentSavingCollapsibleTextList(int id, int xPos, int yPos, int width, String displayString, List<? extends ITextComponent> textLines, Consumer<CollapsibleTextList> onPress, BiPredicate<Integer, Integer> extraHoverCheck, ChangeEntry changeEntry) {
 			super(id, xPos, yPos, width, displayString, textLines, onPress, extraHoverCheck);
 
-			this.mode = mode;
-			this.state = state;
+			this.changeEntry = changeEntry;
 		}
 
-		public EnumDetectionMode getMode() {
-			return mode;
-		}
-
-		public Block getBlock() {
-			return state.getBlock();
-		}
-
-		public IBlockState getState() {
-			return state;
+		public ChangeEntry getChangeEntry() {
+			return changeEntry;
 		}
 	}
 }

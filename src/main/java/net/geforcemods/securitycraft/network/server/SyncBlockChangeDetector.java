@@ -17,24 +17,32 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class SyncBlockChangeDetector implements IMessage {
 	private BlockPos pos;
 	private EnumDetectionMode mode;
+	private boolean showHighlights;
+	private int color;
 
 	public SyncBlockChangeDetector() {}
 
-	public SyncBlockChangeDetector(BlockPos pos, EnumDetectionMode mode) {
+	public SyncBlockChangeDetector(BlockPos pos, EnumDetectionMode mode, boolean showHighlights, int color) {
 		this.pos = pos;
 		this.mode = mode;
+		this.showHighlights = showHighlights;
+		this.color = color;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		pos = BlockPos.fromLong(buf.readLong());
 		mode = EnumDetectionMode.values()[ByteBufUtils.readVarInt(buf, 5)];
+		showHighlights = buf.readBoolean();
+		color = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
 		buf.writeLong(pos.toLong());
 		ByteBufUtils.writeVarInt(buf, mode.ordinal(), 5);
+		buf.writeBoolean(showHighlights);
+		buf.writeInt(color);
 	}
 
 	public static class Handler implements IMessageHandler<SyncBlockChangeDetector, IMessage> {
@@ -53,6 +61,9 @@ public class SyncBlockChangeDetector implements IMessage {
 						IBlockState state = level.getBlockState(pos);
 
 						te.setMode(message.mode);
+						te.showHighlights(message.showHighlights);
+						te.setColor(message.color);
+						te.markDirty();
 						level.notifyBlockUpdate(pos, state, state, 2);
 					}
 				}
