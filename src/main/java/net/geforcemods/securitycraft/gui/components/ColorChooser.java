@@ -35,7 +35,7 @@ public class ColorChooser extends GuiScreen {
 	private final HoverChecker colorFieldHoverChecker;
 	private float selectionX, selectionY;
 	private final int rgbColor;
-	private FixedGuiTextField rBox, gBox, bBox, rgbHexBox;
+	public FixedGuiTextField rBox, gBox, bBox, rgbHexBox;
 	public HueSlider hueSlider;
 
 	public ColorChooser(int xStart, int yStart, int rgbColor) {
@@ -305,7 +305,7 @@ public class ColorChooser extends GuiScreen {
 	}
 
 	//fixes focus when selecting boxes from last added to first added, as well as the highlight position sometimes being wrong when setting the value
-	class FixedGuiTextField extends GuiTextField {
+	public class FixedGuiTextField extends GuiTextField {
 		public FixedGuiTextField(int id, FontRenderer font, int x, int y, int width, int height) {
 			super(id, font, x, y, width, height);
 		}

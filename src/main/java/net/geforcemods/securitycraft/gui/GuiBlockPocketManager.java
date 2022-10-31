@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerBlockPocketManager;
@@ -213,7 +215,20 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider, IHas
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		super.keyTyped(typedChar, keyCode);
+		Slot hoveredSlot = getSlotUnderMouse();
+
+		//code copied from super implementation to prevent pressing the inventory key from closing the screen when the rgb hex text field is focused
+		if (keyCode == Keyboard.KEY_ESCAPE || (!colorChooser.rgbHexBox.isFocused() && mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode)))
+			mc.player.closeScreen();
+
+		checkHotbarKeys(keyCode);
+
+		if (hoveredSlot != null && hoveredSlot.getHasStack()) {
+			if (mc.gameSettings.keyBindPickBlock.isActiveAndMatches(keyCode))
+				handleMouseClick(hoveredSlot, hoveredSlot.slotNumber, 0, ClickType.CLONE);
+			else if (mc.gameSettings.keyBindDrop.isActiveAndMatches(keyCode))
+				handleMouseClick(hoveredSlot, hoveredSlot.slotNumber, isCtrlKeyDown() ? 1 : 0, ClickType.THROW);
+		}
 
 		if (colorChooser != null)
 			colorChooser.keyTyped(typedChar, keyCode);
