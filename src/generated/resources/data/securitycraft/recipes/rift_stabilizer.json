@@ -5,7 +5,7 @@
       "item": "minecraft:chorus_fruit"
     },
     "D": {
-      "tag": "forge:gems/diamond"
+      "item": "securitycraft:reinforced_diamond_block"
     },
     "E": {
       "item": "minecraft:ender_eye"
@@ -19,7 +19,7 @@
   },
   "pattern": [
     "GEG",
-    "DCD",
+    "CDC",
     "III"
   ],
   "result": {

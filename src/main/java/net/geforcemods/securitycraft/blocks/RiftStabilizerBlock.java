@@ -129,6 +129,11 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 	}
 
 	@Override
+	public boolean isSignalSource(BlockState state) {
+		return true;
+	}
+
+	@Override
 	public boolean shouldCheckWeakPower(BlockState state, LevelReader level, BlockPos pos, Direction side) {
 		return false;
 	}
