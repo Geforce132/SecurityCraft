@@ -9,11 +9,11 @@ import net.minecraft.item.ItemStack;
  *
  * @author Geforce, bl4ckscor3
  */
-public interface LinkedAction {
+public interface ILinkedAction {
 	/**
 	 * Used when an {@link Option} in a TileEntity is changed.
 	 */
-	public static final class OptionChanged<T> implements LinkedAction {
+	public static final class OptionChanged<T> implements ILinkedAction {
 		public final Option<T> option;
 
 		public OptionChanged(Option<T> option) {
@@ -24,7 +24,7 @@ public interface LinkedAction {
 	/**
 	 * Used when a {@link ModuleType} is inserted into an {@link IModuleInventory}
 	 */
-	public static final class ModuleInserted implements LinkedAction {
+	public static final class ModuleInserted implements ILinkedAction {
 		public final ItemStack stack;
 		public final ModuleItem module;
 		public final boolean wasModuleToggled;
@@ -39,7 +39,7 @@ public interface LinkedAction {
 	/**
 	 * Used when a {@link ModuleType} is removed from an {@link IModuleInventory}
 	 */
-	public static final class ModuleRemoved implements LinkedAction {
+	public static final class ModuleRemoved implements ILinkedAction {
 		public final ModuleType moduleType;
 		public final boolean wasModuleToggled;
 
@@ -52,7 +52,7 @@ public interface LinkedAction {
 	/**
 	 * Used when the {@link Owner} of a block entity changes
 	 */
-	public static final class OwnerChanged implements LinkedAction {
+	public static final class OwnerChanged implements ILinkedAction {
 		public final Owner newOwner;
 
 		public OwnerChanged(Owner newOwner) {

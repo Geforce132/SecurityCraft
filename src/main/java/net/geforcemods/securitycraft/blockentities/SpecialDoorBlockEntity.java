@@ -2,9 +2,9 @@ package net.geforcemods.securitycraft.blockentities;
 
 import java.util.ArrayList;
 
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
-import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -43,9 +43,9 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 	}
 
 	@Override
-	protected void onLinkedBlockAction(LinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {
-		if (action instanceof LinkedAction.OptionChanged) {
-			Option<?> option = ((LinkedAction.OptionChanged) action).option;
+	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {
+		if (action instanceof ILinkedAction.OptionChanged) {
+			Option<?> option = ((ILinkedAction.OptionChanged) action).option;
 
 			for (Option<?> customOption : customOptions()) {
 				if (customOption.getName().equals(option.getName())) {
@@ -56,13 +56,13 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 		}
-		else if (action instanceof LinkedAction.ModuleInserted) {
-			LinkedAction.ModuleInserted moduleInserted = (LinkedAction.ModuleInserted) action;
+		else if (action instanceof ILinkedAction.ModuleInserted) {
+			ILinkedAction.ModuleInserted moduleInserted = (ILinkedAction.ModuleInserted) action;
 
 			insertModule(moduleInserted.stack, moduleInserted.wasModuleToggled);
 		}
-		else if (action instanceof LinkedAction.ModuleRemoved) {
-			LinkedAction.ModuleRemoved moduleRemoved = (LinkedAction.ModuleRemoved) action;
+		else if (action instanceof ILinkedAction.ModuleRemoved) {
+			ILinkedAction.ModuleRemoved moduleRemoved = (ILinkedAction.ModuleRemoved) action;
 
 			removeModule(moduleRemoved.moduleType, moduleRemoved.wasModuleToggled);
 		}

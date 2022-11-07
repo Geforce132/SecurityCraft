@@ -1,10 +1,10 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
-import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
@@ -62,7 +62,7 @@ public class UniversalBlockRemoverItem extends Item {
 
 				for (ItemStack module : te.getInventory()) {
 					if (!module.isEmpty())
-						te.createLinkedBlockAction(new LinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), te);
+						te.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), te);
 				}
 
 				if (!world.isClientSide) {

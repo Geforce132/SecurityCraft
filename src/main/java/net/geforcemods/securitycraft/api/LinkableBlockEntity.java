@@ -103,11 +103,11 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		createLinkedBlockAction(new LinkedAction.OptionChanged<>(option), this);
+		createLinkedBlockAction(new ILinkedAction.OptionChanged<>(option), this);
 	}
 
 	/**
-	 * Links two blocks together. Calls onLinkedBlockAction() whenever certain events (found in {@link LinkedAction}) occur.
+	 * Links two blocks together. Calls onLinkedBlockAction() whenever certain events (found in {@link ILinkedAction}) occur.
 	 */
 	public static void link(LinkableBlockEntity tileEntity1, LinkableBlockEntity tileEntity2) {
 		if (isLinkedWith(tileEntity1, tileEntity2))
@@ -148,12 +148,12 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 	/**
 	 * Calls onLinkedBlockAction() for every block this tile entity is linked to. <p> <b>NOTE:</b> Never use this method in
-	 * onLinkedBlockAction(), use createLinkedBlockAction(EnumLinkedAction, Object[], ArrayList[LinkableTileEntity] instead.
+	 * onLinkedBlockAction(), use createLinkedBlockAction(EnumILinkedAction, Object[], ArrayList[LinkableTileEntity] instead.
 	 *
 	 * @param action The action that occurred
 	 * @param excludedTE The LinkableTileEntity which called this method, prevents infinite loops.
 	 */
-	public void createLinkedBlockAction(LinkedAction action, LinkableBlockEntity excludedTE) {
+	public void createLinkedBlockAction(ILinkedAction action, LinkableBlockEntity excludedTE) {
 		ArrayList<LinkableBlockEntity> list = new ArrayList<>();
 
 		list.add(excludedTE);
@@ -167,7 +167,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * @param excludedTEs LinkableTileEntities that shouldn't have onLinkedBlockAction() called on them, prevents infinite
 	 *            loops. Always add your tile entity to the list whenever using this method
 	 */
-	public void createLinkedBlockAction(LinkedAction action, ArrayList<LinkableBlockEntity> excludedTEs) {
+	public void createLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedTEs) {
 		for (LinkedBlock block : linkedBlocks) {
 			if (!excludedTEs.contains(block.asTileEntity(level))) {
 				BlockState state = level.getBlockState(block.blockPos);
@@ -179,13 +179,13 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	/**
-	 * Called whenever certain actions occur in blocks this tile entity is linked to. See {@link LinkedAction} for parameter
+	 * Called whenever certain actions occur in blocks this tile entity is linked to. See {@link ILinkedAction} for parameter
 	 * descriptions. <p>
 	 *
-	 * @param action The {@link LinkedAction} that occurred
+	 * @param action The {@link ILinkedAction} that occurred
 	 * @param excludedTEs LinkableTileEntities that aren't going to have onLinkedBlockAction() called on them, always add
 	 *            your tile entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link
 	 *            multiple blocks (i.e: like Laser Blocks)
 	 */
-	protected void onLinkedBlockAction(LinkedAction action, ArrayList<LinkableBlockEntity> excludedTEs) {}
+	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedTEs) {}
 }

@@ -3,10 +3,10 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
-import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -55,7 +55,8 @@ public class ToggleModule {
 
 					if (be instanceof LinkableBlockEntity) {
 						LinkableBlockEntity linkable = (LinkableBlockEntity) be;
-						linkable.createLinkedBlockAction(new LinkedAction.ModuleRemoved(moduleType, true), linkable);
+
+						linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(moduleType, true), linkable);
 					}
 				}
 				else {
@@ -65,7 +66,7 @@ public class ToggleModule {
 						LinkableBlockEntity linkable = (LinkableBlockEntity) be;
 						ItemStack stack = moduleInv.getModule(moduleType);
 
-						linkable.createLinkedBlockAction(new LinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), true), linkable);
+						linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), true), linkable);
 					}
 				}
 				if (be instanceof CustomizableBlockEntity)

@@ -63,7 +63,7 @@ public interface IOwnable {
 		if (te instanceof LinkableBlockEntity) {
 			LinkableBlockEntity linkable = (LinkableBlockEntity) te;
 
-			linkable.createLinkedBlockAction(new LinkedAction.OwnerChanged(getOwner()), linkable);
+			linkable.createLinkedBlockAction(new ILinkedAction.OwnerChanged(getOwner()), linkable);
 		}
 
 		te.setChanged();

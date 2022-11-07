@@ -7,6 +7,7 @@
 - New: Ability to change a block pocket's outline color
 - API: Changed LinkedAction to an interface and the enum values to records for easier usability
 - API: Several methods in LinkableBlockEntity were changed to account for the LinkedAction change
+- API: LinkedAction has been renamed to ILinkedAction
 - Fix: Nether portals can replace reinforced blocks when generating
 - Fix: Can't place blocks on blocks locked by a Sonic Security System
 - Fix: Interacting with blocks while holding a Sonic Security System may sometimes place it for a short while

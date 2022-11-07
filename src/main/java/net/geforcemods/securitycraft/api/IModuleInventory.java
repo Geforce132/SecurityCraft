@@ -135,7 +135,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				continue;
 
 			if (linkable != null)
-				linkable.createLinkedBlockAction(new LinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), linkable);
+				linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), linkable);
 
 			Block.popResource(level, pos, module);
 		}
@@ -176,7 +176,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 					if (te instanceof LinkableBlockEntity) {
 						LinkableBlockEntity be = (LinkableBlockEntity) te;
 
-						be.createLinkedBlockAction(new LinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), be);
+						be.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), be);
 					}
 				}
 
@@ -213,7 +213,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 					if (te instanceof LinkableBlockEntity) {
 						LinkableBlockEntity be = (LinkableBlockEntity) te;
 
-						be.createLinkedBlockAction(new LinkedAction.ModuleInserted(copy, (ModuleItem) copy.getItem(), false), be);
+						be.createLinkedBlockAction(new ILinkedAction.ModuleInserted(copy, (ModuleItem) copy.getItem(), false), be);
 					}
 				}
 			}
@@ -243,7 +243,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			if (te instanceof LinkableBlockEntity) {
 				LinkableBlockEntity be = (LinkableBlockEntity) te;
 
-				be.createLinkedBlockAction(new LinkedAction.ModuleRemoved(((ModuleItem) previous.getItem()).getModuleType(), false), be);
+				be.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) previous.getItem()).getModuleType(), false), be);
 			}
 		}
 
@@ -255,7 +255,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			if (te instanceof LinkableBlockEntity) {
 				LinkableBlockEntity be = (LinkableBlockEntity) te;
 
-				be.createLinkedBlockAction(new LinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), false), be);
+				be.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), false), be);
 			}
 		}
 	}
