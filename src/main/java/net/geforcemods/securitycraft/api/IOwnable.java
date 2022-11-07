@@ -61,9 +61,9 @@ public interface IOwnable {
 		TileEntity te = (TileEntity) this;
 
 		if (te instanceof TileEntityLinkable) {
-			((TileEntityLinkable) te).createLinkedBlockAction(EnumLinkedAction.OWNER_CHANGED, new Object[] {
-					getOwner()
-			}, (TileEntityLinkable) te);
+			TileEntityLinkable linkable = (TileEntityLinkable) te;
+
+			linkable.createLinkedBlockAction(new ILinkedAction.OwnerChanged(getOwner()), linkable);
 		}
 
 		te.markDirty();

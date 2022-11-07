@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.EnumLinkedAction;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
@@ -55,11 +55,8 @@ public class ItemUniversalBlockRemover extends Item {
 				TileEntityLaserBlock te = (TileEntityLaserBlock) world.getTileEntity(pos);
 
 				for (ItemStack module : te.getInventory()) {
-					if (!module.isEmpty()) {
-						te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[] {
-								module, ((ItemModule) module.getItem()).getModuleType(), false
-						}, te);
-					}
+					if (!module.isEmpty())
+						te.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ItemModule) module.getItem()).getModuleType(), false), te);
 				}
 
 				if (!world.isRemote) {

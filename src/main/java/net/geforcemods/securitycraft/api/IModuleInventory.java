@@ -8,7 +8,6 @@ import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -147,7 +146,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				continue;
 
 			if (linkable != null)
-				ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, module, linkable, false);
+				linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ItemModule) module.getItem()).getModuleType(), false), linkable);
 
 			Block.spawnAsEntity(level, pos, module);
 		}
@@ -185,8 +184,11 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				if (stack.getItem() instanceof ItemModule) {
 					onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModuleType(), false);
 
-					if (te instanceof TileEntityLinkable)
-						ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, stack, (TileEntityLinkable) te, false);
+					if (te instanceof TileEntityLinkable) {
+						TileEntityLinkable linkable = (TileEntityLinkable) te;
+
+						linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ItemModule) stack.getItem()).getModuleType(), false), linkable);
+					}
 				}
 
 				return getInventory().set(slot, ItemStack.EMPTY).copy();
@@ -219,8 +221,11 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				if (stack.getItem() instanceof ItemModule) {
 					onModuleInserted(stack, ((ItemModule) stack.getItem()).getModuleType(), false);
 
-					if (te instanceof TileEntityLinkable)
-						ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, copy, (TileEntityLinkable) te, false);
+					if (te instanceof TileEntityLinkable) {
+						TileEntityLinkable linkable = (TileEntityLinkable) te;
+
+						linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(copy, (ItemModule) copy.getItem(), false), linkable);
+					}
 				}
 			}
 
@@ -246,8 +251,11 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		if (!previous.isEmpty()) {
 			onModuleRemoved(previous, ((ItemModule) previous.getItem()).getModuleType(), false);
 
-			if (te instanceof TileEntityLinkable)
-				ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, previous, (TileEntityLinkable) te, false);
+			if (te instanceof TileEntityLinkable) {
+				TileEntityLinkable linkable = (TileEntityLinkable) te;
+
+				linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ItemModule) previous.getItem()).getModuleType(), false), linkable);
+			}
 		}
 
 		getInventory().set(slot, stack);
@@ -255,8 +263,11 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		if (stack.getItem() instanceof ItemModule) {
 			onModuleInserted(stack, ((ItemModule) stack.getItem()).getModuleType(), false);
 
-			if (te instanceof TileEntityLinkable)
-				ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, stack, (TileEntityLinkable) te, false);
+			if (te instanceof TileEntityLinkable) {
+				TileEntityLinkable linkable = (TileEntityLinkable) te;
+
+				linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ItemModule) stack.getItem(), false), linkable);
+			}
 		}
 	}
 

@@ -97,14 +97,11 @@ public abstract class TileEntityLinkable extends CustomizableSCTE implements ITi
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		createLinkedBlockAction(EnumLinkedAction.OPTION_CHANGED, new Object[] {
-				option
-		}, this);
+		createLinkedBlockAction(new ILinkedAction.OptionChanged<>(option), this);
 	}
 
 	/**
-	 * Links two blocks together. Calls onLinkedBlockAction() whenever certain events (found in {@link EnumLinkedAction})
-	 * occur.
+	 * Links two blocks together. Calls onLinkedBlockAction() whenever certain events (found in {@link ILinkedAction}) occur.
 	 */
 	public static void link(TileEntityLinkable tileEntity1, TileEntityLinkable tileEntity2) {
 		if (isLinkedWith(tileEntity1, tileEntity2))
@@ -148,41 +145,38 @@ public abstract class TileEntityLinkable extends CustomizableSCTE implements ITi
 	 * onLinkedBlockAction(), use createLinkedBlockAction(EnumLinkedAction, Object[], ArrayList[TileEntityLinkable] instead.
 	 *
 	 * @param action The action that occurred
-	 * @param parameters Action-specific parameters, see comments in {@link EnumLinkedAction}
 	 * @param excludedTE The TileEntityLinkable which called this method, prevents infinite loops.
 	 */
-	public void createLinkedBlockAction(EnumLinkedAction action, Object[] parameters, TileEntityLinkable excludedTE) {
+	public void createLinkedBlockAction(ILinkedAction action, TileEntityLinkable excludedTE) {
 		ArrayList<TileEntityLinkable> list = new ArrayList<>();
 
 		list.add(excludedTE);
-		createLinkedBlockAction(action, parameters, list);
+		createLinkedBlockAction(action, list);
 	}
 
 	/**
 	 * Calls onLinkedBlockAction() for every block this tile entity is linked to.
 	 *
 	 * @param action The action that occurred
-	 * @param parameters Action-specific parameters, see comments in {@link EnumLinkedAction}
 	 * @param excludedTEs TileEntityLinkables that shouldn't have onLinkedBlockAction() called on them, prevents infinite
 	 *            loops. Always add your tile entity to the list whenever using this method
 	 */
-	public void createLinkedBlockAction(EnumLinkedAction action, Object[] parameters, ArrayList<TileEntityLinkable> excludedTEs) {
+	public void createLinkedBlockAction(ILinkedAction action, ArrayList<TileEntityLinkable> excludedTEs) {
 		for (LinkedBlock block : linkedBlocks)
 			if (!excludedTEs.contains(block.asTileEntity(world))) {
-				block.asTileEntity(world).onLinkedBlockAction(action, parameters, excludedTEs);
+				block.asTileEntity(world).onLinkedBlockAction(action, excludedTEs);
 				block.asTileEntity(world).sync();
 			}
 	}
 
 	/**
-	 * Called whenever certain actions occur in blocks this tile entity is linked to. See {@link EnumLinkedAction} for
-	 * parameter descriptions. <p>
+	 * Called whenever certain actions occur in blocks this tile entity is linked to. See {@link ILinkedAction} for parameter
+	 * descriptions. <p>
 	 *
-	 * @param action The {@link EnumLinkedAction} that occurred
-	 * @param parameters Important variables related to the action
+	 * @param action The {@link ILinkedAction} that occurred
 	 * @param excludedTEs TileEntityLinkables that aren't going to have onLinkedBlockAction() called on them, always add your
 	 *            tile entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link
 	 *            multiple blocks (i.e: like Laser Blocks)
 	 */
-	protected void onLinkedBlockAction(EnumLinkedAction action, Object[] parameters, ArrayList<TileEntityLinkable> excludedTEs) {}
+	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<TileEntityLinkable> excludedTEs) {}
 }

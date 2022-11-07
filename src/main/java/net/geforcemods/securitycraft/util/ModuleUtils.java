@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
-import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.minecraft.entity.Entity;
@@ -75,19 +73,6 @@ public class ModuleUtils {
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
 		return doesModuleHaveTeamOf(name, inv.getTileEntity().getWorld(), stack) || getPlayersFromModule(stack).contains(name.toLowerCase());
-	}
-
-	public static void createLinkedAction(EnumLinkedAction action, ItemStack stack, TileEntityLinkable te, boolean toggled) {
-		if (action == EnumLinkedAction.MODULE_INSERTED) {
-			te.createLinkedBlockAction(action, new Object[] {
-					stack, (ItemModule) stack.getItem(), toggled
-			}, te);
-		}
-		else if (action == EnumLinkedAction.MODULE_REMOVED) {
-			te.createLinkedBlockAction(action, new Object[] {
-					stack, ((ItemModule) stack.getItem()).getModuleType(), toggled
-			}, te);
-		}
 	}
 
 	public static boolean doesModuleHaveTeamOf(String name, World level, ItemStack module) {

@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import java.util.ArrayList;
 
-import net.geforcemods.securitycraft.api.EnumLinkedAction;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -14,7 +14,6 @@ import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -40,9 +39,9 @@ public abstract class TileEntitySpecialDoor extends TileEntityLinkable implement
 	}
 
 	@Override
-	protected void onLinkedBlockAction(EnumLinkedAction action, Object[] parameters, ArrayList<TileEntityLinkable> excludedTEs) {
-		if (action == EnumLinkedAction.OPTION_CHANGED) {
-			Option<?> option = (Option<?>) parameters[0];
+	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<TileEntityLinkable> excludedTEs) {
+		if (action instanceof ILinkedAction.OptionChanged) {
+			Option<?> option = ((ILinkedAction.OptionChanged) action).option;
 
 			for (Option<?> customOption : customOptions()) {
 				if (customOption.getName().equals(option.getName())) {
@@ -51,10 +50,16 @@ public abstract class TileEntitySpecialDoor extends TileEntityLinkable implement
 				}
 			}
 		}
-		else if (action == EnumLinkedAction.MODULE_INSERTED)
-			insertModule((ItemStack) parameters[0], (boolean) parameters[2]);
-		else if (action == EnumLinkedAction.MODULE_REMOVED)
-			removeModule((EnumModuleType) parameters[1], (boolean) parameters[2]);
+		else if (action instanceof ILinkedAction.ModuleInserted) {
+			ILinkedAction.ModuleInserted moduleInserted = (ILinkedAction.ModuleInserted) action;
+
+			insertModule(moduleInserted.stack, moduleInserted.wasModuleToggled);
+		}
+		else if (action instanceof ILinkedAction.ModuleRemoved) {
+			ILinkedAction.ModuleRemoved moduleRemoved = (ILinkedAction.ModuleRemoved) action;
+
+			removeModule(moduleRemoved.moduleType, moduleRemoved.wasModuleToggled);
+		}
 	}
 
 	@Override

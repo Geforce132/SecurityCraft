@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.EnumLinkedAction;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
@@ -44,33 +44,35 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 	}
 
 	@Override
-	protected void onLinkedBlockAction(EnumLinkedAction action, Object[] parameters, ArrayList<TileEntityLinkable> excludedTEs) {
-		if (action == EnumLinkedAction.OPTION_CHANGED) {
-			Option<?> option = (Option<?>) parameters[0];
+	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<TileEntityLinkable> excludedTEs) {
+		if (action instanceof ILinkedAction.OptionChanged) {
+			Option<?> option = ((ILinkedAction.OptionChanged) action).option;
 
 			disabled.copy(option);
 			toggleLaser((OptionBoolean) option);
 		}
-		else if (action == EnumLinkedAction.MODULE_INSERTED) {
-			ItemStack module = (ItemStack) parameters[0];
+		else if (action instanceof ILinkedAction.ModuleInserted) {
+			ILinkedAction.ModuleInserted moduleInserted = (ILinkedAction.ModuleInserted) action;
+			ItemStack module = moduleInserted.stack;
+			boolean toggled = moduleInserted.wasModuleToggled;
 
-			insertModule(module, (boolean) parameters[2]);
+			insertModule(module, toggled);
 		}
-		else if (action == EnumLinkedAction.MODULE_REMOVED) {
-			EnumModuleType module = (EnumModuleType) parameters[1];
+		else if (action instanceof ILinkedAction.ModuleRemoved) {
+			ILinkedAction.ModuleRemoved moduleRemoved = (ILinkedAction.ModuleRemoved) action;
+			EnumModuleType module = moduleRemoved.moduleType;
+			boolean toggled = moduleRemoved.wasModuleToggled;
 
-			removeModule(module, (boolean) parameters[2]);
-			excludedTEs.add(this);
-			createLinkedBlockAction(action, parameters, excludedTEs);
+			removeModule(module, toggled);
 		}
-		else if (action == EnumLinkedAction.OWNER_CHANGED) {
-			Owner owner = (Owner) parameters[0];
+		else if (action instanceof ILinkedAction.OwnerChanged) {
+			Owner owner = ((ILinkedAction.OwnerChanged) action).newOwner;
 
 			setOwner(owner.getUUID(), owner.getName());
 		}
 
 		excludedTEs.add(this);
-		createLinkedBlockAction(action, parameters, excludedTEs);
+		createLinkedBlockAction(action, excludedTEs);
 	}
 
 	@Override

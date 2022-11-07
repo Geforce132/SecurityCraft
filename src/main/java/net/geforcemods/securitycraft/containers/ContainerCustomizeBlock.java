@@ -1,11 +1,10 @@
 package net.geforcemods.securitycraft.containers;
 
-import net.geforcemods.securitycraft.api.EnumLinkedAction;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -121,8 +120,11 @@ public class ContainerCustomizeBlock extends Container {
 			if ((slotNumber >= 36 || slotNumber < maxSlots) && oldStack.getItem() instanceof ItemModule) {
 				moduleInv.onModuleRemoved(oldStack, ((ItemModule) oldStack.getItem()).getModuleType(), false);
 
-				if (moduleInv instanceof TileEntityLinkable)
-					ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, oldStack, (TileEntityLinkable) moduleInv, false);
+				if (moduleInv instanceof TileEntityLinkable) {
+					TileEntityLinkable linkable = (TileEntityLinkable) moduleInv;
+
+					linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ItemModule) oldStack.getItem()).getModuleType(), false), linkable);
+				}
 
 				detectAndSendChanges();
 			}

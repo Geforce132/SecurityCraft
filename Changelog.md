@@ -4,6 +4,9 @@
 - New: Taser effects and damage are now configurable
 - New: The Block Change Detector can now show highlights in the world, marking where it detected block changes
 - New: Ability to change a block pocket's outline color
+- API: Changed EnumLinkedAction to an interface and the enum values to records for easier usability
+- API: Several methods in TileEntityLinkable were changed to account for the EnumLinkedAction change
+- API: EnumLinkedAction has been renamed to ILinkedAction
 - Fix: Nether portals can replace reinforced blocks when generating
 - Fix: Can't place blocks on blocks locked by a Sonic Security System
 - Fix: Sentry bullets can remove item frames

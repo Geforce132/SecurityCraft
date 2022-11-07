@@ -10,9 +10,9 @@ import java.util.Random;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
-import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.IEMPAffected;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
@@ -388,9 +388,9 @@ public class SCEventHandler {
 						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModuleType(), false);
 
 						if (te instanceof TileEntityLinkable) {
-							((TileEntityLinkable) te).createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[] {
-									stack, ((ItemModule) stack.getItem()).getModuleType(), false
-							}, (TileEntityLinkable) te);
+							TileEntityLinkable linkable = (TileEntityLinkable) te;
+
+							linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ItemModule) stack.getItem()).getModuleType(), false), linkable);
 						}
 
 						if (te instanceof TileEntitySecurityCamera) {
