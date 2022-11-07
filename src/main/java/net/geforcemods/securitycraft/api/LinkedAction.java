@@ -1,32 +1,36 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.api.LinkedAction.ModuleInserted;
+import net.geforcemods.securitycraft.api.LinkedAction.ModuleRemoved;
+import net.geforcemods.securitycraft.api.LinkedAction.OptionChanged;
+import net.geforcemods.securitycraft.api.LinkedAction.OwnerChanged;
+import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.minecraft.world.item.ItemStack;
 
 /**
- * A simple enum which contains all the possible actions for LinkableBlockEntity.onLinkedBlockAction(). Each action has
- * different parameters which is passed in onLinkedBlockAction().
+ * A simple interface which contains all the possible actions for LinkableBlockEntity.onLinkedBlockAction().
  *
- * @author Geforce
+ * @author Geforce, bl4ckscor3
  */
-public enum LinkedAction {
-
+public sealed interface LinkedAction permits OptionChanged, ModuleInserted, ModuleRemoved, OwnerChanged {
 	/**
 	 * Used when an {@link Option} in a block entity is changed
 	 */
-	OPTION_CHANGED,
+	public static final record OptionChanged<T> (Option<T> option) implements LinkedAction {}
 
 	/**
-	 * Used when a {@link ModuleType} is inserted into an IModuleInventory
+	 * Used when a {@link ModuleType} is inserted into an {@link IModuleInventory}
 	 */
-	MODULE_INSERTED,
+	public static final record ModuleInserted(ItemStack stack, ModuleItem module, boolean wasModuleToggled) implements LinkedAction {}
 
 	/**
-	 * Used when a {@link ModuleType} is removed from an IModuleInventory
+	 * Used when a {@link ModuleType} is removed from an {@link IModuleInventory}
 	 */
-	MODULE_REMOVED,
+	public static final record ModuleRemoved(ModuleType moduleType, boolean wasModuleToggled) implements LinkedAction {}
 
 	/**
-	 * Used when the {@link Owner} of a block entity changes;
+	 * Used when the {@link Owner} of a block entity changes
 	 */
-	OWNER_CHANGED;
+	public static final record OwnerChanged(Owner newOwner) implements LinkedAction {}
 }
