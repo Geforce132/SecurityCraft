@@ -9,24 +9,24 @@ import net.minecraft.world.item.ItemStack;
  *
  * @author Geforce, bl4ckscor3
  */
-public interface LinkedAction {
+public interface ILinkedAction {
 	/**
 	 * Used when an {@link Option} in a block entity is changed
 	 */
-	public static final record OptionChanged<T> (Option<T> option) implements LinkedAction {}
+	public static final record OptionChanged<T> (Option<T> option) implements ILinkedAction {}
 
 	/**
 	 * Used when a {@link ModuleType} is inserted into an {@link IModuleInventory}
 	 */
-	public static final record ModuleInserted(ItemStack stack, ModuleItem module, boolean wasModuleToggled) implements LinkedAction {}
+	public static final record ModuleInserted(ItemStack stack, ModuleItem module, boolean wasModuleToggled) implements ILinkedAction {}
 
 	/**
 	 * Used when a {@link ModuleType} is removed from an {@link IModuleInventory}
 	 */
-	public static final record ModuleRemoved(ModuleType moduleType, boolean wasModuleToggled) implements LinkedAction {}
+	public static final record ModuleRemoved(ModuleType moduleType, boolean wasModuleToggled) implements ILinkedAction {}
 
 	/**
 	 * Used when the {@link Owner} of a block entity changes
 	 */
-	public static final record OwnerChanged(Owner newOwner) implements LinkedAction {}
+	public static final record OwnerChanged(Owner newOwner) implements ILinkedAction {}
 }
