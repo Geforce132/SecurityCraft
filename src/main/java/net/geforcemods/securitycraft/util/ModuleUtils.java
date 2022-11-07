@@ -5,8 +5,6 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.LinkableBlockEntity;
-import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.nbt.StringTag;
@@ -73,19 +71,6 @@ public class ModuleUtils {
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
 		return doesModuleHaveTeamOf(name, inv.getBlockEntity().getLevel(), stack) || getPlayersFromModule(stack).contains(name.toLowerCase());
-	}
-
-	public static void createLinkedAction(LinkedAction action, ItemStack stack, LinkableBlockEntity be, boolean toggled) {
-		if (action == LinkedAction.MODULE_INSERTED) {
-			be.createLinkedBlockAction(action, new Object[] {
-					stack, (ModuleItem) stack.getItem(), toggled
-			}, be);
-		}
-		else if (action == LinkedAction.MODULE_REMOVED) {
-			be.createLinkedBlockAction(action, new Object[] {
-					stack, ((ModuleItem) stack.getItem()).getModuleType(), toggled
-			}, be);
-		}
 	}
 
 	public static boolean doesModuleHaveTeamOf(String name, Level level, ItemStack module) {

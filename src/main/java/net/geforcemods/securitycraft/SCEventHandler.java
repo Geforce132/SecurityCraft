@@ -304,11 +304,8 @@ public class SCEventHandler {
 						LevelUtils.addScheduledTask(level, () -> level.addFreshEntity(item));
 						be.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
 
-						if (be instanceof LinkableBlockEntity lbe) {
-							lbe.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {
-									stack, ((ModuleItem) stack.getItem()).getModuleType(), false
-							}, lbe);
-						}
+						if (be instanceof LinkableBlockEntity lbe)
+							lbe.createLinkedBlockAction(new LinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), lbe);
 
 						if (be instanceof SecurityCameraBlockEntity cam) {
 							BlockPos camPos = cam.getBlockPos();
