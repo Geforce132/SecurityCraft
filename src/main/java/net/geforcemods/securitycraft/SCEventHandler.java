@@ -18,7 +18,7 @@ import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
-import net.geforcemods.securitycraft.api.LinkedAction;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
@@ -305,7 +305,7 @@ public class SCEventHandler {
 						be.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
 
 						if (be instanceof LinkableBlockEntity lbe)
-							lbe.createLinkedBlockAction(new LinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), lbe);
+							lbe.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), lbe);
 
 						if (be instanceof SecurityCameraBlockEntity cam) {
 							BlockPos camPos = cam.getBlockPos();

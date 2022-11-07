@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
-import net.geforcemods.securitycraft.api.LinkedAction;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -41,8 +41,8 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 	}
 
 	@Override
-	protected void onLinkedBlockAction(LinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {
-		if (action instanceof LinkedAction.OptionChanged optionChanged) {
+	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {
+		if (action instanceof ILinkedAction.OptionChanged optionChanged) {
 			Option<?> option = optionChanged.option();
 
 			for (Option<?> customOption : customOptions()) {
@@ -54,9 +54,9 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 
 			setChanged();
 		}
-		else if (action instanceof LinkedAction.ModuleInserted moduleInserted)
+		else if (action instanceof ILinkedAction.ModuleInserted moduleInserted)
 			insertModule(moduleInserted.stack(), moduleInserted.wasModuleToggled());
-		else if (action instanceof LinkedAction.ModuleRemoved moduleRemoved)
+		else if (action instanceof ILinkedAction.ModuleRemoved moduleRemoved)
 			removeModule(moduleRemoved.moduleType(), moduleRemoved.wasModuleToggled());
 	}
 

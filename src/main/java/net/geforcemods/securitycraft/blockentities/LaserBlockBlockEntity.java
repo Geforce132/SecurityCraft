@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
-import net.geforcemods.securitycraft.api.LinkedAction;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -47,14 +47,14 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	}
 
 	@Override
-	protected void onLinkedBlockAction(LinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {
-		if (action instanceof LinkedAction.OptionChanged optionChanged) {
+	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {
+		if (action instanceof ILinkedAction.OptionChanged optionChanged) {
 			Option<?> option = optionChanged.option();
 
 			disabled.copy(option);
 			toggleLaser((BooleanOption) option);
 		}
-		else if (action instanceof LinkedAction.ModuleInserted moduleInserted) {
+		else if (action instanceof ILinkedAction.ModuleInserted moduleInserted) {
 			ItemStack module = moduleInserted.stack();
 			boolean toggled = moduleInserted.wasModuleToggled();
 
@@ -63,7 +63,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			if (moduleInserted.module().getModuleType() == ModuleType.DISGUISE)
 				onInsertDisguiseModule(module, toggled);
 		}
-		else if (action instanceof LinkedAction.ModuleRemoved moduleRemoved) {
+		else if (action instanceof ILinkedAction.ModuleRemoved moduleRemoved) {
 			ModuleType module = moduleRemoved.moduleType();
 			ItemStack moduleStack = getModule(module);
 			boolean toggled = moduleRemoved.wasModuleToggled();
@@ -73,7 +73,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			if (module == ModuleType.DISGUISE)
 				onRemoveDisguiseModule(moduleStack, toggled);
 		}
-		else if (action instanceof LinkedAction.OwnerChanged ownerChanged) {
+		else if (action instanceof ILinkedAction.OwnerChanged ownerChanged) {
 			Owner owner = ownerChanged.newOwner();
 
 			setOwner(owner.getUUID(), owner.getName());
