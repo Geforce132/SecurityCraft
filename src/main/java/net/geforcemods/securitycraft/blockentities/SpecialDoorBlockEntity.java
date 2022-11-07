@@ -9,10 +9,8 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,9 +41,9 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 	}
 
 	@Override
-	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedBEs) {
-		if (action == LinkedAction.OPTION_CHANGED) {
-			Option<?> option = (Option<?>) parameters[0];
+	protected void onLinkedBlockAction(LinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {
+		if (action instanceof LinkedAction.OptionChanged optionChanged) {
+			Option<?> option = optionChanged.option();
 
 			for (Option<?> customOption : customOptions()) {
 				if (customOption.getName().equals(option.getName())) {
@@ -56,10 +54,10 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 
 			setChanged();
 		}
-		else if (action == LinkedAction.MODULE_INSERTED)
-			insertModule((ItemStack) parameters[0], (boolean) parameters[2]);
-		else if (action == LinkedAction.MODULE_REMOVED)
-			removeModule((ModuleType) parameters[1], (boolean) parameters[2]);
+		else if (action instanceof LinkedAction.ModuleInserted moduleInserted)
+			insertModule(moduleInserted.stack(), moduleInserted.wasModuleToggled());
+		else if (action instanceof LinkedAction.ModuleRemoved moduleRemoved)
+			removeModule(moduleRemoved.moduleType(), moduleRemoved.wasModuleToggled());
 	}
 
 	@Override

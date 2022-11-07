@@ -8,7 +8,6 @@ import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -137,7 +136,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				continue;
 
 			if (be instanceof LinkableBlockEntity linkable)
-				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, module, linkable, false);
+				linkable.createLinkedBlockAction(new LinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), linkable);
 
 			Block.popResource(level, pos, module);
 		}
@@ -174,7 +173,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 					onModuleRemoved(stack, module.getModuleType(), false);
 
 					if (getBlockEntity() instanceof LinkableBlockEntity be)
-						ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, be, false);
+						be.createLinkedBlockAction(new LinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), be);
 				}
 
 				return getInventory().set(slot, ItemStack.EMPTY).copy();
@@ -207,7 +206,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 					onModuleInserted(stack, module.getModuleType(), false);
 
 					if (getBlockEntity() instanceof LinkableBlockEntity be)
-						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, copy, be, false);
+						be.createLinkedBlockAction(new LinkedAction.ModuleInserted(copy, (ModuleItem) copy.getItem(), false), be);
 				}
 			}
 
@@ -233,7 +232,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			onModuleRemoved(previous, ((ModuleItem) previous.getItem()).getModuleType(), false);
 
 			if (getBlockEntity() instanceof LinkableBlockEntity be)
-				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, previous, be, false);
+				be.createLinkedBlockAction(new LinkedAction.ModuleRemoved(((ModuleItem) previous.getItem()).getModuleType(), false), be);
 		}
 
 		getInventory().set(slot, stack);
@@ -242,7 +241,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			onModuleInserted(stack, module.getModuleType(), false);
 
 			if (getBlockEntity() instanceof LinkableBlockEntity be)
-				ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, be, false);
+				be.createLinkedBlockAction(new LinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), false), be);
 		}
 	}
 
