@@ -61,11 +61,8 @@ public class UniversalBlockRemoverItem extends Item {
 				LinkableBlockEntity te = (LinkableBlockEntity) world.getBlockEntity(pos);
 
 				for (ItemStack module : te.getInventory()) {
-					if (!module.isEmpty()) {
-						te.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {
-								module, ((ModuleItem) module.getItem()).getModuleType(), false
-						}, te);
-					}
+					if (!module.isEmpty())
+						te.createLinkedBlockAction(new LinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), te);
 				}
 
 				if (!world.isClientSide) {

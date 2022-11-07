@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.items.ModuleItem;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -127,8 +126,11 @@ public class CustomizeBlockMenu extends Container {
 			if ((index >= 36 || index < maxSlots) && oldStack.getItem() instanceof ModuleItem) {
 				moduleInv.onModuleRemoved(oldStack, ((ModuleItem) oldStack.getItem()).getModuleType(), false);
 
-				if (moduleInv instanceof LinkableBlockEntity)
-					ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, oldStack, (LinkableBlockEntity) moduleInv, false);
+				if (moduleInv instanceof LinkableBlockEntity) {
+					LinkableBlockEntity lbe = (LinkableBlockEntity) moduleInv;
+
+					lbe.createLinkedBlockAction(new LinkedAction.ModuleRemoved(((ModuleItem) oldStack.getItem()).getModuleType(), false), lbe);
+				}
 
 				broadcastChanges();
 			}

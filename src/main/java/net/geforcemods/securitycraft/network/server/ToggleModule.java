@@ -7,9 +7,10 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
+import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -48,20 +49,25 @@ public class ToggleModule {
 			if (be instanceof IModuleInventory && (!(be instanceof IOwnable) || ((IOwnable) be).getOwner().isOwner(player))) {
 				IModuleInventory moduleInv = (IModuleInventory) be;
 				ModuleType moduleType = message.moduleType;
-				LinkedAction linkedAction;
 
 				if (moduleInv.isModuleEnabled(moduleType)) {
 					moduleInv.removeModule(moduleType, true);
-					linkedAction = LinkedAction.MODULE_REMOVED;
+
+					if (be instanceof LinkableBlockEntity) {
+						LinkableBlockEntity linkable = (LinkableBlockEntity) be;
+						linkable.createLinkedBlockAction(new LinkedAction.ModuleRemoved(moduleType, true), linkable);
+					}
 				}
 				else {
 					moduleInv.insertModule(moduleInv.getModule(moduleType), true);
-					linkedAction = LinkedAction.MODULE_INSERTED;
+
+					if (be instanceof LinkableBlockEntity) {
+						LinkableBlockEntity linkable = (LinkableBlockEntity) be;
+						ItemStack stack = moduleInv.getModule(moduleType);
+
+						linkable.createLinkedBlockAction(new LinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), true), linkable);
+					}
 				}
-
-				if (be instanceof LinkableBlockEntity)
-					ModuleUtils.createLinkedAction(linkedAction, moduleInv.getModule(moduleType), (LinkableBlockEntity) be, true);
-
 				if (be instanceof CustomizableBlockEntity)
 					player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
 			}

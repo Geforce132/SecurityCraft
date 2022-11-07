@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
-import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
@@ -49,40 +48,42 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	}
 
 	@Override
-	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedTEs) {
-		if (action == LinkedAction.OPTION_CHANGED) {
-			Option<?> option = (Option<?>) parameters[0];
+	protected void onLinkedBlockAction(LinkedAction action, ArrayList<LinkableBlockEntity> excludedTEs) {
+		if (action instanceof LinkedAction.OptionChanged) {
+			Option<?> option = ((LinkedAction.OptionChanged) action).option;
 
 			disabled.copy(option);
 			toggleLaser((BooleanOption) option);
 		}
-		else if (action == LinkedAction.MODULE_INSERTED) {
-			ItemStack module = (ItemStack) parameters[0];
-			boolean toggled = (boolean) parameters[2];
+		else if (action instanceof LinkedAction.ModuleInserted) {
+			LinkedAction.ModuleInserted moduleInserted = (LinkedAction.ModuleInserted) action;
+			ItemStack module = moduleInserted.stack;
+			boolean toggled = moduleInserted.wasModuleToggled;
 
 			insertModule(module, toggled);
 
-			if (((ModuleItem) module.getItem()).getModuleType() == ModuleType.DISGUISE)
+			if (moduleInserted.module.getModuleType() == ModuleType.DISGUISE)
 				onInsertDisguiseModule(module, toggled);
 		}
-		else if (action == LinkedAction.MODULE_REMOVED) {
-			ModuleType module = (ModuleType) parameters[1];
+		else if (action instanceof LinkedAction.ModuleRemoved) {
+			LinkedAction.ModuleRemoved moduleRemoved = (LinkedAction.ModuleRemoved) action;
+			ModuleType module = moduleRemoved.moduleType;
 			ItemStack moduleStack = getModule(module);
-			boolean toggled = (boolean) parameters[2];
+			boolean toggled = moduleRemoved.wasModuleToggled;
 
 			removeModule(module, toggled);
 
 			if (module == ModuleType.DISGUISE)
 				onRemoveDisguiseModule(moduleStack, toggled);
 		}
-		else if (action == LinkedAction.OWNER_CHANGED) {
-			Owner owner = (Owner) parameters[0];
+		else if (action instanceof LinkedAction.OwnerChanged) {
+			Owner owner = ((LinkedAction.OwnerChanged) action).newOwner;
 
 			setOwner(owner.getUUID(), owner.getName());
 		}
 
 		excludedTEs.add(this);
-		createLinkedBlockAction(action, parameters, excludedTEs);
+		createLinkedBlockAction(action, excludedTEs);
 	}
 
 	@Override

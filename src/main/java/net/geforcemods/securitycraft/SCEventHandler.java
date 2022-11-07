@@ -309,14 +309,14 @@ public class SCEventHandler {
 					if (!te.getInventory().get(i).isEmpty()) {
 						ItemStack stack = te.getInventory().get(i);
 						ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack);
-						LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(item));
 
+						LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(item));
 						te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
 
 						if (te instanceof LinkableBlockEntity) {
-							((LinkableBlockEntity) te).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {
-									stack, ((ModuleItem) stack.getItem()).getModuleType(), false
-							}, (LinkableBlockEntity) te);
+							LinkableBlockEntity lbe = (LinkableBlockEntity) te;
+
+							lbe.createLinkedBlockAction(new LinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), lbe);
 						}
 
 						if (te instanceof SecurityCameraBlockEntity) {

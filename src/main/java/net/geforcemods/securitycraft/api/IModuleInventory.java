@@ -8,7 +8,6 @@ import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -136,7 +135,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				continue;
 
 			if (linkable != null)
-				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, module, linkable, false);
+				linkable.createLinkedBlockAction(new LinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), linkable);
 
 			Block.popResource(level, pos, module);
 		}
@@ -174,8 +173,11 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				if (stack.getItem() instanceof ModuleItem) {
 					onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
 
-					if (te instanceof LinkableBlockEntity)
-						ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, (LinkableBlockEntity) te, false);
+					if (te instanceof LinkableBlockEntity) {
+						LinkableBlockEntity be = (LinkableBlockEntity) te;
+
+						be.createLinkedBlockAction(new LinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), be);
+					}
 				}
 
 				return getInventory().set(slot, ItemStack.EMPTY).copy();
@@ -208,8 +210,11 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				if (stack.getItem() instanceof ModuleItem) {
 					onModuleInserted(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
 
-					if (te instanceof LinkableBlockEntity)
-						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, copy, (LinkableBlockEntity) te, false);
+					if (te instanceof LinkableBlockEntity) {
+						LinkableBlockEntity be = (LinkableBlockEntity) te;
+
+						be.createLinkedBlockAction(new LinkedAction.ModuleInserted(copy, (ModuleItem) copy.getItem(), false), be);
+					}
 				}
 			}
 
@@ -235,8 +240,11 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		if (!previous.isEmpty()) {
 			onModuleRemoved(previous, ((ModuleItem) previous.getItem()).getModuleType(), false);
 
-			if (te instanceof LinkableBlockEntity)
-				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, previous, (LinkableBlockEntity) te, false);
+			if (te instanceof LinkableBlockEntity) {
+				LinkableBlockEntity be = (LinkableBlockEntity) te;
+
+				be.createLinkedBlockAction(new LinkedAction.ModuleRemoved(((ModuleItem) previous.getItem()).getModuleType(), false), be);
+			}
 		}
 
 		getInventory().set(slot, stack);
@@ -244,8 +252,11 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		if (stack.getItem() instanceof ModuleItem) {
 			onModuleInserted(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
 
-			if (te instanceof LinkableBlockEntity)
-				ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, (LinkableBlockEntity) te, false);
+			if (te instanceof LinkableBlockEntity) {
+				LinkableBlockEntity be = (LinkableBlockEntity) te;
+
+				be.createLinkedBlockAction(new LinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), false), be);
+			}
 		}
 	}
 

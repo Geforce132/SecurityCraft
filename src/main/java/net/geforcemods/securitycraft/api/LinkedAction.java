@@ -1,29 +1,62 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.misc.ModuleType;
+import net.minecraft.item.ItemStack;
+
 /**
- * A simple enum which contains all the possible actions for CustomizableSCTE.onLinkedBlockAction(). Each action has
- * different parameters which is passed in onLinkedBlockAction().
+ * A simple interface which contains all the possible actions for LinkableBlockEntity.onLinkedBlockAction().
  *
- * @author Geforce
+ * @author Geforce, bl4ckscor3
  */
-public enum LinkedAction {
+public interface LinkedAction {
 	/**
 	 * Used when an {@link Option} in a TileEntity is changed.
 	 */
-	OPTION_CHANGED,
+	public static final class OptionChanged<T> implements LinkedAction {
+		public final Option<T> option;
+
+		public OptionChanged(Option<T> option) {
+			this.option = option;
+		}
+	}
 
 	/**
-	 * Used when a {@link EnumCustomModules} is inserted into an IModuleInventory.
+	 * Used when a {@link ModuleType} is inserted into an {@link IModuleInventory}
 	 */
-	MODULE_INSERTED,
+	public static final class ModuleInserted implements LinkedAction {
+		public final ItemStack stack;
+		public final ModuleItem module;
+		public final boolean wasModuleToggled;
+
+		public ModuleInserted(ItemStack stack, ModuleItem module, boolean wasModuleToggled) {
+			this.stack = stack;
+			this.module = module;
+			this.wasModuleToggled = wasModuleToggled;
+		}
+	}
 
 	/**
-	 * Used when a {@link EnumCustomModules} is removed from an IModuleInventory.
+	 * Used when a {@link ModuleType} is removed from an {@link IModuleInventory}
 	 */
-	MODULE_REMOVED,
+	public static final class ModuleRemoved implements LinkedAction {
+		public final ModuleType moduleType;
+		public final boolean wasModuleToggled;
+
+		public ModuleRemoved(ModuleType moduleType, boolean wasModuleToggled) {
+			this.moduleType = moduleType;
+			this.wasModuleToggled = wasModuleToggled;
+		}
+	}
 
 	/**
-	 * Used when the {@link Owner} of a block entity changes;
+	 * Used when the {@link Owner} of a block entity changes
 	 */
-	OWNER_CHANGED;
+	public static final class OwnerChanged implements LinkedAction {
+		public final Owner newOwner;
+
+		public OwnerChanged(Owner newOwner) {
+			this.newOwner = newOwner;
+		}
+	}
 }
