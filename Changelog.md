@@ -19,6 +19,7 @@
 - Fix: Sentry bullets can remove item frames
 - Fix: Some blocks don't show up properly in the state selector of the Projector/Disguise Module
 - Fix: Block Pocket Manager's size button and offset slider are available to non-owners
+- Fix: Disguisable blocks do not show the proper block model sometimes
 - Misc: The minimum required Forge version is now 43.1.8
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
