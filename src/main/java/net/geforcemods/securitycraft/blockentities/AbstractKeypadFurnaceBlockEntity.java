@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.inventory.AbstractKeypadFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
@@ -39,18 +40,22 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.AbstractFurnaceTileEntity;
+import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants.WorldEvents;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -64,6 +69,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private int openCount;
 
 	public AbstractKeypadFurnaceBlockEntity(TileEntityType<?> teType, IRecipeType<? extends AbstractCookingRecipe> recipeType) {
 		super(teType, recipeType);
@@ -211,6 +217,73 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 		}
 
 		return false;
+	}
+
+	@Override
+	public void startOpen(PlayerEntity player) {
+		if (!player.isSpectator()) {
+			if (openCount < 0)
+				openCount = 0;
+
+			++openCount;
+
+			BlockState state = getBlockState();
+			boolean isOpen = state.getValue(AbstractKeypadFurnaceBlock.OPEN);
+
+			if (!isOpen) {
+				level.levelEvent(null, WorldEvents.IRON_DOOR_OPEN_SOUND, worldPosition, 0);
+				level.setBlockAndUpdate(worldPosition, state.setValue(AbstractKeypadFurnaceBlock.OPEN, true));
+			}
+
+			scheduleRecheck();
+		}
+	}
+
+	private void scheduleRecheck() {
+		level.getBlockTicks().scheduleTick(getBlockPos(), getBlockState().getBlock(), 5);
+	}
+
+	@Override
+	public void stopOpen(PlayerEntity player) {
+		if (!player.isSpectator())
+			--openCount;
+	}
+
+	public void recheckOpen() {
+		int x = worldPosition.getX();
+		int y = worldPosition.getY();
+		int z = worldPosition.getZ();
+
+		openCount = getOpenCount(level, this, x, y, z);
+
+		if (openCount > 0)
+			scheduleRecheck();
+		else {
+			BlockState state = getBlockState();
+
+			if (!(state.getBlock() instanceof AbstractKeypadFurnaceBlock)) {
+				setRemoved();
+				return;
+			}
+
+			boolean isOpen = state.getValue(AbstractKeypadFurnaceBlock.OPEN);
+
+			if (isOpen) {
+				level.levelEvent(null, WorldEvents.IRON_DOOR_CLOSE_SOUND, worldPosition, 0);
+				level.setBlockAndUpdate(worldPosition, state.setValue(AbstractKeypadFurnaceBlock.OPEN, false));
+			}
+		}
+	}
+
+	public static int getOpenCount(World world, LockableTileEntity be, int x, int y, int z) {
+		int returnValue = 0;
+
+		for (PlayerEntity player : world.getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB(x - 5.0F, y - 5.0F, z - 5.0F, x + 1 + 5.0F, y + 1 + 5.0F, z + 1 + 5.0F))) {
+			if (player.containerMenu instanceof AbstractKeypadFurnaceMenu && ((AbstractKeypadFurnaceMenu) player.containerMenu).te == be)
+				++returnValue;
+		}
+
+		return returnValue;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.Random;
 import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -38,7 +39,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
@@ -156,17 +157,20 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	}
 
 	public void activate(BlockState state, World world, BlockPos pos, PlayerEntity player) {
-		if (!state.getValue(AbstractKeypadFurnaceBlock.OPEN))
-			world.setBlockAndUpdate(pos, state.setValue(AbstractKeypadFurnaceBlock.OPEN, true));
-
 		if (player instanceof ServerPlayerEntity) {
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof INamedContainerProvider) {
-				world.levelEvent(null, Constants.WorldEvents.IRON_DOOR_OPEN_SOUND, pos, 0);
+			if (te instanceof INamedContainerProvider)
 				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
-			}
 		}
+	}
+
+	@Override
+	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random random) {
+		TileEntity te = level.getBlockEntity(pos);
+
+		if (te instanceof AbstractKeypadFurnaceBlockEntity)
+			((AbstractKeypadFurnaceBlockEntity) te).recheckOpen();
 	}
 
 	@Override

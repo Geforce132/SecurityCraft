@@ -14,6 +14,6 @@ public class KeypadSmokerMenu extends AbstractKeypadFurnaceMenu {
 	}
 
 	public KeypadSmokerMenu(int windowId, PlayerInventory inventory, AbstractKeypadFurnaceBlockEntity be) {
-		super(SCContent.KEYPAD_SMOKER_MENU.get(), IRecipeType.SMOKING, RecipeBookCategory.SMOKER, SCContent.KEYPAD_SMOKER.get(), windowId, inventory, be);
+		super(SCContent.KEYPAD_SMOKER_MENU.get(), IRecipeType.SMOKING, RecipeBookCategory.SMOKER, windowId, inventory, be);
 	}
 }
