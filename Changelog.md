@@ -5,6 +5,7 @@
 - New: Taser effects and damage are now configurable
 - New: The Block Change Detector can now show highlights in the world, marking where it detected block changes
 - New: Ability to change a block pocket's outline color
+- New: The I.M.S. is now waterloggable
 - API: Changed LinkedAction to an interface and the enum values to records for easier usability
 - API: Several methods in LinkableBlockEntity were changed to account for the LinkedAction change
 - API: LinkedAction has been renamed to ILinkedAction

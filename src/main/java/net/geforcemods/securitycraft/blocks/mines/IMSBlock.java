@@ -13,14 +13,19 @@ import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -31,13 +36,15 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class IMSBlock extends OwnableBlock {
+public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 	public static final IntegerProperty MINES = IntegerProperty.create("mines", 0, 4);
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final VoxelShape SHAPE = Block.box(4, 0, 5, 12, 7, 11);
 	private static final VoxelShape SHAPE_1_MINE = VoxelShapes.or(SHAPE, Block.box(0, 0, 0, 5, 5, 5));
 	private static final VoxelShape SHAPE_2_MINES = VoxelShapes.or(SHAPE_1_MINE, Block.box(0, 0, 11, 5, 5, 16));
@@ -46,7 +53,7 @@ public class IMSBlock extends OwnableBlock {
 
 	public IMSBlock(Block.Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(MINES, 4));
+		registerDefaultState(stateDefinition.any().setValue(MINES, 4).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -161,12 +168,25 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
-		return defaultBlockState().setValue(MINES, 4);
+		return defaultBlockState().setValue(MINES, 4).setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER);
 	}
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(MINES);
+		builder.add(MINES, WATERLOGGED);
+	}
+
+	@Override
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED))
+			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
