@@ -25,6 +25,7 @@ import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
@@ -60,6 +61,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
@@ -79,8 +81,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
-import net.minecraftforge.event.entity.EntityTeleportEvent.ChorusFruit;
-import net.minecraftforge.event.entity.EntityTeleportEvent.EnderPearl;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -400,42 +400,45 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onEntityTeleport(EntityTeleportEvent event) {
-		if ((event instanceof EnderPearl || event instanceof ChorusFruit) && event.getEntity() instanceof ServerPlayer player) {
-			List<RiftStabilizerBlockEntity> targetPosBlockEntities = BlockEntityTracker.RIFT_STABILIZER.getBlockEntitiesInRange(player.level, event.getTarget());
-			List<RiftStabilizerBlockEntity> playerPosBlockEntities = BlockEntityTracker.RIFT_STABILIZER.getBlockEntitiesInRange(player.level, player.position());
-			List<RiftStabilizerBlockEntity> blockEntities = new ArrayList<>();
-			RiftStabilizerBlockEntity riftStabilizer = null;
-			boolean targetPosDisallowed = false;
+		Entity entity = event.getEntity();
+		Level level = entity.getLevel();
+		List<RiftStabilizerBlockEntity> targetPosBlockEntities = BlockEntityTracker.RIFT_STABILIZER.getBlockEntitiesInRange(level, event.getTarget());
+		List<RiftStabilizerBlockEntity> sourcePosBlockEntities = BlockEntityTracker.RIFT_STABILIZER.getBlockEntitiesInRange(level, entity.position());
+		List<RiftStabilizerBlockEntity> blockEntities = new ArrayList<>();
+		TeleportationType type = TeleportationType.getTypeFromEvent(event);
+		RiftStabilizerBlockEntity riftStabilizer = null;
+		boolean targetPosProhibited = false;
 
-			blockEntities.addAll(targetPosBlockEntities);
-			blockEntities.addAll(playerPosBlockEntities);
-			blockEntities.sort(Comparator.comparingDouble(b -> Math.min(b.getBlockPos().distToCenterSqr(event.getTarget()), b.getBlockPos().distToCenterSqr(player.position()))));
+		blockEntities.addAll(targetPosBlockEntities);
+		blockEntities.addAll(sourcePosBlockEntities);
+		blockEntities.sort(Comparator.comparingDouble(b -> Math.min(b.getBlockPos().distToCenterSqr(event.getTarget()), b.getBlockPos().distToCenterSqr(entity.position()))));
 
-			for (RiftStabilizerBlockEntity be : blockEntities) {
-				if (!be.isDisabled() && !be.getOwner().isOwner(player) && !ModuleUtils.isAllowed(be, player)) {
-					riftStabilizer = be;
-					targetPosDisallowed = be.getBlockPos().distToCenterSqr(event.getTarget()) < be.getBlockPos().distToCenterSqr(player.position());
-					break;
-				}
+		for (RiftStabilizerBlockEntity be : blockEntities) {
+			if (!be.isDisabled() && be.getFilter(type) && (!(entity instanceof Player player) || !be.getOwner().isOwner(player) && !ModuleUtils.isAllowed(be, player))) {
+				riftStabilizer = be;
+				targetPosProhibited = be.getBlockPos().distToCenterSqr(event.getTarget()) < be.getBlockPos().distToCenterSqr(event.getPrev());
+				break;
 			}
+		}
 
-			if (riftStabilizer != null) {
-				BlockPos pos = riftStabilizer.getBlockPos();
+		if (riftStabilizer != null) {
+			BlockPos pos = riftStabilizer.getBlockPos();
 
-				player.level.playSound(null, event.getPrevX(), event.getPrevY(), event.getPrevZ(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.5F);
-				PlayerUtils.sendMessageToPlayer(player, SCContent.RIFT_STABILIZER.get().getName(), Component.translatable(targetPosDisallowed ? "messages.securitycraft:rift_stabilizer.no_teleport_to" : "messages.securitycraft:rift_stabilizer.no_teleport_from"), ChatFormatting.RED);
+			if (entity instanceof Player player) {
+				level.playSound(null, event.getPrevX(), event.getPrevY(), event.getPrevZ(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.5F);
+				PlayerUtils.sendMessageToPlayer(player, SCContent.RIFT_STABILIZER.get().getName(), Component.translatable(targetPosProhibited ? "messages.securitycraft:rift_stabilizer.no_teleport_to" : "messages.securitycraft:rift_stabilizer.no_teleport_from"), ChatFormatting.RED);
 
 				if (riftStabilizer.isModuleEnabled(ModuleType.HARMING))
 					player.hurt(DamageSource.FALL, 5.0F);
-
-				if (riftStabilizer.isModuleEnabled(ModuleType.REDSTONE)) {
-					player.level.setBlockAndUpdate(pos, riftStabilizer.getBlockState().setValue(BlockChangeDetectorBlock.POWERED, true));
-					BlockUtils.updateIndirectNeighbors(player.level, pos, SCContent.BLOCK_CHANGE_DETECTOR.get());
-					player.level.scheduleTick(pos, SCContent.RIFT_STABILIZER.get(), riftStabilizer.getSignalLength());
-				}
-
-				event.setCanceled(true);
 			}
+
+			if (riftStabilizer.isModuleEnabled(ModuleType.REDSTONE)) {
+				level.setBlockAndUpdate(pos, riftStabilizer.getBlockState().setValue(BlockChangeDetectorBlock.POWERED, true));
+				BlockUtils.updateIndirectNeighbors(level, pos, SCContent.BLOCK_CHANGE_DETECTOR.get());
+				level.scheduleTick(pos, SCContent.RIFT_STABILIZER.get(), riftStabilizer.getSignalLength());
+			}
+
+			event.setCanceled(true);
 		}
 	}
 

@@ -649,7 +649,7 @@
 	"help.securitycraft.key_panel.info": "The key panel can be placed down for a smaller, waterloggable version of the keypad. It is also used in the crafting recipes of keypads, password-protected chests, and password-protected furnaces.",
 	"help.securitycraft.sonic_security_system.info": "The Sonic Security System, inspired by the similarly-named device in the game \"Metroid Prime 2: Echoes\", is able to lock certain SecurityCraft blocks and prevent them from being used or interacted with. Right-clicking a supported block will bind it to the Sonic Security System. Once it is placed down, right-clicking it will open a GUI where you can enable, disable, or reset the Sonic Security System. The blocks can be unlocked by playing a tune nearby, either via the Portable Tune Player, or note blocks. To set such a tune, toggle note recording on in the Sonic Security System's GUI then play the tune that you want using note blocks played nearby. Toggle the recording off once you are finished. Any time that tune is played nearby the Sonic Security System, blocks locked by it will become accessible for a short while.",
 	"help.securitycraft.block_change_detector.info": "The Block Change Detector detects players breaking and/or placing blocks in its vicinity (5 blocks by default, can be changed with the universal block modifier). Right-clicking the block will open its interface, where a list of detected changes can be seen, as well as whether it only detects breaking or placing blocks, or both.",
-	"help.securitycraft.rift_stabilizer.info": "The Rift Stabilizer detects and prevents teleportation attempts by players in its vicinity (5 blocks by default, can be changed with the universal block modifier). Teleportation attempts are detected only if they are caused by players using either ender pearls or chorus fruits, and are prevented if the player or the target position is within the block's range.",
+	"help.securitycraft.rift_stabilizer.info": "The Rift Stabilizer detects and prevents teleportation attempts by entities in its vicinity (5 blocks by default, can be changed with the universal block modifier). Teleportation attempts will be prohibited if the source or target position of the teleport is within the block's range. Rightclicking the block will allow you to see a list of all detectable teleportation types.",
 
 	"help.securitycraft.codebreaker.info": "The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)",
 	"help.securitycraft.universal_block_remover.info": "The universal block remover is used to destroy \"reinforced\" blocks by rightclicking it. Only the person who placed the block down can destroy it.",
@@ -824,6 +824,11 @@
 	"gui.securitycraft:block_change_detector.mode.both": "Break & Place",
 	"gui.securitycraft:block_change_detector.smart_module_hint": "Install a Smart Module to allow the detector to only detect a specific block type!",
 	"gui.securitycraft:block_change_detector.show_all_checkbox": "Show all entries",
+	"gui.securitycraft:rift_stabilizer.teleportationTypes": "Detectable Teleportation Types:",
+	"gui.securitycraft:rift_stabilizer.moduleRequired": "You need to install a Smart Module to toggle which teleportation types can be detected by this Rift Stabilizer.",
+	"gui.securitycraft:rift_stabilizer.toggle": "Click the entries in the list below to toggle the detection of that specific teleportation type.",
+	"gui.securitycraft:rift_stabilizer.ender_entity": "Shulker/Enderman",
+	"gui.securitycraft:rift_stabilizer.modded": "Modded Teleportation",
 
 	"messages.securitycraft:bugReport": "Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please",
 	"messages.securitycraft:retinalScanner.hello": "Hello %s.",
@@ -1091,6 +1096,7 @@
 	"module.securitycraft.rift_stabilizer.whitelist_module.description": "Adding an allowlist module to a Rift Stabilizer will allow listed players to teleport into or from the block's vicinity.",
 	"module.securitycraft.rift_stabilizer.redstone_module.description": "Adding a redstone module to a Rift Stabilizer makes it emit a redstone signal each time it detects a teleportation attempt by a player in its vicinity.",
 	"module.securitycraft.rift_stabilizer.harming_module.description": "Adding a harming module to a Rift Stabilizer will cause players attempting to teleport into or from its vicinity to take damage.",
+	"module.securitycraft.rift_stabilizer.smart_module.description": "Adding a smart module to a Rift Stabilizer will allow you to configure which teleportation types the Rift Stabilizer is able to detect.",
 
 	"option.generic.disabled": "Disabled: %s",
 	"option.generic.disabled.description": "Should this block be disabled, making it no longer work until it is enabled again?",

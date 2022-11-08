@@ -1,14 +1,18 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -38,6 +42,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.network.PacketDistributor;
 
 public class RiftStabilizerBlock extends DisguisableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -59,11 +64,15 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (!level.isClientSide && level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be) {
-			if (be.isDisabled()) {
-				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				return InteractionResult.SUCCESS;
+		if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be && be.getOwner().isOwner(player)) {
+			if (!level.isClientSide) {
+				if (be.isDisabled())
+					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+				else
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.RIFT_STABILIZER, pos));
 			}
+
+			return InteractionResult.SUCCESS;
 		}
 
 		return InteractionResult.PASS;

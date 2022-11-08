@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
+import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
@@ -56,6 +57,7 @@ import net.geforcemods.securitycraft.screen.KeypadFurnaceScreen;
 import net.geforcemods.securitycraft.screen.KeypadSmokerScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
+import net.geforcemods.securitycraft.screen.RiftStabilizerScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SSSItemScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
@@ -497,6 +499,10 @@ public class ClientHandler {
 
 	public static void displaySSSItemScreen(ItemStack stack) {
 		Minecraft.getInstance().setScreen(new SSSItemScreen(stack));
+	}
+
+	public static void displayRiftStabilizerScreen(RiftStabilizerBlockEntity be) {
+		Minecraft.getInstance().setScreen(new RiftStabilizerScreen(be));
 	}
 
 	public static void refreshModelData(BlockEntity be) {
