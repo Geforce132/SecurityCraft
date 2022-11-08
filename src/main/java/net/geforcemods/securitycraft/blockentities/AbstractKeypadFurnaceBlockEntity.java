@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.inventory.AbstractKeypadFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
@@ -36,6 +37,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
@@ -44,8 +46,10 @@ import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
@@ -65,6 +69,39 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
+		@Override
+		protected void onOpen(Level level, BlockPos pos, BlockState state) {
+			if (level.isClientSide)
+				return;
+
+			level.levelEvent(null, LevelEvent.SOUND_OPEN_IRON_DOOR, pos, 0);
+			level.setBlockAndUpdate(pos, state.setValue(AbstractKeypadFurnaceBlock.OPEN, true));
+		}
+
+		@Override
+		protected void onClose(Level level, BlockPos pos, BlockState state) {
+			if (level.isClientSide)
+				return;
+
+			level.levelEvent(null, LevelEvent.SOUND_CLOSE_IRON_DOOR, pos, 0);
+			level.setBlockAndUpdate(pos, state.setValue(AbstractKeypadFurnaceBlock.OPEN, false));
+		}
+
+		@Override
+		protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int oldCount, int newCount) {}
+
+		@Override
+		protected boolean isOwnContainer(Player player) {
+			if (player.containerMenu instanceof AbstractKeypadFurnaceMenu menu) {
+				Container container = menu.be;
+
+				return container == AbstractKeypadFurnaceBlockEntity.this;
+			}
+			else
+				return false;
+		}
+	};
 
 	public AbstractKeypadFurnaceBlockEntity(BlockEntityType<?> beType, BlockPos pos, BlockState state, RecipeType<? extends AbstractCookingRecipe> recipeType) {
 		super(beType, pos, state, recipeType);
@@ -210,6 +247,23 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		}
 
 		return false;
+	}
+
+	@Override
+	public void startOpen(Player player) {
+		if (!remove && !player.isSpectator())
+			openersCounter.incrementOpeners(player, this.getLevel(), getBlockPos(), getBlockState());
+	}
+
+	@Override
+	public void stopOpen(Player player) {
+		if (!remove && !player.isSpectator())
+			openersCounter.decrementOpeners(player, getLevel(), getBlockPos(), getBlockState());
+	}
+
+	public void recheckOpen() {
+		if (!remove)
+			openersCounter.recheckOpeners(getLevel(), getBlockPos(), getBlockState());
 	}
 
 	@Override
