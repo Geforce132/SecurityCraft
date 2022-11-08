@@ -5,7 +5,8 @@
 		"bottom": "securitycraft:block/rift_stabilizer_base_bottom",
 		"front": "securitycraft:block/rift_stabilizer_base_front",
 		"particle": "securitycraft:block/rift_stabilizer_base_side",
-		"side": "securitycraft:block/rift_stabilizer_base_side"
+		"side": "securitycraft:block/rift_stabilizer_base_side",
+		"top": "securitycraft:block/rift_stabilizer_pillar_top"
 	},
 	"elements": [
 		{
@@ -30,8 +31,8 @@
 				"east": {"uv": [2, 0, 14, 4], "texture": "#side"},
 				"south": {"uv": [2, 0, 14, 4], "texture": "#side"},
 				"west": {"uv": [2, 0, 14, 4], "texture": "#side"},
-				"up": {"uv": [0, 0, 12, 12], "texture": "#missing"},
-				"down": {"uv": [0, 0, 12, 12], "texture": "#missing"}
+				"up": {"uv": [2, 2, 14, 14], "texture": "#top"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#top"}
 			}
 		}
 	]
