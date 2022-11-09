@@ -37,6 +37,7 @@ public class ToggleListScreen<T> extends Screen {
 	private int leftPos;
 	private int topPos;
 	private final boolean isSmart;
+	private final boolean isRedstone;
 	private final IToggleableEntries<T> be;
 	private ToggleScrollList teleportationModeList;
 
@@ -44,7 +45,8 @@ public class ToggleListScreen<T> extends Screen {
 		super(Component.translatable(title));
 
 		this.be = be;
-		isSmart = be instanceof IModuleInventory customizable && customizable.isModuleEnabled(ModuleType.SMART);
+		isSmart = be instanceof IModuleInventory moduleInventory && moduleInventory.isModuleEnabled(ModuleType.SMART);
+		isRedstone = be instanceof IModuleInventory moduleInventory && moduleInventory.isModuleEnabled(ModuleType.REDSTONE);
 		this.scrollListTitle = scrollListTitle;
 		this.moduleRequired = moduleRequired;
 		this.toggle = toggle;
@@ -121,6 +123,21 @@ public class ToggleListScreen<T> extends Screen {
 			}
 
 			return false;
+		}
+
+		@Override
+		public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
+			super.render(pose, mouseX, mouseY, partialTick);
+
+			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
+			int slotIndex = mouseListY / slotHeight;
+
+			if (isRedstone && mouseX >= left && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
+				int comparatorOutput = be.getComparatorOutputFunction().applyAsInt(orderedFilterList.get(slotIndex));
+
+				if (comparatorOutput > 0)
+					renderTooltip(pose, Component.translatable("gui.securitycraft:toggleList.comparatorOutput", comparatorOutput), mouseX, mouseY);
+			}
 		}
 
 		@Override

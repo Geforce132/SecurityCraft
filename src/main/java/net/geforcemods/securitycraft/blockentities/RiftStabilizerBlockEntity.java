@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.function.ToIntFunction;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -41,6 +43,8 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	private final IntOption range = new IntOption(this::getBlockPos, "range", 5, 1, 15, 1, true);
 	private final DisabledOption disabled = new DisabledOption(false);
 	private final Map<TeleportationType, Boolean> teleportationFilter = new EnumMap<>(TeleportationType.class);
+	private double lastTeleportDistance;
+	private TeleportationType lastTeleportationType;
 	private boolean tracked = false;
 
 	public RiftStabilizerBlockEntity(BlockPos pos, BlockState state) {
@@ -97,6 +101,11 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
+	public ToIntFunction<TeleportationType> getComparatorOutputFunction() {
+		return t -> Arrays.asList(TeleportationType.values()).indexOf(t) + 1;
+	}
+
+	@Override
 	public Map<TeleportationType, Boolean> getFilters() {
 		return teleportationFilter;
 	}
@@ -119,6 +128,10 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 		}
 
 		tag.put("teleportationTypes", teleportationNBT);
+		tag.putDouble("lastTeleportDistance", lastTeleportDistance);
+
+		if (lastTeleportationType != null)
+			tag.putInt("lastTeleportationType", Arrays.asList(TeleportationType.values()).indexOf(lastTeleportationType));
 	}
 
 	@Override
@@ -134,6 +147,11 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 				i++;
 			}
 		}
+
+		lastTeleportDistance = tag.getDouble("lastTeleportDistance");
+
+		if (tag.contains("lastTeleportationType"))
+			lastTeleportationType = TeleportationType.values()[tag.getInt("lastTeleportationType")];
 	}
 
 	@Override
@@ -200,6 +218,19 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 		be.teleportationFilter.put(TeleportationType.ENDERMAN, false);
 		be.teleportationFilter.put(TeleportationType.SHULKER, false);
 		be.teleportationFilter.put(TeleportationType.MODDED, false);
+	}
+
+	public void setLastTeleport(double teleportDistance, TeleportationType type) {
+		lastTeleportDistance = teleportDistance;
+		lastTeleportationType = type;
+	}
+
+	public double getLastTeleportDistance() {
+		return lastTeleportDistance;
+	}
+
+	public TeleportationType getLastTeleportationType() {
+		return lastTeleportationType;
 	}
 
 	@Override

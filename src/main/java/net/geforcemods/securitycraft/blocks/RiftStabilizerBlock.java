@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
@@ -148,12 +149,22 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 
 	@Override
 	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
-		return state.getValue(POWERED) ? 15 : 0;
+		return state.getValue(POWERED) && state.getValue(HALF) == DoubleBlockHalf.LOWER && level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be ? 15 - (int)be.getLastTeleportDistance() : 0;
 	}
 
 	@Override
 	public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
-		return state.getValue(POWERED) ? 15 : 0;
+		return getSignal(state, level, pos, side);
+	}
+
+	@Override
+	public boolean hasAnalogOutputSignal(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+		return state.getValue(HALF) == DoubleBlockHalf.LOWER && level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be && be.isModuleEnabled(ModuleType.REDSTONE) && be.getLastTeleportationType() != null ? be.getComparatorOutputFunction().applyAsInt(be.getLastTeleportationType()) : 0;
 	}
 
 	public static RiftStabilizerBlockEntity getConnectedBlockEntity(Level level, BlockPos pos) {

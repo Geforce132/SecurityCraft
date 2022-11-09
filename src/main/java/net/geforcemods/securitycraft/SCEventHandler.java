@@ -78,6 +78,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
@@ -403,7 +404,7 @@ public class SCEventHandler {
 		Entity entity = event.getEntity();
 		Level level = entity.getLevel();
 		List<RiftStabilizerBlockEntity> targetPosBlockEntities = BlockEntityTracker.RIFT_STABILIZER.getBlockEntitiesInRange(level, event.getTarget());
-		List<RiftStabilizerBlockEntity> sourcePosBlockEntities = BlockEntityTracker.RIFT_STABILIZER.getBlockEntitiesInRange(level, entity.position());
+		List<RiftStabilizerBlockEntity> sourcePosBlockEntities = BlockEntityTracker.RIFT_STABILIZER.getBlockEntitiesInRange(level, event.getPrev());
 		List<RiftStabilizerBlockEntity> blockEntities = new ArrayList<>();
 		TeleportationType type = TeleportationType.getTypeFromEvent(event);
 		RiftStabilizerBlockEntity riftStabilizer = null;
@@ -411,10 +412,10 @@ public class SCEventHandler {
 
 		blockEntities.addAll(targetPosBlockEntities);
 		blockEntities.addAll(sourcePosBlockEntities);
-		blockEntities = blockEntities.stream().distinct().sorted(Comparator.comparingDouble(b -> Math.min(b.getBlockPos().distToCenterSqr(event.getTarget()), b.getBlockPos().distToCenterSqr(entity.position())))).toList();
+		blockEntities = blockEntities.stream().distinct().sorted(Comparator.comparingDouble(b -> Math.min(b.getBlockPos().distToCenterSqr(event.getTarget()), b.getBlockPos().distToCenterSqr(event.getPrev())))).toList();
 
 		for (RiftStabilizerBlockEntity be : blockEntities) {
-			if (!be.isDisabled() && be.getFilter(type) && (!(entity instanceof Player player) || !be.getOwner().isOwner(player) && !ModuleUtils.isAllowed(be, player))) {
+			if (!be.isDisabled() && be.getFilter(type) && (!(entity instanceof Player player) || !be.getOwner().isOwner(player) && !ModuleUtils.isAllowed(be, player) || true)) {
 				riftStabilizer = be;
 				targetPosProhibited = be.getBlockPos().distToCenterSqr(event.getTarget()) < be.getBlockPos().distToCenterSqr(event.getPrev());
 				break;
@@ -423,6 +424,9 @@ public class SCEventHandler {
 
 		if (riftStabilizer != null) {
 			BlockPos pos = riftStabilizer.getBlockPos();
+			Vec3 centerPos = new AABB(pos).getCenter();
+			Vec3 from = targetPosProhibited ? event.getTarget() : event.getPrev();
+			Vec3 distance = from.subtract(centerPos);
 
 			if (entity instanceof Player player) {
 				level.playSound(null, event.getPrevX(), event.getPrevY(), event.getPrevZ(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.5F);
@@ -431,6 +435,8 @@ public class SCEventHandler {
 				if (riftStabilizer.isModuleEnabled(ModuleType.HARMING))
 					player.hurt(DamageSource.FALL, 5.0F);
 			}
+
+			riftStabilizer.setLastTeleport(Math.max(Math.abs(distance.x), Math.max(Math.abs(distance.y), Math.abs(distance.z))) - 0.5D, type);
 
 			if (riftStabilizer.isModuleEnabled(ModuleType.REDSTONE)) {
 				level.setBlockAndUpdate(pos, riftStabilizer.getBlockState().setValue(BlockChangeDetectorBlock.POWERED, true));

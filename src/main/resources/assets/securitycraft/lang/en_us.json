@@ -828,6 +828,7 @@
 	"gui.securitycraft:rift_stabilizer.moduleRequired": "You need to install a Smart Module to toggle which teleportation types can be detected by this Rift Stabilizer.",
 	"gui.securitycraft:rift_stabilizer.toggle": "Click the entries in the list below to toggle the detection of that specific teleportation type.",
 	"gui.securitycraft:rift_stabilizer.modded": "Modded Teleportation",
+	"gui.securitycraft:toggleList.comparatorOutput": "Comparator Output: %s",
 
 	"messages.securitycraft:bugReport": "Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please",
 	"messages.securitycraft:retinalScanner.hello": "Hello %s.",
@@ -1093,7 +1094,7 @@
 	"module.securitycraft.block_change_detector.smart_module.description": "Adding a smart module to a block change detector allows it to only log changes of one specific type of block. The block can be set in the GUI.",
 	"module.securitycraft.rift_stabilizer.disguise_module.description": "Adding a disguise module to a Rift Stabilizer will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
 	"module.securitycraft.rift_stabilizer.whitelist_module.description": "Adding an allowlist module to a Rift Stabilizer will allow listed players to teleport into or from the block's vicinity.",
-	"module.securitycraft.rift_stabilizer.redstone_module.description": "Adding a redstone module to a Rift Stabilizer makes it emit a redstone signal each time it detects a teleportation attempt by a player in its vicinity.",
+	"module.securitycraft.rift_stabilizer.redstone_module.description": "Adding a redstone module to a Rift Stabilizer makes it emit a redstone signal each time it detects a teleportation attempt by a player in its vicinity. This redstone signal will be stronger if the detection happened near the block, and weaker if it happened further away. Additionally, it will allow a comparator to be used to determine the last detected teleportation type.",
 	"module.securitycraft.rift_stabilizer.harming_module.description": "Adding a harming module to a Rift Stabilizer will cause players attempting to teleport into or from its vicinity to take damage.",
 	"module.securitycraft.rift_stabilizer.smart_module.description": "Adding a smart module to a Rift Stabilizer will allow you to configure which teleportation types the Rift Stabilizer is able to detect.",
 

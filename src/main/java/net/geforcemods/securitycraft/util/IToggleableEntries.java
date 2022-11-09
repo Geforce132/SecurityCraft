@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.util;
 
 import java.util.Map;
+import java.util.function.ToIntFunction;
 
 /**
  * Interface for all block entities which contain a toggleable list, which gets displayed in a {@link net.geforcemods.securitycraft.screen.ToggleListScreen}.
@@ -33,6 +34,13 @@ public interface IToggleableEntries<T> {
 	 * @return The full list of all filters of the block entity. Each map entry represents a filter, containing the type and its respective filter state
 	 */
 	Map<T, Boolean> getFilters();
+
+	/**
+	 * @return A function which maps all possible types to their corresponding comparator output, or 0 if no comparator output should be present.
+	 */
+	default ToIntFunction<T> getComparatorOutputFunction() {
+		return t -> 0;
+	}
 
 	/**
 	 * @return The "fallback" type that gets used for all things not specified within the other types.
