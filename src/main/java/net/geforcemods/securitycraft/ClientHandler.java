@@ -57,13 +57,12 @@ import net.geforcemods.securitycraft.screen.KeypadFurnaceScreen;
 import net.geforcemods.securitycraft.screen.KeypadSmokerScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
-import net.geforcemods.securitycraft.screen.RiftStabilizerScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SSSItemScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
 import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
-import net.geforcemods.securitycraft.screen.TrophySystemScreen;
+import net.geforcemods.securitycraft.screen.ToggleListScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Reinforced;
@@ -281,6 +280,7 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_SMOKER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.PROTECTO_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.RIFT_STABILIZER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.USERNAME_LOGGER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 	}
 
@@ -482,7 +482,7 @@ public class ClientHandler {
 	}
 
 	public static void displayTrophySystemScreen(TrophySystemBlockEntity be) {
-		Minecraft.getInstance().setScreen(new TrophySystemScreen(be));
+		Minecraft.getInstance().setScreen(new ToggleListScreen<>(be, SCContent.TROPHY_SYSTEM.get().getDescriptionId(), be.projectiles, be.moduleRequired, be.toggle));
 	}
 
 	public static void displayCheckPasswordScreen(BlockEntity be) {
@@ -502,7 +502,7 @@ public class ClientHandler {
 	}
 
 	public static void displayRiftStabilizerScreen(RiftStabilizerBlockEntity be) {
-		Minecraft.getInstance().setScreen(new RiftStabilizerScreen(be));
+		Minecraft.getInstance().setScreen(new ToggleListScreen<>(be, SCContent.RIFT_STABILIZER.get().getDescriptionId(), be.teleportationTypes, be.moduleRequired, be.toggle));
 	}
 
 	public static void refreshModelData(BlockEntity be) {

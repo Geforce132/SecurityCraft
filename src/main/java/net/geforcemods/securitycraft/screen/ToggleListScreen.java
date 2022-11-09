@@ -1,5 +1,10 @@
 package net.geforcemods.securitycraft.screen;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
@@ -8,14 +13,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
-import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -24,25 +29,25 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 
-public class RiftStabilizerScreen extends Screen {
-	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+public class ToggleListScreen<T> extends Screen {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
-	private final Component teleportationTypes = Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes");
-	private final Component moduleRequired = Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired");
-	private final Component toggle = Utils.localize("gui.securitycraft:rift_stabilizer.toggle");
+	public final Component scrollListTitle, moduleRequired, toggle;
 	private final int imageWidth = 176;
 	private final int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
 	private final boolean isSmart;
-	private final RiftStabilizerBlockEntity be;
-	private TeleportationModeList teleportationModeList;
+	private final IToggleableEntries<T> be;
+	private ToggleScrollList teleportationModeList;
 
-	public RiftStabilizerScreen(RiftStabilizerBlockEntity be) {
-		super(Component.translatable(SCContent.RIFT_STABILIZER.get().getDescriptionId()));
+	public ToggleListScreen(IToggleableEntries<T> be, String title, Component scrollListTitle, Component moduleRequired, Component toggle) {
+		super(Component.translatable(title));
 
 		this.be = be;
-		isSmart = be.isModuleEnabled(ModuleType.SMART);
+		isSmart = be instanceof IModuleInventory customizable && customizable.isModuleEnabled(ModuleType.SMART);
+		this.scrollListTitle = scrollListTitle;
+		this.moduleRequired = moduleRequired;
+		this.toggle = toggle;
 	}
 
 	@Override
@@ -51,9 +56,8 @@ public class RiftStabilizerScreen extends Screen {
 
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
-		addRenderableWidget(teleportationModeList = new RiftStabilizerScreen.TeleportationModeList(minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
+		addRenderableWidget(teleportationModeList = new ToggleScrollList(minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
 	}
-
 
 	@Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
@@ -63,7 +67,7 @@ public class RiftStabilizerScreen extends Screen {
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(pose, mouseX, mouseY, partialTicks);
 		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
-		font.draw(pose, teleportationTypes, width / 2 - font.width(teleportationTypes) / 2, topPos + 31, 4210752);
+		font.draw(pose, scrollListTitle, width / 2 - font.width(scrollListTitle) / 2, topPos + 31, 4210752);
 		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, toggle, moduleRequired, isSmart, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
@@ -75,16 +79,30 @@ public class RiftStabilizerScreen extends Screen {
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
-	class TeleportationModeList extends ScrollPanel {
-		private final int slotHeight = 12, listLength = TeleportationType.values().length;
+	public class ToggleScrollList extends ScrollPanel {
+		private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+		private final int slotHeight = 12, listLength;
+		private final List<T> orderedFilterList;
+		private final Map<T, Component> typeNames = new HashMap<>();
 
-		public TeleportationModeList(Minecraft client, int width, int height, int top, int left) {
+		public ToggleScrollList(Minecraft client, int width, int height, int top, int left) {
 			super(client, width, height, top, left);
+			orderedFilterList = new ArrayList<>(be.getFilters().keySet());
+			orderedFilterList.sort((e1, e2) -> {
+				//the entry for modded projectiles always shows at the bottom of the list
+				if (e1 == be.getDefaultType())
+					return 1;
+				else if (e2 == be.getDefaultType())
+					return -1;
+				else
+					return Utils.localize(e1.toString()).getString().compareTo(Utils.localize(e2.toString()).getString());
+			});
+			listLength = orderedFilterList.size();
 		}
 
 		@Override
 		protected int getContentHeight() {
-			int height = listLength * (font.lineHeight + 3);
+			int height = listLength * (Minecraft.getInstance().font.lineHeight + 3);
 
 			if (height < bottom - top - 4)
 				height = bottom - top - 4;
@@ -97,7 +115,7 @@ public class RiftStabilizerScreen extends Screen {
 			int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
 
 			if (isSmart && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
-				be.toggleFilter(TeleportationType.values()[slotIndex]);
+				be.toggleFilter(orderedFilterList.get(slotIndex));
 				Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 				return true;
 			}
@@ -107,6 +125,7 @@ public class RiftStabilizerScreen extends Screen {
 
 		@Override
 		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY) {
+			Font font = Minecraft.getInstance().font;
 			int baseY = top + border - (int) scrollDistance;
 			int slotBuffer = slotHeight - 4;
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
@@ -139,13 +158,13 @@ public class RiftStabilizerScreen extends Screen {
 			int i = 0;
 
 			//draw entry strings and indicators whether the filter is enabled
-			for (TeleportationType teleportationType : TeleportationType.values()) {
-				Component name = Utils.localize(teleportationType.label);
+			for (T type : orderedFilterList) {
+				Component name = typeNames.computeIfAbsent(type, t -> Utils.localize(t == be.getDefaultType() ? be.getDefaultTypeName() : t.toString()));
 				int yStart = relativeY + (slotHeight * i);
 
 				font.draw(pose, name, left + width / 2 - font.width(name) / 2, yStart, 0xC6C6C6);
 				RenderSystem._setShaderTexture(0, BEACON_GUI);
-				blit(pose, left, yStart - 3, 14, 14, be.getFilter(teleportationType) ? 88 : 110, 219, 21, 22, 256, 256);
+				blit(pose, left, yStart - 3, 14, 14, be.getFilter(type) ? 88 : 110, 219, 21, 22, 256, 256);
 				i++;
 			}
 		}
