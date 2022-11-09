@@ -278,7 +278,8 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	public enum TeleportationType {
 		CHORUS_FRUIT(Items.CHORUS_FRUIT.getDescriptionId()),
 		ENDER_PEARL(Items.ENDER_PEARL.getDescriptionId()),
-		ENDER_ENTITY("gui.securitycraft:rift_stabilizer.ender_entity"),
+		ENDERMAN(EntityType.ENDERMAN.getDescriptionId()),
+		SHULKER(EntityType.SHULKER.getDescriptionId()),
 		MODDED("gui.securitycraft:rift_stabilizer.modded");
 
 		public final String label;
@@ -292,8 +293,14 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 				return CHORUS_FRUIT;
 			else if (event instanceof EnderPearl)
 				return ENDER_PEARL;
-			else if (event instanceof EnderEntity)
-				return ENDER_ENTITY;
+			else if (event instanceof EnderEntity enderEntityEvent) {
+				if (enderEntityEvent.getEntityLiving() instanceof EnderMan)
+					return ENDERMAN;
+				else if (enderEntityEvent.getEntityLiving() instanceof Shulker)
+					return SHULKER;
+
+				return MODDED;
+			}
 			else if (event instanceof TeleportCommand || event instanceof SpreadPlayersCommand)
 				return null;
 

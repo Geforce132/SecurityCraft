@@ -827,7 +827,6 @@
 	"gui.securitycraft:rift_stabilizer.teleportationTypes": "Detectable Teleportation Types:",
 	"gui.securitycraft:rift_stabilizer.moduleRequired": "You need to install a Smart Module to toggle which teleportation types can be detected by this Rift Stabilizer.",
 	"gui.securitycraft:rift_stabilizer.toggle": "Click the entries in the list below to toggle the detection of that specific teleportation type.",
-	"gui.securitycraft:rift_stabilizer.ender_entity": "Shulker/Enderman",
 	"gui.securitycraft:rift_stabilizer.modded": "Modded Teleportation",
 
 	"messages.securitycraft:bugReport": "Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please",
