@@ -222,11 +222,6 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	}
 
 	@Override
-	public void toggleFilter(EntityType<?> projectileType) {
-		setFilter(projectileType, !projectileFilter.get(projectileType));
-	}
-
-	@Override
 	public void setFilter(EntityType<?> projectileType, boolean allowed) {
 		if (projectileFilter.containsKey(projectileType)) {
 			projectileFilter.put(projectileType, allowed);

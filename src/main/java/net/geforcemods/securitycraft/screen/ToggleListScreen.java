@@ -89,7 +89,7 @@ public class ToggleListScreen<T> extends Screen {
 			super(client, width, height, top, left);
 			orderedFilterList = new ArrayList<>(be.getFilters().keySet());
 			orderedFilterList.sort((e1, e2) -> {
-				//the entry for modded projectiles always shows at the bottom of the list
+				//the default entry always shows at the bottom of the list
 				if (e1 == be.getDefaultType())
 					return 1;
 				else if (e2 == be.getDefaultType())
