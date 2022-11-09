@@ -81,6 +81,11 @@ public class ToggleListScreen<T> extends Screen {
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
+	@Override
+	public boolean isPauseScreen() {
+		return false;
+	}
+
 	public class ToggleScrollList extends ScrollPanel {
 		private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 		private final int slotHeight = 12, listLength;
