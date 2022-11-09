@@ -92,9 +92,8 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 
 		level.setBlock(posAbove, DoublePlantBlock.copyWaterloggedFrom(level, posAbove, defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER)), 3);
 
-		if (placer instanceof Player player) {
+		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, posAbove, player));
-		}
 
 		super.setPlacedBy(level, pos, state, placer, stack);
 	}
@@ -103,11 +102,11 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
 		DoubleBlockHalf half = state.getValue(HALF);
 
-		if (facing.getAxis() == Direction.Axis.Y && half == DoubleBlockHalf.LOWER == (facing == Direction.UP)) {
+		if (facing.getAxis() == Direction.Axis.Y && half == DoubleBlockHalf.LOWER == (facing == Direction.UP))
 			return facingState.is(this) && facingState.getValue(HALF) != half ? state.setValue(POWERED, facingState.getValue(POWERED)) : Blocks.AIR.defaultBlockState();
-		} else {
+		else
 			return half == DoubleBlockHalf.LOWER && facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
-		}
+
 	}
 
 	@Override
@@ -184,6 +183,6 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.RIFT_STABILIZER_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
+		return state.getValue(HALF) == DoubleBlockHalf.LOWER ? createTickerHelper(type, SCContent.RIFT_STABILIZER_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker) : null;
 	}
 }
