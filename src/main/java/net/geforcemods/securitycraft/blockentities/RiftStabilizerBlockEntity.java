@@ -17,11 +17,9 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.SyncRiftStabilizer;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Shulker;
@@ -43,9 +41,6 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	private final IntOption range = new IntOption(this::getBlockPos, "range", 5, 1, 15, 1, true);
 	private final DisabledOption disabled = new DisabledOption(false);
 	private final Map<TeleportationType, Boolean> teleportationFilter = new EnumMap<>(TeleportationType.class);
-	public final Component teleportationTypes = Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes");
-	public final Component moduleRequired = Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired");
-	public final Component toggle = Utils.localize("gui.securitycraft:rift_stabilizer.toggle");
 	private boolean tracked = false;
 
 	public RiftStabilizerBlockEntity(BlockPos pos, BlockState state) {

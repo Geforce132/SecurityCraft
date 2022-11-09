@@ -24,11 +24,9 @@ import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.EntityType;
@@ -53,9 +51,6 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	 */
 	public static final int RENDER_DISTANCE = 50;
 	private final Map<EntityType<?>, Boolean> projectileFilter = new LinkedHashMap<>();
-	public final Component projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
-	public final Component moduleRequired = Utils.localize("gui.securitycraft:trophy_system.moduleRequired");
-	public final Component toggle = Utils.localize("gui.securitycraft:trophy_system.toggle");
 	public Projectile entityBeingTargeted = null;
 	public int cooldown = getCooldownTime();
 	private final Random random = new Random();
