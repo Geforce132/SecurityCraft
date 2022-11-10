@@ -280,6 +280,19 @@ public class GuiSCManual extends GuiScreen {
 			return;
 		}
 
+		if (ClientUtils.hasCtrlDown() && subpages.size() > 1) {
+			switch ((int) Math.signum(Mouse.getEventDWheel())) {
+				case -1:
+					nextSubpage();
+					break;
+				case 1:
+					previousSubpage();
+					break;
+			}
+
+			return;
+		}
+
 		switch ((int) Math.signum(Mouse.getEventDWheel())) {
 			case -1:
 				nextPage();

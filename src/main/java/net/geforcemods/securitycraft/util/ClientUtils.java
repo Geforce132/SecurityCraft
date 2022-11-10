@@ -40,6 +40,10 @@ public class ClientUtils {
 		return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
 	}
 
+	public static boolean hasCtrlDown() {
+		return Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
+	}
+
 	public static void renderBoxInLevel(int minX, int maxX, int minZ, int maxZ, int height, int rgbColor) {
 		BufferBuilder builder = Tessellator.getInstance().getBuffer();
 		int r = rgbColor >> 16 & 255;
