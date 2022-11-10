@@ -134,14 +134,16 @@ public class ToggleListScreen<T> extends Screen {
 		public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 			super.render(pose, mouseX, mouseY, partialTick);
 
+			int baseY = top + border - (int) scrollDistance;
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
 			int slotIndex = mouseListY / slotHeight;
+			int slotBottom = baseY + (slotIndex + 1) * slotHeight;
 
 			if (isRedstone && mouseX >= left && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
 				int comparatorOutput = be.getComparatorOutputFunction().applyAsInt(orderedFilterList.get(slotIndex));
 
 				if (comparatorOutput > 0)
-					renderTooltip(pose, Component.translatable("gui.securitycraft:toggleList.comparatorOutput", comparatorOutput), mouseX, mouseY);
+					renderTooltip(pose, Component.translatable("gui.securitycraft:toggleList.comparatorOutput", comparatorOutput), right - 8, slotBottom);
 			}
 		}
 
