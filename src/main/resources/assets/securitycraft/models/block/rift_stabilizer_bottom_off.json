@@ -1,0 +1,10 @@
+{
+	"parent": "securitycraft:block/rift_stabilizer_bottom",
+	"textures": {
+		"bottom": "securitycraft:block/rift_stabilizer_base_bottom",
+		"front": "securitycraft:block/rift_stabilizer_base_front_off",
+		"particle": "securitycraft:block/rift_stabilizer_base_side",
+		"side": "securitycraft:block/rift_stabilizer_base_sidec",
+		"top": "securitycraft:block/rift_stabilizer_pillar_top"
+	}
+}
