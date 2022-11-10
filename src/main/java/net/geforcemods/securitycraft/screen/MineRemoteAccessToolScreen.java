@@ -154,7 +154,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 		}
 
 		for (TextHoverChecker chc : hoverCheckers) {
-			if (chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null)
+			if (chc != null && chc.checkHover(mouseX, mouseY, getFocused()) && chc.getName() != null)
 				renderComponentTooltip(pose, chc.getLines(), mouseX, mouseY);
 		}
 	}
