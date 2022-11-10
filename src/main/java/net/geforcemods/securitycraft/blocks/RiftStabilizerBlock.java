@@ -149,7 +149,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 
 	@Override
 	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
-		return state.getValue(POWERED) && state.getValue(HALF) == DoubleBlockHalf.LOWER && level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be ? 15 - (int)be.getLastTeleportDistance() : 0;
+		return state.getValue(POWERED) && state.getValue(HALF) == DoubleBlockHalf.LOWER && level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be ? 15 - (int) be.getLastTeleportDistance() : 0;
 	}
 
 	@Override
