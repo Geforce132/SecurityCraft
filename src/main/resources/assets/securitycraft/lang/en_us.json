@@ -1094,7 +1094,7 @@
 	"module.securitycraft.block_change_detector.smart_module.description": "Adding a smart module to a block change detector allows it to only log changes of one specific type of block. The block can be set in the GUI.",
 	"module.securitycraft.rift_stabilizer.disguise_module.description": "Adding a disguise module to a Rift Stabilizer will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
 	"module.securitycraft.rift_stabilizer.whitelist_module.description": "Adding an allowlist module to a Rift Stabilizer will allow listed players to teleport into or from the block's vicinity.",
-	"module.securitycraft.rift_stabilizer.redstone_module.description": "Adding a redstone module to a Rift Stabilizer makes it emit a redstone signal each time it detects a teleportation attempt by a player in its vicinity. This redstone signal will be stronger if the detection happened near the block, and weaker if it happened further away. Additionally, it will allow a comparator to be used to determine the last detected teleportation type.",
+	"module.securitycraft.rift_stabilizer.redstone_module.description": "Adding a redstone module to a Rift Stabilizer makes it emit a redstone signal each time it detects a teleportation attempt in its vicinity. This redstone signal will be stronger if the detection happened near the block, and weaker if it happened further away. Additionally, it will allow a comparator to be used to determine the last detected teleportation type.",
 	"module.securitycraft.rift_stabilizer.harming_module.description": "Adding a harming module to a Rift Stabilizer will cause players attempting to teleport into or from its vicinity to take damage.",
 	"module.securitycraft.rift_stabilizer.smart_module.description": "Adding a smart module to a Rift Stabilizer will allow you to configure which teleportation types the Rift Stabilizer is able to detect.",
 
@@ -1201,7 +1201,7 @@
 	"option.securitycraft.rift_stabilizer.signalLength": "Signal length: %s",
 	"option.securitycraft.rift_stabilizer.signalLength.description": "How long should the redstone signal after detecting a teleportation attempt be? (In ticks, 20 ticks = 1 second)",
 	"option.securitycraft.rift_stabilizer.range": "Detection radius: %s",
-	"option.securitycraft.rift_stabilizer.range.description": "How far away should the detector be able to prevent teleportation attempts?",
+	"option.securitycraft.rift_stabilizer.range.description": "How far away should the Rift Stabilizer be able to prevent teleportation attempts?",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",
