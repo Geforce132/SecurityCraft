@@ -260,6 +260,19 @@ public class SCManualScreen extends Screen {
 			return true;
 		}
 
+		if (Screen.hasControlDown() && subpages.size() > 1) {
+			switch ((int) Math.signum(scroll)) {
+				case -1:
+					nextSubpage();
+					break;
+				case 1:
+					previousSubpage();
+					break;
+			}
+
+			return true;
+		}
+
 		switch ((int) Math.signum(scroll)) {
 			case -1:
 				nextPage();
