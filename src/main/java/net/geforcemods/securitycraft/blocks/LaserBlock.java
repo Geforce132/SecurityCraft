@@ -129,19 +129,20 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		if (blockState.getValue(POWERED))
-			return 15;
-		else
-			return 0;
+	public int getSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
+		if (state.getValue(POWERED)) {
+			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof LaserBlockBlockEntity && ((LaserBlockBlockEntity) te).isModuleEnabled(ModuleType.REDSTONE))
+				return 15;
+		}
+
+		return 0;
 	}
 
 	@Override
-	public int getDirectSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		if (blockState.getValue(POWERED))
-			return 15;
-		else
-			return 0;
+	public int getDirectSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
+		return getSignal(state, level, pos, side);
 	}
 
 	@Override
@@ -155,7 +156,7 @@ public class LaserBlock extends DisguisableBlock {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
-		if ((state.getValue(POWERED))) {
+		if (state.getValue(POWERED)) {
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double z = pos.getZ() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;

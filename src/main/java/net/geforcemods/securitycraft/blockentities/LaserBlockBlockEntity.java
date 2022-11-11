@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
@@ -75,6 +76,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 			if (module == ModuleType.DISGUISE)
 				onRemoveDisguiseModule(moduleStack, toggled);
+			else if (module == ModuleType.REDSTONE)
+				onRemoveRedstoneModule();
 		}
 		else if (action instanceof ILinkedAction.OwnerChanged) {
 			Owner owner = ((ILinkedAction.OwnerChanged) action).newOwner;
@@ -99,6 +102,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 		if (module == ModuleType.DISGUISE)
 			onRemoveDisguiseModule(stack, toggled);
+		else if (module == ModuleType.REDSTONE)
+			onRemoveRedstoneModule();
 	}
 
 	private void onInsertDisguiseModule(ItemStack stack, boolean toggled) {
@@ -140,6 +145,13 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		}
 	}
 
+	private void onRemoveRedstoneModule() {
+		if (getBlockState().getValue(LaserBlock.POWERED)) {
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(LaserBlock.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
+		}
+	}
+
 	@Override
 	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
 		super.handleUpdateTag(state, tag);
@@ -175,7 +187,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.HARMING, ModuleType.ALLOWLIST, ModuleType.DISGUISE
+				ModuleType.HARMING, ModuleType.ALLOWLIST, ModuleType.DISGUISE, ModuleType.REDSTONE
 		};
 	}
 
