@@ -61,18 +61,20 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay {
 					Block offsetBlock = offsetState.getBlock();
 
 					if (offsetBlock == SCContent.LASER_BLOCK.get() && !offsetState.getValue(LaserBlock.POWERED)) {
-						BlockEntity te = level.getBlockEntity(offsetPos);
+						if (level.getBlockEntity(offsetPos) instanceof IModuleInventory moduleInv) {
+							if (ModuleUtils.isAllowed(moduleInv, entity))
+								return;
 
-						if (te instanceof IModuleInventory moduleInv && ModuleUtils.isAllowed(moduleInv, entity))
-							return;
+							if (moduleInv.isModuleEnabled(ModuleType.REDSTONE)) {
+								level.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
+								BlockUtils.updateIndirectNeighbors(level, offsetPos, SCContent.LASER_BLOCK.get());
+								level.scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
+							}
 
-						level.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
-						BlockUtils.updateIndirectNeighbors(level, offsetPos, SCContent.LASER_BLOCK.get());
-						level.scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
-
-						if (te instanceof IModuleInventory moduleInv && moduleInv.isModuleEnabled(ModuleType.HARMING)) {
-							if (!(entity instanceof Player player && ((IOwnable) te).getOwner().isOwner(player)))
-								livingEntity.hurt(CustomDamageSources.LASER, 10F);
+							if (moduleInv.isModuleEnabled(ModuleType.HARMING)) {
+								if (!(entity instanceof Player player && ((IOwnable) moduleInv).getOwner().isOwner(player)))
+									livingEntity.hurt(CustomDamageSources.LASER, 10F);
+							}
 						}
 					}
 				}
