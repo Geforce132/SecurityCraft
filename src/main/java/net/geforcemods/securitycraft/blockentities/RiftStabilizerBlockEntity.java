@@ -97,7 +97,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 	@Override
 	public boolean getFilter(TeleportationType teleportationType) {
-		return teleportationFilter.get(teleportationType);
+		return teleportationFilter.containsKey(teleportationType) && teleportationFilter.get(teleportationType);
 	}
 
 	@Override
