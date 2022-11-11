@@ -260,7 +260,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 				renderComponentTooltip(pose, Arrays.asList(levelMismatchInfo), mouseX, mouseY);
 		}
 
-		if (!usesTextField.active && !stack.isEmpty() && usesHoverChecker.checkHover(mouseX, mouseY))
+		if (!usesTextField.active && !stack.isEmpty() && usesHoverChecker.checkHover(mouseX, mouseY, getFocused()))
 			renderComponentTooltip(pose, usesHoverChecker.getLines(), mouseX, mouseY);
 
 		renderTooltip(pose, mouseX, mouseY);

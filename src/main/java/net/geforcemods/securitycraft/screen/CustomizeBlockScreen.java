@@ -162,7 +162,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
 
 		for (TextHoverChecker hoverChecker : hoverCheckers) {
-			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY))
+			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY, getFocused()))
 				renderTooltip(pose, minecraft.font.split(hoverChecker.getName(), 150), mouseX, mouseY);
 		}
 	}
