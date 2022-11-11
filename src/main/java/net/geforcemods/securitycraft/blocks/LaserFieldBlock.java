@@ -60,7 +60,7 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay {
 					BlockState offsetState = world.getBlockState(offsetPos);
 					Block offsetBlock = offsetState.getBlock();
 
-					if (offsetBlock == SCContent.LASER_BLOCK.get() && !offsetState.getValue(LaserBlock.POWERED)) {
+					if (offsetBlock == SCContent.LASER_BLOCK.get()) {
 						TileEntity te = world.getBlockEntity(offsetPos);
 
 						if (te instanceof IModuleInventory) {
@@ -69,7 +69,7 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay {
 							if (ModuleUtils.isAllowed(moduleInv, entity))
 								return;
 
-							if (moduleInv.isModuleEnabled(ModuleType.REDSTONE)) {
+							if (moduleInv.isModuleEnabled(ModuleType.REDSTONE) && !offsetState.getValue(LaserBlock.POWERED)) {
 								world.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
 								BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.LASER_BLOCK.get());
 								world.getBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
