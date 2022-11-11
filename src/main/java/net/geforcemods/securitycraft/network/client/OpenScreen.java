@@ -39,7 +39,7 @@ public class OpenScreen {
 
 	public static void onMessage(OpenScreen message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			switch(message.dataType) {
+			switch (message.dataType) {
 				case CHECK_PASSWORD:
 					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof IPasswordProtected be)
 						ClientHandler.displayCheckPasswordScreen((BlockEntity) be);

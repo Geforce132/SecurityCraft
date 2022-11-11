@@ -185,8 +185,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	/**
-	 * Called whenever certain actions occur in blocks this block entity is linked to. See {@link ILinkedAction} for parameter
-	 * descriptions. <p>
+	 * Called whenever certain actions occur in blocks this block entity is linked to. See {@link ILinkedAction} for
+	 * parameter descriptions. <p>
 	 *
 	 * @param action The {@link ILinkedAction} that occurred
 	 * @param excludedBEs LinkableBlockEntities that aren't going to have onLinkedBlockAction() called on them, always add

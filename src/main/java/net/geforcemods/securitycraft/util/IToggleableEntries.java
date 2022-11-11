@@ -35,8 +35,8 @@ public interface IToggleableEntries<T> {
 	public boolean getFilter(T type);
 
 	/**
-	 * @return The full list of all filters of the block entity. Each map entry represents a filter, containing the type
-	 * 	       and its respective filter state
+	 * @return The full list of all filters of the block entity. Each map entry represents a filter, containing the type and
+	 *         its respective filter state
 	 */
 	Map<T, Boolean> getFilters();
 
@@ -49,8 +49,8 @@ public interface IToggleableEntries<T> {
 	}
 
 	/**
-	 * @return The "fallback" type that gets used for all things not specified within the other types. This type is
-	 *         treated differently by the screen, like getting rendered at the bottom of the list.
+	 * @return The "fallback" type that gets used for all things not specified within the other types. This type is treated
+	 *         differently by the screen, like getting rendered at the bottom of the list.
 	 */
 	T getDefaultType();
 
