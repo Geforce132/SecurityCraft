@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
 - New: Japanese translation (Thanks momo-i!)
+- New: Rift Stabilizer, a block that detects and prevents teleportation attempts in its vicinity
 - Fix: Nether portals can replace reinforced blocks when generating
 - Fix: Crash when trying to disguise a block as/project some blocks that don't always have a block entity associated with them
 - Fix: Can't place blocks on blocks locked by a Sonic Security System

@@ -4,7 +4,7 @@
 		"bottom": "securitycraft:block/rift_stabilizer_base_bottom",
 		"front": "securitycraft:block/rift_stabilizer_base_front_off",
 		"particle": "securitycraft:block/rift_stabilizer_base_side",
-		"side": "securitycraft:block/rift_stabilizer_base_sidec",
+		"side": "securitycraft:block/rift_stabilizer_base_side",
 		"top": "securitycraft:block/rift_stabilizer_pillar_top"
 	}
 }

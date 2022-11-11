@@ -1,7 +1,7 @@
 {
     "variants": {
-        "facing=north,half=lower,powered=false": { "model": "securitycraft:block/reinforced_moss_block" },
-        "facing=north,half=lower,powered=true": { "model": "securitycraft:block/reinforced_gold_block" },
+        "facing=north,half=lower,powered=false": { "model": "securitycraft:block/rift_stabilizer_bottom_off" },
+        "facing=north,half=lower,powered=true": { "model": "securitycraft:block/rift_stabilizer_bottom_on" },
         "facing=south,half=lower,powered=false": { "model": "securitycraft:block/rift_stabilizer_bottom_off", "y": 180 },
         "facing=south,half=lower,powered=true": { "model": "securitycraft:block/rift_stabilizer_bottom_on", "y": 180 },
         "facing=west,half=lower,powered=false": { "model": "securitycraft:block/rift_stabilizer_bottom_off", "y": 270 },
