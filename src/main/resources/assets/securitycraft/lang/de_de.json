@@ -526,6 +526,7 @@
 	"block.securitycraft.reinforced_ochre_froglight": "Verstärktes ockernes Froschlicht",
 	"block.securitycraft.reinforced_verdant_froglight": "Verstärktes junggrünes Froschlicht",
 	"block.securitycraft.reinforced_pearlescent_froglight": "Verstärktes perlmutternes Froschlicht",
+	"block.securitycraft.rift_stabilizer": "Riss-Stabilisierer",
 
 	"item.securitycraft.codebreaker": "Codebrecher",
 	"item.securitycraft.door_indestructible_iron_item": "Verstärkte Eisentür",
@@ -648,6 +649,7 @@
 	"help.securitycraft.key_panel.info": "Das Nummernfeld kann in der Welt platziert werden (auch unter Wasser), und ist eine kleine Version des Nummernschlosses. Es wird außerdem in der Herstellung von Nummernschlössern, passwortgesicherten Truhe und passwortgesicherten Öfen verwendet.",
 	"help.securitycraft.sonic_security_system.info": "Das Schallsicherheitssystem, inspiriert vom \"Sonic Security System\" im Spiel \"Metroid Prime 2: Echoes\", kann bestimmte SecurityCraft Blöcke sperren und somit Spieler daran hindern, sie zu nutzen. Rechtsklicke einen solchen Block, um ihn mit dem Schallsicherheitssystem zu verbinden. Wenn das Schallsicherheitssystem platziert ist, kann via Rechtsklick ein GUI geöffnet werden, das ermöglicht, es zu aktivieren, deaktivieren, oder zurückzusetzen. Die Blöcke lassen sich kurzzeitig entsperren, indem eine bestimmte Melodie - entweder mit einem tragbaren Melodienspieler oder Notenblöcken in der Nähe - abgespielt wird. Um die Melodie zu bestimmen, starte die Aufnahme im GUI des Schallsicherheitssystems, und spiele eine Tonfolge in der Nähe. Sobald du fertig bist, stoppe die Aufnahme. Nun werden die durch dieses Schallsicherheitssystem gesperrten Blöcke jedes Mal, wenn diese Tonfolge in der Nähe des Schallsicherheitssystems gespielt wird, kurzzeitig entsperrt.",
 	"help.securitycraft.block_change_detector.info": "Der Block-Änderungsdetektor detektiert, wenn Spieler in seiner Nähe Blöcke zerbrechen und/oder platzieren (standardmäßig 5 Blöcke, kann mit dem universellen Blockmodifizierer verändert werden). Ein Rechtsklick auf den Block öffnet sein Interface, in dem alle Detektionen aufgelistet sind. Des Weiteren kann eingestellt werden, ob der Block nur Platzieren oder Zerbrechen von Blöcken, oder beides gleichzeitig detektiert.",
+	"help.securitycraft.rift_stabilizer.info": "Der Riss-Stabilisierer erkennt und verhindert Teleportationsversuche von Spielern in dessen Nähe (standardmäßig 5 Blöcke, kann mit dem universellen Blockmodifizierer verändert werden). Teleportationsversuche werden verhindert, falls sich die Ursprungs- oder Zielposition des Teleports im Radius des Blocks befindet. Rechtsklicke den Block, um die Liste aller erkennbaren Teleportationsarten einzusehen.",
 
 	"help.securitycraft.codebreaker.info": "Der Codebrecher kann jedes Nummernschloss, jede passwortgesicherte Truhe und jeden passwortgesicherten Ofen durch einen Rechtsklick knacken. (5 Nutzungen mit einer Chance von 2/3, dass er funktioniert)",
 	"help.securitycraft.universal_block_remover.info": "Der Universelle Blockentferner wird benutzt, um verstärkte Blöcke durch einen Rechtsklick zu entfernen. Nur der Spieler, der den Block platziert hat, kann ihn auch entfernen.",
@@ -824,6 +826,11 @@
 	"gui.securitycraft:block_change_detector.show_all_checkbox": "Alle Einträge anzeigen",
 	"gui.securitycraft:block_change_detector.highlight_in_world_checkbox": "Angezeigte Blöcke in der Welt markieren",
 	"gui.securitycraft:choose_outline_color_tooltip": "Umrandungsfarbe auswählen",
+	"gui.securitycraft:rift_stabilizer.teleportationTypes": "Erkennbare Teleportationsarten:",
+	"gui.securitycraft:rift_stabilizer.moduleRequired": "Du musst ein schlaues Modul installieren, um einzustellen, welche Teleportationsarten von diesem Riss-Stabilisierer erkannt werden können.",
+	"gui.securitycraft:rift_stabilizer.toggle": "Klicke die Einträge in der Liste unten, um die Erkennung der jeweiligen Teleportationsart ein-/auszuschalten.",
+	"gui.securitycraft:rift_stabilizer.modded": "Gemoddete Teleportation",
+	"gui.securitycraft:toggleList.comparatorOutput": "Komparator-Signal: %s",
 
 	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",
 	"messages.securitycraft:retinalScanner.hello": "Hallo %s.",
@@ -936,6 +943,8 @@
 	"messages.securitycraft:sonic_security_system.locked": "\"%s\" ist durch ein Schallsicherheitssystem gesperrt!",
 	"messages.securitycraft:portable_tune_player.tune_saved": "Melodie gespeichert.",
 	"messages.securitycraft:portable_tune_player.no_tune": "Keine Melodie vorhanden.",
+	"messages.securitycraft:rift_stabilizer.no_teleport_to": "Es ist dir nicht gestattet, zu dieser Position zu teleportieren!",
+	"messages.securitycraft:rift_stabilizer.no_teleport_from": "Es ist dir nicht gestattet, von dieser Position aus zu teleportieren!",
 
 	"jei.securitycraft.category.reinforcing": "Blöcke verstärken",
 	"jei.securitycraft.category.unreinforcing": "Verstärkung entfernen",
@@ -1084,6 +1093,11 @@
 	"module.securitycraft.block_change_detector.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Block-Änderungsdetektor erlaubt es zugelassenen Spielern, in seiner Nähte Blöcke zu zerbrechen/platzieren, ohne detektiert zu werden. Ebenfalls können sie alle Einträge einsehen, diese jedoch nicht löschen, oder die Einstellungen des Blocks verändern.",
 	"module.securitycraft.block_change_detector.redstone_module.description": "Ein Redstone-Modul in einem Block-Änderungsdetektor lässt ihn ein Redstonesignal abgeben, wenn ein Spieler einen Block in seiner Nähte platziert/zerbricht.",
 	"module.securitycraft.block_change_detector.smart_module.description": "Ein schlaues Modul in einem Block-Änderungsdetektor macht es möglich, das Platzieren/Zerbrechen eines bestimmten Blockes zu detektieren. Welcher Block dies ist, kann im Interface des Block-Änderungsdetektors festgelegt werden.",
+	"module.securitycraft.rift_stabilizer.disguise_module.description": "Wenn ein Tarnmodul zu einem Riss-Stabilisierer hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.",
+	"module.securitycraft.rift_stabilizer.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Riss-Stabilisierer erlaubt es zugelassenen Spielern, sich in die/aus der Nähe des Blockes zu teleportieren.",
+	"module.securitycraft.rift_stabilizer.redstone_module.description": "Ein Redstone-Modul in einem Riss-Stabilisierer führt dazu, dass ein Redstonesignal abgegeben wird, wenn ein Teleportationsversuch in dessen Nähe erkannt wird. Dieses Signal ist umso stärker, je geringer die Distanz zwischen dem Teleportationsversuch und dem Block ist. Zusätzlich führt es dazu, dass ein Komparator verwendet werden kann, um die letzte erkannte Teleportationsart festzustellen.",
+	"module.securitycraft.rift_stabilizer.harming_module.description": "Ein Schadensmodul in einem Riss-Stabilisierer führt dazu, dass Spieler, die versuchen, sich in den/aus dem Radius des Blocks zu teleportieren, Schaden erleiden.",
+	"module.securitycraft.rift_stabilizer.smart_module.description": "Ein schlaues Modul in einem Riss-Stabilisierer lässt dich einstellen, welche Teleportationsarten der Riss-Stabilisierer erkennen kann.",
 
 	"option.generic.disabled": "Deaktiviert: %s",
 	"option.generic.disabled.description": "Soll dieser Block deaktiviert werden, sodass er bis zum Reaktivieren nicht mehr funktioniert?",
@@ -1185,6 +1199,10 @@
 	"option.securitycraft.block_change_detector.signalLength.description": "Wie lange soll das Redstonesignal nach Detektion einer Block-Änderung sein? (In Ticks, 20 Ticks = 1 Sekunde)",
 	"option.securitycraft.block_change_detector.range": "Detektionsradius: %s",
 	"option.securitycraft.block_change_detector.range.description": "Wie weit weg soll der Detektor Blöcke, die von Spielern platziert/zerbrochen wurden, detektieren?",
+	"option.securitycraft.rift_stabilizer.signalLength": "Signallänge: %s",
+	"option.securitycraft.rift_stabilizer.signalLength.description": "Wie lange soll das Redstonesignal nach Detektion eines Teleportationsversuches sein? (In Ticks, 20 Ticks = 1 Sekunde)",
+	"option.securitycraft.rift_stabilizer.range": "Detektionsradius: %s",
+	"option.securitycraft.rift_stabilizer.range.description": "Wie weit weg soll der Riss-Stabilsierer Teleportationsversuche verhindern?",
 
 	"securitycraft.subtitle.alarm": "Alarm geht los",
 	"securitycraft.subtitle.electrified": "Stromschlag",

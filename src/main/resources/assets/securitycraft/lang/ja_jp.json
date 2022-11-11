@@ -1179,6 +1179,7 @@
 	"option.securitycraft.block_change_detector.signalLength.description": "ブロックチェンジを検出した後のレッドストーンの信号の長さはどのくらいにすべきか？(単位はティック、20ティック＝1秒です。)",
 	"option.securitycraft.block_change_detector.range": "検出範囲：%s",
 	"option.securitycraft.block_change_detector.range.description": "プレイヤーのブロックチェンジを検知するためには、どの程度の距離まで検知するか？",
+	"option.securitycraft.rift_stabilizer.signalLength": "信号長：%s",
 
 	"securitycraft.subtitle.alarm": "アラーム音",
 	"securitycraft.subtitle.electrified": "感電死したエンティティ",

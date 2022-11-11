@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,9 +24,12 @@ import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
+import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
+import net.geforcemods.securitycraft.blocks.BlockChangeDetectorBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
@@ -41,6 +46,7 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -50,9 +56,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -68,8 +77,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
+import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -382,6 +393,55 @@ public class SCEventHandler {
 	public static void onFurnaceFuelBurnTime(FurnaceFuelBurnTimeEvent event) {
 		if (event.getItemStack().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ReinforcedCarpetBlock)
 			event.setBurnTime(0);
+	}
+
+	@SubscribeEvent
+	public static void onEntityTeleport(EntityTeleportEvent event) {
+		Entity entity = event.getEntity();
+		Level level = entity.getLevel();
+		List<RiftStabilizerBlockEntity> targetPosBlockEntities = BlockEntityTracker.RIFT_STABILIZER.getBlockEntitiesInRange(level, event.getTarget());
+		List<RiftStabilizerBlockEntity> sourcePosBlockEntities = BlockEntityTracker.RIFT_STABILIZER.getBlockEntitiesInRange(level, event.getPrev());
+		List<RiftStabilizerBlockEntity> blockEntities = new ArrayList<>();
+		TeleportationType type = TeleportationType.getTypeFromEvent(event);
+		RiftStabilizerBlockEntity riftStabilizer = null;
+		boolean targetPosProhibited = false;
+
+		blockEntities.addAll(targetPosBlockEntities);
+		blockEntities.addAll(sourcePosBlockEntities);
+		blockEntities = blockEntities.stream().distinct().sorted(Comparator.comparingDouble(b -> Math.min(b.getBlockPos().distToCenterSqr(event.getTarget()), b.getBlockPos().distToCenterSqr(event.getPrev())))).toList();
+
+		for (RiftStabilizerBlockEntity be : blockEntities) {
+			if (!be.isDisabled() && be.getFilter(type) && (!(entity instanceof Player player) || !be.getOwner().isOwner(player) && !ModuleUtils.isAllowed(be, player))) {
+				riftStabilizer = be;
+				targetPosProhibited = be.getBlockPos().distToCenterSqr(event.getTarget()) < be.getBlockPos().distToCenterSqr(event.getPrev());
+				break;
+			}
+		}
+
+		if (riftStabilizer != null) {
+			BlockPos pos = riftStabilizer.getBlockPos();
+			Vec3 centerPos = new AABB(pos).getCenter();
+			Vec3 from = targetPosProhibited ? event.getTarget() : event.getPrev();
+			Vec3 distance = from.subtract(centerPos);
+
+			if (entity instanceof Player player) {
+				level.playSound(null, event.getPrevX(), event.getPrevY(), event.getPrevZ(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.5F);
+				PlayerUtils.sendMessageToPlayer(player, SCContent.RIFT_STABILIZER.get().getName(), Component.translatable(targetPosProhibited ? "messages.securitycraft:rift_stabilizer.no_teleport_to" : "messages.securitycraft:rift_stabilizer.no_teleport_from"), ChatFormatting.RED);
+
+				if (riftStabilizer.isModuleEnabled(ModuleType.HARMING))
+					player.hurt(DamageSource.FALL, 5.0F);
+			}
+
+			riftStabilizer.setLastTeleport(Math.max(Math.abs(distance.x), Math.max(Math.abs(distance.y), Math.abs(distance.z))) - 0.5D, type);
+
+			if (riftStabilizer.isModuleEnabled(ModuleType.REDSTONE)) {
+				level.setBlockAndUpdate(pos, riftStabilizer.getBlockState().setValue(BlockChangeDetectorBlock.POWERED, true));
+				BlockUtils.updateIndirectNeighbors(level, pos, SCContent.BLOCK_CHANGE_DETECTOR.get());
+				level.scheduleTick(pos, SCContent.RIFT_STABILIZER.get(), riftStabilizer.getSignalLength());
+			}
+
+			event.setCanceled(true);
+		}
 	}
 
 	@SubscribeEvent
