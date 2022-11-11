@@ -14,6 +14,7 @@
 - Fix: Sentry bullets can remove item frames
 - Fix: Crash involving the Electrified Iron Fence
 - Fix: The Electrified Iron Fence Gate is not affected by EMPs
+- Fix: The Harming Module does not work when a Laser Block is powered
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
 

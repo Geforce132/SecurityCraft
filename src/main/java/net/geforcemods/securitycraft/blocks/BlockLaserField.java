@@ -90,7 +90,7 @@ public class BlockLaserField extends BlockOwnable implements IOverlayDisplay {
 					IBlockState offsetState = world.getBlockState(offsetPos);
 					Block block = offsetState.getBlock();
 
-					if (block == SCContent.laserBlock && !offsetState.getValue(BlockLaserBlock.POWERED)) {
+					if (block == SCContent.laserBlock) {
 						TileEntity te = world.getTileEntity(offsetPos);
 
 						if (te instanceof IModuleInventory) {
@@ -99,7 +99,7 @@ public class BlockLaserField extends BlockOwnable implements IOverlayDisplay {
 							if (ModuleUtils.isAllowed(moduleInv, entity))
 								return;
 
-							if (moduleInv.isModuleEnabled(EnumModuleType.REDSTONE)) {
+							if (moduleInv.isModuleEnabled(EnumModuleType.REDSTONE) && !offsetState.getValue(BlockLaserBlock.POWERED)) {
 								world.setBlockState(offsetPos, offsetState.withProperty(BlockLaserBlock.POWERED, true));
 								BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.laserBlock);
 								world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
