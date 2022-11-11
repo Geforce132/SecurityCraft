@@ -93,16 +93,22 @@ public class BlockLaserField extends BlockOwnable implements IOverlayDisplay {
 					if (block == SCContent.laserBlock && !offsetState.getValue(BlockLaserBlock.POWERED)) {
 						TileEntity te = world.getTileEntity(offsetPos);
 
-						if (te instanceof IModuleInventory && ModuleUtils.isAllowed((IModuleInventory) te, entity))
-							return;
+						if (te instanceof IModuleInventory) {
+							IModuleInventory moduleInv = (IModuleInventory) te;
 
-						world.setBlockState(offsetPos, offsetState.withProperty(BlockLaserBlock.POWERED, true));
-						BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.laserBlock);
-						world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
+							if (ModuleUtils.isAllowed(moduleInv, entity))
+								return;
 
-						if (te instanceof IModuleInventory && ((IModuleInventory) te).isModuleEnabled(EnumModuleType.HARMING)) {
-							if (!(entity instanceof EntityPlayer && ((IOwnable) te).getOwner().isOwner((EntityPlayer) entity)))
-								((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);
+							if (moduleInv.isModuleEnabled(EnumModuleType.REDSTONE)) {
+								world.setBlockState(offsetPos, offsetState.withProperty(BlockLaserBlock.POWERED, true));
+								BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.laserBlock);
+								world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
+							}
+
+							if (moduleInv.isModuleEnabled(EnumModuleType.HARMING)) {
+								if (!(entity instanceof EntityPlayer && ((IOwnable) moduleInv).getOwner().isOwner((EntityPlayer) entity)))
+									((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);
+							}
 						}
 					}
 				}

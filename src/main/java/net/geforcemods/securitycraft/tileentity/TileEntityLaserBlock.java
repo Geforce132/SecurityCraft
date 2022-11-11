@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.TileEntityRenderDelegate;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -89,6 +90,8 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 
 		if (module == EnumModuleType.DISGUISE)
 			onRemoveDisguiseModule(stack, toggled);
+		else if (module == EnumModuleType.REDSTONE)
+			onRemoveRedstoneModule();
 	}
 
 	private void onInsertDisguiseModule(ItemStack stack, boolean toggled) {
@@ -114,6 +117,15 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 
 			if (disguisedState != null && disguisedState.getLightValue(world, pos) > 0)
 				world.checkLight(pos);
+		}
+	}
+
+	private void onRemoveRedstoneModule() {
+		IBlockState state = world.getBlockState(pos);
+
+		if (state.getValue(BlockLaserBlock.POWERED)) {
+			world.setBlockState(pos, state.withProperty(BlockLaserBlock.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.laserBlock);
 		}
 	}
 
@@ -146,7 +158,7 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 	@Override
 	public EnumModuleType[] acceptedModules() {
 		return new EnumModuleType[] {
-				EnumModuleType.HARMING, EnumModuleType.ALLOWLIST, EnumModuleType.DISGUISE
+				EnumModuleType.HARMING, EnumModuleType.ALLOWLIST, EnumModuleType.DISGUISE, EnumModuleType.REDSTONE
 		};
 	}
 

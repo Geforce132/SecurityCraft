@@ -135,19 +135,20 @@ public class BlockLaserBlock extends BlockDisguisable {
 	}
 
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-		if (blockState.getValue(POWERED))
-			return 15;
-		else
-			return 0;
+	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		if (state.getValue(POWERED)) {
+			TileEntity te = world.getTileEntity(pos);
+
+			if (te instanceof TileEntityLaserBlock && ((TileEntityLaserBlock) te).isModuleEnabled(EnumModuleType.REDSTONE))
+				return 15;
+		}
+
+		return 0;
 	}
 
 	@Override
-	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-		if (blockState.getValue(POWERED))
-			return 15;
-		else
-			return 0;
+	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return getWeakPower(state, world, pos, side);
 	}
 
 	@Override
@@ -178,7 +179,7 @@ public class BlockLaserBlock extends BlockDisguisable {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(POWERED, meta == 1 ? true : false);
+		return getDefaultState().withProperty(POWERED, (meta == 1) == true);
 	}
 
 	@Override

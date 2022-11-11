@@ -5,6 +5,7 @@
 - New: The Block Change Detector can now show highlights in the world, marking where it detected block changes
 - New: Ability to change a block pocket's outline color
 - New: Scrolling in the SecurityCraft Manual while holding the control key will now scroll through subpages (if any exist)
+- Change: The Laser Block now needs a Redstone Module in order to emit a redstone signal when someone walks through the laser
 - API: Changed EnumLinkedAction to an interface and the enum values to records for easier usability
 - API: Several methods in TileEntityLinkable were changed to account for the EnumLinkedAction change
 - API: EnumLinkedAction has been renamed to ILinkedAction
