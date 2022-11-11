@@ -72,11 +72,11 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.PacketDistributor;
 
 public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffected { //needs to be a creature so it can target a player, ai is also only given to living entities
-	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner> defineId(Sentry.class, Owner.getSerializer());
-	private static final EntityDataAccessor<CompoundTag> ALLOWLIST = SynchedEntityData.<CompoundTag> defineId(Sentry.class, EntityDataSerializers.COMPOUND_TAG);
-	private static final EntityDataAccessor<Boolean> HAS_SPEED_MODULE = SynchedEntityData.<Boolean> defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Integer> MODE = SynchedEntityData.<Integer> defineId(Sentry.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Float> HEAD_ROTATION = SynchedEntityData.<Float> defineId(Sentry.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(Sentry.class, Owner.getSerializer());
+	private static final EntityDataAccessor<CompoundTag> ALLOWLIST = SynchedEntityData.<CompoundTag>defineId(Sentry.class, EntityDataSerializers.COMPOUND_TAG);
+	private static final EntityDataAccessor<Boolean> HAS_SPEED_MODULE = SynchedEntityData.<Boolean>defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Integer> MODE = SynchedEntityData.<Integer>defineId(Sentry.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Float> HEAD_ROTATION = SynchedEntityData.<Float>defineId(Sentry.class, EntityDataSerializers.FLOAT);
 	public static final float MAX_TARGET_DISTANCE = 20.0F;
 	private static final float ANIMATION_STEP_SIZE = 0.025F;
 	private static final float UPWARDS_ANIMATION_LIMIT = 0.025F;
