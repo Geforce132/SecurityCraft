@@ -147,7 +147,7 @@ public class CameraMonitorScreen extends Screen {
 		font.draw(matrix, selectCameras, startX + xSize / 2 - font.width(selectCameras) / 2, startY + 6, 4210752);
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
-			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
+			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY, getFocused())) {
 				if (cameraTEs[i] != null) {
 					if (cameraTEs[i].isDisabled())
 						renderTooltip(matrix, Utils.localize("gui.securitycraft:scManual.disabled"), mouseX, mouseY);

@@ -268,7 +268,7 @@ public class StateSelector extends Screen implements IGuiEventListener, IContain
 
 		previousPageButton.mouseClicked(mouseX, mouseY, button);
 		nextPageButton.mouseClicked(mouseX, mouseY, button);
-		clickedInDragRegion = dragHoverChecker.checkHover(mouseX, mouseY);
+		clickedInDragRegion = dragHoverChecker.checkHover(mouseX, mouseY, getFocused());
 		return false;
 	}
 

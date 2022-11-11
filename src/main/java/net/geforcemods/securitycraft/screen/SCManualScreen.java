@@ -193,7 +193,7 @@ public class SCManualScreen extends Screen {
 			for (int i = 0; i < hoverCheckers.size(); i++) {
 				HoverChecker chc = hoverCheckers.get(i);
 
-				if (chc != null && chc.checkHover(mouseX, mouseY)) {
+				if (chc != null && chc.checkHover(mouseX, mouseY, getFocused())) {
 					if (chc instanceof TextHoverChecker && ((TextHoverChecker) chc).getName() != null)
 						GuiUtils.drawHoveringText(matrix, ((TextHoverChecker) chc).getLines(), mouseX, mouseY, width, height, -1, font);
 					else if (i < displays.length && !displays[i].getCurrentStack().isEmpty())

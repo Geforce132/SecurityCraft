@@ -18,6 +18,7 @@
 - Fix: Mobs can spawn on reinforced ice and reinforced iron trapdoors
 - Fix: Sentry bullets can remove item frames
 - Fix: Password-protected furnaces close even if some players still have it open
+- Fix: Tooltips in some screens can overlap when tabbing through buttons while hovering over other areas that show a tooltip
 - Fix: The Harming Module does not work when a Laser Block is powered
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
