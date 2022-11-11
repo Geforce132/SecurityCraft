@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
-import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
