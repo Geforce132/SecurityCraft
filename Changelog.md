@@ -19,6 +19,7 @@
 - Fix: Sentry bullets can remove item frames
 - Fix: Block Pocket Manager's size button and offset slider are available to non-owners
 - Fix: Password-protected furnaces close even if some players still have it open
+- Fix: The Harming Module does not work when a Laser Block is powered
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
 
