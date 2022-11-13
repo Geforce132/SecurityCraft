@@ -333,12 +333,12 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	@Override
-	public boolean keyPressed(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
-		if (minecraft.options.keyInventory.isActiveAndMatches(InputMappings.getKey(p_keyPressed_1_, p_keyPressed_2_))) {
-			this.removed();
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputMappings.getKey(keyCode, scanCode))) {
+			onClose();
 			return true;
 		}
 
-		return super.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);
+		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 }

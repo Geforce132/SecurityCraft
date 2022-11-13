@@ -9,6 +9,7 @@
 - New: Scrolling in the SecurityCraft Manual while holding the control key will now scroll through subpages (if any exist)
 - New: Rift Stabilizer, a block that detects and prevents teleportation attempts in its vicinity
 - Change: The Laser Block now needs a Redstone Module in order to emit a redstone signal when someone walks through the laser
+- Change: Most of SecurityCraft's screens are now no longer pausing the game when open, and can now be closed with the "Open/Close Inventory" key
 - API: Changed LinkedAction to an interface and the enum values to records for easier usability
 - API: Several methods in LinkableBlockEntity were changed to account for the LinkedAction change
 - API: LinkedAction has been renamed to ILinkedAction

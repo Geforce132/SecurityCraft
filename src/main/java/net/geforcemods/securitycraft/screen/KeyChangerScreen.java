@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
@@ -81,6 +82,21 @@ public class KeyChangerScreen extends Screen {
 		font.draw(matrix, ukcName, width / 2 - font.width(ukcName) / 2, topPos + 6, 4210752);
 		font.draw(matrix, enterPasscode, width / 2 - font.width(enterPasscode) / 2, topPos + 25, 4210752);
 		font.draw(matrix, confirmPasscode, width / 2 - font.width(confirmPasscode) / 2, topPos + 65, 4210752);
+	}
+
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputMappings.getKey(keyCode, scanCode))) {
+			onClose();
+			return true;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	@Override
+	public boolean isPauseScreen() {
+		return false;
 	}
 
 	private void updateConfirmButtonState() {

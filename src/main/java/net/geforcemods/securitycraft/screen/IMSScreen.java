@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -56,6 +57,21 @@ public class IMSScreen extends Screen {
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		font.draw(matrix, imsName, width / 2 - font.width(imsName) / 2, topPos + 6, 4210752);
 		font.draw(matrix, target, width / 2 - font.width(target) / 2, topPos + 30, 4210752);
+	}
+
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputMappings.getKey(keyCode, scanCode))) {
+			onClose();
+			return true;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	@Override
+	public boolean isPauseScreen() {
+		return false;
 	}
 
 	protected void targetButtonClicked(Button button) {
