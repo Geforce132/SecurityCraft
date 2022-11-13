@@ -26,7 +26,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 
 public class Bullet extends AbstractArrow {
-	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner> defineId(Bullet.class, Owner.getSerializer());
+	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(Bullet.class, Owner.getSerializer());
 	private Collection<MobEffectInstance> potionEffects = Sets.newHashSet();
 
 	public Bullet(EntityType<Bullet> type, Level level) {

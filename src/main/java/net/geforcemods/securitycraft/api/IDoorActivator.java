@@ -26,8 +26,7 @@ public interface IDoorActivator {
 	 * @param level The world in which the check takes place
 	 * @param pos The position of the block that could power the doors
 	 * @param state The state of the block that could power the doors
-	 * @param be The block entity of the block that could power the doors, if it has one. null if there is no tile entity
-	 *            present
+	 * @param be The block entity of the block that could power the doors, if it has one. null if there is no tile entity present
 	 * @param direction The direction the block that could power the doors is in, relative to the doors
 	 * @param distance The amount of blocks that the block that could power the doors is away from the door
 	 * @return true if the door should get powered, false otherwise

@@ -189,9 +189,9 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * descriptions. <p>
 	 *
 	 * @param action The {@link ILinkedAction} that occurred
-	 * @param excludedBEs LinkableBlockEntities that aren't going to have onLinkedBlockAction() called on them, always add
-	 *            your block entity to the list if you're going to call createLinkedBlockAction() in this method to
-	 *            chain-link multiple blocks (i.e: like Laser Blocks)
+	 * @param excludedBEs LinkableBlockEntities that aren't going to have onLinkedBlockAction() called on them, always add your
+	 *            block entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link
+	 *            multiple blocks (i.e: like Laser Blocks)
 	 */
 	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {}
 }

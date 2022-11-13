@@ -28,10 +28,10 @@ public class ReinforcedRotatedPillarBlock extends BaseReinforcedBlock {
 	public BlockState rotate(BlockState state, Rotation rot) {
 		return switch (rot) {
 			case COUNTERCLOCKWISE_90, CLOCKWISE_90 -> switch (state.getValue(AXIS)) {
-					case X -> state.setValue(AXIS, Direction.Axis.Z);
-					case Z -> state.setValue(AXIS, Direction.Axis.X);
-					default -> state;
-				};
+				case X -> state.setValue(AXIS, Direction.Axis.Z);
+				case Z -> state.setValue(AXIS, Direction.Axis.X);
+				default -> state;
+			};
 			default -> state;
 		};
 	}

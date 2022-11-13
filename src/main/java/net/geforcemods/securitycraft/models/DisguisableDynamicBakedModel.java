@@ -39,7 +39,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 			Block block = disguisedState.getBlock();
 
 			if (block != Blocks.AIR) {
-				final BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
+				BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
 
 				if (model != null && model != this)
 					return model.getQuads(disguisedState, side, rand, modelData);
@@ -69,7 +69,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 
 	@Override
 	@Nonnull
-	public IModelData getModelData(BlockAndTintGetter level, BlockPos pos, BlockState state, IModelData tileData) {
+	public IModelData getModelData(BlockAndTintGetter level, BlockPos pos, BlockState state, IModelData modelData) {
 		BlockEntity blockEntity = level.getBlockEntity(pos);
 
 		if (blockEntity != null) {
@@ -77,14 +77,14 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 				Optional<BlockState> disguisedState = disguisedBlock.getDisguisedBlockState(level, pos);
 
 				if (disguisedState.isPresent()) {
-					tileData.setData(DISGUISED_STATE, disguisedState.get());
-					return tileData;
+					modelData.setData(DISGUISED_STATE, disguisedState.get());
+					return modelData;
 				}
 			}
 		}
 
-		tileData.setData(DISGUISED_STATE, Blocks.AIR.defaultBlockState());
-		return tileData;
+		modelData.setData(DISGUISED_STATE, Blocks.AIR.defaultBlockState());
+		return modelData;
 	}
 
 	@Override
