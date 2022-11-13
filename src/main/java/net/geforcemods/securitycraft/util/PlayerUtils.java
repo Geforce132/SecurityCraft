@@ -228,8 +228,8 @@ public class PlayerUtils {
 	}
 
 	/**
-	 * Gets the component to use for displaying a block's owner. If team ownership is enabled and the given player is on a
-	 * team, this will return the colored team name.
+	 * Gets the component to use for displaying a block's owner. If team ownership is enabled and the given player is on a team,
+	 * this will return the colored team name.
 	 *
 	 * @param ownerName The player who owns the block
 	 * @return The component to display

@@ -35,14 +35,14 @@ public interface IToggleableEntries<T> {
 	public boolean getFilter(T type);
 
 	/**
-	 * @return The full list of all filters of the block entity. Each map entry represents a filter, containing the type and
-	 *         its respective filter state
+	 * @return The full list of all filters of the block entity. Each map entry represents a filter, containing the type and its
+	 *         respective filter state
 	 */
 	Map<T, Boolean> getFilters();
 
 	/**
-	 * @return A function which maps all possible types to their corresponding comparator output, or 0 if no comparator
-	 *         output should be present.
+	 * @return A function which maps all possible types to their corresponding comparator output, or 0 if no comparator output
+	 *         should be present.
 	 */
 	default ToIntFunction<T> getComparatorOutputFunction() {
 		return t -> 0;

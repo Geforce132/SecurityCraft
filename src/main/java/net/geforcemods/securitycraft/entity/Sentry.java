@@ -283,8 +283,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	/**
-	 * Sets this sentry's mode to the given mode (or 0 if the mode is not one of 0, 1, 2) and sends the player a message
-	 * about the switch if wanted
+	 * Sets this sentry's mode to the given mode (or 0 if the mode is not one of 0, 1, 2) and sends the player a message about
+	 * the switch if wanted
 	 *
 	 * @param player The player to send the message to
 	 * @param mode The mode (int) to switch to (instead of sequentially toggling)
@@ -506,8 +506,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	/**
-	 * @return The mode in which the sentry is currently in, CAMOUFLAGE_HP as a fallback if the saved mode is not a valid
-	 *         mode
+	 * @return The mode in which the sentry is currently in, CAMOUFLAGE_HP as a fallback if the saved mode is not a valid mode
 	 */
 	public SentryMode getMode() {
 		int mode = entityData.get(MODE);
@@ -523,8 +522,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	/**
-	 * @return An optional containing the block entity of the block that the sentry uses to disguise itself, or an empty
-	 *         optional if it doesn't exist
+	 * @return An optional containing the block entity of the block that the sentry uses to disguise itself, or an empty optional
+	 *         if it doesn't exist
 	 */
 	public Optional<DisguisableBlockEntity> getSentryDisguiseBlockEntity() {
 		BlockEntity be;
