@@ -1101,6 +1101,7 @@
 	"option.securitycraft.sonic_security_system.signalLength": "활성 시간: %s",
 	"option.securitycraft.sonic_security_system.signalLength.description": "올바른 음정을 들은 후 얼마 동안 소닉 보안 시스템이 블록을 잠금 해제하거나 레드스톤 신호를 보내야 합니까? (눈금 단위: 20틱 = 1초)",
 	"option.securitycraft.block_change_detector.signalLength": "신호 길이: %s",
+	"option.securitycraft.rift_stabilizer.signalLength": "신호 길이: %s",
 
 	"securitycraft.subtitle.alarm": "알람 소리",
 	"securitycraft.subtitle.electrified": "엔티티 감전",

@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
+import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.minecraft.client.Minecraft;
@@ -49,6 +50,11 @@ public class OpenScreen {
 						ClientHandler.displayIMSScreen(ims);
 
 					break;
+				case RIFT_STABILIZER:
+					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof RiftStabilizerBlockEntity riftStabilizer)
+						ClientHandler.displayRiftStabilizerScreen(riftStabilizer);
+
+					break;
 				case SET_PASSWORD:
 					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof IPasswordProtected be)
 						ClientHandler.displaySetPasswordScreen((BlockEntity) be);
@@ -75,6 +81,7 @@ public class OpenScreen {
 	public enum DataType {
 		CHECK_PASSWORD,
 		IMS,
+		RIFT_STABILIZER,
 		SET_PASSWORD,
 		SONIC_SECURITY_SYSTEM,
 		TROPHY_SYSTEM,
