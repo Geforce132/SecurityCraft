@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
+import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
@@ -58,7 +59,7 @@ import net.geforcemods.securitycraft.screen.SSSItemScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
 import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
-import net.geforcemods.securitycraft.screen.TrophySystemScreen;
+import net.geforcemods.securitycraft.screen.ToggleListScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Reinforced;
@@ -124,6 +125,7 @@ public class ClientHandler {
 			SCContent.PROJECTOR.get(),
 			SCContent.PROTECTO.get(),
 			SCContent.RETINAL_SCANNER.get(),
+			SCContent.RIFT_STABILIZER.get(),
 			SCContent.SENTRY_DISGUISE.get(),
 			SCContent.TROPHY_SYSTEM.get(),
 			SCContent.USERNAME_LOGGER.get()
@@ -284,6 +286,7 @@ public class ClientHandler {
 		ClientRegistry.bindTileEntityRenderer(SCContent.KEYPAD_FURNACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.PROTECTO_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.RIFT_STABILIZER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.USERNAME_LOGGER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ScreenManager.register(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), BlockChangeDetectorScreen::new);
 		ScreenManager.register(SCContent.BLOCK_POCKET_MANAGER_MENU.get(), BlockPocketManagerScreen::new);
@@ -485,8 +488,8 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new KeyChangerScreen(be));
 	}
 
-	public static void displayTrophySystemScreen(TrophySystemBlockEntity te) {
-		Minecraft.getInstance().setScreen(new TrophySystemScreen(te));
+	public static void displayTrophySystemScreen(TrophySystemBlockEntity be) {
+		Minecraft.getInstance().setScreen(new ToggleListScreen<>(be, SCContent.TROPHY_SYSTEM.get().getDescriptionId(), Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles"), Utils.localize("gui.securitycraft:trophy_system.moduleRequired"), Utils.localize("gui.securitycraft:trophy_system.toggle")));
 	}
 
 	public static void displayCheckPasswordScreen(TileEntity te) {
@@ -503,6 +506,10 @@ public class ClientHandler {
 
 	public static void displaySSSItemScreen(ItemStack stack) {
 		Minecraft.getInstance().setScreen(new SSSItemScreen(stack));
+	}
+
+	public static void displayRiftStabilizerScreen(RiftStabilizerBlockEntity be) {
+		Minecraft.getInstance().setScreen(new ToggleListScreen<>(be, SCContent.RIFT_STABILIZER.get().getDescriptionId(), Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes"), Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired"), Utils.localize("gui.securitycraft:rift_stabilizer.toggle")));
 	}
 
 	public static void refreshModelData(TileEntity te) {

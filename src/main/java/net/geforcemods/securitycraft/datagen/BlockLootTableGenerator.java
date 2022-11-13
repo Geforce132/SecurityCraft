@@ -93,6 +93,7 @@ public class BlockLootTableGenerator implements IDataProvider {
 						.add(ItemLootEntry.lootTableItem(SCContent.REINFORCED_IRON_BARS.get())
 								.when(TileEntityNBTCondition.builder().equals("canDrop", true)))
 						.when(SurvivesExplosion.survivesExplosion())));
+		putDoorLootTable(SCContent.RIFT_STABILIZER, SCContent.RIFT_STABILIZER_ITEM);
 		putDoorLootTable(SCContent.SCANNER_DOOR, SCContent.SCANNER_DOOR_ITEM);
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_WALL_SIGN);

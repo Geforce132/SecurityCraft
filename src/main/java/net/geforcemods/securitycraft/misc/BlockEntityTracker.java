@@ -9,11 +9,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
+import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 /**
@@ -23,6 +25,7 @@ import net.minecraft.world.World;
 public final class BlockEntityTracker<BE extends TileEntity> {
 	public static final BlockEntityTracker<SonicSecuritySystemBlockEntity> SONIC_SECURITY_SYSTEM = new BlockEntityTracker<>(be -> SonicSecuritySystemBlockEntity.MAX_RANGE);
 	public static final BlockEntityTracker<BlockChangeDetectorBlockEntity> BLOCK_CHANGE_DETECTOR = new BlockEntityTracker<>(be -> be.getRange());
+	public static final BlockEntityTracker<RiftStabilizerBlockEntity> RIFT_STABILIZER = new BlockEntityTracker<>(RiftStabilizerBlockEntity::getRange);
 	private final Map<RegistryKey<World>, Collection<BlockPos>> trackedBlockEntities = new ConcurrentHashMap<>();
 	private final Function<BE, Integer> range;
 
@@ -56,6 +59,10 @@ public final class BlockEntityTracker<BE extends TileEntity> {
 	 * @return A list of all block entities that have the given block position in their range
 	 */
 	public List<BE> getBlockEntitiesInRange(World level, BlockPos pos) {
+		return getBlockEntitiesInRange(level, new Vector3d(pos.getX(), pos.getY(), pos.getZ()));
+	}
+
+	public List<BE> getBlockEntitiesInRange(World level, Vector3d pos) {
 		final Collection<BlockPos> blockEntities = getTrackedBlockEntities(level);
 		List<BE> returnValue = new ArrayList<>();
 
@@ -97,14 +104,14 @@ public final class BlockEntityTracker<BE extends TileEntity> {
 	}
 
 	/**
-	 * Checks whether the given block position is contained in the given block entity's range
+	 * Checks whether the given position is contained in the given block entity's range
 	 *
 	 * @param be The block entitiy
-	 * @param pos The block position to check
+	 * @param pos The position to check
 	 */
-	public boolean canReach(BE be, BlockPos pos) {
+	public boolean canReach(BE be, Vector3d pos) {
 		AxisAlignedBB range = new AxisAlignedBB(be.getBlockPos()).inflate(this.range.apply(be));
 
-		return range.minX <= pos.getX() && range.minY <= pos.getY() && range.minZ <= pos.getZ() && range.maxX >= pos.getX() && range.maxY >= pos.getY() && range.maxZ >= pos.getZ();
+		return range.minX <= pos.x && range.minY <= pos.y && range.minZ <= pos.z && range.maxX >= pos.x && range.maxY >= pos.y && range.maxZ >= pos.z;
 	}
 }
