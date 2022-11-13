@@ -23,7 +23,6 @@
 - Fix: Sentry bullets can remove item frames
 - Fix: Some blocks don't show up properly in the state selector of the Projector/Disguise Module
 - Fix: Block Pocket Manager's size button and offset slider are available to non-owners
-- Fix: Disguisable blocks do not show the proper block model sometimes
 - Fix: Password-protected furnaces close even if some players still have it open
 - Fix: Tooltips in some screens can overlap when tabbing through buttons while hovering over other areas that show a tooltip
 - Fix: The Harming Module does not work when a Laser Block is powered
