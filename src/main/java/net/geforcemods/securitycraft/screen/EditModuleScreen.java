@@ -183,7 +183,7 @@ public class EditModuleScreen extends Screen {
 
 	@Override
 	public boolean isPauseScreen() {
-		return super.isPauseScreen();
+		return false;
 	}
 
 	private void addPlayerButtonClicked(Button button) {
