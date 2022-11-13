@@ -374,7 +374,7 @@ public class SCManualScreen extends Screen {
 
 					if (!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == page.getItem()) {
 						NonNullList<Ingredient> ingredients = recipe.getIngredients();
-						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(9, Ingredient.EMPTY);
+						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(9, Ingredient.EMPTY);
 
 						for (int i = 0; i < ingredients.size(); i++) {
 							recipeItems.set(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()), ingredients.get(i));
@@ -392,7 +392,7 @@ public class SCManualScreen extends Screen {
 						if (recipe.getId().getPath().endsWith("_reset"))
 							continue;
 
-						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
+						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
 
 						for (int i = 0; i < recipeItems.size(); i++) {
 							recipeItems.set(i, recipe.getIngredients().get(i));

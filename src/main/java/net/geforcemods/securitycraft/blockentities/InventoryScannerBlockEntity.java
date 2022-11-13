@@ -47,7 +47,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	private DisabledOption disabled = new DisabledOption(false);
 	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> EmptyHandler.INSTANCE);
 	private LazyOptional<IItemHandler> storageHandler;
-	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack> withSize(37, ItemStack.EMPTY);
+	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
 	private int cooldown;
 
@@ -83,7 +83,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		super.load(state, tag);
 
 		ListNBT list = tag.getList("Items", 10);
-		inventoryContents = NonNullList.<ItemStack> withSize(getContainerSize(), ItemStack.EMPTY);
+		inventoryContents = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); ++i) {
 			CompoundNBT stackTag = list.getCompound(i);

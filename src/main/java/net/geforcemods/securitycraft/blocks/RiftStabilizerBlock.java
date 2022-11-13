@@ -68,7 +68,6 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 			RiftStabilizerBlockEntity riftStabilizer = ((RiftStabilizerBlockEntity) be);
 
 			if (riftStabilizer.getOwner().isOwner(player)) {
-
 				if (!level.isClientSide) {
 					if (riftStabilizer.isDisabled())
 						player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
@@ -111,7 +110,6 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 			return facingState.is(this) && facingState.getValue(HALF) != half ? state.setValue(POWERED, facingState.getValue(POWERED)) : Blocks.AIR.defaultBlockState();
 		else
 			return half == DoubleBlockHalf.LOWER && facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
-
 	}
 
 	@Override

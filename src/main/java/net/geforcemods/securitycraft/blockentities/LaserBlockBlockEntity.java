@@ -92,6 +92,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	@Override
 	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
 		super.onModuleInserted(stack, module, toggled);
+
 		if (module == ModuleType.DISGUISE)
 			onInsertDisguiseModule(stack, toggled);
 	}

@@ -164,8 +164,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * Calls onLinkedBlockAction() for every block this TileEntity is linked to.
 	 *
 	 * @param action The action that occurred
-	 * @param excludedTEs LinkableTileEntities that shouldn't have onLinkedBlockAction() called on them, prevents infinite
-	 *            loops. Always add your tile entity to the list whenever using this method
+	 * @param excludedTEs LinkableTileEntities that shouldn't have onLinkedBlockAction() called on them, prevents infinite loops.
+	 *            Always add your tile entity to the list whenever using this method
 	 */
 	public void createLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedTEs) {
 		for (LinkedBlock block : linkedBlocks) {
@@ -183,9 +183,9 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * descriptions. <p>
 	 *
 	 * @param action The {@link ILinkedAction} that occurred
-	 * @param excludedTEs LinkableTileEntities that aren't going to have onLinkedBlockAction() called on them, always add
-	 *            your tile entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link
-	 *            multiple blocks (i.e: like Laser Blocks)
+	 * @param excludedTEs LinkableTileEntities that aren't going to have onLinkedBlockAction() called on them, always add your
+	 *            tile entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link multiple
+	 *            blocks (i.e: like Laser Blocks)
 	 */
 	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedTEs) {}
 }

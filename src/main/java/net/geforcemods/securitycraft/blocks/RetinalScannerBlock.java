@@ -83,6 +83,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return super.getStateForPlacement(ctx).setValue(FACING, ctx.getPlayer().getDirection().getOpposite()).setValue(POWERED, false);
 	}
+
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING, POWERED, WATERLOGGED);

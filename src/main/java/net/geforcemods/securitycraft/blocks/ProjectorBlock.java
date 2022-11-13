@@ -158,6 +158,7 @@ public class ProjectorBlock extends DisguisableBlock {
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return super.getStateForPlacement(ctx).setValue(FACING, ctx.getPlayer().getDirection().getOpposite()).setValue(HANGING, ctx.getClickedFace() == Direction.DOWN);
 	}
+
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING, HANGING, WATERLOGGED);

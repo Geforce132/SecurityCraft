@@ -11,8 +11,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public class UpdateNBTTagOnClient {
 	private ItemStack stack;
 
-	public UpdateNBTTagOnClient() {
-	}
+	public UpdateNBTTagOnClient() {}
 
 	public UpdateNBTTagOnClient(ItemStack stack) {
 		if (!stack.isEmpty() && stack.hasTag()) {

@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class Bullet extends AbstractArrowEntity {
-	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner> defineId(Bullet.class, Owner.getSerializer());
+	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>defineId(Bullet.class, Owner.getSerializer());
 	private Collection<EffectInstance> potionEffects = Sets.newHashSet();
 
 	public Bullet(EntityType<? extends Bullet> type, World world) {

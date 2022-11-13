@@ -28,8 +28,8 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
 	/**
-	 * The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players,
-	 * MOBS = hostile mobs.
+	 * The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS =
+	 * hostile mobs.
 	 **/
 	private IMSTargetingMode targetingMode = IMSTargetingMode.PLAYERS_AND_MOBS;
 	private boolean updateBombCount = false;
@@ -65,14 +65,14 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 			LivingEntity target = null;
 
 			if (targetingMode == IMSTargetingMode.MOBS || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS) {
-				List<MonsterEntity> mobs = level.<MonsterEntity> getEntitiesOfClass(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
+				List<MonsterEntity> mobs = level.<MonsterEntity>getEntitiesOfClass(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if (!mobs.isEmpty())
 					target = mobs.get(0);
 			}
 
 			if (target == null && (targetingMode == IMSTargetingMode.PLAYERS || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS)) {
-				List<PlayerEntity> players = level.<PlayerEntity> getEntitiesOfClass(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
+				List<PlayerEntity> players = level.<PlayerEntity>getEntitiesOfClass(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if (!players.isEmpty())
 					target = players.get(0);

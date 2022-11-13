@@ -42,7 +42,7 @@ public class InitSentryAnimation {
 
 	public static void onMessage(InitSentryAnimation message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			List<Sentry> sentries = Minecraft.getInstance().level.<Sentry> getEntitiesOfClass(Sentry.class, new AxisAlignedBB(message.pos));
+			List<Sentry> sentries = Minecraft.getInstance().level.<Sentry>getEntitiesOfClass(Sentry.class, new AxisAlignedBB(message.pos));
 
 			if (!sentries.isEmpty()) {
 				Sentry sentry = sentries.get(0);

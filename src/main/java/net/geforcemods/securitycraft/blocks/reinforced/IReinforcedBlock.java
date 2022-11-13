@@ -13,9 +13,11 @@ public interface IReinforcedBlock {
 
 	public Block getVanillaBlock();
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({
+			"rawtypes", "unchecked"
+	})
 	public default BlockState getConvertedState(BlockState vanillaState) {
-		BlockState defaultBlockState = ((Block)this).defaultBlockState();
+		BlockState defaultBlockState = ((Block) this).defaultBlockState();
 
 		for (Property property : vanillaState.getProperties()) {
 			if (defaultBlockState.hasProperty(property))

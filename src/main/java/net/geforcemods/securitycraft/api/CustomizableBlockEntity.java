@@ -17,7 +17,7 @@ import net.minecraft.util.NonNullList;
  * @author Geforce
  */
 public abstract class CustomizableBlockEntity extends NamedBlockEntity implements IModuleInventory, ICustomizable {
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public CustomizableBlockEntity(TileEntityType<?> type) {

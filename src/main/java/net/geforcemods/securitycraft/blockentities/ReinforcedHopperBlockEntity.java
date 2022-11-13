@@ -18,7 +18,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 
 public class ReinforcedHopperBlockEntity extends HopperTileEntity implements IOwnable, IModuleInventory {
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private Owner owner = new Owner();
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
