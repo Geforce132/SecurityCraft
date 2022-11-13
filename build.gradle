@@ -105,14 +105,6 @@ minecraft {
 }
 
 repositories { 
-	maven { // TOP
-		name 'tterrag maven'
-		url "https://maven.tterrag.com/"
-	}
-    maven { // JEI
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
     maven {
     	url "https://cursemaven.com/"
     }
@@ -122,11 +114,12 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.39'
     annotationProcessor 'org.spongepowered:mixin:0.8.3:processor'
 
-	implementation fg.deobf("mezz.jei:jei-1.16.5:7.7.1.110")
-	implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.1.4-22")
-    implementation fg.deobf("curse.maven:jade-324717:3439522")
-    implementation fg.deobf("curse.maven:betterf3-401648:3293637")
-	compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3358847") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame
+    implementation fg.deobf("curse.maven:jei-238222:4060770")
+    implementation fg.deobf("curse.maven:the-one-probe-245211:3752096")
+    implementation fg.deobf("curse.maven:jade-324717:3910873")
+    implementation fg.deobf("curse.maven:betterf3-401648:4030536")
+    implementation fg.deobf("curse.maven:cloth-config-forge-348521:3972422") //betterf3 dependency
+	compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3516607") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame
     implementation fg.deobf("curse.maven:projecte-226410:3736621")
 }
 
