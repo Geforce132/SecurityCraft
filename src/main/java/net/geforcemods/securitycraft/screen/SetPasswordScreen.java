@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -79,6 +80,21 @@ public class SetPasswordScreen extends Screen {
 			font.draw(pose, blockName, width / 2 - font.width(blockName) / 2, topPos + 6, 4210752);
 			font.draw(pose, setup, width / 2 - font.width(setup) / 2, topPos + 16, 4210752);
 		}
+	}
+
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+			onClose();
+			return true;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	@Override
+	public boolean isPauseScreen() {
+		return false;
 	}
 
 	private void saveAndContinueButtonClicked(Button button) {

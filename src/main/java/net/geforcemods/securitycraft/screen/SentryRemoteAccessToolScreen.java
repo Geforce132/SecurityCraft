@@ -341,7 +341,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
-			removed();
+			onClose();
 			return true;
 		}
 

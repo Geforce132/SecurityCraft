@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -52,6 +53,21 @@ public class IMSScreen extends Screen {
 		super.render(pose, mouseX, mouseY, partialTick);
 		font.draw(pose, imsName, width / 2 - font.width(imsName) / 2, topPos + 6, 4210752);
 		font.draw(pose, target, width / 2 - font.width(target) / 2, topPos + 30, 4210752);
+	}
+
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+			onClose();
+			return true;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	@Override
+	public boolean isPauseScreen() {
+		return false;
 	}
 
 	private void modeButtonClicked(Button button) {
