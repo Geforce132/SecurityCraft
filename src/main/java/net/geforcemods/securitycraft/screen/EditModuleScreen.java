@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.IntFunction;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
@@ -168,6 +169,21 @@ public class EditModuleScreen extends Screen {
 			teamList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+	}
+
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (!inputField.isFocused() && minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+			onClose();
+			return true;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	@Override
+	public boolean isPauseScreen() {
+		return super.isPauseScreen();
 	}
 
 	private void addPlayerButtonClicked(Button button) {

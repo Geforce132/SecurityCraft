@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.screen;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -82,7 +83,11 @@ public class CheckPasswordScreen extends Screen {
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (keyCode == GLFW.GLFW_KEY_BACKSPACE && currentString.length() > 0) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+			onClose();
+			return true;
+		}
+		else if (keyCode == GLFW.GLFW_KEY_BACKSPACE && currentString.length() > 0) {
 			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK, 0.15F, 1.0F);
 			currentString = Utils.removeLastChar(currentString);
 			setTextboxCensoredText(keycodeTextbox, currentString);
@@ -91,6 +96,11 @@ public class CheckPasswordScreen extends Screen {
 		}
 
 		return super.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	@Override
+	public boolean isPauseScreen() {
+		return false;
 	}
 
 	@Override

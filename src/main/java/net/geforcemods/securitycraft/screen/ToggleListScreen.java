@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
@@ -71,6 +72,16 @@ public class ToggleListScreen<T> extends Screen {
 		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
 		font.draw(pose, scrollListTitle, width / 2 - font.width(scrollListTitle) / 2, topPos + 31, 4210752);
 		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, toggle, moduleRequired, isSmart, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+	}
+
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+			onClose();
+			return true;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
 	@Override
