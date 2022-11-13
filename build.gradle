@@ -8,7 +8,7 @@ buildscript {
 
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.+'
         classpath 'org.parchmentmc:librarian:1.+'
     }
 }
@@ -53,9 +53,6 @@ minecraft {
             workingDirectory project.file('run/client')
             property 'forge.logging.console.level', 'debug'
             args '-mixin.config=securitycraft.mixins.json'
-            //fixes refmap of deps
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
                 securitycraft {
@@ -91,10 +88,6 @@ minecraft {
 }
 
 repositories {
-    maven { // JEI
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
     maven {
     	url "https://cursemaven.com/"
         content {
@@ -107,11 +100,11 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.17.1-37.1.1'
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
     
-	implementation fg.deobf("mezz.jei:jei-1.17.1:8.0.0.14")
+    implementation fg.deobf("curse.maven:jei-238222:3596034")
     implementation fg.deobf("curse.maven:the-one-probe-245211:3430022")
-    implementation fg.deobf("curse.maven:jade-324717:3439489")
-    implementation fg.deobf("curse.maven:betterf3-401648:3466536")
-	//compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3358847") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame
+    implementation fg.deobf("curse.maven:jade-324717:3468298")
+    implementation fg.deobf("curse.maven:betterf3-401648:4030556")
+    implementation fg.deobf("curse.maven:cloth-config-forge-348521:3782782") //betterf3 dependency
 }
 
 mixin {
