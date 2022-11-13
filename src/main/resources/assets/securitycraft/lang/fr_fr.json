@@ -1150,6 +1150,7 @@
 	"option.securitycraft.block_change_detector.signalLength.description": "Pour combien de temps resterait le signal de redstone après avoir détecté un changement de bloc ? (En ticks, 20 ticks = 1 seconde)",
 	"option.securitycraft.block_change_detector.range": "Rayon de détection : %s",
 	"option.securitycraft.block_change_detector.range.description": "A quelle distance le détecteur pourra détecter un changement de blocs par les joueurs ?",
+	"option.securitycraft.rift_stabilizer.signalLength": "Largeur du signal : %s",
 
 	"securitycraft.subtitle.alarm": "Sonnerie d‘alarme",
 	"securitycraft.subtitle.electrified": "Entité électrocuté",

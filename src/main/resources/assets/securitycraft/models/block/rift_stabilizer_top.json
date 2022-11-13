@@ -1,0 +1,37 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"eye": "block/end_portal_frame_eye",
+		"particle": "securitycraft:block/rift_stabilizer_pillar_side",
+		"side": "securitycraft:block/rift_stabilizer_pillar_side",
+		"base": "securitycraft:block/rift_stabilizer_pillar_top"
+	},
+	"elements": [
+		{
+			"name": "pillar",
+			"from": [2, 0, 2],
+			"to": [14, 5, 14],
+			"faces": {
+				"north": {"uv": [2, 11, 14, 16], "texture": "#side"},
+				"east": {"uv": [2, 11, 14, 16], "texture": "#side"},
+				"south": {"uv": [2, 11, 14, 16], "texture": "#side"},
+				"west": {"uv": [2, 11, 14, 16], "texture": "#side"},
+				"up": {"uv": [2, 2, 14, 14], "texture": "#base"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#base"}
+			}
+		},
+		{
+			"name": "eye",
+			"from": [4, 5, 4],
+			"to": [12, 8, 12],
+			"faces": {
+				"north": {"uv": [4, 0, 12, 3], "texture": "#eye"},
+				"east": {"uv": [4, 0, 12, 3], "texture": "#eye"},
+				"south": {"uv": [4, 0, 12, 3], "texture": "#eye"},
+				"west": {"uv": [4, 0, 12, 3], "texture": "#eye"},
+				"up": {"uv": [4, 4, 12, 12], "texture": "#eye"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#eye"}
+			}
+		}
+	]
+}

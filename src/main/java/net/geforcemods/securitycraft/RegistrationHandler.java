@@ -40,6 +40,7 @@ import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
+import net.geforcemods.securitycraft.network.server.SyncRiftStabilizer;
 import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
@@ -185,6 +186,7 @@ public class RegistrationHandler {
 		SecurityCraft.channel.registerMessage(index++, SyncIMSTargetingOption.class, SyncIMSTargetingOption::encode, SyncIMSTargetingOption::decode, SyncIMSTargetingOption::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SyncKeycardSettings.class, SyncKeycardSettings::encode, SyncKeycardSettings::decode, SyncKeycardSettings::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SyncProjector.class, SyncProjector::encode, SyncProjector::decode, SyncProjector::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SyncRiftStabilizer.class, SyncRiftStabilizer::encode, SyncRiftStabilizer::decode, SyncRiftStabilizer::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SyncSSSSettingsOnServer.class, SyncSSSSettingsOnServer::encode, SyncSSSSettingsOnServer::decode, SyncSSSSettingsOnServer::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SyncTrophySystem.class, SyncTrophySystem::encode, SyncTrophySystem::decode, SyncTrophySystem::onMessage);
 		SecurityCraft.channel.registerMessage(index++, ToggleBlockPocketManager.class, ToggleBlockPocketManager::encode, ToggleBlockPocketManager::decode, ToggleBlockPocketManager::onMessage);
