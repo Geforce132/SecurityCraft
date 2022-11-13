@@ -28,6 +28,7 @@
 - Fix: Tooltips in some screens can overlap when tabbing through buttons while hovering over other areas that show a tooltip
 - Fix: The Harming Module does not work when a Laser Block is powered
 - Fix: Disguisable blocks do not show the proper block model sometimes
+- Fix: The Sonic Security System has no placing sound
 - Misc: The minimum required Forge version is now 43.1.8
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
