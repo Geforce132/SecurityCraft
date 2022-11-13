@@ -51,7 +51,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private String passcode;
 	private Owner owner = new Owner();
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 

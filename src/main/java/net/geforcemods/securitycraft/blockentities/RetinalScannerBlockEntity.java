@@ -98,7 +98,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 		}
 		else if (entity instanceof Player player) {
 			if (isLocked() && sendMessage.get()) {
-			    TranslatableComponent blockName = Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId());
+				TranslatableComponent blockName = Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId());
 
 				PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
 			}

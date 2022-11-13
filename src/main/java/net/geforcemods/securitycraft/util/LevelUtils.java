@@ -15,8 +15,7 @@ import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
 public class LevelUtils {
 	/**
-	 * Correctly schedules a task for execution on the main thread depending on if the provided level is client- or
-	 * serverside
+	 * Correctly schedules a task for execution on the main thread depending on if the provided level is client- or serverside
 	 */
 	public static void addScheduledTask(LevelAccessor level, Runnable runnable) {
 		if (level.isClientSide())

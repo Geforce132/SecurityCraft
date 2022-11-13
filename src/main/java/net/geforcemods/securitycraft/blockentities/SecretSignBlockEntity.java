@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, IModuleInventory, ICustomizable {
 	private Owner owner = new Owner();
 	private BooleanOption isSecret = new BooleanOption("isSecret", true);
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public SecretSignBlockEntity(BlockPos pos, BlockState state) {

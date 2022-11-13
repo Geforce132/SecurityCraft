@@ -78,8 +78,8 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	}
 
 	/**
-	 * Handles chunks that get sent to the client which are in range of the camera storage, i.e. place them into the storage
-	 * for them to be acquired afterwards
+	 * Handles chunks that get sent to the client which are in range of the camera storage, i.e. place them into the storage for
+	 * them to be acquired afterwards
 	 */
 	@Inject(method = "replaceWithPacketData", at = @At(value = "HEAD"), cancellable = true)
 	private void onReplace(int x, int z, ChunkBiomeContainer biomeContainer, FriendlyByteBuf buffer, CompoundTag chunkTag, BitSet chunkSection, CallbackInfoReturnable<LevelChunk> callback) {

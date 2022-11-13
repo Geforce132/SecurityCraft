@@ -37,7 +37,7 @@ public class SetSentryMode {
 	public static void onMessage(SetSentryMode message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			Player player = ctx.get().getSender();
-			List<Sentry> sentries = player.level.<Sentry> getEntitiesOfClass(Sentry.class, new AABB(message.pos));
+			List<Sentry> sentries = player.level.<Sentry>getEntitiesOfClass(Sentry.class, new AABB(message.pos));
 
 			if (!sentries.isEmpty() && sentries.get(0).getOwner().isOwner(player))
 				sentries.get(0).toggleMode(player, message.mode, false);

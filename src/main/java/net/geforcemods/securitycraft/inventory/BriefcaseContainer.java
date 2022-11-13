@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 public class BriefcaseContainer implements Container {
 	public static final int SIZE = 12;
 	private final ItemStack briefcase;
-	private NonNullList<ItemStack> briefcaseInventory = NonNullList.<ItemStack> withSize(SIZE, ItemStack.EMPTY);
+	private NonNullList<ItemStack> briefcaseInventory = NonNullList.<ItemStack>withSize(SIZE, ItemStack.EMPTY);
 
 	public BriefcaseContainer(ItemStack briefcaseItem) {
 		briefcase = briefcaseItem;
