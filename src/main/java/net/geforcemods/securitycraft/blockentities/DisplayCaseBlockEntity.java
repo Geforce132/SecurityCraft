@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
-import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
@@ -76,16 +75,14 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 
 	@Override
 	public boolean onCodebreakerUsed(BlockState state, Player player) {
-		if (!state.getValue(KeypadBlock.POWERED)) {
-			if (isDisabled())
-				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else {
-				activate(player);
-				return true;
-			}
+		if (isDisabled()) {
+			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			return false;
 		}
-
-		return false;
+		else {
+			activate(player);
+			return true;
+		}
 	}
 
 	@Override
