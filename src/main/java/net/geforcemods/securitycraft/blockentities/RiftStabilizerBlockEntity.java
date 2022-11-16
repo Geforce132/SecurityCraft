@@ -50,7 +50,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	public RiftStabilizerBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.RIFT_STABILIZER_BLOCK_ENTITY.get(), pos, state);
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
-		//ordering is done in RiftStabilizerScreen based on the user's current language
+		//ordering is done in ToggleListScreen based on the user's current language
 		teleportationFilter.put(TeleportationType.CHORUS_FRUIT, true);
 		teleportationFilter.put(TeleportationType.ENDER_PEARL, true);
 		teleportationFilter.put(TeleportationType.ENDERMAN, false);
@@ -102,7 +102,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 	@Override
 	public ToIntFunction<TeleportationType> getComparatorOutputFunction() {
-		return t -> Arrays.asList(TeleportationType.values()).indexOf(t) + 1;
+		return t -> t.ordinal() + 1;
 	}
 
 	@Override
