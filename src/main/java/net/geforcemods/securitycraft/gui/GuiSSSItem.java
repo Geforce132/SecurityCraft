@@ -71,6 +71,14 @@ public class GuiSSSItem extends GuiScreen implements ConnectionAccessor {
 	}
 
 	@Override
+	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+		super.keyTyped(typedChar, keyCode);
+
+		if (keyCode == 1 || mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode))
+			mc.player.closeScreen();
+	}
+
+	@Override
 	public boolean doesGuiPauseGame() {
 		return false;
 	}

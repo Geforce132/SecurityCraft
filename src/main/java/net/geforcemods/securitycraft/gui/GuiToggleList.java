@@ -79,7 +79,7 @@ public class GuiToggleList<T> extends GuiScreen {
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		super.keyTyped(typedChar, keyCode);
 
-		if (keyCode == 1)
+		if (keyCode == 1 || mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode))
 			mc.player.closeScreen();
 	}
 
