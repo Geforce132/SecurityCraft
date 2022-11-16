@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.ToIntFunction;
@@ -51,7 +50,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	public RiftStabilizerBlockEntity() {
 		super(SCContent.RIFT_STABILIZER_BLOCK_ENTITY.get());
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
-		//ordering is done in RiftStabilizerScreen based on the user's current language
+		//ordering is done in ToggleListScreen based on the user's current language
 		teleportationFilter.put(TeleportationType.CHORUS_FRUIT, true);
 		teleportationFilter.put(TeleportationType.ENDER_PEARL, true);
 		teleportationFilter.put(TeleportationType.ENDERMAN, false);
@@ -103,7 +102,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 	@Override
 	public ToIntFunction<TeleportationType> getComparatorOutputFunction() {
-		return t -> Arrays.asList(TeleportationType.values()).indexOf(t) + 1;
+		return t -> t.ordinal() + 1;
 	}
 
 	@Override
@@ -132,7 +131,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 		tag.putDouble("lastTeleportDistance", lastTeleportDistance);
 
 		if (lastTeleportationType != null)
-			tag.putInt("lastTeleportationType", Arrays.asList(TeleportationType.values()).indexOf(lastTeleportationType));
+			tag.putInt("lastTeleportationType", lastTeleportationType.ordinal());
 
 		return tag;
 	}
