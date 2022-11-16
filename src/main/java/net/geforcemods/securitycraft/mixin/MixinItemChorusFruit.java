@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 /**
  * Notifies all Rift Stabilizers in the vicinity that a player has just teleported by using a chorus fruit. If a Rift
- * Stabilizer prohibits the teleport, the player is put back to its old position.
+ * Stabilizer prohibits the teleport, the player is put back to their old position.
  */
 @Mixin(ItemChorusFruit.class)
 public class MixinItemChorusFruit {

@@ -584,6 +584,7 @@ public class SCEventHandler {
 
 		event.setCanceled(handleEntityTeleport(entity, entity.getPositionVector(), target, TeleportationType.getTypeFromEvent(entity, target)));
 	}
+
 	public static boolean handleEntityTeleport(EntityLivingBase entity, Vec3d source, Vec3d target, TeleportationType type) {
 		World world = entity.getEntityWorld();
 		List<TileEntityRiftStabilizer> targetPosTileEntities = TileEntityTracker.RIFT_STABILIZER.getTileEntitiesInRange(world, target);
@@ -597,7 +598,7 @@ public class SCEventHandler {
 		tileEntities = tileEntities.stream().distinct().sorted(Comparator.comparingDouble(t -> Math.min(t.getPos().distanceSqToCenter(target.x, target.y, target.z), t.getPos().distanceSqToCenter(source.x, source.y, source.z)))).collect(Collectors.toList());
 
 		for (TileEntityRiftStabilizer te : tileEntities) {
-			if (!te.isDisabled() && te.getFilter(type) && (!(entity instanceof EntityPlayer) || true || !te.getOwner().isOwner(((EntityPlayer) entity)) && !ModuleUtils.isAllowed(te, entity))) {
+			if (!te.isDisabled() && te.getFilter(type) && (!(entity instanceof EntityPlayer) || !te.getOwner().isOwner(((EntityPlayer) entity)) && !ModuleUtils.isAllowed(te, entity))) {
 				riftStabilizer = te;
 				targetPosProhibited = te.getPos().distanceSqToCenter(target.x, target.y, target.z) < te.getPos().distanceSqToCenter(source.x, source.y, source.z);
 				break;
