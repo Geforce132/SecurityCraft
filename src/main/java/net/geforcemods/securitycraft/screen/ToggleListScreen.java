@@ -41,7 +41,7 @@ public class ToggleListScreen<T> extends Screen {
 	private final boolean isSmart;
 	private final boolean isRedstone;
 	private final IToggleableEntries<T> be;
-	private ToggleScrollList teleportationModeList;
+	private ToggleScrollList toggleList;
 
 	public ToggleListScreen(IToggleableEntries<T> be, String title, Component scrollListTitle, Component moduleRequired, Component toggle) {
 		super(new TranslatableComponent(title));
@@ -60,7 +60,7 @@ public class ToggleListScreen<T> extends Screen {
 
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
-		addRenderableWidget(teleportationModeList = new ToggleScrollList(minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
+		addRenderableWidget(toggleList = new ToggleScrollList(minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
 	}
 
 	@Override
@@ -87,8 +87,8 @@ public class ToggleListScreen<T> extends Screen {
 
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		if (teleportationModeList != null)
-			teleportationModeList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+		if (toggleList != null)
+			toggleList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}

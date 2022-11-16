@@ -59,7 +59,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	public TrophySystemBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get(), pos, state);
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
-		//ordering is done in TrophySystemScreen based on the user's current language
+		//ordering is done in ToggleListScreen based on the user's current language
 		projectileFilter.put(SCContent.BULLET_ENTITY.get(), true);
 		projectileFilter.put(EntityType.SPECTRAL_ARROW, true);
 		projectileFilter.put(EntityType.ARROW, true);

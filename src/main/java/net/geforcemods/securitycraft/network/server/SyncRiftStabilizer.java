@@ -17,9 +17,9 @@ public class SyncRiftStabilizer {
 
 	public SyncRiftStabilizer() {}
 
-	public SyncRiftStabilizer(BlockPos pos, TeleportationType projectileType, boolean allowed) {
+	public SyncRiftStabilizer(BlockPos pos, TeleportationType teleportationType, boolean allowed) {
 		this.pos = pos;
-		this.teleportationType = projectileType;
+		this.teleportationType = teleportationType;
 		this.allowed = allowed;
 	}
 
