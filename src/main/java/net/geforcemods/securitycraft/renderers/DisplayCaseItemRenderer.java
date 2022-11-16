@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.renderers;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
+import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -13,11 +13,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.ItemStack;
 
-public class ItemKeypadChestRenderer extends BlockEntityWithoutLevelRenderer {
-	private static KeypadChestBlockEntity dummyBe;
-	private static KeypadChestRenderer dummyRenderer = null;
+public class DisplayCaseItemRenderer extends BlockEntityWithoutLevelRenderer {
+	private static DisplayCaseBlockEntity dummyBe;
+	private static DisplayCaseRenderer dummyRenderer = null;
 
-	public ItemKeypadChestRenderer() {
+	public DisplayCaseItemRenderer() {
 		super(null, null);
 	}
 
@@ -32,11 +32,11 @@ public class ItemKeypadChestRenderer extends BlockEntityWithoutLevelRenderer {
 		if (dummyRenderer == null) {
 			Minecraft mc = Minecraft.getInstance();
 
-			dummyRenderer = new KeypadChestRenderer(new BlockEntityRendererProvider.Context(mc.getBlockEntityRenderDispatcher(), mc.getBlockRenderer(), mc.getItemRenderer(), mc.getEntityRenderDispatcher(), mc.getEntityModels(), mc.font));
+			dummyRenderer = new DisplayCaseRenderer(new BlockEntityRendererProvider.Context(mc.getBlockEntityRenderDispatcher(), mc.getBlockRenderer(), mc.getItemRenderer(), mc.getEntityRenderDispatcher(), mc.getEntityModels(), mc.font));
 		}
 
 		if (dummyBe == null)
-			dummyBe = new KeypadChestBlockEntity(BlockPos.ZERO, SCContent.KEYPAD_CHEST.get().defaultBlockState());
+			dummyBe = new DisplayCaseBlockEntity(BlockPos.ZERO, SCContent.DISPLAY_CASE.get().defaultBlockState());
 
 		dummyRenderer.render(dummyBe, 0.0F, pose, buffer, combinedLight, combinedOverlay);
 	}
