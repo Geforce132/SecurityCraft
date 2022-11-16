@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": {
+      "item": "minecraft:item_frame"
+    },
+    "G": {
+      "item": "securitycraft:reinforced_glass_pane"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "pattern": [
+    "III",
+    "IFG",
+    "III"
+  ],
+  "result": {
+    "item": "securitycraft:display_case"
+  }
+}
