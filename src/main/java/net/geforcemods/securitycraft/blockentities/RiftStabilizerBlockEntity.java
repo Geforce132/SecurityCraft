@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.ToIntFunction;
@@ -131,7 +130,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 		tag.putDouble("lastTeleportDistance", lastTeleportDistance);
 
 		if (lastTeleportationType != null)
-			tag.putInt("lastTeleportationType", Arrays.asList(TeleportationType.values()).indexOf(lastTeleportationType));
+			tag.putInt("lastTeleportationType", lastTeleportationType.ordinal());
 
 		return tag;
 	}
