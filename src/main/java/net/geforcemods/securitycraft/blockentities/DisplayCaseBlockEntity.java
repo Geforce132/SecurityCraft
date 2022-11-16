@@ -101,6 +101,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		super.saveAdditional(tag);
 		tag.put("DisplayedStack", getDisplayedStack().save(new CompoundTag()));
 		tag.putBoolean("ShouldBeOpen", shouldBeOpen);
+		tag.putString("Passcode", passcode);
 	}
 
 	@Override
@@ -112,6 +113,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		super.load(tag);
 		setDisplayedStack(ItemStack.of((CompoundTag) tag.get("DisplayedStack")));
 		shouldBeOpen = tag.getBoolean("ShouldBeOpen");
+		passcode = tag.getString("Passcode");
 
 		if (forceOpenness)
 			forceOpen(shouldBeOpen);
