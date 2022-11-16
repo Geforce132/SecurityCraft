@@ -344,12 +344,12 @@ key.securitycraft.cameraEmitRedstone=Alternar salida de redstone
 key.securitycraft.cameraZoomIn=Acercar
 key.securitycraft.cameraZoomOut=Alejar
 
-help.securitycraft.reinforced.info=Los bloques reforzados son indestructibles. Solo los puede quitar la persona que los puso, con el eliminador de bloques universal. 
-help.securitycraft.block_mines.info=Los bloques con mina funcionan como minas normales. Caminar sobre ellos o picarlos hará que exploten. Puedes sustituir la tierra de esta receta por roca, mena de diamante, horno, grava, arena o piedra para obtener esas variantes. 
-help.securitycraft.reinforced_buttons.info=Los botones reforzados solo pueden ser activados por su propietario o por los jugadores de su lista de permitidos. 
-help.securitycraft.reinforced_pressure_plates.info=Las placas de presión reforzadas solo pueden ser activadas por su propietario o por los jugadores de su lista de permitidos. 
-help.securitycraft.keycards.info=Las tarjetas de acceso se usan en el lector de tarjetas de acceso. Para restablecer la configuración de la tarjeta, colóquela en una mesa de trabajo. Consulte la página del manual del lector de tarjetas para obtener más información. 
-help.securitycraft.block_reinforcers.info=El reforzador de bloques universal refuerza varios bloques de Minecraft y los convierte en la variante de SecurityCraft. Para ello, haz clic derecho con el reforzador de bloques universal y coloca el bloque normal en el hueco superior, y después cierra la interfaz. Para convertir un bloque reforzado de vuelta a su variante normal, usa el hueco inferior. Golpea cualquier bloque (sin modo creativo) con el reforzador para reforzarlo. 
+help.securitycraft.reinforced.info=Los bloques reforzados son indestructibles. Solo los puede quitar la persona que los puso, con el eliminador de bloques universal.
+help.securitycraft.block_mines.info=Los bloques con mina funcionan como minas normales. Caminar sobre ellos o picarlos hará que exploten. Puedes sustituir la tierra de esta receta por roca, mena de diamante, horno, grava, arena o piedra para obtener esas variantes.
+help.securitycraft.reinforced_buttons.info=Los botones reforzados solo pueden ser activados por su propietario o por los jugadores de su lista de permitidos.
+help.securitycraft.reinforced_pressure_plates.info=Las placas de presión reforzadas solo pueden ser activadas por su propietario o por los jugadores de su lista de permitidos.
+help.securitycraft.keycards.info=Las tarjetas de acceso se usan en el lector de tarjetas de acceso. Para restablecer la configuración de la tarjeta, colóquela en una mesa de trabajo. Consulte la página del manual del lector de tarjetas para obtener más información.
+help.securitycraft.block_reinforcers.info=El reforzador de bloques universal refuerza varios bloques de Minecraft y los convierte en la variante de SecurityCraft. Para ello, haz clic derecho con el reforzador de bloques universal y coloca el bloque normal en el hueco superior, y después cierra la interfaz. Para convertir un bloque reforzado de vuelta a su variante normal, usa el hueco inferior. Golpea cualquier bloque (sin modo creativo) con el reforzador para reforzarlo.
 
 help.securitycraft:laserBlock.info=El bloque láser se utiliza colocando dos de ellos con una distancia entre sí igual o menor a 5 bloques. Al colocarlos correctamente debe aparecer un láser entre ellos.
 help.securitycraft:keypad.info=El teclado se utiliza colocándolo, haciendo clic derecho y estableciendo una contraseña numérica. Una vez establecida, al hacer clic derecho podrás introducirla. Si es correcta, el teclado emitirá una señal de redstone durante 3 segundos.
@@ -835,6 +835,7 @@ option.securitycraft:key_panel.sendMessage=Mensaje: #
 option.securitycraft:key_panel.signalLength=Longitud de la señal: #
 option.securitycraft:key_panel.signalLength.description=¿Cómo de larga debería ser la señal de redstone que se emite tras activarse? (En ticks, 20 ticks = 1 segundo)
 option.securitycraft:block_change_detector.signalLength=Longitud de la señal: #
+option.securitycraft:rift_stabilizer.signalLength=Longitud de la señal: #
 
 securitycraft.subtitle.alarm=Alarma suena
 securitycraft.subtitle.electrified=Entidad se electrocuta

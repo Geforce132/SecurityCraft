@@ -33,6 +33,7 @@ import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
 import net.geforcemods.securitycraft.blocks.BlockProjector;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
+import net.geforcemods.securitycraft.blocks.BlockRiftStabilizer;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignWall;
@@ -289,6 +290,7 @@ public class SetupHandler {
 		SCContent.reinforcedGreenGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.GREEN, Blocks.GREEN_GLAZED_TERRACOTTA).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_green_glazed_terracotta").setTranslationKey("securitycraft:reinforced_green_glazed_terracotta");
 		SCContent.reinforcedRedGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.RED, Blocks.RED_GLAZED_TERRACOTTA).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_red_glazed_terracotta").setTranslationKey("securitycraft:reinforced_red_glazed_terracotta");
 		SCContent.reinforcedBlackGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.BLACK, Blocks.BLACK_GLAZED_TERRACOTTA).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_black_glazed_terracotta").setTranslationKey("securitycraft:reinforced_black_glazed_terracotta");
+		SCContent.riftStabilizer = new BlockRiftStabilizer(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("rift_stabilizer").setTranslationKey("securitycraft:rift_stabilizer");
 	}
 
 	public static void setupMines() {

@@ -109,8 +109,6 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 			if (pingCooldown > 0)
 				pingCooldown--;
 			else {
-				// TODO: should the SSS automatically forget the positions of linked blocks
-				// if they are broken?
 				ArrayList<BlockPos> blocksToRemove = new ArrayList<>();
 				Iterator<BlockPos> iterator = linkedBlocks.iterator();
 

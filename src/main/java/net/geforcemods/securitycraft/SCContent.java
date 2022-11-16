@@ -365,6 +365,7 @@ public class SCContent {
 	@Tinted
 	public static Block reinforcedWool;
 	public static Block retinalScanner;
+	public static Block riftStabilizer;
 	public static Block sandMine;
 	public static Block scannerDoor;
 	public static Block secretSignStanding;

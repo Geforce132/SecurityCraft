@@ -25,9 +25,11 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
+import net.geforcemods.securitycraft.tileentity.TileEntityRiftStabilizer;
 import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -60,6 +62,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int SONIC_SECURITY_SYSTEM = 107;
 	public static final int BLOCK_CHANGE_DETECTOR = 108;
 	public static final int SSS_ITEM = 109;
+	public static final int RIFT_STABILIZER = 110;
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -132,6 +135,8 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			case SSS_ITEM:
 				return new ContainerGeneric(player.inventory, te);
+			case RIFT_STABILIZER:
+				return new ContainerGeneric(player.inventory, te);
 			default:
 				return null;
 		}
@@ -187,7 +192,7 @@ public class GuiHandler implements IGuiHandler {
 					return null;
 				return new GuiKeyChanger(player.inventory, te);
 			case TROPHY_SYSTEM_GUI_ID:
-				return new GuiTrophySystem(player.inventory, (TileEntityTrophySystem) te);
+				return new GuiToggleList<>((TileEntityTrophySystem) te, Utils.localize("tile.securitycraft:trophy_system.name"),  Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles"), Utils.localize("gui.securitycraft:trophy_system.moduleRequired"), Utils.localize("gui.securitycraft:trophy_system.toggle"));
 			case CUSTOMIZE_BLOCK:
 				return new GuiCustomizeBlock(player.inventory, (IModuleInventory) te);
 			case DISGUISE_MODULE:
@@ -222,6 +227,8 @@ public class GuiHandler implements IGuiHandler {
 				if (!PlayerUtils.isHoldingItem(player, SCContent.sonicSecuritySystemItem, null))
 					return null;
 				return new GuiSSSItem(PlayerUtils.getSelectedItemStack(player, SCContent.sonicSecuritySystemItem));
+			case RIFT_STABILIZER:
+				return new GuiToggleList<>((TileEntityRiftStabilizer) te, Utils.localize("tile.securitycraft:rift_stabilizer.name"),  Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes"), Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired"), Utils.localize("gui.securitycraft:rift_stabilizer.toggle"));
 			default:
 				return null;
 		}

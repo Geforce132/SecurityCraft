@@ -72,6 +72,7 @@ import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
+import net.geforcemods.securitycraft.network.server.SyncRiftStabilizer;
 import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
 import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
@@ -108,6 +109,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedHopper;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedIronBars;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPiston;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
+import net.geforcemods.securitycraft.tileentity.TileEntityRiftStabilizer;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
@@ -314,6 +316,7 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedGreenGlazedTerracotta, PageType.REINFORCED);
 		registerBlock(event, SCContent.reinforcedRedGlazedTerracotta, PageType.REINFORCED);
 		registerBlock(event, SCContent.reinforcedBlackGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.riftStabilizer);
 
 		//block mines
 		registerBlockMine(event, SCContent.stoneMine);
@@ -465,6 +468,7 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(TileEntitySonicSecuritySystem.class, new ResourceLocation("securitycraft:sonic_security_system"));
 		GameRegistry.registerTileEntity(TileEntityReinforcedDoor.class, new ResourceLocation("securitycraft:reinforced_door"));
 		GameRegistry.registerTileEntity(TileEntityBlockChangeDetector.class, new ResourceLocation("securitycraft:block_change_detector"));
+		GameRegistry.registerTileEntity(TileEntityRiftStabilizer.class, new ResourceLocation("securitycraft:rift_stabilizer"));
 		GameRegistry.registerTileEntity(TileEntityDisguisable.class, new ResourceLocation("securitycraft:disguisable"));
 	}
 
@@ -538,6 +542,7 @@ public class RegistrationHandler {
 		network.registerMessage(SetBriefcaseOwner.Handler.class, SetBriefcaseOwner.class, 46, Side.SERVER);
 		network.registerMessage(SetListModuleData.Handler.class, SetListModuleData.class, 47, Side.SERVER);
 		network.registerMessage(SetStateOnDisguiseModule.Handler.class, SetStateOnDisguiseModule.class, 48, Side.SERVER);
+		network.registerMessage(SyncRiftStabilizer.Handler.class, SyncRiftStabilizer.class, 49, Side.SERVER);
 	}
 
 	@SubscribeEvent
@@ -862,6 +867,7 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.reinforcedGreenGlazedTerracotta, 0, "reinforced_green_glazed_terracotta");
 		registerInventoryModel(SCContent.reinforcedRedGlazedTerracotta, 0, "reinforced_red_glazed_terracotta");
 		registerInventoryModel(SCContent.reinforcedBlackGlazedTerracotta, 0, "reinforced_black_glazed_terracotta");
+		registerInventoryModel(SCContent.riftStabilizer, 0, "rift_stabilizer");
 
 		//items
 		registerInventoryModel(SCContent.codebreaker, 0, "codebreaker");

@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GEG",
+    "CDC",
+    "III"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "D": {
+      "item": "securitycraft:reinforced_metals",
+      "data": 2
+    },
+    "C": {
+      "item": "minecraft:chorus_fruit"
+    },
+    "I": {
+      "item": "securitycraft:reinforced_metals",
+      "data": 1
+    }
+  },
+  "result": {
+    "item": "securitycraft:rift_stabilizer",
+    "count": 1
+  }
+}

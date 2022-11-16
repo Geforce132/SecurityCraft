@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -21,6 +24,7 @@ import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
+import net.geforcemods.securitycraft.blocks.BlockRiftStabilizer;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.blocks.BlockSonicSecuritySystem;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
@@ -38,10 +42,13 @@ import net.geforcemods.securitycraft.misc.SCWorldListener;
 import net.geforcemods.securitycraft.misc.TileEntityTracker;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector.EnumDetectionMode;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
+import net.geforcemods.securitycraft.tileentity.TileEntityRiftStabilizer;
+import net.geforcemods.securitycraft.tileentity.TileEntityRiftStabilizer.TeleportationType;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
 import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem.NoteWrapper;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -57,10 +64,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -68,6 +77,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -78,6 +88,7 @@ import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -564,6 +575,63 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onLivingDestroyEvent(LivingDestroyBlockEvent event) {
 		event.setCanceled(event.getEntity() instanceof EntityWither && event.getState().getBlock() instanceof IReinforcedBlock);
+	}
+
+	@SubscribeEvent
+	public static void onEntityTeleport(EnderTeleportEvent event) {
+		EntityLivingBase entity = event.getEntityLiving();
+		Vec3d target = new Vec3d(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+
+		event.setCanceled(handleEntityTeleport(entity, entity.getPositionVector(), target, TeleportationType.getTypeFromEvent(entity, target)));
+	}
+	public static boolean handleEntityTeleport(EntityLivingBase entity, Vec3d source, Vec3d target, TeleportationType type) {
+		World world = entity.getEntityWorld();
+		List<TileEntityRiftStabilizer> targetPosTileEntities = TileEntityTracker.RIFT_STABILIZER.getTileEntitiesInRange(world, target);
+		List<TileEntityRiftStabilizer> sourcePosTileEntities = TileEntityTracker.RIFT_STABILIZER.getTileEntitiesInRange(world, source);
+		List<TileEntityRiftStabilizer> tileEntities = new ArrayList<>();
+		TileEntityRiftStabilizer riftStabilizer = null;
+		boolean targetPosProhibited = false;
+
+		tileEntities.addAll(targetPosTileEntities);
+		tileEntities.addAll(sourcePosTileEntities);
+		tileEntities = tileEntities.stream().distinct().sorted(Comparator.comparingDouble(t -> Math.min(t.getPos().distanceSqToCenter(target.x, target.y, target.z), t.getPos().distanceSqToCenter(source.x, source.y, source.z)))).collect(Collectors.toList());
+
+		for (TileEntityRiftStabilizer te : tileEntities) {
+			if (!te.isDisabled() && te.getFilter(type) && (!(entity instanceof EntityPlayer) || true || !te.getOwner().isOwner(((EntityPlayer) entity)) && !ModuleUtils.isAllowed(te, entity))) {
+				riftStabilizer = te;
+				targetPosProhibited = te.getPos().distanceSqToCenter(target.x, target.y, target.z) < te.getPos().distanceSqToCenter(source.x, source.y, source.z);
+				break;
+			}
+		}
+
+		if (riftStabilizer != null) {
+			BlockPos pos = riftStabilizer.getPos();
+			Vec3d centerPos = new AxisAlignedBB(pos).getCenter();
+			Vec3d from = targetPosProhibited ? target : source;
+			Vec3d distance = from.subtract(centerPos);
+
+			if (entity instanceof EntityPlayer) {
+				EntityPlayer player = ((EntityPlayer) entity);
+
+				world.playSound(null, source.x, source.y, source.z, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.5F);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.riftStabilizer.getTranslationKey() + ".name"), Utils.localize(targetPosProhibited ? "messages.securitycraft:rift_stabilizer.no_teleport_to" : "messages.securitycraft:rift_stabilizer.no_teleport_from"), TextFormatting.RED);
+
+				if (riftStabilizer.isModuleEnabled(EnumModuleType.HARMING))
+					player.attackEntityFrom(DamageSource.FALL, 5.0F);
+			}
+
+			riftStabilizer.setLastTeleport(Math.max(Math.abs(distance.x), Math.max(Math.abs(distance.y), Math.abs(distance.z))) - 0.5D, type);
+
+			if (riftStabilizer.isModuleEnabled(EnumModuleType.REDSTONE)) {
+				world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockRiftStabilizer.POWERED, true));
+				BlockUtils.updateIndirectNeighbors(world, pos, SCContent.riftStabilizer);
+				world.scheduleUpdate(pos, SCContent.riftStabilizer, riftStabilizer.getSignalLength());
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@SubscribeEvent

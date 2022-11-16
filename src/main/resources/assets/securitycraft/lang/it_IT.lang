@@ -656,9 +656,9 @@ messages.securitycraft:universalKeyChanger.briefcase.notOwned=Questa non è la t
 messages.securitycraft:passwordProtected.notSetUp=Questo blocco non ha ancora una password. Non puoi interagirci.
 messages.securitycraft:sentry.needsBlockBelow=Devi piazzare la Sentinella sopra un blocco!
 messages.securitycraft:sentry.needsBlocksAround=Assicurati che la Sentinella sia circondata da blocchi da tutti e 4 i lati!
-messages.securitycraft:sentry.mode0=Modalità: Aggressiva 
-messages.securitycraft:sentry.mode1=Modalità: Nascosta 
-messages.securitycraft:sentry.mode2=Modalità: Inattiva 
+messages.securitycraft:sentry.mode0=Modalità: Aggressiva
+messages.securitycraft:sentry.mode1=Modalità: Nascosta
+messages.securitycraft:sentry.mode2=Modalità: Inattiva
 messages.securitycraft:sentry.descriptionMode0= (Sempre attiva, attacca mob ostili e giocatori)
 messages.securitycraft:sentry.descriptionMode1= (Si attiva quando un mob ostile o un giocatore si avvicina, attacca mob ostili e giocatori)
 messages.securitycraft:sentry.descriptionMode2= (Sempre attiva, attacca mob ostili)
@@ -930,6 +930,7 @@ option.securitycraft:block_change_detector.signalLength=Lunghezza segnale: #
 option.securitycraft:block_change_detector.signalLength.description=Quanto dovrebbe durare il segnale di redstone dopo aver rilevato? (In tick, 20 tick = 1 secondo)
 option.securitycraft:block_change_detector.range=Raggio rilevamento: #
 option.securitycraft:block_change_detector.range.description=Fino a che distanza il rilevatore dovrebbe funzionare?
+option.securitycraft:rift_stabilizer.signalLength=Lunghezza segnale: #
 
 securitycraft.subtitle.alarm=L'allarme sta suonando
 securitycraft.subtitle.electrified=Entità folgorata

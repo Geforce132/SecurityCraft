@@ -20,6 +20,7 @@ import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
+import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
@@ -44,8 +45,7 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-public class TileEntityTrophySystem extends TileEntityDisguisable implements ITickable, ILockable {
-
+public class TileEntityTrophySystem extends TileEntityDisguisable implements ITickable, ILockable, IToggleableEntries<EntityEntry> {
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
 
@@ -254,10 +254,7 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 		return shooter;
 	}
 
-	public void toggleFilter(EntityEntry projectileType) {
-		setFilter(projectileType, !projectileFilter.get(projectileType));
-	}
-
+	@Override
 	public void setFilter(EntityEntry projectileType, boolean allowed) {
 		if (projectileFilter.containsKey(projectileType)) {
 			projectileFilter.put(projectileType, allowed);
@@ -267,12 +264,29 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 		}
 	}
 
+	@Override
 	public boolean getFilter(EntityEntry projectileType) {
 		return projectileFilter.get(projectileType);
 	}
 
+	@Override
 	public Map<EntityEntry, Boolean> getFilters() {
 		return projectileFilter;
+	}
+
+	@Override
+	public String getTypeName(EntityEntry type) {
+		return type.getName();
+	}
+
+	@Override
+	public EntityEntry getDefaultType() {
+		return MODDED_PROJECTILES;
+	}
+
+	@Override
+	public String getDefaultTypeName() {
+		return "gui.securitycraft:trophy_system.moddedProjectiles";
 	}
 
 	public boolean isDisabled() {
