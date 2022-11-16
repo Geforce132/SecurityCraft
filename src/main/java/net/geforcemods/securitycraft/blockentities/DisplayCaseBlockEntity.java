@@ -101,7 +101,9 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		super.saveAdditional(tag);
 		tag.put("DisplayedStack", getDisplayedStack().save(new CompoundTag()));
 		tag.putBoolean("ShouldBeOpen", shouldBeOpen);
-		tag.putString("Passcode", passcode);
+
+		if (passcode != null && !passcode.isEmpty())
+			tag.putString("Passcode", passcode);
 	}
 
 	@Override
