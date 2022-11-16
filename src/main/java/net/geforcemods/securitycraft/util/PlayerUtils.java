@@ -101,8 +101,8 @@ public class PlayerUtils {
 	}
 
 	/**
-	 * Sends the given {@link ICommandSender} a chat message, followed by a link prefixed with a colon. <p> Args: sender,
-	 * prefix, text, link, color.
+	 * Sends the given {@link ICommandSender} a chat message, followed by a link prefixed with a colon. <p> Args: sender, prefix,
+	 * text, link, color.
 	 */
 	public static void sendMessageEndingWithLink(ICommandSender sender, ITextComponent prefix, ITextComponent text, String link, TextFormatting color) {
 		//@formatter:off
@@ -214,8 +214,8 @@ public class PlayerUtils {
 	}
 
 	/**
-	 * Gets the component to use for displaying a block's owner. If team ownership is enabled and the given player is on a
-	 * team, this will return the colored team name.
+	 * Gets the component to use for displaying a block's owner. If team ownership is enabled and the given player is on a team,
+	 * this will return the colored team name.
 	 *
 	 * @param ownerName The player who owns the block
 	 * @return The component to display

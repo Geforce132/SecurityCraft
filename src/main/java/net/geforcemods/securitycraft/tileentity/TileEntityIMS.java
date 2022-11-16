@@ -29,8 +29,8 @@ public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
 	/**
-	 * The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players,
-	 * MOBS = hostile mobs.
+	 * The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS =
+	 * hostile mobs.
 	 **/
 	private EnumIMSTargetingMode targetingMode = EnumIMSTargetingMode.PLAYERS_AND_MOBS;
 	private boolean updateBombCount = false;

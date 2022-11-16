@@ -43,8 +43,8 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * Called when this option's button in {@link GuiCustomizeBlock} is pressed. Update the option's value here. <p> NOTE:
-	 * This gets called on the server side, not on the client! Use TileEntitySCTE.sync() to update values on the client-side.
+	 * Called when this option's button in {@link GuiCustomizeBlock} is pressed. Update the option's value here. <p> NOTE: This
+	 * gets called on the server side, not on the client! Use TileEntitySCTE.sync() to update values on the client-side.
 	 */
 	public abstract void toggle();
 

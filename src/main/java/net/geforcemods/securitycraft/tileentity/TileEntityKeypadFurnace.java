@@ -50,14 +50,14 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	private static final int[] slotsSides = {
 			1
 	};
-	public NonNullList<ItemStack> furnaceItemStacks = NonNullList.<ItemStack> withSize(3, ItemStack.EMPTY);
+	public NonNullList<ItemStack> furnaceItemStacks = NonNullList.<ItemStack>withSize(3, ItemStack.EMPTY);
 	public int furnaceBurnTime;
 	public int currentItemBurnTime;
 	public int cookTime;
 	public int totalCookTime;
 	private String furnaceCustomName;
 	private String passcode;
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
 
@@ -153,7 +153,7 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 		modules = readModuleInventory(tag);
 		readOptions(tag);
 		NBTTagList list = tag.getTagList("Items", 10);
-		furnaceItemStacks = NonNullList.<ItemStack> withSize(getSizeInventory(), ItemStack.EMPTY);
+		furnaceItemStacks = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.tagCount(); ++i) {
 			NBTTagCompound stackTag = list.getCompoundTagAt(i);

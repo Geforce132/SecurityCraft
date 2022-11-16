@@ -4,19 +4,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 
 /**
- * Implementing this interface designates a block entity as being password-protected. Implementing 
- * this allows you to use {@link SetPasswordScreen} and {@link CheckPasswordScreen} to easily set 
- * your block's password. Extends {@link ICodebreakable} as most password-protected blocks are likely 
- * able to be hacked using the Codebreaker by default.
+ * Implementing this interface designates a block entity as being password-protected. Implementing this allows you to use
+ * {@link SetPasswordScreen} and {@link CheckPasswordScreen} to easily set your block's password. Extends
+ * {@link ICodebreakable} as most password-protected blocks are likely able to be hacked using the Codebreaker by default.
  *
  * @author Geforce
  */
 public interface IPasswordProtected extends ICodebreakable {
 	/**
-	 * Called whenever a player correctly enters this block's password in the password GUI.<p> World, and x, y, and z
-	 * variables are not given, as they are already provided in {@link TileEntity}. This runs on both the CLIENT and SERVER
-	 * sides, be sure to check for World.isRemote.<p> The cleanest way to use this is to check if the block at xCoord,
-	 * yCoord, and zCoord is an instance of your block, if so, call a static method to do your block's function.
+	 * Called whenever a player correctly enters this block's password in the password GUI.<p> World, and x, y, and z variables
+	 * are not given, as they are already provided in {@link TileEntity}. This runs on both the CLIENT and SERVER sides, be sure
+	 * to check for World.isRemote.<p> The cleanest way to use this is to check if the block at xCoord, yCoord, and zCoord is an
+	 * instance of your block, if so, call a static method to do your block's function.
 	 *
 	 * @param player The player who entered the password.
 	 */

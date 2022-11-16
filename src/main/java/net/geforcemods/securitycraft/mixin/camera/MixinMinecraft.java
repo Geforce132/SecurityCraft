@@ -31,8 +31,8 @@ public class MixinMinecraft {
 	}
 
 	/**
-	 * Fixes players being able to move mounted entities while viewing a camera, by updating keybinds used by the camera
-	 * after they get set, but before they get used in World#updateEntities
+	 * Fixes players being able to move mounted entities while viewing a camera, by updating keybinds used by the camera after
+	 * they get set, but before they get used in World#updateEntities
 	 */
 	@Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;runTickKeyboard()V", shift = At.Shift.AFTER))
 	private void updateCameraKeyBindings(CallbackInfo callback) {

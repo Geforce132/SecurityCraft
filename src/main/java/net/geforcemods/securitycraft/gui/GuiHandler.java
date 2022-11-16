@@ -192,7 +192,7 @@ public class GuiHandler implements IGuiHandler {
 					return null;
 				return new GuiKeyChanger(player.inventory, te);
 			case TROPHY_SYSTEM_GUI_ID:
-				return new GuiToggleList<>((TileEntityTrophySystem) te, Utils.localize("tile.securitycraft:trophy_system.name"),  Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles"), Utils.localize("gui.securitycraft:trophy_system.moduleRequired"), Utils.localize("gui.securitycraft:trophy_system.toggle"));
+				return new GuiToggleList<>((TileEntityTrophySystem) te, Utils.localize("tile.securitycraft:trophy_system.name"), Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles"), Utils.localize("gui.securitycraft:trophy_system.moduleRequired"), Utils.localize("gui.securitycraft:trophy_system.toggle"));
 			case CUSTOMIZE_BLOCK:
 				return new GuiCustomizeBlock(player.inventory, (IModuleInventory) te);
 			case DISGUISE_MODULE:
@@ -228,7 +228,7 @@ public class GuiHandler implements IGuiHandler {
 					return null;
 				return new GuiSSSItem(PlayerUtils.getSelectedItemStack(player, SCContent.sonicSecuritySystemItem));
 			case RIFT_STABILIZER:
-				return new GuiToggleList<>((TileEntityRiftStabilizer) te, Utils.localize("tile.securitycraft:rift_stabilizer.name"),  Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes"), Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired"), Utils.localize("gui.securitycraft:rift_stabilizer.toggle"));
+				return new GuiToggleList<>((TileEntityRiftStabilizer) te, Utils.localize("tile.securitycraft:rift_stabilizer.name"), Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes"), Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired"), Utils.localize("gui.securitycraft:rift_stabilizer.toggle"));
 			default:
 				return null;
 		}

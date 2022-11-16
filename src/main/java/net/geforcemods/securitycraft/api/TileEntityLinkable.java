@@ -158,8 +158,8 @@ public abstract class TileEntityLinkable extends CustomizableSCTE implements ITi
 	 * Calls onLinkedBlockAction() for every block this tile entity is linked to.
 	 *
 	 * @param action The action that occurred
-	 * @param excludedTEs TileEntityLinkables that shouldn't have onLinkedBlockAction() called on them, prevents infinite
-	 *            loops. Always add your tile entity to the list whenever using this method
+	 * @param excludedTEs TileEntityLinkables that shouldn't have onLinkedBlockAction() called on them, prevents infinite loops.
+	 *            Always add your tile entity to the list whenever using this method
 	 */
 	public void createLinkedBlockAction(ILinkedAction action, ArrayList<TileEntityLinkable> excludedTEs) {
 		for (LinkedBlock block : linkedBlocks)
@@ -175,8 +175,8 @@ public abstract class TileEntityLinkable extends CustomizableSCTE implements ITi
 	 *
 	 * @param action The {@link ILinkedAction} that occurred
 	 * @param excludedTEs TileEntityLinkables that aren't going to have onLinkedBlockAction() called on them, always add your
-	 *            tile entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link
-	 *            multiple blocks (i.e: like Laser Blocks)
+	 *            tile entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link multiple
+	 *            blocks (i.e: like Laser Blocks)
 	 */
 	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<TileEntityLinkable> excludedTEs) {}
 }

@@ -972,8 +972,8 @@ public class RegistrationHandler {
 	}
 
 	/**
-	 * Registers a block and its ItemBlock and adds the help info for the block to the SecurityCraft manual item.
-	 * Additionally, a configuration value can be set to have this block's recipe show as disabled in the manual.
+	 * Registers a block and its ItemBlock and adds the help info for the block to the SecurityCraft manual item. Additionally, a
+	 * configuration value can be set to have this block's recipe show as disabled in the manual.
 	 *
 	 * @param block The block to register
 	 * @param configValue The config value

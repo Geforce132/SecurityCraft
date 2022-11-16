@@ -29,7 +29,7 @@ public class ProjectECompat {
 					ItemStack reinforcedStack = new ItemStack(block, 1, meta);
 
 					if (!vanillaStack.isEmpty() && !reinforcedStack.isEmpty())
-						reinforcedBlocksConversionProxy.addConversion(1, reinforcedStack, ImmutableMap.<Object, Integer> builder().put(vanillaStack, 1).build());
+						reinforcedBlocksConversionProxy.addConversion(1, reinforcedStack, ImmutableMap.<Object, Integer>builder().put(vanillaStack, 1).build());
 				}
 				else {
 					for (int meta = 0; meta < reinforcedBlock.getAmount(); meta++) {
@@ -37,7 +37,7 @@ public class ProjectECompat {
 						ItemStack reinforcedStack = new ItemStack(block, 1, meta);
 
 						if (!vanillaStack.isEmpty() && !reinforcedStack.isEmpty())
-							reinforcedBlocksConversionProxy.addConversion(1, reinforcedStack, ImmutableMap.<Object, Integer> builder().put(vanillaStack, 1).build());
+							reinforcedBlocksConversionProxy.addConversion(1, reinforcedStack, ImmutableMap.<Object, Integer>builder().put(vanillaStack, 1).build());
 					}
 				}
 			}

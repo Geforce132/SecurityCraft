@@ -44,7 +44,7 @@ public class InitSentryAnimation implements IMessage {
 	public static class Handler implements IMessageHandler<InitSentryAnimation, IMessage> {
 		@Override
 		public IMessage onMessage(InitSentryAnimation message, MessageContext ctx) {
-			List<EntityCreature> sentries = Minecraft.getMinecraft().player.world.<EntityCreature> getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
+			List<EntityCreature> sentries = Minecraft.getMinecraft().player.world.<EntityCreature>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
 
 			if (!sentries.isEmpty()) {
 				EntitySentry sentry = (EntitySentry) sentries.get(0);

@@ -125,7 +125,7 @@ public class DyeBriefcaseRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
 
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-		NonNullList<ItemStack> remainingItems = NonNullList.<ItemStack> withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+		NonNullList<ItemStack> remainingItems = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
 		for (int i = 0; i < remainingItems.size(); ++i) {
 			remainingItems.set(i, ForgeHooks.getContainerItem(inv.getStackInSlot(i)));

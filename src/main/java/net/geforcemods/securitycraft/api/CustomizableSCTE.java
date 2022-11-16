@@ -14,7 +14,7 @@ import net.minecraft.util.NonNullList;
  * @author Geforce
  */
 public abstract class CustomizableSCTE extends TileEntityNamed implements IModuleInventory, ICustomizable {
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private EnumMap<EnumModuleType, Boolean> moduleStates = new EnumMap<>(EnumModuleType.class);
 
 	@Override

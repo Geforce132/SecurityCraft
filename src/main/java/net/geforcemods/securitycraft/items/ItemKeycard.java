@@ -29,8 +29,7 @@ public class ItemKeycard extends Item {
 	}
 
 	/**
-	 * @return 0-indexed level of this keycard. Example: The level 1 keycard will return 0, and the level 5 keycard will
-	 *         return 4
+	 * @return 0-indexed level of this keycard. Example: The level 1 keycard will return 0, and the level 5 keycard will return 4
 	 */
 	public int getLevel() {
 		return level;

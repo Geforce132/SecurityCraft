@@ -22,7 +22,7 @@ import net.minecraft.util.NonNullList;
 public class TileEntitySecretSign extends TileEntitySign implements IOwnable, IModuleInventory, ICustomizable {
 	private Owner owner = new Owner();
 	private OptionBoolean isSecret = new OptionBoolean("isSecret", true);
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private EnumMap<EnumModuleType, Boolean> moduleStates = new EnumMap<>(EnumModuleType.class);
 
 	@Override

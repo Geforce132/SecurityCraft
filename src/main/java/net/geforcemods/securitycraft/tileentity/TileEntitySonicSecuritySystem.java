@@ -34,8 +34,8 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 	private static final int PING_DELAY = 100;
 	/**
 	 * The delay allowed between note block sounds while listening to a note sequence. Notes played within this many ticks of
-	 * each other will be considered as part of the same "combination." Notes played after the delay has elapsed will start a
-	 * new combination
+	 * each other will be considered as part of the same "combination." Notes played after the delay has elapsed will start a new
+	 * combination
 	 */
 	private static final int LISTEN_DELAY = 60;
 	/** The listening and recording range of Sonic Security Systems (perhaps a config option?) */
@@ -61,8 +61,8 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 	private boolean isListening = false;
 	private int listeningTimer = LISTEN_DELAY;
 	/**
-	 * This field keeps track of the number of correct notes that have been listened to in order. If this number matches the
-	 * size of the recordedNotes array, then the correct combination has been played
+	 * This field keeps track of the number of correct notes that have been listened to in order. If this number matches the size
+	 * of the recordedNotes array, then the correct combination has been played
 	 */
 	private int listenPos = 0;
 	private boolean tracked = false;

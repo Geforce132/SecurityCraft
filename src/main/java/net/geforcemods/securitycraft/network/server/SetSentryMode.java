@@ -40,7 +40,7 @@ public class SetSentryMode implements IMessage {
 		public IMessage onMessage(SetSentryMode message, MessageContext context) {
 			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
-				List<EntitySentry> sentries = player.world.<EntitySentry> getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
+				List<EntitySentry> sentries = player.world.<EntitySentry>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
 
 				if (!sentries.isEmpty() && sentries.get(0).getOwner().isOwner(player))
 					sentries.get(0).toggleMode(player, message.mode, false);

@@ -336,9 +336,8 @@ public class TileEntityRiftStabilizer extends TileEntityDisguisable implements I
 				return ENDERMAN;
 			else if (teleported instanceof EntityShulker)
 				return SHULKER;
-			else if (teleported instanceof EntityPlayer && pearl.isPresent()) {
-					return ENDER_PEARL;
-			}
+			else if (teleported instanceof EntityPlayer && pearl.isPresent())
+				return ENDER_PEARL;
 
 			return MODDED;
 		}

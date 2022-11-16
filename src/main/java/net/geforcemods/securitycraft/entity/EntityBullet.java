@@ -21,7 +21,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityBullet extends EntityArrow {
-	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner> createKey(EntityBullet.class, Owner.getSerializer());
+	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(EntityBullet.class, Owner.getSerializer());
 	private Collection<PotionEffect> potionEffects = Sets.newHashSet();
 
 	public EntityBullet(World world) {

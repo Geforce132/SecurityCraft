@@ -39,7 +39,7 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	private OptionBoolean solidifyField = new OptionBoolean("solidifyField", false);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IItemHandler storageHandler;
-	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack> withSize(37, ItemStack.EMPTY);
+	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
 	private int cooldown;
 
@@ -71,7 +71,7 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 		super.readFromNBT(tag);
 
 		NBTTagList list = tag.getTagList("Items", 10);
-		inventoryContents = NonNullList.<ItemStack> withSize(getSizeInventory(), ItemStack.EMPTY);
+		inventoryContents = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.tagCount(); ++i) {
 			NBTTagCompound stackTag = list.getCompoundTagAt(i);

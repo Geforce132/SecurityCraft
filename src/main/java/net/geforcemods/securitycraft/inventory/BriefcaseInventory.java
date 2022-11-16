@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.Constants;
 public class BriefcaseInventory implements IInventory {
 	public static final int SIZE = 12;
 	private final ItemStack briefcase;
-	private NonNullList<ItemStack> briefcaseInventory = NonNullList.<ItemStack> withSize(SIZE, ItemStack.EMPTY);
+	private NonNullList<ItemStack> briefcaseInventory = NonNullList.<ItemStack>withSize(SIZE, ItemStack.EMPTY);
 
 	public BriefcaseInventory(ItemStack briefcaseItem) {
 		briefcase = briefcaseItem;

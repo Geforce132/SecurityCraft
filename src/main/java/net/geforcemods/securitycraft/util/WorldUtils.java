@@ -6,8 +6,7 @@ import net.minecraft.world.WorldServer;
 
 public class WorldUtils {
 	/**
-	 * Correctly schedules a task for execution on the main thread depending on if the provided world is client- or
-	 * serverside
+	 * Correctly schedules a task for execution on the main thread depending on if the provided world is client- or serverside
 	 */
 	public static void addScheduledTask(World w, Runnable r) {
 		if (w.isRemote)

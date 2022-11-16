@@ -35,8 +35,7 @@ public class PortalSize {
 			rightDir = EnumFacing.SOUTH;
 		}
 
-		for (BlockPos blockPos = pos; pos.getY() > blockPos.getY() - 21 && pos.getY() > 0 && isEmptyBlock(world.getBlockState(pos.down()).getBlock()); pos = pos.down()) {
-		}
+		for (BlockPos blockPos = pos; pos.getY() > blockPos.getY() - 21 && pos.getY() > 0 && isEmptyBlock(world.getBlockState(pos.down()).getBlock()); pos = pos.down()) {}
 
 		int distanceToEdge = getDistanceUntilEdge(pos, leftDir) - 1;
 

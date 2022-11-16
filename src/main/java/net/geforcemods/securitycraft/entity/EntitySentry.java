@@ -64,11 +64,11 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class EntitySentry extends EntityCreature implements IRangedAttackMob, IEMPAffected { //needs to be a creature so it can target a player, ai is also only given to living entities
-	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner> createKey(EntitySentry.class, Owner.getSerializer());
-	private static final DataParameter<NBTTagCompound> ALLOWLIST = EntityDataManager.<NBTTagCompound> createKey(EntitySentry.class, DataSerializers.COMPOUND_TAG);
-	private static final DataParameter<Boolean> HAS_SPEED_MODULE = EntityDataManager.<Boolean> createKey(EntitySentry.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Integer> MODE = EntityDataManager.<Integer> createKey(EntitySentry.class, DataSerializers.VARINT);
-	public static final DataParameter<Float> HEAD_ROTATION = EntityDataManager.<Float> createKey(EntitySentry.class, DataSerializers.FLOAT);
+	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(EntitySentry.class, Owner.getSerializer());
+	private static final DataParameter<NBTTagCompound> ALLOWLIST = EntityDataManager.<NBTTagCompound>createKey(EntitySentry.class, DataSerializers.COMPOUND_TAG);
+	private static final DataParameter<Boolean> HAS_SPEED_MODULE = EntityDataManager.<Boolean>createKey(EntitySentry.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(EntitySentry.class, DataSerializers.VARINT);
+	public static final DataParameter<Float> HEAD_ROTATION = EntityDataManager.<Float>createKey(EntitySentry.class, DataSerializers.FLOAT);
 	public static final float MAX_TARGET_DISTANCE = 20.0F;
 	private static final float ANIMATION_STEP_SIZE = 0.025F;
 	private static final float UPWARDS_ANIMATION_LIMIT = 0.025F;
@@ -305,8 +305,8 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob, IE
 	}
 
 	/**
-	 * Sets this sentry's mode to the given mode (or 0 if the mode is not one of 0, 1, 2) and sends the player a message
-	 * about the switch if wanted
+	 * Sets this sentry's mode to the given mode (or 0 if the mode is not one of 0, 1, 2) and sends the player a message about
+	 * the switch if wanted
 	 *
 	 * @param player The player to send the message to
 	 * @param mode The mode (int) to switch to (instead of sequentially toggling)
@@ -528,8 +528,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob, IE
 	}
 
 	/**
-	 * @return The mode in which the sentry is currently in, CAMOUFLAGE_HP as a fallback if the saved mode is not a valid
-	 *         mode
+	 * @return The mode in which the sentry is currently in, CAMOUFLAGE_HP as a fallback if the saved mode is not a valid mode
 	 */
 	public EnumSentryMode getMode() {
 		int mode = dataManager.get(MODE);
@@ -545,8 +544,8 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob, IE
 	}
 
 	/**
-	 * @return An optional containing the block entity of the block that the sentry uses to disguise itself, or an empty
-	 *         optional if it doesn't exist
+	 * @return An optional containing the block entity of the block that the sentry uses to disguise itself, or an empty optional
+	 *         if it doesn't exist
 	 */
 	public Optional<TileEntityDisguisable> getSentryDisguiseBlockEntity() {
 		TileEntity be;
