@@ -9,6 +9,8 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -125,11 +127,13 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 							toAdd = heldStack.split(1);
 
 						be.setDisplayedStack(toAdd);
+						level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
 						return InteractionResult.SUCCESS;
 					}
 				}
 				else if (player.isShiftKeyDown()) {
 					player.addItem(displayedStack);
+					level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
 					be.setDisplayedStack(ItemStack.EMPTY);
 					return InteractionResult.SUCCESS;
 				}
