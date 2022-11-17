@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -7,21 +8,22 @@ import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.AzaleaBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.DeadBushBlock;
 import net.minecraft.world.level.block.FungusBlock;
 import net.minecraft.world.level.block.HalfTransparentBlock;
+import net.minecraft.world.level.block.MangrovePropaguleBlock;
 import net.minecraft.world.level.block.NetherSproutsBlock;
 import net.minecraft.world.level.block.RootsBlock;
 import net.minecraft.world.level.block.WaterlilyBlock;
 import net.minecraft.world.level.block.WitherRoseBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.IPlantable;
@@ -52,22 +54,27 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 			return state.is(SCTags.Blocks.REINFORCED_SAND);
 
 		if (plantable instanceof BushBlock) { //a nasty workaround because BaseReinforcedBlock can't use BushBlock#mayPlaceOn because it is protected
-			if (plantable instanceof AzaleaBlock)
-				return state.is(SCContent.REINFORCED_CLAY.get());
+			boolean condition = false;
+
+			if (plantable instanceof AzaleaBlock || plantable instanceof MangrovePropaguleBlock)
+				condition = state.is(SCContent.REINFORCED_CLAY.get()) || state.is(SCTags.Blocks.REINFORCED_DIRT);
 			else if (plantable instanceof FungusBlock || plantable instanceof NetherSproutsBlock || plantable instanceof RootsBlock)
-				return state.is(SCContent.REINFORCED_SOUL_SOIL.get());
+				condition = state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || state.is(SCTags.Blocks.REINFORCED_DIRT);
 			else if (plantable instanceof WaterlilyBlock)
-				return level.getFluidState(pos).getType() == SCContent.FAKE_WATER.get() && level.getFluidState(pos.above()).getType() == Fluids.EMPTY;
+				condition = level.getFluidState(pos).getType() == SCContent.FAKE_WATER.get() && level.getFluidState(pos.above()).getType() == Fluids.EMPTY;
 			else if (plantable instanceof WitherRoseBlock)
-				return state.is(SCContent.REINFORCED_NETHERRACK.get()) || state.is(SCContent.REINFORCED_SOUL_SOIL.get());
-			else if (plantable instanceof DeadBushBlock)
-				return state.is(SCTags.Blocks.REINFORCED_SAND) || state.is(SCContent.REINFORCED_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_WHITE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_ORANGE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_MAGENTA_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_YELLOW_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_LIME_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_PINK_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_GRAY_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_CYAN_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_PURPLE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_BLUE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_BROWN_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_GREEN_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_RED_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_BLACK_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_DIRT.get()) || state.is(SCContent.REINFORCED_COARSE_DIRT.get()) || state.is(SCContent.REINFORCED_PODZOL.get());
+				condition = state.is(SCContent.REINFORCED_NETHERRACK.get()) || state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || state.is(SCTags.Blocks.REINFORCED_DIRT);
+
+			if (condition)
+				return true;
 		}
 
 		if (PlantType.DESERT.equals(type))
-			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_TERRACOTTA.get();
+			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_TERRACOTTA.get() || this instanceof ReinforcedGlazedTerracottaBlock;
+		else if (PlantType.PLAINS.equals(type))
+			return state.is(SCTags.Blocks.REINFORCED_DIRT);
 		else if (PlantType.BEACH.equals(type)) {
-			boolean isBeach = state.is(SCTags.Blocks.REINFORCED_SAND);
+			boolean isBeach = state.is(SCTags.Blocks.REINFORCED_DIRT) || state.is(SCTags.Blocks.REINFORCED_SAND);
 			boolean hasWater = false;
 
 			for (Direction face : Direction.Plane.HORIZONTAL) {
@@ -75,7 +82,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 				FluidState fluidState = level.getFluidState(pos.relative(face));
 
 				hasWater |= blockState.is(Blocks.FROSTED_ICE);
-				hasWater |= fluidState.is(FluidTags.WATER);
+				hasWater |= fluidState.canHydrate(level, pos, blockState, pos.relative(face));
 
 				if (hasWater)
 					break; //No point continuing.
@@ -85,6 +92,11 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		}
 
 		return false;
+	}
+
+	@Override
+	public boolean onTreeGrow(BlockState state, LevelReader level, BiConsumer<BlockPos, BlockState> placeFunction, RandomSource randomSource, BlockPos pos, TreeConfiguration config) {
+		return true; //Do not allow trees to replace reinforced blocks with dirt when growing
 	}
 
 	@Override
