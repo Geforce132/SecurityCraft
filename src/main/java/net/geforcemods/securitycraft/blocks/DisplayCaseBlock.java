@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -109,6 +110,13 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (!level.isClientSide && level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be) {
 			ItemStack heldStack = player.getItemInHand(hand);
+
+			if (be.isLocked() && be.disableInteractionWhenLocked(level, pos, player)) {
+				MutableComponent blockName = Utils.localize(getDescriptionId());
+
+				PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
+				return InteractionResult.SUCCESS;
+			}
 
 			if (be.isOpen()) {
 				ItemStack displayedStack = be.getDisplayedStack();
