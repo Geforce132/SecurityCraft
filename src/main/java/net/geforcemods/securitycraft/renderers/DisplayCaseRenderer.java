@@ -28,14 +28,17 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlockEntity> {
 	private final ResourceLocation texture = new ResourceLocation(SecurityCraft.MODID, "textures/entity/display_case.png");
+	private final ResourceLocation glowTexture = new ResourceLocation(SecurityCraft.MODID, "textures/entity/glow_display_case.png");
 	private final ModelPart main;
 	private final ModelPart door;
+	private final boolean glowing;
 
-	public DisplayCaseRenderer(BlockEntityRendererProvider.Context ctx) {
-		ModelPart model = ctx.bakeLayer(ClientHandler.DISPLAY_CASE_LOCATION);
+	public DisplayCaseRenderer(BlockEntityRendererProvider.Context ctx, boolean glowing) {
+		ModelPart model = ctx.bakeLayer(glowing ? ClientHandler.GLOW_DISPLAY_CASE_LOCATION : ClientHandler.DISPLAY_CASE_LOCATION);
 
 		main = model.getChild("main");
 		door = model.getChild("door");
+		this.glowing = glowing;
 	}
 
 	public static LayerDefinition createModelLayer() {
@@ -68,6 +71,7 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 		Direction facing = state.getValue(DisplayCaseBlock.FACING);
 		float rotation = facing.toYRot();
 		ItemStack displayedStack = be.getDisplayedStack();
+		int light = glowing ? 0xF000D2 : packedLight;
 
 		door.yRot = -(be.getOpenness(partialTick) * ((float) Math.PI / 2.0F));
 		pose.pushPose();
@@ -97,7 +101,7 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 			}
 
 			pose.scale(0.5F, 0.5F, 0.5F);
-			Minecraft.getInstance().getItemRenderer().renderStatic(displayedStack, TransformType.FIXED, packedLight, OverlayTexture.NO_OVERLAY, pose, buffer, 0);
+			Minecraft.getInstance().getItemRenderer().renderStatic(displayedStack, TransformType.FIXED, light, OverlayTexture.NO_OVERLAY, pose, buffer, 0);
 			pose.popPose();
 		}
 
@@ -118,10 +122,10 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 				break;
 		}
 
-		consumer = buffer.getBuffer(RenderType.entityCutout(texture));
+		consumer = buffer.getBuffer(RenderType.entityCutout(glowing ? glowTexture : texture));
 		pose.scale(-1.0F, 1.0F, -1.0F);
-		main.render(pose, consumer, packedLight, packedOverlay);
-		door.render(pose, consumer, packedLight, packedOverlay);
+		main.render(pose, consumer, light, packedOverlay);
+		door.render(pose, consumer, light, packedOverlay);
 		pose.popPose();
 	}
 }

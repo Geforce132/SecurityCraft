@@ -9,14 +9,17 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class DisplayCaseItem extends BlockItem {
-	public DisplayCaseItem(Block block, Properties properties) {
+	private final boolean glowing;
+
+	public DisplayCaseItem(Block block, Properties properties, boolean glowing) {
 		super(block, properties);
+		this.glowing = glowing;
 	}
 
 	@Override
 	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 		consumer.accept(new IClientItemExtensions() {
-			BlockEntityWithoutLevelRenderer renderer = new DisplayCaseItemRenderer();
+			BlockEntityWithoutLevelRenderer renderer = new DisplayCaseItemRenderer(() -> glowing); //needs to be a supplier, because initializeClient is called before the field is set
 
 			@Override
 			public BlockEntityWithoutLevelRenderer getCustomRenderer() {

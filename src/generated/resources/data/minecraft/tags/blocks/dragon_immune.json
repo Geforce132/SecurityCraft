@@ -9,6 +9,7 @@
     "securitycraft:claymore",
     "securitycraft:display_case",
     "securitycraft:keypad_frame",
+    "securitycraft:glow_display_case",
     "securitycraft:ims",
     "securitycraft:inventory_scanner",
     "securitycraft:inventory_scanner_field",

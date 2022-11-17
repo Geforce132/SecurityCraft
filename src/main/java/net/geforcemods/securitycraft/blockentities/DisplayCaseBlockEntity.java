@@ -24,6 +24,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.PacketDistributor;
@@ -39,7 +40,11 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	private String passcode;
 
 	public DisplayCaseBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), pos, state);
+		this(SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), pos, state);
+	}
+
+	public DisplayCaseBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+		super(type, pos, state);
 		renderBoundingBox = new AABB(pos);
 	}
 

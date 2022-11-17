@@ -150,6 +150,15 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', SCContent.REINFORCED_GLASS_PANE.get())
 		.unlockedBy("has_item_frame", has(Items.ITEM_FRAME))
 		.save(consumer);
+		ShapedRecipeBuilder.shaped(SCContent.GLOW_DISPLAY_CASE.get())
+		.pattern("III")
+		.pattern("IFG")
+		.pattern("III")
+		.define('I', Tags.Items.INGOTS_IRON)
+		.define('F', Items.GLOW_ITEM_FRAME)
+		.define('G', SCContent.REINFORCED_GLASS_PANE.get())
+		.unlockedBy("has_item_frame", has(Items.GLOW_ITEM_FRAME))
+		.save(consumer);
 		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_DOOR_ITEM.get())
 		.pattern("III")
 		.pattern("IDI")

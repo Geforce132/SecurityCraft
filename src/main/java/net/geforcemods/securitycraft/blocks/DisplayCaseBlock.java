@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
+import net.geforcemods.securitycraft.blockentities.GlowDisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -55,10 +56,12 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 	public static final VoxelShape WALL_E = Block.box(0.0D, 2.0D, 2.0D, 6.0D, 14.0D, 14.0D);
 	public static final VoxelShape WALL_S = Block.box(2.0D, 2.0D, 0.0D, 14.0D, 14.0D, 6.0D);
 	public static final VoxelShape WALL_W = Block.box(10.0D, 2.0D, 2.0D, 16.0D, 14.0D, 14.0D);
+	private final boolean glowing;
 
-	public DisplayCaseBlock(Block.Properties properties) {
+	public DisplayCaseBlock(Block.Properties properties, boolean glowing) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(ATTACH_FACE, AttachFace.WALL).setValue(WATERLOGGED, false));
+		this.glowing = glowing;
 	}
 
 	@Override
@@ -127,13 +130,13 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 							toAdd = heldStack.split(1);
 
 						be.setDisplayedStack(toAdd);
-						level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
+						level.playSound(null, pos, glowing ? SoundEvents.GLOW_ITEM_FRAME_ADD_ITEM : SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
 						return InteractionResult.SUCCESS;
 					}
 				}
 				else if (player.isShiftKeyDown()) {
 					player.addItem(displayedStack);
-					level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
+					level.playSound(null, pos, glowing ? SoundEvents.GLOW_ITEM_FRAME_REMOVE_ITEM : SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
 					be.setDisplayedStack(ItemStack.EMPTY);
 					return InteractionResult.SUCCESS;
 				}
@@ -205,12 +208,19 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new DisplayCaseBlockEntity(pos, state);
+		return glowing ? new GlowDisplayCaseBlockEntity(pos, state) : new DisplayCaseBlockEntity(pos, state);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return level.isClientSide ? createTickerHelper(type, SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker) : null;
+		if (level.isClientSide) {
+			if (glowing)
+				return createTickerHelper(type, SCContent.GLOW_DISPLAY_CASE_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
+			else
+				return createTickerHelper(type, SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
+		}
+
+		return null;
 	}
 
 	@Override

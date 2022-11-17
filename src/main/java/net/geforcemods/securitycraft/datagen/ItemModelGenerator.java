@@ -78,6 +78,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				SCContent.ANCIENT_DEBRIS_MINE_ITEM,
 				SCContent.BRIEFCASE,
 				SCContent.DISPLAY_CASE,
+				SCContent.GLOW_DISPLAY_CASE,
 				SCContent.KEYPAD_CHEST_ITEM,
 				SCContent.REDSTONE_MODULE,
 				SCContent.SPEED_MODULE,
