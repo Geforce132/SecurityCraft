@@ -22,7 +22,7 @@ public interface ILinkedAction {
 	}
 
 	/**
-	 * Used when a {@link ModuleType} is inserted into an {@link IModuleInventory}
+	 * Used when a {@link EnumModuleType} is inserted into an {@link IModuleInventory}
 	 */
 	public static final class ModuleInserted implements ILinkedAction {
 		public final ItemStack stack;
@@ -37,7 +37,7 @@ public interface ILinkedAction {
 	}
 
 	/**
-	 * Used when a {@link ModuleType} is removed from an {@link IModuleInventory}
+	 * Used when a {@link EnumModuleType} is removed from an {@link IModuleInventory}
 	 */
 	public static final class ModuleRemoved implements ILinkedAction {
 		public final EnumModuleType moduleType;

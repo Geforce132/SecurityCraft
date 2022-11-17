@@ -1,11 +1,13 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.gui.GuiCheckPassword;
+import net.geforcemods.securitycraft.gui.GuiSetPassword;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 
 /**
  * Implementing this interface designates a block entity as being password-protected. Implementing this allows you to use
- * {@link SetPasswordScreen} and {@link CheckPasswordScreen} to easily set your block's password. Extends
+ * {@link GuiSetPassword} and {@link GuiCheckPassword} to easily set your block's password. Extends
  * {@link ICodebreakable} as most password-protected blocks are likely able to be hacked using the Codebreaker by default.
  *
  * @author Geforce
