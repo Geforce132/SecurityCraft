@@ -12,8 +12,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -108,9 +106,6 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 	}
 
 	@Override
-	public void attack(BlockState state, Level level, BlockPos pos, Player player) {}
-
-	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (!level.isClientSide && level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be) {
 			ItemStack heldStack = player.getItemInHand(hand);
@@ -171,8 +166,8 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!(newState.getBlock() instanceof DisplayCaseBlock)) {
-			if (level.getBlockEntity(pos) instanceof Container container)
-				Containers.dropContents(level, pos, container);
+			if (level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be)
+				Block.popResource(level, pos, be.getDisplayedStack());
 
 			super.onRemove(state, level, pos, newState, isMoving);
 		}
