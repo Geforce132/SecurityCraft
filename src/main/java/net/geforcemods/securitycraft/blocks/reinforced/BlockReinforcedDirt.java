@@ -16,10 +16,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockReinforcedDirt extends BlockDirt implements IReinforcedBlock {
@@ -52,6 +54,11 @@ public class BlockReinforcedDirt extends BlockDirt implements IReinforcedBlock {
 		}
 
 		return state;
+	}
+
+	@Override
+	public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable) {
+		return SCContent.reinforcedGrass.canSustainPlant(state, world, pos, direction, plantable);
 	}
 
 	@Override

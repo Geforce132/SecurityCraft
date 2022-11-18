@@ -20,9 +20,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockReinforcedStainedHardenedClay extends BlockColored implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock {
@@ -50,6 +53,11 @@ public class BlockReinforcedStainedHardenedClay extends BlockColored implements 
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		super.breakBlock(world, pos, state);
 		world.removeTileEntity(pos);
+	}
+
+	@Override
+	public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable) {
+		return SCContent.reinforcedGrass.canSustainPlant(state, world, pos, direction, plantable);
 	}
 
 	@Override

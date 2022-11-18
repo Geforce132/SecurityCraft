@@ -18,6 +18,7 @@
 - Fix: The Electrified Iron Fence Gate is not affected by EMPs
 - Fix: The Harming Module does not work when a Laser Block is powered
 - Fix: Several issues in various language files
+- Fix: Plants and saplings cannot be placed on Reinforced Dirt and similar blocks
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
 
