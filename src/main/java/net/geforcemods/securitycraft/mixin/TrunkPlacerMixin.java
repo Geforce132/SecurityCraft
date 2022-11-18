@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
@@ -25,7 +26,11 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 public class TrunkPlacerMixin {
 	@Inject(method = "setDirtAt", at = @At("HEAD"), cancellable = true)
 	private static void onSetDirtAt(LevelSimulatedReader simulatedLevel, BiConsumer<BlockPos, BlockState> blockSetter, Random random, BlockPos pos, TreeConfiguration config, CallbackInfo callback) {
-		if (simulatedLevel instanceof LevelReader level && (level.getBlockState(pos).getBlock() instanceof BaseReinforcedBlock || level.getBlockState(pos).getBlock() instanceof ReinforcedSnowyDirtBlock))
-			callback.cancel();
+		if (simulatedLevel instanceof LevelReader level) {
+			Block block = level.getBlockState(pos).getBlock();
+
+			if (block instanceof BaseReinforcedBlock || block instanceof ReinforcedSnowyDirtBlock)
+				callback.cancel();
+		}
 	}
 }
