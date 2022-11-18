@@ -13,11 +13,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.ItemStack;
 
-public class ItemKeypadChestRenderer extends BlockEntityWithoutLevelRenderer {
+public class KeypadChestItemRenderer extends BlockEntityWithoutLevelRenderer {
 	private static KeypadChestBlockEntity dummyBe;
 	private static KeypadChestRenderer dummyRenderer = null;
 
-	public ItemKeypadChestRenderer() {
+	public KeypadChestItemRenderer() {
 		super(null, null);
 	}
 

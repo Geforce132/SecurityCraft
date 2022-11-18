@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "securitycraft:display_case"
+    ]
+  },
+  "criteria": {
+    "has_item_frame": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:item_frame"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "securitycraft:display_case"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item_frame",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -52,7 +52,6 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-		super.onDataPacket(net, packet);
 		handleUpdateTag(packet.getTag());
 	}
 

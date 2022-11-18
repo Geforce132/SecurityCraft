@@ -1151,6 +1151,8 @@
 	"option.securitycraft.block_change_detector.range": "Rayon de détection : %s",
 	"option.securitycraft.block_change_detector.range.description": "A quelle distance le détecteur pourra détecter un changement de blocs par les joueurs ?",
 	"option.securitycraft.rift_stabilizer.signalLength": "Largeur du signal : %s",
+	"option.securitycraft.display_case.sendMessage": "Message : %s",
+	"option.securitycraft.glow_display_case.sendMessage": "Message : %s",
 
 	"securitycraft.subtitle.alarm": "Sonnerie d‘alarme",
 	"securitycraft.subtitle.electrified": "Entité électrocuté",
