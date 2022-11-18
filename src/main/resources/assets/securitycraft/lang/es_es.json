@@ -970,6 +970,8 @@
 	"option.securitycraft.key_panel.signalLength.description": "¿Cómo de larga debería ser la señal de redstone que se emite tras activarse? (En ticks, 20 ticks = 1 segundo)",
 	"option.securitycraft.block_change_detector.signalLength": "Longitud de la señal: %s",
 	"option.securitycraft.rift_stabilizer.signalLength": "Longitud de la señal: %s",
+	"option.securitycraft.display_case.sendMessage": "Mensaje: %s",
+	"option.securitycraft.glow_display_case.sendMessage": "Mensaje: %s",
 
 	"securitycraft.subtitle.alarm": "Alarma suena",
 	"securitycraft.subtitle.electrified": "Entidad se electrocuta",
