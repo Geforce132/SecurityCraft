@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.AbstractFlowerFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinforcedBlock, BonemealableBlock, EntityBlock {
@@ -125,6 +126,11 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 				++j;
 			}
 		}
+	}
+
+	@Override
+	public boolean canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction facing, IPlantable plantable) {
+		return SCContent.REINFORCED_DIRT.get().canSustainPlant(state, level, pos, facing, plantable);
 	}
 
 	@Override

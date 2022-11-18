@@ -52,22 +52,29 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 			return state.is(SCTags.Blocks.REINFORCED_SAND);
 
 		if (plantable instanceof BushBlock) { //a nasty workaround because BaseReinforcedBlock can't use BushBlock#mayPlaceOn because it is protected
+			boolean condition = false;
+
 			if (plantable instanceof AzaleaBlock)
-				return state.is(SCContent.REINFORCED_CLAY.get());
-			else if (plantable instanceof FungusBlock || plantable instanceof NetherSproutsBlock || plantable instanceof RootsBlock)
-				return state.is(SCContent.REINFORCED_SOUL_SOIL.get());
-			else if (plantable instanceof WaterlilyBlock)
-				return level.getFluidState(pos).getType() == SCContent.FAKE_WATER.get() && level.getFluidState(pos.above()).getType() == Fluids.EMPTY;
-			else if (plantable instanceof WitherRoseBlock)
-				return state.is(SCContent.REINFORCED_NETHERRACK.get()) || state.is(SCContent.REINFORCED_SOUL_SOIL.get());
+				condition = state.is(SCContent.REINFORCED_CLAY.get()) || state.is(SCTags.Blocks.REINFORCED_DIRT);
 			else if (plantable instanceof DeadBushBlock)
-				return state.is(SCTags.Blocks.REINFORCED_SAND) || state.is(SCContent.REINFORCED_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_WHITE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_ORANGE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_MAGENTA_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_YELLOW_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_LIME_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_PINK_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_GRAY_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_CYAN_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_PURPLE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_BLUE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_BROWN_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_GREEN_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_RED_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_BLACK_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_DIRT.get()) || state.is(SCContent.REINFORCED_COARSE_DIRT.get()) || state.is(SCContent.REINFORCED_PODZOL.get());
+				condition = state.is(SCTags.Blocks.REINFORCED_SAND) || state.is(SCContent.REINFORCED_TERRACOTTA.get()) || state.is(SCTags.Blocks.REINFORCED_TERRACOTTA) || state.is(SCTags.Blocks.REINFORCED_DIRT);
+			else if (plantable instanceof FungusBlock || plantable instanceof NetherSproutsBlock || plantable instanceof RootsBlock)
+				condition = state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || state.is(SCTags.Blocks.REINFORCED_DIRT);
+			else if (plantable instanceof WaterlilyBlock)
+				condition = level.getFluidState(pos).getType() == SCContent.FAKE_WATER.get() && level.getFluidState(pos.above()).getType() == Fluids.EMPTY;
+			else if (plantable instanceof WitherRoseBlock)
+				condition = state.is(SCContent.REINFORCED_NETHERRACK.get()) || state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || state.is(SCTags.Blocks.REINFORCED_DIRT);
+
+			if (condition)
+				return true;
 		}
 
 		if (PlantType.DESERT.equals(type))
-			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_TERRACOTTA.get();
+			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_TERRACOTTA.get() || this instanceof ReinforcedGlazedTerracottaBlock;
+		else if (PlantType.PLAINS.equals(type))
+			return state.is(SCTags.Blocks.REINFORCED_DIRT);
 		else if (PlantType.BEACH.equals(type)) {
-			boolean isBeach = state.is(SCTags.Blocks.REINFORCED_SAND);
+			boolean isBeach = state.is(SCTags.Blocks.REINFORCED_DIRT) || state.is(SCTags.Blocks.REINFORCED_SAND);
 			boolean hasWater = false;
 
 			for (Direction face : Direction.Plane.HORIZONTAL) {
