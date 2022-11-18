@@ -280,7 +280,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 		previousPageButton.mouseClicked(mouseX, mouseY, button);
 		nextPageButton.mouseClicked(mouseX, mouseY, button);
-		clickedInDragRegion = dragHoverChecker.checkHover(mouseX, mouseY, getFocused());
+		clickedInDragRegion = dragHoverChecker.checkHover(mouseX, mouseY);
 		return false;
 	}
 

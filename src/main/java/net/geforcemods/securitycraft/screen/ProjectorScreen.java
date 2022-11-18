@@ -99,11 +99,13 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 
 		for (TextHoverChecker thc : hoverCheckers) {
 			//last check hides the tooltip when a slider is being dragged
-			if (thc.checkHover(mouseX, mouseY, getFocused()) && (!(thc.getWidget() instanceof CallbackSlider) || !isDragging()))
+			if (thc.checkHover(mouseX, mouseY) && (!(thc.getWidget() instanceof CallbackSlider) || !isDragging())) {
 				renderTooltip(pose, thc.getName(), mouseX, mouseY);
+				break;
+			}
 		}
 
-		if (slotHoverChecker.checkHover(mouseX, mouseY, getFocused()) && menu.be.isEmpty())
+		if (slotHoverChecker.checkHover(mouseX, mouseY) && menu.be.isEmpty())
 			renderTooltip(pose, slotHoverChecker.getName(), mouseX, mouseY);
 	}
 
