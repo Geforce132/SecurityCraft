@@ -13,6 +13,7 @@
 	],
 	"mixins": [
 		"PortalForcerMixin",
+		"TrunkPlacerMixin",
 		"camera.ChunkMapMixin",
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",
