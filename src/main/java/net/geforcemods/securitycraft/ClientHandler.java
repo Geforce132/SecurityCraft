@@ -24,6 +24,7 @@ import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.DisguisableBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.EmptyRenderer;
+import net.geforcemods.securitycraft.renderers.DisplayCaseRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.ProjectorRenderer;
@@ -274,6 +275,7 @@ public class ClientHandler {
 		ClientRegistry.bindTileEntityRenderer(SCContent.PROJECTOR_BLOCK_ENTITY.get(), ProjectorRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.REINFORCED_PISTON_BLOCK_ENTITY.get(), ReinforcedPistonRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.SONIC_SECURITY_SYSTEM_BLOCK_ENTITY.get(), SonicSecuritySystemRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), DisplayCaseRenderer::new);
 		//disguisable block entity renderers
 		ClientRegistry.bindTileEntityRenderer(SCContent.BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.CAGE_TRAP_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
@@ -302,7 +304,6 @@ public class ClientHandler {
 		ScreenManager.register(SCContent.PROJECTOR_MENU.get(), ProjectorScreen::new);
 		KeyBindings.init();
 	}
-
 	private static void initTint() {
 		for (Field field : SCContent.class.getFields()) {
 			if (field.isAnnotationPresent(Reinforced.class)) {

@@ -141,6 +141,15 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('C', SCContent.CRYSTAL_QUARTZ_ITEM.get())
 		.unlockedBy("has_crystal_quartz_item", has(SCContent.CRYSTAL_QUARTZ_ITEM.get()))
 		.save(consumer);
+		ShapedRecipeBuilder.shaped(SCContent.DISPLAY_CASE.get())
+		.pattern("III")
+		.pattern("IFG")
+		.pattern("III")
+		.define('I', Tags.Items.INGOTS_IRON)
+		.define('F', Items.ITEM_FRAME)
+		.define('G', SCContent.REINFORCED_GLASS_PANE.get())
+		.unlockedBy("has_item_frame", has(Items.ITEM_FRAME))
+		.save(consumer);
 		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_DOOR_ITEM.get())
 		.pattern("III")
 		.pattern("IDI")

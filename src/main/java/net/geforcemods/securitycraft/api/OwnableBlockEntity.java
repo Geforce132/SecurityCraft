@@ -51,7 +51,7 @@ public class OwnableBlockEntity extends TileEntity implements IOwnable {
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-		load(getBlockState(), packet.getTag());
+		handleUpdateTag(null, packet.getTag());
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
+import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeyPanelBlockEntity;
@@ -51,6 +52,7 @@ import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.FakeLavaBlock;
 import net.geforcemods.securitycraft.blocks.FakeWaterBlock;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
@@ -174,7 +176,8 @@ import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.PageGroup;
-import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
+import net.geforcemods.securitycraft.renderers.DisplayCaseItemRenderer;
+import net.geforcemods.securitycraft.renderers.KeypadChestItemRenderer;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.OwnableTE;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -220,6 +223,7 @@ public class SCContent {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SecurityCraft.MODID);
 	public static final DeferredRegister<ContainerType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, SecurityCraft.MODID);
 	public static final String KEYPAD_CHEST_PATH = "keypad_chest";
+	public static final String DISPLAY_CASE_PATH = "display_case";
 
 	//fluids
 	public static final RegistryObject<FlowingFluid> FLOWING_FAKE_WATER = FLUIDS.register("flowing_fake_water", () -> new FakeWaterFluid.Flowing());
@@ -258,6 +262,8 @@ public class SCContent {
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> CLAYMORE = BLOCKS.register("claymore", () -> new ClaymoreBlock(prop(Material.DECORATION)));
+	@HasManualPage
+	public static final RegistryObject<Block> DISPLAY_CASE = BLOCKS.register(DISPLAY_CASE_PATH, () -> new DisplayCaseBlock(prop(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@OwnableTE
 	@RegisterItemBlock
@@ -1888,6 +1894,7 @@ public class SCContent {
 	public static final RegistryObject<Item> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1).defaultDurability(3)));
 	@HasManualPage
 	public static final RegistryObject<Item> CRYSTAL_QUARTZ_ITEM = ITEMS.register("crystal_quartz_item", () -> new Item(itemProp(SecurityCraft.groupSCDecoration)));
+	public static final RegistryObject<Item> DISPLAY_CASE_ITEM = ITEMS.register(DISPLAY_CASE_PATH, () -> new BlockItem(SCContent.DISPLAY_CASE.get(), itemProp(SecurityCraft.groupSCDecoration).setISTER(() -> DisplayCaseItemRenderer::new))); //keep this as a method reference or else the server will crash
 	@HasManualPage(hasRecipeDescription = true)
 	public static final RegistryObject<Item> FAKE_LAVA_BUCKET = ITEMS.register("bucket_f_lava", () -> new FakeLiquidBucketItem(SCContent.FAKE_LAVA, itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
 	@HasManualPage(hasRecipeDescription = true)
@@ -1904,7 +1911,7 @@ public class SCContent {
 	public static final RegistryObject<Item> KEYCARD_LVL_5 = ITEMS.register("keycard_lv5", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), 4));
 	@HasManualPage
 	public static final RegistryObject<Item> KEY_PANEL = ITEMS.register("keypad_item", () -> new KeyPanelItem(itemProp(SecurityCraft.groupSCTechnical)));
-	public static final RegistryObject<Item> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new BlockItem(SCContent.KEYPAD_CHEST.get(), itemProp(SecurityCraft.groupSCTechnical).setISTER(() -> ItemKeypadChestRenderer::new))); //keep this as a method reference or else the server will crash
+	public static final RegistryObject<Item> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new BlockItem(SCContent.KEYPAD_CHEST.get(), itemProp(SecurityCraft.groupSCTechnical).setISTER(() -> KeypadChestItemRenderer::new))); //keep this as a method reference or else the server will crash
 	@HasManualPage
 	public static final RegistryObject<Item> KEYPAD_DOOR_ITEM = ITEMS.register("keypad_door_item", () -> new TallBlockItem(KEYPAD_DOOR.get(), itemProp(SecurityCraft.groupSCDecoration)));
 	@HasManualPage
@@ -2100,6 +2107,7 @@ public class SCContent {
 	public static final RegistryObject<TileEntityType<BlockChangeDetectorBlockEntity>> BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("block_change_detector", () -> TileEntityType.Builder.of(BlockChangeDetectorBlockEntity::new, SCContent.BLOCK_CHANGE_DETECTOR.get()).build(null));
 	public static final RegistryObject<TileEntityType<RiftStabilizerBlockEntity>> RIFT_STABILIZER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("rift_stabilizer", () -> TileEntityType.Builder.of(RiftStabilizerBlockEntity::new, SCContent.RIFT_STABILIZER.get()).build(null));
 	public static final RegistryObject<TileEntityType<DisguisableBlockEntity>> DISGUISABLE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("disguisable", () -> TileEntityType.Builder.of(DisguisableBlockEntity::new, SCContent.SENTRY_DISGUISE.get()).build(null));
+	public static final RegistryObject<TileEntityType<DisplayCaseBlockEntity>> DISPLAY_CASE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("display_case", () -> TileEntityType.Builder.of(DisplayCaseBlockEntity::new, SCContent.DISPLAY_CASE.get()).build(null));
 
 	//entity types
 	public static final RegistryObject<EntityType<BouncingBetty>> eTypeBouncingBetty = ENTITY_TYPES.register("bouncingbetty",

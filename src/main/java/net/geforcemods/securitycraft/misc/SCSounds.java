@@ -11,7 +11,9 @@ public enum SCSounds {
 	ELECTRIFIED("securitycraft:electrified"),
 	LOCK("securitycraft:lock"),
 	PING("securitycraft:ping"),
-	GET_ITEM("securitycraft:get_item");
+	GET_ITEM("securitycraft:get_item"),
+	DISPLAY_CASE_OPEN("securitycraft:display_case_open"),
+	DISPLAY_CASE_CLOSE("securitycraft:display_case_close");
 
 	public final String path;
 	public final ResourceLocation location;

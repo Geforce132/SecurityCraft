@@ -446,6 +446,7 @@
 	"block.securitycraft.block_change_detector": "Block-Änderungsdetektor",
 	"block.securitycraft.reinforced_end_rod": "Verstärkter Endstab",
 	"block.securitycraft.rift_stabilizer": "Riss-Stabilisierer",
+	"block.securitycraft.display_case": "Vitrine",
 
 	"item.securitycraft.codebreaker": "Codebrecher",
 	"item.securitycraft.door_indestructible_iron_item": "Verstärkte Eisentür",
@@ -568,6 +569,7 @@
 	"help.securitycraft.sonic_security_system.info": "Das Schallsicherheitssystem, inspiriert vom \"Sonic Security System\" im Spiel \"Metroid Prime 2: Echoes\", kann bestimmte SecurityCraft Blöcke sperren und somit Spieler daran hindern, sie zu nutzen. Rechtsklicke einen solchen Block, um ihn mit dem Schallsicherheitssystem zu verbinden. Wenn das Schallsicherheitssystem platziert ist, kann via Rechtsklick ein GUI geöffnet werden, das ermöglicht, es zu aktivieren, deaktivieren, oder zurückzusetzen. Die Blöcke lassen sich kurzzeitig entsperren, indem eine bestimmte Melodie - entweder mit einem tragbaren Melodienspieler oder Notenblöcken in der Nähe - abgespielt wird. Um die Melodie zu bestimmen, starte die Aufnahme im GUI des Schallsicherheitssystems, und spiele eine Tonfolge in der Nähe. Sobald du fertig bist, stoppe die Aufnahme. Nun werden die durch dieses Schallsicherheitssystem gesperrten Blöcke jedes Mal, wenn diese Tonfolge in der Nähe des Schallsicherheitssystems gespielt wird, kurzzeitig entsperrt.",
 	"help.securitycraft.block_change_detector.info": "Der Block-Änderungsdetektor detektiert, wenn Spieler in seiner Nähe Blöcke zerbrechen und/oder platzieren (standardmäßig 5 Blöcke, kann mit dem universellen Blockmodifizierer verändert werden). Ein Rechtsklick auf den Block öffnet sein Interface, in dem alle Detektionen aufgelistet sind. Des Weiteren kann eingestellt werden, ob der Block nur Platzieren oder Zerbrechen von Blöcken, oder beides gleichzeitig detektiert.",
 	"help.securitycraft.rift_stabilizer.info": "Der Riss-Stabilisierer erkennt und verhindert Teleportationsversuche von Spielern in dessen Nähe (standardmäßig 5 Blöcke, kann mit dem universellen Blockmodifizierer verändert werden). Teleportationsversuche werden verhindert, falls sich die Ursprungs- oder Zielposition des Teleports im Radius des Blocks befindet. Rechtsklicke den Block, um die Liste aller erkennbaren Teleportationsarten einzusehen.",
+	"help.securitycraft.display_case.info": "Die Vitrine kann ein Item ausstellen, ähnlich zu einem Vanilla-Rahmen, wobei das Item nicht gedreht werden kann. Um die Vitrine zu öffnen, benötigt man einen numerischen Code, wie das Nummernschloss und andere ähnliche Blöcke. Sobald es offen ist, kann ein Item mit einem Rechtsklick eingefügt werden. Um das Item wieder herauszunehmen, schleich-rechtsklicke die Vitrine. Um die Vitrine zu schließen, rechtsklicke sie mit einer leeren Hand. Während die Vitrine offen ist, kann jeder mit ihr interagieren.",
 
 	"help.securitycraft.codebreaker.info": "Der Codebrecher kann jedes Nummernschloss, jede passwortgesicherte Truhe und jeden passwortgesicherten Ofen durch einen Rechtsklick knacken. (5 Nutzungen mit einer Chance von 2/3, dass er funktioniert)",
 	"help.securitycraft.universal_block_remover.info": "Der Universelle Blockentferner wird benutzt, um verstärkte Blöcke durch einen Rechtsklick zu entfernen. Nur der Spieler, der den Block platziert hat, kann ihn auch entfernen.",
@@ -634,6 +636,7 @@
 	"gui.securitycraft:scManual.keycards": "Schlüsselkarten",
 	"gui.securitycraft:scManual.secret_signs": "Geheime Schilder",
 	"gui.securitycraft:scManual.block_reinforcers": "Universelle Blockverstärker",
+	"gui.securitycraft:scManual.display_cases": "Vitrinen",
 	"gui.securitycraft:scManual.designedBy": "Entworfen von: %s",
 	"gui.securitycraft:scManual.patreon.error": "Fehler beim Laden der Patrons!",
 	"gui.securitycraft:scManual.patreon.loading": "Lade...",
@@ -1001,6 +1004,8 @@
 	"module.securitycraft.rift_stabilizer.redstone_module.description": "Ein Redstone-Modul in einem Riss-Stabilisierer führt dazu, dass ein Redstonesignal abgegeben wird, wenn ein Teleportationsversuch in dessen Nähe erkannt wird. Dieses Signal ist umso stärker, je geringer die Distanz zwischen dem Teleportationsversuch und dem Block ist. Zusätzlich führt es dazu, dass ein Komparator verwendet werden kann, um die letzte erkannte Teleportationsart festzustellen.",
 	"module.securitycraft.rift_stabilizer.harming_module.description": "Ein Schadensmodul in einem Riss-Stabilisierer führt dazu, dass Spieler, die versuchen, sich in den/aus dem Radius des Blocks zu teleportieren, Schaden erleiden.",
 	"module.securitycraft.rift_stabilizer.smart_module.description": "Ein schlaues Modul in einem Riss-Stabilisierer lässt dich einstellen, welche Teleportationsarten der Riss-Stabilisierer erkennen kann.",
+	"module.securitycraft.display_case.whitelist_module.description": "Ein Zulassungslisten-Modul in einer Vitrine erlaubt zugelassenen Spielern, sie zu öffnen, ohne den Code zu kennen.",
+	"module.securitycraft.display_case.blacklist_module.description": "Ein Sperrlisten-Modul in einer Vitrine verhindert, dass gesperrte Spieler mit ihr interagieren können.",
 
 	"option.generic.disabled": "Deaktiviert: %s",
 	"option.generic.disabled.description": "Soll dieser Block deaktiviert werden, sodass er bis zum Reaktivieren nicht mehr funktioniert?",
@@ -1098,6 +1103,8 @@
 	"option.securitycraft.rift_stabilizer.signalLength.description": "Wie lange soll das Redstonesignal nach Detektion eines Teleportationsversuches sein? (In Ticks, 20 Ticks = 1 Sekunde)",
 	"option.securitycraft.rift_stabilizer.range": "Detektionsradius: %s",
 	"option.securitycraft.rift_stabilizer.range.description": "Wie weit weg soll der Riss-Stabilisierer Teleportationsversuche verhindern?",
+	"option.securitycraft.display_case.sendMessage": "Nachricht: %s",
+	"option.securitycraft.display_case.sendMessage.description": "Sendet diese Vitrine eine Nachricht, wenn sie geöffnet wird (bei Nutzung von Zulassungslisten/Sperrlisten-Modulen)?",
 
 	"securitycraft.subtitle.alarm": "Alarm geht los",
 	"securitycraft.subtitle.electrified": "Stromschlag",
@@ -1106,5 +1113,7 @@
 	"securitycraft.subtitle.taserfire": "Taser wird gefeuert",
 	"securitycraft.subtitle.lock": "Behälter wird verschlossen",
 	"securitycraft.subtitle.get_item": "Item bekommen!",
-	"securitycraft.subtitle.ping": "Schallsicherheitssystem pingt"
+	"securitycraft.subtitle.ping": "Schallsicherheitssystem pingt",
+	"securitycraft.subtitle.display_case_open": "Vitrine wird geöffnet",
+	"securitycraft.subtitle.display_case_close": "Vitrine wird geschlossen"
 }

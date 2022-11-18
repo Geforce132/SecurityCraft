@@ -446,6 +446,7 @@
 	"block.securitycraft.block_change_detector": "Block Change Detector",
 	"block.securitycraft.reinforced_end_rod": "Reinforced End Rod",
 	"block.securitycraft.rift_stabilizer": "Rift Stabilizer",
+	"block.securitycraft.display_case": "Display Case",
 
 	"item.securitycraft.codebreaker": "Codebreaker",
 	"item.securitycraft.door_indestructible_iron_item": "Reinforced Iron Door",
@@ -568,6 +569,7 @@
 	"help.securitycraft.sonic_security_system.info": "The Sonic Security System, inspired by the similarly-named device in the game \"Metroid Prime 2: Echoes\", is able to lock certain SecurityCraft blocks and prevent them from being used or interacted with. Right-clicking a supported block will bind it to the Sonic Security System. Once it is placed down, right-clicking it will open a GUI where you can enable, disable, or reset the Sonic Security System. The blocks can be unlocked by playing a tune nearby, either via the Portable Tune Player, or note blocks. To set such a tune, toggle note recording on in the Sonic Security System's GUI then play the tune that you want using note blocks played nearby. Toggle the recording off once you are finished. Any time that tune is played nearby the Sonic Security System, blocks locked by it will become accessible for a short while.",
 	"help.securitycraft.block_change_detector.info": "The Block Change Detector detects players breaking and/or placing blocks in its vicinity (5 blocks by default, can be changed with the universal block modifier). Right-clicking the block will open its interface, where a list of detected changes can be seen, as well as whether it only detects breaking or placing blocks, or both.",
 	"help.securitycraft.rift_stabilizer.info": "The Rift Stabilizer detects and prevents teleportation attempts by entities in its vicinity (5 blocks by default, can be changed with the universal block modifier). Teleportation attempts will be prohibited if the source or target position of the teleport is within the block's range. Rightclicking the block will allow you to see a list of all detectable teleportation types.",
+	"help.securitycraft.display_case.info": "The Display Case can display one item, similar to a vanilla item frame, although the item cannot be rotated. Opening the case requires inserting a passcode, just like the Keypad and other similar blocks do. Once open, an item can be inserted by rightclicking the case with the item. To retrieve the item, sneak-rightclick the case. To close the case, rightclick it with an empty hand. While the case is open, anyone can interact with it.",
 
 	"help.securitycraft.codebreaker.info": "The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)",
 	"help.securitycraft.universal_block_remover.info": "The universal block remover is used to destroy \"reinforced\" blocks by rightclicking it. Only the person who placed the block down can destroy it.",
@@ -633,6 +635,7 @@
 	"gui.securitycraft:scManual.keycards": "Keycards",
 	"gui.securitycraft:scManual.secret_signs": "Secret Signs",
 	"gui.securitycraft:scManual.block_reinforcers": "Universal Block Reinforcers",
+	"gui.securitycraft:scManual.display_cases": "Display Cases",
 	"gui.securitycraft:scManual.designedBy": "Designed by: %s",
 	"gui.securitycraft:scManual.patreon.title": "Our Patrons:",
 	"gui.securitycraft:scManual.patreon.loading": "Loading...",
@@ -1003,6 +1006,8 @@
 	"module.securitycraft.rift_stabilizer.redstone_module.description": "Adding a redstone module to a Rift Stabilizer makes it emit a redstone signal each time it detects a teleportation attempt in its vicinity. This redstone signal will be stronger if the detection happened near the block, and weaker if it happened further away. Additionally, it will allow a comparator to be used to determine the last detected teleportation type.",
 	"module.securitycraft.rift_stabilizer.harming_module.description": "Adding a harming module to a Rift Stabilizer will cause players attempting to teleport into or from its vicinity to take damage.",
 	"module.securitycraft.rift_stabilizer.smart_module.description": "Adding a smart module to a Rift Stabilizer will allow you to configure which teleportation types the Rift Stabilizer is able to detect.",
+	"module.securitycraft.display_case.whitelist_module.description": "Adding an allowlist module to a display case will allow listed players to open it without knowing the code.",
+	"module.securitycraft.display_case.blacklist_module.description": "Adding a denylist module to a display case will ban listed players from interacting with the block.",
 
 	"option.generic.disabled": "Disabled: %s",
 	"option.generic.disabled.description": "Should this block be disabled, making it no longer work until it is enabled again?",
@@ -1100,6 +1105,8 @@
 	"option.securitycraft.rift_stabilizer.signalLength.description": "How long should the redstone signal after detecting a teleportation attempt be? (In ticks, 20 ticks = 1 second)",
 	"option.securitycraft.rift_stabilizer.range": "Detection radius: %s",
 	"option.securitycraft.rift_stabilizer.range.description": "How far away should the Rift Stabilizer be able to prevent teleportation attempts?",
+	"option.securitycraft.display_case.sendMessage": "Message: %s",
+	"option.securitycraft.display_case.sendMessage.description": "Does this case send a message upon activation (when using allowlist/denylist modules)?",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",
@@ -1108,5 +1115,7 @@
 	"securitycraft.subtitle.taserfire": "Taser firing",
 	"securitycraft.subtitle.lock": "Container locking",
 	"securitycraft.subtitle.get_item": "Item gotten!",
-	"securitycraft.subtitle.ping": "Sonic Security System pings"
+	"securitycraft.subtitle.ping": "Sonic Security System pings",
+	"securitycraft.subtitle.display_case_open": "Display Case opens",
+	"securitycraft.subtitle.display_case_close": "Display Case closes"
 }
