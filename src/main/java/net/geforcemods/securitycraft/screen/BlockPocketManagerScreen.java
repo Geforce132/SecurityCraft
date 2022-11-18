@@ -185,20 +185,20 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 				colorChooser.render(matrix, mouseX, mouseY, partialTicks);
 
 			for (StackHoverChecker shc : hoverCheckers) {
-				if (shc.checkHover(mouseX, mouseY, getFocused())) {
+				if (shc.checkHover(mouseX, mouseY)) {
 					renderTooltip(matrix, shc.getStack(), mouseX, mouseY);
-					return;
+					break;
 				}
 			}
 
-			if (!assembleButton.active && assembleHoverChecker.checkHover(mouseX, mouseY, getFocused())) {
+			if (!assembleButton.active && assembleHoverChecker.checkHover(mouseX, mouseY)) {
 				if (!storage)
 					GuiUtils.drawHoveringText(matrix, assembleHoverChecker.getLines().subList(0, 1), mouseX, mouseY, width, height, -1, font);
 				else
 					GuiUtils.drawHoveringText(matrix, assembleHoverChecker.getLines().subList(1, 2), mouseX, mouseY, width, height, -1, font);
 			}
 
-			if (colorChooserButtonHoverChecker.checkHover(mouseX, mouseY, getFocused()))
+			if (colorChooserButtonHoverChecker.checkHover(mouseX, mouseY))
 				renderTooltip(matrix, colorChooserButtonHoverChecker.getName(), mouseX, mouseY);
 		}
 	}

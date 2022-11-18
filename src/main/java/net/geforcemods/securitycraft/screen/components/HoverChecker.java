@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.screen.components;
 
-import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 
@@ -24,12 +23,12 @@ public class HoverChecker {
 		this.widget = widget;
 	}
 
-	public boolean checkHover(double mouseX, double mouseY, IGuiEventListener currentlyFocused) {
+	public boolean checkHover(double mouseX, double mouseY) {
 		if (widget != null) {
 			if (!widget.visible || (widget instanceof Slider && ((Slider) widget).dragging))
 				return false;
 			else
-				return widget.isHovered() && !(widget.isHovered && widget != currentlyFocused);
+				return widget.isHovered();
 		}
 		else
 			return mouseX >= left && mouseX <= right && mouseY >= top && mouseY <= bottom;

@@ -170,8 +170,10 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			renderTooltip(matrix, getSlotUnderMouse().getItem(), mouseX, mouseY);
 
 		for (TextHoverChecker hoverChecker : hoverCheckers) {
-			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY, getFocused()))
+			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY)) {
 				renderTooltip(matrix, minecraft.font.split(hoverChecker.getName(), 150), mouseX, mouseY);
+				break;
+			}
 		}
 	}
 
