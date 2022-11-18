@@ -194,8 +194,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		font.draw(pose, modifyAll, startX + xSize / 2 - font.width(modifyAll) + 25, startY + 194, 4210752);
 
 		for (TextHoverChecker chc : hoverCheckers) {
-			if (chc != null && chc.checkHover(mouseX, mouseY, getFocused()))
+			if (chc != null && chc.checkHover(mouseX, mouseY)) {
 				renderTooltip(pose, chc.getName(), mouseX, mouseY);
+				break;
+			}
 		}
 	}
 

@@ -189,11 +189,15 @@ public class SCManualScreen extends Screen {
 			for (int i = 0; i < hoverCheckers.size(); i++) {
 				HoverChecker chc = hoverCheckers.get(i);
 
-				if (chc != null && chc.checkHover(mouseX, mouseY, getFocused())) {
-					if (chc instanceof TextHoverChecker thc && thc.getName() != null)
+				if (chc != null && chc.checkHover(mouseX, mouseY)) {
+					if (chc instanceof TextHoverChecker thc && thc.getName() != null) {
 						renderComponentTooltip(pose, thc.getLines(), mouseX, mouseY);
-					else if (i < displays.length && !displays[i].getCurrentStack().isEmpty())
+						break;
+					}
+					else if (i < displays.length && !displays[i].getCurrentStack().isEmpty()) {
 						renderTooltip(pose, displays[i].getCurrentStack(), mouseX, mouseY);
+						break;
+					}
 				}
 			}
 		}

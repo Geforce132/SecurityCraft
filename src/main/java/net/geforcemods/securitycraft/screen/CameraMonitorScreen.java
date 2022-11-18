@@ -138,12 +138,16 @@ public class CameraMonitorScreen extends Screen {
 		font.draw(pose, selectCameras, startX + xSize / 2 - font.width(selectCameras) / 2, startY + 6, 4210752);
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
-			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY, getFocused())) {
+			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
 				if (cameraBEs[i] != null) {
-					if (cameraBEs[i].isDisabled())
+					if (cameraBEs[i].isDisabled()) {
 						renderTooltip(pose, Utils.localize("gui.securitycraft:scManual.disabled"), mouseX, mouseY);
-					else if (cameraBEs[i].hasCustomName())
+						break;
+					}
+					else if (cameraBEs[i].hasCustomName()) {
 						renderTooltip(pose, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBEs[i].getCustomName()), 150), mouseX, mouseY);
+						break;
+					}
 				}
 			}
 		}

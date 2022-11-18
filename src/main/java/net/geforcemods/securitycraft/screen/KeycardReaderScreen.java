@@ -104,8 +104,8 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 						else
 							active = otherButtonId >= thisButtonId;
 
-						//update button state and data
-						changeLevelState(otherButtonId, active);
+							//update button state and data
+							changeLevelState(otherButtonId, active);
 					}
 				}
 				else
@@ -258,7 +258,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 				renderComponentTooltip(pose, Arrays.asList(levelMismatchInfo), mouseX, mouseY);
 		}
 
-		if (!usesTextField.active && !stack.isEmpty() && usesHoverChecker.checkHover(mouseX, mouseY, getFocused()))
+		if (!usesTextField.active && !stack.isEmpty() && usesHoverChecker.checkHover(mouseX, mouseY))
 			renderComponentTooltip(pose, usesHoverChecker.getLines(), mouseX, mouseY);
 
 		renderTooltip(pose, mouseX, mouseY);

@@ -155,8 +155,10 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 		for (TextHoverChecker hoverChecker : hoverCheckers) {
 			//last check hides the tooltip when a slider is being dragged
-			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY, getFocused()) && (!(hoverChecker.getWidget() instanceof CallbackSlider) || !isDragging()))
+			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY) && (!(hoverChecker.getWidget() instanceof CallbackSlider) || !isDragging())) {
 				renderTooltip(pose, minecraft.font.split(hoverChecker.getName(), 150), mouseX, mouseY);
+				break;
+			}
 		}
 	}
 
