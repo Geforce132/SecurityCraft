@@ -83,7 +83,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				SCContent.REINFORCED_GOLD_BLOCK.get().asItem());
 		tag(ItemTags.PIGLIN_REPELLENTS).add(SCContent.REINFORCED_SOUL_LANTERN.get().asItem());
 		tag(ItemTags.RAILS).add(SCContent.TRACK_MINE.get().asItem());
-		tag(ItemTags.SAND).addTag(SCTags.Items.REINFORCED_SAND);
 		tag(ItemTags.SLABS).addTag(SCTags.Items.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get().asItem());
 		tag(ItemTags.STAIRS).addTag(SCTags.Items.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get().asItem());
 		tag(ItemTags.SIGNS).addTag(SCTags.Items.SECRET_SIGNS);

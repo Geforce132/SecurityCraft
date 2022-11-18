@@ -12,7 +12,9 @@
 		"f3.DebugOverlayGuiMixin"
 	],
 	"mixins": [
+		"AbstractTrunkPlacerMixin",
 		"TeleporterMixin",
+		"TreeFeatureMixin",
 		"camera.ChunkManagerMixin",
 		"camera.EntityTrackerMixin",
 		"camera.PlayerListMixin",
