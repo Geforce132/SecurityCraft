@@ -8,6 +8,7 @@ import java.util.function.ToIntFunction;
 import com.google.common.collect.Lists;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
@@ -38,7 +39,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-public class TileEntityRiftStabilizer extends TileEntityDisguisable implements ITickable, IToggleableEntries<TeleportationType> {
+public class TileEntityRiftStabilizer extends TileEntityDisguisable implements ITickable, ILockable, IToggleableEntries<TeleportationType> {
 	private final OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private final OptionInt range = new OptionInt(this::getPos, "range", 5, 1, 15, 1, true);
 	private final DisabledOption disabled = new DisabledOption(false);
