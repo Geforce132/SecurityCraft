@@ -1156,6 +1156,8 @@
 	"option.securitycraft.block_change_detector.range": "Raggio rilevamento: %s",
 	"option.securitycraft.block_change_detector.range.description": "Fino a che distanza il rilevatore dovrebbe funzionare?",
 	"option.securitycraft.rift_stabilizer.signalLength": "Lunghezza segnale: %s",
+	"option.securitycraft.display_case.sendMessage": "Messaggio: %s",
+	"option.securitycraft.glow_display_case.sendMessage": "Messaggio: %s",
 
 	"securitycraft.subtitle.alarm": "L'allarme sta suonando",
 	"securitycraft.subtitle.electrified": "Entità folgorata",

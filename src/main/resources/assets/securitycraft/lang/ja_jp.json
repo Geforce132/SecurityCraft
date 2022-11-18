@@ -1180,6 +1180,8 @@
 	"option.securitycraft.block_change_detector.range": "検出範囲：%s",
 	"option.securitycraft.block_change_detector.range.description": "プレイヤーのブロックチェンジを検知するためには、どの程度の距離まで検知するか？",
 	"option.securitycraft.rift_stabilizer.signalLength": "信号長：%s",
+	"option.securitycraft.display_case.sendMessage": "メッセージ：%s",
+	"option.securitycraft.glow_display_case.sendMessage": "メッセージ：%s",
 
 	"securitycraft.subtitle.alarm": "アラーム音",
 	"securitycraft.subtitle.electrified": "感電死したエンティティ",
