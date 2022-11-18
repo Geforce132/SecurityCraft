@@ -186,20 +186,20 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 		if (!be.enabled && isOwner) {
 			for (StackHoverChecker shc : hoverCheckers) {
-				if (shc.checkHover(mouseX, mouseY, getFocused())) {
+				if (shc.checkHover(mouseX, mouseY)) {
 					renderTooltip(pose, shc.getStack(), mouseX, mouseY);
-					return;
+					break;
 				}
 			}
 
-			if (!assembleButton.active && assembleHoverChecker.checkHover(mouseX, mouseY, getFocused())) {
+			if (!assembleButton.active && assembleHoverChecker.checkHover(mouseX, mouseY)) {
 				if (!storage)
 					renderComponentTooltip(pose, assembleHoverChecker.getLines().subList(0, 1), mouseX, mouseY);
 				else
 					renderComponentTooltip(pose, assembleHoverChecker.getLines().subList(1, 2), mouseX, mouseY);
 			}
 
-			if (colorChooserButtonHoverChecker.checkHover(mouseX, mouseY, getFocused()))
+			if (colorChooserButtonHoverChecker.checkHover(mouseX, mouseY))
 				renderTooltip(pose, colorChooserButtonHoverChecker.getName(), mouseX, mouseY);
 		}
 	}

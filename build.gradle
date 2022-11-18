@@ -99,7 +99,7 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.17.1-37.1.1'
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
-    
+
     implementation fg.deobf("curse.maven:jei-238222:3596034")
     implementation fg.deobf("curse.maven:the-one-probe-245211:3430022")
     implementation fg.deobf("curse.maven:jade-324717:3468298")

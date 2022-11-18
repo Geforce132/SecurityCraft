@@ -98,11 +98,13 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 		renderTooltip(pose, mouseX, mouseY);
 
 		for (TextHoverChecker thc : hoverCheckers) {
-			if (thc.checkHover(mouseX, mouseY, getFocused()))
+			if (thc.checkHover(mouseX, mouseY)) {
 				renderTooltip(pose, thc.getName(), mouseX, mouseY);
+				break;
+			}
 		}
 
-		if (slotHoverChecker.checkHover(mouseX, mouseY, getFocused()) && menu.be.isEmpty())
+		if (slotHoverChecker.checkHover(mouseX, mouseY) && menu.be.isEmpty())
 			renderTooltip(pose, slotHoverChecker.getName(), mouseX, mouseY);
 	}
 
