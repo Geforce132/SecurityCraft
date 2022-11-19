@@ -49,7 +49,7 @@ public class TileEntityOwnable extends TileEntity implements IOwnable {
 
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		readFromNBT(pkt.getNbtCompound());
+		handleUpdateTag(pkt.getNbtCompound());
 	}
 
 	@Override

@@ -88,6 +88,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
+import net.geforcemods.securitycraft.tileentity.TileEntityDisplayCase;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityIronFence;
@@ -317,6 +318,7 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedRedGlazedTerracotta, PageType.REINFORCED);
 		registerBlock(event, SCContent.reinforcedBlackGlazedTerracotta, PageType.REINFORCED);
 		registerBlock(event, SCContent.riftStabilizer);
+		registerBlock(event, SCContent.displayCase);
 
 		//block mines
 		registerBlockMine(event, SCContent.stoneMine);
@@ -470,6 +472,7 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(TileEntityBlockChangeDetector.class, new ResourceLocation("securitycraft:block_change_detector"));
 		GameRegistry.registerTileEntity(TileEntityRiftStabilizer.class, new ResourceLocation("securitycraft:rift_stabilizer"));
 		GameRegistry.registerTileEntity(TileEntityDisguisable.class, new ResourceLocation("securitycraft:disguisable"));
+		GameRegistry.registerTileEntity(TileEntityDisplayCase.class, new ResourceLocation("securitycraft:display_case"));
 	}
 
 	@SubscribeEvent
@@ -868,6 +871,7 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.reinforcedRedGlazedTerracotta, 0, "reinforced_red_glazed_terracotta");
 		registerInventoryModel(SCContent.reinforcedBlackGlazedTerracotta, 0, "reinforced_black_glazed_terracotta");
 		registerInventoryModel(SCContent.riftStabilizer, 0, "rift_stabilizer");
+		registerInventoryModel(SCContent.displayCase, 0, "display_case");
 
 		//items
 		registerInventoryModel(SCContent.codebreaker, 0, "codebreaker");

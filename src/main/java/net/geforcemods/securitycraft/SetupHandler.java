@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.blocks.BlockCageTrap;
 import net.geforcemods.securitycraft.blocks.BlockCrystalQuartz;
 import net.geforcemods.securitycraft.blocks.BlockCrystalQuartzSlab;
 import net.geforcemods.securitycraft.blocks.BlockCustomStairs;
+import net.geforcemods.securitycraft.blocks.BlockDisplayCase;
 import net.geforcemods.securitycraft.blocks.BlockFakeLava;
 import net.geforcemods.securitycraft.blocks.BlockFakeLavaBase;
 import net.geforcemods.securitycraft.blocks.BlockFakeWater;
@@ -291,6 +292,7 @@ public class SetupHandler {
 		SCContent.reinforcedRedGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.RED, Blocks.RED_GLAZED_TERRACOTTA).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_red_glazed_terracotta").setTranslationKey("securitycraft:reinforced_red_glazed_terracotta");
 		SCContent.reinforcedBlackGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.BLACK, Blocks.BLACK_GLAZED_TERRACOTTA).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_black_glazed_terracotta").setTranslationKey("securitycraft:reinforced_black_glazed_terracotta");
 		SCContent.riftStabilizer = new BlockRiftStabilizer(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("rift_stabilizer").setTranslationKey("securitycraft:rift_stabilizer");
+		SCContent.displayCase = new BlockDisplayCase(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("display_case").setTranslationKey("securitycraft:display_case");
 	}
 
 	public static void setupMines() {

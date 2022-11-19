@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "IFG",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "F": {
+      "item": "minecraft:item_frame"
+    },
+    "G": {
+      "item": "securitycraft:reinforced_glass_pane"
+    }
+  },
+  "result": {
+    "item": "securitycraft:display_case",
+    "count": 1
+  }
+}

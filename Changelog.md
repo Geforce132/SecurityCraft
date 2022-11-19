@@ -6,6 +6,7 @@
 - New: Ability to change a block pocket's outline color
 - New: Scrolling in the SecurityCraft Manual while holding the control key will now scroll through subpages (if any exist)
 - New: Rift Stabilizer, a block that detects and prevents teleportation attempts in its vicinity
+- New: Display Case. Securely display your items
 - Change: The Laser Block now needs a Redstone Module in order to emit a redstone signal when someone walks through the laser
 - Change: The screens of the Trophy System and Sonic Security System item are now no longer pausing the game when open, and can now be closed with the "Open/Close Inventory" key
 - API: Changed EnumLinkedAction to an interface and the enum values to records for easier usability

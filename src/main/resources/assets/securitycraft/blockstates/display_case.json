@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "attach_face=wall,facing=north": { "model": "securitycraft:display_case" },
+        "attach_face=wall,facing=south": { "model": "securitycraft:display_case", "y": 180 },
+        "attach_face=wall,facing=west":  { "model": "securitycraft:display_case", "y": 270 },
+        "attach_face=wall,facing=east":  { "model": "securitycraft:display_case", "y": 90 },
+        "attach_face=floor,facing=north": { "model": "securitycraft:display_case" },
+        "attach_face=floor,facing=south": { "model": "securitycraft:display_case", "y": 180 },
+        "attach_face=floor,facing=west":  { "model": "securitycraft:display_case", "y": 270 },
+        "attach_face=floor,facing=east":  { "model": "securitycraft:display_case", "y": 90 },
+        "attach_face=ceiling,facing=north": { "model": "securitycraft:display_case" },
+        "attach_face=ceiling,facing=south": { "model": "securitycraft:display_case", "y": 180 },
+        "attach_face=ceiling,facing=west":  { "model": "securitycraft:display_case", "y": 270 },
+        "attach_face=ceiling,facing=east":  { "model": "securitycraft:display_case", "y": 90 }
+    }
+}

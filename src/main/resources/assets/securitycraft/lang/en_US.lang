@@ -309,6 +309,7 @@ tile.securitycraft:sonic_security_system.name=Sonic Security System
 tile.securitycraft:block_change_detector.name=Block Change Detector
 tile.securitycraft:reinforced_end_rod.name=Reinforced End Rod
 tile.securitycraft:rift_stabilizer.name=Rift Stabilizer
+tile.securitycraft:display_case.name=Display Case
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door
@@ -417,6 +418,7 @@ help.securitycraft:sonic_security_system.info=The Sonic Security System, inspire
 help.securitycraft:key_panel.info=The key panel can be placed down for a smaller version of the keypad. It is also used in the crafting recipes of keypads, password-protected chests, and password-protected furnaces.
 help.securitycraft:block_change_detector.info=The Block Change Detector detects players breaking and/or placing blocks in its vicinity (5 blocks by default, can be changed with the universal block modifier). Right-clicking the block will open its interface, where a list of detected changes can be seen, as well as whether it only detects breaking or placing blocks, or both.
 help.securitycraft:rift_stabilizer.info=The Rift Stabilizer detects and prevents teleportation attempts by entities in its vicinity (5 blocks by default, can be changed with the universal block modifier). Teleportation attempts will be prohibited if the source or target position of the teleport is within the block's range. Rightclicking the block will allow you to see a list of all detectable teleportation types.
+help.securitycraft:display_case.info=The Display Case can display one item, similar to a vanilla item frame, although the item cannot be rotated. Opening the case requires inserting a passcode, just like the Keypad and other similar blocks do. Once open, an item can be inserted by rightclicking the case with the item. To retrieve the item, sneak-rightclick the case. To close the case, rightclick it with an empty hand. While the case is open, anyone can interact with it.
 
 help.securitycraft:codebreaker.info=The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)
 help.securitycraft:universalBlockRemover.info=The universal block remover is used to destroy "reinforced" blocks by rightclicking it. Only the person who placed the block down can destroy it.
@@ -815,6 +817,8 @@ module.securitycraft:rift_stabilizer.whitelistModule.description=Adding an allow
 module.securitycraft:rift_stabilizer.redstoneModule.description=Adding a redstone module to a Rift Stabilizer makes it emit a redstone signal each time it detects a teleportation attempt in its vicinity. This redstone signal will be stronger if the detection happened near the block, and weaker if it happened further away. Additionally, it will allow a comparator to be used to determine the last detected teleportation type.
 module.securitycraft:rift_stabilizer.harmingModule.description=Adding a harming module to a Rift Stabilizer will cause players attempting to teleport into or from its vicinity to take damage.
 module.securitycraft:rift_stabilizer.smartModule.description=Adding a smart module to a Rift Stabilizer will allow you to configure which teleportation types the Rift Stabilizer is able to detect.
+module.securitycraft:display_case.whitelistModule.description=Adding an allowlist module to a display case will allow listed players to open it without knowing the code.
+module.securitycraft:display_case.blacklistModule.description=Adding a denylist module to a display case will ban listed players from interacting with the block.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?
 config.securitycraft:isCodebreakerAllowed.tooltip=Can the codebreaker be used?
@@ -959,6 +963,8 @@ option.securitycraft:rift_stabilizer.signalLength=Signal length: #
 option.securitycraft:rift_stabilizer.signalLength.description=How long should the redstone signal after detecting a teleportation attempt be? (In ticks, 20 ticks = 1 second)
 option.securitycraft:rift_stabilizer.range=Detection radius: #
 option.securitycraft:rift_stabilizer.range.description=How far away should the Rift Stabilizer be able to prevent teleportation attempts?
+option.securitycraft:display_case.sendMessage=Message: #
+option.securitycraft:display_case.sendMessage.description=Does this case send a message upon activation (when using allowlist/denylist modules)?
 
 securitycraft.subtitle.alarm=Alarm sounding
 securitycraft.subtitle.electrified=Entity electrocuted
