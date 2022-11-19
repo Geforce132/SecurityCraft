@@ -12,14 +12,14 @@
 		"f3.DebugOverlayGuiMixin"
 	],
 	"mixins": [
-		"AbstractTrunkPlacerMixin",
-		"TeleporterMixin",
-		"TreeFeatureMixin",
 		"camera.ChunkManagerMixin",
 		"camera.EntityTrackerMixin",
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerEntityMixin",
-		"piston.WorldMixin"
+		"piston.WorldMixin",
+		"portal.TeleporterMixin",
+		"reinforceddirt.AbstractTrunkPlacerMixin",
+		"reinforceddirt.TreeFeatureMixin"
 	],
 	"minVersion": "0.8"
 }
