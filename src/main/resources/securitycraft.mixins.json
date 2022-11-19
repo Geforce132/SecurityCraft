@@ -11,11 +11,11 @@
 		"f3.MixinGuiOverlayDebug"
 	],
 	"mixins": [
-		"MixinItemChorusFruit",
-		"MixinTeleporter",
 		"camera.MixinEntityPlayerMP",
 		"camera.MixinEntityTrackerEntry",
-		"camera.MixinPlayerList"
+		"camera.MixinPlayerList",
+		"portal.MixinTeleporter",
+		"riftstabilizer.MixinItemChorusFruit"
 	],
 	"minVersion": "0.8"
 }
