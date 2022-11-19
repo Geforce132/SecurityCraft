@@ -28,6 +28,7 @@
 - Fix: The Sonic Security System has no placing sound
 - Fix: Several issues in various language files
 - Fix: Some reinforced blocks can be destroyed by unintended vanilla means
+- Fix: Option tooltips do not update with the new value when the option is changed
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
 

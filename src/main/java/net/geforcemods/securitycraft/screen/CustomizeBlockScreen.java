@@ -106,11 +106,12 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 					if (option instanceof ISlider && option.isSlider()) {
 						TranslatableComponent translatedBlockName = Utils.localize(blockName);
+						final int sliderIndex = i;
 
 						if (option instanceof DoubleOption)
-							optionButtons[i] = new NamedSlider(Utils.localize(option.getKey(block), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, null);
+							optionButtons[i] = new NamedSlider(Utils.localize(option.getKey(block), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, slider -> updateOptionTooltip(sliderIndex));
 						else if (option instanceof IntOption)
-							optionButtons[i] = new NamedSlider(Utils.localize(option.getKey(block), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, null);
+							optionButtons[i] = new NamedSlider(Utils.localize(option.getKey(block), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, slider -> updateOptionTooltip(sliderIndex));
 
 						optionButtons[i].setFGColor(14737632);
 					}
@@ -129,6 +130,10 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			if (button != null)
 				extraAreas.add(new Rect2i(button.x, button.y, button.getWidth(), button.getHeight()));
 		}
+	}
+
+	private void updateOptionTooltip(int i) {
+		hoverCheckers.set(i, new TextHoverChecker(optionButtons[i], getOptionDescription(i)));
 	}
 
 	@Override
@@ -228,6 +233,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			tempOption.toggle();
 			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 			button.setMessage(getOptionButtonTitle(tempOption));
+			updateOptionTooltip(i);
 			SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getBlockEntity().getBlockPos().getX(), moduleInv.getBlockEntity().getBlockPos().getY(), moduleInv.getBlockEntity().getBlockPos().getZ(), i));
 			return;
 		}
