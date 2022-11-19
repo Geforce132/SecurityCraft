@@ -71,9 +71,9 @@ public class BlockReinforcedBase extends BlockOwnable implements IReinforcedBloc
 				boolean hasWater = world.getBlockState(pos.east()).getMaterial() == Material.WATER || world.getBlockState(pos.west()).getMaterial() == Material.WATER || world.getBlockState(pos.north()).getMaterial() == Material.WATER || world.getBlockState(pos.south()).getMaterial() == Material.WATER;
 
 				return isBeach && hasWater;
+			default:
+				return false;
 		}
-
-		return false;
 	}
 
 	@Override
