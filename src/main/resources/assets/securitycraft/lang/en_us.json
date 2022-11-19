@@ -635,7 +635,6 @@
 	"gui.securitycraft:scManual.keycards": "Keycards",
 	"gui.securitycraft:scManual.secret_signs": "Secret Signs",
 	"gui.securitycraft:scManual.block_reinforcers": "Universal Block Reinforcers",
-	"gui.securitycraft:scManual.display_cases": "Display Cases",
 	"gui.securitycraft:scManual.designedBy": "Designed by: %s",
 	"gui.securitycraft:scManual.patreon.title": "Our Patrons:",
 	"gui.securitycraft:scManual.patreon.loading": "Loading...",

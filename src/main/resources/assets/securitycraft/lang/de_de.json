@@ -636,7 +636,6 @@
 	"gui.securitycraft:scManual.keycards": "Schlüsselkarten",
 	"gui.securitycraft:scManual.secret_signs": "Geheime Schilder",
 	"gui.securitycraft:scManual.block_reinforcers": "Universelle Blockverstärker",
-	"gui.securitycraft:scManual.display_cases": "Vitrinen",
 	"gui.securitycraft:scManual.designedBy": "Entworfen von: %s",
 	"gui.securitycraft:scManual.patreon.error": "Fehler beim Laden der Patrons!",
 	"gui.securitycraft:scManual.patreon.loading": "Lade...",
