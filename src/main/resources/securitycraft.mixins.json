@@ -12,11 +12,11 @@
 		"f3.DebugScreenOverlayMixin"
 	],
 	"mixins": [
-		"PortalForcerMixin",
 		"camera.ChunkMapMixin",
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",
-		"camera.TrackedEntityMixin"
+		"camera.TrackedEntityMixin",
+		"portal.PortalForcerMixin"
 	],
 	"minVersion": "0.8"
 }
