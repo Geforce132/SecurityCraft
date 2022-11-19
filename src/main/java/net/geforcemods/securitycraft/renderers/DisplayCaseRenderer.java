@@ -44,12 +44,12 @@ public class DisplayCaseRenderer extends TileEntityRenderer<DisplayCaseBlockEnti
 			switch (state.getValue(DisplayCaseBlock.ATTACH_FACE)) {
 				case CEILING:
 					pose.translate(0.0D, insertionAmount, 0.0D);
-					pose.mulPose(Vector3f.YP.rotationDegrees(-rotation + 180.F));
+					pose.mulPose(Vector3f.YP.rotationDegrees(-rotation + 180.0F));
 					pose.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
 					break;
 				case FLOOR:
 					pose.translate(0.0D, -insertionAmount, 0.0D);
-					pose.mulPose(Vector3f.YP.rotationDegrees(-rotation + 180.F));
+					pose.mulPose(Vector3f.YP.rotationDegrees(-rotation + 180.0F));
 					pose.mulPose(Vector3f.XP.rotationDegrees(90.0F));
 					break;
 				case WALL:

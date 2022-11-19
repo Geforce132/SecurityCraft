@@ -23,8 +23,8 @@ import net.geforcemods.securitycraft.renderers.BlockPocketManagerRenderer;
 import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.DisguisableBlockEntityRenderer;
-import net.geforcemods.securitycraft.renderers.EmptyRenderer;
 import net.geforcemods.securitycraft.renderers.DisplayCaseRenderer;
+import net.geforcemods.securitycraft.renderers.EmptyRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.ProjectorRenderer;
@@ -304,6 +304,7 @@ public class ClientHandler {
 		ScreenManager.register(SCContent.PROJECTOR_MENU.get(), ProjectorScreen::new);
 		KeyBindings.init();
 	}
+
 	private static void initTint() {
 		for (Field field : SCContent.class.getFields()) {
 			if (field.isAnnotationPresent(Reinforced.class)) {

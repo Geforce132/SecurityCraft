@@ -11,8 +11,7 @@ public enum PageGroup {
 	FURNACE_MINES(true, "block.securitycraft.furnace_mine", "securitycraft.furnace_mines.info"),
 	KEYCARDS(true, "gui.securitycraft:scManual.keycards", "securitycraft.keycards.info"),
 	SECRET_SIGNS(true, "gui.securitycraft:scManual.secret_signs", "securitycraft.secret_signs.info"),
-	BLOCK_REINFORCERS(true, "gui.securitycraft:scManual.block_reinforcers", "securitycraft.block_reinforcers.info"),
-	DISPLAY_CASES(true, "gui.securitycraft:scManual.display_cases", "securitycraft.display_cases.info");
+	BLOCK_REINFORCERS(true, "gui.securitycraft:scManual.block_reinforcers", "securitycraft.block_reinforcers.info");
 
 	private final boolean hasRecipeGrid;
 	private final String title;
