@@ -1225,7 +1225,7 @@
 	"securitycraft.subtitle.taserfire": "Tir de taser",
 	"securitycraft.subtitle.lock": "Verrouillage du conteneur",
 	"securitycraft.subtitle.get_item": "Objet obtenu !",
-	"securitycraft.subtitle.ping": "Ping du système de sécurité sonique"
+	"securitycraft.subtitle.ping": "Ping du système de sécurité sonique",
 	"securitycraft.subtitle.display_case_open": "Vitrine ouvre",
 	"securitycraft.subtitle.display_case_close": "Vitrine ferme"
 }
