@@ -606,7 +606,7 @@
 	"help.securitycraft.secret_signs.info": "秘密の看板はバニラの看板の様に機能しますが、看板の所有者と許可リストに登録されているプレイヤーのみが看板を見たり、やりとりしたりすることができるという若干の違いがあります。この看板が置かれているブロックは誰にも壊されないように注意してください！",
 	"help.securitycraft.block_reinforcers.info": "汎用ブロック強化機は多数のバニラブロックを強化してSecurityCraftの亜種に変更させるものです。これを行うには汎用ブロック強化機を右クリックして、バニラブロックを一番上のスロットに入れてGUIを閉じます。もしくは(クリエイティブモードではないときに)ブロックを壊して強化することもできます。強化されたブロックを元に戻すには、一番下のスロットを使用します(レベル2の機でのみ使用可能)。レベル1の強化機は300回、レベル2の強化機は2700回、レベル3の強化機は無制限で使用できます。",
 
-	"help.securitycraft.laser_block.info": "レーザーブロックは2つを5ブロック以内に設置して使用します。ブロックが正しく設置されるとブロックの間にレーザーが形成されるはずです。プレイヤーがレーザーを通過するたびにレーザーブロックの両方から15ブロックのレッドストーン信号が発せられます。",
+	"help.securitycraft.laser_block.info": "レーザーブロックは2つを5ブロック以内に設置して使用します。ブロックが正しく設置されるとブロックの間にレーザーが形成されるはずです。",
 	"help.securitycraft.keypad.info": "キーパッドは配置後に右クリックして数字のパスコードを設定することで使用します。キーコードを設定したらキーパッドを右クリックするとコードを入力することができます。正しいコードが入力されるとキーパッドから3秒間レッドストーン信号が放出されます。",
 	"help.securitycraft.mine.info": "地雷はクリーパー、ネコ、ヤマネコ以外のエンティティに踏まれることで爆発します。ワイヤーカッターを持ったまま地雷を右クリックすることで地雷が解除され、破壊することができるようになります。火打石と打ち金を装備して地雷を右クリックすることで再度有効にすることができます。",
 	"help.securitycraft.retinal_scanner.info": "網膜スキャナーにカーソルを合わせると15ブロックのレッドストーン信号が出力されます。",
@@ -1179,6 +1179,9 @@
 	"option.securitycraft.block_change_detector.signalLength.description": "ブロックチェンジを検出した後のレッドストーンの信号の長さはどのくらいにすべきか？(単位はティック、20ティック＝1秒です。)",
 	"option.securitycraft.block_change_detector.range": "検出範囲：%s",
 	"option.securitycraft.block_change_detector.range.description": "プレイヤーのブロックチェンジを検知するためには、どの程度の距離まで検知するか？",
+	"option.securitycraft.rift_stabilizer.signalLength": "信号長：%s",
+	"option.securitycraft.display_case.sendMessage": "メッセージ：%s",
+	"option.securitycraft.glow_display_case.sendMessage": "メッセージ：%s",
 
 	"securitycraft.subtitle.alarm": "アラーム音",
 	"securitycraft.subtitle.electrified": "感電死したエンティティ",

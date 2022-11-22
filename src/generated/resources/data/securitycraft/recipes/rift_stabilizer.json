@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "minecraft:chorus_fruit"
+    },
+    "D": {
+      "item": "securitycraft:reinforced_diamond_block"
+    },
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "G": {
+      "tag": "forge:ingots/gold"
+    },
+    "I": {
+      "item": "securitycraft:reinforced_iron_block"
+    }
+  },
+  "pattern": [
+    "GEG",
+    "CDC",
+    "III"
+  ],
+  "result": {
+    "item": "securitycraft:rift_stabilizer"
+  }
+}

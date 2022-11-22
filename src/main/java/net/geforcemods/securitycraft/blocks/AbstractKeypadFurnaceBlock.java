@@ -13,7 +13,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -23,7 +25,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
@@ -131,14 +132,16 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	}
 
 	public void activate(AbstractKeypadFurnaceBlockEntity be, BlockState state, Level level, BlockPos pos, Player player) {
-		if (!state.getValue(AbstractKeypadFurnaceBlock.OPEN))
-			level.setBlockAndUpdate(pos, state.setValue(AbstractKeypadFurnaceBlock.OPEN, true));
-
 		if (player instanceof ServerPlayer serverPlayer) {
-			level.levelEvent(null, LevelEvent.SOUND_OPEN_IRON_DOOR, pos, 0);
 			level.gameEvent(player, GameEvent.CONTAINER_OPEN, pos);
 			NetworkHooks.openScreen(serverPlayer, be, pos);
 		}
+	}
+
+	@Override
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		if (level.getBlockEntity(pos) instanceof AbstractKeypadFurnaceBlockEntity be)
+			be.recheckOpen();
 	}
 
 	@Override

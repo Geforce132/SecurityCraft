@@ -194,8 +194,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		font.draw(pose, modifyAll, startX + xSize / 2 - font.width(modifyAll) + 25, startY + 194, 4210752);
 
 		for (TextHoverChecker chc : hoverCheckers) {
-			if (chc != null && chc.checkHover(mouseX, mouseY))
+			if (chc != null && chc.checkHover(mouseX, mouseY)) {
 				renderTooltip(pose, chc.getName(), mouseX, mouseY);
+				break;
+			}
 		}
 	}
 
@@ -339,7 +341,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
-			removed();
+			onClose();
 			return true;
 		}
 

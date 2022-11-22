@@ -1,13 +1,29 @@
 package net.geforcemods.securitycraft;
 
-import org.apache.commons.lang3.tuple.Pair;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
 
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 
+@EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class ConfigHandler {
+	private static final Logger LOGGER = LogManager.getLogger();
 	public static final ForgeConfigSpec CLIENT_SPEC;
 	public static final Client CLIENT;
 	public static final ForgeConfigSpec SERVER_SPEC;
@@ -64,6 +80,12 @@ public class ConfigHandler {
 		public BooleanValue enableTeamOwnership;
 		public BooleanValue disableThanksMessage;
 		public BooleanValue trickScannersWithPlayerHeads;
+		public DoubleValue taserDamage;
+		public DoubleValue poweredTaserDamage;
+		private ConfigValue<List<? extends String>> taserEffectsValue;
+		private ConfigValue<List<? extends String>> poweredTaserEffectsValue;
+		public final List<Supplier<MobEffectInstance>> taserEffects = new ArrayList<>();
+		public final List<Supplier<MobEffectInstance>> poweredTaserEffects = new ArrayList<>();
 
 		Server(ForgeConfigSpec.Builder builder) {
 			//@formatter:off
@@ -141,7 +163,73 @@ public class ConfigHandler {
 			trickScannersWithPlayerHeads = builder
 					.comment("Set this to true if you want players wearing a different player's skull to be able to trick their retinal scanners and scanner doors into activating.")
 					.define("trick_scanners_with_player_heads", false);
+
+			taserDamage = builder
+					.comment("Set the amount of damage the taser inflicts onto the mobs it hits. Default is half a heart.")
+					.defineInRange("taser_damage", 1.0D, 0.0D, Double.MAX_VALUE);
+
+			poweredTaserDamage = builder
+					.comment("Set the amount of damage the powered taser inflicts onto the mobs it hits. Default is one heart.")
+					.defineInRange("powered_taser_damage", 2.0D, 0.0D, Double.MAX_VALUE);
+
+			taserEffectsValue = builder
+					.comment("Add effects to this list that you want the taser to inflict onto the mobs it hits. One entry corresponds to one effect, and is formatted like this:",
+							"effect_namespace:effect_path|duration|amplifier",
+							"Example: The entry \"minecraft:slowness|20|1\" defines slowness 1 for 1 second (20 ticks = 1 second).")
+					.defineList("taser_effects", List.of("minecraft:weakness|200|2", "minecraft:nausea|200|2", "minecraft:slowness|200|2"), e -> e instanceof String);
+
+			poweredTaserEffectsValue = builder
+					.comment("Add effects to this list that you want the powered taser to inflict onto the mobs it hits. One entry corresponds to one effect, and is formatted like this:",
+							"effect_namespace:effect_path|duration|amplifier",
+							"Example: The entry \"minecraft:slowness|20|1\" defines slowness 1 for 1 second (20 ticks = 1 second).")
+					.defineList("powered_taser_effects", List.of("minecraft:weakness|400|5", "minecraft:nausea|400|5", "minecraft:slowness|400|5"), e -> e instanceof String);
 			//@formatter:on
 		}
+	}
+
+	@SubscribeEvent
+	public static void onModConfig(ModConfigEvent event) {
+		if (event.getConfig().getSpec() == SERVER_SPEC) {
+			loadEffects(SERVER.taserEffectsValue, SERVER.taserEffects);
+			loadEffects(SERVER.poweredTaserEffectsValue, SERVER.poweredTaserEffects);
+		}
+	}
+
+	private static void loadEffects(ConfigValue<List<? extends String>> effectsValue, List<Supplier<MobEffectInstance>> effects) {
+		effects.clear();
+
+		for (String entry : effectsValue.get()) {
+			String[] split = entry.split("\\|");
+
+			if (split.length != 3) {
+				LOGGER.warn("Not enough information provided for effect \"{}\", skipping", entry);
+				continue;
+			}
+
+			int duration = Integer.parseInt(split[1]);
+			int amplifier = Integer.parseInt(split[2]);
+
+			if (!validateValue(duration, entry) || !validateValue(amplifier, entry))
+				continue;
+
+			ResourceLocation effectLocation = new ResourceLocation(split[0]);
+
+			if (!ForgeRegistries.MOB_EFFECTS.containsKey(effectLocation)) {
+				LOGGER.warn("Effect \"{}\" does not exist, skipping", effectLocation);
+				continue;
+			}
+
+			//the amplifier is actually 0-indexed, but 1-indexed in the config for ease of use
+			effects.add(() -> new MobEffectInstance(ForgeRegistries.MOB_EFFECTS.getValue(effectLocation), duration, amplifier - 1));
+		}
+	}
+
+	private static boolean validateValue(int value, String entry) {
+		if (value <= 0) {
+			LOGGER.warn("Value \"{}\" cannot be less than or equal to zero for entry \"{}\", skipping", value, entry);
+			return false;
+		}
+
+		return true;
 	}
 }

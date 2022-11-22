@@ -84,9 +84,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Object[] {
-				option
-		}, this);
+		createLinkedBlockAction(new ILinkedAction.OptionChanged(option), this);
 		super.onOptionChanged(option);
 	}
 
@@ -109,7 +107,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	/**
-	 * Links two blocks together. Calls onLinkedBlockAction() whenever certain events (found in {@link LinkedAction}) occur.
+	 * Links two blocks together. Calls onLinkedBlockAction() whenever certain events (found in {@link ILinkedAction}) occur.
 	 */
 	public static void link(LinkableBlockEntity blockEntity1, LinkableBlockEntity blockEntity2) {
 		if (isLinkedWith(blockEntity1, blockEntity2))
@@ -159,44 +157,41 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * onLinkedBlockAction(), use createLinkedBlockAction(EnumLinkedAction, Object[], ArrayList[LinkableBlockEntity] instead.
 	 *
 	 * @param action The action that occurred
-	 * @param parameters Action-specific parameters, see comments in {@link LinkedAction}
 	 * @param excludedBE The LinkableBlockEntity which called this method, prevents infinite loops.
 	 */
-	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, LinkableBlockEntity excludedBE) {
+	public void createLinkedBlockAction(ILinkedAction action, LinkableBlockEntity excludedBE) {
 		ArrayList<LinkableBlockEntity> list = new ArrayList<>();
 
 		list.add(excludedBE);
-		createLinkedBlockAction(action, parameters, list);
+		createLinkedBlockAction(action, list);
 	}
 
 	/**
 	 * Calls onLinkedBlockAction() for every block this block entity is linked to.
 	 *
 	 * @param action The action that occurred
-	 * @param parameters Action-specific parameters, see comments in {@link LinkedAction}
 	 * @param excludedBEs LinkableBlockEntities that shouldn't have onLinkedBlockAction() called on them, prevents infinite
 	 *            loops. Always add your block entity to the list whenever using this method
 	 */
-	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedBEs) {
+	public void createLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {
 		for (LinkedBlock block : linkedBlocks) {
 			if (!excludedBEs.contains(block.asBlockEntity(level))) {
 				BlockState state = level.getBlockState(block.getPos());
 
-				block.asBlockEntity(level).onLinkedBlockAction(action, parameters, excludedBEs);
+				block.asBlockEntity(level).onLinkedBlockAction(action, excludedBEs);
 				level.sendBlockUpdated(block.getPos(), state, state, 3);
 			}
 		}
 	}
 
 	/**
-	 * Called whenever certain actions occur in blocks this block entity is linked to. See {@link LinkedAction} for parameter
+	 * Called whenever certain actions occur in blocks this block entity is linked to. See {@link ILinkedAction} for parameter
 	 * descriptions. <p>
 	 *
-	 * @param action The {@link LinkedAction} that occurred
-	 * @param parameters Important variables related to the action
-	 * @param excludedBEs LinkableBlockEntities that aren't going to have onLinkedBlockAction() called on them, always add
-	 *            your block entity to the list if you're going to call createLinkedBlockAction() in this method to
-	 *            chain-link multiple blocks (i.e: like Laser Blocks)
+	 * @param action The {@link ILinkedAction} that occurred
+	 * @param excludedBEs LinkableBlockEntities that aren't going to have onLinkedBlockAction() called on them, always add your
+	 *            block entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link
+	 *            multiple blocks (i.e: like Laser Blocks)
 	 */
-	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedBEs) {}
+	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {}
 }

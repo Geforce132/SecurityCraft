@@ -190,10 +190,14 @@ public class SCManualScreen extends Screen {
 				HoverChecker chc = hoverCheckers.get(i);
 
 				if (chc != null && chc.checkHover(mouseX, mouseY)) {
-					if (chc instanceof TextHoverChecker thc && thc.getName() != null)
+					if (chc instanceof TextHoverChecker thc && thc.getName() != null) {
 						renderComponentTooltip(pose, thc.getLines(), mouseX, mouseY);
-					else if (i < displays.length && !displays[i].getCurrentStack().isEmpty())
+						break;
+					}
+					else if (i < displays.length && !displays[i].getCurrentStack().isEmpty()) {
 						renderTooltip(pose, displays[i].getCurrentStack(), mouseX, mouseY);
+						break;
+					}
 				}
 			}
 		}
@@ -257,6 +261,19 @@ public class SCManualScreen extends Screen {
 
 		if (currentPage == -1 && patronList != null && patronList.isMouseOver(mouseX, mouseY) && !patronList.patrons.isEmpty()) {
 			patronList.mouseScrolled(mouseX, mouseY, scroll);
+			return true;
+		}
+
+		if (Screen.hasControlDown() && subpages.size() > 1) {
+			switch ((int) Math.signum(scroll)) {
+				case -1:
+					nextSubpage();
+					break;
+				case 1:
+					previousSubpage();
+					break;
+			}
+
 			return true;
 		}
 
@@ -351,7 +368,7 @@ public class SCManualScreen extends Screen {
 				if (object instanceof ShapedRecipe recipe) {
 					if (!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == item) {
 						NonNullList<Ingredient> ingredients = recipe.getIngredients();
-						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(9, Ingredient.EMPTY);
+						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(9, Ingredient.EMPTY);
 
 						for (int i = 0; i < ingredients.size(); i++) {
 							recipeItems.set(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()), ingredients.get(i));
@@ -367,7 +384,7 @@ public class SCManualScreen extends Screen {
 						if (recipe.getId().getPath().endsWith("_reset"))
 							continue;
 
-						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
+						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
 
 						for (int i = 0; i < recipeItems.size(); i++) {
 							recipeItems.set(i, recipe.getIngredients().get(i));

@@ -8,7 +8,6 @@ import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -40,14 +39,14 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * Checks whether the given module's functionality is enabled
 	 *
 	 * @param module The module
-	 * @return true if the given module is enabled, false otherwise. If the module does not exist, this should return false
-	 *         as well.
+	 * @return true if the given module is enabled, false otherwise. If the module does not exist, this should return false as
+	 *         well.
 	 */
 	public boolean isModuleEnabled(ModuleType module);
 
 	/**
-	 * Turns the given module type on or off, depending on shouldBeEnabled. The module needs to be present in the inventory
-	 * in order for toggling to work.
+	 * Turns the given module type on or off, depending on shouldBeEnabled. The module needs to be present in the inventory in
+	 * order for toggling to work.
 	 *
 	 * @param module The type of the module to toggle
 	 * @param shouldBeEnabled Whether the state of this module type should be set to enabled
@@ -107,8 +106,8 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Used for enabling differentiation between module slots and slots that are handled by IInventory. This is needed
-	 * because of the duplicate getStackInSlot method.
+	 * Used for enabling differentiation between module slots and slots that are handled by IInventory. This is needed because of
+	 * the duplicate getStackInSlot method.
 	 *
 	 * @return true if the slot ids are not starting with 0, false otherwise
 	 */
@@ -137,7 +136,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				continue;
 
 			if (be instanceof LinkableBlockEntity linkable)
-				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, module, linkable, false);
+				linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), linkable);
 
 			Block.popResource(level, pos, module);
 		}
@@ -174,7 +173,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 					onModuleRemoved(stack, module.getModuleType(), false);
 
 					if (getBlockEntity() instanceof LinkableBlockEntity be)
-						ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, be, false);
+						be.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), be);
 				}
 
 				return getInventory().set(slot, ItemStack.EMPTY).copy();
@@ -207,7 +206,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 					onModuleInserted(stack, module.getModuleType(), false);
 
 					if (getBlockEntity() instanceof LinkableBlockEntity be)
-						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, copy, be, false);
+						be.createLinkedBlockAction(new ILinkedAction.ModuleInserted(copy, (ModuleItem) copy.getItem(), false), be);
 				}
 			}
 
@@ -233,7 +232,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			onModuleRemoved(previous, ((ModuleItem) previous.getItem()).getModuleType(), false);
 
 			if (getBlockEntity() instanceof LinkableBlockEntity be)
-				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, previous, be, false);
+				be.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) previous.getItem()).getModuleType(), false), be);
 		}
 
 		getInventory().set(slot, stack);
@@ -242,7 +241,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			onModuleInserted(stack, module.getModuleType(), false);
 
 			if (getBlockEntity() instanceof LinkableBlockEntity be)
-				ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, be, false);
+				be.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), false), be);
 		}
 	}
 
@@ -404,8 +403,8 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Call this from your load method after loadModuleInventory. Used for loading which modules are enabled from a tag. Use
-	 * in conjunction with saveModuleStates.
+	 * Call this from your load method after loadModuleInventory. Used for loading which modules are enabled from a tag. Use in
+	 * conjunction with saveModuleStates.
 	 *
 	 * @param tag The tag to read the states from
 	 * @return An EnumMap of all module types with the enabled flag set as read from the tag

@@ -18,6 +18,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -25,7 +26,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 
 public class Bullet extends AbstractArrow {
-	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner> defineId(Bullet.class, Owner.getSerializer());
+	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(Bullet.class, Owner.getSerializer());
 	private Collection<MobEffectInstance> potionEffects = Sets.newHashSet();
 
 	public Bullet(EntityType<Bullet> type, Level level) {
@@ -91,7 +92,7 @@ public class Bullet extends AbstractArrow {
 	protected void onHitEntity(EntityHitResult raytraceResult) {
 		Entity target = raytraceResult.getEntity();
 
-		if (!(target instanceof Sentry)) {
+		if (!(target instanceof Sentry) && !(target instanceof ItemFrame)) {
 			target.hurt(DamageSource.arrow(this, getOwner()), Mth.ceil(getDeltaMovement().length()));
 
 			if (target instanceof LivingEntity lEntity && !potionEffects.isEmpty()) {
@@ -99,9 +100,9 @@ public class Bullet extends AbstractArrow {
 					lEntity.addEffect(effect);
 				}
 			}
-
-			discard();
 		}
+
+		discard();
 	}
 
 	@Override

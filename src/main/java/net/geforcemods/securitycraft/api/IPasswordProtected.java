@@ -5,10 +5,9 @@ import net.geforcemods.securitycraft.screen.SetPasswordScreen;
 import net.minecraft.world.entity.player.Player;
 
 /**
- * Implementing this interface designates a block entity as being password-protected. Implementing 
- * this allows you to use {@link SetPasswordScreen} and {@link CheckPasswordScreen} to easily set 
- * your block's password. Extends {@link ICodebreakable} as most password-protected blocks are likely 
- * able to be hacked using the Codebreaker by default.
+ * Implementing this interface designates a block entity as being password-protected. Implementing this allows you to use
+ * {@link SetPasswordScreen} and {@link CheckPasswordScreen} to easily set your block's password. Extends
+ * {@link ICodebreakable} as most password-protected blocks are likely able to be hacked using the Codebreaker by default.
  *
  * @author Geforce
  */

@@ -154,8 +154,10 @@ public class MineRemoteAccessToolScreen extends Screen {
 		}
 
 		for (TextHoverChecker chc : hoverCheckers) {
-			if (chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null)
+			if (chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null) {
 				renderComponentTooltip(pose, chc.getLines(), mouseX, mouseY);
+				break;
+			}
 		}
 	}
 
@@ -236,7 +238,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
-			removed();
+			onClose();
 			return true;
 		}
 

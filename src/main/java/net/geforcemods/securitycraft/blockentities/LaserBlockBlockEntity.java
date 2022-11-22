@@ -5,21 +5,22 @@ import java.util.ArrayList;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
-import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
-import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
@@ -48,40 +49,42 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	}
 
 	@Override
-	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedBEs) {
-		if (action == LinkedAction.OPTION_CHANGED) {
-			Option<?> option = (Option<?>) parameters[0];
+	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {
+		if (action instanceof ILinkedAction.OptionChanged optionChanged) {
+			Option<?> option = optionChanged.option();
 
 			disabled.copy(option);
 			toggleLaser((BooleanOption) option);
 		}
-		else if (action == LinkedAction.MODULE_INSERTED) {
-			ItemStack module = (ItemStack) parameters[0];
-			boolean toggled = (boolean) parameters[2];
+		else if (action instanceof ILinkedAction.ModuleInserted moduleInserted) {
+			ItemStack module = moduleInserted.stack();
+			boolean toggled = moduleInserted.wasModuleToggled();
 
 			insertModule(module, toggled);
 
-			if (((ModuleItem) module.getItem()).getModuleType() == ModuleType.DISGUISE)
+			if (moduleInserted.module().getModuleType() == ModuleType.DISGUISE)
 				onInsertDisguiseModule(module, toggled);
 		}
-		else if (action == LinkedAction.MODULE_REMOVED) {
-			ModuleType module = (ModuleType) parameters[1];
+		else if (action instanceof ILinkedAction.ModuleRemoved moduleRemoved) {
+			ModuleType module = moduleRemoved.moduleType();
 			ItemStack moduleStack = getModule(module);
-			boolean toggled = (boolean) parameters[2];
+			boolean toggled = moduleRemoved.wasModuleToggled();
 
 			removeModule(module, toggled);
 
 			if (module == ModuleType.DISGUISE)
 				onRemoveDisguiseModule(moduleStack, toggled);
+			else if (module == ModuleType.REDSTONE)
+				onRemoveRedstoneModule();
 		}
-		else if (action == LinkedAction.OWNER_CHANGED) {
-			Owner owner = (Owner) parameters[0];
+		else if (action instanceof ILinkedAction.OwnerChanged ownerChanged) {
+			Owner owner = ownerChanged.newOwner();
 
 			setOwner(owner.getUUID(), owner.getName());
 		}
 
 		excludedBEs.add(this);
-		createLinkedBlockAction(action, parameters, excludedBEs);
+		createLinkedBlockAction(action, excludedBEs);
 	}
 
 	@Override
@@ -98,6 +101,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 		if (module == ModuleType.DISGUISE)
 			onRemoveDisguiseModule(stack, toggled);
+		else if (module == ModuleType.REDSTONE)
+			onRemoveRedstoneModule();
 	}
 
 	private void onInsertDisguiseModule(ItemStack stack, boolean toggled) {
@@ -139,6 +144,13 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		}
 	}
 
+	private void onRemoveRedstoneModule() {
+		if (getBlockState().getValue(LaserBlock.POWERED)) {
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(LaserBlock.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
+		}
+	}
+
 	@Override
 	public void handleUpdateTag(CompoundTag tag) {
 		super.handleUpdateTag(tag);
@@ -174,7 +186,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.HARMING, ModuleType.ALLOWLIST, ModuleType.DISGUISE
+				ModuleType.HARMING, ModuleType.ALLOWLIST, ModuleType.DISGUISE, ModuleType.REDSTONE
 		};
 	}
 
@@ -187,7 +199,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 	@Override
 	public ModelData getModelData() {
-		BlockState disguisedState = DisguisableBlock.getDisguisedStateOrDefault(getBlockState(), level, worldPosition);
+		BlockState disguisedState = DisguisableBlock.getDisguisedStateOrDefault(Blocks.AIR.defaultBlockState(), level, worldPosition);
 
 		return ModelData.builder().with(DisguisableDynamicBakedModel.DISGUISED_STATE, disguisedState).build();
 	}

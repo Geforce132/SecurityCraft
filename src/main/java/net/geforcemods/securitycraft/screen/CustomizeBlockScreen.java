@@ -103,16 +103,24 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 					Option<?> option = options[i];
 
 					if (option.isSlider()) {
-						if (option instanceof DoubleOption doubleOption)
+						if (option instanceof DoubleOption doubleOption) {
+							final int sliderIndex = i;
+
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
 								doubleOption.setValue(slider.getValue());
+								hoverCheckers.set(sliderIndex, new TextHoverChecker(optionButtons[sliderIndex], getOptionDescription(sliderIndex)));
 								SecurityCraft.channel.sendToServer(new UpdateSliderValue(doubleOption.getPos(), option, doubleOption.get()));
 							});
-						else if (option instanceof IntOption intOption)
+						}
+						else if (option instanceof IntOption intOption) {
+							final int sliderIndex = i;
+
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
 								intOption.setValue(slider.getValueInt());
+								hoverCheckers.set(sliderIndex, new TextHoverChecker(optionButtons[sliderIndex], getOptionDescription(sliderIndex)));
 								SecurityCraft.channel.sendToServer(new UpdateSliderValue(intOption.getPos(), option, intOption.get()));
 							});
+						}
 
 						optionButtons[i].setFGColor(14737632);
 					}
@@ -155,8 +163,10 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 		for (TextHoverChecker hoverChecker : hoverCheckers) {
 			//last check hides the tooltip when a slider is being dragged
-			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY) && (!(hoverChecker.getWidget() instanceof CallbackSlider) || !isDragging()))
+			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY) && (!(hoverChecker.getWidget() instanceof CallbackSlider) || !isDragging())) {
 				renderTooltip(pose, minecraft.font.split(hoverChecker.getName(), 150), mouseX, mouseY);
+				break;
+			}
 		}
 	}
 
@@ -224,6 +234,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			tempOption.toggle();
 			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 			button.setMessage(getOptionButtonTitle(tempOption));
+			hoverCheckers.set(i, new TextHoverChecker(optionButtons[i], getOptionDescription(i)));
 			SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getBlockEntity().getBlockPos().getX(), moduleInv.getBlockEntity().getBlockPos().getY(), moduleInv.getBlockEntity().getBlockPos().getZ(), i));
 			return;
 		}

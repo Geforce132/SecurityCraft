@@ -21,6 +21,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
+import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
@@ -41,7 +42,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.PacketDistributor;
 
-public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable {
+public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable, IToggleableEntries<EntityType<?>> {
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
 	/*
@@ -58,7 +59,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	public TrophySystemBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get(), pos, state);
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
-		//ordering is done in TrophySystemScreen based on the user's current language
+		//ordering is done in ToggleListScreen based on the user's current language
 		projectileFilter.put(SCContent.BULLET_ENTITY.get(), true);
 		projectileFilter.put(EntityType.SPECTRAL_ARROW, true);
 		projectileFilter.put(EntityType.ARROW, true);
@@ -220,10 +221,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		return owner == null || (!owner.owns(this) && !ModuleUtils.isAllowed(this, owner.getName()));
 	}
 
-	public void toggleFilter(EntityType<?> projectileType) {
-		setFilter(projectileType, !projectileFilter.get(projectileType));
-	}
-
+	@Override
 	public void setFilter(EntityType<?> projectileType, boolean allowed) {
 		if (projectileFilter.containsKey(projectileType)) {
 			projectileFilter.put(projectileType, allowed);
@@ -234,12 +232,24 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		}
 	}
 
+	@Override
 	public boolean getFilter(EntityType<?> projectileType) {
 		return projectileFilter.get(projectileType);
 	}
 
+	@Override
 	public Map<EntityType<?>, Boolean> getFilters() {
 		return projectileFilter;
+	}
+
+	@Override
+	public EntityType<?> getDefaultType() {
+		return EntityType.PIG;
+	}
+
+	@Override
+	public String getDefaultTypeName() {
+		return "gui.securitycraft:trophy_system.moddedProjectiles";
 	}
 
 	public boolean isDisabled() {

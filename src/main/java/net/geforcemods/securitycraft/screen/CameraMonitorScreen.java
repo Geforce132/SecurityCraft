@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.screen;
 
 import java.util.ArrayList;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -139,10 +140,14 @@ public class CameraMonitorScreen extends Screen {
 		for (int i = 0; i < hoverCheckers.length; i++) {
 			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
 				if (cameraBEs[i] != null) {
-					if (cameraBEs[i].isDisabled())
+					if (cameraBEs[i].isDisabled()) {
 						renderTooltip(pose, Utils.localize("gui.securitycraft:scManual.disabled"), mouseX, mouseY);
-					else if (cameraBEs[i].hasCustomName())
+						break;
+					}
+					else if (cameraBEs[i].hasCustomName()) {
 						renderTooltip(pose, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBEs[i].getCustomName()), 150), mouseX, mouseY);
+						break;
+					}
 				}
 			}
 		}
@@ -168,6 +173,16 @@ public class CameraMonitorScreen extends Screen {
 		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
 		button.active = false;
 		cameraButtons[(camID - 1) % 10].active = false;
+	}
+
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+			onClose();
+			return true;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
 	@Override

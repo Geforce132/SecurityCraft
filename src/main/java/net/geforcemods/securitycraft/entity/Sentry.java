@@ -72,11 +72,11 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.PacketDistributor;
 
 public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffected { //needs to be a creature so it can target a player, ai is also only given to living entities
-	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner> defineId(Sentry.class, Owner.getSerializer());
-	private static final EntityDataAccessor<CompoundTag> ALLOWLIST = SynchedEntityData.<CompoundTag> defineId(Sentry.class, EntityDataSerializers.COMPOUND_TAG);
-	private static final EntityDataAccessor<Boolean> HAS_SPEED_MODULE = SynchedEntityData.<Boolean> defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Integer> MODE = SynchedEntityData.<Integer> defineId(Sentry.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Float> HEAD_ROTATION = SynchedEntityData.<Float> defineId(Sentry.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(Sentry.class, Owner.getSerializer());
+	private static final EntityDataAccessor<CompoundTag> ALLOWLIST = SynchedEntityData.<CompoundTag>defineId(Sentry.class, EntityDataSerializers.COMPOUND_TAG);
+	private static final EntityDataAccessor<Boolean> HAS_SPEED_MODULE = SynchedEntityData.<Boolean>defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Integer> MODE = SynchedEntityData.<Integer>defineId(Sentry.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Float> HEAD_ROTATION = SynchedEntityData.<Float>defineId(Sentry.class, EntityDataSerializers.FLOAT);
 	public static final float MAX_TARGET_DISTANCE = 20.0F;
 	private static final float ANIMATION_STEP_SIZE = 0.025F;
 	private static final float UPWARDS_ANIMATION_LIMIT = 0.025F;
@@ -283,8 +283,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	/**
-	 * Sets this sentry's mode to the given mode (or 0 if the mode is not one of 0, 1, 2) and sends the player a message
-	 * about the switch if wanted
+	 * Sets this sentry's mode to the given mode (or 0 if the mode is not one of 0, 1, 2) and sends the player a message about
+	 * the switch if wanted
 	 *
 	 * @param player The player to send the message to
 	 * @param mode The mode (int) to switch to (instead of sequentially toggling)
@@ -506,8 +506,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	/**
-	 * @return The mode in which the sentry is currently in, CAMOUFLAGE_HP as a fallback if the saved mode is not a valid
-	 *         mode
+	 * @return The mode in which the sentry is currently in, CAMOUFLAGE_HP as a fallback if the saved mode is not a valid mode
 	 */
 	public SentryMode getMode() {
 		int mode = entityData.get(MODE);
@@ -523,8 +522,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	/**
-	 * @return An optional containing the block entity of the block that the sentry uses to disguise itself, or an empty
-	 *         optional if it doesn't exist
+	 * @return An optional containing the block entity of the block that the sentry uses to disguise itself, or an empty optional
+	 *         if it doesn't exist
 	 */
 	public Optional<DisguisableBlockEntity> getSentryDisguiseBlockEntity() {
 		BlockEntity be;

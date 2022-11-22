@@ -1,5 +1,9 @@
 package net.geforcemods.securitycraft.items;
 
+import java.util.List;
+import java.util.function.Supplier;
+
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -9,7 +13,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -41,7 +44,7 @@ public class TaserItem extends Item {
 
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return slotChanged || ((oldStack.getItem() == SCContent.TASER.get() && newStack.getItem() == SCContent.TASER_POWERED.get()) || (oldStack.getItem() == SCContent.TASER_POWERED.get() && newStack.getItem() == SCContent.TASER.get()));
+		return slotChanged || oldStack.getItem() != newStack.getItem();
 	}
 
 	@Override
@@ -99,14 +102,12 @@ public class TaserItem extends Item {
 
 			if (hitResult != null) {
 				LivingEntity entity = (LivingEntity) hitResult.getEntity();
+				double damage = powered ? ConfigHandler.SERVER.poweredTaserDamage.get() : ConfigHandler.SERVER.taserDamage.get();
 
-				if (!entity.isBlocking() && entity.hurt(CustomDamageSources.TASER, powered ? 2.0F : 1.0F)) {
-					int strength = powered ? 4 : 1;
-					int length = powered ? 400 : 200;
+				if (!entity.isBlocking() && (damage == 0.0D || entity.hurt(CustomDamageSources.TASER, (float) damage))) {
+					List<Supplier<MobEffectInstance>> effects = powered ? ConfigHandler.SERVER.poweredTaserEffects : ConfigHandler.SERVER.taserEffects;
 
-					entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, length, strength));
-					entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, length, strength));
-					entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, length, strength));
+					effects.forEach(effect -> entity.addEffect(effect.get()));
 				}
 			}
 

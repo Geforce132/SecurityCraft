@@ -30,8 +30,8 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
 	/**
-	 * The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players,
-	 * MOBS = hostile mobs.
+	 * The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS =
+	 * hostile mobs.
 	 **/
 	private IMSTargetingMode targetingMode = IMSTargetingMode.PLAYERS_AND_MOBS;
 	private boolean updateBombCount = false;

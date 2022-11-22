@@ -47,7 +47,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	private DisabledOption disabled = new DisabledOption(false);
 	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> EmptyHandler.INSTANCE);
 	private LazyOptional<IItemHandler> storageHandler;
-	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack> withSize(37, ItemStack.EMPTY);
+	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
 	private int cooldown;
 
@@ -86,7 +86,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		ListTag list = tag.getList("Items", 10);
 
 		super.load(tag);
-		inventoryContents = NonNullList.<ItemStack> withSize(getContainerSize(), ItemStack.EMPTY);
+		inventoryContents = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); ++i) {
 			CompoundTag stackTag = list.getCompound(i);
@@ -225,6 +225,20 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			return BlockUtils.getProtectedCapability(side, this, () -> getExtractionHandler(), () -> EMPTY_INVENTORY).cast(); //disallow inserting
 		else
 			return super.getCapability(cap, side);
+	}
+
+	@Override
+	public void invalidateCaps() {
+		if (storageHandler != null)
+			storageHandler.invalidate();
+
+		super.invalidateCaps();
+	}
+
+	@Override
+	public void reviveCaps() {
+		storageHandler = null; //recreated in getExtractionHandler
+		super.reviveCaps();
 	}
 
 	public LazyOptional<IItemHandler> getExtractionHandler() {

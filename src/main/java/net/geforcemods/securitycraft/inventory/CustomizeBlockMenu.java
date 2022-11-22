@@ -1,11 +1,10 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
-import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.items.ModuleItem;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -128,7 +127,7 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 				moduleInv.onModuleRemoved(oldStack, module.getModuleType(), false);
 
 				if (moduleInv instanceof LinkableBlockEntity lbe)
-					ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, oldStack, lbe, false);
+					lbe.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) oldStack.getItem()).getModuleType(), false), lbe);
 
 				broadcastChanges();
 			}

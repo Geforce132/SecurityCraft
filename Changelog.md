@@ -1,6 +1,20 @@
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
 - New: Japanese translation (Thanks momo-i!)
+- New: ProjectE support (all reinforced blocks now have an EMC value)
+- New: Taser effects and damage are now configurable
+- New: The Block Change Detector can now show highlights in the world, marking where it detected block changes
+- New: Ability to change a block pocket's outline color
+- New: The I.M.S. is now waterloggable
+- New: Scrolling in the SecurityCraft Manual while holding the control key will now scroll through subpages (if any exist)
+- New: Rift Stabilizer, a block that detects and prevents teleportation attempts in its vicinity
+- New: Display Case. Securely display your items
+- New: Glow Display Case
+- Change: The Laser Block now needs a Redstone Module in order to emit a redstone signal when someone walks through the laser
+- Change: Most of SecurityCraft's screens are now no longer pausing the game when open, and can now be closed with the "Open/Close Inventory" key
+- API: Changed LinkedAction to an interface and the enum values to records for easier usability
+- API: Several methods in LinkableBlockEntity were changed to account for the LinkedAction change
+- API: LinkedAction has been renamed to ILinkedAction
 - Fix: Nether portals can replace reinforced blocks when generating
 - Fix: Crash when trying to disguise a block as/project some blocks that don't always have a block entity associated with them
 - Fix: Can't place blocks on blocks locked by a Sonic Security System
@@ -9,7 +23,18 @@
 - Fix: Mobs can spawn on reinforced ice and reinforced iron trapdoors
 - Fix: Snow layers can be placed on Reinforced Ice and Reinforced Packed Ice
 - Fix: Snow layers cannot be placed on Reinforced Mud
-- Misc: The minimum required Forge version is now 43.1.1
+- Fix: Sentry bullets can remove item frames
+- Fix: Some blocks don't show up properly in the state selector of the Projector/Disguise Module
+- Fix: Block Pocket Manager's size button and offset slider are available to non-owners
+- Fix: Password-protected furnaces close even if some players still have it open
+- Fix: Tooltips in some screens can overlap when tabbing through buttons while hovering over other areas that show a tooltip
+- Fix: The Harming Module does not work when a Laser Block is powered
+- Fix: Disguisable blocks do not show the proper block model sometimes
+- Fix: The Sonic Security System has no placing sound
+- Fix: Several issues in various language files
+- Fix: Some reinforced blocks can be destroyed by unintended vanilla means
+- Fix: Option tooltips do not update with the new value when the option is changed
+- Misc: The minimum required Forge version is now 43.1.8
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
 
