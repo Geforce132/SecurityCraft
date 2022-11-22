@@ -526,6 +526,9 @@
 	"block.securitycraft.reinforced_ochre_froglight": "強化された黄土色のフロッグライト",
 	"block.securitycraft.reinforced_verdant_froglight": "強化された新緑色のフロッグライト",
 	"block.securitycraft.reinforced_pearlescent_froglight": "強化された真珠色のフロッグライト",
+	"block.securitycraft.rift_stabilizer": "リフトスタビライザー",
+	"block.securitycraft.display_case": "ディスプレイケース",
+	"block.securitycraft.glow_display_case": "輝くディスプレイケース",
 
 	"item.securitycraft.codebreaker": "暗号解読機",
 	"item.securitycraft.door_indestructible_iron_item": "強化された鉄のドア",
@@ -605,6 +608,7 @@
 	"help.securitycraft.keycards.info": "キーカードはキーカードリーダーにリンクして開くことができます。キーカードの設定をリセットするには、キーカードを作業台に置きます。詳細については、キーカードリーダーのマニュアルページを参照してください。",
 	"help.securitycraft.secret_signs.info": "秘密の看板はバニラの看板の様に機能しますが、看板の所有者と許可リストに登録されているプレイヤーのみが看板を見たり、やりとりしたりすることができるという若干の違いがあります。この看板が置かれているブロックは誰にも壊されないように注意してください！",
 	"help.securitycraft.block_reinforcers.info": "汎用ブロック強化機は多数のバニラブロックを強化してSecurityCraftの亜種に変更させるものです。これを行うには汎用ブロック強化機を右クリックして、バニラブロックを一番上のスロットに入れてGUIを閉じます。もしくは(クリエイティブモードではないときに)ブロックを壊して強化することもできます。強化されたブロックを元に戻すには、一番下のスロットを使用します(レベル2の機でのみ使用可能)。レベル1の強化機は300回、レベル2の強化機は2700回、レベル3の強化機は無制限で使用できます。",
+	"help.securitycraft.display_cases.info": "ディスプレイケースは、バニラの額縁と同様に、1つのアイテムを表示することができますが、アイテムを回転することはできません。ケースを開くには、キーパッドや他の類似ブロックど同様にパスコードを入力する必要があります。一度開くとアイテムのあるケースを右クリックすることでアイテムを挿入することができるようになります。アイテムを取り出すには、ケースをスニークしながら右クリックをします。ケースを閉じるには空の手でケースを右クリックします。ケースを開いている間は、誰でもケースに触れることができます。バニラの輝く額縁と同様に輝くディスプレイケースは暗闇で発光します。",
 
 	"help.securitycraft.laser_block.info": "レーザーブロックは2つを5ブロック以内に設置して使用します。ブロックが正しく設置されるとブロックの間にレーザーが形成されるはずです。",
 	"help.securitycraft.keypad.info": "キーパッドは配置後に右クリックして数字のパスコードを設定することで使用します。キーコードを設定したらキーパッドを右クリックするとコードを入力することができます。正しいコードが入力されるとキーパッドから3秒間レッドストーン信号が放出されます。",
@@ -648,6 +652,7 @@
 	"help.securitycraft.key_panel.info": "キーパネルを下に設置すると小型で水浸しでも大丈夫なキーパッドになります。また、キーパッドやパスワード付きチェスト、パスワード付きかまどのクラフトレシピにも使用されます。",
 	"help.securitycraft.sonic_security_system.info": "音波セキュリティシステムはゲーム「メトロイドプライム2：エコーズ」に登場する同名の装置をモチーフにしたもので、特定のセキュリティクラフトブロックをロックして、使用や操作をできないようにすることができます。対応するプロックを右クリックすると、音波セキュリティシステムにバインドされます。一度配置したブロックを右クリックするとGUIが表示され、音波セキュリティシステムの有効化、無効化、リセットが可能になります。ブロックはポータブル音楽プレイヤー、または音符ブロックによって近くにある曲を演奏することで解除できます。このような曲を設定するには音波セキュリティシステムのGUIで録音開始をオンに切り替えて近くで演奏される音符ブロックを使って好きな曲を演奏します。演奏が終わったら録音をオフにします。その曲を音波セキュリティシステムの近くで再生するとロックされたブロックにしばらくアクセスできるようになります。",
 	"help.securitycraft.block_change_detector.info": "ブロックチェンジディテクターはその周辺にあるブロック(デフォルトでは5ブロックで汎用ブロック修正機で設定変更可能)の破壊や設置を検出します。ブロックを右クリックするとインターフェースが表示され、検出された変更のリストとブロックの破壊または配置のみを検出するか、または両方検出するかを確認できます。",
+	"help.securitycraft.rift_stabilizer.info": "リフトスタビライザーはその周辺にいるエンティティによるテレポートの試みを検知し、阻止(デフォルトでは5ブロックで汎用ブロック修正機で変更可能)します。テレポート元またはテレポート先の位置がブロックの範囲内にある場合、テレポートの試みは禁止されます。ブロックを右クリックすると、検出可能な全てのテレポートタイプのリストが表示されます。",
 
 	"help.securitycraft.codebreaker.info": "暗号解読機はキーパッド、パスワード付きチェスト、パスワード付きかまどのパスワードを右クリックで解読を試みることができる。(5回使用可能で、3分の2の確率で成功)",
 	"help.securitycraft.universal_block_remover.info": "汎用ブロック除去機は「強化された」ブロックを右クリックで破壊するために使用されます。ブロックを設置した人だけが破壊できます。",
@@ -714,6 +719,7 @@
 	"gui.securitycraft:scManual.keycards": "キーカード",
 	"gui.securitycraft:scManual.secret_signs": "秘密の看板",
 	"gui.securitycraft:scManual.block_reinforcers": "汎用ブロック強化機",
+	"gui.securitycraft:scManual.display_cases": "ディスプレイケース",
 	"gui.securitycraft:scManual.designedBy": "%s氏によるデザイン",
 	"gui.securitycraft:scManual.patreon.title": "パトロンの皆様:",
 	"gui.securitycraft:scManual.patreon.loading": "読込中...",
@@ -822,6 +828,13 @@
 	"gui.securitycraft:block_change_detector.mode.both": "破壊と設置",
 	"gui.securitycraft:block_change_detector.smart_module_hint": "特定のブロックタイプのみを検出できるようにするにはスマートモジュールをインストールしてください！",
 	"gui.securitycraft:block_change_detector.show_all_checkbox": "全エントリーを表示",
+	"gui.securitycraft:block_change_detector.highlight_in_world_checkbox": "ワールド内で一覧化されたブロックをハイライト",
+	"gui.securitycraft:choose_outline_color_tooltip": "アウトラインの色を選択",
+	"gui.securitycraft:rift_stabilizer.teleportationTypes": "検知可能なテレポートタイプ:",
+	"gui.securitycraft:rift_stabilizer.moduleRequired": "このリフトスタビライザーで検知可能なテレポートタイプを切り替えるにはスマートモジュールをインストールする必要があります。",
+	"gui.securitycraft:rift_stabilizer.toggle": "以下のリストの項目をクリックすると、特定のテレポートタイプの検出が切り替わります。",
+	"gui.securitycraft:rift_stabilizer.modded": "改良されたテレポート",
+	"gui.securitycraft:toggleList.comparatorOutput": "コンパレーター出力: %s",
 
 	"messages.securitycraft:bugReport": "バグの報告はDiscordサーバーの#bugreportチャンネルでお願いします。最初にルールをお読みください。",
 	"messages.securitycraft:retinalScanner.hello": "こんにちわ%sさん。",
@@ -933,6 +946,8 @@
 	"messages.securitycraft:sonic_security_system.locked": "この%sは音波セキュリティシステムによってロックされています！",
 	"messages.securitycraft:portable_tune_player.tune_saved": "音楽を保存しました。",
 	"messages.securitycraft:portable_tune_player.no_tune": "利用可能な音楽はありません。",
+	"messages.securitycraft:rift_stabilizer.no_teleport_to": "その位置へテレポートする権限がありません！",
+	"messages.securitycraft:rift_stabilizer.no_teleport_from": "この位置からテレポートする権限がありません！",
 
 	"jei.securitycraft.category.reinforcing": "ブロックの強化",
 	"jei.securitycraft.category.unreinforcing": "強化の除去",
@@ -996,6 +1011,7 @@
 	"module.securitycraft.laser_block.harming_module.description": "レーザーブロックにハーミングモジュールを追加すると、プレイヤーがレーザーを通過した際にダメージを受けるようになります。",
 	"module.securitycraft.laser_block.whitelist_module.description": "レーザーブロックに許可リストモジュールを追加すると、リストアップされたプレイヤーはレッドストーン信号を発することなくレーザーの中を歩くことができるようになります。",
 	"module.securitycraft.laser_block.disguise_module.description": "レーザーブロックに偽装モジュールを追加すると、そのテクスチャーとモデルが、偽装モジュールを追加したブロックのテクスチャーとモデルに変更されます。",
+	"module.securitycraft.laser_block.redstone_module.description": "レーザーブロックにレッドストーンモジュールを追加すると、モブやプレイヤーがレーザーを通過したときに、15ブロックのレッドストーン信号が発せられるようになります。",
 	"module.securitycraft.portable_radar.redstone_module.description": "ポータブルレーダーにレッドストーンモジュールを追加すると、プレイヤーが範囲内に入ったときにレーダーからレッドストーン信号が発信されるようになります。",
 	"module.securitycraft.portable_radar.whitelist_module.description": "ポータブルレーダーに許可リストモジュールを追加すると、リストアップされたプレイヤーがレーダーの検索対象から除外されます。",
 	"module.securitycraft.retinal_scanner.whitelist_module.description": "網膜スキャナーに許可リストモジュールを追加すると、ブロックを配置したプレイヤーでなくても、リストされたプレイヤーにスキャナーを使用させることができます。",
@@ -1078,6 +1094,15 @@
 	"module.securitycraft.block_change_detector.whitelist_module.description": "ブロックチェンジディテクターに許可リストモジュールを追加すると、リストに載っているプレイヤーは、ログを記録されることなく、そのブロックの周辺にブロックを置いたり壊したりすることができます。彼らはまた、すべてのログを見ることができますが、それを消去したり、ブロックの設定を変更したりすることはできません。",
 	"module.securitycraft.block_change_detector.redstone_module.description": "ブロックチェンジディテクターにレッドストーンモジュールを追加すると、周囲のプレイヤーによってブロックが変更されたことを検出するたびにレッドストーン信号を発信するようになります。",
 	"module.securitycraft.block_change_detector.smart_module.description": "ブロックチェンジディテクターにスマートモジュールを追加すると、特定の1種類のブロックの変更のみを記録することができます。このブロックはGUIで設定することができます。",
+	"module.securitycraft.rift_stabilizer.disguise_module.description": "リフトスタビライザーに偽装モジュールを追加すると、偽装モジュールに追加されたブロックのテクスチャとモデルに変更されます。",
+	"module.securitycraft.rift_stabilizer.whitelist_module.description": "リフトスタビライザーに許可リストモジュールを追加すると、リストアップされたプレイヤーがブロックの周辺にテレポートしたり、ブロックの周辺からテレポートすることができるようになります。",
+	"module.securitycraft.rift_stabilizer.redstone_module.description": "リフトスタビライザーにレッドストーンモジュールを追加すると、その周辺でテレポートの試行を検出するたびにレッドストーン信号を発信するようになります。このレッドストーン信号はブロックの近くで検出された場合は強くなり、遠くで検出された場合は弱くなります。さらに最後に検出されたテレポートの種類を判断するためにコンパレータを使用することができるようになります。",
+	"module.securitycraft.rift_stabilizer.harming_module.description": "リフトスタビライザーにハーミングモジュールを追加すると、その周辺にテレポートしようとするプレイヤーや、周辺からテレポートしようとするプレイヤーがダメージを受けるようになります。",
+	"module.securitycraft.rift_stabilizer.smart_module.description": "リフトスタビライザーにスマートモジュールを追加すると、リフトスタビライザーが検出できるテレポートの種類を設定できるようになります。",
+	"module.securitycraft.display_case.whitelist_module.description": "ディスプレイケースに許可リストモジュールを追加すると、リストアップされたプレイヤーはコードを知らなくてもそれを開くことができるようになります。",
+	"module.securitycraft.display_case.blacklist_module.description": "ディスプレイケースに拒否リストモジュールを追加すると、リストアップされたプレイヤーはブロックとのやり取りを禁止されます。",
+	"module.securitycraft.glow_display_case.whitelist_module.description": "ディスプレイケースに許可リストモジュールを追加すると、リストアップされたプレイヤーはコードを知らなくてもそれを開くことができるようになります",
+	"module.securitycraft.glow_display_case.blacklist_module.description": "ディスプレイケースに拒否リストモジュールを追加すると、リストアップされたプレイヤーはブロックとのやり取りを禁止されます。",
 
 	"option.generic.disabled": "無効：%s",
 	"option.generic.disabled.description": "このブロックを無効にして、再度有効にするまで動作させないようにする必要があるか？",
@@ -1180,8 +1205,13 @@
 	"option.securitycraft.block_change_detector.range": "検出範囲：%s",
 	"option.securitycraft.block_change_detector.range.description": "プレイヤーのブロックチェンジを検知するためには、どの程度の距離まで検知するか？",
 	"option.securitycraft.rift_stabilizer.signalLength": "信号長：%s",
+	"option.securitycraft.rift_stabilizer.signalLength.description": "テレポートを検出した後のレッドストーンの信号の長さはどのくらいにすべきか？(単位はティック、20ティック＝1秒です。)",
+	"option.securitycraft.rift_stabilizer.range": "検出範囲: %s",
+	"option.securitycraft.rift_stabilizer.range.description": "リフトスタビライザーがテレポートの試行を防ぐためにどの程度の距離を離すか？",
 	"option.securitycraft.display_case.sendMessage": "メッセージ：%s",
+	"option.securitycraft.display_case.sendMessage.description": "このケースは有効化時にメッセージを送信するか？(許可リスト/拒否リストを使用する場合)",
 	"option.securitycraft.glow_display_case.sendMessage": "メッセージ：%s",
+	"option.securitycraft.glow_display_case.sendMessage.description": "このケースは有効化時にメッセージを送信するか？(許可リスト/拒否リストを使用する場合)",
 
 	"securitycraft.subtitle.alarm": "アラーム音",
 	"securitycraft.subtitle.electrified": "感電死したエンティティ",
@@ -1190,5 +1220,7 @@
 	"securitycraft.subtitle.taserfire": "テーザー銃射撃",
 	"securitycraft.subtitle.lock": "コンテナロック",
 	"securitycraft.subtitle.get_item": "アイテムゲット！",
-	"securitycraft.subtitle.ping": "音波セキュリティシステムPings"
+	"securitycraft.subtitle.ping": "音波セキュリティシステムPings",
+	"securitycraft.subtitle.display_case_open": "ディスプレイケースが開く",
+	"securitycraft.subtitle.display_case_close": "ディスプレイケースが閉じる"
 }
