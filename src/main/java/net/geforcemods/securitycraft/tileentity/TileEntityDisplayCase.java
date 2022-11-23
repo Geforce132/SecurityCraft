@@ -79,14 +79,17 @@ public class TileEntityDisplayCase extends CustomizableSCTE implements ITickable
 
 	@Override
 	public boolean onCodebreakerUsed(IBlockState state, EntityPlayer player) {
-		if (isDisabled()) {
-			player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			return false;
+		if (!isOpen()) {
+			if (isDisabled())
+				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+
+			else {
+				activate(player);
+				return true;
+			}
 		}
-		else {
-			activate(player);
-			return true;
-		}
+
+		return false;
 	}
 
 	@Override
