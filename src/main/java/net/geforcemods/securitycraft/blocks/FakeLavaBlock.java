@@ -3,12 +3,15 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -35,5 +38,10 @@ public class FakeLavaBlock extends LiquidBlock {
 					lEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20, 2));
 			}
 		}
+	}
+
+	@Override
+	public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
+		return Blocks.LAVA.defaultBlockState().setValue(LEVEL, state.getValue(LEVEL));
 	}
 }

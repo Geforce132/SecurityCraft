@@ -4,12 +4,15 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -25,5 +28,10 @@ public class FakeWaterBlock extends LiquidBlock {
 			if (!(entity instanceof Player) || (!((Player) entity).isCreative() && !(((Player) entity).getVehicle() instanceof Boat)))
 				entity.hurt(CustomDamageSources.FAKE_WATER, 1.5F);
 		}
+	}
+
+	@Override
+	public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
+		return Blocks.WATER.defaultBlockState().setValue(LEVEL, state.getValue(LEVEL));
 	}
 }

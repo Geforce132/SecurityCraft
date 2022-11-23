@@ -8,10 +8,12 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -141,6 +143,11 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 			return super.getCloneItemStack(state, target, level, pos, player);
 
 		return new ItemStack(blockDisguisedAs);
+	}
+
+	@Override
+	public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
+		return getBlockDisguisedAs().defaultBlockState();
 	}
 
 	public Block getBlockDisguisedAs() {
