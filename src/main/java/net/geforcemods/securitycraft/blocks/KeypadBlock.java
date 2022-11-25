@@ -62,7 +62,7 @@ public class KeypadBlock extends DisguisableBlock {
 				activate(state, world, pos, te.getSignalLength());
 			}
 			else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-				te.openPasswordGUI(player);
+				te.openPasswordGUI(world, pos, te.getOwner(), player);
 		}
 
 		return ActionResultType.SUCCESS;

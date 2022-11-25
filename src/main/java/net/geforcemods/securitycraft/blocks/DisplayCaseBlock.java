@@ -168,7 +168,7 @@ public class DisplayCaseBlock extends OwnableBlock implements IWaterLoggable {
 						activate(be);
 					}
 					else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-						be.openPasswordGUI(player);
+						be.openPasswordGUI(level, pos, be.getOwner(), player);
 				}
 			}
 		}

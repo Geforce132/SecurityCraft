@@ -20,16 +20,12 @@ import net.geforcemods.securitycraft.inventory.AbstractKeypadFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
-import net.geforcemods.securitycraft.network.client.OpenScreen;
-import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
@@ -48,8 +44,6 @@ import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.data.IModelData;
@@ -194,29 +188,13 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	}
 
 	@Override
-	public void openPasswordGUI(PlayerEntity player) {
-		if (!level.isClientSide) {
-			if (getPassword() != null)
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.CHECK_PASSWORD, worldPosition));
-			else {
-				if (getOwner().isOwner(player))
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.SET_PASSWORD, worldPosition));
-				else
-					PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
-			}
-		}
-	}
-
-	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
-		if (isDisabled())
+	public boolean shouldAttemptCodebreak(BlockState state, PlayerEntity player) {
+		if (isDisabled()) {
 			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-		else {
-			activate(player);
-			return true;
+			return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	@Override

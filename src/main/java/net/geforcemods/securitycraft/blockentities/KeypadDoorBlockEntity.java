@@ -1,24 +1,16 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.client.OpenScreen;
-import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasswordProtected {
 	private String passcode;
@@ -51,31 +43,13 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	}
 
 	@Override
-	public void openPasswordGUI(PlayerEntity player) {
-		if (!level.isClientSide) {
-			if (getPassword() != null)
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.CHECK_PASSWORD, worldPosition));
-			else {
-				if (getOwner().isOwner(player))
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.SET_PASSWORD, worldPosition));
-				else
-					PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
-			}
-		}
-	}
-
-	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
-		if (!blockState.getValue(DoorBlock.OPEN)) {
-			if (isDisabled())
-				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else {
-				activate(player);
-				return true;
-			}
+	public boolean shouldAttemptCodebreak(BlockState state, PlayerEntity player) {
+		if (isDisabled()) {
+			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			return false;
 		}
 
-		return false;
+		return !state.getValue(DoorBlock.POWERED);
 	}
 
 	@Override
