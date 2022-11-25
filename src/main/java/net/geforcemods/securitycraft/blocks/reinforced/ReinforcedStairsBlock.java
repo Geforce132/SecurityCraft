@@ -140,6 +140,8 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock())
 			modelState.onRemove(world, pos, newState, isMoving);
+
+		super.onRemove(state, world, pos, newState, isMoving);
 	}
 
 	@Override
