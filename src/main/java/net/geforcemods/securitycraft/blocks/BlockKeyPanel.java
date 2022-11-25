@@ -84,7 +84,7 @@ public abstract class BlockKeyPanel extends BlockOwnable {
 				return true;
 			}
 			else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
-				te.openPasswordGUI(player);
+				te.openPasswordGUI(world, pos, te.getOwner(), player);
 		}
 
 		return true;

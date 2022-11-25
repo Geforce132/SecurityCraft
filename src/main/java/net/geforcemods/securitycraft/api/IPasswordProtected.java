@@ -1,55 +1,66 @@
 package net.geforcemods.securitycraft.api;
 
-import net.geforcemods.securitycraft.gui.GuiCheckPassword;
-import net.geforcemods.securitycraft.gui.GuiSetPassword;
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 
 /**
  * Implementing this interface designates a block entity as being password-protected. Implementing this allows you to use
- * {@link GuiSetPassword} and {@link GuiCheckPassword} to easily set your block's password. Extends
+ * {@link SetPasswordScreen} and {@link CheckPasswordScreen} to easily set your block's password. Extends
  * {@link ICodebreakable} as most password-protected blocks are likely able to be hacked using the Codebreaker by default.
  *
  * @author Geforce
  */
 public interface IPasswordProtected extends ICodebreakable {
 	/**
-	 * Called whenever a player correctly enters this block's password in the password GUI.<p> World, and x, y, and z variables
-	 * are not given, as they are already provided in {@link TileEntity}. This runs on both the CLIENT and SERVER sides, be sure
-	 * to check for World.isRemote.<p> The cleanest way to use this is to check if the block at xCoord, yCoord, and zCoord is an
-	 * instance of your block, if so, call a static method to do your block's function.
+	 * Open the correct password GUI depending on if a password is already set or not. <p>
+	 *
+	 * @param world The level of this block entity
+	 * @param pos The position of this block entity
+	 * @param owner The owner of this block entity
+	 * @param player The player who the GUI should be opened to.
+	 */
+	public default void openPasswordGUI(World world, BlockPos pos, Owner owner, EntityPlayer player) {
+		if (!world.isRemote) {
+			if (getPassword() != null)
+				player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
+			else {
+				if (owner.isOwner(player))
+					player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
+				else
+					PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+			}
+		}
+	}
+
+	@Override
+	public default void useCodebreaker(IBlockState state, EntityPlayer player) {
+		activate(player);
+	}
+
+	/**
+	 * Called whenever a player correctly enters this block's password in the password GUI.<p>
 	 *
 	 * @param player The player who entered the password.
 	 */
 	public void activate(EntityPlayer player);
 
 	/**
-	 * Open the correct password GUI depending on if a password is already set or not. <p> To open the "password setup" GUI:
-	 *
-	 * <pre>
-	 * player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
-	 * </pre>
-	 *
-	 * To open the "insert password" GUI:
-	 *
-	 * <pre>
-	 * player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
-	 * </pre>
-	 *
-	 * @param player The player who the GUI should be opened to.
-	 */
-	public void openPasswordGUI(EntityPlayer player);
-
-	/**
-	 * Return your TileEntity's password variable here. If the password is empty or not set yet, return null.
+	 * Return your block entity's password variable here. If the password is empty or not set yet, return null.
 	 *
 	 * @return The password.
 	 */
 	public String getPassword();
 
 	/**
-	 * Save newly created passwords to your TileEntity here. You are responsible for reading and writing the password to your
-	 * NBTTagCompound in writeToNBT() and readFromNBT().
+	 * Save newly created passwords to your block entity here.
 	 *
 	 * @param password The new password to be saved.
 	 */

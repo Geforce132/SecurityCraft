@@ -1,20 +1,14 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.blocks.BlockKeypadDoor;
-import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPasswordProtected {
 	private String passcode;
@@ -53,29 +47,8 @@ public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPass
 	}
 
 	@Override
-	public void openPasswordGUI(EntityPlayer player) {
-		if (getPassword() != null)
-			player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
-		else {
-			if (getOwner().isOwner(player))
-				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
-			else
-				PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
-		}
-	}
-
-	@Override
-	public boolean onCodebreakerUsed(IBlockState state, EntityPlayer player) {
-		if (!state.getValue(BlockKeypad.POWERED)) {
-			if (isDisabled())
-				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else {
-				activate(player);
-				return true;
-			}
-		}
-
-		return false;
+	public boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
+		return !state.getValue(BlockKeypad.POWERED);
 	}
 
 	@Override

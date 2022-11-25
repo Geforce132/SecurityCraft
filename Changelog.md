@@ -12,6 +12,7 @@
 - API: Changed EnumLinkedAction to an interface and the enum values to records for easier usability
 - API: Several methods in TileEntityLinkable were changed to account for the EnumLinkedAction change
 - API: EnumLinkedAction has been renamed to ILinkedAction
+- API: Changes to ICodebreakable and IPasswordProtected to cut down on duplicate code and make them easier and more clear to use
 - Fix: Nether portals can replace reinforced blocks when generating
 - Fix: Can't place blocks on blocks locked by a Sonic Security System
 - Fix: Sentry bullets can remove item frames

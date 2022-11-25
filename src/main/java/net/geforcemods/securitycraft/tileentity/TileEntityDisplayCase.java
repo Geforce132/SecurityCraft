@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -9,11 +8,8 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockDisplayCase;
-import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,8 +19,6 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityDisplayCase extends CustomizableSCTE implements ITickable, IPasswordProtected, ILockable {
 	private AxisAlignedBB renderBoundingBox = Block.FULL_BLOCK_AABB;
@@ -64,32 +58,8 @@ public class TileEntityDisplayCase extends CustomizableSCTE implements ITickable
 	}
 
 	@Override
-	public void openPasswordGUI(EntityPlayer player) {
-		if (!world.isRemote) {
-			if (getPassword() != null)
-				player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
-			else {
-				if (getOwner().isOwner(player))
-					player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
-				else
-					PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
-			}
-		}
-	}
-
-	@Override
-	public boolean onCodebreakerUsed(IBlockState state, EntityPlayer player) {
-		if (!isOpen()) {
-			if (isDisabled())
-				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-
-			else {
-				activate(player);
-				return true;
-			}
-		}
-
-		return false;
+	public boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
+		return !isOpen();
 	}
 
 	@Override

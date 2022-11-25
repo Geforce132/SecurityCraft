@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -69,20 +68,12 @@ public class TileEntityKeycardReader extends TileEntityDisguisable implements IL
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(IBlockState state, EntityPlayer player) {
-		if (!state.getValue(BlockKeypad.POWERED)) {
-			if (isDisabled())
-				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else {
-				activate(player);
-				return true;
-			}
-		}
-
-		return false;
+	public boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
+		return !state.getValue(BlockKeypad.POWERED);
 	}
 
-	public void activate(EntityPlayer player) {
+	@Override
+	public void useCodebreaker(IBlockState state, EntityPlayer player) {
 		if (!world.isRemote)
 			((BlockKeycardReader) getBlockType()).activate(world, pos, world.getBlockState(pos), signalLength.get());
 	}
