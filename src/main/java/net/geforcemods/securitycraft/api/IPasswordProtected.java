@@ -1,8 +1,20 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 /**
  * Implementing this interface designates a block entity as being password-protected. Implementing this allows you to use
@@ -15,9 +27,28 @@ public interface IPasswordProtected extends ICodebreakable {
 	/**
 	 * Open the correct password GUI depending on if a password is already set or not. <p>
 	 *
+	 * @param level The level of this block entity
+	 * @param pos The position of this block entity
+	 * @param owner The owner of this block entity
 	 * @param player The player who the GUI should be opened to.
 	 */
-	public void openPasswordGUI(Player player);
+	public default void openPasswordGUI(Level level, BlockPos pos, Owner owner, Player player) {
+		if (!level.isClientSide) {
+			if (getPassword() != null)
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.CHECK_PASSWORD, pos));
+			else {
+				if (owner.isOwner(player))
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SET_PASSWORD, pos));
+				else
+					PlayerUtils.sendMessageToPlayer(player, new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
+			}
+		}
+	}
+
+	@Override
+	public default void useCodebreaker(BlockState state, Player player) {
+		activate(player);
+	}
 
 	/**
 	 * Called whenever a player correctly enters this block's password in the password GUI.<p>
