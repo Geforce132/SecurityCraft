@@ -35,7 +35,7 @@ public class FakeLavaBlock extends LiquidBlock {
 				lEntity.addEffect(SHORT_FIRE_RESISTANCE);
 
 				if (!lEntity.hasEffect(MobEffects.REGENERATION))
-					lEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20, 2));
+					lEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20, 2, false, false));
 			}
 		}
 	}
