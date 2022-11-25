@@ -23,7 +23,7 @@ public class FakeWaterBlock extends FlowingFluidBlock {
 	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (!world.isClientSide && !(entity instanceof ItemEntity) && !(entity instanceof BoatEntity)) {
 			if (!(entity instanceof PlayerEntity) || (!((PlayerEntity) entity).isCreative() && !(((PlayerEntity) entity).getVehicle() instanceof BoatEntity)))
-				entity.hurt(CustomDamageSources.FAKE_WATER, 1.5F);
+				entity.hurt(CustomDamageSources.FAKE_WATER, 4F);
 		}
 	}
 }
