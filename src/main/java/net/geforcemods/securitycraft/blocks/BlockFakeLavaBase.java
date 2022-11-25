@@ -56,7 +56,7 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements IOverlayDisp
 				lEntity.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 1));
 
 				if (!lEntity.isPotionActive(MobEffects.REGENERATION))
-					lEntity.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 20, 2));
+					lEntity.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 20, 2, false, false));
 			}
 		}
 	}
