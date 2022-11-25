@@ -34,7 +34,7 @@ public class FakeLavaBlock extends FlowingFluidBlock {
 				lEntity.addEffect(SHORT_FIRE_RESISTANCE);
 
 				if (!lEntity.hasEffect(Effects.REGENERATION))
-					lEntity.addEffect(new EffectInstance(Effects.REGENERATION, 20, 2));
+					lEntity.addEffect(new EffectInstance(Effects.REGENERATION, 20, 2, false, false));
 			}
 		}
 	}
