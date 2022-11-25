@@ -26,7 +26,7 @@ public class FakeWaterBlock extends LiquidBlock {
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (!level.isClientSide && !(entity instanceof ItemEntity) && !(entity instanceof Boat)) {
 			if (!(entity instanceof Player) || (!((Player) entity).isCreative() && !(((Player) entity).getVehicle() instanceof Boat)))
-				entity.hurt(CustomDamageSources.FAKE_WATER, 1.5F);
+				entity.hurt(CustomDamageSources.FAKE_WATER, 4F);
 		}
 	}
 
