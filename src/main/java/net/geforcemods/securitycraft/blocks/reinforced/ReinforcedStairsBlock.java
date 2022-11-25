@@ -137,6 +137,8 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock())
 			modelState.onRemove(level, pos, newState, isMoving);
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
@@ -231,34 +233,24 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 		switch (mirror) {
 			case LEFT_RIGHT:
 				if (direction.getAxis() == Direction.Axis.Z) {
-					switch (shape) {
-						case INNER_LEFT:
-							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_RIGHT);
-						case INNER_RIGHT:
-							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_LEFT);
-						case OUTER_LEFT:
-							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_RIGHT);
-						case OUTER_RIGHT:
-							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_LEFT);
-						default:
-							return state.rotate(Rotation.CLOCKWISE_180);
-					}
+					return switch (shape) {
+						case INNER_LEFT -> state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_RIGHT);
+						case INNER_RIGHT -> state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_LEFT);
+						case OUTER_LEFT -> state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_RIGHT);
+						case OUTER_RIGHT -> state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_LEFT);
+						default -> state.rotate(Rotation.CLOCKWISE_180);
+					};
 				}
 				break;
 			case FRONT_BACK:
 				if (direction.getAxis() == Direction.Axis.X) {
-					switch (shape) {
-						case INNER_LEFT:
-							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_LEFT);
-						case INNER_RIGHT:
-							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_RIGHT);
-						case OUTER_LEFT:
-							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_RIGHT);
-						case OUTER_RIGHT:
-							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_LEFT);
-						case STRAIGHT:
-							return state.rotate(Rotation.CLOCKWISE_180);
-					}
+					return switch (shape) {
+						case INNER_LEFT -> state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_LEFT);
+						case INNER_RIGHT -> state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_RIGHT);
+						case OUTER_LEFT -> state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_RIGHT);
+						case OUTER_RIGHT -> state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_LEFT);
+						case STRAIGHT -> state.rotate(Rotation.CLOCKWISE_180);
+					};
 				}
 				break;
 			default:
