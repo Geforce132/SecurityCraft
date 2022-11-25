@@ -31,6 +31,7 @@
 - Fix: Several issues in various language files
 - Fix: Some reinforced blocks can be destroyed by unintended vanilla means
 - Fix: Option tooltips do not update with the new value when the option is changed
+- Fix: Potion particles are visible when being in Fake Lava
 - Removed: Finnish translation due to being outdated and incomplete
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
