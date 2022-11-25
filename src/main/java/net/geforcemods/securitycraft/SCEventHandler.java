@@ -475,26 +475,34 @@ public class SCEventHandler {
 	}
 
 	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
-		Level level = event.getEntity().level;
+		Player player = event.getEntity();
+		Level level = player.level;
+		BlockPos pos = event.getPos();
 
-		if (level.getBlockEntity(event.getPos()) instanceof ICodebreakable codebreakable) {
+		if (level.getBlockEntity(pos) instanceof ICodebreakable codebreakable) {
 			double chance = ConfigHandler.SERVER.codebreakerChance.get();
 
 			if (chance < 0.0D) {
-				Block block = level.getBlockState(event.getPos()).getBlock();
+				Block block = level.getBlockState(pos).getBlock();
 
-				PlayerUtils.sendMessageToPlayer(event.getEntity(), Utils.localize(block.getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(block.getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
 			}
 			else {
-				if (event.getEntity().getItemInHand(event.getHand()).getItem() == SCContent.CODEBREAKER.get())
-					event.getEntity().getItemInHand(event.getHand()).hurtAndBreak(1, event.getEntity(), p -> p.broadcastBreakEvent(event.getHand()));
+				ItemStack stackInHand = player.getItemInHand(event.getHand());
+				BlockState state = level.getBlockState(pos);
 
-				if (event.getEntity().isCreative() || new Random().nextDouble() < chance)
-					return codebreakable.onCodebreakerUsed(level.getBlockState(event.getPos()), event.getEntity());
-				else {
-					PlayerUtils.sendMessageToPlayer(event.getEntity(), Component.translatable(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
-					return true;
-				}
+				if (stackInHand.is(SCContent.CODEBREAKER.get()))
+					stackInHand.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
+
+				if (!codebreakable.shouldAttemptCodebreak(state, player))
+					return false;
+
+				if (player.isCreative() || new Random().nextDouble() < chance)
+					codebreakable.useCodebreaker(state, player);
+				else
+					PlayerUtils.sendMessageToPlayer(player, Component.translatable(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
+
+				return true;
 			}
 		}
 

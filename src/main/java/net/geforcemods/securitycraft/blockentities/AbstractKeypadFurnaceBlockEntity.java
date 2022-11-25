@@ -20,13 +20,9 @@ import net.geforcemods.securitycraft.inventory.AbstractKeypadFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
-import net.geforcemods.securitycraft.network.client.OpenScreen;
-import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -34,7 +30,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -215,35 +210,19 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	}
 
 	@Override
+	public boolean shouldAttemptCodebreak(BlockState state, Player player) {
+		if (isDisabled()) {
+			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
 	public void activate(Player player) {
 		if (!level.isClientSide && getBlockState().getBlock() instanceof AbstractKeypadFurnaceBlock block)
 			block.activate(this, getBlockState(), level, worldPosition, player);
-	}
-
-	@Override
-	public void openPasswordGUI(Player player) {
-		if (!level.isClientSide) {
-			if (getPassword() != null)
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.CHECK_PASSWORD, worldPosition));
-			else {
-				if (getOwner().isOwner(player))
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SET_PASSWORD, worldPosition));
-				else
-					PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
-			}
-		}
-	}
-
-	@Override
-	public boolean onCodebreakerUsed(BlockState state, Player player) {
-		if (isDisabled())
-			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-		else {
-			activate(player);
-			return true;
-		}
-
-		return false;
 	}
 
 	@Override

@@ -46,7 +46,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 				activate(state, level, pos, player, be.getSignalLength());
 			}
 			else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-				be.openPasswordGUI(player);
+				be.openPasswordGUI(level, pos, be.getOwner(), player);
 		}
 
 		return InteractionResult.SUCCESS;
