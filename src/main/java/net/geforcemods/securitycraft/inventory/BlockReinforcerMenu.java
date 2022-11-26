@@ -196,7 +196,7 @@ public class BlockReinforcerMenu extends Container {
 
 	@Override
 	public ItemStack clicked(int slot, int dragType, ClickType clickType, PlayerEntity player) {
-		if (slot >= 0 && !player.getMainHandItem().isEmpty() && getSlot(slot).getItem() == player.getMainHandItem() && player.getMainHandItem().getItem() instanceof UniversalBlockReinforcerItem)
+		if (slot >= 0 && getSlot(slot) != null && getSlot(slot).getItem().getItem() instanceof UniversalBlockReinforcerItem)
 			return ItemStack.EMPTY;
 
 		return super.clicked(slot, dragType, clickType, player);

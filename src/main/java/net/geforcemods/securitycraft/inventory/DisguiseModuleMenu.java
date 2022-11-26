@@ -68,7 +68,7 @@ public class DisguiseModuleMenu extends StateSelectorAccessMenu {
 
 	@Override
 	public ItemStack clicked(int slot, int dragType, ClickType clickType, PlayerEntity player) {
-		if (slot >= 0 && getSlot(slot) != null && ((!player.getMainHandItem().isEmpty() && getSlot(slot).getItem() == player.getMainHandItem() && player.getMainHandItem().getItem() == SCContent.DISGUISE_MODULE.get())))
+		if (slot >= 0 && getSlot(slot) != null && getSlot(slot).getItem().getItem() == SCContent.DISGUISE_MODULE.get())
 			return ItemStack.EMPTY;
 
 		return super.clicked(slot, dragType, clickType, player);
