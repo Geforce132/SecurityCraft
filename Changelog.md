@@ -23,6 +23,7 @@
 - Fix: Several issues in various language files
 - Fix: Plants and saplings cannot be placed on Reinforced Dirt and similar blocks
 - Fix: Potion particles are visible when being in Fake Lava
+- Fix: Briefcase item duplication
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
 

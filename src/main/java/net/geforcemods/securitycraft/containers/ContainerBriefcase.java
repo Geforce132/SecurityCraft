@@ -69,7 +69,7 @@ public class ContainerBriefcase extends Container {
 
 	@Override
 	public ItemStack slotClick(int slot, int dragType, ClickType clickType, EntityPlayer player) {
-		if (slot >= 0 && getSlot(slot) != null && (!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand() && player.getHeldItemMainhand().getItem() instanceof ItemBriefcase))
+		if (slot >= 0 && getSlot(slot) != null && getSlot(slot).getStack().getItem() instanceof ItemBriefcase)
 			return ItemStack.EMPTY;
 
 		return super.slotClick(slot, dragType, clickType, player);
