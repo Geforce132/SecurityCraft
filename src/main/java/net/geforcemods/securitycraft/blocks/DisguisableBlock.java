@@ -136,6 +136,16 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	@Override
+	public int getLightBlock(BlockState state, IBlockReader level, BlockPos pos) {
+		Optional<BlockState> disguisedState = getDisguisedBlockState(level, pos);
+
+		if (disguisedState.isPresent())
+			return disguisedState.get().getLightBlock(level, pos);
+		else
+			return super.getLightBlock(state, level, pos);
+	}
+
+	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
