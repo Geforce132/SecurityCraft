@@ -7,6 +7,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
@@ -23,7 +24,10 @@ public class DataGenRegistrar {
 		generator.addProvider(event.includeServer(), new BlockLootTableGenerator(generator));
 		generator.addProvider(event.includeServer(), blockTagGenerator);
 		generator.addProvider(event.includeServer(), new ItemTagGenerator(generator, blockTagGenerator, existingFileHelper));
-		generator.addProvider(event.includeServer(), new ProjectECompatConversionProvider(generator));
+
+		if (ModList.get().isLoaded("projecte"))
+			generator.addProvider(event.includeServer(), new ProjectECompatConversionProvider(generator));
+
 		generator.addProvider(event.includeServer(), new RecipeGenerator(generator));
 	}
 }
