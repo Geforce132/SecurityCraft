@@ -189,7 +189,7 @@ public class ContainerBlockReinforcer extends Container {
 
 	@Override
 	public ItemStack slotClick(int slot, int dragType, ClickType clickType, EntityPlayer player) {
-		if (slot >= 0 && !player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand() && player.getHeldItemMainhand().getItem() instanceof ItemUniversalBlockReinforcer)
+		if (slot >= 0 && getSlot(slot) != null && getSlot(slot).getStack().getItem() instanceof ItemUniversalBlockReinforcer)
 			return ItemStack.EMPTY;
 
 		return super.slotClick(slot, dragType, clickType, player);
