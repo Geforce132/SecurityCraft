@@ -66,7 +66,7 @@ public class BriefcaseMenu extends AbstractContainerMenu {
 
 	@Override
 	public void clicked(int slot, int dragType, ClickType clickType, Player player) {
-		if (slot >= 0 && getSlot(slot) != null && (!player.getMainHandItem().isEmpty() && getSlot(slot).getItem() == player.getMainHandItem() && player.getMainHandItem().getItem() instanceof BriefcaseItem))
+		if (slot >= 0 && getSlot(slot) != null && getSlot(slot).getItem().getItem() instanceof BriefcaseItem)
 			return;
 		else
 			super.clicked(slot, dragType, clickType, player);
