@@ -33,6 +33,7 @@
 - Fix: Option tooltips do not update with the new value when the option is changed
 - Fix: Potion particles are visible when being in Fake Lava
 - Fix: Block entities of reinforced stairs don't get properly removed when the block is broken, leading to inteaction issues with other blocks placed in the same block space
+- Fix: Grass can grow under disguised blocks when it shouldn't
 - Removed: Finnish translation due to being outdated and incomplete
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
