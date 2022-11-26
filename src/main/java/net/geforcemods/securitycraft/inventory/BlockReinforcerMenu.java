@@ -196,7 +196,7 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 
 	@Override
 	public void clicked(int slot, int dragType, ClickType clickType, Player player) {
-		if (slot >= 0 && !player.getMainHandItem().isEmpty() && getSlot(slot).getItem() == player.getMainHandItem() && player.getMainHandItem().getItem() instanceof UniversalBlockReinforcerItem)
+		if (slot >= 0 && getSlot(slot) != null && getSlot(slot).getItem().getItem() instanceof UniversalBlockReinforcerItem)
 			return;
 		else
 			super.clicked(slot, dragType, clickType, player);
