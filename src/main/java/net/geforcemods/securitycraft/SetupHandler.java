@@ -316,6 +316,8 @@ public class SetupHandler {
 		SCContent.lapisOreMine = new BlockFullMineBase(Material.ROCK, Blocks.LAPIS_ORE, 1).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("lapis_mine").setTranslationKey("securitycraft:lapis_mine");
 		SCContent.quartzOreMine = new BlockFullMineBase(Material.ROCK, Blocks.QUARTZ_ORE, 0).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("quartz_mine").setTranslationKey("securitycraft:quartz_mine");
 		SCContent.redstoneOreMine = new BlockRedstoneOreMine().setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("redstone_mine").setTranslationKey("securitycraft:redstone_mine");
+		SCContent.netherrackMine = new BlockFullMineBase(Material.ROCK, Blocks.NETHERRACK, 0).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 0.4F).setRegistryName("netherrack_mine").setTranslationKey("securitycraft:netherrack_mine");
+		SCContent.endStoneMine = new BlockFullMineBase(Material.ROCK, Blocks.END_STONE, 0).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("end_stone_mine").setTranslationKey("securitycraft:end_stone_mine");
 	}
 
 	public static void setupItems() {

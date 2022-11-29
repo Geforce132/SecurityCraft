@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "normal": [
+            { "model": "securitycraft:end_stone_mine" }
+        ]
+    }
+}

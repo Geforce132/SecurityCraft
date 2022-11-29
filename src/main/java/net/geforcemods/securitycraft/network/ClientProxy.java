@@ -100,7 +100,9 @@ public class ClientProxy implements IProxy {
 				"lapis_ore",
 				"redstone_ore",
 				"sand",
-				"stone"
+				"stone",
+				"end_stone",
+				"netherrack"
 		};
 		//@formatter:on
 

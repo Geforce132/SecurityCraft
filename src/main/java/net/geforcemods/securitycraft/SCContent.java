@@ -35,6 +35,7 @@ public class SCContent {
 	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false)
 	public static Block doubleCrystalQuartzSlab;
 	public static Block emeraldOreMine;
+	public static Block endStoneMine;
 	public static BlockStaticLiquid fakeLava;
 	public static BlockStaticLiquid fakeWater;
 	public static Block frame;
@@ -59,6 +60,7 @@ public class SCContent {
 	public static BlockMine mine;
 	public static BlockMine mineCut;
 	public static Block motionActivatedLight;
+	public static Block netherrackMine;
 	public static Block panicButton;
 	public static Block portableRadar;
 	public static Block projector;

@@ -310,6 +310,8 @@ tile.securitycraft:block_change_detector.name=Block Change Detector
 tile.securitycraft:reinforced_end_rod.name=Reinforced End Rod
 tile.securitycraft:rift_stabilizer.name=Rift Stabilizer
 tile.securitycraft:display_case.name=Display Case
+tile.securitycraft:netherrack_mine.name=Netherrack Mine
+tile.securitycraft:end_stone_mine.name=End Stone Mine
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door

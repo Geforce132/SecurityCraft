@@ -310,6 +310,8 @@ tile.securitycraft:block_change_detector.name=Block-Änderungsdetektor
 tile.securitycraft:reinforced_end_rod.name=Verstärkter Endstab
 tile.securitycraft:rift_stabilizer.name=Riss-Stabilisierer
 tile.securitycraft:display_case.name=Vitrine
+tile.securitycraft:netherrack_mine.name=Netherrackmine
+tile.securitycraft:end_stone_mine.name=Endsteinmine
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür

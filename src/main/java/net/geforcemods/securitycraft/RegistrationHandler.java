@@ -326,6 +326,8 @@ public class RegistrationHandler {
 		registerBlockMine(event, SCContent.cobblestoneMine);
 		registerBlockMine(event, SCContent.sandMine);
 		registerBlockMine(event, SCContent.gravelMine);
+		registerBlockMine(event, SCContent.netherrackMine);
+		registerBlockMine(event, SCContent.endStoneMine);
 		registerBlockMine(event, SCContent.goldOreMine);
 		registerBlockMine(event, SCContent.ironOreMine);
 		registerBlockMine(event, SCContent.coalOreMine);
@@ -937,6 +939,8 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.lapisOreMine, 0, "lapis_ore_mine");
 		registerInventoryModel(SCContent.quartzOreMine, 0, "quartz_ore_mine");
 		registerInventoryModel(SCContent.redstoneOreMine, 0, "redstone_ore_mine");
+		registerInventoryModel(SCContent.netherrackMine, 0, "netherrack_mine");
+		registerInventoryModel(SCContent.endStoneMine, 0, "end_stone_mine");
 	}
 
 	private static void registerInventoryModel(Block block, int metadata, String name) {

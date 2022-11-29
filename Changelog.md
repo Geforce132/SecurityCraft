@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.5 of SecurityCraft--------------------------
 
 - New: The reinforced block tint color can now be changed with a config setting
+- New: Netherrack Mine and End Stone Mine
 - Fix: The Reinforced Grass Block doesn't have a reinforced tint
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------

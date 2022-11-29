@@ -1,0 +1,11 @@
+{
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "blocks/end_stone",
+    "up": "blocks/end_stone",
+    "north": "blocks/end_stone",
+    "east": "blocks/end_stone",
+    "south": "blocks/end_stone",
+    "west": "blocks/end_stone"
+  }
+}
