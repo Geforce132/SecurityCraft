@@ -31,6 +31,8 @@
     "securitycraft:gilded_blackstone_mine",
     "securitycraft:furnace_mine",
     "securitycraft:smoker_mine",
-    "securitycraft:blast_furnace_mine"
+    "securitycraft:blast_furnace_mine",
+    "securitycraft:netherrack_mine",
+    "securitycraft:end_stone_mine"
   ]
 }
