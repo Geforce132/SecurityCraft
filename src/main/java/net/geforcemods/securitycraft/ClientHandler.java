@@ -416,7 +416,7 @@ public class ClientHandler {
 	private static int mixWithReinforcedTintIfEnabled(int tint1) {
 		boolean tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
 
-		return tintReinforcedBlocks ? mixTints(tint1, 0x999999) : tint1;
+		return tintReinforcedBlocks ? mixTints(tint1, ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint1;
 	}
 
 	private static int mixTints(int tint1, int tint2) {
