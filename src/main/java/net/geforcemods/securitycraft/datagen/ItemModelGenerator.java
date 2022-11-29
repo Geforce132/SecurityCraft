@@ -54,7 +54,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				if (flatReinforcedItems.containsKey(block))
 					flatReinforcedItem(block, flatReinforcedItems.get(block));
 				else if (block instanceof ReinforcedStainedGlassPaneBlock)
-					reinforcedPane(block);
+					reinforcedStainedPane(block);
 				else if (block instanceof ReinforcedWallBlock wall)
 					reinforcedWallInventory(block, wall.getVanillaBlock());
 				else if (block instanceof ReinforcedButtonBlock || block instanceof ReinforcedPistonBaseBlock)
@@ -141,6 +141,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	public ItemModelBuilder flatReinforcedItem(Block block, String texturePath) {
 		return singleTexture(name(block), mcLoc("item/generated"), "layer0", new ResourceLocation(texturePath));
+	}
+
+	public ItemModelBuilder reinforcedStainedPane(Block block) {
+		return reinforcedPane(block).renderType("translucent");
 	}
 
 	public ItemModelBuilder reinforcedPane(Block block) {
