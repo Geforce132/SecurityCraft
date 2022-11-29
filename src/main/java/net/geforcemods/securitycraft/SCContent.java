@@ -390,6 +390,12 @@ public class SCContent {
 	public static final RegistryObject<Block> IRON_ORE_MINE = BLOCKS.register("iron_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F).requiresCorrectToolForDrops().harvestLevel(1).harvestTool(ToolType.PICKAXE), Blocks.IRON_ORE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
+	public static final RegistryObject<Block> NETHERRACK_MINE = BLOCKS.register("netherrack_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 0.4F).requiresCorrectToolForDrops().sound(SoundType.NETHERRACK).harvestTool(ToolType.PICKAXE), Blocks.NETHERRACK));
+	@HasManualPage(PageGroup.BLOCK_MINES)
+	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
+	public static final RegistryObject<Block> END_STONE_MINE = BLOCKS.register("end_stone_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F).harvestTool(ToolType.PICKAXE), Blocks.END_STONE));
+	@HasManualPage(PageGroup.BLOCK_MINES)
+	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> COAL_ORE_MINE = BLOCKS.register("coal_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F).requiresCorrectToolForDrops(), Blocks.COAL_ORE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
@@ -2026,7 +2032,9 @@ public class SCContent {
 			SCContent.LAPIS_ORE_MINE.get(),
 			SCContent.NETHER_GOLD_ORE_MINE.get(),
 			SCContent.QUARTZ_ORE_MINE.get(),
-			SCContent.REDSTONE_ORE_MINE.get()).build(null));
+			SCContent.REDSTONE_ORE_MINE.get(),
+			SCContent.NETHERRACK_MINE.get(),
+			SCContent.END_STONE_MINE.get()).build(null));
 	public static final RegistryObject<TileEntityType<KeypadBlockEntity>> KEYPAD_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad", () -> TileEntityType.Builder.of(KeypadBlockEntity::new, SCContent.KEYPAD.get()).build(null));
 	public static final RegistryObject<TileEntityType<LaserBlockBlockEntity>> LASER_BLOCK_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("laser_block", () -> TileEntityType.Builder.of(LaserBlockBlockEntity::new, SCContent.LASER_BLOCK.get()).build(null));
 	public static final RegistryObject<TileEntityType<CageTrapBlockEntity>> CAGE_TRAP_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("cage_trap", () -> TileEntityType.Builder.of(CageTrapBlockEntity::new, SCContent.CAGE_TRAP.get()).build(null));
