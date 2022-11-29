@@ -88,6 +88,7 @@ public class ConfigHandler {
 		public BooleanValue trickScannersWithPlayerHeads;
 		public DoubleValue taserDamage;
 		public DoubleValue poweredTaserDamage;
+		public DoubleValue laserDamage;
 		private ConfigValue<List<? extends String>> taserEffectsValue;
 		private ConfigValue<List<? extends String>> poweredTaserEffectsValue;
 		public final List<Supplier<MobEffectInstance>> taserEffects = new ArrayList<>();
@@ -189,6 +190,10 @@ public class ConfigHandler {
 							"effect_namespace:effect_path|duration|amplifier",
 							"Example: The entry \"minecraft:slowness|20|1\" defines slowness 1 for 1 second (20 ticks = 1 second).")
 					.defineList("powered_taser_effects", List.of("minecraft:weakness|400|5", "minecraft:nausea|400|5", "minecraft:slowness|400|5"), e -> e instanceof String);
+
+			laserDamage = builder
+					.comment("Defines the damage inflicted to an entity if it passes through a laser with installed harming module. This is given in health points, meaning 2 health points = 1 heart")
+					.defineInRange("laser_damage", 10.0, 0.0D, Double.MAX_VALUE);
 			//@formatter:on
 		}
 	}
