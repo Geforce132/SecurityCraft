@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Defines a block that can be converted to a password-protected variant by rightclicking it with a Key Panel. Call
@@ -22,11 +22,12 @@ import net.minecraft.world.level.block.Block;
  */
 public interface IPasswordConvertible {
 	/**
-	 * The block that has to be rightclicked in order to convert it
+	 * Checks whether the given block state is valid for this conversion
 	 *
-	 * @return Aforementioned block
+	 * @param block The block state to check
+	 * @return true if the block can be used for this conversion, false otherwise
 	 */
-	public Block getOriginalBlock();
+	public boolean isValidStateForConversion(BlockState block);
 
 	/**
 	 * Converts the original block to the password-protected one

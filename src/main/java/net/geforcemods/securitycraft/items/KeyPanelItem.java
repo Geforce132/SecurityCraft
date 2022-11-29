@@ -13,7 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class KeyPanelItem extends BlockItem {
 	public KeyPanelItem(Item.Properties properties) {
@@ -24,12 +24,12 @@ public class KeyPanelItem extends BlockItem {
 	public InteractionResult useOn(UseOnContext ctx) {
 		Level level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
-		Block block = level.getBlockState(pos).getBlock();
+		BlockState state = level.getBlockState(pos);
 		Player player = ctx.getPlayer();
 		ItemStack stack = ctx.getItemInHand();
 
 		for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
-			if (block == pc.getOriginalBlock()) {
+			if (pc.isValidStateForConversion(state)) {
 				if (pc.convert(player, level, pos)) {
 					if (!player.isCreative())
 						stack.shrink(1);
