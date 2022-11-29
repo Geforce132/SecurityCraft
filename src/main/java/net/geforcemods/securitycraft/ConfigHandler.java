@@ -45,6 +45,7 @@ public class ConfigHandler {
 		public BooleanValue sayThanksMessage;
 		public DoubleValue cameraSpeed;
 		public BooleanValue reinforcedBlockTint;
+		public IntValue reinforcedBlockTintColor;
 
 		Client(ForgeConfigSpec.Builder builder) {
 			//@formatter:off
@@ -57,8 +58,13 @@ public class ConfigHandler {
 					.defineInRange("cameraSpeed", 2.0D, 0.0D, Double.MAX_VALUE);
 
 			reinforcedBlockTint = builder
-					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? This setting can be overriden by servers.")
+					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? This setting can be overridden by servers.")
 					.define("reinforced_block_tint", true);
+
+			reinforcedBlockTintColor = builder
+					.comment("Set the color that reinforced blocks' textures have when reinforced_block_tint is enabled. This cannot be overridden by servers, and will be applied the same to all blocks. Grayscale values look best.",
+							"Format: 0xRRGGBB")
+					.defineInRange("reinforced_block_tint_color", 0x999999, 0x000000, 0xFFFFFF);
 			//@formatter:on
 		}
 	}
