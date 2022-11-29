@@ -131,8 +131,8 @@ public class KeypadBlock extends DisguisableBlock {
 
 	public static class Convertible implements IPasswordConvertible {
 		@Override
-		public Block getOriginalBlock() {
-			return SCContent.FRAME.get();
+		public boolean isValidStateForConversion(BlockState state) {
+			return state.is(SCContent.FRAME.get());
 		}
 
 		@Override

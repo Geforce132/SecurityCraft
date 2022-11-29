@@ -3,6 +3,8 @@
 - New: The reinforced block tint color can now be changed with a config setting
 - New: Netherrack Mine and End Stone Mine
 - New: The damage of a Laser Block containing a Harming Module can now be changed with a config setting
+- New: More modded wooden chests can now be converted to a Password-protected Chest
+- API: Change IPasswordConvertible#getOriginalBlock to IPasswordConvertible#isValidStateForConversion for finer control over what can be converted
 - Fix: The Reinforced Water Cauldron and Reinforced Grass Block don't have a reinforced tint
 - Fix: Reinforced Stained Glass Pane items display incorrectly
 
