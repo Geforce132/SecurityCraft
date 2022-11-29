@@ -510,6 +510,8 @@
 	"block.securitycraft.rift_stabilizer": "Riss-Stabilisierer",
 	"block.securitycraft.display_case": "Vitrine",
 	"block.securitycraft.glow_display_case": "Leuchtvitrine",
+	"block.securitycraft.netherrack_mine": "Netherrackmine",
+	"block.securitycraft.end_stone_mine": "Endsteinmine",
 
 	"item.securitycraft.codebreaker": "Codebrecher",
 	"item.securitycraft.door_indestructible_iron_item": "Verstärkte Eisentür",

@@ -424,6 +424,12 @@ public class SCContent {
 	public static final RegistryObject<Block> GRAVEL_MINE = BLOCKS.register("gravel_mine", () -> new FallingBlockMineBlock(mineProp(Blocks.GRAVEL), Blocks.GRAVEL));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
+	public static final RegistryObject<Block> NETHERRACK_MINE = BLOCKS.register("netherrack_mine", () -> new BaseFullMineBlock(mineProp(Blocks.NETHERRACK), Blocks.NETHERRACK));
+	@HasManualPage(PageGroup.BLOCK_MINES)
+	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
+	public static final RegistryObject<Block> END_STONE_MINE = BLOCKS.register("end_stone_mine", () -> new BaseFullMineBlock(mineProp(Blocks.END_STONE), Blocks.END_STONE));
+	@HasManualPage(PageGroup.BLOCK_MINES)
+	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> COAL_ORE_MINE = BLOCKS.register("coal_mine", () -> new BaseFullMineBlock(mineProp(Blocks.COAL_ORE), Blocks.COAL_ORE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
@@ -2301,7 +2307,9 @@ public class SCContent {
 			SCContent.DEEPSLATE_IRON_ORE_MINE.get(),
 			SCContent.DEEPSLATE_LAPIS_ORE_MINE.get(),
 			SCContent.DEEPSLATE_REDSTONE_ORE_MINE.get(),
-			SCContent.COPPER_ORE_MINE.get()).build(null));
+			SCContent.COPPER_ORE_MINE.get(),
+			SCContent.NETHERRACK_MINE.get(),
+			SCContent.END_STONE_MINE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<KeypadBlockEntity>> KEYPAD_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad", () -> BlockEntityType.Builder.of(KeypadBlockEntity::new, SCContent.KEYPAD.get()).build(null));
 	public static final RegistryObject<BlockEntityType<LaserBlockBlockEntity>> LASER_BLOCK_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("laser_block", () -> BlockEntityType.Builder.of(LaserBlockBlockEntity::new, SCContent.LASER_BLOCK.get()).build(null));
 	public static final RegistryObject<BlockEntityType<CageTrapBlockEntity>> CAGE_TRAP_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("cage_trap", () -> BlockEntityType.Builder.of(CageTrapBlockEntity::new, SCContent.CAGE_TRAP.get()).build(null));
