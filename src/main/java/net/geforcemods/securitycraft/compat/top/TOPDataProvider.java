@@ -73,7 +73,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				ItemStack displayStack = ((IOverlayDisplay) blockState.getBlock()).getDisplayStack(world, blockState, data.getPos());
 
 				if (displayStack != null) {
-					itemLabel = item;
+					item = itemLabel = displayStack;
 					edited = true;
 				}
 			}

@@ -4,6 +4,7 @@
 - New: Netherrack Mine and End Stone Mine
 - New: The damage of a Laser Block containing a Harming Module can now be changed with a config setting
 - Fix: The Reinforced Grass Block doesn't have a reinforced tint
+- Fix: The One Probe doesn't display some of SecurityCraft's blocks correctly
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
