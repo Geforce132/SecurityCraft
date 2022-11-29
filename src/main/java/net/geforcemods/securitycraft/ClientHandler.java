@@ -368,7 +368,7 @@ public class ClientHandler {
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
 
-			return 0xFFFFFF;
+			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
 		}, SCContent.REINFORCED_GRASS_BLOCK.get());
 	}
 
@@ -405,7 +405,7 @@ public class ClientHandler {
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
 
-			return 0xFFFFFF;
+			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
 		}, SCContent.REINFORCED_GRASS_BLOCK.get());
 		blocksWithReinforcedTint = null;
 		blocksWithCustomTint = null;
