@@ -2,6 +2,7 @@
 
 - New: The reinforced block tint color can now be changed with a config setting
 - New: Netherrack Mine and End Stone Mine
+- New: The damage of a Laser Block containing a Harming Module can now be changed with a config setting
 - Fix: The Reinforced Grass Block doesn't have a reinforced tint
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
