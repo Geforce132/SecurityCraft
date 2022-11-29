@@ -1,0 +1,11 @@
+{
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "minecraft:block/netherrack",
+    "up": "minecraft:block/netherrack",
+    "north": "minecraft:block/netherrack",
+    "east": "minecraft:block/netherrack",
+    "south": "minecraft:block/netherrack",
+    "west": "minecraft:block/netherrack"
+  }
+}
