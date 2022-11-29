@@ -254,7 +254,7 @@ public class ClientProxy implements IProxy {
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
 
-			return 0xFFFFFF;
+			return ConfigHandler.reinforcedBlockTintColor;
 		}, SCContent.reinforcedGrass);
 		event.getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(world, pos) : -1, SCContent.fakeWater, SCContent.bogusWaterFlowing);
 	}
@@ -269,7 +269,7 @@ public class ClientProxy implements IProxy {
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
 
-			return 0xFFFFFF;
+			return ConfigHandler.reinforcedBlockTintColor;
 		}, SCContent.reinforcedGrass);
 		event.getItemColors().registerItemColorHandler((stack, tintIndex) -> tintIndex == 0 ? ((ItemBriefcase) stack.getItem()).getColor(stack) : -1, SCContent.briefcase);
 		toTint = null;
