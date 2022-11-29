@@ -146,13 +146,20 @@ public class ConfigHandler {
 
 	@Name("Taser damage")
 	@LangKey("config.securitycraft:taser_damage")
-	@RangeDouble(min=0.0D)
+	@RangeDouble(min = 0.0D)
 	public static double taserDamage = 1.0D;
 
 	@Name("Powered taser damage")
 	@LangKey("config.securitycraft:powered_taser_damage")
-	@RangeDouble(min=0.0D)
+	@RangeDouble(min = 0.0D)
 	public static double poweredTaserDamage = 2.0D;
+
+	@Name("Reinforced block tint color")
+	@RangeInt(min = 0x000000, max = 0xFFFFFF)
+	@Comment({
+		"Set the color that reinforced blocks' textures have when reinforced_block_tint is enabled. This cannot be overridden by servers, and will be applied the same to all blocks. Grayscale values look best.",
+		"Format: 0xRRGGBB"})
+	public static int reinforcedBlockTintColor = 0x999999;
 
 	/**
 	 * @deprecated Use {@link #TASER_EFFECTS}

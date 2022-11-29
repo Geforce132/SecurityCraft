@@ -276,7 +276,7 @@ public class ClientProxy implements IProxy {
 	}
 
 	private static int mixWithReinforcedTintIfEnabled(int tint1) {
-		return ConfigHandler.reinforcedBlockTint ? mixTints(tint1, 0x999999) : tint1;
+		return ConfigHandler.reinforcedBlockTint ? mixTints(tint1, ConfigHandler.reinforcedBlockTintColor) : tint1;
 	}
 
 	private static int mixTints(int tint1, int tint2) {

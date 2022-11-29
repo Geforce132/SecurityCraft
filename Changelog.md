@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.5 of SecurityCraft--------------------------
+
+- New: The reinforced block tint color can now be changed with a config setting
+
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
 - New: ProjectE support (all reinforced blocks now have an EMC value)
