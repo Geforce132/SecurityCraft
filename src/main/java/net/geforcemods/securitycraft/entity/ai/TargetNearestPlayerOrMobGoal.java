@@ -68,9 +68,8 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 					//@formatter:on
 				}
 
-				if (mode.attacksHostile() && isSupportedTarget(potentialTarget)) {
+				if (mode.attacksHostile() && isSupportedTarget(potentialTarget))
 					break;
-				}
 			}
 
 			if (i < list.size()) {
