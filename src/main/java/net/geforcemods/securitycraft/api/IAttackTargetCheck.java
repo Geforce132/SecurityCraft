@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
  *
  * @author bl4ckscor3
  */
+@FunctionalInterface
 public interface IAttackTargetCheck {
 	/**
 	 * Checks if the Sentry is allowed to attack the given entity

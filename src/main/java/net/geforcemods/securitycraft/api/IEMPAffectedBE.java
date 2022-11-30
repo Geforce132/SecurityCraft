@@ -2,6 +2,10 @@ package net.geforcemods.securitycraft.api;
 
 import net.minecraft.tileentity.TileEntity;
 
+/**
+ * Default implementation of {@link IEMPAffected} for a block entity, adding synchronization when shutting down and
+ * reactivating.
+ */
 public interface IEMPAffectedBE extends IEMPAffected {
 	@Override
 	public default void shutDown() {
