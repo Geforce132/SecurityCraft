@@ -31,11 +31,12 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 
 	@Override
 	public boolean canUse() {
+		if (sentry.isShutDown())
+			return false;
+
 		List<LivingEntity> list = mob.level.<LivingEntity>getEntitiesOfClass(targetType, getTargetSearchArea(getFollowDistance()), e -> sentry.getSensing().canSee(e) && !EntityUtils.isInvisible(e));
 
-		if (list.isEmpty() || sentry.isShutDown())
-			return false;
-		else {
+		if (!list.isEmpty()) {
 			SentryMode mode = sentry.getMode();
 			int i;
 
@@ -79,9 +80,9 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 					return true;
 				}
 			}
-
-			return false;
 		}
+
+		return false;
 	}
 
 	@Override
