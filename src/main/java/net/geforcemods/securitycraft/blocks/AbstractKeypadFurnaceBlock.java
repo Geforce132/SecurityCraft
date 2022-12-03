@@ -172,8 +172,8 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 		}
 
 		@Override
-		public Block getOriginalBlock() {
-			return originalBlock;
+		public boolean isValidStateForConversion(BlockState state) {
+			return state.is(originalBlock);
 		}
 
 		@Override

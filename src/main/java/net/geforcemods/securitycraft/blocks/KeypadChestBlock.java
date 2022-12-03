@@ -34,7 +34,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.Mirror;
@@ -47,6 +46,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.Tags;
 
 public class KeypadChestBlock extends ChestBlock {
 	private static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>> CONTAINER_MERGER = new DoubleBlockCombiner.Combiner<>() {
@@ -219,8 +219,8 @@ public class KeypadChestBlock extends ChestBlock {
 
 	public static class Convertible implements IPasswordConvertible {
 		@Override
-		public Block getOriginalBlock() {
-			return Blocks.CHEST;
+		public boolean isValidStateForConversion(BlockState state) {
+			return state.is(Tags.Blocks.CHESTS_WOODEN);
 		}
 
 		@Override
