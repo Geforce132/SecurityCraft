@@ -264,7 +264,7 @@ public class SCClientEventHandler {
 
 					//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 					if (!(lockable instanceof IOwnable ownable) || !ownable.getOwner().isOwner(player)) {
-						if (lockable.getThisBlockEntity().getBlockState().getBlock() instanceof DisguisableBlock disguisable && disguisable.getDisguisedBlockState(level, pos).isPresent())
+						if (DisguisableBlock.getDisguisedBlockState(level, pos).isPresent())
 							return;
 					}
 

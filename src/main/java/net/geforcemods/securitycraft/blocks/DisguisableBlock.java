@@ -151,7 +151,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		return getDisguisedBlockState(level, pos).orElse(state);
 	}
 
-	public Optional<BlockState> getDisguisedBlockState(BlockGetter level, BlockPos pos) {
+	public static Optional<BlockState> getDisguisedBlockState(BlockGetter level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof IModuleInventory be)
 			return getDisguisedBlockStateFromStack(be.isModuleEnabled(ModuleType.DISGUISE) ? be.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY);
 
