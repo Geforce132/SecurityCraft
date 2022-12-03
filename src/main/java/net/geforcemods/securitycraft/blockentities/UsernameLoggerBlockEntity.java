@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -51,7 +50,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 
 		if (!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp)) {
 			//ignore players on the allowlist
-			if (ModuleUtils.isAllowed(this, player))
+			if (isAllowed(player))
 				return;
 
 			for (int i = 0; i < players.length; i++) {

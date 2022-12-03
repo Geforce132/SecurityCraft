@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -49,12 +48,12 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 				for (LivingEntity entity : entities) {
 					if (!(entity instanceof Sentry) && !EntityUtils.isInvisible(entity)) {
 						if (entity instanceof Player player) {
-							if (player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
+							if (player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || isAllowed(entity))
 								continue;
 						}
 
 						if (!level.isClientSide)
-							LevelUtils.spawnLightning(level, entity.position(), false);
+							level.addFreshEntity(LevelUtils.createLightning(level, entity.position(), false));
 
 						shouldDeactivate = true;
 					}

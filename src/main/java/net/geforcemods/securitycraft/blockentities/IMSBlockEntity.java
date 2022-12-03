@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
@@ -102,7 +101,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 
 	public boolean canAttackEntity(LivingEntity entity) {
 		return entity != null && (!(entity instanceof Player player) || !getOwner().isOwner(player) && !player.isCreative() && !player.isSpectator()) //Player checks
-				&& !(ModuleUtils.isAllowed(this, entity)); //checks for all entities
+				&& !(isAllowed(entity)); //checks for all entities
 	}
 
 	/**
