@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -61,7 +60,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 
 		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
 			if (entity instanceof Player player && !EntityUtils.isInvisible(player)) {
-				if (ModuleUtils.isAllowed(connectedScanner, entity))
+				if (connectedScanner.isAllowed(entity))
 					return Shapes.empty();
 
 				for (int i = 0; i < 10; i++) {
@@ -93,7 +92,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 			return;
 
 		if (entity instanceof Player player && !EntityUtils.isInvisible(player)) {
-			if (ModuleUtils.isAllowed(connectedScanner, entity))
+			if (connectedScanner.isAllowed(entity))
 				return;
 
 			for (int i = 0; i < 10; i++) {

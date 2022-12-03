@@ -16,7 +16,6 @@ import net.geforcemods.securitycraft.entity.ai.TargetNearestPlayerOrMobGoal;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -555,7 +554,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			if (allowlistModule.hasTag() && allowlistModule.getTag().getBoolean("affectEveryone"))
 				return true;
 
-			List<String> players = ModuleUtils.getPlayersFromModule(allowlistModule);
+			List<String> players = ModuleItem.getPlayersFromModule(allowlistModule);
 
 			for (String s : players) {
 				if (potentialTarget.getName().getString().equalsIgnoreCase(s))

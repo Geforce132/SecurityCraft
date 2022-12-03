@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -62,7 +61,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (!level.isClientSide && level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be) {
-			if (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player))
+			if (be.getOwner().isOwner(player) || be.isAllowed(player))
 				NetworkHooks.openScreen((ServerPlayer) player, be, pos);
 		}
 

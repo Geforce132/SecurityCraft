@@ -24,10 +24,6 @@ public class LevelUtils {
 			ServerLifecycleHooks.getCurrentServer().execute(runnable);
 	}
 
-	public static void spawnLightning(Level level, Vec3 pos, boolean effectOnly) {
-		level.addFreshEntity(createLightning(level, pos, effectOnly));
-	}
-
 	public static LightningBolt createLightning(Level level, Vec3 pos, boolean effectOnly) {
 		LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level);
 
