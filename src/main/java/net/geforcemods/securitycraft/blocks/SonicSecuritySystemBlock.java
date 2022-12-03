@@ -105,7 +105,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 		if (player.getItemInHand(hand).getItem() != SCContent.PORTABLE_TUNE_PLAYER.get()) {
 			SonicSecuritySystemBlockEntity be = (SonicSecuritySystemBlockEntity) level.getBlockEntity(pos);
 
-			if (!level.isClientSide && (be.getOwner().isOwner(player) || be.isAllowed(player)))
+			if (!level.isClientSide && (be.isOwnedBy(player) || be.isAllowed(player)))
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SONIC_SECURITY_SYSTEM, pos));
 
 			return InteractionResult.SUCCESS;

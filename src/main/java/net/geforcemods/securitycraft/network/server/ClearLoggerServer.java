@@ -32,7 +32,7 @@ public class ClearLoggerServer {
 		ctx.get().enqueueWork(() -> {
 			ServerPlayer player = ctx.get().getSender();
 
-			if (player.level.getBlockEntity(message.pos) instanceof UsernameLoggerBlockEntity be && be.getOwner().isOwner(player)) {
+			if (player.level.getBlockEntity(message.pos) instanceof UsernameLoggerBlockEntity be && be.isOwnedBy(player)) {
 				be.players = new String[100];
 				be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 2);
 			}

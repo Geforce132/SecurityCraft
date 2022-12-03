@@ -46,7 +46,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 					return Shapes.empty();
 				else if (be.getManager().isAllowed(player))
 					return Shapes.empty();
-				else if (!be.getOwner().isOwner(player))
+				else if (!be.isOwnedBy(player))
 					return Shapes.block();
 				else
 					return Shapes.empty();

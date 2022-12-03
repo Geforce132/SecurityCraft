@@ -118,7 +118,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		colorChooser.init(minecraft, width, height);
 		addRenderableWidget(colorChooserButton = new ColorChooserButton(colorChooserButtonX, outlineY, 20, 20, colorChooser));
 
-		if (!be.getOwner().isOwner(Minecraft.getInstance().player))
+		if (!be.isOwnedBy(Minecraft.getInstance().player))
 			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active = offsetSlider.active = colorChooserButton.active = false;
 		else {
 			updateMaterialInformation(true);

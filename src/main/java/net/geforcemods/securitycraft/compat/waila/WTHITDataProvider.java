@@ -106,7 +106,7 @@ public class WTHITDataProvider extends WailaCompatConstants implements IWailaPlu
 			return;
 
 		//if the te is ownable, show modules only when it's owned, otherwise always show
-		if (config.getBoolean(SHOW_MODULES) && be instanceof IModuleInventory && (!(be instanceof IOwnable) || ((IOwnable) be).getOwner().isOwner(data.getPlayer()))) {
+		if (config.getBoolean(SHOW_MODULES) && be instanceof IModuleInventory && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(data.getPlayer()))) {
 			if (!((IModuleInventory) be).getInsertedModules().isEmpty())
 				tooltip.addLine(Utils.localize("waila.securitycraft:equipped"));
 
@@ -115,7 +115,7 @@ public class WTHITDataProvider extends WailaCompatConstants implements IWailaPlu
 			}
 		}
 
-		if (config.getBoolean(SHOW_PASSWORDS) && be instanceof IPasswordProtected && !(be instanceof KeycardReaderBlockEntity) && ((IOwnable) be).getOwner().isOwner(data.getPlayer())) {
+		if (config.getBoolean(SHOW_PASSWORDS) && be instanceof IPasswordProtected && !(be instanceof KeycardReaderBlockEntity) && ((IOwnable) be).isOwnedBy(data.getPlayer())) {
 			String password = ((IPasswordProtected) be).getPassword();
 
 			tooltip.addLine(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))));
@@ -147,7 +147,7 @@ public class WTHITDataProvider extends WailaCompatConstants implements IWailaPlu
 			if (config.getBoolean(SHOW_OWNER))
 				tooltip.addLine(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner().getName())));
 
-			if (config.getBoolean(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer())) {
+			if (config.getBoolean(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer())) {
 				if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
 					tooltip.addLine(EQUIPPED);
 

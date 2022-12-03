@@ -61,7 +61,7 @@ public class ModuleItem extends Item {
 			ItemStack stack = ctx.getItemInHand();
 			ModuleType type = ((ModuleItem) stack.getItem()).getModuleType();
 
-			if (inv instanceof IOwnable ownable && !ownable.getOwner().isOwner(ctx.getPlayer()))
+			if (inv instanceof IOwnable ownable && !ownable.isOwnedBy(ctx.getPlayer()))
 				return InteractionResult.PASS;
 
 			if (inv.acceptsModule(type) && !inv.hasModule(type)) {
