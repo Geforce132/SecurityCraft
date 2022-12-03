@@ -22,7 +22,6 @@ import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -91,7 +90,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 					Entity shooter = target.getOwner();
 
 					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-					if (!(shooter != null && ((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(shooter.getName().getString(), getOwner().getName())) || (shooter.getUUID() != null && shooter.getUUID().toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, shooter.getName().getString()))))
+					if (!(shooter != null && ((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(shooter.getName().getString(), getOwner().getName())) || (shooter.getUUID() != null && shooter.getUUID().toString().equals(getOwner().getUUID())) || isAllowed(shooter.getName().getString()))))
 						setTarget(target);
 				}
 			}
@@ -219,7 +218,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		else if (projectile.getOwner() instanceof Sentry sentry)
 			owner = sentry.getOwner();
 
-		return owner == null || (!owner.owns(this) && !ModuleUtils.isAllowed(this, owner.getName()));
+		return owner == null || (!owner.owns(this) && !isAllowed(owner.getName()));
 	}
 
 	@Override

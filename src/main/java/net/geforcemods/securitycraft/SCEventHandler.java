@@ -46,7 +46,6 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -409,7 +408,7 @@ public class SCEventHandler {
 		blockEntities = blockEntities.stream().distinct().sorted(Comparator.comparingDouble(b -> Math.min(b.getBlockPos().distSqr(event.getTarget(), true), b.getBlockPos().distSqr(event.getPrev(), true)))).toList();
 
 		for (RiftStabilizerBlockEntity be : blockEntities) {
-			if (!be.isDisabled() && be.getFilter(type) && (!(entity instanceof Player player) || (!be.getOwner().isOwner(player)) && !ModuleUtils.isAllowed(be, player))) {
+			if (!be.isDisabled() && be.getFilter(type) && (!(entity instanceof Player player) || (!be.getOwner().isOwner(player)) && !be.isAllowed(player))) {
 				riftStabilizer = be;
 				targetPosProhibited = be.getBlockPos().distSqr(event.getTarget(), true) < be.getBlockPos().distSqr(event.getPrev(), true);
 				break;

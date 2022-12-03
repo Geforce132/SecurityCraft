@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -106,7 +105,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 		if (player.getItemInHand(hand).getItem() != SCContent.PORTABLE_TUNE_PLAYER.get()) {
 			SonicSecuritySystemBlockEntity be = (SonicSecuritySystemBlockEntity) level.getBlockEntity(pos);
 
-			if (!level.isClientSide && (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player)))
+			if (!level.isClientSide && (be.getOwner().isOwner(player) || be.isAllowed(player)))
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SONIC_SECURITY_SYSTEM, pos));
 
 			return InteractionResult.SUCCESS;

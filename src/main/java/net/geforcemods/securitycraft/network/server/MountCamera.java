@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -43,11 +42,11 @@ public class MountCamera {
 			Level level = player.level;
 			BlockState state = level.getBlockState(pos);
 
-			if (level.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity te) {
-				if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
+			if (level.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
+				if (be.getOwner().isOwner(player) || be.isAllowed(player))
 					((SecurityCameraBlock) state.getBlock()).mountCamera(level, pos, player);
 				else
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", te.getOwner().getName()), ChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", be.getOwner().getName()), ChatFormatting.RED);
 			}
 			else
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", pos), ChatFormatting.RED);

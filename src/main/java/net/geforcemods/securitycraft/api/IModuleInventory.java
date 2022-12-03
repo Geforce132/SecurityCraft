@@ -13,6 +13,8 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -467,5 +469,67 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		}
 
 		return tag;
+	}
+
+	/**
+	 * Checks whether the entity is listed on the allowlist of this block, if an allowlist module exists
+	 *
+	 * @param entity The entity to check
+	 * @return true if the entity is listed on the allowlist module, false otherwise
+	 */
+	public default boolean isAllowed(Entity entity) {
+		return isAllowed(entity.getName().getString());
+	}
+
+	/**
+	 * Checks whether the name of the entity is listed on the allowlist of this block, if an allowlist module exists
+	 *
+	 * @param entity The name of the to check
+	 * @return true if the name of the entity is listed on the allowlist module, false otherwise
+	 */
+	public default boolean isAllowed(String name) {
+		if (!isModuleEnabled(ModuleType.ALLOWLIST))
+			return false;
+
+		ItemStack stack = getModule(ModuleType.ALLOWLIST);
+
+		if (stack.hasTag() && stack.getTag().getBoolean("affectEveryone"))
+			return true;
+
+		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
+		return ModuleItem.doesModuleHaveTeamOf(stack, name, getBlockEntity().getLevel()) || ModuleItem.getPlayersFromModule(stack).contains(name.toLowerCase());
+	}
+
+	/**
+	 * Checks whether the entity is listed on the denylist of this block, if a denylist module exists
+	 *
+	 * @param entity The entity to check
+	 * @return true if the entity is listed on the denylist module, false otherwise
+	 */
+	public default boolean isDenied(Entity entity) {
+		if (!isModuleEnabled(ModuleType.DENYLIST))
+			return false;
+
+		ItemStack stack = getModule(ModuleType.DENYLIST);
+
+		if (stack.hasTag() && stack.getTag().getBoolean("affectEveryone")) {
+			if (getBlockEntity() instanceof IOwnable ownable) {
+				//only deny players that are not the owner
+				if (entity instanceof Player player) {
+					//if the player IS the owner, fall back to the default handling (check if the name is on the list)
+					if (!ownable.getOwner().isOwner(player))
+						return true;
+				}
+				else
+					return true;
+			}
+			else
+				return true;
+		}
+
+		String name = entity.getName().getString();
+
+		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
+		return ModuleItem.doesModuleHaveTeamOf(stack, name, getBlockEntity().getLevel()) || ModuleItem.getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 }

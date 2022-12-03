@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -40,7 +39,7 @@ public class SetKeycardUses {
 			Player player = ctx.get().getSender();
 
 			if (player.level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity be) {
-				if (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player)) {
+				if (be.getOwner().isOwner(player) || be.isAllowed(player)) {
 					if (player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
 						keycardReaderContainer.setKeycardUses(message.uses);
 				}

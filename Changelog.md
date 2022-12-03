@@ -5,6 +5,7 @@
 - New: The damage of a Laser Block containing a Harming Module can now be changed with a config setting
 - New: More modded wooden chests can now be converted to a Password-protected Chest
 - API: Change IPasswordConvertible#getOriginalBlock to IPasswordConvertible#isValidStateForConversion for finer control over what can be converted
+- API: New methods IModuleInventory#isAllowed and IModuleInventory#isDenied to check whether an entity is listed on an allowlist or denylist module respectively
 - Fix: The Reinforced Water Cauldron and Reinforced Grass Block don't have a reinforced tint
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------

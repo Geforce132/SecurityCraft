@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.KeypadDoorBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -35,11 +34,11 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (ModuleUtils.isDenied(be, player)) {
+			else if (be.isDenied(player)) {
 				if (be.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 			}
-			else if (ModuleUtils.isAllowed(be, player)) {
+			else if (be.isAllowed(player)) {
 				if (be.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
