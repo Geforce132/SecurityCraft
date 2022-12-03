@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -56,7 +55,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		if (mode != DetectionMode.BOTH && action != mode)
 			return;
 
-		if (getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player))
+		if (getOwner().isOwner(player) || isAllowed(player))
 			return;
 
 		//don't detect self

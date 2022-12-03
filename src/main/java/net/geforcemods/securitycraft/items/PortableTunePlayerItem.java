@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCEventHandler;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +39,7 @@ public class PortableTunePlayerItem extends Item {
 			SonicSecuritySystemBlockEntity be = (SonicSecuritySystemBlockEntity) level.getBlockEntity(pos);
 			Player player = ctx.getPlayer();
 
-			if (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player)) {
+			if (be.getOwner().isOwner(player) || be.isAllowed(player)) {
 				if (be.getNumberOfNotes() > 0) {
 					be.saveNotes(ctx.getItemInHand().getOrCreateTag());
 					player.displayClientMessage(Utils.localize("messages.securitycraft:portable_tune_player.tune_saved"), true);
