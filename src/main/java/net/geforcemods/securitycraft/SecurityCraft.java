@@ -17,7 +17,6 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBl
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.lycanitesmobs.LycanitesMobsCompat;
-import net.geforcemods.securitycraft.compat.quark.QuarkCompat;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
 import net.geforcemods.securitycraft.itemgroups.SCDecorationTab;
 import net.geforcemods.securitycraft.itemgroups.SCExplosivesTab;
@@ -109,9 +108,6 @@ public class SecurityCraft {
 
 		if (ModList.get().isLoaded("lycanitesmobs"))
 			InterModComms.sendTo(MODID, SecurityCraftAPI.IMC_SENTRY_ATTACK_TARGET_MSG, LycanitesMobsCompat::new);
-
-		if (ModList.get().isLoaded("quark"))
-			QuarkCompat.registerChestConversions();
 	}
 
 	@SubscribeEvent
