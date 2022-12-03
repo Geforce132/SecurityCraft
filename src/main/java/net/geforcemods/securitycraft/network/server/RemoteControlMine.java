@@ -49,7 +49,7 @@ public class RemoteControlMine {
 			BlockState state = level.getBlockState(pos);
 
 			if (state.getBlock() instanceof IExplosive explosive) {
-				if (level.getBlockEntity(pos) instanceof IOwnable be && be.getOwner().isOwner(player)) {
+				if (level.getBlockEntity(pos) instanceof IOwnable be && be.isOwnedBy(player)) {
 					if (message.state.equalsIgnoreCase("activate"))
 						explosive.activateMine(level, pos);
 					else if (message.state.equalsIgnoreCase("defuse"))

@@ -18,7 +18,7 @@ public class OwnerRestrictedSlot extends Slot {
 
 	@Override
 	public boolean mayPickup(Player player) {
-		return ownable.getOwner().isOwner(player) && !isGhostSlot; //the !isGhostSlot check helps to prevent double clicking a stack to pull all items towards the stack
+		return ownable.isOwnedBy(player) && !isGhostSlot; //the !isGhostSlot check helps to prevent double clicking a stack to pull all items towards the stack
 	}
 
 	@Override

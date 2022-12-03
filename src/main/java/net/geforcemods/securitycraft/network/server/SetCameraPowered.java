@@ -40,7 +40,7 @@ public class SetCameraPowered {
 			Player player = ctx.get().getSender();
 			Level level = player.level;
 
-			if (level.getBlockEntity(pos) instanceof IOwnable be && be.getOwner().isOwner(player)) {
+			if (level.getBlockEntity(pos) instanceof IOwnable be && be.isOwnedBy(player)) {
 				level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(SecurityCameraBlock.POWERED, message.powered));
 				level.updateNeighborsAt(pos.relative(level.getBlockState(pos).getValue(SecurityCameraBlock.FACING), -1), level.getBlockState(pos).getBlock());
 			}

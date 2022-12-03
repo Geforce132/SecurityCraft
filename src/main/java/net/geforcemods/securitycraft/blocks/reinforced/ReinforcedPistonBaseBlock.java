@@ -66,7 +66,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 			Owner owner = be.getOwner();
 
 			if (!owner.isValidated()) {
-				if (owner.isOwner(player)) {
+				if (be.isOwnedBy(player)) {
 					owner.setValidated(true);
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), new TranslatableComponent("messages.securitycraft:ownable.validate"), ChatFormatting.GREEN);
 					return InteractionResult.SUCCESS;

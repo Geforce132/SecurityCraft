@@ -78,7 +78,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 					if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemBySlot(EquipmentSlot.HEAD).getItem() == Items.PLAYER_HEAD)
 						viewingPlayer = PlayerUtils.getSkullOwner(player);
 
-					if (!getOwner().isOwner(viewingPlayer) && !isAllowed(viewingPlayer.getName())) {
+					if (!isOwnedBy(viewingPlayer) && !isAllowed(viewingPlayer.getName())) {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), ChatFormatting.RED);
 						return true;
 					}

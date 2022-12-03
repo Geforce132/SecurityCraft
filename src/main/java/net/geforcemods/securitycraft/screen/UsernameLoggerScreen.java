@@ -51,7 +51,7 @@ public class UsernameLoggerScreen extends Screen {
 		addRenderableWidget(new ExtendedButton(leftPos + 4, topPos + 4, 8, 8, new TextComponent("x"), b -> {
 			be.players = new String[100];
 			SecurityCraft.channel.sendToServer(new ClearLoggerServer(be.getBlockPos()));
-		})).active = be.getOwner().isOwner(minecraft.player);
+		})).active = be.isOwnedBy(minecraft.player);
 		addRenderableWidget(playerList = new PlayerList(minecraft, imageWidth - 24, imageHeight - 40, topPos + 20, leftPos + 12));
 	}
 
@@ -129,7 +129,7 @@ public class UsernameLoggerScreen extends Screen {
 		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 			super.render(pose, mouseX, mouseY, partialTicks);
 
-			if (be.getOwner().isOwner(minecraft.player)) {
+			if (be.isOwnedBy(minecraft.player)) {
 				int mouseListY = (int) (mouseY - top + scrollDistance - border);
 				int slotIndex = mouseListY / slotHeight;
 

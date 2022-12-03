@@ -25,7 +25,7 @@ public class BlockChangeDetectorMenu extends AbstractContainerMenu {
 		containerLevelAccess = ContainerLevelAccess.create(level, pos);
 		be = level.getBlockEntity(pos);
 
-		if (level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.getOwner().isOwner(inventory.player)) {
+		if (level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.isOwnedBy(inventory.player)) {
 			addSlot(new Slot(new BlockEntityInventoryWrapper<>((BlockChangeDetectorBlockEntity) be, this), 36, 175, 44) {
 				@Override
 				public boolean mayPlace(ItemStack stack) {

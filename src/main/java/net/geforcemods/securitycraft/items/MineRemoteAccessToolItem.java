@@ -57,7 +57,7 @@ public class MineRemoteAccessToolItem extends Item {
 					return InteractionResult.FAIL;
 				}
 
-				if (level.getBlockEntity(pos) instanceof IOwnable ownable && !ownable.getOwner().isOwner(player)) {
+				if (level.getBlockEntity(pos) instanceof IOwnable ownable && !ownable.isOwnedBy(player)) {
 					if (level.isClientSide)
 						ClientHandler.displayMRATScreen(stack);
 

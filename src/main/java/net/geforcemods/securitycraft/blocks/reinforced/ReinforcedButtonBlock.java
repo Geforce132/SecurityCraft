@@ -71,7 +71,7 @@ public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlo
 	}
 
 	public boolean isAllowedToPress(Level level, BlockPos pos, AllowlistOnlyBlockEntity be, Player entity) {
-		return be.getOwner().isOwner(entity) || be.isAllowed(entity);
+		return be.isOwnedBy(entity) || be.isAllowed(entity);
 	}
 
 	@Override
