@@ -159,7 +159,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 					activate(be);
 				}
 				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-					be.openPasswordGUI(level, pos, be.getOwner(), player);
+					be.openPasswordGUI(level, pos, be, player);
 			}
 		}
 

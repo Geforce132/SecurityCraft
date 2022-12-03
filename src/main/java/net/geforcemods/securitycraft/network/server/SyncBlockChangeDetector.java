@@ -47,7 +47,7 @@ public class SyncBlockChangeDetector {
 			Level level = ctx.get().getSender().level;
 			BlockPos pos = message.pos;
 
-			if (level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.getOwner().isOwner(ctx.get().getSender())) {
+			if (level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
 				BlockState state = level.getBlockState(pos);
 
 				be.setMode(message.mode);

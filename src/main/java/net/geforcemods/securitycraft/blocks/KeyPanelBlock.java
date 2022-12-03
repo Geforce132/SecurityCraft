@@ -110,7 +110,7 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 				activate(state, level, pos, be.getSignalLength());
 			}
 			else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-				be.openPasswordGUI(level, pos, be.getOwner(), player);
+				be.openPasswordGUI(level, pos, be, player);
 		}
 
 		return InteractionResult.SUCCESS;

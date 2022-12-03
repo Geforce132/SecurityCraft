@@ -56,7 +56,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBl
 		if (entity instanceof ItemEntity)
 			return;
 		else if (entity instanceof Player player) {
-			if (((OwnableBlockEntity) level.getBlockEntity(pos)).getOwner().isOwner(player))
+			if (((OwnableBlockEntity) level.getBlockEntity(pos)).isOwnedBy(player))
 				return;
 		}
 		else if (!level.isClientSide && entity instanceof Creeper creeper) {

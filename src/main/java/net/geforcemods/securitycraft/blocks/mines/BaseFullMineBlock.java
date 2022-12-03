@@ -44,7 +44,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 				return Shapes.block();
 			else if (entity instanceof Player player) {
 				if (level.getBlockEntity(pos) instanceof OwnableBlockEntity ownableTe) {
-					if (ownableTe.getOwner().isOwner(player))
+					if (ownableTe.isOwnedBy(player))
 						return Shapes.block();
 				}
 			}
@@ -139,7 +139,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
-		if (player.isCreative() || (level.getBlockEntity(pos) instanceof OwnableBlockEntity te && te.getOwner().isOwner(player)))
+		if (player.isCreative() || (level.getBlockEntity(pos) instanceof OwnableBlockEntity te && te.isOwnedBy(player)))
 			return super.getCloneItemStack(state, target, level, pos, player);
 
 		return new ItemStack(blockDisguisedAs);

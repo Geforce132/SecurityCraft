@@ -82,7 +82,7 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 	}
 
 	public boolean isPlayerAllowedToSeeText(Player player) {
-		return !isSecret() || getOwner().isOwner(player) || isAllowed(player);
+		return !isSecret() || isOwnedBy(player) || isAllowed(player);
 	}
 
 	@Override

@@ -80,7 +80,7 @@ public class SCClientEventHandler {
 			for (BlockPos bcdPos : BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedBlockEntities(level)) {
 				BlockEntity be = level.getBlockEntity(bcdPos);
 
-				if (be instanceof BlockChangeDetectorBlockEntity bcd && bcd.isShowingHighlights() && bcd.getOwner().isOwner(mc.player)) {
+				if (be instanceof BlockChangeDetectorBlockEntity bcd && bcd.isShowingHighlights() && bcd.isOwnedBy(mc.player)) {
 					for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
 						BlockPos pos = changeEntry.pos();
 
@@ -272,7 +272,7 @@ public class SCClientEventHandler {
 					BlockPos pos = bhr.getBlockPos();
 
 					//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
-					if (!(lockable instanceof IOwnable ownable) || !ownable.getOwner().isOwner(player)) {
+					if (!(lockable instanceof IOwnable ownable) || !ownable.isOwnedBy(player)) {
 						if (DisguisableBlock.getDisguisedBlockState(level, pos).isPresent())
 							return;
 					}

@@ -56,7 +56,7 @@ public class UniversalOwnerChangerItem extends Item {
 		Owner owner = ownable.getOwner();
 		boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
 
-		if (!owner.isOwner(player) && !isDefault) {
+		if (!ownable.isOwnedBy(player) && !isDefault) {
 			if (!(block instanceof IBlockMine) && (!(be.getBlockState().getBlock() instanceof DisguisableBlock db) || (((BlockItem) db.getDisguisedStack(level, pos).getItem()).getBlock() instanceof DisguisableBlock))) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), ChatFormatting.RED);
 				return InteractionResult.FAIL;

@@ -27,7 +27,7 @@ public class BlockPocketManagerMenu extends AbstractContainerMenu {
 		}
 
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
-		isOwner = be.getOwner().isOwner(inventory.player);
+		isOwner = be.isOwnedBy(inventory.player);
 		storage = be != null && be.isModuleEnabled(ModuleType.STORAGE) && isOwner;
 
 		if (storage) {

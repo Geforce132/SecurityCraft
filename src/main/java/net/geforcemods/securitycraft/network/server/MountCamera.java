@@ -43,7 +43,7 @@ public class MountCamera {
 			BlockState state = level.getBlockState(pos);
 
 			if (level.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
-				if (be.getOwner().isOwner(player) || be.isAllowed(player))
+				if (be.isOwnedBy(player) || be.isAllowed(player))
 					((SecurityCameraBlock) state.getBlock()).mountCamera(level, pos, player);
 				else
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", be.getOwner().getName()), ChatFormatting.RED);

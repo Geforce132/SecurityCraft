@@ -57,7 +57,7 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 	}
 
 	public boolean isAllowedToPress(Level level, BlockPos pos, AllowlistOnlyBlockEntity be, Player entity) {
-		return be.getOwner().isOwner(entity) || be.isAllowed(entity);
+		return be.isOwnedBy(entity) || be.isAllowed(entity);
 	}
 
 	@Override

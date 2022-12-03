@@ -46,7 +46,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 		if (!level.isClientSide) {
 			if (level.getBlockEntity(pos) instanceof ReinforcedHopperBlockEntity be) {
 				//only allow the owner or players on the allowlist to access a reinforced hopper
-				if (be.getOwner().isOwner(player) || be.isAllowed(player))
+				if (be.isOwnedBy(player) || be.isAllowed(player))
 					player.openMenu(be);
 			}
 		}

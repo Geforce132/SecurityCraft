@@ -18,7 +18,7 @@ public class EntityUtils {
 	}
 
 	public static boolean doesPlayerOwn(Player player, Level level, BlockPos pos) {
-		return level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.getOwner().isOwner(player);
+		return level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.isOwnedBy(player);
 	}
 
 	public static boolean isInvisible(LivingEntity entity) {
