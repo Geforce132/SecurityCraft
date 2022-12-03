@@ -95,32 +95,6 @@ public class Owner {
 	}
 
 	/**
-	 * @return If this person is the same person as the given player.
-	 */
-	public boolean isOwner(Player player) {
-		if (player == null)
-			return false;
-
-		return isOwner(new Owner(player));
-	}
-
-	/**
-	 * @return If this person is the same person as the given owner.
-	 */
-	public boolean isOwner(Owner owner) {
-		String uuidToCheck = owner.getUUID();
-		String nameToCheck = owner.getName();
-
-		if (ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(ownerName, nameToCheck))
-			return true;
-
-		if (uuidToCheck != null && uuidToCheck.equals(ownerUUID))
-			return true;
-
-		return nameToCheck != null && ownerUUID.equals("ownerUUID") && nameToCheck.equals(ownerName);
-	}
-
-	/**
 	 * Set the UUID and name of a new owner using strings.
 	 */
 	public void set(String uuid, String name) {

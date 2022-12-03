@@ -40,7 +40,7 @@ public class ToggleBlockPocketManager {
 		ctx.get().enqueueWork(() -> {
 			Player player = ctx.get().getSender();
 
-			if (player.level.getBlockEntity(message.pos) instanceof BlockPocketManagerBlockEntity be && be.getOwner().isOwner(player)) {
+			if (player.level.getBlockEntity(message.pos) instanceof BlockPocketManagerBlockEntity be && be.isOwnedBy(player)) {
 				be.size = message.size;
 
 				if (message.enabling)

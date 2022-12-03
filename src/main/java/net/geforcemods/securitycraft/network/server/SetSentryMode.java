@@ -39,7 +39,7 @@ public class SetSentryMode {
 			Player player = ctx.get().getSender();
 			List<Sentry> sentries = player.level.<Sentry>getEntitiesOfClass(Sentry.class, new AABB(message.pos));
 
-			if (!sentries.isEmpty() && sentries.get(0).getOwner().isOwner(player))
+			if (!sentries.isEmpty() && sentries.get(0).isOwnedBy(player))
 				sentries.get(0).toggleMode(player, message.mode, false);
 		});
 

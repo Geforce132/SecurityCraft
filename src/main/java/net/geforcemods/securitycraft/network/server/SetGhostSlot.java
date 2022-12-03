@@ -36,7 +36,7 @@ public class SetGhostSlot {
 		ctx.get().enqueueWork(() -> {
 			Player player = ctx.get().getSender();
 
-			if (player.containerMenu instanceof InventoryScannerMenu menu && menu.be.getOwner().isOwner(player))
+			if (player.containerMenu instanceof InventoryScannerMenu menu && menu.be.isOwnedBy(player))
 				menu.be.getContents().set(message.slotIndex, message.stack);
 		});
 		ctx.get().setPacketHandled(true);

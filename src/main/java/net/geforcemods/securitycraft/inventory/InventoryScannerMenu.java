@@ -31,7 +31,7 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 		}
 
 		//inventory scanner storage
-		if (be.getOwner().isOwner(inventory.player) && be.isModuleEnabled(ModuleType.STORAGE)) {
+		if (be.isOwnedBy(inventory.player) && be.isModuleEnabled(ModuleType.STORAGE)) {
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 3; j++) {
 					addSlot(new Slot(be, 10 + ((i * 3) + j), 188 + (j * 18), 29 + i * 18));
@@ -92,7 +92,7 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 	@Override
 	public void clicked(int slotId, int dragType, ClickType clickType, Player player) {
 		if (slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof OwnerRestrictedSlot slot && slot.isGhostSlot()) {
-			if (be.getOwner().isOwner(player)) {
+			if (be.isOwnedBy(player)) {
 				ItemStack pickedUpStack = getCarried().copy();
 
 				pickedUpStack.setCount(1);

@@ -44,7 +44,7 @@ public class UniversalKeyChangerItem extends Item {
 		BlockEntity be = level.getBlockEntity(pos);
 
 		if (be instanceof IPasswordProtected) {
-			if (((IOwnable) be).getOwner().isOwner(player)) {
+			if (((IOwnable) be).isOwnedBy(player)) {
 				if (!level.isClientSide)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.UNIVERSAL_KEY_CHANGER, pos));
 

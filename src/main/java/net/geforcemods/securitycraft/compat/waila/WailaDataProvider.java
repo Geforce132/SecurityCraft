@@ -151,7 +151,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 						return;
 
 					//if the te is ownable, show modules only when it's owned, otherwise always show
-					if (config.get(SHOW_MODULES) && be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(data.getPlayer()))) {
+					if (config.get(SHOW_MODULES) && be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(data.getPlayer()))) {
 						if (!inv.getInsertedModules().isEmpty())
 							tooltip.add(EQUIPPED);
 
@@ -160,7 +160,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 						}
 					}
 
-					if (config.get(SHOW_PASSWORDS) && be instanceof IPasswordProtected ipp && ((IOwnable) be).getOwner().isOwner(data.getPlayer())) {
+					if (config.get(SHOW_PASSWORDS) && be instanceof IPasswordProtected ipp && ((IOwnable) be).isOwnedBy(data.getPlayer())) {
 						String password = ipp.getPassword();
 
 						tooltip.add(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))));
@@ -191,7 +191,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				if (config.get(SHOW_OWNER))
 					tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner().getName())));
 
-				if (config.get(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer())) {
+				if (config.get(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer())) {
 					if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
 						tooltip.add(EQUIPPED);
 

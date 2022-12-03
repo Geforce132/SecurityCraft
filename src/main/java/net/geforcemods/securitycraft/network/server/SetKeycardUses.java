@@ -39,7 +39,7 @@ public class SetKeycardUses {
 			Player player = ctx.get().getSender();
 
 			if (player.level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity be) {
-				if (be.getOwner().isOwner(player) || be.isAllowed(player)) {
+				if (be.isOwnedBy(player) || be.isAllowed(player)) {
 					if (player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
 						keycardReaderContainer.setKeycardUses(message.uses);
 				}

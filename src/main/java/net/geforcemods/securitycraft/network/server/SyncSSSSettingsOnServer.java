@@ -50,7 +50,7 @@ public class SyncSSSSettingsOnServer {
 			BlockPos pos = message.pos;
 			Level level = ctx.get().getSender().level;
 
-			if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.getOwner().isOwner(ctx.get().getSender())) {
+			if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.isOwnedBy(ctx.get().getSender())) {
 				switch (message.dataType) {
 					case POWER_ON:
 						sss.setActive(true);

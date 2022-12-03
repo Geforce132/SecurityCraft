@@ -59,6 +59,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -69,7 +70,7 @@ import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffected { //needs to be a creature so it can target a player, ai is also only given to living entities
+public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffected, IOwnable { //needs to be a creature so it can target a player, ai is also only given to living entities
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(Sentry.class, Owner.getSerializer());
 	private static final EntityDataAccessor<CompoundTag> ALLOWLIST = SynchedEntityData.<CompoundTag>defineId(Sentry.class, EntityDataSerializers.COMPOUND_TAG);
 	private static final EntityDataAccessor<Boolean> HAS_SPEED_MODULE = SynchedEntityData.<Boolean>defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
@@ -160,7 +161,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		BlockPos pos = blockPosition();
 
-		if (getOwner().isOwner(player) && hand == InteractionHand.MAIN_HAND) {
+		if (isOwnedBy(player) && hand == InteractionHand.MAIN_HAND) {
 			Item item = player.getMainHandItem().getItem();
 
 			player.closeContainer();
@@ -240,7 +241,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			player.swing(InteractionHand.MAIN_HAND);
 			return InteractionResult.SUCCESS;
 		}
-		else if (!getOwner().isOwner(player) && hand == InteractionHand.MAIN_HAND && player.isCreative()) {
+		else if (!isOwnedBy(player) && hand == InteractionHand.MAIN_HAND && player.isCreative()) {
 			if (player.isCrouching() || player.getMainHandItem().getItem() == SCContent.UNIVERSAL_BLOCK_REMOVER.get())
 				kill();
 		}
@@ -433,12 +434,18 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		super.readAdditionalSaveData(tag);
 	}
 
-	/**
-	 * @return The owner of this sentry
-	 */
+	@Override
+	public void setOwner(String uuid, String name) {
+		entityData.set(OWNER, new Owner(name, uuid));
+	}
+
+	@Override
 	public Owner getOwner() {
 		return entityData.get(OWNER);
 	}
+
+	@Override
+	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {}
 
 	/**
 	 * Adds a disguise module to the sentry and places a block if possible

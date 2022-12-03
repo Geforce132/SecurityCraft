@@ -51,7 +51,7 @@ public class SetPassword {
 			Player player = ctx.get().getSender();
 			Level level = player.level;
 
-			if (level.getBlockEntity(pos) instanceof IPasswordProtected be && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
+			if (level.getBlockEntity(pos) instanceof IPasswordProtected be && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 				be.setPassword(password);
 
 				if (be instanceof KeypadChestBlockEntity chestBe)

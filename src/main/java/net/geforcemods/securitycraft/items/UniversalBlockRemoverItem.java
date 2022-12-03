@@ -47,7 +47,7 @@ public class UniversalBlockRemoverItem extends Item {
 		Player player = ctx.getPlayer();
 
 		if (be != null && isOwnableBlock(block, be)) {
-			if (!((IOwnable) be).getOwner().isOwner(player)) {
+			if (!((IOwnable) be).isOwnedBy(player)) {
 				if (!(block instanceof IBlockMine) && (!(be.getBlockState().getBlock() instanceof DisguisableBlock db) || (((BlockItem) db.getDisguisedStack(level, pos).getItem()).getBlock() instanceof DisguisableBlock)))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) be).getOwner().getName())), ChatFormatting.RED);
 

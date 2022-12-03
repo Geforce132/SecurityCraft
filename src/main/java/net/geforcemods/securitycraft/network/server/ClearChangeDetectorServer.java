@@ -32,7 +32,7 @@ public class ClearChangeDetectorServer {
 		ctx.get().enqueueWork(() -> {
 			ServerPlayer player = ctx.get().getSender();
 
-			if (player.level.getBlockEntity(message.pos) instanceof BlockChangeDetectorBlockEntity be && be.getOwner().isOwner(player)) {
+			if (player.level.getBlockEntity(message.pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(player)) {
 				be.getEntries().clear();
 				be.setChanged();
 				be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 2);
