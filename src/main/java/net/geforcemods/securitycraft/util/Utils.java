@@ -1,10 +1,7 @@
 package net.geforcemods.securitycraft.util;
 
-import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
-import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -12,9 +9,7 @@ import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -34,15 +29,6 @@ public class Utils {
 
 	public static Component getFormattedCoordinates(BlockPos pos) {
 		return Component.translatable("messages.securitycraft:formattedCoordinates", pos.getX(), pos.getY(), pos.getZ());
-	}
-
-	public static void setISinTEAppropriately(Level level, BlockPos pos, NonNullList<ItemStack> contents) {
-		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, pos);
-
-		if (connectedScanner == null)
-			return;
-
-		connectedScanner.setContents(contents);
 	}
 
 	/**
