@@ -12,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -70,12 +71,15 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
 				IProperty<?> variantProperty = singleSlab.getVariantProperty();
 				Comparable<?> value = state.getValue(variantProperty);
 				BlockSlab.EnumBlockHalf half = state.getValue(BlockSlab.HALF);
+				TileEntity tile = world.getTileEntity(pos);
 				Owner owner = null;
 
-				if (world.getTileEntity(pos) instanceof IOwnable) {
-					owner = ((IOwnable) world.getTileEntity(pos)).getOwner();
+				if (tile instanceof IOwnable) {
+					IOwnable ownable = (IOwnable) tile;
 
-					if (!((IOwnable) world.getTileEntity(pos)).isOwnedBy(player)) {
+					owner = ownable.getOwner();
+
+					if (!ownable.isOwnedBy(player)) {
 						if (!world.isRemote)
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize("messages.securitycraft:reinforcedSlab"), Utils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
 
@@ -91,7 +95,7 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
 						stack.shrink(1);
 
 						if (owner != null)
-							((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
+							((IOwnable) tile).setOwner(owner.getUUID(), owner.getName());
 					}
 
 					return EnumActionResult.SUCCESS;
