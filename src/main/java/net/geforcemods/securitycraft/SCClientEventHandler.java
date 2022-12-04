@@ -22,7 +22,6 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.MainWindow;
@@ -224,9 +223,7 @@ public class SCClientEventHandler {
 
 							//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 							if (!(te instanceof IOwnable) || !((IOwnable) te).getOwner().isOwner(player)) {
-								Block block = te.getBlockState().getBlock();
-
-								if (block instanceof DisguisableBlock && ((DisguisableBlock) block).getDisguisedBlockState(world, pos).isPresent())
+								if (DisguisableBlock.getDisguisedBlockState(world, pos).isPresent())
 									return;
 							}
 

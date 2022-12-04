@@ -154,7 +154,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		return getDisguisedBlockState(world, pos).orElse(state);
 	}
 
-	public Optional<BlockState> getDisguisedBlockState(IBlockReader world, BlockPos pos) {
+	public static Optional<BlockState> getDisguisedBlockState(IBlockReader world, BlockPos pos) {
 		TileEntity tile = world.getBlockEntity(pos);
 
 		if (tile instanceof IModuleInventory) {

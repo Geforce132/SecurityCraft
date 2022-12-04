@@ -95,7 +95,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		boolean disguised = false;
 
 		if (block instanceof DisguisableBlock) {
-			Optional<BlockState> disguisedBlockState = ((DisguisableBlock) block).getDisguisedBlockState(data.getWorld(), data.getPosition());
+			Optional<BlockState> disguisedBlockState = DisguisableBlock.getDisguisedBlockState(data.getWorld(), data.getPosition());
 
 			if (disguisedBlockState.isPresent()) {
 				disguised = true;
