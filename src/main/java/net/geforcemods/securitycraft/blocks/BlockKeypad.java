@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -181,8 +180,8 @@ public class BlockKeypad extends BlockDisguisable {
 		}
 
 		@Override
-		public Block getOriginalBlock() {
-			return SCContent.frame;
+		public boolean isValidStateForConversion(IBlockState state) {
+			return state.getBlock() == SCContent.frame;
 		}
 
 		@Override

@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -237,8 +236,8 @@ public class BlockKeypadFurnace extends BlockDisguisable {
 		}
 
 		@Override
-		public Block getOriginalBlock() {
-			return Blocks.FURNACE;
+		public boolean isValidStateForConversion(IBlockState state) {
+			return state.getBlock() == Blocks.FURNACE;
 		}
 
 		@Override

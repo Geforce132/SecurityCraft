@@ -265,7 +265,8 @@ public class SCEventHandler {
 
 		World world = event.getWorld();
 		TileEntity te = world.getTileEntity(event.getPos());
-		Block block = world.getBlockState(event.getPos()).getBlock();
+		IBlockState state = world.getBlockState(event.getPos());
+		Block block = state.getBlock();
 
 		if (te instanceof ILockable && ((ILockable) te).isLocked() && ((ILockable) te).disableInteractionWhenLocked(world, event.getPos(), event.getEntityPlayer())) {
 			if (!event.getEntityPlayer().isSneaking()) {
@@ -291,7 +292,7 @@ public class SCEventHandler {
 
 		if (PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.keyPanel, event.getHand())) {
 			for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
-				if (pc.getOriginalBlock() == block) {
+				if (pc.isValidStateForConversion(state)) {
 					event.setUseBlock(Result.DENY);
 					event.setUseItem(Result.ALLOW);
 				}

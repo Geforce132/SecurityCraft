@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,10 +28,9 @@ public class ItemKeyPanel extends ItemBlock {
 	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 		IBlockState state = world.getBlockState(pos);
-		Block block = state.getBlock();
 
 		for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
-			if (block == pc.getOriginalBlock()) {
+			if (pc.isValidStateForConversion(state)) {
 				if (pc.convert(player, world, pos)) {
 					if (!player.capabilities.isCreativeMode)
 						stack.shrink(1);

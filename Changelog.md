@@ -3,6 +3,8 @@
 - New: The reinforced block tint color can now be changed with a config setting
 - New: Netherrack Mine and End Stone Mine
 - New: The damage of a Laser Block containing a Harming Module can now be changed with a config setting
+- New: More modded wooden chests can now be converted to a Password-protected Chest
+- API: Change IPasswordConvertible#getOriginalBlock to IPasswordConvertible#isValidStateForConversion for finer control over what can be converted
 - Fix: The Reinforced Grass Block doesn't have a reinforced tint
 - Fix: The One Probe doesn't display some of SecurityCraft's blocks correctly
 - Fix: Potential startup crash in combination with other mods

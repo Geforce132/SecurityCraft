@@ -23,11 +23,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.InventoryLargeChest;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -45,6 +45,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class BlockKeypadChest extends BlockOwnable {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
@@ -486,8 +487,8 @@ public class BlockKeypadChest extends BlockOwnable {
 		}
 
 		@Override
-		public Block getOriginalBlock() {
-			return Blocks.CHEST;
+		public boolean isValidStateForConversion(IBlockState state) {
+			return OreDictionary.getOres("chestWood").stream().anyMatch(stack -> stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).getBlock() == state.getBlock());
 		}
 
 		@Override

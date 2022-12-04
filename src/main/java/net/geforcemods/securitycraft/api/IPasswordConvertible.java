@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -24,11 +24,12 @@ import net.minecraft.world.World;
  */
 public interface IPasswordConvertible {
 	/**
-	 * The block that has to be rightclicked in order to convert it
+	 * Checks whether the given block state is valid for this conversion
 	 *
-	 * @return Aforementioned block
+	 * @param state The block state to check
+	 * @return true if the block can be used for this conversion, false otherwise
 	 */
-	public Block getOriginalBlock();
+	public boolean isValidStateForConversion(IBlockState state);
 
 	/**
 	 * Converts the original block to the password-protected one
