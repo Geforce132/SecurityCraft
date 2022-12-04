@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -24,12 +24,12 @@ public class KeyPanelItem extends BlockItem {
 	public ActionResultType useOn(ItemUseContext ctx) {
 		World world = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
-		Block block = world.getBlockState(pos).getBlock();
+		BlockState state = world.getBlockState(pos);
 		PlayerEntity player = ctx.getPlayer();
 		ItemStack stack = ctx.getItemInHand();
 
 		for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
-			if (block == pc.getOriginalBlock()) {
+			if (pc.isValidStateForConversion(state)) {
 				if (pc.convert(player, world, pos)) {
 					if (!player.isCreative())
 						stack.shrink(1);

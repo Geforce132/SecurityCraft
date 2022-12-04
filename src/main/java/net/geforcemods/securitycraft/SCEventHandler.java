@@ -234,7 +234,7 @@ public class SCEventHandler {
 
 			if (PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.KEY_PANEL, event.getHand())) {
 				for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
-					if (pc.getOriginalBlock() == block) {
+					if (pc.isValidStateForConversion(state)) {
 						event.setUseBlock(Result.DENY);
 						event.setUseItem(Result.ALLOW);
 					}

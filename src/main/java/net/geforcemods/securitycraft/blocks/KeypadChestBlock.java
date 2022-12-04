@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -45,6 +44,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.Tags;
 
 public class KeypadChestBlock extends ChestBlock {
 	private static final TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>> CONTAINER_MERGER = new TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>>() {
@@ -223,8 +223,8 @@ public class KeypadChestBlock extends ChestBlock {
 
 	public static class Convertible implements IPasswordConvertible {
 		@Override
-		public Block getOriginalBlock() {
-			return Blocks.CHEST;
+		public boolean isValidStateForConversion(BlockState state) {
+			return state.is(Tags.Blocks.CHESTS_WOODEN);
 		}
 
 		@Override
