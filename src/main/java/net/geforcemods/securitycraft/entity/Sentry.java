@@ -182,7 +182,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 	public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
 		BlockPos pos = blockPosition();
 
-		if (isOwner(player) && hand == Hand.MAIN_HAND) {
+		if (isOwnedBy(player) && hand == Hand.MAIN_HAND) {
 			Item item = player.getMainHandItem().getItem();
 
 			player.closeContainer();
@@ -261,7 +261,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 			player.swing(Hand.MAIN_HAND);
 			return ActionResultType.SUCCESS;
 		}
-		else if (!isOwner(player) && hand == Hand.MAIN_HAND && player.isCreative()) {
+		else if (!isOwnedBy(player) && hand == Hand.MAIN_HAND && player.isCreative()) {
 			if (player.isCrouching() || player.getMainHandItem().getItem() == SCContent.UNIVERSAL_BLOCK_REMOVER.get())
 				remove();
 		}

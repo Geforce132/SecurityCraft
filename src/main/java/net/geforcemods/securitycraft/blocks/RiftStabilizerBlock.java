@@ -67,7 +67,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 		if (be instanceof RiftStabilizerBlockEntity) {
 			RiftStabilizerBlockEntity riftStabilizer = ((RiftStabilizerBlockEntity) be);
 
-			if (riftStabilizer.isOwner(player)) {
+			if (riftStabilizer.isOwnedBy(player)) {
 				if (!level.isClientSide) {
 					if (riftStabilizer.isDisabled())
 						player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);

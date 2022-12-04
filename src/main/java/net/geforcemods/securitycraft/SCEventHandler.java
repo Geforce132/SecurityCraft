@@ -415,7 +415,7 @@ public class SCEventHandler {
 		blockEntities = blockEntities.stream().distinct().sorted(Comparator.comparingDouble(b -> Math.min(b.getBlockPos().distSqr(event.getTarget(), true), b.getBlockPos().distSqr(event.getPrev(), true)))).collect(Collectors.toList());
 
 		for (RiftStabilizerBlockEntity be : blockEntities) {
-			if (!be.isDisabled() && be.getFilter(type) && (!(entity instanceof PlayerEntity) || !be.isOwner(((PlayerEntity) entity)) && !be.isAllowed(entity))) {
+			if (!be.isDisabled() && be.getFilter(type) && (!(entity instanceof PlayerEntity) || !be.isOwnedBy(((PlayerEntity) entity)) && !be.isAllowed(entity))) {
 				riftStabilizer = be;
 				targetPosProhibited = be.getBlockPos().distSqr(event.getTarget(), true) < be.getBlockPos().distSqr(event.getPrev(), true);
 				break;

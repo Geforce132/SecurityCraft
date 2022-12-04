@@ -37,7 +37,7 @@ public interface IPasswordProtected extends ICodebreakable {
 			if (getPassword() != null)
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.CHECK_PASSWORD, pos));
 			else {
-				if (ownable.isOwner(player))
+				if (ownable.isOwnedBy(player))
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.SET_PASSWORD, pos));
 				else
 					PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);

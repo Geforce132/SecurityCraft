@@ -50,7 +50,7 @@ public class UpdateSliderValue {
 			PlayerEntity player = ctx.get().getSender();
 			TileEntity te = player.level.getBlockEntity(pos);
 
-			if (te instanceof ICustomizable && (!(te instanceof IOwnable) || ((IOwnable) te).isOwner(player))) {
+			if (te instanceof ICustomizable && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
 				ICustomizable customizable = (ICustomizable) te;
 				Option<?> option = null;
 

@@ -48,7 +48,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		String playerName = player.getName().getString();
 		long timestamp = System.currentTimeMillis();
 
-		if (!isOwner(player) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp)) {
+		if (!isOwnedBy(player) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp)) {
 			//ignore players on the allowlist
 			if (isAllowed(player))
 				return;

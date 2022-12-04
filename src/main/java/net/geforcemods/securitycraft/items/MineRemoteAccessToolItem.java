@@ -63,7 +63,7 @@ public class MineRemoteAccessToolItem extends Item {
 
 				TileEntity te = world.getBlockEntity(pos);
 
-				if (te instanceof IOwnable && !((IOwnable) te).isOwner(player)) {
+				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player)) {
 					if (world.isClientSide)
 						ClientHandler.displayMRATScreen(stack);
 

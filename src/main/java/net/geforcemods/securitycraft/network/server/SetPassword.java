@@ -52,7 +52,7 @@ public class SetPassword {
 			World world = player.level;
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable) te).isOwner(player))) {
+			if (te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
 				((IPasswordProtected) te).setPassword(password);
 
 				if (te instanceof KeypadChestBlockEntity)

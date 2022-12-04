@@ -76,11 +76,11 @@ public interface IOwnable {
 	 * @param player The player to check ownership of
 	 * @return true if the given player owns this IOwnable, false otherwise
 	 */
-	public default boolean isOwner(PlayerEntity player) {
+	public default boolean isOwnedBy(PlayerEntity player) {
 		if (player == null)
 			return false;
 
-		return isOwner(new Owner(player));
+		return isOwnedBy(new Owner(player));
 	}
 
 	/**
@@ -89,7 +89,7 @@ public interface IOwnable {
 	 * @param player The owner to check ownership of
 	 * @return true if the given owner owns this IOwnable, false otherwise
 	 */
-	public default boolean isOwner(Owner owner) {
+	public default boolean isOwnedBy(Owner owner) {
 		String thisUUID = getOwner().getUUID();
 		String thisName = getOwner().getName();
 		String otherUUID = owner.getUUID();

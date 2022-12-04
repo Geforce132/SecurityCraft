@@ -29,7 +29,7 @@ public class BlockPocketManagerMenu extends Container {
 			te = (BlockPocketManagerBlockEntity) tile;
 
 		worldPosCallable = IWorldPosCallable.create(world, pos);
-		isOwner = te.isOwner(inventory.player);
+		isOwner = te.isOwnedBy(inventory.player);
 		storage = te != null && te.isModuleEnabled(ModuleType.STORAGE) && isOwner;
 
 		if (storage) {

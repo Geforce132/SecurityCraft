@@ -53,7 +53,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 
 					if (te.getManager().isAllowed(entity))
 						return VoxelShapes.empty();
-					else if (!te.isOwner((PlayerEntity) entity))
+					else if (!te.isOwnedBy((PlayerEntity) entity))
 						return VoxelShapes.block();
 					else
 						return VoxelShapes.empty();

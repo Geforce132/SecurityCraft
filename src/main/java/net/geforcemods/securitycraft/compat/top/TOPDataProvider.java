@@ -103,7 +103,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				}
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
-				if (te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable) te).isOwner(player))) {
+				if (te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
 					if (!((IModuleInventory) te).getInsertedModules().isEmpty()) {
 						probeInfo.text(EQUIPPED);
 
@@ -113,7 +113,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 					}
 				}
 
-				if (te instanceof IPasswordProtected && !(te instanceof KeycardReaderBlockEntity) && ((IOwnable) te).isOwner(player)) {
+				if (te instanceof IPasswordProtected && !(te instanceof KeycardReaderBlockEntity) && ((IOwnable) te).isOwnedBy(player)) {
 					String password = ((IPasswordProtected) te).getPassword();
 
 					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))).getString()));

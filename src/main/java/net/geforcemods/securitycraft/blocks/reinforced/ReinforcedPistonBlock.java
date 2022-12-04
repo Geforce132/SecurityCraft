@@ -67,7 +67,7 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 			Owner owner = be.getOwner();
 
 			if (!owner.isValidated()) {
-				if (be.isOwner(player)) {
+				if (be.isOwnedBy(player)) {
 					owner.setValidated(true);
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), new TranslationTextComponent("messages.securitycraft:ownable.validate"), TextFormatting.GREEN);
 					return ActionResultType.SUCCESS;

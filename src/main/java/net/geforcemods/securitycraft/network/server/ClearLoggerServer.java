@@ -37,7 +37,7 @@ public class ClearLoggerServer {
 			if (te instanceof UsernameLoggerBlockEntity) {
 				UsernameLoggerBlockEntity logger = (UsernameLoggerBlockEntity) te;
 
-				if (logger.isOwner(player)) {
+				if (logger.isOwnedBy(player)) {
 					logger.players = new String[100];
 					logger.getLevel().sendBlockUpdated(logger.getBlockPos(), logger.getBlockState(), logger.getBlockState(), 2);
 				}

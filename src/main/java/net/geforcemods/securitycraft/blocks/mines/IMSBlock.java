@@ -121,7 +121,7 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				else if (be.isOwner(player)) {
+				else if (be.isOwnedBy(player)) {
 					ItemStack held = player.getItemInHand(hand);
 					int mines = state.getValue(MINES);
 

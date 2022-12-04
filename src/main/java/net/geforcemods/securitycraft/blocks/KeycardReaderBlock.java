@@ -68,7 +68,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 				//either no keycard, or an unlinked keycard, or an admin tool
 				if ((!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker) {
 					//only allow the owner and players on the allowlist to open the gui
-					if (te.isOwner(player) || te.isAllowed(player))
+					if (te.isOwnedBy(player) || te.isAllowed(player))
 						NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
 				}
 				else if (item != SCContent.LIMITED_USE_KEYCARD.get()) { //limited use keycards are only crafting components now

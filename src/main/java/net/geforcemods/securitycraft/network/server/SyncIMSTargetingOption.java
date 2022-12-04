@@ -40,7 +40,7 @@ public class SyncIMSTargetingOption {
 			PlayerEntity player = ctx.get().getSender();
 			TileEntity te = player.level.getBlockEntity(pos);
 
-			if (te instanceof IMSBlockEntity && ((IMSBlockEntity) te).isOwner(player))
+			if (te instanceof IMSBlockEntity && ((IMSBlockEntity) te).isOwnedBy(player))
 				((IMSBlockEntity) te).setTargetingMode(message.targetingMode);
 		});
 

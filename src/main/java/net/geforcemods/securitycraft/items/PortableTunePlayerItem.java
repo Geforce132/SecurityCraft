@@ -41,7 +41,7 @@ public class PortableTunePlayerItem extends Item {
 			SonicSecuritySystemBlockEntity te = (SonicSecuritySystemBlockEntity) world.getBlockEntity(pos);
 			PlayerEntity player = ctx.getPlayer();
 
-			if (te.isOwner(player) || te.isAllowed(player)) {
+			if (te.isOwnedBy(player) || te.isAllowed(player)) {
 				if (te.getNumberOfNotes() > 0) {
 					te.saveNotes(ctx.getItemInHand().getOrCreateTag());
 					player.displayClientMessage(Utils.localize("messages.securitycraft:portable_tune_player.tune_saved"), true);

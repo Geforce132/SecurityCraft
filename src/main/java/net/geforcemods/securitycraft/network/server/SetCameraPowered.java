@@ -42,7 +42,7 @@ public class SetCameraPowered {
 			World world = player.level;
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof IOwnable && ((IOwnable) te).isOwner(player)) {
+			if (te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player)) {
 				world.setBlockAndUpdate(pos, world.getBlockState(pos).setValue(SecurityCameraBlock.POWERED, message.powered));
 				world.updateNeighborsAt(pos.relative(world.getBlockState(pos).getValue(SecurityCameraBlock.FACING), -1), world.getBlockState(pos).getBlock());
 			}

@@ -62,7 +62,7 @@ public class SyncProjector {
 			World world = player.level;
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (world.isLoaded(pos) && te instanceof ProjectorBlockEntity && ((ProjectorBlockEntity) te).isOwner(player)) {
+			if (world.isLoaded(pos) && te instanceof ProjectorBlockEntity && ((ProjectorBlockEntity) te).isOwnedBy(player)) {
 				ProjectorBlockEntity projector = (ProjectorBlockEntity) te;
 				BlockState state = world.getBlockState(pos);
 

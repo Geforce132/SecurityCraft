@@ -51,7 +51,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 				if (isModuleEnabled(ModuleType.ALLOWLIST))
 					isNotAllowed = !isAllowed(e);
 
-				return !isOwner(e) && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
+				return !isOwnedBy(e) && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});
 
 			if (isModuleEnabled(ModuleType.REDSTONE))

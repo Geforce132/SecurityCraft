@@ -54,7 +54,7 @@ public class SyncBlockPocketManager {
 			World world = player.level;
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (world.isLoaded(pos) && te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwner(player)) {
+			if (world.isLoaded(pos) && te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
 				BlockPocketManagerBlockEntity bpm = (BlockPocketManagerBlockEntity) te;
 				BlockState state = world.getBlockState(pos);
 

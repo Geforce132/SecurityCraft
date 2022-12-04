@@ -65,7 +65,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 		if (tile instanceof TrophySystemBlockEntity) {
 			TrophySystemBlockEntity be = (TrophySystemBlockEntity) tile;
 
-			if (be.isOwner(player)) {
+			if (be.isOwnedBy(player)) {
 				if (!world.isClientSide) {
 					if (be.isDisabled())
 						player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);

@@ -195,7 +195,7 @@ public class IronFenceBlock extends OwnableBlock {
 			return;
 		//owner check
 		else if (entity instanceof PlayerEntity) {
-			if (((OwnableBlockEntity) world.getBlockEntity(pos)).isOwner((PlayerEntity) entity))
+			if (((OwnableBlockEntity) world.getBlockEntity(pos)).isOwnedBy((PlayerEntity) entity))
 				return;
 		}
 		else if (!world.isClientSide && entity instanceof CreeperEntity) {

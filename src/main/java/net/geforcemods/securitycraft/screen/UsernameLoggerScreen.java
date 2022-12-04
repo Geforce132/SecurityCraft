@@ -51,7 +51,7 @@ public class UsernameLoggerScreen extends Screen {
 		addButton(new ExtendedButton(leftPos + 4, topPos + 4, 8, 8, new StringTextComponent("x"), b -> {
 			tileEntity.players = new String[100];
 			SecurityCraft.channel.sendToServer(new ClearLoggerServer(tileEntity.getBlockPos()));
-		})).active = tileEntity.isOwner(minecraft.player);
+		})).active = tileEntity.isOwnedBy(minecraft.player);
 		children.add(playerList = new PlayerList(minecraft, imageWidth - 24, imageHeight - 40, topPos + 20, leftPos + 12));
 	}
 
@@ -141,7 +141,7 @@ public class UsernameLoggerScreen extends Screen {
 		public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 			super.render(matrix, mouseX, mouseY, partialTicks);
 
-			if (tileEntity.isOwner(minecraft.player)) {
+			if (tileEntity.isOwnedBy(minecraft.player)) {
 				int mouseListY = (int) (mouseY - top + scrollDistance - border);
 				int slotIndex = mouseListY / slotHeight;
 

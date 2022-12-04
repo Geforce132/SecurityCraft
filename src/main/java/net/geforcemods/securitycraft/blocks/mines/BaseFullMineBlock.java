@@ -46,7 +46,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 				if (te instanceof OwnableBlockEntity) {
 					OwnableBlockEntity ownableTe = (OwnableBlockEntity) te;
 
-					if (ownableTe.isOwner((PlayerEntity) entity))
+					if (ownableTe.isOwnedBy((PlayerEntity) entity))
 						return VoxelShapes.block();
 				}
 			}
@@ -145,7 +145,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 		if (world.getBlockEntity(pos) instanceof OwnableBlockEntity) {
 			OwnableBlockEntity te = (OwnableBlockEntity) world.getBlockEntity(pos);
 
-			if (player.isCreative() || te.isOwner(player))
+			if (player.isCreative() || te.isOwnedBy(player))
 				return super.getPickBlock(state, target, world, pos, player);
 		}
 

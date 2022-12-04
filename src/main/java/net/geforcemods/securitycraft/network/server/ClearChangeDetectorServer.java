@@ -37,7 +37,7 @@ public class ClearChangeDetectorServer {
 			if (tile instanceof BlockChangeDetectorBlockEntity) {
 				BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) tile;
 
-				if (be.isOwner(player)) {
+				if (be.isOwnedBy(player)) {
 					be.getEntries().clear();
 					be.setChanged();
 					be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 2);

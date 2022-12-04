@@ -93,7 +93,7 @@ public class BlockChangeDetectorScreen extends ContainerScreen<BlockChangeDetect
 			SecurityCraft.channel.sendToServer(new ClearChangeDetectorServer(be.getBlockPos()));
 		}));
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
-		boolean isOwner = be.isOwner(minecraft.player);
+		boolean isOwner = be.isOwnedBy(minecraft.player);
 		int settingsX = leftPos + 173;
 		Button colorChooserButton;
 

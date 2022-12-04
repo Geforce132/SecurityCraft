@@ -97,7 +97,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 	}
 
 	public boolean canAttackEntity(LivingEntity entity) {
-		return entity != null && (!(entity instanceof PlayerEntity) || !isOwner((PlayerEntity) entity) && !((PlayerEntity) entity).isCreative() && !((PlayerEntity) entity).isSpectator()) //PlayerEntity checks
+		return entity != null && (!(entity instanceof PlayerEntity) || !isOwnedBy((PlayerEntity) entity) && !((PlayerEntity) entity).isCreative() && !((PlayerEntity) entity).isSpectator()) //PlayerEntity checks
 				&& !(isAllowed(entity)); //checks for all entities
 	}
 

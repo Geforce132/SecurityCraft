@@ -102,7 +102,7 @@ public class ProjectorBlock extends DisguisableBlock {
 		if (!(te instanceof ProjectorBlockEntity))
 			return ActionResultType.FAIL;
 
-		boolean isOwner = ((IOwnable) te).isOwner(player);
+		boolean isOwner = ((IOwnable) te).isOwnedBy(player);
 
 		if (!world.isClientSide && isOwner)
 			NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
