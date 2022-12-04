@@ -48,7 +48,7 @@ public class SyncRiftStabilizer {
 				if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity) {
 					RiftStabilizerBlockEntity be = ((RiftStabilizerBlockEntity) level.getBlockEntity(pos));
 
-					if (be.getOwner().isOwner(ctx.get().getSender())) {
+					if (be.isOwner(ctx.get().getSender())) {
 						BlockState state = level.getBlockState(pos);
 
 						be.setFilter(message.teleportationType, allowed);

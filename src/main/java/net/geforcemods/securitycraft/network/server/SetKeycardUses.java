@@ -44,7 +44,7 @@ public class SetKeycardUses {
 			if (tile instanceof KeycardReaderBlockEntity) {
 				KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;
 
-				if (te.getOwner().isOwner(player) || te.isAllowed(player)) {
+				if (te.isOwner(player) || te.isAllowed(player)) {
 					Container container = player.containerMenu;
 
 					if (container instanceof KeycardReaderMenu)

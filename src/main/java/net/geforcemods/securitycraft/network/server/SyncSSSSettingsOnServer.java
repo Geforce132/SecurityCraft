@@ -52,7 +52,7 @@ public class SyncSSSSettingsOnServer {
 			World world = ctx.get().getSender().level;
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof SonicSecuritySystemBlockEntity && ((SonicSecuritySystemBlockEntity) te).getOwner().isOwner(ctx.get().getSender())) {
+			if (te instanceof SonicSecuritySystemBlockEntity && ((SonicSecuritySystemBlockEntity) te).isOwner(ctx.get().getSender())) {
 				SonicSecuritySystemBlockEntity sss = (SonicSecuritySystemBlockEntity) te;
 
 				switch (message.dataType) {

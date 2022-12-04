@@ -56,7 +56,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 				TileEntity te = world.getBlockEntity(pos);
 
 				if (te instanceof ILockable) {
-					if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player)) {
+					if (te instanceof IOwnable && !((IOwnable) te).isOwner(player)) {
 						Block block = te.getBlockState().getBlock();
 
 						if (!(block instanceof DisguisableBlock) || !DisguisableBlock.getDisguisedBlockState(world, pos).isPresent()) {

@@ -63,7 +63,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 			if (tile instanceof BlockChangeDetectorBlockEntity) {
 				BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) tile;
 
-				if (be.getOwner().isOwner(player) || be.isAllowed(player))
+				if (be.isOwner(player) || be.isAllowed(player))
 					NetworkHooks.openGui((ServerPlayerEntity) player, be, pos);
 			}
 		}

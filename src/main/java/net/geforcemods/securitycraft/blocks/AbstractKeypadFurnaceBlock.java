@@ -149,7 +149,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 				activate(state, world, pos, player);
 			}
 			else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-				te.openPasswordGUI(world, pos, te.getOwner(), player);
+				te.openPasswordGUI(world, pos, te, player);
 		}
 
 		return ActionResultType.SUCCESS;

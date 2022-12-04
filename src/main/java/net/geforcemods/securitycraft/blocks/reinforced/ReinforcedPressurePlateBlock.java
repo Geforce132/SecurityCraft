@@ -99,7 +99,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	}
 
 	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyBlockEntity te, PlayerEntity entity) {
-		return te.getOwner().isOwner(entity) || te.isAllowed(entity);
+		return te.isOwner(entity) || te.isAllowed(entity);
 	}
 
 	@Override

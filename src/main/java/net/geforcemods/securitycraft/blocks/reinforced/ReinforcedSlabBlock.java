@@ -81,7 +81,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 		TileEntity te = world.getBlockEntity(pos);
 
 		if (state.getBlock() == this) {
-			if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(ctx.getPlayer())) {
+			if (te instanceof IOwnable && !((IOwnable) te).isOwner(ctx.getPlayer())) {
 				PlayerUtils.sendMessageToPlayer(ctx.getPlayer(), Utils.localize("messages.securitycraft:reinforcedSlab"), Utils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
 
 				return state;

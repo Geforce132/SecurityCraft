@@ -40,7 +40,7 @@ public class SetSentryMode {
 
 			List<Sentry> sentries = player.level.<Sentry>getEntitiesOfClass(Sentry.class, new AxisAlignedBB(message.pos));
 
-			if (!sentries.isEmpty() && sentries.get(0).getOwner().isOwner(player))
+			if (!sentries.isEmpty() && sentries.get(0).isOwner(player))
 				sentries.get(0).toggleMode(player, message.mode, false);
 		});
 

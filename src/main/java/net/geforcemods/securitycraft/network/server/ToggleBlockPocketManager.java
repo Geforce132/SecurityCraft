@@ -42,7 +42,7 @@ public class ToggleBlockPocketManager {
 			PlayerEntity player = ctx.get().getSender();
 			TileEntity te = player.level.getBlockEntity(message.pos);
 
-			if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).getOwner().isOwner(player)) {
+			if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwner(player)) {
 				((BlockPocketManagerBlockEntity) te).size = message.size;
 
 				if (message.enabling)

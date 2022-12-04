@@ -103,7 +103,7 @@ public class KeypadChestBlock extends ChestBlock {
 				activate(state, world, pos, player);
 			}
 			else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-				te.openPasswordGUI(world, pos, te.getOwner(), player);
+				te.openPasswordGUI(world, pos, te, player);
 		}
 
 		return ActionResultType.SUCCESS;
@@ -156,7 +156,7 @@ public class KeypadChestBlock extends ChestBlock {
 			TileEntity te = ctx.getLevel().getBlockEntity(ctx.getClickedPos().relative(dir));
 
 			//only connect to chests which have the same owner
-			if (te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner(ctx.getPlayer()))
+			if (te instanceof IOwnable && ((IOwnable) te).isOwner(ctx.getPlayer()))
 				return returnValue;
 		}
 		return null;

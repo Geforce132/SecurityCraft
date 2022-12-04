@@ -68,7 +68,7 @@ public class ModuleItem extends Item {
 			IModuleInventory inv = (IModuleInventory) te;
 			ModuleType type = ((ModuleItem) stack.getItem()).getModuleType();
 
-			if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(ctx.getPlayer()))
+			if (te instanceof IOwnable && !((IOwnable) te).isOwner(ctx.getPlayer()))
 				return ActionResultType.PASS;
 
 			if (inv.acceptsModule(type) && !inv.hasModule(type)) {

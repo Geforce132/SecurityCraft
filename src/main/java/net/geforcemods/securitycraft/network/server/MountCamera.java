@@ -49,7 +49,7 @@ public class MountCamera {
 				if (te instanceof SecurityCameraBlockEntity) {
 					SecurityCameraBlockEntity cam = (SecurityCameraBlockEntity) te;
 
-					if (cam.getOwner().isOwner(player) || cam.isAllowed(player))
+					if (cam.isOwner(player) || cam.isAllowed(player))
 						((SecurityCameraBlock) state.getBlock()).mountCamera(world, pos, player);
 					else
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", cam.getOwner().getName()), TextFormatting.RED);

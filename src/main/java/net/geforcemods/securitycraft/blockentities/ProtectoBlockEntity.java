@@ -48,7 +48,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 						if (entity instanceof PlayerEntity) {
 							PlayerEntity player = (PlayerEntity) entity;
 
-							if (player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || isAllowed(entity)) {
+							if (player.isCreative() || player.isSpectator() || isOwner(player) || isAllowed(entity)) {
 								continue;
 							}
 						}

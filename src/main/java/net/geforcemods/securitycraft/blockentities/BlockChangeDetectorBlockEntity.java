@@ -54,7 +54,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		if (mode != DetectionMode.BOTH && action != mode)
 			return;
 
-		if (getOwner().isOwner(player) || isAllowed(player))
+		if (isOwner(player) || isAllowed(player))
 			return;
 
 		//don't detect self

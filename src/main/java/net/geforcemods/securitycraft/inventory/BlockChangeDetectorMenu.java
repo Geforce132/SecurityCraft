@@ -27,7 +27,7 @@ public class BlockChangeDetectorMenu extends Container {
 		if (te instanceof BlockChangeDetectorBlockEntity) {
 			BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) te;
 
-			if (be.getOwner().isOwner(inventory.player)) {
+			if (be.isOwner(inventory.player)) {
 				addSlot(new Slot(new BlockEntityInventoryWrapper<>(be, this), 36, 175, 44) {
 					@Override
 					public boolean mayPlace(ItemStack stack) {

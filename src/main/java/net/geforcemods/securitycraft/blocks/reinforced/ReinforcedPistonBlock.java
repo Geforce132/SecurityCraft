@@ -63,10 +63,11 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 		TileEntity te = world.getBlockEntity(pos);
 
 		if (te instanceof OwnableBlockEntity) {
-			Owner owner = ((OwnableBlockEntity) te).getOwner();
+			OwnableBlockEntity be = (OwnableBlockEntity) te;
+			Owner owner = be.getOwner();
 
 			if (!owner.isValidated()) {
-				if (owner.isOwner(player)) {
+				if (be.isOwner(player)) {
 					owner.setValidated(true);
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), new TranslationTextComponent("messages.securitycraft:ownable.validate"), TextFormatting.GREEN);
 					return ActionResultType.SUCCESS;

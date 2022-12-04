@@ -54,7 +54,7 @@ public class SyncBlockChangeDetector {
 			if (tile instanceof BlockChangeDetectorBlockEntity) {
 				BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) tile;
 
-				if (be.getOwner().isOwner(player)) {
+				if (be.isOwner(player)) {
 					BlockState state = level.getBlockState(pos);
 
 					be.setMode(message.mode);

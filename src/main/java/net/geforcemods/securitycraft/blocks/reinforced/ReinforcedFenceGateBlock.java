@@ -57,7 +57,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 		else if (entity instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity) entity;
 
-			if (((OwnableBlockEntity) world.getBlockEntity(pos)).getOwner().isOwner(player))
+			if (((OwnableBlockEntity) world.getBlockEntity(pos)).isOwner(player))
 				return;
 		}
 		else if (!world.isClientSide && entity instanceof CreeperEntity) {

@@ -15,7 +15,7 @@ public class ReinforcedCauldronBlockEntity extends CustomizableBlockEntity {
 	}
 
 	public boolean isAllowedToInteract(PlayerEntity player) {
-		return isPublic.get() || getOwner().isOwner(player) || isAllowed(player);
+		return isPublic.get() || isOwner(player) || isAllowed(player);
 	}
 
 	@Override

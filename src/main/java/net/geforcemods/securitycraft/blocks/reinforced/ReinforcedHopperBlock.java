@@ -51,7 +51,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 				ReinforcedHopperBlockEntity te = (ReinforcedHopperBlockEntity) tileEntity;
 
 				//only allow the owner or players on the allowlist to access a reinforced hopper
-				if (te.getOwner().isOwner(player) || te.isAllowed(player))
+				if (te.isOwner(player) || te.isAllowed(player))
 					player.openMenu(te);
 			}
 		}

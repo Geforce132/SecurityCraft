@@ -20,6 +20,7 @@ import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.material.PushReaction;
@@ -69,7 +70,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffected { //needs to be a creature so it can target a player, ai is also only given to living entities
+public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffected, IOwnable { //needs to be a creature so it can target a player, ai is also only given to living entities
 	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>defineId(Sentry.class, Owner.getSerializer());
 	private static final DataParameter<CompoundNBT> ALLOWLIST = EntityDataManager.<CompoundNBT>defineId(Sentry.class, DataSerializers.COMPOUND_TAG);
 	private static final DataParameter<Boolean> HAS_SPEED_MODULE = EntityDataManager.<Boolean>defineId(Sentry.class, DataSerializers.BOOLEAN);
@@ -181,7 +182,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 	public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
 		BlockPos pos = blockPosition();
 
-		if (getOwner().isOwner(player) && hand == Hand.MAIN_HAND) {
+		if (isOwner(player) && hand == Hand.MAIN_HAND) {
 			Item item = player.getMainHandItem().getItem();
 
 			player.closeContainer();
@@ -260,7 +261,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 			player.swing(Hand.MAIN_HAND);
 			return ActionResultType.SUCCESS;
 		}
-		else if (!getOwner().isOwner(player) && hand == Hand.MAIN_HAND && player.isCreative()) {
+		else if (!isOwner(player) && hand == Hand.MAIN_HAND && player.isCreative()) {
 			if (player.isCrouching() || player.getMainHandItem().getItem() == SCContent.UNIVERSAL_BLOCK_REMOVER.get())
 				remove();
 		}
@@ -448,12 +449,18 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 		super.readAdditionalSaveData(tag);
 	}
 
-	/**
-	 * @return The owner of this sentry
-	 */
+	@Override
+	public void setOwner(String uuid, String name) {
+		entityData.set(OWNER, new Owner(name, uuid));
+	}
+
+	@Override
 	public Owner getOwner() {
 		return entityData.get(OWNER);
 	}
+
+	@Override
+	public void onOwnerChanged(BlockState state, World level, BlockPos pos, PlayerEntity player) {}
 
 	/**
 	 * Adds a disguise module to the sentry and places a block if possible

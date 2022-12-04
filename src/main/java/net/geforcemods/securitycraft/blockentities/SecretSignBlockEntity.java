@@ -85,7 +85,7 @@ public class SecretSignBlockEntity extends SignTileEntity implements IOwnable, I
 	}
 
 	public boolean isPlayerAllowedToSeeText(PlayerEntity player) {
-		return !isSecret() || getOwner().isOwner(player) || isAllowed(player);
+		return !isSecret() || isOwner(player) || isAllowed(player);
 	}
 
 	@Override

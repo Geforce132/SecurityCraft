@@ -108,7 +108,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 		if (player.getItemInHand(hand).getItem() != SCContent.PORTABLE_TUNE_PLAYER.get()) {
 			SonicSecuritySystemBlockEntity te = (SonicSecuritySystemBlockEntity) world.getBlockEntity(pos);
 
-			if (!world.isClientSide && (te.getOwner().isOwner(player) || te.isAllowed(player)))
+			if (!world.isClientSide && (te.isOwner(player) || te.isAllowed(player)))
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.SONIC_SECURITY_SYSTEM, pos));
 
 			return ActionResultType.SUCCESS;

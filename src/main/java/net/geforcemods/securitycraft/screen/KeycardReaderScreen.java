@@ -81,7 +81,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 		signature = previousSignature;
 		acceptedLevels = te.getAcceptedLevels();
 		isSmart = te.isModuleEnabled(ModuleType.SMART);
-		isOwner = te.getOwner().isOwner(inv.player);
+		isOwner = te.isOwner(inv.player);
 		imageHeight = 249;
 	}
 

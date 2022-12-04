@@ -59,7 +59,7 @@ public class SyncKeycardSettings {
 
 			if (tile instanceof KeycardReaderBlockEntity) {
 				KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;
-				boolean isOwner = te.getOwner().isOwner(player);
+				boolean isOwner = te.isOwner(player);
 
 				if (isOwner || te.isAllowed(player)) {
 					if (isOwner) {

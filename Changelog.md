@@ -4,8 +4,9 @@
 - New: Netherrack Mine and End Stone Mine
 - New: The damage of a Laser Block containing a Harming Module can now be changed with a config setting
 - New: More modded wooden chests can now be converted to a Password-protected Chest
-- API: Change IPasswordConvertible#getOriginalBlock to IPasswordConvertible#isValidStateForConversion for finer control over what can be converted
+- API: Changed IPasswordConvertible#getOriginalBlock to IPasswordConvertible#isValidStateForConversion for finer control over what can be converted
 - API: New methods IModuleInventory#isAllowed and IModuleInventory#isDenied to check whether an entity is listed on an allowlist or denylist module respectively
+- API: Moved and renamed Owner#isOwner methods to IPasswordProtected#isOwnedBy
 - Fix: The Reinforced Grass Block doesn't have a reinforced tint
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------

@@ -51,7 +51,7 @@ public class SyncTrophySystem {
 				boolean allowed = message.allowed;
 				TileEntity te = world.getBlockEntity(pos);
 
-				if (te instanceof TrophySystemBlockEntity && ((TrophySystemBlockEntity) te).getOwner().isOwner(ctx.get().getSender())) {
+				if (te instanceof TrophySystemBlockEntity && ((TrophySystemBlockEntity) te).isOwner(ctx.get().getSender())) {
 					BlockState state = world.getBlockState(pos);
 
 					((TrophySystemBlockEntity) te).setFilter(projectileType, allowed);

@@ -39,7 +39,7 @@ public class SetGhostSlot {
 			if (player.containerMenu instanceof InventoryScannerMenu) {
 				InventoryScannerMenu menu = (InventoryScannerMenu) player.containerMenu;
 
-				if (menu.te.getOwner().isOwner(player))
+				if (menu.te.isOwner(player))
 					menu.te.getContents().set(message.slotIndex, message.stack);
 			}
 		});
