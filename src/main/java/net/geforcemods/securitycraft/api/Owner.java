@@ -156,7 +156,7 @@ public class Owner {
 	}
 
 	/**
-	 * @deprecated Use {@link #owns} or {@link #isOwner} to check for ownership
+	 * @deprecated Use {@link #owns} or {@link IOwnable#isOwnedBy} to check for ownership
 	 */
 	@Override
 	@Deprecated
