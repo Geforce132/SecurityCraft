@@ -73,7 +73,7 @@ public class BlockCageTrap extends BlockDisguisable {
 				return;
 			}
 
-			if (entity instanceof EntityPlayer && (te.getOwner().isOwner((EntityPlayer) entity) || te.isAllowed(entity)))
+			if (entity instanceof EntityPlayer && (te.isOwnedBy((EntityPlayer) entity) || te.isAllowed(entity)))
 				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
 
 			if (entity instanceof EntityLiving && !state.getValue(DEACTIVATED)) {
@@ -122,7 +122,7 @@ public class BlockCageTrap extends BlockDisguisable {
 				if (!state.getBoundingBox(world, pos).offset(pos).intersects(entity.getEntityBoundingBox()))
 					return;
 
-				if ((isPlayer && tileEntity.getOwner().isOwner((EntityPlayer) entity)))
+				if ((isPlayer && tileEntity.isOwnedBy((EntityPlayer) entity)))
 					return;
 
 				BlockPos topMiddle = pos.up(4);
@@ -191,7 +191,7 @@ public class BlockCageTrap extends BlockDisguisable {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(DEACTIVATED, ((meta == 1) == true));
+		return getDefaultState().withProperty(DEACTIVATED, (meta == 1));
 	}
 
 	@Override

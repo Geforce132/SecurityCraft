@@ -16,7 +16,7 @@ public class TileEntityBlockPocketManagerRenderer extends TileEntitySpecialRende
 	public void render(TileEntityBlockPocketManager te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		// The code below draws the outline border of a block pocket.
 
-		if (!te.showOutline || !te.getOwner().isOwner(Minecraft.getMinecraft().player))
+		if (!te.showOutline || !te.isOwnedBy(Minecraft.getMinecraft().player))
 			return;
 
 		EnumFacing facing = te.getWorld().getBlockState(te.getPos()).getValue(BlockBlockPocketManager.FACING);

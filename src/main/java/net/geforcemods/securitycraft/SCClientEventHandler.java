@@ -69,7 +69,7 @@ public class SCClientEventHandler {
 
 			TileEntityBlockChangeDetector bcd = (TileEntityBlockChangeDetector) be;
 
-			if (bcd.isShowingHighlights() && bcd.getOwner().isOwner(mc.player)) {
+			if (bcd.isShowingHighlights() && bcd.isOwnedBy(mc.player)) {
 				for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
 					BlockPos pos = changeEntry.pos;
 
@@ -212,7 +212,7 @@ public class SCClientEventHandler {
 								BlockPos pos = mop.getBlockPos();
 
 								//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
-								if (!(te instanceof IOwnable) || !((IOwnable) te).getOwner().isOwner(player)) {
+								if (!(te instanceof IOwnable) || !((IOwnable) te).isOwnedBy(player)) {
 									Block block = te.getBlockType();
 
 									if (block instanceof BlockDisguisable && ((BlockDisguisable) block).getDisguisedBlockState(world, pos) != null)

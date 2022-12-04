@@ -42,7 +42,7 @@ public class SetGhostSlot implements IMessage {
 				if (player.openContainer instanceof ContainerInventoryScanner) {
 					ContainerInventoryScanner menu = (ContainerInventoryScanner) player.openContainer;
 
-					if (menu.te.getOwner().isOwner(player))
+					if (menu.te.isOwnedBy(player))
 						menu.te.getContents().set(message.slotIndex, message.stack);
 				}
 			});

@@ -84,7 +84,7 @@ public class BlockProjector extends BlockDisguisable {
 		if (!(te instanceof TileEntityProjector))
 			return false;
 
-		boolean isOwner = ((TileEntityProjector) te).getOwner().isOwner(player);
+		boolean isOwner = ((TileEntityProjector) te).isOwnedBy(player);
 
 		if (!world.isRemote && isOwner)
 			player.openGui(SecurityCraft.instance, GuiHandler.PROJECTOR, world, pos.getX(), pos.getY(), pos.getZ());

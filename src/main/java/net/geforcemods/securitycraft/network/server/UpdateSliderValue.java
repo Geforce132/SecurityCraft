@@ -52,7 +52,7 @@ public class UpdateSliderValue implements IMessage {
 				EntityPlayer player = context.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);
 
-				if (te instanceof ICustomizable && !(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player)) {
+				if (te instanceof ICustomizable && !(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player)) {
 					Option<?> o = ((ICustomizable) te).customOptions()[id];
 
 					if (o instanceof OptionDouble)

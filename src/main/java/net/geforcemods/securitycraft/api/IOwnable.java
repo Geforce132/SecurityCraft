@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -67,5 +68,39 @@ public interface IOwnable {
 		}
 
 		te.markDirty();
+	}
+
+	/**
+	 * Checks whether the given player owns this IOwnable.
+	 *
+	 * @param player The player to check ownership of
+	 * @return true if the given player owns this IOwnable, false otherwise
+	 */
+	public default boolean isOwnedBy(EntityPlayer player) {
+		if (player == null)
+			return false;
+
+		return isOwnedBy(new Owner(player));
+	}
+
+	/**
+	 * Checks whether the given owner owns this IOwnable.
+	 *
+	 * @param player The owner to check ownership of
+	 * @return true if the given owner owns this IOwnable, false otherwise
+	 */
+	public default boolean isOwnedBy(Owner owner) {
+		String thisUUID = getOwner().getUUID();
+		String thisName = getOwner().getName();
+		String otherUUID = owner.getUUID();
+		String otherName = owner.getName();
+
+		if (ConfigHandler.enableTeamOwnership && PlayerUtils.areOnSameTeam(thisName, otherName))
+			return true;
+
+		if (otherUUID != null && otherUUID.equals(thisUUID))
+			return true;
+
+		return otherName != null && thisUUID.equals("ownerUUID") && otherName.equals(thisName);
 	}
 }

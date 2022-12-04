@@ -33,7 +33,7 @@ public class GuiInventoryScanner extends GuiContainer {
 		super(new ContainerInventoryScanner(inventory, te));
 		tileEntity = te;
 		playerObj = player;
-		owns = tileEntity.getOwner().isOwner(playerObj);
+		owns = tileEntity.isOwnedBy(playerObj);
 		hasRedstoneModule = tileEntity.isModuleEnabled(EnumModuleType.REDSTONE);
 		hasStorageModule = tileEntity.isModuleEnabled(EnumModuleType.STORAGE);
 		infoStringRedstone = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (hasRedstoneModule ? "yes" : "no"))).getFormattedText();
@@ -76,7 +76,7 @@ public class GuiInventoryScanner extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRenderer.drawString(Utils.localize("gui.securitycraft:invScan.prohibitedItems").getFormattedText(), 8, 6, 4210752);
-		fontRenderer.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + Utils.localize("gui.securitycraft:invScan.mode.admin").getFormattedText()) : (TextFormatting.UNDERLINE + Utils.localize("gui.securitycraft:invScan.mode.view").getFormattedText()), 112, 6, 4210752);
+		fontRenderer.drawString(tileEntity.isOwnedBy(playerObj) ? (TextFormatting.UNDERLINE + Utils.localize("gui.securitycraft:invScan.mode.admin").getFormattedText()) : (TextFormatting.UNDERLINE + Utils.localize("gui.securitycraft:invScan.mode.view").getFormattedText()), 112, 6, 4210752);
 
 		if (hasStorageModule && owns)
 			fontRenderer.drawString(Utils.localize("gui.securitycraft:invScan.storage").getFormattedText(), 188, 18, 4210752);

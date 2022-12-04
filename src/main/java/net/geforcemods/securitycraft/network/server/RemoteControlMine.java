@@ -56,7 +56,7 @@ public class RemoteControlMine implements IMessage {
 					IExplosive explosive = ((IExplosive) state.getBlock());
 					TileEntity te = world.getTileEntity(pos);
 
-					if (!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player)) {
+					if (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player)) {
 						if (message.state.equalsIgnoreCase("activate"))
 							explosive.activateMine(world, pos);
 						else if (message.state.equalsIgnoreCase("defuse"))

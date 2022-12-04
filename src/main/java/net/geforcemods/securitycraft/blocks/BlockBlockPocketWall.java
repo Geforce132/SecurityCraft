@@ -54,7 +54,7 @@ public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityPro
 
 				if (te.getManager().isAllowed(entity))
 					return;
-				else if (!te.getOwner().isOwner((EntityPlayer) entity))
+				else if (!te.isOwnedBy((EntityPlayer) entity))
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
 			}
 		}

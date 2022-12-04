@@ -87,7 +87,7 @@ public class BlockSonicSecuritySystem extends BlockOwnable {
 		if (player.getHeldItem(hand).getItem() != SCContent.portableTunePlayer) {
 			TileEntitySonicSecuritySystem te = (TileEntitySonicSecuritySystem) world.getTileEntity(pos);
 
-			if (!world.isRemote && (te.getOwner().isOwner(player) || te.isAllowed(player)))
+			if (!world.isRemote && (te.isOwnedBy(player) || te.isAllowed(player)))
 				player.openGui(SecurityCraft.instance, GuiHandler.SONIC_SECURITY_SYSTEM, world, pos.getX(), pos.getY(), pos.getZ());
 
 			return true;

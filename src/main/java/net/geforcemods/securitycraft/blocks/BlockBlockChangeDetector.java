@@ -64,7 +64,7 @@ public class BlockBlockChangeDetector extends BlockDisguisable {
 
 		TileEntityBlockChangeDetector te = (TileEntityBlockChangeDetector) tile;
 
-		if (te.getOwner().isOwner(player) || te.isAllowed(player)) {
+		if (te.isOwnedBy(player) || te.isAllowed(player)) {
 			player.openGui(SecurityCraft.instance, GuiHandler.BLOCK_CHANGE_DETECTOR, world, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}

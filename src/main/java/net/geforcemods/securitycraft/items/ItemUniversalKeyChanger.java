@@ -32,7 +32,7 @@ public class ItemUniversalKeyChanger extends Item {
 		TileEntity te = world.getTileEntity(pos);
 
 		if (te instanceof IPasswordProtected) {
-			if (((IOwnable) te).getOwner().isOwner(player)) {
+			if (((IOwnable) te).isOwnedBy(player)) {
 				player.openGui(SecurityCraft.instance, GuiHandler.KEY_CHANGER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
 				return EnumActionResult.SUCCESS;
 			}

@@ -49,7 +49,7 @@ public class SyncTENBTTag implements IMessage {
 				EntityPlayer player = ctx.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);
 
-				if (te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner(player))
+				if (te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player))
 					te.readFromNBT(message.tag);
 			});
 

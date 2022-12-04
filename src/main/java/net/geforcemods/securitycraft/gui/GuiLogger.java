@@ -41,7 +41,7 @@ public class GuiLogger extends GuiContainer {
 	public void initGui() {
 		super.initGui();
 
-		addButton(new GuiButton(0, guiLeft + 4, guiTop + 4, 8, 8, "x")).enabled = tileEntity.getOwner().isOwner(mc.player);
+		addButton(new GuiButton(0, guiLeft + 4, guiTop + 4, 8, 8, "x")).enabled = tileEntity.isOwnedBy(mc.player);
 		playerList = new PlayerList(mc, xSize - 24, ySize - 40, guiTop + 20, guiLeft + 12, width, height);
 	}
 
@@ -67,7 +67,7 @@ public class GuiLogger extends GuiContainer {
 		//draw extra info
 		if (slotIndex != -1) {
 			if (tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty()) {
-				if (tileEntity.getOwner().isOwner(mc.player)) {
+				if (tileEntity.isOwnedBy(mc.player)) {
 					localized = Utils.localize("gui.securitycraft:logger.date", DATE_FORMAT.format(new Date(tileEntity.timestamps[slotIndex]))).getFormattedText();
 
 					if (tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
@@ -118,7 +118,7 @@ public class GuiLogger extends GuiContainer {
 
 		@Override
 		protected void elementClicked(int index, boolean doubleClick) {
-			if (tileEntity.getOwner().isOwner(mc.player)) {
+			if (tileEntity.isOwnedBy(mc.player)) {
 				String uuid = tileEntity.uuids[index];
 
 				//copy UUID to clipboard

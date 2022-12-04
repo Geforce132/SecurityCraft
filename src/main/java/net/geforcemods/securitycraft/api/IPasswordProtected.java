@@ -24,15 +24,15 @@ public interface IPasswordProtected extends ICodebreakable {
 	 *
 	 * @param world The level of this block entity
 	 * @param pos The position of this block entity
-	 * @param owner The owner of this block entity
+	 * @param ownable This block entity
 	 * @param player The player who the GUI should be opened to.
 	 */
-	public default void openPasswordGUI(World world, BlockPos pos, Owner owner, EntityPlayer player) {
+	public default void openPasswordGUI(World world, BlockPos pos, IOwnable ownable, EntityPlayer player) {
 		if (!world.isRemote) {
 			if (getPassword() != null)
 				player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			else {
-				if (owner.isOwner(player))
+				if (ownable.isOwnedBy(player))
 					player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 				else
 					PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);

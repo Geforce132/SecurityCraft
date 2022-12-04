@@ -62,7 +62,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class EntitySentry extends EntityCreature implements IRangedAttackMob, IEMPAffected { //needs to be a creature so it can target a player, ai is also only given to living entities
+public class EntitySentry extends EntityCreature implements IRangedAttackMob, IEMPAffected, IOwnable { //needs to be a creature so it can target a player, ai is also only given to living entities
 	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(EntitySentry.class, Owner.getSerializer());
 	private static final DataParameter<NBTTagCompound> ALLOWLIST = EntityDataManager.<NBTTagCompound>createKey(EntitySentry.class, DataSerializers.COMPOUND_TAG);
 	private static final DataParameter<Boolean> HAS_SPEED_MODULE = EntityDataManager.<Boolean>createKey(EntitySentry.class, DataSerializers.BOOLEAN);
@@ -178,7 +178,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob, IE
 	public boolean processInteract(EntityPlayer player, EnumHand hand) {
 		BlockPos pos = getPosition();
 
-		if (getOwner().isOwner(player) && hand == EnumHand.MAIN_HAND) {
+		if (isOwnedBy(player) && hand == EnumHand.MAIN_HAND) {
 			Item item = player.getHeldItemMainhand().getItem();
 
 			player.closeScreen();
@@ -264,7 +264,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob, IE
 			player.swingArm(EnumHand.MAIN_HAND);
 			return true;
 		}
-		else if (!getOwner().isOwner(player) && hand == EnumHand.MAIN_HAND && player.isCreative()) {
+		else if (!isOwnedBy(player) && hand == EnumHand.MAIN_HAND && player.isCreative()) {
 			if (player.isSneaking() || player.getHeldItemMainhand().getItem() == SCContent.universalBlockRemover)
 				remove();
 		}
@@ -457,12 +457,18 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob, IE
 		super.readEntityFromNBT(tag);
 	}
 
-	/**
-	 * @return The owner of this sentry
-	 */
+	@Override
+	public void setOwner(String uuid, String name) {
+		dataManager.set(OWNER, new Owner(name, uuid));
+	}
+
+	@Override
 	public Owner getOwner() {
 		return dataManager.get(OWNER);
 	}
+
+	@Override
+	public void onOwnerChanged(IBlockState state, World level, BlockPos pos, EntityPlayer player) {}
 
 	/**
 	 * Adds a disguise module to the sentry and places a block if possible

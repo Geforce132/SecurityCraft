@@ -42,7 +42,7 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 		String playerName = player.getName();
 		long timestamp = System.currentTimeMillis();
 
-		if (!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp)) {
+		if (!isOwnedBy(player) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp)) {
 			//ignore players on the allowlist
 			if (isAllowed(player))
 				return;

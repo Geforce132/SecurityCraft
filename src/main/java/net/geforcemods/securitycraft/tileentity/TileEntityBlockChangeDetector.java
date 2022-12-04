@@ -47,7 +47,7 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 		if (mode != EnumDetectionMode.BOTH && action != mode)
 			return;
 
-		if (getOwner().isOwner(player) || isAllowed(player))
+		if (isOwnedBy(player) || isAllowed(player))
 			return;
 
 		BlockPos thisPos = getPos();

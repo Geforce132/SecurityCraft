@@ -64,7 +64,7 @@ public class SyncProjector implements IMessage {
 				World world = player.world;
 				TileEntity te = world.getTileEntity(pos);
 
-				if (world.isBlockLoaded(pos) && te instanceof TileEntityProjector && ((TileEntityProjector) te).getOwner().isOwner(player)) {
+				if (world.isBlockLoaded(pos) && te instanceof TileEntityProjector && ((TileEntityProjector) te).isOwnedBy(player)) {
 					TileEntityProjector projector = (TileEntityProjector) te;
 					IBlockState state = world.getBlockState(pos);
 

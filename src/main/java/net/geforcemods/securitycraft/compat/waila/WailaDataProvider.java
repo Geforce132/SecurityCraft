@@ -96,7 +96,7 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 
 		if (!disguised) {
 			//if the te is ownable, show modules only when it's owned, otherwise always show
-			if (config.getConfig(SHOW_MODULES) && te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(data.getPlayer()))) {
+			if (config.getConfig(SHOW_MODULES) && te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(data.getPlayer()))) {
 				if (!((IModuleInventory) te).getInsertedModules().isEmpty())
 					body.add(Utils.localize("waila.securitycraft:equipped").getFormattedText());
 
@@ -105,7 +105,7 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 				}
 			}
 
-			if (config.getConfig(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof TileEntityKeycardReader) && ((IOwnable) te).getOwner().isOwner(data.getPlayer())) {
+			if (config.getConfig(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof TileEntityKeycardReader) && ((IOwnable) te).isOwnedBy(data.getPlayer())) {
 				String password = ((IPasswordProtected) te).getPassword();
 
 				body.add(Utils.localize("waila.securitycraft:password").getFormattedText() + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getFormattedText()));
@@ -130,7 +130,7 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 			if (config.getConfig(SHOW_OWNER))
 				body.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner().getName())).getFormattedText());
 
-			if (config.getConfig(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer())) {
+			if (config.getConfig(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer())) {
 				if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
 					body.add(Utils.localize("waila.securitycraft:equipped").getFormattedText());
 

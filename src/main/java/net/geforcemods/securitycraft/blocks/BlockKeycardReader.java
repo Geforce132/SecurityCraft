@@ -93,7 +93,7 @@ public class BlockKeycardReader extends BlockDisguisable {
 				//either no keycard, or an unlinked keycard, or an admin tool
 				if ((!(item instanceof ItemKeycard) || !stack.hasTagCompound() || !stack.getTagCompound().getBoolean("linked")) && !isCodebreaker) {
 					//only allow the owner and whitelisted players to open the gui
-					if (te.getOwner().isOwner(player) || te.isAllowed(player))
+					if (te.isOwnedBy(player) || te.isAllowed(player))
 						player.openGui(SecurityCraft.instance, GuiHandler.KEYCARD_READER_ID, world, pos.getX(), pos.getY(), pos.getZ());
 				}
 				else if (item != SCContent.limitedUseKeycard) { //limited use keycards are only crafting components now

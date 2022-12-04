@@ -17,7 +17,7 @@ public class ContainerBlockChangeDetector extends ContainerGeneric {
 	public ContainerBlockChangeDetector(InventoryPlayer inventory, TileEntityBlockChangeDetector te) {
 		this.te = te;
 
-		if (te.getOwner().isOwner(inventory.player)) {
+		if (te.isOwnedBy(inventory.player)) {
 			addSlotToContainer(new Slot(new TileEntityInventoryWrapper<>(te, this), 36, 175, 44) {
 				@Override
 				public boolean isItemValid(ItemStack stack) {

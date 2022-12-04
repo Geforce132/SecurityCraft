@@ -15,7 +15,7 @@ public class CyclicCompat {
 		if (event.getEntityPlayer().inventory.getCurrentItem().getItem() instanceof ItemChestSackEmpty) {
 			TileEntity te = event.getWorld().getTileEntity(event.getPos());
 
-			if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(event.getEntityPlayer()))
+			if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(event.getEntityPlayer()))
 				event.setUseItem(Result.DENY);
 		}
 	}

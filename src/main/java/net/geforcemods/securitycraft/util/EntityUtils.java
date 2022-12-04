@@ -21,7 +21,7 @@ public class EntityUtils {
 	public static boolean doesPlayerOwn(EntityPlayer player, World world, BlockPos pos) {
 		TileEntity te = world.getTileEntity(pos);
 
-		return te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner(player);
+		return te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player);
 	}
 
 	public static boolean isInvisible(EntityLivingBase entity) {

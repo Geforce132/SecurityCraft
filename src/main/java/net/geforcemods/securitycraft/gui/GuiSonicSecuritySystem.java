@@ -56,7 +56,7 @@ public class GuiSonicSecuritySystem extends GuiContainer implements ConnectionAc
 		super(new ContainerGeneric(inv, te));
 		this.te = te;
 		title = te.getDisplayName().getFormattedText();
-		isOwner = te.getOwner().isOwner(Minecraft.getMinecraft().player);
+		isOwner = te.isOwnedBy(Minecraft.getMinecraft().player);
 		xSize = 300;
 	}
 

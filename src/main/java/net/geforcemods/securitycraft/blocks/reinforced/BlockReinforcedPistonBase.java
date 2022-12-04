@@ -67,13 +67,14 @@ public class BlockReinforcedPistonBase extends BlockPistonBase implements IReinf
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
-		if (te instanceof TileEntityOwnable) {
-			Owner owner = ((TileEntityOwnable) te).getOwner();
+		if (tile instanceof TileEntityOwnable) {
+			TileEntityOwnable te = (TileEntityOwnable) tile;
+			Owner owner = te.getOwner();
 
 			if (!owner.isValidated()) {
-				if (owner.isOwner(player)) {
+				if (te.isOwnedBy(player)) {
 					owner.setValidated(true);
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:ownable.validate"), TextFormatting.GREEN);
 					return true;

@@ -52,9 +52,9 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 				if (mode.attacksPlayers()) {
 					//@formatter:off
 					if(potentialTarget instanceof EntityPlayer
-							&& !((EntityPlayer)potentialTarget).isSpectator()
-							&& !((EntityPlayer)potentialTarget).isCreative()
-							&& !((EntitySentry)taskOwner).getOwner().isOwner(((EntityPlayer)potentialTarget))
+							&& !((EntityPlayer) potentialTarget).isSpectator()
+							&& !((EntityPlayer) potentialTarget).isCreative()
+							&& !((EntitySentry) taskOwner).isOwnedBy(((EntityPlayer)potentialTarget))
 							&& !sentry.isTargetingAllowedPlayer(potentialTarget)
 							&& !EntityUtils.isInvisible(potentialTarget)) {
 						break;

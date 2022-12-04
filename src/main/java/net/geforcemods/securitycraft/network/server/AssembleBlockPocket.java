@@ -44,7 +44,7 @@ public class AssembleBlockPocket implements IMessage {
 				TileEntity te = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension).getTileEntity(message.pos);
 				EntityPlayer player = ctx.getServerHandler().player;
 
-				if (te instanceof TileEntityBlockPocketManager && ((TileEntityBlockPocketManager) te).getOwner().isOwner(player)) {
+				if (te instanceof TileEntityBlockPocketManager && ((TileEntityBlockPocketManager) te).isOwnedBy(player)) {
 					((TileEntityBlockPocketManager) te).size = message.size;
 					((TileEntityBlockPocketManager) te).autoAssembleMultiblock();
 				}

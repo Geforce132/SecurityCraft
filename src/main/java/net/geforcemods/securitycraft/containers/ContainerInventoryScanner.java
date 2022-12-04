@@ -26,7 +26,7 @@ public class ContainerInventoryScanner extends Container {
 		}
 
 		//inventory scanner storage
-		if (te.getOwner().isOwner(inventory.player) && te.isModuleEnabled(EnumModuleType.STORAGE)) {
+		if (te.isOwnedBy(inventory.player) && te.isModuleEnabled(EnumModuleType.STORAGE)) {
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 3; j++) {
 					addSlotToContainer(new Slot(te, 10 + ((i * 3) + j), 188 + (j * 18), 29 + i * 18));
@@ -87,7 +87,7 @@ public class ContainerInventoryScanner extends Container {
 	@Override
 	public ItemStack slotClick(int slotId, int dragType, ClickType clickType, EntityPlayer player) {
 		if (slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof SlotOwnerRestricted && ((SlotOwnerRestricted) getSlot(slotId)).isGhostSlot()) {
-			if (te.getOwner().isOwner(player)) {
+			if (te.isOwnedBy(player)) {
 				ItemStack pickedUpStack = player.inventory.getItemStack().copy();
 
 				pickedUpStack.setCount(1);

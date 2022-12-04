@@ -49,7 +49,7 @@ public class ItemSonicSecuritySystem extends ItemBlock {
 			TileEntity te = world.getTileEntity(pos);
 
 			if (te instanceof ILockable) {
-				if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player)) {
+				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player)) {
 					Block block = te.getBlockType();
 
 					if (!(block instanceof BlockDisguisable) || ((BlockDisguisable) block).getDisguisedBlockState(world, pos) == null) {

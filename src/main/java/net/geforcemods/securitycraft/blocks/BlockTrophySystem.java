@@ -70,7 +70,7 @@ public class BlockTrophySystem extends BlockDisguisable {
 		if (tile instanceof TileEntityTrophySystem) {
 			TileEntityTrophySystem te = (TileEntityTrophySystem) tile;
 
-			if (te.getOwner().isOwner(player)) {
+			if (te.isOwnedBy(player)) {
 				if (!world.isRemote) {
 					if (te.isDisabled())
 						player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);

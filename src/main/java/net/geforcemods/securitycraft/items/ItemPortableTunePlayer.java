@@ -33,7 +33,7 @@ public class ItemPortableTunePlayer extends Item {
 		if (world.getBlockState(pos).getBlock() == SCContent.sonicSecuritySystem) {
 			TileEntitySonicSecuritySystem te = (TileEntitySonicSecuritySystem) world.getTileEntity(pos);
 
-			if (te.getOwner().isOwner(player) || te.isAllowed(player)) {
+			if (te.isOwnedBy(player) || te.isAllowed(player)) {
 				if (te.getNumberOfNotes() > 0) {
 					ItemStack stack = player.getHeldItem(hand);
 

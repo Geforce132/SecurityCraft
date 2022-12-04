@@ -96,7 +96,7 @@ public class BlockIMS extends BlockOwnable {
 
 				if (te.isDisabled())
 					player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				else if (te.getOwner().isOwner(player)) {
+				else if (te.isOwnedBy(player)) {
 					ItemStack held = player.getHeldItem(hand);
 					int mines = state.getValue(MINES);
 

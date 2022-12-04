@@ -57,7 +57,7 @@ public class SyncBlockChangeDetector implements IMessage {
 				if (tile instanceof TileEntityBlockChangeDetector) {
 					TileEntityBlockChangeDetector te = (TileEntityBlockChangeDetector) tile;
 
-					if (te.getOwner().isOwner(player)) {
+					if (te.isOwnedBy(player)) {
 						IBlockState state = level.getBlockState(pos);
 
 						te.setMode(message.mode);

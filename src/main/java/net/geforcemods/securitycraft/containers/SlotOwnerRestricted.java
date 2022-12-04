@@ -18,7 +18,7 @@ public class SlotOwnerRestricted extends Slot {
 
 	@Override
 	public boolean canTakeStack(EntityPlayer player) {
-		return tileEntity.getOwner().isOwner(player) && !isGhostSlot; //the !isGhostSlot check helps to prevent double clicking a stack to pull all items towards the stack
+		return tileEntity.isOwnedBy(player) && !isGhostSlot; //the !isGhostSlot check helps to prevent double clicking a stack to pull all items towards the stack
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class TileEntityProtecto extends TileEntityDisguisable implements ITickab
 						if (entity instanceof EntityPlayer) {
 							EntityPlayer player = (EntityPlayer) entity;
 
-							if (player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || isAllowed(entity))
+							if (player.isCreative() || player.isSpectator() || isOwnedBy(player) || isAllowed(entity))
 								continue;
 						}
 

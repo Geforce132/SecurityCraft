@@ -72,7 +72,7 @@ public class TileEntitySecretSign extends TileEntitySign implements IOwnable, IM
 	}
 
 	public boolean isPlayerAllowedToSeeText(EntityPlayer player) {
-		return !isSecret() || getOwner().isOwner(player) || isAllowed(player);
+		return !isSecret() || isOwnedBy(player) || isAllowed(player);
 	}
 
 	@Override

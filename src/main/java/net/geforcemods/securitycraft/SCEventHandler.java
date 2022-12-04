@@ -311,7 +311,7 @@ public class SCEventHandler {
 				event.setCanceled(true);
 				event.setCancellationResult(EnumActionResult.SUCCESS);
 
-				if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(event.getEntityPlayer())) {
+				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(event.getEntityPlayer())) {
 					if (!(te.getBlockType() instanceof BlockDisguisable) || (((ItemBlock) ((BlockDisguisable) te.getBlockType()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof BlockDisguisable))
 						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize("item.securitycraft:universalBlockModifier.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner().getName())), TextFormatting.RED);
 
@@ -598,7 +598,7 @@ public class SCEventHandler {
 		tileEntities = tileEntities.stream().distinct().sorted(Comparator.comparingDouble(t -> Math.min(t.getPos().distanceSqToCenter(target.x, target.y, target.z), t.getPos().distanceSqToCenter(source.x, source.y, source.z)))).collect(Collectors.toList());
 
 		for (TileEntityRiftStabilizer te : tileEntities) {
-			if (!te.isDisabled() && te.getFilter(type) && (!(entity instanceof EntityPlayer) || !te.getOwner().isOwner(((EntityPlayer) entity)) && !te.isAllowed(entity))) {
+			if (!te.isDisabled() && te.getFilter(type) && (!(entity instanceof EntityPlayer) || !te.isOwnedBy(((EntityPlayer) entity)) && !te.isAllowed(entity))) {
 				riftStabilizer = te;
 				targetPosProhibited = te.getPos().distanceSqToCenter(target.x, target.y, target.z) < te.getPos().distanceSqToCenter(source.x, source.y, source.z);
 				break;

@@ -193,7 +193,7 @@ public class BlockDisplayCase extends BlockOwnable {
 						activate(be);
 					}
 					else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
-						be.openPasswordGUI(world, pos, be.getOwner(), player);
+						be.openPasswordGUI(world, pos, be, player);
 				}
 			}
 		}

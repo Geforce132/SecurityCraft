@@ -84,7 +84,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 		else if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
 
-			if (te.getOwner().isOwner(player))
+			if (te.isOwnedBy(player))
 				return;
 		}
 		else if (entity instanceof EntityCreeper) {

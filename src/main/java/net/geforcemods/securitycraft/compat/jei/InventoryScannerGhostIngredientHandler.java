@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 public class InventoryScannerGhostIngredientHandler implements IGhostIngredientHandler<GuiInventoryScanner> {
 	@Override
 	public <I> List<Target<I>> getTargets(GuiInventoryScanner screen, I ingredient, boolean doStart) {
-		if (!screen.tileEntity.getOwner().isOwner(Minecraft.getMinecraft().player))
+		if (!screen.tileEntity.isOwnedBy(Minecraft.getMinecraft().player))
 			return new ArrayList<>();
 
 		List<Target<I>> targets = new ArrayList<>();

@@ -47,7 +47,7 @@ public class SetKeycardUses implements IMessage {
 				if (tile instanceof TileEntityKeycardReader) {
 					TileEntityKeycardReader te = (TileEntityKeycardReader) tile;
 
-					if (te.getOwner().isOwner(player) || te.isAllowed(player)) {
+					if (te.isOwnedBy(player) || te.isAllowed(player)) {
 						Container container = player.openContainer;
 
 						if (container instanceof ContainerKeycardReader)

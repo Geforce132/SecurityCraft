@@ -105,7 +105,7 @@ public class BlockLaserField extends BlockOwnable implements IOverlayDisplay {
 							}
 
 							if (moduleInv.isModuleEnabled(EnumModuleType.HARMING)) {
-								if (!(entity instanceof EntityPlayer && ((IOwnable) moduleInv).getOwner().isOwner((EntityPlayer) entity)))
+								if (!(entity instanceof EntityPlayer && ((IOwnable) moduleInv).isOwnedBy((EntityPlayer) entity)))
 									((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.LASER, (float) ConfigHandler.laserDamage);
 							}
 						}

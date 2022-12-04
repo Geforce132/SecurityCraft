@@ -76,7 +76,7 @@ public class BlockRiftStabilizer extends BlockDisguisable {
 		if (te instanceof TileEntityRiftStabilizer) {
 			TileEntityRiftStabilizer riftStabilizer = ((TileEntityRiftStabilizer) te);
 
-			if (riftStabilizer.getOwner().isOwner(player)) {
+			if (riftStabilizer.isOwnedBy(player)) {
 				if (!world.isRemote) {
 					if (riftStabilizer.isDisabled())
 						player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);

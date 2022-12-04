@@ -89,7 +89,7 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider {
 			return;
 		//owner check
 		else if (entity instanceof EntityPlayer) {
-			if (te.getOwner().isOwner((EntityPlayer) entity))
+			if (te.isOwnedBy((EntityPlayer) entity))
 				return;
 		}
 		else if (entity instanceof EntityCreeper) {

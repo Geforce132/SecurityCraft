@@ -44,7 +44,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 				if (isModuleEnabled(EnumModuleType.ALLOWLIST))
 					isNotAllowed = !isAllowed(e);
 
-				return !getOwner().isOwner(e) && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
+				return !isOwnedBy(e) && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});
 
 			if (isModuleEnabled(EnumModuleType.REDSTONE)) {

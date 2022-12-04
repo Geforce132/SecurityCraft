@@ -56,7 +56,7 @@ public class SyncTrophySystem implements IMessage {
 					boolean allowed = message.allowed;
 					TileEntity te = world.getTileEntity(pos);
 
-					if (te instanceof TileEntityTrophySystem && ((TileEntityTrophySystem) te).getOwner().isOwner(player)) {
+					if (te instanceof TileEntityTrophySystem && ((TileEntityTrophySystem) te).isOwnedBy(player)) {
 						IBlockState state = world.getBlockState(pos);
 
 						((TileEntityTrophySystem) te).setFilter(projectileType, allowed);

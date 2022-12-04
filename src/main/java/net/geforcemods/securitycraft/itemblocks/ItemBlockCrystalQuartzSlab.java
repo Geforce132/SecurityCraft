@@ -53,7 +53,7 @@ public class ItemBlockCrystalQuartzSlab extends ItemBlock {
 				if (world.getTileEntity(pos) instanceof IOwnable) {
 					owner = ((IOwnable) world.getTileEntity(pos)).getOwner();
 
-					if (!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)) {
+					if (!((IOwnable) world.getTileEntity(pos)).isOwnedBy(player)) {
 						if (!world.isRemote)
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize("messages.securitycraft:reinforcedSlab"), Utils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
 

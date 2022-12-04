@@ -53,7 +53,7 @@ public class SyncSSSSettingsOnServer implements IMessage {
 				World world = ctx.getServerHandler().player.world;
 				TileEntity te = world.getTileEntity(pos);
 
-				if (te instanceof TileEntitySonicSecuritySystem && ((TileEntitySonicSecuritySystem) te).getOwner().isOwner(ctx.getServerHandler().player)) {
+				if (te instanceof TileEntitySonicSecuritySystem && ((TileEntitySonicSecuritySystem) te).isOwnedBy(ctx.getServerHandler().player)) {
 					TileEntitySonicSecuritySystem sss = (TileEntitySonicSecuritySystem) te;
 
 					switch (message.dataType) {

@@ -95,7 +95,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 			SecurityCraft.network.sendToServer(new ClearChangeDetectorServer(be.getPos()));
 		}));
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
-		boolean isOwner = be.getOwner().isOwner(mc.player);
+		boolean isOwner = be.isOwnedBy(mc.player);
 		int settingsX = guiLeft + 173;
 		GuiButton colorChooserButton;
 

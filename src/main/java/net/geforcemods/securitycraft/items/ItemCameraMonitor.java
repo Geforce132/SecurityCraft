@@ -35,7 +35,7 @@ public class ItemCameraMonitor extends Item {
 		if (world.getBlockState(pos).getBlock() == SCContent.securityCamera && !PlayerUtils.isPlayerMountedOnCamera(player)) {
 			TileEntitySecurityCamera te = (TileEntitySecurityCamera) world.getTileEntity(pos);
 
-			if (!te.getOwner().isOwner(player) && !te.isAllowed(player)) {
+			if (!te.isOwnedBy(player) && !te.isAllowed(player)) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:cameraMonitor.name"), Utils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}

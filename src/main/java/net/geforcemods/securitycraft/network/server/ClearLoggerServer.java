@@ -36,7 +36,7 @@ public class ClearLoggerServer implements IMessage {
 				EntityPlayer player = context.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(message.pos);
 
-				if (te instanceof TileEntityLogger && ((TileEntityLogger) te).getOwner().isOwner(player)) {
+				if (te instanceof TileEntityLogger && ((TileEntityLogger) te).isOwnedBy(player)) {
 					((TileEntityLogger) te).players = new String[100];
 					((TileEntityLogger) te).sync();
 				}

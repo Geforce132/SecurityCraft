@@ -50,7 +50,7 @@ public class SyncRiftStabilizer implements IMessage {
 					if (world.getTileEntity(pos) instanceof TileEntityRiftStabilizer) {
 						TileEntityRiftStabilizer te = ((TileEntityRiftStabilizer) world.getTileEntity(pos));
 
-						if (te.getOwner().isOwner(ctx.getServerHandler().player)) {
+						if (te.isOwnedBy(ctx.getServerHandler().player)) {
 							IBlockState state = world.getBlockState(pos);
 
 							te.setFilter(message.teleportationType, allowed);

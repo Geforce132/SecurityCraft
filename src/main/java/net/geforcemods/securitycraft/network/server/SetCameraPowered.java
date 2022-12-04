@@ -44,7 +44,7 @@ public class SetCameraPowered implements IMessage {
 				World world = player.world;
 				TileEntity te = world.getTileEntity(pos);
 
-				if (te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner(player)) {
+				if (te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player)) {
 					world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockSecurityCamera.POWERED, message.powered));
 					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), false);
 				}

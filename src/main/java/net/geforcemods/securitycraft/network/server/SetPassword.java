@@ -55,7 +55,7 @@ public class SetPassword implements IMessage {
 				World world = player.world;
 				TileEntity te = world.getTileEntity(pos);
 
-				if (te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player))) {
+				if (te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
 					((IPasswordProtected) te).setPassword(password);
 
 					if (te instanceof TileEntityKeypadChest)

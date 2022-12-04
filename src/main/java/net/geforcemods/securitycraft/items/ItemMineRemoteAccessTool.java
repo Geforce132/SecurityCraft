@@ -54,7 +54,7 @@ public class ItemMineRemoteAccessTool extends Item {
 
 				TileEntity te = world.getTileEntity(pos);
 
-				if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player)) {
+				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player)) {
 					player.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 					return EnumActionResult.SUCCESS;
 				}

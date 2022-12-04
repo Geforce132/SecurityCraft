@@ -60,9 +60,9 @@ public class SyncKeycardSettings implements IMessage {
 
 				if (tile instanceof TileEntityKeycardReader) {
 					TileEntityKeycardReader te = (TileEntityKeycardReader) tile;
-					boolean isOwner = te.getOwner().isOwner(player);
+					boolean isOwner = te.isOwnedBy(player);
 
-					if (te.getOwner().isOwner(player) || te.isAllowed(player)) {
+					if (te.isOwnedBy(player) || te.isAllowed(player)) {
 						if (isOwner) {
 							te.setAcceptedLevels(message.acceptedLevels);
 							te.setSignature(message.signature);

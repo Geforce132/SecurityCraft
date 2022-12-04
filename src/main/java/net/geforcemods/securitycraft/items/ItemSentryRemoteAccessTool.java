@@ -59,7 +59,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 					return EnumActionResult.SUCCESS;
 				}
 
-				if (!sentry.getOwner().isOwner(player)) {
+				if (!sentry.isOwnedBy(player)) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessSentry.name"), Utils.localize("messages.securitycraft:srat.cantBind"), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}

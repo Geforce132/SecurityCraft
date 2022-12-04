@@ -64,7 +64,7 @@ public class BlockReinforcedButton extends BlockButton implements IReinforcedBlo
 	}
 
 	public boolean isAllowedToPress(World world, BlockPos pos, TileEntityAllowlistOnly te, EntityPlayer entity) {
-		return te.getOwner().isOwner(entity) || te.isAllowed(entity);
+		return te.isOwnedBy(entity) || te.isAllowed(entity);
 	}
 
 	@Override

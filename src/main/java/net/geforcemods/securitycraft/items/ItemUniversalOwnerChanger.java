@@ -53,10 +53,11 @@ public class ItemUniversalOwnerChanger extends Item {
 			return EnumActionResult.SUCCESS;
 		}
 
-		Owner owner = ((IOwnable) te).getOwner();
+		IOwnable ownable = (IOwnable) te;
+		Owner owner = ownable.getOwner();
 		boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
 
-		if (!owner.isOwner(player) && !isDefault) {
+		if (!ownable.isOwnedBy(player) && !isDefault) {
 			if (!(block instanceof IBlockMine) && (!(te.getBlockType() instanceof BlockDisguisable) || (((ItemBlock) ((BlockDisguisable) te.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable))) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;

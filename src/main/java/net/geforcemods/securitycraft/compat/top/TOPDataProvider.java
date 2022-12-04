@@ -125,7 +125,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				}
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
-				if (te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player))) {
+				if (te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
 					if (!((IModuleInventory) te).getInsertedModules().isEmpty()) {
 						probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getFormattedText());
 
@@ -135,7 +135,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 					}
 				}
 
-				if (te instanceof IPasswordProtected && !(te instanceof TileEntityKeycardReader) && ((IOwnable) te).getOwner().isOwner(player)) {
+				if (te instanceof IPasswordProtected && !(te instanceof TileEntityKeycardReader) && ((IOwnable) te).isOwnedBy(player)) {
 					String password = ((IPasswordProtected) te).getPassword();
 
 					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:password").getFormattedText() + TextFormatting.GRAY + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getFormattedText()));

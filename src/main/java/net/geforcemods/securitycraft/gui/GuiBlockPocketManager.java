@@ -78,7 +78,7 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider, IHas
 		this.te = te;
 		playerInventory = inventory;
 		size = te.size;
-		isOwner = te.getOwner().isOwner(inventory.player);
+		isOwner = te.isOwnedBy(inventory.player);
 		storage = te != null && te.isModuleEnabled(EnumModuleType.STORAGE) && isOwner;
 
 		if (storage)
@@ -119,7 +119,7 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider, IHas
 		colorChooser.setWorldAndResolution(mc, this.width, height);
 		addButton(colorChooserButton = new ColorChooserButton(5, colorChooserButtonX, outlineY, 20, 20, colorChooser));
 
-		if (!te.getOwner().isOwner(Minecraft.getMinecraft().player))
+		if (!te.isOwnedBy(Minecraft.getMinecraft().player))
 			sizeButton.enabled = toggleButton.enabled = assembleButton.enabled = outlineButton.enabled = offsetSlider.enabled = colorChooserButton.enabled = false;
 		else {
 			updateMaterialInformation(true);

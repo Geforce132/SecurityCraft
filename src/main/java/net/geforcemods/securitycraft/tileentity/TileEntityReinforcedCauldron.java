@@ -10,7 +10,7 @@ public class TileEntityReinforcedCauldron extends CustomizableSCTE {
 	private final OptionBoolean isPublic = new OptionBoolean("isPublic", false);
 
 	public boolean isAllowedToInteract(EntityPlayer player) {
-		return isPublic.get() || getOwner().isOwner(player) || isAllowed(player);
+		return isPublic.get() || isOwnedBy(player) || isAllowed(player);
 	}
 
 	@Override

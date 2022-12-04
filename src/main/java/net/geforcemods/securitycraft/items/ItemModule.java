@@ -63,7 +63,7 @@ public class ItemModule extends Item {
 			ItemStack stack = player.getHeldItem(hand);
 			EnumModuleType type = ((ItemModule) stack.getItem()).getModuleType();
 
-			if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player))
+			if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player))
 				return EnumActionResult.PASS;
 
 			if (inv.acceptsModule(type) && !inv.hasModule(type)) {

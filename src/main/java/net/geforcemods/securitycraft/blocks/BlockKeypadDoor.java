@@ -43,7 +43,7 @@ public class BlockKeypadDoor extends BlockSpecialDoor {
 				return true;
 			}
 			else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
-				te.openPasswordGUI(world, pos, te.getOwner(), player);
+				te.openPasswordGUI(world, pos, te, player);
 		}
 
 		return true;
