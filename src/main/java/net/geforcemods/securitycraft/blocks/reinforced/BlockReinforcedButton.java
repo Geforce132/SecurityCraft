@@ -6,7 +6,6 @@ import java.util.List;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityAllowlistOnly;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockButton;
 import net.minecraft.block.SoundType;
@@ -65,7 +64,7 @@ public class BlockReinforcedButton extends BlockButton implements IReinforcedBlo
 	}
 
 	public boolean isAllowedToPress(World world, BlockPos pos, TileEntityAllowlistOnly te, EntityPlayer entity) {
-		return te.getOwner().isOwner(entity) || ModuleUtils.isAllowed(te, entity);
+		return te.getOwner().isOwner(entity) || te.isAllowed(entity);
 	}
 
 	@Override

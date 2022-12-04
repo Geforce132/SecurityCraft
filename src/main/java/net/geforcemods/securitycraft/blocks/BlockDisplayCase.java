@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisplayCase;
 import net.geforcemods.securitycraft.util.AttachFace;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -183,11 +182,11 @@ public class BlockDisplayCase extends BlockOwnable {
 				else {
 					if (be.isDisabled())
 						player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-					else if (ModuleUtils.isDenied(be, player)) {
+					else if (be.isDenied(player)) {
 						if (be.sendsMessages())
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 					}
-					else if (ModuleUtils.isAllowed(be, player)) {
+					else if (be.isAllowed(player)) {
 						if (be.sendsMessages())
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 

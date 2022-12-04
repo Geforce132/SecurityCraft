@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -52,7 +51,7 @@ public class MountCamera implements IMessage {
 					if (te instanceof TileEntitySecurityCamera) {
 						TileEntitySecurityCamera cam = (TileEntitySecurityCamera) te;
 
-						if (cam.getOwner().isOwner(player) || ModuleUtils.isAllowed(cam, player))
+						if (cam.getOwner().isOwner(player) || cam.isAllowed(player))
 							((BlockSecurityCamera) state.getBlock()).mountCamera(world, pos.getX(), pos.getY(), pos.getZ(), player);
 						else
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.cameraMonitor.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:notOwned", cam.getOwner().getName()), TextFormatting.RED);

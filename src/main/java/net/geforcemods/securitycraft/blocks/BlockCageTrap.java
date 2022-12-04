@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedIronBars;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.SoundType;
@@ -74,7 +73,7 @@ public class BlockCageTrap extends BlockDisguisable {
 				return;
 			}
 
-			if (entity instanceof EntityPlayer && (te.getOwner().isOwner((EntityPlayer) entity) || ModuleUtils.isAllowed(te, entity)))
+			if (entity instanceof EntityPlayer && (te.getOwner().isOwner((EntityPlayer) entity) || te.isAllowed(entity)))
 				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
 
 			if (entity instanceof EntityLiving && !state.getValue(DEACTIVATED)) {
@@ -192,7 +191,7 @@ public class BlockCageTrap extends BlockDisguisable {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(DEACTIVATED, (meta == 1 ? true : false));
+		return getDefaultState().withProperty(DEACTIVATED, ((meta == 1) == true));
 	}
 
 	@Override

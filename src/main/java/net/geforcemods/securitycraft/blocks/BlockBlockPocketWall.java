@@ -5,7 +5,6 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocket;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -53,7 +52,7 @@ public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityPro
 				if (te.getManager() == null)
 					return;
 
-				if (ModuleUtils.isAllowed(te.getManager(), entity))
+				if (te.getManager().isAllowed(entity))
 					return;
 				else if (!te.getOwner().isOwner((EntityPlayer) entity))
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);

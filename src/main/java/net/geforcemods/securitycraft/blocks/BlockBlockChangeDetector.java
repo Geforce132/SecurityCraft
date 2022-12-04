@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -65,7 +64,7 @@ public class BlockBlockChangeDetector extends BlockDisguisable {
 
 		TileEntityBlockChangeDetector te = (TileEntityBlockChangeDetector) tile;
 
-		if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)) {
+		if (te.getOwner().isOwner(player) || te.isAllowed(player)) {
 			player.openGui(SecurityCraft.instance, GuiHandler.BLOCK_CHANGE_DETECTOR, world, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}

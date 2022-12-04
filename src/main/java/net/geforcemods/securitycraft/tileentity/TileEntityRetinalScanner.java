@@ -25,7 +25,6 @@ import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
@@ -74,7 +73,7 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 					if (ConfigHandler.trickScannersWithPlayerHeads && player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.SKULL)
 						viewingPlayer = PlayerUtils.getSkullOwner(player);
 
-					if (!getOwner().isOwner(viewingPlayer) && !ModuleUtils.isAllowed(this, viewingPlayer.getName())) {
+					if (!getOwner().isOwner(viewingPlayer) && !isAllowed(viewingPlayer.getName())) {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.retinalScanner), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
 						return true;
 					}

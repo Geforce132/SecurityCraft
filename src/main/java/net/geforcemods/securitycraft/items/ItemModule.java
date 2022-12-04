@@ -1,6 +1,8 @@
 package net.geforcemods.securitycraft.items;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILinkedAction;
@@ -8,7 +10,6 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -18,6 +19,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -127,7 +130,7 @@ public class ItemModule extends Item {
 				affectsEveryone = tag.getBoolean("affectEveryone");
 
 				if (!affectsEveryone) {
-					playerCount = ModuleUtils.getPlayersFromModule(stack).size();
+					playerCount = ItemModule.getPlayersFromModule(stack).size();
 					teamCount = tag.getTagList("ListedTeams", Constants.NBT.TAG_STRING).tagCount();
 				}
 			}
@@ -168,5 +171,32 @@ public class ItemModule extends Item {
 
 	public boolean canBeCustomized() {
 		return canBeCustomized;
+	}
+
+	public static boolean doesModuleHaveTeamOf(ItemStack module, String name, World level) {
+		ScorePlayerTeam team = level.getScoreboard().getPlayersTeam(name);
+
+		if (!module.hasTagCompound())
+			module.setTagCompound(new NBTTagCompound());
+
+		//@formatter:off
+		return team != null && StreamSupport.stream(module.getTagCompound().getTagList("ListedTeams", Constants.NBT.TAG_STRING).spliterator(), false)
+				.filter(tag -> tag instanceof NBTTagString)
+				.map(tag -> ((NBTTagString) tag).getString())
+				.anyMatch(team.getName()::equals);
+		//@formatter:on
+	}
+
+	public static List<String> getPlayersFromModule(ItemStack stack) {
+		List<String> list = new ArrayList<>();
+
+		if (stack.getItem() instanceof ItemModule && stack.hasTagCompound()) {
+			for (int i = 1; i <= MAX_PLAYERS; i++) {
+				if (stack.getTagCompound().getString("Player" + i) != null && !stack.getTagCompound().getString("Player" + i).isEmpty())
+					list.add(stack.getTagCompound().getString("Player" + i).toLowerCase());
+			}
+		}
+
+		return list;
 	}
 }

@@ -10,6 +10,8 @@ import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -494,5 +496,49 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		}
 
 		return tag;
+	}
+
+	public default boolean isAllowed(Entity entity) {
+		return isAllowed(entity.getName());
+	}
+
+	public default boolean isAllowed(String name) {
+		if (!isModuleEnabled(EnumModuleType.ALLOWLIST))
+			return false;
+
+		ItemStack stack = getModule(EnumModuleType.ALLOWLIST);
+
+		if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("affectEveryone"))
+			return true;
+
+		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
+		return ItemModule.doesModuleHaveTeamOf(stack, name, getTileEntity().getWorld()) || ItemModule.getPlayersFromModule(stack).contains(name.toLowerCase());
+	}
+
+	public default boolean isDenied(Entity entity) {
+		if (!isModuleEnabled(EnumModuleType.DENYLIST))
+			return false;
+
+		ItemStack stack = getModule(EnumModuleType.DENYLIST);
+
+		if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("affectEveryone")) {
+			if (getTileEntity() instanceof IOwnable) {
+				//only deny players that are not the owner
+				if (entity instanceof EntityPlayer) {
+					//if the player IS the owner, fall back to the default handling (check if the name is on the list)
+					if (!((IOwnable) getTileEntity()).getOwner().isOwner((EntityPlayer) entity))
+						return true;
+				}
+				else
+					return true;
+			}
+			else
+				return true;
+		}
+
+		String name = entity.getName();
+
+		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
+		return ItemModule.doesModuleHaveTeamOf(stack, name, getTileEntity().getWorld()) || ItemModule.getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 }

@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.blocks.BlockBlockChangeDetector;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.TileEntityTracker;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,7 +47,7 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 		if (mode != EnumDetectionMode.BOTH && action != mode)
 			return;
 
-		if (getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player))
+		if (getOwner().isOwner(player) || isAllowed(player))
 			return;
 
 		BlockPos thisPos = getPos();

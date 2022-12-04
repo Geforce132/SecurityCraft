@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
@@ -89,7 +88,7 @@ public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 
 	public boolean canAttackEntity(EntityLivingBase entity) {
 		return entity != null && (!(entity instanceof EntityPlayer) || !getOwner().isOwner((EntityPlayer) entity) && !((EntityPlayer) entity).isCreative() && !((EntityPlayer) entity).isSpectator()) //PlayerEntity checks
-				&& !ModuleUtils.isAllowed(this, entity); //checks for all entities
+				&& !isAllowed(entity); //checks for all entities
 	}
 
 	/**

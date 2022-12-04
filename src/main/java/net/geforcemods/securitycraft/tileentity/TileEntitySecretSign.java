@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -73,7 +72,7 @@ public class TileEntitySecretSign extends TileEntitySign implements IOwnable, IM
 	}
 
 	public boolean isPlayerAllowedToSeeText(EntityPlayer player) {
-		return !isSecret() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player);
+		return !isSecret() || getOwner().isOwner(player) || isAllowed(player);
 	}
 
 	@Override

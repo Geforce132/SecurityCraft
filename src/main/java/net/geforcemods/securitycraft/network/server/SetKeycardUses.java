@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.network.server;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.containers.ContainerKeycardReader;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -48,7 +47,7 @@ public class SetKeycardUses implements IMessage {
 				if (tile instanceof TileEntityKeycardReader) {
 					TileEntityKeycardReader te = (TileEntityKeycardReader) tile;
 
-					if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)) {
+					if (te.getOwner().isOwner(player) || te.isAllowed(player)) {
 						Container container = player.openContainer;
 
 						if (container instanceof ContainerKeycardReader)

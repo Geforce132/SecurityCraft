@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.block.material.Material;
@@ -61,7 +60,7 @@ public class BlockInventoryScannerField extends BlockOwnable implements IOverlay
 
 		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
 			if (entity instanceof EntityPlayer && !EntityUtils.isInvisible((EntityPlayer) entity)) {
-				if (ModuleUtils.isAllowed(connectedScanner, entity))
+				if (connectedScanner.isAllowed(entity))
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
 
 				for (int i = 0; i < 10; i++) {
@@ -121,7 +120,7 @@ public class BlockInventoryScannerField extends BlockOwnable implements IOverlay
 			return;
 
 		if (entity instanceof EntityPlayer && !EntityUtils.isInvisible((EntityLivingBase) entity)) {
-			if (ModuleUtils.isAllowed(connectedScanner, entity))
+			if (connectedScanner.isAllowed(entity))
 				return;
 
 			for (int i = 0; i < 10; i++) {

@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCEventHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
 import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem.NoteWrapper;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,7 +33,7 @@ public class ItemPortableTunePlayer extends Item {
 		if (world.getBlockState(pos).getBlock() == SCContent.sonicSecuritySystem) {
 			TileEntitySonicSecuritySystem te = (TileEntitySonicSecuritySystem) world.getTileEntity(pos);
 
-			if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)) {
+			if (te.getOwner().isOwner(player) || te.isAllowed(player)) {
 				if (te.getNumberOfNotes() > 0) {
 					ItemStack stack = player.getHeldItem(hand);
 

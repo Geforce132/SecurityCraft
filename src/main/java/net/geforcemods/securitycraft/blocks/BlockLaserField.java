@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
@@ -96,7 +95,7 @@ public class BlockLaserField extends BlockOwnable implements IOverlayDisplay {
 						if (te instanceof IModuleInventory) {
 							IModuleInventory moduleInv = (IModuleInventory) te;
 
-							if (ModuleUtils.isAllowed(moduleInv, entity))
+							if (moduleInv.isAllowed(entity))
 								return;
 
 							if (moduleInv.isModuleEnabled(EnumModuleType.REDSTONE) && !offsetState.getValue(BlockLaserBlock.POWERED)) {

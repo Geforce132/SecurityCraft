@@ -17,7 +17,6 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -576,7 +575,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob, IE
 			if (allowlistModule.hasTagCompound() && allowlistModule.getTagCompound().getBoolean("affectEveryone"))
 				return true;
 
-			List<String> players = ModuleUtils.getPlayersFromModule(allowlistModule);
+			List<String> players = ItemModule.getPlayersFromModule(allowlistModule);
 
 			for (String s : players) {
 				if (potentialTarget.getName().equalsIgnoreCase(s))
