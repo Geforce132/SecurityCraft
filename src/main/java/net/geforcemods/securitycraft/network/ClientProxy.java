@@ -219,24 +219,26 @@ public class ClientProxy implements IProxy {
 				try {
 					Block block = (Block) field.get(null);
 
-					//@formatter:off
-					//registering reinforced blocks color overlay for world
-					toTint.put(block, Pair.of(
-						(state, world, pos, tintIndex) -> {
-							if (tintIndex == 0)
-								return hasReinforcedTint ? mixWithReinforcedTintIfEnabled(tint) : tint;
-							else
-								return 0xFFFFFF;
-						},
-						//same thing for inventory
-						(stack, tintIndex) -> {
-							if (tintIndex == 0)
-								return hasReinforcedTint ? mixWithReinforcedTintIfEnabled(tint) : tint;
-							else
-								return 0xFFFFFF;
-						}
-					));
-					//@formatter:on
+					if (toTint != null) { //apparently some mods post the color handler events again, after forge already posted them.
+						//@formatter:off
+						//registering reinforced blocks color overlay for world
+						toTint.put(block, Pair.of(
+							(state, world, pos, tintIndex) -> {
+								if (tintIndex == 0)
+									return hasReinforcedTint ? mixWithReinforcedTintIfEnabled(tint) : tint;
+								else
+									return 0xFFFFFF;
+							},
+							//same thing for inventory
+							(stack, tintIndex) -> {
+								if (tintIndex == 0)
+									return hasReinforcedTint ? mixWithReinforcedTintIfEnabled(tint) : tint;
+								else
+									return 0xFFFFFF;
+							}
+						));
+						//@formatter:on
+					}
 				}
 				catch (IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();
@@ -248,33 +250,38 @@ public class ClientProxy implements IProxy {
 	@SubscribeEvent
 	public static void onColorHandlerBlock(ColorHandlerEvent.Block event) {
 		initTint();
-		toTint.forEach((block, pair) -> event.getBlockColors().registerBlockColorHandler(pair.getLeft(), block));
-		event.getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
-			if (tintIndex == 1 && !state.getValue(BlockReinforcedGrass.SNOWY)) {
-				int grassTint = world != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(world, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D);
 
-				return mixWithReinforcedTintIfEnabled(grassTint);
-			}
+		if (toTint != null) { //apparently some mods post the color handler events again, after forge already posted them.
+			toTint.forEach((block, pair) -> event.getBlockColors().registerBlockColorHandler(pair.getLeft(), block));
+			event.getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
+				if (tintIndex == 1 && !state.getValue(BlockReinforcedGrass.SNOWY)) {
+					int grassTint = world != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(world, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D);
 
-			return ConfigHandler.reinforcedBlockTintColor;
-		}, SCContent.reinforcedGrass);
-		event.getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(world, pos) : -1, SCContent.fakeWater, SCContent.bogusWaterFlowing);
+					return mixWithReinforcedTintIfEnabled(grassTint);
+				}
+
+				return ConfigHandler.reinforcedBlockTintColor;
+			}, SCContent.reinforcedGrass);
+			event.getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(world, pos) : -1, SCContent.fakeWater, SCContent.bogusWaterFlowing);
+		}
 	}
 
 	@SubscribeEvent
 	public static void onColorHandlerItem(ColorHandlerEvent.Item event) {
-		toTint.forEach((block, pair) -> event.getItemColors().registerItemColorHandler(pair.getRight(), block));
-		event.getItemColors().registerItemColorHandler((stack, tintIndex) -> {
-			if (tintIndex == 1) {
-				int grassTint = ColorizerGrass.getGrassColor(0.5D, 1.0D);
+		if (toTint != null) { //apparently some mods post the color handler events again, after forge already posted them.
+			toTint.forEach((block, pair) -> event.getItemColors().registerItemColorHandler(pair.getRight(), block));
+			event.getItemColors().registerItemColorHandler((stack, tintIndex) -> {
+				if (tintIndex == 1) {
+					int grassTint = ColorizerGrass.getGrassColor(0.5D, 1.0D);
 
-				return mixWithReinforcedTintIfEnabled(grassTint);
-			}
+					return mixWithReinforcedTintIfEnabled(grassTint);
+				}
 
-			return ConfigHandler.reinforcedBlockTintColor;
-		}, SCContent.reinforcedGrass);
-		event.getItemColors().registerItemColorHandler((stack, tintIndex) -> tintIndex == 0 ? ((ItemBriefcase) stack.getItem()).getColor(stack) : -1, SCContent.briefcase);
-		toTint = null;
+				return ConfigHandler.reinforcedBlockTintColor;
+			}, SCContent.reinforcedGrass);
+			event.getItemColors().registerItemColorHandler((stack, tintIndex) -> tintIndex == 0 ? ((ItemBriefcase) stack.getItem()).getColor(stack) : -1, SCContent.briefcase);
+			toTint = null;
+		}
 	}
 
 	private static int mixWithReinforcedTintIfEnabled(int tint1) {
