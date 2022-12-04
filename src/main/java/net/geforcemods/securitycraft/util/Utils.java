@@ -1,15 +1,10 @@
 package net.geforcemods.securitycraft.util;
 
-import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
-import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
 
 public class Utils {
 	public static final Style GRAY_STYLE = Style.EMPTY.withColor(TextFormatting.GRAY);
@@ -27,15 +22,6 @@ public class Utils {
 
 	public static TranslationTextComponent getFormattedCoordinates(BlockPos pos) {
 		return new TranslationTextComponent("messages.securitycraft:formattedCoordinates", pos.getX(), pos.getY(), pos.getZ());
-	}
-
-	public static void setISinTEAppropriately(World world, BlockPos pos, NonNullList<ItemStack> contents) {
-		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
-
-		if (connectedScanner == null)
-			return;
-
-		connectedScanner.setContents(contents);
 	}
 
 	/**

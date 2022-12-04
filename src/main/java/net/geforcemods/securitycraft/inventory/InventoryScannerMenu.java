@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
+import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ClickType;
@@ -81,7 +81,12 @@ public class InventoryScannerMenu extends Container {
 	public void removed(PlayerEntity player) {
 		super.removed(player);
 
-		Utils.setISinTEAppropriately(player.level, te.getBlockPos(), ((InventoryScannerBlockEntity) player.level.getBlockEntity(te.getBlockPos())).getContents());
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(player.level, te.getBlockPos());
+
+		if (connectedScanner == null)
+			return;
+
+		connectedScanner.setContents(te.getContents());
 	}
 
 	@Override
