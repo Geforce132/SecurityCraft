@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.network.PacketBuffer;
@@ -62,7 +61,7 @@ public class SyncKeycardSettings {
 				KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;
 				boolean isOwner = te.getOwner().isOwner(player);
 
-				if (isOwner || ModuleUtils.isAllowed(te, player)) {
+				if (isOwner || te.isAllowed(player)) {
 					if (isOwner) {
 						te.setAcceptedLevels(message.acceptedLevels);
 						te.setSignature(message.signature);

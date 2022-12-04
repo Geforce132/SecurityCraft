@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -79,7 +78,7 @@ public class ReinforcedButtonBlock extends AbstractButtonBlock implements IReinf
 	}
 
 	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyBlockEntity te, PlayerEntity entity) {
-		return te.getOwner().isOwner(entity) || ModuleUtils.isAllowed(te, entity);
+		return te.getOwner().isOwner(entity) || te.isAllowed(entity);
 	}
 
 	@Override

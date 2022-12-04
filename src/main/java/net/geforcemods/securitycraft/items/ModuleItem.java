@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ClientHandler;
@@ -10,7 +11,6 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -25,6 +25,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.StringNBT;
+import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
@@ -147,7 +149,7 @@ public class ModuleItem extends Item {
 				affectsEveryone = tag.getBoolean("affectEveryone");
 
 				if (!affectsEveryone) {
-					playerCount = ModuleUtils.getPlayersFromModule(stack).size();
+					playerCount = ModuleItem.getPlayersFromModule(stack).size();
 					teamCount = tag.getList("ListedTeams", Constants.NBT.TAG_STRING).size();
 				}
 			}
@@ -183,5 +185,31 @@ public class ModuleItem extends Item {
 
 	public boolean canBeCustomized() {
 		return canBeCustomized;
+	}
+
+	public static boolean doesModuleHaveTeamOf(ItemStack module, String name, World level) {
+		ScorePlayerTeam team = level.getScoreboard().getPlayersTeam(name);
+
+		//@formatter:off
+		return team != null && module.getOrCreateTag().getList("ListedTeams", Constants.NBT.TAG_STRING)
+				.stream()
+				.filter(tag -> tag instanceof StringNBT)
+				.map(tag -> ((StringNBT) tag).getAsString())
+				.anyMatch(team.getName()::equals);
+		//@formatter:on
+	}
+
+	public static List<String> getPlayersFromModule(ItemStack stack) {
+		List<String> list = new ArrayList<>();
+
+		if (stack.getItem() instanceof ModuleItem && stack.hasTag()) {
+			for (int i = 1; i <= MAX_PLAYERS; i++) {
+				if (stack.getTag().getString("Player" + i) != null && !stack.getTag().getString("Player" + i).isEmpty()) {
+					list.add(stack.getTag().getString("Player" + i).toLowerCase());
+				}
+			}
+		}
+
+		return list;
 	}
 }

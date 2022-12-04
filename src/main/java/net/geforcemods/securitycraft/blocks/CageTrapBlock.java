@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -61,7 +60,7 @@ public class CageTrapBlock extends DisguisableBlock {
 
 				if (te.isDisabled())
 					return getCorrectShape(state, world, pos, ctx, te);
-				else if (entity instanceof PlayerEntity && (te.getOwner().isOwner((PlayerEntity) entity) || ModuleUtils.isAllowed(te, entity)))
+				else if (entity instanceof PlayerEntity && (te.getOwner().isOwner((PlayerEntity) entity) || te.isAllowed(entity)))
 					return getCorrectShape(state, world, pos, ctx, te);
 				if (entity instanceof MobEntity && !state.getValue(DEACTIVATED))
 					return te.capturesMobs() ? VoxelShapes.empty() : getCorrectShape(state, world, pos, ctx, te);

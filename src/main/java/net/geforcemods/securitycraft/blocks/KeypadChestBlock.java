@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -93,11 +92,11 @@ public class KeypadChestBlock extends ChestBlock {
 		if (!world.isClientSide && !isBlocked(world, pos)) {
 			KeypadChestBlockEntity te = (KeypadChestBlockEntity) world.getBlockEntity(pos);
 
-			if (ModuleUtils.isDenied(te, player)) {
+			if (te.isDenied(player)) {
 				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 			}
-			else if (ModuleUtils.isAllowed(te, player)) {
+			else if (te.isAllowed(player)) {
 				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 

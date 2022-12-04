@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class ReinforcedCauldronBlockEntity extends CustomizableBlockEntity {
@@ -16,7 +15,7 @@ public class ReinforcedCauldronBlockEntity extends CustomizableBlockEntity {
 	}
 
 	public boolean isAllowedToInteract(PlayerEntity player) {
-		return isPublic.get() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player);
+		return isPublic.get() || getOwner().isOwner(player) || isAllowed(player);
 	}
 
 	@Override

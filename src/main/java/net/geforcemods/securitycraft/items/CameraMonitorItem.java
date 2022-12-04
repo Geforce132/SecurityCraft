@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
@@ -50,7 +49,7 @@ public class CameraMonitorItem extends Item {
 		if (world.getBlockState(pos).getBlock() == SCContent.SECURITY_CAMERA.get() && !PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SecurityCameraBlockEntity te = (SecurityCameraBlockEntity) world.getBlockEntity(pos);
 
-			if (!te.getOwner().isOwner(player) && !ModuleUtils.isAllowed(te, player)) {
+			if (!te.getOwner().isOwner(player) && !te.isAllowed(player)) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
 				return ActionResultType.FAIL;
 			}

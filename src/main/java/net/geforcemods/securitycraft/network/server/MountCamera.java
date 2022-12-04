@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
@@ -50,7 +49,7 @@ public class MountCamera {
 				if (te instanceof SecurityCameraBlockEntity) {
 					SecurityCameraBlockEntity cam = (SecurityCameraBlockEntity) te;
 
-					if (cam.getOwner().isOwner(player) || ModuleUtils.isAllowed(cam, player))
+					if (cam.getOwner().isOwner(player) || cam.isAllowed(player))
 						((SecurityCameraBlock) state.getBlock()).mountCamera(world, pos, player);
 					else
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", cam.getOwner().getName()), TextFormatting.RED);

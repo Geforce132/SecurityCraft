@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -109,7 +108,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 		if (player.getItemInHand(hand).getItem() != SCContent.PORTABLE_TUNE_PLAYER.get()) {
 			SonicSecuritySystemBlockEntity te = (SonicSecuritySystemBlockEntity) world.getBlockEntity(pos);
 
-			if (!world.isClientSide && (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)))
+			if (!world.isClientSide && (te.getOwner().isOwner(player) || te.isAllowed(player)))
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.SONIC_SECURITY_SYSTEM, pos));
 
 			return ActionResultType.SUCCESS;

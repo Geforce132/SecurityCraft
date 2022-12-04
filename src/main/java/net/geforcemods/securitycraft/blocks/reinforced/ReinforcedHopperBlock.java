@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -52,7 +51,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 				ReinforcedHopperBlockEntity te = (ReinforcedHopperBlockEntity) tileEntity;
 
 				//only allow the owner or players on the allowlist to access a reinforced hopper
-				if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
+				if (te.getOwner().isOwner(player) || te.isAllowed(player))
 					player.openMenu(te);
 			}
 		}
@@ -109,10 +108,10 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 					IModuleInventory inv = (IModuleInventory) te;
 
 					//hoppers can extract out of e.g. chests if the hopper's owner is on the chest's allowlist module
-					if (ModuleUtils.isAllowed(inv, hopperTe.getOwner().getName()))
+					if (inv.isAllowed(hopperTe.getOwner().getName()))
 						return true;
 					//hoppers can extract out of e.g. chests whose owner is on the hopper's allowlist module
-					else if (ModuleUtils.isAllowed(hopperTe, te.getOwner().getName()))
+					else if (hopperTe.isAllowed(te.getOwner().getName()))
 						return true;
 				}
 

@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -99,7 +98,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 
 	public boolean canAttackEntity(LivingEntity entity) {
 		return entity != null && (!(entity instanceof PlayerEntity) || !getOwner().isOwner((PlayerEntity) entity) && !((PlayerEntity) entity).isCreative() && !((PlayerEntity) entity).isSpectator()) //PlayerEntity checks
-				&& !(ModuleUtils.isAllowed(this, entity)); //checks for all entities
+				&& !(isAllowed(entity)); //checks for all entities
 	}
 
 	/**

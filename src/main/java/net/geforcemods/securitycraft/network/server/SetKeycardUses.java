@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.network.PacketBuffer;
@@ -45,7 +44,7 @@ public class SetKeycardUses {
 			if (tile instanceof KeycardReaderBlockEntity) {
 				KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;
 
-				if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)) {
+				if (te.getOwner().isOwner(player) || te.isAllowed(player)) {
 					Container container = player.containerMenu;
 
 					if (container instanceof KeycardReaderMenu)

@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
@@ -50,7 +49,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 				boolean isNotAllowed = true;
 
 				if (isModuleEnabled(ModuleType.ALLOWLIST))
-					isNotAllowed = !ModuleUtils.isAllowed(this, e);
+					isNotAllowed = !isAllowed(e);
 
 				return !getOwner().isOwner(e) && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});

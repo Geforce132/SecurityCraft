@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -52,7 +51,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 					if (te.getManager() == null)
 						return VoxelShapes.empty();
 
-					if (ModuleUtils.isAllowed(te.getManager(), entity))
+					if (te.getManager().isAllowed(entity))
 						return VoxelShapes.empty();
 					else if (!te.getOwner().isOwner((PlayerEntity) entity))
 						return VoxelShapes.block();

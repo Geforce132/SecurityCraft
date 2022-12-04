@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -86,7 +85,7 @@ public class SecretSignBlockEntity extends SignTileEntity implements IOwnable, I
 	}
 
 	public boolean isPlayerAllowedToSeeText(PlayerEntity player) {
-		return !isSecret() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player);
+		return !isSecret() || getOwner().isOwner(player) || isAllowed(player);
 	}
 
 	@Override

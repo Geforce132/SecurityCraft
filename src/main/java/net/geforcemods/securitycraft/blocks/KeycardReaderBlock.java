@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -57,7 +56,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 			if (te.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (ModuleUtils.isDenied(te, player)) {
+			else if (te.isDenied(player)) {
 				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 			}
@@ -69,7 +68,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 				//either no keycard, or an unlinked keycard, or an admin tool
 				if ((!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker) {
 					//only allow the owner and players on the allowlist to open the gui
-					if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
+					if (te.getOwner().isOwner(player) || te.isAllowed(player))
 						NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
 				}
 				else if (item != SCContent.LIMITED_USE_KEYCARD.get()) { //limited use keycards are only crafting components now

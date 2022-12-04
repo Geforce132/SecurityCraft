@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -49,7 +48,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 						if (entity instanceof PlayerEntity) {
 							PlayerEntity player = (PlayerEntity) entity;
 
-							if (player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity)) {
+							if (player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || isAllowed(entity)) {
 								continue;
 							}
 						}
