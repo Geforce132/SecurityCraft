@@ -24,10 +24,10 @@ public interface IPasswordConvertible {
 	/**
 	 * Checks whether the given block state is valid for this conversion
 	 *
-	 * @param block The block state to check
+	 * @param state The block state to check
 	 * @return true if the block can be used for this conversion, false otherwise
 	 */
-	public boolean isValidStateForConversion(BlockState block);
+	public boolean isValidStateForConversion(BlockState state);
 
 	/**
 	 * Converts the original block to the password-protected one
