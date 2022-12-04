@@ -1,10 +1,10 @@
 package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
@@ -76,7 +76,12 @@ public class ContainerInventoryScanner extends Container {
 	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed(player);
 
-		Utils.setISinTEAppropriately(player.world, te.getPos(), ((TileEntityInventoryScanner) player.world.getTileEntity(te.getPos())).getContents());
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(player.world, te.getPos());
+
+		if (connectedScanner == null)
+			return;
+
+		connectedScanner.setContents(te.getContents());
 	}
 
 	@Override
