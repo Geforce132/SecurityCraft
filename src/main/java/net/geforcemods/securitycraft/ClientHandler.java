@@ -75,7 +75,6 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -101,7 +100,6 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -207,21 +205,6 @@ public class ClientHandler {
 		ModelResourceLocation mineMrl = new ModelResourceLocation(mineRl, "inventory");
 
 		event.getModels().put(mineMrl, new BlockMineModel(event.getModels().get(new ModelResourceLocation(realBlockRl, "inventory")), event.getModels().get(mineMrl)));
-	}
-
-	@SubscribeEvent
-	public static void onTextureStitchPre(TextureStitchEvent.Pre event) {
-		if (event.getAtlas().location().equals(Sheets.CHEST_SHEET)) {
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/active"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/inactive"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/left_active"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/left_inactive"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/right_active"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/right_inactive"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/christmas"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/christmas_left"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/christmas_right"));
-		}
 	}
 
 	@SubscribeEvent
