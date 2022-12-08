@@ -100,14 +100,14 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.19.3-44.0.0'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     
-    implementation fg.deobf("curse.maven:jei-238222:4068188")
-    implementation fg.deobf("curse.maven:the-one-probe-245211:3965693")
-    implementation fg.deobf("curse.maven:jade-324717:4084563")
-    implementation fg.deobf("curse.maven:betterf3-401648:4030573")
-    implementation fg.deobf("curse.maven:cloth-config-348521:3972423") //betterf3 dependency
-    implementation fg.deobf("curse.maven:wthit-forge-455982:4044026")
-    implementation fg.deobf("curse.maven:badpackets-615134:4073854") //wthit dependency
-    implementation fg.deobf("curse.maven:projecte-226410:3955047")
+//    implementation fg.deobf("curse.maven:jei-238222:4068188")
+//    implementation fg.deobf("curse.maven:the-one-probe-245211:3965693")
+//    implementation fg.deobf("curse.maven:jade-324717:4084563")
+//    implementation fg.deobf("curse.maven:betterf3-401648:4030573")
+    implementation fg.deobf("curse.maven:cloth-config-348521:4147099") //betterf3 dependency
+//    implementation fg.deobf("curse.maven:wthit-forge-455982:4044026")
+//    implementation fg.deobf("curse.maven:badpackets-615134:4073854") //wthit dependency
+//    implementation fg.deobf("curse.maven:projecte-226410:3955047")
 }
 
 mixin {
