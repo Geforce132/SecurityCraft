@@ -5,8 +5,8 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -26,7 +26,11 @@ import net.minecraft.world.phys.HitResult;
 
 public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock {
 	public SpecialDoorBlock(Block.Properties properties) {
-		super(properties);
+		this(properties, SoundEvents.IRON_DOOR_CLOSE, SoundEvents.IRON_DOOR_OPEN);
+	}
+
+	public SpecialDoorBlock(Block.Properties properties, SoundEvent closeSound, SoundEvent openSound) {
+		super(properties, closeSound, openSound);
 	}
 
 	//redstone signals should not be able to open these doors
@@ -67,7 +71,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock 
 
 		level.setBlock(pos, upperState.setValue(DoorBlock.OPEN, false), 3);
 		level.setBlock(pos.below(), lowerState.setValue(DoorBlock.OPEN, false), 3);
-		level.playSound(null, pos, SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 1.0F, 1.0F);
+		playSound(null, level, pos, false);
 		level.gameEvent(null, GameEvent.BLOCK_CLOSE, pos);
 	}
 
