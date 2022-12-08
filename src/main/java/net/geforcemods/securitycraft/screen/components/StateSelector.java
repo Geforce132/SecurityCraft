@@ -110,8 +110,8 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 			this.blockItem = blockItem;
 		}
 
-		previousPageButton = new Button(xStart + 69, yStart + 125, 20, 20, Component.literal("<"), button -> turnPage(-1));
-		nextPageButton = new Button(xStart + 126, yStart + 125, 20, 20, Component.literal(">"), button -> turnPage(1));
+		previousPageButton = Button.builder(Component.literal("<"), button -> turnPage(-1)).bounds(xStart + 69, yStart + 125, 20, 20).build();
+		nextPageButton = Button.builder(Component.literal(">"), button -> turnPage(1)).bounds(xStart + 126, yStart + 125, 20, 20).build();
 		updateButtons(true, false);
 		extraAreas.add(new Rect2i(xStart, 0, 193, minecraft.getWindow().getGuiScaledHeight()));
 	}

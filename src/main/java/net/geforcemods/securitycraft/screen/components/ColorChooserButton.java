@@ -9,7 +9,7 @@ public class ColorChooserButton extends Button {
 	private final ColorChooser colorChooser;
 
 	public ColorChooserButton(int x, int y, int width, int height, ColorChooser colorChooser) {
-		super(x, y, width, height, Component.empty(), button -> colorChooser.disabled = !colorChooser.disabled);
+		super(x, y, width, height, Component.empty(), button -> colorChooser.disabled = !colorChooser.disabled, s -> Component.empty());
 
 		this.colorChooser = colorChooser;
 	}

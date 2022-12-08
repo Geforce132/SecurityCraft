@@ -29,7 +29,7 @@ public class CollapsibleTextList extends Button {
 	private int initialY = -1;
 
 	public CollapsibleTextList(int xPos, int yPos, int width, Component displayString, List<? extends Component> textLines, OnPress onPress, BiPredicate<Integer, Integer> extraHoverCheck) {
-		super(xPos, yPos, width, 12, displayString, onPress);
+		super(xPos, yPos, width, 12, displayString, onPress, s -> Component.empty());
 		originalDisplayString = displayString;
 		switchOpenStatus(); //properly sets the message as well
 		textCutoff = width - 5;

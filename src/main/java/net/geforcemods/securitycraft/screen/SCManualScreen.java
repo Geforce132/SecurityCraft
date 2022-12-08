@@ -741,7 +741,7 @@ public class SCManualScreen extends Screen {
 
 	static class HyperlinkButton extends Button {
 		public HyperlinkButton(int xPos, int yPos, int width, int height, Component displayString, OnPress handler) {
-			super(xPos, yPos, width, height, displayString, handler);
+			super(xPos, yPos, width, height, displayString, handler, s -> Component.empty());
 		}
 
 		@Override
