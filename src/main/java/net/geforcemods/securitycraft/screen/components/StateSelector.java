@@ -5,15 +5,16 @@ import java.util.Collection;
 import java.util.List;
 
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
+import com.mojang.math.Axis;
+import com.mojang.math.MatrixUtil;
 
 import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -56,7 +57,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	private static final int PAGE_LENGTH = 5;
 	private static final float ROTATION_SENSITIVITY = 0.1F;
 	private static final Vector3f Y_DRAG_ROTATION_VECTOR = new Vector3f((float) (1.0D / Math.sqrt(2)), 0, (float) (1.0D / Math.sqrt(2)));
-	private static final Quaternion DEFAULT_ROTATION = Quaternion.fromXYZDegrees(new Vector3f(15.0F, -135.0F, 0.0F));
+	private static final Quaternionf DEFAULT_ROTATION = new Quaternionf().rotateXYZ(15.0F, -135.0F, 0.0F);
 	private static final EnumProperty<StandingOrWallType> STANDING_OR_WALL_TYPE_PROPERTY = EnumProperty.create("standing_or_wall", StandingOrWallType.class);
 	private final StateSelectorAccessMenu menu;
 	private final int xStart, yStart, slotToCheck;
@@ -72,7 +73,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	private List<BlockStatePropertyButton<?>> buttons = new ArrayList<>();
 	private int page, amountOfPages;
 	private Button previousPageButton, nextPageButton;
-	private Matrix4f dragRotation = Util.make(new Matrix4f(), matrix -> matrix.setIdentity());
+	private Matrix4f dragRotation = new Matrix4f();
 	private boolean clickedInDragRegion = false;
 	private StandingOrWallType standingOrWallType = StandingOrWallType.NONE;
 
@@ -127,7 +128,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		nextPageButton.render(pose, mouseX, mouseY, partialTick);
 		pose.pushPose();
 		pose.translate(previewXTranslation, previewYTranslation, 0);
-		pose.last().pose().multiply(1.5F);
+		MatrixUtil.mulComponentWise(pose.last().pose(), 1.5F);
 		pose.translate(0.5F, 0.5F, 0.5F);
 		pose.mulPose(DEFAULT_ROTATION);
 		pose.mulPoseMatrix(dragRotation);
@@ -170,7 +171,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 			};
 
 			updateBlockEntityInfo(true);
-			dragRotation.setIdentity();
+			dragRotation.identity();
 		}
 
 		int buttonY = 0;
@@ -265,8 +266,8 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
 		if (button == 0 && clickedInDragRegion) {
 			dragRotation.transpose();
-			dragRotation.multiply(Vector3f.YN.rotation((float) dragX * ROTATION_SENSITIVITY));
-			dragRotation.multiply(Y_DRAG_ROTATION_VECTOR.rotation((float) dragY * ROTATION_SENSITIVITY));
+			dragRotation.mul(new Matrix4f().set(Axis.YN.rotation((float) dragX * ROTATION_SENSITIVITY)));
+			dragRotation.mul(new Matrix4f().set(new Quaternionf().fromAxisAngleRad(Y_DRAG_ROTATION_VECTOR, (float) dragY * ROTATION_SENSITIVITY)));
 			dragRotation.transpose();
 			return true;
 		}

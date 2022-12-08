@@ -1,9 +1,8 @@
 package net.geforcemods.securitycraft.renderers;
 
-import org.joml.Vector3f;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -86,17 +85,17 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 			switch (state.getValue(DisplayCaseBlock.ATTACH_FACE)) {
 				case CEILING:
 					pose.translate(0.0D, insertionAmount, 0.0D);
-					pose.mulPose(Vector3f.YP.rotationDegrees(-rotation + 180.0F));
-					pose.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
+					pose.mulPose(Axis.YP.rotationDegrees(-rotation + 180.0F));
+					pose.mulPose(Axis.XP.rotationDegrees(-90.0F));
 					break;
 				case FLOOR:
 					pose.translate(0.0D, -insertionAmount, 0.0D);
-					pose.mulPose(Vector3f.YP.rotationDegrees(-rotation + 180.0F));
-					pose.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+					pose.mulPose(Axis.YP.rotationDegrees(-rotation + 180.0F));
+					pose.mulPose(Axis.XP.rotationDegrees(90.0F));
 					break;
 				case WALL:
-					pose.mulPose(Vector3f.YP.rotationDegrees(180.0F));
-					pose.mulPose(Vector3f.YP.rotationDegrees(-rotation));
+					pose.mulPose(Axis.YP.rotationDegrees(180.0F));
+					pose.mulPose(Axis.YP.rotationDegrees(-rotation));
 					pose.translate(0.0D, 0.0D, insertionAmount);
 					break;
 			}
@@ -106,20 +105,20 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 			pose.popPose();
 		}
 
-		pose.mulPose(Vector3f.YP.rotationDegrees(-rotation));
+		pose.mulPose(Axis.YP.rotationDegrees(-rotation));
 
 		switch (state.getValue(DisplayCaseBlock.ATTACH_FACE)) {
 			case CEILING:
 				pose.translate(0.0D, 0.0D, 1.0D);
-				pose.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
+				pose.mulPose(Axis.XP.rotationDegrees(-90.0F));
 				break;
 			case FLOOR:
 				pose.translate(0.0D, 0.0D, -1.0D);
-				pose.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+				pose.mulPose(Axis.XP.rotationDegrees(90.0F));
 				break;
 			case WALL:
 				pose.translate(0.0D, 1.0D, 0.0D);
-				pose.mulPose(Vector3f.XP.rotationDegrees(180.0F));
+				pose.mulPose(Axis.XP.rotationDegrees(180.0F));
 				break;
 		}
 

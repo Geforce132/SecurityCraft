@@ -1,9 +1,7 @@
 package net.geforcemods.securitycraft.renderers;
 
-import org.joml.Vector3f;
-
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
+import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -28,7 +26,7 @@ public class BulletRenderer extends EntityRenderer<Bullet> {
 
 	@Override
 	public void render(Bullet entity, float entityYaw, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight) {
-		pose.mulPose(new Quaternion(Vector3f.YP, entity.getYRot(), true));
+		pose.mulPose(Axis.YP.rotationDegrees(entity.getYRot()));
 		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(entity))), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 

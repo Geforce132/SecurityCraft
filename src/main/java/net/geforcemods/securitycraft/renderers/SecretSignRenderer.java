@@ -3,12 +3,11 @@ package net.geforcemods.securitycraft.renderers;
 import java.util.List;
 import java.util.Map;
 
-import org.joml.Vector3f;
-
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
@@ -56,12 +55,12 @@ public class SecretSignRenderer implements BlockEntityRenderer<SecretSignBlockEn
 
 		if (state.getBlock() instanceof SecretStandingSignBlock) {
 			pose.translate(0.5D, 0.5D, 0.5D);
-			pose.mulPose(Vector3f.YP.rotationDegrees(-(state.getValue(SecretStandingSignBlock.ROTATION) * 360 / 16.0F)));
+			pose.mulPose(Axis.YP.rotationDegrees(-(state.getValue(SecretStandingSignBlock.ROTATION) * 360 / 16.0F)));
 			model.stick.visible = true;
 		}
 		else {
 			pose.translate(0.5D, 0.5D, 0.5D);
-			pose.mulPose(Vector3f.YP.rotationDegrees(-state.getValue(SecretWallSignBlock.FACING).toYRot()));
+			pose.mulPose(Axis.YP.rotationDegrees(-state.getValue(SecretWallSignBlock.FACING).toYRot()));
 			pose.translate(0.0D, -0.3125D, -0.4375D);
 			model.stick.visible = false;
 		}
