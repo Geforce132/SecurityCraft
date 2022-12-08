@@ -16,7 +16,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -148,7 +148,7 @@ public class CameraMonitorItem extends Item {
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
 				//default to overworld if there is no dimension saved
-				list.add(GlobalPos.of(coords.length == 4 ? ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(coords[3])) : Level.OVERWORLD, new BlockPos(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]))));
+				list.add(GlobalPos.of(coords.length == 4 ? ResourceKey.create(Registries.DIMENSION, new ResourceLocation(coords[3])) : Level.OVERWORLD, new BlockPos(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]))));
 			}
 			else
 				list.add(null);
