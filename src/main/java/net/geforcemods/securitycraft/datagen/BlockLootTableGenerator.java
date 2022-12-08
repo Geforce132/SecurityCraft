@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.datagen;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -12,9 +12,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.misc.conditions.BlockEntityNBTCondition;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -25,7 +23,7 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.LootTables;
+import net.minecraft.world.level.storage.loot.LootTable.Builder;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay;
@@ -38,15 +36,11 @@ import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.registries.RegistryObject;
 
-public class BlockLootTableGenerator implements DataProvider {
+public class BlockLootTableGenerator implements LootTableSubProvider {
 	protected final Map<Supplier<Block>, LootTable.Builder> lootTables = new HashMap<>();
-	private final DataGenerator generator;
 
-	public BlockLootTableGenerator(DataGenerator generator) {
-		this.generator = generator;
-	}
-
-	private void addTables() {
+	@Override
+	public void generate(BiConsumer<ResourceLocation, Builder> consumer) {
 		for (RegistryObject<Block> obj : SCContent.BLOCKS.getEntries()) {
 			Block block = obj.get();
 
@@ -122,6 +116,8 @@ public class BlockLootTableGenerator implements DataProvider {
 								.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
 										.copy("LinkedBlocks", "LinkedBlocks")))));
 		//@formatter:on
+
+		lootTables.forEach((block, lootTable) -> consumer.accept(block.get().getLootTable(), lootTable.setParamSet(LootContextParamSets.BLOCK)));
 	}
 
 	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> drop) {
@@ -181,30 +177,5 @@ public class BlockLootTableGenerator implements DataProvider {
 														.hasProperty(BlockStateProperties.SLAB_TYPE, SlabType.DOUBLE))))
 								.apply(ApplyExplosionDecay.explosionDecay()))));
 		//@formatter:on
-	}
-
-	@Override
-	public void run(CachedOutput cache) throws IOException {
-		Map<ResourceLocation, LootTable> tables = new HashMap<>();
-
-		addTables();
-
-		for (Map.Entry<Supplier<Block>, LootTable.Builder> entry : lootTables.entrySet()) {
-			tables.put(entry.getKey().get().getLootTable(), entry.getValue().setParamSet(LootContextParamSets.BLOCK).build());
-		}
-
-		tables.forEach((key, lootTable) -> {
-			try {
-				DataProvider.saveStable(cache, LootTables.serialize(lootTable), generator.getOutputFolder().resolve("data/" + key.getNamespace() + "/loot_tables/" + key.getPath() + ".json"));
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
-		});
-	}
-
-	@Override
-	public String getName() {
-		return "SecurityCraft Block Loot Tables";
 	}
 }

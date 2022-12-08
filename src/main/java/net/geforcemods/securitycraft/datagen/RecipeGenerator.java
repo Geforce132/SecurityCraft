@@ -10,8 +10,9 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
@@ -23,6 +24,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
@@ -31,18 +33,18 @@ import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 
 public class RecipeGenerator extends RecipeProvider {
-	public RecipeGenerator(DataGenerator generator) {
-		super(generator);
+	public RecipeGenerator(PackOutput output) {
+		super(output);
 	}
 
 	@Override
-	protected final void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+	protected final void buildRecipes(Consumer<FinishedRecipe> consumer) {
 		//combine keycard with limited use keycard to get keycards with a configurable limited amount of uses
 		SpecialRecipeBuilder.special(SCContent.LIMITED_USE_KEYCARD_RECIPE_SERIALIZER.get()).save(consumer, "limited_use_keycards");
 
 		//@formatter:off
 		//shaped recipes
-		ShapedRecipeBuilder.shaped(SCContent.ALARM.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.ALARM.get())
 		.pattern("GGG")
 		.pattern("GNG")
 		.pattern("GRG")
@@ -51,7 +53,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.BLOCK_CHANGE_DETECTOR.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.BLOCK_CHANGE_DETECTOR.get())
 		.pattern("IRI")
 		.pattern("ILI")
 		.pattern("III")
@@ -60,7 +62,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('L', SCContent.USERNAME_LOGGER.get())
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.BLOCK_POCKET_MANAGER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.BLOCK_POCKET_MANAGER.get())
 		.pattern("CIC")
 		.pattern("IRI")
 		.pattern("CIC")
@@ -69,7 +71,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('R', SCContent.REINFORCED_REDSTONE_BLOCK.get())
 		.unlockedBy("has_redstone_block", has(Tags.Items.STORAGE_BLOCKS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.BOUNCING_BETTY.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.BOUNCING_BETTY.get())
 		.pattern(" P ")
 		.pattern("IGI")
 		.define('P', Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE)
@@ -77,7 +79,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', Tags.Items.GUNPOWDER)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.BRIEFCASE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.BRIEFCASE.get())
 		.pattern("SSS")
 		.pattern("ICI")
 		.pattern("III")
@@ -86,7 +88,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('C', SCContent.KEYPAD_CHEST.get())
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.CAGE_TRAP.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.CAGE_TRAP.get())
 		.pattern("BBB")
 		.pattern("GRG")
 		.pattern("III")
@@ -96,7 +98,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('I', SCContent.REINFORCED_IRON_BLOCK.get())
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.CAMERA_MONITOR.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.CAMERA_MONITOR.get())
 		.pattern("III")
 		.pattern("IGI")
 		.pattern("III")
@@ -104,7 +106,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', SCContent.REINFORCED_GLASS_PANE.get())
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.CLAYMORE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.CLAYMORE.get())
 		.pattern("HSH")
 		.pattern("SBS")
 		.pattern("RGR")
@@ -115,7 +117,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', Tags.Items.GUNPOWDER)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.CODEBREAKER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.CODEBREAKER.get())
 		.pattern("DTD")
 		.pattern("GSG")
 		.pattern("RER")
@@ -127,7 +129,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('E', Tags.Items.GEMS_EMERALD)
 		.unlockedBy("has_nether_star", has(Tags.Items.NETHER_STARS))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.CRYSTAL_QUARTZ_ITEM.get(), 9)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.CRYSTAL_QUARTZ_ITEM.get(), 9)
 		.pattern("CQC")
 		.pattern("QCQ")
 		.pattern("CQC")
@@ -135,13 +137,13 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('C', Tags.Items.GEMS_PRISMARINE)
 		.unlockedBy("has_prismarine_crystals", has(Tags.Items.GEMS_PRISMARINE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.CRYSTAL_QUARTZ.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SCContent.CRYSTAL_QUARTZ.get())
 		.pattern("CC")
 		.pattern("CC")
 		.define('C', SCContent.CRYSTAL_QUARTZ_ITEM.get())
 		.unlockedBy("has_crystal_quartz_item", has(SCContent.CRYSTAL_QUARTZ_ITEM.get()))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.DISPLAY_CASE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, SCContent.DISPLAY_CASE.get())
 		.pattern("III")
 		.pattern("IFG")
 		.pattern("III")
@@ -150,7 +152,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', SCContent.REINFORCED_GLASS_PANE.get())
 		.unlockedBy("has_item_frame", has(Items.ITEM_FRAME))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.GLOW_DISPLAY_CASE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, SCContent.GLOW_DISPLAY_CASE.get())
 		.pattern("III")
 		.pattern("IFG")
 		.pattern("III")
@@ -159,7 +161,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', SCContent.REINFORCED_GLASS_PANE.get())
 		.unlockedBy("has_item_frame", has(Items.GLOW_ITEM_FRAME))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_DOOR_ITEM.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.REINFORCED_DOOR_ITEM.get())
 		.pattern("III")
 		.pattern("IDI")
 		.pattern("III")
@@ -167,7 +169,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('D', Items.IRON_DOOR)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.IRON_FENCE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SCContent.IRON_FENCE.get())
 		.pattern(" I ")
 		.pattern("IFI")
 		.pattern(" I ")
@@ -175,7 +177,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('F', ItemTags.WOODEN_FENCES)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.IMS.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.IMS.get())
 		.pattern("BPB")
 		.pattern(" I ")
 		.pattern("B B")
@@ -184,7 +186,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('I', SCContent.REINFORCED_IRON_BLOCK.get())
 		.unlockedBy("has_radar", has(SCContent.PORTABLE_RADAR.get()))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.INVENTORY_SCANNER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.INVENTORY_SCANNER.get())
 		.pattern("SSS")
 		.pattern("SLS")
 		.pattern("SCS")
@@ -193,7 +195,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('C', Tags.Items.CHESTS_ENDER)
 		.unlockedBy("has_stone", has(SCTags.Items.REINFORCED_STONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.KEYCARD_READER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.KEYCARD_READER.get())
 		.pattern("SSS")
 		.pattern("SHS")
 		.pattern("SSS")
@@ -201,7 +203,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('H', Items.HOPPER)
 		.unlockedBy("has_stone", has(SCTags.Items.REINFORCED_STONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.FRAME.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.FRAME.get())
 		.pattern("III")
 		.pattern("IR ")
 		.pattern("III")
@@ -209,7 +211,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.KEY_PANEL.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.KEY_PANEL.get())
 		.pattern("BBB")
 		.pattern("BPB")
 		.pattern("BBB")
@@ -218,7 +220,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.unlockedBy("has_stone_button", has(Items.STONE_BUTTON))
 		.save(consumer);
 		//don't change these to reinforced, because the block reinforcer needs a laser block!!!
-		ShapedRecipeBuilder.shaped(SCContent.LASER_BLOCK.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.LASER_BLOCK.get())
 		.pattern("SSS")
 		.pattern("SRS")
 		.pattern("SGS")
@@ -228,14 +230,14 @@ public class RecipeGenerator extends RecipeProvider {
 		.unlockedBy("has_stone", has(Tags.Items.STONE))
 		.save(consumer);
 		//k you can change again :)
-		ShapedRecipeBuilder.shaped(SCContent.MINE.get(), 3)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.MINE.get(), 3)
 		.pattern(" I ")
 		.pattern("IGI")
 		.define('I', Tags.Items.INGOTS_IRON)
 		.define('G', Tags.Items.GUNPOWDER)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.MOTION_ACTIVATED_LIGHT.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.MOTION_ACTIVATED_LIGHT.get())
 		.pattern("L")
 		.pattern("R")
 		.pattern("S")
@@ -244,7 +246,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('S', Tags.Items.RODS_WOODEN)
 		.unlockedBy("has_stick", has(Tags.Items.RODS_WOODEN))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.PANIC_BUTTON.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.PANIC_BUTTON.get())
 		.pattern(" I ")
 		.pattern("IBI")
 		.pattern(" R ")
@@ -253,7 +255,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.PORTABLE_RADAR.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.PORTABLE_RADAR.get())
 		.pattern("III")
 		.pattern("ITI")
 		.pattern("IRI")
@@ -262,14 +264,14 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.PORTABLE_TUNE_PLAYER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.PORTABLE_TUNE_PLAYER.get())
 		.pattern("IRN")
 		.define('I', Tags.Items.INGOTS_IRON)
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.define('N', Blocks.NOTE_BLOCK)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.PROJECTOR.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.PROJECTOR.get())
 		.pattern("III")
 		.pattern("BLP")
 		.pattern("I I")
@@ -279,7 +281,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('P', SCContent.REINFORCED_GLASS_PANE.get())
 		.unlockedBy("has_redstone_lamp", has(SCContent.REINFORCED_REDSTONE_LAMP.get()))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.PROTECTO.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.PROTECTO.get())
 		.pattern("ODO")
 		.pattern("OEO")
 		.pattern("OOO")
@@ -288,7 +290,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('E', Items.ENDER_EYE)
 		.unlockedBy("has_ender_eye", has(Items.ENDER_EYE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_BOOKSHELF.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_BOOKSHELF.get())
 		.pattern("PPP")
 		.pattern("BBB")
 		.pattern("PPP")
@@ -296,21 +298,21 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('P', SCTags.Items.REINFORCED_PLANKS)
 		.unlockedBy("has_book", has(Items.BOOK))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_COARSE_DIRT.get(), 4)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_COARSE_DIRT.get(), 4)
 		.pattern("DG")
 		.pattern("GD")
 		.define('D', SCContent.REINFORCED_DIRT.get())
 		.define('G', SCContent.REINFORCED_GRAVEL.get())
 		.unlockedBy("has_reinforced_gravel", has(SCContent.REINFORCED_GRAVEL.get()))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_DIORITE.get(), 2)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_DIORITE.get(), 2)
 		.pattern("CQ")
 		.pattern("QC")
 		.define('C', SCContent.REINFORCED_COBBLESTONE.get())
 		.define('Q', Tags.Items.GEMS_QUARTZ)
 		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_FENCEGATE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_FENCEGATE.get())
 		.pattern(" I ")
 		.pattern("IGI")
 		.pattern(" I ")
@@ -318,14 +320,14 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', Tags.Items.FENCE_GATES_WOODEN)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_LEVER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_LEVER.get())
 		.pattern("S")
 		.pattern("C")
 		.define('S', Tags.Items.RODS_WOODEN)
 		.define('C', SCTags.Items.REINFORCED_COBBLESTONE)
 		.unlockedBy("has_cobble", has(SCContent.REINFORCED_COBBLESTONE.get()))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_OBSERVER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_OBSERVER.get())
 		.pattern("CCC")
 		.pattern("RRQ")
 		.pattern("CCC")
@@ -334,7 +336,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_quartz", has(Tags.Items.GEMS_QUARTZ))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_REDSTONE_LAMP.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_REDSTONE_LAMP.get())
 		.pattern(" R ")
 		.pattern("RGR")
 		.pattern(" R ")
@@ -342,7 +344,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_TINTED_GLASS.get(), 2)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_TINTED_GLASS.get(), 2)
 		.pattern(" A ")
 		.pattern("AGA")
 		.pattern(" A ")
@@ -350,7 +352,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', SCContent.REINFORCED_GLASS.get())
 		.unlockedBy("has_amethyst_shard", has(Items.AMETHYST_SHARD))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.REMOTE_ACCESS_MINE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.REMOTE_ACCESS_MINE.get())
 		.pattern(" T ")
 		.pattern(" DG")
 		.pattern("S  ")
@@ -360,7 +362,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('S', Tags.Items.RODS_WOODEN)
 		.unlockedBy("has_mine", has(SCContent.MINE.get()))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.REMOTE_ACCESS_SENTRY.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.REMOTE_ACCESS_SENTRY.get())
 		.pattern("ITI")
 		.pattern("IDI")
 		.pattern("ISI")
@@ -370,7 +372,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('S', Tags.Items.RODS_WOODEN)
 		.unlockedBy("has_sentry", has(SCContent.SENTRY.get()))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.RETINAL_SCANNER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.RETINAL_SCANNER.get())
 		.pattern("SSS")
 		.pattern("SES")
 		.pattern("SSS")
@@ -378,7 +380,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('E', Items.ENDER_EYE)
 		.unlockedBy("has_stone", has(SCTags.Items.REINFORCED_STONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.RIFT_STABILIZER_ITEM.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.RIFT_STABILIZER_ITEM.get())
 		.pattern("GEG")
 		.pattern("CDC")
 		.pattern("III")
@@ -389,7 +391,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('I', SCContent.REINFORCED_IRON_BLOCK.get())
 		.unlockedBy("has_iron", has(SCContent.REINFORCED_IRON_BLOCK.get()))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.SECURITY_CAMERA.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.SECURITY_CAMERA.get())
 		.pattern("III")
 		.pattern("GRI")
 		.pattern("IIS")
@@ -399,7 +401,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('S', Tags.Items.RODS_WOODEN)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.SENTRY.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.SENTRY.get())
 		.pattern("RDR")
 		.pattern("IPI")
 		.pattern("BBB")
@@ -410,7 +412,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('B', SCContent.REINFORCED_IRON_BLOCK.get())
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.TASER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.TASER.get())
 		.pattern("BGI")
 		.pattern("RSG")
 		.pattern("  S")
@@ -421,7 +423,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('S', Tags.Items.RODS_WOODEN)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.TRACK_MINE.get(), 4)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, SCContent.TRACK_MINE.get(), 4)
 		.pattern("I I")
 		.pattern("ISI")
 		.pattern("IGI")
@@ -430,7 +432,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', Tags.Items.GUNPOWDER)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.TROPHY_SYSTEM.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.TROPHY_SYSTEM.get())
 		.pattern(" T ")
 		.pattern(" B ")
 		.pattern("S S")
@@ -439,7 +441,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('S', Tags.Items.RODS_WOODEN)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.UNIVERSAL_BLOCK_MODIFIER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.UNIVERSAL_BLOCK_MODIFIER.get())
 		.pattern(" RE")
 		.pattern(" IR")
 		.pattern("I  ")
@@ -448,7 +450,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('I', Tags.Items.INGOTS_IRON)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get())
 		.group("securitycraft:universal_block_reinforcer")
 		.pattern(" DG")
 		.pattern("RLD")
@@ -460,7 +462,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('S', Tags.Items.RODS_WOODEN)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get())
 		.group("securitycraft:universal_block_reinforcer")
 		.pattern(" DG")
 		.pattern("RLD")
@@ -472,7 +474,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('S', Tags.Items.RODS_WOODEN)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get())
 		.group("securitycraft:universal_block_reinforcer")
 		.pattern(" EG")
 		.pattern("RNE")
@@ -484,13 +486,13 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('S', Tags.Items.RODS_WOODEN)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.UNIVERSAL_BLOCK_REMOVER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.UNIVERSAL_BLOCK_REMOVER.get())
 		.pattern("SII")
 		.define('S', Items.SHEARS)
 		.define('I', Tags.Items.INGOTS_IRON)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.UNIVERSAL_KEY_CHANGER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.UNIVERSAL_KEY_CHANGER.get())
 		.pattern(" RL")
 		.pattern(" IR")
 		.pattern("I  ")
@@ -499,7 +501,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('I', Tags.Items.INGOTS_IRON)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.USERNAME_LOGGER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.USERNAME_LOGGER.get())
 		.pattern("SPS")
 		.pattern("SRS")
 		.pattern("SSS")
@@ -508,7 +510,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.WIRE_CUTTERS.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.WIRE_CUTTERS.get())
 		.pattern("SI ")
 		.pattern("I I")
 		.pattern(" I ")
@@ -516,13 +518,13 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('I', Tags.Items.INGOTS_IRON)
 		.unlockedBy("has_mine", has(SCContent.MINE.get()))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_GLASS_PANE.get(), 16)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_GLASS_PANE.get(), 16)
 		.pattern("GGG")
 		.pattern("GGG")
 		.define('G', SCContent.REINFORCED_GLASS.get())
 		.unlockedBy("has_glass", has(Tags.Items.GLASS))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.SONIC_SECURITY_SYSTEM_ITEM.get())
 		.pattern(" RD")
 		.pattern(" S ")
 		.pattern(" I ")
@@ -534,45 +536,45 @@ public class RecipeGenerator extends RecipeProvider {
 		.save(consumer);
 
 		//shapeless recipes
-		ShapelessRecipeBuilder.shapeless(SCContent.BLOCK_POCKET_WALL.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, SCContent.BLOCK_POCKET_WALL.get())
 		.requires(SCContent.REINFORCED_CRYSTAL_QUARTZ.get())
 		.unlockedBy("has_reinforced_crystal_quartz", has(SCContent.REINFORCED_CRYSTAL_QUARTZ.get()))
 		.save(consumer);
-		ShapelessRecipeBuilder.shapeless(SCContent.KEYPAD_DOOR_ITEM.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, SCContent.KEYPAD_DOOR_ITEM.get())
 		.requires(SCContent.REINFORCED_DOOR_ITEM.get())
 		.requires(SCContent.KEYPAD.get())
 		.unlockedBy("has_reinforced_door", has(SCContent.REINFORCED_DOOR_ITEM.get()))
 		.save(consumer);
-		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_PACKED_MUD.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_PACKED_MUD.get())
 		.requires(SCContent.REINFORCED_MUD.get())
 		.requires(Items.WHEAT)
 		.unlockedBy("has_wheat", has(Items.WHEAT))
 		.save(consumer);
-		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_ANDESITE.get(), 2)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_ANDESITE.get(), 2)
 		.requires(SCContent.REINFORCED_DIORITE.get())
 		.requires(SCTags.Items.REINFORCED_COBBLESTONE)
 		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
 		.save(consumer);
-		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_CRYSTAL_QUARTZ.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_CRYSTAL_QUARTZ.get())
 		.requires(SCContent.BLOCK_POCKET_WALL.get())
 		.unlockedBy("has_block_pocket_wall", has(SCContent.BLOCK_POCKET_WALL.get()))
 		.save(consumer);
-		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_GRANITE.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_GRANITE.get())
 		.requires(SCContent.REINFORCED_DIORITE.get())
 		.requires(Tags.Items.GEMS_QUARTZ)
 		.unlockedBy("has_quartz", has(Tags.Items.GEMS_QUARTZ))
 		.save(consumer);
-		ShapelessRecipeBuilder.shapeless(SCContent.SC_MANUAL.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, SCContent.SC_MANUAL.get())
 		.requires(Items.BOOK)
 		.requires(Blocks.IRON_BARS)
 		.unlockedBy("has_wood", has(ItemTags.LOGS)) //the thought behind this is that the recipe will be given right after the player chopped their first piece of wood
 		.save(consumer);
-		ShapelessRecipeBuilder.shapeless(SCContent.SCANNER_DOOR_ITEM.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, SCContent.SCANNER_DOOR_ITEM.get())
 		.requires(SCContent.REINFORCED_DOOR_ITEM.get())
 		.requires(SCContent.RETINAL_SCANNER.get())
 		.unlockedBy("has_reinforced_door", has(SCContent.REINFORCED_DOOR_ITEM.get()))
 		.save(consumer);
-		ShapelessRecipeBuilder.shapeless(SCContent.UNIVERSAL_OWNER_CHANGER.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, SCContent.UNIVERSAL_OWNER_CHANGER.get())
 		.requires(SCContent.UNIVERSAL_BLOCK_MODIFIER.get())
 		.requires(Items.NAME_TAG)
 		.unlockedBy("has_name_tag", has(Items.NAME_TAG))
@@ -1126,32 +1128,32 @@ public class RecipeGenerator extends RecipeProvider {
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_WEATHERED_CUT_COPPER.get(), SCContent.REINFORCED_WEATHERED_CUT_COPPER_STAIRS.get(), 1);
 
 		//moss conversions
-		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
 		.requires(SCContent.REINFORCED_COBBLESTONE.get())
 		.requires(Blocks.MOSS_BLOCK)
 		.unlockedBy("has_moss", has(Blocks.MOSS_BLOCK))
 		.save(consumer, "securitycraft:reinforced_mossy_cobblestone_from_vanilla_moss");
-		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
 		.requires(Blocks.COBBLESTONE)
 		.requires(SCContent.REINFORCED_MOSS_BLOCK.get())
 		.unlockedBy("has_reinforced_moss", has(SCContent.REINFORCED_MOSS_BLOCK.get()))
 		.save(consumer, "securitycraft:reinforced_mossy_cobblestone_from_vanilla_cobblestone");
-		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
 		.requires(SCContent.REINFORCED_COBBLESTONE.get())
 		.requires(SCContent.REINFORCED_MOSS_BLOCK.get())
 		.unlockedBy("has_reinforced_moss", has(SCContent.REINFORCED_MOSS_BLOCK.get()))
 		.save(consumer, "securitycraft:reinforced_mossy_cobblestone_from_reinforced_ingredients");
-		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_STONE_BRICKS.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_MOSSY_STONE_BRICKS.get())
 		.requires(SCContent.REINFORCED_STONE_BRICKS.get())
 		.requires(Blocks.MOSS_BLOCK)
 		.unlockedBy("has_moss", has(Blocks.MOSS_BLOCK))
 		.save(consumer, "securitycraft:reinforced_mossy_stone_bricks_from_vanilla_moss");
-		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_STONE_BRICKS.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_MOSSY_STONE_BRICKS.get())
 		.requires(Blocks.STONE_BRICKS)
 		.requires(SCContent.REINFORCED_MOSS_BLOCK.get())
 		.unlockedBy("has_reinforced_moss", has(SCContent.REINFORCED_MOSS_BLOCK.get()))
 		.save(consumer, "securitycraft:reinforced_mossy_stone_bricks_from_vanilla_stone_bricks");
-		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_STONE_BRICKS.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_MOSSY_STONE_BRICKS.get())
 		.requires(SCContent.REINFORCED_STONE_BRICKS.get())
 		.requires(SCContent.REINFORCED_MOSS_BLOCK.get())
 		.unlockedBy("has_reinforced_moss", has(SCContent.REINFORCED_MOSS_BLOCK.get()))
@@ -1162,7 +1164,7 @@ public class RecipeGenerator extends RecipeProvider {
 	protected final void addBarkRecipe(Consumer<FinishedRecipe> consumer, ItemLike log, ItemLike result) //woof
 	{
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(result, 3)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 3)
 		.group("securitycraft:bark")
 		.pattern("LL")
 		.pattern("LL")
@@ -1174,7 +1176,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addBlockMineRecipe(Consumer<FinishedRecipe> consumer, ItemLike input, ItemLike result) {
 		//@formatter:off
-		ShapelessRecipeBuilder.shapeless(result)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result)
 		.group("securitycraft:block_mines")
 		.requires(input)
 		.requires(SCContent.MINE.get())
@@ -1185,7 +1187,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addButtonRecipe(Consumer<FinishedRecipe> consumer, ItemLike input, ItemLike result) {
 		//@formatter:off
-		ShapelessRecipeBuilder.shapeless(result)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, result)
 		.group("securitycraft:reinforced_buttons")
 		.requires(input)
 		.unlockedBy("has_block", has(input))
@@ -1195,7 +1197,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addCarpetRecipe(Consumer<FinishedRecipe> consumer, ItemLike wool, ItemLike carpet) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(carpet, 3)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, carpet, 3)
 		.group("securitycraft:reinforced_carpets")
 		.pattern("WW")
 		.define('W', wool)
@@ -1206,7 +1208,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addChiselingRecipe(Consumer<FinishedRecipe> consumer, ItemLike slab, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(result)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
 		.pattern("S")
 		.pattern("S")
 		.define('S', slab)
@@ -1217,7 +1219,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addColoredWoolRecipe(Consumer<FinishedRecipe> consumer, TagKey<Item> dye, ItemLike result) {
 		//@formatter:off
-		ShapelessRecipeBuilder.shapeless(result)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result)
 		.group("securitycraft:reinforced_wool")
 		.requires(dye)
 		.requires(SCContent.REINFORCED_WHITE_WOOL.get())
@@ -1228,7 +1230,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addCompressingRecipe(Consumer<FinishedRecipe> consumer, ItemLike block, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(result)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
 		.pattern("BBB")
 		.pattern("BBB")
 		.pattern("BBB")
@@ -1240,7 +1242,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addKeycardRecipe(Consumer<FinishedRecipe> consumer, TagKey<Item> specialIngredient, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(result)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result)
 		.group("securitycraft:keycards")
 		.pattern("III")
 		.pattern("SSS")
@@ -1253,7 +1255,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addKeycardResetRecipe(Consumer<FinishedRecipe> consumer, ItemLike keycard) {
 		//@formatter:off
-		ShapelessRecipeBuilder.shapeless(keycard)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, keycard)
 		.requires(keycard)
 		.unlockedBy("has_keycard", has(keycard))
 		.save(consumer, new ResourceLocation(SecurityCraft.MODID, Utils.getRegistryName(keycard.asItem()).getPath() + "_reset"));
@@ -1262,7 +1264,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addModuleRecipe(Consumer<FinishedRecipe> consumer, ItemLike specialIngredient, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(result)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result)
 		.group("securitycraft:modules")
 		.pattern("III")
 		.pattern("IPI")
@@ -1277,7 +1279,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addModuleRecipe(Consumer<FinishedRecipe> consumer, TagKey<Item> specialIngredient, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(result)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result)
 		.group("securitycraft:modules")
 		.pattern("III")
 		.pattern("IPI")
@@ -1292,7 +1294,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addPillarRecipe(Consumer<FinishedRecipe> consumer, ItemLike block, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(result, 2)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 2)
 		.pattern("B")
 		.pattern("B")
 		.define('B', block)
@@ -1303,7 +1305,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addPlanksRecipe(Consumer<FinishedRecipe> consumer, TagKey<Item> log, ItemLike result) {
 		//@formatter:off
-		ShapelessRecipeBuilder.shapeless(result, 4)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result, 4)
 		.group("securitycraft:reinforced_planks")
 		.requires(log)
 		.unlockedBy("has_log", has(log))
@@ -1313,7 +1315,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addPressurePlateRecipe(Consumer<FinishedRecipe> consumer, ItemLike block, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(result)
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, result)
 		.group("securitycraft:reinforced_pressure_plates")
 		.pattern("SS")
 		.define('S', block)
@@ -1324,7 +1326,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addSecretSignRecipe(Consumer<FinishedRecipe> consumer, ItemLike vanillaSign, ItemLike result) {
 		//@formatter:off
-		ShapelessRecipeBuilder.shapeless(result, 3)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result, 3)
 		.group("securitycraft:secret_signs")
 		.requires(vanillaSign, 3)
 		.requires(SCContent.RETINAL_SCANNER.get())
@@ -1333,16 +1335,16 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addShapelessConditionalRecipe(Consumer<FinishedRecipe> consumer, ItemLike result, int amount, String group, List<ItemLike> ingredients, AbstractCriterionTriggerInstance criterion, ICondition condition) {
+	protected final void addShapelessConditionalRecipe(Consumer<FinishedRecipe> consumer, ItemLike result, int amount, String group, CraftingBookCategory craftingBookCategory, RecipeCategory recipeCategory, List<ItemLike> ingredients, AbstractCriterionTriggerInstance criterion, ICondition condition) {
 		//@formatter:off
 		ShapelessRecipeBuilder.Result recipe;
 		Item resultItem = result.asItem();
 		ResourceLocation id = Utils.getRegistryName(resultItem);
 
 		recipe = new ShapelessRecipeBuilder.Result(id,
-				resultItem, amount, group, ingredients.stream().map(item -> Ingredient.of(item)).collect(Collectors.toList()),
+				resultItem, amount, group, craftingBookCategory, ingredients.stream().map(item -> Ingredient.of(item)).collect(Collectors.toList()),
 				Advancement.Builder.advancement().addCriterion("has_item", criterion),
-				new ResourceLocation(id.getNamespace(), "recipes/" + resultItem.getItemCategory().getRecipeFolderName() + "/" + id.getPath()));
+				new ResourceLocation(id.getNamespace(), "recipes/" + recipeCategory.getFolderName() + "/" + id.getPath()));
 		ConditionalRecipe.builder().addCondition(condition).addRecipe(recipe).build(consumer, id);
 		//@formatter:on
 	}
@@ -1357,7 +1359,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addSimpleCookingRecipe(Consumer<FinishedRecipe> consumer, ItemLike input, ItemLike output, float xp, int time) {
 		//@formatter:off
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), output, xp, time)
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), RecipeCategory.BUILDING_BLOCKS, output, xp, time)
 		.unlockedBy("has_item", has(input))
 		.save(consumer);
 		//@formatter:on
@@ -1365,7 +1367,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addSimpleCookingRecipe(Consumer<FinishedRecipe> consumer, TagKey<Item> input, ItemLike output, float xp, int time) {
 		//@formatter:off
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), output, xp, time)
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), RecipeCategory.BUILDING_BLOCKS, output, xp, time)
 		.unlockedBy("has_item", has(input))
 		.save(consumer);
 		//@formatter:on
@@ -1373,7 +1375,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addSlabRecipe(Consumer<FinishedRecipe> consumer, ItemLike block, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(result, 6)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 6)
 		.group("securitycraft:slabs")
 		.pattern("BBB")
 		.define('B', block)
@@ -1384,7 +1386,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addStainedGlassRecipe(Consumer<FinishedRecipe> consumer, TagKey<Item> dye, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(result, 8)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 8)
 		.group("securitycraft:reinforced_glass")
 		.pattern("GGG")
 		.pattern("GDG")
@@ -1398,7 +1400,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addStainedGlassPaneRecipes(Consumer<FinishedRecipe> consumer, TagKey<Item> dye, ItemLike stainedGlass, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(result, 8)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 8)
 		.group("securitycraft:reinforced_glass_panes")
 		.pattern("GGG")
 		.pattern("GDG")
@@ -1407,7 +1409,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('D', dye)
 		.unlockedBy("has_glass", has(Tags.Items.GLASS))
 		.save(consumer, new ResourceLocation(SecurityCraft.MODID, Utils.getRegistryName(result.asItem()).getPath() + "_from_dye"));
-		ShapedRecipeBuilder.shaped(result, 16)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 16)
 		.group("securitycraft:reinforced_glass_panes")
 		.pattern("GGG")
 		.pattern("GGG")
@@ -1419,7 +1421,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addStainedTerracottaRecipe(Consumer<FinishedRecipe> consumer, TagKey<Item> dye, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(result, 8)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 8)
 		.group("securitycraft:reinforced_terracotta")
 		.pattern("TTT")
 		.pattern("TDT")
@@ -1433,7 +1435,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addStairsRecipe(Consumer<FinishedRecipe> consumer, ItemLike block, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(result, 4)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 4)
 		.group("securitycraft:stairs")
 		.pattern("B  ")
 		.pattern("BB ")
@@ -1446,7 +1448,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addStonecuttingRecipe(Consumer<FinishedRecipe> consumer, ItemLike ingredient, ItemLike result, int count) {
 		//@formatter:off
-		SingleItemRecipeBuilder.stonecutting(Ingredient.of(ingredient), result, count)
+		SingleItemRecipeBuilder.stonecutting(Ingredient.of(ingredient), RecipeCategory.BUILDING_BLOCKS, result, count)
 		.unlockedBy("has_" + Utils.getRegistryName(ingredient.asItem()).getPath(), has(ingredient))
 		.save(consumer, Utils.getRegistryName(result.asItem()) + "_from_" + Utils.getRegistryName(ingredient.asItem()).getPath() + "_stonecutting");
 		//@formatter:on
@@ -1454,7 +1456,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addTwoByTwoRecipe(Consumer<FinishedRecipe> consumer, ItemLike block, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(result, 4)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 4)
 		.pattern("BB")
 		.pattern("BB")
 		.define('B', block)
@@ -1465,7 +1467,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addWallRecipes(Consumer<FinishedRecipe> consumer, ItemLike block, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(result, 6)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 6)
 		.group("securitycraft:walls")
 		.pattern("BBB")
 		.pattern("BBB")
@@ -1474,10 +1476,5 @@ public class RecipeGenerator extends RecipeProvider {
 		.save(consumer);
 		addStonecuttingRecipe(consumer, block, result, 1);
 		//@formatter:on
-	}
-
-	@Override
-	public String getName() {
-		return "SecurityCraft Recipes";
 	}
 }
