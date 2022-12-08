@@ -62,11 +62,6 @@ public abstract class FakeWaterFluid extends ForgeFlowingFluid {
 	}
 
 	@Override
-	protected boolean canConvertToSource() {
-		return true;
-	}
-
-	@Override
 	protected void beforeDestroyingBlock(LevelAccessor level, BlockPos pos, BlockState state) {
 		BlockEntity be = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
 

@@ -174,11 +174,6 @@ public abstract class FakeLavaFluid extends ForgeFlowingFluid {
 	}
 
 	@Override
-	protected boolean canConvertToSource() {
-		return false;
-	}
-
-	@Override
 	protected void spreadTo(LevelAccessor level, BlockPos pos, BlockState state, Direction direction, FluidState fluidState) {
 		if (direction == Direction.DOWN) {
 			if (is(FluidTags.LAVA) && fluidState.is(FluidTags.WATER)) {
