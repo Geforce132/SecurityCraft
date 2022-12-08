@@ -7,7 +7,6 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.GsonHelper;
@@ -43,7 +42,7 @@ public class BlockEntityNBTCondition implements LootItemCondition {
 
 	@Override
 	public LootItemConditionType getType() {
-		return SCContent.BLOCK_ENTITY_NBT.get();
+		return null;//SCContent.BLOCK_ENTITY_NBT.get();
 	}
 
 	public static ConditionBuilder builder() {

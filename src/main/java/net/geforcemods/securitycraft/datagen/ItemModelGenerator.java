@@ -35,6 +35,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
+		List<Item> mineTabItems = SecurityCraft.getCreativeTabItems(SecurityCraft.mineTab);
+		List<Item> decorationTabItems = SecurityCraft.getCreativeTabItems(SecurityCraft.decorationTab);
 		Map<Block, String> flatReinforcedItems = new HashMap<>();
 
 		flatReinforcedItems.put(SCContent.REINFORCED_CAULDRON.get(), "item/cauldron");
@@ -50,7 +52,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 			Block block = obj.get();
 			Item item = block.asItem();
 
-			if (item.getCreativeTabs().contains(SecurityCraft.decorationTab)) {
+			if (decorationTabItems.contains(item)) {
 				if (flatReinforcedItems.containsKey(block))
 					flatReinforcedItem(block, flatReinforcedItems.get(block));
 				else if (block instanceof ReinforcedStainedGlassPaneBlock)
@@ -62,7 +64,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				else if (block instanceof IReinforcedBlock)
 					simpleReinforcedParent(block);
 			}
-			else if (item.getCreativeTabs().contains(SecurityCraft.mineTab) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
+			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
 				blockMine(mine.getBlockDisguisedAs(), block);
 		}
 

@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.datagen;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -56,11 +57,14 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
+		List<Item> mineTabItems = SecurityCraft.getCreativeTabItems(SecurityCraft.mineTab);
+		List<Item> decorationTabItems = SecurityCraft.getCreativeTabItems(SecurityCraft.decorationTab);
+
 		for (RegistryObject<Block> obj : SCContent.BLOCKS.getEntries()) {
 			Block block = obj.get();
 			Item item = block.asItem();
 
-			if (item.getCreativeTabs().contains(SecurityCraft.decorationTab)) {
+			if (decorationTabItems.contains(item)) {
 				if (block instanceof ReinforcedSlabBlock)
 					reinforcedSlabBlock(block);
 				else if (block instanceof ReinforcedStainedGlassBlock)
@@ -74,7 +78,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 				else if (block instanceof ReinforcedCarpetBlock)
 					reinforcedCarpetBlock(block);
 			}
-			else if (item.getCreativeTabs().contains(SecurityCraft.mineTab) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
+			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
 				blockMine(mine.getBlockDisguisedAs(), block);
 		}
 

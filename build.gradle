@@ -97,9 +97,9 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.3-44.0.0'
+    minecraft 'net.minecraftforge:forge:1.19.3-44.0.1'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    
+
 //    implementation fg.deobf("curse.maven:jei-238222:4068188")
 //    implementation fg.deobf("curse.maven:the-one-probe-245211:3965693")
 //    implementation fg.deobf("curse.maven:jade-324717:4084563")

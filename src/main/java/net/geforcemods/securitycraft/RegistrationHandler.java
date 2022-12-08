@@ -1,7 +1,13 @@
 package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
+import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.network.client.OpenSRATScreen;
@@ -46,11 +52,16 @@ import net.geforcemods.securitycraft.network.server.ToggleModule;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
+import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -59,6 +70,7 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -69,6 +81,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class RegistrationHandler {
+	private static final Map<SCItemGroup, List<ItemStack>> STACKS_FOR_ITEM_GROUPS = Util.make(new EnumMap<>(SCItemGroup.class), map -> Arrays.stream(SCItemGroup.values()).forEach(key -> map.put(key, new ArrayList<ItemStack>())));
+
 	@SubscribeEvent
 	public static void onRegister(RegisterEvent event) {
 		event.register(Keys.ITEMS, helper -> {
@@ -77,14 +91,17 @@ public class RegistrationHandler {
 				try {
 					if (field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).registerBlockItem()) {
 						Block block = ((RegistryObject<Block>) field.get(null)).get();
+						Item blockItem = new BlockItem(block, new Item.Properties().fireResistant());
 
-						helper.register(Utils.getRegistryName(block), new BlockItem(block, new Item.Properties().tab(SecurityCraft.decorationTab).fireResistant()));
+						helper.register(Utils.getRegistryName(block), blockItem);
+						STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION).add(new ItemStack(blockItem));
 					}
 					else if (field.isAnnotationPresent(RegisterItemBlock.class)) {
-						int tab = field.getAnnotation(RegisterItemBlock.class).value().ordinal();
 						Block block = ((RegistryObject<Block>) field.get(null)).get();
+						Item blockItem = new BlockItem(block, new Item.Properties());
 
-						helper.register(Utils.getRegistryName(block), new BlockItem(block, new Item.Properties().tab(tab == 0 ? SecurityCraft.technicalTab : (tab == 1 ? SecurityCraft.mineTab : SecurityCraft.decorationTab))));
+						helper.register(Utils.getRegistryName(block), blockItem);
+						STACKS_FOR_ITEM_GROUPS.get(field.getAnnotation(RegisterItemBlock.class).value()).add(new ItemStack(blockItem));
 					}
 				}
 				catch (IllegalArgumentException | IllegalAccessException e) {
@@ -105,6 +122,43 @@ public class RegistrationHandler {
 	@SubscribeEvent
 	public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
 		event.put(SCContent.SENTRY_ENTITY.get(), Mob.createMobAttributes().build());
+	}
+
+	@SubscribeEvent
+	public static void onCreativeModeTabRegister(CreativeModeTabEvent.Register event) {
+		//@formatter:off
+		SecurityCraft.technicalTab = event.registerCreativeModeTab(new ResourceLocation(SecurityCraft.MODID, "technical"), builder -> builder
+				.icon(() -> new ItemStack(SCContent.USERNAME_LOGGER.get()))
+				.title(Component.translatable("itemGroup.securitycraft.technical"))
+				.displayItems((features, output, hasPermissions) -> STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.TECHNICAL).forEach(output::accept)));
+		SecurityCraft.mineTab = event.registerCreativeModeTab(new ResourceLocation(SecurityCraft.MODID, "explosives"), List.of(), List.of(SecurityCraft.technicalTab), builder -> builder
+				.icon(() -> new ItemStack(SCContent.MINE.get()))
+				.title(Component.translatable("itemGroup.securitycraft.explosives"))
+				.displayItems((features, output, hasPermissions) -> STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES).forEach(output::accept)));
+		SecurityCraft.decorationTab = event.registerCreativeModeTab(new ResourceLocation(SecurityCraft.MODID, "decoration"), List.of(), List.of(SecurityCraft.mineTab), builder -> builder
+				.icon(() -> new ItemStack(SCContent.REINFORCED_OAK_STAIRS.get()))
+				.title(Component.translatable("itemGroup.securitycraft.decoration"))
+				.displayItems((features, output, hasPermissions) -> {
+		//@formatter:on
+					List<ItemStack> decorationGroupItems = STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION);
+					List<Item> vanillaOrderedItems = new ArrayList<>();
+
+					vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.BUILDING_BLOCKS));
+					vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.COLORED_BLOCKS));
+					vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.NATURAL_BLOCKS));
+					vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.REDSTONE_BLOCKS));
+					decorationGroupItems.sort((a, b) -> {
+						if (a.getItem() instanceof BlockItem blockItemA && blockItemA.getBlock() instanceof IReinforcedBlock reinforcedBlockA && b.getItem() instanceof BlockItem blockItemB && blockItemB.getBlock() instanceof IReinforcedBlock reinforcedBlockB) {
+							int indexA = vanillaOrderedItems.indexOf(reinforcedBlockA.getVanillaBlock().asItem());
+							int indexB = vanillaOrderedItems.indexOf(reinforcedBlockB.getVanillaBlock().asItem());
+
+							return Integer.compare(indexA == -1 ? Integer.MAX_VALUE : indexA, indexB == -1 ? Integer.MAX_VALUE : indexB);
+						}
+
+						return Integer.MAX_VALUE;
+					});
+					decorationGroupItems.forEach(output::accept);
+				}));
 	}
 
 	public static void registerPackets() {
