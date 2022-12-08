@@ -7,13 +7,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 public class LimitedUseKeycardRecipe extends CustomRecipe {
-	public LimitedUseKeycardRecipe(ResourceLocation id) {
-		super(id);
+	public LimitedUseKeycardRecipe(ResourceLocation id, CraftingBookCategory craftingBookCategory) {
+		super(id, craftingBookCategory);
 	}
 
 	@Override
