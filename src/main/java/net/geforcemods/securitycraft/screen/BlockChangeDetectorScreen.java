@@ -290,8 +290,8 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			for (int i = 0; i < filteredEntries.size(); i++) {
 				ContentSavingCollapsileTextList entry = filteredEntries.get(i);
 
-				entry.y = top + height - (int) scrollDistance;
-				entry.visible = entry.y + entry.getHeight() > top && entry.y < bottom;
+				entry.setY(top + height - (int) scrollDistance);
+				entry.visible = entry.getY() + entry.getHeight() > top && entry.getY() < bottom;
 				height += entry.getHeight();
 			}
 
@@ -313,7 +313,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		public void addEntry(ContentSavingCollapsileTextList entry) {
 			entry.setWidth(154);
 			entry.setHeight(slotHeight);
-			entry.x = left;
+			entry.setX(left);
 			entry.setY(top + slotHeight * allEntries.size());
 			allEntries.add(entry);
 		}
@@ -432,12 +432,12 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			super.render(pose, mouseX, mouseY, partialTick);
 
 			if (currentIndex == DetectionMode.BREAK.ordinal())
-				minecraft.getItemRenderer().renderAndDecorateItem(ironPickaxe, x + 2, y + 2);
+				minecraft.getItemRenderer().renderAndDecorateItem(ironPickaxe, getX() + 2, getY() + 2);
 			else if (currentIndex == DetectionMode.PLACE.ordinal())
-				minecraft.getItemRenderer().renderAndDecorateItem(grassBlock, x + 2, y + 2);
+				minecraft.getItemRenderer().renderAndDecorateItem(grassBlock, getX() + 2, getY() + 2);
 			else if (currentIndex == DetectionMode.BOTH.ordinal()) {
-				minecraft.getItemRenderer().renderAndDecorateItem(grassBlock, x + 2, y + 2, 0, -100);
-				minecraft.getItemRenderer().renderAndDecorateItem(ironPickaxe, x + 2, y + 2);
+				minecraft.getItemRenderer().renderAndDecorateItem(grassBlock, getX() + 2, getY() + 2, 0, -100);
+				minecraft.getItemRenderer().renderAndDecorateItem(ironPickaxe, getX() + 2, getY() + 2);
 			}
 		}
 

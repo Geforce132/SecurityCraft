@@ -731,10 +731,10 @@ public class SCManualScreen extends Screen {
 		@Override
 		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 			if (visible) {
-				isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
+				isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 				RenderSystem._setShaderTexture(0, VANILLA_BOOK);
-				blit(pose, x, y, isHoveredOrFocused() ? 23 : 0, textureY, 23, 13);
+				blit(pose, getX(), getY(), isHoveredOrFocused() ? 23 : 0, textureY, 23, 13);
 			}
 		}
 	}
@@ -747,8 +747,8 @@ public class SCManualScreen extends Screen {
 		@Override
 		public void renderButton(PoseStack pose, int mouseX, int mouseY, float partial) {
 			RenderSystem._setShaderTexture(0, ICONS);
-			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-			blit(pose, x, y, isHoveredOrFocused() ? 138 : 122, 1, 16, 16);
+			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
+			blit(pose, getX(), getY(), isHoveredOrFocused() ? 138 : 122, 1, 16, 16);
 		}
 	}
 

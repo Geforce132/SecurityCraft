@@ -85,7 +85,7 @@ public class EditModuleScreen extends Screen {
 		addRenderableWidget(pasteButton = new ExtendedButton(controlsStartX, height / 2 + 32, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.paste"), this::pasteButtonClicked));
 		addRenderableWidget(clearButton = new ExtendedButton(controlsStartX, height / 2 + 57, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::clearButtonClicked));
 		addRenderableWidget(playerList = new PlayerList(minecraft, 110, 165, height / 2 - 88, guiLeft + 10));
-		addRenderableWidget(teamList = new TeamList(minecraft, editTeamsButton.getWidth(), 75, editTeamsButton.y + editTeamsButton.getHeight(), editTeamsButton.x));
+		addRenderableWidget(teamList = new TeamList(minecraft, editTeamsButton.getWidth(), 75, editTeamsButton.getY() + editTeamsButton.getHeight(), editTeamsButton.getX()));
 		addRenderableWidget(affectEveryPlayerCheckbox = new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.hasTag() && module.getTag().getBoolean("affectEveryone"), newState -> module.getOrCreateTag().putBoolean("affectEveryone", newState), 0x404040));
 
 		teamList.active = false;

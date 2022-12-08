@@ -59,21 +59,21 @@ public class CollapsibleTextList extends Button {
 		int v = getYImage(isHoveredOrFocused());
 		int heightOffset = (height - 8) / 2;
 
-		ScreenUtils.blitWithBorder(pose, WIDGETS_LOCATION, x, y, 0, 46 + v * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
-		drawCenteredString(pose, font, getMessage(), x + font.width(getMessage()) / 2 + 3, y + heightOffset, getFGColor());
+		ScreenUtils.blitWithBorder(pose, WIDGETS_LOCATION, getX(), getY(), 0, 46 + v * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
+		drawCenteredString(pose, font, getMessage(), getX() + font.width(getMessage()) / 2 + 3, getY() + heightOffset, getFGColor());
 
 		if (open) {
 			int renderedLines = 0;
 
-			GuiComponent.fillGradient(pose, x, y + height, x + width, y + heightOpen, 0xC0101010, 0xD0101010, 0);
+			GuiComponent.fillGradient(pose, getX(), getY() + height, getX() + width, getY() + heightOpen, 0xC0101010, 0xD0101010, 0);
 
 			for (int i = 0; i < textLines.size(); i++) {
-				int textY = y + 2 + height + renderedLines * font.lineHeight + (i * 12);
+				int textY = getY() + 2 + height + renderedLines * font.lineHeight + (i * 12);
 
 				if (i > 0)
-					GuiComponent.fillGradient(pose, x + 1, textY - 3, x + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0, getBlitOffset());
+					GuiComponent.fillGradient(pose, getX() + 1, textY - 3, getX() + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0, getBlitOffset());
 
-				font.drawWordWrap(textLines.get(i), x + 2, textY, textCutoff, getFGColor());
+				font.drawWordWrap(textLines.get(i), getX() + 2, textY, textCutoff, getFGColor());
 				renderedLines += splitTextLineCount.get(i) - 1;
 			}
 		}
@@ -84,7 +84,7 @@ public class CollapsibleTextList extends Button {
 			Screen currentScreen = Minecraft.getInstance().screen;
 
 			if (currentScreen != null)
-				currentScreen.renderTooltip(pose, originalDisplayString, x + 1, y + height + 2);
+				currentScreen.renderTooltip(pose, originalDisplayString, getX() + 1, getY() + height + 2);
 		}
 	}
 
@@ -123,11 +123,12 @@ public class CollapsibleTextList extends Button {
 		return extraHoverCheck.test((int) mouseX, (int) mouseY) && super.isMouseOver(mouseX, mouseY);
 	}
 
+	@Override
 	public void setY(int y) {
 		if (initialY == -1)
 			initialY = y;
 
-		this.y = y;
+		super.setY(y);
 	}
 
 	public void switchOpenStatus() {

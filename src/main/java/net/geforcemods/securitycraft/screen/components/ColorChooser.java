@@ -272,7 +272,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		public void renderButton(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 			RenderSystem._setShaderTexture(0, TEXTURE);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			blit(pose, x + (int) (value * (width - 8)), y, isHoveredOrFocused() ? 151 : 145, 0, 6, height);
+			blit(pose, getX() + (int) (value * (width - 8)), getY(), isHoveredOrFocused() ? 151 : 145, 0, 6, height);
 		}
 	}
 
