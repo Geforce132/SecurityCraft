@@ -17,6 +17,9 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -31,6 +34,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ILockable, ITickingBlockEntity {
@@ -110,7 +114,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 		mode = DetectionMode.values()[modeOrdinal];
 		entries = new ArrayList<>();
-		tag.getList("entries", Tag.TAG_COMPOUND).stream().map(element -> ChangeEntry.load((CompoundTag) element)).forEach(entries::add);
+		tag.getList("entries", Tag.TAG_COMPOUND).stream().map(element -> ChangeEntry.load(level, (CompoundTag) element)).forEach(entries::add);
 		filter = ItemStack.of(tag.getCompound("filter"));
 		showHighlights = tag.getBoolean("ShowHighlights");
 		setColor(tag.getInt("Color"));
@@ -304,7 +308,8 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 			return tag;
 		}
 
-		public static ChangeEntry load(CompoundTag tag) {
+		public static ChangeEntry load(Level level, CompoundTag tag) {
+			HolderGetter<Block> holderGetter = level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup();
 			int actionOrdinal = tag.getInt("action");
 
 			if (actionOrdinal < 0 || actionOrdinal >= DetectionMode.values().length)
@@ -317,7 +322,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 					tag.getLong("timestamp"),
 					DetectionMode.values()[actionOrdinal],
 					BlockPos.of(tag.getLong("pos")),
-					NbtUtils.readBlockState(tag.getCompound("state")));
+					NbtUtils.readBlockState(holderGetter, tag.getCompound("state")));
 			//@formatter:on
 		}
 	}

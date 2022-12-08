@@ -9,6 +9,9 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBaseBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.Connection;
@@ -351,8 +354,11 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 
 	@Override
 	public void load(CompoundTag tag) {
+		HolderGetter<Block> holderGetter;
+
 		super.load(tag);
-		movedState = NbtUtils.readBlockState(tag.getCompound("blockState"));
+		holderGetter = level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup();
+		movedState = NbtUtils.readBlockState(holderGetter, tag.getCompound("blockState"));
 		direction = Direction.from3DDataValue(tag.getInt("facing"));
 		progress = tag.getFloat("progress");
 		lastProgress = progress;

@@ -8,6 +8,8 @@ import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
@@ -80,7 +82,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 		if (!tag.contains("SavedState"))
 			resetSavedState();
 		else
-			setProjectedState(NbtUtils.readBlockState(tag.getCompound("SavedState")));
+			setProjectedState(NbtUtils.readBlockState(level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup(), tag.getCompound("SavedState")));
 	}
 
 	public int getProjectionWidth() {
