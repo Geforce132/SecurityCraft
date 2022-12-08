@@ -165,6 +165,10 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		return Optional.empty();
 	}
 
+	public static Optional<BlockState> getDisguisedBlockStateFromStack(Level level, ItemStack module) {
+		return getDisguisedBlockStateFromStack(level.holderLookup(Registries.BLOCK), module);
+	}
+
 	public static Optional<BlockState> getDisguisedBlockStateFromStack(HolderGetter<Block> holderGetter, ItemStack module) {
 		if (!module.isEmpty()) {
 			BlockState disguisedState = NbtUtils.readBlockState(holderGetter, module.getOrCreateTag().getCompound("SavedState"));
