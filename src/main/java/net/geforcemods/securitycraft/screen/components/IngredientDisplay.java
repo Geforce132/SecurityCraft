@@ -1,15 +1,14 @@
 package net.geforcemods.securitycraft.screen.components;
 
-import org.jline.reader.Widget;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public class IngredientDisplay implements Widget {
+public class IngredientDisplay implements Renderable {
 	private static final int DISPLAY_LENGTH = 20;
 	private final int x;
 	private final int y;

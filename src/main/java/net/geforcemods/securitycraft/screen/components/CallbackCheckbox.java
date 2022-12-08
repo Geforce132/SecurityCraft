@@ -50,7 +50,7 @@ public class CallbackCheckbox extends AbstractButton {
 	}
 
 	@Override
-	public void updateNarration(NarrationElementOutput narrationElementOutput) {
+	protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
 		narrationElementOutput.add(NarratedElementType.TITLE, createNarrationMessage());
 
 		if (active) {

@@ -16,7 +16,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-import org.jline.reader.Widget;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -42,6 +41,7 @@ import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
@@ -143,8 +143,8 @@ public class SCManualScreen extends Screen {
 
 		blit(pose, startX, 5, 0, 0, 256, 250);
 
-		for (Widget widget : renderables) {
-			widget.render(pose, mouseX, mouseY, partialTicks);
+		for (Renderable renderable : renderables) {
+			renderable.render(pose, mouseX, mouseY, partialTicks);
 		}
 
 		if (currentPage > -1) {
