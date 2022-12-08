@@ -60,7 +60,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 			if (tickCount >= PLAYBACK_DELAY) {
 				if (currentNote < be.getNumberOfNotes()) {
 					NoteWrapper note = be.getRecordedNotes().get(currentNote++);
-					SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase()).getSoundEvent();
+					SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase()).getSoundEvent().get();
 					float pitch = (float) Math.pow(2.0D, (note.noteID() - 12) / 12.0D);
 
 					tickCount = 0;

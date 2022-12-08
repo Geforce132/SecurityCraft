@@ -88,7 +88,7 @@ public class CheckPasswordScreen extends Screen {
 			return true;
 		}
 		else if (keyCode == GLFW.GLFW_KEY_BACKSPACE && currentString.length() > 0) {
-			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK, 0.15F, 1.0F);
+			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
 			currentString = Utils.removeLastChar(currentString);
 			setTextboxCensoredText(keycodeTextbox, currentString);
 			checkCode(currentString);
@@ -106,7 +106,7 @@ public class CheckPasswordScreen extends Screen {
 	@Override
 	public boolean charTyped(char typedChar, int keyCode) {
 		if (isValidChar(typedChar) && currentString.length() < MAX_CHARS) {
-			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK, 0.15F, 1.0F);
+			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
 			currentString += typedChar;
 			setTextboxCensoredText(keycodeTextbox, currentString);
 			checkCode(currentString);
