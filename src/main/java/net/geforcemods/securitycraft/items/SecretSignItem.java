@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +18,7 @@ public class SecretSignItem extends StandingAndWallBlockItem {
 	private final String translationKey;
 
 	public SecretSignItem(Item.Properties properties, Block floor, Block wall, String translationKey) {
-		super(floor, wall, properties);
+		super(floor, wall, properties, Direction.DOWN);
 
 		this.translationKey = translationKey;
 	}

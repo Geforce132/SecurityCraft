@@ -26,6 +26,7 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.Vec3;
@@ -46,7 +47,7 @@ public class SecretSignRenderer implements BlockEntityRenderer<SecretSignBlockEn
 	@Override
 	public void render(SecretSignBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
 		BlockState state = be.getBlockState();
-		WoodType woodType = SignRenderer.getWoodType(state.getBlock());
+		WoodType woodType = SignBlock.getWoodType(state.getBlock());
 		SignModel model = signModels.get(woodType);
 		Material material = Sheets.getSignMaterial(woodType);
 		VertexConsumer builder;
