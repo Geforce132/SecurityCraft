@@ -48,19 +48,12 @@ public class SetPasswordScreen extends Screen {
 		Button saveAndContinueButton = addRenderableWidget(new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save"), this::saveAndContinueButtonClicked));
 
 		saveAndContinueButton.active = false;
-		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
 		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 47, 77, 12, Component.empty()));
 		keycodeTextbox.setMaxLength(20);
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*"));
 		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = !text.isEmpty());
 		setInitialFocus(keycodeTextbox);
-	}
-
-	@Override
-	public void removed() {
-		super.removed();
-		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override

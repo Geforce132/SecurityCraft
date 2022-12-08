@@ -45,7 +45,6 @@ public class CheckPasswordScreen extends Screen {
 
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
-		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
 		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 + 30 + 10, 80, 20, Component.literal("0"), b -> addNumberToString(0)));
 		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 - 60 + 10, 20, 20, Component.literal("1"), b -> addNumberToString(1)));
@@ -63,12 +62,6 @@ public class CheckPasswordScreen extends Screen {
 		keycodeTextbox.setMaxLength(MAX_CHARS);
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*\\**")); //allow any amount of numbers and any amount of asterisks
 		setInitialFocus(keycodeTextbox);
-	}
-
-	@Override
-	public void removed() {
-		super.removed();
-		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override

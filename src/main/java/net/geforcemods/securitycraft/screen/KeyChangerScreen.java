@@ -46,7 +46,6 @@ public class KeyChangerScreen extends Screen {
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
 
-		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addRenderableWidget(confirmButton = new ExtendedButton(width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::confirmButtonClicked));
 		confirmButton.active = false;
 
@@ -60,12 +59,6 @@ public class KeyChangerScreen extends Screen {
 		textboxConfirmPasscode.setMaxLength(20);
 		textboxConfirmPasscode.setFilter(s -> s.matches("[0-9]*"));
 		textboxConfirmPasscode.setResponder(s -> updateConfirmButtonState());
-	}
-
-	@Override
-	public void removed() {
-		super.removed();
-		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override

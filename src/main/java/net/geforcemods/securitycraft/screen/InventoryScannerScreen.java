@@ -49,12 +49,6 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	}
 
 	@Override
-	public void init() {
-		super.init();
-		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-	}
-
-	@Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		super.render(pose, mouseX, mouseY, partialTicks);
 
@@ -65,12 +59,6 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 
 		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
 			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
-	}
-
-	@Override
-	public void removed() {
-		super.removed();
-		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override

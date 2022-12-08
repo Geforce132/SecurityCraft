@@ -106,7 +106,6 @@ public class SCManualScreen extends Screen {
 		byte startY = 2;
 
 		startX = (width - 256) / 2;
-		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addRenderableWidget(new ChangePageButton(startX + 210, startY + 188, true, b -> nextPage()));
 		addRenderableWidget(new ChangePageButton(startX + 22, startY + 188, false, b -> previousPage()));
 		addRenderableWidget(nextSubpage = new ChangePageButton(startX + 180, startY + 97, true, b -> nextSubpage()));
@@ -227,7 +226,6 @@ public class SCManualScreen extends Screen {
 	public void removed() {
 		super.removed();
 		lastPage = currentPage;
-		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
