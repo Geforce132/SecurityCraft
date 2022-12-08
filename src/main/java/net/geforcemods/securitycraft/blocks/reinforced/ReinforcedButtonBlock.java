@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,20 +22,10 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
-	public boolean isWoodenButton;
 
-	public ReinforcedButtonBlock(boolean isWooden, Block.Properties properties, Block vb) {
-		super(isWooden, properties);
-		this.isWoodenButton = isWooden;
+	public ReinforcedButtonBlock(Block.Properties properties, Block vb, int ticksToStayPressed, boolean arrowsCanPush, SoundEvent soundOff, SoundEvent soundOn) {
+		super(properties, ticksToStayPressed, arrowsCanPush, soundOff, soundOn);
 		this.vanillaBlock = vb;
-	}
-
-	@Override
-	public SoundEvent getSound(boolean powered) {
-		if (isWoodenButton)
-			return powered ? SoundEvents.WOODEN_BUTTON_CLICK_ON : SoundEvents.WOODEN_BUTTON_CLICK_OFF;
-		else
-			return powered ? SoundEvents.STONE_BUTTON_CLICK_ON : SoundEvents.STONE_BUTTON_CLICK_OFF;
 	}
 
 	@Override

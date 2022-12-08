@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,8 +42,8 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock {
 	private static final VoxelShape CEILING_EW_POWERED = Block.box(5, 15, 3, 11, 16, 13);
 	private static final VoxelShape CEILING_EW_UNPOWERED = Block.box(5, 14, 3, 11, 16, 13);
 
-	public PanicButtonBlock(boolean isWooden, Block.Properties properties) {
-		super(isWooden, properties);
+	public PanicButtonBlock(Block.Properties properties, int ticksToStayPressed, boolean arrowsCanPush, SoundEvent soundOff, SoundEvent soundOn) {
+		super(properties, ticksToStayPressed, arrowsCanPush, soundOff, soundOn);
 	}
 
 	@Override
@@ -114,10 +113,5 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock {
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new OwnableBlockEntity(pos, state);
-	}
-
-	@Override
-	protected SoundEvent getSound(boolean turningOn) {
-		return turningOn ? SoundEvents.STONE_BUTTON_CLICK_ON : SoundEvents.STONE_BUTTON_CLICK_OFF;
 	}
 }
