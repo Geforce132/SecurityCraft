@@ -2150,37 +2150,37 @@ public class SCContent {
 	public static final RegistryObject<Block> REINFORCED_WARPED_BUTTON = BLOCKS.register("reinforced_warped_button", () -> woodenButton(Blocks.WARPED_BUTTON, SoundType.NETHER_WOOD, SoundEvents.NETHER_WOOD_BUTTON_CLICK_OFF, SoundEvents.NETHER_WOOD_BUTTON_CLICK_ON));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STONE_PRESSURE_PLATE = BLOCKS.register("reinforced_stone_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.MOBS, prop().noCollission(), Blocks.STONE_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_STONE_PRESSURE_PLATE = BLOCKS.register("reinforced_stone_pressure_plate", () -> stonePressurePlate(Blocks.STONE_PRESSURE_PLATE));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE = BLOCKS.register("reinforced_polished_blackstone_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.MOBS, prop().noCollission(), Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE = BLOCKS.register("reinforced_polished_blackstone_pressure_plate", () -> stonePressurePlate(Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OAK_PRESSURE_PLATE = BLOCKS.register("reinforced_oak_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(Material.WOOD).noCollission().sound(SoundType.WOOD), Blocks.OAK_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_OAK_PRESSURE_PLATE = BLOCKS.register("reinforced_oak_pressure_plate", () -> woodenPressurePlate(Blocks.OAK_PRESSURE_PLATE));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SPRUCE_PRESSURE_PLATE = BLOCKS.register("reinforced_spruce_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(Material.WOOD).noCollission().sound(SoundType.WOOD), Blocks.SPRUCE_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_SPRUCE_PRESSURE_PLATE = BLOCKS.register("reinforced_spruce_pressure_plate", () -> woodenPressurePlate(Blocks.SPRUCE_PRESSURE_PLATE));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BIRCH_PRESSURE_PLATE = BLOCKS.register("reinforced_birch_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(Material.WOOD).noCollission().sound(SoundType.WOOD), Blocks.BIRCH_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_BIRCH_PRESSURE_PLATE = BLOCKS.register("reinforced_birch_pressure_plate", () -> woodenPressurePlate(Blocks.BIRCH_PRESSURE_PLATE));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_JUNGLE_PRESSURE_PLATE = BLOCKS.register("reinforced_jungle_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(Material.WOOD).noCollission().sound(SoundType.WOOD), Blocks.JUNGLE_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_JUNGLE_PRESSURE_PLATE = BLOCKS.register("reinforced_jungle_pressure_plate", () -> woodenPressurePlate(Blocks.JUNGLE_PRESSURE_PLATE));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ACACIA_PRESSURE_PLATE = BLOCKS.register("reinforced_acacia_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(Material.WOOD).noCollission().sound(SoundType.WOOD), Blocks.ACACIA_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_ACACIA_PRESSURE_PLATE = BLOCKS.register("reinforced_acacia_pressure_plate", () -> woodenPressurePlate(Blocks.ACACIA_PRESSURE_PLATE));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_OAK_PRESSURE_PLATE = BLOCKS.register("reinforced_dark_oak_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(Material.WOOD).noCollission().sound(SoundType.WOOD), Blocks.DARK_OAK_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_DARK_OAK_PRESSURE_PLATE = BLOCKS.register("reinforced_dark_oak_pressure_plate", () -> woodenPressurePlate(Blocks.DARK_OAK_PRESSURE_PLATE));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MANGROVE_PRESSURE_PLATE = BLOCKS.register("reinforced_mangrove_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(Material.WOOD).noCollission().sound(SoundType.WOOD), Blocks.MANGROVE_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_MANGROVE_PRESSURE_PLATE = BLOCKS.register("reinforced_mangrove_pressure_plate", () -> woodenPressurePlate(Blocks.MANGROVE_PRESSURE_PLATE));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRIMSON_PRESSURE_PLATE = BLOCKS.register("reinforced_crimson_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(Material.WOOD).noCollission().sound(SoundType.WOOD), Blocks.CRIMSON_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_CRIMSON_PRESSURE_PLATE = BLOCKS.register("reinforced_crimson_pressure_plate", () -> woodenPressurePlate(Blocks.CRIMSON_PRESSURE_PLATE, SoundType.NETHER_WOOD, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_OFF, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_ON));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WARPED_PRESSURE_PLATE = BLOCKS.register("reinforced_warped_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(Material.WOOD).noCollission().sound(SoundType.WOOD), Blocks.WARPED_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_WARPED_PRESSURE_PLATE = BLOCKS.register("reinforced_warped_pressure_plate", () -> woodenPressurePlate(Blocks.WARPED_PRESSURE_PLATE, SoundType.NETHER_WOOD, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_OFF, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_ON));
 	@HasManualPage(hasRecipeDescription = true)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
@@ -2595,5 +2595,17 @@ public class SCContent {
 
 	private static ReinforcedButtonBlock stoneButton(Block vanillaBlock) {
 		return new ReinforcedButtonBlock(prop().noCollission(), vanillaBlock, 20, false, SoundEvents.STONE_BUTTON_CLICK_OFF, SoundEvents.STONE_BUTTON_CLICK_ON);
+	}
+
+	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock) {
+		return woodenPressurePlate(vanillaBlock, SoundType.WOOD, SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_OFF, SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_ON);
+	}
+
+	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, SoundType soundType, SoundEvent soundOff, SoundEvent soundOn) {
+		return new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(Material.WOOD).noCollission().sound(soundType), vanillaBlock, soundOff, soundOn);
+	}
+
+	private static ReinforcedPressurePlateBlock stonePressurePlate(Block vanillaBlock) {
+		return new ReinforcedPressurePlateBlock(Sensitivity.MOBS, prop().noCollission(), vanillaBlock, SoundEvents.STONE_PRESSURE_PLATE_CLICK_OFF, SoundEvents.STONE_PRESSURE_PLATE_CLICK_ON);
 	}
 }

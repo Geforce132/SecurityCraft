@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
@@ -33,7 +35,11 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBlock {
 	public ReinforcedFenceGateBlock(Block.Properties properties) {
-		super(properties);
+		this(properties, SoundEvents.IRON_DOOR_CLOSE, SoundEvents.IRON_DOOR_OPEN);
+	}
+
+	public ReinforcedFenceGateBlock(BlockBehaviour.Properties properties, SoundEvent closeSound, SoundEvent openSound) {
+		super(properties, closeSound, openSound);
 	}
 
 	@Override
@@ -78,12 +84,12 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBl
 			if (isPoweredSCBlock || block.defaultBlockState().isSignalSource())
 				if (isPoweredSCBlock && !state.getValue(OPEN) && !state.getValue(POWERED)) {
 					level.setBlock(pos, state.setValue(OPEN, true).setValue(POWERED, true), 2);
-					level.playSound(null, pos, SoundEvents.IRON_DOOR_OPEN, SoundSource.BLOCKS, 1.0F, 1.0F);
+					level.playSound(null, pos, SoundEvents.IRON_DOOR_OPEN, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 					level.gameEvent(null, GameEvent.BLOCK_OPEN, pos);
 				}
 				else if (!isPoweredSCBlock && state.getValue(OPEN) && state.getValue(POWERED)) {
 					level.setBlock(pos, state.setValue(OPEN, false).setValue(POWERED, false), 2);
-					level.playSound(null, pos, SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 1.0F, 1.0F);
+					level.playSound(null, pos, SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 					level.gameEvent(null, GameEvent.BLOCK_CLOSE, pos);
 				}
 				else if (isPoweredSCBlock != state.getValue(POWERED))
