@@ -108,7 +108,7 @@ public class MineBlock extends ExplosiveBlock {
 	public void explode(Level level, BlockPos pos) {
 		if (!level.isClientSide && !level.getBlockState(pos).getValue(DEACTIVATED)) {
 			level.destroyBlock(pos, false);
-			level.explode(null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.0F : 3.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+			level.explode(null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.0F : 3.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionInteraction());
 		}
 	}
 

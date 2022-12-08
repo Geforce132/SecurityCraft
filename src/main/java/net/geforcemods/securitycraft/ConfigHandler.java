@@ -115,7 +115,7 @@ public class ConfigHandler {
 					.define("mineExplodesWhenInCreative", true);
 
 			mineExplosionsBreakBlocks = builder
-					.comment("Set this to false if you want mines to not break blocks when they explode.")
+					.comment("Set this to false if you want mines to not break blocks when they explode. If this is set to true, the tntExplosionDropDecay gamerule will be respected")
 					.define("mineExplosionsBreakBlocks", true);
 
 			laserBlockRange = builder

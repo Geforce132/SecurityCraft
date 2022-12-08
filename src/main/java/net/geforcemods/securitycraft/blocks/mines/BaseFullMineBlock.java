@@ -98,7 +98,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 	public void explode(Level level, BlockPos pos) {
 		if (!level.isClientSide) {
 			level.destroyBlock(pos, false);
-			level.explode(null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 2.5F : 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+			level.explode(null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 2.5F : 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionInteraction());
 		}
 	}
 
