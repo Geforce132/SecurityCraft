@@ -8,6 +8,7 @@
 - API: New methods IModuleInventory#isAllowed and IModuleInventory#isDenied to check whether an entity is listed on an allowlist or denylist module respectively
 - API: Moved and renamed Owner#isOwner methods to IPasswordProtected#isOwnedBy
 - Fix: The Reinforced Water Cauldron and Reinforced Grass Block don't have a reinforced tint
+- Fix: The Reinforced Moss Carpet has a different sound compared to the vanilla Moss Carpet
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
