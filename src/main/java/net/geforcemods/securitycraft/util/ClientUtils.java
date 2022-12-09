@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.util;
 import java.util.Arrays;
 
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -91,6 +92,19 @@ public class ClientUtils {
 		bufferBuilder.vertex(m4f, moduleRight, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(1, 0).endVertex();
 		bufferBuilder.vertex(m4f, moduleLeft, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(0, 0).endVertex();
 		BufferUploader.drawWithShader(bufferBuilder.end());
+	}
+
+	public static Quaternionf fromXYZDegrees(float x, float y, float z) {
+		return fromXYZ((float) Math.toRadians(x), (float) Math.toRadians(y), (float) Math.toRadians(z));
+	}
+
+	public static Quaternionf fromXYZ(float x, float y, float z) {
+		Quaternionf quaternion = new Quaternionf();
+
+		quaternion.mul(new Quaternionf((float) Math.sin(x / 2.0F), 0.0F, 0.0F, (float) Math.cos(x / 2.0F)));
+		quaternion.mul(new Quaternionf(0.0F, (float) Math.sin(y / 2.0F), 0.0F, (float) Math.cos(y / 2.0F)));
+		quaternion.mul(new Quaternionf(0.0F, 0.0F, (float) Math.sin(z / 2.0F), (float) Math.cos(z / 2.0F)));
+		return quaternion;
 	}
 
 	public static void renderBoxInLevel(MultiBufferSource buffer, Matrix4f positionMatrix, int minX, int maxX, int minZ, int maxZ, int height, int rgbColor) {
