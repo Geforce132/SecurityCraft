@@ -50,16 +50,16 @@ public class SentryItem extends Item {
 			return InteractionResult.FAIL;
 		}
 
+		if (replacesTargetedBlock)
+			level.removeBlock(pos, false);
+
 		Sentry entity = SCContent.SENTRY_ENTITY.get().create(level);
 
-		entity.setupSentry(player);
 		entity.setPos(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
+		entity.setupSentry(player);
 
 		if (stack.hasCustomHoverName())
 			entity.setCustomName(stack.getHoverName());
-
-		if (replacesTargetedBlock)
-			level.removeBlock(pos, false);
 
 		level.addFreshEntity(entity);
 		entity.gameEvent(GameEvent.ENTITY_PLACE, player);
