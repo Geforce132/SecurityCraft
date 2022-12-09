@@ -133,13 +133,6 @@ public class RegistrationHandler {
 
 	@SubscribeEvent
 	public static void onCreativeModeTabRegister(CreativeModeTabEvent.Register event) {
-		List<Item> vanillaOrderedItems = new ArrayList<>();
-
-		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.BUILDING_BLOCKS));
-		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.COLORED_BLOCKS));
-		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.NATURAL_BLOCKS));
-		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.FUNCTIONAL_BLOCKS));
-		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.REDSTONE_BLOCKS));
 		//@formatter:off
 		SecurityCraft.technicalTab = event.registerCreativeModeTab(new ResourceLocation(SecurityCraft.MODID, "technical"), builder -> builder
 				.icon(() -> new ItemStack(SCContent.USERNAME_LOGGER.get()))
@@ -150,6 +143,7 @@ public class RegistrationHandler {
 				.title(Component.translatable("itemGroup.securitycraft.explosives"))
 				.displayItems((features, output, hasPermissions) -> {
 		//@formatter:on
+					List<Item> vanillaOrderedItems = getVanillaOrderedItems();
 					List<ItemStack> mineGroupItems = STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES);
 
 					mineGroupItems.sort((a, b) -> {
@@ -176,6 +170,7 @@ public class RegistrationHandler {
 				.title(Component.translatable("itemGroup.securitycraft.decoration"))
 				.displayItems((features, output, hasPermissions) -> {
 		//@formatter:on
+					List<Item> vanillaOrderedItems = getVanillaOrderedItems();
 					List<ItemStack> decorationGroupItems = STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION);
 
 					decorationGroupItems.sort((a, b) -> {
@@ -321,5 +316,16 @@ public class RegistrationHandler {
 		strongLingeringPotionStack.setTag(strongNBT.copy());
 
 		return Ingredient.of(normalPotionStack, strongPotionStack, normalSplashPotionStack, strongSplashPotionStack, normalLingeringPotionStack, strongLingeringPotionStack);
+	}
+
+	private static List<Item> getVanillaOrderedItems() {
+		List<Item> vanillaOrderedItems = new ArrayList<>();
+
+		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.BUILDING_BLOCKS));
+		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.COLORED_BLOCKS));
+		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.NATURAL_BLOCKS));
+		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.FUNCTIONAL_BLOCKS));
+		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.REDSTONE_BLOCKS));
+		return vanillaOrderedItems;
 	}
 }
