@@ -149,14 +149,17 @@ public class RegistrationHandler {
 					mineGroupItems.sort((a, b) -> {
 						//if a isn't an item that has a vanilla counterpart, it should appear at the front
 						if (!(a.getItem() instanceof BlockItem blockItemA && blockItemA.getBlock() instanceof BaseFullMineBlock blockMineA))
-							return 1;
+							return -1;
 
 						//same for b
 						if (!(b.getItem() instanceof BlockItem blockItemB && blockItemB.getBlock() instanceof BaseFullMineBlock blockMineB))
-							return -1;
+							return 1;
 
 						return Integer.compare(vanillaOrderedItems.indexOf(blockMineA.getBlockDisguisedAs().asItem()), vanillaOrderedItems.indexOf(blockMineB.getBlockDisguisedAs().asItem()));
 					});
+					output.accept(SCContent.REMOTE_ACCESS_MINE.get());
+					output.accept(SCContent.WIRE_CUTTERS.get());
+					output.accept(Items.FLINT_AND_STEEL);
 					output.accept(SCContent.MINE.get());
 					output.acceptAll(mineGroupItems);
 					output.acceptAll(List.of( //@formatter:off
