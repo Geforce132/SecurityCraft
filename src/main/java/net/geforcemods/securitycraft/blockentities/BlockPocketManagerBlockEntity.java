@@ -115,7 +115,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 				//reach the next block that is missing for the block pocket
 				while ((stateInLevel = level.getBlockState(toPlace.getLeft())) == toPlace.getRight());
 
-				if (stateInLevel.getMaterial().isReplaceable()) {
+				if (stateInLevel.canBeReplaced()) {
 					BlockPos placeLocation = toPlace.getLeft();
 					BlockState stateToPlace = toPlace.getRight();
 					SoundType soundType = stateToPlace.getSoundType();
@@ -371,7 +371,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 						BlockPos currentPos = pos.relative(right, xi);
 						BlockState currentState = level.getBlockState(currentPos);
-						boolean replaceable = currentState.getMaterial().isReplaceable();
+						boolean replaceable = currentState.canBeReplaced();
 
 						//checking the lowest and highest level of the cube
 						//if (y level is lowest AND it's not the block pocket manager's position) OR (y level is highest)

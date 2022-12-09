@@ -12,6 +12,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -26,11 +27,12 @@ public class SentryItem extends Item {
 
 	@Override
 	public InteractionResult useOn(UseOnContext ctx) {
-		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
-	}
-
-	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
-		boolean replacesTargetedBlock = level.getBlockState(pos).getMaterial().isReplaceable();
+		Level level = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		Direction facing = ctx.getClickedFace();
+		Player player = ctx.getPlayer();
+		ItemStack stack = ctx.getItemInHand();
+		boolean replacesTargetedBlock = level.getBlockState(pos).canBeReplaced(new BlockPlaceContext(ctx));
 
 		if (!replacesTargetedBlock) {
 			pos = pos.relative(facing); //if the block is not replaceable, place sentry next to targeted block
