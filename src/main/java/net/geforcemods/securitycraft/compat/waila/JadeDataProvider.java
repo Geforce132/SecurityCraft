@@ -1,18 +1,15 @@
 package net.geforcemods.securitycraft.compat.waila;
 
-import java.util.*;
+import java.util.Optional;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.blocks.*;
-import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
-import net.geforcemods.securitycraft.blocks.mines.FurnaceMineBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.blocks.FakeLavaBlock;
+import net.geforcemods.securitycraft.blocks.FakeWaterBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
@@ -30,8 +27,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.RegistryObject;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IBlockComponentProvider;
@@ -39,21 +34,14 @@ import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaPlugin;
-import snownee.jade.api.TooltipPosition;
 import snownee.jade.api.WailaPlugin;
 import snownee.jade.api.config.IPluginConfig;
-import snownee.jade.api.ui.IElement;
-import snownee.jade.api.ui.IElement.Align;
-import snownee.jade.impl.Tooltip;
-import snownee.jade.impl.ui.ItemStackElement;
-import snownee.jade.impl.ui.TextElement;
 
 @WailaPlugin(SecurityCraft.MODID)
 public class JadeDataProvider extends WailaCompatConstants implements IWailaPlugin {
 	public static final SecurityCraftInfo SECURITYCRAFT_INFO = new SecurityCraftInfo();
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void registerClient(IWailaClientRegistration registration) {
 		registration.addConfig(SHOW_OWNER, true);
 		registration.addConfig(SHOW_MODULES, true);
@@ -66,18 +54,12 @@ public class JadeDataProvider extends WailaCompatConstants implements IWailaPlug
 		registration.addBeforeRenderCallback((tooltip, rect, poseStack, accessor, color) -> ClientHandler.isPlayerMountedOnCamera());
 		registration.addRayTraceCallback((hit, accessor, original) -> {
 			if (accessor instanceof BlockAccessor blockAccessor) {
-				if (blockAccessor.getBlock() instanceof IOverlayDisplay block) {
-					ItemStack fake = block.getDisplayStack(blockAccessor.getLevel(), blockAccessor.getBlockState(), blockAccessor.getPosition());
-					return registration.blockAccessor().from(blockAccessor).fakeBlock(fake).build();
-				}
-				if (blockAccessor.getBlock() instanceof FakeWaterBlock) {
-					BlockState camo = Blocks.WATER.defaultBlockState();
-					return registration.blockAccessor().from(blockAccessor).blockState(camo).build();
-				}
-				if (blockAccessor.getBlock() instanceof FakeLavaBlock) {
-					BlockState camo = Blocks.LAVA.defaultBlockState();
-					return registration.blockAccessor().from(blockAccessor).blockState(camo).build();
-				}
+				if (blockAccessor.getBlock() instanceof IOverlayDisplay block)
+					return registration.blockAccessor().from(blockAccessor).fakeBlock(block.getDisplayStack(blockAccessor.getLevel(), blockAccessor.getBlockState(), blockAccessor.getPosition())).build();
+				else if (blockAccessor.getBlock() instanceof FakeWaterBlock)
+					return registration.blockAccessor().from(blockAccessor).blockState(Blocks.WATER.defaultBlockState()).build();
+				else if (blockAccessor.getBlock() instanceof FakeLavaBlock)
+					return registration.blockAccessor().from(blockAccessor).blockState(Blocks.LAVA.defaultBlockState()).build();
 			}
 			return accessor;
 		});
