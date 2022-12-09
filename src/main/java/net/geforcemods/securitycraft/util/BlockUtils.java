@@ -40,7 +40,7 @@ public class BlockUtils {
 	}
 
 	public static ExplosionInteraction getExplosionInteraction() {
-		return ConfigHandler.SERVER.mineExplosionsBreakBlocks.get() ? ExplosionInteraction.TNT : ExplosionInteraction.NONE;
+		return ConfigHandler.SERVER.mineExplosionsBreakBlocks.get() ? ExplosionInteraction.BLOCK : ExplosionInteraction.NONE;
 	}
 
 	public static boolean hasActiveSCBlockNextTo(Level level, BlockPos pos) {
