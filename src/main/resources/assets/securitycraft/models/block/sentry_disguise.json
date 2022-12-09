@@ -1,5 +1,3 @@
 {
-	"textures": {
-		"particle": "securitycraft:entity/sentry"
-	}
+	"textures": {}
 }
