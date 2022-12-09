@@ -194,8 +194,8 @@ import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.OwnableBE;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
-import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
 import net.geforcemods.securitycraft.util.Reinforced;
+import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.sounds.SoundEvent;
@@ -266,7 +266,7 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final RegistryObject<Block> BLOCK_POCKET_MANAGER = BLOCKS.register("block_pocket_manager", () -> new BlockPocketManagerBlock(prop()));
 	@HasManualPage
-	@RegisterItemBlock(SCItemGroup.DECORATION)
+	@RegisterItemBlock(SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> BLOCK_POCKET_WALL = BLOCKS.register("block_pocket_wall", () -> new BlockPocketWallBlock(prop().noCollission().isRedstoneConductor((s, w, p) -> false).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation)));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
@@ -274,14 +274,14 @@ public class SCContent {
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> CAGE_TRAP = BLOCKS.register("cage_trap", () -> new CageTrapBlock(propDisguisable(Material.METAL).sound(SoundType.METAL).noCollission()));
-	@RegisterItemBlock(SCItemGroup.DECORATION)
+	@RegisterItemBlock(SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("chiseled_crystal_quartz", () -> new Block(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
 	@HasManualPage
-	@RegisterItemBlock(SCItemGroup.DECORATION)
+	@RegisterItemBlock(SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> CRYSTAL_QUARTZ = BLOCKS.register("crystal_quartz", () -> new Block(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
-	@RegisterItemBlock(SCItemGroup.DECORATION)
+	@RegisterItemBlock(SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("crystal_quartz_pillar", () -> new RotatedPillarBlock(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
-	@RegisterItemBlock(SCItemGroup.DECORATION)
+	@RegisterItemBlock(SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> CRYSTAL_QUARTZ_SLAB = BLOCKS.register("crystal_quartz_slab", () -> new SlabBlock(Block.Properties.of(Material.STONE).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
@@ -302,7 +302,7 @@ public class SCContent {
 	public static final RegistryObject<Block> INVENTORY_SCANNER = BLOCKS.register("inventory_scanner", () -> new InventoryScannerBlock(propDisguisable()));
 	public static final RegistryObject<Block> INVENTORY_SCANNER_FIELD = BLOCKS.register("inventory_scanner_field", () -> new InventoryScannerFieldBlock(prop(Material.GLASS)));
 	@HasManualPage
-	@RegisterItemBlock(SCItemGroup.DECORATION)
+	@RegisterItemBlock(SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> IRON_FENCE = BLOCKS.register("electrified_iron_fence", () -> new IronFenceBlock(prop(Material.METAL, MaterialColor.METAL).sound(SoundType.METAL)));
 	public static final RegistryObject<Block> KEY_PANEL_BLOCK = BLOCKS.register("key_panel", () -> new KeyPanelBlock(prop(Material.METAL)));
 	@HasManualPage
@@ -347,7 +347,7 @@ public class SCContent {
 	@OwnableBE
 	public static final RegistryObject<Block> REINFORCED_DOOR = BLOCKS.register("iron_door_reinforced", () -> new ReinforcedDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion()));
 	@HasManualPage
-	@RegisterItemBlock(SCItemGroup.DECORATION)
+	@RegisterItemBlock(SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> REINFORCED_FENCEGATE = BLOCKS.register("reinforced_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
@@ -377,7 +377,7 @@ public class SCContent {
 	public static final RegistryObject<Block> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(prop(Material.METAL)));
 	@HasManualPage
 	public static final RegistryObject<Block> SONIC_SECURITY_SYSTEM = BLOCKS.register("sonic_security_system", () -> new SonicSecuritySystemBlock(prop(Material.METAL).sound(SoundType.METAL).isRedstoneConductor(SonicSecuritySystemBlock::isNormalCube).noCollission()));
-	@RegisterItemBlock(SCItemGroup.DECORATION)
+	@RegisterItemBlock(SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> STAIRS_CRYSTAL_QUARTZ = BLOCKS.register("crystal_quartz_stairs", () -> new StairBlock(() -> CRYSTAL_QUARTZ.get().defaultBlockState(), Block.Properties.copy(CRYSTAL_QUARTZ.get())));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> TRACK_MINE = BLOCKS.register("track_mine", () -> new TrackMineBlock(prop(Material.METAL, 0.7F).noCollission().sound(SoundType.METAL)));
@@ -2168,7 +2168,7 @@ public class SCContent {
 	public static final RegistryObject<Block> REINFORCED_WARPED_PRESSURE_PLATE = BLOCKS.register("reinforced_warped_pressure_plate", () -> woodenPressurePlate(Blocks.WARPED_PRESSURE_PLATE, SoundType.NETHER_WOOD, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_OFF, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_ON));
 	@HasManualPage(hasRecipeDescription = true)
 	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
+	@Reinforced(hasReinforcedTint = false, itemGroup = SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> REINFORCED_IRON_TRAPDOOR = BLOCKS.register("reinforced_iron_trapdoor", () -> new ReinforcedIronTrapDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion().isValidSpawn(SCContent::never)));
 
 	//ordered by vanilla <1.19.3 brewing tab order
@@ -2183,19 +2183,19 @@ public class SCContent {
 
 	//misc
 	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2)
+	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> REINFORCED_CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_chiseled_crystal_quartz_block", () -> new BlockPocketBlock(prop(), SCContent.CHISELED_CRYSTAL_QUARTZ));
 	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2)
+	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_crystal_quartz_block", () -> new BlockPocketBlock(prop(), SCContent.CRYSTAL_QUARTZ));
 	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2)
+	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("reinforced_crystal_quartz_pillar", () -> new ReinforcedRotatedCrystalQuartzPillar(prop(), SCContent.CRYSTAL_QUARTZ_PILLAR));
 	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2)
+	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_crystal_quartz_slab", () -> new ReinforcedSlabBlock(prop(), SCContent.CRYSTAL_QUARTZ_SLAB));
 	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2)
+	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(prop(), SCContent.STAIRS_CRYSTAL_QUARTZ));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE

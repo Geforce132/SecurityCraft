@@ -54,8 +54,8 @@ import net.geforcemods.securitycraft.network.server.ToggleModule;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
-import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
 import net.geforcemods.securitycraft.util.Reinforced;
+import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.Util;
 import net.minecraft.core.registries.Registries;
@@ -99,7 +99,7 @@ public class RegistrationHandler {
 						Item blockItem = new BlockItem(block, new Item.Properties().fireResistant());
 
 						helper.register(Utils.getRegistryName(block), blockItem);
-						STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION).add(new ItemStack(blockItem));
+						STACKS_FOR_ITEM_GROUPS.get(field.getAnnotation(Reinforced.class).itemGroup()).add(new ItemStack(blockItem));
 					}
 					else if (field.isAnnotationPresent(RegisterItemBlock.class)) {
 						Block block = ((RegistryObject<Block>) field.get(null)).get();
@@ -152,18 +152,71 @@ public class RegistrationHandler {
 					vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.BUILDING_BLOCKS));
 					vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.COLORED_BLOCKS));
 					vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.NATURAL_BLOCKS));
+					vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.FUNCTIONAL_BLOCKS));
 					vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.REDSTONE_BLOCKS));
 					decorationGroupItems.sort((a, b) -> {
-						if (a.getItem() instanceof BlockItem blockItemA && blockItemA.getBlock() instanceof IReinforcedBlock reinforcedBlockA && b.getItem() instanceof BlockItem blockItemB && blockItemB.getBlock() instanceof IReinforcedBlock reinforcedBlockB) {
-							int indexA = vanillaOrderedItems.indexOf(reinforcedBlockA.getVanillaBlock().asItem());
-							int indexB = vanillaOrderedItems.indexOf(reinforcedBlockB.getVanillaBlock().asItem());
+						//if a isn't an item that has a vanilla counterpart, it should appear at the back
+						if (!(a.getItem() instanceof BlockItem blockItemA && blockItemA.getBlock() instanceof IReinforcedBlock reinforcedBlockA))
+							return 1;
 
-							return Integer.compare(indexA == -1 ? Integer.MAX_VALUE : indexA, indexB == -1 ? Integer.MAX_VALUE : indexB);
-						}
+						//same for b
+						if (!(b.getItem() instanceof BlockItem blockItemB && blockItemB.getBlock() instanceof IReinforcedBlock reinforcedBlockB))
+							return -1;
 
-						return Integer.MAX_VALUE;
+						int indexA = vanillaOrderedItems.indexOf(reinforcedBlockA.getVanillaBlock().asItem());
+						int indexB = vanillaOrderedItems.indexOf(reinforcedBlockB.getVanillaBlock().asItem());
+
+						//items that have no counterpart in any of the above vanilla tabs should appear at the end
+						if (indexA == -1)
+							return 1;
+						else if (indexB == -1)
+							return -1;
+
+						return Integer.compare(indexA, indexB);
 					});
-					decorationGroupItems.forEach(output::accept);
+
+					//loop starts from the back, because the reinforced bookshelf is expected to be towards the end of the list
+					//can't use indexOf, because ItemStack does not implement Object#equals
+					for (int i = decorationGroupItems.size() - 1; i >= 0; i--) {
+						//sort secret signs after the reinforced bookshelf
+						if (decorationGroupItems.get(i).getItem() == SCContent.REINFORCED_BOOKSHELF.get().asItem()) {
+							decorationGroupItems.addAll(i + 1, List.of( //@formatter:off
+									new ItemStack(SCContent.SECRET_OAK_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_SPRUCE_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_BIRCH_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_JUNGLE_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_ACACIA_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_DARK_OAK_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_MANGROVE_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_CRIMSON_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_WARPED_SIGN_ITEM.get())));
+							//@formatter:on
+							break;
+						}
+					}
+
+					decorationGroupItems.addAll(List.of( //@formatter:off
+							new ItemStack(SCContent.CRYSTAL_QUARTZ.get()),
+							new ItemStack(SCContent.STAIRS_CRYSTAL_QUARTZ.get()),
+							new ItemStack(SCContent.CRYSTAL_QUARTZ_SLAB.get()),
+							new ItemStack(SCContent.CHISELED_CRYSTAL_QUARTZ.get()),
+							new ItemStack(SCContent.CRYSTAL_QUARTZ_PILLAR.get()),
+							new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ.get()),
+							new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get()),
+							new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get()),
+							new ItemStack(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get()),
+							new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()),
+							new ItemStack(SCContent.BLOCK_POCKET_WALL.get()),
+							new ItemStack(SCContent.IRON_FENCE.get()),
+							new ItemStack(SCContent.REINFORCED_FENCEGATE.get()),
+							new ItemStack(SCContent.REINFORCED_IRON_TRAPDOOR.get()),
+							new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()),
+							new ItemStack(SCContent.KEYPAD_DOOR_ITEM.get()),
+							new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()),
+							new ItemStack(SCContent.DISPLAY_CASE.get()),
+							new ItemStack(SCContent.GLOW_DISPLAY_CASE.get())));
+					//@formatter:on
+					output.acceptAll(decorationGroupItems);
 				}));
 	}
 
