@@ -241,6 +241,9 @@ public class RegistrationHandler {
 							new ItemStack(SCContent.DISPLAY_CASE.get()),
 							new ItemStack(SCContent.GLOW_DISPLAY_CASE.get())));
 					//@formatter:on
+					output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
+					output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get());
+					output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get());
 					output.acceptAll(decorationGroupItems);
 				}));
 	}
