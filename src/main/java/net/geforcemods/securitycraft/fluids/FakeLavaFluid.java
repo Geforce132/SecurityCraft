@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.fluids;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
@@ -122,6 +123,16 @@ public abstract class FakeLavaFluid extends ForgeFlowingFluid {
 	@Override
 	public ParticleOptions getDripParticle() {
 		return ParticleTypes.DRIPPING_LAVA;
+	}
+
+	@Override
+	protected boolean canConvertToSource(Level level) {
+		return level.getGameRules().getBoolean(SecurityCraft.RULE_FAKE_LAVA_SOURCE_CONVERSION);
+	}
+
+	@Override
+	public boolean canConvertToSource(FluidState state, Level level, BlockPos pos) {
+		return canConvertToSource(level);
 	}
 
 	@Override
