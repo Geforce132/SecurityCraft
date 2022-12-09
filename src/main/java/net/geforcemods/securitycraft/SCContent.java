@@ -389,7 +389,7 @@ public class SCContent {
 	public static final RegistryObject<Block> USERNAME_LOGGER = BLOCKS.register("username_logger", () -> new UsernameLoggerBlock(propDisguisable()));
 	@HasManualPage
 	@OwnableBE
-	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
+	@RegisterItemBlock(SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(prop(Material.DECORATION, 1.0F)));
 	public static final RegistryObject<? extends LiquidBlock> FAKE_WATER_BLOCK = BLOCKS.register("fake_water_block", () -> new FakeWaterBlock(prop(Material.WATER).noCollission(), FAKE_WATER));
 	public static final RegistryObject<? extends LiquidBlock> FAKE_LAVA_BLOCK = BLOCKS.register("fake_lava_block", () -> new FakeLavaBlock(prop(Material.LAVA).noCollission().randomTicks().lightLevel(state -> 15), FAKE_LAVA));
@@ -477,15 +477,15 @@ public class SCContent {
 	public static final RegistryObject<Block> GILDED_BLACKSTONE_MINE = BLOCKS.register("gilded_blackstone_mine", () -> new BaseFullMineBlock(mineProp(Blocks.GILDED_BLACKSTONE), Blocks.GILDED_BLACKSTONE));
 	@HasManualPage(PageGroup.FURNACE_MINES)
 	@OwnableBE
-	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
+	@RegisterItemBlock(SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> FURNACE_MINE = BLOCKS.register("furnace_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F).requiresCorrectToolForDrops(), Blocks.FURNACE));
 	@HasManualPage(PageGroup.FURNACE_MINES)
 	@OwnableBE
-	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
+	@RegisterItemBlock(SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> SMOKER_MINE = BLOCKS.register("smoker_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F).requiresCorrectToolForDrops(), Blocks.SMOKER));
 	@HasManualPage(PageGroup.FURNACE_MINES)
 	@OwnableBE
-	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
+	@RegisterItemBlock(SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> BLAST_FURNACE_MINE = BLOCKS.register("blast_furnace_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F).requiresCorrectToolForDrops(), Blocks.BLAST_FURNACE));
 
 	//reinforced blocks (ordered by vanilla <1.19.3 building blocks creative tab order)

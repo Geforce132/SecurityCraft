@@ -7,6 +7,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -132,6 +133,13 @@ public class RegistrationHandler {
 
 	@SubscribeEvent
 	public static void onCreativeModeTabRegister(CreativeModeTabEvent.Register event) {
+		List<Item> vanillaOrderedItems = new ArrayList<>();
+
+		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.BUILDING_BLOCKS));
+		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.COLORED_BLOCKS));
+		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.NATURAL_BLOCKS));
+		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.FUNCTIONAL_BLOCKS));
+		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.REDSTONE_BLOCKS));
 		//@formatter:off
 		SecurityCraft.technicalTab = event.registerCreativeModeTab(new ResourceLocation(SecurityCraft.MODID, "technical"), builder -> builder
 				.icon(() -> new ItemStack(SCContent.USERNAME_LOGGER.get()))
@@ -140,20 +148,36 @@ public class RegistrationHandler {
 		SecurityCraft.mineTab = event.registerCreativeModeTab(new ResourceLocation(SecurityCraft.MODID, "explosives"), List.of(), List.of(SecurityCraft.technicalTab), builder -> builder
 				.icon(() -> new ItemStack(SCContent.MINE.get()))
 				.title(Component.translatable("itemGroup.securitycraft.explosives"))
-				.displayItems((features, output, hasPermissions) -> STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES).forEach(output::accept)));
+				.displayItems((features, output, hasPermissions) -> {
+		//@formatter:on
+					List<ItemStack> mineGroupItems = STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES);
+
+					mineGroupItems.sort((a, b) -> {
+						//if a isn't an item that has a vanilla counterpart, it should appear at the front
+						if (!(a.getItem() instanceof BlockItem blockItemA && blockItemA.getBlock() instanceof BaseFullMineBlock blockMineA))
+							return 1;
+
+						//same for b
+						if (!(b.getItem() instanceof BlockItem blockItemB && blockItemB.getBlock() instanceof BaseFullMineBlock blockMineB))
+							return -1;
+
+						return Integer.compare(vanillaOrderedItems.indexOf(blockMineA.getBlockDisguisedAs().asItem()), vanillaOrderedItems.indexOf(blockMineB.getBlockDisguisedAs().asItem()));
+					});
+					output.accept(SCContent.MINE.get());
+					output.acceptAll(mineGroupItems);
+					output.acceptAll(List.of( //@formatter:off
+							new ItemStack(SCContent.ANCIENT_DEBRIS_MINE_ITEM.get()),
+							new ItemStack(SCContent.FURNACE_MINE.get()),
+							new ItemStack(SCContent.SMOKER_MINE.get()),
+							new ItemStack(SCContent.BLAST_FURNACE_MINE.get())));
+				}));
 		SecurityCraft.decorationTab = event.registerCreativeModeTab(new ResourceLocation(SecurityCraft.MODID, "decoration"), List.of(), List.of(SecurityCraft.mineTab), builder -> builder
 				.icon(() -> new ItemStack(SCContent.REINFORCED_OAK_STAIRS.get()))
 				.title(Component.translatable("itemGroup.securitycraft.decoration"))
 				.displayItems((features, output, hasPermissions) -> {
 		//@formatter:on
 					List<ItemStack> decorationGroupItems = STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION);
-					List<Item> vanillaOrderedItems = new ArrayList<>();
 
-					vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.BUILDING_BLOCKS));
-					vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.COLORED_BLOCKS));
-					vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.NATURAL_BLOCKS));
-					vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.FUNCTIONAL_BLOCKS));
-					vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.REDSTONE_BLOCKS));
 					decorationGroupItems.sort((a, b) -> {
 						//if a isn't an item that has a vanilla counterpart, it should appear at the back
 						if (!(a.getItem() instanceof BlockItem blockItemA && blockItemA.getBlock() instanceof IReinforcedBlock reinforcedBlockA))
@@ -164,12 +188,15 @@ public class RegistrationHandler {
 							return -1;
 
 						int indexA = vanillaOrderedItems.indexOf(reinforcedBlockA.getVanillaBlock().asItem());
-						int indexB = vanillaOrderedItems.indexOf(reinforcedBlockB.getVanillaBlock().asItem());
 
 						//items that have no counterpart in any of the above vanilla tabs should appear at the end
 						if (indexA == -1)
 							return 1;
-						else if (indexB == -1)
+
+						int indexB = vanillaOrderedItems.indexOf(reinforcedBlockB.getVanillaBlock().asItem());
+
+						//same here
+						if (indexB == -1)
 							return -1;
 
 						return Integer.compare(indexA, indexB);
