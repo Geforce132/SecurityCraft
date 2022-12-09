@@ -266,7 +266,7 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final RegistryObject<Block> BLOCK_POCKET_MANAGER = BLOCKS.register("block_pocket_manager", () -> new BlockPocketManagerBlock(prop()));
 	@HasManualPage
-	@RegisterItemBlock(SCItemGroup.MANUAL)
+	@RegisterItemBlock
 	public static final RegistryObject<Block> BLOCK_POCKET_WALL = BLOCKS.register("block_pocket_wall", () -> new BlockPocketWallBlock(prop().noCollission().isRedstoneConductor((s, w, p) -> false).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation)));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
@@ -274,14 +274,14 @@ public class SCContent {
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> CAGE_TRAP = BLOCKS.register("cage_trap", () -> new CageTrapBlock(propDisguisable(Material.METAL).sound(SoundType.METAL).noCollission()));
-	@RegisterItemBlock(SCItemGroup.MANUAL)
+	@RegisterItemBlock
 	public static final RegistryObject<Block> CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("chiseled_crystal_quartz", () -> new Block(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
 	@HasManualPage
-	@RegisterItemBlock(SCItemGroup.MANUAL)
+	@RegisterItemBlock
 	public static final RegistryObject<Block> CRYSTAL_QUARTZ = BLOCKS.register("crystal_quartz", () -> new Block(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
-	@RegisterItemBlock(SCItemGroup.MANUAL)
+	@RegisterItemBlock
 	public static final RegistryObject<Block> CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("crystal_quartz_pillar", () -> new RotatedPillarBlock(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
-	@RegisterItemBlock(SCItemGroup.MANUAL)
+	@RegisterItemBlock
 	public static final RegistryObject<Block> CRYSTAL_QUARTZ_SLAB = BLOCKS.register("crystal_quartz_slab", () -> new SlabBlock(Block.Properties.of(Material.STONE).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
@@ -302,7 +302,7 @@ public class SCContent {
 	public static final RegistryObject<Block> INVENTORY_SCANNER = BLOCKS.register("inventory_scanner", () -> new InventoryScannerBlock(propDisguisable()));
 	public static final RegistryObject<Block> INVENTORY_SCANNER_FIELD = BLOCKS.register("inventory_scanner_field", () -> new InventoryScannerFieldBlock(prop(Material.GLASS)));
 	@HasManualPage
-	@RegisterItemBlock(SCItemGroup.MANUAL)
+	@RegisterItemBlock
 	public static final RegistryObject<Block> IRON_FENCE = BLOCKS.register("electrified_iron_fence", () -> new IronFenceBlock(prop(Material.METAL, MaterialColor.METAL).sound(SoundType.METAL)));
 	public static final RegistryObject<Block> KEY_PANEL_BLOCK = BLOCKS.register("key_panel", () -> new KeyPanelBlock(prop(Material.METAL)));
 	@HasManualPage
@@ -347,7 +347,7 @@ public class SCContent {
 	@OwnableBE
 	public static final RegistryObject<Block> REINFORCED_DOOR = BLOCKS.register("iron_door_reinforced", () -> new ReinforcedDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion()));
 	@HasManualPage
-	@RegisterItemBlock(SCItemGroup.MANUAL)
+	@RegisterItemBlock
 	public static final RegistryObject<Block> REINFORCED_FENCEGATE = BLOCKS.register("reinforced_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
@@ -377,19 +377,19 @@ public class SCContent {
 	public static final RegistryObject<Block> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(prop(Material.METAL)));
 	@HasManualPage
 	public static final RegistryObject<Block> SONIC_SECURITY_SYSTEM = BLOCKS.register("sonic_security_system", () -> new SonicSecuritySystemBlock(prop(Material.METAL).sound(SoundType.METAL).isRedstoneConductor(SonicSecuritySystemBlock::isNormalCube).noCollission()));
-	@RegisterItemBlock(SCItemGroup.MANUAL)
+	@RegisterItemBlock
 	public static final RegistryObject<Block> STAIRS_CRYSTAL_QUARTZ = BLOCKS.register("crystal_quartz_stairs", () -> new StairBlock(() -> CRYSTAL_QUARTZ.get().defaultBlockState(), Block.Properties.copy(CRYSTAL_QUARTZ.get())));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> TRACK_MINE = BLOCKS.register("track_mine", () -> new TrackMineBlock(prop(Material.METAL, 0.7F).noCollission().sound(SoundType.METAL)));
 	@HasManualPage
-	@RegisterItemBlock(SCItemGroup.TECHNICAL)
+	@RegisterItemBlock
 	public static final RegistryObject<Block> TROPHY_SYSTEM = BLOCKS.register("trophy_system", () -> new TrophySystemBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> USERNAME_LOGGER = BLOCKS.register("username_logger", () -> new UsernameLoggerBlock(propDisguisable()));
 	@HasManualPage
 	@OwnableBE
-	@RegisterItemBlock(SCItemGroup.MANUAL)
+	@RegisterItemBlock
 	public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(prop(Material.DECORATION, 1.0F)));
 	public static final RegistryObject<? extends LiquidBlock> FAKE_WATER_BLOCK = BLOCKS.register("fake_water_block", () -> new FakeWaterBlock(prop(Material.WATER).noCollission(), FAKE_WATER));
 	public static final RegistryObject<? extends LiquidBlock> FAKE_LAVA_BLOCK = BLOCKS.register("fake_lava_block", () -> new FakeLavaBlock(prop(Material.LAVA).noCollission().randomTicks().lightLevel(state -> 15), FAKE_LAVA));
@@ -477,15 +477,15 @@ public class SCContent {
 	public static final RegistryObject<Block> GILDED_BLACKSTONE_MINE = BLOCKS.register("gilded_blackstone_mine", () -> new BaseFullMineBlock(mineProp(Blocks.GILDED_BLACKSTONE), Blocks.GILDED_BLACKSTONE));
 	@HasManualPage(PageGroup.FURNACE_MINES)
 	@OwnableBE
-	@RegisterItemBlock(SCItemGroup.MANUAL)
+	@RegisterItemBlock
 	public static final RegistryObject<Block> FURNACE_MINE = BLOCKS.register("furnace_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F).requiresCorrectToolForDrops(), Blocks.FURNACE));
 	@HasManualPage(PageGroup.FURNACE_MINES)
 	@OwnableBE
-	@RegisterItemBlock(SCItemGroup.MANUAL)
+	@RegisterItemBlock
 	public static final RegistryObject<Block> SMOKER_MINE = BLOCKS.register("smoker_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F).requiresCorrectToolForDrops(), Blocks.SMOKER));
 	@HasManualPage(PageGroup.FURNACE_MINES)
 	@OwnableBE
-	@RegisterItemBlock(SCItemGroup.MANUAL)
+	@RegisterItemBlock
 	public static final RegistryObject<Block> BLAST_FURNACE_MINE = BLOCKS.register("blast_furnace_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F).requiresCorrectToolForDrops(), Blocks.BLAST_FURNACE));
 
 	//reinforced blocks (ordered by vanilla <1.19.3 building blocks creative tab order)

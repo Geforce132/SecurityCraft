@@ -96,18 +96,24 @@ public class RegistrationHandler {
 			for (Field field : SCContent.class.getFields()) {
 				try {
 					if (field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).registerBlockItem()) {
+						SCItemGroup group = field.getAnnotation(Reinforced.class).itemGroup();
 						Block block = ((RegistryObject<Block>) field.get(null)).get();
 						Item blockItem = new BlockItem(block, new Item.Properties().fireResistant());
 
 						helper.register(Utils.getRegistryName(block), blockItem);
-						STACKS_FOR_ITEM_GROUPS.get(field.getAnnotation(Reinforced.class).itemGroup()).add(new ItemStack(blockItem));
+
+						if (group != SCItemGroup.MANUAL)
+							STACKS_FOR_ITEM_GROUPS.get(group).add(new ItemStack(blockItem));
 					}
 					else if (field.isAnnotationPresent(RegisterItemBlock.class)) {
+						SCItemGroup group = field.getAnnotation(RegisterItemBlock.class).value();
 						Block block = ((RegistryObject<Block>) field.get(null)).get();
 						Item blockItem = new BlockItem(block, new Item.Properties());
 
 						helper.register(Utils.getRegistryName(block), blockItem);
-						STACKS_FOR_ITEM_GROUPS.get(field.getAnnotation(RegisterItemBlock.class).value()).add(new ItemStack(blockItem));
+
+						if (group != SCItemGroup.MANUAL)
+							STACKS_FOR_ITEM_GROUPS.get(group).add(new ItemStack(blockItem));
 					}
 				}
 				catch (IllegalArgumentException | IllegalAccessException e) {
@@ -137,7 +143,82 @@ public class RegistrationHandler {
 		SecurityCraft.technicalTab = event.registerCreativeModeTab(new ResourceLocation(SecurityCraft.MODID, "technical"), builder -> builder
 				.icon(() -> new ItemStack(SCContent.USERNAME_LOGGER.get()))
 				.title(Component.translatable("itemGroup.securitycraft.technical"))
-				.displayItems((features, output, hasPermissions) -> STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.TECHNICAL).forEach(output::accept)));
+				.displayItems((features, output, hasPermissions) -> {
+					output.acceptAll(List.of(
+							new ItemStack(SCContent.SC_MANUAL.get()),
+							new ItemStack(SCContent.FRAME.get()),
+							new ItemStack(SCContent.KEY_PANEL.get()),
+							new ItemStack(SCContent.KEYPAD.get()),
+							new ItemStack(SCContent.KEYPAD_CHEST.get()),
+							new ItemStack(SCContent.KEYPAD_FURNACE.get()),
+							new ItemStack(SCContent.KEYPAD_SMOKER.get()),
+							new ItemStack(SCContent.KEYPAD_BLAST_FURNACE.get()),
+							new ItemStack(SCContent.DISPLAY_CASE.get()),
+							new ItemStack(SCContent.GLOW_DISPLAY_CASE.get()),
+							new ItemStack(SCContent.KEYCARD_READER.get()),
+							new ItemStack(SCContent.KEYCARD_LVL_1.get()),
+							new ItemStack(SCContent.KEYCARD_LVL_2.get()),
+							new ItemStack(SCContent.KEYCARD_LVL_3.get()),
+							new ItemStack(SCContent.KEYCARD_LVL_4.get()),
+							new ItemStack(SCContent.KEYCARD_LVL_5.get()),
+							new ItemStack(SCContent.LIMITED_USE_KEYCARD.get()),
+							new ItemStack(SCContent.CODEBREAKER.get()),
+							new ItemStack(SCContent.UNIVERSAL_KEY_CHANGER.get()),
+							new ItemStack(SCContent.RETINAL_SCANNER.get()),
+							new ItemStack(SCContent.LASER_BLOCK.get()),
+							new ItemStack(SCContent.INVENTORY_SCANNER.get()),
+							new ItemStack(SCContent.USERNAME_LOGGER.get()),
+							new ItemStack(SCContent.PORTABLE_RADAR.get()),
+							new ItemStack(SCContent.TROPHY_SYSTEM.get()),
+							new ItemStack(SCContent.RIFT_STABILIZER.get()),
+							new ItemStack(SCContent.BLOCK_CHANGE_DETECTOR.get()),
+							new ItemStack(SCContent.PROJECTOR.get()),
+							new ItemStack(SCContent.PROTECTO.get()),
+							new ItemStack(SCContent.MOTION_ACTIVATED_LIGHT.get()),
+							new ItemStack(SCContent.SECURITY_CAMERA.get()),
+							new ItemStack(SCContent.CAMERA_MONITOR.get()),
+							new ItemStack(SCContent.ALARM.get()),
+							new ItemStack(SCContent.PANIC_BUTTON.get()),
+							new ItemStack(SCContent.SENTRY.get()),
+							new ItemStack(SCContent.REMOTE_ACCESS_SENTRY.get()),
+							new ItemStack(SCContent.REMOTE_ACCESS_MINE.get()),
+							new ItemStack(SCContent.CAGE_TRAP.get()),
+							new ItemStack(SCContent.WIRE_CUTTERS.get()),
+							new ItemStack(SCContent.IRON_FENCE.get()),
+							new ItemStack(SCContent.REINFORCED_FENCEGATE.get()),
+							new ItemStack(SCContent.REINFORCED_IRON_TRAPDOOR.get()),
+							new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()),
+							new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()),
+							new ItemStack(SCContent.KEYPAD_DOOR_ITEM.get()),
+							new ItemStack(SCContent.BLOCK_POCKET_MANAGER.get()),
+							new ItemStack(SCContent.BLOCK_POCKET_WALL.get()),
+							new ItemStack(SCContent.SONIC_SECURITY_SYSTEM.get()),
+							new ItemStack(SCContent.PORTABLE_TUNE_PLAYER.get()),
+							new ItemStack(SCContent.REINFORCED_PISTON.get()),
+							new ItemStack(SCContent.REINFORCED_STICKY_PISTON.get()),
+							new ItemStack(SCContent.REINFORCED_OBSERVER.get()),
+							new ItemStack(SCContent.REINFORCED_CAULDRON.get()),
+							new ItemStack(SCContent.REINFORCED_HOPPER.get()),
+							new ItemStack(SCContent.ALLOWLIST_MODULE.get()),
+							new ItemStack(SCContent.DENYLIST_MODULE.get()),
+							new ItemStack(SCContent.DISGUISE_MODULE.get()),
+							new ItemStack(SCContent.REDSTONE_MODULE.get()),
+							new ItemStack(SCContent.SPEED_MODULE.get()),
+							new ItemStack(SCContent.SMART_MODULE.get()),
+							new ItemStack(SCContent.STORAGE_MODULE.get()),
+							new ItemStack(SCContent.HARMING_MODULE.get()),
+							new ItemStack(SCContent.UNIVERSAL_BLOCK_MODIFIER.get()),
+							new ItemStack(SCContent.UNIVERSAL_OWNER_CHANGER.get()),
+							new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()),
+							new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get()),
+							new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()),
+							new ItemStack(SCContent.TASER.get()),
+							new ItemStack(SCContent.BRIEFCASE.get()),
+							new ItemStack(SCContent.FAKE_WATER_BUCKET.get()),
+							new ItemStack(SCContent.FAKE_LAVA_BUCKET.get()),
+							new ItemStack(SCContent.ADMIN_TOOL.get())));
+					output.acceptAll(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.TECHNICAL));
+				}));
 		SecurityCraft.mineTab = event.registerCreativeModeTab(new ResourceLocation(SecurityCraft.MODID, "explosives"), List.of(), List.of(SecurityCraft.technicalTab), builder -> builder
 				.icon(() -> new ItemStack(SCContent.MINE.get()))
 				.title(Component.translatable("itemGroup.securitycraft.explosives"))
@@ -236,8 +317,8 @@ public class RegistrationHandler {
 							new ItemStack(SCContent.REINFORCED_FENCEGATE.get()),
 							new ItemStack(SCContent.REINFORCED_IRON_TRAPDOOR.get()),
 							new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()),
-							new ItemStack(SCContent.KEYPAD_DOOR_ITEM.get()),
 							new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()),
+							new ItemStack(SCContent.KEYPAD_DOOR_ITEM.get()),
 							new ItemStack(SCContent.DISPLAY_CASE.get()),
 							new ItemStack(SCContent.GLOW_DISPLAY_CASE.get())));
 					//@formatter:on

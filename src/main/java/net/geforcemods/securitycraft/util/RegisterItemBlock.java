@@ -20,5 +20,5 @@ public @interface RegisterItemBlock {
 	 * @return The creative tab. If this returns {@link SCItemGroup#MANUAL}, then the item is not automatically registered to any
 	 *         tab
 	 */
-	SCItemGroup value() default SCItemGroup.TECHNICAL;
+	SCItemGroup value() default SCItemGroup.MANUAL;
 }
