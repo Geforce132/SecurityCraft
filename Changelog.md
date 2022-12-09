@@ -9,6 +9,7 @@
 - API: Moved and renamed Owner#isOwner methods to IPasswordProtected#isOwnedBy
 - Fix: The Reinforced Water Cauldron and Reinforced Grass Block don't have a reinforced tint
 - Fix: Reinforced Stained Glass Pane items display incorrectly
+- Fix: The Reinforced Moss Carpet has a different sound compared to the vanilla Moss Carpet
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
