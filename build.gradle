@@ -102,7 +102,7 @@ dependencies {
     
     implementation fg.deobf("curse.maven:jei-238222:4068188")
     implementation fg.deobf("curse.maven:the-one-probe-245211:3965693")
-    implementation fg.deobf("curse.maven:jade-324717:4096513")
+    implementation fg.deobf("curse.maven:jade-324717:4159759")
     implementation fg.deobf("curse.maven:betterf3-401648:4030573")
     implementation fg.deobf("curse.maven:cloth-config-348521:3972423") //betterf3 dependency
     implementation fg.deobf("curse.maven:wthit-forge-455982:4044026")

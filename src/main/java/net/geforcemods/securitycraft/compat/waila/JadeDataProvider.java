@@ -16,17 +16,16 @@ import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IBlockComponentProvider;
@@ -36,6 +35,9 @@ import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaPlugin;
 import snownee.jade.api.WailaPlugin;
 import snownee.jade.api.config.IPluginConfig;
+import snownee.jade.api.ui.IElement.Align;
+import snownee.jade.impl.Tooltip;
+import snownee.jade.impl.ui.TextElement;
 
 @WailaPlugin(SecurityCraft.MODID)
 public class JadeDataProvider extends WailaCompatConstants implements IWailaPlugin {
@@ -54,13 +56,22 @@ public class JadeDataProvider extends WailaCompatConstants implements IWailaPlug
 		registration.addBeforeRenderCallback((tooltip, rect, poseStack, accessor, color) -> ClientHandler.isPlayerMountedOnCamera());
 		registration.addRayTraceCallback((hit, accessor, original) -> {
 			if (accessor instanceof BlockAccessor blockAccessor) {
-				if (blockAccessor.getBlock() instanceof IOverlayDisplay block)
-					return registration.blockAccessor().from(blockAccessor).fakeBlock(block.getDisplayStack(blockAccessor.getLevel(), blockAccessor.getBlockState(), blockAccessor.getPosition())).build();
-				else if (blockAccessor.getBlock() instanceof FakeWaterBlock)
+				Block block = blockAccessor.getBlock();
+
+				if (block instanceof IOverlayDisplay overlayDisplay) {
+					Level level = blockAccessor.getLevel();
+					BlockState state = blockAccessor.getBlockState();
+					BlockPos pos = blockAccessor.getPosition();
+
+					if (overlayDisplay.shouldShowSCInfo(level, state, pos))
+						return registration.blockAccessor().from(blockAccessor).fakeBlock(overlayDisplay.getDisplayStack(level, state, pos)).build();
+				}
+				else if (block instanceof FakeWaterBlock)
 					return registration.blockAccessor().from(blockAccessor).blockState(Blocks.WATER.defaultBlockState()).build();
-				else if (blockAccessor.getBlock() instanceof FakeLavaBlock)
+				else if (block instanceof FakeLavaBlock)
 					return registration.blockAccessor().from(blockAccessor).blockState(Blocks.LAVA.defaultBlockState()).build();
 			}
+
 			return accessor;
 		});
 	}
@@ -86,6 +97,9 @@ public class JadeDataProvider extends WailaCompatConstants implements IWailaPlug
 			BlockEntity be = data.getBlockEntity();
 
 			if (be != null) {
+				if (tooltip instanceof Tooltip t)
+					t.lines.get(0).getAlignedElements(Align.LEFT).set(0, new TextElement(Component.translatable(((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition()).getDescriptionId()).setStyle(ITEM_NAME_STYLE)));
+
 				//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
 				if (config.get(SHOW_OWNER) && be instanceof IOwnable ownable && Utils.getRegistryName(block).getNamespace().equals(SecurityCraft.MODID))
 					tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner().getName())));
@@ -150,5 +164,4 @@ public class JadeDataProvider extends WailaCompatConstants implements IWailaPlug
 			return new ResourceLocation(SecurityCraft.MODID, "info");
 		}
 	}
-
 }
