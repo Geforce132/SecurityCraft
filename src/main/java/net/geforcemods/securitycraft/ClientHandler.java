@@ -145,7 +145,7 @@ public class ClientHandler {
 	//@formatter:on
 
 	@SubscribeEvent
-	public static void onModelBakingCompleted(ModelEvent.BakingCompleted event) {
+	public static void onModelBakingCompleted(ModelEvent.ModifyBakingResult event) {
 		//@formatter:off
 		String[] mines = {
 				"ancient_debris",
@@ -201,7 +201,7 @@ public class ClientHandler {
 		modelRegistry.put(mrl, new DisguisableDynamicBakedModel(modelRegistry.get(mrl)));
 	}
 
-	private static void registerBlockMineModel(ModelEvent.BakingCompleted event, ResourceLocation mineRl, ResourceLocation realBlockRl) {
+	private static void registerBlockMineModel(ModelEvent.ModifyBakingResult event, ResourceLocation mineRl, ResourceLocation realBlockRl) {
 		ModelResourceLocation mineMrl = new ModelResourceLocation(mineRl, "inventory");
 
 		event.getModels().put(mineMrl, new BlockMineModel(event.getModels().get(new ModelResourceLocation(realBlockRl, "inventory")), event.getModels().get(mineMrl)));
