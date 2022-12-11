@@ -66,6 +66,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTab.TabVisibility;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -136,6 +137,55 @@ public class RegistrationHandler {
 	@SubscribeEvent
 	public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
 		event.put(SCContent.SENTRY_ENTITY.get(), Mob.createMobAttributes().build());
+	}
+
+	public static void registerPackets() {
+		int index = 0;
+
+		//client
+		SecurityCraft.channel.registerMessage(index++, InitSentryAnimation.class, InitSentryAnimation::encode, InitSentryAnimation::decode, InitSentryAnimation::onMessage);
+		SecurityCraft.channel.registerMessage(index++, OpenScreen.class, OpenScreen::encode, OpenScreen::decode, OpenScreen::onMessage);
+		SecurityCraft.channel.registerMessage(index++, OpenSRATScreen.class, OpenSRATScreen::encode, OpenSRATScreen::decode, OpenSRATScreen::onMessage);
+		SecurityCraft.channel.registerMessage(index++, RefreshDisguisableModel.class, RefreshDisguisableModel::encode, RefreshDisguisableModel::decode, RefreshDisguisableModel::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SendTip.class, SendTip::encode, SendTip::decode, SendTip::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetCameraView.class, SetCameraView::encode, SetCameraView::decode, SetCameraView::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetTrophySystemTarget.class, SetTrophySystemTarget::encode, SetTrophySystemTarget::decode, SetTrophySystemTarget::onMessage);
+		SecurityCraft.channel.registerMessage(index++, UpdateLogger.class, UpdateLogger::encode, UpdateLogger::decode, UpdateLogger::onMessage);
+		SecurityCraft.channel.registerMessage(index++, UpdateNBTTagOnClient.class, UpdateNBTTagOnClient::encode, UpdateNBTTagOnClient::decode, UpdateNBTTagOnClient::onMessage);
+		//server
+		SecurityCraft.channel.registerMessage(index++, AssembleBlockPocket.class, AssembleBlockPocket::encode, AssembleBlockPocket::decode, AssembleBlockPocket::onMessage);
+		SecurityCraft.channel.registerMessage(index++, CheckPassword.class, CheckPassword::encode, CheckPassword::decode, CheckPassword::onMessage);
+		SecurityCraft.channel.registerMessage(index++, ClearChangeDetectorServer.class, ClearChangeDetectorServer::encode, ClearChangeDetectorServer::decode, ClearChangeDetectorServer::onMessage);
+		SecurityCraft.channel.registerMessage(index++, ClearLoggerServer.class, ClearLoggerServer::encode, ClearLoggerServer::decode, ClearLoggerServer::onMessage);
+		SecurityCraft.channel.registerMessage(index++, DismountCamera.class, DismountCamera::encode, DismountCamera::decode, DismountCamera::onMessage);
+		SecurityCraft.channel.registerMessage(index++, GiveNightVision.class, GiveNightVision::encode, GiveNightVision::decode, GiveNightVision::onMessage);
+		SecurityCraft.channel.registerMessage(index++, MountCamera.class, MountCamera::encode, MountCamera::decode, MountCamera::onMessage);
+		SecurityCraft.channel.registerMessage(index++, OpenBriefcaseInventory.class, OpenBriefcaseInventory::encode, OpenBriefcaseInventory::decode, OpenBriefcaseInventory::onMessage);
+		SecurityCraft.channel.registerMessage(index++, RemoteControlMine.class, RemoteControlMine::encode, RemoteControlMine::decode, RemoteControlMine::onMessage);
+		SecurityCraft.channel.registerMessage(index++, RemoveCameraTag.class, RemoveCameraTag::encode, RemoveCameraTag::decode, RemoveCameraTag::onMessage);
+		SecurityCraft.channel.registerMessage(index++, RemoveMineFromMRAT.class, RemoveMineFromMRAT::encode, RemoveMineFromMRAT::decode, RemoveMineFromMRAT::onMessage);
+		SecurityCraft.channel.registerMessage(index++, RemovePositionFromSSS.class, RemovePositionFromSSS::encode, RemovePositionFromSSS::decode, RemovePositionFromSSS::onMessage);
+		SecurityCraft.channel.registerMessage(index++, RemoveSentryFromSRAT.class, RemoveSentryFromSRAT::encode, RemoveSentryFromSRAT::decode, RemoveSentryFromSRAT::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetBriefcaseOwner.class, SetBriefcaseOwner::encode, SetBriefcaseOwner::decode, SetBriefcaseOwner::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetCameraPowered.class, SetCameraPowered::encode, SetCameraPowered::decode, SetCameraPowered::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetGhostSlot.class, SetGhostSlot::encode, SetGhostSlot::decode, SetGhostSlot::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetKeycardUses.class, SetKeycardUses::encode, SetKeycardUses::decode, SetKeycardUses::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetListModuleData.class, SetListModuleData::encode, SetListModuleData::decode, SetListModuleData::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetPassword.class, SetPassword::encode, SetPassword::decode, SetPassword::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetSentryMode.class, SetSentryMode::encode, SetSentryMode::decode, SetSentryMode::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetStateOnDisguiseModule.class, SetStateOnDisguiseModule::encode, SetStateOnDisguiseModule::decode, SetStateOnDisguiseModule::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SyncBlockChangeDetector.class, SyncBlockChangeDetector::encode, SyncBlockChangeDetector::decode, SyncBlockChangeDetector::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SyncBlockPocketManager.class, SyncBlockPocketManager::encode, SyncBlockPocketManager::decode, SyncBlockPocketManager::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SyncIMSTargetingOption.class, SyncIMSTargetingOption::encode, SyncIMSTargetingOption::decode, SyncIMSTargetingOption::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SyncKeycardSettings.class, SyncKeycardSettings::encode, SyncKeycardSettings::decode, SyncKeycardSettings::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SyncProjector.class, SyncProjector::encode, SyncProjector::decode, SyncProjector::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SyncRiftStabilizer.class, SyncRiftStabilizer::encode, SyncRiftStabilizer::decode, SyncRiftStabilizer::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SyncSSSSettingsOnServer.class, SyncSSSSettingsOnServer::encode, SyncSSSSettingsOnServer::decode, SyncSSSSettingsOnServer::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SyncTrophySystem.class, SyncTrophySystem::encode, SyncTrophySystem::decode, SyncTrophySystem::onMessage);
+		SecurityCraft.channel.registerMessage(index++, ToggleBlockPocketManager.class, ToggleBlockPocketManager::encode, ToggleBlockPocketManager::decode, ToggleBlockPocketManager::onMessage);
+		SecurityCraft.channel.registerMessage(index++, ToggleModule.class, ToggleModule::encode, ToggleModule::decode, ToggleModule::onMessage);
+		SecurityCraft.channel.registerMessage(index++, ToggleOption.class, ToggleOption::encode, ToggleOption::decode, ToggleOption::onMessage);
+		SecurityCraft.channel.registerMessage(index++, UpdateSliderValue.class, UpdateSliderValue::encode, UpdateSliderValue::decode, UpdateSliderValue::onMessage);
 	}
 
 	@SubscribeEvent
@@ -332,53 +382,140 @@ public class RegistrationHandler {
 				}));
 	}
 
-	public static void registerPackets() {
-		int index = 0;
-
-		//client
-		SecurityCraft.channel.registerMessage(index++, InitSentryAnimation.class, InitSentryAnimation::encode, InitSentryAnimation::decode, InitSentryAnimation::onMessage);
-		SecurityCraft.channel.registerMessage(index++, OpenScreen.class, OpenScreen::encode, OpenScreen::decode, OpenScreen::onMessage);
-		SecurityCraft.channel.registerMessage(index++, OpenSRATScreen.class, OpenSRATScreen::encode, OpenSRATScreen::decode, OpenSRATScreen::onMessage);
-		SecurityCraft.channel.registerMessage(index++, RefreshDisguisableModel.class, RefreshDisguisableModel::encode, RefreshDisguisableModel::decode, RefreshDisguisableModel::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SendTip.class, SendTip::encode, SendTip::decode, SendTip::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SetCameraView.class, SetCameraView::encode, SetCameraView::decode, SetCameraView::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SetTrophySystemTarget.class, SetTrophySystemTarget::encode, SetTrophySystemTarget::decode, SetTrophySystemTarget::onMessage);
-		SecurityCraft.channel.registerMessage(index++, UpdateLogger.class, UpdateLogger::encode, UpdateLogger::decode, UpdateLogger::onMessage);
-		SecurityCraft.channel.registerMessage(index++, UpdateNBTTagOnClient.class, UpdateNBTTagOnClient::encode, UpdateNBTTagOnClient::decode, UpdateNBTTagOnClient::onMessage);
-		//server
-		SecurityCraft.channel.registerMessage(index++, AssembleBlockPocket.class, AssembleBlockPocket::encode, AssembleBlockPocket::decode, AssembleBlockPocket::onMessage);
-		SecurityCraft.channel.registerMessage(index++, CheckPassword.class, CheckPassword::encode, CheckPassword::decode, CheckPassword::onMessage);
-		SecurityCraft.channel.registerMessage(index++, ClearChangeDetectorServer.class, ClearChangeDetectorServer::encode, ClearChangeDetectorServer::decode, ClearChangeDetectorServer::onMessage);
-		SecurityCraft.channel.registerMessage(index++, ClearLoggerServer.class, ClearLoggerServer::encode, ClearLoggerServer::decode, ClearLoggerServer::onMessage);
-		SecurityCraft.channel.registerMessage(index++, DismountCamera.class, DismountCamera::encode, DismountCamera::decode, DismountCamera::onMessage);
-		SecurityCraft.channel.registerMessage(index++, GiveNightVision.class, GiveNightVision::encode, GiveNightVision::decode, GiveNightVision::onMessage);
-		SecurityCraft.channel.registerMessage(index++, MountCamera.class, MountCamera::encode, MountCamera::decode, MountCamera::onMessage);
-		SecurityCraft.channel.registerMessage(index++, OpenBriefcaseInventory.class, OpenBriefcaseInventory::encode, OpenBriefcaseInventory::decode, OpenBriefcaseInventory::onMessage);
-		SecurityCraft.channel.registerMessage(index++, RemoteControlMine.class, RemoteControlMine::encode, RemoteControlMine::decode, RemoteControlMine::onMessage);
-		SecurityCraft.channel.registerMessage(index++, RemoveCameraTag.class, RemoveCameraTag::encode, RemoveCameraTag::decode, RemoveCameraTag::onMessage);
-		SecurityCraft.channel.registerMessage(index++, RemoveMineFromMRAT.class, RemoveMineFromMRAT::encode, RemoveMineFromMRAT::decode, RemoveMineFromMRAT::onMessage);
-		SecurityCraft.channel.registerMessage(index++, RemovePositionFromSSS.class, RemovePositionFromSSS::encode, RemovePositionFromSSS::decode, RemovePositionFromSSS::onMessage);
-		SecurityCraft.channel.registerMessage(index++, RemoveSentryFromSRAT.class, RemoveSentryFromSRAT::encode, RemoveSentryFromSRAT::decode, RemoveSentryFromSRAT::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SetBriefcaseOwner.class, SetBriefcaseOwner::encode, SetBriefcaseOwner::decode, SetBriefcaseOwner::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SetCameraPowered.class, SetCameraPowered::encode, SetCameraPowered::decode, SetCameraPowered::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SetGhostSlot.class, SetGhostSlot::encode, SetGhostSlot::decode, SetGhostSlot::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SetKeycardUses.class, SetKeycardUses::encode, SetKeycardUses::decode, SetKeycardUses::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SetListModuleData.class, SetListModuleData::encode, SetListModuleData::decode, SetListModuleData::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SetPassword.class, SetPassword::encode, SetPassword::decode, SetPassword::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SetSentryMode.class, SetSentryMode::encode, SetSentryMode::decode, SetSentryMode::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SetStateOnDisguiseModule.class, SetStateOnDisguiseModule::encode, SetStateOnDisguiseModule::decode, SetStateOnDisguiseModule::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SyncBlockChangeDetector.class, SyncBlockChangeDetector::encode, SyncBlockChangeDetector::decode, SyncBlockChangeDetector::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SyncBlockPocketManager.class, SyncBlockPocketManager::encode, SyncBlockPocketManager::decode, SyncBlockPocketManager::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SyncIMSTargetingOption.class, SyncIMSTargetingOption::encode, SyncIMSTargetingOption::decode, SyncIMSTargetingOption::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SyncKeycardSettings.class, SyncKeycardSettings::encode, SyncKeycardSettings::decode, SyncKeycardSettings::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SyncProjector.class, SyncProjector::encode, SyncProjector::decode, SyncProjector::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SyncRiftStabilizer.class, SyncRiftStabilizer::encode, SyncRiftStabilizer::decode, SyncRiftStabilizer::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SyncSSSSettingsOnServer.class, SyncSSSSettingsOnServer::encode, SyncSSSSettingsOnServer::decode, SyncSSSSettingsOnServer::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SyncTrophySystem.class, SyncTrophySystem::encode, SyncTrophySystem::decode, SyncTrophySystem::onMessage);
-		SecurityCraft.channel.registerMessage(index++, ToggleBlockPocketManager.class, ToggleBlockPocketManager::encode, ToggleBlockPocketManager::decode, ToggleBlockPocketManager::onMessage);
-		SecurityCraft.channel.registerMessage(index++, ToggleModule.class, ToggleModule::encode, ToggleModule::decode, ToggleModule::onMessage);
-		SecurityCraft.channel.registerMessage(index++, ToggleOption.class, ToggleOption::encode, ToggleOption::decode, ToggleOption::onMessage);
-		SecurityCraft.channel.registerMessage(index++, UpdateSliderValue.class, UpdateSliderValue::encode, UpdateSliderValue::decode, UpdateSliderValue::onMessage);
+	@SubscribeEvent
+	public static void onCreativeModeTabBuildContents(CreativeModeTabEvent.BuildContents event) {
+		if (event.getTab() == CreativeModeTabs.REDSTONE_BLOCKS) {
+			event.getEntries().putAfter(new ItemStack(Items.LEVER), new ItemStack(SCContent.REINFORCED_LEVER.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.getEntries().putAfter(new ItemStack(Items.STONE_BUTTON), new ItemStack(SCContent.REINFORCED_OAK_BUTTON.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.getEntries().putAfter(new ItemStack(SCContent.REINFORCED_OAK_BUTTON.get()), new ItemStack(SCContent.REINFORCED_STONE_BUTTON.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.getEntries().putAfter(new ItemStack(SCContent.REINFORCED_STONE_BUTTON.get()), new ItemStack(SCContent.PANIC_BUTTON.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.getEntries().putAfter(new ItemStack(Items.STONE_PRESSURE_PLATE), new ItemStack(SCContent.REINFORCED_OAK_PRESSURE_PLATE.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.getEntries().putAfter(new ItemStack(SCContent.REINFORCED_OAK_PRESSURE_PLATE.get()), new ItemStack(SCContent.REINFORCED_STONE_PRESSURE_PLATE.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.getEntries().putAfter(new ItemStack(Items.STICKY_PISTON), new ItemStack(SCContent.REINFORCED_PISTON.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.getEntries().putAfter(new ItemStack(SCContent.REINFORCED_PISTON.get()), new ItemStack(SCContent.REINFORCED_STICKY_PISTON.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.getEntries().putAfter(new ItemStack(Items.HOPPER), new ItemStack(SCContent.REINFORCED_HOPPER.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+		}
+		else if (event.getTab() == CreativeModeTabs.COLORED_BLOCKS) {
+			//@formatter:off
+			event.acceptAll(List.of(
+					new ItemStack(SCContent.REINFORCED_WHITE_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_LIGHT_GRAY_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_GRAY_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_BLACK_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_BROWN_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_RED_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_ORANGE_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_YELLOW_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_LIME_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_GREEN_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_CYAN_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_LIGHT_BLUE_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_BLUE_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_PURPLE_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_MAGENTA_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_PINK_WOOL.get()),
+					new ItemStack(SCContent.REINFORCED_WHITE_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_LIGHT_GRAY_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_GRAY_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_BLACK_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_BROWN_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_RED_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_ORANGE_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_YELLOW_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_LIME_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_GREEN_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_CYAN_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_LIGHT_BLUE_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_BLUE_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_PURPLE_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_MAGENTA_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_PINK_CARPET.get()),
+					new ItemStack(SCContent.REINFORCED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_WHITE_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_GRAY_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_BLACK_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_BROWN_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_RED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_ORANGE_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_YELLOW_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_LIME_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_GREEN_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_CYAN_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_BLUE_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_PURPLE_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_MAGENTA_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_PINK_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_WHITE_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_LIGHT_GRAY_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_GRAY_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_BLACK_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_BROWN_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_RED_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_ORANGE_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_YELLOW_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_LIME_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_GREEN_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_CYAN_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_LIGHT_BLUE_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_BLUE_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_PURPLE_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_MAGENTA_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_PINK_CONCRETE.get()),
+					new ItemStack(SCContent.REINFORCED_WHITE_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_LIGHT_GRAY_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_GRAY_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_BLACK_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_BROWN_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_RED_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_ORANGE_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_YELLOW_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_LIME_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_GREEN_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_CYAN_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_LIGHT_BLUE_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_BLUE_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_PURPLE_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_MAGENTA_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_PINK_GLAZED_TERRACOTTA.get()),
+					new ItemStack(SCContent.REINFORCED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_TINTED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_WHITE_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_GRAY_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_BLACK_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_BROWN_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_RED_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_ORANGE_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_YELLOW_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_LIME_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_GREEN_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_CYAN_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_BLUE_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_PURPLE_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_MAGENTA_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_PINK_STAINED_GLASS.get()),
+					new ItemStack(SCContent.REINFORCED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_GRAY_STAINED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_BROWN_STAINED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_LIME_STAINED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_CYAN_STAINED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_BLUE_STAINED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_PURPLE_STAINED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_MAGENTA_STAINED_GLASS_PANE.get()),
+					new ItemStack(SCContent.REINFORCED_PINK_STAINED_GLASS_PANE.get())));
+			//@formatter:on
+		}
 	}
 
 	public static void registerFakeLiquidRecipes() {
