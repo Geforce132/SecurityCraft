@@ -65,6 +65,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -87,7 +88,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class RegistrationHandler {
-	private static final Map<SCItemGroup, List<ItemStack>> STACKS_FOR_ITEM_GROUPS = Util.make(new EnumMap<>(SCItemGroup.class), map -> Arrays.stream(SCItemGroup.values()).forEach(key -> map.put(key, new ArrayList<ItemStack>())));
+	public static final Map<SCItemGroup, List<ItemStack>> STACKS_FOR_ITEM_GROUPS = Util.make(new EnumMap<>(SCItemGroup.class), map -> Arrays.stream(SCItemGroup.values()).forEach(key -> map.put(key, new ArrayList<ItemStack>())));
 
 	@SubscribeEvent
 	public static void onRegister(RegisterEvent event) {
@@ -410,11 +411,15 @@ public class RegistrationHandler {
 	private static List<Item> getVanillaOrderedItems() {
 		List<Item> vanillaOrderedItems = new ArrayList<>();
 
-		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.BUILDING_BLOCKS));
-		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.COLORED_BLOCKS));
-		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.NATURAL_BLOCKS));
-		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.FUNCTIONAL_BLOCKS));
-		vanillaOrderedItems.addAll(SecurityCraft.getCreativeTabItems(CreativeModeTabs.REDSTONE_BLOCKS));
+		vanillaOrderedItems.addAll(getCreativeTabItems(CreativeModeTabs.BUILDING_BLOCKS));
+		vanillaOrderedItems.addAll(getCreativeTabItems(CreativeModeTabs.COLORED_BLOCKS));
+		vanillaOrderedItems.addAll(getCreativeTabItems(CreativeModeTabs.NATURAL_BLOCKS));
+		vanillaOrderedItems.addAll(getCreativeTabItems(CreativeModeTabs.FUNCTIONAL_BLOCKS));
+		vanillaOrderedItems.addAll(getCreativeTabItems(CreativeModeTabs.REDSTONE_BLOCKS));
 		return vanillaOrderedItems;
+	}
+
+	private static List<Item> getCreativeTabItems(CreativeModeTab tab) {
+		return tab.getDisplayItems().stream().map(ItemStack::getItem).toList();
 	}
 }
