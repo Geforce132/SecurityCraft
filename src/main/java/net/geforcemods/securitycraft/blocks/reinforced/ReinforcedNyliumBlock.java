@@ -32,9 +32,7 @@ public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements Boneme
 	}
 
 	@Override
-	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState blockState) {
-		//TODO: check if blockState and state are the same
-		BlockState state = level.getBlockState(pos);
+	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
 		BlockPos upperPos = pos.above();
 		ChunkGenerator chunkGenerator = level.getChunkSource().getGenerator();
 		Registry<ConfiguredFeature<?, ?>> registry = level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE);
