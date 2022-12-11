@@ -212,6 +212,7 @@ public class RegistrationHandler {
 							new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()),
 							new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get()),
 							new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()),
+							new ItemStack(SCContent.UNIVERSAL_BLOCK_REMOVER.get()),
 							new ItemStack(SCContent.TASER.get()),
 							new ItemStack(SCContent.BRIEFCASE.get()),
 							new ItemStack(SCContent.FAKE_WATER_BUCKET.get()),
@@ -325,6 +326,7 @@ public class RegistrationHandler {
 					output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
 					output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get());
 					output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get());
+					output.accept(SCContent.UNIVERSAL_BLOCK_REMOVER.get());
 					output.acceptAll(decorationGroupItems);
 				}));
 	}
