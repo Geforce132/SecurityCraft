@@ -7,7 +7,6 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.GsonHelper;
@@ -18,8 +17,11 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class BlockEntityNBTCondition implements LootItemCondition {
+	@ObjectHolder(registryName = "minecraft:loot_condition_type", value = "securitycraft:tile_entity_nbt")
+	public static final LootItemConditionType TYPE = null;
 	private String key;
 	private boolean value;
 
@@ -43,7 +45,7 @@ public class BlockEntityNBTCondition implements LootItemCondition {
 
 	@Override
 	public LootItemConditionType getType() {
-		return SCContent.BLOCK_ENTITY_NBT.get();
+		return TYPE;
 	}
 
 	public static ConditionBuilder builder() {

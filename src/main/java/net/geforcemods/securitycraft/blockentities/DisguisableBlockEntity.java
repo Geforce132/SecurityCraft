@@ -70,7 +70,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 			}
 			else {
 				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
-				DisguisableBlock.getDisguisedBlockStateFromStack(stack).ifPresent(disguisedState -> {
+				DisguisableBlock.getDisguisedBlockStateFromStack(level, stack).ifPresent(disguisedState -> {
 					if (disguisedState.getLightEmission(level, worldPosition) > 0)
 						level.getChunkSource().getLightEngine().checkBlock(worldPosition);
 				});

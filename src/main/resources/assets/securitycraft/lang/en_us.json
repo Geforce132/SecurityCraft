@@ -997,6 +997,9 @@
 	"itemGroup.securitycraft.decoration": "SecurityCraft: Decoration",
 	"itemGroup.securitycraft.explosives": "SecurityCraft: Explosives",
 	"itemGroup.securitycraft.technical": "SecurityCraft: Technical",
+	
+	"gamerule.fakeWaterSourceConversion": "Fake water converts to source",
+	"gamerule.fakeLavaSourceConversion": "Fake lava converts to source",
 
 	"module.securitycraft.ims.whitelist_module.description": "Adding an allowlist module to an I.M.S. will allow listed players to walk into the range of the I.M.S. without being targeted.",
 	"module.securitycraft.ims.speed_module.description": "Adding a speed module to an I.M.S. will make the I.M.S. shoot faster, as well as increase the speed of the shot bombs.",

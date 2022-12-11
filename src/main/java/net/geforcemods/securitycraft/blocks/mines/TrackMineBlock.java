@@ -76,7 +76,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	public void onMinecartPass(BlockState state, Level level, BlockPos pos, AbstractMinecart cart) {
 		if (level.getBlockEntity(pos) instanceof TrackMineBlockEntity be && be.isActive()) {
 			level.destroyBlock(pos, false);
-			level.explode(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.0F : 6.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+			level.explode(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.0F : 6.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionInteraction());
 			cart.kill();
 		}
 	}
@@ -85,7 +85,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	public void explode(Level level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof TrackMineBlockEntity be && be.isActive()) {
 			level.destroyBlock(pos, false);
-			level.explode(null, pos.getX(), pos.above().getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.0F : 6.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+			level.explode(null, pos.getX(), pos.above().getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.0F : 6.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionInteraction());
 		}
 	}
 

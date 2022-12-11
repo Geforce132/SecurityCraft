@@ -28,4 +28,12 @@ public @interface Reinforced {
 	 * @return true if a BlockItem should be automatically registered for this block, false if not
 	 */
 	boolean registerBlockItem() default true;
+
+	/**
+	 * The SecurityCraft creative tab to automatically put the item block in, if {@link #registerBlockItem()} returns true
+	 *
+	 * @return The creative tab. If this returns {@link SCItemGroup#MANUAL}, then the item is not automatically registered to any
+	 *         tab
+	 */
+	SCItemGroup itemGroup() default SCItemGroup.DECORATION;
 }

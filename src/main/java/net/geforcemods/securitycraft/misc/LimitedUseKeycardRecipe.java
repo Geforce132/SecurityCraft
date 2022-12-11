@@ -7,13 +7,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class LimitedUseKeycardRecipe extends CustomRecipe {
-	public LimitedUseKeycardRecipe(ResourceLocation id) {
-		super(id);
+	@ObjectHolder(registryName = "minecraft:recipe_serializer", value = "securitycraft:limited_use_keycard_recipe")
+	public static final RecipeSerializer<LimitedUseKeycardRecipe> SERIALIZER = null;
+
+	public LimitedUseKeycardRecipe(ResourceLocation id, CraftingBookCategory craftingBookCategory) {
+		super(id, craftingBookCategory);
 	}
 
 	@Override
@@ -80,6 +85,6 @@ public class LimitedUseKeycardRecipe extends CustomRecipe {
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return SCContent.LIMITED_USE_KEYCARD_RECIPE_SERIALIZER.get();
+		return SERIALIZER;
 	}
 }

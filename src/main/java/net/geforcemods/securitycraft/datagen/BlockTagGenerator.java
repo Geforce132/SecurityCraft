@@ -1,26 +1,29 @@
 package net.geforcemods.securitycraft.datagen;
 
+import java.util.concurrent.CompletableFuture;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
 public class BlockTagGenerator extends BlockTagsProvider {
-	protected BlockTagGenerator(DataGenerator dataGenerator, ExistingFileHelper existingFileHelper) {
-		super(dataGenerator, SecurityCraft.MODID, existingFileHelper);
+	public BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
+		super(output, lookupProvider, SecurityCraft.MODID, existingFileHelper);
 	}
 
 	@Override
-	protected void addTags() {
+	protected void addTags(HolderLookup.Provider provider) {
 		//@formatter:off
 		//securitycraft tags
 		tag(SCTags.Blocks.REINFORCED_ACACIA_LOGS).add(
@@ -245,6 +248,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_BLACK_CARPET.get());
 
 		//minecraft tags
+		tag(BlockTags.ALL_SIGNS).addTag(SCTags.Blocks.SECRET_SIGNS);
 		tag(BlockTags.BAMBOO_PLANTABLE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_DIRT).add(SCContent.REINFORCED_GRAVEL.get());
 		tag(BlockTags.BEACON_BASE_BLOCKS).add(
 				SCContent.REINFORCED_DIAMOND_BLOCK.get(),
@@ -262,6 +266,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.DAMPENS_VIBRATIONS).addTag(SCTags.Blocks.REINFORCED_WOOL);
 		tag(BlockTags.DEAD_BUSH_MAY_PLACE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA).addTag(SCTags.Blocks.REINFORCED_DIRT);
 		tag(BlockTags.DOORS).add(SCContent.KEYPAD_DOOR.get(), SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
+		tag(BlockTags.FENCE_GATES).add(SCContent.REINFORCED_FENCEGATE.get());
 		tag(BlockTags.FENCES).add(SCContent.IRON_FENCE.get());
 		tag(BlockTags.GUARDED_BY_PIGLINS).add(
 				SCContent.DEEPSLATE_GOLD_ORE_MINE.get(),
@@ -396,8 +401,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 			Block block = ro.get();
 
 			if (block != SCContent.CHISELED_CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ_PILLAR.get() && block != SCContent.CRYSTAL_QUARTZ_SLAB.get() && block != SCContent.STAIRS_CRYSTAL_QUARTZ.get()) {
-				dragonImmune.add(block);
-				witherImmune.add(block);
+				dragonImmune.add(ro.getKey());
+				witherImmune.add(ro.getKey());
 			}
 
 			//ugly way of checking if slabs/stairs are wood. they do not need to be added to the tag explicitly, as they are already present in the wooden equivalent tag

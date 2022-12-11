@@ -8,6 +8,8 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -131,10 +133,10 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
-		Optional<BlockState> disguisedState = getDisguisedBlockState(level, pos);
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
 
-		if (disguisedState.isPresent())
-			return disguisedState.get().getLightBlock(level, pos);
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getLightBlock(level, pos);
 		else
 			return super.getLightBlock(state, level, pos);
 	}
@@ -150,19 +152,26 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public static BlockState getDisguisedStateOrDefault(BlockState state, BlockGetter level, BlockPos pos) {
-		return getDisguisedBlockState(level, pos).orElse(state);
+		if (level instanceof LevelReader reader)
+			return getDisguisedBlockState(reader, pos).orElse(state);
+		else
+			return state;
 	}
 
-	public static Optional<BlockState> getDisguisedBlockState(BlockGetter level, BlockPos pos) {
+	public static Optional<BlockState> getDisguisedBlockState(LevelReader level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof IModuleInventory be)
-			return getDisguisedBlockStateFromStack(be.isModuleEnabled(ModuleType.DISGUISE) ? be.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY);
+			return getDisguisedBlockStateFromStack(level.holderLookup(Registries.BLOCK), be.isModuleEnabled(ModuleType.DISGUISE) ? be.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY);
 
 		return Optional.empty();
 	}
 
-	public static Optional<BlockState> getDisguisedBlockStateFromStack(ItemStack module) {
+	public static Optional<BlockState> getDisguisedBlockStateFromStack(Level level, ItemStack module) {
+		return getDisguisedBlockStateFromStack(level.holderLookup(Registries.BLOCK), module);
+	}
+
+	public static Optional<BlockState> getDisguisedBlockStateFromStack(HolderGetter<Block> holderGetter, ItemStack module) {
 		if (!module.isEmpty()) {
-			BlockState disguisedState = NbtUtils.readBlockState(module.getOrCreateTag().getCompound("SavedState"));
+			BlockState disguisedState = NbtUtils.readBlockState(holderGetter, module.getOrCreateTag().getCompound("SavedState"));
 
 			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
 				return Optional.of(disguisedState);

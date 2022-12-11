@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -58,7 +58,7 @@ public class LaserBlock extends DisguisableBlock {
 				BlockState offsetState = level.getBlockState(offsetPos);
 				Block offsetBlock = offsetState.getBlock();
 
-				if (!offsetState.isAir() && !offsetState.getMaterial().isReplaceable() && offsetBlock != SCContent.LASER_BLOCK.get())
+				if (!offsetState.isAir() && !offsetState.canBeReplaced() && offsetBlock != SCContent.LASER_BLOCK.get())
 					break inner;
 				else if (offsetBlock == SCContent.LASER_BLOCK.get()) {
 					LaserBlockBlockEntity thatBe = (LaserBlockBlockEntity) level.getBlockEntity(offsetPos);
@@ -75,7 +75,7 @@ public class LaserBlock extends DisguisableBlock {
 								offsetPos = pos.relative(facing, j);
 								offsetState = level.getBlockState(offsetPos);
 
-								if (offsetState.isAir() || offsetState.getMaterial().isReplaceable()) {
+								if (offsetState.isAir() || offsetState.canBeReplaced()) {
 									level.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().defaultBlockState().setValue(LaserFieldBlock.BOUNDTYPE, boundType));
 
 									if (level.getBlockEntity(offsetPos) instanceof IOwnable ownable)

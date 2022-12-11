@@ -7,7 +7,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
@@ -26,6 +26,7 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.Vec3;
@@ -46,7 +47,7 @@ public class SecretSignRenderer implements BlockEntityRenderer<SecretSignBlockEn
 	@Override
 	public void render(SecretSignBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
 		BlockState state = be.getBlockState();
-		WoodType woodType = SignRenderer.getWoodType(state.getBlock());
+		WoodType woodType = SignBlock.getWoodType(state.getBlock());
 		SignModel model = signModels.get(woodType);
 		Material material = Sheets.getSignMaterial(woodType);
 		VertexConsumer builder;
@@ -55,12 +56,12 @@ public class SecretSignRenderer implements BlockEntityRenderer<SecretSignBlockEn
 
 		if (state.getBlock() instanceof SecretStandingSignBlock) {
 			pose.translate(0.5D, 0.5D, 0.5D);
-			pose.mulPose(Vector3f.YP.rotationDegrees(-(state.getValue(SecretStandingSignBlock.ROTATION) * 360 / 16.0F)));
+			pose.mulPose(Axis.YP.rotationDegrees(-(state.getValue(SecretStandingSignBlock.ROTATION) * 360 / 16.0F)));
 			model.stick.visible = true;
 		}
 		else {
 			pose.translate(0.5D, 0.5D, 0.5D);
-			pose.mulPose(Vector3f.YP.rotationDegrees(-state.getValue(SecretWallSignBlock.FACING).toYRot()));
+			pose.mulPose(Axis.YP.rotationDegrees(-state.getValue(SecretWallSignBlock.FACING).toYRot()));
 			pose.translate(0.0D, -0.3125D, -0.4375D);
 			model.stick.visible = false;
 		}

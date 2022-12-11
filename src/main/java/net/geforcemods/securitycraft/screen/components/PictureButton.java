@@ -66,16 +66,16 @@ public class PictureButton extends ExtendedButton {
 
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-			ScreenUtils.blitWithBorder(pose, WIDGETS_LOCATION, x, y, 0, 46 + getYImage(isHoveredOrFocused()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
+			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
+			ScreenUtils.blitWithBorder(pose, WIDGETS_LOCATION, getX(), getY(), 0, 46 + getYImage(isHoveredOrFocused()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
 
 			if (!blockToRender.isEmpty()) {
-				itemRenderer.renderAndDecorateItem(blockToRender, x + 2, y + 3);
-				itemRenderer.renderGuiItemDecorations(font, blockToRender, x + 2, y + 3, "");
+				itemRenderer.renderAndDecorateItem(blockToRender, getX() + 2, getY() + 3);
+				itemRenderer.renderGuiItemDecorations(font, blockToRender, getX() + 2, getY() + 3, "");
 			}
 			else if (!itemToRender.isEmpty()) {
-				itemRenderer.renderAndDecorateItem(itemToRender, x + 2, y + 2);
-				itemRenderer.renderGuiItemDecorations(font, itemToRender, x + 2, y + 2, "");
+				itemRenderer.renderAndDecorateItem(itemToRender, getX() + 2, getY() + 2);
+				itemRenderer.renderGuiItemDecorations(font, itemToRender, getX() + 2, getY() + 2, "");
 			}
 			else {
 				ResourceLocation texture = getTextureLocation();
@@ -83,7 +83,7 @@ public class PictureButton extends ExtendedButton {
 				if (texture != null) {
 					RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 					RenderSystem._setShaderTexture(0, texture);
-					blit(pose, x + drawOffsetX, y + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
+					blit(pose, getX() + drawOffsetX, getY() + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
 				}
 			}
 		}

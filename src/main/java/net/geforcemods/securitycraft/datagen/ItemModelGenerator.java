@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.geforcemods.securitycraft.RegistrationHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
@@ -14,11 +15,13 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBaseBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
+import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
@@ -35,6 +38,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
+		List<Item> mineTabItems = RegistrationHandler.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES).stream().map(ItemStack::getItem).toList();
+		List<Item> decorationTabItems = RegistrationHandler.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION).stream().map(ItemStack::getItem).toList();
 		Map<Block, String> flatReinforcedItems = new HashMap<>();
 
 		flatReinforcedItems.put(SCContent.REINFORCED_CAULDRON.get(), "item/cauldron");
@@ -50,7 +55,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 			Block block = obj.get();
 			Item item = block.asItem();
 
-			if (item.getCreativeTabs().contains(SecurityCraft.decorationTab)) {
+			if (decorationTabItems.contains(item)) {
 				if (flatReinforcedItems.containsKey(block))
 					flatReinforcedItem(block, flatReinforcedItems.get(block));
 				else if (block instanceof ReinforcedStainedGlassPaneBlock)
@@ -62,7 +67,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				else if (block instanceof IReinforcedBlock)
 					simpleReinforcedParent(block);
 			}
-			else if (item.getCreativeTabs().contains(SecurityCraft.mineTab) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
+			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
 				blockMine(mine.getBlockDisguisedAs(), block);
 		}
 
@@ -118,6 +123,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 		simpleParent(SCContent.BLOCK_CHANGE_DETECTOR.get());
 		simpleParent(SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		simpleParent(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
+		simpleParent(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get(), "reinforced_chiseled_quartz_block");
+		simpleParent(SCContent.REINFORCED_CRYSTAL_QUARTZ.get(), "reinforced_quartz_block");
+		simpleParent(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get(), "reinforced_quartz_pillar");
+		simpleParent(SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get());
+		simpleParent(SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get());
 		simpleParent(SCContent.REINFORCED_GLASS.get());
 		reinforcedPane(SCContent.REINFORCED_GLASS_PANE.get());
 		simpleParent(SCContent.REINFORCED_IRON_TRAPDOOR.get(), "reinforced_iron_trapdoor_bottom");

@@ -9,7 +9,7 @@ public class ColorChooserButton extends Button {
 	private final ColorChooser colorChooser;
 
 	public ColorChooserButton(int x, int y, int width, int height, ColorChooser colorChooser) {
-		super(x, y, width, height, Component.empty(), button -> colorChooser.disabled = !colorChooser.disabled);
+		super(x, y, width, height, Component.empty(), button -> colorChooser.disabled = !colorChooser.disabled, s -> Component.empty());
 
 		this.colorChooser = colorChooser;
 	}
@@ -19,6 +19,6 @@ public class ColorChooserButton extends Button {
 		int color = colorChooser.getRGBColor();
 
 		super.renderButton(pose, mouseX, mouseY, partialTick);
-		fillGradient(pose, x + 2, y + 2, x + width - 2, y + height - 2, color, color, getBlitOffset());
+		fillGradient(pose, getX() + 2, getY() + 2, getX() + width - 2, getY() + height - 2, color, color, getBlitOffset());
 	}
 }

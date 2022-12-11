@@ -42,7 +42,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	private final HoverChecker colorFieldHoverChecker;
 	private float selectionX, selectionY;
 	private final int rgbColor;
-	public FixedEditBox rBox, gBox, bBox, rgbHexBox;
+	public ColorEditBox rBox, gBox, bBox, rgbHexBox;
 	private HueSlider hueSlider;
 
 	public ColorChooser(Component title, int xStart, int yStart, int rgbColor) {
@@ -94,10 +94,10 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 				onColorChange();
 			}
 		});
-		addRenderableWidget(rBox = new FixedEditBox(font, colorFieldRight + 13, colorFieldTop, 26, 10, rText));
-		addRenderableWidget(gBox = new FixedEditBox(font, colorFieldRight + 13, colorFieldTop + 15, 26, 10, gText));
-		addRenderableWidget(bBox = new FixedEditBox(font, colorFieldRight + 13, colorFieldTop + 30, 26, 10, bText));
-		addRenderableWidget(rgbHexBox = new FixedEditBox(font, colorFieldRight + 13, colorFieldTop + 45, 46, 10, rgbHexText));
+		addRenderableWidget(rBox = new ColorEditBox(font, colorFieldRight + 13, colorFieldTop, 26, 10, rText));
+		addRenderableWidget(gBox = new ColorEditBox(font, colorFieldRight + 13, colorFieldTop + 15, 26, 10, gText));
+		addRenderableWidget(bBox = new ColorEditBox(font, colorFieldRight + 13, colorFieldTop + 30, 26, 10, bText));
+		addRenderableWidget(rgbHexBox = new ColorEditBox(font, colorFieldRight + 13, colorFieldTop + 45, 46, 10, rgbHexText));
 		rBox.setValue("" + red);
 		gBox.setValue("" + green);
 		bBox.setValue("" + blue);
@@ -238,7 +238,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		trySetText(excluded, rgbHexBox, Integer.toHexString(rgbColor).substring(2));
 	}
 
-	private void trySetText(EditBox excluded, FixedEditBox editBox, String value) {
+	private void trySetText(EditBox excluded, ColorEditBox editBox, String value) {
 		if (excluded != editBox) {
 			editBox.value = value;
 			editBox.updateCursor();
@@ -272,26 +272,13 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		public void renderButton(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 			RenderSystem._setShaderTexture(0, TEXTURE);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			blit(pose, x + (int) (value * (width - 8)), y, isHoveredOrFocused() ? 151 : 145, 0, 6, height);
+			blit(pose, getX() + (int) (value * (width - 8)), getY(), isHoveredOrFocused() ? 151 : 145, 0, 6, height);
 		}
 	}
 
-	//fixes focus when selecting boxes from last added to first added, as well as the highlight position sometimes being wrong when setting the value
-	public class FixedEditBox extends EditBox {
-		public FixedEditBox(Font font, int x, int y, int width, int height, Component message) {
+	public class ColorEditBox extends EditBox {
+		public ColorEditBox(Font font, int x, int y, int width, int height, Component message) {
 			super(font, x, y, width, height, message);
-		}
-
-		@Override
-		public void setFocused(boolean focused) {
-			if (focused) {
-				rBox.setFocused(false);
-				gBox.setFocused(false);
-				bBox.setFocused(false);
-				rgbHexBox.setFocused(false);
-			}
-
-			super.setFocused(focused);
 		}
 
 		public void updateCursor() {

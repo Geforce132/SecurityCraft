@@ -54,7 +54,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 	public void activate(BlockState state, Level level, BlockPos pos, Player player, int signalLength) {
 		boolean open = !state.getValue(OPEN);
 
-		level.levelEvent(null, open ? 1005 : 1011, pos, 0);
+		playSound(null, level, pos, open);
 		level.setBlockAndUpdate(pos, state.setValue(OPEN, open));
 		level.updateNeighborsAt(pos, SCContent.KEYPAD_DOOR.get());
 		level.gameEvent(player, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);

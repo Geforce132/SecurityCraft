@@ -15,15 +15,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface RegisterItemBlock {
 	/**
-	 * The SecurityCraft creative tab to put the item block in
+	 * The SecurityCraft creative tab to automatically put the item block in
 	 *
-	 * @return The creative tab
+	 * @return The creative tab. If this returns {@link SCItemGroup#MANUAL}, then the item is not automatically registered to any
+	 *         tab
 	 */
-	SCItemGroup value() default SCItemGroup.TECHNICAL;
-
-	public static enum SCItemGroup {
-		TECHNICAL,
-		EXPLOSIVES,
-		DECORATION;
-	}
+	SCItemGroup value() default SCItemGroup.MANUAL;
 }

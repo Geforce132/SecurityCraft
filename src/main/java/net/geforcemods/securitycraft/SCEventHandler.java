@@ -117,7 +117,7 @@ public class SCEventHandler {
 					NoteWrapper note = pair.getRight().poll();
 
 					if (note != null) {
-						SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase()).getSoundEvent();
+						SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase()).getSoundEvent().get();
 						float pitch = (float) Math.pow(2.0D, (note.noteID() - 12) / 12.0D);
 
 						player.level.playSound(null, player.blockPosition(), sound, SoundSource.RECORDS, 3.0F, pitch);

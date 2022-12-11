@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.renderers;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -35,7 +35,7 @@ public class SentryRenderer extends EntityRenderer<Sentry> {
 		pose.scale(-1, -1, 1); //rotate model rightside up
 		RenderSystem._setShaderTexture(0, getTextureLocation(entity));
 		model.renderBase(pose, builder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		pose.mulPose(Vector3f.YP.rotationDegrees(entity.getEntityData().get(Sentry.HEAD_ROTATION)));
+		pose.mulPose(Axis.YP.rotationDegrees(entity.getEntityData().get(Sentry.HEAD_ROTATION)));
 		pose.translate(0.0F, entity.getHeadYTranslation(), 0.0F);
 		model.renderToBuffer(pose, builder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		pose.popPose();

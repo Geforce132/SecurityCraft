@@ -60,7 +60,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 			if (tickCount >= PLAYBACK_DELAY) {
 				if (currentNote < be.getNumberOfNotes()) {
 					NoteWrapper note = be.getRecordedNotes().get(currentNote++);
-					SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase()).getSoundEvent();
+					SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase()).getSoundEvent().get();
 					float pitch = (float) Math.pow(2.0D, (note.noteID() - 12) / 12.0D);
 
 					tickCount = 0;
@@ -131,7 +131,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 		}));
 		soundButton.setCurrentIndex(!be.pings() ? 1 : 0); // Use the disabled mic icon if the SSS is not emitting sounds
 
-		connectionList = addRenderableWidget(new SSSConnectionList<>(this, minecraft, 130, 120, powerButton.y, leftPos + 10));
+		connectionList = addRenderableWidget(new SSSConnectionList<>(this, minecraft, 130, 120, powerButton.getY(), leftPos + 10));
 
 		powerButton.active = !be.isShutDown() && isOwner;
 		recordingButton.active = isActive && isOwner;
@@ -153,7 +153,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 		blit(pose, startX, startY, 0, 0, xSize, ySize, 512, 512);
 		super.render(pose, mouseX, mouseY, partialTicks);
 		font.draw(pose, title, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752);
-		font.draw(pose, SOUND_TEXT, soundButton.x - soundTextLength - 5, startY + 141, 4210752);
+		font.draw(pose, SOUND_TEXT, soundButton.getX() - soundTextLength - 5, startY + 141, 4210752);
 	}
 
 	@Override

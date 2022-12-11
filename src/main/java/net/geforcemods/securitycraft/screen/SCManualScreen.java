@@ -41,7 +41,7 @@ import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
@@ -106,7 +106,6 @@ public class SCManualScreen extends Screen {
 		byte startY = 2;
 
 		startX = (width - 256) / 2;
-		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addRenderableWidget(new ChangePageButton(startX + 210, startY + 188, true, b -> nextPage()));
 		addRenderableWidget(new ChangePageButton(startX + 22, startY + 188, false, b -> previousPage()));
 		addRenderableWidget(nextSubpage = new ChangePageButton(startX + 180, startY + 97, true, b -> nextSubpage()));
@@ -144,8 +143,8 @@ public class SCManualScreen extends Screen {
 
 		blit(pose, startX, 5, 0, 0, 256, 250);
 
-		for (Widget widget : renderables) {
-			widget.render(pose, mouseX, mouseY, partialTicks);
+		for (Renderable renderable : renderables) {
+			renderable.render(pose, mouseX, mouseY, partialTicks);
 		}
 
 		if (currentPage > -1) {
@@ -227,7 +226,6 @@ public class SCManualScreen extends Screen {
 	public void removed() {
 		super.removed();
 		lastPage = currentPage;
-		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
@@ -731,24 +729,24 @@ public class SCManualScreen extends Screen {
 		@Override
 		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 			if (visible) {
-				isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
+				isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 				RenderSystem._setShaderTexture(0, VANILLA_BOOK);
-				blit(pose, x, y, isHoveredOrFocused() ? 23 : 0, textureY, 23, 13);
+				blit(pose, getX(), getY(), isHoveredOrFocused() ? 23 : 0, textureY, 23, 13);
 			}
 		}
 	}
 
 	static class HyperlinkButton extends Button {
 		public HyperlinkButton(int xPos, int yPos, int width, int height, Component displayString, OnPress handler) {
-			super(xPos, yPos, width, height, displayString, handler);
+			super(xPos, yPos, width, height, displayString, handler, s -> Component.empty());
 		}
 
 		@Override
 		public void renderButton(PoseStack pose, int mouseX, int mouseY, float partial) {
 			RenderSystem._setShaderTexture(0, ICONS);
-			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-			blit(pose, x, y, isHoveredOrFocused() ? 138 : 122, 1, 16, 16);
+			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
+			blit(pose, getX(), getY(), isHoveredOrFocused() ? 138 : 122, 1, 16, 16);
 		}
 	}
 

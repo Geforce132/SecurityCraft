@@ -137,7 +137,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 		for (AbstractWidget button : optionButtons) {
 			if (button != null)
-				extraAreas.add(new Rect2i(button.x, button.y, button.getWidth(), button.getHeight()));
+				extraAreas.add(new Rect2i(button.getX(), button.getY(), button.getWidth(), button.getHeight()));
 		}
 	}
 

@@ -121,7 +121,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	public void explode(Level level, BlockPos pos) {
 		if (!level.isClientSide) {
 			level.destroyBlock(pos, false);
-			level.explode(null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.5F : 3.5F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+			level.explode(null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.5F : 3.5F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionInteraction());
 		}
 	}
 

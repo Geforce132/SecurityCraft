@@ -40,7 +40,6 @@ public class BriefcaseSetupScreen extends Screen {
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
 
-		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addRenderableWidget(saveAndContinueButton = new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save"), this::saveAndContinueButtonClicked));
 		saveAndContinueButton.active = false;
 
@@ -49,12 +48,6 @@ public class BriefcaseSetupScreen extends Screen {
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*"));
 		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = text.length() == 4);
 		setInitialFocus(keycodeTextbox);
-	}
-
-	@Override
-	public void removed() {
-		super.removed();
-		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override

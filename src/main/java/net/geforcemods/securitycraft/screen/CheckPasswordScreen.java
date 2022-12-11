@@ -45,7 +45,6 @@ public class CheckPasswordScreen extends Screen {
 
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
-		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
 		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 + 30 + 10, 80, 20, Component.literal("0"), b -> addNumberToString(0)));
 		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 - 60 + 10, 20, 20, Component.literal("1"), b -> addNumberToString(1)));
@@ -66,12 +65,6 @@ public class CheckPasswordScreen extends Screen {
 	}
 
 	@Override
-	public void removed() {
-		super.removed();
-		minecraft.keyboardHandler.setSendRepeatsToGui(false);
-	}
-
-	@Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -88,7 +81,7 @@ public class CheckPasswordScreen extends Screen {
 			return true;
 		}
 		else if (keyCode == GLFW.GLFW_KEY_BACKSPACE && currentString.length() > 0) {
-			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK, 0.15F, 1.0F);
+			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
 			currentString = Utils.removeLastChar(currentString);
 			setTextboxCensoredText(keycodeTextbox, currentString);
 			checkCode(currentString);
@@ -106,7 +99,7 @@ public class CheckPasswordScreen extends Screen {
 	@Override
 	public boolean charTyped(char typedChar, int keyCode) {
 		if (isValidChar(typedChar) && currentString.length() < MAX_CHARS) {
-			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK, 0.15F, 1.0F);
+			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
 			currentString += typedChar;
 			setTextboxCensoredText(keycodeTextbox, currentString);
 			checkCode(currentString);

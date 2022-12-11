@@ -76,7 +76,6 @@ public class EditModuleScreen extends Screen {
 		Component checkboxText = Utils.localize("gui.securitycraft:editModule.affectEveryone");
 		int length = font.width(checkboxText) + 24; //24 = checkbox width + 4 pixels of buffer
 
-		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addRenderableWidget(inputField = new EditBox(font, controlsStartX, height / 2 - 88, 107, 15, Component.empty()));
 		addRenderableWidget(addPlayerButton = new ExtendedButton(controlsStartX, height / 2 - 68, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.add_player"), this::addPlayerButtonClicked));
 		addRenderableWidget(removePlayerButton = new ExtendedButton(controlsStartX, height / 2 - 43, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.remove_player"), this::removePlayerButtonClicked));
@@ -85,7 +84,7 @@ public class EditModuleScreen extends Screen {
 		addRenderableWidget(pasteButton = new ExtendedButton(controlsStartX, height / 2 + 32, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.paste"), this::pasteButtonClicked));
 		addRenderableWidget(clearButton = new ExtendedButton(controlsStartX, height / 2 + 57, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::clearButtonClicked));
 		addRenderableWidget(playerList = new PlayerList(minecraft, 110, 165, height / 2 - 88, guiLeft + 10));
-		addRenderableWidget(teamList = new TeamList(minecraft, editTeamsButton.getWidth(), 75, editTeamsButton.y + editTeamsButton.getHeight(), editTeamsButton.x));
+		addRenderableWidget(teamList = new TeamList(minecraft, editTeamsButton.getWidth(), 75, editTeamsButton.getY() + editTeamsButton.getHeight(), editTeamsButton.getX()));
 		addRenderableWidget(affectEveryPlayerCheckbox = new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.hasTag() && module.getTag().getBoolean("affectEveryone"), newState -> module.getOrCreateTag().putBoolean("affectEveryone", newState), 0x404040));
 
 		teamList.active = false;
@@ -123,9 +122,6 @@ public class EditModuleScreen extends Screen {
 		super.onClose();
 
 		SecurityCraft.channel.sendToServer(new SetListModuleData(module.getOrCreateTag()));
-
-		if (minecraft != null)
-			minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override

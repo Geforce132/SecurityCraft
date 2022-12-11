@@ -75,11 +75,11 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
@@ -100,7 +100,6 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -146,7 +145,7 @@ public class ClientHandler {
 	//@formatter:on
 
 	@SubscribeEvent
-	public static void onModelBakingCompleted(ModelEvent.BakingCompleted event) {
+	public static void onModelBakingCompleted(ModelEvent.ModifyBakingResult event) {
 		//@formatter:off
 		String[] mines = {
 				"ancient_debris",
@@ -202,25 +201,10 @@ public class ClientHandler {
 		modelRegistry.put(mrl, new DisguisableDynamicBakedModel(modelRegistry.get(mrl)));
 	}
 
-	private static void registerBlockMineModel(ModelEvent.BakingCompleted event, ResourceLocation mineRl, ResourceLocation realBlockRl) {
+	private static void registerBlockMineModel(ModelEvent.ModifyBakingResult event, ResourceLocation mineRl, ResourceLocation realBlockRl) {
 		ModelResourceLocation mineMrl = new ModelResourceLocation(mineRl, "inventory");
 
 		event.getModels().put(mineMrl, new BlockMineModel(event.getModels().get(new ModelResourceLocation(realBlockRl, "inventory")), event.getModels().get(mineMrl)));
-	}
-
-	@SubscribeEvent
-	public static void onTextureStitchPre(TextureStitchEvent.Pre event) {
-		if (event.getAtlas().location().equals(Sheets.CHEST_SHEET)) {
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/active"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/inactive"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/left_active"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/left_inactive"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/right_active"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/right_inactive"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/christmas"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/christmas_left"));
-			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/christmas_right"));
-		}
 	}
 
 	@SubscribeEvent
@@ -524,6 +508,6 @@ public class ClientHandler {
 	}
 
 	public static void putDisguisedBeRenderer(BlockEntity disguisableBlockEntity, ItemStack stack) {
-		DISGUISED_BLOCK_RENDER_DELEGATE.putDelegateFor(disguisableBlockEntity, NbtUtils.readBlockState(stack.getOrCreateTag().getCompound("SavedState")));
+		DISGUISED_BLOCK_RENDER_DELEGATE.putDelegateFor(disguisableBlockEntity, NbtUtils.readBlockState(disguisableBlockEntity.getLevel().holderLookup(Registries.BLOCK), stack.getOrCreateTag().getCompound("SavedState")));
 	}
 }

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
@@ -34,9 +34,9 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty> {
 			pose.scale(scale, scale, scale);
 		}
 
-		pose.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
+		pose.mulPose(Axis.YP.rotationDegrees(-90.0F));
 		pose.translate(-0.5D, -0.5D, 0.5D);
-		pose.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+		pose.mulPose(Axis.YP.rotationDegrees(90.0F));
 		Minecraft.getInstance().getBlockRenderer().renderSingleBlock(SCContent.BOUNCING_BETTY.get().defaultBlockState(), pose, buffer, packedLight, OverlayTexture.NO_OVERLAY);
 		pose.popPose();
 		super.render(entity, entityYaw, partialTicks, pose, buffer, packedLight);
