@@ -21,7 +21,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.Direction;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -52,10 +52,10 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 	private static final Map<Direction, EnumProperty<WallSide>> DIR_TO_WALL_HEIGHT = ImmutableMap.of(Direction.EAST, BlockStateProperties.EAST_WALL, Direction.NORTH, BlockStateProperties.NORTH_WALL, Direction.SOUTH, BlockStateProperties.SOUTH_WALL, Direction.WEST, BlockStateProperties.WEST_WALL);
 	private final SCBlockModelProvider scModels;
 
-	public BlockModelAndStateGenerator(DataGenerator gen, ExistingFileHelper exFileHelper) {
-		super(gen, SecurityCraft.MODID, exFileHelper);
+	public BlockModelAndStateGenerator(PackOutput output, ExistingFileHelper exFileHelper) {
+		super(output, SecurityCraft.MODID, exFileHelper);
 
-		scModels = new SCBlockModelProvider(gen, exFileHelper);
+		scModels = new SCBlockModelProvider(output, exFileHelper);
 	}
 
 	@Override

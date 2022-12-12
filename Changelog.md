@@ -13,10 +13,11 @@
 - Fix: Crash when inserting a module into a single Inventory Scanner
 - Fix: Some animations stutter
 - Fix: Using /kill to remove a camera entity, or removing it by other non-standard means, does not update the camera block properly
+- Misc.: The minimum required Forge version is now 44.0.11
 
 --------------------------Changelog for v1.9.4-beta1 of SecurityCraft--------------------------
 
 - New: Game rules "fakeWaterSourceConversion" and "fakeLavaSourceConversion" to control source conversion of fake liquids, akin to vanilla's water and lava
 - Change: Items in SecurityCraft's creative tabs have been reordered to match vanilla's order and in general make more sense
 - Change: Sounds for nether wood reinforced blocks have been adjusted to match the vanilla variants
-- Misc.: The minimum Forge version is 44.0.11
+- Misc.: The minimum required Forge version is 44.0.11
