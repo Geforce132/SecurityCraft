@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCameraBlockEntity> {
@@ -59,7 +60,7 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 		pose.mulPose(POSITIVE_X_180);
 
 		if (!be.isDisabled())
-			model.cameraRotationPoint.yRot = (float) be.cameraRotation;
+			model.cameraRotationPoint.yRot = (float) Mth.lerp(partialTicks, be.oCameraRotation, be.cameraRotation);
 
 		if (be.isShutDown())
 			model.cameraRotationPoint.xRot = 0.9F;
