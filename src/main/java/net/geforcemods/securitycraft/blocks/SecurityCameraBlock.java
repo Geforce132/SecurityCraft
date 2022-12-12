@@ -112,9 +112,8 @@ public class SecurityCameraBlock extends OwnableBlock {
 			for (Direction newFacing : Direction.Plane.HORIZONTAL) {
 				state = state.setValue(FACING, newFacing);
 
-				if (canSurvive(state, level, pos)) {
+				if (canSurvive(state, level, pos))
 					break;
-				}
 			}
 		}
 
@@ -129,12 +128,10 @@ public class SecurityCameraBlock extends OwnableBlock {
 			SectionPos chunkPos = SectionPos.of(pos);
 			int viewDistance = serverPlayer.server.getPlayerList().getViewDistance();
 
-			if (serverPlayer.getCamera() instanceof SecurityCamera cam) {
+			if (serverPlayer.getCamera() instanceof SecurityCamera cam)
 				dummyEntity = new SecurityCamera(level, pos, cam);
-			}
-			else {
+			else
 				dummyEntity = new SecurityCamera(level, pos);
-			}
 
 			level.addFreshEntity(dummyEntity);
 
@@ -148,9 +145,8 @@ public class SecurityCameraBlock extends OwnableBlock {
 			serverPlayer.camera = dummyEntity;
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SetCameraView(dummyEntity));
 
-			if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity cam) {
+			if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity cam)
 				cam.startViewing();
-			}
 		}
 	}
 
@@ -185,6 +181,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
 		if (!canSurvive(level.getBlockState(pos), level, pos) && !canSurvive(state, level, pos)) {
+			System.out.println("DESTROY");
 			level.destroyBlock(pos, true);
 		}
 	}

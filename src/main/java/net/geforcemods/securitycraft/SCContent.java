@@ -334,8 +334,8 @@ public class SCContent {
 	@OwnableBE
 	public static final RegistryObject<Block> REINFORCED_DOOR = BLOCKS.register("iron_door_reinforced", () -> new ReinforcedDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion()));
 	@HasManualPage
-	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> REINFORCED_FENCEGATE = BLOCKS.register("reinforced_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Material.METAL).sound(SoundType.METAL)));
+	@RegisterItemBlock
+	public static final RegistryObject<Block> REINFORCED_FENCE_GATE = BLOCKS.register("reinforced_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> RETINAL_SCANNER = BLOCKS.register("retinal_scanner", () -> new RetinalScannerBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
@@ -2266,7 +2266,7 @@ public class SCContent {
 			SCContent.SAND_MINE.get(),
 			SCContent.STONE_MINE.get(),
 			SCContent.BOUNCING_BETTY.get(),
-			SCContent.REINFORCED_FENCEGATE.get(),
+			SCContent.REINFORCED_FENCE_GATE.get(),
 			SCContent.ANCIENT_DEBRIS_MINE.get(),
 			SCContent.COAL_ORE_MINE.get(),
 			SCContent.EMERALD_ORE_MINE.get(),
