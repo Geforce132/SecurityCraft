@@ -10,6 +10,7 @@
 - Fix: The Reinforced Water Cauldron and Reinforced Grass Block don't have a reinforced tint
 - Fix: Reinforced Stained Glass Pane items display incorrectly
 - Fix: The Reinforced Moss Carpet has a different sound compared to the vanilla Moss Carpet
+- Fix: Crash when inserting a module into a single Inventory Scanner
 
 --------------------------Changelog for v1.9.4-beta1 of SecurityCraft--------------------------
 
