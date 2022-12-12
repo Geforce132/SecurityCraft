@@ -70,7 +70,7 @@ public class SecurityCamera extends Entity {
 
 	public SecurityCamera(World world, BlockPos pos, SecurityCamera oldCamera) {
 		this(world, pos);
-		oldCamera.discardCamera();
+		oldCamera.remove();
 	}
 
 	private void setInitialPitchYaw(SecurityCameraBlockEntity te) {
@@ -140,14 +140,24 @@ public class SecurityCamera extends Entity {
 		super.setRot(yaw, pitch);
 	}
 
+	@Override
+	public void remove() {
+		super.remove();
+		discardCamera();
+	}
+
 	public void stopViewing(ServerPlayerEntity player) {
 		if (!level.isClientSide) {
-			discardCamera();
+			remove();
 			player.camera = player;
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new SetCameraView(player));
 		}
 	}
 
+	/**
+	 * @deprecated Prefer calling {@link #discard()}
+	 */
+	@Deprecated
 	public void discardCamera() {
 		if (!level.isClientSide) {
 			TileEntity te = level.getBlockEntity(blockPosition());
@@ -164,8 +174,6 @@ public class SecurityCamera extends Entity {
 				}
 			}
 		}
-
-		remove();
 	}
 
 	public void setHasLoadedChunks(int initialViewDistance) {
