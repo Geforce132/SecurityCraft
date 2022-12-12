@@ -313,10 +313,11 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		super.onModuleInserted(stack, module, toggled);
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
-		Predicate<ModuleType> test = toggled ? connectedScanner::isModuleEnabled : connectedScanner::hasModule;
 
-		if (connectedScanner != null && !test.test(module))
-			connectedScanner.insertModule(stack, toggled);
+		if (connectedScanner != null) {
+			if (toggled ? !connectedScanner.isModuleEnabled(module) : !connectedScanner.hasModule(module))
+				connectedScanner.insertModule(stack, toggled);
+		}
 
 		if (module == ModuleType.DISGUISE) {
 			onInsertDisguiseModule(this, stack);
