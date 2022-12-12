@@ -9,6 +9,7 @@
 - API: Moved and renamed Owner#isOwner methods to IPasswordProtected#isOwnedBy
 - Fix: The Reinforced Water Cauldron and Reinforced Grass Block don't have a reinforced tint
 - Fix: The Reinforced Moss Carpet has a different sound compared to the vanilla Moss Carpet
+- Fix: Crash when inserting a module into a single Inventory Scanner
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
