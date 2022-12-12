@@ -189,9 +189,8 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if (!canSurvive(world.getBlockState(pos), world, pos) && !canSurvive(state, world, pos)) {
+		if (!canSurvive(world.getBlockState(pos), world, pos) && !canSurvive(state, world, pos))
 			world.destroyBlock(pos, true);
-		}
 	}
 
 	@Override
