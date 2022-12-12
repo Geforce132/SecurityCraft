@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
@@ -60,7 +61,7 @@ public class SecurityCameraRenderer extends TileEntityRenderer<SecurityCameraBlo
 		matrix.mulPose(POSITIVE_X_180);
 
 		if (!te.isDisabled())
-			MODEL.cameraRotationPoint.yRot = (float) te.cameraRotation;
+			MODEL.cameraRotationPoint.yRot = (float) MathHelper.lerp(partialTicks, te.oCameraRotation, te.cameraRotation);
 
 		if (te.isShutDown())
 			MODEL.cameraRotationPoint.xRot = 0.9F;

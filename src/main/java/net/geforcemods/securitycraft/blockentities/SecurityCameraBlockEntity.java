@@ -20,6 +20,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class SecurityCameraBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity, IEMPAffectedBE {
 	public double cameraRotation = 0.0D;
+	public double oCameraRotation = 0.0D;
 	public boolean addToRotation = true;
 	public boolean down = false, downSet = false;
 	private int playersViewing = 0;
@@ -46,6 +47,8 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 				return;
 			}
 
+			oCameraRotation = cameraRotation;
+			
 			if (addToRotation && cameraRotation <= 1.55F)
 				cameraRotation += rotationSpeedOption.get();
 			else

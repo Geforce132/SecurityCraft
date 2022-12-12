@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
@@ -59,7 +60,7 @@ public class SonicSecuritySystemRenderer extends TileEntityRenderer<SonicSecurit
 		}
 
 		matrix.mulPose(POSITIVE_X_180);
-		MODEL.setRadarRotation(te.radarRotationDegrees);
+		MODEL.setRadarRotation(MathHelper.lerp(partialTicks, te.oRadarRotationDegrees, te.radarRotationDegrees));
 		MODEL.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

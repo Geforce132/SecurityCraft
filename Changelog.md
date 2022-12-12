@@ -9,6 +9,7 @@
 - API: Moved and renamed Owner#isOwner methods to IPasswordProtected#isOwnedBy
 - Fix: The Reinforced Grass Block doesn't have a reinforced tint
 - Fix: Crash when inserting a module into a single Inventory Scanner
+- Fix: Some animations stutter
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
