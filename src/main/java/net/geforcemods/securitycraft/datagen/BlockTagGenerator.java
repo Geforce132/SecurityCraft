@@ -266,7 +266,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.DAMPENS_VIBRATIONS).addTag(SCTags.Blocks.REINFORCED_WOOL);
 		tag(BlockTags.DEAD_BUSH_MAY_PLACE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA).addTag(SCTags.Blocks.REINFORCED_DIRT);
 		tag(BlockTags.DOORS).add(SCContent.KEYPAD_DOOR.get(), SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
-		tag(BlockTags.FENCE_GATES).add(SCContent.REINFORCED_FENCEGATE.get());
+		tag(BlockTags.FENCE_GATES).add(SCContent.REINFORCED_FENCE_GATE.get());
 		tag(BlockTags.FENCES).add(SCContent.IRON_FENCE.get());
 		tag(BlockTags.GUARDED_BY_PIGLINS).add(
 				SCContent.DEEPSLATE_GOLD_ORE_MINE.get(),

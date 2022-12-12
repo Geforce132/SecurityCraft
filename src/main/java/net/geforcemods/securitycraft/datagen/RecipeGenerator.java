@@ -313,7 +313,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('Q', Tags.Items.GEMS_QUARTZ)
 		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_FENCEGATE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_FENCE_GATE.get())
 		.pattern(" I ")
 		.pattern("IGI")
 		.pattern(" I ")
