@@ -81,6 +81,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	private static final float UPWARDS_ANIMATION_LIMIT = 0.025F;
 	private static final float DOWNWARDS_ANIMATION_LIMIT = 0.9F;
 	private float headYTranslation = 0.9F;
+	private float oHeadYTranslation = 0.9F;
 	private boolean shutDown = false;
 	public boolean animateUpwards = false;
 	public boolean animate = false;
@@ -132,6 +133,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			}
 
 			if (animate) { //no else if because animate can be changed in the above if statement
+				oHeadYTranslation = headYTranslation;
+
 				if (animateUpwards && headYTranslation > UPWARDS_ANIMATION_LIMIT) {
 					headYTranslation -= ANIMATION_STEP_SIZE;
 
@@ -519,10 +522,11 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	/**
+	 * @param partialTicks Partial ticks
 	 * @return The amount of y translation from the head's default position, used for animation
 	 */
-	public float getHeadYTranslation() {
-		return headYTranslation;
+	public float getHeadYTranslation(float partialTicks) {
+		return Mth.lerp(partialTicks, oHeadYTranslation, headYTranslation);
 	}
 
 	/**
