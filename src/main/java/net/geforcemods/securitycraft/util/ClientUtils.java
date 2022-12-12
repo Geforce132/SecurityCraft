@@ -20,7 +20,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Quaternion;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.client.gui.GuiUtils;
 
@@ -98,8 +97,8 @@ public class ClientUtils {
 		WorldVertexBufferUploader.end(bufferBuilder);
 	}
 
-	public static Quaternion fromXYZDegrees(Vector3f degreesVector) {
-		return fromXYZ((float) Math.toRadians(degreesVector.x()), (float) Math.toRadians(degreesVector.y()), (float) Math.toRadians(degreesVector.z()));
+	public static Quaternion fromXYZDegrees(float x, float y, float z) {
+		return fromXYZ((float) Math.toRadians(x), (float) Math.toRadians(y), (float) Math.toRadians(z));
 	}
 
 	public static Quaternion fromXYZ(float x, float y, float z) {

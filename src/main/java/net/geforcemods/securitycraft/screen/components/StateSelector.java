@@ -53,7 +53,7 @@ public class StateSelector extends Screen implements IGuiEventListener, IContain
 	private static final int PAGE_LENGTH = 5;
 	private static final float ROTATION_SENSITIVITY = 0.1F;
 	private static final Vector3f Y_DRAG_ROTATION_VECTOR = new Vector3f((float) (1.0D / Math.sqrt(2)), 0, (float) (1.0D / Math.sqrt(2)));
-	private static final Quaternion DEFAULT_ROTATION = ClientUtils.fromXYZDegrees(new Vector3f(15.0F, -135.0F, 0.0F));
+	private static final Quaternion DEFAULT_ROTATION = ClientUtils.fromXYZDegrees(15.0F, -135.0F, 0.0F);
 	private static final EnumProperty<StandingOrWallType> STANDING_OR_WALL_TYPE_PROPERTY = EnumProperty.create("standing_or_wall", StandingOrWallType.class);
 	private final StateSelectorAccessMenu menu;
 	private final int xStart, yStart, slotToCheck;
