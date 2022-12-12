@@ -10,6 +10,7 @@
 - Fix: The Reinforced Water Cauldron and Reinforced Grass Block don't have a reinforced tint
 - Fix: The Reinforced Moss Carpet has a different sound compared to the vanilla Moss Carpet
 - Fix: Crash when inserting a module into a single Inventory Scanner
+- Fix: Some animations stutter
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
