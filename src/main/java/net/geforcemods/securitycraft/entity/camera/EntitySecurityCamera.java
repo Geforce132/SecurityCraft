@@ -68,7 +68,7 @@ public class EntitySecurityCamera extends Entity implements IEMPAffected {
 
 	public EntitySecurityCamera(World world, double x, double y, double z, EntitySecurityCamera oldCamera) {
 		this(world, x, y, z);
-		oldCamera.discardCamera();
+		oldCamera.setDead();
 	}
 
 	private void setInitialPitchYaw(TileEntitySecurityCamera te) {
@@ -140,6 +140,12 @@ public class EntitySecurityCamera extends Entity implements IEMPAffected {
 		super.setRotation(yaw, pitch);
 	}
 
+	@Override
+	public void setDead() {
+		super.setDead();
+		discardCamera();
+	}
+
 	public void stopViewing(EntityPlayerMP player) {
 		if (!world.isRemote) {
 			WorldServer serverWorld = (WorldServer) world;
@@ -148,7 +154,7 @@ public class EntitySecurityCamera extends Entity implements IEMPAffected {
 			ChunkPos chunkPos = chunk.getPos();
 			int viewDistance = player.server.getPlayerList().getViewDistance();
 
-			discardCamera();
+			setDead();
 
 			for (int cx = chunkPos.x - viewDistance; cx <= chunkPos.x + viewDistance; cx++) {
 				for (int cz = chunkPos.z - viewDistance; cz <= chunkPos.z + viewDistance; cz++) {
@@ -170,6 +176,10 @@ public class EntitySecurityCamera extends Entity implements IEMPAffected {
 		}
 	}
 
+	/**
+	 * @deprecated Prefer calling {@link #discard()}
+	 */
+	@Deprecated
 	public void discardCamera() {
 		if (!world.isRemote) {
 			TileEntity te = world.getTileEntity(new BlockPos(posX, posY, posZ));
@@ -182,8 +192,6 @@ public class EntitySecurityCamera extends Entity implements IEMPAffected {
 				chunkTicket = null;
 			}
 		}
-
-		setDead();
 	}
 
 	public void setChunkTicket(Ticket chunkTicket) {

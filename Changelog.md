@@ -13,6 +13,7 @@
 - Fix: Admin Tool description in JEI is incorrect
 - Fix: Crash when inserting a module into a single Inventory Scanner
 - Fix: Some animations stutter
+- Fix: Using /kill to remove a camera entity, or removing it by other non-standard means, does not update the camera block properly
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
