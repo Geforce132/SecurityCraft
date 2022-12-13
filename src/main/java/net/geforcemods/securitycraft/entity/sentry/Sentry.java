@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.entity;
+package net.geforcemods.securitycraft.entity.sentry;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,8 +12,6 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blocks.SentryDisguiseBlock;
-import net.geforcemods.securitycraft.entity.ai.AttackRangedIfEnabledGoal;
-import net.geforcemods.securitycraft.entity.ai.TargetNearestPlayerOrMobGoal;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
