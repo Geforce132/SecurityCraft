@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.models;
 
-import net.geforcemods.securitycraft.entity.EntitySentry;
+import net.geforcemods.securitycraft.entity.ai.EntitySentry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;

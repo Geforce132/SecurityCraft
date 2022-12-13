@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.entity.EntitySentry;
-import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
+import net.geforcemods.securitycraft.entity.ai.EntitySentry;
+import net.geforcemods.securitycraft.entity.ai.EntitySentry.EnumSentryMode;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;

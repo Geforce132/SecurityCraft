@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.entity;
+package net.geforcemods.securitycraft.entity.ai;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,8 +10,6 @@ import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockSentryDisguise;
-import net.geforcemods.securitycraft.entity.ai.EntityAIAttackRangedIfEnabled;
-import net.geforcemods.securitycraft.entity.ai.EntityAITargetNearestPlayerOrMob;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;

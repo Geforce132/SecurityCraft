@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.entity;
+package net.geforcemods.securitycraft.entity.ai;
 
 import java.util.Collection;
 

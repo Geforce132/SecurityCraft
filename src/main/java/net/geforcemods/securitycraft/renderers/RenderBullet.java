@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.renderers;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.entity.EntityBullet;
+import net.geforcemods.securitycraft.entity.ai.EntityBullet;
 import net.geforcemods.securitycraft.models.ModelBullet;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;

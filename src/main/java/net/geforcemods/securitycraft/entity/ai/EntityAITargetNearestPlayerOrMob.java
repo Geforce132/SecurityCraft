@@ -4,8 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
-import net.geforcemods.securitycraft.entity.EntitySentry;
-import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
+import net.geforcemods.securitycraft.entity.ai.EntitySentry.EnumSentryMode;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;

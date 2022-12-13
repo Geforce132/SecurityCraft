@@ -2,8 +2,7 @@ package net.geforcemods.securitycraft.entity.ai;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.entity.EntitySentry;
-import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
+import net.geforcemods.securitycraft.entity.ai.EntitySentry.EnumSentryMode;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
