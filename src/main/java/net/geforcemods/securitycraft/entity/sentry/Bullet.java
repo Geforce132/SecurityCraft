@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.entity;
+package net.geforcemods.securitycraft.entity.sentry;
 
 import java.util.Collection;
 

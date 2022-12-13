@@ -1,11 +1,10 @@
-package net.geforcemods.securitycraft.entity.ai;
+package net.geforcemods.securitycraft.entity.sentry;
 
 import java.util.Collections;
 import java.util.List;
 
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
-import net.geforcemods.securitycraft.entity.Sentry;
-import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
+import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.FlyingMob;
