@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.misc.conditions;
+package net.geforcemods.securitycraft.misc;
 
 import java.util.Set;
 
