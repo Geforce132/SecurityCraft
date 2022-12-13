@@ -12,6 +12,7 @@
 - Fix: Potential startup crash in combination with other mods
 - Fix: Admin Tool description in JEI is incorrect
 - Fix: Crash when inserting a module into a single Inventory Scanner
+- Fix: Some animations stutter
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 

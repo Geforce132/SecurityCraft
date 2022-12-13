@@ -49,6 +49,7 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 	/** Used to control the number of ticks that Sonic Security Systems emit redstone power for */
 	public int powerCooldown = 0;
 	public float radarRotationDegrees = 0;
+	public float oRadarRotationDegrees = 0;
 	/** A list containing all of the blocks that this SSS is linked to */
 	private Set<BlockPos> linkedBlocks = new HashSet<>();
 	/** Whether or not this Sonic Security System is on or off */
@@ -134,6 +135,7 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 		}
 		else {
 			if (isActive() || isRecording()) {
+				oRadarRotationDegrees = radarRotationDegrees;
 				// Turn the radar dish slightly
 				radarRotationDegrees += 0.15;
 

@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockDisplayCase;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -149,7 +150,7 @@ public class TileEntityDisplayCase extends CustomizableSCTE implements ITickable
 	}
 
 	public float getOpenness(float partialTicks) {
-		return oOpenness + (openness - oOpenness) * partialTicks;
+		return ClientUtils.lerp(partialTicks, oOpenness, openness);
 	}
 
 	public boolean isOpen() {

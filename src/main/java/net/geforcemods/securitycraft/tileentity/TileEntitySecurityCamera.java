@@ -23,6 +23,7 @@ import net.minecraft.world.WorldServer;
 public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAffectedTE, ITickable {
 	private final double CAMERA_SPEED = 0.0180D;
 	public double cameraRotation = 0.0D;
+	public double oCameraRotation = 0.0D;
 	public boolean addToRotation = true;
 	public boolean down = false;
 	private boolean shutDown = false;
@@ -39,6 +40,8 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 				cameraRotation = customRotationOption.get();
 				return;
 			}
+
+			oCameraRotation = cameraRotation;
 
 			if (addToRotation && cameraRotation <= 1.55F)
 				cameraRotation += rotationSpeedOption.get();

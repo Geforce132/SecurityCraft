@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.models.ModelSecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -20,7 +21,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 	private static final ResourceLocation BEING_VIEWED_TEXTURE = new ResourceLocation("securitycraft:textures/blocks/security_camera_viewing.png");
 
 	@Override
-	public void render(TileEntitySecurityCamera te, double x, double y, double z, float par5, int par6, float alpha) {
+	public void render(TileEntitySecurityCamera te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		//calling down() on the render view entity's position because the camera entity sits at y+0.5 by default and getPosition increases y by 0.5 again
 		if (te.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().getRenderViewEntity().getPosition().down().equals(te.getPos()))
 			return;
@@ -61,7 +62,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 		GlStateManager.rotate(180F, rotation, 0.0F, 1.0F);
 
 		if (!te.isDisabled())
-			MODEL.cameraRotationPoint.rotateAngleY = (float) te.cameraRotation;
+			MODEL.cameraRotationPoint.rotateAngleY = (float) ClientUtils.lerp(partialTicks, te.oCameraRotation, te.cameraRotation);
 
 		if (te.isShutDown())
 			MODEL.cameraRotationPoint.rotateAngleX = 0.9F;

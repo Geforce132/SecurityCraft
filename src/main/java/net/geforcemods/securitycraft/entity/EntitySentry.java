@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -73,6 +74,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob, IE
 	private static final float UPWARDS_ANIMATION_LIMIT = 0.025F;
 	private static final float DOWNWARDS_ANIMATION_LIMIT = 0.9F;
 	private float headYTranslation = 0.9F;
+	private float oHeadYTranslation = 0.9F;
 	private boolean shutDown = false;
 	public boolean animateUpwards = true;
 	public boolean animate = false;
@@ -149,6 +151,8 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob, IE
 			}
 
 			if (animate) { //no else if because animate can be changed in the above if statement
+				oHeadYTranslation = headYTranslation;
+
 				if (animateUpwards && headYTranslation > UPWARDS_ANIMATION_LIMIT) {
 					headYTranslation -= ANIMATION_STEP_SIZE;
 
@@ -542,10 +546,11 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob, IE
 	}
 
 	/**
+	 * @param partialTicks Partial ticks
 	 * @return The amount of y translation from the head's default position, used for animation
 	 */
-	public float getHeadYTranslation() {
-		return headYTranslation;
+	public float getHeadYTranslation(float partialTicks) {
+		return ClientUtils.lerp(partialTicks, oHeadYTranslation, headYTranslation);
 	}
 
 	/**

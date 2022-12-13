@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.models;
 
 import net.geforcemods.securitycraft.entity.EntitySentry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -55,7 +56,7 @@ public class ModelSentry extends ModelBase {
 
 		if (entity instanceof EntitySentry) {
 			GlStateManager.rotate(((EntitySentry) entity).getDataManager().get(EntitySentry.HEAD_ROTATION), 0.0F, 1.0F, 0.0F);
-			GlStateManager.translate(0.0F, ((EntitySentry) entity).getHeadYTranslation(), 0.0F);
+			GlStateManager.translate(0.0F, ((EntitySentry) entity).getHeadYTranslation(Minecraft.getMinecraft().getRenderPartialTicks()), 0.0F);
 		}
 
 		head.render(scale);
