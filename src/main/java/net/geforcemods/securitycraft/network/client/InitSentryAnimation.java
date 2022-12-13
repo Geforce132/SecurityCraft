@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.List;
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.AxisAlignedBB;

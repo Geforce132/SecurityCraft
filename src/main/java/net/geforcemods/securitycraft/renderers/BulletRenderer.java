@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.renderers;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.entity.Bullet;
+import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.models.BulletModel;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;

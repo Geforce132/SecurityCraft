@@ -133,10 +133,10 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPan
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
-import net.geforcemods.securitycraft.entity.Bullet;
 import net.geforcemods.securitycraft.entity.IMSBomb;
-import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.geforcemods.securitycraft.entity.sentry.Bullet;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.fluids.FakeLavaFluid;
 import net.geforcemods.securitycraft.fluids.FakeWaterFluid;
 import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.models;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
-import net.geforcemods.securitycraft.entity.Bullet;
+import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;

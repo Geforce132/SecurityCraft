@@ -1,10 +1,9 @@
-package net.geforcemods.securitycraft.entity.ai;
+package net.geforcemods.securitycraft.entity.sentry;
 
 import java.util.EnumSet;
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.entity.Sentry;
-import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
+import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;

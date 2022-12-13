@@ -13,7 +13,7 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
-import net.geforcemods.securitycraft.misc.conditions.TileEntityNBTCondition;
+import net.geforcemods.securitycraft.misc.TileEntityNBTCondition;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
