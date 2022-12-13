@@ -270,13 +270,10 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
-		if (connectedScanner == null)
-			return;
-
-		Predicate<EnumModuleType> test = toggled ? connectedScanner::isModuleEnabled : connectedScanner::hasModule;
-
-		if (connectedScanner != null && !test.test(module))
-			connectedScanner.insertModule(stack, toggled);
+		if (connectedScanner != null) {
+			if (toggled ? !connectedScanner.isModuleEnabled(module) : !connectedScanner.hasModule(module))
+				connectedScanner.insertModule(stack, toggled);
+		}
 
 		if (world.isRemote && module == EnumModuleType.DISGUISE) {
 			TileEntityRenderDelegate.putDisguisedTeRenderer(this, stack);
