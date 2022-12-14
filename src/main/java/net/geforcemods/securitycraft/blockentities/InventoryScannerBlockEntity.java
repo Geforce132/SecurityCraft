@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blockentities;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
@@ -314,10 +313,11 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		super.onModuleRemoved(stack, module, toggled);
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
-		Predicate<ModuleType> test = toggled ? connectedScanner::isModuleEnabled : connectedScanner::hasModule;
 
-		if (connectedScanner != null && test.test(module))
-			connectedScanner.removeModule(module, toggled);
+		if (connectedScanner != null) {
+			if (toggled ? connectedScanner.isModuleEnabled(module) : connectedScanner.hasModule(module))
+				connectedScanner.removeModule(module, toggled);
+		}
 
 		if (module == ModuleType.STORAGE) {
 			//first 10 slots (0-9) are the prohibited slots

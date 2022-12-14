@@ -9,6 +9,7 @@
 - API: Moved and renamed Owner#isOwner methods to IPasswordProtected#isOwnedBy
 - Fix: The Reinforced Grass Block doesn't have a reinforced tint
 - Fix: Crash when inserting a module into a single Inventory Scanner
+- Fix: Error when breaking an Inventory Scanner that contains a module
 - Fix: Some animations stutter
 - Fix: Using /kill to remove a camera entity, or removing it by other non-standard means, does not update the camera block properly
 
