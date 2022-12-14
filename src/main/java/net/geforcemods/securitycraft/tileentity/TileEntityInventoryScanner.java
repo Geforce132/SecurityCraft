@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.tileentity;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -289,13 +288,10 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
-		if (connectedScanner == null)
-			return;
-
-		Predicate<EnumModuleType> test = toggled ? connectedScanner::isModuleEnabled : connectedScanner::hasModule;
-
-		if (connectedScanner != null && test.test(module))
-			connectedScanner.removeModule(module, toggled);
+		if (connectedScanner != null) {
+			if (toggled ? connectedScanner.isModuleEnabled(module) : connectedScanner.hasModule(module))
+				connectedScanner.removeModule(module, toggled);
+		}
 
 		if (module == EnumModuleType.STORAGE) {
 			//first 10 slots (0-9) are the prohibited slots

@@ -80,16 +80,18 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 */
 	public default void onModuleInserted(ItemStack stack, EnumModuleType module, boolean toggled) {
 		TileEntity te = getTileEntity();
+		World world = te.getWorld();
 
-		if (!te.getWorld().isRemote) {
-			IBlockState state = te.getWorld().getBlockState(te.getPos());
+		if (!world.isRemote) {
+			BlockPos pos = te.getPos();
+			IBlockState state = world.getBlockState(pos);
 
 			if (!toggled)
 				toggleModuleState(module, true);
 
 			te.markDirty();
-			te.getWorld().notifyBlockUpdate(te.getPos(), state, state, 3);
-			te.getWorld().notifyNeighborsOfStateChange(te.getPos(), te.getBlockType(), false);
+			world.notifyBlockUpdate(pos, state, state, 3);
+			world.notifyNeighborsOfStateChange(pos, te.getBlockType(), false);
 			FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendPacketToAllPlayers(getTileEntity().getUpdatePacket());
 		}
 	}
@@ -103,15 +105,18 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 */
 	public default void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
 		TileEntity te = getTileEntity();
+		World world = te.getWorld();
 
-		if (!te.getWorld().isRemote) {
-			IBlockState state = te.getWorld().getBlockState(te.getPos());
+		if (!world.isRemote) {
+			BlockPos pos = te.getPos();
+			IBlockState state = world.getBlockState(pos);
+
 			if (!toggled)
 				toggleModuleState(module, false);
 
 			te.markDirty();
-			te.getWorld().notifyBlockUpdate(te.getPos(), state, state, 3);
-			te.getWorld().notifyNeighborsOfStateChange(te.getPos(), te.getBlockType(), false);
+			world.notifyBlockUpdate(pos, state, state, 3);
+			world.notifyNeighborsOfStateChange(pos, te.getBlockType(), false);
 			FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendPacketToAllPlayers(getTileEntity().getUpdatePacket());
 		}
 	}
