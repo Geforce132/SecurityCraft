@@ -1,5 +1,9 @@
 package net.geforcemods.securitycraft;
 
+import java.util.Arrays;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
+
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -49,7 +53,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -68,6 +72,7 @@ public class SCClientEventHandler {
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
 	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final Component REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
+	private static final int USE_CHECKMARK = 88, USE_CROSS = 110;
 
 	@SubscribeEvent
 	public static void onRenderLevelStage(RenderLevelStageEvent event) {
@@ -197,91 +202,47 @@ public class SCClientEventHandler {
 		LocalPlayer player = mc.player;
 		Level level = player.getCommandSenderWorld();
 		double reachDistance = mc.gameMode.getPickRange();
+		double eyeHeight = player.getEyeHeight();
 
 		for (InteractionHand hand : InteractionHand.values()) {
 			int uCoord = 0;
 			ItemStack stack = player.getItemInHand(hand);
 
 			if (stack.getItem() == SCContent.CAMERA_MONITOR.get()) {
-				double eyeHeight = player.getEyeHeight();
-				Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
-				HitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
+				uCoord = getUCoord(level, player, stack, reachDistance, eyeHeight, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, 30, (tag, i) -> {
+					if (!tag.contains("Camera" + i))
+						return null;
 
-				if (hitResult instanceof BlockHitResult bhr && level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity) {
-					CompoundTag cameras = stack.getOrCreateTag();
-					uCoord = 110;
+					String camera = tag.getString("Camera" + i);
 
-					for (int i = 1; i < 31; i++) {
-						if (!cameras.contains("Camera" + i))
-							continue;
-
-						String[] coords = cameras.getString("Camera" + i).split(" ");
-
-						if (Integer.parseInt(coords[0]) == bhr.getBlockPos().getX() && Integer.parseInt(coords[1]) == bhr.getBlockPos().getY() && Integer.parseInt(coords[2]) == bhr.getBlockPos().getZ()) {
-							uCoord = 88;
-							break;
-						}
-					}
-				}
+					return Arrays.stream(camera.substring(0, camera.lastIndexOf(' ')).split(" ")).map(Integer::parseInt).toArray(Integer[]::new);
+				});
 			}
 			else if (stack.getItem() == SCContent.REMOTE_ACCESS_MINE.get()) {
-				double eyeHeight = player.getEyeHeight();
-				Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
-				HitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
-
-				if (hitResult instanceof BlockHitResult bhr && level.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive) {
-					uCoord = 110;
-					CompoundTag mines = stack.getOrCreateTag();
-
-					for (int i = 1; i <= 6; i++) {
-						if (stack.getTag().getIntArray("mine" + i).length > 0) {
-							int[] coords = mines.getIntArray("mine" + i);
-
-							if (coords[0] == bhr.getBlockPos().getX() && coords[1] == bhr.getBlockPos().getY() && coords[2] == bhr.getBlockPos().getZ()) {
-								uCoord = 88;
-								break;
-							}
-						}
-					}
-				}
+				uCoord = getUCoord(level, player, stack, reachDistance, eyeHeight, bhr -> level.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive, 30, (tag, i) -> {
+					if (tag.getIntArray("mine" + i).length > 0)
+						return Arrays.stream(tag.getIntArray("mine" + i)).boxed().toArray(Integer[]::new);
+					else
+						return null;
+				});
 			}
 			else if (stack.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get()) {
-				if (Minecraft.getInstance().crosshairPickEntity instanceof Sentry sentry) {
-					CompoundTag sentries = stack.getOrCreateTag();
-
-					uCoord = 110;
-
-					for (int i = 1; i <= 12; i++) {
-						if (stack.getTag().getIntArray("sentry" + i).length > 0) {
-							int[] coords = sentries.getIntArray("sentry" + i);
-
-							if (coords[0] == sentry.blockPosition().getX() && coords[1] == sentry.blockPosition().getY() && coords[2] == sentry.blockPosition().getZ()) {
-								uCoord = 88;
-								break;
-							}
-						}
-					}
-				}
+				if (Minecraft.getInstance().crosshairPickEntity instanceof Sentry sentry)
+					uCoord = loop(12, (tag, i) -> Arrays.stream(tag.getIntArray("sentry" + i)).boxed().toArray(Integer[]::new), stack.getOrCreateTag(), sentry.blockPosition());
 			}
 			else if (stack.getItem() == SCContent.SONIC_SECURITY_SYSTEM_ITEM.get()) {
-				double eyeHeight = player.getEyeHeight();
-				Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
-				HitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
-
-				if (hitResult instanceof BlockHitResult bhr && level.getBlockEntity(bhr.getBlockPos()) instanceof ILockable lockable) {
-					BlockPos pos = bhr.getBlockPos();
+				uCoord = getUCoord(level, player, stack, reachDistance, eyeHeight, bhr -> {
+					if (!(level.getBlockEntity(bhr.getBlockPos()) instanceof ILockable lockable))
+						return false;
 
 					//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 					if (!(lockable instanceof IOwnable ownable) || !ownable.isOwnedBy(player)) {
-						if (DisguisableBlock.getDisguisedBlockState(level, pos).isPresent())
-							return;
+						if (DisguisableBlock.getDisguisedBlockState(level, bhr.getBlockPos()).isPresent())
+							return false;
 					}
 
-					if (SonicSecuritySystemItem.isAdded(stack.getOrCreateTag(), pos))
-						uCoord = 88;
-					else
-						uCoord = 110;
-				}
+					return true;
+				}, 0, null, false, SonicSecuritySystemItem::isAdded);
 			}
 
 			if (uCoord != 0) {
@@ -289,6 +250,35 @@ public class SCClientEventHandler {
 				GuiComponent.blit(pose, Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 90 + (hand == InteractionHand.MAIN_HAND ? player.getInventory().selected * 20 : (mc.options.mainHand == HumanoidArm.LEFT ? 189 : -29)), Minecraft.getInstance().getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
 			}
 		}
+	}
+
+	private static int getUCoord(Level level, Player player, ItemStack stackInHand, double reachDistance, double eyeHeight, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords) {
+		return getUCoord(level, player, stackInHand, reachDistance, eyeHeight, isValidHitResult, tagSize, getCoords, true, null);
+	}
+
+	private static int getUCoord(Level level, Player player, ItemStack stackInHand, double reachDistance, double eyeHeight, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords, boolean loop, BiFunction<CompoundTag, BlockPos, Boolean> useCheckmark) {
+		Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
+		BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
+
+		if (hitResult != null && hitResult.getType() == Type.BLOCK && isValidHitResult.test(hitResult)) {
+			if (loop)
+				return loop(tagSize, getCoords, stackInHand.getOrCreateTag(), hitResult.getBlockPos());
+			else
+				return useCheckmark.apply(stackInHand.getOrCreateTag(), hitResult.getBlockPos()) ? USE_CHECKMARK : USE_CROSS;
+		}
+
+		return 0;
+	}
+
+	private static int loop(int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords, CompoundTag tag, BlockPos pos) {
+		for (int i = 1; i <= tagSize; i++) {
+			Integer[] coords = getCoords.apply(tag, i);
+
+			if (coords != null && coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
+				return USE_CHECKMARK;
+		}
+
+		return USE_CROSS;
 	}
 
 	private static enum BCDBuffer implements MultiBufferSource {
