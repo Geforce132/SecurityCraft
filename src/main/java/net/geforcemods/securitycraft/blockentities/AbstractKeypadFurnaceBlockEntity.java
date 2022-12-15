@@ -347,11 +347,6 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	@Override
 	public void toggleModuleState(ModuleType module, boolean shouldBeEnabled) {
 		moduleStates.put(module, shouldBeEnabled);
-
-		if (shouldBeEnabled)
-			onModuleInserted(getModule(module), module, true);
-		else
-			onModuleRemoved(getModule(module), module, true);
 	}
 
 	@Override

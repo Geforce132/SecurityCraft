@@ -333,11 +333,6 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	@Override
 	public void toggleModuleState(ModuleType module, boolean shouldBeEnabled) {
 		moduleStates.put(module, shouldBeEnabled);
-
-		if (shouldBeEnabled)
-			onModuleInserted(getModule(module), module, true);
-		else
-			onModuleRemoved(getModule(module), module, true);
 	}
 
 	public boolean sendsMessages() {
