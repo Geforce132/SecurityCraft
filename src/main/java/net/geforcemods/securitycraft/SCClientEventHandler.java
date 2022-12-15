@@ -53,7 +53,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -258,13 +258,13 @@ public class SCClientEventHandler {
 
 	private static int getUCoord(Level level, Player player, ItemStack stackInHand, double reachDistance, double eyeHeight, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords, boolean loop, BiFunction<CompoundTag, BlockPos, Boolean> useCheckmark) {
 		Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
-		HitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
+		BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
 
-		if (hitResult instanceof BlockHitResult bhr && isValidHitResult.test(bhr)) {
+		if (hitResult != null && hitResult.getType() == Type.BLOCK && isValidHitResult.test(hitResult)) {
 			if (loop)
-				return loop(tagSize, getCoords, stackInHand.getOrCreateTag(), bhr.getBlockPos());
+				return loop(tagSize, getCoords, stackInHand.getOrCreateTag(), hitResult.getBlockPos());
 			else
-				return useCheckmark.apply(stackInHand.getOrCreateTag(), bhr.getBlockPos()) ? USE_CHECKMARK : USE_CROSS;
+				return useCheckmark.apply(stackInHand.getOrCreateTag(), hitResult.getBlockPos()) ? USE_CHECKMARK : USE_CROSS;
 		}
 
 		return 0;
