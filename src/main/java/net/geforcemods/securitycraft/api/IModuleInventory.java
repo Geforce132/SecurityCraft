@@ -169,6 +169,8 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			return ItemStack.EMPTY;
 		else {
 			if (!simulate) {
+				getInventory().set(slot, ItemStack.EMPTY);
+
 				if (stack.getItem() instanceof ModuleItem module) {
 					onModuleRemoved(stack, module.getModuleType(), false);
 
@@ -176,7 +178,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 						be.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), be);
 				}
 
-				return getInventory().set(slot, ItemStack.EMPTY).copy();
+				return stack;
 			}
 			else
 				return stack.copy();
@@ -226,6 +228,10 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		slot = fixSlotId(slot);
 
 		ItemStack previous = getModuleInSlot(slot);
+
+		//Prevent module from being removed and re-added when the slot initializes
+		if (previous.equals(stack, false))
+			return;
 
 		//call the correct methods, should there have been a module in the slot previously
 		if (!previous.isEmpty()) {
@@ -349,7 +355,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				if (!toggled)
 					modules.set(i, ItemStack.EMPTY);
 
-				onModuleRemoved(modules.get(i), module, false);
+				onModuleRemoved(modules.get(i), module, toggled);
 			}
 		}
 	}
