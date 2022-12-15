@@ -7,9 +7,17 @@
     "BBB"
   ],
   "key": {
-    "B": {
-      "item": "securitycraft:crystal_quartz"
-    }
+    "B": [
+      {
+        "item": "securitycraft:crystal_quartz"
+      },
+      {
+        "item": "securitycraft:crystal_quartz_pillar"
+      },
+      {
+        "item": "securitycraft:chiseled_crystal_quartz"
+      }
+    ]
   },
   "result": {
     "item": "securitycraft:crystal_quartz_stairs",

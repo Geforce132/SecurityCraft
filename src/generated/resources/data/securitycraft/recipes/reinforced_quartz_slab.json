@@ -5,9 +5,17 @@
     "BBB"
   ],
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_quartz_block"
-    }
+    "B": [
+      {
+        "item": "securitycraft:reinforced_quartz_block"
+      },
+      {
+        "item": "securitycraft:reinforced_quartz_pillar"
+      },
+      {
+        "item": "securitycraft:reinforced_chiseled_quartz_block"
+      }
+    ]
   },
   "result": {
     "item": "securitycraft:reinforced_quartz_slab",
