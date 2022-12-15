@@ -192,15 +192,13 @@ public class SCClientEventHandler {
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
 		Level level = player.getCommandSenderWorld();
-		double reachDistance = mc.gameMode.getPickRange();
-		double eyeHeight = player.getEyeHeight();
 
 		for (InteractionHand hand : InteractionHand.values()) {
 			int uCoord = 0;
 			ItemStack stack = player.getItemInHand(hand);
 
 			if (stack.getItem() == SCContent.CAMERA_MONITOR.get()) {
-				uCoord = getUCoord(level, player, stack, reachDistance, eyeHeight, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, 30, (tag, i) -> {
+				uCoord = getUCoord(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, 30, (tag, i) -> {
 					if (!tag.contains("Camera" + i))
 						return null;
 
@@ -210,7 +208,7 @@ public class SCClientEventHandler {
 				});
 			}
 			else if (stack.getItem() == SCContent.REMOTE_ACCESS_MINE.get()) {
-				uCoord = getUCoord(level, player, stack, reachDistance, eyeHeight, bhr -> level.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive, 30, (tag, i) -> {
+				uCoord = getUCoord(level, player, stack, bhr -> level.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive, 30, (tag, i) -> {
 					if (tag.getIntArray("mine" + i).length > 0)
 						return Arrays.stream(tag.getIntArray("mine" + i)).boxed().toArray(Integer[]::new);
 					else
@@ -222,7 +220,7 @@ public class SCClientEventHandler {
 					uCoord = loop(12, (tag, i) -> Arrays.stream(tag.getIntArray("sentry" + i)).boxed().toArray(Integer[]::new), stack.getOrCreateTag(), sentry.blockPosition());
 			}
 			else if (stack.getItem() == SCContent.SONIC_SECURITY_SYSTEM_ITEM.get()) {
-				uCoord = getUCoord(level, player, stack, reachDistance, eyeHeight, bhr -> {
+				uCoord = getUCoord(level, player, stack, bhr -> {
 					if (!(level.getBlockEntity(bhr.getBlockPos()) instanceof ILockable lockable))
 						return false;
 
@@ -243,11 +241,13 @@ public class SCClientEventHandler {
 		}
 	}
 
-	private static int getUCoord(Level level, Player player, ItemStack stackInHand, double reachDistance, double eyeHeight, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords) {
-		return getUCoord(level, player, stackInHand, reachDistance, eyeHeight, isValidHitResult, tagSize, getCoords, true, null);
+	private static int getUCoord(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords) {
+		return getUCoord(level, player, stackInHand, isValidHitResult, tagSize, getCoords, true, null);
 	}
 
-	private static int getUCoord(Level level, Player player, ItemStack stackInHand, double reachDistance, double eyeHeight, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords, boolean loop, BiFunction<CompoundTag, BlockPos, Boolean> useCheckmark) {
+	private static int getUCoord(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords, boolean loop, BiFunction<CompoundTag, BlockPos, Boolean> useCheckmark) {
+		double reachDistance = Minecraft.getInstance().gameMode.getPickRange();
+		double eyeHeight = player.getEyeHeight();
 		Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
 		BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
 
