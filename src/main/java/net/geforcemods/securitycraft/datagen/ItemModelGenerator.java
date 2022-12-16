@@ -116,7 +116,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		blockMine(Blocks.BLAST_FURNACE, SCContent.BLAST_FURNACE_MINE.get(), mcLoc(BLOCK_FOLDER + "/blast_furnace_side"), mcLoc(BLOCK_FOLDER + "/blast_furnace_front"), mcLoc(BLOCK_FOLDER + "/blast_furnace_top"));
 		simpleParent(SCContent.BLOCK_CHANGE_DETECTOR.get());
 		simpleParent(SCContent.CRYSTAL_QUARTZ_SLAB.get());
-		simpleParent(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
+		simpleParent(SCContent.CRYSTAL_QUARTZ_STAIRS.get());
+		simpleParent(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get());
+		simpleParent(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get());
 		simpleParent(SCContent.REINFORCED_GLASS.get());
 		reinforcedPane(SCContent.REINFORCED_GLASS_PANE.get());
 		simpleParent(SCContent.REINFORCED_IRON_TRAPDOOR.get(), "reinforced_iron_trapdoor_bottom");

@@ -276,11 +276,15 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_BLACK_STAINED_GLASS.get());
 		tag(BlockTags.INFINIBURN_OVERWORLD).add(SCContent.REINFORCED_NETHERRACK.get());
 		tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
-				SCContent.CRYSTAL_QUARTZ.get(),
-				SCContent.CHISELED_CRYSTAL_QUARTZ.get(),
-				SCContent.CRYSTAL_QUARTZ_PILLAR.get(),
-				SCContent.STAIRS_CRYSTAL_QUARTZ.get(),
 				SCContent.CRYSTAL_QUARTZ_SLAB.get(),
+				SCContent.SMOOTH_CRYSTAL_QUARTZ.get(),
+				SCContent.CHISELED_CRYSTAL_QUARTZ.get(),
+				SCContent.CRYSTAL_QUARTZ_BLOCK.get(),
+				SCContent.CRYSTAL_QUARTZ_BRICKS.get(),
+				SCContent.CRYSTAL_QUARTZ_PILLAR.get(),
+				SCContent.CRYSTAL_QUARTZ_STAIRS.get(),
+				SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(),
+				SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get(),
 				SCContent.STONE_MINE.get(),
 				SCContent.DEEPSLATE_MINE.get(),
 				SCContent.COBBLED_DEEPSLATE_MINE.get(),
@@ -341,9 +345,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.PIGLIN_REPELLENTS).add(SCContent.REINFORCED_SOUL_LANTERN.get());
 		tag(BlockTags.PRESSURE_PLATES).addTag(SCTags.Blocks.REINFORCED_PRESSURE_PLATES);
 		tag(BlockTags.RAILS).add(SCContent.TRACK_MINE.get());
-		tag(BlockTags.SLABS).addTag(SCTags.Blocks.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get());
+		tag(BlockTags.SLABS).addTag(SCTags.Blocks.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get(), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get());
 		tag(BlockTags.SMALL_DRIPLEAF_PLACEABLE).add(SCContent.REINFORCED_CLAY.get(), SCContent.REINFORCED_MOSS_BLOCK.get());
-		tag(BlockTags.STAIRS).addTag(SCTags.Blocks.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
+		tag(BlockTags.STAIRS).addTag(SCTags.Blocks.REINFORCED_STAIRS).add(SCContent.CRYSTAL_QUARTZ_STAIRS.get(), SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get());
 		tag(BlockTags.STRIDER_WARM_BLOCKS).add(SCContent.FAKE_LAVA_BLOCK.get());
 		tag(BlockTags.SIGNS).addTag(SCTags.Blocks.SECRET_SIGNS);
 		tag(BlockTags.SNOW).add(SCContent.REINFORCED_SNOW_BLOCK.get());
@@ -362,7 +366,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		for (RegistryObject<Block> ro : SCContent.BLOCKS.getEntries()) {
 			Block block = ro.get();
 
-			if (block != SCContent.CHISELED_CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ_PILLAR.get() && block != SCContent.CRYSTAL_QUARTZ_SLAB.get() && block != SCContent.STAIRS_CRYSTAL_QUARTZ.get()) {
+			if (block != SCContent.CHISELED_CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ_BLOCK.get() && block != SCContent.CRYSTAL_QUARTZ_PILLAR.get() && block != SCContent.CRYSTAL_QUARTZ_SLAB.get() && block != SCContent.CRYSTAL_QUARTZ_STAIRS.get() && block != SCContent.CRYSTAL_QUARTZ_BRICKS.get() && block != SCContent.SMOOTH_CRYSTAL_QUARTZ.get() && block != SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get() && block != SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get()) {
 				dragonImmune.add(block);
 				witherImmune.add(block);
 			}
