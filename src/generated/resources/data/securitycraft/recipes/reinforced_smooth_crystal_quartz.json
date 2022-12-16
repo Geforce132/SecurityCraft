@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": {
+    "item": "securitycraft:reinforced_crystal_quartz_block"
+  },
+  "result": "securitycraft:reinforced_smooth_crystal_quartz"
+}
