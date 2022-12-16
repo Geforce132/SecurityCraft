@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "#securitycraft:reinforced/stairs",
-    "securitycraft:crystal_quartz_stairs"
+    "securitycraft:crystal_quartz_stairs",
+    "securitycraft:smooth_crystal_quartz_stairs"
   ]
 }
