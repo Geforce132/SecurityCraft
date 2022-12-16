@@ -1,5 +1,9 @@
 package net.geforcemods.securitycraft;
 
+import java.util.Arrays;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
+
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -16,14 +20,12 @@ import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -50,6 +52,7 @@ import net.minecraftforge.fml.relauncher.Side;
 @EventBusSubscriber(value = Side.CLIENT, modid = SecurityCraft.MODID)
 public class SCClientEventHandler {
 	public static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+	private static final int USE_CHECKMARK = 88, USE_CROSS = 110;
 
 	@SubscribeEvent
 	public static void onRenderLevelStage(RenderWorldLastEvent event) {
@@ -126,108 +129,54 @@ public class SCClientEventHandler {
 				Minecraft mc = Minecraft.getMinecraft();
 				EntityPlayerSP player = mc.player;
 				World world = player.getEntityWorld();
-				float reachDistance = mc.playerController.getBlockReachDistance();
 
 				for (EnumHand hand : EnumHand.values()) {
 					ItemStack stack = player.getHeldItem(hand);
 					int uCoord = 0;
 
 					if (stack.getItem() == SCContent.cameraMonitor) {
-						double eyeHeight = player.getEyeHeight();
-						Vec3d lookVec = new Vec3d(player.posX + player.getLookVec().x * reachDistance, eyeHeight + player.posY + player.getLookVec().y * reachDistance, player.posZ + player.getLookVec().z * reachDistance);
-						RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
+						uCoord = getUCoord(world, player, stack, bhr -> world.getTileEntity(bhr.getBlockPos()) instanceof TileEntitySecurityCamera, 30, (tag, i) -> {
+							if (!tag.hasKey("Camera" + i))
+								return null;
 
-						if (mop != null && mop.typeOfHit == Type.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera) {
-							uCoord = 110;
-							NBTTagCompound cameras = stack.getTagCompound();
+							String camera = tag.getString("Camera" + i);
 
-							if (cameras != null) {
-								for (int i = 1; i < 31; i++) {
-									if (!cameras.hasKey("Camera" + i))
-										continue;
-
-									String[] coords = cameras.getString("Camera" + i).split(" ");
-
-									if (Integer.parseInt(coords[0]) == mop.getBlockPos().getX() && Integer.parseInt(coords[1]) == mop.getBlockPos().getY() && Integer.parseInt(coords[2]) == mop.getBlockPos().getZ()) {
-										uCoord = 88;
-										break;
-									}
-								}
-							}
-						}
+							return Arrays.stream(camera.substring(0, camera.lastIndexOf(' ')).split(" ")).map(Integer::parseInt).toArray(Integer[]::new);
+						});
 					}
 					else if (stack.getItem() == SCContent.remoteAccessMine) {
-						double eyeHeight = player.getEyeHeight();
-						Vec3d lookVec = new Vec3d(player.posX + player.getLookVec().x * reachDistance, eyeHeight + player.posY + player.getLookVec().y * reachDistance, player.posZ + player.getLookVec().z * reachDistance);
-						RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
-
-						if (mop != null && mop.typeOfHit == Type.BLOCK && world.getBlockState(mop.getBlockPos()).getBlock() instanceof IExplosive) {
-							uCoord = 110;
-							NBTTagCompound mines = stack.getTagCompound();
-
-							if (mines != null) {
-								for (int i = 1; i <= 6; i++) {
-									if (stack.getTagCompound().getIntArray("mine" + i).length > 0) {
-										int[] coords = mines.getIntArray("mine" + i);
-
-										if (coords[0] == mop.getBlockPos().getX() && coords[1] == mop.getBlockPos().getY() && coords[2] == mop.getBlockPos().getZ()) {
-											uCoord = 88;
-											break;
-										}
-									}
-								}
-							}
-						}
+						uCoord = getUCoord(world, player, stack, bhr -> world.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive, 30, (tag, i) -> {
+							if (tag.getIntArray("mine" + i).length > 0)
+								return Arrays.stream(tag.getIntArray("mine" + i)).boxed().toArray(Integer[]::new);
+							else
+								return null;
+						});
 					}
 					else if (stack.getItem() == SCContent.remoteAccessSentry) {
-						Entity hitEntity = Minecraft.getMinecraft().pointedEntity;
+						if (Minecraft.getMinecraft().pointedEntity instanceof EntitySentry) {
+							EntitySentry sentry = (EntitySentry) Minecraft.getMinecraft().pointedEntity;
 
-						if (hitEntity instanceof EntitySentry) {
-							uCoord = 110;
-							NBTTagCompound sentries = stack.getTagCompound();
+							if (!stack.hasTagCompound())
+								stack.setTagCompound(new NBTTagCompound());
 
-							if (sentries != null) {
-								for (int i = 1; i <= 12; i++) {
-									if (stack.getTagCompound().getIntArray("sentry" + i).length > 0) {
-										int[] coords = sentries.getIntArray("sentry" + i);
-
-										if (coords[0] == hitEntity.getPosition().getX() && coords[1] == hitEntity.getPosition().getY() && coords[2] == hitEntity.getPosition().getZ()) {
-											uCoord = 88;
-											break;
-										}
-									}
-								}
-							}
+							uCoord = loop(12, (tag, i) -> Arrays.stream(tag.getIntArray("sentry" + i)).boxed().toArray(Integer[]::new), stack.getTagCompound(), sentry.getPosition());
 						}
 					}
 					else if (stack.getItem() == SCContent.sonicSecuritySystemItem) {
-						double eyeHeight = player.getEyeHeight();
-						Vec3d lookVec = new Vec3d(player.posX + player.getLookVec().x * reachDistance, eyeHeight + player.posY + player.getLookVec().y * reachDistance, player.posZ + player.getLookVec().z * reachDistance);
-						RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
+						uCoord = getUCoord(world, player, stack, bhr -> {
+							TileEntity tile = world.getTileEntity(bhr.getBlockPos());
 
-						if (mop != null && mop.typeOfHit == Type.BLOCK) {
-							TileEntity te = world.getTileEntity(mop.getBlockPos());
+							if (!(tile instanceof ILockable))
+								return false;
 
-							if (te instanceof ILockable) {
-								BlockPos pos = mop.getBlockPos();
-
-								//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
-								if (!(te instanceof IOwnable) || !((IOwnable) te).isOwnedBy(player)) {
-									Block block = te.getBlockType();
-
-									if (block instanceof BlockDisguisable && ((BlockDisguisable) block).getDisguisedBlockState(world, pos) != null)
-										return;
-								}
-
-								uCoord = 110;
-
-								if (!stack.hasTagCompound())
-									stack.setTagCompound(new NBTTagCompound());
-
-								if (ItemSonicSecuritySystem.isAdded(stack.getTagCompound(), pos))
-									uCoord = 88;
+							//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
+							if (!(tile instanceof IOwnable) || !((IOwnable) tile).isOwnedBy(player)) {
+								if (BlockDisguisable.getDisguisedBlockStateUnknown(world, bhr.getBlockPos()) != null)
+									return false;
 							}
-						}
+
+							return true;
+						}, 0, null, false, ItemSonicSecuritySystem::isAdded);
 					}
 
 					if (uCoord != 0) {
@@ -239,6 +188,40 @@ public class SCClientEventHandler {
 				}
 			}
 		}
+	}
+
+	private static int getUCoord(World level, EntityPlayer player, ItemStack stackInHand, Predicate<RayTraceResult> isValidHitResult, int tagSize, BiFunction<NBTTagCompound, Integer, Integer[]> getCoords) {
+		return getUCoord(level, player, stackInHand, isValidHitResult, tagSize, getCoords, true, null);
+	}
+
+	private static int getUCoord(World level, EntityPlayer player, ItemStack stackInHand, Predicate<RayTraceResult> isValidHitResult, int tagSize, BiFunction<NBTTagCompound, Integer, Integer[]> getCoords, boolean loop, BiFunction<NBTTagCompound, BlockPos, Boolean> useCheckmark) {
+		double reachDistance = Minecraft.getMinecraft().playerController.getBlockReachDistance();
+		double eyeHeight = player.getEyeHeight();
+		Vec3d lookVec = new Vec3d(player.posX + player.getLookVec().x * reachDistance, eyeHeight + player.posY + player.getLookVec().y * reachDistance, player.posZ + player.getLookVec().z * reachDistance);
+		RayTraceResult hitResult = level.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
+
+		if (hitResult != null && hitResult.typeOfHit == Type.BLOCK && isValidHitResult.test(hitResult)) {
+			if (!stackInHand.hasTagCompound())
+				stackInHand.setTagCompound(new NBTTagCompound());
+
+			if (loop)
+				return loop(tagSize, getCoords, stackInHand.getTagCompound(), hitResult.getBlockPos());
+			else
+				return useCheckmark.apply(stackInHand.getTagCompound(), hitResult.getBlockPos()) ? USE_CHECKMARK : USE_CROSS;
+		}
+
+		return 0;
+	}
+
+	private static int loop(int tagSize, BiFunction<NBTTagCompound, Integer, Integer[]> getCoords, NBTTagCompound tag, BlockPos pos) {
+		for (int i = 1; i <= tagSize; i++) {
+			Integer[] coords = getCoords.apply(tag, i);
+
+			if (coords != null && coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
+				return USE_CHECKMARK;
+		}
+
+		return USE_CROSS;
 	}
 
 	private static void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {

@@ -193,6 +193,15 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 		return disguisedState != null ? disguisedState : state;
 	}
 
+	public static IBlockState getDisguisedBlockStateUnknown(IBlockAccess world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+
+		if (state.getBlock() instanceof BlockDisguisable)
+			return ((BlockDisguisable) state.getBlock()).getDisguisedBlockState(world, pos);
+		else
+			return null;
+	}
+
 	public IBlockState getDisguisedBlockState(IBlockAccess world, BlockPos pos) {
 		TileEntity tile = world.getTileEntity(pos);
 
