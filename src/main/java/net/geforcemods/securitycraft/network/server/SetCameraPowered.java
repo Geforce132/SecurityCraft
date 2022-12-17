@@ -2,12 +2,15 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.NetworkEvent;
 
 public class SetCameraPowered {
@@ -39,10 +42,13 @@ public class SetCameraPowered {
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
 			Level level = player.level;
+			BlockEntity be = level.getBlockEntity(pos);
 
-			if (level.getBlockEntity(pos) instanceof IOwnable be && be.isOwnedBy(player)) {
-				level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(SecurityCameraBlock.POWERED, message.powered));
-				level.updateNeighborsAt(pos.relative(level.getBlockState(pos).getValue(SecurityCameraBlock.FACING), -1), level.getBlockState(pos).getBlock());
+			if ((be instanceof IOwnable ownable && ownable.isOwnedBy(player)) || (be instanceof IModuleInventory moduleInv && moduleInv.isAllowed(player))) {
+				BlockState state = level.getBlockState(pos);
+
+				level.setBlockAndUpdate(pos, state.setValue(SecurityCameraBlock.POWERED, message.powered));
+				level.updateNeighborsAt(pos.relative(state.getValue(SecurityCameraBlock.FACING), -1), state.getBlock());
 			}
 		});
 		ctx.get().setPacketHandled(true);
