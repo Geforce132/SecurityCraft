@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.Level.ExplosionInteraction;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -110,6 +111,18 @@ public class BlockUtils {
 
 		for (Direction dir : directions) {
 			level.updateNeighborsAt(pos.relative(dir), block);
+		}
+	}
+
+	public static void destroyInSequence(Block blockToDestroy, LevelAccessor level, BlockPos pos, Direction... directions) {
+		for (Direction direction : directions) {
+			int i = 1;
+			BlockPos modifiedPos = pos.relative(direction, i);
+
+			while (level.getBlockState(modifiedPos).getBlock() == blockToDestroy) {
+				level.destroyBlock(modifiedPos, false);
+				modifiedPos = pos.relative(direction, ++i);
+			}
 		}
 	}
 }
