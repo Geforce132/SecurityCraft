@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.util.WorldUtils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -44,9 +46,11 @@ public class SetCameraPowered implements IMessage {
 				World world = player.world;
 				TileEntity te = world.getTileEntity(pos);
 
-				if (te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player)) {
-					world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockSecurityCamera.POWERED, message.powered));
-					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), false);
+				if ((te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player)) || (te instanceof IModuleInventory && ((IModuleInventory) te).isAllowed(player))) {
+					IBlockState state = world.getBlockState(pos);
+
+					world.setBlockState(pos, state.withProperty(BlockSecurityCamera.POWERED, message.powered));
+					world.notifyNeighborsOfStateChange(pos.offset(state.getValue(BlockSecurityCamera.FACING), -1), state.getBlock(), false);
 				}
 			});
 			return null;
