@@ -98,19 +98,7 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	public static void destroyAdjacentLasers(IWorld world, BlockPos pos) {
-		for (Direction facing : Direction.values()) {
-			int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
-
-			for (int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++) {
-				BlockPos offsetPos = pos.relative(facing, i);
-				BlockState state = world.getBlockState(offsetPos);
-
-				if (state.getBlock() == SCContent.LASER_BLOCK.get())
-					break;
-				else if (state.getBlock() == SCContent.LASER_FIELD.get() && state.getValue(LaserFieldBlock.BOUNDTYPE) == boundType)
-					world.destroyBlock(offsetPos, false);
-			}
-		}
+		BlockUtils.destroyInSequence(SCContent.LASER_FIELD.get(), world, pos, Direction.values());
 	}
 
 	@Override

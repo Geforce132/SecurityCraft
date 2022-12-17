@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -146,37 +147,10 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		if (world.isClientSide || state.getBlock() == newState.getBlock())
 			return;
 
-		InventoryScannerBlockEntity connectedScanner = null;
-
-		for (Direction facing : Direction.Plane.HORIZONTAL) {
-			for (int i = 1; i <= ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
-				BlockPos offsetIPos = pos.relative(facing, i);
-
-				if (world.getBlockState(offsetIPos).getBlock() == SCContent.INVENTORY_SCANNER.get()) {
-					for (int j = 1; j < i; j++) {
-						BlockPos offsetJPos = pos.relative(facing, j);
-						BlockState field = world.getBlockState(offsetJPos);
-
-						//checking if the field is oriented correctly
-						if (field.getBlock() == SCContent.INVENTORY_SCANNER_FIELD.get()) {
-							if (facing == Direction.WEST || facing == Direction.EAST) {
-								if (field.getValue(InventoryScannerFieldBlock.FACING) == Direction.WEST || field.getValue(InventoryScannerFieldBlock.FACING) == Direction.EAST)
-									world.destroyBlock(offsetJPos, false);
-							}
-							else if (facing == Direction.NORTH || facing == Direction.SOUTH) {
-								if (field.getValue(InventoryScannerFieldBlock.FACING) == Direction.NORTH || field.getValue(InventoryScannerFieldBlock.FACING) == Direction.SOUTH)
-									world.destroyBlock(offsetJPos, false);
-							}
-						}
-					}
-
-					connectedScanner = (InventoryScannerBlockEntity) world.getBlockEntity(offsetIPos);
-					break;
-				}
-			}
-		}
-
+		InventoryScannerBlockEntity connectedScanner = getConnectedInventoryScanner(world, pos, state, null);
 		TileEntity tile = world.getBlockEntity(pos);
+
+		BlockUtils.destroyInSequence(SCContent.INVENTORY_SCANNER_FIELD.get(), world, pos, state.getValue(FACING));
 
 		if (tile instanceof InventoryScannerBlockEntity) {
 			InventoryScannerBlockEntity te = (InventoryScannerBlockEntity) tile;
@@ -201,11 +175,11 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	public static InventoryScannerBlockEntity getConnectedInventoryScanner(World world, BlockPos pos) {
-		return getConnectedInventoryScanner(world, pos, null);
+		return getConnectedInventoryScanner(world, pos, world.getBlockState(pos), null);
 	}
 
-	public static InventoryScannerBlockEntity getConnectedInventoryScanner(World world, BlockPos pos, Consumer<OwnableBlockEntity> fieldModifier) {
-		Direction facing = world.getBlockState(pos).getValue(FACING);
+	public static InventoryScannerBlockEntity getConnectedInventoryScanner(World world, BlockPos pos, BlockState stateAtPos, Consumer<OwnableBlockEntity> fieldModifier) {
+		Direction facing = stateAtPos.getValue(FACING);
 		List<BlockPos> fields = new ArrayList<>();
 
 		for (int i = 0; i <= ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {

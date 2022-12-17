@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion.Mode;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
@@ -109,6 +110,18 @@ public class BlockUtils {
 
 		for (Direction dir : directions) {
 			world.updateNeighborsAt(pos.relative(dir), block);
+		}
+	}
+
+	public static void destroyInSequence(Block blockToDestroy, IWorld level, BlockPos pos, Direction... directions) {
+		for (Direction direction : directions) {
+			int i = 1;
+			BlockPos modifiedPos = pos.relative(direction, i);
+
+			while (level.getBlockState(modifiedPos).getBlock() == blockToDestroy) {
+				level.destroyBlock(modifiedPos, false);
+				modifiedPos = pos.relative(direction, ++i);
+			}
 		}
 	}
 }

@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.function.BiFunction;
-
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
@@ -234,31 +231,12 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if (!world.isClientSide()) {
 			Direction facing = state.getValue(FACING);
 
-			if (facing == Direction.EAST || facing == Direction.WEST) {
-				checkAndDestroyFields(world, pos, (p, i) -> p.west(i));
-				checkAndDestroyFields(world, pos, (p, i) -> p.east(i));
-			}
-			else if (facing == Direction.NORTH || facing == Direction.SOUTH) {
-				checkAndDestroyFields(world, pos, (p, i) -> p.north(i));
-				checkAndDestroyFields(world, pos, (p, i) -> p.south(i));
-			}
+			if (facing == Direction.EAST || facing == Direction.WEST)
+				BlockUtils.destroyInSequence(this, world, pos, Direction.EAST, Direction.WEST);
+			else if (facing == Direction.NORTH || facing == Direction.SOUTH)
+				BlockUtils.destroyInSequence(this, world, pos, Direction.NORTH, Direction.SOUTH);
 		}
 	}
-
-	private void checkAndDestroyFields(IWorld world, BlockPos pos, BiFunction<BlockPos, Integer, BlockPos> posModifier) {
-		for (int i = 0; i < ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
-			BlockPos modifiedPos = posModifier.apply(pos, i);
-
-			if (world.getBlockState(modifiedPos).getBlock() == SCContent.INVENTORY_SCANNER.get()) {
-				for (int j = 1; j < i; j++) {
-					world.destroyBlock(posModifier.apply(pos, j), false);
-				}
-
-				break;
-			}
-		}
-	}
-
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
 		if (state.getValue(HORIZONTAL))
