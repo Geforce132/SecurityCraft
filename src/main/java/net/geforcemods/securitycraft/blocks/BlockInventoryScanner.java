@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -187,37 +188,10 @@ public class BlockInventoryScanner extends BlockDisguisable {
 		if (world.isRemote)
 			return;
 
-		TileEntityInventoryScanner connectedScanner = null;
-
-		for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-			for (int i = 1; i <= ConfigHandler.inventoryScannerRange; i++) {
-				BlockPos offsetIPos = pos.offset(facing, i);
-
-				if (world.getBlockState(offsetIPos).getBlock() == SCContent.inventoryScanner) {
-					for (int j = 1; j < i; j++) {
-						BlockPos offsetJPos = pos.offset(facing, j);
-						IBlockState field = world.getBlockState(offsetJPos);
-
-						//checking if the field is oriented correctly
-						if (field.getBlock() == SCContent.inventoryScannerField) {
-							if (facing == EnumFacing.WEST || facing == EnumFacing.EAST) {
-								if (field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.WEST || field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.EAST)
-									world.destroyBlock(offsetJPos, false);
-							}
-							else if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH) {
-								if (field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.NORTH || field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.SOUTH)
-									world.destroyBlock(offsetJPos, false);
-							}
-						}
-					}
-
-					connectedScanner = (TileEntityInventoryScanner) world.getTileEntity(offsetIPos);
-					break;
-				}
-			}
-		}
-
+		TileEntityInventoryScanner connectedScanner = getConnectedInventoryScanner(world, pos, state, null);
 		TileEntity tile = world.getTileEntity(pos);
+
+		BlockUtils.destroyInSequence(SCContent.inventoryScannerField, world, pos, state.getValue(FACING));
 
 		if (tile instanceof TileEntityInventoryScanner) {
 			TileEntityInventoryScanner te = (TileEntityInventoryScanner) tile;
@@ -242,11 +216,11 @@ public class BlockInventoryScanner extends BlockDisguisable {
 	}
 
 	public static TileEntityInventoryScanner getConnectedInventoryScanner(World world, BlockPos pos) {
-		return getConnectedInventoryScanner(world, pos, null);
+		return getConnectedInventoryScanner(world, pos, world.getBlockState(pos), null);
 	}
 
-	public static TileEntityInventoryScanner getConnectedInventoryScanner(World world, BlockPos pos, Consumer<TileEntityOwnable> fieldModifier) {
-		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
+	public static TileEntityInventoryScanner getConnectedInventoryScanner(World world, BlockPos pos, IBlockState stateAtPos, Consumer<TileEntityOwnable> fieldModifier) {
+		EnumFacing facing = stateAtPos.getValue(FACING);
 		List<BlockPos> fields = new ArrayList<>();
 
 		for (int i = 0; i <= ConfigHandler.inventoryScannerRange; i++) {

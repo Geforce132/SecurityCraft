@@ -112,4 +112,16 @@ public class BlockUtils {
 			world.notifyNeighborsOfStateChange(pos.offset(dir), block, false);
 		}
 	}
+
+	public static void destroyInSequence(Block blockToDestroy, World world, BlockPos pos, EnumFacing... directions) {
+		for (EnumFacing direction : directions) {
+			int i = 1;
+			BlockPos modifiedPos = pos.offset(direction, i);
+
+			while (world.getBlockState(modifiedPos).getBlock() == blockToDestroy) {
+				world.destroyBlock(modifiedPos, false);
+				modifiedPos = pos.offset(direction, ++i);
+			}
+		}
+	}
 }

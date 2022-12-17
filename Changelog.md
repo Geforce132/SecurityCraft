@@ -14,6 +14,8 @@
 - Fix: Crash when inserting a module into a single Inventory Scanner
 - Fix: Some animations stutter
 - Fix: Using /kill to remove a camera entity, or removing it by other non-standard means, does not update the camera block properly
+- Fix: Breaking an Inventory Scanner/Laser or one of its field does not break all fields, if the respective config setting is lower than the amount of fields present
+- Fix: Breaking an Inventory Scanner Fields with the inventoryScannerRange config setting set to >=3 does not break and reinstate all fields properly
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 

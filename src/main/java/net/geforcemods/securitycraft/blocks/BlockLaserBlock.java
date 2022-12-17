@@ -109,19 +109,7 @@ public class BlockLaserBlock extends BlockDisguisable {
 	}
 
 	public static void destroyAdjacentLasers(World world, BlockPos pos) {
-		for (EnumFacing facing : EnumFacing.VALUES) {
-			int boundType = facing == EnumFacing.UP || facing == EnumFacing.DOWN ? 1 : (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH ? 2 : 3);
-
-			for (int i = 1; i <= ConfigHandler.laserBlockRange; i++) {
-				BlockPos offsetPos = pos.offset(facing, i);
-				IBlockState state = world.getBlockState(offsetPos);
-
-				if (state.getBlock() == SCContent.laserBlock)
-					break;
-				else if (state.getBlock() == SCContent.laserField && state.getValue(BlockLaserField.BOUNDTYPE) == boundType)
-					world.destroyBlock(offsetPos, false);
-			}
-		}
+		BlockUtils.destroyInSequence(SCContent.laserField, world, pos, EnumFacing.VALUES);
 	}
 
 	@Override
@@ -179,7 +167,7 @@ public class BlockLaserBlock extends BlockDisguisable {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(POWERED, (meta == 1) == true);
+		return getDefaultState().withProperty(POWERED, (meta == 1));
 	}
 
 	@Override

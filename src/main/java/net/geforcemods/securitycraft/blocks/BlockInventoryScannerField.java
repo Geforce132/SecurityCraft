@@ -1,11 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
 import java.util.List;
-import java.util.function.BiFunction;
 
 import javax.annotation.Nullable;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -258,28 +256,10 @@ public class BlockInventoryScannerField extends BlockOwnable implements IOverlay
 		if (!world.isRemote) {
 			EnumFacing facing = state.getValue(FACING);
 
-			if (facing == EnumFacing.EAST || facing == EnumFacing.WEST) {
-				checkAndDestroyFields(world, pos, (p, i) -> p.west(i));
-				checkAndDestroyFields(world, pos, (p, i) -> p.east(i));
-			}
-			else if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH) {
-				checkAndDestroyFields(world, pos, (p, i) -> p.north(i));
-				checkAndDestroyFields(world, pos, (p, i) -> p.south(i));
-			}
-		}
-	}
-
-	private void checkAndDestroyFields(World world, BlockPos pos, BiFunction<BlockPos, Integer, BlockPos> posModifier) {
-		for (int i = 0; i < ConfigHandler.inventoryScannerRange; i++) {
-			BlockPos modifiedPos = posModifier.apply(pos, i);
-
-			if (world.getBlockState(modifiedPos) == SCContent.inventoryScanner) {
-				for (int j = 1; j < i; j++) {
-					world.destroyBlock(posModifier.apply(pos, j), false);
-				}
-
-				break;
-			}
+			if (facing == EnumFacing.EAST || facing == EnumFacing.WEST)
+				BlockUtils.destroyInSequence(this, world, pos, EnumFacing.EAST, EnumFacing.WEST);
+			else if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH)
+				BlockUtils.destroyInSequence(this, world, pos, EnumFacing.NORTH, EnumFacing.SOUTH);
 		}
 	}
 
@@ -287,11 +267,11 @@ public class BlockInventoryScannerField extends BlockOwnable implements IOverlay
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		if (state.getValue(HORIZONTAL))
 			return HORIZONTAL_SHAPE;
-
-		if (state.getValue(FACING) == EnumFacing.EAST || state.getValue(FACING) == EnumFacing.WEST)
+		else if (state.getValue(FACING) == EnumFacing.EAST || state.getValue(FACING) == EnumFacing.WEST)
 			return EAST_WEST_SHAPE;
 		else if (state.getValue(FACING) == EnumFacing.NORTH || state.getValue(FACING) == EnumFacing.SOUTH)
 			return NORTH_SOUTH_SHAPE;
+
 		return super.getBoundingBox(state, world, pos);
 	}
 
@@ -317,16 +297,16 @@ public class BlockInventoryScannerField extends BlockOwnable implements IOverlay
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-		IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
-		Block block = iblockstate.getBlock();
+	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		IBlockState offsetState = world.getBlockState(pos.offset(side));
+		Block block = offsetState.getBlock();
 
 		if (side == EnumFacing.UP || side == EnumFacing.DOWN) {
 			if (block == this)
 				return false;
 		}
 
-		return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+		return super.shouldSideBeRendered(state, world, pos, side);
 	}
 
 	@Override

@@ -55,7 +55,7 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 
 	@Override
 	public void onOwnerChanged(IBlockState state, World world, BlockPos pos, EntityPlayer player) {
-		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos, be -> be.setOwner(getOwner().getUUID(), getOwner().getName()));
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos, world.getBlockState(pos), be -> be.setOwner(getOwner().getUUID(), getOwner().getName()));
 
 		if (connectedScanner != null) {
 			connectedScanner.setOwner(getOwner().getUUID(), getOwner().getName());

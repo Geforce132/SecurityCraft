@@ -118,21 +118,9 @@ public class BlockLaserField extends BlockOwnable implements IOverlayDisplay {
 	@Override
 	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state) {
 		if (!world.isRemote) {
-			EnumFacing[] facingArray = {
-					EnumFacing.byIndex((state.getValue(BlockLaserField.BOUNDTYPE) - 1) * 2), EnumFacing.byIndex((state.getValue(BlockLaserField.BOUNDTYPE) - 1) * 2).getOpposite()
-			};
+			EnumFacing direction = EnumFacing.byIndex((state.getValue(BlockLaserField.BOUNDTYPE) - 1) * 2);
 
-			for (EnumFacing facing : facingArray) {
-				for (int i = 0; i < ConfigHandler.laserBlockRange; i++) {
-					if (world.getBlockState(pos.offset(facing, i)).getBlock() == SCContent.laserBlock) {
-						for (int j = 1; j < i; j++) {
-							world.destroyBlock(pos.offset(facing, j), false);
-						}
-
-						break;
-					}
-				}
-			}
+			BlockUtils.destroyInSequence(this, world, pos, direction, direction.getOpposite());
 		}
 	}
 
