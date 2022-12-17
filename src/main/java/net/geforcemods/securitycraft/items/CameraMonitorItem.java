@@ -70,7 +70,7 @@ public class CameraMonitorItem extends Item {
 					break;
 				}
 
-			if (!level.isClientSide)
+			if (!level.isClientSide && !stack.isEmpty())
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
 			return InteractionResult.SUCCESS;
