@@ -14,9 +14,7 @@ public class UpdateNBTTagOnClient {
 	public UpdateNBTTagOnClient() {}
 
 	public UpdateNBTTagOnClient(ItemStack stack) {
-		if (!stack.isEmpty() && stack.hasTag()) {
-			this.stack = stack;
-		}
+		this.stack = stack;
 	}
 
 	public static void encode(UpdateNBTTagOnClient message, FriendlyByteBuf buf) {
