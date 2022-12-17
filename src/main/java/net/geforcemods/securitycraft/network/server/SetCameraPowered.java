@@ -2,8 +2,10 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -42,9 +44,11 @@ public class SetCameraPowered {
 			World world = player.level;
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player)) {
-				world.setBlockAndUpdate(pos, world.getBlockState(pos).setValue(SecurityCameraBlock.POWERED, message.powered));
-				world.updateNeighborsAt(pos.relative(world.getBlockState(pos).getValue(SecurityCameraBlock.FACING), -1), world.getBlockState(pos).getBlock());
+			if ((te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player)) || (te instanceof IModuleInventory && ((IModuleInventory) te).isAllowed(player))) {
+				BlockState state = world.getBlockState(pos);
+
+				world.setBlockAndUpdate(pos, state.setValue(SecurityCameraBlock.POWERED, message.powered));
+				world.updateNeighborsAt(pos.relative(state.getValue(SecurityCameraBlock.FACING), -1), state.getBlock());
 			}
 		});
 		ctx.get().setPacketHandled(true);
