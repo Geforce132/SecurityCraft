@@ -40,9 +40,8 @@ public class LaserBlock extends DisguisableBlock {
 	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
 		super.setPlacedBy(world, pos, state, entity, stack);
 
-		if (!world.isClientSide) {
+		if (!world.isClientSide)
 			setLaser(world, pos);
-		}
 	}
 
 	public void setLaser(World world, BlockPos pos) {
