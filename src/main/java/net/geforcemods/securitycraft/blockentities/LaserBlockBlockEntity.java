@@ -55,8 +55,12 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		if (action instanceof ILinkedAction.OptionChanged optionChanged) {
 			Option<?> option = optionChanged.option();
 
-			disabled.copy(option);
-			toggleLaser((BooleanOption) option);
+			if (option.getName().equals("disabled")) {
+				disabled.copy(option);
+				toggleLaser((BooleanOption) option);
+			}
+			else if (option.getName().equals("ignoreOwner"))
+				ignoreOwner.copy(option);
 		}
 		else if (action instanceof ILinkedAction.ModuleInserted moduleInserted)
 			insertModule(moduleInserted.stack(), moduleInserted.wasModuleToggled());

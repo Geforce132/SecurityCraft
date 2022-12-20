@@ -246,23 +246,15 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	public void onOptionChanged(Option<?> option) {
 		RiftStabilizerBlockEntity connectedBlockEntity = RiftStabilizerBlock.getConnectedBlockEntity(level, worldPosition);
 
-		if (option.getName().equals("signalLength")) {
-			IntOption intOption = (IntOption) option;
-
-			if (connectedBlockEntity != null)
-				connectedBlockEntity.setSignalLength(intOption.get());
-		}
-		else if (option.getName().equals("range")) {
-			IntOption intOption = (IntOption) option;
-
-			if (connectedBlockEntity != null)
-				connectedBlockEntity.setRange(intOption.get());
-		}
-		else if (option.getName().equals("disabled")) {
-			BooleanOption bo = (BooleanOption) option;
-
-			if (connectedBlockEntity != null)
-				connectedBlockEntity.setDisabled(bo.get());
+		if (connectedBlockEntity != null) {
+			if (option.getName().equals("signalLength"))
+				connectedBlockEntity.setSignalLength(((IntOption) option).get());
+			else if (option.getName().equals("range"))
+				connectedBlockEntity.setRange(((IntOption) option).get());
+			else if (option.getName().equals("disabled"))
+				connectedBlockEntity.setDisabled(((BooleanOption) option).get());
+			else if (option.getName().equals("ignoreOwner"))
+				connectedBlockEntity.setDisabled(((BooleanOption) option).get());
 		}
 
 		super.onOptionChanged(option);
@@ -323,6 +315,14 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 	public boolean isDisabled() {
 		return disabled.get();
+	}
+
+	public void setIgnoresOwner(boolean ignoresOwner) {
+		if (ignoresOwner() != ignoresOwner) {
+			ignoreOwner.setValue(ignoresOwner);
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
+			setChanged();
+		}
 	}
 
 	public boolean ignoresOwner() {

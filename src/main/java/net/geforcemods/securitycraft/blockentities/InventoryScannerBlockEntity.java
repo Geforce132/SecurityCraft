@@ -379,11 +379,10 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(InventoryScannerBlock.HORIZONTAL, bo.get()));
 		}
 		else if (option.getName().equals("solidifyField")) {
-			BooleanOption bo = (BooleanOption) option;
 			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
 			if (connectedScanner != null)
-				connectedScanner.setSolidifyField(bo.get());
+				connectedScanner.setSolidifyField(((BooleanOption) option).get());
 		}
 		else if (option.getName().equals("disabled")) {
 			BooleanOption bo = (BooleanOption) option;
@@ -392,6 +391,12 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 				InventoryScannerBlock.checkAndPlaceAppropriately(level, worldPosition, true);
 			else
 				modifyFields((offsetPos, state) -> level.destroyBlock(offsetPos, false), connectedScanner -> connectedScanner.setDisabled(true));
+		}
+		else if (option.getName().equals("ignoreOwner")) {
+			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
+
+			if (connectedScanner != null)
+				connectedScanner.setIgnoresOwner(((BooleanOption) option).get());
 		}
 
 		super.onOptionChanged(option);
@@ -458,6 +463,14 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
+	}
+
+	public void setIgnoresOwner(boolean ignoresOwner) {
+		if (ignoresOwner() != ignoresOwner) {
+			ignoreOwner.setValue(ignoresOwner);
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
+			setChanged();
+		}
 	}
 
 	@Override
