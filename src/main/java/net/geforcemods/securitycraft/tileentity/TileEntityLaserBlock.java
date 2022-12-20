@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
@@ -28,18 +27,18 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 		public void toggle() {
 			setValue(!get());
 
-			toggleLaser(this);
+			setLasersAccordingToDisabledOption();
 		}
 	};
 
-	private void toggleLaser(OptionBoolean option) {
+	private void setLasersAccordingToDisabledOption() {
 		Block block = world.getBlockState(pos).getBlock();
 
 		if (block != SCContent.laserBlock)
 			return;
 
-		if (option.get())
-			((BlockLaserBlock) block).setLaser(((TileEntityLaserBlock) world.getTileEntity(pos)).getOwner(), world, pos);
+		if (isEnabled())
+			((BlockLaserBlock) block).setLaser(getOwner(), world, pos);
 		else
 			BlockLaserBlock.destroyAdjacentLasers(world, pos);
 	}
@@ -50,7 +49,7 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 			Option<?> option = ((ILinkedAction.OptionChanged) action).option;
 
 			disabled.copy(option);
-			toggleLaser((OptionBoolean) option);
+			setLasersAccordingToDisabledOption();
 		}
 		else if (action instanceof ILinkedAction.ModuleInserted) {
 			ILinkedAction.ModuleInserted moduleInserted = (ILinkedAction.ModuleInserted) action;
