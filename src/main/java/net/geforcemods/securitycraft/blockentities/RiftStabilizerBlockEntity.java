@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
@@ -42,6 +43,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	private final IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private final IntOption range = new IntOption(this::getBlockPos, "range", 5, 1, 15, 1, true);
 	private final DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private final Map<TeleportationType, Boolean> teleportationFilter = new EnumMap<>(TeleportationType.class);
 	private double lastTeleportDistance;
 	private TeleportationType lastTeleportationType;
@@ -269,7 +271,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				signalLength, range, disabled
+				signalLength, range, disabled, ignoreOwner
 		};
 	}
 
@@ -321,6 +323,10 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 	public boolean isDisabled() {
 		return disabled.get();
+	}
+
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
 	}
 
 	public enum TeleportationType {

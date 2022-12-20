@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
@@ -36,6 +37,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			toggleLaser(this);
 		}
 	};
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 
 	public LaserBlockBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), pos, state);
@@ -167,7 +169,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				disabled
+				disabled, ignoreOwner
 		};
 	}
 
@@ -180,5 +182,9 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 	public boolean isEnabled() {
 		return !disabled.get();
+	}
+
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
 	}
 }

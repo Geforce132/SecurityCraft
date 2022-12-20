@@ -95,7 +95,7 @@ public class CageTrapBlock extends DisguisableBlock {
 				if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
 					return;
 
-				if ((isPlayer && cageTrap.isOwnedBy((Player) entity)))
+				if ((isPlayer && cageTrap.isOwnedBy((Player) entity)) && cageTrap.ignoresOwner())
 					return;
 
 				if (state.getValue(DEACTIVATED))
