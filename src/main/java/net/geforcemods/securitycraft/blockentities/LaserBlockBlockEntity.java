@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
@@ -33,8 +32,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		@Override
 		public void toggle() {
 			setValue(!get());
-
-			toggleLaser(this);
+			setLasersAccordingToDisabledOption();
 		}
 	};
 
@@ -42,8 +40,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		super(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), pos, state);
 	}
 
-	private void toggleLaser(BooleanOption option) {
-		if (option.get())
+	private void setLasersAccordingToDisabledOption() {
+		if (isEnabled())
 			((LaserBlock) getBlockState().getBlock()).setLaser(level, worldPosition);
 		else
 			LaserBlock.destroyAdjacentLasers(level, worldPosition);
@@ -55,7 +53,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			Option<?> option = optionChanged.option();
 
 			disabled.copy(option);
-			toggleLaser((BooleanOption) option);
+			setLasersAccordingToDisabledOption();
 		}
 		else if (action instanceof ILinkedAction.ModuleInserted moduleInserted) {
 			ItemStack module = moduleInserted.stack();
