@@ -97,8 +97,8 @@ public class JadeDataProvider extends WailaCompatConstants implements IWailaPlug
 			BlockEntity be = data.getBlockEntity();
 
 			if (be != null) {
-				if (tooltip instanceof Tooltip t)
-					t.lines.get(0).getAlignedElements(Align.LEFT).set(0, new TextElement(Component.translatable(((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition()).getDescriptionId()).setStyle(ITEM_NAME_STYLE)));
+				if (tooltip instanceof Tooltip t && data.getBlock() instanceof IOverlayDisplay overlayDisplay)
+					t.lines.get(0).getAlignedElements(Align.LEFT).set(0, new TextElement(Component.translatable(overlayDisplay.getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition()).getDescriptionId()).setStyle(ITEM_NAME_STYLE)));
 
 				//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
 				if (config.get(SHOW_OWNER) && be instanceof IOwnable ownable && Utils.getRegistryName(block).getNamespace().equals(SecurityCraft.MODID))
