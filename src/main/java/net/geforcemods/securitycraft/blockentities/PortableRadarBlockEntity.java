@@ -116,7 +116,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 
 		boolean lastPlayerOwns = ConfigHandler.SERVER.enableTeamOwnership.get() ? PlayerUtils.areOnSameTeam(lastPlayerName, getOwner().getName()) : lastPlayerName.equals(getOwner().getName());
 
-		return (shouldSendNewMessage || repeatMessageOption.get()) && !lastPlayerOwns;
+		return (shouldSendNewMessage || repeatMessageOption.get()) && !(lastPlayerOwns && ignoresOwner());
 	}
 
 	public void setSentMessage() {

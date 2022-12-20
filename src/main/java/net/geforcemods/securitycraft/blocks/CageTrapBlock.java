@@ -56,7 +56,7 @@ public class CageTrapBlock extends DisguisableBlock {
 
 				if (be.isDisabled())
 					return getCorrectShape(state, level, pos, ctx, be);
-				else if (entity instanceof Player player && (be.isOwnedBy(player) || be.isAllowed(player)))
+				else if (entity instanceof Player player && ((be.isOwnedBy(player) && be.ignoresOwner()) || be.isAllowed(player)))
 					return getCorrectShape(state, level, pos, collisionContext, be);
 				if (entity instanceof Mob && !state.getValue(DEACTIVATED))
 					return be.capturesMobs() ? Shapes.empty() : getCorrectShape(state, level, pos, collisionContext, be);
