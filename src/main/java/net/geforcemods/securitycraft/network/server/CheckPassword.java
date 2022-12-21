@@ -47,12 +47,12 @@ public class CheckPassword {
 			if (player.level.getBlockEntity(pos) instanceof IPasswordProtected passwordProtected) {
 				boolean isPasscodeCorrect = passwordProtected.getPassword().equals(password);
 
-				player.closeContainer();
-
 				if (passwordProtected.isOnCooldown())
 					return;
-				else if (isPasscodeCorrect)
+				else if (isPasscodeCorrect) {
 					passwordProtected.activate(player);
+					player.closeContainer();
+				}
 				else
 					passwordProtected.onIncorrectPasscodeEntered(player, password);
 			}

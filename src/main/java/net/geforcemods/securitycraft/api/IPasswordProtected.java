@@ -108,8 +108,14 @@ public interface IPasswordProtected extends ICodebreakable {
 			if (moduleInv.isModuleEnabled(ModuleType.SMART))
 				startCooldown();
 
-			if (moduleInv.isModuleEnabled(ModuleType.HARMING))
+			if (moduleInv.isModuleEnabled(ModuleType.HARMING)) {
 				player.hurt(CustomDamageSources.INCORRECT_PASSCODE, ConfigHandler.SERVER.incorrectPasscodeDamage.get());
+				player.closeContainer();
+			}
+
+			return;
 		}
+
+		player.closeContainer();
 	}
 }
