@@ -104,7 +104,12 @@ public interface IPasswordProtected extends ICodebreakable {
 	 * @param incorrectCode The incorrect code that was entered
 	 */
 	public default void onIncorrectPasscodeEntered(Player player, String incorrectCode) {
-		if (this instanceof IModuleInventory moduleInv && moduleInv.isModuleEnabled(ModuleType.HARMING))
-			player.hurt(CustomDamageSources.INCORRECT_PASSCODE, ConfigHandler.SERVER.incorrectPasscodeDamage.get());
+		if (this instanceof IModuleInventory moduleInv) {
+			if (moduleInv.isModuleEnabled(ModuleType.SMART))
+				startCooldown();
+
+			if (moduleInv.isModuleEnabled(ModuleType.HARMING))
+				player.hurt(CustomDamageSources.INCORRECT_PASSCODE, ConfigHandler.SERVER.incorrectPasscodeDamage.get());
+		}
 	}
 }

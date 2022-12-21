@@ -2,9 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -51,16 +49,9 @@ public class CheckPassword {
 
 				player.closeContainer();
 
-				if (passwordProtected instanceof IModuleInventory moduleInv && moduleInv.isModuleEnabled(ModuleType.SMART)) {
-					if (passwordProtected.isOnCooldown())
-						return;
-					else if (!isPasscodeCorrect) {
-						passwordProtected.startCooldown();
-						return;
-					}
-				}
-
-				if (isPasscodeCorrect)
+				if (passwordProtected.isOnCooldown())
+					return;
+				else if (isPasscodeCorrect)
 					passwordProtected.activate(player);
 				else
 					passwordProtected.onIncorrectPasscodeEntered(player, password);
