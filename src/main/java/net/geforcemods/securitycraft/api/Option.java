@@ -231,8 +231,8 @@ public abstract class Option<T> {
 	}
 
 	public static class SmartModuleCooldownOption extends IntOption {
-		public SmartModuleCooldownOption() {
-			super(null, "smartModuleCooldown", 100, 1, 400, 1, true);
+		public SmartModuleCooldownOption(Supplier<BlockPos> pos) {
+			super(pos, "smartModuleCooldown", 100, 1, 400, 1, true);
 		}
 
 		@Override
