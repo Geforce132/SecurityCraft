@@ -71,12 +71,8 @@ public class CheckPasswordScreen extends Screen {
 		keycodeTextbox.setMaxLength(MAX_CHARS);
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*\\**")); //allow any amount of numbers and any amount of asterisks
 
-		if (be.isOnCooldown()) {
-			children().forEach(listener -> {
-				if (listener instanceof AbstractWidget widget)
-					widget.active = false;
-			});
-		}
+		if (be.isOnCooldown())
+			toggleChildrenActive(false);
 		else
 			setInitialFocus(keycodeTextbox);
 	}
@@ -103,10 +99,7 @@ public class CheckPasswordScreen extends Screen {
 		}
 		else if (wasOnCooldownLastRenderTick) {
 			wasOnCooldownLastRenderTick = false;
-			children().forEach(listener -> {
-				if (listener instanceof AbstractWidget widget)
-					widget.active = true;
-			});
+			toggleChildrenActive(true);
 		}
 	}
 
@@ -179,6 +172,13 @@ public class CheckPasswordScreen extends Screen {
 		}
 
 		textField.setValue(x);
+	}
+
+	private void toggleChildrenActive(boolean setActive) {
+		children().forEach(listener -> {
+			if (listener instanceof AbstractWidget widget)
+				widget.active = setActive;
+		});
 	}
 
 	public void checkCode(String code) {
