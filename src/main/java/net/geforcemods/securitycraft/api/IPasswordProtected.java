@@ -112,10 +112,6 @@ public interface IPasswordProtected extends ICodebreakable {
 				if (player.hurt(CustomDamageSources.INCORRECT_PASSCODE, ConfigHandler.SERVER.incorrectPasscodeDamage.get()))
 					player.closeContainer();
 			}
-
-			return;
 		}
-
-		player.closeContainer();
 	}
 }

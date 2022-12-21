@@ -7,7 +7,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -184,9 +186,11 @@ public class CheckPasswordScreen extends Screen {
 	public void checkCode(String code) {
 		BlockPos pos = ((BlockEntity) be).getBlockPos();
 
+		if (be instanceof IModuleInventory moduleInv && moduleInv.isModuleEnabled(ModuleType.SMART))
+			toggleChildrenActive(false);
+
 		currentString = "";
 		keycodeTextbox.setValue("");
-		toggleChildrenActive(false);
 		SecurityCraft.channel.sendToServer(new CheckPassword(pos.getX(), pos.getY(), pos.getZ(), code));
 	}
 }
