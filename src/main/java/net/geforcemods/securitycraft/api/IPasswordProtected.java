@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.api;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
@@ -94,6 +95,7 @@ public interface IPasswordProtected extends ICodebreakable {
 	 * @param incorrectCode The incorrect code that was entered
 	 */
 	public default void onIncorrectPasscodeEntered(Player player, String incorrectCode) {
-		player.hurt(CustomDamageSources.INCORRECT_PASSCODE, ConfigHandler.SERVER.incorrectPasscodeDamage.get());
+		if (this instanceof IModuleInventory moduleInv && moduleInv.isModuleEnabled(ModuleType.HARMING))
+			player.hurt(CustomDamageSources.INCORRECT_PASSCODE, ConfigHandler.SERVER.incorrectPasscodeDamage.get());
 	}
 }

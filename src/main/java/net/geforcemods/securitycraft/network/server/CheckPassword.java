@@ -51,23 +51,19 @@ public class CheckPassword {
 
 				player.closeContainer();
 
-				if (passwordProtected instanceof IModuleInventory moduleInv) {
-					if (moduleInv.isModuleEnabled(ModuleType.SMART)) {
-						if (passwordProtected.isOnCooldown())
-							return;
-						else if (!isPasscodeCorrect) {
-							passwordProtected.startCooldown();
-							return;
-						}
-					}
-					else if (moduleInv.isModuleEnabled(ModuleType.HARMING) && !isPasscodeCorrect) {
-						passwordProtected.onIncorrectPasscodeEntered(player, password);
+				if (passwordProtected instanceof IModuleInventory moduleInv && moduleInv.isModuleEnabled(ModuleType.SMART)) {
+					if (passwordProtected.isOnCooldown())
+						return;
+					else if (!isPasscodeCorrect) {
+						passwordProtected.startCooldown();
 						return;
 					}
 				}
 
 				if (isPasscodeCorrect)
 					passwordProtected.activate(player);
+				else
+					passwordProtected.onIncorrectPasscodeEntered(player, password);
 			}
 		});
 
