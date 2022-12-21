@@ -7,9 +7,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -59,10 +61,19 @@ public class CheckPasswordScreen extends Screen {
 		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 50, 20, 20, Component.literal("0"), b -> addNumberToString(0)));
 		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 + 50, 20, 20, Component.literal("✔"), b -> checkCode(currentString)));
 
+		//TODO: fix it still being possible to enter stuff in the editbox when it's not active
 		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 62, 77, 12, Component.empty()));
 		keycodeTextbox.setMaxLength(MAX_CHARS);
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*\\**")); //allow any amount of numbers and any amount of asterisks
-		setInitialFocus(keycodeTextbox);
+
+		if (((IPasswordProtected) be).isOnCooldown()) {
+			children().forEach(listener -> {
+				if (listener instanceof AbstractWidget widget)
+					widget.active = false;
+			});
+		}
+		else
+			setInitialFocus(keycodeTextbox);
 	}
 
 	@Override

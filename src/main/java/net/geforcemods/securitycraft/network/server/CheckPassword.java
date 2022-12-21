@@ -2,7 +2,10 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.misc.CustomDamageSources;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -44,9 +47,28 @@ public class CheckPassword {
 			String password = message.password;
 			ServerPlayer player = ctx.get().getSender();
 
-			if (player.level.getBlockEntity(pos) instanceof IPasswordProtected be && be.getPassword().equals(password)) {
+			if (player.level.getBlockEntity(pos) instanceof IPasswordProtected passwordProtected) {
+				boolean isPasscodeCorrect = passwordProtected.getPassword().equals(password);
+
 				player.closeContainer();
-				be.activate(player);
+
+				if (passwordProtected instanceof IModuleInventory moduleInv) {
+					if (moduleInv.isModuleEnabled(ModuleType.SMART)) {
+						if (passwordProtected.isOnCooldown())
+							return;
+						else if (!isPasscodeCorrect) {
+							passwordProtected.startCooldown();
+							return;
+						}
+					}
+					else if (moduleInv.isModuleEnabled(ModuleType.HARMING) && !isPasscodeCorrect) {
+						player.hurt(CustomDamageSources.INCORRECT_PASSCODE, passwordProtected.getIncorrectPasscodeDamage());
+						return;
+					}
+				}
+
+				if (isPasscodeCorrect)
+					passwordProtected.activate(player);
 			}
 		});
 

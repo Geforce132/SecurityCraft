@@ -603,6 +603,8 @@
 	"death.attack.securitycraft.electricity.player": "%1$s was electrocuted whilst fighting %2$s",
 	"death.attack.securitycraft.taser": "%s was tasered to death",
 	"death.attack.securitycraft.taser.player": "%1$s was tasered to death whilst fighting %2$s",
+	"death.attack.securitycraft.incorrectPasscode": "%s entered an incorrect code",
+	"death.attack.securitycraft.incorrectPasscode.player": "%1$s entered an incorrect code whilst fighting %2$s",
 
 	"key.categories.securitycraft": "SecurityCraft",
 	"key.securitycraft.cameraActivateNightVision": "Toggle Night Vision",
@@ -1023,6 +1025,8 @@
 	"module.securitycraft.keypad.whitelist_module.description": "Adding an allowlist module to a keypad will allow listed players to use the block without knowing the code.",
 	"module.securitycraft.keypad.blacklist_module.description": "Adding a denylist module to a keypad will ban listed players from interacting with the block.",
 	"module.securitycraft.keypad.disguise_module.description": "Adding a disguise module to a keypad will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
+	"module.securitycraft.keypad.smart_module.description": "Adding a smart module to a block that requries a passcode will result in a cooldown being applied after an incorrect code has been entered. During that time, no new code can be entered.",
+	"module.securitycraft.keypad.harming_module.description": "Adding a harming module to a block that requries a passcode will result in the player getting damaged, if they enter an incorrect code.",
 	"module.securitycraft.laser_block.harming_module.description": "Adding a harming module to a laser block will cause players to take damage if they step through the lasers.",
 	"module.securitycraft.laser_block.whitelist_module.description": "Adding an allowlist module to a laser block will allow listed players to walk through the lasers without emitting a redstone signal.",
 	"module.securitycraft.laser_block.disguise_module.description": "Adding a disguise module to a laser block will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
@@ -1121,6 +1125,8 @@
 
 	"option.generic.disabled": "Disabled: %s",
 	"option.generic.disabled.description": "Should this block be disabled, making it no longer work until it is enabled again?",
+	"option.generic.smartModuleCooldown": "Cooldown: %s",
+	"option.generic.smartModuleCooldown.description": "How long can players not enter a passcode after an incorrect code has been entered? (In Ticks, 20 ticks = 1 second; requires Smart Module)",
 	"option.securitycraft.portable_radar.searchRadius": "Search radius: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "The radius the radar searches in.",
 	"option.securitycraft.portable_radar.searchDelay": "Search delay: %s sec.",

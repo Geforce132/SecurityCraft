@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
@@ -70,4 +71,27 @@ public interface IPasswordProtected extends ICodebreakable {
 	 * @param password The new password to be saved.
 	 */
 	public void setPassword(String password);
+
+	/**
+	 * Checks whether this block is on cooldown, meaning a new code cannot be entered.
+	 *
+	 * @return true if this block is on cooldown, false otherwise
+	 */
+	public default boolean isOnCooldown() { //TODO: only default temporarily, remove when done
+		return false;
+	}
+
+	/**
+	 * Sets this block to be on cooldown and starts the cooldown
+	 */
+	public default void startCooldown() {} //TODO: only default temporarily, remove when done
+
+	/**
+	 * Defines how much damage is dealt to the player when an incorrect passcode has been entered.
+	 *
+	 * @return The damage dealt to the player in health points (2 = 1 heart)
+	 */
+	public default int getIncorrectPasscodeDamage() {
+		return ConfigHandler.SERVER.incorrectPasscodeDamage.get();
+	}
 }
