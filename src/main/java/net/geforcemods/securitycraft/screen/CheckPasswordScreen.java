@@ -184,6 +184,8 @@ public class CheckPasswordScreen extends Screen {
 	public void checkCode(String code) {
 		BlockPos pos = ((BlockEntity) be).getBlockPos();
 
+		currentString = "";
+		keycodeTextbox.setValue("");
 		toggleChildrenActive(false);
 		SecurityCraft.channel.sendToServer(new CheckPassword(pos.getX(), pos.getY(), pos.getZ(), code));
 	}
