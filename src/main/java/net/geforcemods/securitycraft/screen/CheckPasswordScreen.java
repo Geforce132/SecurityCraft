@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -22,7 +23,10 @@ import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class CheckPasswordScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private BlockEntity be;
+	private static final int MAX_CHARS = 20;
+	private static final Component COOLDOWN_TEXT_1 = Component.translatable("gui.securitycraft:password.cooldown1");
+	private int cooldownText1XPos;
+	private IPasswordProtected be;
 	private char[] allowedChars = {
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\u0008', '\u001B'
 	}; //0-9, backspace and escape
@@ -33,11 +37,11 @@ public class CheckPasswordScreen extends Screen {
 	private Component blockName;
 	private EditBox keycodeTextbox;
 	private String currentString = "";
-	private static final int MAX_CHARS = 20;
+	private boolean wasOnCooldownLastRenderTick = false;
 
 	public CheckPasswordScreen(BlockEntity be, Component title) {
 		super(title);
-		this.be = be;
+		this.be = (IPasswordProtected) be;
 		blockName = Utils.localize(be.getBlockState().getBlock().getDescriptionId());
 	}
 
@@ -47,26 +51,27 @@ public class CheckPasswordScreen extends Screen {
 
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
+		cooldownText1XPos = width / 2 - font.width(COOLDOWN_TEXT_1) / 2;
 
-		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 - 40, 20, 20, Component.literal("1"), b -> addNumberToString(1)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 40, 20, 20, Component.literal("2"), b -> addNumberToString(2)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 - 40, 20, 20, Component.literal("3"), b -> addNumberToString(3)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 - 10, 20, 20, Component.literal("4"), b -> addNumberToString(4)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 10, 20, 20, Component.literal("5"), b -> addNumberToString(5)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 - 10, 20, 20, Component.literal("6"), b -> addNumberToString(6)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 + 20, 20, 20, Component.literal("7"), b -> addNumberToString(7)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 20, 20, 20, Component.literal("8"), b -> addNumberToString(8)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 + 20, 20, 20, Component.literal("9"), b -> addNumberToString(9)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 + 50, 20, 20, Component.literal("←"), b -> removeLastCharacter()));
-		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 50, 20, 20, Component.literal("0"), b -> addNumberToString(0)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 + 50, 20, 20, Component.literal("✔"), b -> checkCode(currentString)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 33, height / 2 - 45, 20, 20, Component.literal("1"), b -> addNumberToString(1)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 45, 20, 20, Component.literal("2"), b -> addNumberToString(2)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 17, height / 2 - 45, 20, 20, Component.literal("3"), b -> addNumberToString(3)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 33, height / 2 - 20, 20, 20, Component.literal("4"), b -> addNumberToString(4)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 20, 20, 20, Component.literal("5"), b -> addNumberToString(5)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 17, height / 2 - 20, 20, 20, Component.literal("6"), b -> addNumberToString(6)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 33, height / 2 + 5, 20, 20, Component.literal("7"), b -> addNumberToString(7)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 5, 20, 20, Component.literal("8"), b -> addNumberToString(8)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 17, height / 2 + 5, 20, 20, Component.literal("9"), b -> addNumberToString(9)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 33, height / 2 + 30, 20, 20, Component.literal("←"), b -> removeLastCharacter()));
+		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 30, 20, 20, Component.literal("0"), b -> addNumberToString(0)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 17, height / 2 + 30, 20, 20, Component.literal("✔"), b -> checkCode(currentString)));
 
 		//TODO: fix it still being possible to enter stuff in the editbox when it's not active
 		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 62, 77, 12, Component.empty()));
 		keycodeTextbox.setMaxLength(MAX_CHARS);
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*\\**")); //allow any amount of numbers and any amount of asterisks
 
-		if (((IPasswordProtected) be).isOnCooldown()) {
+		if (be.isOnCooldown()) {
 			children().forEach(listener -> {
 				if (listener instanceof AbstractWidget widget)
 					widget.active = false;
@@ -84,6 +89,25 @@ public class CheckPasswordScreen extends Screen {
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(pose, mouseX, mouseY, partialTick);
 		font.draw(pose, blockName, width / 2 - font.width(blockName) / 2, topPos + 6, 4210752);
+
+		if (be.isOnCooldown()) {
+			long cooldownEnd = be.getCooldownEnd();
+			long secondsLeft = Math.max(cooldownEnd - System.currentTimeMillis(), 0) / 1000 + 1; //+1 so that the text doesn't say "0 seconds left" for a whole second
+			Component text = Component.translatable("gui.securitycraft:password.cooldown2", secondsLeft);
+
+			font.draw(pose, COOLDOWN_TEXT_1, cooldownText1XPos, height / 2 + 55, 4210752);
+			font.draw(pose, text, width / 2 - font.width(text) / 2, height / 2 + 65, 4210752);
+
+			if (!wasOnCooldownLastRenderTick)
+				wasOnCooldownLastRenderTick = true;
+		}
+		else if (wasOnCooldownLastRenderTick) {
+			wasOnCooldownLastRenderTick = false;
+			children().forEach(listener -> {
+				if (listener instanceof AbstractWidget widget)
+					widget.active = true;
+			});
+		}
 	}
 
 	@Override
@@ -156,6 +180,8 @@ public class CheckPasswordScreen extends Screen {
 	}
 
 	public void checkCode(String code) {
-		SecurityCraft.channel.sendToServer(new CheckPassword(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ(), code));
+		BlockPos pos = ((BlockEntity) be).getBlockPos();
+
+		SecurityCraft.channel.sendToServer(new CheckPassword(pos.getX(), pos.getY(), pos.getZ(), code));
 	}
 }

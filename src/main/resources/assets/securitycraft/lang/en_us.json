@@ -771,6 +771,8 @@
 	"gui.securitycraft:password.invalidCode": "Invalid code!",
 	"gui.securitycraft:password.setup": "setup",
 	"gui.securitycraft:password.save": "Save",
+	"gui.securitycraft:password.cooldown1": "On cooldown!",
+	"gui.securitycraft:password.cooldown2": "Time left: %s second(s)",
 	"gui.securitycraft:camera.lookAround": "%1$s%2$s%3$s%4$s - Look around",
 	"gui.securitycraft:camera.activateNightVision": "%s - Activate night vision",
 	"gui.securitycraft:camera.exit": "%s - Exit Camera",

@@ -10,7 +10,7 @@
 - API: Changed IPasswordConvertible#getOriginalBlock to IPasswordConvertible#isValidStateForConversion for finer control over what can be converted
 - API: New methods IModuleInventory#isAllowed and IModuleInventory#isDenied to check whether an entity is listed on an allowlist or denylist module respectively
 - API: Moved and renamed Owner#isOwner methods to IPasswordProtected#isOwnedBy
-- API: New methods IPasswordProtected#isOnCooldown, IPasswordProtected#startCooldown, and IPasswordProtected#onIncorrectPasscodeEntered
+- API: New methods IPasswordProtected#startCooldown, IPasswordProtected#isOnCooldown IPasswordProtected#getCooldownEnd, and IPasswordProtected#getIncorrectPasscodeDamage
 - Fix: The Reinforced Water Cauldron and Reinforced Grass Block don't have a reinforced tint
 - Fix: Reinforced Stained Glass Pane items display incorrectly
 - Fix: The Reinforced Moss Carpet has a different sound compared to the vanilla Moss Carpet

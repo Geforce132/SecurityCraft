@@ -46,7 +46,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
-		tag.putLong("cooldownEnd", cooldownEnd);
+		tag.putLong("cooldownEnd", getCooldownEnd());
 	}
 
 	@Override
@@ -97,17 +97,22 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 	}
 
 	@Override
-	public boolean isOnCooldown() {
-		return System.currentTimeMillis() < cooldownEnd;
-	}
-
-	@Override
 	public void startCooldown() {
 		if (!isOnCooldown()) {
 			cooldownEnd = System.currentTimeMillis() + smartModuleCooldown.get() * 50;
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 			setChanged();
 		}
+	}
+
+	@Override
+	public long getCooldownEnd() {
+		return cooldownEnd;
+	}
+
+	@Override
+	public boolean isOnCooldown() {
+		return System.currentTimeMillis() < getCooldownEnd();
 	}
 
 	@Override
