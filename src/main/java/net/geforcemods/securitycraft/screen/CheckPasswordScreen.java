@@ -77,22 +77,20 @@ public class CheckPasswordScreen extends Screen {
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
-			onClose();
-			return true;
-		}
-		else if (keyCode == GLFW.GLFW_KEY_BACKSPACE && currentString.length() > 0) {
-			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
-			removeLastCharacter();
-			return true;
-		}
-		else if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
-			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
-			checkCode(currentString);
-			return true;
+		if (!super.keyPressed(keyCode, scanCode, modifiers)) {
+			if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode)))
+				onClose();
+			else if (keyCode == GLFW.GLFW_KEY_BACKSPACE && currentString.length() > 0) {
+				Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
+				removeLastCharacter();
+			}
+			else if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
+				Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
+				checkCode(currentString);
+			}
 		}
 
-		return super.keyPressed(keyCode, scanCode, modifiers);
+		return true;
 	}
 
 	@Override
