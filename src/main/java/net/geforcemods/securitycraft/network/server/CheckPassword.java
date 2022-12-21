@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -62,7 +61,7 @@ public class CheckPassword {
 						}
 					}
 					else if (moduleInv.isModuleEnabled(ModuleType.HARMING) && !isPasscodeCorrect) {
-						player.hurt(CustomDamageSources.INCORRECT_PASSCODE, passwordProtected.getIncorrectPasscodeDamage());
+						passwordProtected.onIncorrectPasscodeEntered(player, password);
 						return;
 					}
 				}

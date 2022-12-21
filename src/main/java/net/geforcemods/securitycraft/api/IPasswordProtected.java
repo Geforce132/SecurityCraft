@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
@@ -87,11 +88,12 @@ public interface IPasswordProtected extends ICodebreakable {
 	public default void startCooldown() {} //TODO: only default temporarily, remove when done
 
 	/**
-	 * Defines how much damage is dealt to the player when an incorrect passcode has been entered.
+	 * Gets called when an incorrect passcode has been inserted.
 	 *
-	 * @return The damage dealt to the player in health points (2 = 1 heart)
+	 * @param player The player who entered the incorrect code
+	 * @param incorrectCode The incorrect code that was entered
 	 */
-	public default int getIncorrectPasscodeDamage() {
-		return ConfigHandler.SERVER.incorrectPasscodeDamage.get();
+	public default void onIncorrectPasscodeEntered(Player player, String incorrectCode) {
+		player.hurt(CustomDamageSources.INCORRECT_PASSCODE, ConfigHandler.SERVER.incorrectPasscodeDamage.get());
 	}
 }
