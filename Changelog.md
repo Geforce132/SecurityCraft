@@ -5,6 +5,7 @@
 - New: The damage dealt by a Laser Block containing a Harming Module can now be changed with a config setting
 - New: More modded wooden chests can now be converted to a Password-protected Chest
 - New: Crystal Quartz Bricks, Smooth Crystal Quartz, Smooth Crystal Quartz Stairs, Smooth Crystal Quartz Slab, and their reinforced variants
+- New: Passcodes now have to be manually confirmed by using the new enter button found in the check password interface (or by using the enter key on the keyboard)
 - API: Changed IPasswordConvertible#getOriginalBlock to IPasswordConvertible#isValidStateForConversion for finer control over what can be converted
 - API: New methods IModuleInventory#isAllowed and IModuleInventory#isDenied to check whether an entity is listed on an allowlist or denylist module respectively
 - API: Moved and renamed Owner#isOwner methods to IPasswordProtected#isOwnedBy

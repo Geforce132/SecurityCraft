@@ -46,19 +46,20 @@ public class CheckPasswordScreen extends Screen {
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
 
-		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 + 30 + 10, 80, 20, Component.literal("0"), b -> addNumberToString(0)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 - 60 + 10, 20, 20, Component.literal("1"), b -> addNumberToString(1)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 60 + 10, 20, 20, Component.literal("2"), b -> addNumberToString(2)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 - 60 + 10, 20, 20, Component.literal("3"), b -> addNumberToString(3)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 - 30 + 10, 20, 20, Component.literal("4"), b -> addNumberToString(4)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 30 + 10, 20, 20, Component.literal("5"), b -> addNumberToString(5)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 - 30 + 10, 20, 20, Component.literal("6"), b -> addNumberToString(6)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 + 10, 20, 20, Component.literal("7"), b -> addNumberToString(7)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 10, 20, 20, Component.literal("8"), b -> addNumberToString(8)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 + 10, 20, 20, Component.literal("9"), b -> addNumberToString(9)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 48, height / 2 + 30 + 10, 25, 20, Component.literal("<-"), b -> removeLastCharacter()));
+		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 - 40, 20, 20, Component.literal("1"), b -> addNumberToString(1)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 40, 20, 20, Component.literal("2"), b -> addNumberToString(2)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 - 40, 20, 20, Component.literal("3"), b -> addNumberToString(3)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 - 10, 20, 20, Component.literal("4"), b -> addNumberToString(4)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 10, 20, 20, Component.literal("5"), b -> addNumberToString(5)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 - 10, 20, 20, Component.literal("6"), b -> addNumberToString(6)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 + 20, 20, 20, Component.literal("7"), b -> addNumberToString(7)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 20, 20, 20, Component.literal("8"), b -> addNumberToString(8)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 + 20, 20, 20, Component.literal("9"), b -> addNumberToString(9)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 + 50, 20, 20, Component.literal("←"), b -> removeLastCharacter()));
+		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 50, 20, 20, Component.literal("0"), b -> addNumberToString(0)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 + 50, 20, 20, Component.literal("✔"), b -> checkCode(currentString)));
 
-		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 67, 77, 12, Component.empty()));
+		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 62, 77, 12, Component.empty()));
 		keycodeTextbox.setMaxLength(MAX_CHARS);
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*\\**")); //allow any amount of numbers and any amount of asterisks
 		setInitialFocus(keycodeTextbox);
@@ -82,8 +83,11 @@ public class CheckPasswordScreen extends Screen {
 		}
 		else if (keyCode == GLFW.GLFW_KEY_BACKSPACE && currentString.length() > 0) {
 			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
-			currentString = Utils.removeLastChar(currentString);
-			setTextboxCensoredText(keycodeTextbox, currentString);
+			removeLastCharacter();
+			return true;
+		}
+		else if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
+			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
 			checkCode(currentString);
 			return true;
 		}
@@ -102,7 +106,6 @@ public class CheckPasswordScreen extends Screen {
 			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
 			currentString += typedChar;
 			setTextboxCensoredText(keycodeTextbox, currentString);
-			checkCode(currentString);
 		}
 		else
 			return super.charTyped(typedChar, keyCode);
@@ -123,7 +126,6 @@ public class CheckPasswordScreen extends Screen {
 		if (currentString.length() < MAX_CHARS) {
 			currentString += "" + number;
 			setTextboxCensoredText(keycodeTextbox, currentString);
-			checkCode(currentString);
 		}
 	}
 
