@@ -254,7 +254,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 			else if (option.getName().equals("disabled"))
 				connectedBlockEntity.setDisabled(((BooleanOption) option).get());
 			else if (option.getName().equals("ignoreOwner"))
-				connectedBlockEntity.setDisabled(((BooleanOption) option).get());
+				connectedBlockEntity.setIgnoresOwner(((BooleanOption) option).get());
 		}
 
 		super.onOptionChanged(option);
