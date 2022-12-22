@@ -22,6 +22,7 @@
 - Fix: Breaking an Inventory Scanner Fields with the inventoryScannerRange config setting set to >=3 does not break and reinstate all fields properly
 - Fix: Players that are on the allowlist of a Security Camera, cannot toggle the camera's redstone output
 - Fix: Disabled option in laser blocks does not work properly
+- Fix: Several instances of chunks not loading correctly when changing the view distance while viewing a camera
 - Misc.: The minimum required Forge version is now 44.0.11
 
 --------------------------Changelog for v1.9.4-beta1 of SecurityCraft--------------------------
