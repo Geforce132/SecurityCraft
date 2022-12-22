@@ -210,15 +210,14 @@ public class CameraController {
 				newStorage.viewCenterX = cameraStorage.viewCenterX;
 				newStorage.viewCenterZ = cameraStorage.viewCenterZ;
 
-				for(int i = 0; i < cameraStorage.chunks.length(); i++) {
+				for (int i = 0; i < cameraStorage.chunks.length(); i++) {
 					LevelChunk chunk = cameraStorage.chunks.get(i);
 
 					if (chunk != null) {
 						ChunkPos pos = chunk.getPos();
 
-						if (newStorage.inRange(pos.x, pos.z)) {
+						if (newStorage.inRange(pos.x, pos.z))
 							newStorage.replace(newStorage.getIndex(pos.x, pos.z), chunk);
-						}
 					}
 				}
 			}
