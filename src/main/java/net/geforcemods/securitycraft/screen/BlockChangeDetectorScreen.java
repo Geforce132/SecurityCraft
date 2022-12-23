@@ -136,8 +136,8 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			else
 				stateString = "";
 
-			List<Component> list = List.of(
 			//@formatter:off
+			List<Component> list = List.of(
 					entry.player(),
 					entry.uuid(),
 					entry.action(),
