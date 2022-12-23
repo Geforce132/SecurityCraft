@@ -39,7 +39,7 @@ public class ProjectorRenderer extends TileEntityRenderer<ProjectorBlockEntity> 
 			RenderSystem.disableCull();
 
 			for (int x = 0; x < te.getProjectionWidth(); x++) {
-				for (int y = 0; yLoopBoundary.test(te, hanging, y);) { //increment is done at the end of the loop
+				for (int y = 0; yLoopBoundary.test(te, hanging, y); y = hanging ? y - 1 : y + 1) {
 					stack.pushPose();
 
 					if (!te.isHorizontal())
@@ -57,7 +57,6 @@ public class ProjectorRenderer extends TileEntityRenderer<ProjectorBlockEntity> 
 					}
 
 					stack.popPose();
-					y = hanging ? y - 1 : y + 1;
 				}
 			}
 

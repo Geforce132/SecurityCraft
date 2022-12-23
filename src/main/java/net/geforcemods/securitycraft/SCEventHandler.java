@@ -464,10 +464,10 @@ public class SCEventHandler {
 				continue;
 
 			// If the SSS is recording, record the note being played
+			// Otherwise, check to see if the note being played matches the saved combination.
+			// If so, toggle its redstone power output on
 			if (te.isRecording())
 				te.recordNote(vanillaNoteId, instrumentName);
-			// If the SSS is active, check to see if the note being played matches the saved combination.
-			// If so, toggle its redstone power output on
 			else if (te.listenToNote(vanillaNoteId, instrumentName)) {
 				te.correctTuneWasPlayed = true;
 				te.powerCooldown = te.signalLength.get();

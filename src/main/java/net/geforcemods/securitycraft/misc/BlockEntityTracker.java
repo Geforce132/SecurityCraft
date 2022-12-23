@@ -65,8 +65,9 @@ public final class BlockEntityTracker<BE extends TileEntity> {
 	public List<BE> getBlockEntitiesInRange(World level, Vector3d pos) {
 		final Collection<BlockPos> blockEntities = getTrackedBlockEntities(level);
 		List<BE> returnValue = new ArrayList<>();
+		Iterator<BlockPos> it = blockEntities.iterator();
 
-		for (Iterator<BlockPos> it = blockEntities.iterator(); it.hasNext();) {
+		while (it.hasNext()) {
 			BlockPos bePos = it.next();
 
 			if (bePos != null) {

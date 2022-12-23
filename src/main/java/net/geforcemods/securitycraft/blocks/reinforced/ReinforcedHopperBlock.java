@@ -107,11 +107,9 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 				if (te instanceof IModuleInventory) {
 					IModuleInventory inv = (IModuleInventory) te;
 
-					//hoppers can extract out of e.g. chests if the hopper's owner is on the chest's allowlist module
-					if (inv.isAllowed(hopperTe.getOwner().getName()))
+					if (inv.isAllowed(hopperTe.getOwner().getName())) //hoppers can extract out of e.g. chests if the hopper's owner is on the chest's allowlist module
 						return true;
-					//hoppers can extract out of e.g. chests whose owner is on the hopper's allowlist module
-					else if (hopperTe.isAllowed(te.getOwner().getName()))
+					else if (hopperTe.isAllowed(te.getOwner().getName())) //hoppers can extract out of e.g. chests whose owner is on the hopper's allowlist module
 						return true;
 				}
 

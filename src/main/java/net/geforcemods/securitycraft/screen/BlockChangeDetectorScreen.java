@@ -142,8 +142,8 @@ public class BlockChangeDetectorScreen extends ContainerScreen<BlockChangeDetect
 			else
 				stateString = "";
 
-			List<TextComponent> list = Arrays.asList(
 			//@formatter:off
+			List<TextComponent> list = Arrays.asList(
 				entry.player,
 				entry.uuid,
 				entry.action,

@@ -237,6 +237,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 				BlockUtils.destroyInSequence(this, world, pos, Direction.NORTH, Direction.SOUTH);
 		}
 	}
+
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
 		if (state.getValue(HORIZONTAL))

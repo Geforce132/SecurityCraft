@@ -74,9 +74,26 @@ public class IronFenceBlock extends OwnableBlock {
 		VoxelShape voxelshape4 = Block.box(f2, pExtensionBottom, f2, 16.0D, pExtensionHeight, f3);
 		VoxelShape voxelshape5 = VoxelShapes.or(voxelshape1, voxelshape4);
 		VoxelShape voxelshape6 = VoxelShapes.or(voxelshape2, voxelshape3);
+		//@formatter:off
 		VoxelShape[] returnValue = {
-				VoxelShapes.empty(), voxelshape2, voxelshape3, voxelshape6, voxelshape1, VoxelShapes.or(voxelshape2, voxelshape1), VoxelShapes.or(voxelshape3, voxelshape1), VoxelShapes.or(voxelshape6, voxelshape1), voxelshape4, VoxelShapes.or(voxelshape2, voxelshape4), VoxelShapes.or(voxelshape3, voxelshape4), VoxelShapes.or(voxelshape6, voxelshape4), voxelshape5, VoxelShapes.or(voxelshape2, voxelshape5), VoxelShapes.or(voxelshape3, voxelshape5), VoxelShapes.or(voxelshape6, voxelshape5)
+				VoxelShapes.empty(),
+				voxelshape2,
+				voxelshape3,
+				voxelshape6,
+				voxelshape1,
+				VoxelShapes.or(voxelshape2, voxelshape1),
+				VoxelShapes.or(voxelshape3, voxelshape1),
+				VoxelShapes.or(voxelshape6, voxelshape1),
+				voxelshape4,
+				VoxelShapes.or(voxelshape2, voxelshape4),
+				VoxelShapes.or(voxelshape3, voxelshape4),
+				VoxelShapes.or(voxelshape6, voxelshape4),
+				voxelshape5,
+				VoxelShapes.or(voxelshape2, voxelshape5),
+				VoxelShapes.or(voxelshape3, voxelshape5),
+				VoxelShapes.or(voxelshape6, voxelshape5)
 		};
+		//@formatter:on
 
 		for (int i = 0; i < 16; ++i) {
 			returnValue[i] = VoxelShapes.or(voxelshape, returnValue[i]);
@@ -190,11 +207,9 @@ public class IronFenceBlock extends OwnableBlock {
 	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (!getShape(state, world, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
 			return;
-		//so dropped items don't get destroyed
-		else if (entity instanceof ItemEntity)
+		else if (entity instanceof ItemEntity) //so dropped items don't get destroyed
 			return;
-		//owner check
-		else if (entity instanceof PlayerEntity) {
+		else if (entity instanceof PlayerEntity) { //owner check
 			if (((OwnableBlockEntity) world.getBlockEntity(pos)).isOwnedBy((PlayerEntity) entity))
 				return;
 		}
