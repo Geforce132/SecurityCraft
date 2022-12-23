@@ -5,6 +5,7 @@
 - New: The damage dealt by a Laser Block containing a Harming Module can now be changed with a config setting
 - New: More modded wooden chests can now be converted to a Password-protected Chest
 - New: Crystal Quartz Bricks, Smooth Crystal Quartz, Smooth Crystal Quartz Stairs, Smooth Crystal Quartz Slab, and their reinforced variants
+- New: Ignore owner option for blocks like the Inventory Scanner or Block Change Detector
 - API: Changed IPasswordConvertible#getOriginalBlock to IPasswordConvertible#isValidStateForConversion for finer control over what can be converted
 - API: New methods IModuleInventory#isAllowed and IModuleInventory#isDenied to check whether an entity is listed on an allowlist or denylist module respectively
 - API: Moved and renamed Owner#isOwner methods to IPasswordProtected#isOwnedBy
@@ -18,6 +19,7 @@
 - Fix: Breaking an Inventory Scanner/Laser or one of its field does not break all fields, if the respective config setting is lower than the amount of fields present
 - Fix: Breaking an Inventory Scanner Fields with the inventoryScannerRange config setting set to >=3 does not break and reinstate all fields properly
 - Fix: Players that are on the allowlist of a Security Camera, cannot toggle the camera's redstone output
+- Fix: The Redstone Module in a Laser Block does not respect ownership
 - Fix: Disabled option in laser blocks does not work properly
 - Fix: Several instances of chunks not loading correctly when changing the view distance while viewing a camera
 

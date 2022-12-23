@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class CageTrapBlockEntity extends DisguisableBlockEntity {
 	private BooleanOption shouldCaptureMobsOption = new BooleanOption("captureMobs", false);
 	private DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 
 	public CageTrapBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.CAGE_TRAP_BLOCK_ENTITY.get(), pos, state);
@@ -31,10 +33,14 @@ public class CageTrapBlockEntity extends DisguisableBlockEntity {
 		return disabled.get();
 	}
 
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
+	}
+
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				shouldCaptureMobsOption, disabled
+				shouldCaptureMobsOption, disabled, ignoreOwner
 		};
 	}
 }
