@@ -34,15 +34,16 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public void tick() {
 		if (!level.isClientSide) {
-			if (isDisabled() || cooldown-- > 0)
+			if (isDisabled())
 				return;
 
-			if (level.getBestNeighborSignal(worldPosition) > 0) {
+			if (cooldown > 0)
+				cooldown--;
+			else if (level.getBestNeighborSignal(worldPosition) > 0) {
 				level.getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB(worldPosition).inflate(searchRadius.get()), e -> !e.isSpectator()).forEach(this::addPlayer);
 				syncLoggedPlayersToClient();
+				cooldown = TICKS_BETWEEN_ATTACKS;
 			}
-
-			cooldown = TICKS_BETWEEN_ATTACKS;
 		}
 	}
 
