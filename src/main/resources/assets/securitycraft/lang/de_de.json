@@ -1018,6 +1018,8 @@
 
 	"option.generic.disabled": "Deaktiviert: %s",
 	"option.generic.disabled.description": "Soll dieser Block deaktiviert werden, sodass er bis zum Reaktivieren nicht mehr funktioniert?",
+	"option.generic.ignoreOwner": "Besitzer ignorieren: %s",
+	"option.generic.ignoreOwner.description": "Soll dieser Block seinen Besitzer ignorieren? Dies führt dazu, dass jedwede Funktionalität des Blocks nicht für seinen Besitzer funktioniert.",
 	"option.securitycraft.portable_radar.searchRadius": "Suchradius: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "Der Radius, in dem der Radar sucht.",
 	"option.securitycraft.portable_radar.searchDelay": "Suchintervall: %s Sek.",

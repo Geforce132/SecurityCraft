@@ -175,6 +175,17 @@ public abstract class Option<T> {
 		}
 	}
 
+	public static class IgnoreOwnerOption extends BooleanOption {
+		public IgnoreOwnerOption(Boolean value) {
+			super("ignoreOwner", value);
+		}
+
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.ignoreOwner";
+		}
+	}
+
 	/**
 	 * A subclass of {@link Option} set up to handle integers.
 	 */

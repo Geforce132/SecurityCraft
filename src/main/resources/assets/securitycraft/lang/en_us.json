@@ -1020,6 +1020,8 @@
 
 	"option.generic.disabled": "Disabled: %s",
 	"option.generic.disabled.description": "Should this block be disabled, making it no longer work until it is enabled again?",
+	"option.generic.ignoreOwner": "Ignore Owner: %s",
+	"option.generic.ignoreOwner.description": "Should this block ignore its owner, meaning any functionality it has will not work for the owner?",
 	"option.securitycraft.portable_radar.searchRadius": "Search radius: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "The radius the radar searches in.",
 	"option.securitycraft.portable_radar.searchDelay": "Search delay: %s sec.",

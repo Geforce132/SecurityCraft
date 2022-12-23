@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -30,6 +31,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	private IntOption searchDelayOption = new IntOption(this::getBlockPos, "searchDelay", 4, 4, 10, 1, true);
 	private BooleanOption repeatMessageOption = new BooleanOption("repeatMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private boolean shouldSendNewMessage = true;
 	private String lastPlayerName = "";
 	private int ticksUntilNextSearch = getSearchDelay();
@@ -45,14 +47,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 
 			ServerPlayerEntity owner = level.getServer().getPlayerList().getPlayerByName(getOwner().getName());
 			AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(getSearchRadius(), getSearchRadius(), getSearchRadius());
-			List<PlayerEntity> entities = level.getEntitiesOfClass(PlayerEntity.class, area, e -> {
-				boolean isNotAllowed = true;
-
-				if (isModuleEnabled(ModuleType.ALLOWLIST))
-					isNotAllowed = !isAllowed(e);
-
-				return !isOwnedBy(e) && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
-			});
+			List<PlayerEntity> entities = level.getEntitiesOfClass(PlayerEntity.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && !e.isSpectator() && !EntityUtils.isInvisible(e));
 
 			if (isModuleEnabled(ModuleType.REDSTONE))
 				PortableRadarBlock.togglePowerOutput(level, worldPosition, !entities.isEmpty());
@@ -119,7 +114,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 
 		boolean lastPlayerOwns = ConfigHandler.SERVER.enableTeamOwnership.get() ? PlayerUtils.areOnSameTeam(lastPlayerName, getOwner().getName()) : lastPlayerName.equals(getOwner().getName());
 
-		return (shouldSendNewMessage || repeatMessageOption.get()) && !lastPlayerOwns;
+		return (shouldSendNewMessage || repeatMessageOption.get()) && !(lastPlayerOwns && ignoresOwner());
 	}
 
 	public void setSentMessage() {
@@ -134,6 +129,10 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 		return searchDelayOption.get() * 20;
 	}
 
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
+	}
+
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
@@ -144,7 +143,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				searchRadiusOption, searchDelayOption, repeatMessageOption, disabled
+				searchRadiusOption, searchDelayOption, repeatMessageOption, disabled, ignoreOwner
 		};
 	}
 }

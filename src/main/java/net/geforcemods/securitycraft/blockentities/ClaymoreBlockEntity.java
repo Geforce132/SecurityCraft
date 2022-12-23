@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blockentities;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -19,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity {
 	private IntOption range = new IntOption(this::getBlockPos, "range", 5, 1, 10, 1, true);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private int cooldown = -1;
 
 	public ClaymoreBlockEntity() {
@@ -53,7 +55,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 			else if (dir == Direction.WEST)
 				area = area.contract(range.get(), -0, -0);
 
-			getLevel().getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !e.isSpectator() && !EntityUtils.doesEntityOwn(e, level, worldPosition)).stream().findFirst().ifPresent(entity -> {
+			level.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !e.isSpectator() && !(EntityUtils.doesEntityOwn(e, level, worldPosition) && ignoresOwner())).stream().findFirst().ifPresent(entity -> {
 				cooldown = 20;
 				getLevel().playSound(null, new BlockPos(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			});
@@ -79,12 +81,16 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range
+				range, ignoreOwner
 		};
 	}
 
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[0];
+	}
+
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
 	}
 }

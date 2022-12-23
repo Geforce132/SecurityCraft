@@ -60,7 +60,7 @@ public class CageTrapBlock extends DisguisableBlock {
 
 				if (te.isDisabled())
 					return getCorrectShape(state, world, pos, ctx, te);
-				else if (entity instanceof PlayerEntity && (te.isOwnedBy((PlayerEntity) entity) || te.isAllowed(entity)))
+				else if (entity instanceof PlayerEntity && ((te.isOwnedBy((PlayerEntity) entity) && te.ignoresOwner()) || te.isAllowed(entity)))
 					return getCorrectShape(state, world, pos, ctx, te);
 				if (entity instanceof MobEntity && !state.getValue(DEACTIVATED))
 					return te.capturesMobs() ? VoxelShapes.empty() : getCorrectShape(state, world, pos, ctx, te);
@@ -88,27 +88,27 @@ public class CageTrapBlock extends DisguisableBlock {
 	@Override
 	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (!world.isClientSide) {
-			CageTrapBlockEntity tileEntity = (CageTrapBlockEntity) world.getBlockEntity(pos);
+			CageTrapBlockEntity cageTrap = (CageTrapBlockEntity) world.getBlockEntity(pos);
 
-			if (tileEntity.isDisabled())
+			if (cageTrap.isDisabled())
 				return;
 
 			boolean isPlayer = entity instanceof PlayerEntity;
 
-			if (isPlayer || (entity instanceof MobEntity && tileEntity.capturesMobs())) {
+			if (isPlayer || (entity instanceof MobEntity && cageTrap.capturesMobs())) {
 				if (!getShape(state, world, pos, ISelectionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
 					return;
 
-				if ((isPlayer && ((IOwnable) world.getBlockEntity(pos)).isOwnedBy((PlayerEntity) entity)))
+				if ((isPlayer && cageTrap.isOwnedBy((PlayerEntity) entity)) && cageTrap.ignoresOwner())
 					return;
 
 				if (state.getValue(DEACTIVATED))
 					return;
 
 				BlockPos topMiddle = pos.above(4);
-				String ownerName = ((IOwnable) world.getBlockEntity(pos)).getOwner().getName();
+				String ownerName = cageTrap.getOwner().getName();
 
-				BlockModifier placer = new BlockModifier(world, new BlockPos.Mutable().set(pos), tileEntity.getOwner());
+				BlockModifier placer = new BlockModifier(world, new BlockPos.Mutable().set(pos), cageTrap.getOwner());
 
 				placer.loop((w, p, o) -> {
 					if (w.isEmptyBlock(p)) {

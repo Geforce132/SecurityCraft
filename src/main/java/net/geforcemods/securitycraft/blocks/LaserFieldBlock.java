@@ -2,9 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -62,20 +61,20 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay {
 					if (offsetBlock == SCContent.LASER_BLOCK.get()) {
 						TileEntity te = world.getBlockEntity(offsetPos);
 
-						if (te instanceof IModuleInventory) {
-							IModuleInventory moduleInv = (IModuleInventory) te;
+						if (te instanceof LaserBlockBlockEntity) {
+							LaserBlockBlockEntity laser = (LaserBlockBlockEntity) te;
 
-							if (moduleInv.isAllowed(entity))
+							if (laser.isAllowed(entity))
 								return;
 
-							if (moduleInv.isModuleEnabled(ModuleType.REDSTONE) && !offsetState.getValue(LaserBlock.POWERED)) {
-								world.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
-								BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.LASER_BLOCK.get());
-								world.getBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
-							}
+							if (!(entity instanceof PlayerEntity && laser.isOwnedBy((PlayerEntity) entity) && laser.ignoresOwner())) {
+								if (laser.isModuleEnabled(ModuleType.REDSTONE) && !offsetState.getValue(LaserBlock.POWERED)) {
+									world.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
+									BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.LASER_BLOCK.get());
+									world.getBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
+								}
 
-							if (moduleInv.isModuleEnabled(ModuleType.HARMING)) {
-								if (!(entity instanceof PlayerEntity && ((IOwnable) moduleInv).isOwnedBy((PlayerEntity) entity))) {
+								if (laser.isModuleEnabled(ModuleType.HARMING)) {
 									double damage = ConfigHandler.SERVER.laserDamage.get();
 
 									((LivingEntity) entity).hurt(CustomDamageSources.LASER, (float) damage);
