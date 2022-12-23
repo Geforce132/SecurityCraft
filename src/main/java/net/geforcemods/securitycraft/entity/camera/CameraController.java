@@ -15,7 +15,9 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.OverlayRegistry;
@@ -32,6 +34,8 @@ public class CameraController {
 	public static CameraType previousCameraType;
 	public static boolean resetOverlaysAfterDismount = false;
 	private static ClientChunkCache.Storage cameraStorage;
+	private static boolean chunksLoaded = false;
+	private static int chunkLoadingDistance = -1;
 	private static boolean wasUpPressed;
 	private static boolean wasDownPressed;
 	private static boolean wasLeftPressed;
@@ -195,9 +199,42 @@ public class CameraController {
 		return cameraStorage;
 	}
 
-	public static void setCameraStorage(ClientChunkCache.Storage cameraStorage) {
-		if (cameraStorage != null)
-			CameraController.cameraStorage = cameraStorage;
+	public static void setCameraStorage(ClientChunkCache.Storage newStorage) {
+		if (newStorage != null) {
+			if (cameraStorage != null) {
+				newStorage.viewCenterX = cameraStorage.viewCenterX;
+				newStorage.viewCenterZ = cameraStorage.viewCenterZ;
+
+				for (int i = 0; i < cameraStorage.chunks.length(); i++) {
+					LevelChunk chunk = cameraStorage.chunks.get(i);
+
+					if (chunk != null) {
+						ChunkPos pos = chunk.getPos();
+
+						if (newStorage.inRange(pos.x, pos.z))
+							newStorage.replace(newStorage.getIndex(pos.x, pos.z), chunk);
+					}
+				}
+			}
+
+			cameraStorage = newStorage;
+		}
+	}
+
+	public static void setHasLoadedChunks(boolean hasLoadedChunks) {
+		chunksLoaded = hasLoadedChunks;
+	}
+
+	public static void setChunkLoadingDistance(int initialViewDistance) {
+		chunkLoadingDistance = initialViewDistance;
+	}
+
+	public static boolean hasLoadedChunks() {
+		return chunksLoaded;
+	}
+
+	public static int getChunkLoadingDistance() {
+		return chunkLoadingDistance;
 	}
 
 	public static void setRenderPosition(Entity entity) {

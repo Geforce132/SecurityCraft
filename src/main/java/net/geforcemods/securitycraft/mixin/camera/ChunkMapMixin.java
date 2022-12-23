@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.SectionPos;
@@ -52,11 +53,24 @@ public abstract class ChunkMapMixin {
 				for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
 					ChunkPos chunkPos = new ChunkPos(i, j);
 
-					updateChunkTracking(player, chunkPos, new Packet[2], camera.hasLoadedChunks(), true);
+					updateChunkTracking(player, chunkPos, new Packet[2], CameraController.hasLoadedChunks(), true);
 				}
 			}
 
-			camera.setHasLoadedChunks(viewDistance);
+			CameraController.setHasLoadedChunks(true);
+			CameraController.setChunkLoadingDistance(viewDistance);
+		}
+		else if (CameraController.hasLoadedChunks()) {
+			SectionPos pos = player.getLastSectionPos();
+
+			for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
+				for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
+					updateChunkTracking(player, new ChunkPos(i, j), new Packet[2], !CameraController.hasLoadedChunks(), true);
+				}
+			}
+
+			CameraController.setHasLoadedChunks(false);
+			CameraController.setChunkLoadingDistance(-1);
 		}
 	}
 }
