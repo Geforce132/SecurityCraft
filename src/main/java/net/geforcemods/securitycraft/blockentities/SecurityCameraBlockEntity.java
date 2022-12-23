@@ -50,7 +50,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 			}
 
 			oCameraRotation = cameraRotation;
-			
+
 			if (addToRotation && cameraRotation <= 1.55F)
 				cameraRotation += rotationSpeedOption.get();
 			else
