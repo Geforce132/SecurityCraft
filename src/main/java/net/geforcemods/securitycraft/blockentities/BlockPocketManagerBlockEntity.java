@@ -98,7 +98,8 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			//place 4 blocks per tick
 			//only place the next block if the previous one was placed
 			//if any block failed to place, either the end was reached, or a block was in the way
-			placeLoop: for (int i = 0; i < BLOCK_PLACEMENTS_PER_TICK; i++) {
+			placeLoop:
+			for (int i = 0; i < BLOCK_PLACEMENTS_PER_TICK; i++) {
 				Pair<BlockPos, BlockState> toPlace;
 				BlockState stateInLevel;
 
@@ -124,7 +125,8 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 					if (!isCreative) {
 						//remove blocks from inventory
-						invLoop: for (int k = 0; k < storage.size(); k++) {
+						invLoop:
+						for (int k = 0; k < storage.size(); k++) {
 							ItemStack stackToCheck = storage.get(k);
 
 							if (!stackToCheck.isEmpty() && ((BlockItem) stackToCheck.getItem()).getBlock() == stateToPlace.getBlock()) {
@@ -153,11 +155,9 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			}
 
 			if (!placed4Blocks) {
-				//there are still blocks left to place, so a different block is blocking (heh) a space
-				if (!placeQueue.isEmpty())
+				if (!placeQueue.isEmpty()) //there are still blocks left to place, so a different block is blocking (heh) a space
 					placeQueue.clear();
-				//no more blocks left to place, assembling must be done
-				else {
+				else { //no more blocks left to place, assembling must be done
 					setWalls(!isModuleEnabled(ModuleType.DISGUISE));
 					PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), new TranslatableComponent("messages.securitycraft:blockpocket.assembled"), ChatFormatting.DARK_AQUA);
 				}
@@ -490,8 +490,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 							//placing the corners
 							if (((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
 								placeQueue.add(Pair.of(currentPos, SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get().defaultBlockState()));
-							//placing the sides parallel to the block pocket manager
-							else if ((zi == lowest || zi == highest) && xi > lowest && xi < highest) {
+							else if ((zi == lowest || zi == highest) && xi > lowest && xi < highest) { //placing the sides parallel to the block pocket manager
 								Axis typeToPlace = managerFacing == Direction.NORTH || managerFacing == Direction.SOUTH ? Axis.X : Axis.Z;
 
 								placeQueue.add(Pair.of(currentPos, SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().defaultBlockState().setValue(ReinforcedRotatedPillarBlock.AXIS, typeToPlace)));
@@ -512,11 +511,9 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 							//placing the walls
 						}
 						else if (yi > lowest && yi < highest) {
-							//checking the walls parallel to the block pocket manager
-							if ((zi == lowest || zi == highest) && xi > lowest && xi < highest)
+							if ((zi == lowest || zi == highest) && xi > lowest && xi < highest) //placing the walls parallel to the block pocket manager
 								placeQueue.add(Pair.of(currentPos, SCContent.BLOCK_POCKET_WALL.get().defaultBlockState()));
-							//checking the walls orthogonal to the block pocket manager
-							else if ((xi == lowest || xi == highest) && zi > lowest && zi < highest)
+							else if ((xi == lowest || xi == highest) && zi > lowest && zi < highest) //placing the walls orthogonal to the block pocket manager
 								placeQueue.add(Pair.of(currentPos, SCContent.BLOCK_POCKET_WALL.get().defaultBlockState()));
 						}
 

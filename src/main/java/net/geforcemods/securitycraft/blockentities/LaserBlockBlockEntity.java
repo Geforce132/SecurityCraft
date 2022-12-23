@@ -56,7 +56,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 			if (option.getName().equals("disabled")) {
 				disabled.copy(option);
-			    setLasersAccordingToDisabledOption();
+				setLasersAccordingToDisabledOption();
 			}
 			else if (option.getName().equals("ignoreOwner"))
 				ignoreOwner.copy(option);
