@@ -64,8 +64,9 @@ public class TileEntityTracker<TE extends TileEntity> {
 	public List<TE> getTileEntitiesInRange(World world, Vec3d pos) {
 		final Collection<BlockPos> tileEntities = getTrackedTileEntities(world);
 		List<TE> returnValue = new ArrayList<>();
+		Iterator<BlockPos> it = tileEntities.iterator();
 
-		for (Iterator<BlockPos> it = tileEntities.iterator(); it.hasNext();) {
+		while (it.hasNext()) {
 			BlockPos tePos = it.next();
 
 			if (tePos != null) {

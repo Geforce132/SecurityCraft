@@ -62,7 +62,8 @@ public class BlockLaserBlock extends BlockDisguisable {
 		for (EnumFacing facing : EnumFacing.VALUES) {
 			int boundType = facing == EnumFacing.UP || facing == EnumFacing.DOWN ? 1 : (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH ? 2 : 3);
 
-			inner: for (int i = 1; i <= ConfigHandler.laserBlockRange; i++) {
+			inner:
+			for (int i = 1; i <= ConfigHandler.laserBlockRange; i++) {
 				BlockPos offsetPos = pos.offset(facing, i);
 				IBlockState offsetState = world.getBlockState(offsetPos);
 				Block offsetBlock = offsetState.getBlock();

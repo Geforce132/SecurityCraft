@@ -77,7 +77,8 @@ public class PortalSize {
 
 	protected int calculatePortalHeight() {
 		{
-			label56: for (height = 0; height < 21; ++height) {
+			label56:
+			for (height = 0; height < 21; ++height) {
 				for (int i = 0; i < width; ++i) {
 					BlockPos pos = bottomLeft.offset(rightDir, i).up(height);
 					Block block = world.getBlockState(pos).getBlock();

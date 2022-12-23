@@ -132,8 +132,8 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 			else
 				stateString = "";
 
-			List<ITextComponent> list = Arrays.asList(
 			//@formatter:off
+			List<ITextComponent> list = Arrays.asList(
 				entry.player,
 				entry.uuid,
 				entry.action,

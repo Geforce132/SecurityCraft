@@ -39,7 +39,7 @@ public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileE
 			Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
 			for (int fakeX = 0; fakeX < te.getProjectionWidth(); fakeX++) {
-				for (int fakeY = 0; yLoopBoundary.test(te, hanging, fakeY);) { //increment is done at the end of the loop
+				for (int fakeY = 0; yLoopBoundary.test(te, hanging, fakeY); fakeY = hanging ? fakeY - 1 : fakeY + 1) {
 					GlStateManager.pushMatrix();
 
 					BlockPos pos;
@@ -61,7 +61,6 @@ public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileE
 					}
 
 					GlStateManager.popMatrix();
-					fakeY = hanging ? fakeY - 1 : fakeY + 1;
 				}
 			}
 
