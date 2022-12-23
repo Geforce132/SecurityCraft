@@ -4,10 +4,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
-import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.IPacket;
@@ -40,23 +42,55 @@ public abstract class ChunkManagerMixin {
 	}
 
 	/**
+	 * Fixes entities not getting sent to chunks loaded by cameras by returning the camera's position to the distance checking
+	 * method
+	 */
+	@ModifyArgs(method = "checkerboardDistance(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/entity/player/ServerPlayerEntity;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;floor(D)I", ordinal = 0))
+	private static void modifyPlayerX(Args args, ChunkPos pos, ServerPlayerEntity player, boolean useSectionPos) {
+		if (PlayerUtils.isPlayerMountedOnCamera(player))
+			args.set(0, player.getCamera().getX() / 16.0D);
+	}
+
+	/**
+	 * Fixes entities not getting sent to chunks loaded by cameras by returning the camera's position to the distance checking
+	 * method
+	 */
+	@ModifyArgs(method = "checkerboardDistance(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/entity/player/ServerPlayerEntity;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;floor(D)I", ordinal = 1))
+	private static void modifyPlayerZ(Args args, ChunkPos pos, ServerPlayerEntity player, boolean useSectionPos) {
+		if (PlayerUtils.isPlayerMountedOnCamera(player))
+			args.set(0, player.getCamera().getZ() / 16.0D);
+	}
+
+	/**
 	 * Tracks chunks loaded by cameras to make sure they're being sent to the client
 	 */
 	@Inject(method = "move", at = @At(value = "TAIL"))
 	private void trackCameraLoadedChunks(ServerPlayerEntity player, CallbackInfo callback) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SectionPos pos = SectionPos.of(player.getCamera());
-			SecurityCamera camera = ((SecurityCamera) player.getCamera());
 
 			for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
 				for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
 					ChunkPos chunkPos = new ChunkPos(i, j);
 
-					updateChunkTracking(player, chunkPos, new IPacket[2], camera.hasLoadedChunks(), true);
+					updateChunkTracking(player, chunkPos, new IPacket[2], CameraController.hasLoadedChunks(), true);
 				}
 			}
 
-			camera.setHasLoadedChunks(viewDistance);
+			CameraController.setHasLoadedChunks(true);
+			CameraController.setChunkLoadingDistance(viewDistance);
+		}
+		else if (CameraController.hasLoadedChunks()) {
+			SectionPos pos = player.getLastSectionPos();
+
+			for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
+				for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
+					updateChunkTracking(player, new ChunkPos(i, j), new IPacket[2], !CameraController.hasLoadedChunks(), true);
+				}
+			}
+
+			CameraController.setHasLoadedChunks(false);
+			CameraController.setChunkLoadingDistance(-1);
 		}
 	}
 }

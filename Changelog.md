@@ -19,6 +19,8 @@
 - Fix: Players that are on the allowlist of a Security Camera, cannot toggle the camera's redstone output
 - Fix: The Redstone Module in a Laser Block does not respect ownership
 - Fix: Disabled option in laser blocks does not work properly
+- Fix: When viewing a camera that is far away, entities around the camera don't load
+- Fix: Several instances of chunks not loading correctly when changing the view distance while viewing a camera
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 

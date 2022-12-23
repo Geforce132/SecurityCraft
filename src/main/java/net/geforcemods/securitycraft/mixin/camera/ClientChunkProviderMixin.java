@@ -33,8 +33,6 @@ import net.minecraftforge.event.world.ChunkEvent;
 @Mixin(value = ClientChunkProvider.class, priority = 1100)
 public abstract class ClientChunkProviderMixin implements IChunkStorageProvider {
 	@Shadow
-	private volatile ClientChunkProvider.ChunkArray storage;
-	@Shadow
 	@Final
 	private ClientWorld level;
 
@@ -52,7 +50,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	/**
 	 * Updates the camera storage with the new view radius
 	 */
-	@Inject(method = "updateViewRadius", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/multiplayer/ClientChunkProvider$ChunkArray;<init>(Lnet/minecraft/client/multiplayer/ClientChunkProvider;I)V"))
+	@Inject(method = "updateViewRadius", at = @At(value = "FIELD", target = "Lnet/minecraft/client/multiplayer/ClientChunkProvider;storage:Lnet/minecraft/client/multiplayer/ClientChunkProvider$ChunkArray;", ordinal = 1))
 	public void onUpdateViewRadius(int viewDistance, CallbackInfo ci) {
 		CameraController.setCameraStorage(newStorage(Math.max(2, viewDistance) + 3));
 	}
@@ -83,7 +81,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	private void onReplace(int x, int z, BiomeContainer biomeContainer, PacketBuffer buffer, CompoundNBT chunkTag, int size, boolean fullChunk, CallbackInfoReturnable<Chunk> callback) {
 		ClientChunkProvider.ChunkArray cameraStorage = CameraController.getCameraStorage();
 
-		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && !storage.inRange(x, z) && cameraStorage.inRange(x, z)) {
+		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && cameraStorage.inRange(x, z)) {
 			int index = cameraStorage.getIndex(x, z);
 			Chunk chunk = cameraStorage.getChunk(index);
 			ChunkPos chunkPos = new ChunkPos(x, z);
@@ -116,7 +114,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 */
 	@Inject(method = "getChunk(IILnet/minecraft/world/chunk/ChunkStatus;Z)Lnet/minecraft/world/chunk/Chunk;", at = @At("TAIL"), cancellable = true)
 	private void onGetChunk(int x, int z, ChunkStatus requiredStatus, boolean load, CallbackInfoReturnable<Chunk> callback) {
-		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && !storage.inRange(x, z) && CameraController.getCameraStorage().inRange(x, z)) {
+		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && CameraController.getCameraStorage().inRange(x, z)) {
 			Chunk chunk = CameraController.getCameraStorage().getChunk(CameraController.getCameraStorage().getIndex(x, z));
 
 			if (chunk != null && chunk.getPos().x == x && chunk.getPos().z == z)

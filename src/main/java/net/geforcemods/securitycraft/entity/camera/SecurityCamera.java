@@ -33,8 +33,6 @@ public class SecurityCamera extends Entity {
 	private boolean shouldProvideNightVision = false;
 	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
-	private int viewDistance = -1;
-	private boolean loadedChunks = false;
 
 	public SecurityCamera(EntityType<? extends SecurityCamera> type, World world) {
 		super(SCContent.eTypeSecurityCamera.get(), world);
@@ -155,7 +153,7 @@ public class SecurityCamera extends Entity {
 	}
 
 	/**
-	 * @deprecated Prefer calling {@link #discard()}
+	 * @deprecated Prefer calling {@link #remove()}
 	 */
 	@Deprecated
 	public void discardCamera() {
@@ -166,7 +164,7 @@ public class SecurityCamera extends Entity {
 				((SecurityCameraBlockEntity) te).stopViewing();
 
 			SectionPos chunkPos = SectionPos.of(blockPosition());
-			int viewDistance = this.viewDistance <= 0 ? level.getServer().getPlayerList().getViewDistance() : this.viewDistance;
+			int viewDistance = CameraController.getChunkLoadingDistance() <= 0 ? level.getServer().getPlayerList().getViewDistance() : CameraController.getChunkLoadingDistance();
 
 			for (int x = chunkPos.getX() - viewDistance; x <= chunkPos.getX() + viewDistance; x++) {
 				for (int z = chunkPos.getZ() - viewDistance; z <= chunkPos.getZ() + viewDistance; z++) {
@@ -174,15 +172,6 @@ public class SecurityCamera extends Entity {
 				}
 			}
 		}
-	}
-
-	public void setHasLoadedChunks(int initialViewDistance) {
-		loadedChunks = true;
-		viewDistance = initialViewDistance;
-	}
-
-	public boolean hasLoadedChunks() {
-		return loadedChunks;
 	}
 
 	@Override
