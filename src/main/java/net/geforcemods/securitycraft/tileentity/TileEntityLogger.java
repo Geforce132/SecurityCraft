@@ -26,15 +26,16 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 	@Override
 	public void update() {
 		if (!world.isRemote) {
-			if (isDisabled() || cooldown-- > 0)
+			if (isDisabled())
 				return;
 
-			if (world.getRedstonePowerFromNeighbors(pos) > 0) {
+			if (cooldown > 0)
+				cooldown--;
+			else if (world.getRedstonePowerFromNeighbors(pos) > 0) {
 				world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(searchRadius.get()), e -> !e.isSpectator()).forEach(this::addPlayer);
 				syncLoggedPlayersToClient();
+				cooldown = TICKS_BETWEEN_ATTACKS;
 			}
-
-			cooldown = TICKS_BETWEEN_ATTACKS;
 		}
 	}
 
