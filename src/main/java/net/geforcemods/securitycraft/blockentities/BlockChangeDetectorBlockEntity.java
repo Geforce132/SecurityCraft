@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.BlockChangeDetectorBlock;
 import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
@@ -36,6 +37,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private IntOption range = new IntOption(this::getBlockPos, "range", 5, 1, 15, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private DetectionMode mode = DetectionMode.BOTH;
 	private boolean tracked = false;
 	private List<ChangeEntry> entries = new ArrayList<>();
@@ -55,7 +57,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		if (mode != DetectionMode.BOTH && action != mode)
 			return;
 
-		if (isOwnedBy(player) || isAllowed(player))
+		if ((isOwnedBy(player) && ignoresOwner()) || isAllowed(player))
 			return;
 
 		//don't detect self
@@ -152,6 +154,10 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		return disabled.get();
 	}
 
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
+	}
+
 	public List<ChangeEntry> getEntries() {
 		return entries;
 	}
@@ -181,7 +187,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				signalLength, range, disabled
+				signalLength, range, disabled, ignoreOwner
 		};
 	}
 

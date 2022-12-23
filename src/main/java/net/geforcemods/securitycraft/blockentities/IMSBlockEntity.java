@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.entity.IMSBomb;
@@ -26,6 +27,7 @@ import net.minecraft.world.phys.AABB;
 public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	private IntOption range = new IntOption(this::getBlockPos, "range", 15, 1, 30, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
 	/**
@@ -100,7 +102,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 	}
 
 	public boolean canAttackEntity(LivingEntity entity) {
-		return entity != null && (!(entity instanceof Player player) || !isOwnedBy(player) && !player.isCreative() && !player.isSpectator()) //Player checks
+		return entity != null && (!(entity instanceof Player player) || !(isOwnedBy(player) && ignoresOwner()) && !player.isCreative() && !player.isSpectator()) //Player checks
 				&& !(isAllowed(entity)); //checks for all entities
 	}
 
@@ -165,7 +167,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range, disabled
+				range, disabled, ignoreOwner
 		};
 	}
 
@@ -175,6 +177,10 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 
 	public boolean isDisabled() {
 		return disabled.get();
+	}
+
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
 	}
 
 	public static enum IMSTargetingMode {

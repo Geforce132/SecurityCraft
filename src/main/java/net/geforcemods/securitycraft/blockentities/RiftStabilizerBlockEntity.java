@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
@@ -42,6 +43,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	private final IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private final IntOption range = new IntOption(this::getBlockPos, "range", 5, 1, 15, 1, true);
 	private final DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private final Map<TeleportationType, Boolean> teleportationFilter = new EnumMap<>(TeleportationType.class);
 	private double lastTeleportDistance;
 	private TeleportationType lastTeleportationType;
@@ -246,23 +248,15 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	public void onOptionChanged(Option<?> option) {
 		RiftStabilizerBlockEntity connectedBlockEntity = RiftStabilizerBlock.getConnectedBlockEntity(level, worldPosition);
 
-		if (option.getName().equals("signalLength")) {
-			IntOption intOption = (IntOption) option;
-
-			if (connectedBlockEntity != null)
-				connectedBlockEntity.setSignalLength(intOption.get());
-		}
-		else if (option.getName().equals("range")) {
-			IntOption intOption = (IntOption) option;
-
-			if (connectedBlockEntity != null)
-				connectedBlockEntity.setRange(intOption.get());
-		}
-		else if (option.getName().equals("disabled")) {
-			BooleanOption bo = (BooleanOption) option;
-
-			if (connectedBlockEntity != null)
-				connectedBlockEntity.setDisabled(bo.get());
+		if (connectedBlockEntity != null) {
+			if (option.getName().equals("signalLength"))
+				connectedBlockEntity.setSignalLength(((IntOption) option).get());
+			else if (option.getName().equals("range"))
+				connectedBlockEntity.setRange(((IntOption) option).get());
+			else if (option.getName().equals("disabled"))
+				connectedBlockEntity.setDisabled(((BooleanOption) option).get());
+			else if (option.getName().equals("ignoreOwner"))
+				connectedBlockEntity.setIgnoresOwner(((BooleanOption) option).get());
 		}
 
 		super.onOptionChanged(option);
@@ -271,7 +265,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				signalLength, range, disabled
+				signalLength, range, disabled, ignoreOwner
 		};
 	}
 
@@ -323,6 +317,18 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 	public boolean isDisabled() {
 		return disabled.get();
+	}
+
+	public void setIgnoresOwner(boolean ignoresOwner) {
+		if (ignoresOwner() != ignoresOwner) {
+			ignoreOwner.setValue(ignoresOwner);
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
+			setChanged();
+		}
+	}
+
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
 	}
 
 	public enum TeleportationType {

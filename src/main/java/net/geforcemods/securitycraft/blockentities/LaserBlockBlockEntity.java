@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
@@ -35,6 +36,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			setLasersAccordingToDisabledOption();
 		}
 	};
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 
 	public LaserBlockBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), pos, state);
@@ -52,8 +54,12 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		if (action instanceof ILinkedAction.OptionChanged optionChanged) {
 			Option<?> option = optionChanged.option();
 
-			disabled.copy(option);
-			setLasersAccordingToDisabledOption();
+			if (option.getName().equals("disabled")) {
+				disabled.copy(option);
+			    setLasersAccordingToDisabledOption();
+			}
+			else if (option.getName().equals("ignoreOwner"))
+				ignoreOwner.copy(option);
 		}
 		else if (action instanceof ILinkedAction.ModuleInserted moduleInserted) {
 			ItemStack module = moduleInserted.stack();
@@ -192,7 +198,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				disabled
+				disabled, ignoreOwner
 		};
 	}
 
@@ -203,5 +209,9 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 	public boolean isEnabled() {
 		return !disabled.get();
+	}
+
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
 	}
 }
