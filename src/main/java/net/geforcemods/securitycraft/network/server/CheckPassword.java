@@ -50,8 +50,8 @@ public class CheckPassword {
 				if (passwordProtected.isOnCooldown())
 					return;
 				else if (isPasscodeCorrect) {
-					passwordProtected.activate(player);
 					player.closeContainer();
+					passwordProtected.activate(player);
 				}
 				else
 					passwordProtected.onIncorrectPasscodeEntered(player, password);
