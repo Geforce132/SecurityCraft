@@ -66,7 +66,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 			return false;
 		}
 
-		return !state.getValue(KeypadBlock.POWERED);
+		return !state.getValue(KeypadBlock.POWERED) && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override

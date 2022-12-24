@@ -489,7 +489,7 @@ public class SCEventHandler {
 				BlockState state = level.getBlockState(pos);
 
 				if (!codebreakable.shouldAttemptCodebreak(state, player))
-					return false;
+					return true;
 
 				if (stackInHand.is(SCContent.CODEBREAKER.get()))
 					stackInHand.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
@@ -498,9 +498,9 @@ public class SCEventHandler {
 					codebreakable.useCodebreaker(state, player);
 				else
 					PlayerUtils.sendMessageToPlayer(player, new TranslatableComponent(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
-
-				return true;
 			}
+
+			return true;
 		}
 
 		return false;

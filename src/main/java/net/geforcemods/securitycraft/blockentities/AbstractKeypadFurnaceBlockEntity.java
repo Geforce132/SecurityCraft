@@ -219,7 +219,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 			return false;
 		}
 
-		return true;
+		return IPasswordProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override
