@@ -21,6 +21,7 @@
 - Fix: The Redstone Module in a Laser Block does not respect ownership
 - Fix: Disabled option in laser blocks does not work properly
 - Fix: The Username Logger sometimes cannot be activated by a short redstone signal
+- Fix: The Codebreaker sometimes loses durability when rightclicking a block even though no codebreaking attempt has been made
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
