@@ -499,11 +499,11 @@ public class SCEventHandler {
 				ItemStack stackInHand = player.getItemInHand(event.getHand());
 				BlockState state = world.getBlockState(pos);
 
-				if (stackInHand.getItem() == SCContent.CODEBREAKER.get())
-					stackInHand.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
-
 				if (!codebreakable.shouldAttemptCodebreak(state, player))
 					return false;
+
+				if (stackInHand.getItem() == SCContent.CODEBREAKER.get())
+					stackInHand.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
 
 				if (player.isCreative() || new Random().nextDouble() < chance)
 					codebreakable.useCodebreaker(state, player);

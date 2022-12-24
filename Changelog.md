@@ -22,6 +22,7 @@
 - Fix: When viewing a camera that is far away, entities around the camera don't load
 - Fix: Several instances of chunks not loading correctly when changing the view distance while viewing a camera
 - Fix: The Username Logger sometimes cannot be activated by a short redstone signal
+- Fix: The Codebreaker sometimes loses durability when rightclicking a block even though no codebreaking attempt has been made
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
