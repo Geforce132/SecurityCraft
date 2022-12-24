@@ -186,8 +186,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
-		addOrRemoveModuleFromAttached(stack, true, toggled);
 		IModuleInventory.super.onModuleRemoved(stack, module, toggled);
+		addOrRemoveModuleFromAttached(stack, true, toggled);
 	}
 
 	@Override
