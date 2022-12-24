@@ -80,7 +80,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 			return false;
 		}
 
-		return !state.getValue(KeyPanelBlock.POWERED);
+		return !state.getValue(KeyPanelBlock.POWERED) && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override

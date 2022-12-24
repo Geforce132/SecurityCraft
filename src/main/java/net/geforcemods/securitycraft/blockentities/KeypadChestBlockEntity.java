@@ -165,14 +165,9 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 	}
 
 	@Override
-	public void openPasswordGUI(World level, BlockPos pos, IOwnable ownable, PlayerEntity player) {
+	public void openPasswordGUI(World level, BlockPos pos, PlayerEntity player) {
 		if (!level.isClientSide && !isBlocked())
-			IPasswordProtected.super.openPasswordGUI(level, worldPosition, ownable, player);
-	}
-
-	@Override
-	public boolean shouldAttemptCodebreak(BlockState state, PlayerEntity player) {
-		return true;
+			IPasswordProtected.super.openPasswordGUI(level, pos, player);
 	}
 
 	@Override

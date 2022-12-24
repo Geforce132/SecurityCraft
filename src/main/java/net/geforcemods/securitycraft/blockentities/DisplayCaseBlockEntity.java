@@ -70,7 +70,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 			return false;
 		}
 
-		return !isOpen();
+		return !isOpen() && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override

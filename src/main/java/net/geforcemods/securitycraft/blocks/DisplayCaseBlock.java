@@ -156,18 +156,20 @@ public class DisplayCaseBlock extends OwnableBlock implements IWaterLoggable {
 				else {
 					if (be.isDisabled())
 						player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-					else if (be.isDenied(player)) {
-						if (be.sendsMessages())
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-					}
-					else if (be.isAllowed(player)) {
-						if (be.sendsMessages())
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+					else if (be.verifyPasswordSet(level, pos, be, player)) {
+						if (be.isDenied(player)) {
+							if (be.sendsMessages())
+								PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+						}
+						else if (be.isAllowed(player)) {
+							if (be.sendsMessages())
+								PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-						activate(be);
+							activate(be);
+						}
+						else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
+							be.openPasswordGUI(level, pos, player);
 					}
-					else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-						be.openPasswordGUI(level, pos, be, player);
 				}
 			}
 		}

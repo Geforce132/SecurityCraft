@@ -50,18 +50,20 @@ public class KeypadBlock extends DisguisableBlock {
 
 			if (te.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (te.isDenied(player)) {
-				if (te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-			}
-			else if (te.isAllowed(player)) {
-				if (te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+			else if (te.verifyPasswordSet(world, pos, te, player)) {
+				if (te.isDenied(player)) {
+					if (te.sendsMessages())
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+				}
+				else if (te.isAllowed(player)) {
+					if (te.sendsMessages())
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-				activate(state, world, pos, te.getSignalLength());
+					activate(state, world, pos, te.getSignalLength());
+				}
+				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
+					te.openPasswordGUI(world, pos, player);
 			}
-			else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-				te.openPasswordGUI(world, pos, te, player);
 		}
 
 		return ActionResultType.SUCCESS;

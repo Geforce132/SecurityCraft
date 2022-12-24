@@ -49,7 +49,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 			return false;
 		}
 
-		return !state.getValue(DoorBlock.POWERED);
+		return !state.getValue(DoorBlock.POWERED) && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override

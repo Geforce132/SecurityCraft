@@ -92,18 +92,20 @@ public class KeypadChestBlock extends ChestBlock {
 		if (!world.isClientSide && !isBlocked(world, pos)) {
 			KeypadChestBlockEntity te = (KeypadChestBlockEntity) world.getBlockEntity(pos);
 
-			if (te.isDenied(player)) {
-				if (te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-			}
-			else if (te.isAllowed(player)) {
-				if (te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+			if (te.verifyPasswordSet(world, pos, te, player)) {
+				if (te.isDenied(player)) {
+					if (te.sendsMessages())
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+				}
+				else if (te.isAllowed(player)) {
+					if (te.sendsMessages())
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-				activate(state, world, pos, player);
+					activate(state, world, pos, player);
+				}
+				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
+					te.openPasswordGUI(world, pos, player);
 			}
-			else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-				te.openPasswordGUI(world, pos, te, player);
 		}
 
 		return ActionResultType.SUCCESS;
