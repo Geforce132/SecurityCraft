@@ -2,11 +2,10 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
@@ -92,20 +91,20 @@ public class BlockLaserField extends BlockOwnable implements IOverlayDisplay {
 					if (block == SCContent.laserBlock) {
 						TileEntity te = world.getTileEntity(offsetPos);
 
-						if (te instanceof IModuleInventory) {
-							IModuleInventory moduleInv = (IModuleInventory) te;
+						if (te instanceof TileEntityLaserBlock) {
+							TileEntityLaserBlock laser = (TileEntityLaserBlock) te;
 
-							if (moduleInv.isAllowed(entity))
+							if (laser.isAllowed(entity))
 								return;
 
-							if (moduleInv.isModuleEnabled(EnumModuleType.REDSTONE) && !offsetState.getValue(BlockLaserBlock.POWERED)) {
-								world.setBlockState(offsetPos, offsetState.withProperty(BlockLaserBlock.POWERED, true));
-								BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.laserBlock);
-								world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
-							}
+							if (!(entity instanceof EntityPlayer && laser.isOwnedBy((EntityPlayer) entity) && laser.ignoresOwner())) {
+								if (laser.isModuleEnabled(EnumModuleType.REDSTONE) && !offsetState.getValue(BlockLaserBlock.POWERED)) {
+									world.setBlockState(offsetPos, offsetState.withProperty(BlockLaserBlock.POWERED, true));
+									BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.laserBlock);
+									world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
+								}
 
-							if (moduleInv.isModuleEnabled(EnumModuleType.HARMING)) {
-								if (!(entity instanceof EntityPlayer && ((IOwnable) moduleInv).isOwnedBy((EntityPlayer) entity)))
+								if (laser.isModuleEnabled(EnumModuleType.HARMING))
 									((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.LASER, (float) ConfigHandler.laserDamage);
 							}
 						}

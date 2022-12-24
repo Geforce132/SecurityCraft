@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockBlockChangeDetector;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -32,6 +33,7 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private OptionInt range = new OptionInt(this::getPos, "range", 5, 1, 15, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private EnumDetectionMode mode = EnumDetectionMode.BOTH;
 	private boolean tracked = false;
 	private List<ChangeEntry> entries = new ArrayList<>();
@@ -47,7 +49,7 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 		if (mode != EnumDetectionMode.BOTH && action != mode)
 			return;
 
-		if (isOwnedBy(player) || isAllowed(player))
+		if ((isOwnedBy(player) && ignoresOwner()) || isAllowed(player))
 			return;
 
 		BlockPos thisPos = getPos();
@@ -154,6 +156,10 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 		return disabled.get();
 	}
 
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
+	}
+
 	public List<ChangeEntry> getFilteredEntries() {
 		return filteredEntries;
 	}
@@ -189,7 +195,7 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				signalLength, range, disabled
+				signalLength, range, disabled, ignoreOwner
 		};
 	}
 

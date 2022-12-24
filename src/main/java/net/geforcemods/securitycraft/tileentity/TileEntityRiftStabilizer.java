@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockRiftStabilizer;
@@ -43,6 +44,7 @@ public class TileEntityRiftStabilizer extends TileEntityDisguisable implements I
 	private final OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private final OptionInt range = new OptionInt(this::getPos, "range", 5, 1, 15, 1, true);
 	private final DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private final Map<TeleportationType, Boolean> teleportationFilter = new EnumMap<>(TeleportationType.class);
 	private double lastTeleportDistance;
 	private TeleportationType lastTeleportationType;
@@ -235,23 +237,15 @@ public class TileEntityRiftStabilizer extends TileEntityDisguisable implements I
 	public void onOptionChanged(Option<?> option) {
 		TileEntityRiftStabilizer connectedTileEntity = BlockRiftStabilizer.getConnectedTileEntity(world, pos);
 
-		if (option.getName().equals("signalLength")) {
-			OptionInt intOption = (OptionInt) option;
-
-			if (connectedTileEntity != null)
-				connectedTileEntity.setSignalLength(intOption.get());
-		}
-		else if (option.getName().equals("range")) {
-			OptionInt intOption = (OptionInt) option;
-
-			if (connectedTileEntity != null)
-				connectedTileEntity.setRange(intOption.get());
-		}
-		else if (option.getName().equals("disabled")) {
-			OptionBoolean bo = (OptionBoolean) option;
-
-			if (connectedTileEntity != null)
-				connectedTileEntity.setDisabled(bo.get());
+		if (connectedTileEntity != null) {
+			if (option.getName().equals("signalLength"))
+				connectedTileEntity.setSignalLength(((OptionInt) option).get());
+			else if (option.getName().equals("range"))
+				connectedTileEntity.setRange(((OptionInt) option).get());
+			else if (option.getName().equals("disabled"))
+				connectedTileEntity.setDisabled(((OptionBoolean) option).get());
+			else if (option.getName().equals("ignoreOwner"))
+				connectedTileEntity.setIgnoresOwner(((OptionBoolean) option).get());
 		}
 
 		super.onOptionChanged(option);
@@ -315,6 +309,20 @@ public class TileEntityRiftStabilizer extends TileEntityDisguisable implements I
 
 	public boolean isDisabled() {
 		return disabled.get();
+	}
+
+	public void setIgnoresOwner(boolean ignoresOwner) {
+		if (ignoresOwner() != ignoresOwner) {
+			IBlockState state = world.getBlockState(pos);
+
+			ignoreOwner.setValue(ignoresOwner);
+			world.notifyBlockUpdate(pos, state, state, 3); //sync option change to client
+			markDirty();
+		}
+	}
+
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
 	}
 
 	public enum TeleportationType {

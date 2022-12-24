@@ -885,6 +885,8 @@ config.securitycraft:trickScannersWithPlayerHeads.tooltip=Setze diese Option auf
 
 option.generic.disabled=Deaktiviert: #
 option.generic.disabled.description=Soll dieser Block deaktiviert werden, sodass er bis zum Reaktivieren nicht mehr funktioniert?
+option.generic.ignoreOwner=Besitzer ignorieren: #
+option.generic.ignoreOwner.description=Soll dieser Block seinen Besitzer ignorieren? Dies führt dazu, dass jedwede Funktionalität des Blocks nicht für seinen Besitzer funktioniert.
 option.securitycraft:portableRadar.searchRadius=Suchradius: #
 option.securitycraft:portableRadar.searchRadius.description=Der Radius, in dem der Radar sucht.
 option.securitycraft:portableRadar.searchDelay=Suchintervall: # Sek.

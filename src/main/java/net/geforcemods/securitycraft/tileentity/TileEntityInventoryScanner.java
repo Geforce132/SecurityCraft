@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScannerField;
@@ -37,6 +38,7 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	private OptionBoolean horizontal = new OptionBoolean("horizontal", false);
 	private OptionBoolean solidifyField = new OptionBoolean("solidifyField", false);
 	private DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private IItemHandler storageHandler;
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
@@ -329,19 +331,22 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockInventoryScanner.HORIZONTAL, bo.get()));
 		}
 		else if (option.getName().equals("solidifyField")) {
-			OptionBoolean bo = (OptionBoolean) option;
 			TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
 			if (connectedScanner != null)
-				connectedScanner.setSolidifyField(bo.get());
+				connectedScanner.setSolidifyField(((OptionBoolean) option).get());
 		}
 		else if (option.getName().equals("disabled")) {
-			OptionBoolean bo = (OptionBoolean) option;
-
-			if (!bo.get())
+			if (!((OptionBoolean) option).get())
 				BlockInventoryScanner.checkAndPlaceAppropriately(world, pos, null, true);
 			else
 				modifyFields((offsetPos, state) -> world.destroyBlock(offsetPos, false), connectedScanner -> connectedScanner.setDisabled(true));
+		}
+		else if (option.getName().equals("ignoreOwner")) {
+			TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
+
+			if (connectedScanner != null)
+				connectedScanner.setIgnoresOwner(((OptionBoolean) option).get());
 		}
 	}
 
@@ -406,10 +411,24 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 		}
 	}
 
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
+	}
+
+	public void setIgnoresOwner(boolean ignoresOwner) {
+		if (ignoresOwner() != ignoresOwner) {
+			IBlockState state = world.getBlockState(pos);
+
+			ignoreOwner.setValue(ignoresOwner);
+			world.notifyBlockUpdate(pos, state, state, 3); //sync option change to client
+			markDirty();
+		}
+	}
+
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				horizontal, solidifyField, disabled
+				horizontal, solidifyField, disabled, ignoreOwner
 		};
 	}
 

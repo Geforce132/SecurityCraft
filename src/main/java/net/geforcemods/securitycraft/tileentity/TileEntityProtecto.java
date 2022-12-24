@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
 import net.geforcemods.securitycraft.entity.ai.EntitySentry;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -23,6 +24,7 @@ public class TileEntityProtecto extends TileEntityDisguisable implements ITickab
 	private int cooldown = 0;
 	private int ticksBetweenAttacks = isModuleEnabled(EnumModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
 	private DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 
 	@Override
 	public void update() {
@@ -45,7 +47,7 @@ public class TileEntityProtecto extends TileEntityDisguisable implements ITickab
 						if (entity instanceof EntityPlayer) {
 							EntityPlayer player = (EntityPlayer) entity;
 
-							if (player.isCreative() || player.isSpectator() || isOwnedBy(player) || isAllowed(entity))
+							if (player.isCreative() || player.isSpectator() || (isOwnedBy(player) && ignoresOwner()) || isAllowed(entity))
 								continue;
 						}
 
@@ -91,11 +93,15 @@ public class TileEntityProtecto extends TileEntityDisguisable implements ITickab
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				disabled
+				disabled, ignoreOwner
 		};
 	}
 
 	public boolean isDisabled() {
 		return disabled.get();
+	}
+
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
 	}
 }

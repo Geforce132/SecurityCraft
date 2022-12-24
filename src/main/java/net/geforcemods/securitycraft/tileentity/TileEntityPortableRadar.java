@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
@@ -27,6 +28,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 	private OptionInt searchDelayOption = new OptionInt(this::getPos, "searchDelay", 4, 4, 10, 1, true);
 	private OptionBoolean repeatMessageOption = new OptionBoolean("repeatMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private boolean shouldSendNewMessage = true;
 	private String lastPlayerName = "";
 	private int ticksUntilNextSearch = getSearchDelay();
@@ -38,14 +40,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 
 			EntityPlayerMP owner = world.getMinecraftServer().getPlayerList().getPlayerByUsername(getOwner().getName());
 			AxisAlignedBB area = new AxisAlignedBB(pos).grow(getSearchRadius(), getSearchRadius(), getSearchRadius());
-			List<EntityPlayer> entities = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> {
-				boolean isNotAllowed = true;
-
-				if (isModuleEnabled(EnumModuleType.ALLOWLIST))
-					isNotAllowed = !isAllowed(e);
-
-				return !isOwnedBy(e) && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
-			});
+			List<EntityPlayer> entities = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && !e.isSpectator() && !EntityUtils.isInvisible(e));
 
 			if (isModuleEnabled(EnumModuleType.REDSTONE)) {
 				BlockPortableRadar.togglePowerOutput(world, pos, !entities.isEmpty());
@@ -104,7 +99,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 
 		boolean lastPlayerOwns = ConfigHandler.enableTeamOwnership ? PlayerUtils.areOnSameTeam(lastPlayerName, getOwner().getName()) : lastPlayerName.equals(getOwner().getName());
 
-		return (shouldSendNewMessage || repeatMessageOption.get()) && !lastPlayerOwns;
+		return (shouldSendNewMessage || repeatMessageOption.get()) && !(lastPlayerOwns && ignoresOwner());
 	}
 
 	public void setSentMessage() {
@@ -119,6 +114,10 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 		return searchDelayOption.get() * 20;
 	}
 
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
+	}
+
 	@Override
 	public EnumModuleType[] acceptedModules() {
 		return new EnumModuleType[] {
@@ -129,7 +128,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				searchRadiusOption, searchDelayOption, repeatMessageOption, disabled
+				searchRadiusOption, searchDelayOption, repeatMessageOption, disabled, ignoreOwner
 		};
 	}
 }

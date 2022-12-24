@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
@@ -30,6 +31,7 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 			setLasersAccordingToDisabledOption();
 		}
 	};
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 
 	private void setLasersAccordingToDisabledOption() {
 		Block block = world.getBlockState(pos).getBlock();
@@ -48,8 +50,12 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 		if (action instanceof ILinkedAction.OptionChanged) {
 			Option<?> option = ((ILinkedAction.OptionChanged) action).option;
 
-			disabled.copy(option);
-			setLasersAccordingToDisabledOption();
+			if (option.getName().equals("disabled")) {
+				disabled.copy(option);
+				setLasersAccordingToDisabledOption();
+			}
+			else if (option.getName().equals("ignoreOwner"))
+				ignoreOwner.copy(option);
 		}
 		else if (action instanceof ILinkedAction.ModuleInserted) {
 			ILinkedAction.ModuleInserted moduleInserted = (ILinkedAction.ModuleInserted) action;
@@ -164,11 +170,15 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				disabled
+				disabled, ignoreOwner
 		};
 	}
 
 	public boolean isEnabled() {
 		return !disabled.get();
+	}
+
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
 	}
 }

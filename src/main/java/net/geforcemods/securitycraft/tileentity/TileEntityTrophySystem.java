@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.entity.ai.EntityBullet;
@@ -59,6 +60,7 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 	public int cooldown = getCooldownTime();
 	private final Random random = new Random();
 	private DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 
 	public TileEntityTrophySystem() {
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
@@ -101,7 +103,7 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 						String name = shooter instanceof EntitySentry ? ((EntitySentry) shooter).getOwner().getName() : shooter.getName();
 
 						//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-						if (!((ConfigHandler.enableTeamOwnership && PlayerUtils.areOnSameTeam(shooter.getName(), getOwner().getName())) || (uuid != null && uuid.toString().equals(getOwner().getUUID())) || isAllowed(name)))
+						if (!((ConfigHandler.enableTeamOwnership && PlayerUtils.areOnSameTeam(shooter.getName(), getOwner().getName())) || (ignoresOwner() && (uuid != null && uuid.toString().equals(getOwner().getUUID()))) || isAllowed(name)))
 							setTarget(target);
 					}
 				}
@@ -292,6 +294,10 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 		return disabled.get();
 	}
 
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
+	}
+
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
 		super.onModuleRemoved(stack, module, toggled);
@@ -313,7 +319,7 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				disabled
+				disabled, ignoreOwner
 		};
 	}
 

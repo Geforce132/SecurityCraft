@@ -139,7 +139,7 @@ public class BlockInventoryScannerField extends BlockOwnable implements IOverlay
 		boolean hasStorageModule = allowInteraction && te.isModuleEnabled(EnumModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && te.isModuleEnabled(EnumModuleType.REDSTONE);
 
-		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || te.isOwnedBy(player))
+		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || (te.isOwnedBy(player) && te.ignoresOwner()))
 			return false;
 
 		return loopInventory(player.inventory.mainInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.offHandInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);

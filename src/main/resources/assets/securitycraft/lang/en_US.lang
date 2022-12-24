@@ -887,6 +887,8 @@ config.securitycraft:trickScannersWithPlayerHeads.tooltip=Set this to true if yo
 
 option.generic.disabled=Disabled: #
 option.generic.disabled.description=Should this block be disabled, making it no longer work until it is enabled again?
+option.generic.ignoreOwner=Ignore Owner: #
+option.generic.ignoreOwner.description=Should this block ignore its owner, meaning any functionality it has will not work for the owner?
 option.securitycraft:portableRadar.searchRadius=Search radius: #
 option.securitycraft:portableRadar.searchRadius.description=The radius the radar searches in.
 option.securitycraft:portableRadar.searchDelay=Search delay: # sec.

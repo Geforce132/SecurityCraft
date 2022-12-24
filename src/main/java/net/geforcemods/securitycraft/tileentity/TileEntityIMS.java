@@ -5,6 +5,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
@@ -25,6 +26,7 @@ import net.minecraft.util.math.BlockPos;
 public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 	private OptionInt range = new OptionInt(this::getPos, "range", 15, 1, 30, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
 	/**
@@ -87,7 +89,7 @@ public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 	}
 
 	public boolean canAttackEntity(EntityLivingBase entity) {
-		return entity != null && (!(entity instanceof EntityPlayer) || !isOwnedBy((EntityPlayer) entity) && !((EntityPlayer) entity).isCreative() && !((EntityPlayer) entity).isSpectator()) //PlayerEntity checks
+		return entity != null && (!(entity instanceof EntityPlayer) || !(isOwnedBy((EntityPlayer) entity) && ignoresOwner()) && !((EntityPlayer) entity).isCreative() && !((EntityPlayer) entity).isSpectator()) //PlayerEntity checks
 				&& !isAllowed(entity); //checks for all entities
 	}
 
@@ -152,7 +154,7 @@ public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range, disabled
+				range, disabled, ignoreOwner
 		};
 	}
 
@@ -162,6 +164,10 @@ public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 
 	public boolean isDisabled() {
 		return disabled.get();
+	}
+
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
 	}
 
 	public static enum EnumIMSTargetingMode {

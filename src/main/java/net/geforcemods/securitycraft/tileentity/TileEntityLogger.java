@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
@@ -18,6 +19,7 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
 	private OptionInt searchRadius = new OptionInt(this::getPos, "searchRadius", 3, 1, 20, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	public String[] players = new String[100];
 	public String[] uuids = new String[100];
 	public long[] timestamps = new long[100];
@@ -43,7 +45,7 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 		String playerName = player.getName();
 		long timestamp = System.currentTimeMillis();
 
-		if (!isOwnedBy(player) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp)) {
+		if (!(isOwnedBy(player) && ignoresOwner()) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp)) {
 			//ignore players on the allowlist
 			if (isAllowed(player))
 				return;
@@ -109,11 +111,15 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				searchRadius, disabled
+				searchRadius, disabled, ignoreOwner
 		};
 	}
 
 	public boolean isDisabled() {
 		return disabled.get();
+	}
+
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
 	}
 }

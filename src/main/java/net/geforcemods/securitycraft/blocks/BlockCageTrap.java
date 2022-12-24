@@ -66,31 +66,31 @@ public class BlockCageTrap extends BlockDisguisable {
 		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile instanceof TileEntityCageTrap) {
-			TileEntityCageTrap te = (TileEntityCageTrap) tile;
+			TileEntityCageTrap cageTrap = (TileEntityCageTrap) tile;
 
-			if (te.isDisabled()) {
-				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
+			if (cageTrap.isDisabled()) {
+				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, cageTrap);
 				return;
 			}
 
-			if (entity instanceof EntityPlayer && (te.isOwnedBy((EntityPlayer) entity) || te.isAllowed(entity)))
-				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
+			if (entity instanceof EntityPlayer && ((cageTrap.isOwnedBy((EntityPlayer) entity) && cageTrap.ignoresOwner()) || cageTrap.isAllowed(entity)))
+				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, cageTrap);
 
 			if (entity instanceof EntityLiving && !state.getValue(DEACTIVATED)) {
-				if (te.capturesMobs())
+				if (cageTrap.capturesMobs())
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
 				else
-					addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
+					addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, cageTrap);
 
 				return;
 			}
 			else if (entity instanceof EntityItem) {
-				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
+				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, cageTrap);
 				return;
 			}
 
 			if (state.getValue(DEACTIVATED))
-				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
+				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, cageTrap);
 			else
 				addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
 		}
@@ -115,19 +115,19 @@ public class BlockCageTrap extends BlockDisguisable {
 			if (state.getValue(DEACTIVATED))
 				return;
 
-			TileEntityCageTrap tileEntity = (TileEntityCageTrap) world.getTileEntity(pos);
+			TileEntityCageTrap cageTrap = (TileEntityCageTrap) world.getTileEntity(pos);
 			boolean isPlayer = entity instanceof EntityPlayer;
 
-			if (isPlayer || (entity instanceof EntityMob && tileEntity.capturesMobs())) {
+			if (isPlayer || (entity instanceof EntityMob && cageTrap.capturesMobs())) {
 				if (!state.getBoundingBox(world, pos).offset(pos).intersects(entity.getEntityBoundingBox()))
 					return;
 
-				if ((isPlayer && tileEntity.isOwnedBy((EntityPlayer) entity)))
+				if ((isPlayer && cageTrap.isOwnedBy((EntityPlayer) entity)) && cageTrap.ignoresOwner())
 					return;
 
 				BlockPos topMiddle = pos.up(4);
-				String ownerName = tileEntity.getOwner().getName();
-				BlockModifier placer = new BlockModifier(world, new MutableBlockPos(pos), tileEntity.getOwner());
+				String ownerName = cageTrap.getOwner().getName();
+				BlockModifier placer = new BlockModifier(world, new MutableBlockPos(pos), cageTrap.getOwner());
 
 				placer.loop((w, p, o) -> {
 					if (w.isAirBlock(p)) {
