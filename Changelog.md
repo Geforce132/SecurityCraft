@@ -26,6 +26,7 @@
 - Fix: Disabled option in laser blocks does not work properly
 - Fix: Several instances of chunks not loading correctly when changing the view distance while viewing a camera
 - Fix: The Username Logger sometimes cannot be activated by a short redstone signal
+- Fix: The Codebreaker sometimes loses durability when rightclicking a block even though no codebreaking attempt has been made
 - Misc.: The minimum required Forge version is now 44.0.11
 
 --------------------------Changelog for v1.9.4-beta1 of SecurityCraft--------------------------
