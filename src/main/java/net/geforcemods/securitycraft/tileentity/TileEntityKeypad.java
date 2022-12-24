@@ -54,7 +54,7 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 
 	@Override
 	public boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
-		return !state.getValue(BlockKeypad.POWERED);
+		return !state.getValue(BlockKeypad.POWERED) && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override

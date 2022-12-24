@@ -134,14 +134,9 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	}
 
 	@Override
-	public void openPasswordGUI(World world, BlockPos pos, IOwnable ownable, EntityPlayer player) {
+	public void openPasswordGUI(World world, BlockPos pos, EntityPlayer player) {
 		if (!world.isRemote && !isBlocked())
-			IPasswordProtected.super.openPasswordGUI(world, pos, ownable, player);
-	}
-
-	@Override
-	public boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
-		return true;
+			IPasswordProtected.super.openPasswordGUI(world, pos, player);
 	}
 
 	@Override

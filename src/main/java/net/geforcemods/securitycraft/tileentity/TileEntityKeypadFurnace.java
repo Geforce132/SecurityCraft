@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -448,11 +447,6 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	public void activate(EntityPlayer player) {
 		if (!world.isRemote)
 			((BlockKeypadFurnace) getBlockType()).activate(world.getBlockState(pos), world, pos, player);
-	}
-
-	@Override
-	public boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
-		return true;
 	}
 
 	@Override

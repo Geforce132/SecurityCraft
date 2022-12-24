@@ -120,9 +120,7 @@ public class GuiSetPassword extends GuiContainer implements GuiResponder {
 		if (button.id == saveAndContinueButton.id) {
 			((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getText());
 			SecurityCraft.network.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
-
 			Minecraft.getMinecraft().player.closeScreen();
-			Minecraft.getMinecraft().player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, tileEntity.getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ());
 		}
 	}
 

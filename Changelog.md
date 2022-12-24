@@ -5,9 +5,12 @@
 - New: The damage dealt by a Laser Block containing a Harming Module can now be changed with a config setting
 - New: More modded wooden chests can now be converted to a Password-protected Chest
 - New: Ignore owner option for blocks like the Inventory Scanner or Block Change Detector
+- Change: Password-protected blocks can now only be activated if a password has been set, even if the player activating the block is on the allowlist
 - API: Changed IPasswordConvertible#getOriginalBlock to IPasswordConvertible#isValidStateForConversion for finer control over what can be converted
 - API: New methods IModuleInventory#isAllowed and IModuleInventory#isDenied to check whether an entity is listed on an allowlist or denylist module respectively
 - API: Moved and renamed Owner#isOwner methods to IPasswordProtected#isOwnedBy
+- API: New method IPasswordProtected#verifyPasswordSet which returns whether a password has been set for this IPasswordProtected
+- API: Removed the IOwnable parameter from IPasswordProtected#setPasswordGUI because the relevant code has been moved to IPasswordProtected#verifyPasswordSet
 - Fix: The Reinforced Grass Block doesn't have a reinforced tint
 - Fix: The One Probe doesn't display some of SecurityCraft's blocks correctly
 - Fix: Potential startup crash in combination with other mods

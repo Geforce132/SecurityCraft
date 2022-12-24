@@ -182,18 +182,20 @@ public class BlockDisplayCase extends BlockOwnable {
 				else {
 					if (be.isDisabled())
 						player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-					else if (be.isDenied(player)) {
-						if (be.sendsMessages())
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-					}
-					else if (be.isAllowed(player)) {
-						if (be.sendsMessages())
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+					else if (be.verifyPasswordSet(world, pos, be, player)) {
+						if (be.isDenied(player)) {
+							if (be.sendsMessages())
+								PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+						}
+						else if (be.isAllowed(player)) {
+							if (be.sendsMessages())
+								PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-						activate(be);
+							activate(be);
+						}
+						else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
+							be.openPasswordGUI(world, pos, player);
 					}
-					else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
-						be.openPasswordGUI(world, pos, be, player);
 				}
 			}
 		}

@@ -115,20 +115,22 @@ public class BlockKeypadChest extends BlockOwnable {
 		if (!world.isRemote) {
 			TileEntityKeypadChest te = (TileEntityKeypadChest) world.getTileEntity(pos);
 
-			if (te.isDenied(player)) {
-				if (te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+			if (te.verifyPasswordSet(world, pos, te, player)) {
+				if (te.isDenied(player)) {
+					if (te.sendsMessages())
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 
-				return true;
-			}
-			else if (te.isAllowed(player)) {
-				if (te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+					return true;
+				}
+				else if (te.isAllowed(player)) {
+					if (te.sendsMessages())
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-				activate(world, pos, player);
+					activate(world, pos, player);
+				}
+				else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
+					te.openPasswordGUI(world, pos, player);
 			}
-			else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
-				te.openPasswordGUI(world, pos, te, player);
 		}
 
 		return true;

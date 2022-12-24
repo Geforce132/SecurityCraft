@@ -60,7 +60,7 @@ public class TileEntityDisplayCase extends CustomizableSCTE implements ITickable
 
 	@Override
 	public boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
-		return !isOpen();
+		return !isOpen() && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override

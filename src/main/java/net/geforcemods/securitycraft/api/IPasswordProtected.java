@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.gui.GuiCheckPassword;
 import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.gui.GuiSetPassword;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
@@ -13,31 +15,57 @@ import net.minecraft.world.World;
 
 /**
  * Implementing this interface designates a block entity as being password-protected. Implementing this allows you to use
- * {@link SetPasswordScreen} and {@link CheckPasswordScreen} to easily set your block's password. Extends
+ * {@link GuiSetPassword} and {@link GuiCheckPassword} to easily set your block's password. Extends
  * {@link ICodebreakable} as most password-protected blocks are likely able to be hacked using the Codebreaker by default.
  *
  * @author Geforce
  */
 public interface IPasswordProtected extends ICodebreakable {
 	/**
-	 * Open the correct password GUI depending on if a password is already set or not. <p>
+	 * Open the check password GUI if a password is set. <p>
+	 *
+	 * @param world The level of this block entity
+	 * @param pos The position of this block entity
+	 * @param player The player who the GUI should be opened to.
+	 */
+	public default void openPasswordGUI(World world, BlockPos pos, EntityPlayer player) {
+		if (!world.isRemote) {
+			if (getPassword() != null)
+				player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
+		}
+	}
+
+	/**
+	 * Check that a password has been set, and if not, opens the set password GUI or sends a warning message. <p>
 	 *
 	 * @param world The level of this block entity
 	 * @param pos The position of this block entity
 	 * @param ownable This block entity
-	 * @param player The player who the GUI should be opened to.
+	 * @param player The player who interacted with this block entity
+	 * @return true if a password has been set, false otherwise
 	 */
-	public default void openPasswordGUI(World world, BlockPos pos, IOwnable ownable, EntityPlayer player) {
+	default boolean verifyPasswordSet(World world, BlockPos pos, IOwnable ownable, EntityPlayer player) {
 		if (!world.isRemote) {
 			if (getPassword() != null)
-				player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
-			else {
-				if (ownable.isOwnedBy(player))
-					player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
-				else
-					PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
-			}
+				return true;
+
+			if (ownable.isOwnedBy(player))
+				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
+			else
+				PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
 		}
+
+		return false;
+	}
+
+	@Override
+	default boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
+		if (getPassword() == null) {
+			PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override

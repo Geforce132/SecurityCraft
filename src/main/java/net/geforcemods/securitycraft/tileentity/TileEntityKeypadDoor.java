@@ -48,7 +48,7 @@ public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPass
 
 	@Override
 	public boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
-		return !state.getValue(BlockKeypad.POWERED);
+		return !state.getValue(BlockKeypad.POWERED) && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override

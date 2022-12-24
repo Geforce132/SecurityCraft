@@ -68,7 +68,7 @@ public class TileEntityKeyPanel extends CustomizableSCTE implements IPasswordPro
 
 	@Override
 	public boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
-		return !state.getValue(BlockKeyPanel.POWERED);
+		return !state.getValue(BlockKeyPanel.POWERED) && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override
