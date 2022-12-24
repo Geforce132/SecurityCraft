@@ -68,8 +68,17 @@ public class CheckPasswordScreen extends Screen {
 		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 30, 20, 20, Component.literal("0"), b -> addNumberToString(0)));
 		addRenderableWidget(new ExtendedButton(width / 2 + 17, height / 2 + 30, 20, 20, Component.literal("✔"), b -> checkCode(currentString)));
 
-		//TODO: fix it still being possible to enter stuff in the editbox when it's not active
-		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 62, 77, 12, Component.empty()));
+		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 62, 77, 12, Component.empty()) {
+			@Override
+			public boolean mouseClicked(double mouseX, double mouseY, int button) {
+				return active && super.mouseClicked(mouseX, mouseY, button);
+			}
+
+			@Override
+			public boolean canConsumeInput() {
+				return active && super.canConsumeInput();
+			}
+		});
 		keycodeTextbox.setMaxLength(MAX_CHARS);
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*\\**")); //allow any amount of numbers and any amount of asterisks
 
@@ -112,13 +121,16 @@ public class CheckPasswordScreen extends Screen {
 		if (isBackspace || !super.keyPressed(keyCode, scanCode, modifiers)) {
 			if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode)))
 				onClose();
-			else if (isBackspace && currentString.length() > 0) {
-				Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
-				removeLastCharacter();
-			}
-			else if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
-				Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
-				checkCode(currentString);
+
+			if (!be.isOnCooldown()) {
+				if (isBackspace && currentString.length() > 0) {
+					Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
+					removeLastCharacter();
+				}
+				else if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
+					Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
+					checkCode(currentString);
+				}
 			}
 		}
 
@@ -132,7 +144,7 @@ public class CheckPasswordScreen extends Screen {
 
 	@Override
 	public boolean charTyped(char typedChar, int keyCode) {
-		if (isValidChar(typedChar) && currentString.length() < MAX_CHARS) {
+		if (!be.isOnCooldown() && isValidChar(typedChar) && currentString.length() < MAX_CHARS) {
 			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
 			currentString += typedChar;
 			setTextboxCensoredText(keycodeTextbox, currentString);
@@ -181,6 +193,7 @@ public class CheckPasswordScreen extends Screen {
 			if (listener instanceof AbstractWidget widget)
 				widget.active = setActive;
 		});
+		keycodeTextbox.setFocus(!setActive);
 	}
 
 	public void checkCode(String code) {
