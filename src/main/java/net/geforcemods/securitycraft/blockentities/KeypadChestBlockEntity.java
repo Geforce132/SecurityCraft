@@ -196,15 +196,17 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> o) {
-		if (o instanceof BooleanOption option) {
-			KeypadChestBlockEntity offsetTe = findOther();
+	public void onOptionChanged(Option<?> option) {
+		KeypadChestBlockEntity otherBe = findOther();
 
-			if (offsetTe != null)
-				offsetTe.setSendsMessages(option.get());
+		if (otherBe != null) {
+			if (option.getName().equals("sendMessage"))
+				otherBe.setSendsMessages(((BooleanOption) option).get());
+			else if (option.getName().equals("smartModuleCooldown"))
+				otherBe.smartModuleCooldown.copy(option);
 		}
 
-		ICustomizable.super.onOptionChanged(o);
+		ICustomizable.super.onOptionChanged(option);
 	}
 
 	@Override
