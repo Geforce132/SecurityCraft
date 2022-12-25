@@ -11,25 +11,26 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fmlclient.gui.widget.Slider;
 
 public class NamedSlider extends Slider {
-	private String blockName;
+	private Block block;
 	private Consumer<NamedSlider> consumer;
 
-	public NamedSlider(Component initialString, Component bN, int xPos, int yPos, int width, int height, Component prefix, String suf, int minVal, int maxVal, int currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method) {
+	public NamedSlider(Component initialString, Block block, int xPos, int yPos, int width, int height, Component prefix, String suf, int minVal, int maxVal, int currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method) {
 		super(xPos, yPos, width, height, prefix, new TextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
 
 		setMessage(new TextComponent(initialString.getString()));
-		blockName = bN.getString();
+		this.block = block;
 		consumer = method;
 	}
 
-	public NamedSlider(Component initialString, Component bN, int xPos, int yPos, int width, int height, Component prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method) {
+	public NamedSlider(Component initialString, Block block, int xPos, int yPos, int width, int height, Component prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method) {
 		super(xPos, yPos, width, height, prefix, new TextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
 
 		setMessage(new TextComponent(initialString.getString()));
-		blockName = bN.getString();
+		this.block = block;
 		consumer = method;
 	}
 
@@ -64,7 +65,7 @@ public class NamedSlider extends Slider {
 			consumer.accept(this);
 	}
 
-	public String getBlockName() {
-		return blockName;
+	public Block getBlock() {
+		return block;
 	}
 }

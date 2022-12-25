@@ -105,13 +105,12 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 					Option<?> option = options[i];
 
 					if (option instanceof ISlider && option.isSlider()) {
-						TranslatableComponent translatedBlockName = Utils.localize(blockName);
 						final int sliderIndex = i;
 
 						if (option instanceof DoubleOption)
-							optionButtons[i] = new NamedSlider(Utils.localize(option.getKey(block), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, slider -> updateOptionTooltip(sliderIndex));
+							optionButtons[i] = new NamedSlider(Utils.localize(option.getKey(block), option.toString()), block, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, slider -> updateOptionTooltip(sliderIndex));
 						else if (option instanceof IntOption)
-							optionButtons[i] = new NamedSlider(Utils.localize(option.getKey(block), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, slider -> updateOptionTooltip(sliderIndex));
+							optionButtons[i] = new NamedSlider(Utils.localize(option.getKey(block), option.toString()), block, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, slider -> updateOptionTooltip(sliderIndex));
 
 						optionButtons[i].setFGColor(14737632);
 					}
