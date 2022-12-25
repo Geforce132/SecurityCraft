@@ -44,9 +44,17 @@ public class CheckPassword {
 			String password = message.password;
 			ServerPlayer player = ctx.get().getSender();
 
-			if (player.level.getBlockEntity(pos) instanceof IPasswordProtected be && be.getPassword().equals(password)) {
-				player.closeContainer();
-				be.activate(player);
+			if (player.level.getBlockEntity(pos) instanceof IPasswordProtected passwordProtected) {
+				boolean isPasscodeCorrect = passwordProtected.getPassword().equals(password);
+
+				if (passwordProtected.isOnCooldown())
+					return;
+				else if (isPasscodeCorrect) {
+					player.closeContainer();
+					passwordProtected.activate(player);
+				}
+				else
+					passwordProtected.onIncorrectPasscodeEntered(player, password);
 			}
 		});
 

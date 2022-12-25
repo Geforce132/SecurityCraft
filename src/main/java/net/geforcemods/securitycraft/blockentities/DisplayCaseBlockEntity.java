@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -27,6 +28,8 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	private final AABB renderBoundingBox;
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
+	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
+	private long cooldownEnd = 0;
 	private ItemStack displayedStack = ItemStack.EMPTY;
 	private boolean shouldBeOpen;
 	private float openness;
@@ -84,6 +87,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		super.save(tag);
 		tag.put("DisplayedStack", getDisplayedStack().save(new CompoundTag()));
 		tag.putBoolean("ShouldBeOpen", shouldBeOpen);
+		tag.putLong("cooldownEnd", getCooldownEnd());
 
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("Passcode", passcode);
@@ -100,6 +104,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		super.load(tag);
 		setDisplayedStack(ItemStack.of((CompoundTag) tag.get("DisplayedStack")));
 		shouldBeOpen = tag.getBoolean("ShouldBeOpen");
+		cooldownEnd = tag.getLong("cooldownEnd");
 		passcode = tag.getString("Passcode");
 
 		if (forceOpenness)
@@ -107,16 +112,35 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	}
 
 	@Override
+	public void startCooldown() {
+		if (!isOnCooldown()) {
+			cooldownEnd = System.currentTimeMillis() + smartModuleCooldown.get() * 50;
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+			setChanged();
+		}
+	}
+
+	@Override
+	public long getCooldownEnd() {
+		return cooldownEnd;
+	}
+
+	@Override
+	public boolean isOnCooldown() {
+		return System.currentTimeMillis() < getCooldownEnd();
+	}
+
+	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST, ModuleType.DENYLIST
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.SMART, ModuleType.HARMING
 		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, disabled
+				sendMessage, disabled, smartModuleCooldown
 		};
 	}
 
