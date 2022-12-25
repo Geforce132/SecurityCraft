@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.function.Consumer;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
@@ -65,17 +67,9 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 	@Override
 	public void setPassword(String password) {
-		TileEntity te = null;
-
 		passcode = password;
-
-		if (getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
-			te = level.getBlockEntity(worldPosition.above());
-		else if (getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER)
-			te = level.getBlockEntity(worldPosition.below());
-
-		if (te instanceof KeypadDoorBlockEntity)
-			((KeypadDoorBlockEntity) te).setPasswordExclusively(password);
+		runForOtherHalf(otherHalf -> otherHalf.setPasswordExclusively(password));
+		setChanged();
 	}
 
 	//only set the password for this door half
@@ -85,8 +79,15 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 	@Override
 	public void startCooldown() {
+		long start = System.currentTimeMillis();
+
+		startCooldown(start);
+		runForOtherHalf(otherHalf -> otherHalf.startCooldown(start));
+	}
+
+	public void startCooldown(long start) {
 		if (!isOnCooldown()) {
-			cooldownEnd = System.currentTimeMillis() + smartModuleCooldown.get() * 50;
+			cooldownEnd = start + smartModuleCooldown.get() * 50;
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 			setChanged();
 		}
@@ -119,5 +120,17 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public int defaultSignalLength() {
 		return 60;
+	}
+
+	public void runForOtherHalf(Consumer<KeypadDoorBlockEntity> action) {
+		TileEntity te = null;
+
+		if (getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
+			te = level.getBlockEntity(worldPosition.above());
+		else if (getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER)
+			te = level.getBlockEntity(worldPosition.below());
+
+		if (te instanceof KeypadDoorBlockEntity)
+			action.accept((KeypadDoorBlockEntity) te);
 	}
 }
