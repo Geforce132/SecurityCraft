@@ -46,7 +46,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
-		tag.putLong("cooldownEnd", getCooldownEnd());
+		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 		return tag;
 	}
 
@@ -55,7 +55,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 		super.load(state, tag);
 
 		passcode = tag.getString("passcode");
-		cooldownEnd = tag.getLong("cooldownEnd");
+		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 	}
 
 	@Override

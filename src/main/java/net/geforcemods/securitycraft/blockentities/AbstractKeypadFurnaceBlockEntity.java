@@ -85,7 +85,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 		writeModuleInventory(tag);
 		writeModuleStates(tag);
 		writeOptions(tag);
-		tag.putLong("cooldownEnd", getCooldownEnd());
+		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 
 		if (owner != null)
 			owner.write(tag, false);
@@ -103,7 +103,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 		modules = readModuleInventory(tag);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
-		cooldownEnd = tag.getLong("cooldownEnd");
+		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 		owner.read(tag);
 		passcode = tag.getString("passcode");
 	}

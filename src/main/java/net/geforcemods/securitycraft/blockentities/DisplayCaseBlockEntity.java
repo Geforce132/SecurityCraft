@@ -92,7 +92,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		super.save(tag);
 		tag.put("DisplayedStack", getDisplayedStack().save(new CompoundNBT()));
 		tag.putBoolean("ShouldBeOpen", shouldBeOpen);
-		tag.putLong("cooldownEnd", getCooldownEnd());
+		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("Passcode", passcode);
@@ -109,7 +109,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		super.load(state, tag);
 		setDisplayedStack(ItemStack.of((CompoundNBT) tag.get("DisplayedStack")));
 		shouldBeOpen = tag.getBoolean("ShouldBeOpen");
-		cooldownEnd = tag.getLong("cooldownEnd");
+		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 		passcode = tag.getString("Passcode");
 
 		if (forceOpenness)

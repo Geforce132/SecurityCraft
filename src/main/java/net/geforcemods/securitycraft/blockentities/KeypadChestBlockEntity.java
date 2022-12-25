@@ -62,7 +62,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 		writeModuleInventory(tag);
 		writeModuleStates(tag);
 		writeOptions(tag);
-		tag.putLong("cooldownEnd", getCooldownEnd());
+		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
@@ -79,7 +79,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
-		cooldownEnd = tag.getLong("cooldownEnd");
+		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 		passcode = tag.getString("passcode");
 		moduleStates = readModuleStates(tag);
 		owner.read(tag);
