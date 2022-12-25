@@ -103,25 +103,21 @@ public interface IPasswordProtected extends ICodebreakable {
 	/**
 	 * Sets this block to be on cooldown and starts the cooldown
 	 */
-	public default void startCooldown() {} //TODO: only default temporarily, remove when done
+	public void startCooldown();
 
 	/**
 	 * Checks whether this block is on cooldown, meaning a new code cannot be entered.
 	 *
 	 * @return true if this block is on cooldown, false otherwise
 	 */
-	public default boolean isOnCooldown() { //TODO: only default temporarily, remove when done
-		return false;
-	}
+	public boolean isOnCooldown();
 
 	/**
 	 * Returns the time at which the cooldown ends
 	 *
 	 * @return A UNIX timestamp representing the cooldown's end time
 	 */
-	public default long getCooldownEnd() { //TODO: only default temporarily, remove when done
-		return 0;
-	}
+	public long getCooldownEnd();
 
 	/**
 	 * Gets called when an incorrect passcode has been inserted.
