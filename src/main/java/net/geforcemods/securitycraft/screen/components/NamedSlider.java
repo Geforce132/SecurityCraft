@@ -7,28 +7,29 @@ import javax.annotation.Nullable;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 
 public class NamedSlider extends Slider {
-	private String blockName;
+	private Block block;
 	private Consumer<NamedSlider> consumer;
 
-	public NamedSlider(ITextComponent initialString, ITextComponent bN, int xPos, int yPos, int width, int height, ITextComponent prefix, String suf, int minVal, int maxVal, int currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method) {
+	public NamedSlider(ITextComponent initialString, Block block, int xPos, int yPos, int width, int height, ITextComponent prefix, String suf, int minVal, int maxVal, int currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method) {
 		super(xPos, yPos, width, height, prefix, new StringTextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
 
 		setMessage(new StringTextComponent(initialString.getString()));
-		blockName = bN.getString();
+		this.block = block;
 		consumer = method;
 	}
 
-	public NamedSlider(ITextComponent initialString, ITextComponent bN, int xPos, int yPos, int width, int height, ITextComponent prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method) {
+	public NamedSlider(ITextComponent initialString, Block block, int xPos, int yPos, int width, int height, ITextComponent prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method) {
 		super(xPos, yPos, width, height, prefix, new StringTextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
 
 		setMessage(new StringTextComponent(initialString.getString()));
-		blockName = bN.getString();
+		this.block = block;
 		consumer = method;
 	}
 
@@ -57,7 +58,7 @@ public class NamedSlider extends Slider {
 			consumer.accept(this);
 	}
 
-	public String getBlockName() {
-		return blockName;
+	public Block getBlock() {
+		return block;
 	}
 }

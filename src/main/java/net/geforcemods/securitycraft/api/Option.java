@@ -249,7 +249,7 @@ public abstract class Option<T> {
 				return;
 
 			setValue((int) slider.getValue());
-			slider.setMessage(Utils.localize("option" + ((NamedSlider) slider).getBlockName() + "." + getName(), toString()));
+			slider.setMessage(Utils.localize(getKey(((NamedSlider) slider).getBlock()), toString()));
 			SecurityCraft.channel.sendToServer(new UpdateSliderValue(pos.get(), this, get()));
 		}
 	}
@@ -335,7 +335,7 @@ public abstract class Option<T> {
 				return;
 
 			setValue(slider.getValue());
-			slider.setMessage(Utils.localize("option" + ((NamedSlider) slider).getBlockName() + "." + getName(), toString()));
+			slider.setMessage(Utils.localize(getKey(((NamedSlider) slider).getBlock()), toString()));
 			SecurityCraft.channel.sendToServer(new UpdateSliderValue(pos.get(), this, get()));
 		}
 	}
