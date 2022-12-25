@@ -311,8 +311,18 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 	@Override
 	public void startCooldown() {
+		KeypadChestBlockEntity otherHalf = findOther();
+		long start = System.currentTimeMillis();
+
+		startCooldown(start);
+
+		if (otherHalf != null)
+			otherHalf.startCooldown(start);
+	}
+
+	public void startCooldown(long start) {
 		if (!isOnCooldown()) {
-			cooldownEnd = System.currentTimeMillis() + smartModuleCooldown.get() * 50;
+			cooldownEnd = start + smartModuleCooldown.get() * 50;
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 			setChanged();
 		}
