@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -49,9 +48,18 @@ public class CheckPassword implements IMessage {
 				EntityPlayer player = ctx.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);
 
-				if (te instanceof IPasswordProtected && ((IPasswordProtected) te).getPassword().equals(message.password)) {
-					((EntityPlayerMP) player).closeScreen();
-					((IPasswordProtected) te).activate(player);
+				if (te instanceof IPasswordProtected) {
+					IPasswordProtected passwordProtected = (IPasswordProtected) te;
+					boolean isPasscodeCorrect = passwordProtected.getPassword().equals(message.password);
+
+					if (passwordProtected.isOnCooldown())
+						return;
+					else if (isPasscodeCorrect) {
+						player.closeScreen();
+						passwordProtected.activate(player);
+					}
+					else
+						passwordProtected.onIncorrectPasscodeEntered(player, message.password);
 				}
 			});
 

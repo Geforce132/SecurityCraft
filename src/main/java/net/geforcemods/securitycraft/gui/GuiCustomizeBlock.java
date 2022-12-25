@@ -63,7 +63,6 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 	private GuiButton[] optionButtons = new GuiButton[5];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private final Block block;
-	private final String blockName;
 	private final String title;
 	private EnumMap<EnumModuleType, Boolean> indicators = new EnumMap<>(EnumModuleType.class);
 
@@ -72,7 +71,6 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 
 		moduleInv = te;
 		block = te.getTileEntity().getBlockType();
-		blockName = block.getTranslationKey().substring(5);
 		title = Utils.localize(block).getFormattedText();
 		inventorySlots.addListener(this);
 
@@ -109,9 +107,9 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 
 				if (option instanceof ISlider && option.isSlider()) {
 					if (option instanceof OptionDouble)
-						optionButtons[i] = new GuiSlider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionDouble) option).getMin(), ((OptionDouble) option).getMax(), ((OptionDouble) option).get(), true, true, (ISlider) option);
+						optionButtons[i] = new GuiSlider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionDouble) option).getMin(), ((OptionDouble) option).getMax(), ((OptionDouble) option).get(), true, true, (ISlider) option);
 					else if (option instanceof OptionInt)
-						optionButtons[i] = new GuiSlider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionInt) option).getMin(), ((OptionInt) option).getMax(), ((OptionInt) option).get(), true, true, (ISlider) option);
+						optionButtons[i] = new GuiSlider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionInt) option).getMin(), ((OptionInt) option).getMax(), ((OptionInt) option).get(), true, true, (ISlider) option);
 
 					optionButtons[i].packedFGColour = 14737632;
 				}
@@ -230,7 +228,7 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 	}
 
 	private String getModuleDescription(int buttonID) {
-		String moduleDescription = "module." + blockName + "." + descriptionButtons[buttonID].getItemStack().getTranslationKey().substring(5).replace("securitycraft:", "") + ".description";
+		String moduleDescription = "module." + block.getTranslationKey().substring(5) + "." + descriptionButtons[buttonID].getItemStack().getTranslationKey().substring(5).replace("securitycraft:", "") + ".description";
 
 		return Utils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey() + ".name").getFormattedText() + ":" + TextFormatting.RESET + "\n\n" + Utils.localize(moduleDescription).getFormattedText();
 	}

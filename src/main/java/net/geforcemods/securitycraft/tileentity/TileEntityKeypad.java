@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
+import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.minecraft.block.state.IBlockState;
@@ -29,6 +30,8 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private DisabledOption disabled = new DisabledOption(false);
+	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
+	private long cooldownEnd = 0;
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
@@ -37,6 +40,7 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 		if (passcode != null && !passcode.isEmpty())
 			tag.setString("passcode", passcode);
 
+		tag.setLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 		return tag;
 	}
 
@@ -44,6 +48,7 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		passcode = tag.getString("passcode");
+		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 	}
 
 	@Override
@@ -81,16 +86,37 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 	}
 
 	@Override
+	public void startCooldown() {
+		if (!isOnCooldown()) {
+			IBlockState state = world.getBlockState(pos);
+
+			cooldownEnd = System.currentTimeMillis() + smartModuleCooldown.get() * 50;
+			world.notifyBlockUpdate(pos, state, state, 3);
+			markDirty();
+		}
+	}
+
+	@Override
+	public long getCooldownEnd() {
+		return cooldownEnd;
+	}
+
+	@Override
+	public boolean isOnCooldown() {
+		return System.currentTimeMillis() < getCooldownEnd();
+	}
+
+	@Override
 	public EnumModuleType[] acceptedModules() {
 		return new EnumModuleType[] {
-				EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST, EnumModuleType.DISGUISE
+				EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST, EnumModuleType.DISGUISE, EnumModuleType.SMART, EnumModuleType.HARMING
 		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				isAlwaysActive, sendMessage, signalLength, disabled
+				isAlwaysActive, sendMessage, signalLength, disabled, smartModuleCooldown
 		};
 	}
 

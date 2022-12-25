@@ -109,8 +109,8 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider, IHas
 		buttonList.add(sizeButton = new GuiButton(1, guiLeft + guiWidth / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[1], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText()));
 		buttonList.add(outlineButton = new GuiButton(2, outlineButtonX, outlineY, outlineButtonWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!te.showOutline ? "show" : "hide")).getFormattedText()));
 		buttonList.add(assembleButton = new GuiButton(3, guiLeft + guiWidth / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[3], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.assemble").getFormattedText()));
-		buttonList.add(offsetSlider = new GuiSlider(Utils.localize("gui.securitycraft:projector.offset", te.autoBuildOffset).getFormattedText(), "", 4, guiLeft + guiWidth / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", "").getFormattedText(), (-size + 2) / 2, (size - 2) / 2, te.autoBuildOffset, false, true, this));
-		colorChooser = new ColorChooser(colorChooserX, outlineY, previousColor) {
+		buttonList.add(offsetSlider = new GuiSlider(Utils.localize("gui.securitycraft:projector.offset", te.autoBuildOffset).getFormattedText(), SCContent.projector, 4, guiLeft + guiWidth / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", "").getFormattedText(), (-size + 2) / 2, (size - 2) / 2, te.autoBuildOffset, false, true, this));
+		colorChooser = new ColorChooser(colorChooserX, outlineY, previousColor, SCContent.blockPocketManager) {
 			@Override
 			public void onColorChange() {
 				te.setColor(getRGBColor());
@@ -376,7 +376,7 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider, IHas
 	}
 
 	@Override
-	public void onChangeSliderValue(GuiSlider slider, String blockName, int id) {
+	public void onChangeSliderValue(GuiSlider slider, Block block, int id) {
 		if (slider.id == offsetSlider.id)
 			slider.displayString = slider.prefix + slider.getValueInt();
 	}

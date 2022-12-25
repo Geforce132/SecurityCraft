@@ -6,11 +6,13 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
+import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -55,6 +57,8 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
+	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
+	private long cooldownEnd = 0;
 
 	@Override
 	public int getSizeInventory() {
@@ -145,8 +149,6 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 
-		modules = readModuleInventory(tag);
-		readOptions(tag);
 		NBTTagList list = tag.getTagList("Items", 10);
 		furnaceItemStacks = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
 
@@ -163,6 +165,7 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 		totalCookTime = tag.getShort("CookTimeTotal");
 		currentItemBurnTime = TileEntityFurnace.getItemBurnTime(furnaceItemStacks.get(1));
 		passcode = tag.getString("passcode");
+		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 		furnaceCustomName = tag.getString("CustomName");
 	}
 
@@ -170,8 +173,6 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
-		writeModuleInventory(tag);
-		writeOptions(tag);
 		tag.setShort("BurnTime", (short) furnaceBurnTime);
 		tag.setShort("CookTime", (short) cookTime);
 		tag.setShort("CookTimeTotal", (short) totalCookTime);
@@ -190,6 +191,8 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 
 		if (passcode != null && !passcode.isEmpty())
 			tag.setString("passcode", passcode);
+
+		tag.setLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 
 		if (hasCustomName())
 			tag.setString("CustomName", furnaceCustomName);
@@ -465,16 +468,37 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	}
 
 	@Override
+	public void startCooldown() {
+		if (!isOnCooldown()) {
+			IBlockState state = world.getBlockState(pos);
+
+			cooldownEnd = System.currentTimeMillis() + smartModuleCooldown.get() * 50;
+			world.notifyBlockUpdate(pos, state, state, 3);
+			markDirty();
+		}
+	}
+
+	@Override
+	public long getCooldownEnd() {
+		return cooldownEnd;
+	}
+
+	@Override
+	public boolean isOnCooldown() {
+		return System.currentTimeMillis() < getCooldownEnd();
+	}
+
+	@Override
 	public EnumModuleType[] acceptedModules() {
 		return new EnumModuleType[] {
-				EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST, EnumModuleType.DISGUISE
+				EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST, EnumModuleType.DISGUISE, EnumModuleType.SMART, EnumModuleType.HARMING
 		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, disabled
+				sendMessage, disabled, smartModuleCooldown
 		};
 	}
 

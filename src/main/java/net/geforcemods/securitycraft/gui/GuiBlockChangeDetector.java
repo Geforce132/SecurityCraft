@@ -106,7 +106,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 		}));
 		addButton(showAllCheckbox = new CallbackCheckbox(2, settingsX, guiTop + 65, 20, 20, "", false, isSelected -> changeEntryList.updateFilteredEntries(), 0x404040));
 		addButton(highlightInWorldCheckbox = new CallbackCheckbox(3, settingsX, guiTop + 90, 20, 20, "", be.isShowingHighlights(), isSelected -> be.showHighlights(isSelected), 0x404040));
-		colorChooser = new ColorChooser(settingsX, guiTop + 135, previousColor) {
+		colorChooser = new ColorChooser(settingsX, guiTop + 135, previousColor, SCContent.blockChangeDetector) {
 			@Override
 			public void onColorChange() {
 				be.setColor(getRGBColor());

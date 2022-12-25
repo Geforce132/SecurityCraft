@@ -14,6 +14,7 @@ import com.google.common.base.Predicate;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
@@ -35,10 +36,11 @@ public class ColorChooser extends GuiScreen {
 	private final HoverChecker colorFieldHoverChecker;
 	private float selectionX, selectionY;
 	private final int rgbColor;
+	private Block block;
 	public FixedGuiTextField rBox, gBox, bBox, rgbHexBox;
 	public HueSlider hueSlider;
 
-	public ColorChooser(int xStart, int yStart, int rgbColor) {
+	public ColorChooser(int xStart, int yStart, int rgbColor, Block block) {
 		this.xStart = xStart;
 		this.yStart = yStart;
 		colorFieldLeft = xStart + 6;
@@ -46,6 +48,7 @@ public class ColorChooser extends GuiScreen {
 		colorFieldRight = colorFieldLeft + colorFieldSize;
 		colorFieldBottom = colorFieldTop + colorFieldSize;
 		this.rgbColor = rgbColor;
+		this.block = block;
 		colorFieldHoverChecker = new HoverChecker(colorFieldTop, colorFieldBottom, colorFieldLeft, colorFieldRight);
 	}
 
@@ -87,9 +90,9 @@ public class ColorChooser extends GuiScreen {
 
 		updateHSBValues(red, green, blue);
 		extraAreas.add(new Rectangle(xStart, yStart, 144, 108));
-		addButton(hueSlider = new HueSlider(0, colorFieldLeft - 2, yStart + 85, 82, 20, h * 360.0D, new net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider() {
+		addButton(hueSlider = new HueSlider(block, 0, colorFieldLeft - 2, yStart + 85, 82, 20, h * 360.0D, new net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider() {
 			@Override
-			public void onChangeSliderValue(GuiSlider slider, String blockName, int id) {
+			public void onChangeSliderValue(GuiSlider slider, Block block, int id) {
 				h = slider.getValueInt() / 360.0F;
 				updateTextFields(null);
 				onColorChange();
@@ -286,8 +289,8 @@ public class ColorChooser extends GuiScreen {
 	}
 
 	public class HueSlider extends GuiSlider {
-		public HueSlider(int id, int x, int y, int width, int height, double d, net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider iSlider) {
-			super("", "", id, x, y, width, height, "", 0.0D, 360.0D, d, false, false, iSlider);
+		public HueSlider(Block block, int id, int x, int y, int width, int height, double d, net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider iSlider) {
+			super("", block, id, x, y, width, height, "", 0.0D, 360.0D, d, false, false, iSlider);
 		}
 
 		@Override

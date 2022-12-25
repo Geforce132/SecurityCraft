@@ -10,6 +10,7 @@ package net.geforcemods.securitycraft.gui.components;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
@@ -31,20 +32,20 @@ public class GuiSlider extends GuiButtonExt {
 	@Nullable
 	public ISlider parent = null;
 	public boolean drawString = true;
-	private String blockName;
+	private Block block;
 	public String prefix;
 
-	public GuiSlider(String initialString, String bN, int id, int xPos, int yPos, int width, int height, String prefix, int minVal, int maxVal, int currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par) {
-		this(initialString, bN, id, xPos, yPos, width, height, prefix, (double) minVal, (double) maxVal, (double) currentVal, showDec, drawStr, par);
+	public GuiSlider(String initialString, Block block, int id, int xPos, int yPos, int width, int height, String prefix, int minVal, int maxVal, int currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par) {
+		this(initialString, block, id, xPos, yPos, width, height, prefix, (double) minVal, (double) maxVal, (double) currentVal, showDec, drawStr, par);
 	}
 
-	public GuiSlider(String initialString, String bN, int id, int xPos, int yPos, int width, int height, String prefix, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par) {
+	public GuiSlider(String initialString, Block block, int id, int xPos, int yPos, int width, int height, String prefix, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par) {
 		super(id, xPos, yPos, width, height, prefix);
 		minValue = minVal;
 		maxValue = maxVal;
 		parent = par;
 		showDecimal = showDec;
-		blockName = bN;
+		this.block = block;
 		String val;
 		sliderValue = (currentVal - minVal) / (maxVal - minVal);
 		this.prefix = prefix;
@@ -125,7 +126,7 @@ public class GuiSlider extends GuiButtonExt {
 		}
 
 		if (parent != null)
-			parent.onChangeSliderValue(this, blockName, id);
+			parent.onChangeSliderValue(this, block, id);
 	}
 
 	@Override
@@ -149,7 +150,7 @@ public class GuiSlider extends GuiButtonExt {
 	}
 
 	public static interface ISlider {
-		void onChangeSliderValue(GuiSlider slider, String blockName, int id);
+		void onChangeSliderValue(GuiSlider slider, Block block, int id);
 
 		void onMouseRelease(int id);
 	}

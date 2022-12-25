@@ -162,9 +162,16 @@ public class ConfigHandler {
 	public static int reinforcedBlockTintColor = 0x999999;
 
 	@Name("Laser damage")
-	@RangeDouble(min = 0.0D, max = Double.MAX_VALUE)
+	@RangeDouble(min = 0.0D)
 	@Comment("Defines the damage inflicted to an entity if it passes through a laser with installed harming module. This is given in health points, meaning 2 health points = 1 heart")
 	public static double laserDamage = 10.0D;
+
+	@Name("Incorrect Passcode Damage")
+	@RangeInt(min = 1)
+	@Comment({
+		"Defines the damage that a block requiring a passcode deals to the player, if the player enters an incorrect code. This only works if a harming module is installed.",
+		"Default is two hearts of damage."})
+	public static int incorrectPasscodeDamage = 4;
 
 	/**
 	 * @deprecated Use {@link #TASER_EFFECTS}

@@ -19,9 +19,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class TileEntitySpecialDoor extends TileEntityLinkable implements ILockable {
-	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
-	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
-	private DisabledOption disabled = new DisabledOption(false);
+	protected OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
+	protected OptionInt signalLength = new OptionInt(this::getPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
+	protected DisabledOption disabled = new DisabledOption(false);
 
 	@Override
 	public void onOwnerChanged(IBlockState state, World world, BlockPos pos, EntityPlayer player) {

@@ -5,10 +5,14 @@
 - New: The damage dealt by a Laser Block containing a Harming Module can now be changed with a config setting
 - New: More modded wooden chests can now be converted to a Password-protected Chest
 - New: Ignore owner option for blocks like the Inventory Scanner or Block Change Detector
+- New: Smart Module (incorrect code = cooldown) and Harming Module (incorrect code = damage) support for blocks that require a passcode
+- New: Config option "incorrectPasscodeDamage" to define the amount of damage dealt to a player who inserted an incorrect passcode
 - Change: Password-protected blocks can now only be activated if a password has been set, even if the player activating the block is on the allowlist
+- Change: Passcodes now have to be manually confirmed by using the new enter button found in the check password interface (or by using the enter key on the keyboard)
 - API: Changed IPasswordConvertible#getOriginalBlock to IPasswordConvertible#isValidStateForConversion for finer control over what can be converted
 - API: New methods IModuleInventory#isAllowed and IModuleInventory#isDenied to check whether an entity is listed on an allowlist or denylist module respectively
 - API: Moved and renamed Owner#isOwner methods to IPasswordProtected#isOwnedBy
+- API: New methods IPasswordProtected#startCooldown, IPasswordProtected#isOnCooldown IPasswordProtected#getCooldownEnd, and IPasswordProtected#getIncorrectPasscodeDamage
 - API: New method IPasswordProtected#verifyPasswordSet which returns whether a password has been set for this IPasswordProtected
 - API: Removed the IOwnable parameter from IPasswordProtected#setPasswordGUI because the relevant code has been moved to IPasswordProtected#verifyPasswordSet
 - Fix: The Reinforced Grass Block doesn't have a reinforced tint
@@ -23,6 +27,7 @@
 - Fix: Players that are on the allowlist of a Security Camera, cannot toggle the camera's redstone output
 - Fix: The Redstone Module in a Laser Block does not respect ownership
 - Fix: Disabled option in laser blocks does not work properly
+- Fix: In the check password screen, using the enter key to press focused buttons does not work
 - Fix: The Username Logger sometimes cannot be activated by a short redstone signal
 - Fix: The Codebreaker sometimes loses durability when rightclicking a block even though no codebreaking attempt has been made
 

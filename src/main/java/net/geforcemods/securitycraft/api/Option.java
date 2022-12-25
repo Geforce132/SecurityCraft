@@ -189,22 +189,22 @@ public abstract class Option<T> {
 	 * A subclass of {@link Option}, set up to handle integers.
 	 */
 	public static class OptionInt extends Option<Integer> implements ISlider {
-		private boolean slider;
+		private boolean isSlider;
 		private Supplier<BlockPos> pos;
 
 		public OptionInt(String optionName, Integer value) {
 			super(optionName, value);
-			slider = false;
+			isSlider = false;
 		}
 
 		public OptionInt(String optionName, Integer value, Integer min, Integer max, Integer increment) {
 			super(optionName, value, min, max, increment);
-			slider = false;
+			isSlider = false;
 		}
 
-		public OptionInt(Supplier<BlockPos> pos, String optionName, Integer value, Integer min, Integer max, Integer increment, boolean s) {
+		public OptionInt(Supplier<BlockPos> pos, String optionName, Integer value, Integer min, Integer max, Integer increment, boolean isSlider) {
 			super(optionName, value, min, max, increment);
-			slider = s;
+			this.isSlider = isSlider;
 			this.pos = pos;
 		}
 
@@ -241,16 +241,16 @@ public abstract class Option<T> {
 
 		@Override
 		public boolean isSlider() {
-			return slider;
+			return isSlider;
 		}
 
 		@Override
-		public void onChangeSliderValue(GuiSlider slider, String blockName, int id) {
+		public void onChangeSliderValue(GuiSlider slider, Block block, int id) {
 			if (!isSlider())
 				return;
 
 			setValue((int) slider.getValue());
-			slider.displayString = (Utils.localize("option." + blockName + "." + getName()).getFormattedText() + " ").replace("#", toString());
+			slider.displayString = (Utils.localize(getKey(block)).getFormattedText() + " ").replace("#", toString());
 		}
 
 		@Override
@@ -259,26 +259,37 @@ public abstract class Option<T> {
 		}
 	}
 
+	public static class SmartModuleCooldownOption extends OptionInt {
+		public SmartModuleCooldownOption(Supplier<BlockPos> pos) {
+			super(pos, "smartModuleCooldown", 100, 20, 400, 1, true);
+		}
+
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.smartModuleCooldown";
+		}
+	}
+
 	/**
 	 * A subclass of {@link Option}, set up to handle doubles.
 	 */
 	public static class OptionDouble extends Option<Double> implements ISlider {
-		private boolean slider;
+		private boolean isSlider;
 		private Supplier<BlockPos> pos;
 
 		public OptionDouble(String optionName, Double value) {
 			super(optionName, value);
-			slider = false;
+			isSlider = false;
 		}
 
 		public OptionDouble(String optionName, Double value, Double min, Double max, Double increment) {
 			super(optionName, value, min, max, increment);
-			slider = false;
+			isSlider = false;
 		}
 
-		public OptionDouble(Supplier<BlockPos> pos, String optionName, Double value, Double min, Double max, Double increment, boolean s) {
+		public OptionDouble(Supplier<BlockPos> pos, String optionName, Double value, Double min, Double max, Double increment, boolean isSlider) {
 			super(optionName, value, min, max, increment);
-			slider = s;
+			this.isSlider = isSlider;
 			this.pos = pos;
 		}
 
@@ -320,16 +331,16 @@ public abstract class Option<T> {
 
 		@Override
 		public boolean isSlider() {
-			return slider;
+			return isSlider;
 		}
 
 		@Override
-		public void onChangeSliderValue(GuiSlider slider, String blockName, int id) {
+		public void onChangeSliderValue(GuiSlider slider, Block block, int id) {
 			if (!isSlider())
 				return;
 
 			setValue(slider.getValue());
-			slider.displayString = (Utils.localize("option." + blockName + "." + getName()).getFormattedText() + " ").replace("#", toString());
+			slider.displayString = (Utils.localize(getKey(block)).getFormattedText() + " ").replace("#", toString());
 		}
 
 		@Override
