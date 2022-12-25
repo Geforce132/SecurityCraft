@@ -1,6 +1,9 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.misc.CustomDamageSources;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
@@ -96,4 +99,43 @@ public interface IPasswordProtected extends ICodebreakable {
 	 * @param password The new password to be saved.
 	 */
 	public void setPassword(String password);
+
+	/**
+	 * Sets this block to be on cooldown and starts the cooldown
+	 */
+	public void startCooldown();
+
+	/**
+	 * Checks whether this block is on cooldown, meaning a new code cannot be entered.
+	 *
+	 * @return true if this block is on cooldown, false otherwise
+	 */
+	public boolean isOnCooldown();
+
+	/**
+	 * Returns the time at which the cooldown ends
+	 *
+	 * @return A UNIX timestamp representing the cooldown's end time
+	 */
+	public long getCooldownEnd();
+
+	/**
+	 * Gets called when an incorrect passcode has been inserted.
+	 *
+	 * @param player The player who entered the incorrect code
+	 * @param incorrectCode The incorrect code that was entered
+	 */
+	public default void onIncorrectPasscodeEntered(PlayerEntity player, String incorrectCode) {
+		if (this instanceof IModuleInventory) {
+			IModuleInventory moduleInv = (IModuleInventory) this;
+
+			if (moduleInv.isModuleEnabled(ModuleType.SMART))
+				startCooldown();
+
+			if (moduleInv.isModuleEnabled(ModuleType.HARMING)) {
+				if (player.hurt(CustomDamageSources.INCORRECT_PASSCODE, ConfigHandler.SERVER.incorrectPasscodeDamage.get()))
+					player.closeContainer();
+			}
+		}
+	}
 }

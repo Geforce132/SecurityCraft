@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -47,9 +46,18 @@ public class CheckPassword {
 			PlayerEntity player = ctx.get().getSender();
 			TileEntity te = player.level.getBlockEntity(pos);
 
-			if (te instanceof IPasswordProtected && ((IPasswordProtected) te).getPassword().equals(password)) {
-				((ServerPlayerEntity) player).closeContainer();
-				((IPasswordProtected) te).activate(player);
+			if (te instanceof IPasswordProtected) {
+				IPasswordProtected passwordProtected = (IPasswordProtected) te;
+				boolean isPasscodeCorrect = passwordProtected.getPassword().equals(password);
+
+				if (passwordProtected.isOnCooldown())
+					return;
+				else if (isPasscodeCorrect) {
+					player.closeContainer();
+					passwordProtected.activate(player);
+				}
+				else
+					passwordProtected.onIncorrectPasscodeEntered(player, password);
 			}
 		});
 

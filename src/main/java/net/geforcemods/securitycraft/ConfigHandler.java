@@ -91,6 +91,7 @@ public class ConfigHandler {
 		public DoubleValue taserDamage;
 		public DoubleValue poweredTaserDamage;
 		public DoubleValue laserDamage;
+		public IntValue incorrectPasscodeDamage;
 		private ConfigValue<List<? extends String>> taserEffectsValue;
 		private ConfigValue<List<? extends String>> poweredTaserEffectsValue;
 		public final List<Supplier<EffectInstance>> taserEffects = new ArrayList<>();
@@ -196,6 +197,11 @@ public class ConfigHandler {
 			laserDamage = builder
 					.comment("Defines the damage inflicted to an entity if it passes through a laser with installed harming module. This is given in health points, meaning 2 health points = 1 heart")
 					.defineInRange("laser_damage", 10.0, 0.0D, Double.MAX_VALUE);
+
+			incorrectPasscodeDamage = builder
+					.comment("Defines the damage that a block requiring a passcode deals to the player, if the player enters an incorrect code. This only works if a harming module is installed.",
+							"Default is two hearts of damage.")
+					.defineInRange("incorrectPasscodeDamage", 4, 1, Integer.MAX_VALUE);
 			//@formatter:on
 		}
 	}

@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -46,6 +47,8 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
+	private long cooldownEnd = 0;
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public KeypadChestBlockEntity() {
@@ -59,6 +62,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 		writeModuleInventory(tag);
 		writeModuleStates(tag);
 		writeOptions(tag);
+		tag.putLong("cooldownEnd", getCooldownEnd());
 
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
@@ -75,6 +79,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
+		cooldownEnd = tag.getLong("cooldownEnd");
 		passcode = tag.getString("passcode");
 		moduleStates = readModuleStates(tag);
 		owner.read(tag);
@@ -184,11 +189,13 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		if (option instanceof BooleanOption) {
-			KeypadChestBlockEntity offsetTe = findOther();
+		KeypadChestBlockEntity otherBe = findOther();
 
-			if (offsetTe != null)
-				offsetTe.setSendsMessages(((BooleanOption) option).get());
+		if (otherBe != null) {
+			if (option.getName().equals("sendMessage"))
+				otherBe.setSendsMessages(((BooleanOption) option).get());
+			else if (option.getName().equals("smartModuleCooldown"))
+				otherBe.smartModuleCooldown.copy(option);
 		}
 	}
 
@@ -309,16 +316,35 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 	}
 
 	@Override
+	public void startCooldown() {
+		if (!isOnCooldown()) {
+			cooldownEnd = System.currentTimeMillis() + smartModuleCooldown.get() * 50;
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+			setChanged();
+		}
+	}
+
+	@Override
+	public long getCooldownEnd() {
+		return cooldownEnd;
+	}
+
+	@Override
+	public boolean isOnCooldown() {
+		return System.currentTimeMillis() < getCooldownEnd();
+	}
+
+	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.REDSTONE
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.REDSTONE, ModuleType.SMART, ModuleType.HARMING
 		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage
+				sendMessage, smartModuleCooldown
 		};
 	}
 
