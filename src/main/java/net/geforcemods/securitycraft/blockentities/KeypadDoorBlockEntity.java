@@ -33,7 +33,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
-		tag.putLong("cooldownEnd", getCooldownEnd());
+		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 		super.load(tag);
 
 		passcode = tag.getString("passcode");
-		cooldownEnd = tag.getLong("cooldownEnd");
+		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 	}
 
 	@Override
