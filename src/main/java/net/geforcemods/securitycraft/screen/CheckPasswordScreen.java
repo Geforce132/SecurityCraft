@@ -142,6 +142,7 @@ public class CheckPasswordScreen extends Screen {
 				}
 			}
 		}
+
 		return true;
 	}
 
