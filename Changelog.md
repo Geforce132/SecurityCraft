@@ -17,19 +17,20 @@
 - API: Removed the IOwnable parameter from IPasswordProtected#setPasswordGUI because the relevant code has been moved to IPasswordProtected#verifyPasswordSet
 - Fix: The Reinforced Grass Block doesn't have a reinforced tint
 - Fix: The One Probe doesn't display some of SecurityCraft's blocks correctly
-- Fix: Potential startup crash in combination with other mods
+- Fix: Startup crash in combination with other mods (e.g. Blue Skies, Reborn Core)
 - Fix: Admin Tool description in JEI is incorrect
 - Fix: Crash when inserting a module into a single Inventory Scanner
 - Fix: Some animations stutter
 - Fix: Using /kill to remove a camera entity, or removing it by other non-standard means, does not update the camera block properly
 - Fix: Breaking an Inventory Scanner/Laser or one of its field does not break all fields, if the respective config setting is lower than the amount of fields present
-- Fix: Breaking an Inventory Scanner Fields with the inventoryScannerRange config setting set to >=3 does not break and reinstate all fields properly
-- Fix: Players that are on the allowlist of a Security Camera, cannot toggle the camera's redstone output
+- Fix: Breaking an Inventory Scanner Field with the inventoryScannerRange config setting set to >=3 does not break and reinstate all fields properly
+- Fix: Players that are on the allowlist of a Security Camera cannot toggle the camera's redstone output
 - Fix: The Redstone Module in a Laser Block does not respect ownership
 - Fix: Disabled option in laser blocks does not work properly
 - Fix: In the check password screen, using the enter key to press focused buttons does not work
 - Fix: The Username Logger sometimes cannot be activated by a short redstone signal
 - Fix: The Codebreaker sometimes loses durability when rightclicking a block even though no codebreaking attempt has been made
+- Fix: List module messages of the Display Case are not translated properly
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 

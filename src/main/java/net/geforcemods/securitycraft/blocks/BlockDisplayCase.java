@@ -185,11 +185,11 @@ public class BlockDisplayCase extends BlockOwnable {
 					else if (be.verifyPasswordSet(world, pos, be, player)) {
 						if (be.isDenied(player)) {
 							if (be.sendsMessages())
-								PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+								PlayerUtils.sendMessageToPlayer(player, Utils.localize(this), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 						}
 						else if (be.isAllowed(player)) {
 							if (be.sendsMessages())
-								PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+								PlayerUtils.sendMessageToPlayer(player, Utils.localize(this), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 							activate(be);
 						}
