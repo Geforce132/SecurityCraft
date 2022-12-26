@@ -36,6 +36,7 @@
 - Fix: The Username Logger sometimes cannot be activated by a short redstone signal
 - Fix: The Codebreaker sometimes loses durability when rightclicking a block even though no codebreaking attempt has been made
 - Fix: Taking an item out of a Display Case does not work when the offhand is not empty
+- Fix: Issues when unloading and saving chunks containing linkable block entities
 - Misc.: The minimum required Forge version is now 44.0.11
 
 --------------------------Changelog for v1.9.4-beta1 of SecurityCraft--------------------------
