@@ -56,7 +56,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 					CompoundTag toAppend = new CompoundTag();
 
 					if (block != null) {
-						if (!block.validate(level)) {
+						if (level.isLoaded(block.blockPos) && !block.validate(level)) {
 							linkedBlocks.remove(i);
 							continue;
 						}
@@ -78,7 +78,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	@Override
 	public void setRemoved() {
 		for (LinkedBlock block : linkedBlocks) {
-			LinkableBlockEntity.unlink(block.asBlockEntity(level), this);
+			if (level.isLoaded(block.blockPos))
+				LinkableBlockEntity.unlink(block.asBlockEntity(level), this);
 		}
 	}
 
