@@ -55,7 +55,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 					CompoundNBT toAppend = new CompoundNBT();
 
 					if (block != null) {
-						if (!block.validate(level)) {
+						if (level.isLoaded(block.blockPos) && !block.validate(level)) {
 							linkedBlocks.remove(i);
 							continue;
 						}
@@ -97,7 +97,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	@Override
 	public void setRemoved() {
 		for (LinkedBlock block : linkedBlocks) {
-			LinkableBlockEntity.unlink(block.asTileEntity(level), this);
+			if (level.isLoaded(block.blockPos))
+				LinkableBlockEntity.unlink(block.asTileEntity(level), this);
 		}
 	}
 
