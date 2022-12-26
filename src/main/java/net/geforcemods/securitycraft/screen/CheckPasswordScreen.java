@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -153,6 +154,12 @@ public class CheckPasswordScreen extends Screen {
 			return super.charTyped(typedChar, keyCode);
 
 		return true;
+	}
+
+	@Override
+	public void setFocused(GuiEventListener listener) {
+		if (!(listener instanceof AbstractWidget widget) || widget.isFocused())
+			super.setFocused(listener);
 	}
 
 	private boolean isValidChar(char c) {
