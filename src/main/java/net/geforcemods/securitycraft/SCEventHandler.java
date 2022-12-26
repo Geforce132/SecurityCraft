@@ -261,7 +261,7 @@ public class SCEventHandler {
 			}
 		}
 
-		if (block instanceof DisplayCaseBlock && event.getEntity().isShiftKeyDown() && event.getEntity().getMainHandItem().isEmpty() && !event.getEntity().getOffhandItem().isEmpty()) {
+		if (block instanceof DisplayCaseBlock && event.getEntity().isShiftKeyDown() && event.getPlayer().getMainHandItem().isEmpty() && !event.getPlayer().getOffhandItem().isEmpty()) {
 			event.setUseBlock(Result.ALLOW);
 			event.setUseItem(Result.DENY);
 			return;
