@@ -49,7 +49,7 @@ public abstract class TileEntityLinkable extends CustomizableSCTE implements ITi
 					NBTTagCompound toAppend = new NBTTagCompound();
 
 					if (block != null) {
-						if (!block.validate(world)) {
+						if (world.isBlockLoaded(block.blockPos) && !block.validate(world)) {
 							linkedBlocks.remove(i);
 							continue;
 						}
@@ -91,7 +91,8 @@ public abstract class TileEntityLinkable extends CustomizableSCTE implements ITi
 	@Override
 	public void invalidate() {
 		for (LinkedBlock block : linkedBlocks) {
-			TileEntityLinkable.unlink(block.asTileEntity(world), this);
+			if (world.isBlockLoaded(block.blockPos))
+				TileEntityLinkable.unlink(block.asTileEntity(world), this);
 		}
 	}
 
