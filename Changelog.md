@@ -24,14 +24,15 @@
 - Fix: Using /kill to remove a camera entity, or removing it by other non-standard means, does not update the camera block properly
 - Fix: Error when unbinding the last mine/sentry from a Mine/Sentry Remote Access Tool
 - Fix: Breaking an Inventory Scanner/Laser or one of its field does not break all fields, if the respective config setting is lower than the amount of fields present
-- Fix: Breaking an Inventory Scanner Fields with the inventoryScannerRange config setting set to >=3 does not break and reinstate all fields properly
-- Fix: Players that are on the allowlist of a Security Camera, cannot toggle the camera's redstone output
+- Fix: Breaking an Inventory Scanner Field with the inventoryScannerRange config setting set to >=3 does not break and reinstate all fields properly
+- Fix: Players that are on the allowlist of a Security Camera cannot toggle the camera's redstone output
 - Fix: The Redstone Module in a Laser Block does not respect ownership
 - Fix: Disabled option in laser blocks does not work properly
 - Fix: In the check password screen, using the enter key to press focused buttons does not work
 - Fix: Several instances of chunks not loading correctly when changing the view distance while viewing a camera
 - Fix: The Username Logger sometimes cannot be activated by a short redstone signal
 - Fix: The Codebreaker sometimes loses durability when rightclicking a block even though no codebreaking attempt has been made
+- Fix: Taking an item out of a Display Case does not work when the offhand is not empty
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
