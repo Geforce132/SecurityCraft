@@ -24,6 +24,7 @@ import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
+import net.geforcemods.securitycraft.blocks.BlockDisplayCase;
 import net.geforcemods.securitycraft.blocks.BlockRiftStabilizer;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.blocks.BlockSonicSecuritySystem;
@@ -342,6 +343,12 @@ public class SCEventHandler {
 				nameable.setCustomName(nametag.getDisplayName());
 
 			PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:naming.named", nameable.getDisplayName()), TextFormatting.GREEN);
+			return;
+		}
+
+		if (block instanceof BlockDisplayCase && event.getEntity().isSneaking() && event.getEntityPlayer().getHeldItemMainhand().isEmpty() && !event.getEntityPlayer().getHeldItemOffhand().isEmpty()) {
+			event.setUseBlock(Result.ALLOW);
+			event.setUseItem(Result.DENY);
 			return;
 		}
 
