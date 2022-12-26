@@ -29,6 +29,7 @@ import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.Tel
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
+import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
@@ -261,6 +262,12 @@ public class SCEventHandler {
 				PlayerUtils.sendMessageToPlayer(event.getEntity(), Component.translatable(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.named", nameable.getCustomName()), ChatFormatting.RED);
 				return;
 			}
+		}
+
+		if (block instanceof DisplayCaseBlock && event.getEntity().isShiftKeyDown() && event.getEntity().getMainHandItem().isEmpty() && !event.getEntity().getOffhandItem().isEmpty()) {
+			event.setUseBlock(Result.ALLOW);
+			event.setUseItem(Result.DENY);
+			return;
 		}
 
 		//outside !world.isRemote for properly checking the interaction
