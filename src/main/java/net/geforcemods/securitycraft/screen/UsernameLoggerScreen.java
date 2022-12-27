@@ -117,10 +117,10 @@ public class UsernameLoggerScreen extends Screen {
 
 		@Override
 		protected int getContentHeight() {
-			int height = 50 + (be.players.length * font.lineHeight);
+			int height = be.players.length * (font.lineHeight + 3);
 
-			if (height < bottom - top - 8)
-				height = bottom - top - 8;
+			if (height < bottom - top - 4)
+				height = bottom - top - 4;
 
 			return height;
 		}
