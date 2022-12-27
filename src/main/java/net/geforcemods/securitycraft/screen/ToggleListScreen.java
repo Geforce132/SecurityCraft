@@ -125,7 +125,7 @@ public class ToggleListScreen<T> extends Screen {
 
 		@Override
 		protected int getContentHeight() {
-			int height = listLength * (Minecraft.getInstance().font.lineHeight + 3);
+			int height = listLength * (font.lineHeight + 3);
 
 			if (height < bottom - top - 4)
 				height = bottom - top - 4;
