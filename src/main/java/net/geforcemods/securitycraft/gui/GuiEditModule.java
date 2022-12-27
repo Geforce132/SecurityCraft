@@ -434,15 +434,15 @@ public class GuiEditModule extends GuiContainer implements GuiResponder {
 
 		@Override
 		public int getSize() {
-			return listHeight;
+			return listLength;
 		}
 
 		@Override
 		public int getContentHeight() {
 			int height = getSize() * (font.FONT_HEIGHT + 3);
 
-			if (height < bottom - top - 8)
-				height = bottom - top - 8;
+			if (height < bottom - top - 4)
+				height = bottom - top - 4;
 
 			return height;
 		}

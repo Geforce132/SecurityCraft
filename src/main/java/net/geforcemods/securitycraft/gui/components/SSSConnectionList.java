@@ -62,8 +62,8 @@ public class SSSConnectionList<T extends GuiScreen & ConnectionAccessor> extends
 	public int getContentHeight() {
 		int height = connectionInfo.size() * 12;
 
-		if (height < bottom - top - 8)
-			height = bottom - top - 8;
+		if (height < bottom - top - 4)
+			height = bottom - top - 4;
 
 		return height;
 	}

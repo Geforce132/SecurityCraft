@@ -151,7 +151,7 @@ public abstract class ColorableScrollPanel {
 	}
 
 	public void applyScrollLimits() {
-		int listHeight = getContentHeight() - (bottom - top - 7);
+		int listHeight = getContentHeight() - (bottom - top - 4);
 
 		if (listHeight < 0)
 			listHeight /= 2;

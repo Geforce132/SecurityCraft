@@ -656,8 +656,8 @@ public class GuiSCManual extends GuiScreen {
 		public int getContentHeight() {
 			int height = patrons.size() * (fontRenderer.FONT_HEIGHT + 3);
 
-			if (height < bottom - top - 8)
-				height = bottom - top - 8;
+			if (height < bottom - top - 4)
+				height = bottom - top - 4;
 
 			return height;
 		}

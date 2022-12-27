@@ -33,6 +33,7 @@
 - Fix: List module messages of the Display Case are not translated properly
 - Fix: Taking an item out of a Display Case does not work when the offhand is not empty
 - Fix: Issues when unloading and saving chunks containing linkable block entities
+- Fix: Some scroll lists can be scrolled a tiny bit even though there is no scrollbar
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
