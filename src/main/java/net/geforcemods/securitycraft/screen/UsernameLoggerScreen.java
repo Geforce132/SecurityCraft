@@ -181,7 +181,7 @@ public class UsernameLoggerScreen extends Screen {
 			//draw entry strings
 			for (int i = 0; i < be.players.length; i++) {
 				if (be.players[i] != null && !be.players[i].equals(""))
-					font.draw(pose, be.players[i] + " " + i, left + width / 2 - font.width(be.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
+					font.draw(pose, be.players[i], left + width / 2 - font.width(be.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
 			}
 		}
 
