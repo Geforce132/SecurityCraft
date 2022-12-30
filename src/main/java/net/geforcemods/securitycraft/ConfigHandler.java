@@ -206,7 +206,7 @@ public class ConfigHandler {
 
 	@SubscribeEvent
 	public static void onModConfig(ModConfigEvent event) {
-		if (event.getConfig().getSpec() == SERVER_SPEC) {
+		if (event.getConfig().getSpec() == SERVER_SPEC && SERVER_SPEC.isLoaded()) {
 			loadEffects(SERVER.taserEffectsValue, SERVER.taserEffects);
 			loadEffects(SERVER.poweredTaserEffectsValue, SERVER.poweredTaserEffects);
 		}
