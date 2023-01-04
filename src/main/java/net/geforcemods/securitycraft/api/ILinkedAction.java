@@ -40,5 +40,5 @@ public sealed interface ILinkedAction permits OptionChanged, ModuleInserted, Mod
 	/**
 	 * Used when a property of the {@link BlockState} at the block entity's position changes
 	 */
-	public static final record StateChanged(Property<?> property) implements ILinkedAction {}
+	public static final record StateChanged<T extends Comparable<T>> (Property<T> property, T oldValue, T newValue) implements ILinkedAction {}
 }
