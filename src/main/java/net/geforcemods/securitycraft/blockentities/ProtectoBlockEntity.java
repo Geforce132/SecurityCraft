@@ -50,7 +50,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 				for (LivingEntity entity : entities) {
 					if (!(entity instanceof Sentry) && !EntityUtils.isInvisible(entity)) {
 						if (entity instanceof Player player) {
-							if (!entity.canBeSeenAsEnemy() || (isOwnedBy(player) && ignoresOwner()) || isAllowed(entity))
+							if (player.isCreative() || player.isSpectator() || (isOwnedBy(player) && ignoresOwner()) || isAllowed(entity))
 								continue;
 						}
 

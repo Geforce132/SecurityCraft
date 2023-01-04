@@ -49,7 +49,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 
 			ServerPlayer owner = level.getServer().getPlayerList().getPlayerByName(getOwner().getName());
 			AABB area = new AABB(pos).inflate(getSearchRadius());
-			List<Player> entities = level.getEntitiesOfClass(Player.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && e.canBeSeenByAnyone() && !EntityUtils.isInvisible(e));
+			List<Player> entities = level.getEntitiesOfClass(Player.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && !e.isSpectator() && !EntityUtils.isInvisible(e));
 
 			if (isModuleEnabled(ModuleType.REDSTONE))
 				PortableRadarBlock.togglePowerOutput(level, pos, !entities.isEmpty());

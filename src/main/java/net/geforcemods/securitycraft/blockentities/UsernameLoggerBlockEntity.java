@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -42,7 +41,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		if (cooldown > 0)
 			cooldown--;
 		else if (level.getBestNeighborSignal(pos) > 0) {
-			level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get()), LivingEntity::canBeSeenByAnyone).forEach(this::addPlayer);
+			level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get()), e -> !e.isSpectator()).forEach(this::addPlayer);
 			syncLoggedPlayersToClient();
 			cooldown = TICKS_BETWEEN_ATTACKS;
 		}

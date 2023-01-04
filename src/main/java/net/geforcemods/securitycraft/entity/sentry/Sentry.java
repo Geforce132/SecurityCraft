@@ -329,7 +329,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		//don't shoot if somehow a non player is a target, or if the player is in spectator or creative mode
-		if (target instanceof Player player && !player.canBeSeenAsEnemy())
+		if (target instanceof Player player && (player.isSpectator() || player.isCreative()))
 			return;
 
 		//also don't shoot if the target is too far away
