@@ -40,6 +40,8 @@
 - Fix: Some scroll lists can be scrolled a tiny bit even though there is no scrollbar
 - Fix: Some scroll lists cannot be scrolled far enough to show all entries
 - Fix: Some mines explode when detecting a player in creative mode
+- Fix: Laser blocks that are indirectly connected to a laser field detecting an entity don't activate
+- Fix: Laser fields can activate disconnected laser blocks in some circumstances
 - Misc.: The minimum required Forge version is now 44.0.11
 
 --------------------------Changelog for v1.9.4-beta1 of SecurityCraft--------------------------
