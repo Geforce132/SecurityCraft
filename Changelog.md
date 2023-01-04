@@ -16,6 +16,7 @@
 - API: New methods IPasswordProtected#startCooldown, IPasswordProtected#isOnCooldown IPasswordProtected#getCooldownEnd, and IPasswordProtected#getIncorrectPasscodeDamage
 - API: New method IPasswordProtected#verifyPasswordSet which returns whether a password has been set for this IPasswordProtected
 - API: Removed the IOwnable parameter from IPasswordProtected#setPasswordGUI because the relevant code has been moved to IPasswordProtected#verifyPasswordSet
+- API: New linked action ILinkedAction#StateChanged which is used when the state at the linkable block entity's position changes
 - Fix: The Reinforced Water Cauldron and Reinforced Grass Block don't have a reinforced tint
 - Fix: Reinforced Stained Glass Pane items display incorrectly
 - Fix: The Reinforced Moss Carpet has a different sound compared to the vanilla Moss Carpet

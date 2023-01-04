@@ -69,7 +69,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 			setOwner(owner.getUUID(), owner.getName());
 		}
-		else if (action instanceof ILinkedAction.StateChanged stateChanged) {
+		else if (action instanceof ILinkedAction.StateChanged<?> stateChanged) {
 			BlockState state = getBlockState();
 
 			if (stateChanged.property() == LaserBlock.POWERED && !state.getValue(LaserBlock.POWERED)) {
