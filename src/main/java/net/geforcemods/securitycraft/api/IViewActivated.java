@@ -30,7 +30,7 @@ public interface IViewActivated {
 			return;
 		}
 
-		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(5), e -> !e.isSpectator() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof Player));
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(5), e -> e.canBeSeenByAnyone() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof Player));
 
 		for (LivingEntity entity : entities) {
 			double eyeHeight = entity.getEyeHeight();
