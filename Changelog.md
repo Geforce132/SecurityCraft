@@ -36,6 +36,7 @@
 - Fix: Issues when unloading and saving chunks containing linkable block entities
 - Fix: Some scroll lists can be scrolled a tiny bit even though there is no scrollbar
 - Fix: Some scroll lists cannot be scrolled far enough to show all entries
+- Fix: Some mines explode when detecting a player in creative mode
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
