@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
@@ -52,39 +53,55 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay {
 			if (!getShape(state, world, pos, ISelectionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
 				return;
 
-			for (Direction facing : Direction.values()) {
-				for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
-					BlockPos offsetPos = pos.relative(facing, i);
-					BlockState offsetState = world.getBlockState(offsetPos);
-					Block offsetBlock = offsetState.getBlock();
+			for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
+				BlockPos offsetPos = pos.relative(getFieldDirection(state), i);
+				BlockState offsetState = world.getBlockState(offsetPos);
+				Block offsetBlock = offsetState.getBlock();
 
-					if (offsetBlock == SCContent.LASER_BLOCK.get()) {
-						TileEntity te = world.getBlockEntity(offsetPos);
+				if (offsetBlock == SCContent.LASER_BLOCK.get()) {
+					TileEntity te = world.getBlockEntity(offsetPos);
 
-						if (te instanceof LaserBlockBlockEntity) {
-							LaserBlockBlockEntity laser = (LaserBlockBlockEntity) te;
+					if (te instanceof LaserBlockBlockEntity) {
+						LaserBlockBlockEntity laser = (LaserBlockBlockEntity) te;
 
-							if (laser.isAllowed(entity))
-								return;
+						if (laser.isAllowed(entity))
+							return;
 
-							if (!(entity instanceof PlayerEntity && laser.isOwnedBy((PlayerEntity) entity) && laser.ignoresOwner())) {
-								if (laser.isModuleEnabled(ModuleType.REDSTONE) && !offsetState.getValue(LaserBlock.POWERED)) {
-									world.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
-									BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.LASER_BLOCK.get());
-									world.getBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
-								}
+						if (!(entity instanceof PlayerEntity && laser.isOwnedBy((PlayerEntity) entity) && laser.ignoresOwner())) {
+							if (laser.isModuleEnabled(ModuleType.REDSTONE) && !offsetState.getValue(LaserBlock.POWERED)) {
+								world.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
+								BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.LASER_BLOCK.get());
+								world.getBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
+								laser.createLinkedBlockAction(new ILinkedAction.StateChanged<>(LaserBlock.POWERED, false, true), laser);
+							}
 
-								if (laser.isModuleEnabled(ModuleType.HARMING)) {
-									double damage = ConfigHandler.SERVER.laserDamage.get();
+							if (laser.isModuleEnabled(ModuleType.HARMING)) {
+								double damage = ConfigHandler.SERVER.laserDamage.get();
 
-									((LivingEntity) entity).hurt(CustomDamageSources.LASER, (float) damage);
-								}
+								((LivingEntity) entity).hurt(CustomDamageSources.LASER, (float) damage);
 							}
 						}
+
+						break;
 					}
 				}
 			}
 		}
+	}
+
+	public static Direction getFieldDirection(BlockState state) {
+		if (state.getBlock() instanceof LaserFieldBlock) {
+			int boundType = state.getValue(BOUNDTYPE);
+
+			if (boundType == 1)
+				return Direction.UP;
+			else if (boundType == 2)
+				return Direction.SOUTH;
+			else if (boundType == 3)
+				return Direction.EAST;
+		}
+
+		return null;
 	}
 
 	@Override
