@@ -87,6 +87,15 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 			setOwner(owner.getUUID(), owner.getName());
 		}
+		else if (action instanceof ILinkedAction.StateChanged<?> stateChanged) {
+			BlockState state = getBlockState();
+
+			if (stateChanged.property() == LaserBlock.POWERED && !state.getValue(LaserBlock.POWERED)) {
+				level.setBlockAndUpdate(worldPosition, state.setValue(LaserBlock.POWERED, true));
+				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
+				level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), 50);
+			}
+		}
 
 		excludedBEs.add(this);
 		createLinkedBlockAction(action, excludedBEs);
