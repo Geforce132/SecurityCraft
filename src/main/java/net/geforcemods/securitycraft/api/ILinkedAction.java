@@ -3,6 +3,8 @@ package net.geforcemods.securitycraft.api;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 
 /**
  * A simple interface which contains all the possible actions for LinkableBlockEntity.onLinkedBlockAction().
@@ -29,4 +31,9 @@ public interface ILinkedAction {
 	 * Used when the {@link Owner} of a block entity changes
 	 */
 	public static final record OwnerChanged(Owner newOwner) implements ILinkedAction {}
+
+	/**
+	 * Used when a property of the {@link BlockState} at the block entity's position changes
+	 */
+	public static final record StateChanged<T extends Comparable<T>> (Property<T> property, T oldValue, T newValue) implements ILinkedAction {}
 }

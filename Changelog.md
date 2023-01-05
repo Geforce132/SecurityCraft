@@ -16,6 +16,7 @@
 - API: New methods IPasswordProtected#startCooldown, IPasswordProtected#isOnCooldown IPasswordProtected#getCooldownEnd, and IPasswordProtected#getIncorrectPasscodeDamage
 - API: New method IPasswordProtected#verifyPasswordSet which returns whether a password has been set for this IPasswordProtected
 - API: Removed the IOwnable parameter from IPasswordProtected#setPasswordGUI because the relevant code has been moved to IPasswordProtected#verifyPasswordSet
+- API: New linked action ILinkedAction#StateChanged which is used when the state at the linkable block entity's position changes
 - Fix: The Reinforced Water Cauldron and Reinforced Grass Block don't have a reinforced tint
 - Fix: The Reinforced Moss Carpet has a different sound compared to the vanilla Moss Carpet
 - Fix: Crash when inserting a module into a single Inventory Scanner
@@ -37,6 +38,8 @@
 - Fix: Some scroll lists can be scrolled a tiny bit even though there is no scrollbar
 - Fix: Some scroll lists cannot be scrolled far enough to show all entries
 - Fix: Some mines explode when detecting a player in creative mode
+- Fix: Laser blocks that are indirectly connected to a laser field detecting an entity don't activate
+- Fix: Laser fields can activate disconnected laser blocks in some circumstances
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
