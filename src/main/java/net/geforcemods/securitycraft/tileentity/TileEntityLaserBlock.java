@@ -76,6 +76,15 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 
 			setOwner(owner.getUUID(), owner.getName());
 		}
+		else if (action instanceof ILinkedAction.StateChanged<?>) {
+			IBlockState state = world.getBlockState(pos);
+
+			if (((ILinkedAction.StateChanged<?>) action).property == BlockLaserBlock.POWERED && !state.getValue(BlockLaserBlock.POWERED)) {
+				world.setBlockState(pos, state.withProperty(BlockLaserBlock.POWERED, true));
+				BlockUtils.updateIndirectNeighbors(world, pos, SCContent.laserBlock);
+				world.scheduleUpdate(pos, SCContent.laserBlock, 50);
+			}
+		}
 
 		excludedTEs.add(this);
 		createLinkedBlockAction(action, excludedTEs);

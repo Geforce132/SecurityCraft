@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -57,6 +59,21 @@ public interface ILinkedAction {
 
 		public OwnerChanged(Owner newOwner) {
 			this.newOwner = newOwner;
+		}
+	}
+
+	/**
+	 * Used when a property of the {@link IBlockState} at the block entity's position changes
+	 */
+	public static final class StateChanged<T extends Comparable<T>> implements ILinkedAction {
+		public final IProperty<T> property;
+		public final T oldValue;
+		public final T newValue;
+
+		public StateChanged(IProperty<T> property, T oldValue, T newValue) {
+			this.property = property;
+			this.oldValue = oldValue;
+			this.newValue = newValue;
 		}
 	}
 }

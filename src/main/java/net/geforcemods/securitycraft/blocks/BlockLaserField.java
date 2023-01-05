@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -82,36 +83,52 @@ public class BlockLaserField extends BlockOwnable implements IOverlayDisplay {
 			if (!state.getBoundingBox(world, pos).offset(pos).intersects(entity.getEntityBoundingBox()))
 				return;
 
-			for (EnumFacing facing : EnumFacing.VALUES) {
-				for (int i = 0; i < ConfigHandler.laserBlockRange; i++) {
-					BlockPos offsetPos = pos.offset(facing, i);
-					IBlockState offsetState = world.getBlockState(offsetPos);
-					Block block = offsetState.getBlock();
+			for (int i = 0; i < ConfigHandler.laserBlockRange; i++) {
+				BlockPos offsetPos = pos.offset(getFieldDirection(state), i);
+				IBlockState offsetState = world.getBlockState(offsetPos);
+				Block block = offsetState.getBlock();
 
-					if (block == SCContent.laserBlock) {
-						TileEntity te = world.getTileEntity(offsetPos);
+				if (block == SCContent.laserBlock) {
+					TileEntity te = world.getTileEntity(offsetPos);
 
-						if (te instanceof TileEntityLaserBlock) {
-							TileEntityLaserBlock laser = (TileEntityLaserBlock) te;
+					if (te instanceof TileEntityLaserBlock) {
+						TileEntityLaserBlock laser = (TileEntityLaserBlock) te;
 
-							if (laser.isAllowed(entity))
-								return;
+						if (laser.isAllowed(entity))
+							return;
 
-							if (!(entity instanceof EntityPlayer && laser.isOwnedBy((EntityPlayer) entity) && laser.ignoresOwner())) {
-								if (laser.isModuleEnabled(EnumModuleType.REDSTONE) && !offsetState.getValue(BlockLaserBlock.POWERED)) {
-									world.setBlockState(offsetPos, offsetState.withProperty(BlockLaserBlock.POWERED, true));
-									BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.laserBlock);
-									world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
-								}
-
-								if (laser.isModuleEnabled(EnumModuleType.HARMING))
-									((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.LASER, (float) ConfigHandler.laserDamage);
+						if (!(entity instanceof EntityPlayer && laser.isOwnedBy((EntityPlayer) entity) && laser.ignoresOwner())) {
+							if (laser.isModuleEnabled(EnumModuleType.REDSTONE) && !offsetState.getValue(BlockLaserBlock.POWERED)) {
+								world.setBlockState(offsetPos, offsetState.withProperty(BlockLaserBlock.POWERED, true));
+								BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.laserBlock);
+								world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
+								laser.createLinkedBlockAction(new ILinkedAction.StateChanged<>(BlockLaserBlock.POWERED, false, true), laser);
 							}
+
+							if (laser.isModuleEnabled(EnumModuleType.HARMING))
+								((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.LASER, (float) ConfigHandler.laserDamage);
 						}
+
+						break;
 					}
 				}
 			}
 		}
+	}
+
+	public static EnumFacing getFieldDirection(IBlockState state) {
+		if (state.getBlock() instanceof BlockLaserField) {
+			int boundType = state.getValue(BOUNDTYPE);
+
+			if (boundType == 1)
+				return EnumFacing.UP;
+			else if (boundType == 2)
+				return EnumFacing.SOUTH;
+			else if (boundType == 3)
+				return EnumFacing.EAST;
+		}
+
+		return null;
 	}
 
 	@Override
