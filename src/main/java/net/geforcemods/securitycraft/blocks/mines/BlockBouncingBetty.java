@@ -65,7 +65,7 @@ public class BlockBouncingBetty extends BlockExplosive {
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if (!state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()))
 			return;
-		else if (!EntityUtils.doesEntityOwn(entity, world, pos))
+		else if (!EntityUtils.doesEntityOwn(entity, world, pos) && !(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative()))
 			explode(world, pos);
 	}
 

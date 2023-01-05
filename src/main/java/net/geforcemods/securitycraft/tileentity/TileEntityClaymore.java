@@ -54,7 +54,7 @@ public class TileEntityClaymore extends CustomizableSCTE implements ITickable {
 			else if (dir == EnumFacing.WEST)
 				area = area.contract(range.get(), -0, -0);
 
-			getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area, e -> !EntityUtils.isInvisible(e) && (!(e instanceof EntityPlayer) || !((EntityPlayer) e).isSpectator()) && !(EntityUtils.doesEntityOwn(e, world, pos) && ignoresOwner())).stream().findFirst().ifPresent(entity -> {
+			getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area, e -> !EntityUtils.isInvisible(e) && !(e instanceof EntityPlayer && (((EntityPlayer) e).isCreative() || ((EntityPlayer) e).isSpectator())) && !(EntityUtils.doesEntityOwn(e, world, pos) && ignoresOwner())).stream().findFirst().ifPresent(entity -> {
 				cooldown = 20;
 				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			});

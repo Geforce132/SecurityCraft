@@ -56,12 +56,13 @@ public class BlockFullMineBase extends BlockExplosive implements IOverlayDisplay
 			return;
 		}
 		else if (entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entity;
 			TileEntity te = world.getTileEntity(pos);
 
 			if (te instanceof TileEntityOwnable) {
 				TileEntityOwnable ownableTe = (TileEntityOwnable) te;
 
-				if (ownableTe.isOwnedBy((EntityPlayer) entity)) {
+				if (ownableTe.isOwnedBy(player) || player.isCreative()) {
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
 					return;
 				}

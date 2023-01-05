@@ -85,7 +85,7 @@ public class BlockMine extends BlockExplosive {
 			return;
 		else if (!state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()))
 			return;
-		else if (!EntityUtils.doesEntityOwn(entity, world, pos))
+		else if (!EntityUtils.doesEntityOwn(entity, world, pos) && !(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative()))
 			explode(world, pos);
 	}
 
