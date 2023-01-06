@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
+import net.geforcemods.securitycraft.misc.BlockEntityNBTCondition;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -54,6 +55,7 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 		lootTables.remove(SCContent.REINFORCED_PISTON_HEAD);
 		putMineLootTable(SCContent.ANCIENT_DEBRIS_MINE);
 		putSlabLootTable(SCContent.CRYSTAL_QUARTZ_SLAB);
+		putSlabLootTable(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB);
 
 		LootPoolSingletonContainer.Builder<?> imsLootEntryBuilder = LootItem.lootTableItem(SCContent.BOUNCING_BETTY.get());
 
@@ -76,13 +78,13 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 		putStandardBlockLootTable(SCContent.KEYPAD_CHEST);
 		putDoorLootTable(SCContent.KEYPAD_DOOR, SCContent.KEYPAD_DOOR_ITEM);
 		putDoorLootTable(SCContent.REINFORCED_DOOR, SCContent.REINFORCED_DOOR_ITEM);
-//		lootTables.put(SCContent.REINFORCED_IRON_BARS,
-//				LootTable.lootTable()
-//				.withPool(LootPool.lootPool()
-//						.setRolls(ConstantValue.exactly(1))
-//						.add(LootItem.lootTableItem(SCContent.REINFORCED_IRON_BARS.get())
-//								.when(BlockEntityNBTCondition.builder().equals("canDrop", true)))
-//						.when(ExplosionCondition.survivesExplosion())));
+		lootTables.put(SCContent.REINFORCED_IRON_BARS,
+				LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+						.setRolls(ConstantValue.exactly(1))
+						.add(LootItem.lootTableItem(SCContent.REINFORCED_IRON_BARS.get())
+								.when(BlockEntityNBTCondition.builder().equals("canDrop", true)))
+						.when(ExplosionCondition.survivesExplosion())));
 		lootTables.put(SCContent.REINFORCED_LAVA_CAULDRON, createStandardBlockLootTable(SCContent.REINFORCED_CAULDRON));
 		lootTables.put(SCContent.REINFORCED_POWDER_SNOW_CAULDRON, createStandardBlockLootTable(SCContent.REINFORCED_CAULDRON));
 		lootTables.put(SCContent.REINFORCED_WATER_CAULDRON, createStandardBlockLootTable(SCContent.REINFORCED_CAULDRON));
@@ -107,7 +109,8 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 		putStandardBlockLootTable(SCContent.SECRET_WARPED_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_WARPED_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECURITY_CAMERA);
-		putStandardBlockLootTable(SCContent.STAIRS_CRYSTAL_QUARTZ);
+		putStandardBlockLootTable(SCContent.CRYSTAL_QUARTZ_STAIRS);
+		putStandardBlockLootTable(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS);
 		lootTables.put(SCContent.SONIC_SECURITY_SYSTEM, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))

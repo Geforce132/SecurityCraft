@@ -7,7 +7,7 @@ import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.models.SentryModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -36,7 +36,7 @@ public class SentryRenderer extends EntityRenderer<Sentry> {
 		RenderSystem._setShaderTexture(0, getTextureLocation(entity));
 		model.renderBase(pose, builder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		pose.mulPose(Axis.YP.rotationDegrees(entity.getEntityData().get(Sentry.HEAD_ROTATION)));
-		pose.translate(0.0F, entity.getHeadYTranslation(), 0.0F);
+		pose.translate(0.0F, entity.getHeadYTranslation(partialTicks), 0.0F);
 		model.renderToBuffer(pose, builder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		pose.popPose();
 	}

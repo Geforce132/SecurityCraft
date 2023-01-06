@@ -34,7 +34,7 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	public InventoryScannerScreen(InventoryScannerMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 		be = menu.be;
-		owns = be.getOwner().isOwner(inv.player);
+		owns = be.isOwnedBy(inv.player);
 		hasRedstoneModule = be.isModuleEnabled(ModuleType.REDSTONE);
 		hasStorageModule = be.isModuleEnabled(ModuleType.STORAGE);
 		infoStringRedstone = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (hasRedstoneModule ? "yes" : "no")));
@@ -64,7 +64,7 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	@Override
 	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
 		font.draw(pose, prohibitedItems, 8, 6, 4210752);
-		font.draw(pose, be.getOwner().isOwner(minecraft.player) ? adminMode : viewMode, 112, 6, 4210752);
+		font.draw(pose, be.isOwnedBy(minecraft.player) ? adminMode : viewMode, 112, 6, 4210752);
 
 		if (hasStorageModule && owns)
 			font.draw(pose, storage, 188, 18, 4210752);

@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
@@ -45,9 +44,9 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 			if (level.getBlockEntity(pos) instanceof BlockPocketBlockEntity be) {
 				if (be.getManager() == null)
 					return Shapes.empty();
-				else if (ModuleUtils.isAllowed(be.getManager(), player))
+				else if (be.getManager().isAllowed(player))
 					return Shapes.empty();
-				else if (!be.getOwner().isOwner(player))
+				else if (!be.isOwnedBy(player))
 					return Shapes.block();
 				else
 					return Shapes.empty();

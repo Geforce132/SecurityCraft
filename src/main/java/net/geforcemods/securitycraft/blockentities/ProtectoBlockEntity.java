@@ -5,13 +5,13 @@ import java.util.List;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
-import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -27,6 +27,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 	private int cooldown = 0;
 	private int ticksBetweenAttacks = isModuleEnabled(ModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
 	private DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 
 	public ProtectoBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.PROTECTO_BLOCK_ENTITY.get(), pos, state);
@@ -49,12 +50,12 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 				for (LivingEntity entity : entities) {
 					if (!(entity instanceof Sentry) && !EntityUtils.isInvisible(entity)) {
 						if (entity instanceof Player player) {
-							if (player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
+							if (player.isCreative() || player.isSpectator() || (isOwnedBy(player) && ignoresOwner()) || isAllowed(entity))
 								continue;
 						}
 
 						if (!level.isClientSide)
-							LevelUtils.spawnLightning(level, entity.position(), false);
+							level.addFreshEntity(LevelUtils.createLightning(level, entity.position(), false));
 
 						shouldDeactivate = true;
 					}
@@ -96,11 +97,15 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				disabled
+				disabled, ignoreOwner
 		};
 	}
 
 	public boolean isDisabled() {
 		return disabled.get();
+	}
+
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
 	}
 }

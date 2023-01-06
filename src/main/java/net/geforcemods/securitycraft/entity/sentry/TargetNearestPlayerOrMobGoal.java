@@ -1,11 +1,10 @@
-package net.geforcemods.securitycraft.entity.ai;
+package net.geforcemods.securitycraft.entity.sentry;
 
 import java.util.Collections;
 import java.util.List;
 
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
-import net.geforcemods.securitycraft.entity.Sentry;
-import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
+import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.FlyingMob;
@@ -31,11 +30,12 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 
 	@Override
 	public boolean canUse() {
+		if (sentry.isShutDown())
+			return false;
+
 		List<LivingEntity> list = mob.level.<LivingEntity>getEntitiesOfClass(targetType, getTargetSearchArea(getFollowDistance()), e -> sentry.getSensing().hasLineOfSight(e) && !EntityUtils.isInvisible(e));
 
-		if (list.isEmpty() || sentry.isShutDown())
-			return false;
-		else {
+		if (!list.isEmpty()) {
 			SentryMode mode = sentry.getMode();
 			int i;
 
@@ -61,16 +61,15 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 					if (potentialTarget instanceof Player player
 							&& !player.isSpectator()
 							&& !player.isCreative()
-							&& !((Sentry) mob).getOwner().isOwner(player)
+							&& !((Sentry) mob).isOwnedBy(player)
 							&& !sentry.isTargetingAllowedPlayer(potentialTarget)) {
 						break;
 					}
 					//@formatter:on
 				}
 
-				if (mode.attacksHostile() && isSupportedTarget(potentialTarget)) {
+				if (mode.attacksHostile() && isSupportedTarget(potentialTarget))
 					break;
-				}
 			}
 
 			if (i < list.size()) {
@@ -80,9 +79,9 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 					return true;
 				}
 			}
-
-			return false;
 		}
+
+		return false;
 	}
 
 	@Override

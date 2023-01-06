@@ -29,13 +29,14 @@ import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.Tel
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
+import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
-import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -46,7 +47,6 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -230,7 +230,7 @@ public class SCEventHandler {
 
 			if (PlayerUtils.isHoldingItem(event.getEntity(), SCContent.KEY_PANEL, event.getHand())) {
 				for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
-					if (pc.getOriginalBlock() == block) {
+					if (pc.isValidStateForConversion(state)) {
 						event.setUseBlock(Result.DENY);
 						event.setUseItem(Result.ALLOW);
 					}
@@ -262,6 +262,12 @@ public class SCEventHandler {
 				PlayerUtils.sendMessageToPlayer(event.getEntity(), Component.translatable(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.named", nameable.getCustomName()), ChatFormatting.RED);
 				return;
 			}
+		}
+
+		if (block instanceof DisplayCaseBlock && event.getEntity().isShiftKeyDown() && event.getEntity().getMainHandItem().isEmpty() && !event.getEntity().getOffhandItem().isEmpty()) {
+			event.setUseBlock(Result.ALLOW);
+			event.setUseItem(Result.DENY);
+			return;
 		}
 
 		//outside !world.isRemote for properly checking the interaction
@@ -411,7 +417,7 @@ public class SCEventHandler {
 		blockEntities = blockEntities.stream().distinct().sorted(Comparator.comparingDouble(b -> Math.min(b.getBlockPos().distToCenterSqr(event.getTarget()), b.getBlockPos().distToCenterSqr(event.getPrev())))).toList();
 
 		for (RiftStabilizerBlockEntity be : blockEntities) {
-			if (!be.isDisabled() && be.getFilter(type) && (!(entity instanceof Player player) || !be.getOwner().isOwner(player) && !ModuleUtils.isAllowed(be, player))) {
+			if (!be.isDisabled() && be.getFilter(type) && (!(entity instanceof Player player) || !(be.isOwnedBy(player) && be.ignoresOwner()) && !be.isAllowed(player))) {
 				riftStabilizer = be;
 				targetPosProhibited = be.getBlockPos().distToCenterSqr(event.getTarget()) < be.getBlockPos().distToCenterSqr(event.getPrev());
 				break;
@@ -491,19 +497,19 @@ public class SCEventHandler {
 				ItemStack stackInHand = player.getItemInHand(event.getHand());
 				BlockState state = level.getBlockState(pos);
 
+				if (!codebreakable.shouldAttemptCodebreak(state, player))
+					return true;
+
 				if (stackInHand.is(SCContent.CODEBREAKER.get()))
 					stackInHand.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
-
-				if (!codebreakable.shouldAttemptCodebreak(state, player))
-					return false;
 
 				if (player.isCreative() || new Random().nextDouble() < chance)
 					codebreakable.useCodebreaker(state, player);
 				else
 					PlayerUtils.sendMessageToPlayer(player, Component.translatable(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
-
-				return true;
 			}
+
+			return true;
 		}
 
 		return false;

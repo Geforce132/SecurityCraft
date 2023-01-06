@@ -1,10 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "building",
   "group": "securitycraft:stairs",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_quartz_block"
-    }
+    "B": [
+      {
+        "item": "securitycraft:reinforced_quartz_block"
+      },
+      {
+        "item": "securitycraft:reinforced_quartz_pillar"
+      },
+      {
+        "item": "securitycraft:reinforced_chiseled_quartz_block"
+      }
+    ]
   },
   "pattern": [
     "B  ",

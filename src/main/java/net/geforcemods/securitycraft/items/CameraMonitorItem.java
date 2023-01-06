@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -47,7 +46,7 @@ public class CameraMonitorItem extends Item {
 		if (level.getBlockState(pos).getBlock() == SCContent.SECURITY_CAMERA.get() && !PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) level.getBlockEntity(pos);
 
-			if (!be.getOwner().isOwner(player) && !ModuleUtils.isAllowed(be, player)) {
+			if (!be.isOwnedBy(player) && !be.isAllowed(player)) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cannotView"), ChatFormatting.RED);
 				return InteractionResult.FAIL;
 			}
@@ -70,7 +69,7 @@ public class CameraMonitorItem extends Item {
 					break;
 				}
 
-			if (!level.isClientSide)
+			if (!level.isClientSide && !stack.isEmpty())
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
 			return InteractionResult.SUCCESS;

@@ -46,13 +46,13 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 
 	@Override
 	public TextureAtlasSprite getParticleIcon(ModelData modelData) {
-		BlockState state = modelData.get(DISGUISED_STATE);
+		BlockState disguisedState = modelData.get(DISGUISED_STATE);
 
-		if (state != null) {
-			Block block = state.getBlock();
+		if (disguisedState != null) {
+			Block block = disguisedState.getBlock();
 
 			if (block != Blocks.AIR) {
-				BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(state);
+				BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
 
 				if (model != null && model != this)
 					return model.getParticleIcon(modelData);
@@ -72,7 +72,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 		BlockState disguisedState = modelData.get(DISGUISED_STATE);
 
 		if (disguisedState != null) {
-			Block block = state.getBlock();
+			Block block = disguisedState.getBlock();
 
 			if (block != Blocks.AIR) {
 				BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);

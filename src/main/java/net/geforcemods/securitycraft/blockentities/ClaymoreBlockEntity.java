@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blockentities;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -14,12 +15,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	private IntOption range = new IntOption(this::getBlockPos, "range", 5, 1, 10, 1, true);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private int cooldown = -1;
 
 	public ClaymoreBlockEntity(BlockPos pos, BlockState state) {
@@ -50,7 +53,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 			default -> new AABB(pos);
 		};
 
-		level.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !e.isSpectator() && !EntityUtils.doesEntityOwn(e, level, pos)).stream().findFirst().ifPresent(entity -> {
+		level.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !(e instanceof Player player && player.isCreative()) && !e.isSpectator() && !(EntityUtils.doesEntityOwn(e, level, pos) && ignoresOwner())).stream().findFirst().ifPresent(entity -> {
 			cooldown = 20;
 			level.playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
 		});
@@ -74,12 +77,16 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range
+				range, ignoreOwner
 		};
 	}
 
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[0];
+	}
+
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
 	}
 }

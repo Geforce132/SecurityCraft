@@ -74,9 +74,26 @@ public class IronFenceBlock extends OwnableBlock {
 		VoxelShape voxelshape4 = Block.box(f2, extensionBottom, f2, 16.0D, extensionHeight, f3);
 		VoxelShape voxelshape5 = Shapes.or(voxelshape1, voxelshape4);
 		VoxelShape voxelshape6 = Shapes.or(voxelshape2, voxelshape3);
+		//@formatter:off
 		VoxelShape[] returnValue = {
-				Shapes.empty(), voxelshape2, voxelshape3, voxelshape6, voxelshape1, Shapes.or(voxelshape2, voxelshape1), Shapes.or(voxelshape3, voxelshape1), Shapes.or(voxelshape6, voxelshape1), voxelshape4, Shapes.or(voxelshape2, voxelshape4), Shapes.or(voxelshape3, voxelshape4), Shapes.or(voxelshape6, voxelshape4), voxelshape5, Shapes.or(voxelshape2, voxelshape5), Shapes.or(voxelshape3, voxelshape5), Shapes.or(voxelshape6, voxelshape5)
+				Shapes.empty(),
+				voxelshape2,
+				voxelshape3,
+				voxelshape6,
+				voxelshape1,
+				Shapes.or(voxelshape2, voxelshape1),
+				Shapes.or(voxelshape3, voxelshape1),
+				Shapes.or(voxelshape6, voxelshape1),
+				voxelshape4,
+				Shapes.or(voxelshape2, voxelshape4),
+				Shapes.or(voxelshape3, voxelshape4),
+				Shapes.or(voxelshape6, voxelshape4),
+				voxelshape5,
+				Shapes.or(voxelshape2, voxelshape5),
+				Shapes.or(voxelshape3, voxelshape5),
+				Shapes.or(voxelshape6, voxelshape5)
 		};
+		//@formatter:on
 
 		for (int i = 0; i < 16; ++i) {
 			returnValue[i] = Shapes.or(voxelshape, returnValue[i]);
@@ -133,10 +150,12 @@ public class IronFenceBlock extends OwnableBlock {
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
 		return switch (rot) {
+			//@formatter:off
 			case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH)).setValue(EAST, state.getValue(WEST)).setValue(SOUTH, state.getValue(NORTH)).setValue(WEST, state.getValue(EAST));
 			case COUNTERCLOCKWISE_90 -> state.setValue(NORTH, state.getValue(EAST)).setValue(EAST, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(WEST)).setValue(WEST, state.getValue(NORTH));
 			case CLOCKWISE_90 -> state.setValue(NORTH, state.getValue(WEST)).setValue(EAST, state.getValue(NORTH)).setValue(SOUTH, state.getValue(EAST)).setValue(WEST, state.getValue(SOUTH));
 			default -> state;
+			//@formatter:on
 		};
 	}
 
@@ -183,12 +202,10 @@ public class IronFenceBlock extends OwnableBlock {
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
 			return;
-		//so dropped items don't get destroyed
-		else if (entity instanceof ItemEntity)
+		else if (entity instanceof ItemEntity) //so dropped items don't get destroyed
 			return;
-		//owner check
-		else if (entity instanceof Player player) {
-			if (((OwnableBlockEntity) level.getBlockEntity(pos)).getOwner().isOwner(player))
+		else if (entity instanceof Player player) { //owner check
+			if (((OwnableBlockEntity) level.getBlockEntity(pos)).isOwnedBy(player))
 				return;
 		}
 		else if (!level.isClientSide && entity instanceof Creeper creeper) {

@@ -53,7 +53,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 				BlockEntity be = level.getBlockEntity(pos);
 
 				if (be instanceof ILockable) {
-					if (be instanceof IOwnable ownable && !ownable.getOwner().isOwner(player)) {
+					if (be instanceof IOwnable ownable && !ownable.isOwnedBy(player)) {
 						//only send message when the block is not disguised
 						if (!(be.getBlockState().getBlock() instanceof DisguisableBlock) || !DisguisableBlock.getDisguisedBlockState(level, pos).isPresent()) {
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ownable.getOwner().getName()), ChatFormatting.GREEN);
@@ -73,7 +73,10 @@ public class SonicSecuritySystemItem extends BlockItem {
 						}
 						else if (addLinkedBlock(stack.getTag(), pos, player)) {
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
-							SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+
+							if (!stack.isEmpty())
+								SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+
 							return InteractionResult.SUCCESS;
 						}
 					}

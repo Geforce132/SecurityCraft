@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -34,7 +33,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.Mirror;
@@ -47,6 +45,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.Tags;
 
 public class KeypadChestBlock extends ChestBlock {
 	private static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>> CONTAINER_MERGER = new DoubleBlockCombiner.Combiner<>() {
@@ -95,18 +94,20 @@ public class KeypadChestBlock extends ChestBlock {
 		if (!level.isClientSide && !isBlocked(level, pos)) {
 			KeypadChestBlockEntity be = (KeypadChestBlockEntity) level.getBlockEntity(pos);
 
-			if (ModuleUtils.isDenied(be, player)) {
-				if (be.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
-			}
-			else if (ModuleUtils.isAllowed(be, player)) {
-				if (be.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
+			if (be.verifyPasswordSet(level, pos, be, player)) {
+				if (be.isDenied(player)) {
+					if (be.sendsMessages())
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
+				}
+				else if (be.isAllowed(player)) {
+					if (be.sendsMessages())
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
-				activate(state, level, pos, player);
+					activate(state, level, pos, player);
+				}
+				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
+					be.openPasswordGUI(level, pos, player);
 			}
-			else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-				be.openPasswordGUI(level, pos, be.getOwner(), player);
 		}
 
 		return InteractionResult.SUCCESS;
@@ -152,7 +153,7 @@ public class KeypadChestBlock extends ChestBlock {
 		Direction returnValue = super.candidatePartnerFacing(ctx, dir);
 
 		//only connect to chests which have the same owner
-		if (returnValue != null && ctx.getLevel().getBlockEntity(ctx.getClickedPos().relative(dir)) instanceof IOwnable ownable && ownable.getOwner().isOwner(ctx.getPlayer()))
+		if (returnValue != null && ctx.getLevel().getBlockEntity(ctx.getClickedPos().relative(dir)) instanceof IOwnable ownable && ownable.isOwnedBy(ctx.getPlayer()))
 			return returnValue;
 
 		return null;
@@ -219,8 +220,8 @@ public class KeypadChestBlock extends ChestBlock {
 
 	public static class Convertible implements IPasswordConvertible {
 		@Override
-		public Block getOriginalBlock() {
-			return Blocks.CHEST;
+		public boolean isValidStateForConversion(BlockState state) {
+			return state.is(Tags.Blocks.CHESTS_WOODEN);
 		}
 
 		@Override

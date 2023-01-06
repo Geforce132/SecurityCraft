@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -57,7 +56,7 @@ public class CageTrapBlock extends DisguisableBlock {
 
 				if (be.isDisabled())
 					return getCorrectShape(state, level, pos, ctx, be);
-				else if (entity instanceof Player player && (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player)))
+				else if (entity instanceof Player player && ((be.isOwnedBy(player) && be.ignoresOwner()) || be.isAllowed(player)))
 					return getCorrectShape(state, level, pos, collisionContext, be);
 				if (entity instanceof Mob && !state.getValue(DEACTIVATED))
 					return be.capturesMobs() ? Shapes.empty() : getCorrectShape(state, level, pos, collisionContext, be);
@@ -96,7 +95,7 @@ public class CageTrapBlock extends DisguisableBlock {
 				if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
 					return;
 
-				if ((isPlayer && cageTrap.getOwner().isOwner((Player) entity)))
+				if ((isPlayer && cageTrap.isOwnedBy((Player) entity)) && cageTrap.ignoresOwner())
 					return;
 
 				if (state.getValue(DEACTIVATED))

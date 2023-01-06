@@ -5,12 +5,12 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -23,6 +23,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
 	private IntOption searchRadius = new IntOption(this::getBlockPos, "searchRadius", 3, 1, 20, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	public String[] players = new String[100];
 	public String[] uuids = new String[100];
 	public long[] timestamps = new long[100];
@@ -34,24 +35,25 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		if (isDisabled() || cooldown-- > 0)
+		if (isDisabled())
 			return;
 
-		if (level.getBestNeighborSignal(pos) > 0) {
+		if (cooldown > 0)
+			cooldown--;
+		else if (level.getBestNeighborSignal(pos) > 0) {
 			level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get()), e -> !e.isSpectator()).forEach(this::addPlayer);
 			syncLoggedPlayersToClient();
+			cooldown = TICKS_BETWEEN_ATTACKS;
 		}
-
-		cooldown = TICKS_BETWEEN_ATTACKS;
 	}
 
 	public void addPlayer(Player player) {
 		String playerName = player.getName().getString();
 		long timestamp = System.currentTimeMillis();
 
-		if (!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp)) {
+		if (!(isOwnedBy(player) && ignoresOwner()) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp)) {
 			//ignore players on the allowlist
-			if (ModuleUtils.isAllowed(this, player))
+			if (isAllowed(player))
 				return;
 
 			for (int i = 0; i < players.length; i++) {
@@ -114,11 +116,15 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				searchRadius, disabled
+				searchRadius, disabled, ignoreOwner
 		};
 	}
 
 	public boolean isDisabled() {
 		return disabled.get();
+	}
+
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
 	}
 }

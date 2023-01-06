@@ -168,11 +168,22 @@ public abstract class Option<T> {
 		}
 	}
 
+	public static class IgnoreOwnerOption extends BooleanOption {
+		public IgnoreOwnerOption(Boolean value) {
+			super("ignoreOwner", value);
+		}
+
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.ignoreOwner";
+		}
+	}
+
 	/**
 	 * A subclass of {@link Option}, set up to handle integers.
 	 */
 	public static class IntOption extends Option<Integer> {
-		private boolean slider;
+		private boolean isSlider;
 		private Supplier<BlockPos> pos;
 
 		public IntOption(String optionName, Integer value) {
@@ -183,9 +194,9 @@ public abstract class Option<T> {
 			super(optionName, value, min, max, increment);
 		}
 
-		public IntOption(Supplier<BlockPos> pos, String optionName, Integer value, Integer min, Integer max, Integer increment, boolean s) {
+		public IntOption(Supplier<BlockPos> pos, String optionName, Integer value, Integer min, Integer max, Integer increment, boolean isSlider) {
 			super(optionName, value, min, max, increment);
-			slider = s;
+			this.isSlider = isSlider;
 			this.pos = pos;
 		}
 
@@ -222,7 +233,7 @@ public abstract class Option<T> {
 
 		@Override
 		public boolean isSlider() {
-			return slider;
+			return isSlider;
 		}
 
 		public BlockPos getPos() {
@@ -230,26 +241,37 @@ public abstract class Option<T> {
 		}
 	}
 
+	public static class SmartModuleCooldownOption extends IntOption {
+		public SmartModuleCooldownOption(Supplier<BlockPos> pos) {
+			super(pos, "smartModuleCooldown", 100, 20, 400, 1, true);
+		}
+
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.smartModuleCooldown";
+		}
+	}
+
 	/**
 	 * A subclass of {@link Option}, set up to handle doubles.
 	 */
 	public static class DoubleOption extends Option<Double> {
-		private boolean slider;
+		private boolean isSlider;
 		private Supplier<BlockPos> pos;
 
 		public DoubleOption(String optionName, Double value) {
 			super(optionName, value);
-			slider = false;
+			isSlider = false;
 		}
 
 		public DoubleOption(String optionName, Double value, Double min, Double max, Double increment) {
 			super(optionName, value, min, max, increment);
-			slider = false;
+			isSlider = false;
 		}
 
-		public DoubleOption(Supplier<BlockPos> pos, String optionName, Double value, Double min, Double max, Double increment, boolean s) {
+		public DoubleOption(Supplier<BlockPos> pos, String optionName, Double value, Double min, Double max, Double increment, boolean isSlider) {
 			super(optionName, value, min, max, increment);
-			slider = s;
+			this.isSlider = isSlider;
 			this.pos = pos;
 		}
 
@@ -291,7 +313,7 @@ public abstract class Option<T> {
 
 		@Override
 		public boolean isSlider() {
-			return slider;
+			return isSlider;
 		}
 
 		public BlockPos getPos() {

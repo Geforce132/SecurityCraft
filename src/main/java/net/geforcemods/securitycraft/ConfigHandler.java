@@ -43,6 +43,7 @@ public class ConfigHandler {
 		public BooleanValue sayThanksMessage;
 		public DoubleValue cameraSpeed;
 		public BooleanValue reinforcedBlockTint;
+		public IntValue reinforcedBlockTintColor;
 
 		Client(ForgeConfigSpec.Builder builder) {
 			//@formatter:off
@@ -55,8 +56,13 @@ public class ConfigHandler {
 					.defineInRange("cameraSpeed", 2.0D, 0.0D, Double.MAX_VALUE);
 
 			reinforcedBlockTint = builder
-					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? This setting can be overriden by servers.")
+					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? This setting can be overridden by servers.")
 					.define("reinforced_block_tint", true);
+
+			reinforcedBlockTintColor = builder
+					.comment("Set the color that reinforced blocks' textures have when reinforced_block_tint is enabled. This cannot be overridden by servers, and will be applied the same to all blocks. Grayscale values look best.",
+							"Format: 0xRRGGBB")
+					.defineInRange("reinforced_block_tint_color", 0x999999, 0x000000, 0xFFFFFF);
 			//@formatter:on
 		}
 	}
@@ -82,6 +88,8 @@ public class ConfigHandler {
 		public BooleanValue trickScannersWithPlayerHeads;
 		public DoubleValue taserDamage;
 		public DoubleValue poweredTaserDamage;
+		public DoubleValue laserDamage;
+		public IntValue incorrectPasscodeDamage;
 		private ConfigValue<List<? extends String>> taserEffectsValue;
 		private ConfigValue<List<? extends String>> poweredTaserEffectsValue;
 		public final List<Supplier<MobEffectInstance>> taserEffects = new ArrayList<>();
@@ -183,13 +191,22 @@ public class ConfigHandler {
 							"effect_namespace:effect_path|duration|amplifier",
 							"Example: The entry \"minecraft:slowness|20|1\" defines slowness 1 for 1 second (20 ticks = 1 second).")
 					.defineList("powered_taser_effects", List.of("minecraft:weakness|400|5", "minecraft:nausea|400|5", "minecraft:slowness|400|5"), e -> e instanceof String);
+
+			laserDamage = builder
+					.comment("Defines the damage inflicted to an entity if it passes through a laser with installed harming module. This is given in health points, meaning 2 health points = 1 heart")
+					.defineInRange("laser_damage", 10.0, 0.0D, Double.MAX_VALUE);
+
+			incorrectPasscodeDamage = builder
+					.comment("Defines the damage that a block requiring a passcode deals to the player, if the player enters an incorrect code. This only works if a harming module is installed.",
+							"Default is two hearts of damage.")
+					.defineInRange("incorrectPasscodeDamage", 4, 1, Integer.MAX_VALUE);
 			//@formatter:on
 		}
 	}
 
 	@SubscribeEvent
 	public static void onModConfig(ModConfigEvent event) {
-		if (event.getConfig().getSpec() == SERVER_SPEC) {
+		if (event.getConfig().getSpec() == SERVER_SPEC && SERVER_SPEC.isLoaded()) {
 			loadEffects(SERVER.taserEffectsValue, SERVER.taserEffects);
 			loadEffects(SERVER.poweredTaserEffectsValue, SERVER.poweredTaserEffects);
 		}

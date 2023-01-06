@@ -53,7 +53,8 @@ public class LaserBlock extends DisguisableBlock {
 		for (Direction facing : Direction.values()) {
 			int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
 
-			inner: for (int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++) {
+			inner:
+			for (int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++) {
 				BlockPos offsetPos = pos.relative(facing, i);
 				BlockState offsetState = level.getBlockState(offsetPos);
 				Block offsetBlock = offsetState.getBlock();
@@ -98,19 +99,7 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	public static void destroyAdjacentLasers(LevelAccessor level, BlockPos pos) {
-		for (Direction facing : Direction.values()) {
-			int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
-
-			for (int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++) {
-				BlockPos offsetPos = pos.relative(facing, i);
-				BlockState state = level.getBlockState(offsetPos);
-
-				if (state.getBlock() == SCContent.LASER_BLOCK.get())
-					break;
-				else if (state.getBlock() == SCContent.LASER_FIELD.get() && state.getValue(LaserFieldBlock.BOUNDTYPE) == boundType)
-					level.destroyBlock(offsetPos, false);
-			}
-		}
+		BlockUtils.destroyInSequence(SCContent.LASER_FIELD.get(), level, pos, Direction.values());
 	}
 
 	@Override

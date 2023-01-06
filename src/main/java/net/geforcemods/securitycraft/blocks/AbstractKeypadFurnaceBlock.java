@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.blockentities.AbstractKeypadFurnaceBlockEntity;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -114,18 +113,20 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (ModuleUtils.isDenied(be, player)) {
-				if (be.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
-			}
-			else if (ModuleUtils.isAllowed(be, player)) {
-				if (be.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
+			else if (be.verifyPasswordSet(level, pos, be, player)) {
+				if (be.isDenied(player)) {
+					if (be.sendsMessages())
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
+				}
+				else if (be.isAllowed(player)) {
+					if (be.sendsMessages())
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
-				activate(be, state, level, pos, player);
+					activate(be, state, level, pos, player);
+				}
+				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
+					be.openPasswordGUI(level, pos, player);
 			}
-			else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-				be.openPasswordGUI(level, pos, be.getOwner(), player);
 		}
 
 		return InteractionResult.SUCCESS;
@@ -172,8 +173,8 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 		}
 
 		@Override
-		public Block getOriginalBlock() {
-			return originalBlock;
+		public boolean isValidStateForConversion(BlockState state) {
+			return state.is(originalBlock);
 		}
 
 		@Override

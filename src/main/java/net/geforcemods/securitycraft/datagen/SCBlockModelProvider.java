@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.datagen;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockModelProvider;
@@ -9,8 +9,8 @@ import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class SCBlockModelProvider extends BlockModelProvider {
-	public SCBlockModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-		super(generator, SecurityCraft.MODID, existingFileHelper);
+	public SCBlockModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
+		super(output, SecurityCraft.MODID, existingFileHelper);
 	}
 
 	public BlockModelBuilder reinforcedCarpet(String name, ResourceLocation wool) {

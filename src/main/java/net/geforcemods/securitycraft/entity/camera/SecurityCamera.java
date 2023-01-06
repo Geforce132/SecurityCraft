@@ -31,8 +31,6 @@ public class SecurityCamera extends Entity {
 	private boolean shouldProvideNightVision = false;
 	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
-	private int viewDistance = -1;
-	private boolean loadedChunks = false;
 
 	public SecurityCamera(EntityType<SecurityCamera> type, Level level) {
 		super(SCContent.SECURITY_CAMERA_ENTITY.get(), level);
@@ -60,7 +58,7 @@ public class SecurityCamera extends Entity {
 
 	public SecurityCamera(Level level, BlockPos pos, SecurityCamera oldCamera) {
 		this(level, pos);
-		oldCamera.discardCamera();
+		oldCamera.discard();
 	}
 
 	private void setInitialPitchYaw() {
@@ -128,39 +126,38 @@ public class SecurityCamera extends Entity {
 		setRot(yaw, pitch);
 	}
 
+	@Override
+	public void remove(RemovalReason pReason) {
+		super.remove(pReason);
+		discardCamera();
+	}
+
 	public void stopViewing(ServerPlayer player) {
 		if (!level.isClientSide) {
-			discardCamera();
+			discard();
 			player.camera = player;
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new SetCameraView(player));
 		}
 	}
 
+	/**
+	 * @deprecated Prefer calling {@link #discard()}
+	 */
+	@Deprecated
 	public void discardCamera() {
 		if (!level.isClientSide) {
 			if (level.getBlockEntity(blockPosition()) instanceof SecurityCameraBlockEntity camBe)
 				camBe.stopViewing();
 
 			SectionPos chunkPos = SectionPos.of(blockPosition());
-			int viewDistance = this.viewDistance <= 0 ? level.getServer().getPlayerList().getViewDistance() : this.viewDistance;
+			int chunkLoadingDistance = CameraController.getChunkLoadingDistance() <= 0 ? level.getServer().getPlayerList().getViewDistance() : CameraController.getChunkLoadingDistance();
 
-			for (int x = chunkPos.getX() - viewDistance; x <= chunkPos.getX() + viewDistance; x++) {
-				for (int z = chunkPos.getZ() - viewDistance; z <= chunkPos.getZ() + viewDistance; z++) {
+			for (int x = chunkPos.getX() - chunkLoadingDistance; x <= chunkPos.getX() + chunkLoadingDistance; x++) {
+				for (int z = chunkPos.getZ() - chunkLoadingDistance; z <= chunkPos.getZ() + chunkLoadingDistance; z++) {
 					ForgeChunkManager.forceChunk((ServerLevel) level, SecurityCraft.MODID, this, x, z, false, false);
 				}
 			}
 		}
-
-		discard();
-	}
-
-	public void setHasLoadedChunks(int initialViewDistance) {
-		loadedChunks = true;
-		viewDistance = initialViewDistance;
-	}
-
-	public boolean hasLoadedChunks() {
-		return loadedChunks;
 	}
 
 	@Override

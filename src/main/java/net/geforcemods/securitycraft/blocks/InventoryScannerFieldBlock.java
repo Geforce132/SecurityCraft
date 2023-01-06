@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.function.BiFunction;
-
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
@@ -10,7 +7,6 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -61,7 +57,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 
 		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
 			if (entity instanceof Player player && !EntityUtils.isInvisible(player)) {
-				if (ModuleUtils.isAllowed(connectedScanner, entity))
+				if (connectedScanner.isAllowed(entity))
 					return Shapes.empty();
 
 				for (int i = 0; i < 10; i++) {
@@ -93,7 +89,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 			return;
 
 		if (entity instanceof Player player && !EntityUtils.isInvisible(player)) {
-			if (ModuleUtils.isAllowed(connectedScanner, entity))
+			if (connectedScanner.isAllowed(entity))
 				return;
 
 			for (int i = 0; i < 10; i++) {
@@ -114,7 +110,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		boolean hasStorageModule = allowInteraction && be.isModuleEnabled(ModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && be.isModuleEnabled(ModuleType.REDSTONE);
 
-		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || be.getOwner().isOwner(player))
+		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || (be.isOwnedBy(player) && be.ignoresOwner()))
 			return false;
 
 		return loopInventory(player.getInventory().items, stack, be, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.getInventory().armor, stack, be, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.getInventory().offhand, stack, be, hasSmartModule, hasStorageModule, hasRedstoneModule);
@@ -232,28 +228,10 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if (!level.isClientSide()) {
 			Direction facing = state.getValue(FACING);
 
-			if (facing == Direction.EAST || facing == Direction.WEST) {
-				checkAndDestroyFields(level, pos, (p, i) -> p.west(i));
-				checkAndDestroyFields(level, pos, (p, i) -> p.east(i));
-			}
-			else if (facing == Direction.NORTH || facing == Direction.SOUTH) {
-				checkAndDestroyFields(level, pos, (p, i) -> p.north(i));
-				checkAndDestroyFields(level, pos, (p, i) -> p.south(i));
-			}
-		}
-	}
-
-	private void checkAndDestroyFields(LevelAccessor level, BlockPos pos, BiFunction<BlockPos, Integer, BlockPos> posModifier) {
-		for (int i = 0; i < ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
-			BlockPos modifiedPos = posModifier.apply(pos, i);
-
-			if (level.getBlockState(modifiedPos).getBlock() == SCContent.INVENTORY_SCANNER.get()) {
-				for (int j = 1; j < i; j++) {
-					level.destroyBlock(posModifier.apply(pos, j), false);
-				}
-
-				break;
-			}
+			if (facing == Direction.EAST || facing == Direction.WEST)
+				BlockUtils.destroyInSequence(this, level, pos, Direction.EAST, Direction.WEST);
+			else if (facing == Direction.NORTH || facing == Direction.SOUTH)
+				BlockUtils.destroyInSequence(this, level, pos, Direction.NORTH, Direction.SOUTH);
 		}
 	}
 
@@ -268,6 +246,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 			return SHAPE_EW; //ew
 		else if (facing == Direction.NORTH || facing == Direction.SOUTH)
 			return SHAPE_NS; //ns
+
 		return Shapes.block();
 	}
 

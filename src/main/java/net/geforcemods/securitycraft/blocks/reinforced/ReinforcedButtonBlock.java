@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
@@ -60,8 +59,8 @@ public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlo
 		}
 	}
 
-	public boolean isAllowedToPress(Level level, BlockPos pos, AllowlistOnlyBlockEntity te, Player entity) {
-		return te.getOwner().isOwner(entity) || ModuleUtils.isAllowed(te, entity);
+	public boolean isAllowedToPress(Level level, BlockPos pos, AllowlistOnlyBlockEntity be, Player entity) {
+		return be.isOwnedBy(entity) || be.isAllowed(entity);
 	}
 
 	@Override

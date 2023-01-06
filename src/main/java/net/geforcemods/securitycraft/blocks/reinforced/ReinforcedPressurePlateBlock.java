@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
@@ -89,7 +88,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	}
 
 	public boolean isAllowedToPress(Level level, BlockPos pos, AllowlistOnlyBlockEntity be, Player entity) {
-		return be.getOwner().isOwner(entity) || ModuleUtils.isAllowed(be, entity);
+		return be.isOwnedBy(entity) || be.isAllowed(entity);
 	}
 
 	@Override

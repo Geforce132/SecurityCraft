@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
+import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +31,7 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 		}
 
 		//inventory scanner storage
-		if (be.getOwner().isOwner(inventory.player) && be.isModuleEnabled(ModuleType.STORAGE)) {
+		if (be.isOwnedBy(inventory.player) && be.isModuleEnabled(ModuleType.STORAGE)) {
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 3; j++) {
 					addSlot(new Slot(be, 10 + ((i * 3) + j), 188 + (j * 18), 29 + i * 18));
@@ -81,7 +81,10 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 	public void removed(Player player) {
 		super.removed(player);
 
-		Utils.setISinTEAppropriately(be.getLevel(), be.getBlockPos(), be.getContents());
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(be.getLevel(), be.getBlockPos());
+
+		if (connectedScanner != null)
+			connectedScanner.setContents(be.getContents());
 	}
 
 	@Override
@@ -92,7 +95,7 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 	@Override
 	public void clicked(int slotId, int dragType, ClickType clickType, Player player) {
 		if (slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof OwnerRestrictedSlot slot && slot.isGhostSlot()) {
-			if (be.getOwner().isOwner(player)) {
+			if (be.isOwnedBy(player)) {
 				ItemStack pickedUpStack = getCarried().copy();
 
 				pickedUpStack.setCount(1);

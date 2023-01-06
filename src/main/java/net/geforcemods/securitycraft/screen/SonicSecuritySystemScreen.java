@@ -47,7 +47,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 	public SonicSecuritySystemScreen(SonicSecuritySystemBlockEntity be) {
 		super(be.getName());
 		this.be = be;
-		isOwner = be.getOwner().isOwner(Minecraft.getInstance().player);
+		isOwner = be.isOwnedBy(Minecraft.getInstance().player);
 	}
 
 	@Override

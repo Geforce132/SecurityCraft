@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.GlowDisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -149,18 +148,20 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 			else {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				else if (ModuleUtils.isDenied(be, player)) {
-					if (be.sendsMessages())
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
-				}
-				else if (ModuleUtils.isAllowed(be, player)) {
-					if (be.sendsMessages())
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
+				else if (be.verifyPasswordSet(level, pos, be, player)) {
+					if (be.isDenied(player)) {
+						if (be.sendsMessages())
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
+					}
+					else if (be.isAllowed(player)) {
+						if (be.sendsMessages())
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
-					activate(be);
+						activate(be);
+					}
+					else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
+						be.openPasswordGUI(level, pos, player);
 				}
-				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-					be.openPasswordGUI(level, pos, be.getOwner(), player);
 			}
 		}
 

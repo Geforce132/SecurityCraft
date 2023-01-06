@@ -56,7 +56,7 @@ public class MineRemoteAccessToolItem extends Item {
 					return InteractionResult.FAIL;
 				}
 
-				if (level.getBlockEntity(pos) instanceof IOwnable ownable && !ownable.getOwner().isOwner(player)) {
+				if (level.getBlockEntity(pos) instanceof IOwnable ownable && !ownable.isOwnedBy(player)) {
 					if (level.isClientSide)
 						ClientHandler.displayMRATScreen(stack);
 
@@ -68,7 +68,7 @@ public class MineRemoteAccessToolItem extends Item {
 
 				stack.getTag().putIntArray(("mine" + availSlot), BlockUtils.posToIntArray(pos));
 
-				if (!level.isClientSide)
+				if (!level.isClientSide && !stack.isEmpty())
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
@@ -109,7 +109,7 @@ public class MineRemoteAccessToolItem extends Item {
 			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
 				stack.getTag().remove("mine" + i);
 
-				if (!player.level.isClientSide)
+				if (!player.level.isClientSide && !stack.isEmpty())
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
 				return;

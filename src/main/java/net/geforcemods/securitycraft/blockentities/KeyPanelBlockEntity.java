@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.Utils;
@@ -32,6 +33,8 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private DisabledOption disabled = new DisabledOption(false);
+	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
+	private long cooldownEnd = 0;
 
 	public KeyPanelBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.KEY_PANEL_BLOCK_ENTITY.get(), pos, state);
@@ -43,6 +46,8 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
+
+		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 	}
 
 	@Override
@@ -50,19 +55,39 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 		super.load(tag);
 
 		passcode = tag.getString("passcode");
+		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
+	}
+
+	@Override
+	public void startCooldown() {
+		if (!isOnCooldown()) {
+			cooldownEnd = System.currentTimeMillis() + smartModuleCooldown.get() * 50;
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+			setChanged();
+		}
+	}
+
+	@Override
+	public long getCooldownEnd() {
+		return cooldownEnd;
+	}
+
+	@Override
+	public boolean isOnCooldown() {
+		return System.currentTimeMillis() < getCooldownEnd();
 	}
 
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST, ModuleType.DENYLIST
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.SMART, ModuleType.HARMING
 		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				isAlwaysActive, sendMessage, signalLength, disabled
+				isAlwaysActive, sendMessage, signalLength, disabled, smartModuleCooldown
 		};
 	}
 
@@ -79,7 +104,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 			return false;
 		}
 
-		return !state.getValue(KeyPanelBlock.POWERED);
+		return !state.getValue(KeyPanelBlock.POWERED) && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override

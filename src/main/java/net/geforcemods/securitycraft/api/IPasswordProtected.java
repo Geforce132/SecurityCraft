@@ -1,6 +1,9 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.misc.CustomDamageSources;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
@@ -25,24 +28,50 @@ import net.minecraftforge.network.PacketDistributor;
  */
 public interface IPasswordProtected extends ICodebreakable {
 	/**
-	 * Open the correct password GUI depending on if a password is already set or not. <p>
+	 * Open the check password GUI if a password is set. <p>
 	 *
 	 * @param level The level of this block entity
 	 * @param pos The position of this block entity
-	 * @param owner The owner of this block entity
 	 * @param player The player who the GUI should be opened to.
 	 */
-	public default void openPasswordGUI(Level level, BlockPos pos, Owner owner, Player player) {
+	public default void openPasswordGUI(Level level, BlockPos pos, Player player) {
 		if (!level.isClientSide) {
 			if (getPassword() != null)
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.CHECK_PASSWORD, pos));
-			else {
-				if (owner.isOwner(player))
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SET_PASSWORD, pos));
-				else
-					PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
-			}
 		}
+	}
+
+	/**
+	 * Check that a password has been set, and if not, opens the set password screen or sends a warning message. <p>
+	 *
+	 * @param level The level of this block entity
+	 * @param pos The position of this block entity
+	 * @param ownable This block entity
+	 * @param player The player who interacted with this block entity
+	 * @return true if a password has been set, false otherwise
+	 */
+	default boolean verifyPasswordSet(Level level, BlockPos pos, IOwnable ownable, Player player) {
+		if (!level.isClientSide) {
+			if (getPassword() != null)
+				return true;
+
+			if (ownable.isOwnedBy(player))
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SET_PASSWORD, pos));
+			else
+				PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
+		}
+
+		return false;
+	}
+
+	@Override
+	default boolean shouldAttemptCodebreak(BlockState state, Player player) {
+		if (getPassword() == null) {
+			PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override
@@ -70,4 +99,41 @@ public interface IPasswordProtected extends ICodebreakable {
 	 * @param password The new password to be saved.
 	 */
 	public void setPassword(String password);
+
+	/**
+	 * Sets this block to be on cooldown and starts the cooldown
+	 */
+	public void startCooldown();
+
+	/**
+	 * Checks whether this block is on cooldown, meaning a new code cannot be entered.
+	 *
+	 * @return true if this block is on cooldown, false otherwise
+	 */
+	public boolean isOnCooldown();
+
+	/**
+	 * Returns the time at which the cooldown ends
+	 *
+	 * @return A UNIX timestamp representing the cooldown's end time
+	 */
+	public long getCooldownEnd();
+
+	/**
+	 * Gets called when an incorrect passcode has been inserted.
+	 *
+	 * @param player The player who entered the incorrect code
+	 * @param incorrectCode The incorrect code that was entered
+	 */
+	public default void onIncorrectPasscodeEntered(Player player, String incorrectCode) {
+		if (this instanceof IModuleInventory moduleInv) {
+			if (moduleInv.isModuleEnabled(ModuleType.SMART))
+				startCooldown();
+
+			if (moduleInv.isModuleEnabled(ModuleType.HARMING)) {
+				if (player.hurt(CustomDamageSources.INCORRECT_PASSCODE, ConfigHandler.SERVER.incorrectPasscodeDamage.get()))
+					player.closeContainer();
+			}
+		}
+	}
 }

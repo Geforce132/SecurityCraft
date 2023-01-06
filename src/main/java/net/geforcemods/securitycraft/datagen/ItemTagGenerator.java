@@ -81,7 +81,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 		//minecraft tags
 		tag(ItemTags.DAMPENS_VIBRATIONS).addTag(SCTags.Items.REINFORCED_WOOL);
-		tag(ItemTags.FENCE_GATES).add(SCContent.REINFORCED_FENCEGATE.get().asItem());
+		tag(ItemTags.FENCE_GATES).add(SCContent.REINFORCED_FENCE_GATE.get().asItem());
 		tag(ItemTags.FENCES).add(SCContent.IRON_FENCE.get().asItem());
 		tag(ItemTags.PIGLIN_LOVED).add(
 				SCContent.DEEPSLATE_GOLD_ORE_MINE.get().asItem(),
@@ -92,8 +92,8 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				SCContent.REINFORCED_RAW_GOLD_BLOCK.get().asItem());
 		tag(ItemTags.PIGLIN_REPELLENTS).add(SCContent.REINFORCED_SOUL_LANTERN.get().asItem());
 		tag(ItemTags.RAILS).add(SCContent.TRACK_MINE.get().asItem());
-		tag(ItemTags.SLABS).addTag(SCTags.Items.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get().asItem());
-		tag(ItemTags.STAIRS).addTag(SCTags.Items.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get().asItem());
+		tag(ItemTags.SLABS).addTag(SCTags.Items.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get().asItem(), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get().asItem());
+		tag(ItemTags.STAIRS).addTag(SCTags.Items.REINFORCED_STAIRS).add(SCContent.CRYSTAL_QUARTZ_STAIRS.get().asItem(), SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get().asItem());
 		tag(ItemTags.SIGNS).addTag(SCTags.Items.SECRET_SIGNS);
 		tag(ItemTags.TERRACOTTA).addTag(SCTags.Items.REINFORCED_TERRACOTTA);
 		tag(ItemTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get().asItem());

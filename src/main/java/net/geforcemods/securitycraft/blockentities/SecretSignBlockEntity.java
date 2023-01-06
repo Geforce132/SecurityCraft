@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -83,7 +82,7 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 	}
 
 	public boolean isPlayerAllowedToSeeText(Player player) {
-		return !isSecret() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player);
+		return !isSecret() || isOwnedBy(player) || isAllowed(player);
 	}
 
 	@Override
@@ -132,10 +131,5 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 	@Override
 	public void toggleModuleState(ModuleType module, boolean shouldBeEnabled) {
 		moduleStates.put(module, shouldBeEnabled);
-
-		if (shouldBeEnabled)
-			onModuleInserted(getModule(module), module, true);
-		else
-			onModuleRemoved(getModule(module), module, true);
 	}
 }

@@ -46,7 +46,7 @@ public class ToggleOption {
 			Player player = ctx.get().getSender();
 			BlockEntity be = player.level.getBlockEntity(pos);
 
-			if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
+			if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 				customizable.customOptions()[id].toggle();
 				customizable.onOptionChanged(customizable.customOptions()[id]);
 				player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);

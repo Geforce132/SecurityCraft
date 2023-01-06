@@ -5,7 +5,7 @@ import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.entity.Bullet;
+import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.models.BulletModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

@@ -18,7 +18,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.Direction;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -32,8 +32,8 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ItemModelGenerator extends ItemModelProvider {
-	public ItemModelGenerator(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-		super(generator, SecurityCraft.MODID, existingFileHelper);
+	public ItemModelGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
+		super(output, SecurityCraft.MODID, existingFileHelper);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				if (flatReinforcedItems.containsKey(block))
 					flatReinforcedItem(block, flatReinforcedItems.get(block));
 				else if (block instanceof ReinforcedStainedGlassPaneBlock)
-					reinforcedPane(block);
+					reinforcedStainedPane(block);
 				else if (block instanceof ReinforcedWallBlock wall)
 					reinforcedWallInventory(block, wall.getVanillaBlock());
 				else if (block instanceof ReinforcedButtonBlock || block instanceof ReinforcedPistonBaseBlock)
@@ -122,12 +122,18 @@ public class ItemModelGenerator extends ItemModelProvider {
 		blockMine(Blocks.BLAST_FURNACE, SCContent.BLAST_FURNACE_MINE.get(), mcLoc(BLOCK_FOLDER + "/blast_furnace_side"), mcLoc(BLOCK_FOLDER + "/blast_furnace_front"), mcLoc(BLOCK_FOLDER + "/blast_furnace_top"));
 		simpleParent(SCContent.BLOCK_CHANGE_DETECTOR.get());
 		simpleParent(SCContent.CRYSTAL_QUARTZ_SLAB.get());
-		simpleParent(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
-		simpleParent(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get(), "reinforced_chiseled_quartz_block");
-		simpleParent(SCContent.REINFORCED_CRYSTAL_QUARTZ.get(), "reinforced_quartz_block");
-		simpleParent(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get(), "reinforced_quartz_pillar");
-		simpleParent(SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get());
-		simpleParent(SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get());
+		simpleParent(SCContent.CRYSTAL_QUARTZ_STAIRS.get());
+		simpleParent(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get());
+		simpleParent(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get());
+		simpleReinforcedParent(SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK.get());
+		simpleReinforcedParent(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get());
+		simpleReinforcedParent(SCContent.REINFORCED_CRYSTAL_QUARTZ_BRICKS.get());
+		simpleReinforcedParent(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get());
+		simpleReinforcedParent(SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get());
+		simpleReinforcedParent(SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get());
+		simpleReinforcedParent(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ.get());
+		simpleReinforcedParent(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB.get());
+		simpleReinforcedParent(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS.get());
 		simpleParent(SCContent.REINFORCED_GLASS.get());
 		reinforcedPane(SCContent.REINFORCED_GLASS_PANE.get());
 		simpleParent(SCContent.REINFORCED_IRON_TRAPDOOR.get(), "reinforced_iron_trapdoor_bottom");
@@ -151,6 +157,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	public ItemModelBuilder flatReinforcedItem(Block block, String texturePath) {
 		return singleTexture(name(block), mcLoc("item/generated"), "layer0", new ResourceLocation(texturePath));
+	}
+
+	public ItemModelBuilder reinforcedStainedPane(Block block) {
+		return reinforcedPane(block).renderType("translucent");
 	}
 
 	public ItemModelBuilder reinforcedPane(Block block) {

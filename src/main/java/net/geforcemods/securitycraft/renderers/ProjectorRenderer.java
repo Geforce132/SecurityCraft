@@ -37,7 +37,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 			RenderSystem.disableCull();
 
 			for (int x = 0; x < be.getProjectionWidth(); x++) {
-				for (int y = 0; yLoopBoundary.test(be, hanging, y);) { //increment is done at the end of the loop
+				for (int y = 0; yLoopBoundary.test(be, hanging, y); y = hanging ? y - 1 : y + 1) {
 					pose.pushPose();
 
 					if (!be.isHorizontal())
@@ -57,7 +57,6 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 					}
 
 					pose.popPose();
-					y = hanging ? y - 1 : y + 1;
 				}
 			}
 

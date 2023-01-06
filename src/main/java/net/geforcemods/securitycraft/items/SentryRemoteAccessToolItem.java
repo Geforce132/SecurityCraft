@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.network.client.OpenSRATScreen;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -64,7 +64,7 @@ public class SentryRemoteAccessToolItem extends Item {
 					return InteractionResult.FAIL;
 				}
 
-				if (!sentry.getOwner().isOwner(player)) {
+				if (!sentry.isOwnedBy(player)) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.cantBind"), ChatFormatting.RED);
 					return InteractionResult.FAIL;
 				}
@@ -74,7 +74,7 @@ public class SentryRemoteAccessToolItem extends Item {
 
 				stack.getTag().putIntArray(("sentry" + availSlot), BlockUtils.posToIntArray(sentryPos));
 
-				if (!level.isClientSide)
+				if (!level.isClientSide && !stack.isEmpty())
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.bound", sentryPos), ChatFormatting.GREEN);
@@ -127,7 +127,7 @@ public class SentryRemoteAccessToolItem extends Item {
 			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
 				stack.getTag().remove("sentry" + i);
 
-				if (!player.level.isClientSide)
+				if (!player.level.isClientSide && !stack.isEmpty())
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
 				return;

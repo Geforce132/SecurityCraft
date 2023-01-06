@@ -75,7 +75,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		signature = previousSignature;
 		acceptedLevels = be.getAcceptedLevels();
 		isSmart = be.isModuleEnabled(ModuleType.SMART);
-		isOwner = be.getOwner().isOwner(inv.player);
+		isOwner = be.isOwnedBy(inv.player);
 		imageHeight = 249;
 	}
 
@@ -104,8 +104,8 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 						else
 							active = otherButtonId >= thisButtonId;
 
-							//update button state and data
-							changeLevelState(otherButtonId, active);
+						//update button state and data
+						changeLevelState(otherButtonId, active);
 					}
 				}
 				else

@@ -9,9 +9,7 @@ import java.util.Map;
 
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.misc.conditions.BlockEntityNBTCondition;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.network.client.OpenSRATScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
@@ -59,7 +57,6 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.Util;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -74,9 +71,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -123,6 +118,7 @@ public class RegistrationHandler {
 				}
 			}
 		});
+
 		event.register(Keys.SOUND_EVENTS, helper -> {
 			for (int i = 0; i < SCSounds.values().length; i++) {
 				SCSounds sound = SCSounds.values()[i];
@@ -130,8 +126,6 @@ public class RegistrationHandler {
 				helper.register(sound.location, sound.event);
 			}
 		});
-		event.register(Registries.LOOT_CONDITION_TYPE, helper -> helper.register(new ResourceLocation(SecurityCraft.MODID, "tile_entity_nbt"), new LootItemConditionType(new BlockEntityNBTCondition.ConditionSerializer())));
-		event.register(Registries.RECIPE_SERIALIZER, helper -> helper.register(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard_recipe"), new SimpleCraftingRecipeSerializer<>(LimitedUseKeycardRecipe::new)));
 	}
 
 	@SubscribeEvent
@@ -236,7 +230,7 @@ public class RegistrationHandler {
 							new ItemStack(SCContent.CAGE_TRAP.get()),
 							new ItemStack(SCContent.WIRE_CUTTERS.get()),
 							new ItemStack(SCContent.IRON_FENCE.get()),
-							new ItemStack(SCContent.REINFORCED_FENCEGATE.get()),
+							new ItemStack(SCContent.REINFORCED_FENCE_GATE.get()),
 							new ItemStack(SCContent.REINFORCED_IRON_TRAPDOOR.get()),
 							new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()),
 							new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()),
@@ -354,19 +348,27 @@ public class RegistrationHandler {
 					}
 
 					decorationGroupItems.addAll(List.of( //@formatter:off
-							new ItemStack(SCContent.CRYSTAL_QUARTZ.get()),
-							new ItemStack(SCContent.STAIRS_CRYSTAL_QUARTZ.get()),
+							new ItemStack(SCContent.CRYSTAL_QUARTZ_BLOCK.get()),
+							new ItemStack(SCContent.CRYSTAL_QUARTZ_STAIRS.get()),
 							new ItemStack(SCContent.CRYSTAL_QUARTZ_SLAB.get()),
 							new ItemStack(SCContent.CHISELED_CRYSTAL_QUARTZ.get()),
+							new ItemStack(SCContent.CRYSTAL_QUARTZ_BRICKS.get()),
 							new ItemStack(SCContent.CRYSTAL_QUARTZ_PILLAR.get()),
-							new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ.get()),
+							new ItemStack(SCContent.SMOOTH_CRYSTAL_QUARTZ.get()),
+							new ItemStack(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get()),
+							new ItemStack(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get()),
+							new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK.get()),
 							new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get()),
 							new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get()),
 							new ItemStack(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get()),
+							new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_BRICKS.get()),
 							new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()),
+							new ItemStack(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ.get()),
+							new ItemStack(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS.get()),
+							new ItemStack(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB.get()),
 							new ItemStack(SCContent.BLOCK_POCKET_WALL.get()),
 							new ItemStack(SCContent.IRON_FENCE.get()),
-							new ItemStack(SCContent.REINFORCED_FENCEGATE.get()),
+							new ItemStack(SCContent.REINFORCED_FENCE_GATE.get()),
 							new ItemStack(SCContent.REINFORCED_IRON_TRAPDOOR.get()),
 							new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()),
 							new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()),

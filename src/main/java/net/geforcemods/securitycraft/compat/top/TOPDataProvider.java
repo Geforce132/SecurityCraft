@@ -19,8 +19,8 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.entity.Sentry;
-import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
+import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -102,7 +102,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				}
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
-				if (be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
+				if (be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 					if (!inv.getInsertedModules().isEmpty()) {
 						probeInfo.text(EQUIPPED);
 
@@ -112,7 +112,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 					}
 				}
 
-				if (be instanceof IPasswordProtected passwordProtected && !(be instanceof KeycardReaderBlockEntity) && ((IOwnable) be).getOwner().isOwner(player)) {
+				if (be instanceof IPasswordProtected passwordProtected && !(be instanceof KeycardReaderBlockEntity) && ((IOwnable) be).isOwnedBy(player)) {
 					String password = passwordProtected.getPassword();
 
 					probeInfo.text(Component.literal(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))).getString()));

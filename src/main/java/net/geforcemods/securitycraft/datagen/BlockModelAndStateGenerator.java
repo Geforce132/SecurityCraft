@@ -21,7 +21,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.Direction;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -52,10 +52,10 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 	private static final Map<Direction, EnumProperty<WallSide>> DIR_TO_WALL_HEIGHT = ImmutableMap.of(Direction.EAST, BlockStateProperties.EAST_WALL, Direction.NORTH, BlockStateProperties.NORTH_WALL, Direction.SOUTH, BlockStateProperties.SOUTH_WALL, Direction.WEST, BlockStateProperties.WEST_WALL);
 	private final SCBlockModelProvider scModels;
 
-	public BlockModelAndStateGenerator(DataGenerator gen, ExistingFileHelper exFileHelper) {
-		super(gen, SecurityCraft.MODID, exFileHelper);
+	public BlockModelAndStateGenerator(PackOutput output, ExistingFileHelper exFileHelper) {
+		super(output, SecurityCraft.MODID, exFileHelper);
 
-		scModels = new SCBlockModelProvider(gen, exFileHelper);
+		scModels = new SCBlockModelProvider(output, exFileHelper);
 	}
 
 	@Override
@@ -134,7 +134,9 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		reinforcedSlabBlock(SCContent.REINFORCED_DIORITE_SLAB.get(), "reinforced_diorite", "diorite");
 		reinforcedSlabBlock(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_SLAB.get(), "reinforced_polished_blackstone_bricks", "polished_blackstone_bricks");
 		reinforcedSlabBlock(SCContent.CRYSTAL_QUARTZ_SLAB.get(), "reinforced_quartz_block", "quartz_block_side", "quartz_block_top");
+		reinforcedSlabBlock(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_smooth_quartz", "quartz_block_bottom", "quartz_block_bottom");
 		reinforcedSlabBlock(SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_quartz_block", "quartz_block_side", "quartz_block_top");
+		reinforcedSlabBlock(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_smooth_quartz", "quartz_block_bottom", "quartz_block_bottom");
 		reinforcedSlabBlock(SCContent.REINFORCED_DEEPSLATE_BRICK_SLAB.get(), "reinforced_deepslate_bricks", "deepslate_bricks");
 		reinforcedSlabBlock(SCContent.REINFORCED_DEEPSLATE_TILE_SLAB.get(), "reinforced_deepslate_tiles", "deepslate_tiles");
 
@@ -164,7 +166,9 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		reinforcedStairsBlock(SCContent.REINFORCED_RED_NETHER_BRICK_STAIRS.get(), "red_nether_bricks");
 		reinforcedStairsBlock(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_STAIRS.get(), "polished_blackstone_bricks");
 		reinforcedStairsBlock(SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top");
-		reinforcedStairsBlock(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), "quartz_block_side", "quartz_block_top");
+		reinforcedStairsBlock(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_bottom", "quartz_block_bottom");
+		reinforcedStairsBlock(SCContent.CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top");
+		reinforcedStairsBlock(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_bottom", "quartz_block_bottom");
 		reinforcedStairsBlock(SCContent.REINFORCED_DEEPSLATE_BRICK_STAIRS.get(), "deepslate_bricks");
 		reinforcedStairsBlock(SCContent.REINFORCED_DEEPSLATE_TILE_STAIRS.get(), "deepslate_tiles");
 

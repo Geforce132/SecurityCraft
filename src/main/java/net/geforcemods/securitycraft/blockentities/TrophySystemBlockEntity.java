@@ -13,16 +13,16 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.entity.Bullet;
 import net.geforcemods.securitycraft.entity.IMSBomb;
-import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.sentry.Bullet;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -55,6 +55,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	public int cooldown = getCooldownTime();
 	private final Random random = new Random();
 	private DisabledOption disabled = new DisabledOption(false);
+	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 
 	public TrophySystemBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get(), pos, state);
@@ -91,7 +92,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 					Entity shooter = target.getOwner();
 
 					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-					if (!(shooter != null && ((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(shooter.getName().getString(), getOwner().getName())) || (shooter.getUUID() != null && shooter.getUUID().toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, shooter.getName().getString()))))
+					if (!(shooter != null && ((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(shooter.getName().getString(), getOwner().getName())) || (ignoresOwner() && (shooter.getUUID() != null && shooter.getUUID().toString().equals(getOwner().getUUID()))) || isAllowed(shooter.getName().getString()))))
 						setTarget(target);
 				}
 			}
@@ -218,7 +219,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		else if (projectile.getOwner() instanceof Sentry sentry)
 			owner = sentry.getOwner();
 
-		return owner == null || (!owner.owns(this) && !ModuleUtils.isAllowed(this, owner.getName()));
+		return owner == null || (!owner.owns(this) && !isAllowed(owner.getName()));
 	}
 
 	@Override
@@ -256,6 +257,10 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		return disabled.get();
 	}
 
+	public boolean ignoresOwner() {
+		return ignoreOwner.get();
+	}
+
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		super.onModuleRemoved(stack, module, toggled);
@@ -277,7 +282,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				disabled
+				disabled, ignoreOwner
 		};
 	}
 

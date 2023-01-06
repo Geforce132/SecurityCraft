@@ -306,11 +306,15 @@ public class ClientHandler {
 
 		blocksWithReinforcedTint.put(SCContent.BLOCK_POCKET_MANAGER.get(), crystalQuartzTint);
 		blocksWithReinforcedTint.put(SCContent.BLOCK_POCKET_WALL.get(), crystalQuartzTint);
-		blocksWithCustomTint.put(SCContent.CHISELED_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
-		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ.get(), crystalQuartzTint);
-		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), crystalQuartzTint);
 		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
-		blocksWithCustomTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
+		blocksWithCustomTint.put(SCContent.SMOOTH_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
+		blocksWithCustomTint.put(SCContent.CHISELED_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
+		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_BLOCK.get(), crystalQuartzTint);
+		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_BRICKS.get(), crystalQuartzTint);
+		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), crystalQuartzTint);
+		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_STAIRS.get(), crystalQuartzTint);
+		blocksWithCustomTint.put(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
+		blocksWithCustomTint.put(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), crystalQuartzTint);
 	}
 
 	@SubscribeEvent
@@ -348,13 +352,13 @@ public class ClientHandler {
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
 
-			return 0xFFFFFF;
+			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
 		}, SCContent.REINFORCED_GRASS_BLOCK.get());
 		event.register((state, world, pos, tintIndex) -> {
 			if (tintIndex == 1)
 				return world != null && pos != null ? BiomeColors.getAverageWaterColor(world, pos) : -1;
 
-			return 0xFFFFFF;
+			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
 		}, SCContent.REINFORCED_WATER_CAULDRON.get());
 	}
 
@@ -391,7 +395,7 @@ public class ClientHandler {
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
 
-			return 0xFFFFFF;
+			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
 		}, SCContent.REINFORCED_GRASS_BLOCK.get());
 		blocksWithReinforcedTint = null;
 		blocksWithCustomTint = null;
@@ -400,7 +404,7 @@ public class ClientHandler {
 	private static int mixWithReinforcedTintIfEnabled(int tint1) {
 		boolean tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
 
-		return tintReinforcedBlocks ? mixTints(tint1, 0x999999) : tint1;
+		return tintReinforcedBlocks ? mixTints(tint1, ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint1;
 	}
 
 	private static int mixTints(int tint1, int tint2) {

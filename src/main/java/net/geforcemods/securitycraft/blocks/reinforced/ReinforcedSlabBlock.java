@@ -76,7 +76,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 		BlockEntity be = level.getBlockEntity(pos);
 
 		if (state.getBlock() == this) {
-			if (be instanceof IOwnable ownable && !ownable.getOwner().isOwner(ctx.getPlayer())) {
+			if (be instanceof IOwnable ownable && !ownable.isOwnedBy(ctx.getPlayer())) {
 				PlayerUtils.sendMessageToPlayer(ctx.getPlayer(), Utils.localize("messages.securitycraft:reinforcedSlab"), Utils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), ChatFormatting.RED);
 
 				return state;

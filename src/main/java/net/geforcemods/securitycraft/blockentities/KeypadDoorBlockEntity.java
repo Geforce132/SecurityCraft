@@ -1,7 +1,11 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.function.Consumer;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.Utils;
@@ -14,6 +18,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasswordProtected {
+	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
+	private long cooldownEnd = 0;
 	private String passcode;
 
 	public KeypadDoorBlockEntity(BlockPos pos, BlockState state) {
@@ -26,6 +32,8 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
+
+		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 	}
 
 	@Override
@@ -33,6 +41,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 		super.load(tag);
 
 		passcode = tag.getString("passcode");
+		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 	}
 
 	@Override
@@ -48,7 +57,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 			return false;
 		}
 
-		return !state.getValue(DoorBlock.OPEN);
+		return !state.getValue(DoorBlock.OPEN) && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override
@@ -58,18 +67,8 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 	@Override
 	public void setPassword(String password) {
-		BlockEntity be = null;
-
 		passcode = password;
-
-		if (getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
-			be = level.getBlockEntity(worldPosition.above());
-		else if (getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER)
-			be = level.getBlockEntity(worldPosition.below());
-
-		if (be instanceof KeypadDoorBlockEntity doorTe)
-			doorTe.setPasswordExclusively(password);
-
+		runForOtherHalf(otherHalf -> otherHalf.setPasswordExclusively(password));
 		setChanged();
 	}
 
@@ -80,14 +79,59 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	}
 
 	@Override
+	public void startCooldown() {
+		long start = System.currentTimeMillis();
+
+		startCooldown(start);
+		runForOtherHalf(otherHalf -> otherHalf.startCooldown(start));
+	}
+
+	public void startCooldown(long start) {
+		if (!isOnCooldown()) {
+			cooldownEnd = start + smartModuleCooldown.get() * 50;
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+			setChanged();
+		}
+	}
+
+	@Override
+	public long getCooldownEnd() {
+		return cooldownEnd;
+	}
+
+	@Override
+	public boolean isOnCooldown() {
+		return System.currentTimeMillis() < getCooldownEnd();
+	}
+
+	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST, ModuleType.DENYLIST
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.SMART, ModuleType.HARMING
+		};
+	}
+
+	@Override
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				sendMessage, signalLength, disabled, smartModuleCooldown
 		};
 	}
 
 	@Override
 	public int defaultSignalLength() {
 		return 60;
+	}
+
+	public void runForOtherHalf(Consumer<KeypadDoorBlockEntity> action) {
+		BlockEntity be = null;
+
+		if (getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
+			be = level.getBlockEntity(worldPosition.above());
+		else if (getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER)
+			be = level.getBlockEntity(worldPosition.below());
+
+		if (be instanceof KeypadDoorBlockEntity otherHalf)
+			action.accept(otherHalf);
 	}
 }

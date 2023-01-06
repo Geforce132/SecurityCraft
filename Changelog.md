@@ -1,6 +1,53 @@
+--------------------------Changelog for v1.9.5 of SecurityCraft--------------------------
+
+- New: The reinforced block tint color can now be changed with a config setting
+- New: Netherrack Mine and End Stone Mine
+- New: The damage dealt by a Laser Block containing a Harming Module can now be changed with a config setting
+- New: More modded wooden chests can now be converted to a Password-protected Chest
+- New: Crystal Quartz Bricks, Smooth Crystal Quartz, Smooth Crystal Quartz Stairs, Smooth Crystal Quartz Slab, and their reinforced variants
+- New: Ignore owner option for blocks like the Inventory Scanner or Block Change Detector
+- New: Smart Module (incorrect code = cooldown) and Harming Module (incorrect code = damage) support for blocks that require a passcode
+- New: Config option "incorrectPasscodeDamage" to define the amount of damage dealt to a player who inserted an incorrect passcode
+- Change: Password-protected blocks can now only be activated if a password has been set, even if the player activating the block is on the allowlist
+- Change: Passcodes now have to be manually confirmed by using the new enter button found in the check password interface (or by using the enter key on the keyboard)
+- API: Changed IPasswordConvertible#getOriginalBlock to IPasswordConvertible#isValidStateForConversion for finer control over what can be converted
+- API: New methods IModuleInventory#isAllowed and IModuleInventory#isDenied to check whether an entity is listed on an allowlist or denylist module respectively
+- API: Moved and renamed Owner#isOwner methods to IPasswordProtected#isOwnedBy
+- API: New methods IPasswordProtected#startCooldown, IPasswordProtected#isOnCooldown IPasswordProtected#getCooldownEnd, and IPasswordProtected#getIncorrectPasscodeDamage
+- API: New method IPasswordProtected#verifyPasswordSet which returns whether a password has been set for this IPasswordProtected
+- API: Removed the IOwnable parameter from IPasswordProtected#setPasswordGUI because the relevant code has been moved to IPasswordProtected#verifyPasswordSet
+- API: New linked action ILinkedAction#StateChanged which is used when the state at the linkable block entity's position changes
+- Fix: The Reinforced Water Cauldron and Reinforced Grass Block don't have a reinforced tint
+- Fix: Reinforced Stained Glass Pane items display incorrectly
+- Fix: The Reinforced Moss Carpet has a different sound compared to the vanilla Moss Carpet
+- Fix: Crash when inserting a module into a single Inventory Scanner
+- Fix: Breaking a disguised Inventory Scanner does not update the disguise of the connected scanner
+- Fix: Some animations stutter
+- Fix: Using /kill to remove a camera entity, or removing it by other non-standard means, does not update the camera block properly
+- Fix: Error when unbinding the last mine/sentry from a Mine/Sentry Remote Access Tool
+- Fix: Placing an Inventory Scanner facing a disguised scanner does not update the placed scanner's disguise
+- Fix: The Cage Trap and Password-protected Furnace/Smoker/Blast Furnace are black instead of see-through
+- Fix: Breaking an Inventory Scanner/Laser or one of its field does not break all fields, if the respective config setting is lower than the amount of fields present
+- Fix: Breaking an Inventory Scanner Field with the inventoryScannerRange config setting set to >=3 does not break and reinstate all fields properly
+- Fix: Players that are on the allowlist of a Security Camera cannot toggle the camera's redstone output
+- Fix: The Redstone Module in a Laser Block does not respect ownership
+- Fix: Disabled option in laser blocks does not work properly
+- Fix: In the check password screen, using the enter key to press focused buttons does not work
+- Fix: Several instances of chunks not loading correctly when changing the view distance while viewing a camera
+- Fix: The Username Logger sometimes cannot be activated by a short redstone signal
+- Fix: The Codebreaker sometimes loses durability when rightclicking a block even though no codebreaking attempt has been made
+- Fix: Taking an item out of a Display Case does not work when the offhand is not empty
+- Fix: Issues when unloading and saving chunks containing linkable block entities
+- Fix: Some scroll lists can be scrolled a tiny bit even though there is no scrollbar
+- Fix: Some scroll lists cannot be scrolled far enough to show all entries
+- Fix: Some mines explode when detecting a player in creative mode
+- Fix: Laser blocks that are indirectly connected to a laser field detecting an entity don't activate
+- Fix: Laser fields can activate disconnected laser blocks in some circumstances
+- Misc.: The minimum required Forge version is now 44.0.11
+
 --------------------------Changelog for v1.9.4-beta1 of SecurityCraft--------------------------
 
 - New: Game rules "fakeWaterSourceConversion" and "fakeLavaSourceConversion" to control source conversion of fake liquids, akin to vanilla's water and lava
 - Change: Items in SecurityCraft's creative tabs have been reordered to match vanilla's order and in general make more sense
 - Change: Sounds for nether wood reinforced blocks have been adjusted to match the vanilla variants
-- Misc.: The minimum Forge version is 44.0.11
+- Misc.: The minimum required Forge version is 44.0.11

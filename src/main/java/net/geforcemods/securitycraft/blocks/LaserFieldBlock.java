@@ -2,15 +2,14 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -54,52 +53,53 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay {
 			if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
 				return;
 
-			for (Direction facing : Direction.values()) {
-				for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
-					BlockPos offsetPos = pos.relative(facing, i);
-					BlockState offsetState = level.getBlockState(offsetPos);
-					Block offsetBlock = offsetState.getBlock();
+			for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
+				BlockPos offsetPos = pos.relative(getFieldDirection(state), i);
+				BlockState offsetState = level.getBlockState(offsetPos);
+				Block offsetBlock = offsetState.getBlock();
 
-					if (offsetBlock == SCContent.LASER_BLOCK.get()) {
-						if (level.getBlockEntity(offsetPos) instanceof IModuleInventory moduleInv) {
-							if (ModuleUtils.isAllowed(moduleInv, entity))
-								return;
+				if (offsetBlock == SCContent.LASER_BLOCK.get()) {
+					if (level.getBlockEntity(offsetPos) instanceof LaserBlockBlockEntity laser) {
+						if (laser.isAllowed(entity))
+							return;
 
-							if (moduleInv.isModuleEnabled(ModuleType.REDSTONE) && !offsetState.getValue(LaserBlock.POWERED)) {
+						if (!(entity instanceof Player player && laser.isOwnedBy(player) && laser.ignoresOwner())) {
+							if (laser.isModuleEnabled(ModuleType.REDSTONE) && !offsetState.getValue(LaserBlock.POWERED)) {
 								level.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
 								BlockUtils.updateIndirectNeighbors(level, offsetPos, SCContent.LASER_BLOCK.get());
 								level.scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
+								laser.createLinkedBlockAction(new ILinkedAction.StateChanged<>(LaserBlock.POWERED, false, true), laser);
 							}
 
-							if (moduleInv.isModuleEnabled(ModuleType.HARMING)) {
-								if (!(entity instanceof Player player && ((IOwnable) moduleInv).getOwner().isOwner(player)))
-									livingEntity.hurt(CustomDamageSources.LASER, 10F);
+							if (laser.isModuleEnabled(ModuleType.HARMING)) {
+								double damage = ConfigHandler.SERVER.laserDamage.get();
+
+								livingEntity.hurt(CustomDamageSources.LASER, (float) damage);
 							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	@Override
-	public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
-		if (!level.isClientSide()) {
-			Direction[] facingArray = {
-					Direction.from3DDataValue((state.getValue(LaserFieldBlock.BOUNDTYPE) - 1) * 2), Direction.from3DDataValue((state.getValue(LaserFieldBlock.BOUNDTYPE) - 1) * 2).getOpposite()
-			};
-
-			for (Direction facing : facingArray) {
-				for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
-					if (level.getBlockState(pos.relative(facing, i)).getBlock() == SCContent.LASER_BLOCK.get()) {
-						for (int j = 1; j < i; j++) {
-							level.destroyBlock(pos.relative(facing, j), false);
 						}
 
 						break;
 					}
 				}
 			}
+		}
+	}
+
+	public static Direction getFieldDirection(BlockState state) {
+		return switch (state.getValue(BOUNDTYPE)) {
+			case 1 -> Direction.UP;
+			case 2 -> Direction.SOUTH;
+			case 3 -> Direction.EAST;
+			default -> null;
+		};
+	}
+
+	@Override
+	public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
+		if (!level.isClientSide()) {
+			Direction direction = Direction.from3DDataValue((state.getValue(LaserFieldBlock.BOUNDTYPE) - 1) * 2);
+
+			BlockUtils.destroyInSequence(this, level, pos, direction, direction.getOpposite());
 		}
 	}
 

@@ -144,10 +144,10 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedTintedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
-import net.geforcemods.securitycraft.entity.Bullet;
 import net.geforcemods.securitycraft.entity.IMSBomb;
-import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.geforcemods.securitycraft.entity.sentry.Bullet;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.fluids.FakeLavaFluid;
 import net.geforcemods.securitycraft.fluids.FakeWaterFluid;
 import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
@@ -187,6 +187,8 @@ import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.items.UniversalBlockRemoverItem;
 import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
+import net.geforcemods.securitycraft.misc.BlockEntityNBTCondition;
+import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnerDataSerializer;
 import net.geforcemods.securitycraft.misc.PageGroup;
@@ -197,6 +199,7 @@ import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -207,6 +210,8 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -226,6 +231,7 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
@@ -241,10 +247,18 @@ public class SCContent {
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, SecurityCraft.MODID);
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, SecurityCraft.MODID);
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SecurityCraft.MODID);
+	public static final DeferredRegister<LootItemConditionType> LOOT_ITEM_CONDITION_TYPES = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, SecurityCraft.MODID);
 	public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, SecurityCraft.MODID);
+	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, SecurityCraft.MODID);
 	public static final String KEYPAD_CHEST_PATH = "keypad_chest";
 	public static final String DISPLAY_CASE_PATH = "display_case";
 	public static final String GLOW_DISPLAY_CASE_PATH = "glow_display_case";
+
+	//loot item condition types
+	public static final RegistryObject<LootItemConditionType> BLOCK_ENTITY_NBT = LOOT_ITEM_CONDITION_TYPES.register("tile_entity_nbt", () -> new LootItemConditionType(new BlockEntityNBTCondition.ConditionSerializer()));
+
+	//recipe serializers
+	public static final RegistryObject<SimpleCraftingRecipeSerializer<LimitedUseKeycardRecipe>> LIMITED_USE_KEYCARD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("limited_use_keycard_recipe", () -> new SimpleCraftingRecipeSerializer<>(LimitedUseKeycardRecipe::new));
 
 	//data serializer entries
 	public static final RegistryObject<EntityDataSerializer<Owner>> OWNER_SERIALIZER = DATA_SERIALIZERS.register("owner", () -> new OwnerDataSerializer());
@@ -274,15 +288,6 @@ public class SCContent {
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> CAGE_TRAP = BLOCKS.register("cage_trap", () -> new CageTrapBlock(propDisguisable(Material.METAL).sound(SoundType.METAL).noCollission()));
-	@RegisterItemBlock
-	public static final RegistryObject<Block> CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("chiseled_crystal_quartz", () -> new Block(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
-	@HasManualPage
-	@RegisterItemBlock
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ = BLOCKS.register("crystal_quartz", () -> new Block(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
-	@RegisterItemBlock
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("crystal_quartz_pillar", () -> new RotatedPillarBlock(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
-	@RegisterItemBlock
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_SLAB = BLOCKS.register("crystal_quartz_slab", () -> new SlabBlock(Block.Properties.of(Material.STONE).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> CLAYMORE = BLOCKS.register("claymore", () -> new ClaymoreBlock(prop(Material.DECORATION)));
@@ -348,7 +353,7 @@ public class SCContent {
 	public static final RegistryObject<Block> REINFORCED_DOOR = BLOCKS.register("iron_door_reinforced", () -> new ReinforcedDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion()));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> REINFORCED_FENCEGATE = BLOCKS.register("reinforced_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Material.METAL).sound(SoundType.METAL)));
+	public static final RegistryObject<Block> REINFORCED_FENCE_GATE = BLOCKS.register("reinforced_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> RETINAL_SCANNER = BLOCKS.register("retinal_scanner", () -> new RetinalScannerBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
@@ -377,8 +382,6 @@ public class SCContent {
 	public static final RegistryObject<Block> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(prop(Material.METAL)));
 	@HasManualPage
 	public static final RegistryObject<Block> SONIC_SECURITY_SYSTEM = BLOCKS.register("sonic_security_system", () -> new SonicSecuritySystemBlock(prop(Material.METAL).sound(SoundType.METAL).isRedstoneConductor(SonicSecuritySystemBlock::isNormalCube).noCollission()));
-	@RegisterItemBlock
-	public static final RegistryObject<Block> STAIRS_CRYSTAL_QUARTZ = BLOCKS.register("crystal_quartz_stairs", () -> new StairBlock(() -> CRYSTAL_QUARTZ.get().defaultBlockState(), Block.Properties.copy(CRYSTAL_QUARTZ.get())));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> TRACK_MINE = BLOCKS.register("track_mine", () -> new TrackMineBlock(prop(Material.METAL, 0.7F).noCollission().sound(SoundType.METAL)));
 	@HasManualPage
@@ -416,6 +419,12 @@ public class SCContent {
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> GRAVEL_MINE = BLOCKS.register("gravel_mine", () -> new FallingBlockMineBlock(mineProp(Blocks.GRAVEL), Blocks.GRAVEL));
+	@HasManualPage(PageGroup.BLOCK_MINES)
+	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
+	public static final RegistryObject<Block> NETHERRACK_MINE = BLOCKS.register("netherrack_mine", () -> new BaseFullMineBlock(mineProp(Blocks.NETHERRACK), Blocks.NETHERRACK));
+	@HasManualPage(PageGroup.BLOCK_MINES)
+	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
+	public static final RegistryObject<Block> END_STONE_MINE = BLOCKS.register("end_stone_mine", () -> new BaseFullMineBlock(mineProp(Blocks.END_STONE), Blocks.END_STONE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> COAL_ORE_MINE = BLOCKS.register("coal_mine", () -> new BaseFullMineBlock(mineProp(Blocks.COAL_ORE), Blocks.COAL_ORE));
@@ -1263,7 +1272,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_QUARTZ = BLOCKS.register("reinforced_quartz_block", () -> new BaseReinforcedBlock(prop(), Blocks.QUARTZ_BLOCK));
+	public static final RegistryObject<Block> REINFORCED_QUARTZ_BLOCK = BLOCKS.register("reinforced_quartz_block", () -> new BaseReinforcedBlock(prop(), Blocks.QUARTZ_BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1749,7 +1758,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MOSS_CARPET = BLOCKS.register("reinforced_moss_carpet", () -> new ReinforcedCarpetBlock(prop(Material.MOSS).sound(SoundType.MOSS), Blocks.MOSS_CARPET));
+	public static final RegistryObject<Block> REINFORCED_MOSS_CARPET = BLOCKS.register("reinforced_moss_carpet", () -> new ReinforcedCarpetBlock(prop(Material.MOSS).sound(SoundType.MOSS_CARPET), Blocks.MOSS_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2182,21 +2191,52 @@ public class SCContent {
 	public static final RegistryObject<Block> REINFORCED_POWDER_SNOW_CAULDRON = BLOCKS.register("reinforced_powder_snow_cauldron", () -> new ReinforcedLayeredCauldronBlock(prop(Material.METAL, MaterialColor.STONE).noOcclusion(), LayeredCauldronBlock.SNOW, IReinforcedCauldronInteraction.POWDER_SNOW, Blocks.POWDER_SNOW_CAULDRON));
 
 	//misc
-	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
-	public static final RegistryObject<Block> REINFORCED_CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_chiseled_crystal_quartz_block", () -> new BlockPocketBlock(prop(), SCContent.CHISELED_CRYSTAL_QUARTZ));
-	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
-	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_crystal_quartz_block", () -> new BlockPocketBlock(prop(), SCContent.CRYSTAL_QUARTZ));
-	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
-	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("reinforced_crystal_quartz_pillar", () -> new ReinforcedRotatedCrystalQuartzPillar(prop(), SCContent.CRYSTAL_QUARTZ_PILLAR));
+	@RegisterItemBlock
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_SLAB = BLOCKS.register("crystal_quartz_slab", () -> new SlabBlock(Block.Properties.of(Material.STONE).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
+	@RegisterItemBlock
+	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ = BLOCKS.register("smooth_crystal_quartz", () -> new Block(Block.Properties.of(Material.STONE).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
+	@RegisterItemBlock
+	public static final RegistryObject<Block> CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("chiseled_crystal_quartz", () -> new Block(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
+	@HasManualPage
+	@RegisterItemBlock
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BLOCK = BLOCKS.register("crystal_quartz", () -> new Block(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
+	@RegisterItemBlock
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BRICKS = BLOCKS.register("crystal_quartz_bricks", () -> new Block(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
+	@RegisterItemBlock
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("crystal_quartz_pillar", () -> new RotatedPillarBlock(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
+	@RegisterItemBlock
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("crystal_quartz_stairs", () -> new StairBlock(() -> CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), Block.Properties.copy(CRYSTAL_QUARTZ_BLOCK.get())));
+	@RegisterItemBlock
+	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("smooth_crystal_quartz_stairs", () -> new StairBlock(() -> SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), Block.Properties.copy(SMOOTH_CRYSTAL_QUARTZ.get())));
+	@RegisterItemBlock
+	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("smooth_crystal_quartz_slab", () -> new SlabBlock(Block.Properties.of(Material.STONE).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_crystal_quartz_slab", () -> new ReinforcedSlabBlock(prop(), SCContent.CRYSTAL_QUARTZ_SLAB));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
-	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(prop(), SCContent.STAIRS_CRYSTAL_QUARTZ));
+	public static final RegistryObject<Block> REINFORCED_SMOOTH_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_smooth_crystal_quartz", () -> new BaseReinforcedBlock(prop(), SCContent.SMOOTH_CRYSTAL_QUARTZ));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	public static final RegistryObject<Block> REINFORCED_CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_chiseled_crystal_quartz_block", () -> new BlockPocketBlock(prop(), SCContent.CHISELED_CRYSTAL_QUARTZ));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_BLOCK = BLOCKS.register("reinforced_crystal_quartz_block", () -> new BlockPocketBlock(prop(), SCContent.CRYSTAL_QUARTZ_BLOCK));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_BRICKS = BLOCKS.register("reinforced_crystal_quartz_bricks", () -> new BaseReinforcedBlock(prop(), SCContent.CRYSTAL_QUARTZ_BRICKS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("reinforced_crystal_quartz_pillar", () -> new ReinforcedRotatedCrystalQuartzPillar(prop(), SCContent.CRYSTAL_QUARTZ_PILLAR));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(prop(), SCContent.CRYSTAL_QUARTZ_STAIRS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	public static final RegistryObject<Block> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_smooth_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(prop(), SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	public static final RegistryObject<Block> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_smooth_crystal_quartz_slab", () -> new ReinforcedSlabBlock(prop(), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	public static final RegistryObject<Block> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.register("horizontal_reinforced_iron_bars", () -> new HorizontalReinforcedIronBars(prop(Material.METAL).sound(SoundType.METAL), Blocks.IRON_BLOCK));
@@ -2347,7 +2387,7 @@ public class SCContent {
 			SCContent.SAND_MINE.get(),
 			SCContent.STONE_MINE.get(),
 			SCContent.BOUNCING_BETTY.get(),
-			SCContent.REINFORCED_FENCEGATE.get(),
+			SCContent.REINFORCED_FENCE_GATE.get(),
 			SCContent.ANCIENT_DEBRIS_MINE.get(),
 			SCContent.COAL_ORE_MINE.get(),
 			SCContent.EMERALD_ORE_MINE.get(),
@@ -2366,7 +2406,9 @@ public class SCContent {
 			SCContent.DEEPSLATE_IRON_ORE_MINE.get(),
 			SCContent.DEEPSLATE_LAPIS_ORE_MINE.get(),
 			SCContent.DEEPSLATE_REDSTONE_ORE_MINE.get(),
-			SCContent.COPPER_ORE_MINE.get()).build(null));
+			SCContent.COPPER_ORE_MINE.get(),
+			SCContent.NETHERRACK_MINE.get(),
+			SCContent.END_STONE_MINE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<KeypadBlockEntity>> KEYPAD_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad", () -> BlockEntityType.Builder.of(KeypadBlockEntity::new, SCContent.KEYPAD.get()).build(null));
 	public static final RegistryObject<BlockEntityType<LaserBlockBlockEntity>> LASER_BLOCK_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("laser_block", () -> BlockEntityType.Builder.of(LaserBlockBlockEntity::new, SCContent.LASER_BLOCK.get()).build(null));
 	public static final RegistryObject<BlockEntityType<CageTrapBlockEntity>> CAGE_TRAP_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("cage_trap", () -> BlockEntityType.Builder.of(CageTrapBlockEntity::new, SCContent.CAGE_TRAP.get()).build(null));
@@ -2410,7 +2452,7 @@ public class SCContent {
 	public static final RegistryObject<BlockEntityType<BlockPocketManagerBlockEntity>> BLOCK_POCKET_MANAGER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("block_pocket_manager", () -> BlockEntityType.Builder.of(BlockPocketManagerBlockEntity::new, SCContent.BLOCK_POCKET_MANAGER.get()).build(null));
 	public static final RegistryObject<BlockEntityType<BlockPocketBlockEntity>> BLOCK_POCKET_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("block_pocket", () -> BlockEntityType.Builder.of(BlockPocketBlockEntity::new,
 			SCContent.BLOCK_POCKET_WALL.get(),
-			SCContent.REINFORCED_CRYSTAL_QUARTZ.get(),
+			SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK.get(),
 			SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get(),
 			SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()).build(null));
 	public static final RegistryObject<BlockEntityType<AllowlistOnlyBlockEntity>> ALLOWLIST_ONLY_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_pressure_plate", () -> BlockEntityType.Builder.of(AllowlistOnlyBlockEntity::new,
