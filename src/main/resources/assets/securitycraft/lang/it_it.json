@@ -983,9 +983,6 @@
 	"itemGroup.securitycraft.explosives": "SecurityCraft: Esplosivi",
 	"itemGroup.securitycraft.technical": "SecurityCraft: Tecnico",
 
-	"gamerule.fakeWaterSourceConversion": "Conversione di acqua finta in sorgente",
-	"gamerule.fakeLavaSourceConversion": "Conversione di lava finta in sorgente",
-
 	"module.securitycraft.ims.whitelist_module.description": "Aggiungere un modulo lista consentiti ad uno S.M.I. permette ai giocatori in lista consentiti di camminare nel range dello S.M.I. senza essere bersagliati.",
 	"module.securitycraft.ims.speed_module.description": "Aggiungere un modulo velocità ad un S.M.I. permetterà a quest'ultimo di sparare più velocemente, e aumenta la velocità delle bombe lanciate.",
 	"module.securitycraft.inventory_scanner.whitelist_module.description": "Aggiungere un modulo lista consentiti ad uno scanner dell'inventario permette i giocatori in lista consentiti di passare attraverso lo scanner senza controllare il suo inventario.",
