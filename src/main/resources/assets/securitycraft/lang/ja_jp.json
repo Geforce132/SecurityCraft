@@ -917,9 +917,6 @@
 	"itemGroup.securitycraft.explosives": "SecurityCraft: 爆発物",
 	"itemGroup.securitycraft.technical": "SecurityCraft: テクニカル",
 
-	"gamerule.fakeWaterSourceConversion": "偽の水を源泉に変換",
-	"gamerule.fakeLavaSourceConversion": "偽の溶岩を源泉に変換",
-
 	"module.securitycraft.ims.whitelist_module.description": "I.M.S.に許可リストモジュールを追加すると、リストアップされたプレイヤーがI.M.S.の範囲内を歩いても、ターゲットにされなくなります。",
 	"module.securitycraft.ims.speed_module.description": "I.M.S.にスピードモジュールを追加すると、I.M.S.の射撃速度が速くなり、爆弾の発射速度も速くなります。",
 	"module.securitycraft.inventory_scanner.whitelist_module.description": "インベントリスキャナーに許可リストモジュールを追加すると、リストアップされたプレイヤーはインベントリを確認せずにスキャンフィールドを通過することができるようになります。",

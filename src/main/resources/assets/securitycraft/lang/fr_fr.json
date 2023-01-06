@@ -921,9 +921,6 @@
 	"itemGroup.securitycraft.explosives": "SecurityCraft: Explosifs",
 	"itemGroup.securitycraft.technical": "SecurityCraft: Technique",
 
-	"gamerule.fakeWaterSourceConversion": "Fausse eau se convertit à la source",
-	"gamerule.fakeLavaSourceConversion": "Fausse lave se convertit à la source",
-
 	"module.securitycraft.ims.whitelist_module.description": "L’ajout d’un module de liste d´autorisation à un S.M.I. permettra aux joueurs inscrits sur la liste d’autorisation de pénétrer dans la portée du S.M.I. sans être ciblés.",
 	"module.securitycraft.ims.speed_module.description": "L’ajout d’un module de vitesse à un S.M.I. fera le S.M.I. tire plus rapidement, en plus d’augmenter la vitesse des bombes de tir.",
 	"module.securitycraft.inventory_scanner.whitelist_module.description": "L’ajout d’un module de liste d´autorisation à un scanner d’inventaire permettra aux joueurs sur la liste d’autorisation de parcourir le champ de scan sans vérifier leur inventaire.",
