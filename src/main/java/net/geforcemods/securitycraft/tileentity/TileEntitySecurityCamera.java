@@ -36,12 +36,12 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 	@Override
 	public void update() {
 		if (!shutDown) {
+			oCameraRotation = cameraRotation;
+
 			if (!shouldRotateOption.get()) {
 				cameraRotation = customRotationOption.get();
 				return;
 			}
-
-			oCameraRotation = cameraRotation;
 
 			if (addToRotation && cameraRotation <= 1.55F)
 				cameraRotation += rotationSpeedOption.get();
