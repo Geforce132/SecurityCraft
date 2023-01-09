@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
+
+- Fix: Turning off camera rotation leads to extreme stuttering of the camera
+
 --------------------------Changelog for v1.9.5 of SecurityCraft--------------------------
 
 - New: The reinforced block tint color can now be changed with a config setting
