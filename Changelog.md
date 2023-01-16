@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
 
 - Fix: Turning off camera rotation leads to extreme stuttering of the camera
+- Fix: Shift-clicking a potion in the brewing stand screen puts the potion into the wrong slot
 
 --------------------------Changelog for v1.9.5 of SecurityCraft--------------------------
 

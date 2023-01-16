@@ -42,7 +42,7 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 
 	@Override
 	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {
-		if (action instanceof ILinkedAction.OptionChanged optionChanged) {
+		if (action instanceof ILinkedAction.OptionChanged<?> optionChanged) {
 			Option<?> option = optionChanged.option();
 
 			for (Option<?> customOption : customOptions()) {
