@@ -15,6 +15,7 @@
 		"camera.MixinEntityTrackerEntry",
 		"camera.MixinPlayerList",
 		"portal.MixinTeleporter",
+		"potion.MixinContainerBrewingStand",
 		"riftstabilizer.MixinItemChorusFruit"
 	],
 	"minVersion": "0.8"

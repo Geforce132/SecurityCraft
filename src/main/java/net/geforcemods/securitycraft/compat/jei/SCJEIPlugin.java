@@ -32,11 +32,11 @@ public class SCJEIPlugin implements IModPlugin {
 
 		//@formatter:off
 		registry.addAdvancedGuiHandlers(
-				new SlotMover(GuiCustomizeBlock.class),
-				new SlotMover(GuiProjector.class),
-				new SlotMover(GuiDisguiseModule.class),
-				new SlotMover(GuiBlockChangeDetector.class),
-				new SlotMover(GuiBlockPocketManager.class));
+				new SlotMover<>(GuiCustomizeBlock.class),
+				new SlotMover<>(GuiProjector.class),
+				new SlotMover<>(GuiDisguiseModule.class),
+				new SlotMover<>(GuiBlockChangeDetector.class),
+				new SlotMover<>(GuiBlockPocketManager.class));
 		//@formatter:on
 		registry.addIngredientInfo(new ItemStack(SCContent.adminTool), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.admin_tool");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypad), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad");

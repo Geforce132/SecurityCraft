@@ -41,7 +41,7 @@ public abstract class TileEntitySpecialDoor extends TileEntityLinkable implement
 	@Override
 	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<TileEntityLinkable> excludedTEs) {
 		if (action instanceof ILinkedAction.OptionChanged) {
-			Option<?> option = ((ILinkedAction.OptionChanged) action).option;
+			Option<?> option = ((ILinkedAction.OptionChanged<?>) action).option;
 
 			for (Option<?> customOption : customOptions()) {
 				if (customOption.getName().equals(option.getName())) {

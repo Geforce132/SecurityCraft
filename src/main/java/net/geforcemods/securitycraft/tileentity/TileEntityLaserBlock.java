@@ -48,7 +48,7 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 	@Override
 	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<TileEntityLinkable> excludedTEs) {
 		if (action instanceof ILinkedAction.OptionChanged) {
-			Option<?> option = ((ILinkedAction.OptionChanged) action).option;
+			Option<?> option = ((ILinkedAction.OptionChanged<?>) action).option;
 
 			if (option.getName().equals("disabled")) {
 				disabled.copy(option);
