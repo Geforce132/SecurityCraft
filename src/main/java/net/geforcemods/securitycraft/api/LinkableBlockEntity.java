@@ -85,7 +85,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		createLinkedBlockAction(new ILinkedAction.OptionChanged(option), this);
+		createLinkedBlockAction(new ILinkedAction.OptionChanged<>(option), this);
 		super.onOptionChanged(option);
 	}
 
