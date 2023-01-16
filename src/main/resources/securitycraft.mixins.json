@@ -18,7 +18,7 @@
 		"camera.ServerPlayerEntityMixin",
 		"piston.WorldMixin",
 		"portal.TeleporterMixin",
-		"potion.BrewingStandContainer",
+		"potion.BrewingStandContainerMixin",
 		"reinforceddirt.AbstractTrunkPlacerMixin",
 		"reinforceddirt.TreeFeatureMixin"
 	],
