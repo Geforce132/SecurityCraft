@@ -50,7 +50,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 	@Override
 	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {
-		if (action instanceof ILinkedAction.OptionChanged optionChanged) {
+		if (action instanceof ILinkedAction.OptionChanged<?> optionChanged) {
 			Option<?> option = optionChanged.option();
 
 			if (option.getName().equals("disabled")) {
