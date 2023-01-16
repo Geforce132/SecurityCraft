@@ -11,7 +11,6 @@ import mcjty.theoneprobe.api.IProbeInfoEntityProvider;
 import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ITheOneProbe;
 import mcjty.theoneprobe.api.ProbeMode;
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -38,7 +37,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.fml.ModList;
 
 public class TOPDataProvider implements Function<ITheOneProbe, Void> {
@@ -90,18 +88,8 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 
 				BlockEntity be = level.getBlockEntity(data.getPos());
 
-				if (be instanceof IOwnable ownable) {
-					String ownerName = ownable.getOwner().getName();
-
-					if (ConfigHandler.SERVER.enableTeamOwnership.get()) {
-						PlayerTeam team = PlayerUtils.getPlayersTeam(ownerName);
-
-						if (team != null)
-							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName().getString() + ChatFormatting.GRAY).getString(); //TOP does not work with normal component formatting
-					}
-
-					probeInfo.vertical().text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ownerName).getString()));
-				}
+				if (be instanceof IOwnable ownable)
+					probeInfo.vertical().mcText(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner())).withStyle(ChatFormatting.GRAY));
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
 				if (be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
@@ -138,16 +126,8 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, Entity entity, IProbeHitEntityData data) {
 				if (entity instanceof Sentry sentry) {
 					SentryMode mode = sentry.getMode();
-					String ownerName = sentry.getOwner().getName();
 
-					if (ConfigHandler.SERVER.enableTeamOwnership.get()) {
-						PlayerTeam team = PlayerUtils.getPlayersTeam(ownerName);
-
-						if (team != null)
-							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName().getString() + ChatFormatting.GRAY).getString(); //TOP does not work with normal component formatting
-					}
-
-					probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ownerName).getString()));
+					probeInfo.mcText(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())).withStyle(ChatFormatting.GRAY));
 
 					if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
 						probeInfo.text(EQUIPPED);

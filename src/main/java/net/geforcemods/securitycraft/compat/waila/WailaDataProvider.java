@@ -149,7 +149,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				if (be != null) {
 					//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
 					if (config.get(SHOW_OWNER) && be instanceof IOwnable ownable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
-						tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner().getName())));
+						tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner())));
 
 					if (disguised)
 						return;
@@ -193,7 +193,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				SentryMode mode = sentry.getMode();
 
 				if (config.get(SHOW_OWNER))
-					tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner().getName())));
+					tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())));
 
 				if (config.get(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer())) {
 					if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
