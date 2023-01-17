@@ -100,7 +100,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.19.3-44.0.36'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     
-//    implementation fg.deobf("curse.maven:jei-238222:4068188")
+    implementation fg.deobf("curse.maven:jei-238222:4346825")
     implementation fg.deobf("curse.maven:the-one-probe-245211:4159743")
     implementation fg.deobf("curse.maven:jade-324717:4199865")
     implementation fg.deobf("curse.maven:betterf3-401648:4279062")
