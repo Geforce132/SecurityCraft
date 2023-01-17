@@ -66,6 +66,8 @@ dependencies {
 	compile 'org.spongepowered:mixin:0.8.3'
 	deobfProvided "curse.maven:hwyla-253449:2568751"
 	deobfProvided "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17"
+	deobfProvided "curse.maven:ftb-library-legacy-forge-237167:2985811"
+	deobfProvided "curse.maven:ftb-utilities-forge-237102:3157548"
 	deobfProvided "curse.maven:cyclic-239286:2883487"
 	deobfProvided "curse.maven:icbm-classic-244451:3516968"
 	deobfProvided "curse.maven:lycanites-mobs-224770:2935745"

@@ -92,7 +92,7 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 
 		//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
 		if (config.getConfig(SHOW_OWNER) && te instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
-			body.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner().getName())).getFormattedText());
+			body.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())).getFormattedText());
 
 		if (!disguised) {
 			//if the te is ownable, show modules only when it's owned, otherwise always show
@@ -128,7 +128,7 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 			EnumSentryMode mode = sentry.getMode();
 
 			if (config.getConfig(SHOW_OWNER))
-				body.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner().getName())).getFormattedText());
+				body.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())).getFormattedText());
 
 			if (config.getConfig(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer())) {
 				if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {

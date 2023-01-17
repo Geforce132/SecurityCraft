@@ -11,7 +11,6 @@ import mcjty.theoneprobe.api.IProbeInfoEntityProvider;
 import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ITheOneProbe;
 import mcjty.theoneprobe.api.ProbeMode;
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -32,7 +31,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IWorldNameable;
@@ -107,22 +105,8 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 
 				TileEntity te = world.getTileEntity(data.getPos());
 
-				if (te instanceof IOwnable) {
-					String ownerName = ((IOwnable) te).getOwner().getName();
-
-					if (ConfigHandler.enableTeamOwnership) {
-						ScorePlayerTeam team = PlayerUtils.getPlayersTeam(ownerName);
-
-						if (team != null)
-							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName()).getFormattedText();
-						else
-							ownerName = TextFormatting.GRAY + ownerName;
-					}
-					else
-						ownerName = TextFormatting.GRAY + ownerName;
-
-					probeInfo.vertical().text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ownerName).getFormattedText());
-				}
+				if (te instanceof IOwnable)
+					probeInfo.vertical().text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())).getFormattedText());
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
 				if (te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
@@ -159,16 +143,8 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				if (entity instanceof EntitySentry) {
 					EntitySentry sentry = (EntitySentry) entity;
 					EnumSentryMode mode = sentry.getMode();
-					String ownerName = TextFormatting.GRAY + sentry.getOwner().getName();
 
-					if (ConfigHandler.enableTeamOwnership) {
-						ScorePlayerTeam team = PlayerUtils.getPlayersTeam(ownerName);
-
-						if (team != null)
-							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName() + TextFormatting.GRAY).getFormattedText();
-					}
-
-					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ownerName).getFormattedText());
+					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())).getFormattedText());
 
 					if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
 						probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getFormattedText());

@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.tileentity;
 
 import java.util.List;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -10,6 +9,7 @@ import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -30,7 +30,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private boolean shouldSendNewMessage = true;
-	private String lastPlayerName = "";
+	private Owner lastPlayer = new Owner();
 	private int ticksUntilNextSearch = getSearchDelay();
 
 	@Override
@@ -69,8 +69,11 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
+		NBTTagCompound lastPlayerTag = new NBTTagCompound();
+
 		tag.setBoolean("shouldSendNewMessage", shouldSendNewMessage);
-		tag.setString("lastPlayerName", lastPlayerName);
+		lastPlayer.writeToNBT(lastPlayerTag, false);
+		tag.setTag("lastPlayer", lastPlayerTag);
 		return tag;
 	}
 
@@ -78,7 +81,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
-		lastPlayerName = tag.getString("lastPlayerName");
+		lastPlayer = Owner.fromCompound(tag.getCompoundTag("lastPlayer"));
 	}
 
 	@Override
@@ -92,14 +95,14 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 	}
 
 	public boolean shouldSendMessage(EntityPlayer player) {
-		if (!player.getName().equals(lastPlayerName)) {
+		Owner currentPlayer = new Owner(player);
+
+		if (!currentPlayer.equals(lastPlayer)) {
 			shouldSendNewMessage = true;
-			lastPlayerName = player.getName();
+			lastPlayer = currentPlayer;
 		}
 
-		boolean lastPlayerOwns = ConfigHandler.enableTeamOwnership ? PlayerUtils.areOnSameTeam(lastPlayerName, getOwner().getName()) : lastPlayerName.equals(getOwner().getName());
-
-		return (shouldSendNewMessage || repeatMessageOption.get()) && !(lastPlayerOwns && ignoresOwner());
+		return (shouldSendNewMessage || repeatMessageOption.get()) && !(lastPlayer.owns(this) && ignoresOwner());
 	}
 
 	public void setSentMessage() {

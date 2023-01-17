@@ -103,7 +103,7 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 						String name = shooter instanceof EntitySentry ? ((EntitySentry) shooter).getOwner().getName() : shooter.getName();
 
 						//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-						if (!((ConfigHandler.enableTeamOwnership && PlayerUtils.areOnSameTeam(shooter.getName(), getOwner().getName())) || (ignoresOwner() && (uuid != null && uuid.toString().equals(getOwner().getUUID()))) || isAllowed(name)))
+						if (!((ConfigHandler.enableTeamOwnership && PlayerUtils.areOnSameTeam(new Owner(shooter), getOwner())) || (ignoresOwner() && (uuid != null && uuid.toString().equals(getOwner().getUUID()))) || isAllowed(name)))
 							setTarget(target);
 					}
 				}

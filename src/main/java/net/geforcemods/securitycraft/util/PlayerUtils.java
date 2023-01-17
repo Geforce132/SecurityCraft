@@ -8,6 +8,8 @@ import com.mojang.authlib.GameProfile;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.compat.ftbutilities.FTBUtilitiesCompat;
+import net.geforcemods.securitycraft.compat.ftbutilities.TeamRepresentation;
 import net.geforcemods.securitycraft.entity.camera.EntitySecurityCamera;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.minecraft.client.Minecraft;
@@ -32,6 +34,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class PlayerUtils {
@@ -183,19 +186,22 @@ public class PlayerUtils {
 	}
 
 	/**
-	 * Checks if two given players are on the same scoreboard team
+	 * Checks if two given players are on the same scoreboard/FTB Teams team
 	 *
-	 * @param name1 The name of the first player
-	 * @param name2 The name of the second player
+	 * @param owner1 The first owner object representing a player
+	 * @param owner2 The second owner object representing a player
 	 * @return true if both players are on the same team, false otherwise
 	 */
-	public static boolean areOnSameTeam(String name1, String name2) {
-		if (name1.equals(name2))
+	public static boolean areOnSameTeam(Owner owner1, Owner owner2) {
+		if (owner1.equals(owner2))
 			return true;
 
-		ScorePlayerTeam team = getPlayersTeam(name1);
+		if (Loader.isModLoaded("ftbutilities"))
+			return FTBUtilitiesCompat.areOnSameTeam(owner1, owner2);
 
-		return team != null && team.getMembershipCollection().contains(name2);
+		ScorePlayerTeam team = getPlayersVanillaTeam(owner1.getName());
+
+		return team != null && team.getMembershipCollection().contains(owner2.getName());
 	}
 
 	/**
@@ -204,7 +210,7 @@ public class PlayerUtils {
 	 * @param playerName The player whose team to get
 	 * @return The team the given player is on. null if the player is not part of a team
 	 */
-	public static ScorePlayerTeam getPlayersTeam(String playerName) {
+	public static ScorePlayerTeam getPlayersVanillaTeam(String playerName) {
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 
 		if (server != null)
@@ -217,18 +223,18 @@ public class PlayerUtils {
 	 * Gets the component to use for displaying a block's owner. If team ownership is enabled and the given player is on a team,
 	 * this will return the colored team name.
 	 *
-	 * @param ownerName The player who owns the block
+	 * @param owner The player who owns the block
 	 * @return The component to display
 	 */
-	public static ITextComponent getOwnerComponent(String ownerName) {
+	public static ITextComponent getOwnerComponent(Owner owner) {
 		if (ConfigHandler.enableTeamOwnership) {
-			ScorePlayerTeam team = getPlayersTeam(ownerName);
+			TeamRepresentation teamRepresentation = TeamRepresentation.get(owner);
 
-			if (team != null)
-				return Utils.localize("messages.securitycraft:teamOwner", new TextComponentString(team.getDisplayName()).setStyle(new Style().setColor(team.getColor())));
+			if (teamRepresentation != null)
+				return Utils.localize("messages.securitycraft:teamOwner", new TextComponentString(teamRepresentation.name()).setStyle(new Style().setColor(teamRepresentation.color()))).setStyle(new Style().setColor(TextFormatting.GRAY));
 		}
 
-		return new TextComponentString(ownerName);
+		return new TextComponentString(owner.getName());
 	}
 
 	/**

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.api;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataSerializer;
@@ -23,6 +24,15 @@ public class Owner {
 	private boolean validated = true;
 
 	public Owner() {}
+
+	public Owner(Entity entity) {
+		if (entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entity;
+
+			ownerName = player.getName();
+			ownerUUID = player.getGameProfile().getId().toString();
+		}
+	}
 
 	public Owner(EntityPlayer player) {
 		ownerName = player.getName();
@@ -76,10 +86,11 @@ public class Owner {
 			if (ownable == null)
 				continue;
 
-			String uuidToCheck = ownable.getOwner().getUUID();
-			String nameToCheck = ownable.getOwner().getName();
+			Owner ownableOwner = ownable.getOwner();
+			String uuidToCheck = ownableOwner.getUUID();
+			String nameToCheck = ownableOwner.getName();
 
-			if (ConfigHandler.enableTeamOwnership && PlayerUtils.areOnSameTeam(ownerName, nameToCheck))
+			if (ConfigHandler.enableTeamOwnership && PlayerUtils.areOnSameTeam(this, ownableOwner))
 				continue;
 
 			// Check the player's UUID first.

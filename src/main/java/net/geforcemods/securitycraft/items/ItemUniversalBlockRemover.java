@@ -41,7 +41,7 @@ public class ItemUniversalBlockRemover extends Item {
 		if (isOwnableBlock(block, tileEntity)) {
 			if (!((IOwnable) tileEntity).isOwnedBy(player)) {
 				if (!(block instanceof IBlockMine) && (!(tileEntity.getBlockType() instanceof BlockDisguisable) || (((ItemBlock) ((BlockDisguisable) tileEntity.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable))) {
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalBlockRemover.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) tileEntity).getOwner().getName())), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalBlockRemover.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) tileEntity).getOwner())), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
 
