@@ -54,7 +54,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 					viewingPlayer = PlayerUtils.getSkullOwner(player);
 
 				if (!isOwnedBy(viewingPlayer) && !isAllowed(viewingPlayer.getName())) {
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner())), TextFormatting.RED);
 					return true;
 				}
 

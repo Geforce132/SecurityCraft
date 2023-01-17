@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -102,9 +103,10 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 	public IFormattableTextComponent insertCard(World world, BlockPos pos, KeycardReaderBlockEntity te, ItemStack stack, PlayerEntity player) {
 		CompoundNBT tag = stack.getTag();
+		Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
 
 		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
-		if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !PlayerUtils.areOnSameTeam(te.getOwner().getName(), tag.getString("ownerName"))) || !te.getOwner().getUUID().equals(tag.getString("ownerUUID")))
+		if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !PlayerUtils.areOnSameTeam(te.getOwner(), keycardOwner)) || !te.getOwner().getUUID().equals(keycardOwner.getUUID()))
 			return new TranslationTextComponent("messages.securitycraft:keycardReader.differentOwner");
 
 		//the keycard's signature does not match this keycard reader's

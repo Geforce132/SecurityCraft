@@ -51,7 +51,7 @@ public class UniversalKeyChangerItem extends Item {
 				return ActionResultType.SUCCESS;
 			}
 			else if (!(te.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem) ((DisguisableBlock) te.getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock)) {
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) world.getBlockEntity(pos)).getOwner().getName())), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())), TextFormatting.RED);
 				return ActionResultType.FAIL;
 			}
 		}
