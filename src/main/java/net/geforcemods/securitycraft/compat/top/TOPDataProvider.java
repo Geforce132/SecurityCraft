@@ -40,9 +40,9 @@ import net.minecraftforge.fml.ModList;
 
 public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 	private static final IFormattableTextComponent EQUIPPED = Utils.localize("waila.securitycraft:equipped").withStyle(Utils.GRAY_STYLE);
-	private static final IFormattableTextComponent ALLOWLIST_MODULE = new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey()));
-	private static final IFormattableTextComponent DISGUISE_MODULE = new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()));
-	private static final IFormattableTextComponent SPEED_MODULE = new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey()));
+	private static final IFormattableTextComponent ALLOWLIST_MODULE = new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey())).withStyle(TextFormatting.GRAY);
+	private static final IFormattableTextComponent DISGUISE_MODULE = new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())).withStyle(TextFormatting.GRAY);
+	private static final IFormattableTextComponent SPEED_MODULE = new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey())).withStyle(TextFormatting.GRAY);
 
 	@Nullable
 	@Override
@@ -65,7 +65,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				.item(disguisedAs)
 				.vertical()
 				.itemLabel(disguisedAs)
-				.text(new StringTextComponent("" + TextFormatting.BLUE + TextFormatting.ITALIC + ModList.get().getModContainerById(disguisedAs.getItem().getRegistryName().getNamespace()).get().getModInfo().getDisplayName()));
+				.mcText(new StringTextComponent(ModList.get().getModContainerById(disguisedAs.getItem().getRegistryName().getNamespace()).get().getModInfo().getDisplayName()).withStyle(TextFormatting.BLUE, TextFormatting.ITALIC));
 				return true;
 				//@formatter:on
 			}
@@ -93,10 +93,10 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				//if the te is ownable, show modules only when it's owned, otherwise always show
 				if (te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
 					if (!((IModuleInventory) te).getInsertedModules().isEmpty()) {
-						probeInfo.text(EQUIPPED);
+						probeInfo.mcText(EQUIPPED);
 
 						for (ModuleType module : ((IModuleInventory) te).getInsertedModules()) {
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(module.getTranslationKey())));
+							probeInfo.mcText(new StringTextComponent("- ").append(new TranslationTextComponent(module.getTranslationKey())).withStyle(TextFormatting.GRAY));
 						}
 					}
 				}
@@ -104,14 +104,13 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				if (te instanceof IPasswordProtected && !(te instanceof KeycardReaderBlockEntity) && ((IOwnable) te).isOwnedBy(player)) {
 					String password = ((IPasswordProtected) te).getPassword();
 
-					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))).getString()));
+					probeInfo.mcText(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))).withStyle(TextFormatting.GRAY));
 				}
 
 				if (te instanceof INameable && ((INameable) te).hasCustomName()) {
 					ITextComponent text = ((INameable) te).getCustomName();
-					ITextComponent name = text == null ? StringTextComponent.EMPTY : text;
 
-					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:customName", name).getString()));
+					probeInfo.mcText(Utils.localize("waila.securitycraft:customName", text == null ? StringTextComponent.EMPTY : text).withStyle(TextFormatting.GRAY));
 				}
 			}
 		});
@@ -130,16 +129,16 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 					probeInfo.mcText(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())).withStyle(TextFormatting.GRAY));
 
 					if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
-						probeInfo.text(EQUIPPED);
+						probeInfo.mcText(EQUIPPED);
 
 						if (!sentry.getAllowlistModule().isEmpty())
-							probeInfo.text(ALLOWLIST_MODULE);
+							probeInfo.mcText(ALLOWLIST_MODULE);
 
 						if (!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(DISGUISE_MODULE);
+							probeInfo.mcText(DISGUISE_MODULE);
 
 						if (sentry.hasSpeedModule())
-							probeInfo.text(SPEED_MODULE);
+							probeInfo.mcText(SPEED_MODULE);
 					}
 
 					IFormattableTextComponent modeDescription = Utils.localize(mode.getModeKey());
@@ -147,7 +146,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 					if (mode != SentryMode.IDLE)
 						modeDescription.append("- ").append(Utils.localize(mode.getTargetKey()));
 
-					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + modeDescription.getString()));
+					probeInfo.mcText(modeDescription.withStyle(TextFormatting.GRAY));
 				}
 			}
 		});
