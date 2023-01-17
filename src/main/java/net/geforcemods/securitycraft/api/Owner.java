@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
 /**
@@ -19,6 +20,13 @@ public class Owner {
 	private boolean validated = true;
 
 	public Owner() {}
+
+	public Owner(Entity entity) {
+		if (entity instanceof Player player) {
+			ownerName = player.getName().getString();
+			ownerUUID = player.getGameProfile().getId().toString();
+		}
+	}
 
 	public Owner(Player player) {
 		ownerName = player.getName().getString();
@@ -72,17 +80,18 @@ public class Owner {
 			if (ownable == null)
 				continue;
 
-			String uuidToCheck = ownable.getOwner().getUUID();
-			String nameToCheck = ownable.getOwner().getName();
+			Owner ownableOwner = ownable.getOwner();
+			String uuidToCheck = ownableOwner.getUUID();
+			String nameToCheck = ownableOwner.getName();
 
-			if (ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(ownerName, nameToCheck))
+			if (ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(this, ownableOwner))
 				continue;
 
 			// Check the player's UUID first.
 			if (uuidToCheck != null && !uuidToCheck.equals(ownerUUID))
 				return false;
 
-			// If the TileEntity doesn't have a UUID saved, use the player's name instead.
+			// If the BlockEntity doesn't have a UUID saved, use the player's name instead.
 			if (nameToCheck != null && uuidToCheck.equals("ownerUUID") && !nameToCheck.equals("owner") && !nameToCheck.equals(ownerName))
 				return false;
 		}
