@@ -895,7 +895,7 @@ config.securitycraft:retinalScannerFace.tooltip=Soll der Augenscanner das Gesich
 config.securitycraft:mineExplosionsBreakBlocks=Zerstören Minenexplosionen Blöcke?
 config.securitycraft:mineExplosionsBreakBlocks.tooltip=Setze diese Option auf false wenn Du möchtest, dass Minen keine Blöcke zerstören wenn sie explodieren.
 config.securitycraft:enableTeamOwnership=Ist das Besitzen von Blöcken innerhalb von Teams aktiviert?
-config.securitycraft:enableTeamOwnership.tooltip=Setze diese Option auf true, damit jeder Spieler in einem Scoreboard-Team die Blöcke aller anderen Spieler in dem selben Team besitzt. Das macht es Spielern möglich, die verstärkten Blöcke aller anderen Spieler im selben Team zu zerbrechen, Optionen zu ändern, Module hinzufügen oder entfernen, und Zugriff auf alle anderen besitzergebundenen Sachen zu haben.
+config.securitycraft:enableTeamOwnership.tooltip=Setze diese Option auf true, damit jeder Spieler in einem Scoreboard-Team (oder FTB Utilities-Team) die Blöcke aller anderen Spieler in dem selben Team besitzt. Das macht es Spielern möglich, die verstärkten Blöcke aller anderen Spieler im selben Team zu zerbrechen, Optionen zu ändern, Module hinzufügen oder entfernen, und Zugriff auf alle anderen besitzergebundenen Sachen zu haben.
 config.securitycraft:trickScannersWithPlayerHeads=Augenscanner mit Spielerköpfen reinlegen?
 config.securitycraft:trickScannersWithPlayerHeads.tooltip=Setze diese Option auf true, wenn du möchtest, dass Spieler die einen Spielerkopf tragen, Augenscanner und Scannertüren dieses Spielers öffnen können.
 
