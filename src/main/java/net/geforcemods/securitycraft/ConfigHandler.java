@@ -159,7 +159,7 @@ public class ConfigHandler {
 					.define("retinalScannerFace", true);
 
 			enableTeamOwnership = builder
-					.comment("Set this to true to enable every player on a scoreboard team to own the blocks of every other player on the same team.",
+					.comment("Set this to true to enable every player on a scoreboard team (or FTB Teams party) to own the blocks of every other player on the same team.",
 							"This enables players on the same team to break each other's reinforced blocks, change options, add/remove modules, and have access to all other owner-restricted things.")
 					.define("enable_team_ownership", false);
 
