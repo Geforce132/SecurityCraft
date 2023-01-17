@@ -38,10 +38,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fml.ModList;
 
 public class TOPDataProvider implements Function<ITheOneProbe, Void> {
-	private static final MutableComponent EQUIPPED = Component.literal("" + ChatFormatting.GRAY).append(Utils.localize("waila.securitycraft:equipped"));
-	private static final MutableComponent ALLOWLIST_MODULE = Component.literal(ChatFormatting.GRAY + "- ").append(Component.translatable(ModuleType.ALLOWLIST.getTranslationKey()));
-	private static final MutableComponent DISGUISE_MODULE = Component.literal(ChatFormatting.GRAY + "- ").append(Component.translatable(ModuleType.DISGUISE.getTranslationKey()));
-	private static final MutableComponent SPEED_MODULE = Component.literal(ChatFormatting.GRAY + "- ").append(Component.translatable(ModuleType.SPEED.getTranslationKey()));
+	private static final MutableComponent EQUIPPED = Utils.localize("waila.securitycraft:equipped").withStyle(ChatFormatting.GRAY);
+	private static final MutableComponent ALLOWLIST_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.ALLOWLIST.getTranslationKey())).withStyle(ChatFormatting.GRAY);
+	private static final MutableComponent DISGUISE_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.DISGUISE.getTranslationKey())).withStyle(ChatFormatting.GRAY);
+	private static final MutableComponent SPEED_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.SPEED.getTranslationKey())).withStyle(ChatFormatting.GRAY);
 
 	@Nullable
 	@Override
@@ -64,7 +64,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				.item(disguisedAs)
 				.vertical()
 				.itemLabel(disguisedAs)
-				.text(Component.literal("" + ChatFormatting.BLUE + ChatFormatting.ITALIC + ModList.get().getModContainerById(Utils.getRegistryName(disguisedAs.getItem()).getNamespace()).get().getModInfo().getDisplayName()));
+				.mcText(Component.literal(ModList.get().getModContainerById(Utils.getRegistryName(disguisedAs.getItem()).getNamespace()).get().getModInfo().getDisplayName()).withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
 				return true;
 				//@formatter:on
 			}
@@ -88,13 +88,14 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 
 				if (be instanceof IOwnable ownable)
 					probeInfo.vertical().mcText(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner())).withStyle(ChatFormatting.GRAY));
+
 				//if the te is ownable, show modules only when it's owned, otherwise always show
 				if (be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 					if (!inv.getInsertedModules().isEmpty()) {
-						probeInfo.text(EQUIPPED);
+						probeInfo.mcText(EQUIPPED);
 
 						for (ModuleType module : inv.getInsertedModules()) {
-							probeInfo.text(Component.literal(ChatFormatting.GRAY + "- ").append(Component.translatable(module.getTranslationKey())));
+							probeInfo.mcText(Component.literal("- ").append(Component.translatable(module.getTranslationKey())).withStyle(ChatFormatting.GRAY));
 						}
 					}
 				}
@@ -102,14 +103,13 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				if (be instanceof IPasswordProtected passwordProtected && !(be instanceof KeycardReaderBlockEntity) && ((IOwnable) be).isOwnedBy(player)) {
 					String password = passwordProtected.getPassword();
 
-					probeInfo.text(Component.literal(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))).getString()));
+					probeInfo.mcText(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))).withStyle(ChatFormatting.GRAY));
 				}
 
 				if (be instanceof Nameable nameable && nameable.hasCustomName()) {
 					Component text = nameable.getCustomName();
-					Component name = text == null ? Component.empty() : text;
 
-					probeInfo.text(Component.literal(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:customName", name).getString()));
+					probeInfo.mcText(Utils.localize("waila.securitycraft:customName", text == null ? Component.empty() : text).withStyle(ChatFormatting.GRAY));
 				}
 			}
 		});
@@ -125,17 +125,18 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 					SentryMode mode = sentry.getMode();
 
 					probeInfo.mcText(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())).withStyle(ChatFormatting.GRAY));
+
 					if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
-						probeInfo.text(EQUIPPED);
+						probeInfo.mcText(EQUIPPED);
 
 						if (!sentry.getAllowlistModule().isEmpty())
-							probeInfo.text(ALLOWLIST_MODULE);
+							probeInfo.mcText(ALLOWLIST_MODULE);
 
 						if (!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(DISGUISE_MODULE);
+							probeInfo.mcText(DISGUISE_MODULE);
 
 						if (sentry.hasSpeedModule())
-							probeInfo.text(SPEED_MODULE);
+							probeInfo.mcText(SPEED_MODULE);
 					}
 
 					MutableComponent modeDescription = Utils.localize(mode.getModeKey());
@@ -143,7 +144,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 					if (mode != SentryMode.IDLE)
 						modeDescription.append("- ").append(Utils.localize(mode.getTargetKey()));
 
-					probeInfo.text(Component.literal(ChatFormatting.GRAY + modeDescription.getString()));
+					probeInfo.mcText(modeDescription.withStyle(ChatFormatting.GRAY));
 				}
 			}
 		});
