@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -90,6 +91,11 @@ public class BlockProjector extends BlockDisguisable {
 			player.openGui(SecurityCraft.instance, GuiHandler.PROJECTOR, world, pos.getX(), pos.getY(), pos.getZ());
 
 		return isOwner;
+	}
+
+	@Override
+	public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return side != null && side.getAxis() == Axis.Y;
 	}
 
 	@Override

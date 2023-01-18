@@ -55,6 +55,11 @@ public class BlockAlarm extends BlockOwnable {
 	}
 
 	@Override
+	public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return side != null && side.getAxis() == Axis.Y;
+	}
+
+	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if (!canPlaceBlockOnSide(world, pos, state.getValue(FACING))) {
 			dropBlockAsItem(world, pos, state, 0);
