@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -91,6 +92,11 @@ public class ProjectorBlock extends DisguisableBlock {
 			NetworkHooks.openScreen((ServerPlayer) player, be, pos);
 
 		return isOwner ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+	}
+
+	@Override
+	public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+		return direction != null && direction.getAxis() != Axis.Y;
 	}
 
 	@Override
