@@ -53,6 +53,11 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	@Override
+	public boolean canConnectRedstone(BlockState state, IBlockReader level, BlockPos pos, Direction direction) {
+		return direction != null && direction.getAxis() != Axis.Y;
+	}
+
+	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
 		if (!canSurvive(state, world, pos))
 			world.destroyBlock(pos, true);

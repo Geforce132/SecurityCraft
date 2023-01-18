@@ -23,6 +23,7 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -108,6 +109,11 @@ public class ProjectorBlock extends DisguisableBlock {
 			NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
 
 		return isOwner ? ActionResultType.SUCCESS : ActionResultType.FAIL;
+	}
+
+	@Override
+	public boolean canConnectRedstone(BlockState state, IBlockReader level, BlockPos pos, Direction direction) {
+		return direction != null && direction.getAxis() != Axis.Y;
 	}
 
 	@Override

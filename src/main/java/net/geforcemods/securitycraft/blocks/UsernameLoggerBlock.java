@@ -12,6 +12,7 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -34,6 +35,11 @@ public class UsernameLoggerBlock extends DisguisableBlock {
 			ClientHandler.displayUsernameLoggerScreen(world, pos);
 
 		return ActionResultType.SUCCESS;
+	}
+
+	@Override
+	public boolean canConnectRedstone(BlockState state, IBlockReader level, BlockPos pos, Direction direction) {
+		return direction != null && direction.getAxis() != Axis.Y;
 	}
 
 	@Override
