@@ -4,18 +4,24 @@ import org.joml.Vector3f;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.client.OpenLaserScreen;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -30,6 +36,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.PacketDistributor;
 
 public class LaserBlock extends DisguisableBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -47,46 +55,65 @@ public class LaserBlock extends DisguisableBlock {
 			setLaser(level, pos);
 	}
 
+	@Override
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		LaserBlockBlockEntity be = (LaserBlockBlockEntity) level.getBlockEntity(pos);
+
+		if (!level.isClientSide && be.isOwnedBy(player))
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenLaserScreen(pos, be.getSideConfig()));
+
+		return InteractionResult.SUCCESS;
+	}
+
 	public void setLaser(Level level, BlockPos pos) {
+		for (Direction facing : Direction.values()) {
+			setLaser(level, pos, facing);
+		}
+	}
+
+	public void setLaser(Level level, BlockPos pos, Direction facing) {
 		LaserBlockBlockEntity thisBe = (LaserBlockBlockEntity) level.getBlockEntity(pos);
 
-		for (Direction facing : Direction.values()) {
-			int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
+		if (!thisBe.isSideEnabled(facing))
+			return;
 
-			inner:
-			for (int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++) {
-				BlockPos offsetPos = pos.relative(facing, i);
-				BlockState offsetState = level.getBlockState(offsetPos);
-				Block offsetBlock = offsetState.getBlock();
+		int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
 
-				if (!offsetState.isAir() && !offsetState.canBeReplaced() && offsetBlock != SCContent.LASER_BLOCK.get())
-					break inner;
-				else if (offsetBlock == SCContent.LASER_BLOCK.get()) {
-					LaserBlockBlockEntity thatBe = (LaserBlockBlockEntity) level.getBlockEntity(offsetPos);
+		for (int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++) {
+			BlockPos offsetPos = pos.relative(facing, i);
+			BlockState offsetState = level.getBlockState(offsetPos);
+			Block offsetBlock = offsetState.getBlock();
 
-					if (thisBe.getOwner().owns(thatBe)) {
-						LinkableBlockEntity.link(thisBe, thatBe);
+			if (!offsetState.isAir() && !offsetState.canBeReplaced() && offsetBlock != SCContent.LASER_BLOCK.get())
+				return;
+			else if (offsetBlock == SCContent.LASER_BLOCK.get()) {
+				LaserBlockBlockEntity thatBe = (LaserBlockBlockEntity) level.getBlockEntity(offsetPos);
 
-						for (ModuleType type : thatBe.getInsertedModules()) {
-							thisBe.insertModule(thatBe.getModule(type), false);
+				if (thisBe.getOwner().owns(thatBe)) {
+					LinkableBlockEntity.link(thisBe, thatBe);
+
+					for (ModuleType type : thatBe.getInsertedModules()) {
+						thisBe.insertModule(thatBe.getModule(type), false);
+					}
+
+					if (thisBe.isEnabled() && thatBe.isEnabled()) {
+						if (!thatBe.isSideEnabled(facing.getOpposite())) {
+							thisBe.setSideEnabled(facing, false);
+							return;
 						}
 
-						if (thisBe.isEnabled() && thatBe.isEnabled()) {
-							for (int j = 1; j < i; j++) {
-								offsetPos = pos.relative(facing, j);
-								offsetState = level.getBlockState(offsetPos);
+						for (int j = 1; j < i; j++) {
+							offsetPos = pos.relative(facing, j);
+							offsetState = level.getBlockState(offsetPos);
 
-								if (offsetState.isAir() || offsetState.canBeReplaced()) {
-									level.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().defaultBlockState().setValue(LaserFieldBlock.BOUNDTYPE, boundType));
+							if (offsetState.isAir() || offsetState.canBeReplaced()) {
+								level.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().defaultBlockState().setValue(LaserFieldBlock.BOUNDTYPE, boundType));
 
-									if (level.getBlockEntity(offsetPos) instanceof IOwnable ownable)
-										ownable.setOwner(thisBe.getOwner().getUUID(), thisBe.getOwner().getName());
-								}
+								if (level.getBlockEntity(offsetPos) instanceof IOwnable ownable)
+									ownable.setOwner(thisBe.getOwner().getUUID(), thisBe.getOwner().getName());
 							}
 						}
 					}
-
-					break inner;
 				}
 			}
 		}

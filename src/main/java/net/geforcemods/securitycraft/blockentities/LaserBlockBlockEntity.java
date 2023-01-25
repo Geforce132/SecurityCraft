@@ -1,8 +1,10 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILinkedAction;
@@ -17,8 +19,11 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,16 +41,50 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		}
 	};
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
+	private EnumMap<Direction, Boolean> sideConfig = Util.make(() -> {
+		EnumMap<Direction, Boolean> map = new EnumMap<>(Direction.class);
+
+		for (Direction dir : Direction.values()) {
+			map.put(dir, true);
+		}
+
+		return map;
+	});
 
 	public LaserBlockBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), pos, state);
 	}
 
-	private void setLasersAccordingToDisabledOption() {
-		if (isEnabled())
-			((LaserBlock) getBlockState().getBlock()).setLaser(level, worldPosition);
-		else
-			LaserBlock.destroyAdjacentLasers(level, worldPosition);
+	@Override
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
+		tag.put("sideConfig", saveSideConfig(sideConfig));
+	}
+
+	public static CompoundTag saveSideConfig(EnumMap<Direction, Boolean> sideConfig) {
+		CompoundTag sideConfigTag = new CompoundTag();
+
+		sideConfig.forEach((dir, enabled) -> sideConfigTag.putBoolean(dir.getName(), enabled));
+		return sideConfigTag;
+	}
+
+	@Override
+	public void load(CompoundTag tag) {
+		super.load(tag);
+		sideConfig = loadSideConfig(tag.getCompound("sideConfig"));
+	}
+
+	public static EnumMap<Direction, Boolean> loadSideConfig(CompoundTag sideConfigTag) {
+		EnumMap<Direction, Boolean> sideConfig = new EnumMap<>(Direction.class);
+
+		for (Direction dir : Direction.values()) {
+			if (sideConfigTag.contains(dir.getName(), Tag.TAG_BYTE))
+				sideConfig.put(dir, sideConfigTag.getBoolean(dir.getName()));
+			else
+				sideConfig.put(dir, true);
+		}
+
+		return sideConfig;
 	}
 
 	@Override
@@ -197,5 +236,46 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
+	}
+
+	public void applySideConfig(EnumMap<Direction, Boolean> sideConfig) {
+		sideConfig.forEach(this::setSideEnabled);
+	}
+
+	public void setSideEnabled(Direction direction, boolean enabled) {
+		int i = 1;
+		BlockPos pos = getBlockPos();
+		BlockPos modifiedPos = pos.relative(direction, i);
+		BlockState stateAtModifiedPos = level.getBlockState(modifiedPos);
+
+		sideConfig.put(direction, enabled);
+
+		while (i < ConfigHandler.SERVER.laserBlockRange.get() && stateAtModifiedPos.getBlock() != SCContent.LASER_BLOCK.get()) {
+			modifiedPos = pos.relative(direction, ++i);
+			stateAtModifiedPos = level.getBlockState(modifiedPos);
+		}
+
+		if (level.getBlockEntity(modifiedPos) instanceof LaserBlockBlockEntity otherLaser)
+			otherLaser.sideConfig.put(direction.getOpposite(), enabled);
+
+		if (enabled && getBlockState().getBlock() instanceof LaserBlock block)
+			block.setLaser(level, pos, direction);
+		else if (!enabled)
+			BlockUtils.destroyInSequence(SCContent.LASER_FIELD.get(), level, worldPosition, direction);
+	}
+
+	public EnumMap<Direction, Boolean> getSideConfig() {
+		return sideConfig;
+	}
+
+	public boolean isSideEnabled(Direction dir) {
+		return sideConfig.getOrDefault(dir, true);
+	}
+
+	private void setLasersAccordingToDisabledOption() {
+		if (isEnabled())
+			((LaserBlock) getBlockState().getBlock()).setLaser(level, worldPosition);
+		else
+			LaserBlock.destroyAdjacentLasers(level, worldPosition);
 	}
 }
