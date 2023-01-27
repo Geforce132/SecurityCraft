@@ -849,6 +849,13 @@
 	"gui.securitycraft:rift_stabilizer.toggle": "Klicke die Einträge in der Liste unten, um die Erkennung der jeweiligen Teleportationsart ein-/auszuschalten.",
 	"gui.securitycraft:rift_stabilizer.modded": "Gemoddete Teleportation",
 	"gui.securitycraft:toggleList.comparatorOutput": "Komparator-Signal: %s",
+	"gui.securitycraft:laser.downEnabled": "Unten aktiviert",
+	"gui.securitycraft:laser.upEnabled": "Oben aktiviert",
+	"gui.securitycraft:laser.northEnabled": "Norden aktiviert",
+	"gui.securitycraft:laser.southEnabled": "Süden aktiviert",
+	"gui.securitycraft:laser.westEnabled": "Westen aktiviert",
+	"gui.securitycraft:laser.eastEnabled": "Osten aktiviert",
+	"gui.securitycraft:laser.disabled": "Der Laserblock ist deaktiviert! Reaktiviere ihn mit dem Universellen Blockmodifizierer.",
 
 	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",
 	"messages.securitycraft:retinalScanner.hello": "Hallo %s.",
