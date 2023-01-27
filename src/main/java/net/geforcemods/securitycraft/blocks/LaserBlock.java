@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -100,6 +101,8 @@ public class LaserBlock extends DisguisableBlock {
 					for (ModuleType type : thatBe.getInsertedModules()) {
 						thisBe.insertModule(thatBe.getModule(type), false);
 					}
+
+					thisBe.readOptions(thatBe.writeOptions(new CompoundTag()));
 
 					for (int j = 1; j < i; j++) {
 						offsetPos = pos.relative(facing, j);

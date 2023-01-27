@@ -5,6 +5,7 @@
 - Fix: Shift-clicking a potion in the brewing stand screen puts the potion into the wrong slot
 - Fix: Redstone does not automatically connect to the Alarm, Projector, and Username Logger
 - Fix: Some text in the check password screens doesn't show up properly
+- Fix: Options are not synchronized between newly placed laser blocks
 
 --------------------------Changelog for v1.9.5 of SecurityCraft--------------------------
 
