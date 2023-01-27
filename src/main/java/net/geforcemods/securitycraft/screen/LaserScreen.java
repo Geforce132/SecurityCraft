@@ -9,8 +9,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.SyncLaserSideConfig;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
+import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -18,6 +21,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LaserScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/block_pocket_manager.png");
+	private final boolean hasSmartModule;
+	private final Component noSmartModuleTooltip = Utils.localize("gui.securitycraft:laser.noSmartModule");
 	private int xSize = 176, ySize = 194, leftPos, topPos;
 	private LaserBlockBlockEntity be;
 	private EnumMap<Direction, Boolean> sideConfig;
@@ -26,6 +31,7 @@ public class LaserScreen extends Screen {
 		super(Component.translatable(SCContent.LASER_BLOCK.get().getDescriptionId()));
 		this.be = be;
 		this.sideConfig = sideConfig;
+		hasSmartModule = be.hasModule(ModuleType.SMART);
 	}
 
 	@Override
@@ -33,12 +39,15 @@ public class LaserScreen extends Screen {
 		super.init();
 		leftPos = (width - xSize) / 2;
 		topPos = (height - ySize) / 2;
-		sideConfig.forEach((dir, enabled) -> {
-			CallbackCheckbox checkbox = new CallbackCheckbox(leftPos + 10, topPos + dir.get3DDataValue() * 25 + 25, 20, 20, Component.translatable("gui.securitycraft:laser." + dir.getName() + "Enabled"), enabled, newValue -> onChangeValue(dir, newValue), 0x404040);
 
-			checkbox.active = be.isEnabled();
-			addRenderableWidget(checkbox);
-		});
+		if (hasSmartModule) {
+			sideConfig.forEach((dir, enabled) -> {
+				CallbackCheckbox checkbox = new CallbackCheckbox(leftPos + 10, topPos + dir.get3DDataValue() * 25 + 25, 20, 20, Utils.localize("gui.securitycraft:laser." + dir.getName() + "Enabled"), enabled, newValue -> onChangeValue(dir, newValue), 0x404040);
+
+				checkbox.active = be.isEnabled();
+				addRenderableWidget(checkbox);
+			});
+		}
 	}
 
 	@Override
@@ -49,6 +58,7 @@ public class LaserScreen extends Screen {
 		blit(pose, leftPos, topPos, 0, 0, xSize, ySize);
 		super.render(pose, mouseX, mouseY, partialTicks);
 		font.draw(pose, title, leftPos + xSize / 2 - font.width(title) / 2, topPos + 6, 0x404040);
+		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, null, noSmartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	public void onChangeValue(Direction dir, boolean newValue) {
