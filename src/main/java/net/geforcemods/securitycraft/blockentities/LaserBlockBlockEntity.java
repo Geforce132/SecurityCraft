@@ -2,7 +2,11 @@ package net.geforcemods.securitycraft.blockentities;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -15,6 +19,7 @@ import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
+import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
@@ -24,6 +29,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -238,11 +244,11 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		return ignoreOwner.get();
 	}
 
-	public void applySideConfig(EnumMap<Direction, Boolean> sideConfig) {
-		sideConfig.forEach(this::setSideEnabled);
+	public void applySideConfig(EnumMap<Direction, Boolean> sideConfig, Player player) {
+		sideConfig.forEach((direction, enabled) -> setSideEnabled(direction, enabled, player));
 	}
 
-	public void setSideEnabled(Direction direction, boolean enabled) {
+	public void setSideEnabled(Direction direction, boolean enabled, Player player) {
 		int i = 1;
 		BlockPos pos = getBlockPos();
 		BlockPos modifiedPos = pos.relative(direction, i);
@@ -259,7 +265,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			otherLaser.sideConfig.put(direction.getOpposite(), enabled);
 
 		if (enabled && getBlockState().getBlock() instanceof LaserBlock block)
-			block.setLaser(level, pos, direction);
+			block.setLaser(level, pos, direction, player);
 		else if (!enabled)
 			BlockUtils.destroyInSequence(SCContent.LASER_FIELD.get(), level, worldPosition, direction);
 	}
@@ -274,8 +280,48 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 	private void setLasersAccordingToDisabledOption() {
 		if (isEnabled())
-			((LaserBlock) getBlockState().getBlock()).setLaser(level, worldPosition);
+			((LaserBlock) getBlockState().getBlock()).setLaser(level, worldPosition, null);
 		else
 			LaserBlock.destroyAdjacentLasers(level, worldPosition);
+	}
+
+	public ModuleType synchronizeWith(LaserBlockBlockEntity that) {
+		if (!LinkableBlockEntity.isLinkedWith(this, that)) {
+			Map<ItemStack, Boolean> bothInsertedModules = new Object2BooleanArrayMap<>();
+			List<ModuleType> thisInsertedModules = getInsertedModules();
+			List<ModuleType> thatInsertedModules = that.getInsertedModules();
+
+			for (ModuleType type : thisInsertedModules) {
+				ItemStack thisModule = getModule(type);
+
+				if (thatInsertedModules.contains(type) && !thisModule.areShareTagsEqual(that.getModule(type)))
+					return type;
+
+				bothInsertedModules.put(thisModule.copy(), isModuleEnabled(type));
+				removeModule(type, false);
+			}
+
+			for (ModuleType type : thatInsertedModules) {
+				bothInsertedModules.put(that.getModule(type).copy(), that.isModuleEnabled(type));
+				that.removeModule(type, false);
+				createLinkedBlockAction(new ILinkedAction.ModuleRemoved(type, false), that);
+			}
+
+			readOptions(that.writeOptions(new CompoundTag()));
+			LinkableBlockEntity.link(this, that);
+
+			for (Entry<ItemStack, Boolean> entry : bothInsertedModules.entrySet()) {
+				ItemStack module = entry.getKey();
+				ModuleItem item = (ModuleItem) module.getItem();
+				ModuleType type = item.getModuleType();
+
+				insertModule(entry.getKey(), false);
+				createLinkedBlockAction(new ILinkedAction.ModuleInserted(module, item, false), this);
+				toggleModuleState(type, entry.getValue());
+				createLinkedBlockAction(new ILinkedAction.ModuleInserted(module, item, true), this);
+			}
+		}
+
+		return null;
 	}
 }

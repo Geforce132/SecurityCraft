@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.NetworkEvent;
@@ -38,13 +39,14 @@ public class SyncLaserSideConfig {
 
 	public static void onMessage(SyncLaserSideConfig message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			Level level = ctx.get().getSender().level;
+			Player player = ctx.get().getSender();
+			Level level = player.level;
 			BlockPos pos = message.pos;
 
-			if (level.getBlockEntity(pos) instanceof LaserBlockBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
+			if (level.getBlockEntity(pos) instanceof LaserBlockBlockEntity be && be.isOwnedBy(player)) {
 				BlockState state = level.getBlockState(pos);
 
-				be.applySideConfig(LaserBlockBlockEntity.loadSideConfig(message.sideConfig));
+				be.applySideConfig(LaserBlockBlockEntity.loadSideConfig(message.sideConfig), player);
 				level.sendBlockUpdated(pos, state, state, 2);
 			}
 		});

@@ -972,6 +972,7 @@
 	"messages.securitycraft:rift_stabilizer.no_teleport_from": "You are not permitted to teleport from this position!",
 	"messages.securitycraft:sc_help": "%s: %s + %s",
 	"messages.securitycraft:formattedCoordinates": "X: %1$s Y: %2$s Z: %3$s",
+	"messages.securitycraft:laser.sync_failed": "Synchronization with the Laser Block at %s failed, because \"%s\" does not match. Remove the module from either block and try again.",
 
 	"jei.securitycraft.category.reinforcing": "Block Reinforcing",
 	"jei.securitycraft.category.unreinforcing": "Removing Reinforcement",

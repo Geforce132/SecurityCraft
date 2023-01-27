@@ -6,16 +6,17 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.OpenLaserScreen;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -53,7 +54,7 @@ public class LaserBlock extends DisguisableBlock {
 		super.setPlacedBy(level, pos, state, entity, stack);
 
 		if (!level.isClientSide)
-			setLaser(level, pos);
+			setLaser(level, pos, entity instanceof Player player ? player : null);
 	}
 
 	@Override
@@ -66,13 +67,13 @@ public class LaserBlock extends DisguisableBlock {
 		return InteractionResult.SUCCESS;
 	}
 
-	public void setLaser(Level level, BlockPos pos) {
+	public void setLaser(Level level, BlockPos pos, Player player) {
 		for (Direction facing : Direction.values()) {
-			setLaser(level, pos, facing);
+			setLaser(level, pos, facing, player);
 		}
 	}
 
-	public void setLaser(Level level, BlockPos pos, Direction facing) {
+	public void setLaser(Level level, BlockPos pos, Direction facing, Player player) {
 		LaserBlockBlockEntity thisBe = (LaserBlockBlockEntity) level.getBlockEntity(pos);
 
 		if (!thisBe.isSideEnabled(facing))
@@ -92,17 +93,22 @@ public class LaserBlock extends DisguisableBlock {
 
 				if (thisBe.getOwner().owns(thatBe) && thisBe.isEnabled() && thatBe.isEnabled()) {
 					if (!thatBe.isSideEnabled(facing.getOpposite())) {
-						thisBe.setSideEnabled(facing, false);
+						thisBe.setSideEnabled(facing, false, null);
 						return;
 					}
 
-					LinkableBlockEntity.link(thisBe, thatBe);
+					ModuleType failedType = thisBe.synchronizeWith(thatBe);
 
-					for (ModuleType type : thatBe.getInsertedModules()) {
-						thisBe.insertModule(thatBe.getModule(type), false);
+					if (failedType != null) {
+						if (player != null) {
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:laser.sync_failed", Utils.getFormattedCoordinates(thatBe.getBlockPos()), Utils.localize(failedType.getTranslationKey())), ChatFormatting.RED);
+							thisBe.setSideEnabled(facing, false, null);
+							thatBe.setSideEnabled(facing.getOpposite(), false, null);
+							player.closeContainer();
+						}
+
+						return;
 					}
-
-					thisBe.readOptions(thatBe.writeOptions(new CompoundTag()));
 
 					for (int j = 1; j < i; j++) {
 						offsetPos = pos.relative(facing, j);
@@ -116,6 +122,8 @@ public class LaserBlock extends DisguisableBlock {
 						}
 					}
 				}
+
+				return;
 			}
 		}
 	}
@@ -132,7 +140,7 @@ public class LaserBlock extends DisguisableBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		setLaser(level, pos);
+		setLaser(level, pos, null);
 	}
 
 	@Override
