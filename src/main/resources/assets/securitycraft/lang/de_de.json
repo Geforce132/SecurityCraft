@@ -855,7 +855,6 @@
 	"gui.securitycraft:laser.southEnabled": "Süden aktiviert",
 	"gui.securitycraft:laser.westEnabled": "Westen aktiviert",
 	"gui.securitycraft:laser.eastEnabled": "Osten aktiviert",
-	"gui.securitycraft:laser.disabled": "Der Laserblock ist deaktiviert! Reaktiviere ihn mit dem Universellen Blockmodifizierer.",
 
 	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",
 	"messages.securitycraft:retinalScanner.hello": "Hallo %s.",
