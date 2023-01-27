@@ -89,29 +89,27 @@ public class LaserBlock extends DisguisableBlock {
 			else if (offsetBlock == SCContent.LASER_BLOCK.get()) {
 				LaserBlockBlockEntity thatBe = (LaserBlockBlockEntity) level.getBlockEntity(offsetPos);
 
-				if (thisBe.getOwner().owns(thatBe)) {
+				if (thisBe.getOwner().owns(thatBe) && thisBe.isEnabled() && thatBe.isEnabled()) {
+					if (!thatBe.isSideEnabled(facing.getOpposite())) {
+						thisBe.setSideEnabled(facing, false);
+						return;
+					}
+
 					LinkableBlockEntity.link(thisBe, thatBe);
 
 					for (ModuleType type : thatBe.getInsertedModules()) {
 						thisBe.insertModule(thatBe.getModule(type), false);
 					}
 
-					if (thisBe.isEnabled() && thatBe.isEnabled()) {
-						if (!thatBe.isSideEnabled(facing.getOpposite())) {
-							thisBe.setSideEnabled(facing, false);
-							return;
-						}
+					for (int j = 1; j < i; j++) {
+						offsetPos = pos.relative(facing, j);
+						offsetState = level.getBlockState(offsetPos);
 
-						for (int j = 1; j < i; j++) {
-							offsetPos = pos.relative(facing, j);
-							offsetState = level.getBlockState(offsetPos);
+						if (offsetState.isAir() || offsetState.canBeReplaced()) {
+							level.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().defaultBlockState().setValue(LaserFieldBlock.BOUNDTYPE, boundType));
 
-							if (offsetState.isAir() || offsetState.canBeReplaced()) {
-								level.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().defaultBlockState().setValue(LaserFieldBlock.BOUNDTYPE, boundType));
-
-								if (level.getBlockEntity(offsetPos) instanceof IOwnable ownable)
-									ownable.setOwner(thisBe.getOwner().getUUID(), thisBe.getOwner().getName());
-							}
+							if (level.getBlockEntity(offsetPos) instanceof IOwnable ownable)
+								ownable.setOwner(thisBe.getOwner().getUUID(), thisBe.getOwner().getName());
 						}
 					}
 				}
