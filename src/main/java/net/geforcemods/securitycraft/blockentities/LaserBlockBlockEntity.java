@@ -298,7 +298,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		this.sideConfigActive = sideConfigActive;
 
 		for (Direction direction : Direction.values()) {
-			toggleLaserOnSide(direction, !sideConfigActive, null, false);
+			toggleLaserOnSide(direction, isSideEnabled(direction), null, false);
 		}
 	}
 
