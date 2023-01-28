@@ -856,6 +856,7 @@
 	"gui.securitycraft:laser.westEnabled": "West enabled",
 	"gui.securitycraft:laser.eastEnabled": "East enabled",
 	"gui.securitycraft:laser.noSmartModule": "You need a Smart Module to control which side is emitting a laser.",
+	"gui.securitycraft:laser.smartModule": "Click the checkboxes below to configure on which sides the laser should be active.",
 
 	"messages.securitycraft:bugReport": "Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please",
 	"messages.securitycraft:retinalScanner.hello": "Hello %s.",

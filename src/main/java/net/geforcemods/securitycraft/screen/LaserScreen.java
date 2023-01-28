@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 public class LaserScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/block_pocket_manager.png");
 	private final boolean hasSmartModule;
-	private final Component noSmartModuleTooltip = Utils.localize("gui.securitycraft:laser.noSmartModule");
+	private Component smartModuleTooltip;
 	private int xSize = 176, ySize = 194, leftPos, topPos;
 	private LaserBlockBlockEntity be;
 	private EnumMap<Direction, Boolean> sideConfig;
@@ -47,7 +47,11 @@ public class LaserScreen extends Screen {
 				checkbox.active = be.isEnabled();
 				addRenderableWidget(checkbox);
 			});
+
+			smartModuleTooltip = Utils.localize("gui.securitycraft:laser.smartModule");
 		}
+		else
+			smartModuleTooltip = Utils.localize("gui.securitycraft:laser.noSmartModule");
 	}
 
 	@Override
@@ -58,7 +62,7 @@ public class LaserScreen extends Screen {
 		blit(pose, leftPos, topPos, 0, 0, xSize, ySize);
 		super.render(pose, mouseX, mouseY, partialTicks);
 		font.draw(pose, title, leftPos + xSize / 2 - font.width(title) / 2, topPos + 6, 0x404040);
-		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, null, noSmartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	public void onChangeValue(Direction dir, boolean newValue) {

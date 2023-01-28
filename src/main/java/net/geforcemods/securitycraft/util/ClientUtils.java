@@ -52,7 +52,7 @@ public class ClientUtils {
 		return String.format("%02d:%02d %s", Integer.valueOf(hours < 1 ? 12 : hours), Integer.valueOf(minutes), hours24 < 12 ? "AM" : "PM");
 	}
 
-	public static void renderModuleInfo(PoseStack pose, ModuleType module, Component moduleTooltip, Component noModuleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY) {
+	public static void renderModuleInfo(PoseStack pose, ModuleType module, Component moduleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY) {
 		Minecraft mc = Minecraft.getInstance();
 		float alpha = isModuleInstalled ? 1.0F : 0.5F;
 		int moduleRight = moduleLeft + 16;
@@ -77,12 +77,8 @@ public class ClientUtils {
 
 		RenderSystem.disableBlend();
 
-		if (mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom) {
-			Component text = isModuleInstalled ? moduleTooltip : noModuleTooltip;
-
-			if (text != null && mc.screen != null)
-				mc.screen.renderComponentTooltip(pose, Arrays.asList(text), mouseX, mouseY);
-		}
+		if (moduleTooltip != null && mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom && mc.screen != null)
+			mc.screen.renderComponentTooltip(pose, Arrays.asList(moduleTooltip), mouseX, mouseY);
 	}
 
 	private static void drawTexture(BufferBuilder bufferBuilder, Matrix4f m4f, int moduleLeft, int moduleTop, int moduleRight, int moduleBottom, float alpha) {

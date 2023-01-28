@@ -855,7 +855,8 @@
 	"gui.securitycraft:laser.southEnabled": "Süden aktiviert",
 	"gui.securitycraft:laser.westEnabled": "Westen aktiviert",
 	"gui.securitycraft:laser.eastEnabled": "Osten aktiviert",
-	"gui.securitycraft:laser.moduleRequired": "Du musst ein schlaues Modul installieren, um einzustellen, welche Seiten einen Laser emittieren.",
+	"gui.securitycraft:laser.noSmartModule": "Du musst ein schlaues Modul installieren, um einzustellen, welche Seiten einen Laser emittieren.",
+	"gui.securitycraft:laser.smartModule": "Klicke die Kontrollboxen unten, um zu konfigurieren, auf welchen Seiten der Laser aktiviert sein soll.",
 
 	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",
 	"messages.securitycraft:retinalScanner.hello": "Hallo %s.",
