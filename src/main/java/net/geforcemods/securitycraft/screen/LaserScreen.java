@@ -31,7 +31,7 @@ public class LaserScreen extends Screen {
 		super(Component.translatable(SCContent.LASER_BLOCK.get().getDescriptionId()));
 		this.be = be;
 		this.sideConfig = sideConfig;
-		hasSmartModule = be.hasModule(ModuleType.SMART);
+		hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 	}
 
 	@Override
