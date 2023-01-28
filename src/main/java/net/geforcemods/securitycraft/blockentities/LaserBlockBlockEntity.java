@@ -56,6 +56,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 		return map;
 	});
+	private boolean sideConfigActive;
 
 	public LaserBlockBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), pos, state);
@@ -65,6 +66,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		tag.put("sideConfig", saveSideConfig(sideConfig));
+		tag.putBoolean("sideConfigActive", isSideConfigActive());
 	}
 
 	public static CompoundTag saveSideConfig(EnumMap<Direction, Boolean> sideConfig) {
@@ -78,6 +80,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	public void load(CompoundTag tag) {
 		super.load(tag);
 		sideConfig = loadSideConfig(tag.getCompound("sideConfig"));
+		sideConfigActive = tag.getBoolean("sideConfigActive");
 	}
 
 	public static EnumMap<Direction, Boolean> loadSideConfig(CompoundTag sideConfigTag) {
@@ -150,6 +153,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 					level.getChunkSource().getLightEngine().checkBlock(worldPosition);
 			}
 		}
+		else if (module == ModuleType.SMART)
+			setSideConfigActive(true);
 	}
 
 	@Override
@@ -181,6 +186,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
 			}
 		}
+		else if (module == ModuleType.SMART)
+			setSideConfigActive(false);
 	}
 
 	@Override
@@ -249,19 +256,24 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	}
 
 	public void setSideEnabled(Direction direction, boolean enabled, Player player) {
+		sideConfig.put(direction, enabled);
+
+		if (isSideConfigActive())
+			toggleLaserOnSide(direction, enabled, player, true);
+	}
+
+	public void toggleLaserOnSide(Direction direction, boolean enabled, Player player, boolean modifyOtherLaser) {
 		int i = 1;
 		BlockPos pos = getBlockPos();
 		BlockPos modifiedPos = pos.relative(direction, i);
 		BlockState stateAtModifiedPos = level.getBlockState(modifiedPos);
-
-		sideConfig.put(direction, enabled);
 
 		while (i < ConfigHandler.SERVER.laserBlockRange.get() && stateAtModifiedPos.getBlock() != SCContent.LASER_BLOCK.get()) {
 			modifiedPos = pos.relative(direction, ++i);
 			stateAtModifiedPos = level.getBlockState(modifiedPos);
 		}
 
-		if (level.getBlockEntity(modifiedPos) instanceof LaserBlockBlockEntity otherLaser)
+		if (modifyOtherLaser && level.getBlockEntity(modifiedPos) instanceof LaserBlockBlockEntity otherLaser)
 			otherLaser.sideConfig.put(direction.getOpposite(), enabled);
 
 		if (enabled && getBlockState().getBlock() instanceof LaserBlock block)
@@ -275,7 +287,19 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	}
 
 	public boolean isSideEnabled(Direction dir) {
-		return sideConfig.getOrDefault(dir, true);
+		return !isSideConfigActive() || sideConfig.getOrDefault(dir, true);
+	}
+
+	public boolean isSideConfigActive() {
+		return sideConfigActive;
+	}
+
+	public void setSideConfigActive(boolean sideConfigActive) {
+		this.sideConfigActive = sideConfigActive;
+
+		for (Direction direction : Direction.values()) {
+			toggleLaserOnSide(direction, sideConfigActive, null, false);
+		}
 	}
 
 	private void setLasersAccordingToDisabledOption() {
