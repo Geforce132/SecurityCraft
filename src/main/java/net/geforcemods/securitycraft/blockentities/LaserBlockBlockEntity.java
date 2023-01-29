@@ -56,7 +56,6 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 		return map;
 	});
-	private boolean sideConfigActive;
 
 	public LaserBlockBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), pos, state);
@@ -66,7 +65,6 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		tag.put("sideConfig", saveSideConfig(sideConfig));
-		tag.putBoolean("sideConfigActive", isSideConfigActive());
 	}
 
 	public static CompoundTag saveSideConfig(EnumMap<Direction, Boolean> sideConfig) {
@@ -80,7 +78,6 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	public void load(CompoundTag tag) {
 		super.load(tag);
 		sideConfig = loadSideConfig(tag.getCompound("sideConfig"));
-		sideConfigActive = tag.getBoolean("sideConfigActive");
 	}
 
 	public static EnumMap<Direction, Boolean> loadSideConfig(CompoundTag sideConfigTag) {
@@ -154,7 +151,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			}
 		}
 		else if (module == ModuleType.SMART)
-			setSideConfigActive(true);
+			applyExistingSideConfig();
 	}
 
 	@Override
@@ -187,7 +184,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			}
 		}
 		else if (module == ModuleType.SMART)
-			setSideConfigActive(false);
+			applyExistingSideConfig();
 	}
 
 	@Override
@@ -251,14 +248,20 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		return ignoreOwner.get();
 	}
 
-	public void applySideConfig(EnumMap<Direction, Boolean> sideConfig, Player player) {
+	public void applyNewSideConfig(EnumMap<Direction, Boolean> sideConfig, Player player) {
 		sideConfig.forEach((direction, enabled) -> setSideEnabled(direction, enabled, player));
+	}
+
+	public void applyExistingSideConfig() {
+		for (Direction direction : Direction.values()) {
+			toggleLaserOnSide(direction, isSideEnabled(direction), null, false);
+		}
 	}
 
 	public void setSideEnabled(Direction direction, boolean enabled, Player player) {
 		sideConfig.put(direction, enabled);
 
-		if (isSideConfigActive())
+		if (isModuleEnabled(ModuleType.SMART))
 			toggleLaserOnSide(direction, enabled, player, true);
 	}
 
@@ -287,19 +290,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	}
 
 	public boolean isSideEnabled(Direction dir) {
-		return !isSideConfigActive() || sideConfig.getOrDefault(dir, true);
-	}
-
-	public boolean isSideConfigActive() {
-		return sideConfigActive;
-	}
-
-	public void setSideConfigActive(boolean sideConfigActive) {
-		this.sideConfigActive = sideConfigActive;
-
-		for (Direction direction : Direction.values()) {
-			toggleLaserOnSide(direction, isSideEnabled(direction), null, false);
-		}
+		return !isModuleEnabled(ModuleType.SMART) || sideConfig.getOrDefault(dir, true);
 	}
 
 	private void setLasersAccordingToDisabledOption() {
