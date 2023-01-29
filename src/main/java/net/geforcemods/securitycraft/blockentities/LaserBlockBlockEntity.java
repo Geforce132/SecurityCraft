@@ -1,8 +1,14 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILinkedAction;
@@ -13,12 +19,17 @@ import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
+import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,16 +48,50 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		}
 	};
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
+	private EnumMap<Direction, Boolean> sideConfig = Util.make(() -> {
+		EnumMap<Direction, Boolean> map = new EnumMap<>(Direction.class);
+
+		for (Direction dir : Direction.values()) {
+			map.put(dir, true);
+		}
+
+		return map;
+	});
 
 	public LaserBlockBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), pos, state);
 	}
 
-	private void setLasersAccordingToDisabledOption() {
-		if (isEnabled())
-			((LaserBlock) getBlockState().getBlock()).setLaser(level, worldPosition);
-		else
-			LaserBlock.destroyAdjacentLasers(level, worldPosition);
+	@Override
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
+		tag.put("sideConfig", saveSideConfig(sideConfig));
+	}
+
+	public static CompoundTag saveSideConfig(EnumMap<Direction, Boolean> sideConfig) {
+		CompoundTag sideConfigTag = new CompoundTag();
+
+		sideConfig.forEach((dir, enabled) -> sideConfigTag.putBoolean(dir.getName(), enabled));
+		return sideConfigTag;
+	}
+
+	@Override
+	public void load(CompoundTag tag) {
+		super.load(tag);
+		sideConfig = loadSideConfig(tag.getCompound("sideConfig"));
+	}
+
+	public static EnumMap<Direction, Boolean> loadSideConfig(CompoundTag sideConfigTag) {
+		EnumMap<Direction, Boolean> sideConfig = new EnumMap<>(Direction.class);
+
+		for (Direction dir : Direction.values()) {
+			if (sideConfigTag.contains(dir.getName(), Tag.TAG_BYTE))
+				sideConfig.put(dir, sideConfigTag.getBoolean(dir.getName()));
+			else
+				sideConfig.put(dir, true);
+		}
+
+		return sideConfig;
 	}
 
 	@Override
@@ -107,6 +152,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 		if (module == ModuleType.DISGUISE)
 			onInsertDisguiseModule(stack, toggled);
+		else if (module == ModuleType.SMART)
+			applyExistingSideConfig();
 	}
 
 	@Override
@@ -117,6 +164,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			onRemoveDisguiseModule(stack, toggled);
 		else if (module == ModuleType.REDSTONE)
 			onRemoveRedstoneModule();
+		else if (module == ModuleType.SMART)
+			applyExistingSideConfig();
 	}
 
 	private void onInsertDisguiseModule(ItemStack stack, boolean toggled) {
@@ -200,7 +249,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.HARMING, ModuleType.ALLOWLIST, ModuleType.DISGUISE, ModuleType.REDSTONE
+				ModuleType.HARMING, ModuleType.ALLOWLIST, ModuleType.DISGUISE, ModuleType.REDSTONE, ModuleType.SMART
 		};
 	}
 
@@ -222,5 +271,97 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
+	}
+
+	public void applyNewSideConfig(EnumMap<Direction, Boolean> sideConfig, Player player) {
+		sideConfig.forEach((direction, enabled) -> setSideEnabled(direction, enabled, player));
+	}
+
+	public void applyExistingSideConfig() {
+		for (Direction direction : Direction.values()) {
+			toggleLaserOnSide(direction, isSideEnabled(direction), null, false);
+		}
+	}
+
+	public void setSideEnabled(Direction direction, boolean enabled, Player player) {
+		sideConfig.put(direction, enabled);
+
+		if (isModuleEnabled(ModuleType.SMART))
+			toggleLaserOnSide(direction, enabled, player, true);
+	}
+
+	public void toggleLaserOnSide(Direction direction, boolean enabled, Player player, boolean modifyOtherLaser) {
+		int i = 1;
+		BlockPos pos = getBlockPos();
+		BlockPos modifiedPos = pos.relative(direction, i);
+		BlockState stateAtModifiedPos = level.getBlockState(modifiedPos);
+
+		while (i < ConfigHandler.SERVER.laserBlockRange.get() && stateAtModifiedPos.getBlock() != SCContent.LASER_BLOCK.get()) {
+			modifiedPos = pos.relative(direction, ++i);
+			stateAtModifiedPos = level.getBlockState(modifiedPos);
+		}
+
+		if (modifyOtherLaser && level.getBlockEntity(modifiedPos) instanceof LaserBlockBlockEntity otherLaser)
+			otherLaser.sideConfig.put(direction.getOpposite(), enabled);
+
+		if (enabled && getBlockState().getBlock() instanceof LaserBlock block)
+			block.setLaser(level, pos, direction, player);
+		else if (!enabled)
+			BlockUtils.destroyInSequence(SCContent.LASER_FIELD.get(), level, worldPosition, direction);
+	}
+
+	public EnumMap<Direction, Boolean> getSideConfig() {
+		return sideConfig;
+	}
+
+	public boolean isSideEnabled(Direction dir) {
+		return !isModuleEnabled(ModuleType.SMART) || sideConfig.getOrDefault(dir, true);
+	}
+
+	private void setLasersAccordingToDisabledOption() {
+		if (isEnabled())
+			((LaserBlock) getBlockState().getBlock()).setLaser(level, worldPosition, null);
+		else
+			LaserBlock.destroyAdjacentLasers(level, worldPosition);
+	}
+
+	public ModuleType synchronizeWith(LaserBlockBlockEntity that) {
+		if (!LinkableBlockEntity.isLinkedWith(this, that)) {
+			Map<ItemStack, Boolean> bothInsertedModules = new Object2BooleanArrayMap<>();
+			List<ModuleType> thisInsertedModules = getInsertedModules();
+			List<ModuleType> thatInsertedModules = that.getInsertedModules();
+
+			for (ModuleType type : thisInsertedModules) {
+				ItemStack thisModule = getModule(type);
+
+				if (thatInsertedModules.contains(type) && !thisModule.areShareTagsEqual(that.getModule(type)))
+					return type;
+
+				bothInsertedModules.put(thisModule.copy(), isModuleEnabled(type));
+				removeModule(type, false);
+			}
+
+			for (ModuleType type : thatInsertedModules) {
+				bothInsertedModules.put(that.getModule(type).copy(), that.isModuleEnabled(type));
+				that.removeModule(type, false);
+				createLinkedBlockAction(new ILinkedAction.ModuleRemoved(type, false), that);
+			}
+
+			readOptions(that.writeOptions(new CompoundTag()));
+			LinkableBlockEntity.link(this, that);
+
+			for (Entry<ItemStack, Boolean> entry : bothInsertedModules.entrySet()) {
+				ItemStack module = entry.getKey();
+				ModuleItem item = (ModuleItem) module.getItem();
+				ModuleType type = item.getModuleType();
+
+				insertModule(entry.getKey(), false);
+				createLinkedBlockAction(new ILinkedAction.ModuleInserted(module, item, false), this);
+				toggleModuleState(type, entry.getValue());
+				createLinkedBlockAction(new ILinkedAction.ModuleInserted(module, item, true), this);
+			}
+		}
+
+		return null;
 	}
 }

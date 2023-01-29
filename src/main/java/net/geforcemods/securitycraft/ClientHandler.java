@@ -2,11 +2,13 @@ package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
+import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
@@ -57,6 +59,7 @@ import net.geforcemods.securitycraft.screen.KeycardReaderScreen;
 import net.geforcemods.securitycraft.screen.KeypadBlastFurnaceScreen;
 import net.geforcemods.securitycraft.screen.KeypadFurnaceScreen;
 import net.geforcemods.securitycraft.screen.KeypadSmokerScreen;
+import net.geforcemods.securitycraft.screen.LaserScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
@@ -81,6 +84,7 @@ import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
@@ -568,6 +572,10 @@ public class ClientHandler {
 
 	public static void displayRiftStabilizerScreen(RiftStabilizerBlockEntity be) {
 		Minecraft.getInstance().setScreen(new ToggleListScreen<>(be, SCContent.RIFT_STABILIZER.get().getDescriptionId(), Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes"), Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired"), Utils.localize("gui.securitycraft:rift_stabilizer.toggle")));
+	}
+
+	public static void displayLaserScreen(LaserBlockBlockEntity be, EnumMap<Direction, Boolean> sideConfig) {
+		Minecraft.getInstance().setScreen(new LaserScreen(be, sideConfig));
 	}
 
 	public static void refreshModelData(BlockEntity be) {

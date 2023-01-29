@@ -1,0 +1,56 @@
+package net.geforcemods.securitycraft.network.server;
+
+import java.util.EnumMap;
+import java.util.function.Supplier;
+
+import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.network.NetworkEvent;
+
+public class SyncLaserSideConfig {
+	private BlockPos pos;
+	private CompoundTag sideConfig;
+
+	public SyncLaserSideConfig() {}
+
+	public SyncLaserSideConfig(BlockPos pos, EnumMap<Direction, Boolean> sideConfig) {
+		this.pos = pos;
+		this.sideConfig = LaserBlockBlockEntity.saveSideConfig(sideConfig);
+	}
+
+	public static void encode(SyncLaserSideConfig message, FriendlyByteBuf buf) {
+		buf.writeBlockPos(message.pos);
+		buf.writeNbt(message.sideConfig);
+	}
+
+	public static SyncLaserSideConfig decode(FriendlyByteBuf buf) {
+		SyncLaserSideConfig message = new SyncLaserSideConfig();
+
+		message.pos = buf.readBlockPos();
+		message.sideConfig = buf.readNbt();
+		return message;
+	}
+
+	public static void onMessage(SyncLaserSideConfig message, Supplier<NetworkEvent.Context> ctx) {
+		ctx.get().enqueueWork(() -> {
+			Player player = ctx.get().getSender();
+			Level level = player.level;
+			BlockPos pos = message.pos;
+
+			if (level.getBlockEntity(pos) instanceof LaserBlockBlockEntity be && be.isOwnedBy(player)) {
+				BlockState state = level.getBlockState(pos);
+
+				be.applyNewSideConfig(LaserBlockBlockEntity.loadSideConfig(message.sideConfig), player);
+				level.sendBlockUpdated(pos, state, state, 2);
+			}
+		});
+
+		ctx.get().setPacketHandled(true);
+	}
+}

@@ -120,7 +120,7 @@ public class BlockUtils {
 			BlockPos modifiedPos = pos.relative(direction, i);
 
 			while (level.getBlockState(modifiedPos).getBlock() == blockToDestroy) {
-				level.destroyBlock(modifiedPos, false);
+				level.removeBlock(modifiedPos, false);
 				modifiedPos = pos.relative(direction, ++i);
 			}
 		}
