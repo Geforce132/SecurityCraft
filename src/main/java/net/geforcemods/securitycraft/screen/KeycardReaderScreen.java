@@ -50,12 +50,11 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 	private final ITextComponent blockName = Utils.localize(SCContent.KEYCARD_READER.get().getDescriptionId());
 	private final ITextComponent keycardLevelsText = Utils.localize("gui.securitycraft:keycard_reader.keycard_levels");
 	private final ITextComponent linkText = Utils.localize("gui.securitycraft:keycard_reader.link");
-	private final ITextComponent noSmartModule = Utils.localize("gui.securitycraft:keycard_reader.noSmartModule");
-	private final ITextComponent smartModule = Utils.localize("gui.securitycraft:keycard_reader.smartModule");
 	private final ITextComponent levelMismatchInfo = Utils.localize("gui.securitycraft:keycard_reader.level_mismatch");
 	private final ITextComponent limitedInfo = Utils.localize("tooltip.securitycraft:keycard.limited_info");
+	private ITextComponent smartModuleTooltip;
 	private final KeycardReaderBlockEntity te;
-	private final boolean isSmart;
+	private final boolean hasSmartModule;
 	private final boolean isOwner;
 	private boolean isExactLevel = true;
 	private int previousSignature;
@@ -80,9 +79,14 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 		previousSignature = te.getSignature();
 		signature = previousSignature;
 		acceptedLevels = te.getAcceptedLevels();
-		isSmart = te.isModuleEnabled(ModuleType.SMART);
+		hasSmartModule = te.isModuleEnabled(ModuleType.SMART);
 		isOwner = te.isOwnedBy(inv.player);
 		imageHeight = 249;
+
+		if (hasSmartModule)
+			smartModuleTooltip = Utils.localize("gui.securitycraft:keycard_reader.smartModule");
+		else
+			smartModuleTooltip = Utils.localize("gui.securitycraft:keycard_reader.noSmartModule");
 	}
 
 	@Override
@@ -101,7 +105,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 			toggleButtons[i] = addButton(new TogglePictureButton(leftPos + 100, topPos + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[] {110, 88}, new int[] {219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
 				//@formatter:on
 				//TogglePictureButton already implicitly handles changing the button state in the case of isSmart, so only the data needs to be updated
-				if (!isSmart) {
+				if (!hasSmartModule) {
 					for (int otherButtonId = 0; otherButtonId < 5; otherButtonId++) {
 						boolean active;
 
@@ -120,7 +124,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 			toggleButtons[i].setCurrentIndex(acceptedLevels[i] ? 1 : 0); //set correct button state
 			toggleButtons[i].active = isOwner;
 
-			if (!isSmart) {
+			if (!hasSmartModule) {
 				if (acceptedLevels[i]) {
 					if (firstActiveButton == -1)
 						firstActiveButton = i;
@@ -160,7 +164,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 		usesHoverChecker = new TextHoverChecker(topPos + 107, topPos + 122, leftPos + 28, leftPos + 58, limitedInfo);
 
 		//add =/>= button and handle it being set to the correct state, as well as changing keycard level buttons' states if a smart module was removed
-		if (!isSmart) {
+		if (!hasSmartModule) {
 			if (activeButtons == 1)
 				isExactLevel = true;
 			else if (activeButtons == 0) { //probably won't happen but just in case
@@ -268,7 +272,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 			GuiUtils.drawHoveringText(matrix, usesHoverChecker.getLines(), mouseX, mouseY, width, height, -1, font);
 
 		renderTooltip(matrix, mouseX, mouseY);
-		ClientUtils.renderModuleInfo(matrix, ModuleType.SMART, smartModule, noSmartModule, isSmart, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(matrix, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override

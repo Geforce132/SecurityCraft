@@ -232,9 +232,9 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 			Direction facing = state.getValue(FACING);
 
 			if (facing == Direction.EAST || facing == Direction.WEST)
-				BlockUtils.destroyInSequence(this, world, pos, Direction.EAST, Direction.WEST);
+				BlockUtils.removeInSequence(this, world, pos, Direction.EAST, Direction.WEST);
 			else if (facing == Direction.NORTH || facing == Direction.SOUTH)
-				BlockUtils.destroyInSequence(this, world, pos, Direction.NORTH, Direction.SOUTH);
+				BlockUtils.removeInSequence(this, world, pos, Direction.NORTH, Direction.SOUTH);
 		}
 	}
 

@@ -113,13 +113,13 @@ public class BlockUtils {
 		}
 	}
 
-	public static void destroyInSequence(Block blockToDestroy, IWorld level, BlockPos pos, Direction... directions) {
+	public static void removeInSequence(Block blockToDestroy, IWorld level, BlockPos pos, Direction... directions) {
 		for (Direction direction : directions) {
 			int i = 1;
 			BlockPos modifiedPos = pos.relative(direction, i);
 
 			while (level.getBlockState(modifiedPos).getBlock() == blockToDestroy) {
-				level.destroyBlock(modifiedPos, false);
+				level.removeBlock(modifiedPos, false);
 				modifiedPos = pos.relative(direction, ++i);
 			}
 		}

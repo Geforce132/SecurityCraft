@@ -33,25 +33,23 @@ import net.minecraftforge.client.gui.ScrollPanel;
 
 public class ToggleListScreen<T> extends Screen {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
-	public final ITextComponent scrollListTitle, moduleRequired, toggle;
+	public final ITextComponent scrollListTitle, smartModuleTooltip;
 	private final int imageWidth = 176;
 	private final int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
-	private final boolean isSmart;
-	private final boolean isRedstone;
+	private final boolean hasSmartModule, hasRedstoneModule;
 	private final IToggleableEntries<T> be;
 	private ToggleScrollList toggleList;
 
-	public ToggleListScreen(IToggleableEntries<T> be, String title, ITextComponent scrollListTitle, ITextComponent moduleRequired, ITextComponent toggle) {
+	public ToggleListScreen(IToggleableEntries<T> be, String title, ITextComponent scrollListTitle, ITextComponent noSmartModule, ITextComponent smartModule) {
 		super(new TranslationTextComponent(title));
 
 		this.be = be;
-		isSmart = be instanceof IModuleInventory && ((IModuleInventory) be).isModuleEnabled(ModuleType.SMART);
-		isRedstone = be instanceof IModuleInventory && ((IModuleInventory) be).isModuleEnabled(ModuleType.REDSTONE);
+		hasSmartModule = be instanceof IModuleInventory && ((IModuleInventory) be).isModuleEnabled(ModuleType.SMART);
+		hasRedstoneModule = be instanceof IModuleInventory && ((IModuleInventory) be).isModuleEnabled(ModuleType.REDSTONE);
 		this.scrollListTitle = scrollListTitle;
-		this.moduleRequired = moduleRequired;
-		this.toggle = toggle;
+		smartModuleTooltip = hasSmartModule ? smartModule : noSmartModule;
 	}
 
 	@Override
@@ -76,7 +74,7 @@ public class ToggleListScreen<T> extends Screen {
 
 		font.draw(matrix, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
 		font.draw(matrix, scrollListTitle, width / 2 - font.width(scrollListTitle) / 2, topPos + 31, 4210752);
-		ClientUtils.renderModuleInfo(matrix, ModuleType.SMART, toggle, moduleRequired, isSmart, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(matrix, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override
@@ -137,7 +135,7 @@ public class ToggleListScreen<T> extends Screen {
 		protected boolean clickPanel(double mouseX, double mouseY, int button) {
 			int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
 
-			if (isSmart && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
+			if (hasSmartModule && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
 				be.toggleFilter(orderedFilterList.get(slotIndex));
 				Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 				return true;
@@ -155,7 +153,7 @@ public class ToggleListScreen<T> extends Screen {
 			int slotIndex = mouseListY / slotHeight;
 			int slotBottom = baseY + (slotIndex + 1) * slotHeight;
 
-			if (isRedstone && mouseX >= left && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
+			if (hasRedstoneModule && mouseX >= left && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
 				int comparatorOutput = be.getComparatorOutputFunction().applyAsInt(orderedFilterList.get(slotIndex));
 
 				if (comparatorOutput > 0)
@@ -172,7 +170,7 @@ public class ToggleListScreen<T> extends Screen {
 			int slotIndex = mouseListY / slotHeight;
 
 			//highlight hovered slot
-			if (isSmart && mouseX >= left && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
+			if (hasSmartModule && mouseX >= left && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
 				int min = left;
 				int max = entryRight - 6; //6 is the width of the scrollbar
 				int slotTop = baseY + slotIndex * slotHeight;

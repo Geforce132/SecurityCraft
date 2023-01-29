@@ -27,12 +27,12 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerMenu
 	private boolean hasRedstoneModule = false, hasStorageModule = false;
 	private ITextComponent infoStringRedstone, infoStringStorage;
 	private static final Style UNDERLINE = Style.EMPTY.applyFormat(TextFormatting.UNDERLINE);
-	private final ITextComponent redstoneModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.REDSTONE_MODULE.get().getDescriptionId()));
-	private final ITextComponent storageModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.STORAGE_MODULE.get().getDescriptionId()));
 	private final ITextComponent prohibitedItems = Utils.localize("gui.securitycraft:invScan.prohibitedItems");
 	private final ITextComponent adminMode = Utils.localize("gui.securitycraft:invScan.mode.admin").setStyle(UNDERLINE);
 	private final ITextComponent viewMode = Utils.localize("gui.securitycraft:invScan.mode.view").setStyle(UNDERLINE);
 	private final ITextComponent storage = Utils.localize("gui.securitycraft:invScan.storage");
+	private ITextComponent redstoneModuleTooltip = null;
+	private ITextComponent storageModuleTooltip = null;
 
 	public InventoryScannerScreen(InventoryScannerMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
@@ -43,10 +43,15 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerMenu
 		infoStringRedstone = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (hasRedstoneModule ? "yes" : "no")));
 		infoStringStorage = Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no")));
 
+		if (!hasRedstoneModule)
+			redstoneModuleTooltip = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.REDSTONE_MODULE.get().getDescriptionId()));
+
 		if (hasStorageModule)
 			imageWidth = 246;
-		else
+		else {
 			imageWidth = 190;
+			storageModuleTooltip = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.STORAGE_MODULE.get().getDescriptionId()));
+		}
 
 		imageHeight = 196;
 	}
@@ -64,8 +69,8 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerMenu
 		RenderSystem.disableLighting();
 		font.drawWordWrap(infoStringRedstone, leftPos + 28, topPos + 45, 150, 4210752);
 		font.drawWordWrap(infoStringStorage, leftPos + 28, topPos + 75, 150, 4210752);
-		ClientUtils.renderModuleInfo(matrix, ModuleType.REDSTONE, null, redstoneModuleNotInstalled, hasRedstoneModule, leftPos + 8, topPos + 45, width, height, mouseX, mouseY);
-		ClientUtils.renderModuleInfo(matrix, ModuleType.STORAGE, null, storageModuleNotInstalled, hasStorageModule, leftPos + 8, topPos + 75, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(matrix, ModuleType.REDSTONE, redstoneModuleTooltip, hasRedstoneModule, leftPos + 8, topPos + 45, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(matrix, ModuleType.STORAGE, storageModuleTooltip, hasStorageModule, leftPos + 8, topPos + 75, width, height, mouseX, mouseY);
 
 		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
 			renderTooltip(matrix, getSlotUnderMouse().getItem(), mouseX, mouseY);

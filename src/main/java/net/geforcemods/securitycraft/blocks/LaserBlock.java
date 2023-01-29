@@ -4,22 +4,31 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.client.OpenLaserScreen;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -27,6 +36,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class LaserBlock extends DisguisableBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -41,52 +51,82 @@ public class LaserBlock extends DisguisableBlock {
 		super.setPlacedBy(world, pos, state, entity, stack);
 
 		if (!world.isClientSide)
-			setLaser(world, pos);
+			setLaser(world, pos, entity instanceof PlayerEntity ? (PlayerEntity) entity : null);
 	}
 
-	public void setLaser(World world, BlockPos pos) {
+	@Override
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		LaserBlockBlockEntity be = (LaserBlockBlockEntity) level.getBlockEntity(pos);
+
+		if (!level.isClientSide && be.isOwnedBy(player)) {
+			if (!be.isEnabled())
+				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenLaserScreen(pos, be.getSideConfig()));
+		}
+
+		return ActionResultType.SUCCESS;
+	}
+
+	public void setLaser(World level, BlockPos pos, PlayerEntity player) {
+		for (Direction facing : Direction.values()) {
+			setLaser(level, pos, facing, player);
+		}
+	}
+
+	public void setLaser(World world, BlockPos pos, Direction facing, PlayerEntity player) {
 		LaserBlockBlockEntity thisTe = (LaserBlockBlockEntity) world.getBlockEntity(pos);
 
-		for (Direction facing : Direction.values()) {
-			int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
+		if (!thisTe.isSideEnabled(facing))
+			return;
 
-			inner:
-			for (int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++) {
-				BlockPos offsetPos = pos.relative(facing, i);
-				BlockState offsetState = world.getBlockState(offsetPos);
-				Block offsetBlock = offsetState.getBlock();
+		int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
 
-				if (!offsetState.isAir(world, offsetPos) && !offsetState.getMaterial().isReplaceable() && offsetBlock != SCContent.LASER_BLOCK.get())
-					break inner;
-				else if (offsetBlock == SCContent.LASER_BLOCK.get()) {
-					LaserBlockBlockEntity thatTe = (LaserBlockBlockEntity) world.getBlockEntity(offsetPos);
+		for (int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++) {
+			BlockPos offsetPos = pos.relative(facing, i);
+			BlockState offsetState = world.getBlockState(offsetPos);
+			Block offsetBlock = offsetState.getBlock();
 
-					if (thisTe.getOwner().owns(thatTe)) {
-						LinkableBlockEntity.link(thisTe, thatTe);
+			if (!offsetState.isAir(world, offsetPos) && !offsetState.getMaterial().isReplaceable() && offsetBlock != SCContent.LASER_BLOCK.get())
+				return;
+			else if (offsetBlock == SCContent.LASER_BLOCK.get()) {
+				LaserBlockBlockEntity thatTe = (LaserBlockBlockEntity) world.getBlockEntity(offsetPos);
 
-						for (ModuleType type : thatTe.getInsertedModules()) {
-							thisTe.insertModule(thatTe.getModule(type), false);
-						}
-
-						if (thisTe.isEnabled() && thatTe.isEnabled()) {
-							for (int j = 1; j < i; j++) {
-								offsetPos = pos.relative(facing, j);
-								offsetState = world.getBlockState(offsetPos);
-
-								if (offsetState.isAir(world, offsetPos) || offsetState.getMaterial().isReplaceable()) {
-									world.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().defaultBlockState().setValue(LaserFieldBlock.BOUNDTYPE, boundType));
-
-									TileEntity te = world.getBlockEntity(offsetPos);
-
-									if (te instanceof IOwnable)
-										((IOwnable) te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
-								}
-							}
-						}
+				if (thisTe.getOwner().owns(thatTe) && thisTe.isEnabled() && thatTe.isEnabled()) {
+					if (!thatTe.isSideEnabled(facing.getOpposite())) {
+						thisTe.setSideEnabled(facing, false, null);
+						return;
 					}
 
-					break inner;
+					ModuleType failedType = thisTe.synchronizeWith(thatTe);
+
+					if (failedType != null) {
+						if (player != null) {
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:laser.sync_failed", Utils.getFormattedCoordinates(thatTe.getBlockPos()), Utils.localize(failedType.getTranslationKey())), TextFormatting.RED);
+							thisTe.setSideEnabled(facing, false, null);
+							thatTe.setSideEnabled(facing.getOpposite(), false, null);
+							player.closeContainer();
+						}
+
+						return;
+					}
+
+					for (int j = 1; j < i; j++) {
+						offsetPos = pos.relative(facing, j);
+						offsetState = world.getBlockState(offsetPos);
+
+						if (offsetState.isAir(world, offsetPos) || offsetState.getMaterial().isReplaceable()) {
+							world.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().defaultBlockState().setValue(LaserFieldBlock.BOUNDTYPE, boundType));
+
+							TileEntity te = world.getBlockEntity(offsetPos);
+
+							if (te instanceof IOwnable)
+								((IOwnable) te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
+						}
+					}
 				}
+
+				return;
 			}
 		}
 	}
@@ -98,12 +138,12 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	public static void destroyAdjacentLasers(IWorld world, BlockPos pos) {
-		BlockUtils.destroyInSequence(SCContent.LASER_FIELD.get(), world, pos, Direction.values());
+		BlockUtils.removeInSequence(SCContent.LASER_FIELD.get(), world, pos, Direction.values());
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		setLaser(world, pos);
+		setLaser(world, pos, null);
 	}
 
 	@Override

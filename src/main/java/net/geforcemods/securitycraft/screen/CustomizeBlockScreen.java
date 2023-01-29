@@ -63,7 +63,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	private final List<Rectangle2d> extraAreas = new ArrayList<>();
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
-	private Button[] optionButtons = new Button[5];
+	private Button[] optionButtons;
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
 	private final Block block;
 	private final String blockName;
@@ -107,6 +107,8 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			Option<?>[] options = customizableTe.customOptions();
 
 			if (options != null) {
+				optionButtons = new Button[options.length];
+
 				for (int i = 0; i < options.length; i++) {
 					Option<?> option = options[i];
 

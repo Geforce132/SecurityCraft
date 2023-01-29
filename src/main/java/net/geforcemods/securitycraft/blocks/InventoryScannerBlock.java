@@ -150,7 +150,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		InventoryScannerBlockEntity connectedScanner = getConnectedInventoryScanner(world, pos, state, null);
 		TileEntity tile = world.getBlockEntity(pos);
 
-		BlockUtils.destroyInSequence(SCContent.INVENTORY_SCANNER_FIELD.get(), world, pos, state.getValue(FACING));
+		BlockUtils.removeInSequence(SCContent.INVENTORY_SCANNER_FIELD.get(), world, pos, state.getValue(FACING));
 
 		if (tile instanceof InventoryScannerBlockEntity) {
 			InventoryScannerBlockEntity te = (InventoryScannerBlockEntity) tile;
