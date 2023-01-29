@@ -140,7 +140,7 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	public static void destroyAdjacentLasers(LevelAccessor level, BlockPos pos) {
-		BlockUtils.destroyInSequence(SCContent.LASER_FIELD.get(), level, pos, Direction.values());
+		BlockUtils.removeInSequence(SCContent.LASER_FIELD.get(), level, pos, Direction.values());
 	}
 
 	@Override
