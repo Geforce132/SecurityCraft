@@ -46,7 +46,7 @@ public class SyncLaserSideConfig {
 			if (level.getBlockEntity(pos) instanceof LaserBlockBlockEntity be && be.isOwnedBy(player)) {
 				BlockState state = level.getBlockState(pos);
 
-				be.applySideConfig(LaserBlockBlockEntity.loadSideConfig(message.sideConfig), player);
+				be.applyNewSideConfig(LaserBlockBlockEntity.loadSideConfig(message.sideConfig), player);
 				level.sendBlockUpdated(pos, state, state, 2);
 			}
 		});
