@@ -279,7 +279,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		if (enabled && getBlockState().getBlock() instanceof LaserBlock block)
 			block.setLaser(level, pos, direction, player);
 		else if (!enabled)
-			BlockUtils.destroyInSequence(SCContent.LASER_FIELD.get(), level, worldPosition, direction);
+			BlockUtils.removeInSequence(SCContent.LASER_FIELD.get(), level, worldPosition, direction);
 	}
 
 	public EnumMap<Direction, Boolean> getSideConfig() {
