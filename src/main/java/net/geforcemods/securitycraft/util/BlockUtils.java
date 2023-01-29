@@ -114,7 +114,7 @@ public class BlockUtils {
 		}
 	}
 
-	public static void destroyInSequence(Block blockToDestroy, LevelAccessor level, BlockPos pos, Direction... directions) {
+	public static void removeInSequence(Block blockToDestroy, LevelAccessor level, BlockPos pos, Direction... directions) {
 		for (Direction direction : directions) {
 			int i = 1;
 			BlockPos modifiedPos = pos.relative(direction, i);
