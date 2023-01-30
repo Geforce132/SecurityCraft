@@ -46,12 +46,11 @@ public class GuiKeycardReader extends GuiContainer {
 	private final String inventoryText = Utils.localize("container.inventory").getFormattedText();
 	private final String keycardLevelsText = Utils.localize("gui.securitycraft:keycard_reader.keycard_levels").getFormattedText();
 	private final String linkText = Utils.localize("gui.securitycraft:keycard_reader.link").getFormattedText();
-	private final String noSmartModule = Utils.localize("gui.securitycraft:keycard_reader.noSmartModule").getFormattedText();
-	private final String smartModule = Utils.localize("gui.securitycraft:keycard_reader.smartModule").getFormattedText();
 	private final String levelMismatchInfo = Utils.localize("gui.securitycraft:keycard_reader.level_mismatch").getFormattedText();
 	private final String limitedInfo = Utils.localize("tooltip.securitycraft:keycard.limited_info").getFormattedText();
+	private String smartModuleTooltip;
 	private final TileEntityKeycardReader te;
-	private final boolean isSmart;
+	private final boolean hasSmartModule;
 	private final boolean isOwner;
 	private boolean isExactLevel = true;
 	private int previousSignature;
@@ -78,9 +77,14 @@ public class GuiKeycardReader extends GuiContainer {
 		previousSignature = te.getSignature();
 		signature = previousSignature;
 		acceptedLevels = te.getAcceptedLevels();
-		isSmart = te.isModuleEnabled(EnumModuleType.SMART);
+		hasSmartModule = te.isModuleEnabled(EnumModuleType.SMART);
 		isOwner = te.isOwnedBy(inv.player);
 		ySize = 249;
+
+		if (hasSmartModule)
+			smartModuleTooltip = Utils.localize("gui.securitycraft:keycard_reader.smartModule").getFormattedText();
+		else
+			smartModuleTooltip = Utils.localize("gui.securitycraft:keycard_reader.noSmartModule").getFormattedText();
 	}
 
 	@Override
@@ -99,7 +103,7 @@ public class GuiKeycardReader extends GuiContainer {
 			toggleButtons[i] = addButton(new TogglePictureButton(id++, guiLeft + 100, guiTop + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[] {110, 88}, new int[] {219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
 				//@formatter:on
 				//TogglePictureButton already implicitly handles changing the button state in the case of isSmart, so only the data needs to be updated
-				if (!isSmart) {
+				if (!hasSmartModule) {
 					for (int otherButtonId = 0; otherButtonId < 5; otherButtonId++) {
 						boolean active;
 
@@ -118,7 +122,7 @@ public class GuiKeycardReader extends GuiContainer {
 			toggleButtons[i].setCurrentIndex(acceptedLevels[i] ? 1 : 0); //set correct button state
 			toggleButtons[i].enabled = isOwner;
 
-			if (!isSmart) {
+			if (!hasSmartModule) {
 				if (acceptedLevels[i]) {
 					if (firstActiveButton == -1)
 						firstActiveButton = i;
@@ -172,7 +176,7 @@ public class GuiKeycardReader extends GuiContainer {
 		usesHoverChecker = new StringHoverChecker(guiTop + 107, guiTop + 122, guiLeft + 28, guiLeft + 58, limitedInfo);
 
 		//add =/>= button and handle it being set to the correct state, as well as changing keycard level buttons' states if a smart module was removed
-		if (!isSmart) {
+		if (!hasSmartModule) {
 			if (activeButtons == 1)
 				isExactLevel = true;
 			else if (activeButtons == 0) { //probably won't happen but just in case
@@ -288,7 +292,7 @@ public class GuiKeycardReader extends GuiContainer {
 			GuiUtils.drawHoveringText(usesHoverChecker.getLines(), mouseX, mouseY, width, height, -1, fontRenderer);
 
 		renderHoveredToolTip(mouseX, mouseY);
-		net.geforcemods.securitycraft.util.GuiUtils.renderModuleInfo(EnumModuleType.SMART, smartModule, noSmartModule, isSmart, guiLeft + 5, guiTop + 5, width, height, mouseX, mouseY);
+		net.geforcemods.securitycraft.util.GuiUtils.renderModuleInfo(EnumModuleType.SMART, smartModuleTooltip, hasSmartModule, guiLeft + 5, guiTop + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override

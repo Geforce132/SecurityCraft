@@ -257,9 +257,9 @@ public class BlockInventoryScannerField extends BlockOwnable implements IOverlay
 			EnumFacing facing = state.getValue(FACING);
 
 			if (facing == EnumFacing.EAST || facing == EnumFacing.WEST)
-				BlockUtils.destroyInSequence(this, world, pos, EnumFacing.EAST, EnumFacing.WEST);
+				BlockUtils.removeInSequence(this, world, pos, EnumFacing.EAST, EnumFacing.WEST);
 			else if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH)
-				BlockUtils.destroyInSequence(this, world, pos, EnumFacing.NORTH, EnumFacing.SOUTH);
+				BlockUtils.removeInSequence(this, world, pos, EnumFacing.NORTH, EnumFacing.SOUTH);
 		}
 	}
 

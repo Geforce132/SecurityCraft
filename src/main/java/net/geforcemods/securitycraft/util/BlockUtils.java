@@ -113,13 +113,13 @@ public class BlockUtils {
 		}
 	}
 
-	public static void destroyInSequence(Block blockToDestroy, World world, BlockPos pos, EnumFacing... directions) {
+	public static void removeInSequence(Block blockToDestroy, World world, BlockPos pos, EnumFacing... directions) {
 		for (EnumFacing direction : directions) {
 			int i = 1;
 			BlockPos modifiedPos = pos.offset(direction, i);
 
 			while (world.getBlockState(modifiedPos).getBlock() == blockToDestroy) {
-				world.destroyBlock(modifiedPos, false);
+				world.setBlockToAir(modifiedPos);
 				modifiedPos = pos.offset(direction, ++i);
 			}
 		}

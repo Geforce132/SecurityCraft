@@ -1,7 +1,13 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILinkedAction;
@@ -12,14 +18,20 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
+import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.TileEntityRenderDelegate;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class TileEntityLaserBlock extends TileEntityLinkable {
@@ -32,17 +44,49 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 		}
 	};
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
+	private EnumMap<EnumFacing, Boolean> sideConfig;
 
-	private void setLasersAccordingToDisabledOption() {
-		Block block = world.getBlockState(pos).getBlock();
+	{
+		EnumMap<EnumFacing, Boolean> map = new EnumMap<>(EnumFacing.class);
 
-		if (block != SCContent.laserBlock)
-			return;
+		for (EnumFacing dir : EnumFacing.values()) {
+			map.put(dir, true);
+		}
 
-		if (isEnabled())
-			((BlockLaserBlock) block).setLaser(getOwner(), world, pos);
-		else
-			BlockLaserBlock.destroyAdjacentLasers(world, pos);
+		sideConfig = map;
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		tag.setTag("sideConfig", saveSideConfig(sideConfig));
+		return tag;
+	}
+
+	public static NBTTagCompound saveSideConfig(EnumMap<EnumFacing, Boolean> sideConfig) {
+		NBTTagCompound sideConfigTag = new NBTTagCompound();
+
+		sideConfig.forEach((dir, enabled) -> sideConfigTag.setBoolean(dir.getName(), enabled));
+		return sideConfigTag;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		sideConfig = loadSideConfig(tag.getCompoundTag("sideConfig"));
+	}
+
+	public static EnumMap<EnumFacing, Boolean> loadSideConfig(NBTTagCompound sideConfigTag) {
+		EnumMap<EnumFacing, Boolean> sideConfig = new EnumMap<>(EnumFacing.class);
+
+		for (EnumFacing dir : EnumFacing.values()) {
+			if (sideConfigTag.hasKey(dir.getName(), Constants.NBT.TAG_BYTE))
+				sideConfig.put(dir, sideConfigTag.getBoolean(dir.getName()));
+			else
+				sideConfig.put(dir, true);
+		}
+
+		return sideConfig;
 	}
 
 	@Override
@@ -96,6 +140,8 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 
 		if (module == EnumModuleType.DISGUISE)
 			onInsertDisguiseModule(stack, toggled);
+		else if (module == EnumModuleType.SMART)
+			applyExistingSideConfig();
 	}
 
 	@Override
@@ -106,6 +152,8 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 			onRemoveDisguiseModule(stack, toggled);
 		else if (module == EnumModuleType.REDSTONE)
 			onRemoveRedstoneModule();
+		else if (module == EnumModuleType.SMART)
+			applyExistingSideConfig();
 	}
 
 	private void onInsertDisguiseModule(ItemStack stack, boolean toggled) {
@@ -172,7 +220,7 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 	@Override
 	public EnumModuleType[] acceptedModules() {
 		return new EnumModuleType[] {
-				EnumModuleType.HARMING, EnumModuleType.ALLOWLIST, EnumModuleType.DISGUISE, EnumModuleType.REDSTONE
+				EnumModuleType.HARMING, EnumModuleType.ALLOWLIST, EnumModuleType.DISGUISE, EnumModuleType.REDSTONE, EnumModuleType.SMART
 		};
 	}
 
@@ -189,5 +237,111 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
+	}
+
+	public void applyNewSideConfig(EnumMap<EnumFacing, Boolean> sideConfig, EntityPlayer player) {
+		sideConfig.forEach((direction, enabled) -> setSideEnabled(direction, enabled, player));
+	}
+
+	public void applyExistingSideConfig() {
+		for (EnumFacing direction : EnumFacing.values()) {
+			toggleLaserOnSide(direction, isSideEnabled(direction), null, false);
+		}
+	}
+
+	public void setSideEnabled(EnumFacing direction, boolean enabled, EntityPlayer player) {
+		sideConfig.put(direction, enabled);
+
+		if (isModuleEnabled(EnumModuleType.SMART))
+			toggleLaserOnSide(direction, enabled, player, true);
+	}
+
+	public void toggleLaserOnSide(EnumFacing direction, boolean enabled, EntityPlayer player, boolean modifyOtherLaser) {
+		int i = 1;
+		BlockPos pos = getPos();
+		BlockPos modifiedPos = pos.offset(direction, i);
+		IBlockState ownState = world.getBlockState(pos);
+		IBlockState stateAtModifiedPos = world.getBlockState(modifiedPos);
+
+		while (i < ConfigHandler.laserBlockRange && stateAtModifiedPos.getBlock() != SCContent.laserBlock) {
+			modifiedPos = pos.offset(direction, ++i);
+			stateAtModifiedPos = world.getBlockState(modifiedPos);
+		}
+
+		if (modifyOtherLaser) {
+			TileEntity te = world.getTileEntity(modifiedPos);
+
+			if (te instanceof TileEntityLaserBlock)
+				((TileEntityLaserBlock) te).sideConfig.put(direction.getOpposite(), enabled);
+		}
+
+		if (enabled) {
+			Block block = ownState.getBlock();
+
+			if (block instanceof BlockLaserBlock)
+				((BlockLaserBlock) block).setLaser(world, pos, direction, player);
+		}
+		else if (!enabled)
+			BlockUtils.removeInSequence(SCContent.laserField, world, pos, direction);
+	}
+
+	public EnumMap<EnumFacing, Boolean> getSideConfig() {
+		return sideConfig;
+	}
+
+	public boolean isSideEnabled(EnumFacing dir) {
+		return !isModuleEnabled(EnumModuleType.SMART) || sideConfig.getOrDefault(dir, true);
+	}
+
+	private void setLasersAccordingToDisabledOption() {
+		Block block = world.getBlockState(pos).getBlock();
+
+		if (block != SCContent.laserBlock)
+			return;
+
+		if (isEnabled())
+			((BlockLaserBlock) block).setLaser(world, pos, null);
+		else
+			BlockLaserBlock.destroyAdjacentLasers(world, pos);
+	}
+
+	public EnumModuleType synchronizeWith(TileEntityLaserBlock that) {
+		if (!TileEntityLinkable.isLinkedWith(this, that)) {
+			Map<ItemStack, Boolean> bothInsertedModules = new Object2BooleanArrayMap<>();
+			List<EnumModuleType> thisInsertedModules = getInsertedModules();
+			List<EnumModuleType> thatInsertedModules = that.getInsertedModules();
+
+			for (EnumModuleType type : thisInsertedModules) {
+				ItemStack thisModule = getModule(type);
+
+				if (thatInsertedModules.contains(type) && !ItemStack.areItemStackShareTagsEqual(thisModule, that.getModule(type)))
+					return type;
+
+				bothInsertedModules.put(thisModule.copy(), isModuleEnabled(type));
+				removeModule(type, false);
+			}
+
+			for (EnumModuleType type : thatInsertedModules) {
+				bothInsertedModules.put(that.getModule(type).copy(), that.isModuleEnabled(type));
+				that.removeModule(type, false);
+				createLinkedBlockAction(new ILinkedAction.ModuleRemoved(type, false), that);
+			}
+
+			readOptions(that.writeOptions(new NBTTagCompound()));
+			TileEntityLinkable.link(this, that);
+
+			for (Entry<ItemStack, Boolean> entry : bothInsertedModules.entrySet()) {
+				ItemStack module = entry.getKey();
+				ItemModule item = (ItemModule) module.getItem();
+				EnumModuleType type = item.getModuleType();
+
+				insertModule(entry.getKey(), false);
+				createLinkedBlockAction(new ILinkedAction.ModuleInserted(module, item, false), this);
+				toggleModuleState(type, entry.getValue());
+				createLinkedBlockAction(new ILinkedAction.ModuleInserted(module, item, true), this);
+			}
+		}
+
+		return null;
 	}
 }

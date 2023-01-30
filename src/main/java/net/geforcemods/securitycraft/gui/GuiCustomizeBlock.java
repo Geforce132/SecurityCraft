@@ -60,7 +60,7 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 	private final List<Rectangle> extraAreas = new ArrayList<>();
 	private IModuleInventory moduleInv;
 	private GuiPictureButton[] descriptionButtons = new GuiPictureButton[5];
-	private GuiButton[] optionButtons = new GuiButton[5];
+	private GuiButton[] optionButtons;
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private final Block block;
 	private final String title;
@@ -99,27 +99,32 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 
 		TileEntity te = moduleInv.getTileEntity();
 
-		if (te instanceof ICustomizable && ((ICustomizable) te).customOptions() != null) {
+		if (te instanceof ICustomizable) {
 			ICustomizable customizableTe = (ICustomizable) te;
+			Option<?>[] options = customizableTe.customOptions();
 
-			for (int i = 0; i < customizableTe.customOptions().length; i++) {
-				Option<?> option = customizableTe.customOptions()[i];
+			if (options != null) {
+				optionButtons = new GuiButton[options.length];
 
-				if (option instanceof ISlider && option.isSlider()) {
-					if (option instanceof OptionDouble)
-						optionButtons[i] = new GuiSlider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionDouble) option).getMin(), ((OptionDouble) option).getMax(), ((OptionDouble) option).get(), true, true, (ISlider) option);
-					else if (option instanceof OptionInt)
-						optionButtons[i] = new GuiSlider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionInt) option).getMin(), ((OptionInt) option).getMax(), ((OptionInt) option).get(), true, true, (ISlider) option);
+				for (int i = 0; i < options.length; i++) {
+					Option<?> option = options[i];
 
-					optionButtons[i].packedFGColour = 14737632;
+					if (option instanceof ISlider && option.isSlider()) {
+						if (option instanceof OptionDouble)
+							optionButtons[i] = new GuiSlider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionDouble) option).getMin(), ((OptionDouble) option).getMax(), ((OptionDouble) option).get(), true, true, (ISlider) option);
+						else if (option instanceof OptionInt)
+							optionButtons[i] = new GuiSlider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionInt) option).getMin(), ((OptionInt) option).getMax(), ((OptionInt) option).get(), true, true, (ISlider) option);
+
+						optionButtons[i].packedFGColour = 14737632;
+					}
+					else {
+						optionButtons[i] = new GuiButton(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option));
+						optionButtons[i].packedFGColour = option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632;
+					}
+
+					buttonList.add(optionButtons[i]);
+					hoverCheckers[i + moduleInv.getMaxNumberOfModules()] = new HoverChecker(optionButtons[i]);
 				}
-				else {
-					optionButtons[i] = new GuiButton(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option));
-					optionButtons[i].packedFGColour = option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632;
-				}
-
-				buttonList.add(optionButtons[i]);
-				hoverCheckers[i + moduleInv.getMaxNumberOfModules()] = new HoverChecker(optionButtons[i]);
 			}
 		}
 

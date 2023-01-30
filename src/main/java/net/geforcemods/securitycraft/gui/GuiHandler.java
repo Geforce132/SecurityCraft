@@ -63,6 +63,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int BLOCK_CHANGE_DETECTOR = 108;
 	public static final int SSS_ITEM = 109;
 	public static final int RIFT_STABILIZER = 110;
+	public static final int LASER = 111;
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {

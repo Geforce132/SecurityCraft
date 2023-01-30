@@ -136,7 +136,7 @@ public class BlockLaserField extends BlockOwnable implements IOverlayDisplay {
 		if (!world.isRemote) {
 			EnumFacing direction = EnumFacing.byIndex((state.getValue(BlockLaserField.BOUNDTYPE) - 1) * 2);
 
-			BlockUtils.destroyInSequence(this, world, pos, direction, direction.getOpposite());
+			BlockUtils.removeInSequence(this, world, pos, direction, direction.getOpposite());
 		}
 	}
 

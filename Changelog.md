@@ -1,10 +1,14 @@
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
 
 - New: Support for teams from FTB Utilities when having team ownership enabled in the config
+- New: Laser blocks can now be configured to have lasers on specific sides be disabled by using a Smart Module
+- Change: Lasers and inventory scanner fields are now removed silently
 - Fix: Turning off camera rotation leads to extreme stuttering of the camera
 - Fix: Shift-clicking a potion in the brewing stand screen puts the potion into the wrong slot
 - Fix: Redstone does not automatically connect to the Alarm, Projector, and Username Logger
 - Fix: Some text in the check password screens doesn't show up properly
+- Fix: Options are not synchronized between newly placed laser blocks
+- Fix: Modules are not properly synchronized between laser blocks in certain situations
 
 --------------------------Changelog for v1.9.5 of SecurityCraft--------------------------
 

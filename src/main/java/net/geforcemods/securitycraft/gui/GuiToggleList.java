@@ -33,20 +33,19 @@ public class GuiToggleList<T> extends GuiScreen {
 	private final int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
-	private final String title, scrollListTitle, moduleRequired, toggle;
-	private final boolean isSmart;
-	private final boolean isRedstone;
+	private final String title, scrollListTitle, smartModuleTooltip;
+	private final boolean hasSmartModule;
+	private final boolean hasRedstoneModule;
 	private IToggleableEntries<T> te;
 	private ToggleScrollList entryList;
 
-	public GuiToggleList(IToggleableEntries<T> te, ITextComponent title, ITextComponent scrollListTitle, ITextComponent moduleRequired, ITextComponent toggle) {
+	public GuiToggleList(IToggleableEntries<T> te, ITextComponent title, ITextComponent scrollListTitle, ITextComponent noSmartModule, ITextComponent smartModule) {
 		this.te = te;
-		isSmart = te instanceof IModuleInventory && ((IModuleInventory) te).isModuleEnabled(EnumModuleType.SMART);
-		isRedstone = te instanceof IModuleInventory && ((IModuleInventory) te).isModuleEnabled(EnumModuleType.REDSTONE);
+		hasSmartModule = te instanceof IModuleInventory && ((IModuleInventory) te).isModuleEnabled(EnumModuleType.SMART);
+		hasRedstoneModule = te instanceof IModuleInventory && ((IModuleInventory) te).isModuleEnabled(EnumModuleType.REDSTONE);
 		this.title = title.getFormattedText();
 		this.scrollListTitle = scrollListTitle.getFormattedText();
-		this.moduleRequired = moduleRequired.getFormattedText();
-		this.toggle = toggle.getFormattedText();
+		smartModuleTooltip = (hasSmartModule ? smartModule : noSmartModule).getFormattedText();
 	}
 
 	@Override
@@ -72,7 +71,7 @@ public class GuiToggleList<T> extends GuiScreen {
 
 		fontRenderer.drawString(title, width / 2 - fontRenderer.getStringWidth(title) / 2, topPos + 6, 4210752);
 		fontRenderer.drawString(scrollListTitle, width / 2 - fontRenderer.getStringWidth(scrollListTitle) / 2, topPos + 31, 4210752);
-		GuiUtils.renderModuleInfo(EnumModuleType.SMART, toggle, moduleRequired, isSmart, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+		GuiUtils.renderModuleInfo(EnumModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override
@@ -124,7 +123,7 @@ public class GuiToggleList<T> extends GuiScreen {
 
 		@Override
 		protected boolean isSelected(int index) {
-			return isSmart && index == hoveredSlot;
+			return hasSmartModule && index == hoveredSlot;
 		}
 
 		@Override
@@ -142,7 +141,7 @@ public class GuiToggleList<T> extends GuiScreen {
 
 		@Override
 		protected void elementClicked(int index, boolean doubleClick) {
-			if (isSmart) {
+			if (hasSmartModule) {
 				te.toggleFilter(orderedFilterList.get(index));
 				mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 			}
@@ -154,7 +153,7 @@ public class GuiToggleList<T> extends GuiScreen {
 
 			int slotBottom = slotTop + slotHeight;
 
-			if (isRedstone && mouseX >= left && mouseX <= right - 7 && hoveredSlot >= 0 && hoveredSlot < getSize() && mouseY >= top && mouseY <= bottom) {
+			if (hasRedstoneModule && mouseX >= left && mouseX <= right - 7 && hoveredSlot >= 0 && hoveredSlot < getSize() && mouseY >= top && mouseY <= bottom) {
 				int comparatorOutput = te.getComparatorOutputFunction().applyAsInt(orderedFilterList.get(hoveredSlot));
 
 				if (comparatorOutput > 0) {

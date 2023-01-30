@@ -26,8 +26,8 @@ public class GuiInventoryScanner extends GuiContainer {
 	private boolean owns = false;
 	private boolean hasRedstoneModule = false, hasStorageModule = false;
 	private String infoStringRedstone, infoStringStorage;
-	private final String redstoneModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.redstoneModule.getTranslationKey() + ".name")).getFormattedText();
-	private final String storageModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.storageModule.getTranslationKey() + ".name")).getFormattedText();
+	private String redstoneModuleTooltip = null;
+	private String storageModuleTooltip = null;
 
 	public GuiInventoryScanner(InventoryPlayer inventory, TileEntityInventoryScanner te, EntityPlayer player) {
 		super(new ContainerInventoryScanner(inventory, te));
@@ -39,10 +39,15 @@ public class GuiInventoryScanner extends GuiContainer {
 		infoStringRedstone = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (hasRedstoneModule ? "yes" : "no"))).getFormattedText();
 		infoStringStorage = Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no"))).getFormattedText();
 
+		if (hasRedstoneModule)
+			redstoneModuleTooltip = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.redstoneModule.getTranslationKey() + ".name")).getFormattedText();
+
 		if (hasStorageModule)
 			xSize = 246;
-		else
+		else {
 			xSize = 190;
+			storageModuleTooltip = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.storageModule.getTranslationKey() + ".name")).getFormattedText();
+		}
 
 		ySize = 196;
 	}
@@ -60,8 +65,8 @@ public class GuiInventoryScanner extends GuiContainer {
 		GlStateManager.disableLighting();
 		fontRenderer.drawSplitString(infoStringRedstone, guiLeft + 28, guiTop + 45, 150, 4210752);
 		fontRenderer.drawSplitString(infoStringStorage, guiLeft + 28, guiTop + 75, 150, 4210752);
-		GuiUtils.renderModuleInfo(EnumModuleType.REDSTONE, null, redstoneModuleNotInstalled, hasRedstoneModule, guiLeft + 8, guiTop + 45, width, height, mouseX, mouseY);
-		GuiUtils.renderModuleInfo(EnumModuleType.STORAGE, null, storageModuleNotInstalled, hasStorageModule, guiLeft + 8, guiTop + 75, width, height, mouseX, mouseY);
+		GuiUtils.renderModuleInfo(EnumModuleType.REDSTONE, redstoneModuleTooltip, hasRedstoneModule, guiLeft + 8, guiTop + 45, width, height, mouseX, mouseY);
+		GuiUtils.renderModuleInfo(EnumModuleType.STORAGE, storageModuleTooltip, hasStorageModule, guiLeft + 8, guiTop + 75, width, height, mouseX, mouseY);
 
 		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
 			renderToolTip(getSlotUnderMouse().getStack(), mouseX, mouseY);

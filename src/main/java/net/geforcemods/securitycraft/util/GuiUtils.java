@@ -118,7 +118,7 @@ public class GuiUtils {
 		GlStateManager.disableRescaleNormal();
 	}
 
-	public static void renderModuleInfo(EnumModuleType module, String moduleTooltip, String noModuleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY) {
+	public static void renderModuleInfo(EnumModuleType module, String moduleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY) {
 		Minecraft mc = Minecraft.getMinecraft();
 		float alpha = isModuleInstalled ? 1.0F : 0.5F;
 		int moduleRight = moduleLeft + 16;
@@ -139,12 +139,8 @@ public class GuiUtils {
 			drawTexture(Tessellator.getInstance(), moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
 
-		if (mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom) {
-			String text = isModuleInstalled ? moduleTooltip : noModuleTooltip;
-
-			if (text != null && !text.isEmpty())
-				net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(text), mouseX, mouseY, screenWidth, screenHeight, -1, mc.fontRenderer);
-		}
+		if (moduleTooltip != null && !moduleTooltip.isEmpty() && mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom)
+			net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(moduleTooltip), mouseX, mouseY, screenWidth, screenHeight, -1, mc.fontRenderer);
 
 		GlStateManager.disableBlend();
 		GlStateManager.disableAlpha();
