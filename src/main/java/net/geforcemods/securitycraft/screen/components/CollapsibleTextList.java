@@ -19,8 +19,7 @@ public class CollapsibleTextList extends Button {
 	private static final Component PLUS = Component.literal("+ ");
 	private static final Component MINUS = Component.literal("- ");
 	private final int threeDotsWidth = Minecraft.getInstance().font.width("...");
-	private final int maximumHeight;
-	private int currentHeight;
+	private final int heightOpen;
 	private final Component originalDisplayString;
 	private final List<List<FormattedCharSequence>> textLines = new ArrayList<>();
 	private final BiPredicate<Integer, Integer> extraHoverCheck;
@@ -43,8 +42,7 @@ public class CollapsibleTextList extends Button {
 			this.textLines.add(splitLines);
 		}
 
-		maximumHeight = height + amountOfLines * font.lineHeight + textLines.size() * 3;
-		currentHeight = height;
+		heightOpen = height + amountOfLines * font.lineHeight + textLines.size() * 3;
 		this.extraHoverCheck = extraHoverCheck;
 	}
 
@@ -60,38 +58,23 @@ public class CollapsibleTextList extends Button {
 		drawCenteredString(pose, font, getMessage(), getX() + font.width(getMessage()) / 2 + 3, getY() + heightOffset, getFGColor());
 
 		if (open) {
-			if (currentHeight < maximumHeight)
-				currentHeight++;
-		}
-		else if (!open) {
-			if (currentHeight > height)
-				currentHeight--;
-			else
-				return;
-		}
+			int renderedLines = 0;
 
-		int renderedLines = 0;
+			GuiComponent.fillGradient(pose, getX(), getY() + height, getX() + width, getY() + heightOpen, 0xC0101010, 0xD0101010, 0);
 
-		GuiComponent.fillGradient(pose, getX(), getY() + height, getX() + width, getY() + currentHeight, 0xC0101010, 0xD0101010, 0);
+			for (int i = 0; i < textLines.size(); i++) {
+				int textY = getY() + 2 + height + renderedLines * font.lineHeight + (i * 12);
+				List<FormattedCharSequence> linesToDraw = textLines.get(i);
 
-		for (int i = 0; i < textLines.size(); i++) {
-			int textY = getY() + 2 + height + renderedLines * font.lineHeight + (i * 12);
-			List<FormattedCharSequence> linesToDraw = textLines.get(i);
+				if (i > 0)
+					GuiComponent.fillGradient(pose, getX() + 1, textY - 3, getX() + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0, getBlitOffset());
 
-			if (i > 0)
-				GuiComponent.fillGradient(pose, getX() + 1, textY - 3, getX() + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0, getBlitOffset());
+				for (int lineIndex = 0; lineIndex < linesToDraw.size(); lineIndex++) {
+					font.draw(pose, linesToDraw.get(lineIndex), getX() + 2, textY + lineIndex * font.lineHeight, getFGColor());
+				}
 
-			for (int lineIndex = 0; lineIndex < linesToDraw.size(); lineIndex++) {
-				int lineY = textY + lineIndex * font.lineHeight;
-
-				//don't render text that would render outside of the current height of the text list
-				if (lineY > getY() + currentHeight)
-					return;
-
-				font.draw(pose, linesToDraw.get(lineIndex), getX() + 2, lineY, getFGColor());
+				renderedLines += linesToDraw.size() - 1;
 			}
-
-			renderedLines += linesToDraw.size() - 1;
 		}
 	}
 
@@ -120,11 +103,7 @@ public class CollapsibleTextList extends Button {
 
 	@Override
 	public int getHeight() {
-		return currentHeight;
-	}
-
-	public int getMaximumHeight() {
-		return open ? maximumHeight : height;
+		return open ? heightOpen : height;
 	}
 
 	@Override
