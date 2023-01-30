@@ -381,8 +381,8 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 		public void recalculateContentHeight() {
 			int height = filteredEntries.stream().reduce(0, (accumulated, ctl) -> accumulated + ctl.getHeight(), (identity, accumulated) -> identity + accumulated);
 
-			if (height < bottom - top - 8)
-				height = bottom - top - 8;
+			if (height < bottom - top - 4)
+				height = bottom - top - 4;
 
 			contentHeight = height;
 
