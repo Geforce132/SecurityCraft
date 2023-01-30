@@ -369,7 +369,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		public void recalculateContentHeight() {
-			int height = filteredEntries.stream().reduce(0, (accumulated, ctl) -> accumulated + ctl.getHeight(), (identity, accumulated) -> identity + accumulated);
+			int height = filteredEntries.stream().reduce(0, (accumulated, ctl) -> accumulated + ctl.getMaximumHeight(), (identity, accumulated) -> identity + accumulated);
 
 			if (height < bottom - top - 8)
 				height = bottom - top - 8;
