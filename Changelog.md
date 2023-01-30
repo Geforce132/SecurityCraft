@@ -9,6 +9,7 @@
 - Fix: Some text in the check password screens doesn't show up properly
 - Fix: Options are not synchronized between newly placed laser blocks
 - Fix: Modules are not properly synchronized between laser blocks in certain situations
+- Misc.: The Spanish translation has been updated (Thanks Globi10!)
 
 --------------------------Changelog for v1.9.5 of SecurityCraft--------------------------
 
