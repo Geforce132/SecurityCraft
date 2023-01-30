@@ -1917,7 +1917,7 @@ public class SCContent {
 	@HasManualPage
 	public static final RegistryObject<Item> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
 	@HasManualPage
-	public static final RegistryObject<Item> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1).defaultDurability(3)));
+	public static final RegistryObject<Item> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1).defaultDurability(5)));
 	@HasManualPage
 	public static final RegistryObject<Item> CRYSTAL_QUARTZ_ITEM = ITEMS.register("crystal_quartz_item", () -> new Item(itemProp(SecurityCraft.groupSCDecoration)));
 	public static final RegistryObject<Item> DISPLAY_CASE_ITEM = ITEMS.register(DISPLAY_CASE_PATH, () -> new BlockItem(SCContent.DISPLAY_CASE.get(), itemProp(SecurityCraft.groupSCDecoration).setISTER(() -> DisplayCaseItemRenderer::new))); //keep this as a method reference or else the server will crash
