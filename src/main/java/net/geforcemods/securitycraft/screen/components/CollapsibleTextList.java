@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.screen.components;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 
@@ -13,6 +13,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.client.gui.GuiUtils;
 
 public class CollapsibleTextList extends Button {
@@ -20,10 +21,8 @@ public class CollapsibleTextList extends Button {
 	private static final TextComponent MINUS = new TextComponent("- ");
 	private final int threeDotsWidth = Minecraft.getInstance().font.width("...");
 	private final int heightOpen;
-	private final int textCutoff;
 	private final Component originalDisplayString;
-	private final List<? extends Component> textLines;
-	private final List<Long> splitTextLineCount;
+	private final List<List<FormattedCharSequence>> textLines = new ArrayList<>();
 	private final BiPredicate<Integer, Integer> extraHoverCheck;
 	private boolean open = true;
 	private boolean isMessageTooLong = false;
@@ -33,21 +32,17 @@ public class CollapsibleTextList extends Button {
 		super(xPos, yPos, width, 12, displayString, onPress);
 		originalDisplayString = displayString;
 		switchOpenStatus(); //properly sets the message as well
-		textCutoff = width - 5;
 
-		ImmutableList.Builder<Long> splitTextLineCountBuilder = new ImmutableList.Builder<>();
 		Font font = Minecraft.getInstance().font;
 		int amountOfLines = 0;
 
 		for (Component line : textLines) {
-			long count = font.getSplitter().splitLines(line, textCutoff, line.getStyle()).size();
+			List<FormattedCharSequence> splitLines = font.split(line, width - 5);
 
-			amountOfLines += count;
-			splitTextLineCountBuilder.add(count);
+			amountOfLines += splitLines.size();
+			this.textLines.add(splitLines);
 		}
 
-		this.textLines = textLines;
-		splitTextLineCount = splitTextLineCountBuilder.build();
 		heightOpen = height + amountOfLines * font.lineHeight + textLines.size() * 3;
 		this.extraHoverCheck = extraHoverCheck;
 	}
@@ -71,12 +66,16 @@ public class CollapsibleTextList extends Button {
 
 			for (int i = 0; i < textLines.size(); i++) {
 				int textY = y + 2 + height + renderedLines * font.lineHeight + (i * 12);
+				List<FormattedCharSequence> linesToDraw = textLines.get(i);
 
 				if (i > 0)
 					GuiUtils.drawGradientRect(m4f, getBlitOffset(), x + 1, textY - 3, x + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0);
 
-				font.drawWordWrap(textLines.get(i), x + 2, textY, textCutoff, getFGColor());
-				renderedLines += splitTextLineCount.get(i) - 1;
+				for (int lineIndex = 0; lineIndex < linesToDraw.size(); lineIndex++) {
+					font.draw(pose, linesToDraw.get(lineIndex), x + 2, textY + lineIndex * font.lineHeight, getFGColor());
+				}
+
+				renderedLines += linesToDraw.size() - 1;
 			}
 		}
 	}
