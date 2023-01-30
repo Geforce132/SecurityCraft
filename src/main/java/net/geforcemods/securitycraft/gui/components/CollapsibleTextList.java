@@ -1,11 +1,9 @@
 package net.geforcemods.securitycraft.gui.components;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
-import com.google.common.collect.ImmutableList;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -19,10 +17,8 @@ public class CollapsibleTextList extends ClickButton {
 	private static final TextComponentString MINUS = new TextComponentString("- ");
 	private final int threeDotsWidth = Minecraft.getMinecraft().fontRenderer.getStringWidth("...");
 	private final int heightOpen;
-	private final int textCutoff;
 	private final String originalDisplayString;
-	private final List<String> textLines;
-	private final List<Long> splitTextLineCount;
+	private final List<List<String>> textLines = new ArrayList<>();
 	private final BiPredicate<Integer, Integer> extraHoverCheck;
 	private boolean open = true;
 	private boolean isMessageTooLong = false;
@@ -32,21 +28,17 @@ public class CollapsibleTextList extends ClickButton {
 		super(id, x, y, width, 12, buttonText, clickButton -> onPress.accept((CollapsibleTextList) clickButton));
 		originalDisplayString = buttonText;
 		switchOpenStatus(); //properly sets the message as well
-		textCutoff = width - 5;
 
-		ImmutableList.Builder<Long> splitTextLineCountBuilder = new ImmutableList.Builder<>();
 		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		int amountOfLines = 0;
 
 		for (ITextComponent line : textLines) {
-			long count = font.listFormattedStringToWidth(line.getFormattedText(), textCutoff).size();
+			List<String> splitLines = font.listFormattedStringToWidth(line.getFormattedText(), width - 5);
 
-			amountOfLines += count;
-			splitTextLineCountBuilder.add(count);
+			amountOfLines += splitLines.size();
+			this.textLines.add(splitLines);
 		}
 
-		this.textLines = textLines.stream().map(ITextComponent::getFormattedText).collect(Collectors.toList());
-		splitTextLineCount = splitTextLineCountBuilder.build();
 		heightOpen = height + amountOfLines * font.FONT_HEIGHT + textLines.size() * 3;
 		this.extraHoverCheck = extraHoverCheck;
 	}
@@ -69,12 +61,16 @@ public class CollapsibleTextList extends ClickButton {
 
 			for (int i = 0; i < textLines.size(); i++) {
 				int textY = y + 2 + height + renderedLines * font.FONT_HEIGHT + (i * 12);
+				List<String> linesToDraw = textLines.get(i);
 
 				if (i > 0)
 					GuiUtils.drawGradientRect((int) zLevel, x + 1, textY - 3, x + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0);
 
-				font.drawSplitString(textLines.get(i), x + 2, textY, textCutoff, 0xE0E0E0);
-				renderedLines += splitTextLineCount.get(i) - 1;
+				for (int lineIndex = 0; lineIndex < linesToDraw.size(); lineIndex++) {
+					font.drawString(linesToDraw.get(lineIndex), x + 2, textY + lineIndex * font.FONT_HEIGHT, 0xE0E0E0);
+				}
+
+				renderedLines += linesToDraw.size() - 1;
 			}
 		}
 	}
