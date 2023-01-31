@@ -323,28 +323,31 @@ public class SCEventHandler {
 			if (tile instanceof IModuleInventory) {
 				IModuleInventory te = (IModuleInventory) tile;
 
-				for (int i = 0; i < te.getMaxNumberOfModules(); i++)
-					if (!te.getInventory().get(i).isEmpty()) {
-						ItemStack stack = te.getInventory().get(i);
-						ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+				if (te.shouldDropModules()) {
+					for (int i = 0; i < te.getMaxNumberOfModules(); i++) {
+						if (!te.getInventory().get(i).isEmpty()) {
+							ItemStack stack = te.getInventory().get(i);
+							ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack);
 
-						LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(item));
-						te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
+							LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(item));
+							te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
 
-						if (te instanceof LinkableBlockEntity) {
-							LinkableBlockEntity lbe = (LinkableBlockEntity) te;
+							if (te instanceof LinkableBlockEntity) {
+								LinkableBlockEntity lbe = (LinkableBlockEntity) te;
 
-							lbe.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), lbe);
-						}
+								lbe.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), lbe);
+							}
 
-						if (te instanceof SecurityCameraBlockEntity) {
-							SecurityCameraBlockEntity cam = (SecurityCameraBlockEntity) te;
-							BlockPos camPos = cam.getBlockPos();
-							BlockState camState = cam.getLevel().getBlockState(camPos);
+							if (te instanceof SecurityCameraBlockEntity) {
+								SecurityCameraBlockEntity cam = (SecurityCameraBlockEntity) te;
+								BlockPos camPos = cam.getBlockPos();
+								BlockState camState = cam.getLevel().getBlockState(camPos);
 
-							cam.getLevel().updateNeighborsAt(camPos.relative(camState.getValue(SecurityCameraBlock.FACING), -1), camState.getBlock());
+								cam.getLevel().updateNeighborsAt(camPos.relative(camState.getValue(SecurityCameraBlock.FACING), -1), camState.getBlock());
+							}
 						}
 					}
+				}
 			}
 
 			PlayerEntity player = event.getPlayer();
