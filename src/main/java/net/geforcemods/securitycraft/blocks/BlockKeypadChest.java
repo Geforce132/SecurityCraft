@@ -301,17 +301,15 @@ public class BlockKeypadChest extends BlockOwnable {
 		return surroundingChests <= 1;
 	}
 
-	private boolean isDoubleChest(World world, BlockPos pos) {
-		if (world.getBlockState(pos).getBlock() != this)
-			return false;
-		else {
+	public boolean isDoubleChest(World world, BlockPos pos) {
+		if (world.getBlockState(pos).getBlock() == this) {
 			for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
 				if (world.getBlockState(pos.offset(facing)).getBlock() == this)
 					return true;
 			}
-
-			return false;
 		}
+
+		return false;
 	}
 
 	@Override

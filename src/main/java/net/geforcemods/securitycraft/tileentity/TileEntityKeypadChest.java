@@ -378,6 +378,11 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	}
 
 	@Override
+	public boolean shouldDropModules() {
+		return !((BlockKeypadChest) SCContent.keypadChest).isDoubleChest(world, pos);
+	}
+
+	@Override
 	public EnumModuleType[] acceptedModules() {
 		return new EnumModuleType[] {
 				EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST, EnumModuleType.REDSTONE, EnumModuleType.SMART, EnumModuleType.HARMING

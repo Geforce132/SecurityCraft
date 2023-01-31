@@ -316,6 +316,11 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	}
 
 	@Override
+	public boolean shouldDropModules() {
+		return BlockInventoryScanner.getConnectedInventoryScanner(world, getPos()) == null;
+	}
+
+	@Override
 	public EnumModuleType[] acceptedModules() {
 		return new EnumModuleType[] {
 				EnumModuleType.ALLOWLIST, EnumModuleType.SMART, EnumModuleType.STORAGE, EnumModuleType.DISGUISE, EnumModuleType.REDSTONE

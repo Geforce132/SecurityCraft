@@ -397,24 +397,26 @@ public class SCEventHandler {
 			if (tile instanceof IModuleInventory) {
 				IModuleInventory te = (IModuleInventory) tile;
 
-				for (int i = 100; i - 100 < te.getMaxNumberOfModules(); i++) {
-					if (!te.getStackInSlot(i).isEmpty()) {
-						ItemStack stack = te.getStackInSlot(i);
-						EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
-						WorldUtils.addScheduledTask(world, () -> world.spawnEntity(item));
+				if (te.shouldDropModules()) {
+					for (int i = 100; i - 100 < te.getMaxNumberOfModules(); i++) {
+						if (!te.getStackInSlot(i).isEmpty()) {
+							ItemStack stack = te.getStackInSlot(i);
+							EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+							WorldUtils.addScheduledTask(world, () -> world.spawnEntity(item));
 
-						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModuleType(), false);
+							te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModuleType(), false);
 
-						if (te instanceof TileEntityLinkable) {
-							TileEntityLinkable linkable = (TileEntityLinkable) te;
+							if (te instanceof TileEntityLinkable) {
+								TileEntityLinkable linkable = (TileEntityLinkable) te;
 
-							linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ItemModule) stack.getItem()).getModuleType(), false), linkable);
-						}
+								linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ItemModule) stack.getItem()).getModuleType(), false), linkable);
+							}
 
-						if (te instanceof TileEntitySecurityCamera) {
-							TileEntitySecurityCamera cam = (TileEntitySecurityCamera) te;
+							if (te instanceof TileEntitySecurityCamera) {
+								TileEntitySecurityCamera cam = (TileEntitySecurityCamera) te;
 
-							cam.getWorld().notifyNeighborsOfStateChange(cam.getPos().offset(cam.getWorld().getBlockState(cam.getPos()).getValue(BlockSecurityCamera.FACING), -1), cam.getWorld().getBlockState(cam.getPos()).getBlock(), true);
+								cam.getWorld().notifyNeighborsOfStateChange(cam.getPos().offset(cam.getWorld().getBlockState(cam.getPos()).getValue(BlockSecurityCamera.FACING), -1), cam.getWorld().getBlockState(cam.getPos()).getBlock(), true);
+							}
 						}
 					}
 				}
