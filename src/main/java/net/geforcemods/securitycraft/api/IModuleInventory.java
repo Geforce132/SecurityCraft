@@ -533,4 +533,13 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
 		return ModuleItem.doesModuleHaveTeamOf(stack, name, getBlockEntity().getLevel()) || ModuleItem.getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
+
+	/**
+	 * Determine whether the modules in this inventory should be dropped when the block is broken
+	 *
+	 * @return true if the modules should be dropped, false if not
+	 */
+	public default boolean shouldDropModules() {
+		return true;
+	}
 }
