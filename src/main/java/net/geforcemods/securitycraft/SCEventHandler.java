@@ -312,7 +312,7 @@ public class SCEventHandler {
 		if (!level.isClientSide()) {
 			BlockPos pos = event.getPos();
 
-			if (level.getBlockEntity(pos) instanceof IModuleInventory be) {
+			if (level.getBlockEntity(pos) instanceof IModuleInventory be && be.shouldDropModules()) {
 				for (int i = 0; i < be.getMaxNumberOfModules(); i++) {
 					if (!be.getInventory().get(i).isEmpty()) {
 						ItemStack stack = be.getInventory().get(i);
