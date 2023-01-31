@@ -364,6 +364,11 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
+	public boolean shouldDropModules() {
+		return InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition) == null;
+	}
+
+	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
 				ModuleType.ALLOWLIST, ModuleType.SMART, ModuleType.STORAGE, ModuleType.DISGUISE, ModuleType.REDSTONE

@@ -343,6 +343,11 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	}
 
 	@Override
+	public boolean shouldDropModules() {
+		return getBlockState().getValue(KeypadChestBlock.TYPE) == ChestType.SINGLE;
+	}
+
+	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
 				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.REDSTONE, ModuleType.SMART, ModuleType.HARMING
