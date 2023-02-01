@@ -177,7 +177,7 @@ public class EntitySecurityCamera extends Entity implements IEMPAffected {
 	}
 
 	/**
-	 * @deprecated Prefer calling {@link #discard()}
+	 * @deprecated Prefer calling {@link #setDead()}
 	 */
 	@Deprecated
 	public void discardCamera() {
