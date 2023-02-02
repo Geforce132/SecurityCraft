@@ -898,7 +898,6 @@
 	"messages.securitycraft:universalKeyChanger.briefcase.notOwned": "Questa non è la tua ventiquattrore, non puoi cambiare il suo codice.",
 	"messages.securitycraft:passwordProtected.notSetUp": "Questo blocco non ha ancora una password. Non puoi interagirci.",
 	"messages.securitycraft:sentry.needsBlockBelow": "Devi piazzare la Sentinella sopra un blocco!",
-	"messages.securitycraft:sentry.needsBlocksAround": "Assicurati che la Sentinella sia circondata da blocchi da tutti e 4 i lati!",
 	"messages.securitycraft:sentry.mode0": "Modalità: Aggressiva ",
 	"messages.securitycraft:sentry.mode1": "Modalità: Nascosta ",
 	"messages.securitycraft:sentry.mode2": "Modalità: Inattiva ",
