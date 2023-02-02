@@ -838,7 +838,6 @@
 	"messages.securitycraft:universalKeyChanger.briefcase.notOwned": "이 서류 가방은 귀하의 서류가방이 아니므로 비밀번호를 변경할 수 없습니다.",
 	"messages.securitycraft:passwordProtected.notSetUp": "이 블록에는 아직 비밀번호가 없습니다. 당신은 그것과 상호작용을 할 수 없습니다.",
 	"messages.securitycraft:sentry.needsBlockBelow": "당신은 센트리 건를 블록 위에 올려놓아야 합니다!",
-	"messages.securitycraft:sentry.needsBlocksAround": "센트리 건가 모든 네 면에 블록으로 둘러싸여 있는지 확인합니다!",
 	"messages.securitycraft:sentry.mode0": "현재 모드: 공격 ",
 	"messages.securitycraft:sentry.mode1": "현재 모드: 위장 ",
 	"messages.securitycraft:sentry.mode2": "현재 모드: 유휴 ",

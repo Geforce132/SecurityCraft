@@ -919,7 +919,6 @@
 	"messages.securitycraft:universalKeyChanger.briefcase.notOwned": "これはあなたのカバンではないため、パスコードの変更はできません。",
 	"messages.securitycraft:passwordProtected.notSetUp": "このブロックにはまだパスワードがありません。あなたはそれとやりとりすることはできません。",
 	"messages.securitycraft:sentry.needsBlockBelow": "ブロックの上にセントリーを配置する必要があります。",
-	"messages.securitycraft:sentry.needsBlocksAround": "セントリーの四方がブロックで囲まれていることを確認してください!",
 	"messages.securitycraft:sentry.mode0": "現在のモード：攻撃的 ",
 	"messages.securitycraft:sentry.mode1": "現在のモード：カムフラージュ ",
 	"messages.securitycraft:sentry.mode2": "現在のモード：活動停止 ",
