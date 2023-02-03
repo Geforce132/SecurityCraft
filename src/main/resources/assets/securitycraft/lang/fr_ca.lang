@@ -597,7 +597,7 @@ gui.securitycraft:rift_stabilizer.teleportationTypes=Types de téléporations d�
 gui.securitycraft:rift_stabilizer.moduleRequired=Vous devez installer un module d'intelligence pour basculer quels types de téléportation peuvent être détectés par ce stabilisateur de faille.
 gui.securitycraft:rift_stabilizer.toggle=Cliquez sur les entrées dans la liste ci-dessous pour basculer la détection de ce type spécifique de téléportation.
 gui.securitycraft:rift_stabilizer.modded=Téléportation modifiée
-gui.securitycraft:toggleList.comparatorOutput=Sortie de comparateur : %s 
+gui.securitycraft:toggleList.comparatorOutput=Sortie de comparateur : %s
 
 messages.securitycraft:bugReport=S´il vous plaît, signaler des bogues dans la salon #bugreport de notre serveur Discord. Lire les règles en avance, s´il vous plait
 messages.securitycraft:retinalScanner.hello=Bonjour %s.
@@ -671,7 +671,6 @@ messages.securitycraft:universalKeyChanger.briefcase.noPasscode=Cette mallette n
 messages.securitycraft:universalKeyChanger.briefcase.notOwned=Ce n’est pas votre mallette ; vous ne pouvez pas changer son code d’accès.
 messages.securitycraft:passwordProtected.notSetUp=Ce bloc n’a pas encore de mot de passe. Vous ne pouvez pas interagir avec lui.
 messages.securitycraft:sentry.needsBlockBelow=Les Sentinelles se placent sur un bloc!
-messages.securitycraft:sentry.needsBlocksAround=Assurez-vous que votre sentinelle est entourée de blocs sur ses quatre côtés!
 messages.securitycraft:sentry.mode0=Le mode actuel: Agressif
 messages.securitycraft:sentry.mode1=Le mode actuel: Camouflage
 messages.securitycraft:sentry.mode2=Le mode actuel: Inactif
