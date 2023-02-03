@@ -4,19 +4,19 @@
 	"compatibilityLevel": "JAVA_8",
 	"refmap": "securitycraft.refmap.json",
 	"client": [
-		"camera.MixinEntityRenderer",
-		"camera.MixinMinecraft",
-		"camera.MixinRenderGlobal",
-		"camera.MixinRenderPlayer",
-		"f3.MixinGuiOverlayDebug"
+		"camera.EntityRendererMixin",
+		"camera.MinecraftMixin",
+		"camera.RenderGlobalMixin",
+		"camera.RenderPlayerMixin",
+		"f3.GuiOverlayDebugMixin"
 	],
 	"mixins": [
-		"camera.MixinEntityPlayerMP",
-		"camera.MixinEntityTrackerEntry",
-		"camera.MixinPlayerList",
-		"portal.MixinTeleporter",
-		"potion.MixinContainerBrewingStand",
-		"riftstabilizer.MixinItemChorusFruit"
+		"camera.EntityPlayerMPMixin",
+		"camera.EntityTrackerEntryMixin",
+		"camera.PlayerListMixin",
+		"portal.TeleporterMixin",
+		"potion.ContainerBrewingStandMixin",
+		"riftstabilizer.ItemChorusFruitMixin"
 	],
 	"minVersion": "0.8"
 }
