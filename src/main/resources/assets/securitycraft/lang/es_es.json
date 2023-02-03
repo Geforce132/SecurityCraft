@@ -606,7 +606,7 @@
 	"help.securitycraft.crystal_quartz_item.info": "El cuarzo cristal se utiliza para fabricar bloques de cuarzo cristal.",
 	"help.securitycraft.speed_module.info": "El módulo de velocidad permite que algunos bloques de SecurityCraft funcionen más rápido de lo habitual.",
 	"help.securitycraft.portable_tune_player.info": "El reproductor de melodías portátil puede reproducir una melodía previamente guardada en él. Para guardar una melodía, haz clic derecho sobre un sistema de seguridad sónico que tenga una melodía ya guardada. Para reproducir la melodía, haz clic derecho sobre el reproductor portátil. Para cancelar la reproducción haz clic derecho otra vez o deja de sujetarlo.",
-	
+
 	"gui.securitycraft:scManual.disabled": "Desactivado",
 	"gui.securitycraft:scManual.recipe.keycard_lv1": "Desactivado",
 	"gui.securitycraft:scManual.recipe.keycard_lv2": "Desactivado",
@@ -799,7 +799,7 @@
 	"messages.securitycraft:cameraMonitor.bound": "Cámara en %s vinculada al monitor.",
 	"messages.securitycraft:cameraMonitor.unbound": "Cámara en %s desvinculada del monitor.",
 	"messages.securitycraft:cameraMonitor.rightclickToView": "Haz clic derecho en una cámara para verla.",
-	"messages.securitycraft:cameraMonitor.cameraNotAvailable": "La cámara en la posición %s  no está disponible. Puede que no esté cargada, en otra dimensión o ya no exista.",
+	"messages.securitycraft:cameraMonitor.cameraNotAvailable": "La cámara en la posición %s no está disponible. Puede que no esté cargada, en otra dimensión o ya no exista.",
 	"messages.securitycraft:mrat.noSlots": "¡No te queda espacio para vincular más minas!",
 	"messages.securitycraft:mrat.cantBind": "No puedes vincular una mina que no te pertenece.",
 	"messages.securitycraft:mrat.bound": "Mina en %s vinculada al control remoto.",
