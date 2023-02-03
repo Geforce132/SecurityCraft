@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.List;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.entity.ai.EntitySentry;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -38,9 +38,9 @@ public class SetSentryMode implements IMessage {
 	public static class Handler implements IMessageHandler<SetSentryMode, IMessage> {
 		@Override
 		public IMessage onMessage(SetSentryMode message, MessageContext context) {
-			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
-				List<EntitySentry> sentries = player.world.<EntitySentry>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
+				List<Sentry> sentries = player.world.<Sentry>getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(message.pos));
 
 				if (!sentries.isEmpty() && sentries.get(0).isOwnedBy(player))
 					sentries.get(0).toggleMode(player, message.mode, false);

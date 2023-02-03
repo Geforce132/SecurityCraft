@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -18,7 +18,7 @@ public class ToggleBlockPocketManager implements IMessage {
 
 	public ToggleBlockPocketManager() {}
 
-	public ToggleBlockPocketManager(TileEntityBlockPocketManager te, boolean enabling, int size) {
+	public ToggleBlockPocketManager(BlockPocketManagerBlockEntity te, boolean enabling, int size) {
 		pos = te.getPos();
 		dimension = te.getWorld().provider.getDimension();
 		this.enabling = enabling;
@@ -44,18 +44,18 @@ public class ToggleBlockPocketManager implements IMessage {
 	public static class Handler implements IMessageHandler<ToggleBlockPocketManager, IMessage> {
 		@Override
 		public IMessage onMessage(ToggleBlockPocketManager message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
 				World world = player.world;
 				TileEntity te = world.getTileEntity(message.pos);
 
-				if (te instanceof TileEntityBlockPocketManager && ((TileEntityBlockPocketManager) te).isOwnedBy(player)) {
-					((TileEntityBlockPocketManager) te).size = message.size;
+				if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
+					((BlockPocketManagerBlockEntity) te).size = message.size;
 
 					if (message.enabling)
-						((TileEntityBlockPocketManager) te).enableMultiblock();
+						((BlockPocketManagerBlockEntity) te).enableMultiblock();
 					else
-						((TileEntityBlockPocketManager) te).disableMultiblock();
+						((BlockPocketManagerBlockEntity) te).disableMultiblock();
 				}
 			});
 			return null;

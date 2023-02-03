@@ -2,9 +2,9 @@ package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.items.ItemSonicSecuritySystem;
+import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,7 +35,7 @@ public class RemovePositionFromSSS implements IMessage {
 	public static class Handler implements IMessageHandler<RemovePositionFromSSS, IMessage> {
 		@Override
 		public IMessage onMessage(RemovePositionFromSSS message, MessageContext context) {
-			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
 				ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.sonicSecuritySystemItem);
 
@@ -43,7 +43,7 @@ public class RemovePositionFromSSS implements IMessage {
 					if (!stack.hasTagCompound())
 						stack.setTagCompound(new NBTTagCompound());
 
-					ItemSonicSecuritySystem.removeLinkedBlock(stack.getTagCompound(), message.pos);
+					SonicSecuritySystemItem.removeLinkedBlock(stack.getTagCompound(), message.pos);
 				}
 			});
 

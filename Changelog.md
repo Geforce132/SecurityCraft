@@ -5,6 +5,7 @@
 - Change: Lasers and inventory scanner fields are now removed silently
 - Change: Inventory scanners and password-protected chests now only drop their modules if the last scanner/chest is removed
 - API: IModuleInventory#shouldDropModules to determine whether a block should drop its modules when broken
+- API: Numerous renames across the whole codebase to make porting from newer versions easier going forward
 - Fix: Turning off camera rotation leads to extreme stuttering of the camera
 - Fix: Shift-clicking a potion in the brewing stand screen puts the potion into the wrong slot
 - Fix: Redstone does not automatically connect to the Alarm, Projector, and Username Logger

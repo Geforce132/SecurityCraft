@@ -13,13 +13,13 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.blocks.BlockDisguisable;
+import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.entity.ai.EntitySentry;
-import net.geforcemods.securitycraft.entity.ai.EntitySentry.EnumSentryMode;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
+import net.geforcemods.securitycraft.entity.sentry.Sentry.EnumSentryMode;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.ClientProxy;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -53,7 +53,7 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 		registrar.addConfigRemote("SecurityCraft", SHOW_CUSTOM_NAME, Utils.localize("waila.securitycraft:showCustomName").getFormattedText());
 		registrar.registerBodyProvider((IWailaDataProvider) new WailaDataProvider(), IOwnable.class);
 		registrar.registerStackProvider(new WailaDataProvider(), IOverlayDisplay.class);
-		registrar.registerBodyProvider((IWailaEntityProvider) new WailaDataProvider(), EntitySentry.class);
+		registrar.registerBodyProvider((IWailaEntityProvider) new WailaDataProvider(), Sentry.class);
 	}
 
 	@Override
@@ -76,8 +76,8 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 		Block block = data.getBlock();
 		boolean disguised = false;
 
-		if (block instanceof BlockDisguisable) {
-			IBlockState disguisedBlockState = ((BlockDisguisable) block).getDisguisedBlockState(world, pos);
+		if (block instanceof DisguisableBlock) {
+			IBlockState disguisedBlockState = ((DisguisableBlock) block).getDisguisedBlockState(world, pos);
 
 			if (disguisedBlockState != null) {
 				disguised = true;
@@ -100,12 +100,12 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 				if (!((IModuleInventory) te).getInsertedModules().isEmpty())
 					body.add(Utils.localize("waila.securitycraft:equipped").getFormattedText());
 
-				for (EnumModuleType module : ((IModuleInventory) te).getInsertedModules()) {
+				for (ModuleType module : ((IModuleInventory) te).getInsertedModules()) {
 					body.add("- " + Utils.localize(module.getTranslationKey()).getFormattedText());
 				}
 			}
 
-			if (config.getConfig(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof TileEntityKeycardReader) && ((IOwnable) te).isOwnedBy(data.getPlayer())) {
+			if (config.getConfig(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof KeycardReaderBlockEntity) && ((IOwnable) te).isOwnedBy(data.getPlayer())) {
 				String password = ((IPasswordProtected) te).getPassword();
 
 				body.add(Utils.localize("waila.securitycraft:password").getFormattedText() + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getFormattedText()));
@@ -123,8 +123,8 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 
 	@Override
 	public List<String> getWailaBody(Entity entity, List<String> body, IWailaEntityAccessor data, IWailaConfigHandler config) {
-		if (entity instanceof EntitySentry) {
-			EntitySentry sentry = (EntitySentry) entity;
+		if (entity instanceof Sentry) {
+			Sentry sentry = (Sentry) entity;
 			EnumSentryMode mode = sentry.getMode();
 
 			if (config.getConfig(SHOW_OWNER))
@@ -135,13 +135,13 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 					body.add(Utils.localize("waila.securitycraft:equipped").getFormattedText());
 
 					if (!sentry.getAllowlistModule().isEmpty())
-						body.add("- " + Utils.localize(EnumModuleType.ALLOWLIST.getTranslationKey()).getFormattedText());
+						body.add("- " + Utils.localize(ModuleType.ALLOWLIST.getTranslationKey()).getFormattedText());
 
 					if (!sentry.getDisguiseModule().isEmpty())
-						body.add("- " + Utils.localize(EnumModuleType.DISGUISE.getTranslationKey()).getFormattedText());
+						body.add("- " + Utils.localize(ModuleType.DISGUISE.getTranslationKey()).getFormattedText());
 
 					if (sentry.hasSpeedModule())
-						body.add("- " + Utils.localize(EnumModuleType.SPEED.getTranslationKey()).getFormattedText());
+						body.add("- " + Utils.localize(ModuleType.SPEED.getTranslationKey()).getFormattedText());
 				}
 			}
 

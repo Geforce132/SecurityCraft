@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
@@ -46,7 +46,7 @@ public class SyncTrophySystem implements IMessage {
 	public static class Handler implements IMessageHandler<SyncTrophySystem, IMessage> {
 		@Override
 		public IMessage onMessage(SyncTrophySystem message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityEntry projectileType = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(message.projectileType));
 
 				if (projectileType != null) {
@@ -56,10 +56,10 @@ public class SyncTrophySystem implements IMessage {
 					boolean allowed = message.allowed;
 					TileEntity te = world.getTileEntity(pos);
 
-					if (te instanceof TileEntityTrophySystem && ((TileEntityTrophySystem) te).isOwnedBy(player)) {
+					if (te instanceof TrophySystemBlockEntity && ((TrophySystemBlockEntity) te).isOwnedBy(player)) {
 						IBlockState state = world.getBlockState(pos);
 
-						((TileEntityTrophySystem) te).setFilter(projectileType, allowed);
+						((TrophySystemBlockEntity) te).setFilter(projectileType, allowed);
 						world.notifyBlockUpdate(pos, state, state, 2);
 					}
 				}

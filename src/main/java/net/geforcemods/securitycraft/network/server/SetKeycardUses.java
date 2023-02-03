@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.containers.ContainerKeycardReader;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
+import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
@@ -39,19 +39,19 @@ public class SetKeycardUses implements IMessage {
 	public static class Handler implements IMessageHandler<SetKeycardUses, IMessage> {
 		@Override
 		public IMessage onMessage(SetKeycardUses message, MessageContext context) {
-			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				BlockPos pos = message.pos;
 				EntityPlayer player = context.getServerHandler().player;
 				TileEntity tile = player.world.getTileEntity(pos);
 
-				if (tile instanceof TileEntityKeycardReader) {
-					TileEntityKeycardReader te = (TileEntityKeycardReader) tile;
+				if (tile instanceof KeycardReaderBlockEntity) {
+					KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;
 
 					if (te.isOwnedBy(player) || te.isAllowed(player)) {
 						Container container = player.openContainer;
 
-						if (container instanceof ContainerKeycardReader)
-							((ContainerKeycardReader) container).setKeycardUses(message.uses);
+						if (container instanceof KeycardReaderMenu)
+							((KeycardReaderMenu) container).setKeycardUses(message.uses);
 					}
 				}
 			});

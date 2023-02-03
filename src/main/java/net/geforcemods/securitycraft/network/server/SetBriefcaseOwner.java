@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,7 +34,7 @@ public class SetBriefcaseOwner implements IMessage {
 	public static class Handler implements IMessageHandler<SetBriefcaseOwner, IMessage> {
 		@Override
 		public IMessage onMessage(SetBriefcaseOwner message, MessageContext context) {
-			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
 				ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.briefcase);
 

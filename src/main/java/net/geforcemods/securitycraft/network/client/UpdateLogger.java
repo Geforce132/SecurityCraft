@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.network.client;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
+import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -58,7 +58,7 @@ public class UpdateLogger implements IMessage {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				BlockPos pos = new BlockPos(message.x, message.y, message.z);
 				int i = message.i;
-				TileEntityLogger te = (TileEntityLogger) Minecraft.getMinecraft().player.world.getTileEntity(pos);
+				UsernameLoggerBlockEntity te = (UsernameLoggerBlockEntity) Minecraft.getMinecraft().player.world.getTileEntity(pos);
 
 				if (te != null) {
 					te.players[i] = message.username;

@@ -2,9 +2,9 @@ package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.items.ItemCameraMonitor;
+import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -32,11 +32,11 @@ public class RemoveCameraTag implements IMessage {
 	public static class Handler implements IMessageHandler<RemoveCameraTag, IMessage> {
 		@Override
 		public IMessage onMessage(RemoveCameraTag message, MessageContext context) {
-			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				ItemStack monitor = PlayerUtils.getSelectedItemStack(context.getServerHandler().player, SCContent.cameraMonitor);
 
 				if (!monitor.isEmpty())
-					monitor.getTagCompound().removeTag(ItemCameraMonitor.getTagNameFromPosition(monitor.getTagCompound(), ((ItemCameraMonitor) monitor.getItem()).getCameraPositions(monitor.getTagCompound()).get(message.camID - 1)));
+					monitor.getTagCompound().removeTag(CameraMonitorItem.getTagNameFromPosition(monitor.getTagCompound(), ((CameraMonitorItem) monitor.getItem()).getCameraPositions(monitor.getTagCompound()).get(message.camID - 1)));
 			});
 
 			return null;

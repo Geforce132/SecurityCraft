@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.client;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -55,7 +55,7 @@ public class RefreshDiguisedModel implements IMessage {
 					if (message.insert)
 						te.insertModule(message.stack, message.toggled);
 					else
-						te.removeModule(EnumModuleType.DISGUISE, message.toggled);
+						te.removeModule(ModuleType.DISGUISE, message.toggled);
 
 					Minecraft.getMinecraft().world.markBlockRangeForRenderUpdate(message.pos, message.pos);
 				}

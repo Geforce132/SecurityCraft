@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -21,7 +21,7 @@ public class GiveNightVision implements IMessage {
 	public static class Handler implements IMessageHandler<GiveNightVision, IMessage> {
 		@Override
 		public IMessage onMessage(GiveNightVision message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				if (PlayerUtils.isPlayerMountedOnCamera(ctx.getServerHandler().player))
 					ctx.getServerHandler().player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 3, -1, false, false));
 			});

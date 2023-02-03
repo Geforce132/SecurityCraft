@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +17,7 @@ public class AssembleBlockPocket implements IMessage {
 
 	public AssembleBlockPocket() {}
 
-	public AssembleBlockPocket(TileEntityBlockPocketManager te, int size) {
+	public AssembleBlockPocket(BlockPocketManagerBlockEntity te, int size) {
 		pos = te.getPos();
 		dimension = te.getWorld().provider.getDimension();
 		this.size = size;
@@ -40,13 +40,13 @@ public class AssembleBlockPocket implements IMessage {
 	public static class Handler implements IMessageHandler<AssembleBlockPocket, IMessage> {
 		@Override
 		public IMessage onMessage(AssembleBlockPocket message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				TileEntity te = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension).getTileEntity(message.pos);
 				EntityPlayer player = ctx.getServerHandler().player;
 
-				if (te instanceof TileEntityBlockPocketManager && ((TileEntityBlockPocketManager) te).isOwnedBy(player)) {
-					((TileEntityBlockPocketManager) te).size = message.size;
-					((TileEntityBlockPocketManager) te).autoAssembleMultiblock();
+				if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
+					((BlockPocketManagerBlockEntity) te).size = message.size;
+					((BlockPocketManagerBlockEntity) te).autoAssembleMultiblock();
 				}
 			});
 

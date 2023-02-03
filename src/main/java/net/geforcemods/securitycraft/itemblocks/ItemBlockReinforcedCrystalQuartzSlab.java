@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.itemblocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCrystalQuartzSlab;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCrystalQuartzSlabBlock;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -47,7 +47,7 @@ public class ItemBlockReinforcedCrystalQuartzSlab extends ItemBlock {
 		else {
 			IBlockState state = world.getBlockState(pos);
 
-			if (state.getBlock() instanceof BlockReinforcedCrystalQuartzSlab) {
+			if (state.getBlock() instanceof ReinforcedCrystalQuartzSlabBlock) {
 				BlockSlab.EnumBlockHalf half = state.getValue(BlockSlab.HALF);
 				TileEntity tile = world.getTileEntity(pos);
 				Owner owner = null;

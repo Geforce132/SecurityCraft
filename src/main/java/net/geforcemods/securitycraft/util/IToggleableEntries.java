@@ -5,7 +5,7 @@ import java.util.function.ToIntFunction;
 
 /**
  * Interface for all block entities which contain a toggleable list, which gets displayed in a
- * {@link net.geforcemods.securitycraft.gui.GuiToggleList}.
+ * {@link net.geforcemods.securitycraft.screen.ToggleListScreen}.
  *
  * @param <T> The type of the list to be displayed
  */

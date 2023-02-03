@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.EnumMap;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,7 +27,7 @@ public class SyncLaserSideConfig implements IMessage {
 
 	public SyncLaserSideConfig(BlockPos pos, EnumMap<EnumFacing, Boolean> sideConfig) {
 		this.pos = pos;
-		this.sideConfig = TileEntityLaserBlock.saveSideConfig(sideConfig);
+		this.sideConfig = LaserBlockBlockEntity.saveSideConfig(sideConfig);
 	}
 
 	@Override
@@ -46,19 +46,19 @@ public class SyncLaserSideConfig implements IMessage {
 		@Override
 		@SideOnly(Side.CLIENT)
 		public IMessage onMessage(SyncLaserSideConfig message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
 				World world = player.world;
 				BlockPos pos = message.pos;
 				TileEntity te = world.getTileEntity(pos);
 
-				if (te instanceof TileEntityLaserBlock) {
-					TileEntityLaserBlock laser = (TileEntityLaserBlock) te;
+				if (te instanceof LaserBlockBlockEntity) {
+					LaserBlockBlockEntity laser = (LaserBlockBlockEntity) te;
 
 					if (laser.isOwnedBy(player)) {
 						IBlockState state = world.getBlockState(pos);
 
-						laser.applyNewSideConfig(TileEntityLaserBlock.loadSideConfig(message.sideConfig), player);
+						laser.applyNewSideConfig(LaserBlockBlockEntity.loadSideConfig(message.sideConfig), player);
 						world.notifyBlockUpdate(pos, state, state, 2);
 					}
 				}

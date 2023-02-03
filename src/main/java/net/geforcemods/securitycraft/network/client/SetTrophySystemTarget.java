@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.network.client;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
+import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
@@ -39,8 +39,8 @@ public class SetTrophySystemTarget implements IMessage {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(message.trophyPos);
 
-				if (te instanceof TileEntityTrophySystem) {
-					TileEntityTrophySystem trophySystemTE = (TileEntityTrophySystem) te;
+				if (te instanceof TrophySystemBlockEntity) {
+					TrophySystemBlockEntity trophySystemTE = (TrophySystemBlockEntity) te;
 					Entity target = Minecraft.getMinecraft().world.getEntityByID(message.targetID);
 					trophySystemTE.setTarget(target);
 				}

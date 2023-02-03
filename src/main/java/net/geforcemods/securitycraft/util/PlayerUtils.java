@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.compat.ftbutilities.FTBUtilitiesCompat;
 import net.geforcemods.securitycraft.compat.ftbutilities.TeamRepresentation;
-import net.geforcemods.securitycraft.entity.camera.EntitySecurityCamera;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
@@ -182,7 +182,7 @@ public class PlayerUtils {
 		if (player.world.isRemote)
 			return ClientProxy.isPlayerMountedOnCamera();
 		else
-			return ((EntityPlayerMP) player).getSpectatingEntity() instanceof EntitySecurityCamera;
+			return ((EntityPlayerMP) player).getSpectatingEntity() instanceof SecurityCamera;
 	}
 
 	/**

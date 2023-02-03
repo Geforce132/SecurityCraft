@@ -15,14 +15,14 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.blocks.BlockDisguisable;
-import net.geforcemods.securitycraft.blocks.BlockFakeLavaBase;
-import net.geforcemods.securitycraft.blocks.BlockFakeWaterBase;
+import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.blocks.FakeLavaBaseBlock;
+import net.geforcemods.securitycraft.blocks.FakeWaterBaseBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.entity.ai.EntitySentry;
-import net.geforcemods.securitycraft.entity.ai.EntitySentry.EnumSentryMode;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
+import net.geforcemods.securitycraft.entity.sentry.Sentry.EnumSentryMode;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -51,18 +51,18 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 			String text = formatting + "Minecraft";
 
 			//split up so the display override does not work for every block
-			if (blockState.getBlock() instanceof BlockDisguisable) {
-				item = ((BlockDisguisable) blockState.getBlock()).getDisguisedStack(world, data.getPos());
+			if (blockState.getBlock() instanceof DisguisableBlock) {
+				item = ((DisguisableBlock) blockState.getBlock()).getDisguisedStack(world, data.getPos());
 				itemLabel = item;
 				text = formatting + Loader.instance().getIndexedModList().get(item.getItem().getRegistryName().getNamespace()).getName();
 				edited = true;
 			}
-			else if (blockState.getBlock() instanceof BlockFakeLavaBase) {
+			else if (blockState.getBlock() instanceof FakeLavaBaseBlock) {
 				item = new ItemStack(Items.LAVA_BUCKET);
 				labelText = Utils.localize("tile.lava.name").getFormattedText();
 				edited = true;
 			}
-			else if (blockState.getBlock() instanceof BlockFakeWaterBase) {
+			else if (blockState.getBlock() instanceof FakeWaterBaseBlock) {
 				item = new ItemStack(Items.WATER_BUCKET);
 				labelText = Utils.localize("tile.water.name").getFormattedText();
 				edited = true;
@@ -113,13 +113,13 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 					if (!((IModuleInventory) te).getInsertedModules().isEmpty()) {
 						probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getFormattedText());
 
-						for (EnumModuleType module : ((IModuleInventory) te).getInsertedModules()) {
+						for (ModuleType module : ((IModuleInventory) te).getInsertedModules()) {
 							probeInfo.text(TextFormatting.GRAY + "- " + Utils.localize(module.getTranslationKey()).getFormattedText());
 						}
 					}
 				}
 
-				if (te instanceof IPasswordProtected && !(te instanceof TileEntityKeycardReader) && ((IOwnable) te).isOwnedBy(player)) {
+				if (te instanceof IPasswordProtected && !(te instanceof KeycardReaderBlockEntity) && ((IOwnable) te).isOwnedBy(player)) {
 					String password = ((IPasswordProtected) te).getPassword();
 
 					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:password").getFormattedText() + TextFormatting.GRAY + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getFormattedText()));
@@ -140,8 +140,8 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 
 			@Override
 			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, EntityPlayer player, World world, Entity entity, IProbeHitEntityData data) {
-				if (entity instanceof EntitySentry) {
-					EntitySentry sentry = (EntitySentry) entity;
+				if (entity instanceof Sentry) {
+					Sentry sentry = (Sentry) entity;
 					EnumSentryMode mode = sentry.getMode();
 
 					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())).getFormattedText());
@@ -150,13 +150,13 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 						probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getFormattedText());
 
 						if (!sentry.getAllowlistModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + Utils.localize(EnumModuleType.ALLOWLIST.getTranslationKey()).getFormattedText());
+							probeInfo.text(TextFormatting.GRAY + "- " + Utils.localize(ModuleType.ALLOWLIST.getTranslationKey()).getFormattedText());
 
 						if (!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + Utils.localize(EnumModuleType.DISGUISE.getTranslationKey()).getFormattedText());
+							probeInfo.text(TextFormatting.GRAY + "- " + Utils.localize(ModuleType.DISGUISE.getTranslationKey()).getFormattedText());
 
 						if (sentry.hasSpeedModule())
-							probeInfo.text(TextFormatting.GRAY + "- " + Utils.localize(EnumModuleType.SPEED.getTranslationKey()).getFormattedText());
+							probeInfo.text(TextFormatting.GRAY + "- " + Utils.localize(ModuleType.SPEED.getTranslationKey()).getFormattedText());
 					}
 
 					String modeDescription = Utils.localize(mode.getModeKey()).getFormattedText();

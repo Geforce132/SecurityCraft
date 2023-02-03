@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.itemblocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlabs2;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedSandstoneAndPurpurSlabsBlock;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -60,7 +60,7 @@ public class ItemBlockReinforcedSlabs2 extends ItemBlock {
 			Object type = singleSlab.getTypeForItem(stack);
 			IBlockState state = world.getBlockState(pos);
 
-			if (state.getBlock() instanceof BlockReinforcedSlabs2) {
+			if (state.getBlock() instanceof ReinforcedRedSandstoneAndPurpurSlabsBlock) {
 				IProperty<?> variantProperty = singleSlab.getVariantProperty();
 				Comparable<?> value = state.getValue(variantProperty);
 				BlockSlab.EnumBlockHalf half = state.getValue(BlockSlab.HALF);
@@ -100,10 +100,10 @@ public class ItemBlockReinforcedSlabs2 extends ItemBlock {
 	}
 
 	private IBlockState getDoubleSlabBlock(Comparable<?> comparable) {
-		if (comparable == BlockReinforcedSlabs2.EnumType.RED_SANDSTONE)
-			return makeState_Stone(BlockReinforcedSlabs2.VARIANT, comparable);
-		else if (comparable == BlockReinforcedSlabs2.EnumType.PURPUR)
-			return makeState_Stone(BlockReinforcedSlabs2.VARIANT, comparable);
+		if (comparable == ReinforcedRedSandstoneAndPurpurSlabsBlock.EnumType.RED_SANDSTONE)
+			return makeState_Stone(ReinforcedRedSandstoneAndPurpurSlabsBlock.VARIANT, comparable);
+		else if (comparable == ReinforcedRedSandstoneAndPurpurSlabsBlock.EnumType.PURPUR)
+			return makeState_Stone(ReinforcedRedSandstoneAndPurpurSlabsBlock.VARIANT, comparable);
 		else
 			return null;
 	}

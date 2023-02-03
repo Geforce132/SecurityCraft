@@ -6,8 +6,8 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Predicate;
 
-import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -35,9 +35,9 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	public NonNullList<ItemStack> getInventory();
 
 	/**
-	 * @return An array of what {@link EnumModuleType} can be inserted into this inventory
+	 * @return An array of what {@link ModuleType} can be inserted into this inventory
 	 */
-	public EnumModuleType[] acceptedModules();
+	public ModuleType[] acceptedModules();
 
 	/**
 	 * Checks whether the given module's functionality is enabled
@@ -46,7 +46,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @return true if the given module is enabled, false otherwise. If the module does not exist, this should return false as
 	 *         well.
 	 */
-	public boolean isModuleEnabled(EnumModuleType module);
+	public boolean isModuleEnabled(ModuleType module);
 
 	/**
 	 * Turns the given module type on or off, depending on shouldBeEnabled. The module needs to be present in the inventory in
@@ -55,7 +55,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @param module The type of the module to toggle
 	 * @param shouldBeEnabled Whether the state of this module type should be set to enabled
 	 */
-	public void toggleModuleState(EnumModuleType module, boolean shouldBeEnabled);
+	public void toggleModuleState(ModuleType module, boolean shouldBeEnabled);
 
 	/**
 	 * @return The TileEntity this inventory is for
@@ -78,7 +78,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @param module The EnumModuleType variant of stack.
 	 * @param toggled false if the actual item changed, true if the enabled state of the module changed
 	 */
-	public default void onModuleInserted(ItemStack stack, EnumModuleType module, boolean toggled) {
+	public default void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
 		TileEntity te = getTileEntity();
 		World world = te.getWorld();
 
@@ -103,7 +103,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @param module The EnumModuleType variant of stack.
 	 * @param toggled false if the actual item changed, true if the enabled state of the module changed
 	 */
-	public default void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
+	public default void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		TileEntity te = getTileEntity();
 		World world = te.getWorld();
 
@@ -146,14 +146,14 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		TileEntity te = getTileEntity();
 		World level = te.getWorld();
 		BlockPos pos = te.getPos();
-		TileEntityLinkable linkable = te instanceof TileEntityLinkable ? (TileEntityLinkable) te : null;
+		LinkableBlockEntity linkable = te instanceof LinkableBlockEntity ? (LinkableBlockEntity) te : null;
 
 		for (ItemStack module : getInventory()) {
-			if (!(module.getItem() instanceof ItemModule))
+			if (!(module.getItem() instanceof ModuleItem))
 				continue;
 
 			if (linkable != null)
-				linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ItemModule) module.getItem()).getModuleType(), false), linkable);
+				linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), linkable);
 
 			Block.spawnAsEntity(level, pos, module);
 		}
@@ -188,13 +188,13 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			if (!simulate) {
 				TileEntity te = getTileEntity();
 
-				if (stack.getItem() instanceof ItemModule) {
-					onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModuleType(), false);
+				if (stack.getItem() instanceof ModuleItem) {
+					onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
 
-					if (te instanceof TileEntityLinkable) {
-						TileEntityLinkable linkable = (TileEntityLinkable) te;
+					if (te instanceof LinkableBlockEntity) {
+						LinkableBlockEntity linkable = (LinkableBlockEntity) te;
 
-						linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ItemModule) stack.getItem()).getModuleType(), false), linkable);
+						linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), linkable);
 					}
 				}
 
@@ -225,13 +225,13 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				copy.setCount(1);
 				getInventory().set(slot, copy);
 
-				if (stack.getItem() instanceof ItemModule) {
-					onModuleInserted(stack, ((ItemModule) stack.getItem()).getModuleType(), false);
+				if (stack.getItem() instanceof ModuleItem) {
+					onModuleInserted(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
 
-					if (te instanceof TileEntityLinkable) {
-						TileEntityLinkable linkable = (TileEntityLinkable) te;
+					if (te instanceof LinkableBlockEntity) {
+						LinkableBlockEntity linkable = (LinkableBlockEntity) te;
 
-						linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(copy, (ItemModule) copy.getItem(), false), linkable);
+						linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(copy, (ModuleItem) copy.getItem(), false), linkable);
 					}
 				}
 			}
@@ -256,24 +256,24 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 		//call the correct methods, should there have been a module in the slot previously
 		if (!previous.isEmpty()) {
-			onModuleRemoved(previous, ((ItemModule) previous.getItem()).getModuleType(), false);
+			onModuleRemoved(previous, ((ModuleItem) previous.getItem()).getModuleType(), false);
 
-			if (te instanceof TileEntityLinkable) {
-				TileEntityLinkable linkable = (TileEntityLinkable) te;
+			if (te instanceof LinkableBlockEntity) {
+				LinkableBlockEntity linkable = (LinkableBlockEntity) te;
 
-				linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ItemModule) previous.getItem()).getModuleType(), false), linkable);
+				linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) previous.getItem()).getModuleType(), false), linkable);
 			}
 		}
 
 		getInventory().set(slot, stack);
 
-		if (stack.getItem() instanceof ItemModule) {
-			onModuleInserted(stack, ((ItemModule) stack.getItem()).getModuleType(), false);
+		if (stack.getItem() instanceof ModuleItem) {
+			onModuleInserted(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
 
-			if (te instanceof TileEntityLinkable) {
-				TileEntityLinkable linkable = (TileEntityLinkable) te;
+			if (te instanceof LinkableBlockEntity) {
+				LinkableBlockEntity linkable = (LinkableBlockEntity) te;
 
-				linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ItemModule) stack.getItem(), false), linkable);
+				linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), false), linkable);
 			}
 		}
 	}
@@ -286,14 +286,14 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	@Override
 	public default boolean isItemValid(int slot, ItemStack stack) {
 		slot = fixSlotId(slot);
-		return getModuleInSlot(slot).isEmpty() && !stack.isEmpty() && stack.getItem() instanceof ItemModule && acceptsModule(((ItemModule) stack.getItem()).getModuleType()) && !hasModule(((ItemModule) stack.getItem()).getModuleType());
+		return getModuleInSlot(slot).isEmpty() && !stack.isEmpty() && stack.getItem() instanceof ModuleItem && acceptsModule(((ModuleItem) stack.getItem()).getModuleType()) && !hasModule(((ModuleItem) stack.getItem()).getModuleType());
 	}
 
 	/**
-	 * @return true if the inventory accepts the given {@link EnumModuleType}, false otherwise
+	 * @return true if the inventory accepts the given {@link ModuleType}, false otherwise
 	 */
-	public default boolean acceptsModule(EnumModuleType type) {
-		for (EnumModuleType module : acceptedModules()) {
+	public default boolean acceptsModule(ModuleType type) {
+		for (ModuleType module : acceptedModules()) {
 			if (module == type)
 				return true;
 		}
@@ -304,12 +304,12 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	/**
 	 * @return A List of all EnumModuleType currently inserted in the TileEntity.
 	 */
-	public default ArrayList<EnumModuleType> getInsertedModules() {
-		ArrayList<EnumModuleType> modules = new ArrayList<>();
+	public default ArrayList<ModuleType> getInsertedModules() {
+		ArrayList<ModuleType> modules = new ArrayList<>();
 
 		for (ItemStack stack : getInventory()) {
-			if (!stack.isEmpty() && stack.getItem() instanceof ItemModule)
-				modules.add(((ItemModule) stack.getItem()).getModuleType());
+			if (!stack.isEmpty() && stack.getItem() instanceof ModuleItem)
+				modules.add(((ModuleItem) stack.getItem()).getModuleType());
 		}
 
 		return modules;
@@ -319,11 +319,11 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @param The module type of the stack to get
 	 * @return The ItemStack for the given EnumModuleType type. If there is no ItemStack for that type, returns ItemStack.EMPTY.
 	 */
-	public default ItemStack getModule(EnumModuleType module) {
+	public default ItemStack getModule(ModuleType module) {
 		NonNullList<ItemStack> modules = getInventory();
 
 		for (int i = 0; i < modules.size(); i++) {
-			if (!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModuleType() == module)
+			if (!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ModuleItem && ((ModuleItem) modules.get(i).getItem()).getModuleType() == module)
 				return modules.get(i);
 		}
 
@@ -337,10 +337,10 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @param toggled false if the actual item changed, true if the enabled state of the module changed
 	 */
 	public default void insertModule(ItemStack module, boolean toggled) {
-		if (module.isEmpty() || !(module.getItem() instanceof ItemModule))
+		if (module.isEmpty() || !(module.getItem() instanceof ModuleItem))
 			return;
 
-		ItemModule moduleItem = (ItemModule) module.getItem();
+		ModuleItem moduleItem = (ModuleItem) module.getItem();
 		NonNullList<ItemStack> modules = getInventory();
 
 		//if the module is being toggled, then there should not be a check for whether the module already exists
@@ -378,11 +378,11 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @param module The module type to remove
 	 * @param toggled false if the actual item changed, true if the enabled state of the module changed
 	 */
-	public default void removeModule(EnumModuleType module, boolean toggled) {
+	public default void removeModule(ModuleType module, boolean toggled) {
 		NonNullList<ItemStack> modules = getInventory();
 
 		for (int i = 0; i < modules.size(); i++) {
-			if (!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModuleType() == module) {
+			if (!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ModuleItem && ((ModuleItem) modules.get(i).getItem()).getModuleType() == module) {
 				if (toggled)
 					toggleModuleState(module, false);
 				else
@@ -395,7 +395,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @param module The type to check if it is present in this inventory
 	 * @return true if the given module type is present in this inventory, false otherwise
 	 */
-	public default boolean hasModule(EnumModuleType module) {
+	public default boolean hasModule(ModuleType module) {
 		NonNullList<ItemStack> modules = getInventory();
 
 		if (module == null) {
@@ -406,7 +406,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		}
 		else {
 			for (int i = 0; i < modules.size(); i++) {
-				if (!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModuleType() == module)
+				if (!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ModuleItem && ((ModuleItem) modules.get(i).getItem()).getModuleType() == module)
 					return true;
 			}
 		}
@@ -443,11 +443,11 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @param tag The tag to read the states from
 	 * @return An EnumMap of all module types with the enabled flag set as read from the tag
 	 */
-	public default EnumMap<EnumModuleType, Boolean> readModuleStates(NBTTagCompound tag) {
-		EnumMap<EnumModuleType, Boolean> moduleStates = new EnumMap<>(EnumModuleType.class);
-		List<EnumModuleType> acceptedModules = Arrays.asList(acceptedModules());
+	public default EnumMap<ModuleType, Boolean> readModuleStates(NBTTagCompound tag) {
+		EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+		List<ModuleType> acceptedModules = Arrays.asList(acceptedModules());
 
-		for (EnumModuleType module : EnumModuleType.values()) {
+		for (ModuleType module : ModuleType.values()) {
 			if (acceptedModules.contains(module)) {
 				String key = module.name().toLowerCase() + "Enabled";
 
@@ -496,7 +496,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @return The modified tag
 	 */
 	public default NBTTagCompound writeModuleStates(NBTTagCompound tag) {
-		for (EnumModuleType module : acceptedModules()) {
+		for (ModuleType module : acceptedModules()) {
 			tag.setBoolean(module.name().toLowerCase() + "Enabled", isModuleEnabled(module));
 		}
 
@@ -508,23 +508,23 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	public default boolean isAllowed(String name) {
-		if (!isModuleEnabled(EnumModuleType.ALLOWLIST))
+		if (!isModuleEnabled(ModuleType.ALLOWLIST))
 			return false;
 
-		ItemStack stack = getModule(EnumModuleType.ALLOWLIST);
+		ItemStack stack = getModule(ModuleType.ALLOWLIST);
 
 		if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("affectEveryone"))
 			return true;
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
-		return ItemModule.doesModuleHaveTeamOf(stack, name, getTileEntity().getWorld()) || ItemModule.getPlayersFromModule(stack).contains(name.toLowerCase());
+		return ModuleItem.doesModuleHaveTeamOf(stack, name, getTileEntity().getWorld()) || ModuleItem.getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 
 	public default boolean isDenied(Entity entity) {
-		if (!isModuleEnabled(EnumModuleType.DENYLIST))
+		if (!isModuleEnabled(ModuleType.DENYLIST))
 			return false;
 
-		ItemStack stack = getModule(EnumModuleType.DENYLIST);
+		ItemStack stack = getModule(ModuleType.DENYLIST);
 
 		if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("affectEveryone")) {
 			if (getTileEntity() instanceof IOwnable) {
@@ -544,7 +544,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		String name = entity.getName();
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
-		return ItemModule.doesModuleHaveTeamOf(stack, name, getTileEntity().getWorld()) || ItemModule.getPlayersFromModule(stack).contains(name.toLowerCase());
+		return ModuleItem.doesModuleHaveTeamOf(stack, name, getTileEntity().getWorld()) || ModuleItem.getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 
 	/**

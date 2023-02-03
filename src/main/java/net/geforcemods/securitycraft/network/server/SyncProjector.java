@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,14 +58,14 @@ public class SyncProjector implements IMessage {
 	public static class Handler implements IMessageHandler<SyncProjector, IMessage> {
 		@Override
 		public IMessage onMessage(SyncProjector message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				BlockPos pos = message.pos;
 				EntityPlayer player = ctx.getServerHandler().player;
 				World world = player.world;
 				TileEntity te = world.getTileEntity(pos);
 
-				if (world.isBlockLoaded(pos) && te instanceof TileEntityProjector && ((TileEntityProjector) te).isOwnedBy(player)) {
-					TileEntityProjector projector = (TileEntityProjector) te;
+				if (world.isBlockLoaded(pos) && te instanceof ProjectorBlockEntity && ((ProjectorBlockEntity) te).isOwnedBy(player)) {
+					ProjectorBlockEntity projector = (ProjectorBlockEntity) te;
 					IBlockState state = world.getBlockState(pos);
 
 					switch (message.dataType) {

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.misc;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.geforcemods.securitycraft.items.ItemBriefcase;
+import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -23,7 +23,7 @@ public class DyeBriefcaseRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
 			ItemStack slotStack = inv.getStackInSlot(i);
 
 			if (!slotStack.isEmpty()) {
-				if (slotStack.getItem() instanceof ItemBriefcase) {
+				if (slotStack.getItem() instanceof BriefcaseItem) {
 					if (!stack.isEmpty())
 						return false;
 
@@ -47,14 +47,14 @@ public class DyeBriefcaseRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
 		int[] rgb = new int[3];
 		int i = 0;
 		int j = 0;
-		ItemBriefcase briefcase = null;
+		BriefcaseItem briefcase = null;
 
 		for (int k = 0; k < inv.getSizeInventory(); ++k) {
 			ItemStack slotStack = inv.getStackInSlot(k);
 
 			if (!slotStack.isEmpty()) {
-				if (slotStack.getItem() instanceof ItemBriefcase) {
-					briefcase = (ItemBriefcase) slotStack.getItem();
+				if (slotStack.getItem() instanceof BriefcaseItem) {
+					briefcase = (BriefcaseItem) slotStack.getItem();
 
 					if (!resultStack.isEmpty())
 						return ItemStack.EMPTY;

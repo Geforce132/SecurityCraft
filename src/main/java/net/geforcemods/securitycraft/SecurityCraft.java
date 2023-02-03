@@ -3,27 +3,27 @@ package net.geforcemods.securitycraft;
 import java.lang.reflect.Field;
 
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
-import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
-import net.geforcemods.securitycraft.blocks.BlockKeypad;
-import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
-import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedHopper;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedMetals;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPressurePlate;
+import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
+import net.geforcemods.securitycraft.blocks.KeypadBlock;
+import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
+import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMetalsBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.geforcemods.securitycraft.commands.CommandSC;
+import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.cyclic.CyclicCompat;
 import net.geforcemods.securitycraft.compat.icbmclassic.ICBMClassicEMPCompat;
 import net.geforcemods.securitycraft.compat.lycanitesmobs.LycanitesMobsCompat;
 import net.geforcemods.securitycraft.compat.projecte.ProjectECompat;
 import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
-import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.itemgroups.SCDecorationTab;
+import net.geforcemods.securitycraft.itemgroups.SCExplosivesTab;
+import net.geforcemods.securitycraft.itemgroups.SCTechnicalTab;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.IProxy;
-import net.geforcemods.securitycraft.tabs.CreativeTabSCDecoration;
-import net.geforcemods.securitycraft.tabs.CreativeTabSCExplosives;
-import net.geforcemods.securitycraft.tabs.CreativeTabSCTechnical;
+import net.geforcemods.securitycraft.screen.ScreenHandler;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -59,14 +59,14 @@ public class SecurityCraft {
 	@Instance(MODID)
 	public static SecurityCraft instance = new SecurityCraft();
 	public static SimpleNetworkWrapper network;
-	private GuiHandler guiHandler = new GuiHandler();
-	public static CreativeTabs tabSCTechnical = new CreativeTabSCTechnical();
-	public static CreativeTabs tabSCMine = new CreativeTabSCExplosives();
-	public static CreativeTabs tabSCDecoration = new CreativeTabSCDecoration();
+	private ScreenHandler guiHandler = new ScreenHandler();
+	public static CreativeTabs tabSCTechnical = new SCTechnicalTab();
+	public static CreativeTabs tabSCMine = new SCExplosivesTab();
+	public static CreativeTabs tabSCDecoration = new SCDecorationTab();
 
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {
-		event.registerServerCommand(new CommandSC());
+		event.registerServerCommand(new SCCommand());
 	}
 
 	@EventHandler
@@ -84,14 +84,14 @@ public class SecurityCraft {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, BlockReinforcedHopper.ExtractionBlock.class.getName());
-		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, BlockKeypad.Convertible.class.getName());
-		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, BlockKeypadChest.Convertible.class.getName());
-		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, BlockKeypadFurnace.Convertible.class.getName());
+		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, ReinforcedHopperBlock.ExtractionBlock.class.getName());
+		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, KeypadBlock.Convertible.class.getName());
+		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, KeypadChestBlock.Convertible.class.getName());
+		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, KeypadFurnaceBlock.Convertible.class.getName());
 		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, CommonDoorActivator.class.getName());
-		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, BlockInventoryScanner.DoorActivator.class.getName());
-		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, BlockReinforcedPressurePlate.DoorActivator.class.getName());
-		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, BlockReinforcedMetals.DoorActivator.class.getName());
+		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, InventoryScannerBlock.DoorActivator.class.getName());
+		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, ReinforcedPressurePlateBlock.DoorActivator.class.getName());
+		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, ReinforcedMetalsBlock.DoorActivator.class.getName());
 		FMLInterModComms.sendMessage("waila", "register", "net.geforcemods.securitycraft.compat.waila.WailaDataProvider.callbackRegister");
 		FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "net.geforcemods.securitycraft.compat.top.TOPDataProvider");
 
@@ -106,7 +106,7 @@ public class SecurityCraft {
 		}
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
-		EnumModuleType.refresh();
+		ModuleType.refresh();
 		proxy.registerRenderThings();
 		FMLCommonHandler.instance().getDataFixer().init(SecurityCraft.MODID, TileEntityIDDataFixer.VERSION).registerFix(FixTypes.BLOCK_ENTITY, new TileEntityIDDataFixer());
 		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedCobblestone), new ItemStack(SCContent.reinforcedStone, 1, 0), 0.1F);

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.entity.camera;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.DismountCamera;
@@ -32,8 +32,8 @@ public class CameraController {
 	public static void onClientTick(ClientTickEvent event) {
 		Entity renderViewEntity = Minecraft.getMinecraft().getRenderViewEntity();
 
-		if (renderViewEntity instanceof EntitySecurityCamera) {
-			EntitySecurityCamera cam = (EntitySecurityCamera) renderViewEntity;
+		if (renderViewEntity instanceof SecurityCamera) {
+			SecurityCamera cam = (SecurityCamera) renderViewEntity;
 			GameSettings options = Minecraft.getMinecraft().gameSettings;
 
 			if (event.phase == Phase.END) {
@@ -107,7 +107,7 @@ public class CameraController {
 		SecurityCraft.network.sendToServer(new DismountCamera());
 	}
 
-	public static void moveViewUp(EntitySecurityCamera cam) {
+	public static void moveViewUp(SecurityCamera cam) {
 		float next = cam.rotationPitch - cam.cameraSpeed * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
@@ -118,7 +118,7 @@ public class CameraController {
 			cam.setRotation(cam.rotationYaw, next);
 	}
 
-	public static void moveViewDown(EntitySecurityCamera cam) {
+	public static void moveViewDown(SecurityCamera cam) {
 		float next = cam.rotationPitch + cam.cameraSpeed * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
@@ -129,10 +129,10 @@ public class CameraController {
 			cam.setRotation(cam.rotationYaw, next);
 	}
 
-	public static void moveViewHorizontally(EntitySecurityCamera cam, float yRot, float next) {
+	public static void moveViewHorizontally(SecurityCamera cam, float yRot, float next) {
 		IBlockState state = cam.world.getBlockState(new BlockPos(cam.posX, cam.posY, cam.posZ));
 
-		if (state.getProperties().containsKey(BlockSecurityCamera.FACING)) {
+		if (state.getProperties().containsKey(SecurityCameraBlock.FACING)) {
 			float checkNext = next;
 
 			if (checkNext < 0)
@@ -140,7 +140,7 @@ public class CameraController {
 
 			boolean shouldSetRotation = false;
 
-			switch (state.getValue(BlockSecurityCamera.FACING)) {
+			switch (state.getValue(SecurityCameraBlock.FACING)) {
 				case NORTH:
 					shouldSetRotation = checkNext > 90F && checkNext < 270F;
 					break;
@@ -166,7 +166,7 @@ public class CameraController {
 		}
 	}
 
-	public static void zoomIn(EntitySecurityCamera cam) {
+	public static void zoomIn(SecurityCamera cam) {
 		if (!cam.zooming)
 			Minecraft.getMinecraft().world.playSound(new BlockPos(cam.posX, cam.posY, cam.posZ), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 
@@ -174,7 +174,7 @@ public class CameraController {
 		cam.zoomAmount = Math.max(cam.zoomAmount - 0.1F, 0.1F);
 	}
 
-	public static void zoomOut(EntitySecurityCamera cam) {
+	public static void zoomOut(SecurityCamera cam) {
 		if (!cam.zooming)
 			Minecraft.getMinecraft().world.playSound(new BlockPos(cam.posX, cam.posY, cam.posZ), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 
@@ -182,14 +182,14 @@ public class CameraController {
 		cam.zoomAmount = Math.min(cam.zoomAmount + 0.1F, 1.4F);
 	}
 
-	public static void emitRedstone(EntitySecurityCamera cam) {
+	public static void emitRedstone(SecurityCamera cam) {
 		if (cam.redstoneCooldown == 0) {
 			cam.toggleRedstonePower();
 			cam.redstoneCooldown = 30;
 		}
 	}
 
-	public static void giveNightVision(EntitySecurityCamera cam) {
+	public static void giveNightVision(SecurityCamera cam) {
 		if (cam.toggleNightVisionCooldown == 0)
 			cam.toggleNightVision();
 	}

@@ -5,10 +5,10 @@ import java.util.Arrays;
 import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.KeyBindings;
-import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -56,12 +56,12 @@ public class GuiUtils {
 
 		TileEntity tile = world.getTileEntity(pos);
 
-		if (!(tile instanceof TileEntitySecurityCamera))
+		if (!(tile instanceof SecurityCameraBlockEntity))
 			return;
 
 		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
-		TileEntitySecurityCamera te = (TileEntitySecurityCamera) tile;
-		boolean hasRedstoneModule = te.isModuleEnabled(EnumModuleType.REDSTONE);
+		SecurityCameraBlockEntity te = (SecurityCameraBlockEntity) tile;
+		boolean hasRedstoneModule = te.isModuleEnabled(ModuleType.REDSTONE);
 		GameSettings settings = Minecraft.getMinecraft().gameSettings;
 		IBlockState state = world.getBlockState(pos);
 		String lookAround = GameSettings.getKeyDisplayString(settings.keyBindForward.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindLeft.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindBack.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindRight.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.lookAround").getFormattedText();
@@ -95,7 +95,7 @@ public class GuiUtils {
 			mc.getTextureManager().bindTexture(cameraDashboard);
 		}
 
-		if (state.getWeakPower(world, pos, state.getValue(BlockSecurityCamera.FACING)) == 0) {
+		if (state.getWeakPower(world, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 			if (!hasRedstoneModule)
 				gui.drawTexturedModalRect(12, 2, 104, 0, 12, 12);
 			else
@@ -118,7 +118,7 @@ public class GuiUtils {
 		GlStateManager.disableRescaleNormal();
 	}
 
-	public static void renderModuleInfo(EnumModuleType module, String moduleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY) {
+	public static void renderModuleInfo(ModuleType module, String moduleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY) {
 		Minecraft mc = Minecraft.getMinecraft();
 		float alpha = isModuleInstalled ? 1.0F : 0.5F;
 		int moduleRight = moduleLeft + 16;
@@ -130,11 +130,11 @@ public class GuiUtils {
 		mc.getTextureManager().bindTexture(MODULE_TEXTURES[module.ordinal()]);
 		drawTexture(Tessellator.getInstance(), moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 
-		if (module == EnumModuleType.REDSTONE) {
+		if (module == ModuleType.REDSTONE) {
 			mc.getTextureManager().bindTexture(REDSTONE_TEXTURE);
 			drawTexture(Tessellator.getInstance(), moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
-		else if (module == EnumModuleType.SPEED) {
+		else if (module == ModuleType.SPEED) {
 			mc.getTextureManager().bindTexture(SUGAR_TEXTURE);
 			drawTexture(Tessellator.getInstance(), moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}

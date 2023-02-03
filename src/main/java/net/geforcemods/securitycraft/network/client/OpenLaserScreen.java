@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.EnumMap;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.gui.GuiLaser;
-import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
+import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
+import net.geforcemods.securitycraft.screen.LaserScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -25,7 +25,7 @@ public class OpenLaserScreen implements IMessage {
 
 	public OpenLaserScreen(BlockPos pos, EnumMap<EnumFacing, Boolean> sideConfig) {
 		this.pos = pos;
-		this.sideConfig = TileEntityLaserBlock.saveSideConfig(sideConfig);
+		this.sideConfig = LaserBlockBlockEntity.saveSideConfig(sideConfig);
 	}
 
 	@Override
@@ -47,8 +47,8 @@ public class OpenLaserScreen implements IMessage {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(message.pos);
 
-				if (te instanceof TileEntityLaserBlock)
-					Minecraft.getMinecraft().displayGuiScreen(new GuiLaser((TileEntityLaserBlock) te, TileEntityLaserBlock.loadSideConfig(message.sideConfig)));
+				if (te instanceof LaserBlockBlockEntity)
+					Minecraft.getMinecraft().displayGuiScreen(new LaserScreen((LaserBlockBlockEntity) te, LaserBlockBlockEntity.loadSideConfig(message.sideConfig)));
 			});
 			return null;
 		}

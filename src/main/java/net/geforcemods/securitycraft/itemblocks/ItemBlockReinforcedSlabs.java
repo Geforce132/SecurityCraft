@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.itemblocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlabs;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabsBlock;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -70,7 +70,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 			Object type = singleSlab.getTypeForItem(stack);
 			IBlockState state = world.getBlockState(pos);
 
-			if (state.getBlock() instanceof BlockReinforcedSlabs) {
+			if (state.getBlock() instanceof ReinforcedSlabsBlock) {
 				IProperty<?> variantProperty = singleSlab.getVariantProperty();
 				Comparable<?> value = state.getValue(variantProperty);
 				BlockSlab.EnumBlockHalf half = state.getValue(BlockSlab.HALF);
@@ -110,20 +110,20 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 	}
 
 	private IBlockState getDoubleSlabBlock(Comparable<?> comparable) {
-		if (comparable == BlockReinforcedSlabs.EnumType.STONE)
-			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
-		else if (comparable == BlockReinforcedSlabs.EnumType.COBBLESTONE)
-			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
-		else if (comparable == BlockReinforcedSlabs.EnumType.SANDSTONE)
-			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
-		else if (comparable == BlockReinforcedSlabs.EnumType.STONEBRICK)
-			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
-		else if (comparable == BlockReinforcedSlabs.EnumType.BRICK)
-			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
-		else if (comparable == BlockReinforcedSlabs.EnumType.NETHERBRICK)
-			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
-		else if (comparable == BlockReinforcedSlabs.EnumType.QUARTZ)
-			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
+		if (comparable == ReinforcedSlabsBlock.EnumType.STONE)
+			return makeState_Stone(ReinforcedSlabsBlock.VARIANT, comparable);
+		else if (comparable == ReinforcedSlabsBlock.EnumType.COBBLESTONE)
+			return makeState_Stone(ReinforcedSlabsBlock.VARIANT, comparable);
+		else if (comparable == ReinforcedSlabsBlock.EnumType.SANDSTONE)
+			return makeState_Stone(ReinforcedSlabsBlock.VARIANT, comparable);
+		else if (comparable == ReinforcedSlabsBlock.EnumType.STONEBRICK)
+			return makeState_Stone(ReinforcedSlabsBlock.VARIANT, comparable);
+		else if (comparable == ReinforcedSlabsBlock.EnumType.BRICK)
+			return makeState_Stone(ReinforcedSlabsBlock.VARIANT, comparable);
+		else if (comparable == ReinforcedSlabsBlock.EnumType.NETHERBRICK)
+			return makeState_Stone(ReinforcedSlabsBlock.VARIANT, comparable);
+		else if (comparable == ReinforcedSlabsBlock.EnumType.QUARTZ)
+			return makeState_Stone(ReinforcedSlabsBlock.VARIANT, comparable);
 		else
 			return null;
 	}

@@ -2,11 +2,11 @@ package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.gui.GuiCheckPassword;
-import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.gui.GuiSetPassword;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
+import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.SetPasswordScreen;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 /**
  * Implementing this interface designates a block entity as being password-protected. Implementing this allows you to use
- * {@link GuiSetPassword} and {@link GuiCheckPassword} to easily set your block's password. Extends {@link ICodebreakable} as
+ * {@link SetPasswordScreen} and {@link CheckPasswordScreen} to easily set your block's password. Extends {@link ICodebreakable} as
  * most password-protected blocks are likely able to be hacked using the Codebreaker by default.
  *
  * @author Geforce
@@ -34,7 +34,7 @@ public interface IPasswordProtected extends ICodebreakable {
 	public default void openPasswordGUI(World world, BlockPos pos, EntityPlayer player) {
 		if (!world.isRemote) {
 			if (getPassword() != null)
-				player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(SecurityCraft.instance, ScreenHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 		}
 	}
 
@@ -53,7 +53,7 @@ public interface IPasswordProtected extends ICodebreakable {
 				return true;
 
 			if (ownable.isOwnedBy(player))
-				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(SecurityCraft.instance, ScreenHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			else
 				PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
 		}
@@ -126,10 +126,10 @@ public interface IPasswordProtected extends ICodebreakable {
 		if (this instanceof IModuleInventory) {
 			IModuleInventory moduleInv = (IModuleInventory) this;
 
-			if (moduleInv.isModuleEnabled(EnumModuleType.SMART))
+			if (moduleInv.isModuleEnabled(ModuleType.SMART))
 				startCooldown();
 
-			if (moduleInv.isModuleEnabled(EnumModuleType.HARMING)) {
+			if (moduleInv.isModuleEnabled(ModuleType.HARMING)) {
 				if (player.attackEntityFrom(CustomDamageSources.INCORRECT_PASSCODE, ConfigHandler.incorrectPasscodeDamage))
 					player.closeScreen();
 			}

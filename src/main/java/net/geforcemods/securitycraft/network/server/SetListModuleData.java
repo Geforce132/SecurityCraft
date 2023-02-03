@@ -2,9 +2,9 @@ package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -38,7 +38,7 @@ public class SetListModuleData implements IMessage {
 	public static class Handler implements IMessageHandler<SetListModuleData, IMessage> {
 		@Override
 		public IMessage onMessage(SetListModuleData message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
 				ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.allowlistModule);
 
@@ -52,7 +52,7 @@ public class SetListModuleData implements IMessage {
 					NBTTagCompound clientTag = message.tag;
 					NBTTagCompound serverTag = stack.getTagCompound();
 
-					for (int i = 1; i <= ItemModule.MAX_PLAYERS; i++) {
+					for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
 						String key = "Player" + i;
 
 						if (clientTag.hasKey(key))

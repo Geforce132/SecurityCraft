@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.network.server;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -23,11 +23,11 @@ public class OpenBriefcaseGui implements IMessage {
 	public static class Handler implements IMessageHandler<OpenBriefcaseGui, IMessage> {
 		@Override
 		public IMessage onMessage(OpenBriefcaseGui message, MessageContext context) {
-			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayerMP player = context.getServerHandler().player;
 
 				if (PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
-					player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_GUI_ID, player.world, (int) player.posX, (int) player.posY, (int) player.posZ);
+					player.openGui(SecurityCraft.instance, ScreenHandler.BRIEFCASE_GUI_ID, player.world, (int) player.posX, (int) player.posY, (int) player.posZ);
 			});
 
 			return null;

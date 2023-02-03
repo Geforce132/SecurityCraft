@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -32,13 +32,13 @@ public class ClearLoggerServer implements IMessage {
 	public static class Handler implements IMessageHandler<ClearLoggerServer, IMessage> {
 		@Override
 		public IMessage onMessage(ClearLoggerServer message, MessageContext context) {
-			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(message.pos);
 
-				if (te instanceof TileEntityLogger && ((TileEntityLogger) te).isOwnedBy(player)) {
-					((TileEntityLogger) te).players = new String[100];
-					((TileEntityLogger) te).sync();
+				if (te instanceof UsernameLoggerBlockEntity && ((UsernameLoggerBlockEntity) te).isOwnedBy(player)) {
+					((UsernameLoggerBlockEntity) te).players = new String[100];
+					((UsernameLoggerBlockEntity) te).sync();
 				}
 			});
 

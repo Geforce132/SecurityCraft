@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector;
-import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector.EnumDetectionMode;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.EnumDetectionMode;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -48,14 +48,14 @@ public class SyncBlockChangeDetector implements IMessage {
 	public static class Handler implements IMessageHandler<SyncBlockChangeDetector, IMessage> {
 		@Override
 		public IMessage onMessage(SyncBlockChangeDetector message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
 				World level = player.world;
 				BlockPos pos = message.pos;
 				TileEntity tile = level.getTileEntity(pos);
 
-				if (tile instanceof TileEntityBlockChangeDetector) {
-					TileEntityBlockChangeDetector te = (TileEntityBlockChangeDetector) tile;
+				if (tile instanceof BlockChangeDetectorBlockEntity) {
+					BlockChangeDetectorBlockEntity te = (BlockChangeDetectorBlockEntity) tile;
 
 					if (te.isOwnedBy(player)) {
 						IBlockState state = level.getBlockState(pos);

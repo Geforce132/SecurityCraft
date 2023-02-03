@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -48,13 +48,13 @@ public class SyncSSSSettingsOnServer implements IMessage {
 	public static class Handler implements IMessageHandler<SyncSSSSettingsOnServer, IMessage> {
 		@Override
 		public IMessage onMessage(SyncSSSSettingsOnServer message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				BlockPos pos = message.pos;
 				World world = ctx.getServerHandler().player.world;
 				TileEntity te = world.getTileEntity(pos);
 
-				if (te instanceof TileEntitySonicSecuritySystem && ((TileEntitySonicSecuritySystem) te).isOwnedBy(ctx.getServerHandler().player)) {
-					TileEntitySonicSecuritySystem sss = (TileEntitySonicSecuritySystem) te;
+				if (te instanceof SonicSecuritySystemBlockEntity && ((SonicSecuritySystemBlockEntity) te).isOwnedBy(ctx.getServerHandler().player)) {
+					SonicSecuritySystemBlockEntity sss = (SonicSecuritySystemBlockEntity) te;
 
 					switch (message.dataType) {
 						case POWER_ON:

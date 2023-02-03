@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -40,7 +40,7 @@ public class SetCameraPowered implements IMessage {
 	public static class Handler implements IMessageHandler<SetCameraPowered, IMessage> {
 		@Override
 		public IMessage onMessage(SetCameraPowered message, MessageContext context) {
-			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				BlockPos pos = message.pos;
 				EntityPlayer player = context.getServerHandler().player;
 				World world = player.world;
@@ -49,8 +49,8 @@ public class SetCameraPowered implements IMessage {
 				if ((te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player)) || (te instanceof IModuleInventory && ((IModuleInventory) te).isAllowed(player))) {
 					IBlockState state = world.getBlockState(pos);
 
-					world.setBlockState(pos, state.withProperty(BlockSecurityCamera.POWERED, message.powered));
-					world.notifyNeighborsOfStateChange(pos.offset(state.getValue(BlockSecurityCamera.FACING), -1), state.getBlock(), false);
+					world.setBlockState(pos, state.withProperty(SecurityCameraBlock.POWERED, message.powered));
+					world.notifyNeighborsOfStateChange(pos.offset(state.getValue(SecurityCameraBlock.FACING), -1), state.getBlock(), false);
 				}
 			});
 			return null;

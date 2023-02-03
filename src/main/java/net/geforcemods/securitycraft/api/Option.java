@@ -3,17 +3,17 @@ package net.geforcemods.securitycraft.api;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
-import net.geforcemods.securitycraft.gui.components.GuiSlider;
-import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
+import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
+import net.geforcemods.securitycraft.screen.components.Slider;
+import net.geforcemods.securitycraft.screen.components.Slider.ISlider;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 
 /**
- * A class that allows blocks that have {@link CustomizableSCTE}s to have custom, "per-block" options that are separate from
+ * A class that allows blocks that have {@link CustomizableBlockEntity}s to have custom, "per-block" options that are separate from
  * the main SecurityCraft configuration options.
  *
  * @author Geforce
@@ -43,7 +43,7 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * Called when this option's button in {@link GuiCustomizeBlock} is pressed. Update the option's value here. <p> NOTE: This
+	 * Called when this option's button in {@link CustomizeBlockScreen} is pressed. Update the option's value here. <p> NOTE: This
 	 * gets called on the server side, not on the client! Use TileEntitySCTE.sync() to update values on the client-side.
 	 */
 	public abstract void toggle();
@@ -88,7 +88,7 @@ public abstract class Option<T> {
 
 	/**
 	 * @return If this option is some kind of number (integer, float, etc.), return the amount the number should
-	 *         increase/decrease every time the option is toggled in {@link GuiCustomizeBlock}.
+	 *         increase/decrease every time the option is toggled in {@link CustomizeBlockScreen}.
 	 */
 	public T getIncrement() {
 		return increment;
@@ -245,7 +245,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void onChangeSliderValue(GuiSlider slider, Block block, int id) {
+		public void onChangeSliderValue(Slider slider, Block block, int id) {
 			if (!isSlider())
 				return;
 
@@ -335,7 +335,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void onChangeSliderValue(GuiSlider slider, Block block, int id) {
+		public void onChangeSliderValue(Slider slider, Block block, int id) {
 			if (!isSlider())
 				return;
 

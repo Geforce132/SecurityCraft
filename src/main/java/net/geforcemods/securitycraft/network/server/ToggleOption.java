@@ -1,10 +1,10 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -43,7 +43,7 @@ public class ToggleOption implements IMessage {
 	public static class Handler implements IMessageHandler<ToggleOption, IMessage> {
 		@Override
 		public IMessage onMessage(ToggleOption packet, MessageContext message) {
-			WorldUtils.addScheduledTask(message.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(message.getServerHandler().player.world, () -> {
 				int x = packet.x;
 				int y = packet.y;
 				int z = packet.z;
@@ -55,7 +55,7 @@ public class ToggleOption implements IMessage {
 				if (te instanceof ICustomizable && !(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player)) {
 					((ICustomizable) te).customOptions()[id].toggle();
 					((ICustomizable) te).onOptionChanged(((ICustomizable) te).customOptions()[id]);
-					((CustomizableSCTE) te).sync();
+					((CustomizableBlockEntity) te).sync();
 				}
 			});
 

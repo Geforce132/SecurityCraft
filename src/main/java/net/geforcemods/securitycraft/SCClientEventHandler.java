@@ -7,16 +7,16 @@ import java.util.function.Predicate;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.blocks.BlockDisguisable;
-import net.geforcemods.securitycraft.entity.ai.EntitySentry;
-import net.geforcemods.securitycraft.entity.camera.EntitySecurityCamera;
-import net.geforcemods.securitycraft.items.ItemSonicSecuritySystem;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
+import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.misc.TileEntityTracker;
+import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.network.ClientProxy;
-import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector;
-import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector.ChangeEntry;
-import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -64,13 +64,13 @@ public class SCClientEventHandler {
 		double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
 		double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
 
-		for (BlockPos bcdPos : TileEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedTileEntities(level)) {
+		for (BlockPos bcdPos : BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedTileEntities(level)) {
 			TileEntity be = level.getTileEntity(bcdPos);
 
-			if (!(be instanceof TileEntityBlockChangeDetector))
+			if (!(be instanceof BlockChangeDetectorBlockEntity))
 				continue;
 
-			TileEntityBlockChangeDetector bcd = (TileEntityBlockChangeDetector) be;
+			BlockChangeDetectorBlockEntity bcd = (BlockChangeDetectorBlockEntity) be;
 
 			if (bcd.isShowingHighlights() && bcd.isOwnedBy(mc.player)) {
 				for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
@@ -92,7 +92,7 @@ public class SCClientEventHandler {
 		EntityPlayer player = Minecraft.getMinecraft().player;
 
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
-			EntitySecurityCamera camera = (EntitySecurityCamera) Minecraft.getMinecraft().getRenderViewEntity();
+			SecurityCamera camera = (SecurityCamera) Minecraft.getMinecraft().getRenderViewEntity();
 
 			if (camera.screenshotSoundCooldown == 0) {
 				camera.screenshotSoundCooldown = 7;
@@ -135,7 +135,7 @@ public class SCClientEventHandler {
 					int uCoord = 0;
 
 					if (stack.getItem() == SCContent.cameraMonitor) {
-						uCoord = getUCoord(world, player, stack, bhr -> world.getTileEntity(bhr.getBlockPos()) instanceof TileEntitySecurityCamera, 30, (tag, i) -> {
+						uCoord = getUCoord(world, player, stack, bhr -> world.getTileEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, 30, (tag, i) -> {
 							if (!tag.hasKey("Camera" + i))
 								return null;
 
@@ -153,8 +153,8 @@ public class SCClientEventHandler {
 						});
 					}
 					else if (stack.getItem() == SCContent.remoteAccessSentry) {
-						if (Minecraft.getMinecraft().pointedEntity instanceof EntitySentry) {
-							EntitySentry sentry = (EntitySentry) Minecraft.getMinecraft().pointedEntity;
+						if (Minecraft.getMinecraft().pointedEntity instanceof Sentry) {
+							Sentry sentry = (Sentry) Minecraft.getMinecraft().pointedEntity;
 
 							if (!stack.hasTagCompound())
 								stack.setTagCompound(new NBTTagCompound());
@@ -171,12 +171,12 @@ public class SCClientEventHandler {
 
 							//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 							if (!(tile instanceof IOwnable) || !((IOwnable) tile).isOwnedBy(player)) {
-								if (BlockDisguisable.getDisguisedBlockStateUnknown(world, bhr.getBlockPos()) != null)
+								if (DisguisableBlock.getDisguisedBlockStateUnknown(world, bhr.getBlockPos()) != null)
 									return false;
 							}
 
 							return true;
-						}, 0, null, false, ItemSonicSecuritySystem::isAdded);
+						}, 0, null, false, SonicSecuritySystemItem::isAdded);
 					}
 
 					if (uCoord != 0) {

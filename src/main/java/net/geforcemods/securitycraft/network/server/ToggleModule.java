@@ -1,14 +1,14 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.TileEntityLinkable;
-import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
+import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -20,11 +20,11 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class ToggleModule implements IMessage {
 	private BlockPos pos;
-	private EnumModuleType moduleType;
+	private ModuleType moduleType;
 
 	public ToggleModule() {}
 
-	public ToggleModule(BlockPos pos, EnumModuleType moduleType) {
+	public ToggleModule(BlockPos pos, ModuleType moduleType) {
 		this.pos = pos;
 		this.moduleType = moduleType;
 	}
@@ -38,26 +38,26 @@ public class ToggleModule implements IMessage {
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		pos = BlockPos.fromLong(buf.readLong());
-		moduleType = EnumModuleType.values()[ByteBufUtils.readVarInt(buf, 5)];
+		moduleType = ModuleType.values()[ByteBufUtils.readVarInt(buf, 5)];
 	}
 
 	public static class Handler implements IMessageHandler<ToggleModule, IMessage> {
 		@Override
 		public IMessage onMessage(ToggleModule message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				BlockPos pos = message.pos;
 				EntityPlayer player = ctx.getServerHandler().player;
 				TileEntity be = player.world.getTileEntity(pos);
 
 				if (be instanceof IModuleInventory && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player))) {
 					IModuleInventory moduleInv = (IModuleInventory) be;
-					EnumModuleType moduleType = message.moduleType;
+					ModuleType moduleType = message.moduleType;
 
 					if (moduleInv.isModuleEnabled(moduleType)) {
 						moduleInv.removeModule(moduleType, true);
 
-						if (be instanceof TileEntityLinkable) {
-							TileEntityLinkable linkable = (TileEntityLinkable) be;
+						if (be instanceof LinkableBlockEntity) {
+							LinkableBlockEntity linkable = (LinkableBlockEntity) be;
 
 							linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(moduleType, true), linkable);
 						}
@@ -65,16 +65,16 @@ public class ToggleModule implements IMessage {
 					else {
 						moduleInv.insertModule(moduleInv.getModule(moduleType), true);
 
-						if (be instanceof TileEntityLinkable) {
-							TileEntityLinkable linkable = (TileEntityLinkable) be;
+						if (be instanceof LinkableBlockEntity) {
+							LinkableBlockEntity linkable = (LinkableBlockEntity) be;
 							ItemStack stack = moduleInv.getModule(moduleType);
 
-							linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ItemModule) stack.getItem(), true), linkable);
+							linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), true), linkable);
 						}
 					}
 
-					if (be instanceof CustomizableSCTE)
-						((CustomizableSCTE) be).sync();
+					if (be instanceof CustomizableBlockEntity)
+						((CustomizableBlockEntity) be).sync();
 				}
 			});
 

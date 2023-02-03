@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.client;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
-import net.geforcemods.securitycraft.entity.camera.EntitySecurityCamera;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -37,7 +37,7 @@ public class SetCameraView implements IMessage {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				Minecraft mc = Minecraft.getMinecraft();
 				Entity entity = mc.world.getEntityByID(message.id);
-				boolean isCamera = entity instanceof EntitySecurityCamera;
+				boolean isCamera = entity instanceof SecurityCamera;
 				boolean isPlayer = entity instanceof EntityPlayer;
 
 				if (isCamera || isPlayer) {

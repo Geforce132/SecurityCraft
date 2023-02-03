@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -51,14 +51,14 @@ public class SyncBlockPocketManager implements IMessage {
 	public static class Handler implements IMessageHandler<SyncBlockPocketManager, IMessage> {
 		@Override
 		public IMessage onMessage(SyncBlockPocketManager message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				BlockPos pos = message.pos;
 				EntityPlayer player = ctx.getServerHandler().player;
 				World world = player.world;
 				TileEntity te = world.getTileEntity(pos);
 
-				if (world.isBlockLoaded(pos) && te instanceof TileEntityBlockPocketManager && ((TileEntityBlockPocketManager) te).isOwnedBy(player)) {
-					TileEntityBlockPocketManager bpm = (TileEntityBlockPocketManager) te;
+				if (world.isBlockLoaded(pos) && te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
+					BlockPocketManagerBlockEntity bpm = (BlockPocketManagerBlockEntity) te;
 					IBlockState state = world.getBlockState(pos);
 
 					bpm.size = message.size;

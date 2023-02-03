@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
-import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -24,14 +24,14 @@ public interface ILinkedAction {
 	}
 
 	/**
-	 * Used when a {@link EnumModuleType} is inserted into an {@link IModuleInventory}
+	 * Used when a {@link ModuleType} is inserted into an {@link IModuleInventory}
 	 */
 	public static final class ModuleInserted implements ILinkedAction {
 		public final ItemStack stack;
-		public final ItemModule module;
+		public final ModuleItem module;
 		public final boolean wasModuleToggled;
 
-		public ModuleInserted(ItemStack stack, ItemModule module, boolean wasModuleToggled) {
+		public ModuleInserted(ItemStack stack, ModuleItem module, boolean wasModuleToggled) {
 			this.stack = stack;
 			this.module = module;
 			this.wasModuleToggled = wasModuleToggled;
@@ -39,13 +39,13 @@ public interface ILinkedAction {
 	}
 
 	/**
-	 * Used when a {@link EnumModuleType} is removed from an {@link IModuleInventory}
+	 * Used when a {@link ModuleType} is removed from an {@link IModuleInventory}
 	 */
 	public static final class ModuleRemoved implements ILinkedAction {
-		public final EnumModuleType moduleType;
+		public final ModuleType moduleType;
 		public final boolean wasModuleToggled;
 
-		public ModuleRemoved(EnumModuleType moduleType, boolean wasModuleToggled) {
+		public ModuleRemoved(ModuleType moduleType, boolean wasModuleToggled) {
 			this.moduleType = moduleType;
 			this.wasModuleToggled = wasModuleToggled;
 		}

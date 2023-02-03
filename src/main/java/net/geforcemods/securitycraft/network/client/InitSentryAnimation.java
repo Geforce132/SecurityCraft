@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.List;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.entity.ai.EntitySentry;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -44,10 +44,10 @@ public class InitSentryAnimation implements IMessage {
 	public static class Handler implements IMessageHandler<InitSentryAnimation, IMessage> {
 		@Override
 		public IMessage onMessage(InitSentryAnimation message, MessageContext ctx) {
-			List<EntityCreature> sentries = Minecraft.getMinecraft().player.world.<EntityCreature>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
+			List<EntityCreature> sentries = Minecraft.getMinecraft().player.world.<EntityCreature>getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(message.pos));
 
 			if (!sentries.isEmpty()) {
-				EntitySentry sentry = (EntitySentry) sentries.get(0);
+				Sentry sentry = (Sentry) sentries.get(0);
 
 				sentry.setShutDown(message.isShutDown);
 				sentry.animateUpwards = message.animateUpwards;

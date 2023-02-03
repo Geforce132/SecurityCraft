@@ -1,0 +1,114 @@
+package net.geforcemods.securitycraft.items;
+
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILinkedAction;
+import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
+import net.geforcemods.securitycraft.blocks.CageTrapBlock;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
+import net.geforcemods.securitycraft.blocks.LaserBlock;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
+import net.geforcemods.securitycraft.util.IBlockMine;
+import net.geforcemods.securitycraft.util.IBlockWithNoDrops;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.MutableBlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
+
+public class UniversalBlockRemoverItem extends Item {
+	@Override
+	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+		TileEntity tileEntity = world.getTileEntity(pos);
+		IBlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
+
+		if (isOwnableBlock(block, tileEntity)) {
+			if (!((IOwnable) tileEntity).isOwnedBy(player)) {
+				if (!(block instanceof IBlockMine) && (!(tileEntity.getBlockType() instanceof DisguisableBlock) || (((ItemBlock) ((DisguisableBlock) tileEntity.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))) {
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalBlockRemover.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) tileEntity).getOwner())), TextFormatting.RED);
+					return EnumActionResult.SUCCESS;
+				}
+
+				return EnumActionResult.PASS;
+			}
+
+			if (tileEntity instanceof IModuleInventory)
+				((IModuleInventory) tileEntity).dropAllModules();
+
+			if (block == SCContent.laserBlock) {
+				LaserBlockBlockEntity te = (LaserBlockBlockEntity) world.getTileEntity(pos);
+
+				for (ItemStack module : te.getInventory()) {
+					if (!module.isEmpty())
+						te.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), te);
+				}
+
+				if (!world.isRemote) {
+					world.destroyBlock(pos, true);
+					LaserBlock.destroyAdjacentLasers(world, pos);
+					player.getHeldItem(hand).damageItem(1, player);
+				}
+			}
+			else if (block == SCContent.cageTrap && world.getBlockState(pos).getValue(CageTrapBlock.DEACTIVATED)) {
+				BlockPos originalPos = pos;
+				BlockPos middlePos = originalPos.up(4);
+
+				if (!world.isRemote) {
+					new CageTrapBlock.BlockModifier(world, new MutableBlockPos(originalPos), ((IOwnable) tileEntity).getOwner()).loop((w, p, o) -> {
+						TileEntity te = w.getTileEntity(p);
+
+						if (te instanceof IOwnable && ((IOwnable) te).getOwner().owns((IOwnable) te)) {
+							Block b = w.getBlockState(p).getBlock();
+
+							if (b == SCContent.reinforcedIronBars || (p.equals(middlePos) && b == SCContent.horizontalReinforcedIronBars))
+								w.destroyBlock(p, false);
+						}
+					});
+
+					world.destroyBlock(originalPos, true);
+					player.getHeldItem(hand).damageItem(1, player);
+				}
+			}
+			else {
+				if (block == SCContent.inventoryScanner) {
+					InventoryScannerBlockEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+
+					if (te != null)
+						te.getInventory().clear();
+				}
+				else if (block instanceof IBlockWithNoDrops)
+					Block.spawnAsEntity(world, pos, ((IBlockWithNoDrops) block).getUniversalBlockRemoverDrop());
+
+				if (!world.isRemote) {
+					world.destroyBlock(pos, true); //this also removes the BlockEntity
+					block.onPlayerDestroy(world, pos, state);
+					player.getHeldItem(hand).damageItem(1, player);
+				}
+			}
+
+			return EnumActionResult.SUCCESS;
+		}
+
+		return EnumActionResult.PASS;
+	}
+
+	private boolean isOwnableBlock(Block block, TileEntity tileEntity) {
+		return (tileEntity instanceof OwnableBlockEntity || tileEntity instanceof IOwnable || block instanceof OwnableBlock);
+	}
+}

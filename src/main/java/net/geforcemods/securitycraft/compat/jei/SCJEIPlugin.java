@@ -12,12 +12,12 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.geforcemods.securitycraft.gui.GuiBlockChangeDetector;
-import net.geforcemods.securitycraft.gui.GuiBlockPocketManager;
-import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
-import net.geforcemods.securitycraft.gui.GuiDisguiseModule;
-import net.geforcemods.securitycraft.gui.GuiInventoryScanner;
-import net.geforcemods.securitycraft.gui.GuiProjector;
+import net.geforcemods.securitycraft.screen.BlockChangeDetectorScreen;
+import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
+import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
+import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
+import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
+import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.minecraft.item.ItemStack;
 
 @JEIPlugin
@@ -32,11 +32,11 @@ public class SCJEIPlugin implements IModPlugin {
 
 		//@formatter:off
 		registry.addAdvancedGuiHandlers(
-				new SlotMover<>(GuiCustomizeBlock.class),
-				new SlotMover<>(GuiProjector.class),
-				new SlotMover<>(GuiDisguiseModule.class),
-				new SlotMover<>(GuiBlockChangeDetector.class),
-				new SlotMover<>(GuiBlockPocketManager.class));
+				new SlotMover<>(CustomizeBlockScreen.class),
+				new SlotMover<>(ProjectorScreen.class),
+				new SlotMover<>(DisguiseModuleScreen.class),
+				new SlotMover<>(BlockChangeDetectorScreen.class),
+				new SlotMover<>(BlockPocketManagerScreen.class));
 		//@formatter:on
 		registry.addIngredientInfo(new ItemStack(SCContent.adminTool), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.admin_tool");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypad), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad");
@@ -66,7 +66,7 @@ public class SCJEIPlugin implements IModPlugin {
 		registry.addRecipeCatalyst(new ItemStack(SCContent.universalBlockReinforcerLvL1), VTS_ID);
 		registry.addRecipeCatalyst(new ItemStack(SCContent.universalBlockReinforcerLvL2), VTS_ID, STV_ID);
 		registry.addRecipeCatalyst(new ItemStack(SCContent.universalBlockReinforcerLvL3), VTS_ID, STV_ID);
-		registry.addGhostIngredientHandler(GuiInventoryScanner.class, new InventoryScannerGhostIngredientHandler());
+		registry.addGhostIngredientHandler(InventoryScannerScreen.class, new InventoryScannerGhostIngredientHandler());
 	}
 
 	@Override

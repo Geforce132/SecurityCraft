@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft;
 
-import net.geforcemods.securitycraft.blocks.mines.BlockMine;
-import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.blocks.mines.MineBlock;
+import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.Tinted;
 import net.minecraft.block.Block;
@@ -57,8 +57,8 @@ public class SCContent {
 	public static Block lapisOreMine;
 	public static Block laserBlock;
 	public static Block laserField;
-	public static BlockMine mine;
-	public static BlockMine mineCut;
+	public static MineBlock mine;
+	public static MineBlock mineCut;
 	public static Block motionActivatedLight;
 	public static Block netherrackMine;
 	public static Block panicButton;
@@ -90,7 +90,7 @@ public class SCContent {
 	public static Block reinforcedCobblestone;
 	@Reinforced
 	@Tinted
-	public static Block reinforcedCompressedBlocks;
+	public static Block reinforcedLapisAndCoalBlocks;
 	@Reinforced
 	@Tinted
 	public static Block reinforcedConcrete;
@@ -244,7 +244,7 @@ public class SCContent {
 	@Reinforced
 	@Tinted
 	public static Block reinforcedPistonHead;
-	public static Block reinforcedPistonExtension;
+	public static Block reinforcedMovingPiston;
 	@Reinforced
 	@Tinted
 	public static Block reinforcedPrismarine;
@@ -420,12 +420,12 @@ public class SCContent {
 	public static Item wireCutters;
 
 	//Modules
-	public static ItemModule denylistModule;
-	public static ItemModule disguiseModule;
-	public static ItemModule harmingModule;
-	public static ItemModule redstoneModule;
-	public static ItemModule smartModule;
-	public static ItemModule storageModule;
-	public static ItemModule allowlistModule;
-	public static ItemModule speedModule;
+	public static ModuleItem denylistModule;
+	public static ModuleItem disguiseModule;
+	public static ModuleItem harmingModule;
+	public static ModuleItem redstoneModule;
+	public static ModuleItem smartModule;
+	public static ModuleItem storageModule;
+	public static ModuleItem allowlistModule;
+	public static ModuleItem speedModule;
 }

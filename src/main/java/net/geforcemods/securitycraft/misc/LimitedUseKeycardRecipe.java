@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.misc;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.items.ItemKeycard;
+import net.geforcemods.securitycraft.items.KeycardItem;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,7 +20,7 @@ public class LimitedUseKeycardRecipe extends IForgeRegistryEntry.Impl<IRecipe> i
 			ItemStack stack = inv.getStackInSlot(i);
 			Item item = stack.getItem();
 
-			if (item instanceof ItemKeycard) {
+			if (item instanceof KeycardItem) {
 				if (item != SCContent.limitedUseKeycard) {
 					if (hasNormalKeycard || (stack.hasTagCompound() && stack.getTagCompound().getBoolean("limited")))
 						return false;
@@ -51,7 +51,7 @@ public class LimitedUseKeycardRecipe extends IForgeRegistryEntry.Impl<IRecipe> i
 			ItemStack stack = inv.getStackInSlot(i);
 			Item item = stack.getItem();
 
-			if (item instanceof ItemKeycard && item != SCContent.limitedUseKeycard) {
+			if (item instanceof KeycardItem && item != SCContent.limitedUseKeycard) {
 				keycard = stack.copy();
 				break;
 			}

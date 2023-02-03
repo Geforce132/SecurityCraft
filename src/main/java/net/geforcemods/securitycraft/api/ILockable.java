@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.List;
 
-import net.geforcemods.securitycraft.misc.TileEntityTracker;
-import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
+import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
+import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -29,9 +29,9 @@ public interface ILockable {
 	 */
 	public default boolean isLocked() {
 		TileEntity thisTe = getThisTileEntity();
-		List<TileEntitySonicSecuritySystem> sonicSecuritySystems = TileEntityTracker.SONIC_SECURITY_SYSTEM.getTileEntitiesInRange(thisTe.getWorld(), thisTe.getPos());
+		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = BlockEntityTracker.SONIC_SECURITY_SYSTEM.getTileEntitiesInRange(thisTe.getWorld(), thisTe.getPos());
 
-		for (TileEntitySonicSecuritySystem te : sonicSecuritySystems) {
+		for (SonicSecuritySystemBlockEntity te : sonicSecuritySystems) {
 			if (te.isActive() && te.isLinkedToBlock(thisTe.getPos()))
 				return !te.correctTuneWasPlayed; //if the correct tune was recently played, the block should not be locked
 		}

@@ -5,14 +5,14 @@ import net.minecraft.util.text.TextComponentTranslation;
 
 public class SCManualPage {
 	private final Item item;
-	private final PageType pageType;
+	private final PageGroup pageType;
 	private final TextComponentTranslation title;
 	private final TextComponentTranslation helpInfo;
 	private final String designedBy;
 	private final boolean hasRecipeDescription;
 	private final boolean configValue;
 
-	public SCManualPage(Item item, PageType pageType, TextComponentTranslation title, TextComponentTranslation helpInfo, String designedBy, boolean hasRecipeDescription) {
+	public SCManualPage(Item item, PageGroup pageType, TextComponentTranslation title, TextComponentTranslation helpInfo, String designedBy, boolean hasRecipeDescription) {
 		this.item = item;
 		this.pageType = pageType;
 		this.title = title;
@@ -22,7 +22,7 @@ public class SCManualPage {
 		configValue = true;
 	}
 
-	public SCManualPage(Item item, PageType pageType, TextComponentTranslation title, TextComponentTranslation helpInfo, String designedBy, boolean hasRecipeDescription, boolean configValue) {
+	public SCManualPage(Item item, PageGroup pageType, TextComponentTranslation title, TextComponentTranslation helpInfo, String designedBy, boolean hasRecipeDescription, boolean configValue) {
 		this.item = item;
 		this.pageType = pageType;
 		this.title = title;
@@ -36,7 +36,7 @@ public class SCManualPage {
 		return item;
 	}
 
-	public PageType getPageType() {
+	public PageGroup getPageType() {
 		return pageType;
 	}
 

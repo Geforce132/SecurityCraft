@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.tileentity.TileEntityRiftStabilizer;
-import net.geforcemods.securitycraft.tileentity.TileEntityRiftStabilizer.TeleportationType;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -41,14 +41,14 @@ public class SyncRiftStabilizer implements IMessage {
 	public static class Handler implements IMessageHandler<SyncRiftStabilizer, IMessage> {
 		@Override
 		public IMessage onMessage(SyncRiftStabilizer message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				if (message.teleportationType != null) {
 					World world = ctx.getServerHandler().player.world;
 					BlockPos pos = message.pos;
 					boolean allowed = message.allowed;
 
-					if (world.getTileEntity(pos) instanceof TileEntityRiftStabilizer) {
-						TileEntityRiftStabilizer te = ((TileEntityRiftStabilizer) world.getTileEntity(pos));
+					if (world.getTileEntity(pos) instanceof RiftStabilizerBlockEntity) {
+						RiftStabilizerBlockEntity te = ((RiftStabilizerBlockEntity) world.getTileEntity(pos));
 
 						if (te.isOwnedBy(ctx.getServerHandler().player)) {
 							IBlockState state = world.getBlockState(pos);

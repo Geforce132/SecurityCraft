@@ -1,13 +1,13 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -45,7 +45,7 @@ public class UpdateSliderValue implements IMessage {
 	public static class Handler implements IMessageHandler<UpdateSliderValue, IMessage> {
 		@Override
 		public IMessage onMessage(UpdateSliderValue message, MessageContext context) {
-			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				BlockPos pos = message.pos;
 				int id = message.id;
 				double value = message.value;
@@ -62,8 +62,8 @@ public class UpdateSliderValue implements IMessage {
 
 					((ICustomizable) te).onOptionChanged(((ICustomizable) te).customOptions()[id]);
 
-					if (te instanceof CustomizableSCTE)
-						((CustomizableSCTE) te).sync();
+					if (te instanceof CustomizableBlockEntity)
+						((CustomizableBlockEntity) te).sync();
 				}
 			});
 

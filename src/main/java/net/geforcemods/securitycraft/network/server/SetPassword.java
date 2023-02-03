@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -48,7 +48,7 @@ public class SetPassword implements IMessage {
 	public static class Handler implements IMessageHandler<SetPassword, IMessage> {
 		@Override
 		public IMessage onMessage(SetPassword message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				BlockPos pos = new BlockPos(message.x, message.y, message.z);
 				String password = message.password;
 				EntityPlayer player = ctx.getServerHandler().player;
@@ -58,7 +58,7 @@ public class SetPassword implements IMessage {
 				if (te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
 					((IPasswordProtected) te).setPassword(password);
 
-					if (te instanceof TileEntityKeypadChest)
+					if (te instanceof KeypadChestBlockEntity)
 						checkAndUpdateAdjacentChest(world, pos, password, player);
 				}
 			});
@@ -71,7 +71,7 @@ public class SetPassword implements IMessage {
 				BlockPos offsetPos = pos.offset(facing);
 				TileEntity te = world.getTileEntity(offsetPos);
 
-				if (te instanceof TileEntityKeypadChest) {
+				if (te instanceof KeypadChestBlockEntity) {
 					IBlockState state = world.getBlockState(offsetPos);
 
 					((IPasswordProtected) te).setPassword(codeToSet);

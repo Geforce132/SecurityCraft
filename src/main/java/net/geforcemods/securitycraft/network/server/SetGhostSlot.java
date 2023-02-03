@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -36,11 +36,11 @@ public class SetGhostSlot implements IMessage {
 	public static class Handler implements IMessageHandler<SetGhostSlot, IMessage> {
 		@Override
 		public IMessage onMessage(SetGhostSlot message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
 
-				if (player.openContainer instanceof ContainerInventoryScanner) {
-					ContainerInventoryScanner menu = (ContainerInventoryScanner) player.openContainer;
+				if (player.openContainer instanceof InventoryScannerMenu) {
+					InventoryScannerMenu menu = (InventoryScannerMenu) player.openContainer;
 
 					if (menu.te.isOwnedBy(player))
 						menu.te.getContents().set(message.slotIndex, message.stack);
