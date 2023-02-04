@@ -77,6 +77,8 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 	public boolean animateUpwards = true;
 	public boolean animate = false;
 	private long previousTargetId = Long.MIN_VALUE;
+	public float headRotation;
+	public float oHeadRotation;
 	/**
 	 * @deprecated Only used for upgrading old sentries
 	 */
@@ -143,6 +145,9 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 			}
 		}
 		else {
+			oHeadRotation = headRotation;
+			headRotation = dataManager.get(HEAD_ROTATION);
+
 			if (!shutDown && !animate && headYTranslation > 0.0F && getMode().isAggressive()) {
 				animateUpwards = true;
 				animate = true;
@@ -443,6 +448,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 	public void readEntityFromNBT(NBTTagCompound tag) {
 		NBTTagCompound teTag = tag.getCompoundTag("TileEntityData");
 		Owner owner = Owner.fromCompound(teTag);
+		float headRotation = tag.getFloat("HeadRotation");
 
 		dataManager.set(OWNER, owner);
 
@@ -454,7 +460,9 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		dataManager.set(ALLOWLIST, tag.getCompoundTag("InstalledWhitelist"));
 		dataManager.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
 		dataManager.set(MODE, tag.getInteger("SentryMode"));
-		dataManager.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
+		dataManager.set(HEAD_ROTATION, headRotation);
+		oHeadRotation = headRotation;
+		this.headRotation = headRotation;
 		shutDown = tag.getBoolean("ShutDown");
 		super.readEntityFromNBT(tag);
 	}
