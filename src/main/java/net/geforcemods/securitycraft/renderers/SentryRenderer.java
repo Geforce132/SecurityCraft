@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -35,7 +36,7 @@ public class SentryRenderer extends EntityRenderer<Sentry> {
 		stack.scale(-1, -1, 1); //rotate model rightside up
 		Minecraft.getInstance().textureManager.bind(getTextureLocation(entity));
 		MODEL.renderBase(stack, builder, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		stack.mulPose(Vector3f.YP.rotationDegrees(entity.getEntityData().get(Sentry.HEAD_ROTATION)));
+		stack.mulPose(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.oHeadRotation, entity.headRotation)));
 		stack.translate(0.0F, entity.getHeadYTranslation(partialTicks), 0.0F);
 		MODEL.renderToBuffer(stack, builder, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.popPose();

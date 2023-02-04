@@ -84,6 +84,8 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 	public boolean animateUpwards = false;
 	public boolean animate = false;
 	private long previousTargetId = Long.MIN_VALUE;
+	public float headRotation;
+	public float oHeadRotation;
 	/**
 	 * @deprecated Only used for upgrading old sentries
 	 */
@@ -146,6 +148,9 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 			}
 		}
 		else {
+			oHeadRotation = headRotation;
+			headRotation = entityData.get(HEAD_ROTATION);
+
 			if (!shutDown && !animate && headYTranslation > 0.0F && getMode().isAggressive()) {
 				animateUpwards = true;
 				animate = true;
@@ -434,6 +439,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 	public void readAdditionalSaveData(CompoundNBT tag) {
 		CompoundNBT teTag = tag.getCompound("TileEntityData");
 		Owner owner = Owner.fromCompound(teTag);
+		float headRotation = tag.getFloat("HeadRotation");
 
 		entityData.set(OWNER, owner);
 
@@ -445,7 +451,9 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 		entityData.set(ALLOWLIST, tag.getCompound("InstalledWhitelist"));
 		entityData.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
 		entityData.set(MODE, tag.getInt("SentryMode"));
-		entityData.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
+		entityData.set(HEAD_ROTATION, headRotation);
+		oHeadRotation = headRotation;
+		this.headRotation = headRotation;
 		shutDown = tag.getBoolean("ShutDown");
 		super.readAdditionalSaveData(tag);
 	}
