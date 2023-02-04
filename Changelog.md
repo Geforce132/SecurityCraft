@@ -14,6 +14,7 @@
 - Fix: Modules are not properly synchronized between laser blocks in certain situations
 - Fix: Scroll list in the Block Change Detector's UI slightly moves up and down
 - Fix: Players can sometimes no longer see themselves after viewing a camera
+- Fix: The Sentry's head could sometimes rapidly stutter in height when completely extended or retracted
 - Misc.: The Spanish translation has been updated (Thanks Globi10!)
 - Misc.: German (de_at, de_ch), French (fr_ca), and Spanish (es_ar, es_cl, es_mx, es_uy, es_ve) dialects are now supported. While these are not proper translations into the specific dialects, they should be better than having to resort to English
 - Misc.: Updates to SC Manual entries and other text, to bring them up to date with actual functionality of the mod

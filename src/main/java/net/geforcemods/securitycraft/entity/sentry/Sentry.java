@@ -147,6 +147,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		else {
 			oHeadRotation = headRotation;
 			headRotation = dataManager.get(HEAD_ROTATION);
+			oHeadYTranslation = headYTranslation;
 
 			if (!shutDown && !animate && headYTranslation > 0.0F && getMode().isAggressive()) {
 				animateUpwards = true;
@@ -154,8 +155,6 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 			}
 
 			if (animate) { //no else if because animate can be changed in the above if statement
-				oHeadYTranslation = headYTranslation;
-
 				if (animateUpwards && headYTranslation > UPWARDS_ANIMATION_LIMIT) {
 					headYTranslation -= ANIMATION_STEP_SIZE;
 
