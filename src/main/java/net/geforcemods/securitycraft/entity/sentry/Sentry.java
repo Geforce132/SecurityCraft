@@ -84,6 +84,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	public boolean animateUpwards = false;
 	public boolean animate = false;
 	private long previousTargetId = Long.MIN_VALUE;
+	public float headRotation;
+	public float oHeadRotation;
 
 	public Sentry(EntityType<Sentry> type, Level level) {
 		super(SCContent.SENTRY_ENTITY.get(), level);
@@ -125,6 +127,9 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 				discard();
 		}
 		else {
+			oHeadRotation = headRotation;
+			headRotation = entityData.get(HEAD_ROTATION);
+
 			if (!shutDown && !animate && headYTranslation > 0.0F && getMode().isAggressive()) {
 				animateUpwards = true;
 				animate = true;
@@ -414,6 +419,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	public void readAdditionalSaveData(CompoundTag tag) {
 		CompoundTag teTag = tag.getCompound("TileEntityData");
 		Owner owner = Owner.fromCompound(teTag);
+		float headRotation = tag.getFloat("HeadRotation");
 
 		entityData.set(OWNER, owner);
 		getSentryDisguiseBlockEntity().ifPresent(be -> {
@@ -430,7 +436,9 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		entityData.set(ALLOWLIST, tag.getCompound("InstalledWhitelist"));
 		entityData.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
 		entityData.set(MODE, tag.getInt("SentryMode"));
-		entityData.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
+		entityData.set(HEAD_ROTATION, headRotation);
+		oHeadRotation = headRotation;
+		this.headRotation = headRotation;
 		shutDown = tag.getBoolean("ShutDown");
 		super.readAdditionalSaveData(tag);
 	}
