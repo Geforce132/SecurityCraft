@@ -129,6 +129,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		else {
 			oHeadRotation = headRotation;
 			headRotation = entityData.get(HEAD_ROTATION);
+			oHeadYTranslation = headYTranslation;
 
 			if (!shutDown && !animate && headYTranslation > 0.0F && getMode().isAggressive()) {
 				animateUpwards = true;
@@ -136,8 +137,6 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			}
 
 			if (animate) { //no else if because animate can be changed in the above if statement
-				oHeadYTranslation = headYTranslation;
-
 				if (animateUpwards && headYTranslation > UPWARDS_ANIMATION_LIMIT) {
 					headYTranslation -= ANIMATION_STEP_SIZE;
 
