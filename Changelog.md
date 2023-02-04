@@ -12,6 +12,7 @@
 - Fix: Options are not synchronized between newly placed laser blocks
 - Fix: Modules are not properly synchronized between laser blocks in certain situations
 - Fix: The Codebreaker has 3 uses instead of 5
+- Fix: The Sentry's head could sometimes rapidly stutter in height when completely extended or retracted
 - Misc.: The Spanish translation has been updated (Thanks Globi10!)
 - Misc.: German (de_at, de_ch), French (fr_ca), and Spanish (es_ar, es_cl, es_ec, es_mx, es_uy, es_ve) dialects are now supported. While these are not proper translations into the specific dialects, they should be better than having to resort to English
 - Misc.: Updates to SC Manual entries and other text, to bring them up to date with actual functionality of the mod
