@@ -90,6 +90,8 @@ public class ConfigHandler {
 		public DoubleValue poweredTaserDamage;
 		public DoubleValue laserDamage;
 		public IntValue incorrectPasscodeDamage;
+		public ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
+		public ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
 		private ConfigValue<List<? extends String>> taserEffectsValue;
 		private ConfigValue<List<? extends String>> poweredTaserEffectsValue;
 		public final List<Supplier<MobEffectInstance>> taserEffects = new ArrayList<>();
@@ -200,6 +202,14 @@ public class ConfigHandler {
 					.comment("Defines the damage that a block requiring a passcode deals to the player, if the player enters an incorrect code. This only works if a harming module is installed.",
 							"Default is two hearts of damage.")
 					.defineInRange("incorrectPasscodeDamage", 4, 1, Integer.MAX_VALUE);
+
+			sentryAttackableEntitiesAllowlist = builder
+					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
+					.defineList("sentry_attackable_entities_allowlist", List.of(), e -> e instanceof String);
+
+			sentryAttackableEntitiesDenylist = builder
+					.comment("Add entities to this list that the Sentry currently attacks, but that you want the Sentry to NOT attack. The denylist takes priority over the allowlist.")
+					.defineList("sentry_attackable_entities_denylist", List.of(), e -> e instanceof String);
 			//@formatter:on
 		}
 	}
