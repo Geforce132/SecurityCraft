@@ -2,6 +2,7 @@
 
 - New: Support for FTB Teams when having team ownership enabled in the config
 - New: Laser blocks can now be configured to have lasers on specific sides be disabled by using a Smart Module
+- New: Command "/sc dump <registry>" to be able to copy all of SecurityCraft's registry entries of the specified registry
 - Change: Lasers and inventory scanner fields are now removed silently
 - Change: Inventory scanners and password-protected chests now only drop their modules if the last scanner/chest is removed
 - API: IModuleInventory#shouldDropModules to determine whether a block should drop its modules when broken

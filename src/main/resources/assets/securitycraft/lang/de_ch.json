@@ -947,6 +947,8 @@
 	"messages.securitycraft:rift_stabilizer.no_teleport_to": "Es ist dir nicht gestattet, zu dieser Position zu teleportieren!",
 	"messages.securitycraft:rift_stabilizer.no_teleport_from": "Es ist dir nicht gestattet, von dieser Position aus zu teleportieren!",
 	"messages.securitycraft:laser.sync_failed": "Synchronisation mit dem Laserblock bei %s ist fehlgeschlagen, weil \"%s\" nicht übereinstimmt. Entferne das Modul aus einem der beiden Blöcke und versuche es erneut.",
+	"messages.securitycraft:dump.notFound": "SecurityCraft hat unter \"%s\" nichts registriert.",
+	"messages.securitycraft:dump.result": "Klicke hier, um %s Registrierungseinträge in die Zwischenablage zu kopieren.",
 
 	"jei.securitycraft.category.reinforcing": "Blöcke verstärken",
 	"jei.securitycraft.category.unreinforcing": "Verstärkung entfernen",
