@@ -969,6 +969,8 @@
 	"messages.securitycraft:sc_help": "%s: %s + %s",
 	"messages.securitycraft:formattedCoordinates": "X: %1$s Y: %2$s Z: %3$s",
 	"messages.securitycraft:laser.sync_failed": "Synchronization with the Laser Block at %s failed, because \"%s\" does not match. Remove the module from either block and try again.",
+	"messages.securitycraft:dump.notFound": "SecurityCraft has nothing registered to \"%s\".",
+	"messages.securitycraft:dump.result": "Click here to copy %s registry entries to the clipboard.",
 
 	"jei.securitycraft.category.reinforcing": "Block Reinforcing",
 	"jei.securitycraft.category.unreinforcing": "Removing Reinforcement",
