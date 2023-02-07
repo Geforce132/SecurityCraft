@@ -3,9 +3,11 @@ package net.geforcemods.securitycraft.entity.sentry;
 import java.util.Collections;
 import java.util.List;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.FlyingMob;
 import net.minecraft.world.entity.LivingEntity;
@@ -96,6 +98,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 	public boolean isSupportedTarget(LivingEntity potentialTarget) {
 		//@formatter:off
 		return potentialTarget.deathTime == 0 &&
+				!ConfigHandler.SERVER.sentryAttackableEntitiesDenylist.get().contains(Utils.getRegistryName(potentialTarget.getType()).toString()) &&
 				(potentialTarget instanceof Monster ||
 						potentialTarget instanceof FlyingMob ||
 						potentialTarget instanceof Slime ||
