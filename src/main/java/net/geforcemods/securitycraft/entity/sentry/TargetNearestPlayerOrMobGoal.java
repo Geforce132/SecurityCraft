@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.entity.sentry;
 import java.util.Collections;
 import java.util.List;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.entity.sentry.Sentry.EnumSentryMode;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -15,6 +16,8 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityShulker;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 /**
  * Attacks any player who is not the owner, or any mob
@@ -89,6 +92,7 @@ public class TargetNearestPlayerOrMobGoal extends EntityAINearestAttackableTarge
 	public boolean isSupportedTarget(EntityLivingBase potentialTarget) {
 		//@formatter:off
 		return potentialTarget.deathTime == 0 &&
+				!isOnDenylist(potentialTarget) &&
 				(potentialTarget instanceof EntityMob ||
 						potentialTarget instanceof EntityFlying ||
 						potentialTarget instanceof EntitySlime ||
@@ -96,6 +100,23 @@ public class TargetNearestPlayerOrMobGoal extends EntityAINearestAttackableTarge
 						potentialTarget instanceof EntityDragon ||
 						SecurityCraftAPI.getRegisteredSentryAttackTargetChecks().stream().anyMatch(check -> check.canAttack(potentialTarget)));
 		//@formatter:on
+	}
+
+	private boolean isOnDenylist(Entity potentialTarget) {
+		for (String id : ConfigHandler.sentryAttackableEntitiesDenylist) {
+			if (id == null || id.isEmpty())
+				continue;
+
+			EntityEntry entry = EntityRegistry.getEntry(potentialTarget.getClass());
+
+			if (entry == null)
+				continue;
+
+			if (id.equals(entry.getRegistryName().toString()))
+				return true;
+		}
+
+		return false;
 	}
 
 	@Override

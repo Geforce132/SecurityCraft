@@ -18,10 +18,11 @@ import net.minecraft.entity.Entity;
 @FunctionalInterface
 public interface IAttackTargetCheck {
 	/**
-	 * Checks if the Sentry is allowed to attack the given entity
+	 * Checks if the Sentry is allowed to attack the given entity. Returning false does not guarantee that the Sentry will not
+	 * attack this entity.
 	 *
 	 * @param potentialTarget The entity that the Sentry wants to attack
-	 * @return true if the Sentry is allowed to attack this entity, false otherwise
+	 * @return true if the Sentry is allowed to attack this entity
 	 */
 	public boolean canAttack(Entity potentialTarget);
 }

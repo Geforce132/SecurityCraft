@@ -173,6 +173,14 @@ public class ConfigHandler {
 		"Default is two hearts of damage."})
 	public static int incorrectPasscodeDamage = 4;
 
+	@Name("Sentry Attackable Entities Allowlist")
+	@Comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
+	public static String[] sentryAttackableEntitiesAllowlist = {};
+
+	@Name("Sentry Attackable Entities Denylist")
+	@Comment("Add entities to this list that the Sentry currently attacks, but that you want the Sentry to NOT attack. The denylist takes priority over the allowlist.")
+	public static String[] sentryAttackableEntitiesDenylist = {};
+
 	/**
 	 * @deprecated Use {@link #TASER_EFFECTS}
 	 */

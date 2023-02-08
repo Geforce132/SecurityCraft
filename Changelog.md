@@ -2,6 +2,7 @@
 
 - New: Support for teams from FTB Utilities when having team ownership enabled in the config
 - New: Laser blocks can now be configured to have lasers on specific sides be disabled by using a Smart Module
+- New: Configs "sentryAttackableEntitiesAllowlist" and "sentryAttackableEntitiesDenylist" for controlling which entities a Sentry can and cannot attack
 - Change: Lasers and inventory scanner fields are now removed silently
 - Change: Inventory scanners and password-protected chests now only drop their modules if the last scanner/chest is removed
 - API: IModuleInventory#shouldDropModules to determine whether a block should drop its modules when broken
