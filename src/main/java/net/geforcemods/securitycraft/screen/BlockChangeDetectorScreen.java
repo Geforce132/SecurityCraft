@@ -194,6 +194,14 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	}
 
 	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+		if (changeEntryList != null)
+			changeEntryList.mouseScrolled(mouseX, mouseY, delta);
+
+		return super.mouseScrolled(mouseX, mouseY, delta);
+	}
+
+	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (changeEntryList != null)
 			changeEntryList.mouseClicked(mouseX, mouseY, button);
