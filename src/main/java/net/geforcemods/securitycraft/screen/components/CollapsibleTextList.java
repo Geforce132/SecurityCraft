@@ -12,6 +12,7 @@ import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.IReorderingProcessor;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -22,7 +23,8 @@ public class CollapsibleTextList extends Button implements IGuiEventListener {
 	private static final TextComponent PLUS = new StringTextComponent("+ ");
 	private static final TextComponent MINUS = new StringTextComponent("- ");
 	private final int threeDotsWidth = Minecraft.getInstance().font.width("...");
-	private final int heightOpen;
+	private final int maximumHeight;
+	private int currentHeight, previousHeight;
 	private final ITextComponent originalDisplayString;
 	private final List<List<IReorderingProcessor>> textLines = new ArrayList<>();
 	private final BiPredicate<Integer, Integer> extraHoverCheck;
@@ -45,8 +47,20 @@ public class CollapsibleTextList extends Button implements IGuiEventListener {
 			this.textLines.add(splitLines);
 		}
 
-		heightOpen = height + amountOfLines * font.lineHeight + textLines.size() * 3;
+		maximumHeight = height + amountOfLines * font.lineHeight + textLines.size() * 3;
+		currentHeight = previousHeight = height;
 		this.extraHoverCheck = extraHoverCheck;
+	}
+
+	public void tick() {
+		previousHeight = currentHeight;
+
+		if (open) {
+			if (currentHeight < maximumHeight)
+				currentHeight = Math.min(currentHeight + 40, maximumHeight);
+		}
+		else if (currentHeight > height)
+			currentHeight = Math.max(height, currentHeight - 40);
 	}
 
 	@Override
@@ -56,29 +70,32 @@ public class CollapsibleTextList extends Button implements IGuiEventListener {
 		FontRenderer font = Minecraft.getInstance().font;
 		int v = getYImage(isHovered());
 		int heightOffset = (height - 8) / 2;
+		Matrix4f m4f = pose.last().pose();
+		int renderedLines = 0;
+		int interpolatedHeight = (int) MathHelper.lerp(partialTick, previousHeight, currentHeight);
 
 		GuiUtils.drawContinuousTexturedBox(pose, WIDGETS_LOCATION, x, y, 0, 46 + v * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
 		drawCenteredString(pose, font, getMessage(), x + font.width(getMessage()) / 2 + 3, y + heightOffset, getFGColor());
+		GuiUtils.drawGradientRect(m4f, 0, x, y + height, x + width, y + interpolatedHeight, 0xC0101010, 0xD0101010);
 
-		if (open) {
-			int renderedLines = 0;
-			Matrix4f m4f = pose.last().pose();
+		for (int i = 0; i < textLines.size(); i++) {
+			int textY = y + 2 + height + renderedLines * font.lineHeight + (i * 12);
+			List<IReorderingProcessor> linesToDraw = textLines.get(i);
 
-			GuiUtils.drawGradientRect(m4f, 0, x, y + height, x + width, y + heightOpen, 0xC0101010, 0xD0101010);
+			if (i > 0)
+				GuiUtils.drawGradientRect(m4f, getBlitOffset(), x + 1, textY - 3, x + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0);
 
-			for (int i = 0; i < textLines.size(); i++) {
-				int textY = y + 2 + height + renderedLines * font.lineHeight + (i * 12);
-				List<IReorderingProcessor> linesToDraw = textLines.get(i);
+			for (int lineIndex = 0; lineIndex < linesToDraw.size(); lineIndex++) {
+				int lineY = textY + lineIndex * font.lineHeight;
 
-				if (i > 0)
-					GuiUtils.drawGradientRect(m4f, getBlitOffset(), x + 1, textY - 3, x + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0);
+				//don't render text that would render outside of the current height of the text list
+				if (lineY + font.lineHeight > y + interpolatedHeight)
+					return;
 
-				for (int lineIndex = 0; lineIndex < linesToDraw.size(); lineIndex++) {
-					font.draw(pose, linesToDraw.get(lineIndex), x + 2, textY + lineIndex * font.lineHeight, getFGColor());
-				}
-
-				renderedLines += linesToDraw.size() - 1;
+				font.draw(pose, linesToDraw.get(lineIndex), x + 2, lineY, getFGColor());
 			}
+
+			renderedLines += linesToDraw.size() - 1;
 		}
 	}
 
@@ -107,7 +124,11 @@ public class CollapsibleTextList extends Button implements IGuiEventListener {
 
 	@Override
 	public int getHeight() {
-		return open ? heightOpen : height;
+		return currentHeight;
+	}
+
+	public int getMaximumHeight() {
+		return open ? maximumHeight : height;
 	}
 
 	@Override
