@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.client.config.GuiUtils;
@@ -16,7 +17,8 @@ public class CollapsibleTextList extends ClickButton {
 	private static final TextComponentString PLUS = new TextComponentString("+ ");
 	private static final TextComponentString MINUS = new TextComponentString("- ");
 	private final int threeDotsWidth = Minecraft.getMinecraft().fontRenderer.getStringWidth("...");
-	private final int heightOpen;
+	private final int maximumHeight;
+	private int currentHeight, previousHeight;
 	private final String originalDisplayString;
 	private final List<List<String>> textLines = new ArrayList<>();
 	private final BiPredicate<Integer, Integer> extraHoverCheck;
@@ -39,8 +41,20 @@ public class CollapsibleTextList extends ClickButton {
 			this.textLines.add(splitLines);
 		}
 
-		heightOpen = height + amountOfLines * font.FONT_HEIGHT + textLines.size() * 3;
+		maximumHeight = height + amountOfLines * font.FONT_HEIGHT + textLines.size() * 3;
+		currentHeight = previousHeight = height;
 		this.extraHoverCheck = extraHoverCheck;
+	}
+
+	public void tick() {
+		previousHeight = currentHeight;
+
+		if (open) {
+			if (currentHeight < maximumHeight)
+				currentHeight = Math.min(currentHeight + 40, maximumHeight);
+		}
+		else if (currentHeight > height)
+			currentHeight = Math.max(height, currentHeight - 40);
 	}
 
 	@Override
@@ -50,28 +64,31 @@ public class CollapsibleTextList extends ClickButton {
 		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		int v = getHoverState(isMouseOver());
 		int heightOffset = (height - 8) / 2;
+		int renderedLines = 0;
+		int interpolatedHeight = previousHeight + MathHelper.floor(partialTicks * (previousHeight - currentHeight));
 
 		GuiUtils.drawContinuousTexturedBox(BUTTON_TEXTURES, x, y, 0, 46 + v * 20, width, height, 200, 20, 2, 3, 2, 2, zLevel);
 		drawCenteredString(font, displayString, x + font.getStringWidth(displayString) / 2 + 3, y + heightOffset, 0xE0E0E0);
+		GuiUtils.drawGradientRect(0, x, y + height, x + width, y + interpolatedHeight, 0xC0101010, 0xD0101010);
 
-		if (open) {
-			int renderedLines = 0;
+		for (int i = 0; i < textLines.size(); i++) {
+			int textY = y + 2 + height + renderedLines * font.FONT_HEIGHT + (i * 12);
+			List<String> linesToDraw = textLines.get(i);
 
-			GuiUtils.drawGradientRect(0, x, y + height, x + width, y + heightOpen, 0xC0101010, 0xD0101010);
+			if (i > 0)
+				GuiUtils.drawGradientRect((int) zLevel, x + 1, textY - 3, x + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0);
 
-			for (int i = 0; i < textLines.size(); i++) {
-				int textY = y + 2 + height + renderedLines * font.FONT_HEIGHT + (i * 12);
-				List<String> linesToDraw = textLines.get(i);
+			for (int lineIndex = 0; lineIndex < linesToDraw.size(); lineIndex++) {
+				int lineY = textY + lineIndex * font.FONT_HEIGHT;
 
-				if (i > 0)
-					GuiUtils.drawGradientRect((int) zLevel, x + 1, textY - 3, x + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0);
+				//don't render text that would render outside of the current height of the text list
+				if (lineY + font.FONT_HEIGHT > y + interpolatedHeight)
+					return;
 
-				for (int lineIndex = 0; lineIndex < linesToDraw.size(); lineIndex++) {
-					font.drawString(linesToDraw.get(lineIndex), x + 2, textY + lineIndex * font.FONT_HEIGHT, 0xE0E0E0);
-				}
-
-				renderedLines += linesToDraw.size() - 1;
+				font.drawString(linesToDraw.get(lineIndex), x + 2, lineY, 0xE0E0E0);
 			}
+
+			renderedLines += linesToDraw.size() - 1;
 		}
 	}
 
@@ -103,7 +120,11 @@ public class CollapsibleTextList extends ClickButton {
 	}
 
 	public int getHeight() {
-		return open ? heightOpen : height;
+		return currentHeight;
+	}
+
+	public int getMaximumHeight() {
+		return open ? maximumHeight : height;
 	}
 
 	@Override

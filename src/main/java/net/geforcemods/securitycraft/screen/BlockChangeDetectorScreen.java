@@ -221,6 +221,9 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 
 		if (colorChooser != null)
 			colorChooser.updateScreen();
+
+		if (changeEntryList != null)
+			changeEntryList.tick();
 	}
 
 	@Override
@@ -339,6 +342,10 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 			}
 		}
 
+		public void tick() {
+			filteredEntries.forEach(CollapsibleTextList::tick);
+		}
+
 		public void addEntry(ContentSavingCollapsibleTextList entry) {
 			entry.setWidth(154);
 			entry.setHeight(slotHeight);
@@ -379,7 +386,7 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 		}
 
 		public void recalculateContentHeight() {
-			int height = filteredEntries.stream().reduce(0, (accumulated, ctl) -> accumulated + ctl.getHeight(), (identity, accumulated) -> identity + accumulated);
+			int height = filteredEntries.stream().reduce(0, (accumulated, ctl) -> accumulated + ctl.getMaximumHeight(), (identity, accumulated) -> identity + accumulated);
 
 			if (height < bottom - top - 4)
 				height = bottom - top - 4;
