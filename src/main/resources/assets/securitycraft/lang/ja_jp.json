@@ -1130,6 +1130,8 @@
 	"module.securitycraft.glow_display_case.blacklist_module.description": "ディスプレイケースに拒否リストモジュールを追加すると、リストアップされたプレイヤーはブロックとのやり取りを禁止されます。",
 	"module.securitycraft.glow_display_case.smart_module.description": "パスコードが必要なブロックにスマートモジュールを追加すると、不正なコードが入力された後、クールダウンが適用されます。その間、新しいコードを入力することはできません。",
 	"module.securitycraft.glow_display_case.harming_module.description": "パスコードが必要なブロックにハーミングモジュールを追加すると、間違ったコードを入力した場合、プレイヤーがダメージを受けるようになります。",
+	"module.securitycraft.keypad_barrel.smart_module.description": "パスコードが必要なブロックにスマートモジュールを追加すると、不正なコードが入力された後、クールダウンが適用されます。その間、新しいコードを入力することはできません。",
+	"module.securitycraft.keypad_barrel.harming_module.description": "パスコードが必要なブロックにハーミングモジュールを追加すると、間違ったコードを入力した場合、プレイヤーがダメージを受けるようになります。",
 
 	"option.generic.disabled": "無効：%s",
 	"option.generic.disabled.description": "このブロックを無効にして、再度有効にするまで動作させないようにする必要があるか？",
@@ -1243,6 +1245,7 @@
 	"option.securitycraft.display_case.sendMessage.description": "このケースは有効化時にメッセージを送信するか？(許可リスト/拒否リストを使用する場合)",
 	"option.securitycraft.glow_display_case.sendMessage": "メッセージ：%s",
 	"option.securitycraft.glow_display_case.sendMessage.description": "このケースは有効化時にメッセージを送信するか？(許可リスト/拒否リストを使用する場合)",
+	"option.securitycraft.keypad_barrel.sendMessage": "メッセージ：%s",
 
 	"securitycraft.subtitle.alarm": "アラーム音",
 	"securitycraft.subtitle.electrified": "感電死したエンティティ",

@@ -1245,6 +1245,7 @@
 	"option.securitycraft.display_case.sendMessage.description": "¿Debería este expositor enviar un mensaje al activarse (cuando se usa un módulo de lista de permitidos/rechazados)?",
 	"option.securitycraft.glow_display_case.sendMessage": "Mensaje: %s",
 	"option.securitycraft.glow_display_case.sendMessage.description": "¿Debería este expositor luminoso enviar un mensaje al activarse (cuando se usa un módulo de lista de permitidos/rechazados)?",
+	"option.securitycraft.keypad_barrel.sendMessage": "Mensaje: %s",
 
 	"securitycraft.subtitle.alarm": "Alarma suena",
 	"securitycraft.subtitle.electrified": "Entidad se electrocuta",

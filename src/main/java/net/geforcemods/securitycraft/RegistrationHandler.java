@@ -199,6 +199,7 @@ public class RegistrationHandler {
 							new ItemStack(SCContent.KEY_PANEL.get()),
 							new ItemStack(SCContent.KEYPAD.get()),
 							new ItemStack(SCContent.KEYPAD_CHEST.get()),
+							new ItemStack(SCContent.KEYPAD_BARREL.get()),
 							new ItemStack(SCContent.KEYPAD_FURNACE.get()),
 							new ItemStack(SCContent.KEYPAD_SMOKER.get()),
 							new ItemStack(SCContent.KEYPAD_BLAST_FURNACE.get()),
