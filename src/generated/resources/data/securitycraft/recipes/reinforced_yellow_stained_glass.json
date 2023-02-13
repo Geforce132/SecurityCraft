@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "building",
   "group": "securitycraft:reinforced_glass",
   "key": {
     "D": {

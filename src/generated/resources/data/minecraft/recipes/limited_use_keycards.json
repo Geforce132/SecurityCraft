@@ -1,3 +1,4 @@
 {
-  "type": "securitycraft:limited_use_keycard_recipe"
+  "type": "securitycraft:limited_use_keycard_recipe",
+  "category": "misc"
 }
