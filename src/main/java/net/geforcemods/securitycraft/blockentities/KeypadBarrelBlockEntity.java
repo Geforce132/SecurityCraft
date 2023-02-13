@@ -23,23 +23,56 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BarrelBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 
-public class KeypadBarrelBlockEntity extends BarrelBlockEntity implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable, ILockable, ISentryBulletContainer {
+public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable, ILockable, ISentryBulletContainer {
+	private NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
+	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
+		@Override
+		protected void onOpen(Level level, BlockPos pos, BlockState state) {
+			KeypadBarrelBlockEntity.this.playSound(state, state.getValue(KeypadBarrelBlock.FROG) ? SoundEvents.FROG_AMBIENT : SoundEvents.BARREL_OPEN);
+			KeypadBarrelBlockEntity.this.updateBlockState(state, true);
+		}
+
+		@Override
+		protected void onClose(Level level, BlockPos pos, BlockState state) {
+			KeypadBarrelBlockEntity.this.playSound(state, state.getValue(KeypadBarrelBlock.FROG) ? SoundEvents.FROG_DEATH : SoundEvents.BARREL_CLOSE);
+			KeypadBarrelBlockEntity.this.updateBlockState(state, false);
+		}
+
+		@Override
+		protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int count, int openCount) {}
+
+		@Override
+		protected boolean isOwnContainer(Player player) {
+			if (player.containerMenu instanceof ChestMenu menu)
+				return menu.getContainer() == KeypadBarrelBlockEntity.this;
+
+			return false;
+		}
+	};
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private String passcode;
 	private Owner owner = new Owner();
@@ -50,17 +83,15 @@ public class KeypadBarrelBlockEntity extends BarrelBlockEntity implements IPassw
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public KeypadBarrelBlockEntity(BlockPos pos, BlockState state) {
-		super(pos, state);
-	}
-
-	@Override
-	public BlockEntityType<?> getType() {
-		return SCContent.KEYPAD_BARREL_BLOCK_ENTITY.get();
+		super(SCContent.KEYPAD_BARREL_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
+
+		if (!trySaveLootTable(tag))
+			ContainerHelper.saveAllItems(tag, items);
 
 		writeModuleInventory(tag);
 		writeModuleStates(tag);
@@ -77,6 +108,11 @@ public class KeypadBarrelBlockEntity extends BarrelBlockEntity implements IPassw
 	@Override
 	public void load(CompoundTag tag) {
 		super.load(tag);
+
+		items = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
+
+		if (!tryLoadLootTable(tag))
+			ContainerHelper.loadAllItems(tag, items);
 
 		modules = readModuleInventory(tag);
 		moduleStates = readModuleStates(tag);
@@ -150,6 +186,21 @@ public class KeypadBarrelBlockEntity extends BarrelBlockEntity implements IPassw
 	}
 
 	@Override
+	public int getContainerSize() {
+		return 27;
+	}
+
+	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return this.items;
+	}
+
+	@Override
+	protected void setItems(NonNullList<ItemStack> items) {
+		this.items = items;
+	}
+
+	@Override
 	public boolean enableHack() {
 		return true;
 	}
@@ -166,9 +217,8 @@ public class KeypadBarrelBlockEntity extends BarrelBlockEntity implements IPassw
 	}
 
 	@Override
-	public void openPasswordGUI(Level level, BlockPos pos, Player player) {
-		if (!level.isClientSide)
-			IPasswordProtected.super.openPasswordGUI(level, pos, player);
+	protected AbstractContainerMenu createMenu(int id, Inventory playerInventory) {
+		return ChestMenu.threeRows(id, playerInventory, this);
 	}
 
 	@Override
@@ -265,5 +315,40 @@ public class KeypadBarrelBlockEntity extends BarrelBlockEntity implements IPassw
 		sendMessage.setValue(value);
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
 		setChanged();
+	}
+
+	@Override
+	public void startOpen(Player player) {
+		if (!remove && !player.isSpectator())
+			openersCounter.incrementOpeners(player, getLevel(), getBlockPos(), getBlockState());
+	}
+
+	@Override
+	public void stopOpen(Player player) {
+		if (!remove && !player.isSpectator())
+			openersCounter.decrementOpeners(player, getLevel(), getBlockPos(), getBlockState());
+	}
+
+	public void recheckOpen() {
+		if (!remove)
+			openersCounter.recheckOpeners(getLevel(), getBlockPos(), getBlockState());
+	}
+
+	public void updateBlockState(BlockState state, boolean open) {
+		level.setBlock(getBlockPos(), state.setValue(KeypadBarrelBlock.OPEN, open), 3);
+	}
+
+	public void playSound(BlockState state, SoundEvent sound) {
+		Direction normalFacing = switch (state.getValue(KeypadBarrelBlock.GENERAL_FACING)) {
+			case UP -> Direction.UP;
+			case SIDEWAYS -> state.getValue(KeypadBarrelBlock.HORIZONTAL_FACING);
+			case DOWN -> Direction.DOWN;
+		};
+		Vec3i facingNormal = normalFacing.getNormal();
+		double x = worldPosition.getX() + 0.5D + facingNormal.getX() / 2.0D;
+		double y = worldPosition.getY() + 0.5D + facingNormal.getY() / 2.0D;
+		double z = worldPosition.getZ() + 0.5D + facingNormal.getZ() / 2.0D;
+
+		level.playSound(null, x, y, z, sound, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
 	}
 }

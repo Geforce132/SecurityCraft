@@ -1,56 +1,52 @@
 {
   "variants": {
-    "facing=down,open=false": {
-      "model": "minecraft:block/barrel",
-      "x": 180
-    },
-    "facing=down,open=true": {
-      "model": "minecraft:block/barrel_open",
-      "x": 180
-    },
-    "facing=east,open=false": {
-      "model": "minecraft:block/barrel",
-      "x": 90,
-      "y": 90
-    },
-    "facing=east,open=true": {
-      "model": "minecraft:block/barrel_open",
-      "x": 90,
-      "y": 90
-    },
-    "facing=north,open=false": {
-      "model": "minecraft:block/barrel",
-      "x": 90
-    },
-    "facing=north,open=true": {
-      "model": "minecraft:block/barrel_open",
-      "x": 90
-    },
-    "facing=south,open=false": {
-      "model": "minecraft:block/barrel",
-      "x": 90,
-      "y": 180
-    },
-    "facing=south,open=true": {
-      "model": "minecraft:block/barrel_open",
-      "x": 90,
-      "y": 180
-    },
-    "facing=up,open=false": {
-      "model": "minecraft:block/barrel"
-    },
-    "facing=up,open=true": {
-      "model": "minecraft:block/barrel_open"
-    },
-    "facing=west,open=false": {
-      "model": "minecraft:block/barrel",
-      "x": 90,
-      "y": 270
-    },
-    "facing=west,open=true": {
-      "model": "minecraft:block/barrel_open",
-      "x": 90,
-      "y": 270
-    }
+    "facing=east,frog=false,general_facing=down,open=false": { "model": "securitycraft:block/keypad_barrel", "y": 270, "x": 180 },
+    "facing=north,frog=false,general_facing=down,open=false": { "model": "securitycraft:block/keypad_barrel", "y": 180, "x": 180 },
+    "facing=south,frog=false,general_facing=down,open=false": { "model": "securitycraft:block/keypad_barrel", "x": 180 },
+    "facing=west,frog=false,general_facing=down,open=false": { "model": "securitycraft:block/keypad_barrel", "y": 90, "x": 180 },
+    "facing=east,frog=false,general_facing=sideways,open=false": { "model": "securitycraft:block/keypad_barrel", "y": 270, "x": 270 },
+    "facing=north,frog=false,general_facing=sideways,open=false": { "model": "securitycraft:block/keypad_barrel", "y": 180, "x": 270 },
+    "facing=south,frog=false,general_facing=sideways,open=false": { "model": "securitycraft:block/keypad_barrel", "x": 270 },
+    "facing=west,frog=false,general_facing=sideways,open=false": { "model": "securitycraft:block/keypad_barrel", "y": 90, "x": 270 },
+    "facing=east,frog=false,general_facing=up,open=false": { "model": "securitycraft:block/keypad_barrel", "y": 270 },
+    "facing=north,frog=false,general_facing=up,open=false": { "model": "securitycraft:block/keypad_barrel", "y": 180 },
+    "facing=south,frog=false,general_facing=up,open=false": { "model": "securitycraft:block/keypad_barrel" },
+    "facing=west,frog=false,general_facing=up,open=false": { "model": "securitycraft:block/keypad_barrel", "y": 90 },
+    "facing=east,frog=false,general_facing=down,open=true": { "model": "securitycraft:block/keypad_barrel_open", "y": 270, "x": 180 },
+    "facing=north,frog=false,general_facing=down,open=true": { "model": "securitycraft:block/keypad_barrel_open", "y": 180, "x": 180 },
+    "facing=south,frog=false,general_facing=down,open=true": { "model": "securitycraft:block/keypad_barrel_open", "x": 180 },
+    "facing=west,frog=false,general_facing=down,open=true": { "model": "securitycraft:block/keypad_barrel_open", "y": 90, "x": 180 },
+    "facing=east,frog=false,general_facing=sideways,open=true": { "model": "securitycraft:block/keypad_barrel_open", "y": 270, "x": 270 },
+    "facing=north,frog=false,general_facing=sideways,open=true": { "model": "securitycraft:block/keypad_barrel_open", "y": 180, "x": 270 },
+    "facing=south,frog=false,general_facing=sideways,open=true": { "model": "securitycraft:block/keypad_barrel_open", "x": 270 },
+    "facing=west,frog=false,general_facing=sideways,open=true": { "model": "securitycraft:block/keypad_barrel_open", "y": 90, "x": 270 },
+    "facing=east,frog=false,general_facing=up,open=true": { "model": "securitycraft:block/keypad_barrel_open", "y": 270 },
+    "facing=north,frog=false,general_facing=up,open=true": { "model": "securitycraft:block/keypad_barrel_open", "y": 180 },
+    "facing=south,frog=false,general_facing=up,open=true": { "model": "securitycraft:block/keypad_barrel_open" },
+    "facing=west,frog=false,general_facing=up,open=true": { "model": "securitycraft:block/keypad_barrel_open", "y": 90 },
+    "facing=east,frog=true,general_facing=down,open=false": { "model": "securitycraft:block/keypad_barrel_frog", "y": 270, "x": 180 },
+    "facing=north,frog=true,general_facing=down,open=false": { "model": "securitycraft:block/keypad_barrel_frog", "y": 180, "x": 180 },
+    "facing=south,frog=true,general_facing=down,open=false": { "model": "securitycraft:block/keypad_barrel_frog", "x": 180 },
+    "facing=west,frog=true,general_facing=down,open=false": { "model": "securitycraft:block/keypad_barrel_frog", "y": 90, "x": 180 },
+    "facing=east,frog=true,general_facing=sideways,open=false": { "model": "securitycraft:block/keypad_barrel_frog", "y": 270, "x": 270 },
+    "facing=north,frog=true,general_facing=sideways,open=false": { "model": "securitycraft:block/keypad_barrel_frog", "y": 180, "x": 270 },
+    "facing=south,frog=true,general_facing=sideways,open=false": { "model": "securitycraft:block/keypad_barrel_frog", "x": 270 },
+    "facing=west,frog=true,general_facing=sideways,open=false": { "model": "securitycraft:block/keypad_barrel_frog", "y": 90, "x": 270 },
+    "facing=east,frog=true,general_facing=up,open=false": { "model": "securitycraft:block/keypad_barrel_frog", "y": 270 },
+    "facing=north,frog=true,general_facing=up,open=false": { "model": "securitycraft:block/keypad_barrel_frog", "y": 180 },
+    "facing=south,frog=true,general_facing=up,open=false": { "model": "securitycraft:block/keypad_barrel_frog" },
+    "facing=west,frog=true,general_facing=up,open=false": { "model": "securitycraft:block/keypad_barrel_frog", "y": 90 },
+    "facing=east,frog=true,general_facing=down,open=true": { "model": "securitycraft:block/keypad_barrel_frog_open", "y": 270, "x": 180 },
+    "facing=north,frog=true,general_facing=down,open=true": { "model": "securitycraft:block/keypad_barrel_frog_open", "y": 180, "x": 180 },
+    "facing=south,frog=true,general_facing=down,open=true": { "model": "securitycraft:block/keypad_barrel_frog_open", "x": 180 },
+    "facing=west,frog=true,general_facing=down,open=true": { "model": "securitycraft:block/keypad_barrel_frog_open", "y": 90, "x": 180 },
+    "facing=east,frog=true,general_facing=sideways,open=true": { "model": "securitycraft:block/keypad_barrel_frog_open", "y": 270, "x": 270 },
+    "facing=north,frog=true,general_facing=sideways,open=true": { "model": "securitycraft:block/keypad_barrel_frog_open", "y": 180, "x": 270 },
+    "facing=south,frog=true,general_facing=sideways,open=true": { "model": "securitycraft:block/keypad_barrel_frog_open", "x": 270 },
+    "facing=west,frog=true,general_facing=sideways,open=true": { "model": "securitycraft:block/keypad_barrel_frog_open", "y": 90, "x": 270 },
+    "facing=east,frog=true,general_facing=up,open=true": { "model": "securitycraft:block/keypad_barrel_frog_open", "y": 270 },
+    "facing=north,frog=true,general_facing=up,open=true": { "model": "securitycraft:block/keypad_barrel_frog_open", "y": 180 },
+    "facing=south,frog=true,general_facing=up,open=true": { "model": "securitycraft:block/keypad_barrel_frog_open" },
+    "facing=west,frog=true,general_facing=up,open=true": { "model": "securitycraft:block/keypad_barrel_frog_open", "y": 90 }
   }
 }
