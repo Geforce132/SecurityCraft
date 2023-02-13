@@ -1152,6 +1152,7 @@
 	"module.securitycraft.glow_display_case.harming_module.description": "Adding a harming module to a block that requires a passcode will result in the player getting damaged, if they enter an incorrect code.",
 	"module.securitycraft.keypad_barrel.whitelist_module.description": "Adding an allowlist module to a Password-protected Barrel will allow players to open it without knowing the code. Additionally, Reinforced Hoppers owned by listed players can extract items from the barrel.",
 	"module.securitycraft.keypad_barrel.blacklist_module.description": "Adding a denylist module to a Password-protected Barrel will ban listed players from interacting with the block.",
+	"module.securitycraft.keypad_barrel.disguise_module.description": "Adding a disguise module to a Password-protected Barrek will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
 	"module.securitycraft.keypad_barrel.smart_module.description": "Adding a smart module to a block that requires a passcode will result in a cooldown being applied after an incorrect code has been entered. During that time, no new code can be entered.",
 	"module.securitycraft.keypad_barrel.harming_module.description": "Adding a harming module to a block that requires a passcode will result in the player getting damaged, if they enter an incorrect code.",
 

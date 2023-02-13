@@ -1147,6 +1147,7 @@
 	"module.securitycraft.glow_display_case.harming_module.description": "Wenn ein Schadensmodul zu einem Block, der einen Code benötigt, hinzugefügt wird, bekommen Spieler Schaden, wenn sie einen falschen Code eingeben.",
 	"module.securitycraft.keypad_barrel.whitelist_module.description": "Ein Zulassungslisten-Modul in einem passwortgesicherten Fass erlaubt zugelassenen Spielern, sie zu öffnen, ohne den Code zu kennen. Zusätzlich kann ein verstärkter Trichter eines zugelassenen Spielers Items aus dem Fass ziehen.",
 	"module.securitycraft.keypad_barrel.blacklist_module.description": "Ein Sperrlisten-Modul in einem passwortgesicherten Fass verhindert, dass gesperrte Spieler mit dem Schloss interagieren können.",
+	"module.securitycraft.keypad_barrel.disguise_module.description": "Wenn ein Tarnmodul zu einem passwortgesicherten Fass hinzugefügt wird, ändert es seine Textur/sein Modell zu denen des Blockes im Tarnmodul.",
 	"module.securitycraft.keypad_barrel.smart_module.description": "Wenn ein schlaues Modul zu einem Block, der einen Code benötigt, hinzugefügt wird, existiert eine Abklingzeit, nachdem ein inkorrekter Code eingegeben wurde. In dieser Zeit kann kein neuer Code eingegeben werden.",
 	"module.securitycraft.keypad_barrel.harming_module.description": "Wenn ein Schadensmodul zu einem Block, der einen Code benötigt, hinzugefügt wird, bekommen Spieler Schaden, wenn sie einen falschen Code eingeben.",
 
