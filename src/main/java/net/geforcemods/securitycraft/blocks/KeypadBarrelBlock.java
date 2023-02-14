@@ -45,18 +45,18 @@ import net.minecraftforge.common.Tags;
 
 public class KeypadBarrelBlock extends DisguisableBlock {
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
-	public static final EnumProperty<GeneralFacing> GENERAL_FACING = EnumProperty.create("general_facing", GeneralFacing.class);
+	public static final EnumProperty<LidFacing> LID_FACING = EnumProperty.create("lid_facing", LidFacing.class);
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 	public static final BooleanProperty FROG = BooleanProperty.create("frog");
 
 	public KeypadBarrelBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(HORIZONTAL_FACING, Direction.NORTH).setValue(OPEN, false).setValue(GENERAL_FACING, GeneralFacing.UP).setValue(FROG, false).setValue(WATERLOGGED, false));
+		registerDefaultState(stateDefinition.any().setValue(HORIZONTAL_FACING, Direction.NORTH).setValue(OPEN, false).setValue(LID_FACING, LidFacing.UP).setValue(FROG, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return defaultBlockState().setValue(HORIZONTAL_FACING, ctx.getHorizontalDirection().getOpposite()).setValue(GENERAL_FACING, GeneralFacing.fromDirection(ctx.getNearestLookingDirection().getOpposite()));
+		return defaultBlockState().setValue(HORIZONTAL_FACING, ctx.getHorizontalDirection().getOpposite()).setValue(LID_FACING, LidFacing.fromDirection(ctx.getNearestLookingDirection().getOpposite()));
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(HORIZONTAL_FACING, GENERAL_FACING, OPEN, FROG, WATERLOGGED);
+		builder.add(HORIZONTAL_FACING, LID_FACING, OPEN, FROG, WATERLOGGED);
 	}
 
 	public static class Convertible implements IPasswordConvertible {
@@ -171,7 +171,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 		public boolean convert(Player player, Level level, BlockPos pos) {
 			BlockState state = level.getBlockState(pos);
 			BarrelBlockEntity barrel = (BarrelBlockEntity) level.getBlockEntity(pos);
-			GeneralFacing generalFacing = GeneralFacing.fromDirection(state.getValue(BarrelBlock.FACING));
+			LidFacing generalFacing = LidFacing.fromDirection(state.getValue(BarrelBlock.FACING));
 			Direction horizontalFacing;
 			CompoundTag tag;
 			KeypadBarrelBlockEntity keypadBarrel;
@@ -183,7 +183,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 				case UP, DOWN -> player.getDirection().getOpposite();
 				case SIDEWAYS -> state.getValue(BarrelBlock.FACING);
 			};
-			level.setBlockAndUpdate(pos, SCContent.KEYPAD_BARREL.get().defaultBlockState().setValue(HORIZONTAL_FACING, horizontalFacing).setValue(GENERAL_FACING, generalFacing).setValue(OPEN, state.getValue(BarrelBlock.OPEN)));
+			level.setBlockAndUpdate(pos, SCContent.KEYPAD_BARREL.get().defaultBlockState().setValue(HORIZONTAL_FACING, horizontalFacing).setValue(LID_FACING, generalFacing).setValue(OPEN, state.getValue(BarrelBlock.OPEN)));
 			keypadBarrel = (KeypadBarrelBlockEntity) level.getBlockEntity(pos);
 			keypadBarrel.load(tag);
 			keypadBarrel.setOwner(player.getUUID().toString(), player.getName().getString());
@@ -191,18 +191,18 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 		}
 	}
 
-	public static enum GeneralFacing implements StringRepresentable {
+	public static enum LidFacing implements StringRepresentable {
 		UP("up"),
 		SIDEWAYS("sideways"),
 		DOWN("down");
 
 		private final String name;
 
-		private GeneralFacing(String name) {
+		private LidFacing(String name) {
 			this.name = name;
 		}
 
-		public static GeneralFacing fromDirection(Direction direction) {
+		public static LidFacing fromDirection(Direction direction) {
 			return switch (direction) {
 				case UP -> UP;
 				case NORTH, SOUTH, EAST, WEST -> SIDEWAYS;

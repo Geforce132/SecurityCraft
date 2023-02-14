@@ -368,7 +368,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	}
 
 	public void playSound(BlockState state, SoundEvent sound) {
-		Direction normalFacing = switch (state.getValue(KeypadBarrelBlock.GENERAL_FACING)) {
+		Direction normalFacing = switch (state.getValue(KeypadBarrelBlock.LID_FACING)) {
 			case UP -> Direction.UP;
 			case SIDEWAYS -> state.getValue(KeypadBarrelBlock.HORIZONTAL_FACING);
 			case DOWN -> Direction.DOWN;
