@@ -7,22 +7,17 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
-import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
-import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -31,12 +26,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.network.PacketDistributor;
 
 public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	private DisabledOption disabled = new DisabledOption(false) {
@@ -132,24 +123,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
 		super.onModuleInserted(stack, module, toggled);
 
-		if (module == ModuleType.DISGUISE) {
-			BlockState state = getBlockState();
-
-			if (!level.isClientSide) {
-				SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
-
-				if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
-					level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-					level.updateNeighborsAt(worldPosition, state.getBlock());
-				}
-			}
-			else {
-				ClientHandler.putDisguisedBeRenderer(this, stack);
-
-				if (state.getLightEmission(level, worldPosition) > 0)
-					level.getChunkSource().getLightEngine().checkBlock(worldPosition);
-			}
-		}
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleInserted(this, stack, toggled);
 		else if (module == ModuleType.SMART)
 			applyExistingSideConfig();
 	}
@@ -158,25 +133,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		super.onModuleRemoved(stack, module, toggled);
 
-		if (module == ModuleType.DISGUISE) {
-			if (!level.isClientSide) {
-				BlockState state = getBlockState();
-
-				SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
-
-				if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
-					level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-					level.updateNeighborsAt(worldPosition, state.getBlock());
-				}
-			}
-			else {
-				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
-				DisguisableBlock.getDisguisedBlockStateFromStack(level, stack).ifPresent(disguisedState -> {
-					if (disguisedState.getLightEmission(level, worldPosition) > 0)
-						level.getChunkSource().getLightEngine().checkBlock(worldPosition);
-				});
-			}
-		}
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleRemoved(this, stack, toggled);
 		else if (module == ModuleType.REDSTONE) {
 			if (getBlockState().getValue(LaserBlock.POWERED)) {
 				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(LaserBlock.POWERED, false));
@@ -190,15 +148,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	@Override
 	public void handleUpdateTag(CompoundTag tag) {
 		super.handleUpdateTag(tag);
-
-		if (level != null && level.isClientSide) {
-			ItemStack stack = getModule(ModuleType.DISGUISE);
-
-			if (!stack.isEmpty())
-				ClientHandler.putDisguisedBeRenderer(this, stack);
-			else
-				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
-		}
+		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
 	@Override
@@ -214,9 +164,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	@Override
 	public void setRemoved() {
 		super.setRemoved();
-
-		if (level.isClientSide)
-			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
+		DisguisableBlockEntity.onSetRemoved(this);
 	}
 
 	@Override
@@ -235,9 +183,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 	@Override
 	public ModelData getModelData() {
-		BlockState disguisedState = DisguisableBlock.getDisguisedStateOrDefault(Blocks.AIR.defaultBlockState(), level, worldPosition);
-
-		return ModelData.builder().with(DisguisableDynamicBakedModel.DISGUISED_STATE, disguisedState).build();
+		return DisguisableBlockEntity.getModelData(this);
 	}
 
 	public boolean isEnabled() {

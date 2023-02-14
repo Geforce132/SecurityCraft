@@ -27,7 +27,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BarrelBlock;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
@@ -44,7 +43,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 
-public class KeypadBarrelBlock extends BaseEntityBlock {
+public class KeypadBarrelBlock extends DisguisableBlock {
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final EnumProperty<GeneralFacing> GENERAL_FACING = EnumProperty.create("general_facing", GeneralFacing.class);
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
@@ -52,7 +51,7 @@ public class KeypadBarrelBlock extends BaseEntityBlock {
 
 	public KeypadBarrelBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(HORIZONTAL_FACING, Direction.NORTH).setValue(OPEN, false).setValue(GENERAL_FACING, GeneralFacing.UP).setValue(FROG, false));
+		registerDefaultState(stateDefinition.any().setValue(HORIZONTAL_FACING, Direction.NORTH).setValue(OPEN, false).setValue(GENERAL_FACING, GeneralFacing.UP).setValue(FROG, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -159,7 +158,7 @@ public class KeypadBarrelBlock extends BaseEntityBlock {
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(HORIZONTAL_FACING, GENERAL_FACING, OPEN, FROG);
+		builder.add(HORIZONTAL_FACING, GENERAL_FACING, OPEN, FROG, WATERLOGGED);
 	}
 
 	public static class Convertible implements IPasswordConvertible {
