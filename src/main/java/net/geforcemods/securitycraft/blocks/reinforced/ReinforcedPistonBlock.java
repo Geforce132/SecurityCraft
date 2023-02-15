@@ -64,6 +64,10 @@ public class ReinforcedPistonBlock extends BlockPistonBase implements IReinforce
 	public void checkForMove(World world, BlockPos pos, IBlockState state) {
 		EnumFacing facing = state.getValue(FACING);
 		boolean hasSignal = shouldBeExtended(world, pos, facing);
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof OwnableBlockEntity && !((OwnableBlockEntity) te).getOwner().isValidated())
+			return;
 
 		if (hasSignal && !state.getValue(EXTENDED)) {
 			if ((new ReinforcedPistonBlockStructureHelper(world, pos, facing, true)).canMove()) {
