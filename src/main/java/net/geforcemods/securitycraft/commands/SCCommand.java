@@ -51,8 +51,8 @@ public class SCCommand {
 	});
 
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-		dispatcher.register(LiteralArgumentBuilder.<CommandSourceStack>literal("sc")
 		//@formatter:off
+		dispatcher.register(LiteralArgumentBuilder.<CommandSourceStack>literal("sc")
 				.requires(Predicates.alwaysTrue())
 				.then(dump())
 				.then(connect())
