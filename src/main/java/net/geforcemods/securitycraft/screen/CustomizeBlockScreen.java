@@ -130,14 +130,11 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 					addButton(optionButtons[i]);
 					hoverCheckers.add(new TextHoverChecker(optionButtons[i], getOptionDescription(i)));
 				}
+
+				for (Button button : optionButtons) {
+					extraAreas.add(new Rectangle2d(button.x, button.y, button.getWidth(), button.getHeight()));
+				}
 			}
-		}
-
-		for (Button button : optionButtons) {
-			if (button == null)
-				continue;
-
-			extraAreas.add(new Rectangle2d(button.x, button.y, button.getWidth(), button.getHeight()));
 		}
 	}
 
