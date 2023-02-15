@@ -61,26 +61,6 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (level.getBlockEntity(pos) instanceof OwnableBlockEntity be) {
-			Owner owner = be.getOwner();
-
-			if (!owner.isValidated()) {
-				if (be.isOwnedBy(player)) {
-					owner.setValidated(true);
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), new TranslatableComponent("messages.securitycraft:ownable.validate"), ChatFormatting.GREEN);
-					return InteractionResult.SUCCESS;
-				}
-
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), new TranslatableComponent("messages.securitycraft:ownable.ownerNotValidated"), ChatFormatting.RED);
-				return InteractionResult.SUCCESS;
-			}
-		}
-
-		return InteractionResult.PASS;
-	}
-
-	@Override
 	public void checkIfExtend(Level level, BlockPos pos, BlockState state) {
 		Direction direction = state.getValue(FACING);
 		boolean hasSignal = getNeighborSignal(level, pos, direction);

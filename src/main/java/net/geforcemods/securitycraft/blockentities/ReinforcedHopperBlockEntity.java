@@ -124,4 +124,9 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 		else
 			onModuleRemoved(getModule(module), module, true);
 	}
+
+	@Override
+	public boolean needsValidation() {
+		return true;
+	}
 }
