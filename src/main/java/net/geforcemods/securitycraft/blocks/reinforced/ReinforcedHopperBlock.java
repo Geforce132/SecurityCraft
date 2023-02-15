@@ -4,9 +4,14 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -45,6 +50,19 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (!level.isClientSide) {
 			if (level.getBlockEntity(pos) instanceof ReinforcedHopperBlockEntity be) {
+				Owner owner = be.getOwner();
+
+				if (!owner.isValidated()) {
+					if (be.isOwnedBy(player)) {
+						owner.setValidated(true);
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Component.translatable("messages.securitycraft:ownable.validate"), ChatFormatting.GREEN);
+						return InteractionResult.SUCCESS;
+					}
+
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Component.translatable("messages.securitycraft:ownable.ownerNotValidated"), ChatFormatting.RED);
+					return InteractionResult.SUCCESS;
+				}
+
 				//only allow the owner or players on the allowlist to access a reinforced hopper
 				if (be.isOwnedBy(player) || be.isAllowed(player))
 					player.openMenu(be);
@@ -94,7 +112,9 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 		public boolean canExtract(IOwnable be, Level level, BlockPos pos, BlockState state) {
 			ReinforcedHopperBlockEntity hopperBe = (ReinforcedHopperBlockEntity) level.getBlockEntity(pos);
 
-			if (!be.getOwner().owns(hopperBe)) {
+			if (!hopperBe.getOwner().isValidated())
+				return false;
+			else if (!be.getOwner().owns(hopperBe)) {
 				if (be instanceof IModuleInventory inv) {
 					if (inv.isAllowed(hopperBe.getOwner().getName())) //hoppers can extract out of e.g. chests if the hopper's owner is on the chest's allowlist module
 						return true;

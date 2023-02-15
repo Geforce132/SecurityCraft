@@ -119,4 +119,9 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 	public void toggleModuleState(ModuleType module, boolean shouldBeEnabled) {
 		moduleStates.put(module, shouldBeEnabled);
 	}
+
+	@Override
+	public boolean needsValidation() {
+		return true;
+	}
 }
