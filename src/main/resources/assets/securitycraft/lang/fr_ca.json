@@ -1103,6 +1103,8 @@
 	"module.securitycraft.glow_display_case.blacklist_module.description": "L'ajout d'un module de liste de refus à une virtrine bannira les joueurs inscrits d'interagir avec le bloc.",
 	"module.securitycraft.glow_display_case.smart_module.description": "L'ajout d'un module d'intelligence à un bloc qui requiert un code d'accès en résultera d'application d'une attente après la saisie d'un code incorrect. Pendant ce temps, aucun nouveau code ne peut être saisi.",
 	"module.securitycraft.glow_display_case.harming_module.description": "L'ajout d'un module de dégâts à un bloc qui requiert un code d'accès fera subir des dégâts au joueur, s'il entre un code incorrect.",
+	"module.securitycraft.keypad_barrel.smart_module.description": "L'ajout d'un module d'intelligence à un bloc qui requiert un code d'accès en résultera d'application d'une attente après la saisie d'un code incorrect. Pendant ce temps, aucun nouveau code ne peut être saisi.",
+	"module.securitycraft.keypad_barrel.harming_module.description": "L'ajout d'un module de dégâts à un bloc qui requiert un code d'accès fera subir des dégâts au joueur, s'il entre un code incorrect.",
 
 	"option.generic.disabled": "Désactivé : %s",
 	"option.generic.disabled.description": "Ce bloc devrait-il être désactivé, de façon à ce qu'il ne fonctionne plus jusqu'à ce qu'il soit à nouveau activé ?",
@@ -1214,6 +1216,7 @@
 	"option.securitycraft.display_case.sendMessage.description": "Cette vitrine envoie-t-elle un message à son activation (en utilisant les modules d'autorisation / de refus)?",
 	"option.securitycraft.glow_display_case.sendMessage": "Message : %s",
 	"option.securitycraft.glow_display_case.sendMessage.description": "Cette vitrine envoie-t-elle un message à son activation (en utilisant les modules d'autorisation / de refus)?",
+	"option.securitycraft.keypad_barrel.sendMessage": "Message : %s",
 
 	"securitycraft.subtitle.alarm": "Sonnerie d‘alarme",
 	"securitycraft.subtitle.electrified": "Entité électrocuté",

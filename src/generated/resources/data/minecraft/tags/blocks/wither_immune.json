@@ -18,6 +18,7 @@
     "securitycraft:key_panel",
     "securitycraft:keycard_reader",
     "securitycraft:keypad",
+    "securitycraft:keypad_barrel",
     "securitycraft:keypad_chest",
     "securitycraft:keypad_door",
     "securitycraft:keypad_furnace",

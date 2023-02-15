@@ -1101,6 +1101,8 @@
 	"module.securitycraft.glow_display_case.blacklist_module.description": "Aggiungere un modulo lista negati ad una teca previene l'interazione dei giocatori nella lista con il blocco.",
 	"module.securitycraft.glow_display_case.smart_module.description": "Aggiungere un modulo intelligente a un blocco che richiede un codice fa in modo che quando viene inserito un codice errato parte un conto alla rovescia per la ricarica. In quel periodo non posso essere inseriti codici.",
 	"module.securitycraft.glow_display_case.harming_module.description": "Aggiungere un modulo nocivo a un blocco che richiede un codice risulterà in un danno al giocatore che inserisce un codice errato.",
+	"module.securitycraft.keypad_barrel.smart_module.description": "Aggiungere un modulo intelligente a un blocco che richiede un codice fa in modo che quando viene inserito un codice errato parte un conto alla rovescia per la ricarica. In quel periodo non posso essere inseriti codici.",
+	"module.securitycraft.keypad_barrel.harming_module.description": "Aggiungere un modulo nocivo a un blocco che richiede un codice risulterà in un danno al giocatore che inserisce un codice errato.",
 
 	"option.generic.disabled": "Disabilitato: %s",
 	"option.generic.disabled.description": "Questo blocco dovrebbe essere disabilitato, rendendolo inutilizzabile fino alla sua attivazione?",
@@ -1212,6 +1214,7 @@
 	"option.securitycraft.display_case.sendMessage.description": "Vuoi che questa teca mandi un messaggio all'attivazione (quando si usano moduli lista consentiti/negati)?",
 	"option.securitycraft.glow_display_case.sendMessage": "Messaggio: %s",
 	"option.securitycraft.glow_display_case.sendMessage.description": "Vuoi che questa teca mandi un messaggio all'attivazione (quando si usano moduli lista consentiti/negati)?",
+	"option.securitycraft.keypad_barrel.sendMessage": "Messaggio: %s",
 
 	"securitycraft.subtitle.alarm": "L'allarme sta suonando",
 	"securitycraft.subtitle.electrified": "Entità folgorata",

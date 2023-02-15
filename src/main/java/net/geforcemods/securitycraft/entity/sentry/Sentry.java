@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
-import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blocks.SentryDisguiseBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -346,7 +345,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		AbstractProjectileDispenseBehavior pdb = null;
 		LazyOptional<IItemHandler> optional = LazyOptional.empty();
 
-		if (blockEntity instanceof KeypadChestBlockEntity be)
+		if (blockEntity instanceof ISentryBulletContainer be)
 			optional = be.getHandlerForSentry(this);
 		else if (blockEntity != null)
 			optional = blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);

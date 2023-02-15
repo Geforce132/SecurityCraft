@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
-import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
@@ -13,7 +12,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
+import net.geforcemods.securitycraft.blocks.KeypadBarrelBlock;
 import net.geforcemods.securitycraft.entity.sentry.ISentryBulletContainer;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
@@ -24,24 +23,29 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.BarrelBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable, ILockable, ISentryBulletContainer {
+public class KeypadBarrelBlockEntity extends BarrelBlockEntity implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable, ILockable, ISentryBulletContainer {
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private String passcode;
 	private Owner owner = new Owner();
@@ -51,8 +55,13 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	private long cooldownEnd = 0;
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
-	public KeypadChestBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), pos, state);
+	public KeypadBarrelBlockEntity(BlockPos pos, BlockState state) {
+		super(pos, state);
+	}
+
+	@Override
+	public BlockEntityType<?> getType() {
+		return SCContent.KEYPAD_BARREL_BLOCK_ENTITY.get();
 	}
 
 	@Override
@@ -84,6 +93,22 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	}
 
 	@Override
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		IModuleInventory.super.onModuleInserted(stack, module, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleInserted(this, stack, toggled);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		IModuleInventory.super.onModuleRemoved(stack, module, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleRemoved(this, stack, toggled);
+	}
+
+	@Override
 	public CompoundTag getUpdateTag() {
 		return saveWithoutMetadata();
 	}
@@ -101,24 +126,13 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 	@Override
 	public void handleUpdateTag(CompoundTag tag) {
-		load(tag);
+		super.handleUpdateTag(tag);
+		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
 	@Override
 	public Component getDefaultName() {
-		return Utils.localize("block.securitycraft.keypad_chest");
-	}
-
-	@Override
-	protected void signalOpenCount(Level level, BlockPos pos, BlockState state, int i, int j) {
-		super.signalOpenCount(level, pos, state, i, j);
-
-		if (isModuleEnabled(ModuleType.REDSTONE))
-			BlockUtils.updateIndirectNeighbors(level, pos, state.getBlock(), Direction.DOWN);
-	}
-
-	public int getNumPlayersUsing() {
-		return openersCounter.getOpenerCount();
+		return Utils.localize("block.securitycraft.keypad_barrel");
 	}
 
 	@Override
@@ -145,7 +159,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 	private LazyOptional<IItemHandler> getInsertOnlyHandler() {
 		if (insertOnlyHandler == null)
-			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(KeypadChestBlockEntity.this));
+			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(KeypadBarrelBlockEntity.this));
 
 		return insertOnlyHandler;
 	}
@@ -170,107 +184,25 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 	@Override
 	public void activate(Player player) {
-		if (!level.isClientSide && getBlockState().getBlock() instanceof KeypadChestBlock block && !isBlocked())
+		if (!level.isClientSide && getBlockState().getBlock() instanceof KeypadBarrelBlock block)
 			block.activate(getBlockState(), level, worldPosition, player);
 	}
 
 	@Override
-	public void openPasswordGUI(Level level, BlockPos pos, Player player) {
-		if (!level.isClientSide && !isBlocked())
-			IPasswordProtected.super.openPasswordGUI(level, pos, player);
-	}
-
-	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
-		IModuleInventory.super.onModuleInserted(stack, module, toggled);
-		addOrRemoveModuleFromAttached(stack, false, toggled);
-	}
-
-	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
-		addOrRemoveModuleFromAttached(stack, true, toggled);
-		IModuleInventory.super.onModuleRemoved(stack, module, toggled);
-	}
-
-	@Override
-	public void onOptionChanged(Option<?> option) {
-		KeypadChestBlockEntity otherBe = findOther();
-
-		if (otherBe != null) {
-			if (option.getName().equals("sendMessage"))
-				otherBe.setSendsMessages(((BooleanOption) option).get());
-			else if (option.getName().equals("smartModuleCooldown"))
-				otherBe.smartModuleCooldown.copy(option);
-		}
-
-		ICustomizable.super.onOptionChanged(option);
+	protected AbstractContainerMenu createMenu(int id, Inventory playerInventory) {
+		return ChestMenu.threeRows(id, playerInventory, this);
 	}
 
 	@Override
 	public void dropAllModules() {
-		KeypadChestBlockEntity offsetBe = findOther();
-
 		for (ItemStack module : getInventory()) {
 			if (!(module.getItem() instanceof ModuleItem item))
 				continue;
-
-			if (offsetBe != null)
-				offsetBe.removeModule(item.getModuleType(), false);
 
 			Block.popResource(level, worldPosition, module);
 		}
 
 		getInventory().clear();
-	}
-
-	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove, boolean toggled) {
-		if (module.isEmpty() || !(module.getItem() instanceof ModuleItem moduleItem))
-			return;
-
-		KeypadChestBlockEntity offsetBe = findOther();
-
-		if (offsetBe != null) {
-			if (toggled && offsetBe.isModuleEnabled(moduleItem.getModuleType()) != remove)
-				return;
-			else if (!toggled && offsetBe.hasModule(moduleItem.getModuleType()) != remove)
-				return;
-
-			if (remove)
-				offsetBe.removeModule(moduleItem.getModuleType(), toggled);
-			else
-				offsetBe.insertModule(module, toggled);
-		}
-	}
-
-	public KeypadChestBlockEntity findOther() {
-		BlockState state = getBlockState();
-		ChestType type = state.getValue(KeypadChestBlock.TYPE);
-
-		if (type != ChestType.SINGLE) {
-			BlockPos offsetPos = worldPosition.relative(ChestBlock.getConnectedDirection(state));
-			BlockState offsetState = level.getBlockState(offsetPos);
-
-			if (state.getBlock() == offsetState.getBlock()) {
-				ChestType offsetType = offsetState.getValue(KeypadChestBlock.TYPE);
-
-				if (offsetType != ChestType.SINGLE && type != offsetType && state.getValue(KeypadChestBlock.FACING) == offsetState.getValue(KeypadChestBlock.FACING)) {
-					if (level.getBlockEntity(offsetPos) instanceof KeypadChestBlockEntity be)
-						return be;
-				}
-			}
-		}
-
-		return null;
-	}
-
-	@Override
-	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {
-		KeypadChestBlockEntity otherHalf = findOther();
-
-		if (otherHalf != null)
-			otherHalf.setOwner(getOwner().getUUID(), getOwner().getName());
-
-		IOwnable.super.onOwnerChanged(state, level, pos, player);
 	}
 
 	@Override
@@ -295,21 +227,6 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 		setChanged();
 	}
 
-	public boolean isBlocked() {
-		for (Direction dir : Direction.Plane.HORIZONTAL.stream().collect(Collectors.toList())) {
-			BlockPos pos = getBlockPos().relative(dir);
-
-			if (level.getBlockState(pos).getBlock() instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(level, pos))
-				return true;
-		}
-
-		return isSingleBlocked();
-	}
-
-	public boolean isSingleBlocked() {
-		return KeypadChestBlock.isBlocked(getLevel(), getBlockPos());
-	}
-
 	@Override
 	public NonNullList<ItemStack> getInventory() {
 		return modules;
@@ -317,13 +234,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 	@Override
 	public void startCooldown() {
-		KeypadChestBlockEntity otherHalf = findOther();
-		long start = System.currentTimeMillis();
-
-		startCooldown(start);
-
-		if (otherHalf != null)
-			otherHalf.startCooldown(start);
+		startCooldown(System.currentTimeMillis());
 	}
 
 	public void startCooldown(long start) {
@@ -345,14 +256,9 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	}
 
 	@Override
-	public boolean shouldDropModules() {
-		return getBlockState().getValue(KeypadChestBlock.TYPE) == ChestType.SINGLE;
-	}
-
-	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.REDSTONE, ModuleType.SMART, ModuleType.HARMING
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.DISGUISE, ModuleType.SMART, ModuleType.HARMING
 		};
 	}
 
@@ -371,11 +277,17 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	@Override
 	public void toggleModuleState(ModuleType module, boolean shouldBeEnabled) {
 		moduleStates.put(module, shouldBeEnabled);
+	}
 
-		if (shouldBeEnabled)
-			onModuleInserted(getModule(module), module, true);
-		else
-			onModuleRemoved(getModule(module), module, true);
+	@Override
+	public void setRemoved() {
+		super.setRemoved();
+		DisguisableBlockEntity.onSetRemoved(this);
+	}
+
+	@Override
+	public IModelData getModelData() {
+		return DisguisableBlockEntity.DEFAULT_MODEL_DATA.get();
 	}
 
 	public boolean sendsMessages() {
@@ -386,5 +298,20 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 		sendMessage.setValue(value);
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
 		setChanged();
+	}
+
+	@Override
+	public void playSound(BlockState state, SoundEvent sound) {
+		Direction normalFacing = switch (state.getValue(KeypadBarrelBlock.LID_FACING)) {
+			case UP -> Direction.UP;
+			case SIDEWAYS -> state.getValue(KeypadBarrelBlock.HORIZONTAL_FACING);
+			case DOWN -> Direction.DOWN;
+		};
+		Vec3i facingNormal = normalFacing.getNormal();
+		double x = worldPosition.getX() + 0.5D + facingNormal.getX() / 2.0D;
+		double y = worldPosition.getY() + 0.5D + facingNormal.getY() / 2.0D;
+		double z = worldPosition.getZ() + 0.5D + facingNormal.getZ() / 2.0D;
+
+		level.playSound(null, x, y, z, sound, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
 	}
 }

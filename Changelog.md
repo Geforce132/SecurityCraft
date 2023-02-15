@@ -4,6 +4,7 @@
 - New: Laser blocks can now be configured to have lasers on specific sides be disabled by using a Smart Module
 - New: Command "/sc dump <registry>" to be able to copy all of SecurityCraft's registry entries of the specified registry
 - New: Configs "sentryAttackableEntitiesAllowlist" and "sentryAttackableEntitiesDenylist" for controlling which entities a Sentry can and cannot attack
+- New: Password-protected Barrel
 - Change: Lasers and inventory scanner fields are now removed silently
 - Change: Inventory scanners and password-protected chests now only drop their modules if the last scanner/chest is removed
 - Change: Changing the owner of a Reinforced Hopper now needs validation of the new owner (akin to reinforced pistons)
