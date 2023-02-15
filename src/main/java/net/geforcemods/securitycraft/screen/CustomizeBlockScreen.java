@@ -125,14 +125,11 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 					buttonList.add(optionButtons[i]);
 					hoverCheckers[i + moduleInv.getMaxNumberOfModules()] = new HoverChecker(optionButtons[i]);
 				}
+
+				for (GuiButton button : optionButtons) {
+					extraAreas.add(new Rectangle(button.x, button.y, button.width, button.height));
+				}
 			}
-		}
-
-		for (GuiButton button : optionButtons) {
-			if (button == null)
-				continue;
-
-			extraAreas.add(new Rectangle(button.x, button.y, button.width, button.height));
 		}
 	}
 
