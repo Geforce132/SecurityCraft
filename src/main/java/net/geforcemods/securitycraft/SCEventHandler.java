@@ -22,6 +22,7 @@ import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.EnumDetectionMode;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
@@ -274,6 +275,24 @@ public class SCEventHandler {
 					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(block), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(block)), TextFormatting.DARK_RED, false);
 
 				event.setCanceled(true);
+				return;
+			}
+		}
+
+		if (te instanceof IOwnable) {
+			IOwnable ownable = (IOwnable) te;
+			Owner owner = ownable.getOwner();
+
+			if (!owner.isValidated()) {
+				if (ownable.isOwnedBy(event.getEntityPlayer())) {
+					owner.setValidated(true);
+					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(block.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:ownable.validate"), TextFormatting.GREEN);
+				}
+				else
+					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(block.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:ownable.ownerNotValidated"), TextFormatting.RED);
+
+				event.setCanceled(true);
+				event.setCancellationResult(EnumActionResult.SUCCESS);
 				return;
 			}
 		}

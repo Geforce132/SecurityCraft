@@ -93,7 +93,9 @@ public class ReinforcedHopperBlock extends BlockHopper implements IReinforcedBlo
 		public boolean canExtract(IOwnable te, World world, BlockPos pos, IBlockState state) {
 			ReinforcedHopperBlockEntity hopperTe = (ReinforcedHopperBlockEntity) world.getTileEntity(pos);
 
-			if (!te.getOwner().owns(hopperTe)) {
+			if (!hopperTe.getOwner().isValidated())
+				return false;
+			else if (!te.getOwner().owns(hopperTe)) {
 				if (te instanceof IModuleInventory) {
 					IModuleInventory inv = (IModuleInventory) te;
 

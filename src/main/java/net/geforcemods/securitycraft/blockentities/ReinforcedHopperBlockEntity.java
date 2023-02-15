@@ -109,4 +109,9 @@ public class ReinforcedHopperBlockEntity extends TileEntityHopper implements IOw
 		else
 			onModuleRemoved(getModule(module), module, true);
 	}
+
+	@Override
+	public boolean needsValidation() {
+		return true;
+	}
 }

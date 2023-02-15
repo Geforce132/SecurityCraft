@@ -8,14 +8,11 @@ import com.google.common.collect.Lists;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
-import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.ReinforcedPistonBlockStructureHelper;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.BlockPistonExtension;
@@ -34,10 +31,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -63,29 +58,6 @@ public class ReinforcedPistonBlock extends BlockPistonBase implements IReinforce
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
-	}
-
-	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity tile = world.getTileEntity(pos);
-
-		if (tile instanceof OwnableBlockEntity) {
-			OwnableBlockEntity te = (OwnableBlockEntity) tile;
-			Owner owner = te.getOwner();
-
-			if (!owner.isValidated()) {
-				if (te.isOwnedBy(player)) {
-					owner.setValidated(true);
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:ownable.validate"), TextFormatting.GREEN);
-					return true;
-				}
-
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:ownable.ownerNotValidated"), TextFormatting.RED);
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	@Override
