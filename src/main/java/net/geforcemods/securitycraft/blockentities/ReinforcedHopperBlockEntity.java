@@ -114,4 +114,9 @@ public class ReinforcedHopperBlockEntity extends HopperTileEntity implements IOw
 		else
 			onModuleRemoved(getModule(module), module, true);
 	}
+
+	@Override
+	public boolean needsValidation() {
+		return true;
+	}
 }

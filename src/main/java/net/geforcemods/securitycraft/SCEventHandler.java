@@ -22,6 +22,7 @@ import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
@@ -215,6 +216,24 @@ public class SCEventHandler {
 				}
 
 				event.setCanceled(true);
+				return;
+			}
+		}
+
+		if (te instanceof IOwnable) {
+			IOwnable ownable = (IOwnable) te;
+			Owner owner = ownable.getOwner();
+
+			if (!owner.isValidated()) {
+				if (ownable.isOwnedBy(event.getPlayer())) {
+					owner.setValidated(true);
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(block.getDescriptionId()), new TranslationTextComponent("messages.securitycraft:ownable.validate"), TextFormatting.GREEN);
+				}
+				else
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(block.getDescriptionId()), new TranslationTextComponent("messages.securitycraft:ownable.ownerNotValidated"), TextFormatting.RED);
+
+				event.setCanceled(true);
+				event.setCancellationResult(ActionResultType.SUCCESS);
 				return;
 			}
 		}
