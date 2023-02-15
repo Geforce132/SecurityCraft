@@ -134,12 +134,11 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 					addRenderableWidget(optionButtons[i]);
 					hoverCheckers.add(new TextHoverChecker(optionButtons[i], getOptionDescription(i)));
 				}
-			}
-		}
 
-		for (AbstractWidget button : optionButtons) {
-			if (button != null)
-				extraAreas.add(new Rect2i(button.getX(), button.getY(), button.getWidth(), button.getHeight()));
+				for (AbstractWidget button : optionButtons) {
+					extraAreas.add(new Rect2i(button.getX(), button.getY(), button.getWidth(), button.getHeight()));
+				}
+			}
 		}
 	}
 
