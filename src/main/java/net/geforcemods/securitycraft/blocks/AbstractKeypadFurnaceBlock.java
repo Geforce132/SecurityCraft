@@ -216,8 +216,9 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 
 			furnace.clearContent();
 			world.setBlockAndUpdate(pos, AbstractKeypadFurnaceBlock.this.defaultBlockState().setValue(FACING, facing).setValue(OPEN, false).setValue(LIT, lit));
-			((AbstractKeypadFurnaceBlockEntity) world.getBlockEntity(pos)).load(world.getBlockState(pos), tag);
-			((IOwnable) world.getBlockEntity(pos)).setOwner(player.getUUID().toString(), player.getName().getString());
+			furnace = (AbstractKeypadFurnaceBlockEntity) world.getBlockEntity(pos);
+			furnace.load(world.getBlockState(pos), tag);
+			((IOwnable) furnace).setOwner(player.getUUID().toString(), player.getName().getString());
 			return true;
 		}
 	}

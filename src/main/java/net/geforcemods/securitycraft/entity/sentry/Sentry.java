@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
-import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blocks.SentryDisguiseBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -366,8 +365,8 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 		ProjectileDispenseBehavior pdb = null;
 		LazyOptional<IItemHandler> optional = LazyOptional.empty();
 
-		if (te instanceof KeypadChestBlockEntity)
-			optional = ((KeypadChestBlockEntity) te).getHandlerForSentry(this);
+		if (te instanceof ISentryBulletContainer)
+			optional = ((ISentryBulletContainer) te).getHandlerForSentry(this);
 		else if (te != null)
 			optional = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
 

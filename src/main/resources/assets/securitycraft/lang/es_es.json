@@ -1131,6 +1131,7 @@
 	"option.securitycraft.rift_stabilizer.range.description": "¿A qué distancia debería el estabilizador de grietas evitar los intentos de teletransportación?",
 	"option.securitycraft.display_case.sendMessage": "Mensaje: %s",
 	"option.securitycraft.display_case.sendMessage.description": "¿Debería este expositor enviar un mensaje al activarse (cuando se usa un módulo de lista de permitidos/rechazados)?",
+	"option.securitycraft.keypad_barrel.sendMessage": "Mensaje: %s", 
 
 	"securitycraft.subtitle.alarm": "Alarma suena",
 	"securitycraft.subtitle.electrified": "Entidad se electrocuta",

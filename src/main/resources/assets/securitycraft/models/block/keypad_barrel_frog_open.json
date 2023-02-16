@@ -1,0 +1,8 @@
+{
+  "parent": "securitycraft:block/reinforced_cube_bottom_top",
+  "textures": {
+    "bottom": "securitycraft:block/keypad_barrel_bottom",
+    "side": "securitycraft:block/keypad_barrel_frog_open",
+    "top": "securitycraft:block/keypad_barrel_top_open"
+  }
+}

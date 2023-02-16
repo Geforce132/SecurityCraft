@@ -1,9 +1,12 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.function.Supplier;
+
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -15,12 +18,17 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class DisguisableBlockEntity extends CustomizableBlockEntity {
+	public static final Supplier<IModelData> DEFAULT_MODEL_DATA = () -> new ModelDataMap.Builder().withInitial(DisguisableDynamicBakedModel.DISGUISED_STATE, Blocks.AIR.defaultBlockState()).build();
+
 	public DisguisableBlockEntity() {
 		super(SCContent.DISGUISABLE_BLOCK_ENTITY.get());
 	}
@@ -33,23 +41,28 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
 		super.onModuleInserted(stack, module, toggled);
 
-		if (module == ModuleType.DISGUISE) {
-			BlockState state = getBlockState();
+		if (module == ModuleType.DISGUISE)
+			onDisguiseModuleInserted(this, stack, toggled);
+	}
 
-			if (!level.isClientSide) {
-				SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
+	public static void onDisguiseModuleInserted(TileEntity be, ItemStack stack, boolean toggled) {
+		BlockState state = be.getBlockState();
+		World level = be.getLevel();
+		BlockPos worldPosition = be.getBlockPos();
 
-				if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
-					level.getLiquidTicks().scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-					level.updateNeighborsAt(worldPosition, state.getBlock());
-				}
+		if (!level.isClientSide) {
+			SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
+
+			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
+				level.getLiquidTicks().scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+				level.updateNeighborsAt(worldPosition, state.getBlock());
 			}
-			else {
-				ClientHandler.putDisguisedBeRenderer(this, stack);
+		}
+		else {
+			ClientHandler.putDisguisedBeRenderer(be, stack);
 
-				if (state.getLightValue(level, worldPosition) > 0)
-					level.getChunkSource().getLightEngine().checkBlock(worldPosition);
-			}
+			if (state.getLightValue(level, worldPosition) > 0)
+				level.getChunkSource().getLightEngine().checkBlock(worldPosition);
 		}
 	}
 
@@ -57,47 +70,60 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		super.onModuleRemoved(stack, module, toggled);
 
-		if (module == ModuleType.DISGUISE) {
-			if (!level.isClientSide) {
-				BlockState state = getBlockState();
+		if (module == ModuleType.DISGUISE)
+			onDisguiseModuleRemoved(this, stack, toggled);
+	}
 
-				SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
+	public static void onDisguiseModuleRemoved(TileEntity be, ItemStack stack, boolean toggled) {
+		World level = be.getLevel();
+		BlockPos worldPosition = be.getBlockPos();
 
-				if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
-					level.getLiquidTicks().scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-					level.updateNeighborsAt(worldPosition, state.getBlock());
-				}
+		if (!level.isClientSide) {
+			BlockState state = be.getBlockState();
+
+			SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
+
+			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
+				level.getLiquidTicks().scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+				level.updateNeighborsAt(worldPosition, state.getBlock());
 			}
-			else {
-				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
-				DisguisableBlock.getDisguisedBlockStateFromStack(stack).ifPresent(disguisedState -> {
-					if (disguisedState.getLightValue(level, worldPosition) > 0)
-						level.getChunkSource().getLightEngine().checkBlock(worldPosition);
-				});
-			}
+		}
+		else {
+			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
+			DisguisableBlock.getDisguisedBlockStateFromStack(stack).ifPresent(disguisedState -> {
+				if (disguisedState.getLightValue(level, worldPosition) > 0)
+					level.getChunkSource().getLightEngine().checkBlock(worldPosition);
+			});
 		}
 	}
 
 	@Override
 	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
 		super.handleUpdateTag(state, tag);
+		onHandleUpdateTag(this);
+	}
+
+	public static <T extends TileEntity & IModuleInventory> void onHandleUpdateTag(T be) {
+		World level = be.getLevel();
 
 		if (level != null && level.isClientSide) {
-			ItemStack stack = getModule(ModuleType.DISGUISE);
+			ItemStack stack = be.getModule(ModuleType.DISGUISE);
 
 			if (!stack.isEmpty())
-				ClientHandler.putDisguisedBeRenderer(this, stack);
+				ClientHandler.putDisguisedBeRenderer(be, stack);
 			else
-				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
+				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
 		}
 	}
 
 	@Override
 	public void setRemoved() {
 		super.setRemoved();
+	}
 
-		if (level.isClientSide)
-			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
+	public static void onSetRemoved(TileEntity be) {
+		if (be.getLevel().isClientSide)
+			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
 	}
 
 	@Override
@@ -114,6 +140,6 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 
 	@Override
 	public IModelData getModelData() {
-		return new ModelDataMap.Builder().withInitial(DisguisableDynamicBakedModel.DISGUISED_STATE, Blocks.AIR.defaultBlockState()).build();
+		return DEFAULT_MODEL_DATA.get();
 	}
 }

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
+import net.geforcemods.securitycraft.blocks.KeypadBarrelBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
@@ -92,6 +93,7 @@ public class SecurityCraft {
 	public static void onInterModEnqueue(InterModEnqueueEvent event) { //stage 3
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, ReinforcedHopperBlock.ExtractionBlock::new);
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, KeypadBlock.Convertible::new);
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, KeypadBarrelBlock.Convertible::new);
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, KeypadChestBlock.Convertible::new);
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> SCContent.KEYPAD_FURNACE.get().new Convertible(Blocks.FURNACE));
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> SCContent.KEYPAD_SMOKER.get().new Convertible(Blocks.SMOKER));

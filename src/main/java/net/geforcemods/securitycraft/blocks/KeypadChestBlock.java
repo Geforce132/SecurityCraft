@@ -256,8 +256,9 @@ public class KeypadChestBlock extends ChestBlock {
 			tag = chest.save(new CompoundNBT());
 			chest.clearContent();
 			world.setBlockAndUpdate(pos, SCContent.KEYPAD_CHEST.get().defaultBlockState().setValue(FACING, facing).setValue(TYPE, type));
-			((ChestTileEntity) world.getBlockEntity(pos)).load(world.getBlockState(pos), tag);
-			((IOwnable) world.getBlockEntity(pos)).setOwner(player.getUUID().toString(), player.getName().getString());
+			chest = ((ChestTileEntity) world.getBlockEntity(pos));
+			chest.load(world.getBlockState(pos), tag);
+			((IOwnable) chest).setOwner(player.getUUID().toString(), player.getName().getString());
 		}
 	}
 }

@@ -2,8 +2,6 @@ package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
 
-import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -16,18 +14,13 @@ import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.inventory.AbstractKeypadFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
-import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.AbstractCookingRecipe;
@@ -35,7 +28,6 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -48,11 +40,9 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants.WorldEvents;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -125,16 +115,8 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 
 	@Override
 	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-		load(state, tag);
-
-		if (level != null && level.isClientSide) {
-			ItemStack stack = getModule(ModuleType.DISGUISE);
-
-			if (!stack.isEmpty())
-				ClientHandler.putDisguisedBeRenderer(this, stack);
-			else
-				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
-		}
+		super.handleUpdateTag(state, tag);
+		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
 	@Override
@@ -335,57 +317,22 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
 		IModuleInventory.super.onModuleInserted(stack, module, toggled);
 
-		if (module == ModuleType.DISGUISE) {
-			BlockState state = getBlockState();
-
-			if (!level.isClientSide) {
-				SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
-
-				if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
-					level.getLiquidTicks().scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-					level.updateNeighborsAt(worldPosition, state.getBlock());
-				}
-			}
-			else {
-				ClientHandler.putDisguisedBeRenderer(this, stack);
-
-				if (state.getLightValue(level, worldPosition) > 0)
-					level.getChunkSource().getLightEngine().checkBlock(worldPosition);
-			}
-		}
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleInserted(this, stack, toggled);
 	}
 
 	@Override
 	public void setRemoved() {
 		super.setRemoved();
-
-		if (level.isClientSide)
-			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(getTileEntity());
+		DisguisableBlockEntity.onSetRemoved(this);
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		IModuleInventory.super.onModuleRemoved(stack, module, toggled);
 
-		if (module == ModuleType.DISGUISE) {
-			if (!level.isClientSide) {
-				BlockState state = getBlockState();
-
-				SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
-
-				if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
-					level.getLiquidTicks().scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-					level.updateNeighborsAt(worldPosition, state.getBlock());
-				}
-			}
-			else {
-				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
-				DisguisableBlock.getDisguisedBlockStateFromStack(stack).ifPresent(disguisedState -> {
-					if (disguisedState.getLightValue(level, worldPosition) > 0)
-						level.getChunkSource().getLightEngine().checkBlock(worldPosition);
-				});
-			}
-		}
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleRemoved(this, stack, toggled);
 	}
 
 	@Override
@@ -405,7 +352,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 
 	@Override
 	public IModelData getModelData() {
-		return new ModelDataMap.Builder().withInitial(DisguisableDynamicBakedModel.DISGUISED_STATE, Blocks.AIR.defaultBlockState()).build();
+		return DisguisableBlockEntity.DEFAULT_MODEL_DATA.get();
 	}
 
 	public boolean sendsMessages() {

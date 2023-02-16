@@ -123,6 +123,7 @@ public class ClientHandler {
 			SCContent.INVENTORY_SCANNER.get(),
 			SCContent.KEYCARD_READER.get(),
 			SCContent.KEYPAD.get(),
+			SCContent.KEYPAD_BARREL.get(),
 			SCContent.KEYPAD_BLAST_FURNACE.get(),
 			SCContent.KEYPAD_FURNACE.get(),
 			SCContent.KEYPAD_SMOKER.get(),
@@ -287,6 +288,7 @@ public class ClientHandler {
 		ClientRegistry.bindTileEntityRenderer(SCContent.INVENTORY_SCANNER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.KEYCARD_READER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.KEYPAD_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.KEYPAD_BARREL_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.KEYPAD_BLAST_FURNACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.KEYPAD_SMOKER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.KEYPAD_FURNACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
