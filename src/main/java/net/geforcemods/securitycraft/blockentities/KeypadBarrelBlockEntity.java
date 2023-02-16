@@ -30,10 +30,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BarrelBlockEntity;
@@ -186,11 +183,6 @@ public class KeypadBarrelBlockEntity extends BarrelBlockEntity implements IPassw
 	public void activate(Player player) {
 		if (!level.isClientSide && getBlockState().getBlock() instanceof KeypadBarrelBlock block)
 			block.activate(getBlockState(), level, worldPosition, player);
-	}
-
-	@Override
-	protected AbstractContainerMenu createMenu(int id, Inventory playerInventory) {
-		return ChestMenu.threeRows(id, playerInventory, this);
 	}
 
 	@Override

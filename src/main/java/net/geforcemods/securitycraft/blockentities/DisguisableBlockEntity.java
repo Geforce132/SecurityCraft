@@ -105,6 +105,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 
 	public static <T extends BlockEntity & IModuleInventory> void onHandleUpdateTag(T be) {
 		Level level = be.getLevel();
+
 		if (level != null && level.isClientSide) {
 			ItemStack stack = be.getModule(ModuleType.DISGUISE);
 
