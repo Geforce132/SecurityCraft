@@ -8,6 +8,7 @@
 - Change: Lasers and inventory scanner fields are now removed silently
 - Change: Inventory scanners and password-protected chests now only drop their modules if the last scanner/chest is removed
 - Change: Changing the owner of a Reinforced Hopper now needs validation of the new owner (akin to reinforced pistons)
+- Change: New look for the Claymore
 - API: IModuleInventory#shouldDropModules to determine whether a block should drop its modules when broken
 - Fix: Turning off camera rotation leads to extreme stuttering of the camera
 - Fix: Shift-clicking a potion in the brewing stand screen puts the potion into the wrong slot
@@ -20,7 +21,7 @@
 - Fix: The Block Change Detector list cannot be scrolled using the mouse wheel
 - Fix: The Reinforced Hopper checks for the wrong allowlist sometimes
 - Misc.: The Spanish translation has been updated (Thanks Globi10!)
-- Misc.: German (de_at, de_ch), French (fr_ca), and Spanish (es_ar, es_cl, es_ec, es_mx, es_uy, es_ve) dialects are now supported. While these are not proper translations into the specific dialects, they should be better than having to resort to English
+- Misc.: Dialects for German (de_at, de_ch), French (fr_ca), and Spanish (es_ar, es_cl, es_ec, es_mx, es_uy, es_ve) are now supported. While these are not proper translations into the specific dialects, they should be better than having to resort to English
 - Misc.: Updates to SC Manual entries and other text, to bring them up to date with actual functionality of the mod
 
 --------------------------Changelog for v1.9.5 of SecurityCraft--------------------------
