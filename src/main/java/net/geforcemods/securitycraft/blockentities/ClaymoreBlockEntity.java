@@ -94,4 +94,9 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}
+
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+		return new AxisAlignedBB(worldPosition);
+	}
 }
