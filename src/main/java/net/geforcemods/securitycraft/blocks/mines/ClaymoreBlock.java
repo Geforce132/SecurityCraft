@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import java.util.stream.Stream;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -28,6 +30,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -35,14 +38,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class ClaymoreBlock extends ExplosiveBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
-	private static final VoxelShape NORTH_OFF = Shapes.or(Block.box(4, 0, 5, 12, 4, 7), Shapes.or(Block.box(4, 4, 5, 12, 5, 6), Shapes.or(Block.box(5, 4, 4, 6, 5, 5), Shapes.or(Block.box(10, 4, 4, 11, 5, 5), Shapes.or(Block.box(4, 4, 3, 5, 5, 4), Block.box(11, 4, 3, 12, 5, 4))))));
-	private static final VoxelShape NORTH_ON = Shapes.or(NORTH_OFF, Shapes.or(Block.box(3, 4, 2, 4, 5, 3), Block.box(12, 4, 2, 13, 5, 3)));
-	private static final VoxelShape EAST_OFF = Shapes.or(Block.box(9, 0, 4, 11, 4, 12), Shapes.or(Block.box(10, 4, 4, 11, 5, 12), Shapes.or(Block.box(11, 4, 5, 12, 5, 6), Shapes.or(Block.box(11, 4, 10, 12, 5, 11), Shapes.or(Block.box(12, 4, 4, 13, 5, 5), Block.box(12, 4, 11, 13, 5, 12))))));
-	private static final VoxelShape EAST_ON = Shapes.or(EAST_OFF, Shapes.or(Block.box(13, 4, 3, 14, 5, 4), Block.box(13, 4, 12, 14, 5, 13)));
-	private static final VoxelShape SOUTH_OFF = Shapes.or(Block.box(4, 0, 9, 12, 4, 11), Shapes.or(Block.box(4, 4, 10, 12, 5, 11), Shapes.or(Block.box(5, 4, 11, 6, 5, 12), Shapes.or(Block.box(10, 4, 11, 11, 5, 12), Shapes.or(Block.box(4, 4, 12, 5, 5, 13), Block.box(11, 4, 12, 12, 5, 13))))));
-	private static final VoxelShape SOUTH_ON = Shapes.or(SOUTH_OFF, Shapes.or(Block.box(3, 4, 13, 4, 5, 14), Block.box(12, 4, 13, 13, 5, 14)));
-	private static final VoxelShape WEST_OFF = Shapes.or(Block.box(5, 0, 4, 7, 4, 12), Shapes.or(Block.box(5, 4, 4, 6, 5, 12), Shapes.or(Block.box(4, 4, 5, 5, 5, 6), Shapes.or(Block.box(4, 4, 10, 5, 5, 11), Shapes.or(Block.box(3, 4, 4, 4, 5, 5), Block.box(3, 4, 11, 4, 5, 12))))));
-	private static final VoxelShape WEST_ON = Shapes.or(WEST_OFF, Shapes.or(Block.box(2, 4, 3, 3, 5, 4), Block.box(2, 4, 12, 3, 5, 13)));
+	private static final VoxelShape NORTH = Stream.of(Block.box(4, 0, 8, 12, 6, 9), Block.box(5, 0, 7, 11, 6, 8), Block.box(6, 6, 8, 10, 7, 9)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+	private static final VoxelShape EAST = Stream.of(Block.box(7, 0, 4, 8, 6, 12), Block.box(8, 0, 5, 9, 6, 11), Block.box(7, 6, 6, 8, 7, 10)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+	private static final VoxelShape SOUTH = Stream.of(Block.box(4, 0, 7, 12, 6, 8), Block.box(5, 0, 8, 11, 6, 9), Block.box(6, 6, 7, 10, 7, 8)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+	private static final VoxelShape WEST = Stream.of(Block.box(8, 0, 4, 9, 6, 12), Block.box(7, 0, 5, 8, 6, 11), Block.box(8, 6, 6, 9, 7, 10)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 
 	public ClaymoreBlock(Block.Properties properties) {
 		super(properties);
@@ -148,10 +147,10 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
 		return switch (state.getValue(FACING)) {
-			case NORTH -> state.getValue(DEACTIVATED) ? NORTH_OFF : NORTH_ON;
-			case EAST -> state.getValue(DEACTIVATED) ? EAST_OFF : EAST_ON;
-			case SOUTH -> state.getValue(DEACTIVATED) ? SOUTH_OFF : SOUTH_ON;
-			case WEST -> state.getValue(DEACTIVATED) ? WEST_OFF : WEST_ON;
+			case NORTH -> NORTH;
+			case EAST -> EAST;
+			case SOUTH -> SOUTH;
+			case WEST -> WEST;
 			default -> Shapes.block();
 		};
 	}

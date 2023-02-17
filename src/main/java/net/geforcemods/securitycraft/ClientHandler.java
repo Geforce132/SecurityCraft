@@ -29,6 +29,7 @@ import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
 import net.geforcemods.securitycraft.renderers.BlockPocketManagerRenderer;
 import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
+import net.geforcemods.securitycraft.renderers.ClaymoreRenderer;
 import net.geforcemods.securitycraft.renderers.DisguisableBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.DisplayCaseRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
@@ -322,6 +323,7 @@ public class ClientHandler {
 		event.registerEntityRenderer(SCContent.BULLET_ENTITY.get(), BulletRenderer::new);
 		//normal renderers
 		event.registerBlockEntityRenderer(SCContent.BLOCK_POCKET_MANAGER_BLOCK_ENTITY.get(), BlockPocketManagerRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.CLAYMORE_BLOCK_ENTITY.get(), ClaymoreRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), KeypadChestRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), ctx -> new DisplayCaseRenderer(ctx, false));
 		event.registerBlockEntityRenderer(SCContent.GLOW_DISPLAY_CASE_BLOCK_ENTITY.get(), ctx -> new DisplayCaseRenderer(ctx, true));
