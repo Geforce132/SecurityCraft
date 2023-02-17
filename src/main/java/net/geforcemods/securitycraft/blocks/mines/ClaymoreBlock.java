@@ -31,6 +31,15 @@ import net.minecraftforge.common.MinecraftForge;
 public class ClaymoreBlock extends ExplosiveBlock {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
+	public static final AxisAlignedBB NS_BOUNDING_BOX;
+	public static final AxisAlignedBB EW_BOUNDING_BOX;
+
+	static {
+		float px = 0.0625F;
+
+		NS_BOUNDING_BOX = new AxisAlignedBB(4.0F * px, 0.0F, 6.0F * px, 12.0F * px, 7.0F * px, 10.0F * px);
+		EW_BOUNDING_BOX = new AxisAlignedBB(10.0F * px, 0.0F, 12.0F * px, 6.0F * px, 7.0F * px, 4.0F * px);
+	}
 
 	public ClaymoreBlock(Material material) {
 		super(material);
@@ -168,14 +177,16 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		if (state.getValue(FACING) == EnumFacing.NORTH)
-			return new AxisAlignedBB(0.225F, 0.000F, 0.175F, 0.775F, 0.325F, 0.450F);
-		else if (state.getValue(FACING) == EnumFacing.SOUTH)
-			return new AxisAlignedBB(0.225F, 0.000F, 0.550F, 0.775F, 0.325F, 0.825F);
-		else if (state.getValue(FACING) == EnumFacing.EAST)
-			return new AxisAlignedBB(0.550F, 0.0F, 0.225F, 0.825F, 0.335F, 0.775F);
-		else
-			return new AxisAlignedBB(0.175F, 0.0F, 0.225F, 0.450F, 0.335F, 0.775F);
+		switch (state.getValue(FACING)) {
+			case NORTH:
+			case SOUTH:
+				return NS_BOUNDING_BOX;
+			case EAST:
+			case WEST:
+				return EW_BOUNDING_BOX;
+			default:
+				return Block.FULL_BLOCK_AABB;
+		}
 	}
 
 	@Override

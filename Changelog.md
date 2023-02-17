@@ -6,6 +6,7 @@
 - Change: Lasers and inventory scanner fields are now removed silently
 - Change: Inventory scanners and password-protected chests now only drop their modules if the last scanner/chest is removed
 - Change: Changing the owner of a Reinforced Hopper now needs validation of the new owner (akin to reinforced pistons)
+- Change: New look for the Claymore
 - API: IModuleInventory#shouldDropModules to determine whether a block should drop its modules when broken
 - API: Numerous renames across the whole codebase to make porting from newer versions easier going forward
 - Fix: Turning off camera rotation leads to extreme stuttering of the camera
