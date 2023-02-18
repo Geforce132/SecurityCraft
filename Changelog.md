@@ -21,7 +21,7 @@
 - Fix: The Reinforced Hopper checks for the wrong allowlist sometimes
 - Fix: The Reinforced Piston is able to push blocks while not being validated
 - Misc.: The Spanish translation has been updated (Thanks Globi10!)
-- Misc.: German (de_at, de_ch), French (fr_ca), and Spanish (es_ar, es_cl, es_mx, es_uy, es_ve) dialects are now supported. While these are not proper translations into the specific dialects, they should be better than having to resort to English
+- Misc.: Dialects for German (de_at, de_ch), French (fr_ca), and Spanish (es_ar, es_cl, es_mx, es_uy, es_ve) are now supported. While these are not proper translations into the specific dialects, they should be better than having to resort to English
 - Misc.: Updates to SC Manual entries and other text, to bring them up to date with actual functionality of the mod
 
 --------------------------Changelog for v1.9.5 of SecurityCraft--------------------------
