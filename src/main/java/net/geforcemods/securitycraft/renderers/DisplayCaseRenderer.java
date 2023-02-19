@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.renderers;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
@@ -20,6 +21,10 @@ public class DisplayCaseRenderer extends TileEntitySpecialRenderer<DisplayCaseBl
 	@Override
 	public void render(DisplayCaseBlockEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		IBlockState state = te.getBlockState();
+
+		if (state.getBlock() != SCContent.displayCase)
+			return;
+
 		EnumFacing facing = state.getValue(DisplayCaseBlock.FACING);
 		float rotation = facing.getHorizontalAngle();
 		ItemStack displayedStack = te.getDisplayedStack();
