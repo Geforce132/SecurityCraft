@@ -21,6 +21,7 @@
 - Fix: The Reinforced Hopper checks for the wrong allowlist sometimes
 - Fix: The Reinforced Piston is able to push blocks while not being validated
 - Fix: It's possible to remove other players' laser/inventory scanner fields
+- Fix: Cannot place blocks against laser blocks from other players
 - Misc.: The Spanish translation has been updated (Thanks Globi10!)
 - Misc.: Dialects for German (de_at, de_ch), French (fr_ca), and Spanish (es_ar, es_cl, es_mx, es_uy, es_ve) are now supported. While these are not proper translations into the specific dialects, they should be better than having to resort to English
 - Misc.: Updates to SC Manual entries and other text, to bring them up to date with actual functionality of the mod
