@@ -134,9 +134,10 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay {
 	@Override
 	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state) {
 		if (!world.isRemote) {
-			EnumFacing direction = EnumFacing.byIndex((state.getValue(LaserFieldBlock.BOUNDTYPE) - 1) * 2);
+			int boundType = state.getValue(LaserFieldBlock.BOUNDTYPE);
+			EnumFacing direction = EnumFacing.byIndex((boundType - 1) * 2);
 
-			BlockUtils.removeInSequence(this, world, pos, direction, direction.getOpposite());
+			BlockUtils.removeInSequence((directionToCheck, stateToCheck) -> stateToCheck.getBlock() == this && stateToCheck.getValue(BOUNDTYPE) == boundType, world, pos, direction, direction.getOpposite());
 		}
 	}
 

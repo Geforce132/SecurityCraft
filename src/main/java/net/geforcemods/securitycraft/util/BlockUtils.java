@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.util;
 
+import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IDoorActivator;
@@ -113,12 +114,12 @@ public class BlockUtils {
 		}
 	}
 
-	public static void removeInSequence(Block blockToDestroy, World world, BlockPos pos, EnumFacing... directions) {
+	public static void removeInSequence(BiPredicate<EnumFacing, IBlockState> stateMatcher, World world, BlockPos pos, EnumFacing... directions) {
 		for (EnumFacing direction : directions) {
 			int i = 1;
 			BlockPos modifiedPos = pos.offset(direction, i);
 
-			while (world.getBlockState(modifiedPos).getBlock() == blockToDestroy) {
+			while (stateMatcher.test(direction, world.getBlockState(modifiedPos))) {
 				world.setBlockToAir(modifiedPos);
 				modifiedPos = pos.offset(direction, ++i);
 			}

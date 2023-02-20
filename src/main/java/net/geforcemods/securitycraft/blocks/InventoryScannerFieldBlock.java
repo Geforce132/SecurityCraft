@@ -256,10 +256,14 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if (!world.isRemote) {
 			EnumFacing facing = state.getValue(FACING);
 
-			if (facing == EnumFacing.EAST || facing == EnumFacing.WEST)
-				BlockUtils.removeInSequence(this, world, pos, EnumFacing.EAST, EnumFacing.WEST);
-			else if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH)
-				BlockUtils.removeInSequence(this, world, pos, EnumFacing.NORTH, EnumFacing.SOUTH);
+			BlockUtils.removeInSequence((direction, stateToCheck) -> {
+				if (stateToCheck.getBlock() != SCContent.inventoryScannerField)
+					return false;
+
+				EnumFacing stateToCheckFacing = stateToCheck.getValue(FACING);
+
+				return stateToCheckFacing == direction || stateToCheckFacing == direction.getOpposite();
+			}, world, pos, facing, facing.getOpposite());
 		}
 	}
 

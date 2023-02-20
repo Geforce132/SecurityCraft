@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
+import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
@@ -281,8 +282,13 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			if (block instanceof LaserBlock)
 				((LaserBlock) block).setLaser(world, pos, direction, player);
 		}
-		else if (!enabled)
-			BlockUtils.removeInSequence(SCContent.laserField, world, pos, direction);
+		else if (!enabled) {
+			int boundType = direction == EnumFacing.UP || direction == EnumFacing.DOWN ? 1 : (direction == EnumFacing.NORTH || direction == EnumFacing.SOUTH ? 2 : 3);
+
+			BlockUtils.removeInSequence((directionToCheck, stateToCheck) -> {
+				return stateToCheck.getBlock() == SCContent.laserField && stateToCheck.getValue(LaserFieldBlock.BOUNDTYPE) == boundType;
+			}, world, pos, direction);
+		}
 	}
 
 	public EnumMap<EnumFacing, Boolean> getSideConfig() {
