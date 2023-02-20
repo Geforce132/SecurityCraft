@@ -228,10 +228,14 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if (!level.isClientSide()) {
 			Direction facing = state.getValue(FACING);
 
-			if (facing == Direction.EAST || facing == Direction.WEST)
-				BlockUtils.removeInSequence(this, level, pos, Direction.EAST, Direction.WEST);
-			else if (facing == Direction.NORTH || facing == Direction.SOUTH)
-				BlockUtils.removeInSequence(this, level, pos, Direction.NORTH, Direction.SOUTH);
+			BlockUtils.removeInSequence((direction, stateToCheck) -> {
+				if (stateToCheck.getBlock() != SCContent.INVENTORY_SCANNER_FIELD.get())
+					return false;
+
+				Direction stateToCheckFacing = stateToCheck.getValue(FACING);
+
+				return stateToCheckFacing == direction || stateToCheckFacing == direction.getOpposite();
+			}, level, pos, facing, facing.getOpposite());
 		}
 	}
 

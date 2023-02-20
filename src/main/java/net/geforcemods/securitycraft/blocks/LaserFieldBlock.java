@@ -97,9 +97,10 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay {
 	@Override
 	public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
 		if (!level.isClientSide()) {
-			Direction direction = Direction.from3DDataValue((state.getValue(LaserFieldBlock.BOUNDTYPE) - 1) * 2);
+			int boundType = state.getValue(LaserFieldBlock.BOUNDTYPE);
+			Direction direction = Direction.from3DDataValue((boundType - 1) * 2);
 
-			BlockUtils.removeInSequence(this, level, pos, direction, direction.getOpposite());
+			BlockUtils.removeInSequence((directionToCheck, stateToCheck) -> stateToCheck.getBlock() == this && stateToCheck.getValue(BOUNDTYPE) == boundType, level, pos, direction, direction.getOpposite());
 		}
 	}
 
