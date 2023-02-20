@@ -143,7 +143,14 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 		InventoryScannerBlockEntity connectedScanner = getConnectedInventoryScanner(level, pos, state, null);
 
-		BlockUtils.removeInSequence(SCContent.INVENTORY_SCANNER_FIELD.get(), level, pos, state.getValue(FACING));
+		BlockUtils.removeInSequence((direction, stateToCheck) -> {
+			if (stateToCheck.getBlock() != SCContent.INVENTORY_SCANNER_FIELD.get())
+				return false;
+
+			Direction stateToCheckFacing = stateToCheck.getValue(FACING);
+
+			return stateToCheckFacing == direction || stateToCheckFacing == direction.getOpposite();
+		}, level, pos, state.getValue(FACING));
 
 		if (level.getBlockEntity(pos) instanceof InventoryScannerBlockEntity be) {
 			//first 10 slots (0-9) are the prohibited slots
