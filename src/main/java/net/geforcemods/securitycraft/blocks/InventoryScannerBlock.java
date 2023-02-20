@@ -150,7 +150,14 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		InventoryScannerBlockEntity connectedScanner = getConnectedInventoryScanner(world, pos, state, null);
 		TileEntity tile = world.getBlockEntity(pos);
 
-		BlockUtils.removeInSequence(SCContent.INVENTORY_SCANNER_FIELD.get(), world, pos, state.getValue(FACING));
+		BlockUtils.removeInSequence((direction, stateToCheck) -> {
+			if (stateToCheck.getBlock() != SCContent.INVENTORY_SCANNER_FIELD.get())
+				return false;
+
+			Direction stateToCheckFacing = stateToCheck.getValue(FACING);
+
+			return stateToCheckFacing == direction || stateToCheckFacing == direction.getOpposite();
+		}, world, pos, state.getValue(FACING));
 
 		if (tile instanceof InventoryScannerBlockEntity) {
 			InventoryScannerBlockEntity te = (InventoryScannerBlockEntity) tile;

@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.util;
 
+import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ConfigHandler;
@@ -113,12 +114,12 @@ public class BlockUtils {
 		}
 	}
 
-	public static void removeInSequence(Block blockToDestroy, IWorld level, BlockPos pos, Direction... directions) {
+	public static void removeInSequence(BiPredicate<Direction, BlockState> stateMatcher, IWorld level, BlockPos pos, Direction... directions) {
 		for (Direction direction : directions) {
 			int i = 1;
 			BlockPos modifiedPos = pos.relative(direction, i);
 
-			while (level.getBlockState(modifiedPos).getBlock() == blockToDestroy) {
+			while (stateMatcher.test(direction, level.getBlockState(modifiedPos))) {
 				level.removeBlock(modifiedPos, false);
 				modifiedPos = pos.relative(direction, ++i);
 			}
