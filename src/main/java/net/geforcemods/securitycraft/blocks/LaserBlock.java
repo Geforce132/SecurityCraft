@@ -59,9 +59,9 @@ public class LaserBlock extends DisguisableBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		LaserBlockBlockEntity be = (LaserBlockBlockEntity) level.getBlockEntity(pos);
-
 		if (!level.isClientSide) {
+			LaserBlockBlockEntity be = (LaserBlockBlockEntity) level.getBlockEntity(pos);
+
 			if (be.isOwnedBy(player)) {
 				if (!be.isEnabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);

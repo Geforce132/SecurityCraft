@@ -9,11 +9,14 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,6 +26,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	private IntOption delay = new IntOption(this::getBlockPos, "delay", 2, 1, 30, 1, true);
 	private int cooldown = 0;
 	private boolean isPowered = false;
+	private SoundEvent sound = SCSounds.ALARM.event;
 
 	public AlarmBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.ALARM_BLOCK_ENTITY.get(), pos, state);
@@ -32,11 +36,12 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	public void tick(Level level, BlockPos pos, BlockState state) { //server only as per AlarmBlock
 		if (isPowered && --cooldown <= 0) {
 			double rangeSqr = Math.pow(range.get(), 2);
+			Holder<SoundEvent> soundEventHolder = BuiltInRegistries.SOUND_EVENT.wrapAsHolder(isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event);
 
 			for (ServerPlayer player : ((ServerLevel) level).getPlayers(p -> p.blockPosition().distSqr(pos) <= rangeSqr)) {
 				float volume = (float) (1.0F - ((player.blockPosition().distSqr(pos)) / rangeSqr));
 
-				player.connection.send(new ClientboundSoundPacket(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SCSounds.ALARM.event), SoundSource.BLOCKS, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), volume, 1.0F, player.getCommandSenderWorld().random.nextLong()));
+				player.connection.send(new ClientboundSoundPacket(soundEventHolder, SoundSource.BLOCKS, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), volume, 1.0F, player.getCommandSenderWorld().random.nextLong()));
 			}
 
 			setCooldown(delay.get() * 20);
@@ -48,6 +53,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 		super.saveAdditional(tag);
 		tag.putInt("cooldown", cooldown);
 		tag.putBoolean("isPowered", isPowered);
+		tag.putString("sound", sound.getLocation().toString());
 	}
 
 	@Override
@@ -56,6 +62,16 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 
 		cooldown = tag.getInt("cooldown");
 		isPowered = tag.getBoolean("isPowered");
+		setSound(new ResourceLocation(tag.getString("sound")));
+	}
+
+	public void setSound(ResourceLocation soundEvent) {
+		sound = SoundEvent.createVariableRangeEvent(soundEvent);
+		setChanged();
+	}
+
+	public SoundEvent getSound() {
+		return isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event;
 	}
 
 	public void setCooldown(int cooldown) {
@@ -74,7 +90,9 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[] {};
+		return new ModuleType[] {
+				ModuleType.SMART
+		};
 	}
 
 	@Override
