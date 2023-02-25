@@ -981,6 +981,7 @@
 	"messages.securitycraft:universalOwnerChanger.noName": "Du musst diesem Item den Namen des neuen Besitzers geben. Benutze einen Amboss, um es umzubenennen.",
 	"messages.securitycraft:universalOwnerChanger.notOwned": "Du besitzt diesen Block nicht, also kannst du seinen Besitzer auch nicht ändern.",
 	"messages.securitycraft:universalOwnerChanger.ownerInvalidated": "Der Besitzer des Blocks wurde geändert und muss deshalb vom neuen Besitzer verifiziert werden, um wieder zu funktionieren. Um einen Block zu verifizieren, muss der neue Besitzer des Blocks den Block rechtsklicken.",
+	"module.securitycraft.alarm.smart_module.description": "Ein schlaues Modul in einem Alarm lässt dich einstellen, welches Geräusch der Alarm abspielt, wenn er aktiviert wird.",
 	"module.securitycraft.block_change_detector.disguise_module.description": "Wenn ein Tarnmodul zu einem Block-Änderungsdetektor hinzugefügt wird, ändert es seine Textur/sein Modell zu denen des Blockes im Tarnmodul.",
 	"module.securitycraft.block_change_detector.redstone_module.description": "Ein Redstone-Modul in einem Block-Änderungsdetektor lässt ihn ein Redstonesignal abgeben, wenn ein Spieler einen Block in seiner Nähte platziert/zerbricht.",
 	"module.securitycraft.block_change_detector.smart_module.description": "Ein schlaues Modul in einem Block-Änderungsdetektor macht es möglich, das Platzieren/Zerbrechen eines bestimmten Blockes zu detektieren. Welcher Block dies ist, kann im Interface des Block-Änderungsdetektors festgelegt werden.",
