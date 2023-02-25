@@ -151,7 +151,7 @@ public class AlarmScreen extends Screen {
 			int slotIndex = mouseListY / slotHeight;
 
 			if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
-				Component soundEventKey = soundEventKeys.get(soundEvents.get(slotIndex));
+				Component soundEventKey = getSoundEventComponent(soundEvents.get(slotIndex));
 				int length = font.width(soundEventKey);
 
 				if (length >= width - 6 - textOffset)
@@ -185,12 +185,16 @@ public class AlarmScreen extends Screen {
 					break;
 
 				SoundEvent soundEvent = soundEvents.get(i);
-				Component name = soundEventKeys.computeIfAbsent(soundEvent, t -> Utils.localize(soundEvent.getLocation().toLanguageKey()));
+				Component name = getSoundEventComponent(soundEvent);
 
 				font.draw(pose, name, left + textOffset, yStart, 0xC6C6C6);
 				RenderSystem._setShaderTexture(0, GUI_TEXTURE);
 				blit(pose, left, yStart - 1, getBlitOffset(), i == slotIndex && mouseX >= left && mouseX < min ? 9 : 0, 211, 10, 10, 256, 256);
 			}
+		}
+
+		private Component getSoundEventComponent(SoundEvent soundEvent) {
+			return soundEventKeys.computeIfAbsent(soundEvent, t -> Utils.localize(soundEvent.getLocation().toLanguageKey()));
 		}
 
 		private void renderHighlightBox(int entryRight, Tesselator tesselator, int baseY, int slotBuffer, int slotIndex, int min) {
