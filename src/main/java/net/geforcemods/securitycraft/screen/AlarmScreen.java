@@ -169,17 +169,21 @@ public class AlarmScreen extends Screen {
 
 			renderHighlightBox(entryRight, tesselator, baseY, slotBuffer, selectedSoundIndex, min);
 
-			int i = 0;
-
 			//draw entry strings and indicators whether the filter is enabled
-			for (SoundEvent soundEvent : soundEvents) {
-				Component name = soundEventKeys.computeIfAbsent(soundEvent, t -> Utils.localize(soundEvent.getLocation().toLanguageKey()));
+			for (int i = 0; i < soundEvents.size(); i++) {
 				int yStart = relativeY + (slotHeight * i);
+
+				if (yStart + slotHeight < top)
+					continue;
+				else if (yStart > top + height)
+					break;
+
+				SoundEvent soundEvent = soundEvents.get(i);
+				Component name = soundEventKeys.computeIfAbsent(soundEvent, t -> Utils.localize(soundEvent.getLocation().toLanguageKey()));
 
 				font.draw(pose, name, left + textOffset, yStart, 0xC6C6C6);
 				RenderSystem._setShaderTexture(0, GUI_TEXTURE);
 				blit(pose, left, yStart - 1, getBlitOffset(), i == slotIndex && mouseX >= left && mouseX < min ? 9 : 0, 211, 10, 10, 256, 256);
-				i++;
 			}
 		}
 
