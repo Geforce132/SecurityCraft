@@ -56,15 +56,15 @@ public class LaserBlock extends DisguisableBlock {
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		LaserBlockBlockEntity be = (LaserBlockBlockEntity) world.getTileEntity(pos);
 
-		if (!world.isRemote) {
-			if (be.isOwnedBy(player)) {
+		if (be.isOwnedBy(player)) {
+			if (!world.isRemote) {
 				if (!be.isEnabled())
 					player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
 					SecurityCraft.network.sendTo(new OpenLaserScreen(pos, be.getSideConfig()), (EntityPlayerMP) player);
-
-				return true;
 			}
+
+			return true;
 		}
 
 		return false;
