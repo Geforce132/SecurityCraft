@@ -17,7 +17,9 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.SetAlarmSound;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -36,6 +38,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class AlarmScreen extends Screen {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm.png");
 	private final AlarmBlockEntity be;
+	private final boolean hasSmartModule;
+	private final Component smartModuleTooltip;
 	private final ResourceLocation previousSelectedSoundEvent;
 	private ResourceLocation selectedSoundEvent;
 	private int imageWidth = 256, imageHeight = 211, leftPos, topPos;
@@ -44,6 +48,8 @@ public class AlarmScreen extends Screen {
 	public AlarmScreen(AlarmBlockEntity be, ResourceLocation selectedSoundEvent) {
 		super(be.getDisplayName());
 		this.be = be;
+		this.hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
+		smartModuleTooltip = Utils.localize(hasSmartModule ? "gui.securitycraft:alarm.smart_module" : "gui.securitycraft:alarm.no_smart_module");
 		previousSelectedSoundEvent = selectedSoundEvent;
 		this.selectedSoundEvent = selectedSoundEvent;
 	}
@@ -64,6 +70,7 @@ public class AlarmScreen extends Screen {
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(pose, mouseX, mouseY, partialTicks);
 		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
+		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	public void selectSound(ResourceLocation eventId) {
@@ -124,7 +131,7 @@ public class AlarmScreen extends Screen {
 			if (slotIndex >= 0 && slotIndex < listLength) {
 				if (mouseX >= 0 && mouseX <= textOffset - 2)
 					playSound(soundEvents.get(slotIndex));
-				else if (mouseX > textOffset - 2 && mouseX <= right - 6 && slotIndex != selectedSoundIndex) {
+				else if (hasSmartModule && mouseX > textOffset - 2 && mouseX <= right - 6 && slotIndex != selectedSoundIndex) {
 					Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 					selectSound(slotIndex);
 				}
@@ -162,7 +169,7 @@ public class AlarmScreen extends Screen {
 			int min = left + textOffset - 2;
 
 			//highlight hovered slot
-			if (slotIndex != selectedSoundIndex && mouseX >= min && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
+			if (hasSmartModule && slotIndex != selectedSoundIndex && mouseX >= min && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
 				renderHighlightBox(entryRight, tesselator, baseY, slotBuffer, slotIndex, min);
 
 			//highlight slot of the currently selected sound

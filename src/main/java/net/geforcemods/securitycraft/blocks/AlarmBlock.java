@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -60,7 +59,7 @@ public class AlarmBlock extends OwnableBlock {
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		AlarmBlockEntity be = (AlarmBlockEntity) level.getBlockEntity(pos);
 
-		if (be.isOwnedBy(player) && be.isModuleEnabled(ModuleType.SMART)) {
+		if (be.isOwnedBy(player)) {
 			if (!level.isClientSide)
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.ALARM, pos));
 

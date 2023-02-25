@@ -562,6 +562,8 @@
 	"entity.securitycraft.sentry": "Sentry",
 	"gamerule.fakeLavaSourceConversion": "Fake lava converts to source",
 	"gamerule.fakeWaterSourceConversion": "Fake water converts to source",
+	"gui.securitycraft:alarm.no_smart_module": "Install a Smart Module to be able to control which sound the Alarm plays.",
+	"gui.securitycraft:alarm.smart_module": "Click one of the sound entries in the list to select which sound the Alarm plays.",
 	"gui.securitycraft:blockPocketManager.activate": "Activate",
 	"gui.securitycraft:blockPocketManager.assemble": "Auto-Assemble",
 	"gui.securitycraft:blockPocketManager.deactivate": "Deactivate",
