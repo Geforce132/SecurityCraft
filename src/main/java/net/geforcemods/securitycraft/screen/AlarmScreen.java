@@ -90,7 +90,7 @@ public class AlarmScreen extends Screen {
 
 	public class SoundScrollList extends ScrollPanel {
 		public final List<SoundEvent> soundEvents = new ArrayList<>(ForgeRegistries.SOUND_EVENTS.getValues());
-		private final int slotHeight = 12, listLength = soundEvents.size(), textOffset = 10;
+		private final int slotHeight = 12, listLength = soundEvents.size(), textOffset = 11;
 		private final Map<SoundEvent, Component> soundEventKeys = new HashMap<>();
 		private SoundInstance playingSound;
 		private int selectedSoundIndex;
@@ -122,9 +122,9 @@ public class AlarmScreen extends Screen {
 			int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
 
 			if (slotIndex >= 0 && slotIndex < listLength) {
-				if (mouseX >= 0 && mouseX <= textOffset)
+				if (mouseX >= 0 && mouseX <= textOffset - 2)
 					playSound(soundEvents.get(slotIndex));
-				else if (mouseX > textOffset && mouseX <= right - 6 && slotIndex != selectedSoundIndex) {
+				else if (mouseX > textOffset - 2 && mouseX <= right - 6 && slotIndex != selectedSoundIndex) {
 					Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 					selectSound(slotIndex);
 				}
@@ -148,10 +148,8 @@ public class AlarmScreen extends Screen {
 				int length = font.width(soundEventKey);
 
 				if (length >= width - 6 - textOffset)
-					renderTooltip(pose, List.of(soundEventKey), Optional.empty(), left - 2, baseY + (slotHeight * slotIndex + slotHeight));
+					renderTooltip(pose, List.of(soundEventKey), Optional.empty(), left + textOffset - 12, baseY + (slotHeight * slotIndex + slotHeight));
 			}
-
-			RenderSystem._setShaderTexture(0, new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm.png"));
 		}
 
 		@Override
@@ -167,9 +165,10 @@ public class AlarmScreen extends Screen {
 			if (slotIndex != selectedSoundIndex && mouseX >= min && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
 				renderHighlightBox(entryRight, tesselator, baseY, slotBuffer, slotIndex, min);
 
+			//highlight slot of the currently selected sound
 			renderHighlightBox(entryRight, tesselator, baseY, slotBuffer, selectedSoundIndex, min);
 
-			//draw entry strings and indicators whether the filter is enabled
+			//draw entry strings and sound icons
 			for (int i = 0; i < soundEvents.size(); i++) {
 				int yStart = relativeY + (slotHeight * i);
 
