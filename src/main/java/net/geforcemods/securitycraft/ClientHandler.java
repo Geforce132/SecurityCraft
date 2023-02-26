@@ -433,6 +433,10 @@ public class ClientHandler {
 		return Minecraft.getInstance().player;
 	}
 
+	public static Level getClientLevel() {
+		return Minecraft.getInstance().level;
+	}
+
 	public static void displayMRATScreen(ItemStack stack) {
 		Minecraft.getInstance().setScreen(new MineRemoteAccessToolScreen(stack));
 	}

@@ -2,15 +2,15 @@ package net.geforcemods.securitycraft.network.client;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
 public class PlayAlarmSound {
@@ -69,10 +69,10 @@ public class PlayAlarmSound {
 
 	public static void onMessage(PlayAlarmSound message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			Minecraft mc = Minecraft.getInstance();
+			Level level = ClientHandler.getClientLevel();
 
-			if (mc.level.getBlockEntity(message.bePos) instanceof AlarmBlockEntity be)
-				be.playSound(mc.level, message.getX(), message.getY(), message.getZ(), message.sound, SoundSource.BLOCKS, message.volume, 1.0F, message.seed);
+			if (level.getBlockEntity(message.bePos) instanceof AlarmBlockEntity be)
+				be.playSound(level, message.getX(), message.getY(), message.getZ(), message.sound, message.volume, message.seed);
 		});
 
 		ctx.get().setPacketHandled(true);
