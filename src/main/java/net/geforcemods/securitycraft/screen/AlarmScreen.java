@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -57,9 +58,17 @@ public class AlarmScreen extends Screen {
 	@Override
 	protected void init() {
 		super.init();
+
+		EditBox searchBar;
+		Component searchText = Utils.localize("gui.securitycraft:alarm.edit_box");
+
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
 		soundList = addRenderableWidget(new SoundScrollList(minecraft, imageWidth - 10, imageHeight - 65, topPos + 40, leftPos + 5));
+		searchBar = addRenderableWidget(new EditBox(font, leftPos + 30, topPos + 20, imageWidth - 60, 15, searchText));
+		searchBar.setHint(searchText);
+		searchBar.setFilter(s -> s.matches("[a-zA-Z0-9\\._]*"));
+		searchBar.setResponder(soundList::updateFilteredEntries);
 	}
 
 	@Override
@@ -96,18 +105,20 @@ public class AlarmScreen extends Screen {
 	}
 
 	public class SoundScrollList extends ScrollPanel {
-		public final List<SoundEvent> soundEvents = new ArrayList<>(ForgeRegistries.SOUND_EVENTS.getValues());
-		private final int slotHeight = 12, listLength = soundEvents.size(), textOffset = 11;
+		public final List<SoundEvent> allSoundEvents = new ArrayList<>(ForgeRegistries.SOUND_EVENTS.getValues());
+		private final int slotHeight = 12, textOffset = 11;
 		private final Map<SoundEvent, Component> soundEventKeys = new HashMap<>();
+		private List<SoundEvent> filteredSoundEvents;
 		private SoundInstance playingSound;
-		private int selectedSoundIndex;
+		private int selectedSoundIndex, contentHeight = 0;
+		private String previousSearchText = "";
 
 		public SoundScrollList(Minecraft client, int width, int height, int top, int left) {
 			super(client, width, height, top, left);
 
 			int maxScroll = getContentHeight() - (height - border);
 
-			this.selectedSoundIndex = Math.max(0, Iterables.indexOf(soundEvents, se -> se.getLocation().equals(selectedSoundEvent)));
+			updateFilteredEntries("");
 			scrollDistance = selectedSoundIndex * slotHeight;
 
 			if (scrollDistance > maxScroll)
@@ -116,21 +127,21 @@ public class AlarmScreen extends Screen {
 
 		@Override
 		protected int getContentHeight() {
-			int height = listLength * (font.lineHeight + 3);
-
-			if (height < bottom - top - 4)
-				height = bottom - top - 4;
-
-			return height;
+			return contentHeight;
 		}
 
 		@Override
 		protected boolean clickPanel(double mouseX, double mouseY, int button) {
 			int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
 
-			if (slotIndex >= 0 && slotIndex < listLength) {
-				if (mouseX >= 0 && mouseX <= textOffset - 2)
-					playSound(soundEvents.get(slotIndex));
+			if (slotIndex >= 0 && slotIndex < filteredSoundEvents.size()) {
+				Minecraft mc = Minecraft.getInstance();
+				double relativeMouseY = mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight();
+
+				if (relativeMouseY < top || relativeMouseY > bottom)
+					return false;
+				else if (mouseX >= 0 && mouseX <= textOffset - 2)
+					playSound(filteredSoundEvents.get(slotIndex));
 				else if (hasSmartModule && mouseX > textOffset - 2 && mouseX <= right - 6 && slotIndex != selectedSoundIndex) {
 					Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 					selectSound(slotIndex);
@@ -150,8 +161,8 @@ public class AlarmScreen extends Screen {
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
 			int slotIndex = mouseListY / slotHeight;
 
-			if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
-				Component soundEventKey = getSoundEventComponent(soundEvents.get(slotIndex));
+			if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < filteredSoundEvents.size() && mouseY >= top && mouseY <= bottom) {
+				Component soundEventKey = getSoundEventComponent(filteredSoundEvents.get(slotIndex));
 				int length = font.width(soundEventKey);
 
 				if (length >= width - 6 - textOffset)
@@ -160,36 +171,36 @@ public class AlarmScreen extends Screen {
 		}
 
 		@Override
-		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
+		protected void drawPanel(PoseStack pose, int entryRight, int baseY, Tesselator tesselator, int mouseX, int mouseY) {
 			Font font = Minecraft.getInstance().font;
-			int baseY = top + border - (int) scrollDistance;
 			int slotBuffer = slotHeight - 4;
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
 			int slotIndex = mouseListY / slotHeight;
 			int min = left + textOffset - 2;
 
 			//highlight hovered slot
-			if (hasSmartModule && slotIndex != selectedSoundIndex && mouseX >= min && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
+			if (hasSmartModule && slotIndex != selectedSoundIndex && mouseX >= min && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < filteredSoundEvents.size() && mouseY >= top && mouseY <= bottom)
 				renderHighlightBox(entryRight, tesselator, baseY, slotBuffer, slotIndex, min);
 
 			//highlight slot of the currently selected sound
-			renderHighlightBox(entryRight, tesselator, baseY, slotBuffer, selectedSoundIndex, min);
+			if (selectedSoundIndex >= 0)
+				renderHighlightBox(entryRight, tesselator, baseY, slotBuffer, selectedSoundIndex, min);
 
 			//draw entry strings and sound icons
-			for (int i = 0; i < soundEvents.size(); i++) {
-				int yStart = relativeY + (slotHeight * i);
+			for (int i = 0; i < filteredSoundEvents.size(); i++) {
+				int yStart = baseY + (slotHeight * i);
 
 				if (yStart + slotHeight < top)
 					continue;
 				else if (yStart > top + height)
 					break;
 
-				SoundEvent soundEvent = soundEvents.get(i);
+				SoundEvent soundEvent = filteredSoundEvents.get(i);
 				Component name = getSoundEventComponent(soundEvent);
 
 				font.draw(pose, name, left + textOffset, yStart, 0xC6C6C6);
 				RenderSystem._setShaderTexture(0, GUI_TEXTURE);
-				blit(pose, left, yStart - 1, getBlitOffset(), i == slotIndex && mouseX >= left && mouseX < min ? 9 : 0, 211, 10, 10, 256, 256);
+				blit(pose, left, yStart - 1, getBlitOffset(), i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? 9 : 0, 211, 10, 10, 256, 256);
 			}
 		}
 
@@ -221,7 +232,7 @@ public class AlarmScreen extends Screen {
 
 		public void selectSound(int slotIndex) {
 			selectedSoundIndex = slotIndex;
-			AlarmScreen.this.selectSound(soundEvents.get(slotIndex).getLocation());
+			AlarmScreen.this.selectSound(filteredSoundEvents.get(slotIndex).getLocation());
 		}
 
 		public void playSound(SoundEvent soundEvent) {
@@ -232,6 +243,35 @@ public class AlarmScreen extends Screen {
 
 			playingSound = SimpleSoundInstance.forUI(soundEvent, 1.0F, 1.0F);
 			soundManager.play(playingSound);
+		}
+
+		public void updateFilteredEntries(String searchText) {
+			//@formatter:off
+			filteredSoundEvents = new ArrayList<>(allSoundEvents
+					.stream()
+					.filter(e -> e.getLocation().toLanguageKey().contains(searchText))
+					.toList());
+			//@formatter:on
+			recalculateContentHeight();
+			updateSelectedSoundIndex();
+
+			if (!searchText.equals(previousSearchText)) {
+				previousSearchText = searchText;
+				scrollDistance = 0;
+			}
+		}
+
+		public void recalculateContentHeight() {
+			int height = filteredSoundEvents.size() * (font.lineHeight + 3);
+
+			if (height < bottom - top - 4)
+				height = bottom - top - 4;
+
+			contentHeight = height;
+		}
+
+		public void updateSelectedSoundIndex() {
+			selectedSoundIndex = Iterables.indexOf(filteredSoundEvents, se -> se.getLocation().equals(selectedSoundEvent));
 		}
 
 		@Override
