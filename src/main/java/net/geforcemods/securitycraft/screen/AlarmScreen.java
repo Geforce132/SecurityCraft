@@ -116,10 +116,10 @@ public class AlarmScreen extends Screen {
 		public SoundScrollList(Minecraft client, int width, int height, int top, int left) {
 			super(client, width, height, top, left);
 
-			int maxScroll = getContentHeight() - (height - border);
-
 			updateFilteredEntries("");
 			scrollDistance = selectedSoundIndex * slotHeight;
+
+			int maxScroll = getContentHeight() - (height - border);
 
 			if (scrollDistance > maxScroll)
 				scrollDistance = maxScroll;
