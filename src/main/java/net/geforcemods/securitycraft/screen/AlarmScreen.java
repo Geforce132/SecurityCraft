@@ -95,7 +95,7 @@ public class AlarmScreen extends Screen {
 	public void onClose() {
 		super.onClose();
 
-		if (soundList.playingSound != null)
+		if (soundList != null && soundList.playingSound != null)
 			Minecraft.getInstance().getSoundManager().stop(soundList.playingSound);
 
 		if (selectedSoundEvent != previousSelectedSoundEvent) {
