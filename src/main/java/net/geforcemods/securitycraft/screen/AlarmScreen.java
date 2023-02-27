@@ -21,6 +21,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.SetAlarmSound;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.EditBox;
@@ -40,10 +41,11 @@ public class AlarmScreen extends Screen {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm.png");
 	private final AlarmBlockEntity be;
 	private final boolean hasSmartModule;
-	private final Component smartModuleTooltip;
+	private final Component smartModuleTooltip, currentlySelectedText = Utils.localize("gui.securitycraft:alarm.currently_selected").withStyle(ChatFormatting.UNDERLINE);
 	private final ResourceLocation previousSelectedSoundEvent;
 	private ResourceLocation selectedSoundEvent;
-	private int imageWidth = 256, imageHeight = 211, leftPos, topPos;
+	private Component selectedSoundEventText;
+	private int imageWidth = 256, imageHeight = 221, leftPos, topPos;
 	private SoundScrollList soundList;
 
 	public AlarmScreen(AlarmBlockEntity be, ResourceLocation selectedSoundEvent) {
@@ -52,7 +54,7 @@ public class AlarmScreen extends Screen {
 		this.hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		smartModuleTooltip = Utils.localize(hasSmartModule ? "gui.securitycraft:alarm.smart_module" : "gui.securitycraft:alarm.no_smart_module");
 		previousSelectedSoundEvent = selectedSoundEvent;
-		this.selectedSoundEvent = selectedSoundEvent;
+		selectSound(selectedSoundEvent);
 	}
 
 	@Override
@@ -64,7 +66,7 @@ public class AlarmScreen extends Screen {
 
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
-		soundList = addRenderableWidget(new SoundScrollList(minecraft, imageWidth - 10, imageHeight - 65, topPos + 40, leftPos + 5));
+		soundList = addRenderableWidget(new SoundScrollList(minecraft, imageWidth - 10, imageHeight - 75, topPos + 40, leftPos + 5));
 		searchBar = addRenderableWidget(new EditBox(font, leftPos + 30, topPos + 20, imageWidth - 60, 15, searchText));
 		searchBar.setHint(searchText);
 		searchBar.setFilter(s -> s.matches("[a-zA-Z0-9\\._]*"));
@@ -79,11 +81,14 @@ public class AlarmScreen extends Screen {
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(pose, mouseX, mouseY, partialTicks);
 		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
+		font.draw(pose, currentlySelectedText, width / 2 - font.width(currentlySelectedText) / 2, topPos + imageHeight - 30, 4210752);
+		font.draw(pose, selectedSoundEventText, width / 2 - font.width(selectedSoundEventText) / 2, topPos + imageHeight - 17, 4210752);
 		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	public void selectSound(ResourceLocation eventId) {
 		this.selectedSoundEvent = eventId;
+		selectedSoundEventText = Utils.localize(selectedSoundEvent.toLanguageKey());
 	}
 
 	@Override
@@ -200,7 +205,7 @@ public class AlarmScreen extends Screen {
 
 				font.draw(pose, name, left + textOffset, yStart, 0xC6C6C6);
 				RenderSystem._setShaderTexture(0, GUI_TEXTURE);
-				blit(pose, left, yStart - 1, getBlitOffset(), i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? 9 : 0, 211, 10, 10, 256, 256);
+				blit(pose, left, yStart - 1, getBlitOffset(), i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? 9 : 0, 221, 10, 10, 256, 256);
 			}
 		}
 
