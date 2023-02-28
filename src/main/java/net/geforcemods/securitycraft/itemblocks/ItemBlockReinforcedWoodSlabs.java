@@ -95,7 +95,7 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
 						stack.shrink(1);
 
 						if (owner != null)
-							((IOwnable) tile).setOwner(owner.getUUID(), owner.getName());
+							((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
 					}
 
 					return EnumActionResult.SUCCESS;
