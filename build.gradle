@@ -69,7 +69,7 @@ dependencies {
 	deobfProvided "curse.maven:ftb-library-legacy-forge-237167:2985811"
 	deobfProvided "curse.maven:ftb-utilities-forge-237102:3157548"
 	deobfProvided "curse.maven:cyclic-239286:2883487"
-	deobfProvided "curse.maven:icbm-classic-244451:3516968"
+	deobfProvided "curse.maven:icbm-classic-244451:4399322"
 	deobfProvided "curse.maven:lycanites-mobs-224770:2935745"
 	deobfProvided "curse.maven:projecte-226410:2702991"
 	deobfProvided 'mezz.jei:jei_1.12.2:4.16.1.302'
