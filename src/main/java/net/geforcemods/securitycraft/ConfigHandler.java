@@ -235,7 +235,7 @@ public class ConfigHandler {
 
 		for (String entry : effectsValue) {
 			String[] split = entry.split("\\|");
-			System.out.println(entry);
+
 			if (split.length != 3) {
 				LOGGER.warn("Not enough information provided for effect \"{}\", skipping", entry);
 				continue;
