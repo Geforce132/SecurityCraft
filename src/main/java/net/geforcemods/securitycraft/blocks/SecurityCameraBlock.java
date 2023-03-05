@@ -134,6 +134,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 				dummyEntity = new SecurityCamera(level, pos);
 
 			level.addFreshEntity(dummyEntity);
+			dummyEntity.setChunkLoadingDistance(viewDistance);
 
 			for (int x = chunkPos.getX() - viewDistance; x <= chunkPos.getX() + viewDistance; x++) {
 				for (int z = chunkPos.getZ() - viewDistance; z <= chunkPos.getZ() + viewDistance; z++) {
