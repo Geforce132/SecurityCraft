@@ -1,5 +1,8 @@
 package net.geforcemods.securitycraft.entity.camera;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -19,17 +22,21 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.network.PacketDistributor;
 
 public class SecurityCamera extends Entity {
+	private static final List<Player> DISMOUNTED_PLAYERS = new ArrayList<>();
 	public int screenshotSoundCooldown = 0;
 	protected int redstoneCooldown = 0;
 	protected int toggleNightVisionCooldown = 0;
 	private boolean shouldProvideNightVision = false;
 	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
+	private int initialChunkLoadingDistance = 0;
+	private boolean hasSentChunks = false;
 
 	public SecurityCamera(EntityType<SecurityCamera> type, Level level) {
 		super(SCContent.SECURITY_CAMERA_ENTITY.get(), level);
@@ -125,6 +132,22 @@ public class SecurityCamera extends Entity {
 		setRot(yaw, pitch);
 	}
 
+	public void setChunkLoadingDistance(int chunkLoadingDistance) {
+		initialChunkLoadingDistance = chunkLoadingDistance;
+	}
+
+	public boolean hasSentChunks() {
+		return hasSentChunks;
+	}
+
+	public void setHasSentChunks(boolean hasSentChunks) {
+		this.hasSentChunks = hasSentChunks;
+	}
+
+	public static boolean hasRecentlyDismounted(Player player) {
+		return DISMOUNTED_PLAYERS.remove(player);
+	}
+
 	@Override
 	public void remove(RemovalReason pReason) {
 		super.remove(pReason);
@@ -136,6 +159,7 @@ public class SecurityCamera extends Entity {
 			discard();
 			player.camera = player;
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new SetCameraView(player));
+			DISMOUNTED_PLAYERS.add(player);
 		}
 	}
 
@@ -149,7 +173,7 @@ public class SecurityCamera extends Entity {
 				camBe.stopViewing();
 
 			SectionPos chunkPos = SectionPos.of(blockPosition());
-			int chunkLoadingDistance = CameraController.getChunkLoadingDistance() <= 0 ? level.getServer().getPlayerList().getViewDistance() : CameraController.getChunkLoadingDistance();
+			int chunkLoadingDistance = initialChunkLoadingDistance <= 0 ? level.getServer().getPlayerList().getViewDistance() : initialChunkLoadingDistance;
 
 			for (int x = chunkPos.getX() - chunkLoadingDistance; x <= chunkPos.getX() + chunkLoadingDistance; x++) {
 				for (int z = chunkPos.getZ() - chunkLoadingDistance; z <= chunkPos.getZ() + chunkLoadingDistance; z++) {
