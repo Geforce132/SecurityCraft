@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
-import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.IPacket;
@@ -66,31 +66,29 @@ public abstract class ChunkManagerMixin {
 	 */
 	@Inject(method = "move", at = @At(value = "TAIL"))
 	private void trackCameraLoadedChunks(ServerPlayerEntity player, CallbackInfo callback) {
-		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
-			SectionPos pos = SectionPos.of(player.getCamera());
+		if (player.getCamera() instanceof SecurityCamera) {
+			SecurityCamera camera = ((SecurityCamera) player.getCamera());
 
-			for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
-				for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
-					ChunkPos chunkPos = new ChunkPos(i, j);
+			if (!camera.hasSentChunks()) {
+				SectionPos pos = SectionPos.of(camera);
 
-					updateChunkTracking(player, chunkPos, new IPacket[2], CameraController.hasLoadedChunks(), true);
+				for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
+					for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
+						updateChunkTracking(player, new ChunkPos(i, j), new IPacket[2], false, true);
+					}
 				}
-			}
 
-			CameraController.setHasLoadedChunks(true);
-			CameraController.setChunkLoadingDistance(viewDistance);
+				camera.setHasSentChunks(true);
+			}
 		}
-		else if (CameraController.hasLoadedChunks()) {
+		else if (SecurityCamera.hasRecentlyDismounted(player)) {
 			SectionPos pos = player.getLastSectionPos();
 
 			for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
 				for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
-					updateChunkTracking(player, new ChunkPos(i, j), new IPacket[2], !CameraController.hasLoadedChunks(), true);
+					updateChunkTracking(player, new ChunkPos(i, j), new IPacket[2], false, true);
 				}
 			}
-
-			CameraController.setHasLoadedChunks(false);
-			CameraController.setChunkLoadingDistance(-1);
 		}
 	}
 }

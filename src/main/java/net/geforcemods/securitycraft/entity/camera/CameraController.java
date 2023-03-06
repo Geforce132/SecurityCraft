@@ -27,8 +27,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class CameraController {
 	public static PointOfView previousCameraType;
 	private static ClientChunkProvider.ChunkArray cameraStorage;
-	private static boolean chunksLoaded = false;
-	private static int chunkLoadingDistance = -1;
 	private static boolean wasUpPressed;
 	private static boolean wasDownPressed;
 	private static boolean wasLeftPressed;
@@ -221,22 +219,6 @@ public class CameraController {
 
 			cameraStorage = newStorage;
 		}
-	}
-
-	public static void setHasLoadedChunks(boolean hasLoadedChunks) {
-		chunksLoaded = hasLoadedChunks;
-	}
-
-	public static void setChunkLoadingDistance(int initialViewDistance) {
-		chunkLoadingDistance = initialViewDistance;
-	}
-
-	public static boolean hasLoadedChunks() {
-		return chunksLoaded;
-	}
-
-	public static int getChunkLoadingDistance() {
-		return chunkLoadingDistance;
 	}
 
 	public static void setRenderPosition(Entity entity) {
