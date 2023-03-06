@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket;
@@ -32,7 +32,7 @@ public abstract class ChunkMapMixin {
 	 * Fixes block updates not getting sent to chunks loaded by cameras by returning the camera's SectionPos to the distance
 	 * checking methods
 	 */
-	@Redirect(method = {"getPlayers", "lambda$setViewDistance$48"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getLastSectionPos()Lnet/minecraft/core/SectionPos;"))
+	@Redirect(method = {"getPlayers", "lambda$setViewDistance$45"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getLastSectionPos()Lnet/minecraft/core/SectionPos;"))
 	private SectionPos getCameraSectionPos(ServerPlayer player) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			return SectionPos.of(player.getCamera());
@@ -46,29 +46,27 @@ public abstract class ChunkMapMixin {
 	 */
 	@Inject(method = "move", at = @At(value = "TAIL"))
 	private void trackCameraLoadedChunks(ServerPlayer player, CallbackInfo callback) {
-		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
-			SectionPos pos = SectionPos.of(player.getCamera());
+		if (player.getCamera() instanceof SecurityCamera camera) {
+			if (!camera.hasSentChunks()) {
+				SectionPos pos = SectionPos.of(camera);
 
-			for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
-				for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
-					updateChunkTracking(player, new ChunkPos(i, j), new MutableObject<>(), CameraController.hasLoadedChunks(), true);
+				for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
+					for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
+						updateChunkTracking(player, new ChunkPos(i, j), new MutableObject<>(), false, true);
+					}
 				}
-			}
 
-			CameraController.setHasLoadedChunks(true);
-			CameraController.setChunkLoadingDistance(viewDistance);
+				camera.setHasSentChunks(true);
+			}
 		}
-		else if (CameraController.hasLoadedChunks()) {
+		else if (SecurityCamera.hasRecentlyDismounted(player)) {
 			SectionPos pos = player.getLastSectionPos();
 
 			for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
 				for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
-					updateChunkTracking(player, new ChunkPos(i, j), new MutableObject<>(), !CameraController.hasLoadedChunks(), true);
+					updateChunkTracking(player, new ChunkPos(i, j), new MutableObject<>(), false, true);
 				}
 			}
-
-			CameraController.setHasLoadedChunks(false);
-			CameraController.setChunkLoadingDistance(-1);
 		}
 	}
 }
