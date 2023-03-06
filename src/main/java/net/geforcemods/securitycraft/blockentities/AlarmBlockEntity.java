@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -28,6 +29,7 @@ import net.minecraftforge.network.PacketDistributor;
 public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	private IntOption range = new IntOption(this::getBlockPos, "range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
 	private IntOption delay = new IntOption(this::getBlockPos, "delay", 2, 1, 30, 1, true);
+	private DisabledOption disabled = new DisabledOption(false);
 	private int cooldown = 0;
 	private boolean isPowered = false;
 	private SoundEvent sound = SCSounds.ALARM.event;
@@ -40,10 +42,10 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
 		if (level.isClientSide) {
-			if (soundPlaying && !getBlockState().getValue(AlarmBlock.LIT))
+			if (soundPlaying && (isDisabled() || !getBlockState().getValue(AlarmBlock.LIT)))
 				stopPlayingSound();
 		}
-		else if (isPowered && --cooldown <= 0) {
+		else if (!isDisabled() && isPowered && --cooldown <= 0) {
 			double rangeSqr = Math.pow(range.get(), 2);
 			Holder<SoundEvent> soundEventHolder = BuiltInRegistries.SOUND_EVENT.wrapAsHolder(isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event);
 
@@ -97,6 +99,10 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 		setChanged();
 	}
 
+	public boolean isDisabled() {
+		return disabled.get();
+	}
+
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
@@ -107,7 +113,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range, delay
+				range, delay, disabled
 		};
 	}
 
