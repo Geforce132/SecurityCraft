@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -19,11 +21,14 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.SetAlarmSound;
+import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
+import net.geforcemods.securitycraft.screen.components.ActiveBasedTextureButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
@@ -34,11 +39,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraftforge.client.gui.widget.ExtendedButton;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class AlarmScreen extends Screen {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm.png");
+	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
+	private static final ResourceLocation RESET_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset_inactive.png");
 	private final AlarmBlockEntity be;
 	private final boolean hasSmartModule;
 	private final Component smartModuleTooltip, currentlySelectedText = Utils.localize("gui.securitycraft:alarm.currently_selected").withStyle(ChatFormatting.UNDERLINE);
@@ -47,6 +55,10 @@ public class AlarmScreen extends Screen {
 	private Component selectedSoundEventText;
 	private int imageWidth = 256, imageHeight = 221, leftPos, topPos;
 	private SoundScrollList soundList;
+	private Button minusThree, minusTwo, minusOne, reset, plusOne, plusTwo, plusThree;
+	private int previousSoundLength, soundLength;
+	private Component soundLengthText;
+	private int soundLengthTextLength, soundLengthTextStartX;
 
 	public AlarmScreen(AlarmBlockEntity be, ResourceLocation selectedSoundEvent) {
 		super(be.getDisplayName());
@@ -54,6 +66,8 @@ public class AlarmScreen extends Screen {
 		this.hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		smartModuleTooltip = Utils.localize(hasSmartModule ? "gui.securitycraft:alarm.smart_module" : "gui.securitycraft:alarm.no_smart_module");
 		previousSelectedSoundEvent = selectedSoundEvent;
+		previousSoundLength = be.getSoundLength();
+		soundLength = previousSoundLength;
 		selectSound(selectedSoundEvent);
 	}
 
@@ -63,6 +77,8 @@ public class AlarmScreen extends Screen {
 
 		EditBox searchBar;
 		Component searchText = Utils.localize("gui.securitycraft:alarm.edit_box");
+		int buttonHeight = 13;
+		int buttonY = topPos + 35;
 
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
@@ -71,6 +87,14 @@ public class AlarmScreen extends Screen {
 		searchBar.setHint(searchText);
 		searchBar.setFilter(s -> s.matches("[a-zA-Z0-9\\._]*"));
 		searchBar.setResponder(soundList::updateFilteredEntries);
+		minusThree = addRenderableWidget(new ExtendedButton(leftPos + 22, buttonY, 24, buttonHeight, Component.literal("---"), b -> changeSoundLength(soundLength - 100)));
+		minusTwo = addRenderableWidget(new ExtendedButton(leftPos + 48, buttonY, 18, buttonHeight, Component.literal("--"), b -> changeSoundLength(soundLength - 10)));
+		minusOne = addRenderableWidget(new ExtendedButton(leftPos + 68, buttonY, 12, buttonHeight, Component.literal("-"), b -> changeSoundLength(soundLength - 1)));
+		reset = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 82, buttonY, 12, buttonHeight, RESET_TEXTURE, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSoundLength(previousSoundLength)));
+		plusOne = addRenderableWidget(new ExtendedButton(leftPos + 96, buttonY, 12, buttonHeight, Component.literal("+"), b -> changeSoundLength(soundLength + 1)));
+		plusTwo = addRenderableWidget(new ExtendedButton(leftPos + 110, buttonY, 18, buttonHeight, Component.literal("++"), b -> changeSoundLength(soundLength + 10)));
+		plusThree = addRenderableWidget(new ExtendedButton(leftPos + 130, buttonY, 24, buttonHeight, Component.literal("+++"), b -> changeSoundLength(soundLength + 100)));
+		changeSoundLength(soundLength);
 	}
 
 	@Override
@@ -84,6 +108,7 @@ public class AlarmScreen extends Screen {
 		font.draw(pose, currentlySelectedText, width / 2 - font.width(currentlySelectedText) / 2, topPos + imageHeight - 30, 4210752);
 		font.draw(pose, selectedSoundEventText, width / 2 - font.width(selectedSoundEventText) / 2, topPos + imageHeight - 17, 4210752);
 		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+		font.draw(pose, soundLengthText, leftPos + imageWidth / 2 - font.width(soundLengthText) / 2, 23, 0xffffff);
 	}
 
 	public void selectSound(ResourceLocation eventId) {
@@ -107,6 +132,37 @@ public class AlarmScreen extends Screen {
 			be.setSound(selectedSoundEvent);
 			SecurityCraft.channel.sendToServer(new SetAlarmSound(be.getBlockPos(), selectedSoundEvent));
 		}
+
+		if (soundLength != previousSoundLength)
+			SecurityCraft.channel.sendToServer(new UpdateSliderValue(be.getBlockPos(), be.customOptions()[1], soundLength));
+	}
+
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+		if (mouseX >= leftPos + soundLengthTextStartX && mouseY >= topPos + 23 && mouseX <= leftPos + soundLengthTextStartX + soundLengthTextLength && mouseY <= topPos + 43)
+			changeSoundLength(soundLength + (int) Math.signum(delta));
+
+		return super.mouseScrolled(mouseX, mouseY, delta);
+	}
+
+	public void changeSoundLength(int newSoundLength) {
+		boolean enablePlusButtons;
+		boolean enableMinusButtons;
+
+		soundLength = Math.max(0, Math.min(newSoundLength, Integer.MAX_VALUE));
+		soundLengthText = Component.translatable("Sound length: %s", StringUtils.leftPad("" + soundLength, 5, "0"));
+		soundLengthTextLength = font.width(soundLengthText);
+		soundLengthTextStartX = imageWidth / 2 - soundLengthTextLength / 2;
+		enablePlusButtons = soundLength != Integer.MAX_VALUE;
+		enableMinusButtons = soundLength != 0;
+		minusThree.active = enableMinusButtons;
+		minusTwo.active = enableMinusButtons;
+		minusOne.active = enableMinusButtons;
+		reset.active = soundLength != previousSoundLength;
+		plusOne.active = enablePlusButtons;
+		plusTwo.active = enablePlusButtons;
+		plusThree.active = enablePlusButtons;
+		be.setSoundLength(soundLength);
 	}
 
 	public class SoundScrollList extends ScrollPanel {

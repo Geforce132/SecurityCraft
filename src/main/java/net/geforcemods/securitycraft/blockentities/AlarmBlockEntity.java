@@ -125,6 +125,14 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 		};
 	}
 
+	public int getSoundLength() {
+		return soundLength.get();
+	}
+
+	public void setSoundLength(int soundLength) {
+		this.soundLength.setValue(soundLength);
+	}
+
 	@Override
 	public void setRemoved() {
 		super.setRemoved();
