@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
-	private IntOption range = new IntOption("range", 5, 1, 10, 1, true);
+	private IntOption range = new IntOption(this::getBlockPos, "range", 5, 1, 10, 1, true);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private int cooldown = -1;
 

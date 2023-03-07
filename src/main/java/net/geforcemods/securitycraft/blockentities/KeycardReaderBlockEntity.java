@@ -27,7 +27,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	};
 	private int signature = 0;
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private IntOption signalLength = new IntOption("signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private DisabledOption disabled = new DisabledOption(false);
 
 	public KeycardReaderBlockEntity(BlockPos pos, BlockState state) {

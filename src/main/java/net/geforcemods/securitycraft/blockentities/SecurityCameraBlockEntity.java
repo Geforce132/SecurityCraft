@@ -27,9 +27,9 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	public boolean down = false, downSet = false;
 	private int playersViewing = 0;
 	private boolean shutDown = false;
-	private DoubleOption rotationSpeedOption = new DoubleOption("rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D, true);
+	private DoubleOption rotationSpeedOption = new DoubleOption(this::getBlockPos, "rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D, true);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
-	private DoubleOption customRotationOption = new DoubleOption("customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
+	private DoubleOption customRotationOption = new DoubleOption(this::getBlockPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
 	private DisabledOption disabled = new DisabledOption(false);
 
 	public SecurityCameraBlockEntity(BlockPos pos, BlockState state) {
