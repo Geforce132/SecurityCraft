@@ -26,8 +26,10 @@ import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -103,28 +105,49 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 				for (int i = 0; i < options.length; i++) {
 					Option<?> option = options[i];
+					final int optionIndex = i;
 
 					if (option.isSlider()) {
 						if (option instanceof DoubleOption doubleOption) {
-							final int sliderIndex = i;
-
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
 								doubleOption.setValue(slider.getValue());
-								hoverCheckers.set(sliderIndex, new TextHoverChecker(optionButtons[sliderIndex], getOptionDescription(sliderIndex)));
-								SecurityCraft.channel.sendToServer(new UpdateSliderValue(doubleOption.getPos(), option, doubleOption.get()));
+								hoverCheckers.set(optionIndex, new TextHoverChecker(optionButtons[optionIndex], getOptionDescription(optionIndex)));
+								SecurityCraft.channel.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, doubleOption.get()));
 							});
 						}
 						else if (option instanceof IntOption intOption) {
-							final int sliderIndex = i;
-
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
 								intOption.setValue(slider.getValueInt());
-								hoverCheckers.set(sliderIndex, new TextHoverChecker(optionButtons[sliderIndex], getOptionDescription(sliderIndex)));
-								SecurityCraft.channel.sendToServer(new UpdateSliderValue(intOption.getPos(), option, intOption.get()));
+								hoverCheckers.set(optionIndex, new TextHoverChecker(optionButtons[optionIndex], getOptionDescription(optionIndex)));
+								SecurityCraft.channel.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, intOption.get()));
 							});
 						}
 
 						optionButtons[i].setFGColor(14737632);
+					}
+					else if (option instanceof IntOption intOption && intOption.isTextbox()) {
+						RememberingEditBox editBox = new RememberingEditBox(font, leftPos + 179, (topPos + 10) + (i * 25), 118, 20, getOptionButtonTitle(option));
+
+						editBox.setFilter(value -> {
+							try {
+								int number = Integer.parseInt(value);
+
+								return number >= intOption.getMin() && number <= intOption.getMax();
+							}
+							catch (Exception e) {}
+
+							return false;
+						});
+						editBox.setValue(intOption.get() + "");
+						editBox.setResponder(value -> {
+							if (!editBox.previousValue.equals(value)) {
+								intOption.setValue(Integer.parseInt(value));
+								hoverCheckers.set(optionIndex, new TextHoverChecker(optionButtons[optionIndex], getOptionDescription(optionIndex)));
+								SecurityCraft.channel.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, intOption.get()));
+							}
+						});
+						optionButtons[i] = editBox;
+						optionButtons[i].setFGColor(option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632);
 					}
 					else {
 						optionButtons[i] = new ExtendedButton(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, getOptionButtonTitle(option), this::optionButtonClicked);
@@ -289,6 +312,39 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 		public ModuleItem getModule() {
 			return module;
+		}
+	}
+
+	//remembers the previous value of the box to be able to see whether the value actually changed
+	private class RememberingEditBox extends EditBox {
+		private String previousValue;
+
+		public RememberingEditBox(Font font, int x, int y, int width, int height, Component message) {
+			super(font, x, y, width, height, message);
+		}
+
+		@Override
+		public void insertText(String textToWrite) {
+			previousValue = value;
+			super.insertText(textToWrite);
+		}
+
+		@Override
+		public void moveCursorTo(int pos) {
+			previousValue = value;
+			super.moveCursorTo(pos);
+		}
+
+		@Override
+		public void setMaxLength(int length) {
+			previousValue = value;
+			super.setMaxLength(length);
+		}
+
+		@Override
+		public void setValue(String text) {
+			previousValue = value;
+			super.setValue(text);
 		}
 	}
 }

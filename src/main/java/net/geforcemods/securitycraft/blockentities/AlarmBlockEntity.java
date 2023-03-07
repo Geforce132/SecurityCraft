@@ -27,8 +27,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.PacketDistributor;
 
 public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
-	private IntOption range = new IntOption(this::getBlockPos, "range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
-	private IntOption delay = new IntOption(this::getBlockPos, "delay", 2, 1, 30, 1, true);
+	private IntOption range = new IntOption("range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
+	private IntOption soundLength = new IntOption("delay", 2, 1, Integer.MAX_VALUE);
 	private DisabledOption disabled = new DisabledOption(false);
 	private int cooldown = 0;
 	private boolean isPowered = false;
@@ -55,7 +55,15 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new PlayAlarmSound(worldPosition, soundEventHolder, volume, player.getCommandSenderWorld().random.nextLong()));
 			}
 
-			setCooldown(delay.get() * 20);
+			setCooldown(soundLength.get() * 20);
+		}
+	}
+
+	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option == soundLength) {
+			stopPlayingSound();
+			setCooldown(0);
 		}
 	}
 
@@ -113,7 +121,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range, delay, disabled
+				range, soundLength, disabled
 		};
 	}
 

@@ -49,7 +49,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	private static Executor mainThreadExecutor;
 	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption("signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private DisabledOption disabled = new DisabledOption(false);
 	private GameProfile ownerProfile;
 	private int viewCooldown = 0;
