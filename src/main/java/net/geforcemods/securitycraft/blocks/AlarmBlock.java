@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -57,11 +58,13 @@ public class AlarmBlock extends OwnableBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		AlarmBlockEntity be = (AlarmBlockEntity) level.getBlockEntity(pos);
-
-		if (be.isOwnedBy(player)) {
-			if (!level.isClientSide)
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.ALARM, pos));
+		if (level.getBlockEntity(pos) instanceof AlarmBlockEntity be && be.isOwnedBy(player)) {
+			if (!level.isClientSide) {
+				if (be.isDisabled())
+					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+				else
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.ALARM, pos));
+			}
 
 			return InteractionResult.SUCCESS;
 		}
