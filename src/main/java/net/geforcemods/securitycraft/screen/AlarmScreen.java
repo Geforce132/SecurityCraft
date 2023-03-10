@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -53,9 +51,9 @@ public class AlarmScreen extends Screen {
 	private final ResourceLocation previousSelectedSoundEvent;
 	private ResourceLocation selectedSoundEvent;
 	private Component selectedSoundEventText;
-	private int imageWidth = 256, imageHeight = 221, leftPos, topPos;
+	private int imageWidth = 256, imageHeight = 246, leftPos, topPos;
 	private SoundScrollList soundList;
-	private Button minusThree, minusTwo, minusOne, reset, plusOne, plusTwo, plusThree;
+	private Button minusMinute, minusTenSeconds, minusSecond, reset, plusSecond, plusTenSeconds, plusMinute;
 	private int previousSoundLength, soundLength;
 	private Component soundLengthText;
 	private int soundLengthTextLength, soundLengthTextStartX;
@@ -74,27 +72,28 @@ public class AlarmScreen extends Screen {
 	@Override
 	protected void init() {
 		super.init();
+		leftPos = (width - imageWidth) / 2;
+		topPos = (height - imageHeight) / 2;
 
 		EditBox searchBar;
 		Component searchText = Utils.localize("gui.securitycraft:alarm.edit_box");
 		int buttonHeight = 13;
-		int buttonY = topPos + 35;
+		int buttonsX = leftPos + 20;
+		int buttonY = topPos + imageHeight - 20;
 
-		leftPos = (width - imageWidth) / 2;
-		topPos = (height - imageHeight) / 2;
-		soundList = addRenderableWidget(new SoundScrollList(minecraft, imageWidth - 10, imageHeight - 75, topPos + 40, leftPos + 5));
+		soundList = addRenderableWidget(new SoundScrollList(minecraft, imageWidth - 10, imageHeight - 105, topPos + 40, leftPos + 5));
 		searchBar = addRenderableWidget(new EditBox(font, leftPos + 30, topPos + 20, imageWidth - 60, 15, searchText));
 		searchBar.setHint(searchText);
 		searchBar.setFilter(s -> s.matches("[a-zA-Z0-9\\._]*"));
 		searchBar.setResponder(soundList::updateFilteredEntries);
-		minusThree = addRenderableWidget(new ExtendedButton(leftPos + 22, buttonY, 24, buttonHeight, Component.literal("---"), b -> changeSoundLength(soundLength - 100)));
-		minusTwo = addRenderableWidget(new ExtendedButton(leftPos + 48, buttonY, 18, buttonHeight, Component.literal("--"), b -> changeSoundLength(soundLength - 10)));
-		minusOne = addRenderableWidget(new ExtendedButton(leftPos + 68, buttonY, 12, buttonHeight, Component.literal("-"), b -> changeSoundLength(soundLength - 1)));
-		reset = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 82, buttonY, 12, buttonHeight, RESET_TEXTURE, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSoundLength(previousSoundLength)));
-		plusOne = addRenderableWidget(new ExtendedButton(leftPos + 96, buttonY, 12, buttonHeight, Component.literal("+"), b -> changeSoundLength(soundLength + 1)));
-		plusTwo = addRenderableWidget(new ExtendedButton(leftPos + 110, buttonY, 18, buttonHeight, Component.literal("++"), b -> changeSoundLength(soundLength + 10)));
-		plusThree = addRenderableWidget(new ExtendedButton(leftPos + 130, buttonY, 24, buttonHeight, Component.literal("+++"), b -> changeSoundLength(soundLength + 100)));
-		changeSoundLength(soundLength);
+		minusMinute = addRenderableWidget(new ExtendedButton(buttonsX, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_one_minute"), b -> changeSoundLength(soundLength - 60)));
+		minusTenSeconds = addRenderableWidget(new ExtendedButton(buttonsX + 34, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_ten_seconds"), b -> changeSoundLength(soundLength - 10)));
+		minusSecond = addRenderableWidget(new ExtendedButton(buttonsX + 68, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_one_second"), b -> changeSoundLength(soundLength - 1)));
+		reset = addRenderableWidget(new ActiveBasedTextureButton(buttonsX + 102, buttonY, 12, buttonHeight, RESET_TEXTURE, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSoundLength(previousSoundLength)));
+		plusSecond = addRenderableWidget(new ExtendedButton(buttonsX + 116, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.plus_one_second"), b -> changeSoundLength(soundLength + 1)));
+		plusTenSeconds = addRenderableWidget(new ExtendedButton(buttonsX + 150, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.plus_ten_seconds"), b -> changeSoundLength(soundLength + 10)));
+		plusMinute = addRenderableWidget(new ExtendedButton(buttonsX + 184, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.plus_one_minute"), b -> changeSoundLength(soundLength + 60)));
+		changeSoundLength(soundLength);//24,18,12
 	}
 
 	@Override
@@ -105,10 +104,10 @@ public class AlarmScreen extends Screen {
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(pose, mouseX, mouseY, partialTicks);
 		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
-		font.draw(pose, currentlySelectedText, width / 2 - font.width(currentlySelectedText) / 2, topPos + imageHeight - 30, 4210752);
-		font.draw(pose, selectedSoundEventText, width / 2 - font.width(selectedSoundEventText) / 2, topPos + imageHeight - 17, 4210752);
+		font.draw(pose, currentlySelectedText, width / 2 - font.width(currentlySelectedText) / 2, topPos + imageHeight - 62, 4210752);
+		font.draw(pose, selectedSoundEventText, width / 2 - font.width(selectedSoundEventText) / 2, topPos + imageHeight - 49, 4210752);
 		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
-		font.draw(pose, soundLengthText, leftPos + imageWidth / 2 - font.width(soundLengthText) / 2, 23, 0xffffff);
+		font.draw(pose, soundLengthText, width / 2 - font.width(soundLengthText) / 2, topPos + imageHeight - 33, 4210752);
 	}
 
 	public void selectSound(ResourceLocation eventId) {
@@ -133,6 +132,7 @@ public class AlarmScreen extends Screen {
 			SecurityCraft.channel.sendToServer(new SetAlarmSound(be.getBlockPos(), selectedSoundEvent));
 		}
 
+		//TODO: synchronize this in SetAlarmSound
 		if (soundLength != previousSoundLength)
 			SecurityCraft.channel.sendToServer(new UpdateSliderValue(be.getBlockPos(), be.customOptions()[1], soundLength));
 	}
@@ -150,18 +150,18 @@ public class AlarmScreen extends Screen {
 		boolean enableMinusButtons;
 
 		soundLength = Math.max(0, Math.min(newSoundLength, Integer.MAX_VALUE));
-		soundLengthText = Component.translatable("Sound length: %s", StringUtils.leftPad("" + soundLength, 5, "0"));
+		soundLengthText = Component.translatable("gui.securitycraft:alarm.sound_length", Component.literal(String.format("%02d:%02d", soundLength / 60, soundLength % 60)).withStyle(ChatFormatting.RESET)).withStyle(ChatFormatting.UNDERLINE);
 		soundLengthTextLength = font.width(soundLengthText);
 		soundLengthTextStartX = imageWidth / 2 - soundLengthTextLength / 2;
 		enablePlusButtons = soundLength != Integer.MAX_VALUE;
 		enableMinusButtons = soundLength != 0;
-		minusThree.active = enableMinusButtons;
-		minusTwo.active = enableMinusButtons;
-		minusOne.active = enableMinusButtons;
+		minusMinute.active = enableMinusButtons;
+		minusTenSeconds.active = enableMinusButtons;
+		minusSecond.active = enableMinusButtons;
 		reset.active = soundLength != previousSoundLength;
-		plusOne.active = enablePlusButtons;
-		plusTwo.active = enablePlusButtons;
-		plusThree.active = enablePlusButtons;
+		plusSecond.active = enablePlusButtons;
+		plusTenSeconds.active = enablePlusButtons;
+		plusMinute.active = enablePlusButtons;
 		be.setSoundLength(soundLength);
 	}
 
@@ -261,7 +261,7 @@ public class AlarmScreen extends Screen {
 
 				font.draw(pose, name, left + textOffset, yStart, 0xC6C6C6);
 				RenderSystem._setShaderTexture(0, GUI_TEXTURE);
-				blit(pose, left, yStart - 1, getBlitOffset(), i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? 9 : 0, 221, 10, 10, 256, 256);
+				blit(pose, left, yStart - 1, getBlitOffset(), i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? 9 : 0, 246, 10, 10, 256, 256);
 			}
 		}
 
