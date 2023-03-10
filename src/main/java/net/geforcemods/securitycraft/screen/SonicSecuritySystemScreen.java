@@ -167,14 +167,6 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		if (connectionList != null)
-			connectionList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-
-		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-	}
-
-	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (minecraft.options.keyInventory.isActiveAndMatches(InputMappings.getKey(keyCode, scanCode))) {
 			onClose();

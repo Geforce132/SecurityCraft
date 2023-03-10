@@ -88,14 +88,6 @@ public class ToggleListScreen<T> extends Screen {
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		if (toggleList != null)
-			toggleList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-
-		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-	}
-
-	@Override
 	public boolean isPauseScreen() {
 		return false;
 	}
@@ -133,12 +125,19 @@ public class ToggleListScreen<T> extends Screen {
 
 		@Override
 		protected boolean clickPanel(double mouseX, double mouseY, int button) {
-			int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
+			if (hasSmartModule) {
+				int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
 
-			if (hasSmartModule && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
-				be.toggleFilter(orderedFilterList.get(slotIndex));
-				Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-				return true;
+				if (slotIndex >= 0 && slotIndex < listLength) {
+					Minecraft mc = Minecraft.getInstance();
+					double relativeMouseY = mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight();
+
+					if (relativeMouseY >= top && relativeMouseY <= bottom) {
+						be.toggleFilter(orderedFilterList.get(slotIndex));
+						Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+						return true;
+					}
+				}
 			}
 
 			return false;

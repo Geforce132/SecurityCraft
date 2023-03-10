@@ -618,14 +618,6 @@ public class SCManualScreen extends Screen {
 		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
-	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		if (patronList != null)
-			patronList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-
-		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-	}
-
 	class PatronList extends ColorableScrollPanel {
 		private final String patronListLink = FMLEnvironment.production ? "https://gist.githubusercontent.com/bl4ckscor3/bdda6596012b1206816db034350b5717/raw" : "https://gist.githubusercontent.com/bl4ckscor3/3196e6740774e386871a74a9606eaa61/raw";
 		private final int slotHeight = 12;
