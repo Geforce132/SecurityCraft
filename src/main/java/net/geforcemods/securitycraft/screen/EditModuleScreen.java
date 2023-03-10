@@ -424,9 +424,7 @@ public class EditModuleScreen extends Screen {
 					Minecraft mc = Minecraft.getInstance();
 					double relativeMouseY = mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight();
 
-					if (relativeMouseY < top || relativeMouseY > bottom)
-						return false;
-					else {
+					if (relativeMouseY >= top && relativeMouseY <= bottom) {
 						toggleTeam(availableTeams.get(slotIndex));
 						minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 						return true;
@@ -446,7 +444,7 @@ public class EditModuleScreen extends Screen {
 				int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
 				int slotIndex = mouseListY / slotHeight;
 
-				if (slotIndex >= 0 && slotIndex < listLength && mouseX >= left && mouseX < right - 6 && mouseListY >= 0 && mouseY >= top && mouseY <= bottom && slotIndex < listLength) {
+				if (slotIndex >= 0 && slotIndex < listLength && mouseX >= left && mouseX < right - 6 && mouseListY >= 0 && mouseY >= top && mouseY <= bottom) {
 					Component name = availableTeams.get(slotIndex).getDisplayName();
 					int length = font.width(name);
 					int baseY = top + border - (int) scrollDistance;

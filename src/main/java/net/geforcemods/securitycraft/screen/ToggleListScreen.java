@@ -119,20 +119,19 @@ public class ToggleListScreen<T> extends Screen {
 
 		@Override
 		protected boolean clickPanel(double mouseX, double mouseY, int button) {
-			int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
+			if (hasSmartModule) {
+				int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
 
-			if (slotIndex >= 0 && slotIndex < listLength) {
-				Minecraft mc = Minecraft.getInstance();
-				double relativeMouseY = mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight();
+				if (slotIndex >= 0 && slotIndex < listLength) {
+					Minecraft mc = Minecraft.getInstance();
+					double relativeMouseY = mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight();
 
-				if (relativeMouseY < top || relativeMouseY > bottom)
-					return false;
-				else {
-					be.toggleFilter(orderedFilterList.get(slotIndex));
-					Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+					if (relativeMouseY >= top && relativeMouseY <= bottom) {
+						be.toggleFilter(orderedFilterList.get(slotIndex));
+						Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+						return true;
+					}
 				}
-
-				return true;
 			}
 
 			return false;

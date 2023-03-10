@@ -144,14 +144,11 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			Minecraft mc = Minecraft.getInstance();
 			double relativeMouseY = mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight();
 
-			if (relativeMouseY < top || relativeMouseY > bottom)
-				return false;
-			else if (mouseX < 13) {
+			if (relativeMouseY >= top && relativeMouseY <= bottom && mouseX < 13) {
 				parent.removePosition(connectionInfo.get(slotIndex).pos);
 				Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+				return true;
 			}
-
-			return true;
 		}
 
 		return false;
