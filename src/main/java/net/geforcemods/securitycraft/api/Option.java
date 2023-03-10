@@ -184,7 +184,6 @@ public abstract class Option<T> {
 	 */
 	public static class IntOption extends Option<Integer> {
 		private boolean isSlider;
-		private Supplier<BlockPos> pos;
 
 		public IntOption(String optionName, Integer value) {
 			super(optionName, value);
@@ -194,10 +193,9 @@ public abstract class Option<T> {
 			super(optionName, value, min, max, increment);
 		}
 
-		public IntOption(Supplier<BlockPos> pos, String optionName, Integer value, Integer min, Integer max, Integer increment, boolean isSlider) {
+		public IntOption(String optionName, Integer value, Integer min, Integer max, Integer increment, boolean isSlider) {
 			super(optionName, value, min, max, increment);
 			this.isSlider = isSlider;
-			this.pos = pos;
 		}
 
 		@Override
@@ -235,15 +233,11 @@ public abstract class Option<T> {
 		public boolean isSlider() {
 			return isSlider;
 		}
-
-		public BlockPos getPos() {
-			return pos.get();
-		}
 	}
 
 	public static class SmartModuleCooldownOption extends IntOption {
 		public SmartModuleCooldownOption(Supplier<BlockPos> pos) {
-			super(pos, "smartModuleCooldown", 100, 20, 400, 1, true);
+			super("smartModuleCooldown", 100, 20, 400, 1, true);
 		}
 
 		@Override
@@ -257,7 +251,6 @@ public abstract class Option<T> {
 	 */
 	public static class DoubleOption extends Option<Double> {
 		private boolean isSlider;
-		private Supplier<BlockPos> pos;
 
 		public DoubleOption(String optionName, Double value) {
 			super(optionName, value);
@@ -269,10 +262,9 @@ public abstract class Option<T> {
 			isSlider = false;
 		}
 
-		public DoubleOption(Supplier<BlockPos> pos, String optionName, Double value, Double min, Double max, Double increment, boolean isSlider) {
+		public DoubleOption(String optionName, Double value, Double min, Double max, Double increment, boolean isSlider) {
 			super(optionName, value, min, max, increment);
 			this.isSlider = isSlider;
-			this.pos = pos;
 		}
 
 		@Override
@@ -314,10 +306,6 @@ public abstract class Option<T> {
 		@Override
 		public boolean isSlider() {
 			return isSlider;
-		}
-
-		public BlockPos getPos() {
-			return pos.get();
 		}
 	}
 

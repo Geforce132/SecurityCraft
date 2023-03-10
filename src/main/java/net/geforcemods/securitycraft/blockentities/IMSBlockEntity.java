@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
-	private IntOption range = new IntOption(this::getBlockPos, "range", 15, 1, 30, 1, true);
+	private IntOption range = new IntOption("range", 15, 1, 30, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	/** Number of bombs remaining in storage. **/

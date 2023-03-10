@@ -113,7 +113,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), TextComponent.EMPTY, doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
 								doubleOption.setValue(slider.getValue());
 								hoverCheckers.set(sliderIndex, new TextHoverChecker(optionButtons[sliderIndex], getOptionDescription(sliderIndex)));
-								SecurityCraft.channel.sendToServer(new UpdateSliderValue(doubleOption.getPos(), option, doubleOption.get()));
+								SecurityCraft.channel.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, doubleOption.get()));
 							});
 						}
 						else if (option instanceof IntOption intOption) {
@@ -122,7 +122,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), TextComponent.EMPTY, intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
 								intOption.setValue(slider.getValueInt());
 								hoverCheckers.set(sliderIndex, new TextHoverChecker(optionButtons[sliderIndex], getOptionDescription(sliderIndex)));
-								SecurityCraft.channel.sendToServer(new UpdateSliderValue(intOption.getPos(), option, intOption.get()));
+								SecurityCraft.channel.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, intOption.get()));
 							});
 						}
 
