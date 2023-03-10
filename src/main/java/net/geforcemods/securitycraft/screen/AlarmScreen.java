@@ -226,7 +226,7 @@ public class AlarmScreen extends Screen {
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
 			int slotIndex = mouseListY / slotHeight;
 
-			if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < filteredSoundEvents.size() && mouseY >= top && mouseY <= bottom) {
+			if (slotIndex >= 0 && slotIndex < filteredSoundEvents.size() && mouseX >= left && mouseX < right - 6 && mouseListY >= 0 && mouseY >= top && mouseY <= bottom) {
 				Component soundEventKey = getSoundEventComponent(filteredSoundEvents.get(slotIndex));
 				int length = font.width(soundEventKey);
 
