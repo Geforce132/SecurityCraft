@@ -140,10 +140,15 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 	protected boolean clickPanel(double mouseX, double mouseY, int button) {
 		int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
 
-		if (slotIndex >= 0 && mouseY >= 0 && mouseX < 13 && slotIndex < connectionInfo.size()) {
-			parent.removePosition(connectionInfo.get(slotIndex).pos);
-			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-			return true;
+		if (slotIndex >= 0 && slotIndex < connectionInfo.size()) {
+			Minecraft mc = Minecraft.getInstance();
+			double relativeMouseY = mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight();
+
+			if (relativeMouseY >= top && relativeMouseY <= bottom && mouseX < 13) {
+				parent.removePosition(connectionInfo.get(slotIndex).pos);
+				Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+				return true;
+			}
 		}
 
 		return false;
