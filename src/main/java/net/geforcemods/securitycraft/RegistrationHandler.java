@@ -34,7 +34,7 @@ import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.network.server.RemoveMineFromMRAT;
 import net.geforcemods.securitycraft.network.server.RemovePositionFromSSS;
 import net.geforcemods.securitycraft.network.server.RemoveSentryFromSRAT;
-import net.geforcemods.securitycraft.network.server.SetAlarmSound;
+import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
 import net.geforcemods.securitycraft.network.server.SetBriefcaseOwner;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetGhostSlot;
@@ -166,7 +166,7 @@ public class RegistrationHandler {
 		SecurityCraft.channel.registerMessage(index++, RemoveMineFromMRAT.class, RemoveMineFromMRAT::encode, RemoveMineFromMRAT::decode, RemoveMineFromMRAT::onMessage);
 		SecurityCraft.channel.registerMessage(index++, RemovePositionFromSSS.class, RemovePositionFromSSS::encode, RemovePositionFromSSS::decode, RemovePositionFromSSS::onMessage);
 		SecurityCraft.channel.registerMessage(index++, RemoveSentryFromSRAT.class, RemoveSentryFromSRAT::encode, RemoveSentryFromSRAT::decode, RemoveSentryFromSRAT::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SetAlarmSound.class, SetAlarmSound::encode, SetAlarmSound::decode, SetAlarmSound::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SyncAlarmSettings.class, SyncAlarmSettings::encode, SyncAlarmSettings::decode, SyncAlarmSettings::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SetBriefcaseOwner.class, SetBriefcaseOwner::encode, SetBriefcaseOwner::decode, SetBriefcaseOwner::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SetCameraPowered.class, SetCameraPowered::encode, SetCameraPowered::decode, SetCameraPowered::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SetGhostSlot.class, SetGhostSlot::encode, SetGhostSlot::decode, SetGhostSlot::onMessage);

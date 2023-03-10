@@ -18,8 +18,7 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.SetAlarmSound;
-import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
+import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
 import net.geforcemods.securitycraft.screen.components.ActiveBasedTextureButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -127,14 +126,20 @@ public class AlarmScreen extends Screen {
 		if (soundList != null && soundList.playingSound != null)
 			Minecraft.getInstance().getSoundManager().stop(soundList.playingSound);
 
+		boolean changed = false;
+
 		if (selectedSoundEvent != previousSelectedSoundEvent) {
 			be.setSound(selectedSoundEvent);
-			SecurityCraft.channel.sendToServer(new SetAlarmSound(be.getBlockPos(), selectedSoundEvent));
+			changed = true;
 		}
 
-		//TODO: synchronize this in SetAlarmSound
-		if (soundLength != previousSoundLength)
-			SecurityCraft.channel.sendToServer(new UpdateSliderValue(be.getBlockPos(), be.customOptions()[1], soundLength));
+		if (soundLength != previousSoundLength) {
+			be.setSoundLength(soundLength);
+			changed = true;
+		}
+
+		if (changed)
+			SecurityCraft.channel.sendToServer(new SyncAlarmSettings(be.getBlockPos(), selectedSoundEvent, soundLength));
 	}
 
 	@Override
@@ -149,12 +154,12 @@ public class AlarmScreen extends Screen {
 		boolean enablePlusButtons;
 		boolean enableMinusButtons;
 
-		soundLength = Math.max(0, Math.min(newSoundLength, Integer.MAX_VALUE));
+		soundLength = Math.max(1, Math.min(newSoundLength, Integer.MAX_VALUE));
 		soundLengthText = Component.translatable("gui.securitycraft:alarm.sound_length", Component.literal(String.format("%02d:%02d", soundLength / 60, soundLength % 60)).withStyle(ChatFormatting.RESET)).withStyle(ChatFormatting.UNDERLINE);
 		soundLengthTextLength = font.width(soundLengthText);
 		soundLengthTextStartX = imageWidth / 2 - soundLengthTextLength / 2;
 		enablePlusButtons = soundLength != Integer.MAX_VALUE;
-		enableMinusButtons = soundLength != 0;
+		enableMinusButtons = soundLength > 1;
 		minusMinute.active = enableMinusButtons;
 		minusTenSeconds.active = enableMinusButtons;
 		minusSecond.active = enableMinusButtons;
@@ -162,7 +167,6 @@ public class AlarmScreen extends Screen {
 		plusSecond.active = enablePlusButtons;
 		plusTenSeconds.active = enablePlusButtons;
 		plusMinute.active = enablePlusButtons;
-		be.setSoundLength(soundLength);
 	}
 
 	public class SoundScrollList extends ScrollPanel {

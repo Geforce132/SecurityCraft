@@ -88,6 +88,16 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 		return isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event;
 	}
 
+	public int getSoundLength() {
+		return soundLength;
+	}
+
+	public void setSoundLength(int soundLength) {
+		this.soundLength = Mth.clamp(soundLength, 1, Integer.MAX_VALUE);
+		stopPlayingSound();
+		setCooldown(0);
+	}
+
 	public void setCooldown(int cooldown) {
 		this.cooldown = cooldown;
 		setChanged();
@@ -118,16 +128,6 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 		return new Option[] {
 				range, disabled
 		};
-	}
-
-	public int getSoundLength() {
-		return soundLength;
-	}
-
-	public void setSoundLength(int soundLength) {
-		this.soundLength = Mth.clamp(soundLength, 1, Integer.MAX_VALUE);
-		stopPlayingSound();
-		setCooldown(0);
 	}
 
 	@Override
