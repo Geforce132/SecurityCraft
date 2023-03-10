@@ -6,10 +6,12 @@
 - New: Configs "sentryAttackableEntitiesAllowlist" and "sentryAttackableEntitiesDenylist" for controlling which entities a Sentry can and cannot attack
 - New: Password-protected Barrel
 - New: The Alarm can now play any sound when a Smart Module is installed
+- New: The Alarm can now be disabled with the Universal Block Modifier
 - Change: Lasers and inventory scanner fields are now removed silently
 - Change: Inventory scanners and password-protected chests now only drop their modules if the last scanner/chest is removed
 - Change: Changing the owner of a Reinforced Hopper now needs validation of the new owner (akin to reinforced pistons)
 - Change: New look for the Claymore
+- Change: The Alarm's "Delay" option can now be found in the new GUI of the Alarm, accessible by rightclicking it
 - API: IModuleInventory#shouldDropModules to determine whether a block should drop its modules when broken
 - Fix: Turning off camera rotation leads to extreme stuttering of the camera
 - Fix: Shift-clicking a potion in the brewing stand screen puts the potion into the wrong slot
