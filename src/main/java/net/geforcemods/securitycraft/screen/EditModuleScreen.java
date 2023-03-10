@@ -157,17 +157,6 @@ public class EditModuleScreen extends Screen {
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		if (playerList != null)
-			playerList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-
-		if (teamList != null)
-			teamList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-
-		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-	}
-
-	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (!inputField.isFocused() && minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
 			onClose();
@@ -431,10 +420,17 @@ public class EditModuleScreen extends Screen {
 			if (active) {
 				int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
 
-				if (slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
-					toggleTeam(availableTeams.get(slotIndex));
-					minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-					return true;
+				if (slotIndex >= 0 && slotIndex < listLength) {
+					Minecraft mc = Minecraft.getInstance();
+					double relativeMouseY = mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight();
+
+					if (relativeMouseY < top || relativeMouseY > bottom)
+						return false;
+					else {
+						toggleTeam(availableTeams.get(slotIndex));
+						minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+						return true;
+					}
 				}
 			}
 
@@ -450,7 +446,7 @@ public class EditModuleScreen extends Screen {
 				int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
 				int slotIndex = mouseListY / slotHeight;
 
-				if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
+				if (slotIndex >= 0 && slotIndex < listLength && mouseX >= left && mouseX < right - 6 && mouseListY >= 0 && mouseY >= top && mouseY <= bottom && slotIndex < listLength) {
 					Component name = availableTeams.get(slotIndex).getDisplayName();
 					int length = font.width(name);
 					int baseY = top + border - (int) scrollDistance;

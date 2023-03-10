@@ -39,7 +39,6 @@ public class ToggleListScreen<T> extends Screen {
 	private int topPos;
 	private final boolean hasSmartModule, hasRedstoneModule;
 	private final IToggleableEntries<T> be;
-	private ToggleScrollList toggleList;
 
 	public ToggleListScreen(IToggleableEntries<T> be, String title, Component scrollListTitle, Component noSmartModule, Component smartModule) {
 		super(Component.translatable(title));
@@ -57,7 +56,7 @@ public class ToggleListScreen<T> extends Screen {
 
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
-		addRenderableWidget(toggleList = new ToggleScrollList(minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
+		addRenderableWidget(new ToggleScrollList(minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
 	}
 
 	@Override
@@ -80,14 +79,6 @@ public class ToggleListScreen<T> extends Screen {
 		}
 
 		return super.keyPressed(keyCode, scanCode, modifiers);
-	}
-
-	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		if (toggleList != null)
-			toggleList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-
-		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
 	@Override
@@ -130,9 +121,17 @@ public class ToggleListScreen<T> extends Screen {
 		protected boolean clickPanel(double mouseX, double mouseY, int button) {
 			int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
 
-			if (hasSmartModule && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
-				be.toggleFilter(orderedFilterList.get(slotIndex));
-				Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+			if (slotIndex >= 0 && slotIndex < listLength) {
+				Minecraft mc = Minecraft.getInstance();
+				double relativeMouseY = mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight();
+
+				if (relativeMouseY < top || relativeMouseY > bottom)
+					return false;
+				else {
+					be.toggleFilter(orderedFilterList.get(slotIndex));
+					Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+				}
+
 				return true;
 			}
 

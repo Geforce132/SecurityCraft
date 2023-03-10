@@ -84,14 +84,6 @@ public class UsernameLoggerScreen extends Screen {
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		if (playerList != null)
-			playerList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-
-		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-	}
-
-	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
 			onClose();
