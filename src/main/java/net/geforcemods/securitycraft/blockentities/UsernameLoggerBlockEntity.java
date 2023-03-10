@@ -21,7 +21,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable {
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
-	private IntOption searchRadius = new IntOption(this::getBlockPos, "searchRadius", 3, 1, 20, 1, true);
+	private IntOption searchRadius = new IntOption("searchRadius", 3, 1, 20, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	public String[] players = new String[100];
