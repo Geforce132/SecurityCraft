@@ -485,7 +485,7 @@ public class ClientHandler {
 	}
 
 	public static void displayTrophySystemScreen(TrophySystemBlockEntity be) {
-		Minecraft.getInstance().setScreen(new ToggleListScreen<>(be, SCContent.TROPHY_SYSTEM.get().getDescriptionId(), Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles"), Utils.localize("gui.securitycraft:trophy_system.moduleRequired"), Utils.localize("gui.securitycraft:trophy_system.toggle")));
+		Minecraft.getInstance().setScreen(new ToggleListScreen<>(be, be.getName(), Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles"), Utils.localize("gui.securitycraft:trophy_system.moduleRequired"), Utils.localize("gui.securitycraft:trophy_system.toggle")));
 	}
 
 	public static void displayCheckPasswordScreen(BlockEntity be) {
@@ -505,7 +505,7 @@ public class ClientHandler {
 	}
 
 	public static void displayRiftStabilizerScreen(RiftStabilizerBlockEntity be) {
-		Minecraft.getInstance().setScreen(new ToggleListScreen<>(be, SCContent.RIFT_STABILIZER.get().getDescriptionId(), Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes"), Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired"), Utils.localize("gui.securitycraft:rift_stabilizer.toggle")));
+		Minecraft.getInstance().setScreen(new ToggleListScreen<>(be, be.getName(), Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes"), Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired"), Utils.localize("gui.securitycraft:rift_stabilizer.toggle")));
 	}
 
 	public static void displayLaserScreen(LaserBlockBlockEntity be, EnumMap<Direction, Boolean> sideConfig) {
