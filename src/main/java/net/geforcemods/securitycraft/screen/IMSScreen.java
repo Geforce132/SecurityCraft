@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.screen;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity.IMSTargetingMode;
@@ -22,7 +21,6 @@ import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 @OnlyIn(Dist.CLIENT)
 public class IMSScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslationTextComponent imsName = Utils.localize(SCContent.IMS.get().getDescriptionId());
 	private final TranslationTextComponent target = Utils.localize("gui.securitycraft:ims.target");
 	private int imageWidth = 176;
 	private int imageHeight = 166;
@@ -33,7 +31,7 @@ public class IMSScreen extends Screen {
 	private IMSTargetingMode targetMode;
 
 	public IMSScreen(IMSBlockEntity te) {
-		super(te.getDisplayName());
+		super(te.getName());
 		tileEntity = te;
 		targetMode = tileEntity.getTargetingMode();
 	}
@@ -55,7 +53,7 @@ public class IMSScreen extends Screen {
 		minecraft.getTextureManager().bind(TEXTURE);
 		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.draw(matrix, imsName, width / 2 - font.width(imsName) / 2, topPos + 6, 4210752);
+		font.draw(matrix, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
 		font.draw(matrix, target, width / 2 - font.width(target) / 2, topPos + 30, 4210752);
 	}
 

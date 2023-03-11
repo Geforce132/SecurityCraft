@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
@@ -47,7 +46,6 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 	private static final ResourceLocation WORLD_SELECTION_ICONS = new ResourceLocation("textures/gui/world_selection.png");
 	private static final ITextComponent EQUALS = new StringTextComponent("=");
 	private static final ITextComponent GREATER_THAN_EQUALS = new StringTextComponent(">=");
-	private final ITextComponent blockName = Utils.localize(SCContent.KEYCARD_READER.get().getDescriptionId());
 	private final ITextComponent keycardLevelsText = Utils.localize("gui.securitycraft:keycard_reader.keycard_levels");
 	private final ITextComponent linkText = Utils.localize("gui.securitycraft:keycard_reader.link");
 	private final ITextComponent levelMismatchInfo = Utils.localize("gui.securitycraft:keycard_reader.level_mismatch");
@@ -72,8 +70,8 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 	//fixes link and set uses buttons being on for a split second when opening the container
 	private boolean firstTick = true;
 
-	public KeycardReaderScreen(KeycardReaderMenu container, PlayerInventory inv, ITextComponent name) {
-		super(container, inv, name);
+	public KeycardReaderScreen(KeycardReaderMenu container, PlayerInventory inv, ITextComponent title) {
+		super(container, inv, title);
 
 		te = container.te;
 		previousSignature = te.getSignature();
@@ -205,7 +203,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 
 	@Override
 	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, blockName, imageWidth / 2 - font.width(blockName) / 2, 6, 4210752);
+		font.draw(matrix, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
 		font.draw(matrix, signatureText, imageWidth / 2 - font.width(signatureText) / 2, 23, 4210752);
 		font.draw(matrix, keycardLevelsText, 170 - font.width(keycardLevelsText), 56, 4210752);
 

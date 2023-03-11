@@ -47,7 +47,6 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 	private static final ItemStack BLOCK_POCKET_WALL = new ItemStack(SCContent.BLOCK_POCKET_WALL.get());
 	private static final ItemStack REINFORCED_CHISELED_CRYSTAL_QUARTZ = new ItemStack(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get());
 	private static final ItemStack REINFORCED_CRYSTAL_QUARTZ_PILLAR = new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get());
-	private final TranslationTextComponent blockPocketManager = Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId());
 	private final TranslationTextComponent youNeed = Utils.localize("gui.securitycraft:blockPocketManager.youNeed");
 	private final boolean storage;
 	private final boolean isOwner;
@@ -141,7 +140,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 
 	@Override
 	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, blockPocketManager, (storage ? 123 : imageWidth) / 2 - font.width(blockPocketManager) / 2, 6, 4210752);
+		font.draw(matrix, title, (storage ? 123 : imageWidth) / 2 - font.width(title) / 2, 6, 4210752);
 
 		if (storage) {
 			font.draw(matrix, inventory.getDisplayName(), 8, imageHeight - 94, 4210752);

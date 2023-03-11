@@ -42,8 +42,8 @@ public class ToggleListScreen<T> extends Screen {
 	private final IToggleableEntries<T> be;
 	private ToggleScrollList toggleList;
 
-	public ToggleListScreen(IToggleableEntries<T> be, String title, ITextComponent scrollListTitle, ITextComponent noSmartModule, ITextComponent smartModule) {
-		super(new TranslationTextComponent(title));
+	public ToggleListScreen(IToggleableEntries<T> be, ITextComponent title, ITextComponent scrollListTitle, ITextComponent noSmartModule, ITextComponent smartModule) {
+		super(title);
 
 		this.be = be;
 		hasSmartModule = be instanceof IModuleInventory && ((IModuleInventory) be).isModuleEnabled(ModuleType.SMART);

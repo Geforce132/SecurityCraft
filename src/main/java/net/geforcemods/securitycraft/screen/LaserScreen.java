@@ -5,7 +5,6 @@ import java.util.EnumMap;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -18,7 +17,6 @@ import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class LaserScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/block_pocket_manager.png");
@@ -29,7 +27,7 @@ public class LaserScreen extends Screen {
 	private EnumMap<Direction, Boolean> sideConfig;
 
 	public LaserScreen(LaserBlockBlockEntity be, EnumMap<Direction, Boolean> sideConfig) {
-		super(new TranslationTextComponent(SCContent.LASER_BLOCK.get().getDescriptionId()));
+		super(be.getName());
 		this.be = be;
 		this.sideConfig = sideConfig;
 		hasSmartModule = be.isModuleEnabled(ModuleType.SMART);

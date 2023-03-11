@@ -30,7 +30,6 @@ public class SetPasswordScreen extends Screen {
 	private int leftPos;
 	private int topPos;
 	private TileEntity tileEntity;
-	private TranslationTextComponent blockName;
 	private TranslationTextComponent setup;
 	private IFormattableTextComponent combined;
 	private TextFieldWidget keycodeTextbox;
@@ -38,9 +37,8 @@ public class SetPasswordScreen extends Screen {
 	public SetPasswordScreen(TileEntity te, ITextComponent title) {
 		super(title);
 		tileEntity = te;
-		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getDescriptionId());
 		setup = Utils.localize("gui.securitycraft:password.setup");
-		combined = blockName.plainCopy().append(new StringTextComponent(" ")).append(setup);
+		combined = title.plainCopy().append(new StringTextComponent(" ")).append(setup);
 	}
 
 	@Override
@@ -80,7 +78,7 @@ public class SetPasswordScreen extends Screen {
 		if (font.width(combined) < imageWidth - 10)
 			font.draw(matrix, combined, width / 2 - font.width(combined) / 2, topPos + 6, 4210752);
 		else {
-			font.draw(matrix, blockName, width / 2 - font.width(blockName) / 2, topPos + 6, 4210752);
+			font.draw(matrix, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
 			font.draw(matrix, setup, width / 2 - font.width(setup) / 2, topPos + 16, 4210752);
 		}
 	}

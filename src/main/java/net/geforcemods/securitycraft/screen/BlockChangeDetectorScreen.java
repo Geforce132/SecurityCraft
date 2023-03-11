@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
@@ -53,7 +52,6 @@ import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 public class BlockChangeDetectorScreen extends ContainerScreen<BlockChangeDetectorMenu> implements IContainerListener, IHasExtraAreas {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_change_detector.png");
 	private static final TranslationTextComponent CLEAR = Utils.localize("gui.securitycraft:editModule.clear");
-	private static final TranslationTextComponent BLOCK_NAME = Utils.localize(SCContent.BLOCK_CHANGE_DETECTOR.get().getDescriptionId());
 	private BlockChangeDetectorBlockEntity be;
 	private ChangeEntryList changeEntryList;
 	private TextHoverChecker[] hoverCheckers = new TextHoverChecker[5];
@@ -161,7 +159,7 @@ public class BlockChangeDetectorScreen extends ContainerScreen<BlockChangeDetect
 
 	@Override
 	protected void renderLabels(MatrixStack pose, int mouseX, int mouseY) {
-		font.draw(pose, BLOCK_NAME, imageWidth / 2 - font.width(BLOCK_NAME) / 2, 6, 0x404040);
+		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, 6, 0x404040);
 		renderTooltip(pose, mouseX - leftPos, mouseY - topPos);
 	}
 
