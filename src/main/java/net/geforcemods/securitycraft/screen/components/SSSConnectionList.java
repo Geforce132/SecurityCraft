@@ -125,12 +125,12 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 		int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
 		int slotIndex = mouseListY / slotHeight;
 
-		if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < connectionInfo.size() && mouseY >= top && mouseY <= bottom) {
+		if (slotIndex >= 0 && slotIndex < connectionInfo.size() && mouseListY >= 0 && mouseX >= left && mouseX < right - 6 && mouseY >= top && mouseY <= bottom) {
 			ITextComponent blockName = connectionInfo.get(slotIndex).blockName;
 			int length = font.width(blockName);
 			int baseY = top + border - (int) scrollDistance;
 
-			if (length >= width - 6) //6 = barWidth
+			if (length + 13 >= width - 6) //6 = barWidth
 				parent.renderTooltip(pose, blockName, left + 1, baseY + (slotHeight * slotIndex + slotHeight));
 
 			font.draw(pose, Utils.getFormattedCoordinates(connectionInfo.get(slotIndex).pos), left + 13, top + height + 5, 4210752);
