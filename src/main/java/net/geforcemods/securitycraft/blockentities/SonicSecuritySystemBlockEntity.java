@@ -134,8 +134,9 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 			}
 		}
 		else {
+			oRadarRotationDegrees = radarRotationDegrees;
+
 			if (isActive() || isRecording()) {
-				oRadarRotationDegrees = radarRotationDegrees;
 				// Turn the radar dish slightly
 				radarRotationDegrees += 0.15;
 
