@@ -75,7 +75,7 @@ public class AlarmScreen extends Screen {
 		topPos = (height - imageHeight) / 2;
 
 		EditBox searchBar;
-		Component searchText = Utils.localize("gui.securitycraft:alarm.edit_box");
+		Component searchText = Utils.localize("gui.securitycraft:alarm.search");
 		int buttonHeight = 13;
 		int buttonsX = leftPos + 20;
 		int buttonY = topPos + imageHeight - 20;
@@ -92,7 +92,7 @@ public class AlarmScreen extends Screen {
 		plusSecond = addRenderableWidget(new ExtendedButton(buttonsX + 116, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.plus_one_second"), b -> changeSoundLength(soundLength + 1)));
 		plusTenSeconds = addRenderableWidget(new ExtendedButton(buttonsX + 150, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.plus_ten_seconds"), b -> changeSoundLength(soundLength + 10)));
 		plusMinute = addRenderableWidget(new ExtendedButton(buttonsX + 184, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.plus_one_minute"), b -> changeSoundLength(soundLength + 60)));
-		changeSoundLength(soundLength);//24,18,12
+		changeSoundLength(soundLength);
 	}
 
 	@Override

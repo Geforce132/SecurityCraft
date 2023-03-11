@@ -563,7 +563,7 @@
 	"gamerule.fakeLavaSourceConversion": "Fake lava converts to source",
 	"gamerule.fakeWaterSourceConversion": "Fake water converts to source",
 	"gui.securitycraft:alarm.currently_selected": "Currently selected sound:",
-	"gui.securitycraft:alarm.edit_box": "Search...",
+	"gui.securitycraft:alarm.search": "Search...",
 	"gui.securitycraft:alarm.no_smart_module": "You need to install a Smart Module to be able to control which sound the Alarm plays.",
 	"gui.securitycraft:alarm.smart_module": "Click one of the sound entries in the list to select which sound the Alarm plays.",
 	"gui.securitycraft:alarm.sound_length": "Sound length: %s",
