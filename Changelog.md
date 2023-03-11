@@ -25,6 +25,7 @@
 - Fix: Severe lag when a player mounts a camera on a dedicated server when other players are connected
 - Fix: Dragging some scroll lists scrolls faster than it should
 - Fix: It's possible to select entries while the mouse is outside of a scroll list
+- Fix: Many blocks don't show their custom name in their GUI
 - Misc.: The Spanish translation has been updated (Thanks Globi10!)
 - Misc.: Dialects for German (de_at, de_ch), French (fr_ca), and Spanish (es_ar, es_cl, es_ec, es_mx, es_uy, es_ve) are now supported. While these are not proper translations into the specific dialects, they should be better than having to resort to English
 - Misc.: Updates to SC Manual entries and other text, to bring them up to date with actual functionality of the mod

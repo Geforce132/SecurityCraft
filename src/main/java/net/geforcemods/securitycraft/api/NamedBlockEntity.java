@@ -40,7 +40,7 @@ public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter 
 
 	@Override
 	public Component getName() {
-		return hasCustomName() ? customName : getDefaultName();
+		return hasCustomName() ? getCustomName() : getDefaultName();
 	}
 
 	@Override

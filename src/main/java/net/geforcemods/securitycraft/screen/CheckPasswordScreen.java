@@ -39,7 +39,6 @@ public class CheckPasswordScreen extends Screen {
 	private int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
-	private TranslatableComponent blockName;
 	private EditBox keycodeTextbox;
 	private String currentString = "";
 	private boolean wasOnCooldownLastRenderTick = false;
@@ -47,7 +46,6 @@ public class CheckPasswordScreen extends Screen {
 	public CheckPasswordScreen(BlockEntity be, Component title) {
 		super(title);
 		this.be = (IPasswordProtected) be;
-		blockName = Utils.localize(be.getBlockState().getBlock().getDescriptionId());
 	}
 
 	@Override
@@ -105,7 +103,7 @@ public class CheckPasswordScreen extends Screen {
 		RenderSystem._setShaderTexture(0, TEXTURE);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(pose, mouseX, mouseY, partialTick);
-		font.draw(pose, blockName, width / 2 - font.width(blockName) / 2, topPos + 6, 4210752);
+		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
 
 		if (be.isOnCooldown()) {
 			long cooldownEnd = be.getCooldownEnd();

@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity.IMSTargetingMode;
@@ -19,7 +18,6 @@ import net.minecraft.resources.ResourceLocation;
 
 public class IMSScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslatableComponent imsName = Utils.localize(SCContent.IMS.get().getDescriptionId());
 	private final TranslatableComponent target = Utils.localize("gui.securitycraft:ims.target");
 	private int imageWidth = 176;
 	private int imageHeight = 166;
@@ -29,7 +27,7 @@ public class IMSScreen extends Screen {
 	private IMSTargetingMode targetMode;
 
 	public IMSScreen(IMSBlockEntity be) {
-		super(be.getDisplayName());
+		super(be.getName());
 		this.be = be;
 		targetMode = be.getTargetingMode();
 	}
@@ -50,7 +48,7 @@ public class IMSScreen extends Screen {
 		RenderSystem._setShaderTexture(0, TEXTURE);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(pose, mouseX, mouseY, partialTick);
-		font.draw(pose, imsName, width / 2 - font.width(imsName) / 2, topPos + 6, 4210752);
+		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
 		font.draw(pose, target, width / 2 - font.width(target) / 2, topPos + 30, 4210752);
 	}
 

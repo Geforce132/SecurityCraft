@@ -29,7 +29,6 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/projector.png");
 	private static final TranslatableComponent SLOT_TOOLTIP = Utils.localize("gui.securitycraft:projector.block");
 	private ProjectorBlockEntity be;
-	private TranslatableComponent blockName;
 	private TextHoverChecker[] hoverCheckers = new TextHoverChecker[5];
 	private TextHoverChecker slotHoverChecker;
 	private CallbackSlider projectionWidthSlider;
@@ -39,10 +38,9 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 	private StateSelector stateSelector;
 	private int sliderWidth = 120;
 
-	public ProjectorScreen(ProjectorMenu menu, Inventory inv, Component text) {
-		super(menu, inv, text);
+	public ProjectorScreen(ProjectorMenu menu, Inventory inv, Component title) {
+		super(menu, inv, title);
 		this.be = menu.be;
-		blockName = Utils.localize(be.getBlockState().getBlock().getDescriptionId());
 		imageHeight = 235;
 	}
 
@@ -111,7 +109,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 
 	@Override
 	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, blockName, imageWidth / 2 - font.width(blockName) / 2, 6, 0x404040);
+		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, 6, 0x404040);
 	}
 
 	@Override
