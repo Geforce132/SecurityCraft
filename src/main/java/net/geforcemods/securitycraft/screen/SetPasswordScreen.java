@@ -70,7 +70,7 @@ public class SetPasswordScreen extends Screen {
 		super.render(pose, mouseX, mouseY, partialTicks);
 		drawString(pose, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 
-		if (font.width(combined) < width - 10)
+		if (font.width(combined) < imageWidth - 10)
 			font.draw(pose, combined, width / 2 - font.width(combined) / 2, topPos + 6, 4210752);
 		else {
 			font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
