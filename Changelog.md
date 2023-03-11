@@ -23,6 +23,7 @@
 - Fix: It's possible to remove other players' laser/inventory scanner fields
 - Fix: Cannot place blocks against laser blocks from other players
 - Fix: Creating a reinforced double slab does not retain the owner
+- Fix: The tooltip for long names in the Sonic Security System list does not always show up
 - Misc.: The Spanish translation has been updated (Thanks Globi10!)
 - Misc.: Dialects for German (de_at, de_ch), French (fr_ca), and Spanish (es_ar, es_cl, es_mx, es_uy, es_ve) are now supported. While these are not proper translations into the specific dialects, they should be better than having to resort to English
 - Misc.: Updates to SC Manual entries and other text, to bring them up to date with actual functionality of the mod
