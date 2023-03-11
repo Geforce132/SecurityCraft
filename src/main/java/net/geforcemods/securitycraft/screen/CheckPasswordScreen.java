@@ -36,7 +36,7 @@ public class CheckPasswordScreen extends GuiContainer {
 	private char[] allowedChars = {
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\u0008', '\u001B'
 	}; //0-9, backspace and escape
-	private String blockName;
+	private String title;
 	private GuiTextField keycodeTextbox;
 	private String currentString = "";
 	private boolean wasOnCooldownLastRenderTick = false;
@@ -44,7 +44,7 @@ public class CheckPasswordScreen extends GuiContainer {
 	public CheckPasswordScreen(InventoryPlayer inventoryPlayer, TileEntity tileEntity) {
 		super(new GenericMenu(inventoryPlayer, tileEntity));
 		be = (IPasswordProtected) tileEntity;
-		blockName = Utils.localize(tileEntity.getBlockType().getTranslationKey() + ".name").getFormattedText();
+		title = tileEntity.getDisplayName().getFormattedText();
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class CheckPasswordScreen extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(blockName, xSize / 2 - fontRenderer.getStringWidth(blockName) / 2, 6, 4210752);
+		fontRenderer.drawString(title, xSize / 2 - fontRenderer.getStringWidth(title) / 2, 6, 4210752);
 
 		if (be.isOnCooldown()) {
 			long cooldownEnd = be.getCooldownEnd();

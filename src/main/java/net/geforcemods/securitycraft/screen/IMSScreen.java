@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.screen;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity.EnumIMSTargetingMode;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
@@ -14,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class IMSScreen extends GuiContainer {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final String imsName = Utils.localize(SCContent.ims.getTranslationKey() + ".name").getFormattedText();
+	private final String title;
 	private final String target = Utils.localize("gui.securitycraft:ims.target").getFormattedText();
 	private IMSBlockEntity tileEntity;
 	private GuiButton targetButton;
@@ -24,6 +23,7 @@ public class IMSScreen extends GuiContainer {
 		super(new GenericMenu(inventory, te));
 		tileEntity = te;
 		targetMode = tileEntity.getTargetingMode();
+		title = te.getDisplayName().getFormattedText();
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class IMSScreen extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(imsName, xSize / 2 - fontRenderer.getStringWidth(imsName) / 2, 6, 4210752);
+		fontRenderer.drawString(title, xSize / 2 - fontRenderer.getStringWidth(title) / 2, 6, 4210752);
 		fontRenderer.drawString(target, xSize / 2 - fontRenderer.getStringWidth(target) / 2, 30, 4210752);
 	}
 

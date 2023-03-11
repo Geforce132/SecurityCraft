@@ -28,14 +28,14 @@ public class SetPasswordScreen extends GuiContainer implements GuiResponder {
 	private char[] allowedChars = {
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\u0008', '\u001B'
 	}; //0-9, backspace and escape
-	private String blockName;
+	private String title;
 	private GuiTextField keycodeTextbox;
 	private GuiButton saveAndContinueButton;
 
 	public SetPasswordScreen(InventoryPlayer inventoryPlayer, TileEntity tileEntity) {
 		super(new GenericMenu(inventoryPlayer, tileEntity));
 		this.tileEntity = tileEntity;
-		blockName = Utils.localize(tileEntity.getBlockType().getTranslationKey() + ".name").getFormattedText();
+		title = tileEntity.getDisplayName().getFormattedText();
 	}
 
 	@Override
@@ -71,12 +71,12 @@ public class SetPasswordScreen extends GuiContainer implements GuiResponder {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String setup = Utils.localize("gui.securitycraft:password.setup").getFormattedText();
-		String combined = blockName + " " + setup;
+		String combined = title + " " + setup;
 
 		if (fontRenderer.getStringWidth(combined) < xSize - 10)
 			fontRenderer.drawString(combined, xSize / 2 - fontRenderer.getStringWidth(combined) / 2, 6, 4210752);
 		else {
-			fontRenderer.drawString(blockName, xSize / 2 - fontRenderer.getStringWidth(blockName) / 2, 6, 4210752);
+			fontRenderer.drawString(title, xSize / 2 - fontRenderer.getStringWidth(title) / 2, 6, 4210752);
 			fontRenderer.drawString(setup, xSize / 2 - fontRenderer.getStringWidth(setup) / 2, 16, 4210752);
 		}
 	}

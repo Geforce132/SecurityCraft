@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -132,12 +133,12 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 
 	@Override
 	public ITextComponent getDisplayName() {
-		return hasCustomName() ? new TextComponentString(furnaceCustomName) : getDefaultName();
+		return hasCustomName() ? new TextComponentString(getName()) : getDefaultName();
 	}
 
 	@Override
 	public ITextComponent getDefaultName() {
-		return Utils.localize("container.furnace");
+		return Utils.localize(SCContent.keypadFurnace);
 	}
 
 	@Override

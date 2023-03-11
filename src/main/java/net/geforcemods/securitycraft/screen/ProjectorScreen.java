@@ -35,7 +35,7 @@ public class ProjectorScreen extends GuiContainer implements ISlider, IHasExtraA
 	private static final String SLOT_TOOLTIP = Utils.localize("gui.securitycraft:projector.block").getFormattedText();
 	private ProjectorBlockEntity te;
 	private Block block;
-	private String blockName;
+	private String title;
 	private StringHoverChecker[] hoverCheckers = new StringHoverChecker[5];
 	private StringHoverChecker slotHoverChecker;
 	private Slider projectionWidthSlider;
@@ -50,7 +50,7 @@ public class ProjectorScreen extends GuiContainer implements ISlider, IHasExtraA
 		super(new ProjectorMenu(inv, te));
 		this.te = te;
 		block = te.getWorld().getBlockState(te.getPos()).getBlock();
-		blockName = Utils.localize(block.getTranslationKey() + ".name").getFormattedText();
+		title = te.getDisplayName().getFormattedText();
 		ySize = 235;
 	}
 
@@ -112,7 +112,7 @@ public class ProjectorScreen extends GuiContainer implements ISlider, IHasExtraA
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(blockName, xSize / 2 - fontRenderer.getStringWidth(blockName) / 2, 6, 4210752);
+		fontRenderer.drawString(title, xSize / 2 - fontRenderer.getStringWidth(title) / 2, 6, 4210752);
 	}
 
 	@Override

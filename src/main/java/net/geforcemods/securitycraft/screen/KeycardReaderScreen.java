@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
@@ -42,7 +41,7 @@ public class KeycardReaderScreen extends GuiContainer {
 	private static final ResourceLocation WORLD_SELECTION_ICONS = new ResourceLocation("textures/gui/world_selection.png");
 	private static final String EQUALS = "=";
 	private static final String GREATER_THAN_EQUALS = ">=";
-	private final String blockName = Utils.localize(SCContent.keycardReader.getTranslationKey() + ".name").getFormattedText();
+	private final String title;
 	private final String inventoryText = Utils.localize("container.inventory").getFormattedText();
 	private final String keycardLevelsText = Utils.localize("gui.securitycraft:keycard_reader.keycard_levels").getFormattedText();
 	private final String linkText = Utils.localize("gui.securitycraft:keycard_reader.link").getFormattedText();
@@ -80,6 +79,7 @@ public class KeycardReaderScreen extends GuiContainer {
 		hasSmartModule = te.isModuleEnabled(ModuleType.SMART);
 		isOwner = te.isOwnedBy(inv.player);
 		ySize = 249;
+		title = tile.getDisplayName().getFormattedText();
 
 		if (hasSmartModule)
 			smartModuleTooltip = Utils.localize("gui.securitycraft:keycard_reader.smartModule").getFormattedText();
@@ -223,7 +223,7 @@ public class KeycardReaderScreen extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(blockName, xSize / 2 - fontRenderer.getStringWidth(blockName) / 2, 6, 4210752);
+		fontRenderer.drawString(title, xSize / 2 - fontRenderer.getStringWidth(title) / 2, 6, 4210752);
 		fontRenderer.drawString(signatureText, xSize / 2 - fontRenderer.getStringWidth(signatureText) / 2, 23, 4210752);
 		fontRenderer.drawString(keycardLevelsText, 170 - fontRenderer.getStringWidth(keycardLevelsText), 56, 4210752);
 

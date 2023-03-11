@@ -59,7 +59,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class BlockChangeDetectorScreen extends GuiContainer implements IContainerListener, IHasExtraAreas {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_change_detector.png");
-	private final String blockName = Utils.localize(SCContent.blockChangeDetector).getFormattedText();
+	private final String title;
 	private BlockChangeDetectorBlockEntity be;
 	private ChangeEntryList changeEntryList;
 	private StringHoverChecker[] hoverCheckers = new StringHoverChecker[5];
@@ -81,6 +81,7 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 		previousMode = be.getMode();
 		wasShowingHighlights = be.isShowingHighlights();
 		previousColor = be.getColor();
+		title = be.getDisplayName().getFormattedText();
 	}
 
 	@Override
@@ -160,7 +161,7 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(blockName, xSize / 2 - fontRenderer.getStringWidth(blockName) / 2, 6, 0x404040);
+		fontRenderer.drawString(title, xSize / 2 - fontRenderer.getStringWidth(title) / 2, 6, 0x404040);
 		renderHoveredToolTip(mouseX - guiLeft, mouseY - guiTop);
 	}
 

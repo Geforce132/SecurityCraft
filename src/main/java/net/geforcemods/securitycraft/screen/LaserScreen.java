@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.screen;
 
 import java.util.EnumMap;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -26,7 +25,7 @@ public class LaserScreen extends GuiScreen {
 	private EnumMap<EnumFacing, Boolean> sideConfig;
 
 	public LaserScreen(LaserBlockBlockEntity be, EnumMap<EnumFacing, Boolean> sideConfig) {
-		title = Utils.localize(SCContent.laserBlock).getFormattedText();
+		title = be.getDisplayName().getFormattedText();
 		this.be = be;
 		this.sideConfig = sideConfig;
 		hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
