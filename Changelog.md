@@ -10,7 +10,7 @@
 - Change: Changing the owner of a Reinforced Hopper now needs validation of the new owner (akin to reinforced pistons)
 - Change: New look for the Claymore
 - API: IModuleInventory#shouldDropModules to determine whether a block should drop its modules when broken
-- Fix: Turning off camera rotation leads to extreme stuttering of the camera
+- Fix: Turning off camera rotation or the Sonic Security System leads to (extreme) stuttering of the camera/SSS
 - Fix: Shift-clicking a potion in the brewing stand screen puts the potion into the wrong slot
 - Fix: Redstone does not automatically connect to the Alarm, Projector, and Username Logger
 - Fix: Some text in the check password screens doesn't show up properly
