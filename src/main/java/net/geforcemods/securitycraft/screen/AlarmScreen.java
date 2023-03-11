@@ -154,11 +154,11 @@ public class AlarmScreen extends Screen {
 		boolean enablePlusButtons;
 		boolean enableMinusButtons;
 
-		soundLength = Math.max(1, Math.min(newSoundLength, Integer.MAX_VALUE));
+		soundLength = Math.max(1, Math.min(newSoundLength, AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH));
 		soundLengthText = Component.translatable("gui.securitycraft:alarm.sound_length", Component.literal(String.format("%02d:%02d", soundLength / 60, soundLength % 60)).withStyle(ChatFormatting.RESET)).withStyle(ChatFormatting.UNDERLINE);
 		soundLengthTextLength = font.width(soundLengthText);
 		soundLengthTextStartX = imageWidth / 2 - soundLengthTextLength / 2;
-		enablePlusButtons = soundLength != Integer.MAX_VALUE;
+		enablePlusButtons = soundLength < AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH;
 		enableMinusButtons = soundLength > 1;
 		minusMinute.active = enableMinusButtons;
 		minusTenSeconds.active = enableMinusButtons;

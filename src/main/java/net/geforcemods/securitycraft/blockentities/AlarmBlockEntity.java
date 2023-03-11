@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.PacketDistributor;
 
 public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
+	public static final int MAXIMUM_ALARM_SOUND_LENGTH = 3600; //one hour
 	private IntOption range = new IntOption(this::getBlockPos, "range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private int cooldown = 0;
@@ -93,7 +94,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	}
 
 	public void setSoundLength(int soundLength) {
-		this.soundLength = Mth.clamp(soundLength, 1, Integer.MAX_VALUE);
+		this.soundLength = Mth.clamp(soundLength, 1, MAXIMUM_ALARM_SOUND_LENGTH);
 		stopPlayingSound();
 		setCooldown(0);
 	}
