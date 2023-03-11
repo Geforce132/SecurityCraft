@@ -25,7 +25,6 @@ public class SetPasswordScreen extends Screen {
 	private int leftPos;
 	private int topPos;
 	private BlockEntity be;
-	private Component blockName;
 	private Component setup;
 	private MutableComponent combined;
 	private EditBox keycodeTextbox;
@@ -33,9 +32,8 @@ public class SetPasswordScreen extends Screen {
 	public SetPasswordScreen(BlockEntity be, Component title) {
 		super(title);
 		this.be = be;
-		blockName = Utils.localize(be.getBlockState().getBlock().getDescriptionId());
 		setup = Utils.localize("gui.securitycraft:password.setup");
-		combined = blockName.plainCopy().append(Component.literal(" ")).append(setup);
+		combined = title.plainCopy().append(Component.literal(" ")).append(setup);
 	}
 
 	@Override
@@ -75,7 +73,7 @@ public class SetPasswordScreen extends Screen {
 		if (font.width(combined) < width - 10)
 			font.draw(pose, combined, width / 2 - font.width(combined) / 2, topPos + 6, 4210752);
 		else {
-			font.draw(pose, blockName, width / 2 - font.width(blockName) / 2, topPos + 6, 4210752);
+			font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
 			font.draw(pose, setup, width / 2 - font.width(setup) / 2, topPos + 16, 4210752);
 		}
 	}

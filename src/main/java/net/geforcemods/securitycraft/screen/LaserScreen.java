@@ -6,7 +6,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -28,7 +27,7 @@ public class LaserScreen extends Screen {
 	private EnumMap<Direction, Boolean> sideConfig;
 
 	public LaserScreen(LaserBlockBlockEntity be, EnumMap<Direction, Boolean> sideConfig) {
-		super(Component.translatable(SCContent.LASER_BLOCK.get().getDescriptionId()));
+		super(be.getName());
 		this.be = be;
 		this.sideConfig = sideConfig;
 		hasSmartModule = be.isModuleEnabled(ModuleType.SMART);

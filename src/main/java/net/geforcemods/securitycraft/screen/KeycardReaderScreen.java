@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
@@ -41,7 +40,6 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	private static final ResourceLocation WORLD_SELECTION_ICONS = new ResourceLocation("textures/gui/world_selection.png");
 	private static final Component EQUALS = Component.literal("=");
 	private static final Component GREATER_THAN_EQUALS = Component.literal(">=");
-	private final Component blockName = Utils.localize(SCContent.KEYCARD_READER.get().getDescriptionId());
 	private final Component keycardLevelsText = Utils.localize("gui.securitycraft:keycard_reader.keycard_levels");
 	private final Component linkText = Utils.localize("gui.securitycraft:keycard_reader.link");
 	private final Component levelMismatchInfo = Utils.localize("gui.securitycraft:keycard_reader.level_mismatch");
@@ -66,8 +64,8 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	//fixes link and set uses buttons being on for a split second when opening the container
 	private boolean firstTick = true;
 
-	public KeycardReaderScreen(KeycardReaderMenu menu, Inventory inv, Component text) {
-		super(menu, inv, text);
+	public KeycardReaderScreen(KeycardReaderMenu menu, Inventory inv, Component title) {
+		super(menu, inv, title);
 
 		be = menu.be;
 		previousSignature = be.getSignature();
@@ -199,7 +197,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 
 	@Override
 	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, blockName, imageWidth / 2 - font.width(blockName) / 2, 6, 4210752);
+		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
 		font.draw(pose, signatureText, imageWidth / 2 - font.width(signatureText) / 2, 23, 4210752);
 		font.draw(pose, keycardLevelsText, 170 - font.width(keycardLevelsText), 56, 4210752);
 
