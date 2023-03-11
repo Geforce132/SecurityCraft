@@ -56,6 +56,7 @@ public class AlarmScreen extends Screen {
 	private int previousSoundLength, soundLength;
 	private Component soundLengthText;
 	private int soundLengthTextLength, soundLengthTextStartX;
+	private EditBox timeEditBox;
 
 	public AlarmScreen(AlarmBlockEntity be, ResourceLocation selectedSoundEvent) {
 		super(be.getDisplayName());
@@ -85,6 +86,13 @@ public class AlarmScreen extends Screen {
 		searchBar.setHint(searchText);
 		searchBar.setFilter(s -> s.matches("[a-zA-Z0-9\\._]*"));
 		searchBar.setResponder(soundList::updateFilteredEntries);
+		timeEditBox = addRenderableWidget(new EditBox(font, buttonsX + 128, buttonY - 15, 34, 12, Component.empty()));
+		timeEditBox.setResponder(string -> {
+			String[] ms = string.split(":");
+
+			if (ms.length == 2)
+				changeSoundLength(Integer.parseInt(ms[0]) * 60 + Integer.parseInt(ms[1]), false);
+		});
 		minusMinute = addRenderableWidget(new ExtendedButton(buttonsX, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_one_minute"), b -> changeSoundLength(soundLength - 60)));
 		minusTenSeconds = addRenderableWidget(new ExtendedButton(buttonsX + 34, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_ten_seconds"), b -> changeSoundLength(soundLength - 10)));
 		minusSecond = addRenderableWidget(new ExtendedButton(buttonsX + 68, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_one_second"), b -> changeSoundLength(soundLength - 1)));
@@ -106,7 +114,7 @@ public class AlarmScreen extends Screen {
 		font.draw(pose, currentlySelectedText, width / 2 - font.width(currentlySelectedText) / 2, topPos + imageHeight - 62, 4210752);
 		font.draw(pose, selectedSoundEventText, width / 2 - font.width(selectedSoundEventText) / 2, topPos + imageHeight - 49, 4210752);
 		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
-		font.draw(pose, soundLengthText, width / 2 - font.width(soundLengthText) / 2, topPos + imageHeight - 33, 4210752);
+		font.draw(pose, soundLengthText, width / 2 - font.width(soundLengthText) / 2 - 20, topPos + imageHeight - 33, 4210752);
 	}
 
 	public void selectSound(ResourceLocation eventId) {
@@ -151,13 +159,21 @@ public class AlarmScreen extends Screen {
 	}
 
 	public void changeSoundLength(int newSoundLength) {
+		changeSoundLength(newSoundLength, true);
+	}
+
+	public void changeSoundLength(int newSoundLength, boolean updateTimeEditBox) {
 		boolean enablePlusButtons;
 		boolean enableMinusButtons;
 
 		soundLength = Math.max(1, Math.min(newSoundLength, AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH));
-		soundLengthText = Component.translatable("gui.securitycraft:alarm.sound_length", Component.literal(String.format("%02d:%02d", soundLength / 60, soundLength % 60)).withStyle(ChatFormatting.RESET)).withStyle(ChatFormatting.UNDERLINE);
+		soundLengthText = Component.translatable("gui.securitycraft:alarm.sound_length").withStyle(ChatFormatting.UNDERLINE);
 		soundLengthTextLength = font.width(soundLengthText);
 		soundLengthTextStartX = imageWidth / 2 - soundLengthTextLength / 2;
+
+		if (updateTimeEditBox)
+			timeEditBox.setValue(String.format("%02d:%02d", soundLength / 60, soundLength % 60));
+
 		enablePlusButtons = soundLength < AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH;
 		enableMinusButtons = soundLength > 1;
 		minusMinute.active = enableMinusButtons;

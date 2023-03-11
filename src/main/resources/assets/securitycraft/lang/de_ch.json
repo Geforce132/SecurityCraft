@@ -564,7 +564,7 @@
 	"gui.securitycraft:alarm.search": "Suchen...",
 	"gui.securitycraft:alarm.no_smart_module": "Du musst ein schlaues Modul installieren, um auswählen zu können, welches Geräusch der Alarm abspielt.",
 	"gui.securitycraft:alarm.smart_module": "Klicke auf einen der Geräusch-Einträge in der Liste um auszuwählen, welches Geräusch der Alarm abspielt.",
-	"gui.securitycraft:alarm.sound_length": "Geräusch-Länge: %s",
+	"gui.securitycraft:alarm.sound_length": "Geräusch-Länge:",
 	"gui.securitycraft:blockPocketManager.activate": "Aktivieren",
 	"gui.securitycraft:blockPocketManager.assemble": "Auto-Aufbauen",
 	"gui.securitycraft:blockPocketManager.deactivate": "Deaktivieren",
