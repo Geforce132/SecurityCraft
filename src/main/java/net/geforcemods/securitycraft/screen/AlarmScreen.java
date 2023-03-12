@@ -55,7 +55,7 @@ public class AlarmScreen extends Screen {
 	private Button minusMinute, minusTenSeconds, minusSecond, reset, plusSecond, plusTenSeconds, plusMinute;
 	private int previousSoundLength, soundLength;
 	private Component soundLengthText;
-	private int soundLengthTextLength, soundLengthTextStartX;
+	private int soundLengthTextLength;
 	private EditBox timeEditBox;
 
 	public AlarmScreen(AlarmBlockEntity be, ResourceLocation selectedSoundEvent) {
@@ -86,7 +86,13 @@ public class AlarmScreen extends Screen {
 		searchBar.setHint(searchText);
 		searchBar.setFilter(s -> s.matches("[a-zA-Z0-9\\._]*"));
 		searchBar.setResponder(soundList::updateFilteredEntries);
-		timeEditBox = addRenderableWidget(new EditBox(font, buttonsX + 128, buttonY - 15, 34, 12, Component.empty()));
+		timeEditBox = addRenderableWidget(new EditBox(font, buttonsX + 128, buttonY - 15, 34, 12, Component.empty()) {
+			@Override
+			public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+				changeSoundLength(soundLength + (int) Math.signum(delta));
+				return super.mouseScrolled(mouseX, mouseY, delta);
+			}
+		});
 		timeEditBox.setResponder(string -> {
 			String[] ms = string.split(":");
 
@@ -150,14 +156,6 @@ public class AlarmScreen extends Screen {
 			SecurityCraft.channel.sendToServer(new SyncAlarmSettings(be.getBlockPos(), selectedSoundEvent, soundLength));
 	}
 
-	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-		if (mouseX >= leftPos + soundLengthTextStartX && mouseY >= topPos + 23 && mouseX <= leftPos + soundLengthTextStartX + soundLengthTextLength && mouseY <= topPos + 43)
-			changeSoundLength(soundLength + (int) Math.signum(delta));
-
-		return super.mouseScrolled(mouseX, mouseY, delta);
-	}
-
 	public void changeSoundLength(int newSoundLength) {
 		changeSoundLength(newSoundLength, true);
 	}
@@ -169,7 +167,6 @@ public class AlarmScreen extends Screen {
 		soundLength = Math.max(1, Math.min(newSoundLength, AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH));
 		soundLengthText = Component.translatable("gui.securitycraft:alarm.sound_length").withStyle(ChatFormatting.UNDERLINE);
 		soundLengthTextLength = font.width(soundLengthText);
-		soundLengthTextStartX = imageWidth / 2 - soundLengthTextLength / 2;
 
 		if (updateTimeEditBox)
 			timeEditBox.setValue(String.format("%02d:%02d", soundLength / 60, soundLength % 60));
