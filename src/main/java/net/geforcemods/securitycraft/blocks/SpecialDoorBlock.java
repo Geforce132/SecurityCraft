@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -44,6 +45,11 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock 
 
 			if (lowerBe instanceof LinkableBlockEntity linkable1 && upperBe instanceof LinkableBlockEntity linkable2)
 				LinkableBlockEntity.link(linkable1, linkable2);
+
+			if (lowerBe instanceof INameSetter nameSetter1 && upperBe instanceof INameSetter nameSetter2) {
+				nameSetter1.setCustomName(stack.getHoverName());
+				nameSetter2.setCustomName(stack.getHoverName());
+			}
 		}
 	}
 
