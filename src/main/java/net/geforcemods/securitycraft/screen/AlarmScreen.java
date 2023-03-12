@@ -46,7 +46,9 @@ public class AlarmScreen extends Screen {
 	private static final ResourceLocation RESET_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset_inactive.png");
 	private final AlarmBlockEntity be;
 	private final boolean hasSmartModule;
-	private final Component smartModuleTooltip, currentlySelectedText = Utils.localize("gui.securitycraft:alarm.currently_selected").withStyle(ChatFormatting.UNDERLINE);
+	private final Component smartModuleTooltip;
+	private final Component currentlySelectedText = Utils.localize("gui.securitycraft:alarm.currently_selected").withStyle(ChatFormatting.UNDERLINE);
+	private final Component soundLengthText = Component.translatable("gui.securitycraft:alarm.sound_length").withStyle(ChatFormatting.UNDERLINE);
 	private final ResourceLocation previousSelectedSoundEvent;
 	private ResourceLocation selectedSoundEvent;
 	private Component selectedSoundEventText;
@@ -54,8 +56,7 @@ public class AlarmScreen extends Screen {
 	private SoundScrollList soundList;
 	private Button minusMinute, minusTenSeconds, minusSecond, reset, plusSecond, plusTenSeconds, plusMinute;
 	private int previousSoundLength, soundLength;
-	private Component soundLengthText;
-	private int soundLengthTextLength;
+	private int soundLengthTextXPosition;
 	private EditBox timeEditBox;
 
 	public AlarmScreen(AlarmBlockEntity be, ResourceLocation selectedSoundEvent) {
@@ -80,13 +81,17 @@ public class AlarmScreen extends Screen {
 		int buttonHeight = 13;
 		int buttonsX = leftPos + 20;
 		int buttonY = topPos + imageHeight - 20;
+		int timeEditBoxWidth = 34;
+		int soundLengthTextWidthPlusBuffer = font.width(soundLengthText) + 5;
+		int combinedTextAndBoxWidth = soundLengthTextWidthPlusBuffer + timeEditBoxWidth;
 
+		soundLengthTextXPosition = width / 2 - combinedTextAndBoxWidth / 2;
 		soundList = addRenderableWidget(new SoundScrollList(minecraft, imageWidth - 10, imageHeight - 105, topPos + 40, leftPos + 5));
 		searchBar = addRenderableWidget(new EditBox(font, leftPos + 30, topPos + 20, imageWidth - 60, 15, searchText));
 		searchBar.setHint(searchText);
 		searchBar.setFilter(s -> s.matches("[a-zA-Z0-9\\._]*"));
 		searchBar.setResponder(soundList::updateFilteredEntries);
-		timeEditBox = addRenderableWidget(new EditBox(font, buttonsX + 128, buttonY - 15, 34, 12, Component.empty()) {
+		timeEditBox = addRenderableWidget(new EditBox(font, soundLengthTextXPosition + soundLengthTextWidthPlusBuffer, buttonY - 15, timeEditBoxWidth, 12, Component.empty()) {
 			@Override
 			public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
 				changeSoundLength(soundLength + (int) Math.signum(delta));
@@ -120,7 +125,7 @@ public class AlarmScreen extends Screen {
 		font.draw(pose, currentlySelectedText, width / 2 - font.width(currentlySelectedText) / 2, topPos + imageHeight - 62, 4210752);
 		font.draw(pose, selectedSoundEventText, width / 2 - font.width(selectedSoundEventText) / 2, topPos + imageHeight - 49, 4210752);
 		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
-		font.draw(pose, soundLengthText, width / 2 - font.width(soundLengthText) / 2 - 20, topPos + imageHeight - 33, 4210752);
+		font.draw(pose, soundLengthText, soundLengthTextXPosition, topPos + imageHeight - 33, 4210752);
 	}
 
 	public void selectSound(ResourceLocation eventId) {
@@ -165,8 +170,6 @@ public class AlarmScreen extends Screen {
 		boolean enableMinusButtons;
 
 		soundLength = Math.max(1, Math.min(newSoundLength, AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH));
-		soundLengthText = Component.translatable("gui.securitycraft:alarm.sound_length").withStyle(ChatFormatting.UNDERLINE);
-		soundLengthTextLength = font.width(soundLengthText);
 
 		if (updateTimeEditBox)
 			timeEditBox.setValue(String.format("%02d:%02d", soundLength / 60, soundLength % 60));
