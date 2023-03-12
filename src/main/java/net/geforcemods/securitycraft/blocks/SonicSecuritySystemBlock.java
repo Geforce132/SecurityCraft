@@ -78,8 +78,10 @@ public class SonicSecuritySystemBlock extends OwnableBlock {
 
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof SonicSecuritySystemBlockEntity)
+		if (te instanceof SonicSecuritySystemBlockEntity) {
 			((SonicSecuritySystemBlockEntity) te).transferPositionsFromItem(stack.getTagCompound());
+			((SonicSecuritySystemBlockEntity) te).setCustomName(stack.getDisplayName());
+		}
 	}
 
 	@Override

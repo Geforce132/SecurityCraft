@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
@@ -323,6 +324,14 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
+	}
+
+	@Override
+	public void setCustomName(String customName) {
+		super.setCustomName(customName);
+
+		if (world.getBlockState(pos).getValue(RiftStabilizerBlock.HALF) == EnumDoorHalf.LOWER)
+			((INameSetter) world.getTileEntity(pos.up())).setCustomName(customName);
 	}
 
 	public enum TeleportationType {

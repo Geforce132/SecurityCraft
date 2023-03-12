@@ -2,11 +2,13 @@ package net.geforcemods.securitycraft.blockentities;
 
 import java.util.function.Consumer;
 
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
+import net.geforcemods.securitycraft.blocks.SpecialDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDoor.EnumDoorHalf;
@@ -121,6 +123,14 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public int defaultSignalLength() {
 		return 60;
+	}
+
+	@Override
+	public void setCustomName(String customName) {
+		super.setCustomName(customName);
+
+		if (world.getBlockState(pos).getValue(SpecialDoorBlock.HALF) == EnumDoorHalf.LOWER)
+			((INameSetter) world.getTileEntity(pos.up())).setCustomName(customName);
 	}
 
 	public void runForOtherHalf(Consumer<KeypadDoorBlockEntity> action) {

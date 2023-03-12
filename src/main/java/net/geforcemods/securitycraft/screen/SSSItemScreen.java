@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class SSSItemScreen extends GuiScreen implements ConnectionAccessor {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final String title = Utils.localize(SCContent.sonicSecuritySystemItem).getFormattedText();
+	private final String title;
 	private final ItemStack stack;
 	private final int imageWidth = 176;
 	private final int imageHeight = 166;
@@ -29,10 +29,14 @@ public class SSSItemScreen extends GuiScreen implements ConnectionAccessor {
 	private SSSConnectionList<SSSItemScreen> connectionList;
 
 	public SSSItemScreen(ItemStack stack) {
-		if (stack.getItem() instanceof SonicSecuritySystemItem)
+		if (stack.getItem() instanceof SonicSecuritySystemItem) {
 			this.stack = stack;
-		else
+			title = stack.getDisplayName();
+		}
+		else {
 			this.stack = ItemStack.EMPTY;
+			title = Utils.localize(SCContent.sonicSecuritySystem).getFormattedText();
+		}
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -43,13 +44,17 @@ public class SpecialDoorItem extends ItemBlock {
 				world.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 				stack.shrink(1);
 
-				if (world.getTileEntity(pos) != null) {
-					LinkableBlockEntity lowerTe = ((LinkableBlockEntity) world.getTileEntity(pos));
+				TileEntity te = world.getTileEntity(pos);
+
+				if (te != null) {
+					LinkableBlockEntity lowerTe = (LinkableBlockEntity) te;
 					LinkableBlockEntity upperTe = ((LinkableBlockEntity) world.getTileEntity(pos.up()));
 
 					lowerTe.setOwner(player.getGameProfile().getId().toString(), player.getName());
 					upperTe.setOwner(player.getGameProfile().getId().toString(), player.getName());
 					LinkableBlockEntity.link(lowerTe, upperTe);
+					lowerTe.setCustomName(stack.getDisplayName());
+					upperTe.setCustomName(stack.getDisplayName());
 				}
 
 				return EnumActionResult.SUCCESS;
