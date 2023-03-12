@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.minecraft.block.Block;
@@ -47,6 +48,11 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 
 			if (lowerTe instanceof LinkableBlockEntity && upperTe instanceof LinkableBlockEntity)
 				LinkableBlockEntity.link((LinkableBlockEntity) lowerTe, (LinkableBlockEntity) upperTe);
+
+			if (lowerTe instanceof INameSetter && upperTe instanceof INameSetter) {
+				((INameSetter) lowerTe).setCustomName(stack.getHoverName());
+				((INameSetter) upperTe).setCustomName(stack.getHoverName());
+			}
 		}
 	}
 

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blockentities;
 import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
@@ -13,8 +14,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.text.ITextComponent;
 
 public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasswordProtected {
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
@@ -120,6 +123,14 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public int defaultSignalLength() {
 		return 60;
+	}
+
+	@Override
+	public void setCustomName(ITextComponent customName) {
+		super.setCustomName(customName);
+
+		if (getBlockState().getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.LOWER)
+			((INameSetter) level.getBlockEntity(worldPosition.above())).setCustomName(customName);
 	}
 
 	public void runForOtherHalf(Consumer<KeypadDoorBlockEntity> action) {

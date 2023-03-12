@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -27,10 +28,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.event.entity.living.EntityTeleportEvent;
@@ -330,6 +333,14 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
+	}
+
+	@Override
+	public void setCustomName(ITextComponent customName) {
+		super.setCustomName(customName);
+
+		if (getBlockState().getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.LOWER)
+			((INameSetter) level.getBlockEntity(worldPosition.above())).setCustomName(customName);
 	}
 
 	public enum TeleportationType {
