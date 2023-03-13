@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -91,19 +93,8 @@ public class AlarmScreen extends Screen {
 		searchBar.setHint(searchText);
 		searchBar.setFilter(s -> s.matches("[a-zA-Z0-9\\._]*"));
 		searchBar.setResponder(soundList::updateFilteredEntries);
-		timeEditBox = addRenderableWidget(new EditBox(font, soundLengthTextXPosition + soundLengthTextWidthPlusBuffer, buttonY - 15, timeEditBoxWidth, 12, Component.empty()) {
-			@Override
-			public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-				changeSoundLength(soundLength + (int) Math.signum(delta));
-				return super.mouseScrolled(mouseX, mouseY, delta);
-			}
-		});
-		timeEditBox.setResponder(string -> {
-			String[] ms = string.split(":");
-
-			if (ms.length == 2)
-				changeSoundLength(Integer.parseInt(ms[0]) * 60 + Integer.parseInt(ms[1]), false);
-		});
+		timeEditBox = addRenderableWidget(new SoundLengthEditBox(font, soundLengthTextXPosition + soundLengthTextWidthPlusBuffer, buttonY - 15, timeEditBoxWidth, 12, Component.empty()));
+		timeEditBox.setFilter(string -> string.matches("[0-9:]*"));
 		minusMinute = addRenderableWidget(new ExtendedButton(buttonsX, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_one_minute"), b -> changeSoundLength(soundLength - 60)));
 		minusTenSeconds = addRenderableWidget(new ExtendedButton(buttonsX + 34, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_ten_seconds"), b -> changeSoundLength(soundLength - 10)));
 		minusSecond = addRenderableWidget(new ExtendedButton(buttonsX + 68, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_one_second"), b -> changeSoundLength(soundLength - 1)));
@@ -362,5 +353,73 @@ public class AlarmScreen extends Screen {
 
 		@Override
 		public void updateNarration(NarrationElementOutput narrationElementOutput) {}
+	}
+
+	public class SoundLengthEditBox extends EditBox {
+		public SoundLengthEditBox(Font font, int x, int y, int width, int height, Component message) {
+			super(font, x, y, width, height, message);
+		}
+
+		@Override
+		public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+			changeSoundLength(soundLength + (int) Math.signum(delta));
+			return super.mouseScrolled(mouseX, mouseY, delta);
+		}
+
+		@Override
+		public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+			if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER)
+				checkAndProcessInput();
+
+			return super.keyPressed(keyCode, scanCode, modifiers);
+		}
+
+		@Override
+		public void setFocus(boolean focused) {
+			if (isFocused() && !focused)
+				checkAndProcessInput();
+
+			super.setFocus(focused);
+		}
+
+		private void checkAndProcessInput() {
+			int minutes = 0;
+			int seconds = 2;
+
+			if (value != null && !value.isEmpty() && !value.isBlank()) {
+				if (!value.contains(":")) {
+					int numeric = Integer.parseInt(value);
+
+					minutes = numeric / 60;
+					seconds = numeric % 60;
+				}
+				else {
+					String[] split = value.split(":");
+
+					if (split.length == 2) {
+						if (!split[0].isEmpty() && !split[0].isBlank()) {
+							try {
+								minutes = Integer.parseInt(split[0]);
+							}
+							catch (NumberFormatException e) { //usually happens when the entered number is too big
+								minutes = 60;
+							}
+						}
+
+						if (!split[1].isEmpty() && !split[1].isBlank()) {
+							try {
+								seconds = Integer.parseInt(split[1]);
+							}
+							catch (NumberFormatException e) {} //usually happens when the entered number is too big
+						}
+						else
+							seconds = 0;
+					}
+				}
+			}
+
+			changeSoundLength(minutes * 60 + seconds, true);
+			moveCursorToEnd();
+		}
 	}
 }
