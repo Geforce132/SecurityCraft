@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
@@ -31,6 +32,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	public static final int MAXIMUM_ALARM_SOUND_LENGTH = 3600; //one hour
 	private IntOption range = new IntOption(this::getBlockPos, "range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
+	private BooleanOption resetCooldown = new BooleanOption("resetCooldown", false);
 	private int cooldown = 0;
 	private boolean isPowered = false;
 	private SoundEvent sound = SCSounds.ALARM.event;
@@ -47,14 +49,16 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 			if (soundPlaying && (isDisabled() || !getBlockState().getValue(AlarmBlock.LIT)))
 				stopPlayingSound();
 		}
-		else if (!isDisabled() && isPowered && --cooldown <= 0) {
-			double rangeSqr = Math.pow(range.get(), 2);
-			Holder<SoundEvent> soundEventHolder = BuiltInRegistries.SOUND_EVENT.wrapAsHolder(isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event);
+		else if (!isDisabled() && --cooldown <= 0) {
+			if (isPowered) {
+				double rangeSqr = Math.pow(range.get(), 2);
+				Holder<SoundEvent> soundEventHolder = BuiltInRegistries.SOUND_EVENT.wrapAsHolder(isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event);
 
-			for (ServerPlayer player : ((ServerLevel) level).getPlayers(p -> p.blockPosition().distSqr(pos) <= rangeSqr)) {
-				float volume = (float) (1.0F - ((player.blockPosition().distSqr(pos)) / rangeSqr));
+				for (ServerPlayer player : ((ServerLevel) level).getPlayers(p -> p.blockPosition().distSqr(pos) <= rangeSqr)) {
+					float volume = (float) (1.0F - ((player.blockPosition().distSqr(pos)) / rangeSqr));
 
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new PlayAlarmSound(worldPosition, soundEventHolder, volume, player.getCommandSenderWorld().random.nextLong()));
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new PlayAlarmSound(worldPosition, soundEventHolder, volume, player.getCommandSenderWorld().random.nextLong()));
+				}
 			}
 
 			setCooldown(soundLength * 20);
@@ -110,6 +114,10 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 
 	public void setPowered(boolean isPowered) {
 		this.isPowered = isPowered;
+
+		if (isPowered && resetCooldown.get())
+			setCooldown(0);
+
 		setChanged();
 	}
 
@@ -127,7 +135,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range, disabled
+				range, disabled, resetCooldown
 		};
 	}
 

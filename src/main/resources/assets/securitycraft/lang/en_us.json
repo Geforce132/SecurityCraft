@@ -1138,6 +1138,8 @@
 	"option.securitycraft.alarm.delay.description": "If an alarm is activated, how many seconds in-between alarm sounds effects?",
 	"option.securitycraft.alarm.range": "Range: %s",
 	"option.securitycraft.alarm.range.description": "How many blocks away can the alarm sound be heard?",
+	"option.securitycraft.alarm.resetCooldown": "Reset Cooldown: %s",
+	"option.securitycraft.alarm.resetCooldown.description": "Should the cooldown between alarm sounds be reset when the alarm is powered on, meaning the sound is always played immediately?",
 	"option.securitycraft.block_change_detector.range": "Detection radius: %s",
 	"option.securitycraft.block_change_detector.range.description": "How far away should the detector be able to detect block changes by players?",
 	"option.securitycraft.block_change_detector.signalLength": "Signal length: %s",
