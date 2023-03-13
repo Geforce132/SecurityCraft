@@ -18,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -80,7 +81,12 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 
 		cooldown = tag.getInt("cooldown");
 		isPowered = tag.getBoolean("isPowered");
-		setSound(new ResourceLocation(tag.getString("sound")));
+
+		if (tag.contains("sound", Tag.TAG_STRING))
+			setSound(new ResourceLocation(tag.getString("sound")));
+		else
+			setSound(SCSounds.ALARM.location);
+
 		soundLength = tag.getInt("delay");
 	}
 
