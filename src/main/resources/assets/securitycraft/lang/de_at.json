@@ -1129,7 +1129,7 @@
 	"option.securitycraft.alarm.range": "Reichweite: %s",
 	"option.securitycraft.alarm.range.description": "Wie viele Blöcke weit kann der Alarm-Sound gehört werden?",
 	"option.securitycraft.alarm.resetCooldown": "Abklingzeit zurücksetzen: %s",
-	"option.securitycraft.alarm.resetCooldown.description": "Soll die Abklingzeit zwischen Alarmsounds zurückgesetzt werden sobald der Alarm ein Redstonesignal bekommt, sodass der Alarmsound immer sofort abgespielt wird?",
+	"option.securitycraft.alarm.resetCooldown.description": "Soll die Abklingzeit zwischen Alarmsounds zurückgesetzt werden, sobald der Alarm ein Redstonesignal bekommt, sodass der Alarmsound immer sofort abgespielt wird?",
 	"option.securitycraft.block_change_detector.range": "Detektionsradius: %s",
 	"option.securitycraft.block_change_detector.range.description": "Wie weit weg soll der Detektor Blöcke, die von Spielern platziert/zerbrochen wurden, detektieren?",
 	"option.securitycraft.block_change_detector.signalLength": "Signallänge: %s",
