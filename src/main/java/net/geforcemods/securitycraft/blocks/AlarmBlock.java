@@ -3,12 +3,17 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -16,11 +21,14 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -28,6 +36,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class AlarmBlock extends OwnableBlock {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
@@ -43,6 +52,27 @@ public class AlarmBlock extends OwnableBlock {
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP).setValue(LIT, false));
+	}
+
+	@Override
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		TileEntity tile = level.getBlockEntity(pos);
+
+		if (tile instanceof AlarmBlockEntity) {
+			AlarmBlockEntity be = (AlarmBlockEntity) tile;
+
+			if (be.isOwnedBy(player)) {
+				if (!level.isClientSide) {
+					if (be.isDisabled())
+						player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+					else
+						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.ALARM, pos));
+				}
+
+				return ActionResultType.SUCCESS;
+			}
+		}
+		return ActionResultType.PASS;
 	}
 
 	@Override

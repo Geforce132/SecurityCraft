@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
@@ -38,6 +39,7 @@ import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
 import net.geforcemods.securitycraft.renderers.SonicSecuritySystemRenderer;
 import net.geforcemods.securitycraft.renderers.TrophySystemRenderer;
+import net.geforcemods.securitycraft.screen.AlarmScreen;
 import net.geforcemods.securitycraft.screen.BlockChangeDetectorScreen;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
@@ -445,6 +447,10 @@ public class ClientHandler {
 		return Minecraft.getInstance().player;
 	}
 
+	public static World getClientLevel() {
+		return Minecraft.getInstance().level;
+	}
+
 	public static void displayMRATScreen(ItemStack stack) {
 		Minecraft.getInstance().setScreen(new MineRemoteAccessToolScreen(stack));
 	}
@@ -528,6 +534,10 @@ public class ClientHandler {
 
 	public static void displayLaserScreen(LaserBlockBlockEntity be, EnumMap<Direction, Boolean> sideConfig) {
 		Minecraft.getInstance().setScreen(new LaserScreen(be, sideConfig));
+	}
+
+	public static void displayAlarmScreen(AlarmBlockEntity be) {
+		Minecraft.getInstance().setScreen(new AlarmScreen(be, be.getSound().getLocation()));
 	}
 
 	public static void refreshModelData(TileEntity te) {

@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
@@ -40,7 +41,13 @@ public class OpenScreen {
 	public static void onMessage(OpenScreen message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			TileEntity te = Minecraft.getInstance().level.getBlockEntity(message.pos);
+
 			switch (message.dataType) {
+				case ALARM:
+					if (te instanceof AlarmBlockEntity)
+						ClientHandler.displayAlarmScreen((AlarmBlockEntity) te);
+
+					break;
 				case CHECK_PASSWORD:
 					if (te instanceof IPasswordProtected)
 						ClientHandler.displayCheckPasswordScreen(te);
@@ -80,6 +87,7 @@ public class OpenScreen {
 	}
 
 	public enum DataType {
+		ALARM,
 		CHECK_PASSWORD,
 		IMS,
 		RIFT_STABILIZER,
