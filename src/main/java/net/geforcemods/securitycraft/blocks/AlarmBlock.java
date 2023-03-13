@@ -3,14 +3,21 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -28,9 +35,11 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.PacketDistributor;
 
 public class AlarmBlock extends OwnableBlock {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
@@ -46,6 +55,22 @@ public class AlarmBlock extends OwnableBlock {
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP).setValue(LIT, false));
+	}
+
+	@Override
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (level.getBlockEntity(pos) instanceof AlarmBlockEntity be && be.isOwnedBy(player)) {
+			if (!level.isClientSide) {
+				if (be.isDisabled())
+					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+				else
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.ALARM, pos));
+			}
+
+			return InteractionResult.SUCCESS;
+		}
+
+		return InteractionResult.PASS;
 	}
 
 	@Override
@@ -179,7 +204,7 @@ public class AlarmBlock extends OwnableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return level.isClientSide ? null : createTickerHelper(type, SCContent.ALARM_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
+		return createTickerHelper(type, SCContent.ALARM_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
 	}
 
 	@Override
