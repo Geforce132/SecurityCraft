@@ -2,24 +2,39 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.blocks.OldLitAlarmBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
+import net.geforcemods.securitycraft.util.AlarmSoundHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickable {
+	public static final int MAXIMUM_ALARM_SOUND_LENGTH = 3600; //one hour
 	public IntOption range = new IntOption(this::getPos, "range", 17, 0, ConfigHandler.maxAlarmRange, 1, true);
-	private IntOption delay = new IntOption(this::getPos, "delay", 2, 1, 30, 1, true);
+	private DisabledOption disabled = new DisabledOption(false);
+	private BooleanOption resetCooldown = new BooleanOption("resetCooldown", false);
 	private int cooldown = 0;
 	private boolean isPowered = false;
+	private SoundEvent sound = SCSounds.ALARM.event;
+	private boolean soundPlaying = false;
+	private int soundLength = 2;
 
 	@Override
 	public void update() {
@@ -31,22 +46,31 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 
 			newTe.getOwner().set(getOwner().getUUID(), getOwner().getName());
 			newTe.range.copy(range);
-			newTe.delay.copy(delay);
+			newTe.soundLength = soundLength;
 			newTe.setPowered(false);
 			invalidate();
 			return;
 		}
 
-		if (!world.isRemote && isPowered && --cooldown <= 0) {
-			double rangeSqr = Math.pow(range.get(), 2);
+		if (world.isRemote) {
+			if (soundPlaying && (isDisabled() || !isPowered))
+				stopPlayingSound();
+		}
+		else {
+			if (!isDisabled() && --cooldown <= 0) {
+				if (isPowered) {
+					double rangeSqr = Math.pow(range.get(), 2);
+					SoundEvent soundEvent = isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event;
 
-			for (EntityPlayerMP player : world.getPlayers(EntityPlayerMP.class, p -> p.getPosition().distanceSq(pos) <= rangeSqr)) {
-				float volume = (float) (1.0F - ((player.getPosition().distanceSq(pos)) / rangeSqr));
+					for (EntityPlayerMP player : world.getPlayers(EntityPlayerMP.class, p -> p.getPosition().distanceSq(pos) <= rangeSqr)) {
+						float volume = (float) (1.0F - ((player.getPosition().distanceSq(pos)) / rangeSqr));
 
-				player.connection.sendPacket(new SPacketSoundEffect(SCSounds.ALARM.event, SoundCategory.BLOCKS, pos.getX(), pos.getY(), pos.getZ(), volume, 1.0F));
+						SecurityCraft.network.sendTo(new PlayAlarmSound(pos, soundEvent, volume), player);
+					}
+				}
+
+				setCooldown(soundLength * 20);
 			}
-
-			setCooldown(delay.get() * 20);
 		}
 	}
 
@@ -55,6 +79,8 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 		super.writeToNBT(tag);
 		tag.setInteger("cooldown", cooldown);
 		tag.setBoolean("isPowered", isPowered);
+		tag.setString("sound", sound.getRegistryName().toString());
+		tag.setInteger("delay", soundLength);
 		return tag;
 	}
 
@@ -63,6 +89,36 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 		super.readFromNBT(tag);
 		cooldown = tag.getInteger("cooldown");
 		isPowered = tag.getBoolean("isPowered");
+
+		if (tag.hasKey("sound", Constants.NBT.TAG_STRING))
+			setSound(new ResourceLocation(tag.getString("sound")));
+		else
+			setSound(SCSounds.ALARM.location);
+
+		soundLength = tag.getInteger("delay");
+	}
+
+	public void setSound(ResourceLocation soundEvent) {
+		setSound(ForgeRegistries.SOUND_EVENTS.getValue(soundEvent));
+	}
+
+	public void setSound(SoundEvent soundEvent) {
+		sound = soundEvent;
+		markDirty();
+	}
+
+	public SoundEvent getSound() {
+		return isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event;
+	}
+
+	public int getSoundLength() {
+		return soundLength;
+	}
+
+	public void setSoundLength(int soundLength) {
+		this.soundLength = MathHelper.clamp(soundLength, 1, MAXIMUM_ALARM_SOUND_LENGTH);
+		stopPlayingSound();
+		setCooldown(0);
 	}
 
 	public void setCooldown(int cooldown) {
@@ -75,17 +131,46 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 
 	public void setPowered(boolean isPowered) {
 		this.isPowered = isPowered;
+
+		if (isPowered && resetCooldown.get())
+			setCooldown(0);
+
+		markDirty();
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[] {};
+		return new ModuleType[] {
+				ModuleType.SMART
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range, delay
+				range, disabled, resetCooldown
 		};
+	}
+
+	@Override
+	public void invalidate() {
+		super.invalidate();
+
+		if (world.isRemote && soundPlaying)
+			stopPlayingSound();
+	}
+
+	public void playSound(World level, double x, double y, double z, SoundEvent sound, float volume) {
+		AlarmSoundHandler.playSound(this, level, x, y, z, sound, SoundCategory.BLOCKS, volume, 1.0F);
+		soundPlaying = true;
+	}
+
+	public void stopPlayingSound() {
+		AlarmSoundHandler.stopCurrentSound(this);
+		soundPlaying = false;
 	}
 }

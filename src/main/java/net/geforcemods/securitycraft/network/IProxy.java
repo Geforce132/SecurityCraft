@@ -1,13 +1,20 @@
 package net.geforcemods.securitycraft.network;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 
 public interface IProxy {
-	public void registerEntityRenderingHandlers();
+	public default void registerEntityRenderingHandlers() {}
 
-	public void registerRenderThings();
+	public default void registerRenderThings() {}
 
-	public void registerVariants();
+	public default void registerVariants() {}
 
-	public EntityPlayer getClientPlayer();
+	public default EntityPlayer getClientPlayer() {
+		return null;
+	}
+
+	public default World getClientLevel() {
+		return null;
+	}
 }

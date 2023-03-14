@@ -137,9 +137,9 @@ public abstract class ColorableScrollPanel {
 			worldr.pos(scrollBarRight - 1, barTop, 0.0D).tex(1.0D, 0.0D).color(scrollbar.r, scrollbar.g, scrollbar.b, scrollbar.a).endVertex();
 			worldr.pos(scrollBarLeft, barTop, 0.0D).tex(0.0D, 0.0D).color(scrollbar.r, scrollbar.g, scrollbar.b, scrollbar.a).endVertex();
 			tess.draw();
+			GlStateManager.enableTexture2D();
 		}
 
-		GlStateManager.enableTexture2D();
 		GlStateManager.shadeModel(GL11.GL_FLAT);
 		GlStateManager.enableAlpha();
 		GlStateManager.disableBlend();

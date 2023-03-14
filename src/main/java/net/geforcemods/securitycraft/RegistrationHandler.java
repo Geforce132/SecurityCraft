@@ -81,6 +81,7 @@ import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.network.client.OpenLaserScreen;
+import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
@@ -107,6 +108,7 @@ import net.geforcemods.securitycraft.network.server.SetListModuleData;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
 import net.geforcemods.securitycraft.network.server.SetStateOnDisguiseModule;
+import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
 import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
@@ -552,6 +554,8 @@ public class RegistrationHandler {
 		network.registerMessage(SyncRiftStabilizer.Handler.class, SyncRiftStabilizer.class, 49, Side.SERVER);
 		network.registerMessage(OpenLaserScreen.Handler.class, OpenLaserScreen.class, 50, Side.CLIENT);
 		network.registerMessage(SyncLaserSideConfig.Handler.class, SyncLaserSideConfig.class, 51, Side.SERVER);
+		network.registerMessage(PlayAlarmSound.Handler.class, PlayAlarmSound.class, 52, Side.CLIENT);
+		network.registerMessage(SyncAlarmSettings.Handler.class, SyncAlarmSettings.class, 53, Side.SERVER);
 	}
 
 	@SubscribeEvent

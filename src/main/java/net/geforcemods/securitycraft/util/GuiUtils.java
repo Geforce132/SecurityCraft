@@ -139,8 +139,10 @@ public class GuiUtils {
 			drawTexture(Tessellator.getInstance(), moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
 
-		if (moduleTooltip != null && !moduleTooltip.isEmpty() && mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom)
+		if (moduleTooltip != null && !moduleTooltip.isEmpty() && mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom) {
 			net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(moduleTooltip), mouseX, mouseY, screenWidth, screenHeight, -1, mc.fontRenderer);
+			RenderHelper.disableStandardItemLighting();
+		}
 
 		GlStateManager.disableBlend();
 		GlStateManager.disableAlpha();

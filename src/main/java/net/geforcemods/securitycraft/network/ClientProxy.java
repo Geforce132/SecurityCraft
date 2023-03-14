@@ -73,6 +73,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ColorizerGrass;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -306,6 +307,11 @@ public class ClientProxy implements IProxy {
 	@Override
 	public EntityPlayer getClientPlayer() {
 		return Minecraft.getMinecraft().player;
+	}
+
+	@Override
+	public World getClientLevel() {
+		return Minecraft.getMinecraft().world;
 	}
 
 	public static boolean isPlayerMountedOnCamera() {

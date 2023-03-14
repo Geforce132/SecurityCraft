@@ -27,7 +27,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.client.GuiScrollingList;
 
 public class ToggleListScreen<T> extends GuiScreen {
-	private final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
 	private final int imageWidth = 176;
 	private final int imageHeight = 166;

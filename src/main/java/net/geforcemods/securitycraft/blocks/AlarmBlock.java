@@ -3,8 +3,11 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
+import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -32,6 +35,28 @@ public class AlarmBlock extends OwnableBlock {
 		super(material);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		TileEntity tile = world.getTileEntity(pos);
+
+		if (tile instanceof AlarmBlockEntity) {
+			AlarmBlockEntity te = (AlarmBlockEntity) tile;
+
+			if (te.isOwnedBy(player)) {
+				if (!world.isRemote) {
+					if (te.isDisabled())
+						player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+					else
+						player.openGui(SecurityCraft.instance, ScreenHandler.ALARM, world, pos.getX(), pos.getY(), pos.getZ());
+				}
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	@Override

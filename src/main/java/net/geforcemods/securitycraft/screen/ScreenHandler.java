@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.screen;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
@@ -63,7 +64,7 @@ public class ScreenHandler implements IGuiHandler {
 	public static final int BLOCK_CHANGE_DETECTOR = 108;
 	public static final int SSS_ITEM = 109;
 	public static final int RIFT_STABILIZER = 110;
-	public static final int LASER = 111;
+	public static final int ALARM = 111;
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -137,6 +138,8 @@ public class ScreenHandler implements IGuiHandler {
 			case SSS_ITEM:
 				return new GenericMenu(player.inventory, te);
 			case RIFT_STABILIZER:
+				return new GenericMenu(player.inventory, te);
+			case ALARM:
 				return new GenericMenu(player.inventory, te);
 			default:
 				return null;
@@ -230,6 +233,8 @@ public class ScreenHandler implements IGuiHandler {
 				return new SSSItemScreen(PlayerUtils.getSelectedItemStack(player, SCContent.sonicSecuritySystemItem));
 			case RIFT_STABILIZER:
 				return new ToggleListScreen<>((RiftStabilizerBlockEntity) te, te.getDisplayName(), Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes"), Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired"), Utils.localize("gui.securitycraft:rift_stabilizer.toggle"));
+			case ALARM:
+				return new AlarmScreen((AlarmBlockEntity) te, ((AlarmBlockEntity) te).getSound().getRegistryName());
 			default:
 				return null;
 		}
