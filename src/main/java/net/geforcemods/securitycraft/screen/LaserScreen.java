@@ -39,7 +39,7 @@ public class LaserScreen extends GuiScreen {
 
 		if (hasSmartModule) {
 			sideConfig.forEach((dir, enabled) -> {
-				CallbackCheckbox checkbox = new CallbackCheckbox(-1, leftPos + 10, topPos + dir.getIndex() * 25 + 25, 20, 20, Utils.localize("gui.securitycraft:laser." + dir.getName() + "Enabled").getFormattedText(), enabled, newValue -> onChangeValue(dir, newValue), 0x404040);
+				CallbackCheckbox checkbox = new CallbackCheckbox(-1, leftPos + 10, topPos + dir.getIndex() * 25 + 30, 20, 20, Utils.localize("gui.securitycraft:laser." + dir.getName() + "Enabled").getFormattedText(), enabled, newValue -> onChangeValue(dir, newValue), 0x404040);
 
 				checkbox.enabled = be.isEnabled();
 				addButton(checkbox);
