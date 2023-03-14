@@ -5,8 +5,8 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
-import net.geforcemods.securitycraft.api.Option.OptionInt;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -16,7 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswordProtected, ILockable {
 	private String passcode;
-	private OptionBoolean isAlwaysActive = new OptionBoolean("isAlwaysActive", false) {
+	private BooleanOption isAlwaysActive = new BooleanOption("isAlwaysActive", false) {
 		@Override
 		public void toggle() {
 			super.toggle();
@@ -27,8 +27,8 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 			}
 		}
 	};
-	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
-	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private DisabledOption disabled = new DisabledOption(false);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
 	private long cooldownEnd = 0;
@@ -65,7 +65,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 	@Override
 	public void onOptionChanged(Option<?> option) {
 		if (option.getName().equals("disabled")) {
-			boolean isDisabled = ((OptionBoolean) option).get();
+			boolean isDisabled = ((BooleanOption) option).get();
 			IBlockState state = world.getBlockState(pos);
 
 			if (isDisabled && state.getValue(KeypadBlock.POWERED))

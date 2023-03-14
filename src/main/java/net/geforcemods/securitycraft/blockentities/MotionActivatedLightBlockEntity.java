@@ -5,8 +5,8 @@ import java.util.List;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
-import net.geforcemods.securitycraft.api.Option.OptionDouble;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -20,7 +20,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 
 public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity implements ITickable {
 	private static final int TICKS_BETWEEN_ATTACKS = 5;
-	private OptionDouble searchRadiusOption = new OptionDouble(this::getPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
+	private DoubleOption searchRadiusOption = new DoubleOption(this::getPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
@@ -42,7 +42,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 	@Override
 	public void onOptionChanged(Option<?> option) {
 		//turn off the light when it's disabled
-		if (option.getName().equals("disabled") && ((OptionBoolean) option).get()) {
+		if (option.getName().equals("disabled") && ((BooleanOption) option).get()) {
 			IBlockState state = world.getBlockState(pos);
 
 			if (state.getValue(MotionActivatedLightBlock.LIT))

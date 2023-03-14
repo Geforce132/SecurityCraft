@@ -10,9 +10,9 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
-import net.geforcemods.securitycraft.api.Option.OptionDouble;
-import net.geforcemods.securitycraft.api.Option.OptionInt;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -110,10 +110,10 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 					Option<?> option = options[i];
 
 					if (option instanceof ISlider && option.isSlider()) {
-						if (option instanceof OptionDouble)
-							optionButtons[i] = new Slider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionDouble) option).getMin(), ((OptionDouble) option).getMax(), ((OptionDouble) option).get(), true, true, (ISlider) option);
-						else if (option instanceof OptionInt)
-							optionButtons[i] = new Slider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionInt) option).getMin(), ((OptionInt) option).getMax(), ((OptionInt) option).get(), true, true, (ISlider) option);
+						if (option instanceof DoubleOption)
+							optionButtons[i] = new Slider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, true, (ISlider) option);
+						else if (option instanceof IntOption)
+							optionButtons[i] = new Slider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, true, (ISlider) option);
 
 						optionButtons[i].packedFGColour = 14737632;
 					}
@@ -246,8 +246,8 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 	}
 
 	private String getValueText(Option<?> option) {
-		if (option instanceof OptionBoolean)
-			return new TextComponentTranslation(((OptionBoolean) option).get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no").getFormattedText();
+		if (option instanceof BooleanOption)
+			return new TextComponentTranslation(((BooleanOption) option).get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no").getFormattedText();
 		else
 			return option.toString();
 	}

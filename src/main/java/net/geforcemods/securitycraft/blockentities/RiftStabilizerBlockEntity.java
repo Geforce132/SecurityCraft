@@ -13,8 +13,8 @@ import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
-import net.geforcemods.securitycraft.api.Option.OptionInt;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -42,8 +42,8 @@ import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements ITickable, ILockable, IToggleableEntries<TeleportationType> {
-	private final OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
-	private final OptionInt range = new OptionInt(this::getPos, "range", 5, 1, 15, 1, true);
+	private final IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private final IntOption range = new IntOption(this::getPos, "range", 5, 1, 15, 1, true);
 	private final DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private final Map<TeleportationType, Boolean> teleportationFilter = new EnumMap<>(TeleportationType.class);
@@ -240,13 +240,13 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 		if (connectedTileEntity != null) {
 			if (option.getName().equals("signalLength"))
-				connectedTileEntity.setSignalLength(((OptionInt) option).get());
+				connectedTileEntity.setSignalLength(((IntOption) option).get());
 			else if (option.getName().equals("range"))
-				connectedTileEntity.setRange(((OptionInt) option).get());
+				connectedTileEntity.setRange(((IntOption) option).get());
 			else if (option.getName().equals("disabled"))
-				connectedTileEntity.setDisabled(((OptionBoolean) option).get());
+				connectedTileEntity.setDisabled(((BooleanOption) option).get());
 			else if (option.getName().equals("ignoreOwner"))
-				connectedTileEntity.setIgnoresOwner(((OptionBoolean) option).get());
+				connectedTileEntity.setIgnoresOwner(((BooleanOption) option).get());
 		}
 
 		super.onOptionChanged(option);

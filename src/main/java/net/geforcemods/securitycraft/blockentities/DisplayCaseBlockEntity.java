@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -24,7 +24,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements ITickable, IPasswordProtected, ILockable {
 	private AxisAlignedBB renderBoundingBox = Block.FULL_BLOCK_AABB;
-	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
+	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
 	private long cooldownEnd = 0;

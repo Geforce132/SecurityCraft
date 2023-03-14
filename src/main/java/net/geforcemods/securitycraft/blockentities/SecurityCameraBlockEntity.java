@@ -5,8 +5,8 @@ import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IEMPAffectedBE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
-import net.geforcemods.securitycraft.api.Option.OptionDouble;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -27,9 +27,9 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	public boolean addToRotation = true;
 	public boolean down = false;
 	private boolean shutDown = false;
-	private OptionDouble rotationSpeedOption = new OptionDouble(this::getPos, "rotationSpeed", CAMERA_SPEED, 0.01D, 0.025D, 0.001D, true);
-	private OptionBoolean shouldRotateOption = new OptionBoolean("shouldRotate", true);
-	private OptionDouble customRotationOption = new OptionDouble(this::getPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
+	private DoubleOption rotationSpeedOption = new DoubleOption(this::getPos, "rotationSpeed", CAMERA_SPEED, 0.01D, 0.025D, 0.001D, true);
+	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
+	private DoubleOption customRotationOption = new DoubleOption(this::getPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private int playersViewing = 0;
 
@@ -135,7 +135,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	public void onOptionChanged(Option<?> option) {
 		if (option.getName().equals("disabled"))
 
-			if (((OptionBoolean) option).get())
+			if (((BooleanOption) option).get())
 				makeEveryoneStopViewingTheCamera();
 	}
 

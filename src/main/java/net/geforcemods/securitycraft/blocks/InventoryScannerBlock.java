@@ -12,7 +12,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -172,9 +172,9 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			thisTe.insertModule(connectedScanner.getModule(type), false);
 		}
 
-		((OptionBoolean) customOptions[0]).setValue(connectedScanner.isHorizontal());
-		((OptionBoolean) customOptions[1]).setValue(connectedScanner.doesFieldSolidify());
-		((OptionBoolean) customOptions[2]).setValue(false);
+		((BooleanOption) customOptions[0]).setValue(connectedScanner.isHorizontal());
+		((BooleanOption) customOptions[1]).setValue(connectedScanner.doesFieldSolidify());
+		((BooleanOption) customOptions[2]).setValue(false);
 	}
 
 	@Override

@@ -18,8 +18,8 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
-import net.geforcemods.securitycraft.api.Option.OptionInt;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -45,9 +45,9 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static PlayerProfileCache profileCache;
 	private static MinecraftSessionService sessionService;
-	private OptionBoolean activatedByEntities = new OptionBoolean("activatedByEntities", false);
-	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
-	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
+	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private DisabledOption disabled = new DisabledOption(false);
 	private GameProfile ownerProfile;
 	private int viewCooldown = 0;

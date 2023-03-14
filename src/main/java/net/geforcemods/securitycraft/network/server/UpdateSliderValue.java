@@ -5,8 +5,8 @@ import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.OptionDouble;
-import net.geforcemods.securitycraft.api.Option.OptionInt;
+import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -55,10 +55,10 @@ public class UpdateSliderValue implements IMessage {
 				if (te instanceof ICustomizable && !(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player)) {
 					Option<?> o = ((ICustomizable) te).customOptions()[id];
 
-					if (o instanceof OptionDouble)
-						((OptionDouble) o).setValue(value);
-					else if (o instanceof OptionInt)
-						((OptionInt) o).setValue((int) value);
+					if (o instanceof DoubleOption)
+						((DoubleOption) o).setValue(value);
+					else if (o instanceof IntOption)
+						((IntOption) o).setValue((int) value);
 
 					((ICustomizable) te).onOptionChanged(((ICustomizable) te).customOptions()[id]);
 

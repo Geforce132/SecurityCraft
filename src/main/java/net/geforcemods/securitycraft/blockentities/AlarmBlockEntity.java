@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.OptionInt;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.blocks.OldLitAlarmBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -16,8 +16,8 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 
 public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickable {
-	public OptionInt range = new OptionInt(this::getPos, "range", 17, 0, ConfigHandler.maxAlarmRange, 1, true);
-	private OptionInt delay = new OptionInt(this::getPos, "delay", 2, 1, 30, 1, true);
+	public IntOption range = new IntOption(this::getPos, "range", 17, 0, ConfigHandler.maxAlarmRange, 1, true);
+	private IntOption delay = new IntOption(this::getPos, "delay", 2, 1, 30, 1, true);
 	private int cooldown = 0;
 	private boolean isPowered = false;
 

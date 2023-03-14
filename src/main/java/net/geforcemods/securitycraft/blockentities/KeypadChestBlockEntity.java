@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
@@ -45,7 +45,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPassword
 	private String passcode;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
-	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
+	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
 	private long cooldownEnd = 0;
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
@@ -179,7 +179,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPassword
 
 		if (otherTe != null) {
 			if (option.getName().equals("sendMessage"))
-				otherTe.setSendsMessages(((OptionBoolean) option).get());
+				otherTe.setSendsMessages(((BooleanOption) option).get());
 			else if (option.getName().equals("smartModuleCooldown"))
 				otherTe.smartModuleCooldown.copy(option);
 		}

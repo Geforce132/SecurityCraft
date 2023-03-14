@@ -9,7 +9,7 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.inventory.ExtractOnlyItemStackHandler;
@@ -35,8 +35,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements IInventory, ITickable, ILockable {
-	private OptionBoolean horizontal = new OptionBoolean("horizontal", false);
-	private OptionBoolean solidifyField = new OptionBoolean("solidifyField", false);
+	private BooleanOption horizontal = new BooleanOption("horizontal", false);
+	private BooleanOption solidifyField = new BooleanOption("solidifyField", false);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private IItemHandler storageHandler;
@@ -330,7 +330,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	@Override
 	public void onOptionChanged(Option<?> option) {
 		if (option.getName().equals("horizontal")) {
-			OptionBoolean bo = (OptionBoolean) option;
+			BooleanOption bo = (BooleanOption) option;
 
 			modifyFields((offsetPos, state) -> world.setBlockState(offsetPos, state.withProperty(InventoryScannerFieldBlock.HORIZONTAL, bo.get())), connectedScanner -> connectedScanner.setHorizontal(bo.get()));
 			world.setBlockState(pos, world.getBlockState(pos).withProperty(InventoryScannerBlock.HORIZONTAL, bo.get()));
@@ -339,10 +339,10 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 			if (connectedScanner != null)
-				connectedScanner.setSolidifyField(((OptionBoolean) option).get());
+				connectedScanner.setSolidifyField(((BooleanOption) option).get());
 		}
 		else if (option.getName().equals("disabled")) {
-			if (!((OptionBoolean) option).get())
+			if (!((BooleanOption) option).get())
 				InventoryScannerBlock.checkAndPlaceAppropriately(world, pos, null, true);
 			else
 				modifyFields((offsetPos, state) -> world.destroyBlock(offsetPos, false), connectedScanner -> connectedScanner.setDisabled(true));
@@ -351,7 +351,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 			if (connectedScanner != null)
-				connectedScanner.setIgnoresOwner(((OptionBoolean) option).get());
+				connectedScanner.setIgnoresOwner(((BooleanOption) option).get());
 		}
 	}
 

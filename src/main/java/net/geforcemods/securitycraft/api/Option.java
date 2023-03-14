@@ -139,8 +139,8 @@ public abstract class Option<T> {
 	/**
 	 * A subclass of {@link Option}, set up to handle booleans.
 	 */
-	public static class OptionBoolean extends Option<Boolean> {
-		public OptionBoolean(String optionName, Boolean value) {
+	public static class BooleanOption extends Option<Boolean> {
+		public BooleanOption(String optionName, Boolean value) {
 			super(optionName, value);
 		}
 
@@ -163,7 +163,7 @@ public abstract class Option<T> {
 		}
 	}
 
-	public static class DisabledOption extends OptionBoolean {
+	public static class DisabledOption extends BooleanOption {
 		public DisabledOption(Boolean value) {
 			super("disabled", value);
 		}
@@ -174,7 +174,7 @@ public abstract class Option<T> {
 		}
 	}
 
-	public static class IgnoreOwnerOption extends OptionBoolean {
+	public static class IgnoreOwnerOption extends BooleanOption {
 		public IgnoreOwnerOption(Boolean value) {
 			super("ignoreOwner", value);
 		}
@@ -188,21 +188,21 @@ public abstract class Option<T> {
 	/**
 	 * A subclass of {@link Option}, set up to handle integers.
 	 */
-	public static class OptionInt extends Option<Integer> implements ISlider {
+	public static class IntOption extends Option<Integer> implements ISlider {
 		private boolean isSlider;
 		private Supplier<BlockPos> pos;
 
-		public OptionInt(String optionName, Integer value) {
+		public IntOption(String optionName, Integer value) {
 			super(optionName, value);
 			isSlider = false;
 		}
 
-		public OptionInt(String optionName, Integer value, Integer min, Integer max, Integer increment) {
+		public IntOption(String optionName, Integer value, Integer min, Integer max, Integer increment) {
 			super(optionName, value, min, max, increment);
 			isSlider = false;
 		}
 
-		public OptionInt(Supplier<BlockPos> pos, String optionName, Integer value, Integer min, Integer max, Integer increment, boolean isSlider) {
+		public IntOption(Supplier<BlockPos> pos, String optionName, Integer value, Integer min, Integer max, Integer increment, boolean isSlider) {
 			super(optionName, value, min, max, increment);
 			this.isSlider = isSlider;
 			this.pos = pos;
@@ -259,7 +259,7 @@ public abstract class Option<T> {
 		}
 	}
 
-	public static class SmartModuleCooldownOption extends OptionInt {
+	public static class SmartModuleCooldownOption extends IntOption {
 		public SmartModuleCooldownOption(Supplier<BlockPos> pos) {
 			super(pos, "smartModuleCooldown", 100, 20, 400, 1, true);
 		}
@@ -273,21 +273,21 @@ public abstract class Option<T> {
 	/**
 	 * A subclass of {@link Option}, set up to handle doubles.
 	 */
-	public static class OptionDouble extends Option<Double> implements ISlider {
+	public static class DoubleOption extends Option<Double> implements ISlider {
 		private boolean isSlider;
 		private Supplier<BlockPos> pos;
 
-		public OptionDouble(String optionName, Double value) {
+		public DoubleOption(String optionName, Double value) {
 			super(optionName, value);
 			isSlider = false;
 		}
 
-		public OptionDouble(String optionName, Double value, Double min, Double max, Double increment) {
+		public DoubleOption(String optionName, Double value, Double min, Double max, Double increment) {
 			super(optionName, value, min, max, increment);
 			isSlider = false;
 		}
 
-		public OptionDouble(Supplier<BlockPos> pos, String optionName, Double value, Double min, Double max, Double increment, boolean isSlider) {
+		public DoubleOption(Supplier<BlockPos> pos, String optionName, Double value, Double min, Double max, Double increment, boolean isSlider) {
 			super(optionName, value, min, max, increment);
 			this.isSlider = isSlider;
 			this.pos = pos;
@@ -352,12 +352,12 @@ public abstract class Option<T> {
 	/**
 	 * A subclass of {@link Option}, set up to handle floats.
 	 */
-	public static class OptionFloat extends Option<Float> {
-		public OptionFloat(String optionName, Float value) {
+	public static class FloatOption extends Option<Float> {
+		public FloatOption(String optionName, Float value) {
 			super(optionName, value);
 		}
 
-		public OptionFloat(String optionName, Float value, Float min, Float max, Float increment) {
+		public FloatOption(String optionName, Float value, Float min, Float max, Float increment) {
 			super(optionName, value, min, max, increment);
 		}
 
