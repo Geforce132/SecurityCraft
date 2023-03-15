@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -24,9 +23,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -34,12 +36,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBlock {
-	public ReinforcedFenceGateBlock(Block.Properties properties) {
-		this(properties, SoundEvents.IRON_DOOR_CLOSE, SoundEvents.IRON_DOOR_OPEN);
-	}
+	private static final WoodType NOT_REALLY_A_WOOD_TYPE = WoodType.register(new WoodType("securitycraft:iron", BlockSetType.IRON, SoundType.METAL, SoundType.METAL, SoundEvents.IRON_DOOR_CLOSE, SoundEvents.IRON_DOOR_OPEN));
 
-	public ReinforcedFenceGateBlock(BlockBehaviour.Properties properties, SoundEvent closeSound, SoundEvent openSound) {
-		super(properties, closeSound, openSound);
+	public ReinforcedFenceGateBlock(BlockBehaviour.Properties properties) {
+		super(properties, NOT_REALLY_A_WOOD_TYPE);
 	}
 
 	@Override
