@@ -1,6 +1,6 @@
 {
-	"version": "v1.9.5",
-	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/4318698",
-	"fileName": "[1.12.2] SecurityCraft v1.9.5",
-	"changelog": "More module support for passcode blocks, ignore owner option, fixes"
+	"version": "v1.9.6",
+	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/4438426",
+	"fileName": "[1.12.2] SecurityCraft v1.9.6",
+	"changelog": "Password-protected Barrels, a Laser side config, and Smart Module support for the Alarm"
 }
