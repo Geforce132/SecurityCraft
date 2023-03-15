@@ -203,8 +203,6 @@ import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.inventory.MenuType;
@@ -228,6 +226,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
@@ -323,7 +322,7 @@ public class SCContent {
 	public static final RegistryObject<Block> KEYPAD_BARREL = BLOCKS.register("keypad_barrel", () -> new KeypadBarrelBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage(hasRecipeDescription = true)
 	public static final RegistryObject<Block> KEYPAD_CHEST = BLOCKS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestBlock(prop(Material.WOOD).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> KEYPAD_DOOR = BLOCKS.register("keypad_door", () -> new KeypadDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion()));
+	public static final RegistryObject<Block> KEYPAD_DOOR = BLOCKS.register("keypad_door", () -> new KeypadDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion(), BlockSetType.IRON));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
 	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_FURNACE = BLOCKS.register("keypad_furnace", () -> new KeypadFurnaceBlock(prop(Material.METAL).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0)));
@@ -343,7 +342,7 @@ public class SCContent {
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final RegistryObject<Block> PANIC_BUTTON = BLOCKS.register("panic_button", () -> new PanicButtonBlock(prop().lightLevel(state -> state.getValue(PanicButtonBlock.POWERED) ? 4 : 0), -1, false, SoundEvents.STONE_BUTTON_CLICK_OFF, SoundEvents.STONE_BUTTON_CLICK_ON));
+	public static final RegistryObject<Block> PANIC_BUTTON = BLOCKS.register("panic_button", () -> new PanicButtonBlock(prop().lightLevel(state -> state.getValue(PanicButtonBlock.POWERED) ? 4 : 0), BlockSetType.STONE, -1, false));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> PORTABLE_RADAR = BLOCKS.register("portable_radar", () -> new PortableRadarBlock(prop(Material.DECORATION)));
@@ -363,7 +362,7 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final RegistryObject<Block> RETINAL_SCANNER = BLOCKS.register("retinal_scanner", () -> new RetinalScannerBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
 	public static final RegistryObject<Block> RIFT_STABILIZER = BLOCKS.register("rift_stabilizer", () -> new RiftStabilizerBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
-	public static final RegistryObject<Block> SCANNER_DOOR = BLOCKS.register("scanner_door", () -> new ScannerDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion()));
+	public static final RegistryObject<Block> SCANNER_DOOR = BLOCKS.register("scanner_door", () -> new ScannerDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion(), BlockSetType.IRON));
 	public static final RegistryObject<Block> SECRET_OAK_SIGN = BLOCKS.register("secret_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD).sound(SoundType.WOOD), WoodType.OAK));
 	public static final RegistryObject<Block> SECRET_OAK_WALL_SIGN = BLOCKS.register("secret_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD).sound(SoundType.WOOD), WoodType.OAK));
 	public static final RegistryObject<Block> SECRET_SPRUCE_SIGN = BLOCKS.register("secret_spruce_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD).sound(SoundType.WOOD), WoodType.SPRUCE));
@@ -2116,74 +2115,74 @@ public class SCContent {
 	public static final RegistryObject<Block> REINFORCED_REDSTONE_LAMP = BLOCKS.register("reinforced_redstone_lamp", () -> new ReinforcedRedstoneLampBlock(prop(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(state -> state.getValue(ReinforcedRedstoneLampBlock.LIT) ? 15 : 0), Blocks.REDSTONE_LAMP));
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STONE_BUTTON = BLOCKS.register("reinforced_stone_button", () -> stoneButton(Blocks.STONE_BUTTON));
+	public static final RegistryObject<Block> REINFORCED_STONE_BUTTON = BLOCKS.register("reinforced_stone_button", () -> stoneButton(Blocks.STONE_BUTTON, BlockSetType.STONE));
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_BUTTON = BLOCKS.register("reinforced_polished_blackstone_button", () -> stoneButton(Blocks.POLISHED_BLACKSTONE_BUTTON));
+	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_BUTTON = BLOCKS.register("reinforced_polished_blackstone_button", () -> stoneButton(Blocks.POLISHED_BLACKSTONE_BUTTON, BlockSetType.POLISHED_BLACKSTONE));
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OAK_BUTTON = BLOCKS.register("reinforced_oak_button", () -> woodenButton(Blocks.OAK_BUTTON));
+	public static final RegistryObject<Block> REINFORCED_OAK_BUTTON = BLOCKS.register("reinforced_oak_button", () -> woodenButton(Blocks.OAK_BUTTON, BlockSetType.OAK));
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SPRUCE_BUTTON = BLOCKS.register("reinforced_spruce_button", () -> woodenButton(Blocks.SPRUCE_BUTTON));
+	public static final RegistryObject<Block> REINFORCED_SPRUCE_BUTTON = BLOCKS.register("reinforced_spruce_button", () -> woodenButton(Blocks.SPRUCE_BUTTON, BlockSetType.SPRUCE));
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BIRCH_BUTTON = BLOCKS.register("reinforced_birch_button", () -> woodenButton(Blocks.BIRCH_BUTTON));
+	public static final RegistryObject<Block> REINFORCED_BIRCH_BUTTON = BLOCKS.register("reinforced_birch_button", () -> woodenButton(Blocks.BIRCH_BUTTON, BlockSetType.BIRCH));
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_JUNGLE_BUTTON = BLOCKS.register("reinforced_jungle_button", () -> woodenButton(Blocks.JUNGLE_BUTTON));
+	public static final RegistryObject<Block> REINFORCED_JUNGLE_BUTTON = BLOCKS.register("reinforced_jungle_button", () -> woodenButton(Blocks.JUNGLE_BUTTON, BlockSetType.JUNGLE));
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ACACIA_BUTTON = BLOCKS.register("reinforced_acacia_button", () -> woodenButton(Blocks.ACACIA_BUTTON));
+	public static final RegistryObject<Block> REINFORCED_ACACIA_BUTTON = BLOCKS.register("reinforced_acacia_button", () -> woodenButton(Blocks.ACACIA_BUTTON, BlockSetType.ACACIA));
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_OAK_BUTTON = BLOCKS.register("reinforced_dark_oak_button", () -> woodenButton(Blocks.DARK_OAK_BUTTON));
+	public static final RegistryObject<Block> REINFORCED_DARK_OAK_BUTTON = BLOCKS.register("reinforced_dark_oak_button", () -> woodenButton(Blocks.DARK_OAK_BUTTON, BlockSetType.DARK_OAK));
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MANGROVE_BUTTON = BLOCKS.register("reinforced_mangrove_button", () -> woodenButton(Blocks.MANGROVE_BUTTON));
+	public static final RegistryObject<Block> REINFORCED_MANGROVE_BUTTON = BLOCKS.register("reinforced_mangrove_button", () -> woodenButton(Blocks.MANGROVE_BUTTON, BlockSetType.MANGROVE));
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRIMSON_BUTTON = BLOCKS.register("reinforced_crimson_button", () -> woodenButton(Blocks.CRIMSON_BUTTON, SoundType.NETHER_WOOD, SoundEvents.NETHER_WOOD_BUTTON_CLICK_OFF, SoundEvents.NETHER_WOOD_BUTTON_CLICK_ON));
+	public static final RegistryObject<Block> REINFORCED_CRIMSON_BUTTON = BLOCKS.register("reinforced_crimson_button", () -> woodenButton(Blocks.CRIMSON_BUTTON, BlockSetType.CRIMSON));
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WARPED_BUTTON = BLOCKS.register("reinforced_warped_button", () -> woodenButton(Blocks.WARPED_BUTTON, SoundType.NETHER_WOOD, SoundEvents.NETHER_WOOD_BUTTON_CLICK_OFF, SoundEvents.NETHER_WOOD_BUTTON_CLICK_ON));
+	public static final RegistryObject<Block> REINFORCED_WARPED_BUTTON = BLOCKS.register("reinforced_warped_button", () -> woodenButton(Blocks.WARPED_BUTTON, BlockSetType.WARPED));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STONE_PRESSURE_PLATE = BLOCKS.register("reinforced_stone_pressure_plate", () -> stonePressurePlate(Blocks.STONE_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_STONE_PRESSURE_PLATE = BLOCKS.register("reinforced_stone_pressure_plate", () -> stonePressurePlate(Blocks.STONE_PRESSURE_PLATE, BlockSetType.STONE));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE = BLOCKS.register("reinforced_polished_blackstone_pressure_plate", () -> stonePressurePlate(Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE = BLOCKS.register("reinforced_polished_blackstone_pressure_plate", () -> stonePressurePlate(Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE, BlockSetType.POLISHED_BLACKSTONE));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OAK_PRESSURE_PLATE = BLOCKS.register("reinforced_oak_pressure_plate", () -> woodenPressurePlate(Blocks.OAK_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_OAK_PRESSURE_PLATE = BLOCKS.register("reinforced_oak_pressure_plate", () -> woodenPressurePlate(Blocks.OAK_PRESSURE_PLATE, BlockSetType.OAK));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SPRUCE_PRESSURE_PLATE = BLOCKS.register("reinforced_spruce_pressure_plate", () -> woodenPressurePlate(Blocks.SPRUCE_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_SPRUCE_PRESSURE_PLATE = BLOCKS.register("reinforced_spruce_pressure_plate", () -> woodenPressurePlate(Blocks.SPRUCE_PRESSURE_PLATE, BlockSetType.SPRUCE));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BIRCH_PRESSURE_PLATE = BLOCKS.register("reinforced_birch_pressure_plate", () -> woodenPressurePlate(Blocks.BIRCH_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_BIRCH_PRESSURE_PLATE = BLOCKS.register("reinforced_birch_pressure_plate", () -> woodenPressurePlate(Blocks.BIRCH_PRESSURE_PLATE, BlockSetType.BIRCH));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_JUNGLE_PRESSURE_PLATE = BLOCKS.register("reinforced_jungle_pressure_plate", () -> woodenPressurePlate(Blocks.JUNGLE_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_JUNGLE_PRESSURE_PLATE = BLOCKS.register("reinforced_jungle_pressure_plate", () -> woodenPressurePlate(Blocks.JUNGLE_PRESSURE_PLATE, BlockSetType.JUNGLE));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ACACIA_PRESSURE_PLATE = BLOCKS.register("reinforced_acacia_pressure_plate", () -> woodenPressurePlate(Blocks.ACACIA_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_ACACIA_PRESSURE_PLATE = BLOCKS.register("reinforced_acacia_pressure_plate", () -> woodenPressurePlate(Blocks.ACACIA_PRESSURE_PLATE, BlockSetType.ACACIA));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_OAK_PRESSURE_PLATE = BLOCKS.register("reinforced_dark_oak_pressure_plate", () -> woodenPressurePlate(Blocks.DARK_OAK_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_DARK_OAK_PRESSURE_PLATE = BLOCKS.register("reinforced_dark_oak_pressure_plate", () -> woodenPressurePlate(Blocks.DARK_OAK_PRESSURE_PLATE, BlockSetType.DARK_OAK));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MANGROVE_PRESSURE_PLATE = BLOCKS.register("reinforced_mangrove_pressure_plate", () -> woodenPressurePlate(Blocks.MANGROVE_PRESSURE_PLATE));
+	public static final RegistryObject<Block> REINFORCED_MANGROVE_PRESSURE_PLATE = BLOCKS.register("reinforced_mangrove_pressure_plate", () -> woodenPressurePlate(Blocks.MANGROVE_PRESSURE_PLATE, BlockSetType.MANGROVE));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRIMSON_PRESSURE_PLATE = BLOCKS.register("reinforced_crimson_pressure_plate", () -> woodenPressurePlate(Blocks.CRIMSON_PRESSURE_PLATE, Material.NETHER_WOOD, SoundType.NETHER_WOOD, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_OFF, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_ON));
+	public static final RegistryObject<Block> REINFORCED_CRIMSON_PRESSURE_PLATE = BLOCKS.register("reinforced_crimson_pressure_plate", () -> woodenPressurePlate(Blocks.CRIMSON_PRESSURE_PLATE, Material.NETHER_WOOD, BlockSetType.CRIMSON));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WARPED_PRESSURE_PLATE = BLOCKS.register("reinforced_warped_pressure_plate", () -> woodenPressurePlate(Blocks.WARPED_PRESSURE_PLATE, Material.NETHER_WOOD, SoundType.NETHER_WOOD, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_OFF, SoundEvents.NETHER_WOOD_PRESSURE_PLATE_CLICK_ON));
+	public static final RegistryObject<Block> REINFORCED_WARPED_PRESSURE_PLATE = BLOCKS.register("reinforced_warped_pressure_plate", () -> woodenPressurePlate(Blocks.WARPED_PRESSURE_PLATE, Material.NETHER_WOOD, BlockSetType.WARPED));
 	@HasManualPage(hasRecipeDescription = true)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false, itemGroup = SCItemGroup.MANUAL)
-	public static final RegistryObject<Block> REINFORCED_IRON_TRAPDOOR = BLOCKS.register("reinforced_iron_trapdoor", () -> new ReinforcedIronTrapDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion().isValidSpawn(SCContent::never)));
+	public static final RegistryObject<Block> REINFORCED_IRON_TRAPDOOR = BLOCKS.register("reinforced_iron_trapdoor", () -> new ReinforcedIronTrapDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion().isValidSpawn(SCContent::never), BlockSetType.IRON));
 
 	//ordered by vanilla <1.19.3 brewing tab order
 	@Reinforced
@@ -2618,27 +2617,23 @@ public class SCContent {
 		return new ForgeFlowingFluid.Properties(ForgeMod.LAVA_TYPE, FAKE_LAVA, FLOWING_FAKE_LAVA).block(FAKE_LAVA_BLOCK).bucket(FAKE_LAVA_BUCKET);
 	}
 
-	private static ReinforcedButtonBlock woodenButton(Block vanillaBlock) {
-		return woodenButton(vanillaBlock, SoundType.WOOD, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundEvents.WOODEN_BUTTON_CLICK_ON);
+	private static ReinforcedButtonBlock woodenButton(Block vanillaBlock, BlockSetType blockSetType) {
+		return new ReinforcedButtonBlock(prop(Material.DECORATION).noCollission(), vanillaBlock, blockSetType, 30, true);
 	}
 
-	private static ReinforcedButtonBlock woodenButton(Block vanillaBlock, SoundType soundType, SoundEvent soundOff, SoundEvent soundOn) {
-		return new ReinforcedButtonBlock(prop(Material.DECORATION).noCollission().sound(soundType), vanillaBlock, 30, true, soundOff, soundOn);
+	private static ReinforcedButtonBlock stoneButton(Block vanillaBlock, BlockSetType blockSetType) {
+		return new ReinforcedButtonBlock(prop().noCollission(), vanillaBlock, blockSetType, 20, false);
 	}
 
-	private static ReinforcedButtonBlock stoneButton(Block vanillaBlock) {
-		return new ReinforcedButtonBlock(prop().noCollission(), vanillaBlock, 20, false, SoundEvents.STONE_BUTTON_CLICK_OFF, SoundEvents.STONE_BUTTON_CLICK_ON);
+	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, BlockSetType blockSetType) {
+		return woodenPressurePlate(vanillaBlock, Material.WOOD, blockSetType);
 	}
 
-	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock) {
-		return woodenPressurePlate(vanillaBlock, Material.WOOD, SoundType.WOOD, SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_OFF, SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_ON);
+	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, Material material, BlockSetType blockSetType) {
+		return new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(material).noCollission(), vanillaBlock, blockSetType);
 	}
 
-	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, Material material, SoundType soundType, SoundEvent soundOff, SoundEvent soundOn) {
-		return new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(material).noCollission().sound(soundType), vanillaBlock, soundOff, soundOn);
-	}
-
-	private static ReinforcedPressurePlateBlock stonePressurePlate(Block vanillaBlock) {
-		return new ReinforcedPressurePlateBlock(Sensitivity.MOBS, prop().noCollission(), vanillaBlock, SoundEvents.STONE_PRESSURE_PLATE_CLICK_OFF, SoundEvents.STONE_PRESSURE_PLATE_CLICK_ON);
+	private static ReinforcedPressurePlateBlock stonePressurePlate(Block vanillaBlock, BlockSetType blockSetType) {
+		return new ReinforcedPressurePlateBlock(Sensitivity.MOBS, prop().noCollission(), vanillaBlock, blockSetType);
 	}
 }

@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,6 +18,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -26,8 +26,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinforcedBlock, EntityBlock {
-	public ReinforcedIronTrapDoorBlock(Block.Properties properties) {
-		super(properties, SoundEvents.IRON_TRAPDOOR_CLOSE, SoundEvents.IRON_TRAPDOOR_OPEN);
+	public ReinforcedIronTrapDoorBlock(Block.Properties properties, BlockSetType blockSetType) {
+		super(properties, blockSetType);
 	}
 
 	@Override

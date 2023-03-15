@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,14 +15,15 @@ import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
 
-	public ReinforcedButtonBlock(Block.Properties properties, Block vb, int ticksToStayPressed, boolean arrowsCanPush, SoundEvent soundOff, SoundEvent soundOn) {
-		super(properties, ticksToStayPressed, arrowsCanPush, soundOff, soundOn);
+	public ReinforcedButtonBlock(Block.Properties properties, Block vb, BlockSetType blockSetType, int ticksToStayPressed, boolean arrowsCanPush) {
+		super(properties, blockSetType, ticksToStayPressed, arrowsCanPush);
 		this.vanillaBlock = vb;
 	}
 

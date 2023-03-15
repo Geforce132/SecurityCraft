@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -21,14 +20,15 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
 
-	public ReinforcedPressurePlateBlock(Sensitivity sensitivity, Block.Properties properties, Block vanillaBlock, SoundEvent soundOff, SoundEvent soundOn) {
-		super(sensitivity, properties, soundOff, soundOn);
+	public ReinforcedPressurePlateBlock(Sensitivity sensitivity, Block.Properties properties, Block vanillaBlock, BlockSetType blockSetType) {
+		super(sensitivity, properties, blockSetType);
 
 		this.vanillaBlock = vanillaBlock;
 	}

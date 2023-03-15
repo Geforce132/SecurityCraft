@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +17,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -42,8 +42,8 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock {
 	private static final VoxelShape CEILING_EW_POWERED = Block.box(5, 15, 3, 11, 16, 13);
 	private static final VoxelShape CEILING_EW_UNPOWERED = Block.box(5, 14, 3, 11, 16, 13);
 
-	public PanicButtonBlock(Block.Properties properties, int ticksToStayPressed, boolean arrowsCanPush, SoundEvent soundOff, SoundEvent soundOn) {
-		super(properties, ticksToStayPressed, arrowsCanPush, soundOff, soundOn);
+	public PanicButtonBlock(Block.Properties properties, BlockSetType blockSetType, int ticksToStayPressed, boolean arrowsCanPush) {
+		super(properties, blockSetType, ticksToStayPressed, arrowsCanPush);
 	}
 
 	@Override
