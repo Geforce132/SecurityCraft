@@ -176,11 +176,11 @@ public class SCClientEventHandler {
 
 		RenderSystem._setShaderTexture(0, CAMERA_DASHBOARD);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		gui.blit(pose, 5, 0, 0, 0, 90, 20);
-		gui.blit(pose, window.getGuiScaledWidth() - 70, 5, 190, 0, 65, 30);
+		GuiComponent.blit(pose, 5, 0, 0, 0, 90, 20);
+		GuiComponent.blit(pose, window.getGuiScaledWidth() - 70, 5, 190, 0, 65, 30);
 
 		if (!mc.player.hasEffect(MobEffects.NIGHT_VISION))
-			gui.blit(pose, 28, 4, 90, 12, 16, 11);
+			GuiComponent.blit(pose, 28, 4, 90, 12, 16, 11);
 		else {
 			RenderSystem._setShaderTexture(0, NIGHT_VISION);
 			GuiComponent.blit(pose, 27, -1, 0, 0, 18, 18, 18, 18);
@@ -189,12 +189,12 @@ public class SCClientEventHandler {
 
 		if (state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 			if (!hasRedstoneModule)
-				gui.blit(pose, 12, 2, 104, 0, 12, 12);
+				GuiComponent.blit(pose, 12, 2, 104, 0, 12, 12);
 			else
-				gui.blit(pose, 12, 3, 90, 0, 12, 11);
+				GuiComponent.blit(pose, 12, 3, 90, 0, 12, 11);
 		}
 		else
-			Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(REDSTONE, 10, 0);
+			Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(pose, REDSTONE, 10, 0);
 	}
 
 	public static void hotbarBindOverlay(ForgeGui gui, PoseStack pose, float partialTicks, int width, int height) {

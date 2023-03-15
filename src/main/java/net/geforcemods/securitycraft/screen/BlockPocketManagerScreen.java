@@ -153,25 +153,25 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 				font.draw(pose, youNeed, imageWidth / 2 - font.width(youNeed) / 2, 83, 4210752);
 
 				font.draw(pose, wallsNeededOverall + "", 42, 100, 4210752);
-				minecraft.getItemRenderer().renderAndDecorateItem(BLOCK_POCKET_WALL, 25, 96);
+				minecraft.getItemRenderer().renderAndDecorateItem(pose, BLOCK_POCKET_WALL, 25, 96);
 
 				font.draw(pose, pillarsNeededOverall + "", 94, 100, 4210752);
-				minecraft.getItemRenderer().renderAndDecorateItem(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 77, 96);
+				minecraft.getItemRenderer().renderAndDecorateItem(pose, REINFORCED_CRYSTAL_QUARTZ_PILLAR, 77, 96);
 
 				font.draw(pose, chiseledNeededOverall + "", 147, 100, 4210752);
-				minecraft.getItemRenderer().renderAndDecorateItem(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 130, 96);
+				minecraft.getItemRenderer().renderAndDecorateItem(pose, REINFORCED_CHISELED_CRYSTAL_QUARTZ, 130, 96);
 			}
 			else {
 				font.draw(pose, youNeed, 169 + 87 / 2 - font.width(youNeed) / 2, imageHeight - 83, 4210752);
 
 				font.draw(pose, Math.max(0, wallsStillNeeded) + "", 192, imageHeight - 66, 4210752);
-				minecraft.getItemRenderer().renderAndDecorateItem(BLOCK_POCKET_WALL, 175, imageHeight - 70);
+				minecraft.getItemRenderer().renderAndDecorateItem(pose, BLOCK_POCKET_WALL, 175, imageHeight - 70);
 
 				font.draw(pose, Math.max(0, pillarsStillNeeded) + "", 192, imageHeight - 44, 4210752);
-				minecraft.getItemRenderer().renderAndDecorateItem(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 175, imageHeight - 48);
+				minecraft.getItemRenderer().renderAndDecorateItem(pose, REINFORCED_CRYSTAL_QUARTZ_PILLAR, 175, imageHeight - 48);
 
 				font.draw(pose, Math.max(0, chiseledStillNeeded) + "", 192, imageHeight - 22, 4210752);
-				minecraft.getItemRenderer().renderAndDecorateItem(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 175, imageHeight - 26);
+				minecraft.getItemRenderer().renderAndDecorateItem(pose, REINFORCED_CHISELED_CRYSTAL_QUARTZ, 175, imageHeight - 26);
 			}
 		}
 	}

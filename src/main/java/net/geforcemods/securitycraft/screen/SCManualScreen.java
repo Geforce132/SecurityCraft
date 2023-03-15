@@ -47,6 +47,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.ClickEvent.Action;
 import net.minecraft.network.chat.Component;
@@ -62,6 +63,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -154,10 +156,10 @@ public class SCManualScreen extends Screen {
 				font.draw(pose, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
 			if (designedBy != null)
-				font.drawWordWrap(designedBy, startX + 18, 150, 75, 0);
+				font.drawWordWrap(pose, designedBy, startX + 18, 150, 75, 0);
 
 			font.draw(pose, pageTitle, startX + 39, 27, 0);
-			font.drawWordWrap(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
+			font.drawWordWrap(pose, subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 			font.draw(pose, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
 			RenderSystem._setShaderTexture(0, ICONS);
 
@@ -362,9 +364,12 @@ public class SCManualScreen extends Screen {
 		pageGroup = page.group();
 
 		if (pageGroup == PageGroup.NONE) {
-			for (Recipe<?> object : Minecraft.getInstance().level.getRecipeManager().getRecipes()) {
+			Level level = Minecraft.getInstance().level;
+			RegistryAccess registryAccess = level.registryAccess();
+
+			for (Recipe<?> object : level.getRecipeManager().getRecipes()) {
 				if (object instanceof ShapedRecipe recipe) {
-					if (!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == item) {
+					if (!recipe.getResultItem(registryAccess).isEmpty() && recipe.getResultItem(registryAccess).getItem() == item) {
 						NonNullList<Ingredient> ingredients = recipe.getIngredients();
 						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(9, Ingredient.EMPTY);
 
@@ -377,7 +382,7 @@ public class SCManualScreen extends Screen {
 					}
 				}
 				else if (object instanceof ShapelessRecipe recipe) {
-					if (!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == item) {
+					if (!recipe.getResultItem(registryAccess).isEmpty() && recipe.getResultItem(registryAccess).getItem() == item) {
 						//don't show keycard reset recipes
 						if (recipe.getId().getPath().endsWith("_reset"))
 							continue;
@@ -395,6 +400,8 @@ public class SCManualScreen extends Screen {
 			}
 		}
 		else if (pageGroup.hasRecipeGrid()) {
+			Level level = Minecraft.getInstance().level;
+			RegistryAccess registryAccess = level.registryAccess();
 			Map<Integer, ItemStack[]> recipeStacks = new HashMap<>();
 			List<Item> pageItems = Arrays.stream(pageGroup.getItems().getItems()).map(ItemStack::getItem).toList();
 			int stacksLeft = pageItems.size();
@@ -408,7 +415,7 @@ public class SCManualScreen extends Screen {
 					break;
 
 				if (object instanceof ShapedRecipe recipe) {
-					if (!recipe.getResultItem().isEmpty() && pageItems.contains(recipe.getResultItem().getItem())) {
+					if (!recipe.getResultItem(registryAccess).isEmpty() && pageItems.contains(recipe.getResultItem(registryAccess).getItem())) {
 						NonNullList<Ingredient> ingredients = recipe.getIngredients();
 
 						for (int i = 0; i < ingredients.size(); i++) {
@@ -417,7 +424,7 @@ public class SCManualScreen extends Screen {
 							if (items.length == 0)
 								continue;
 
-							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
+							int indexToAddAt = pageItems.indexOf(recipe.getResultItem(registryAccess).getItem());
 
 							//first item needs to suffice since multiple recipes are being cycled through
 							recipeStacks.get(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()))[indexToAddAt] = items[0];
@@ -427,7 +434,7 @@ public class SCManualScreen extends Screen {
 					}
 				}
 				else if (object instanceof ShapelessRecipe recipe) {
-					if (!recipe.getResultItem().isEmpty() && pageItems.contains(recipe.getResultItem().getItem())) {
+					if (!recipe.getResultItem(registryAccess).isEmpty() && pageItems.contains(recipe.getResultItem(registryAccess).getItem())) {
 						//don't show keycard reset recipes
 						if (recipe.getId().getPath().endsWith("_reset"))
 							continue;
@@ -440,7 +447,7 @@ public class SCManualScreen extends Screen {
 							if (items.length == 0)
 								continue;
 
-							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
+							int indexToAddAt = pageItems.indexOf(recipe.getResultItem(registryAccess).getItem());
 
 							//first item needs to suffice since multiple recipes are being cycled through
 							recipeStacks.get(i)[indexToAddAt] = items[0];
@@ -735,7 +742,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		@Override
-		public void renderButton(PoseStack pose, int mouseX, int mouseY, float partial) {
+		public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partial) {
 			RenderSystem._setShaderTexture(0, ICONS);
 			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
 			blit(pose, getX(), getY(), isHoveredOrFocused() ? 138 : 122, 1, 16, 16);

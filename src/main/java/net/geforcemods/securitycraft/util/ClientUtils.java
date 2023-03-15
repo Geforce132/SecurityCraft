@@ -152,7 +152,6 @@ public class ClientUtils {
 		BufferBuilder buffer = tessellator.getBuilder();
 
 		RenderSystem.enableDepthTest();
-		RenderSystem.disableTexture();
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -163,7 +162,6 @@ public class ClientUtils {
 		buffer.vertex(mat, right, bottom, zLevel).color(toRed, toGreen, toBlue, toAlpha).endVertex();
 		tessellator.end();
 		RenderSystem.disableBlend();
-		RenderSystem.enableTexture();
 	}
 
 	public static int HSBtoRGB(float hue, float saturation, float brightness) {

@@ -170,7 +170,6 @@ public class ToggleListScreen<T> extends Screen {
 				BufferBuilder bufferBuilder = tess.getBuilder();
 
 				RenderSystem.enableBlend();
-				RenderSystem.disableTexture();
 				RenderSystem.defaultBlendFunc();
 				bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 				bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
@@ -182,7 +181,6 @@ public class ToggleListScreen<T> extends Screen {
 				bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 				bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 				BufferUploader.drawWithShader(bufferBuilder.end());
-				RenderSystem.enableTexture();
 				RenderSystem.disableBlend();
 			}
 

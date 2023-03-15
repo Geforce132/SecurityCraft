@@ -35,7 +35,7 @@ public class CallbackCheckbox extends AbstractButton {
 	}
 
 	@Override
-	public void renderButton(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+	public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		Minecraft minecraft = Minecraft.getInstance();
 
 		RenderSystem.setShaderTexture(0, TEXTURE);
@@ -45,7 +45,6 @@ public class CallbackCheckbox extends AbstractButton {
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		blit(pose, getX(), getY(), isFocused() ? 20.0F : 0.0F, selected ? 20.0F : 0.0F, 20, height, 64, 64);
-		renderBg(pose, minecraft, mouseX, mouseY);
 		minecraft.font.draw(pose, getMessage(), getX() + 24, getY() + (height - 8) / 2, textColor | Mth.ceil(alpha * 255.0F) << 24);
 	}
 

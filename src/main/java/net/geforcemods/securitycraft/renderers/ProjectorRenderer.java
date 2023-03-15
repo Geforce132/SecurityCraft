@@ -80,19 +80,19 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 		BlockPos pos = null;
 
 		if (direction == Direction.NORTH) {
-			pos = new BlockPos(bePos.getX() + x + offset, bePos.getY() + y, bePos.getZ() + distance);
+			pos = BlockPos.containing(bePos.getX() + x + offset, bePos.getY() + y, bePos.getZ() + distance);
 			pose.translate(0.0D + x + offset, 0.0D + y, distance);
 		}
 		else if (direction == Direction.SOUTH) {
-			pos = new BlockPos(bePos.getX() + x + offset, bePos.getY() + y, bePos.getZ() + -distance);
+			pos = BlockPos.containing(bePos.getX() + x + offset, bePos.getY() + y, bePos.getZ() + -distance);
 			pose.translate(0.0D + x + offset, 0.0D + y, -distance);
 		}
 		else if (direction == Direction.WEST) {
-			pos = new BlockPos(bePos.getX() + distance, bePos.getY() + y, bePos.getZ() + x + offset);
+			pos = BlockPos.containing(bePos.getX() + distance, bePos.getY() + y, bePos.getZ() + x + offset);
 			pose.translate(distance, 0.0D + y, 0.0D + x + offset);
 		}
 		else if (direction == Direction.EAST) {
-			pos = new BlockPos(bePos.getX() + -distance, bePos.getY() + y, bePos.getZ() + x + offset);
+			pos = BlockPos.containing(bePos.getX() + -distance, bePos.getY() + y, bePos.getZ() + x + offset);
 			pose.translate(-distance, 0.0D + y, 0.0D + x + offset);
 		}
 

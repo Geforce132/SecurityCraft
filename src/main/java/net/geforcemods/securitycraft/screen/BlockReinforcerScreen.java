@@ -43,8 +43,8 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 
 		if (!inv.get(36).isEmpty()) {
 			font.draw(pose, output, 50, 25, 4210752);
-			minecraft.getItemRenderer().renderAndDecorateItem(menu.reinforcingSlot.getOutput(), 116, 20);
-			minecraft.getItemRenderer().renderGuiItemDecorations(minecraft.font, menu.reinforcingSlot.getOutput(), 116, 20, null);
+			minecraft.getItemRenderer().renderAndDecorateItem(pose, menu.reinforcingSlot.getOutput(), 116, 20);
+			minecraft.getItemRenderer().renderGuiItemDecorations(pose, minecraft.font, menu.reinforcingSlot.getOutput(), 116, 20, null);
 
 			if (mouseX >= leftPos + 114 && mouseX < leftPos + 134 && mouseY >= topPos + 17 && mouseY < topPos + 39)
 				renderTooltip(pose, menu.reinforcingSlot.getOutput(), mouseX - leftPos, mouseY - topPos);
@@ -52,8 +52,8 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 
 		if (!isLvl1 && !inv.get(37).isEmpty()) {
 			font.draw(pose, output, 50, 50, 4210752);
-			minecraft.getItemRenderer().renderAndDecorateItem(menu.unreinforcingSlot.getOutput(), 116, 46);
-			minecraft.getItemRenderer().renderGuiItemDecorations(minecraft.font, menu.unreinforcingSlot.getOutput(), 116, 46, null);
+			minecraft.getItemRenderer().renderAndDecorateItem(pose, menu.unreinforcingSlot.getOutput(), 116, 46);
+			minecraft.getItemRenderer().renderGuiItemDecorations(pose, minecraft.font, menu.unreinforcingSlot.getOutput(), 116, 46, null);
 
 			if (mouseX >= leftPos + 114 && mouseX < leftPos + 134 && mouseY >= topPos + 43 && mouseY < topPos + 64)
 				renderTooltip(pose, menu.unreinforcingSlot.getOutput(), mouseX - leftPos, mouseY - topPos);

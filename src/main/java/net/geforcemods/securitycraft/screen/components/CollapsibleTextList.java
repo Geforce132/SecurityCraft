@@ -61,14 +61,14 @@ public class CollapsibleTextList extends Button {
 	}
 
 	@Override
-	public void renderButton(PoseStack pose, int mouseX, int mouseY, float partialTick) {
+	public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 		isHovered &= extraHoverCheck.test(mouseX, mouseY);
 
 		Font font = Minecraft.getInstance().font;
-		int v = getYImage(isHoveredOrFocused());
+		int v = !active ? 0 : (isHoveredOrFocused() ? 2 : 1);
 		int heightOffset = (height - 8) / 2;
 
-		ScreenUtils.blitWithBorder(pose, WIDGETS_LOCATION, getX(), getY(), 0, 46 + v * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
+		ScreenUtils.blitWithBorder(pose, WIDGETS_LOCATION, getX(), getY(), 0, 46 + v * 20, width, height, 200, 20, 2, 3, 2, 2, 0);
 		drawCenteredString(pose, font, getMessage(), getX() + font.width(getMessage()) / 2 + 3, getY() + heightOffset, getFGColor());
 
 		int renderedLines = 0;
@@ -81,7 +81,7 @@ public class CollapsibleTextList extends Button {
 			List<FormattedCharSequence> linesToDraw = textLines.get(i);
 
 			if (i > 0)
-				GuiComponent.fillGradient(pose, getX() + 1, textY - 3, getX() + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0, getBlitOffset());
+				GuiComponent.fillGradient(pose, getX() + 1, textY - 3, getX() + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0, 0);
 
 			for (int lineIndex = 0; lineIndex < linesToDraw.size(); lineIndex++) {
 				int lineY = textY + lineIndex * font.lineHeight;

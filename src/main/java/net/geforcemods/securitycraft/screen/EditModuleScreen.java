@@ -134,7 +134,7 @@ public class EditModuleScreen extends Screen {
 		RenderSystem._setShaderTexture(0, TEXTURE);
 		blit(pose, startX, startY, 0, 0, xSize, ySize);
 		super.render(pose, mouseX, mouseY, partialTicks);
-		font.drawWordWrap(editModule, startX + xSize / 2 - font.width(editModule) / 2, startY + 6, width, 4210752);
+		font.drawWordWrap(pose, editModule, startX + xSize / 2 - font.width(editModule) / 2, startY + 6, width, 4210752);
 	}
 
 	@Override
@@ -498,7 +498,6 @@ public class EditModuleScreen extends Screen {
 
 	private void renderBox(BufferBuilder bufferBuilder, int min, int max, int slotTop, int slotBuffer, int borderColor) {
 		RenderSystem.enableBlend();
-		RenderSystem.disableTexture();
 		RenderSystem.defaultBlendFunc();
 		bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 		bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
@@ -510,7 +509,6 @@ public class EditModuleScreen extends Screen {
 		bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 		bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 		BufferUploader.drawWithShader(bufferBuilder.end());
-		RenderSystem.enableTexture();
 		RenderSystem.disableBlend();
 	}
 }

@@ -198,7 +198,7 @@ public class CheckPasswordScreen extends Screen {
 			if (listener instanceof AbstractWidget widget)
 				widget.active = setActive;
 		});
-		keycodeTextbox.setFocus(setActive);
+		keycodeTextbox.setFocused(setActive);
 	}
 
 	public void checkCode(String code) {

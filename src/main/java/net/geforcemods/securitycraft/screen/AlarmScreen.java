@@ -272,7 +272,7 @@ public class AlarmScreen extends Screen {
 
 				font.draw(pose, name, left + textOffset, yStart, 0xC6C6C6);
 				RenderSystem._setShaderTexture(0, GUI_TEXTURE);
-				blit(pose, left, yStart - 1, getBlitOffset(), i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? 9 : 0, 246, 10, 10, 256, 256);
+				blit(pose, left, yStart - 1, 0, i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? 9 : 0, 246, 10, 10, 256, 256);
 			}
 		}
 
@@ -286,7 +286,6 @@ public class AlarmScreen extends Screen {
 			BufferBuilder bufferBuilder = tesselator.getBuilder();
 
 			RenderSystem.enableBlend();
-			RenderSystem.disableTexture();
 			RenderSystem.defaultBlendFunc();
 			bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 			bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
@@ -298,7 +297,6 @@ public class AlarmScreen extends Screen {
 			bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 			bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 			BufferUploader.drawWithShader(bufferBuilder.end());
-			RenderSystem.enableTexture();
 			RenderSystem.disableBlend();
 		}
 
@@ -375,11 +373,11 @@ public class AlarmScreen extends Screen {
 		}
 
 		@Override
-		public void setFocus(boolean focused) {
+		public void setFocused(boolean focused) {
 			if (isFocused() && !focused)
 				checkAndProcessInput();
 
-			super.setFocus(focused);
+			super.setFocused(focused);
 		}
 
 		private void checkAndProcessInput() {

@@ -74,7 +74,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	@Override
 	public void wasExploded(Level level, BlockPos pos, Explosion explosion) {
 		if (!level.isClientSide && level.getBlockState(pos).hasProperty(ClaymoreBlock.DEACTIVATED) && !level.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
-			if (pos.equals(new BlockPos(explosion.getPosition())))
+			if (pos.equals(BlockPos.containing(explosion.getPosition())))
 				return;
 
 			explode(level, pos);

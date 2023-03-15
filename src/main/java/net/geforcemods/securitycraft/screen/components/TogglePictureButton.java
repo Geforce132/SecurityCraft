@@ -53,7 +53,7 @@ public class TogglePictureButton extends ExtendedButton implements IToggleableBu
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
-			ScreenUtils.blitWithBorder(pose, WIDGETS_LOCATION, getX(), getY(), 0, 46 + getYImage(isHoveredOrFocused()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
+			ScreenUtils.blitWithBorder(pose, WIDGETS_LOCATION, getX(), getY(), 0, 46 + (!active ? 0 : (isHoveredOrFocused() ? 40 : 20)), width, height, 200, 20, 2, 3, 2, 2, 0);
 
 			if (getTextureLocation() != null) {
 				RenderSystem._setShaderTexture(0, getTextureLocation());

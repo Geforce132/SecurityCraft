@@ -15,10 +15,10 @@ public class ColorChooserButton extends Button {
 	}
 
 	@Override
-	public void renderButton(PoseStack pose, int mouseX, int mouseY, float partialTick) {
+	public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 		int color = colorChooser.getRGBColor();
 
-		super.renderButton(pose, mouseX, mouseY, partialTick);
-		fillGradient(pose, getX() + 2, getY() + 2, getX() + width - 2, getY() + height - 2, color, color, getBlitOffset());
+		super.renderWidget(pose, mouseX, mouseY, partialTick);
+		fillGradient(pose, getX() + 2, getY() + 2, getX() + width - 2, getY() + height - 2, color, color, 0);
 	}
 }

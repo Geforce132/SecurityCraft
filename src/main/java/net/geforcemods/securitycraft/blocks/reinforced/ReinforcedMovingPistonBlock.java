@@ -58,7 +58,7 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-		if (builder.getLevel().getBlockEntity(new BlockPos(builder.getParameter(LootContextParams.ORIGIN))) instanceof ReinforcedPistonMovingBlockEntity be)
+		if (builder.getLevel().getBlockEntity(BlockPos.containing(builder.getParameter(LootContextParams.ORIGIN))) instanceof ReinforcedPistonMovingBlockEntity be)
 			return be.getMovedState().getDrops(builder);
 		else
 			return Collections.emptyList();

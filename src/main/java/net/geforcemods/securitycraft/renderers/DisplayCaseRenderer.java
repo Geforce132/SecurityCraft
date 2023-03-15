@@ -17,12 +17,12 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -101,7 +101,7 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 			}
 
 			pose.scale(0.5F, 0.5F, 0.5F);
-			Minecraft.getInstance().getItemRenderer().renderStatic(displayedStack, TransformType.FIXED, light, OverlayTexture.NO_OVERLAY, pose, buffer, 0);
+			Minecraft.getInstance().getItemRenderer().renderStatic(displayedStack, ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, pose, buffer, be.getLevel(), 0);
 			pose.popPose();
 		}
 

@@ -34,7 +34,6 @@ import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.network.server.RemoveMineFromMRAT;
 import net.geforcemods.securitycraft.network.server.RemovePositionFromSSS;
 import net.geforcemods.securitycraft.network.server.RemoveSentryFromSRAT;
-import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
 import net.geforcemods.securitycraft.network.server.SetBriefcaseOwner;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetGhostSlot;
@@ -43,6 +42,7 @@ import net.geforcemods.securitycraft.network.server.SetListModuleData;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
 import net.geforcemods.securitycraft.network.server.SetStateOnDisguiseModule;
+import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
 import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
@@ -196,7 +196,7 @@ public class RegistrationHandler {
 		SecurityCraft.technicalTab = event.registerCreativeModeTab(new ResourceLocation(SecurityCraft.MODID, "technical"), builder -> builder
 				.icon(() -> new ItemStack(SCContent.USERNAME_LOGGER.get()))
 				.title(Component.translatable("itemGroup.securitycraft.technical"))
-				.displayItems((features, output, hasPermissions) -> {
+				.displayItems((itemDisplayParameters, output) -> {
 					output.acceptAll(List.of(
 							new ItemStack(SCContent.SC_MANUAL.get()),
 							new ItemStack(SCContent.FRAME.get()),
@@ -277,7 +277,7 @@ public class RegistrationHandler {
 		SecurityCraft.mineTab = event.registerCreativeModeTab(new ResourceLocation(SecurityCraft.MODID, "explosives"), List.of(), List.of(SecurityCraft.technicalTab), builder -> builder
 				.icon(() -> new ItemStack(SCContent.MINE.get()))
 				.title(Component.translatable("itemGroup.securitycraft.explosives"))
-				.displayItems((features, output, hasPermissions) -> {
+				.displayItems((itemDisplayParameters, output) -> {
 		//@formatter:on
 					List<Item> vanillaOrderedItems = getVanillaOrderedItems();
 					List<ItemStack> mineGroupItems = STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES);
@@ -307,7 +307,7 @@ public class RegistrationHandler {
 		SecurityCraft.decorationTab = event.registerCreativeModeTab(new ResourceLocation(SecurityCraft.MODID, "decoration"), List.of(), List.of(SecurityCraft.mineTab), builder -> builder
 				.icon(() -> new ItemStack(SCContent.REINFORCED_OAK_STAIRS.get()))
 				.title(Component.translatable("itemGroup.securitycraft.decoration"))
-				.displayItems((features, output, hasPermissions) -> {
+				.displayItems((itemDisplayParameters, output) -> {
 		//@formatter:on
 					List<Item> vanillaOrderedItems = getVanillaOrderedItems();
 					List<ItemStack> decorationGroupItems = STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION);

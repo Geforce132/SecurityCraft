@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -325,9 +326,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	}
 
 	@Override
-	public boolean changeFocus(boolean focus) {
-		return false;
-	}
+	public void changeFocus(ComponentPath path) {}
 
 	@Override
 	public List<? extends GuiEventListener> children() {

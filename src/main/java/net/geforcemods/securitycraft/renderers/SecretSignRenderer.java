@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -22,6 +21,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer.SignModel;
 import net.minecraft.client.resources.model.Material;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -102,7 +102,7 @@ public class SecretSignRenderer implements BlockEntityRenderer<SecretSignBlockEn
 				if (drawOutline)
 					font.drawInBatch8xOutline(line, xPos, lineIndex * LINE_HEIGHT - 20, textColor, darkColor, pose.last().pose(), buffer, packedLightCoords);
 				else
-					font.drawInBatch(line, xPos, lineIndex * LINE_HEIGHT - 20, textColor, false, pose.last().pose(), buffer, false, 0, packedLightCoords);
+					font.drawInBatch(line, xPos, lineIndex * LINE_HEIGHT - 20, textColor, false, pose.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, packedLightCoords);
 			}
 		}
 
@@ -128,10 +128,15 @@ public class SecretSignRenderer implements BlockEntityRenderer<SecretSignBlockEn
 
 	private static int getDarkColor(SecretSignBlockEntity be) {
 		int textColor = be.getColor().getTextColor();
-		int r = (int) (NativeImage.getR(textColor) * 0.4D);
-		int g = (int) (NativeImage.getG(textColor) * 0.4D);
-		int b = (int) (NativeImage.getB(textColor) * 0.4D);
 
-		return textColor == DyeColor.BLACK.getTextColor() && be.hasGlowingText() ? BLACK_TEXT_OUTLINE_COLOR : NativeImage.combine(0, b, g, r);
+		if (textColor == DyeColor.BLACK.getTextColor() && be.hasGlowingText())
+			return BLACK_TEXT_OUTLINE_COLOR;
+		else {
+			int r = (int) (FastColor.ARGB32.red(textColor) * 0.4D);
+			int g = (int) (FastColor.ARGB32.green(textColor) * 0.4D);
+			int b = (int) (FastColor.ARGB32.blue(textColor) * 0.4D);
+
+			return FastColor.ARGB32.color(0, r, g, b);
+		}
 	}
 }

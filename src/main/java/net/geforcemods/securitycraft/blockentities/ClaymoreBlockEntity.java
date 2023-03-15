@@ -55,7 +55,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 
 		level.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !(e instanceof Player player && player.isCreative()) && !e.isSpectator() && !(EntityUtils.doesEntityOwn(e, level, pos) && ignoresOwner())).stream().findFirst().ifPresent(entity -> {
 			cooldown = 20;
-			level.playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.playSound(null, BlockPos.containing(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
 		});
 	}
 

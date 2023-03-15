@@ -445,12 +445,12 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			super.render(pose, mouseX, mouseY, partialTick);
 
 			if (currentIndex == DetectionMode.BREAK.ordinal())
-				minecraft.getItemRenderer().renderAndDecorateItem(ironPickaxe, getX() + 2, getY() + 2);
+				minecraft.getItemRenderer().renderAndDecorateItem(pose, ironPickaxe, getX() + 2, getY() + 2);
 			else if (currentIndex == DetectionMode.PLACE.ordinal())
-				minecraft.getItemRenderer().renderAndDecorateItem(grassBlock, getX() + 2, getY() + 2);
+				minecraft.getItemRenderer().renderAndDecorateItem(pose, grassBlock, getX() + 2, getY() + 2);
 			else if (currentIndex == DetectionMode.BOTH.ordinal()) {
-				minecraft.getItemRenderer().renderAndDecorateItem(grassBlock, getX() + 2, getY() + 2, 0, -100);
-				minecraft.getItemRenderer().renderAndDecorateItem(ironPickaxe, getX() + 2, getY() + 2);
+				minecraft.getItemRenderer().renderAndDecorateItem(pose, grassBlock, getX() + 2, getY() + 2, 0, -100);
+				minecraft.getItemRenderer().renderAndDecorateItem(pose, ironPickaxe, getX() + 2, getY() + 2);
 			}
 		}
 

@@ -8,13 +8,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockMineModel implements BakedModel {
@@ -27,13 +27,13 @@ public class BlockMineModel implements BakedModel {
 	}
 
 	@Override
-	public BakedModel applyTransform(TransformType transformType, PoseStack pose, boolean applyLeftHandTransform) {
-		if (transformType == TransformType.GUI) {
-			guiModel.getTransforms().getTransform(transformType).apply(applyLeftHandTransform, pose);
+	public BakedModel applyTransform(ItemDisplayContext displayContext, PoseStack pose, boolean applyLeftHandTransform) {
+		if (displayContext == ItemDisplayContext.GUI) {
+			guiModel.getTransforms().getTransform(displayContext).apply(applyLeftHandTransform, pose);
 			return guiModel;
 		}
 		else {
-			defaultModel.getTransforms().getTransform(transformType).apply(applyLeftHandTransform, pose);
+			defaultModel.getTransforms().getTransform(displayContext).apply(applyLeftHandTransform, pose);
 			return defaultModel;
 		}
 	}

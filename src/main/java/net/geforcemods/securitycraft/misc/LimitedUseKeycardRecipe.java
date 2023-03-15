@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.misc;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.KeycardItem;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -50,7 +51,7 @@ public class LimitedUseKeycardRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer inv) {
+	public ItemStack assemble(CraftingContainer inv, RegistryAccess registryAccess) {
 		ItemStack keycard = ItemStack.EMPTY;
 
 		for (int i = 0; i < inv.getContainerSize(); ++i) {

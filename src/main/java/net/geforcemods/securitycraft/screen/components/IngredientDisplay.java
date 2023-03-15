@@ -26,7 +26,7 @@ public class IngredientDisplay implements Renderable {
 		if (stacks == null || stacks.length == 0)
 			return;
 
-		Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(stacks[currentRenderingStack], x, y);
+		Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(pose, stacks[currentRenderingStack], x, y);
 
 		if (!Screen.hasShiftDown()) {
 			ticksToChange -= partialTick;
