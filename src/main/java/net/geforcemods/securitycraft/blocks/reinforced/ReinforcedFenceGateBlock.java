@@ -73,7 +73,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBl
 			return;
 		}
 
-		entity.hurt(CustomDamageSources.ELECTRICITY, 6.0F);
+		entity.hurt(CustomDamageSources.electricity(level.registryAccess()), 6.0F);
 	}
 
 	@Override

@@ -61,7 +61,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
@@ -169,7 +168,7 @@ public class SCEventHandler {
 		LivingEntity entity = event.getEntity();
 		Level level = entity.level;
 
-		if (event.getSource() == CustomDamageSources.ELECTRICITY)
+		if (event.getSource().is(CustomDamageSources.ELECTRICITY))
 			level.playSound(null, entity.blockPosition(), SCSounds.ELECTRIFIED.event, SoundSource.BLOCKS, 0.25F, 1.0F);
 
 		if (!level.isClientSide && entity instanceof ServerPlayer player && PlayerUtils.isPlayerMountedOnCamera(entity))
@@ -453,7 +452,7 @@ public class SCEventHandler {
 				PlayerUtils.sendMessageToPlayer(player, SCContent.RIFT_STABILIZER.get().getName(), Component.translatable(targetPosProhibited ? "messages.securitycraft:rift_stabilizer.no_teleport_to" : "messages.securitycraft:rift_stabilizer.no_teleport_from"), ChatFormatting.RED);
 
 				if (riftStabilizer.isModuleEnabled(ModuleType.HARMING))
-					player.hurt(DamageSource.FALL, 5.0F);
+					player.hurt(entity.damageSources().fall(), 5.0F);
 			}
 
 			riftStabilizer.setLastTeleport(Math.max(Math.abs(distance.x), Math.max(Math.abs(distance.y), Math.abs(distance.z))) - 0.5D, type);

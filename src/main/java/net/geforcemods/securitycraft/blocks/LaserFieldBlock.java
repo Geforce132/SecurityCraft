@@ -74,7 +74,7 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay {
 							if (laser.isModuleEnabled(ModuleType.HARMING)) {
 								double damage = ConfigHandler.SERVER.laserDamage.get();
 
-								livingEntity.hurt(CustomDamageSources.LASER, (float) damage);
+								livingEntity.hurt(CustomDamageSources.laser(level.registryAccess()), (float) damage);
 							}
 						}
 

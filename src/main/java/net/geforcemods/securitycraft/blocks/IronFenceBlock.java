@@ -216,7 +216,7 @@ public class IronFenceBlock extends OwnableBlock {
 			return;
 		}
 
-		entity.hurt(CustomDamageSources.ELECTRICITY, 6.0F); //3 hearts per attack
+		entity.hurt(CustomDamageSources.electricity(level.registryAccess()), 6.0F); //3 hearts per attack
 	}
 
 	@Override

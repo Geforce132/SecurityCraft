@@ -14,7 +14,6 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -94,7 +93,7 @@ public class Bullet extends AbstractArrow {
 		Entity target = raytraceResult.getEntity();
 
 		if (!(target instanceof Sentry) && !(target instanceof ItemFrame)) {
-			target.hurt(DamageSource.arrow(this, getOwner()), Mth.ceil(getDeltaMovement().length()));
+			target.hurt(damageSources().arrow(this, getOwner()), Mth.ceil(getDeltaMovement().length()));
 
 			if (target instanceof LivingEntity lEntity && !potionEffects.isEmpty()) {
 				for (MobEffectInstance effect : potionEffects) {
