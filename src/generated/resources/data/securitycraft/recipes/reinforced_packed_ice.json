@@ -13,5 +13,6 @@
   ],
   "result": {
     "item": "securitycraft:reinforced_packed_ice"
-  }
+  },
+  "show_notification": true
 }

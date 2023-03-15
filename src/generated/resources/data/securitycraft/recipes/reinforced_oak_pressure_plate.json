@@ -12,5 +12,6 @@
   ],
   "result": {
     "item": "securitycraft:reinforced_oak_pressure_plate"
-  }
+  },
+  "show_notification": true
 }

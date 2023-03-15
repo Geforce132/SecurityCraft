@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "securitycraft:glow_display_case"
-  }
+  },
+  "show_notification": true
 }

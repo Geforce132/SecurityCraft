@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "securitycraft:panic_button"
-  }
+  },
+  "show_notification": true
 }

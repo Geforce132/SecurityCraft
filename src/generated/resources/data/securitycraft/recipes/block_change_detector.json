@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "securitycraft:block_change_detector"
-  }
+  },
+  "show_notification": true
 }

@@ -14,5 +14,6 @@
   "result": {
     "count": 3,
     "item": "securitycraft:reinforced_spruce_wood"
-  }
+  },
+  "show_notification": true
 }

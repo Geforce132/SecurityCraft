@@ -13,5 +13,6 @@
   "result": {
     "count": 3,
     "item": "securitycraft:reinforced_light_gray_carpet"
-  }
+  },
+  "show_notification": true
 }

@@ -12,5 +12,6 @@
   ],
   "result": {
     "item": "securitycraft:reinforced_chiseled_polished_blackstone"
-  }
+  },
+  "show_notification": true
 }

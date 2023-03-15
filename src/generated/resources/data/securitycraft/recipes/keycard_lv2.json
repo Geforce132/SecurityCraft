@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "securitycraft:keycard_lv2"
-  }
+  },
+  "show_notification": true
 }

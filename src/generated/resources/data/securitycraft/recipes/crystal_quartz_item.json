@@ -17,5 +17,6 @@
   "result": {
     "count": 9,
     "item": "securitycraft:crystal_quartz_item"
-  }
+  },
+  "show_notification": true
 }

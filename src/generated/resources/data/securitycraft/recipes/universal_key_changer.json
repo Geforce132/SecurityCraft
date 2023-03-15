@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "securitycraft:universal_key_changer"
-  }
+  },
+  "show_notification": true
 }

@@ -14,5 +14,6 @@
   "result": {
     "count": 6,
     "item": "securitycraft:reinforced_polished_blackstone_brick_wall"
-  }
+  },
+  "show_notification": true
 }

@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "securitycraft:reinforced_bookshelf"
-  }
+  },
+  "show_notification": true
 }

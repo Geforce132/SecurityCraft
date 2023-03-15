@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "securitycraft:motion_activated_light"
-  }
+  },
+  "show_notification": true
 }

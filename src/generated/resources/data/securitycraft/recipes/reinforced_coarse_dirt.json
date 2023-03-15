@@ -16,5 +16,6 @@
   "result": {
     "count": 4,
     "item": "securitycraft:reinforced_coarse_dirt"
-  }
+  },
+  "show_notification": true
 }

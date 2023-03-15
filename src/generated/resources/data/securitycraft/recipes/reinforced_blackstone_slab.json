@@ -13,5 +13,6 @@
   "result": {
     "count": 6,
     "item": "securitycraft:reinforced_blackstone_slab"
-  }
+  },
+  "show_notification": true
 }

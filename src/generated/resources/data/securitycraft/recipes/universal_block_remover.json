@@ -14,5 +14,6 @@
   ],
   "result": {
     "item": "securitycraft:universal_block_remover"
-  }
+  },
+  "show_notification": true
 }

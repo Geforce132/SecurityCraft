@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "securitycraft:portable_radar"
-  }
+  },
+  "show_notification": true
 }

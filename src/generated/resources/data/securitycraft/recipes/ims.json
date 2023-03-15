@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "securitycraft:ims"
-  }
+  },
+  "show_notification": true
 }

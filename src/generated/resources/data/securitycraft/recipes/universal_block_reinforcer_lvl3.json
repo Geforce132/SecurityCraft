@@ -26,5 +26,6 @@
   ],
   "result": {
     "item": "securitycraft:universal_block_reinforcer_lvl3"
-  }
+  },
+  "show_notification": true
 }

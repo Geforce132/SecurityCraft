@@ -13,5 +13,6 @@
   "result": {
     "count": 3,
     "item": "securitycraft:reinforced_purple_carpet"
-  }
+  },
+  "show_notification": true
 }

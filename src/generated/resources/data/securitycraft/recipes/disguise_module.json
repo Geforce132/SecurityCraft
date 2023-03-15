@@ -20,5 +20,6 @@
   ],
   "result": {
     "item": "securitycraft:disguise_module"
-  }
+  },
+  "show_notification": true
 }

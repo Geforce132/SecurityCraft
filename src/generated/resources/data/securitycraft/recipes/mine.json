@@ -16,5 +16,6 @@
   "result": {
     "count": 3,
     "item": "securitycraft:mine"
-  }
+  },
+  "show_notification": true
 }

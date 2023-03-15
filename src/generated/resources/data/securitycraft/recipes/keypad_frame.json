@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "securitycraft:keypad_frame"
-  }
+  },
+  "show_notification": true
 }

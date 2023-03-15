@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "securitycraft:alarm"
-  }
+  },
+  "show_notification": true
 }

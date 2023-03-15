@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "securitycraft:trophy_system"
-  }
+  },
+  "show_notification": true
 }

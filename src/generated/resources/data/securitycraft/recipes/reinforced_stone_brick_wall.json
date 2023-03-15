@@ -14,5 +14,6 @@
   "result": {
     "count": 6,
     "item": "securitycraft:reinforced_stone_brick_wall"
-  }
+  },
+  "show_notification": true
 }

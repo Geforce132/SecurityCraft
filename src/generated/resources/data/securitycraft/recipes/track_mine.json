@@ -20,5 +20,6 @@
   "result": {
     "count": 4,
     "item": "securitycraft:track_mine"
-  }
+  },
+  "show_notification": true
 }

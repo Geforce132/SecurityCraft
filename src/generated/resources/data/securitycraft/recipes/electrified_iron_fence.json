@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "securitycraft:electrified_iron_fence"
-  }
+  },
+  "show_notification": true
 }

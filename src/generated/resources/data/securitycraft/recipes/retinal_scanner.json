@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "securitycraft:retinal_scanner"
-  }
+  },
+  "show_notification": true
 }

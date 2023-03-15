@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "securitycraft:security_camera"
-  }
+  },
+  "show_notification": true
 }

@@ -12,5 +12,6 @@
   ],
   "result": {
     "item": "securitycraft:crystal_quartz"
-  }
+  },
+  "show_notification": true
 }

@@ -15,5 +15,6 @@
   ],
   "result": {
     "item": "securitycraft:reinforced_lever"
-  }
+  },
+  "show_notification": true
 }

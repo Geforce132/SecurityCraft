@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "securitycraft:briefcase"
-  }
+  },
+  "show_notification": true
 }

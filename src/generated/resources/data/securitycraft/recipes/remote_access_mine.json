@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "securitycraft:remote_access_mine"
-  }
+  },
+  "show_notification": true
 }
