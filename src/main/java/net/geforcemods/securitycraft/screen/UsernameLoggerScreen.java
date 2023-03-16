@@ -16,13 +16,13 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
+import net.geforcemods.securitycraft.screen.components.SmallXButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.gui.widget.ExtendedButton;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 
 public class UsernameLoggerScreen extends Screen {
@@ -47,7 +47,7 @@ public class UsernameLoggerScreen extends Screen {
 
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
-		addRenderableWidget(new ExtendedButton(leftPos + 4, topPos + 4, 8, 8, Component.literal("x"), b -> {
+		addRenderableWidget(new SmallXButton(leftPos + 4, topPos + 4, b -> {
 			be.players = new String[100];
 			SecurityCraft.channel.sendToServer(new ClearLoggerServer(be.getBlockPos()));
 		})).active = be.isOwnedBy(minecraft.player);

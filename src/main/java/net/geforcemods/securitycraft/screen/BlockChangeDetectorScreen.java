@@ -25,6 +25,7 @@ import net.geforcemods.securitycraft.screen.components.CollapsibleTextList;
 import net.geforcemods.securitycraft.screen.components.ColorChooser;
 import net.geforcemods.securitycraft.screen.components.ColorChooserButton;
 import net.geforcemods.securitycraft.screen.components.IToggleableButton;
+import net.geforcemods.securitycraft.screen.components.SmallXButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
@@ -76,7 +77,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	protected void init() {
 		super.init();
 
-		Button clearButton = addRenderableWidget(new ExtendedButton(leftPos + 4, topPos + 4, 8, 8, Component.literal("x"), b -> {
+		Button clearButton = addRenderableWidget(new SmallXButton(leftPos + 4, topPos + 4, b -> {
 			changeEntryList.allEntries.forEach(this::removeWidget);
 			changeEntryList.allEntries.clear();
 			changeEntryList.filteredEntries.clear();
