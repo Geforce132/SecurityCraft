@@ -134,7 +134,6 @@ public class SCManualScreen extends Screen {
 	@Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(pose);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 		if (currentPage == -1)
 			RenderSystem._setShaderTexture(0, TITLE_PAGE);
@@ -729,7 +728,6 @@ public class SCManualScreen extends Screen {
 		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 			if (visible) {
 				isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
-				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 				RenderSystem._setShaderTexture(0, VANILLA_BOOK);
 				blit(pose, getX(), getY(), isHoveredOrFocused() ? 23 : 0, textureY, 23, 13);
 			}

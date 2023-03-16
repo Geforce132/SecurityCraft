@@ -89,7 +89,6 @@ public class CheckPasswordScreen extends Screen {
 	@Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 		renderBackground(pose);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(pose, mouseX, mouseY, partialTick);

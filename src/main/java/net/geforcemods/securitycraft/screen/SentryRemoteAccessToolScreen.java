@@ -181,7 +181,6 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		int startY = (height - ySize) / 2;
 
 		renderBackground(pose);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
 		blit(pose, startX, startY, 0, 0, xSize, ySize, 512, 256);
 		super.render(pose, mouseX, mouseY, partialTicks);

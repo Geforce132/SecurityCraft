@@ -126,7 +126,6 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	@Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 		if (!disabled) {
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			RenderSystem._setShaderTexture(0, TEXTURE);
 			blit(pose, xStart, yStart, 0, 0, 145, 109);
 			ClientUtils.fillHorizontalGradient(pose, 0, colorFieldLeft, colorFieldTop, colorFieldRight + 1, colorFieldBottom + 1, 0xFFFFFFFF, ClientUtils.HSBtoRGB(h, 1.0F, 1.0F));
@@ -267,7 +266,6 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		@Override
 		public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 			RenderSystem._setShaderTexture(0, TEXTURE);
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			blit(pose, getX() + (int) (value * (width - 8)), getY(), isHoveredOrFocused() ? 151 : 145, 0, 6, height);
 		}
 	}

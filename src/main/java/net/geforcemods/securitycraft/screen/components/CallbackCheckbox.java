@@ -40,7 +40,6 @@ public class CallbackCheckbox extends AbstractButton {
 
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		RenderSystem.enableDepthTest();
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);

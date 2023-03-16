@@ -122,7 +122,6 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 		BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
 
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
 		blit(pose, xStart, yStart, 0, 0, 193, 150);
 		super.render(pose, mouseX, mouseY, partialTick);

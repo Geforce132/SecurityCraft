@@ -62,7 +62,6 @@ public class ToggleListScreen<T> extends Screen {
 	@Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(pose);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, GUI_TEXTURE);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(pose, mouseX, mouseY, partialTicks);

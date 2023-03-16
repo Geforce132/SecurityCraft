@@ -50,7 +50,6 @@ public class SSSItemScreen extends Screen implements ConnectionAccessor {
 		int textWidth = font.width(title);
 
 		renderBackground(pose);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(pose, mouseX, mouseY, partialTicks);

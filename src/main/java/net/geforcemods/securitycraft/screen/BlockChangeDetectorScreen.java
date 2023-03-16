@@ -176,7 +176,6 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	@Override
 	protected void renderBg(PoseStack pose, float partialTick, int mouseX, int mouseY) {
 		renderBackground(pose);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}

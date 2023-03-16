@@ -203,7 +203,6 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	@Override
 	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(pose);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, storage ? TEXTURE_STORAGE : TEXTURE);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}

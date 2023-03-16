@@ -65,7 +65,6 @@ public class PictureButton extends ExtendedButton {
 			Font font = mc.font;
 
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
 			ScreenUtils.blitWithBorder(pose, WIDGETS_LOCATION, getX(), getY(), 0, 46 + (!active ? 0 : (isHoveredOrFocused() ? 40 : 20)), width, height, 200, 20, 2, 3, 2, 2, 0);
 
@@ -81,7 +80,6 @@ public class PictureButton extends ExtendedButton {
 				ResourceLocation texture = getTextureLocation();
 
 				if (texture != null) {
-					RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 					RenderSystem._setShaderTexture(0, texture);
 					blit(pose, getX() + drawOffsetX, getY() + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
 				}
