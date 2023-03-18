@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -21,7 +22,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class CheckPasswordScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
@@ -53,18 +53,18 @@ public class CheckPasswordScreen extends Screen {
 		topPos = (height - imageHeight) / 2;
 		cooldownText1XPos = width / 2 - font.width(COOLDOWN_TEXT_1) / 2;
 
-		addRenderableWidget(new ExtendedButton(width / 2 - 33, height / 2 - 45, 20, 20, Component.literal("1"), b -> addNumberToString(1)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 45, 20, 20, Component.literal("2"), b -> addNumberToString(2)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 17, height / 2 - 45, 20, 20, Component.literal("3"), b -> addNumberToString(3)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 33, height / 2 - 20, 20, 20, Component.literal("4"), b -> addNumberToString(4)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 20, 20, 20, Component.literal("5"), b -> addNumberToString(5)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 17, height / 2 - 20, 20, 20, Component.literal("6"), b -> addNumberToString(6)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 33, height / 2 + 5, 20, 20, Component.literal("7"), b -> addNumberToString(7)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 5, 20, 20, Component.literal("8"), b -> addNumberToString(8)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 17, height / 2 + 5, 20, 20, Component.literal("9"), b -> addNumberToString(9)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 33, height / 2 + 30, 20, 20, Component.literal("←"), b -> removeLastCharacter()));
-		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 30, 20, 20, Component.literal("0"), b -> addNumberToString(0)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 17, height / 2 + 30, 20, 20, Component.literal("✔"), b -> checkCode(currentString)));
+		addRenderableWidget(new Button(width / 2 - 33, height / 2 - 45, 20, 20, Component.literal("1"), b -> addNumberToString(1), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 8, height / 2 - 45, 20, 20, Component.literal("2"), b -> addNumberToString(2), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 + 17, height / 2 - 45, 20, 20, Component.literal("3"), b -> addNumberToString(3), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 33, height / 2 - 20, 20, 20, Component.literal("4"), b -> addNumberToString(4), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 8, height / 2 - 20, 20, 20, Component.literal("5"), b -> addNumberToString(5), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 + 17, height / 2 - 20, 20, 20, Component.literal("6"), b -> addNumberToString(6), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 33, height / 2 + 5, 20, 20, Component.literal("7"), b -> addNumberToString(7), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 8, height / 2 + 5, 20, 20, Component.literal("8"), b -> addNumberToString(8), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 + 17, height / 2 + 5, 20, 20, Component.literal("9"), b -> addNumberToString(9), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 33, height / 2 + 30, 20, 20, Component.literal("←"), b -> removeLastCharacter(), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 8, height / 2 + 30, 20, 20, Component.literal("0"), b -> addNumberToString(0), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 + 17, height / 2 + 30, 20, 20, Component.literal("✔"), b -> checkCode(currentString), Button.DEFAULT_NARRATION));
 
 		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 62, 77, 12, Component.empty()) {
 			@Override

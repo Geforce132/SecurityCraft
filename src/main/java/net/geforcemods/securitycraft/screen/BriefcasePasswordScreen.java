@@ -18,7 +18,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class BriefcasePasswordScreen extends Screen {
 	public static final String UP_ARROW = "\u2191";
@@ -48,15 +47,15 @@ public class BriefcasePasswordScreen extends Screen {
 		for (int i = 0; i < 4; i++) {
 			final int id = i;
 
-			addRenderableWidget(new ExtendedButton(width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, Component.literal(UP_ARROW), b -> keycodeButtonClicked(id)));
-			addRenderableWidget(new ExtendedButton(width / 2 - 40 + (i * 20), height / 2, 20, 20, Component.literal(DOWN_ARROW), b -> keycodeButtonClicked(4 + id)));
+			addRenderableWidget(new Button(width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, Component.literal(UP_ARROW), b -> keycodeButtonClicked(id), Button.DEFAULT_NARRATION));
+			addRenderableWidget(new Button(width / 2 - 40 + (i * 20), height / 2, 20, 20, Component.literal(DOWN_ARROW), b -> keycodeButtonClicked(4 + id), Button.DEFAULT_NARRATION));
 			//text boxes are not added via addRenderableWidget because they should not be selectable
 			keycodeTextboxes[i] = addRenderableOnly(new EditBox(font, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12, Component.empty()));
 			keycodeTextboxes[i].setMaxLength(1);
 			keycodeTextboxes[i].setValue("0");
 		}
 
-		addRenderableWidget(new ExtendedButton((width / 2 + 42), height / 2 - 26, 20, 20, Component.literal(">"), this::continueButtonClicked));
+		addRenderableWidget(new Button((width / 2 + 42), height / 2 - 26, 20, 20, Component.literal(">"), this::continueButtonClicked, Button.DEFAULT_NARRATION));
 	}
 
 	@Override

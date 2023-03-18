@@ -2,17 +2,17 @@ package net.geforcemods.securitycraft.screen.components;
 
 import java.util.function.IntFunction;
 
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.client.gui.widget.ExtendedButton;
 
-public class ToggleComponentButton extends ExtendedButton implements IToggleableButton {
+public class ToggleComponentButton extends Button implements IToggleableButton {
 	private final IntFunction<Component> onValueChange;
 	private int currentIndex = 0;
 	private final int toggleCount;
 
 	public ToggleComponentButton(int xPos, int yPos, int width, int height, IntFunction<Component> onValueChange, int initialValue, int toggleCount, OnPress onPress) {
-		super(xPos, yPos, width, height, Component.empty(), onPress);
+		super(xPos, yPos, width, height, Component.empty(), onPress, DEFAULT_NARRATION);
 
 		this.onValueChange = onValueChange;
 		this.currentIndex = initialValue;

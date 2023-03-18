@@ -18,7 +18,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class KeyChangerScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
@@ -46,7 +45,7 @@ public class KeyChangerScreen extends Screen {
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
 
-		addRenderableWidget(confirmButton = new ExtendedButton(width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::confirmButtonClicked));
+		addRenderableWidget(confirmButton = new Button(width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::confirmButtonClicked, Button.DEFAULT_NARRATION));
 		confirmButton.active = false;
 
 		addRenderableWidget(textboxNewPasscode = new EditBox(font, width / 2 - 57, height / 2 - 47, 110, 12, Component.empty()));

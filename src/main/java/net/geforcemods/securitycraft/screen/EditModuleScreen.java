@@ -38,7 +38,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.scores.PlayerTeam;
-import net.minecraftforge.client.gui.widget.ExtendedButton;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 
 public class EditModuleScreen extends Screen {
@@ -77,12 +76,12 @@ public class EditModuleScreen extends Screen {
 		int length = font.width(checkboxText) + 24; //24 = checkbox width + 4 pixels of buffer
 
 		addRenderableWidget(inputField = new EditBox(font, controlsStartX, height / 2 - 88, 107, 15, Component.empty()));
-		addRenderableWidget(addPlayerButton = new ExtendedButton(controlsStartX, height / 2 - 68, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.add_player"), this::addPlayerButtonClicked));
-		addRenderableWidget(removePlayerButton = new ExtendedButton(controlsStartX, height / 2 - 43, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.remove_player"), this::removePlayerButtonClicked));
+		addRenderableWidget(addPlayerButton = new Button(controlsStartX, height / 2 - 68, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.add_player"), this::addPlayerButtonClicked, Button.DEFAULT_NARRATION));
+		addRenderableWidget(removePlayerButton = new Button(controlsStartX, height / 2 - 43, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.remove_player"), this::removePlayerButtonClicked, Button.DEFAULT_NARRATION));
 		addRenderableWidget(editTeamsButton = new NonScrollableToggleComponentButton(controlsStartX, height / 2 - 18, controlsWidth, 20, i -> Utils.localize("gui.securitycraft:editModule.edit_teams"), 0, 2, this::editTeamsButtonClicked));
-		addRenderableWidget(copyButton = new ExtendedButton(controlsStartX, height / 2 + 7, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.copy"), this::copyButtonClicked));
-		addRenderableWidget(pasteButton = new ExtendedButton(controlsStartX, height / 2 + 32, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.paste"), this::pasteButtonClicked));
-		addRenderableWidget(clearButton = new ExtendedButton(controlsStartX, height / 2 + 57, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::clearButtonClicked));
+		addRenderableWidget(copyButton = new Button(controlsStartX, height / 2 + 7, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.copy"), this::copyButtonClicked, Button.DEFAULT_NARRATION));
+		addRenderableWidget(pasteButton = new Button(controlsStartX, height / 2 + 32, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.paste"), this::pasteButtonClicked, Button.DEFAULT_NARRATION));
+		addRenderableWidget(clearButton = new Button(controlsStartX, height / 2 + 57, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::clearButtonClicked, Button.DEFAULT_NARRATION));
 		addRenderableWidget(playerList = new PlayerList(minecraft, 110, 165, height / 2 - 88, guiLeft + 10));
 		addRenderableWidget(teamList = new TeamList(minecraft, editTeamsButton.getWidth(), 75, editTeamsButton.getY() + editTeamsButton.getHeight(), editTeamsButton.getX()));
 		addRenderableWidget(affectEveryPlayerCheckbox = new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.hasTag() && module.getTag().getBoolean("affectEveryone"), newState -> module.getOrCreateTag().putBoolean("affectEveryone", newState), 0x404040));

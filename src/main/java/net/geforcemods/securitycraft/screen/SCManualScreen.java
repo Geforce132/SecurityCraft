@@ -67,7 +67,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.client.gui.widget.ExtendedButton;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
@@ -716,11 +715,11 @@ public class SCManualScreen extends Screen {
 		public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 	}
 
-	static class ChangePageButton extends ExtendedButton {
+	static class ChangePageButton extends Button {
 		private final int textureY;
 
 		public ChangePageButton(int xPos, int yPos, boolean forward, OnPress onPress) {
-			super(xPos, yPos, 23, 13, Component.empty(), onPress);
+			super(xPos, yPos, 23, 13, Component.empty(), onPress, DEFAULT_NARRATION);
 			textureY = forward ? 192 : 205;
 		}
 

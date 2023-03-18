@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
@@ -13,9 +14,8 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.gui.ScreenUtils;
-import net.minecraftforge.client.gui.widget.ExtendedButton;
 
-public class PictureButton extends ExtendedButton {
+public class PictureButton extends Button {
 	private final ItemRenderer itemRenderer;
 	private ItemStack blockToRender = ItemStack.EMPTY;
 	private ItemStack itemToRender = ItemStack.EMPTY;
@@ -34,7 +34,7 @@ public class PictureButton extends ExtendedButton {
 	}
 
 	public PictureButton(int xPos, int yPos, int width, int height, ItemRenderer itemRenderer, ItemStack itemToRender, OnPress onPress) {
-		super(xPos, yPos, width, height, Component.empty(), onPress);
+		super(xPos, yPos, width, height, Component.empty(), onPress, DEFAULT_NARRATION);
 		this.itemRenderer = itemRenderer;
 
 		if (!itemToRender.isEmpty() && itemToRender.getItem() instanceof BlockItem)
@@ -44,7 +44,7 @@ public class PictureButton extends ExtendedButton {
 	}
 
 	public PictureButton(int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, OnPress onPress) {
-		super(xPos, yPos, width, height, Component.empty(), onPress);
+		super(xPos, yPos, width, height, Component.empty(), onPress, DEFAULT_NARRATION);
 
 		itemRenderer = null;
 		textureLocation = texture;

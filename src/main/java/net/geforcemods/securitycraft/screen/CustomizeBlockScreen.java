@@ -39,7 +39,6 @@ import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas, ContainerListener {
 	//@formatter:off
@@ -127,7 +126,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 						optionButtons[i].setFGColor(14737632);
 					}
 					else {
-						optionButtons[i] = new ExtendedButton(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, getOptionButtonTitle(option), this::optionButtonClicked);
+						optionButtons[i] = new Button(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, getOptionButtonTitle(option), this::optionButtonClicked, Button.DEFAULT_NARRATION);
 						optionButtons[i].setFGColor(option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632);
 					}
 

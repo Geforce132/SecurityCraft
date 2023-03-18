@@ -44,7 +44,6 @@ import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.client.gui.widget.ExtendedButton;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 
 public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChangeDetectorMenu> implements ContainerListener, IHasExtraAreas {
@@ -428,14 +427,14 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 	}
 
-	class ModeButton extends ExtendedButton implements IToggleableButton {
+	class ModeButton extends Button implements IToggleableButton {
 		private final ItemStack ironPickaxe = new ItemStack(Items.IRON_PICKAXE);
 		private final ItemStack grassBlock = new ItemStack(Blocks.GRASS_BLOCK);
 		private final int toggleCount;
 		private int currentIndex = 0;
 
 		public ModeButton(int xPos, int yPos, int width, int height, int initialIndex, int toggleCount, OnPress onPress) {
-			super(xPos, yPos, width, height, Component.empty(), onPress);
+			super(xPos, yPos, width, height, Component.empty(), onPress, DEFAULT_NARRATION);
 			this.toggleCount = toggleCount;
 			currentIndex = initialIndex;
 		}

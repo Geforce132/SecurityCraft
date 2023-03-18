@@ -3,14 +3,14 @@ package net.geforcemods.securitycraft.screen.components;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.ScreenUtils;
-import net.minecraftforge.client.gui.widget.ExtendedButton;
 
-public class TogglePictureButton extends ExtendedButton implements IToggleableButton {
+public class TogglePictureButton extends Button implements IToggleableButton {
 	private ResourceLocation textureLocation;
 	private int[] u;
 	private int[] v;
@@ -29,7 +29,7 @@ public class TogglePictureButton extends ExtendedButton implements IToggleableBu
 	}
 
 	public TogglePictureButton(int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int drawWidth, int drawHeight, int uWidth, int vHeight, int textureWidth, int textureHeight, int toggleCount, OnPress onPress) {
-		super(xPos, yPos, width, height, Component.empty(), onPress);
+		super(xPos, yPos, width, height, Component.empty(), onPress, DEFAULT_NARRATION);
 
 		if (textureX.length != toggleCount || textureY.length != toggleCount)
 			throw new RuntimeException("TogglePictureButton was set up incorrectly. Array lengths must match toggleCount!");

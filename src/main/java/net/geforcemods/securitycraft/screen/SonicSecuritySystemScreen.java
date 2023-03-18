@@ -24,7 +24,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class SonicSecuritySystemScreen extends Screen implements ConnectionAccessor {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/sonic_security_system.png");
@@ -84,7 +83,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 		int leftPos = (width - xSize) / 2;
 		int buttonX = leftPos + xSize - 155;
 
-		powerButton = addRenderableWidget(new ExtendedButton(buttonX, height / 2 - 59, 150, 20, getPowerString(be.isActive()), button -> {
+		powerButton = addRenderableWidget(new Button(buttonX, height / 2 - 59, 150, 20, getPowerString(be.isActive()), button -> {
 			boolean toggledState = !be.isActive();
 			boolean containsNotes = be.getNumberOfNotes() > 0;
 
@@ -100,27 +99,27 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 			soundButton.active = toggledState;
 			playButton.active = toggledState && containsNotes;
 			clearButton.active = toggledState && containsNotes;
-		}));
+		}, Button.DEFAULT_NARRATION));
 
-		recordingButton = addRenderableWidget(new ExtendedButton(buttonX, height / 2 - 32, 150, 20, getRecordingString(be.isRecording()), button -> {
+		recordingButton = addRenderableWidget(new Button(buttonX, height / 2 - 32, 150, 20, getRecordingString(be.isRecording()), button -> {
 			boolean recording = !be.isRecording();
 			be.setRecording(recording);
 			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), recording ? SyncSSSSettingsOnServer.DataType.RECORDING_ON : SyncSSSSettingsOnServer.DataType.RECORDING_OFF));
 			recordingButton.setMessage(getRecordingString(be.isRecording()));
-		}));
+		}, Button.DEFAULT_NARRATION));
 
-		playButton = addRenderableWidget(new ExtendedButton(buttonX, height / 2 - 10, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.play"), button -> {
+		playButton = addRenderableWidget(new Button(buttonX, height / 2 - 10, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.play"), button -> {
 			// Start playing back any notes that have been recorded
 			if (be.getNumberOfNotes() > 0)
 				playback = true;
-		}));
+		}, Button.DEFAULT_NARRATION));
 
-		clearButton = addRenderableWidget(new ExtendedButton(buttonX, height / 2 + 12, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.clear"), button -> {
+		clearButton = addRenderableWidget(new Button(buttonX, height / 2 + 12, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.clear"), button -> {
 			be.clearNotes();
 			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.CLEAR_NOTES));
 			playButton.active = false;
 			clearButton.active = false;
-		}));
+		}, Button.DEFAULT_NARRATION));
 		//@formatter:off
 		soundButton = addRenderableWidget(new TogglePictureButton(buttonX + 130, height / 2 + 52, 20, 20, STREAMER_ICONS, new int[]{0, 0}, new int[]{32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
 			//@formatter:on

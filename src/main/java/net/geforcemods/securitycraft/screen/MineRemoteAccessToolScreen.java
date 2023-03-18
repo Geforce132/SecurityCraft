@@ -24,7 +24,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class MineRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
@@ -85,7 +84,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:
-						guiButtons[i][j] = new ExtendedButton(btnX, btnY, 20, 20, Component.literal("X"), b -> buttonClicked(mine, action));
+						guiButtons[i][j] = new Button(btnX, btnY, 20, 20, Component.literal("X"), b -> buttonClicked(mine, action), Button.DEFAULT_NARRATION);
 						guiButtons[i][j].active = false;
 						break;
 				}
