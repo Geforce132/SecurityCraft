@@ -22,12 +22,12 @@ import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.screen.components.CallbackSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
-import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -56,7 +56,6 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
 	private AbstractWidget[] optionButtons;
-	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
 	private final Block block;
 	private final String blockName;
 	private final Component name;
@@ -90,7 +89,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			int column = i % numberOfColumns;
 
 			addRenderableWidget(descriptionButtons[i] = new ModuleButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked));
-			hoverCheckers.add(new TextHoverChecker(descriptionButtons[i], getModuleDescription(i)));
+			descriptionButtons[i].setTooltip(Tooltip.create(getModuleDescription(i)));
 			descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
 
@@ -109,7 +108,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
 								doubleOption.setValue(slider.getValue());
-								hoverCheckers.set(sliderIndex, new TextHoverChecker(optionButtons[sliderIndex], getOptionDescription(sliderIndex)));
+								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
 								SecurityCraft.channel.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, doubleOption.get()));
 							});
 						}
@@ -118,7 +117,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
 								intOption.setValue(slider.getValueInt());
-								hoverCheckers.set(sliderIndex, new TextHoverChecker(optionButtons[sliderIndex], getOptionDescription(sliderIndex)));
+								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
 								SecurityCraft.channel.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, intOption.get()));
 							});
 						}
@@ -131,7 +130,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 					}
 
 					addRenderableWidget(optionButtons[i]);
-					hoverCheckers.add(new TextHoverChecker(optionButtons[i], getOptionDescription(i)));
+					optionButtons[i].setTooltip(Tooltip.create(getOptionDescription(i)));
 				}
 
 				for (AbstractWidget button : optionButtons) {
@@ -160,14 +159,6 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
 			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
-
-		for (TextHoverChecker hoverChecker : hoverCheckers) {
-			//last check hides the tooltip when a slider is being dragged
-			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY) && (!(hoverChecker.getWidget() instanceof CallbackSlider) || !isDragging())) {
-				renderTooltip(pose, minecraft.font.split(hoverChecker.getName(), 150), mouseX, mouseY);
-				break;
-			}
-		}
 	}
 
 	@Override
@@ -233,7 +224,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			tempOption.toggle();
 			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 			button.setMessage(getOptionButtonTitle(tempOption));
-			hoverCheckers.set(i, new TextHoverChecker(optionButtons[i], getOptionDescription(i)));
+			optionButtons[i].setTooltip(Tooltip.create(getOptionDescription(i)));
 			SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getBlockEntity().getBlockPos().getX(), moduleInv.getBlockEntity().getBlockPos().getY(), moduleInv.getBlockEntity().getBlockPos().getZ(), i));
 			return;
 		}

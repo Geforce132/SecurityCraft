@@ -12,11 +12,11 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
-import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.SmallXButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
@@ -33,9 +33,6 @@ public class CameraMonitorScreen extends Screen {
 	private CompoundTag nbtTag;
 	private Button[] cameraButtons = new Button[10];
 	private Button[] unbindButtons = new Button[10];
-	private HoverChecker[] hoverCheckers = new HoverChecker[10];
-	private SecurityCameraBlockEntity[] cameraBEs = new SecurityCameraBlockEntity[10];
-	private ResourceLocation[] cameraViewDim = new ResourceLocation[10];
 	private int xSize = 176, ySize = 166;
 	private int page = 1;
 
@@ -91,21 +88,20 @@ public class CameraMonitorScreen extends Screen {
 			addRenderableWidget(button);
 
 			if (view != null) {
-				if (!view.dimension().equals(Minecraft.getInstance().player.level.dimension())) {
-					hoverCheckers[buttonId - 1] = new HoverChecker(button);
-					cameraViewDim[buttonId - 1] = view.dimension().location();
+				SecurityCameraBlockEntity cameraBe = Minecraft.getInstance().level.getBlockEntity(view.pos()) instanceof SecurityCameraBlockEntity camera ? camera : null;
+
+				if (cameraBe != null) {
+					if (cameraBe.isDisabled()) {
+						button.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:scManual.disabled")));
+						button.active = false;
+					}
+					else if (cameraBe.hasCustomName())
+						button.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBe.getCustomName())));
 				}
-
-				cameraBEs[buttonId - 1] = Minecraft.getInstance().level.getBlockEntity(view.pos()) instanceof SecurityCameraBlockEntity camera ? camera : null;
-				hoverCheckers[buttonId - 1] = new HoverChecker(button);
-
-				if (cameraBEs[buttonId - 1] != null && cameraBEs[buttonId - 1].isDisabled())
-					button.active = false;
 			}
 			else {
 				button.active = false;
 				unbindButtons[buttonId - 1].active = false;
-				cameraBEs[buttonId - 1] = null;
 				continue;
 			}
 		}
@@ -135,21 +131,6 @@ public class CameraMonitorScreen extends Screen {
 		blit(pose, startX, startY, 0, 0, xSize, ySize);
 		super.render(pose, mouseX, mouseY, partialTicks);
 		font.draw(pose, selectCameras, startX + xSize / 2 - font.width(selectCameras) / 2, startY + 6, 4210752);
-
-		for (int i = 0; i < hoverCheckers.length; i++) {
-			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
-				if (cameraBEs[i] != null) {
-					if (cameraBEs[i].isDisabled()) {
-						renderTooltip(pose, Utils.localize("gui.securitycraft:scManual.disabled"), mouseX, mouseY);
-						break;
-					}
-					else if (cameraBEs[i].hasCustomName()) {
-						renderTooltip(pose, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBEs[i].getCustomName()), 150), mouseX, mouseY);
-						break;
-					}
-				}
-			}
-		}
 	}
 
 	private void cameraButtonClicked(Button button, int buttonId) {
@@ -167,11 +148,13 @@ public class CameraMonitorScreen extends Screen {
 
 	private void unbindButtonClicked(Button button, int buttonId) {
 		int camID = buttonId + (page - 1) * 10;
+		Button cameraButton = cameraButtons[(camID - 1) % 10];
 
 		SecurityCraft.channel.sendToServer(new RemoveCameraTag(camID));
 		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
 		button.active = false;
-		cameraButtons[(camID - 1) % 10].active = false;
+		cameraButton.active = false;
+		cameraButton.setTooltip(null);
 	}
 
 	@Override

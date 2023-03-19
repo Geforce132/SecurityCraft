@@ -48,7 +48,7 @@ public class TogglePictureButton extends Button implements IToggleableButton {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+	public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		if (visible) {
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;

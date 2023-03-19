@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -13,10 +10,10 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
 import net.geforcemods.securitycraft.network.server.RemoveMineFromMRAT;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
-import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -33,7 +30,6 @@ public class MineRemoteAccessToolScreen extends Screen {
 	private Button[][] guiButtons = new Button[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
 	private int xSize = 256, ySize = 184;
-	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
 	private final Component notBound = Utils.localize("gui.securitycraft:mrat.notBound");
 	private final Component[] lines = new Component[6];
 	private final int[] lengths = new int[6];
@@ -54,8 +50,6 @@ public class MineRemoteAccessToolScreen extends Screen {
 		int id = 0;
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-
-		hoverCheckers.clear();
 
 		for (int i = 0; i < 6; i++) {
 			y += 30;
@@ -108,10 +102,10 @@ public class MineRemoteAccessToolScreen extends Screen {
 						guiButtons[i][DEFUSE].active = active && defusable;
 						guiButtons[i][ACTIVATE].active = !active && defusable;
 						guiButtons[i][DETONATE].active = active;
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][DEFUSE], Utils.localize("gui.securitycraft:mrat.defuse")));
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][ACTIVATE], Utils.localize("gui.securitycraft:mrat.activate")));
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][DETONATE], Utils.localize("gui.securitycraft:mrat.detonate")));
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind")));
+						guiButtons[i][DEFUSE].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:mrat.defuse")));
+						guiButtons[i][ACTIVATE].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:mrat.activate")));
+						guiButtons[i][DETONATE].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:mrat.detonate")));
+						guiButtons[i][UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:mrat.unbind")));
 					}
 					else {
 						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
@@ -123,10 +117,10 @@ public class MineRemoteAccessToolScreen extends Screen {
 				}
 				else {
 					for (int j = 0; j < 3; j++) {
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][j], Utils.localize("gui.securitycraft:mrat.outOfRange")));
+						guiButtons[i][j].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:mrat.outOfRange")));
 					}
 
-					hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind")));
+					guiButtons[i][UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:mrat.unbind")));
 				}
 			}
 			else
@@ -149,13 +143,6 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 		for (int i = 0; i < 6; i++) {
 			font.draw(pose, lines[i], startX + xSize / 2 - lengths[i] + 25, startY + i * 30 + 13, 4210752);
-		}
-
-		for (TextHoverChecker chc : hoverCheckers) {
-			if (chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null) {
-				renderComponentTooltip(pose, chc.getLines(), mouseX, mouseY);
-				break;
-			}
 		}
 	}
 
