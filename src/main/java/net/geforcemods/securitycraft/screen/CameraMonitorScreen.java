@@ -12,10 +12,10 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
-import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
@@ -33,9 +33,6 @@ public class CameraMonitorScreen extends Screen {
 	private CompoundTag nbtTag;
 	private CameraButton[] cameraButtons = new CameraButton[10];
 	private CameraButton[] unbindButtons = new CameraButton[10];
-	private HoverChecker[] hoverCheckers = new HoverChecker[10];
-	private SecurityCameraBlockEntity[] cameraBEs = new SecurityCameraBlockEntity[10];
-	private ResourceLocation[] cameraViewDim = new ResourceLocation[10];
 	private int xSize = 176, ySize = 166;
 	private int page = 1;
 
@@ -70,20 +67,21 @@ public class CameraMonitorScreen extends Screen {
 		cameraButtons[8] = new CameraButton(9, width / 2 + 22, height / 2 + 10, 20, 20, Component.empty(), this::cameraButtonClicked);
 		cameraButtons[9] = new CameraButton(10, width / 2 - 38, height / 2 + 40, 80, 20, Component.empty(), this::cameraButtonClicked);
 
-		unbindButtons[0] = new CameraButton(1, width / 2 - 19, height / 2 - 68 + 10, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[1] = new CameraButton(2, width / 2 + 11, height / 2 - 68 + 10, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[2] = new CameraButton(3, width / 2 + 41, height / 2 - 68 + 10, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[3] = new CameraButton(4, width / 2 - 19, height / 2 - 38 + 10, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[4] = new CameraButton(5, width / 2 + 11, height / 2 - 38 + 10, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[5] = new CameraButton(6, width / 2 + 41, height / 2 - 38 + 10, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[6] = new CameraButton(7, width / 2 - 19, height / 2 + 2, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[7] = new CameraButton(8, width / 2 + 11, height / 2 + 2, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[8] = new CameraButton(9, width / 2 + 41, height / 2 + 2, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[9] = new CameraButton(10, width / 2 + 41, height / 2 + 32, 8, 8, x, this::unbindButtonClicked);
+		unbindButtons[0] = new CameraButton(1, width / 2 - 19, height / 2 - 68 + 10, 8, 8, x, b -> unbindButtonClicked(b, 1));
+		unbindButtons[1] = new CameraButton(2, width / 2 + 11, height / 2 - 68 + 10, 8, 8, x, b -> unbindButtonClicked(b, 2));
+		unbindButtons[2] = new CameraButton(3, width / 2 + 41, height / 2 - 68 + 10, 8, 8, x, b -> unbindButtonClicked(b, 3));
+		unbindButtons[3] = new CameraButton(4, width / 2 - 19, height / 2 - 38 + 10, 8, 8, x, b -> unbindButtonClicked(b, 4));
+		unbindButtons[4] = new CameraButton(5, width / 2 + 11, height / 2 - 38 + 10, 8, 8, x, b -> unbindButtonClicked(b, 5));
+		unbindButtons[5] = new CameraButton(6, width / 2 + 41, height / 2 - 38 + 10, 8, 8, x, b -> unbindButtonClicked(b, 6));
+		unbindButtons[6] = new CameraButton(7, width / 2 - 19, height / 2 + 2, 8, 8, x, b -> unbindButtonClicked(b, 7));
+		unbindButtons[7] = new CameraButton(8, width / 2 + 11, height / 2 + 2, 8, 8, x, b -> unbindButtonClicked(b, 8));
+		unbindButtons[8] = new CameraButton(9, width / 2 + 41, height / 2 + 2, 8, 8, x, b -> unbindButtonClicked(b, 9));
+		unbindButtons[9] = new CameraButton(10, width / 2 + 41, height / 2 + 32, 8, 8, x, b -> unbindButtonClicked(b, 10));
 
 		for (int i = 0; i < 10; i++) {
-			CameraButton button = cameraButtons[i];
-			int camID = button.camId + (page - 1) * 10;
+			Button button = cameraButtons[i];
+			int buttonId = i + 1;
+			int camID = buttonId + (page - 1) * 10;
 			ArrayList<GlobalPos> views = cameraMonitor.getCameraPositions(nbtTag);
 			GlobalPos view = views.get(camID - 1);
 
@@ -91,21 +89,20 @@ public class CameraMonitorScreen extends Screen {
 			addRenderableWidget(button);
 
 			if (view != null) {
-				if (!view.dimension().equals(Minecraft.getInstance().player.level.dimension())) {
-					hoverCheckers[button.camId - 1] = new HoverChecker(button);
-					cameraViewDim[button.camId - 1] = view.dimension().location();
+				SecurityCameraBlockEntity cameraBe = Minecraft.getInstance().level.getBlockEntity(view.pos()) instanceof SecurityCameraBlockEntity camera ? camera : null;
+
+				if (cameraBe != null) {
+					if (cameraBe.isDisabled()) {
+						button.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:scManual.disabled")));
+						button.active = false;
+					}
+					else if (cameraBe.hasCustomName())
+						button.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBe.getCustomName())));
 				}
-
-				cameraBEs[button.camId - 1] = Minecraft.getInstance().level.getBlockEntity(view.pos()) instanceof SecurityCameraBlockEntity camera ? camera : null;
-				hoverCheckers[button.camId - 1] = new HoverChecker(button);
-
-				if (cameraBEs[button.camId - 1] != null && cameraBEs[button.camId - 1].isDisabled())
-					button.active = false;
 			}
 			else {
 				button.active = false;
-				unbindButtons[button.camId - 1].active = false;
-				cameraBEs[button.camId - 1] = null;
+				unbindButtons[buttonId - 1].active = false;
 				continue;
 			}
 		}
@@ -136,21 +133,6 @@ public class CameraMonitorScreen extends Screen {
 		blit(pose, startX, startY, 0, 0, xSize, ySize);
 		super.render(pose, mouseX, mouseY, partialTicks);
 		font.draw(pose, selectCameras, startX + xSize / 2 - font.width(selectCameras) / 2, startY + 6, 4210752);
-
-		for (int i = 0; i < hoverCheckers.length; i++) {
-			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
-				if (cameraBEs[i] != null) {
-					if (cameraBEs[i].isDisabled()) {
-						renderTooltip(pose, Utils.localize("gui.securitycraft:scManual.disabled"), mouseX, mouseY);
-						break;
-					}
-					else if (cameraBEs[i].hasCustomName()) {
-						renderTooltip(pose, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBEs[i].getCustomName()), 150), mouseX, mouseY);
-						break;
-					}
-				}
-			}
-		}
 	}
 
 	private void cameraButtonClicked(Button button) {
@@ -166,13 +148,15 @@ public class CameraMonitorScreen extends Screen {
 		Minecraft.getInstance().player.closeContainer();
 	}
 
-	private void unbindButtonClicked(Button button) {
-		int camID = ((CameraButton) button).camId + (page - 1) * 10;
+	private void unbindButtonClicked(Button button, int buttonId) {
+		int camID = buttonId + (page - 1) * 10;
+		Button cameraButton = cameraButtons[(camID - 1) % 10];
 
 		SecurityCraft.channel.sendToServer(new RemoveCameraTag(camID));
 		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
 		button.active = false;
-		cameraButtons[(camID - 1) % 10].active = false;
+		cameraButton.active = false;
+		cameraButton.setTooltip(null);
 	}
 
 	@Override

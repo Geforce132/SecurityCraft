@@ -48,7 +48,7 @@ public class TogglePictureButton extends ExtendedButton implements IToggleableBu
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+	public void renderButton(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		if (visible) {
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

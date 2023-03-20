@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -14,11 +13,13 @@ import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.geforcemods.securitycraft.network.server.RemoveSentryFromSRAT;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
+import net.geforcemods.securitycraft.screen.components.IToggleableButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -133,9 +134,9 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						guiButtons[i][UNBIND].active = true;
 						((TogglePictureButton) guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
 						((TogglePictureButton) guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][MODE], Arrays.asList(Utils.localize("gui.securitycraft:srat.mode2"), Utils.localize("gui.securitycraft:srat.mode1"), Utils.localize("gui.securitycraft:srat.mode3"))));
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][TARGETS], Arrays.asList(Utils.localize("gui.securitycraft:srat.targets1"), Utils.localize("gui.securitycraft:srat.targets2"), Utils.localize("gui.securitycraft:srat.targets3"))));
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:srat.unbind")));
+						updateModeButtonTooltip(guiButtons[i][MODE]);
+						updateTargetsButtonTooltip(guiButtons[i][TARGETS]);
+						guiButtons[i][UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:srat.unbind")));
 						foundSentry = true;
 					}
 					else {
@@ -148,10 +149,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				}
 				else {
 					for (int j = 0; j < 2; j++) {
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][j], Utils.localize("gui.securitycraft:srat.outOfRange")));
+						guiButtons[i][j].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:srat.outOfRange")));
 					}
 
-					hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:srat.unbind")));
+					guiButtons[i][UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:srat.unbind")));
 				}
 			}
 			else
@@ -170,9 +171,9 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			addRenderableWidget(guiButtonsGlobal[j]);
 		}
 
-		hoverCheckers.add(new TextHoverChecker(guiButtonsGlobal[MODE], Arrays.asList(Utils.localize("gui.securitycraft:srat.mode2"), Utils.localize("gui.securitycraft:srat.mode1"), Utils.localize("gui.securitycraft:srat.mode3"))));
-		hoverCheckers.add(new TextHoverChecker(guiButtonsGlobal[TARGETS], Arrays.asList(Utils.localize("gui.securitycraft:srat.targets1"), Utils.localize("gui.securitycraft:srat.targets2"), Utils.localize("gui.securitycraft:srat.targets3"))));
-		hoverCheckers.add(new TextHoverChecker(guiButtonsGlobal[UNBIND], Utils.localize("gui.securitycraft:srat.unbind")));
+		updateModeButtonTooltip(guiButtonsGlobal[MODE]);
+		updateTargetsButtonTooltip(guiButtonsGlobal[TARGETS]);
+		guiButtonsGlobal[UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:srat.unbind")));
 	}
 
 	@Override
@@ -216,6 +217,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				guiButtons[sentry][TARGETS].active = SentryMode.values()[resultingMode] != SentryMode.IDLE;
 				sentries.get(0).toggleMode(Minecraft.getInstance().player, resultingMode, false);
 				SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).blockPosition(), resultingMode));
+				updateModeButtonTooltip(guiButtons[sentry][MODE]);
+				updateTargetsButtonTooltip(guiButtons[sentry][TARGETS]);
 			}
 		}
 	}
@@ -238,6 +241,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 		for (int i = 0; i < 3; i++) {
 			guiButtons[sentry][i].active = false;
+			guiButtons[sentry][i].setTooltip(null);
 		}
 
 		for (int i = 0; i < guiButtons.length; i++) {
@@ -247,6 +251,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 		for (int i = 0; i < 3; i++) {
 			guiButtonsGlobal[i].active = false;
+			guiButtonsGlobal[i].setTooltip(null);
 		}
 	}
 
@@ -275,6 +280,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				performSingleAction(sentry, mode, targets);
 			}
 		}
+
+		updateModeButtonTooltip(guiButtonsGlobal[MODE]);
 	}
 
 	protected void globalTargetsButtonClicked(Button button) {
@@ -290,6 +297,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				performSingleAction(sentry, mode, targets);
 			}
 		}
+
+		updateTargetsButtonTooltip(guiButtonsGlobal[TARGETS]);
 	}
 
 	/**
@@ -331,6 +340,24 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		int trackingRange = Math.min(SENTRY_TRACKING_RANGE, viewDistance) - 1;
 
 		return xDistance >= -trackingRange && xDistance <= trackingRange && zDistance >= -trackingRange && zDistance <= trackingRange;
+	}
+
+	private void updateModeButtonTooltip(Button button) {
+		button.setTooltip(Tooltip.create(switch (((IToggleableButton) button).getCurrentIndex()) {
+			default -> Utils.localize("gui.securitycraft:srat.mode2");
+			case 0 -> Utils.localize("gui.securitycraft:srat.mode2");
+			case 1 -> Utils.localize("gui.securitycraft:srat.mode1");
+			case 2 -> Utils.localize("gui.securitycraft:srat.mode3");
+		}));
+	}
+
+	private void updateTargetsButtonTooltip(Button button) {
+		button.setTooltip(Tooltip.create(switch (((IToggleableButton) button).getCurrentIndex()) {
+			default -> Utils.localize("gui.securitycraft:srat.targets1");
+			case 0 -> Utils.localize("gui.securitycraft:srat.targets1");
+			case 1 -> Utils.localize("gui.securitycraft:srat.targets2");
+			case 2 -> Utils.localize("gui.securitycraft:srat.targets3");
+		}));
 	}
 
 	@Override

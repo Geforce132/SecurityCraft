@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -17,7 +16,6 @@ import net.geforcemods.securitycraft.screen.components.CallbackSlider;
 import net.geforcemods.securitycraft.screen.components.ColorChooser;
 import net.geforcemods.securitycraft.screen.components.ColorChooserButton;
 import net.geforcemods.securitycraft.screen.components.StackHoverChecker;
-import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -25,6 +23,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
@@ -60,8 +59,6 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	private Button outlineButton;
 	private CallbackSlider offsetSlider;
 	private StackHoverChecker[] hoverCheckers = new StackHoverChecker[3];
-	private TextHoverChecker assembleHoverChecker;
-	private TextHoverChecker colorChooserButtonHoverChecker;
 	private ColorChooser colorChooser;
 	private int wallsNeededOverall = (size - 2) * (size - 2) * 6;
 	private int pillarsNeededOverall = (size - 2) * 12 - 1;
@@ -135,8 +132,8 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 			hoverCheckers[2] = new StackHoverChecker(REINFORCED_CHISELED_CRYSTAL_QUARTZ, topPos + imageHeight - 27, topPos + imageHeight - 9, leftPos + 174, leftPos + 191);
 		}
 
-		assembleHoverChecker = new TextHoverChecker(assembleButton, Arrays.asList(Utils.localize("gui.securitycraft:blockPocketManager.needStorageModule"), Utils.localize("messages.securitycraft:blockpocket.notEnoughItems")));
-		colorChooserButtonHoverChecker = new TextHoverChecker(colorChooserButton, Utils.localize("gui.securitycraft:choose_outline_color_tooltip"));
+		updateAssembleButtonTooltip();
+		colorChooserButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:choose_outline_color_tooltip")));
 	}
 
 	@Override
@@ -187,16 +184,6 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 					break;
 				}
 			}
-
-			if (!assembleButton.active && assembleHoverChecker.checkHover(mouseX, mouseY)) {
-				if (!storage)
-					renderComponentTooltip(pose, assembleHoverChecker.getLines().subList(0, 1), mouseX, mouseY);
-				else
-					renderComponentTooltip(pose, assembleHoverChecker.getLines().subList(1, 2), mouseX, mouseY);
-			}
-
-			if (colorChooserButtonHoverChecker.checkHover(mouseX, mouseY))
-				renderTooltip(pose, colorChooserButtonHoverChecker.getName(), mouseX, mouseY);
 		}
 	}
 
@@ -294,6 +281,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		chiseledStillNeeded = chiseledNeededOverall - materialCounts[2];
 		//the assemble button should always be active when the player is in creative mode
 		assembleButton.active = isOwner && (minecraft.player.isCreative() || (!be.enabled && storage && wallsStillNeeded <= 0 && pillarsStillNeeded <= 0 && chiseledStillNeeded <= 0));
+		updateAssembleButtonTooltip();
 	}
 
 	public void toggleButtonClicked(Button button) {
@@ -350,6 +338,13 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 			PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), feedback, ChatFormatting.DARK_AQUA, true);
 
 		Minecraft.getInstance().player.closeContainer();
+	}
+
+	public void updateAssembleButtonTooltip() {
+		if (!assembleButton.isActive())
+			assembleButton.setTooltip(Tooltip.create(!storage ? Utils.localize("gui.securitycraft:blockPocketManager.needStorageModule") : Utils.localize("messages.securitycraft:blockpocket.notEnoughItems")));
+		else
+			assembleButton.setTooltip(null);
 	}
 
 	public void outlineButtonClicked(Button button) {

@@ -59,7 +59,7 @@ public class PictureButton extends ExtendedButton {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+	public void renderButton(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		if (visible) {
 			Minecraft mc = Minecraft.getInstance();
 			Font font = mc.font;

@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.screen;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -31,6 +30,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -48,10 +48,8 @@ import net.minecraftforge.client.gui.widget.ScrollPanel;
 
 public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChangeDetectorMenu> implements ContainerListener, IHasExtraAreas {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_change_detector.png");
-	private static final Component CLEAR = Utils.localize("gui.securitycraft:editModule.clear");
 	private BlockChangeDetectorBlockEntity be;
 	private ChangeEntryList changeEntryList;
-	private TextHoverChecker[] hoverCheckers = new TextHoverChecker[5];
 	private TextHoverChecker smartModuleHoverChecker;
 	private ModeButton modeButton;
 	private Checkbox showAllCheckbox;
@@ -91,6 +89,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 		addRenderableWidget(modeButton = new ModeButton(settingsX, topPos + 19, 20, 20, be.getMode().ordinal(), DetectionMode.values().length, b -> {
 			be.setMode(DetectionMode.values()[((ModeButton) b).getCurrentIndex()]);
+			b.setTooltip(Tooltip.create(Utils.localize(be.getMode().getDescriptionId())));
 			changeEntryList.updateFilteredEntries();
 			be.updateFilteredEntries();
 		}));
@@ -117,11 +116,11 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		colorChooser.init(minecraft, width, height);
 		addRenderableWidget(colorChooserButton = new ColorChooserButton(settingsX, topPos + 115, 20, 20, colorChooser));
 
-		hoverCheckers[0] = new TextHoverChecker(clearButton, CLEAR);
-		hoverCheckers[1] = new TextHoverChecker(modeButton, Arrays.stream(DetectionMode.values()).map(e -> Utils.localize(e.getDescriptionId())).toList());
-		hoverCheckers[2] = new TextHoverChecker(showAllCheckbox, Utils.localize("gui.securitycraft:block_change_detector.show_all_checkbox"));
-		hoverCheckers[3] = new TextHoverChecker(highlightInWorldCheckbox, Utils.localize("gui.securitycraft:block_change_detector.highlight_in_world_checkbox"));
-		hoverCheckers[4] = new TextHoverChecker(colorChooserButton, Utils.localize("gui.securitycraft:choose_outline_color_tooltip"));
+		clearButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:editModule.clear")));
+		modeButton.setTooltip(Tooltip.create(Utils.localize(be.getMode().getDescriptionId())));
+		showAllCheckbox.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:block_change_detector.show_all_checkbox")));
+		highlightInWorldCheckbox.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:block_change_detector.highlight_in_world_checkbox")));
+		colorChooserButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:choose_outline_color_tooltip")));
 		smartModuleHoverChecker = isOwner ? new TextHoverChecker(topPos + 44, topPos + 60, settingsX + 1, leftPos + 191, Utils.localize("gui.securitycraft:block_change_detector.smart_module_hint")) : null;
 		addRenderableWidget(changeEntryList = new ChangeEntryList(minecraft, 160, 150, topPos + 20, leftPos + 8));
 		clearButton.active = modeButton.active = colorChooserButton.active = isOwner;
@@ -160,13 +159,6 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	@Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 		super.render(pose, mouseX, mouseY, partialTick);
-
-		for (TextHoverChecker hoverChecker : hoverCheckers) {
-			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY)) {
-				renderTooltip(pose, hoverChecker.getName(), mouseX, mouseY);
-				break;
-			}
-		}
 
 		if (smartModuleHoverChecker != null && smartModuleHoverChecker.checkHover(mouseX, mouseY) && !be.isModuleEnabled(ModuleType.SMART))
 			renderComponentTooltip(pose, smartModuleHoverChecker.getLines(), mouseX, mouseY);
