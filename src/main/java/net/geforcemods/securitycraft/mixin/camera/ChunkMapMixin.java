@@ -33,7 +33,7 @@ public abstract class ChunkMapMixin {
 	 * checking methods
 	 */
 	@Redirect(method = {"getPlayers", "lambda$setViewDistance$48"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getLastSectionPos()Lnet/minecraft/core/SectionPos;"))
-	private SectionPos getCameraSectionPos(ServerPlayer player) {
+	private SectionPos securitycraft$getCameraSectionPos(ServerPlayer player) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			return SectionPos.of(player.getCamera());
 
@@ -45,7 +45,7 @@ public abstract class ChunkMapMixin {
 	 * when they stop viewing a camera
 	 */
 	@Inject(method = "move", at = @At(value = "TAIL"))
-	private void trackCameraLoadedChunks(ServerPlayer player, CallbackInfo callback) {
+	private void securitycraft$trackCameraLoadedChunks(ServerPlayer player, CallbackInfo callback) {
 		if (player.getCamera() instanceof SecurityCamera camera) {
 			if (!camera.hasSentChunks()) {
 				SectionPos pos = SectionPos.of(camera);

@@ -22,7 +22,7 @@ public class LevelRendererMixin {
 	private Minecraft minecraft;
 
 	@Redirect(method = "setupRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewArea;repositionCamera(DD)V"))
-	public void onRepositionCamera(ViewArea viewArea, double x, double z) {
+	public void securitycraft$onRepositionCamera(ViewArea viewArea, double x, double z) {
 		if (!PlayerUtils.isPlayerMountedOnCamera(minecraft.player))
 			viewArea.repositionCamera(x, z);
 	}
