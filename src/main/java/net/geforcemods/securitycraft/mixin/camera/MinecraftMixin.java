@@ -15,7 +15,7 @@ import net.minecraft.client.Options;
 @Mixin(value = Minecraft.class, priority = 1100)
 public class MinecraftMixin {
 	@Redirect(method = "handleKeybinds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;setCameraType(Lnet/minecraft/client/CameraType;)V"))
-	private void handleKeybinds(Options options, CameraType newType) {
+	private void securitycraft$preventCameraSwitching(Options options, CameraType newType) {
 		if (!ClientHandler.isPlayerMountedOnCamera())
 			options.setCameraType(newType);
 	}
