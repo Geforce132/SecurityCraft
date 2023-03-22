@@ -48,11 +48,29 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	}
 
 	/**
-	 * Updates the camera storage with the new view radius
+	 * Updates the camera storage's view radius by creating a new Storage instance with the same view center and chunks as the
+	 * previous one
 	 */
 	@Inject(method = "updateViewRadius", at = @At(value = "FIELD", target = "Lnet/minecraft/client/multiplayer/ClientChunkProvider;storage:Lnet/minecraft/client/multiplayer/ClientChunkProvider$ChunkArray;", ordinal = 1))
 	public void securitycraft$onUpdateViewRadius(int viewDistance, CallbackInfo ci) {
-		CameraController.setCameraStorage(newStorage(Math.max(2, viewDistance) + 3));
+		ClientChunkProvider.ChunkArray oldStorage = CameraController.getCameraStorage();
+		ClientChunkProvider.ChunkArray newStorage = newStorage(Math.max(2, viewDistance) + 3);
+
+		newStorage.viewCenterX = oldStorage.viewCenterX;
+		newStorage.viewCenterZ = oldStorage.viewCenterZ;
+
+		for (int i = 0; i < oldStorage.chunks.length(); ++i) {
+			Chunk chunk = oldStorage.chunks.get(i);
+
+			if (chunk != null) {
+				ChunkPos pos = chunk.getPos();
+
+				if (newStorage.inRange(pos.x, pos.z))
+					newStorage.replace(newStorage.getIndex(pos.x, pos.z), chunk);
+			}
+		}
+
+		CameraController.setCameraStorage(newStorage);
 	}
 
 	/**

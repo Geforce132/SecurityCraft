@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
+
+- Fix: Mounting two cameras after one another in different dimensions causes severe lag
+  
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
 
 - New: Support for FTB Teams when having team ownership enabled in the config
