@@ -32,8 +32,10 @@ public abstract class ChunkMapMixin {
 	 * Fixes block updates not getting sent to chunks loaded by cameras by returning the camera's SectionPos to the distance
 	 * checking methods
 	 */
-	@Redirect(method = {"getPlayers", "lambda$setViewDistance$45"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getLastSectionPos()Lnet/minecraft/core/SectionPos;"))
-	private SectionPos getCameraSectionPos(ServerPlayer player) {
+	@Redirect(method = {
+			"getPlayers", "lambda$setViewDistance$45"
+	}, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getLastSectionPos()Lnet/minecraft/core/SectionPos;"))
+	private SectionPos securitycraft$getCameraSectionPos(ServerPlayer player) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			return SectionPos.of(player.getCamera());
 
@@ -45,7 +47,7 @@ public abstract class ChunkMapMixin {
 	 * when they stop viewing a camera
 	 */
 	@Inject(method = "move", at = @At(value = "TAIL"))
-	private void trackCameraLoadedChunks(ServerPlayer player, CallbackInfo callback) {
+	private void securitycraft$trackCameraLoadedChunks(ServerPlayer player, CallbackInfo callback) {
 		if (player.getCamera() instanceof SecurityCamera camera) {
 			if (!camera.hasSentChunks()) {
 				SectionPos pos = SectionPos.of(camera);

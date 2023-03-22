@@ -38,7 +38,7 @@ public abstract class TrackedEntityMixin {
 	 * shouldBeSent
 	 */
 	@Inject(method = "updatePlayer", at = @At(value = "FIELD", target = "Lnet/minecraft/world/phys/Vec3;x:D", ordinal = 0), locals = LocalCapture.CAPTURE_FAILSOFT)
-	private void onUpdatePlayer(ServerPlayer player, CallbackInfo callback, Vec3 unused, double viewDistance) {
+	private void securitycraft$onUpdatePlayer(ServerPlayer player, CallbackInfo callback, Vec3 unused, double viewDistance) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			Vec3 relativePosToCamera = player.getCamera().position().subtract(serverEntity.sentPos());
 
@@ -51,7 +51,7 @@ public abstract class TrackedEntityMixin {
 	 * Enables entities that should be sent as well as security camera entities to be sent to the client
 	 */
 	@ModifyVariable(method = "updatePlayer", name = "flag", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, shift = At.Shift.BEFORE, ordinal = 1))
-	public boolean modifyFlag(boolean original) {
+	public boolean securitycraft$modifyFlag(boolean original) {
 		boolean shouldBeSent = this.shouldBeSent;
 
 		this.shouldBeSent = false;
