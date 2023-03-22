@@ -22,7 +22,7 @@ public class RenderGlobalMixin {
 	private Minecraft mc;
 
 	@Redirect(method = "setupTerrain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewFrustum;updateChunkPositions(DD)V"))
-	private void onRepositionCamera(ViewFrustum viewFrustum, double x, double z) {
+	private void securitycraft$onRepositionCamera(ViewFrustum viewFrustum, double x, double z) {
 		if (!PlayerUtils.isPlayerMountedOnCamera(mc.player))
 			viewFrustum.updateChunkPositions(x, z);
 	}

@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 @Mixin(ContainerBrewingStand.class)
 public class ContainerBrewingStandMixin {
 	@Redirect(method = "transferStackInSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Slot;isItemValid(Lnet/minecraft/item/ItemStack;)Z"))
-	private boolean preventPotionShiftClickToTopSlot(Slot ingredientSlot, ItemStack stack) {
+	private boolean securitycraft$preventPotionShiftClickToTopSlot(Slot ingredientSlot, ItemStack stack) {
 		return !(stack.getItem() instanceof ItemPotion) && ingredientSlot.isItemValid(stack);
 	}
 }

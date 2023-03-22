@@ -17,7 +17,7 @@ import net.minecraft.init.Blocks;
 @Mixin(GuiOverlayDebug.class)
 public class GuiOverlayDebugMixin {
 	@ModifyVariable(method = "getDebugInfoRight", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/multiplayer/WorldClient;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;"))
-	public IBlockState spoofBlockState(IBlockState originalState) {
+	public IBlockState securitycraft$spoofBlockState(IBlockState originalState) {
 		Block originalBlock = originalState.getBlock();
 
 		if (originalBlock instanceof DisguisableBlock) {

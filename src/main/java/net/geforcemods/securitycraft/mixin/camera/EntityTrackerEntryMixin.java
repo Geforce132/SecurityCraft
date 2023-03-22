@@ -28,7 +28,7 @@ public class EntityTrackerEntryMixin {
 	private long encodedPosZ;
 
 	@Redirect(method = "updatePlayerEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityTrackerEntry;isVisibleTo(Lnet/minecraft/entity/player/EntityPlayerMP;)Z"))
-	private boolean shouldUpdate(EntityTrackerEntry entry, EntityPlayerMP player) {
+	private boolean securitycraft$shouldUpdate(EntityTrackerEntry entry, EntityPlayerMP player) {
 		if (entry.getTrackedEntity() instanceof SecurityCamera)
 			return true;
 

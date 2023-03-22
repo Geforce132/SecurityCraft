@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.EntityRenderer;
 @Mixin(value = EntityRenderer.class, priority = 1100)
 public class EntityRendererMixin {
 	@ModifyConstant(method = "updateFovModifierHand", constant = @Constant(floatValue = 1.0F))
-	private float modifyInitialFValue(float f) {
+	private float securitycraft$modifyInitialFValue(float f) {
 		if (Minecraft.getMinecraft().getRenderViewEntity() instanceof SecurityCamera)
 			return ((SecurityCamera) Minecraft.getMinecraft().getRenderViewEntity()).getZoomAmount();
 		else

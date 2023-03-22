@@ -18,7 +18,7 @@ import net.minecraft.world.WorldServer;
 @Mixin(Teleporter.class)
 public class TeleporterMixin {
 	@Redirect(method = "makePortal", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldServer;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;"))
-	private IBlockState addReinforcedBlockCheck(WorldServer level, BlockPos offsetPos) {
+	private IBlockState securitycraft$addReinforcedBlockCheck(WorldServer level, BlockPos offsetPos) {
 		IBlockState offsetState = level.getBlockState(offsetPos);
 
 		if (offsetState.getBlock() instanceof IReinforcedBlock)

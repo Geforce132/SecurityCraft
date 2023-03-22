@@ -21,7 +21,7 @@ import net.minecraft.server.management.PlayerList;
 @Mixin(value = PlayerList.class, priority = 1100)
 public class PlayerListMixin {
 	@Inject(method = "sendToAllNearExcept", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/EntityPlayerMP;posZ:D", opcode = Opcodes.GETFIELD), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
-	private void broadcastToCameras(EntityPlayer except, double x, double y, double z, double radius, int dimension, Packet<?> packet, CallbackInfo callback, int iteration, EntityPlayerMP player) {
+	private void securitycraft$broadcastToCameras(EntityPlayer except, double x, double y, double z, double radius, int dimension, Packet<?> packet, CallbackInfo callback, int iteration, EntityPlayerMP player) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SecurityCamera camera = (SecurityCamera) player.getSpectatingEntity();
 			double dX = x - camera.posX;
