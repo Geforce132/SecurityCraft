@@ -34,7 +34,7 @@ public abstract class ChunkManagerMixin {
 	 * checking method
 	 */
 	@Redirect(method = "checkerboardDistance(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/entity/player/ServerPlayerEntity;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;getLastSectionPos()Lnet/minecraft/util/math/SectionPos;"))
-	private static SectionPos getCameraSectionPos(ServerPlayerEntity player) {
+	private static SectionPos securitycraft$getCameraSectionPos(ServerPlayerEntity player) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			return SectionPos.of(player.getCamera());
 
@@ -46,7 +46,7 @@ public abstract class ChunkManagerMixin {
 	 * method
 	 */
 	@ModifyArgs(method = "checkerboardDistance(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/entity/player/ServerPlayerEntity;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;floor(D)I", ordinal = 0))
-	private static void modifyPlayerX(Args args, ChunkPos pos, ServerPlayerEntity player, boolean useSectionPos) {
+	private static void securitycraft$modifyPlayerX(Args args, ChunkPos pos, ServerPlayerEntity player, boolean useSectionPos) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			args.set(0, player.getCamera().getX() / 16.0D);
 	}
@@ -56,7 +56,7 @@ public abstract class ChunkManagerMixin {
 	 * method
 	 */
 	@ModifyArgs(method = "checkerboardDistance(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/entity/player/ServerPlayerEntity;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;floor(D)I", ordinal = 1))
-	private static void modifyPlayerZ(Args args, ChunkPos pos, ServerPlayerEntity player, boolean useSectionPos) {
+	private static void securitycraft$modifyPlayerZ(Args args, ChunkPos pos, ServerPlayerEntity player, boolean useSectionPos) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			args.set(0, player.getCamera().getZ() / 16.0D);
 	}
@@ -65,7 +65,7 @@ public abstract class ChunkManagerMixin {
 	 * Tracks chunks loaded by cameras to make sure they're being sent to the client
 	 */
 	@Inject(method = "move", at = @At(value = "TAIL"))
-	private void trackCameraLoadedChunks(ServerPlayerEntity player, CallbackInfo callback) {
+	private void securitycraft$trackCameraLoadedChunks(ServerPlayerEntity player, CallbackInfo callback) {
 		if (player.getCamera() instanceof SecurityCamera) {
 			SecurityCamera camera = ((SecurityCamera) player.getCamera());
 

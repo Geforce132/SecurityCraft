@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 @Mixin(value = PlayerList.class, priority = 1100)
 public class PlayerListMixin {
 	@Inject(method = "broadcast", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;getZ()D"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
-	private void broadcastToCameras(PlayerEntity except, double x, double y, double z, double radius, RegistryKey<World> dimension, IPacket<?> packet, CallbackInfo callback, int iteration, ServerPlayerEntity player) {
+	private void securitycraft$broadcastToCameras(PlayerEntity except, double x, double y, double z, double radius, RegistryKey<World> dimension, IPacket<?> packet, CallbackInfo callback, int iteration, ServerPlayerEntity player) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SecurityCamera camera = (SecurityCamera) player.getCamera();
 			double dX = x - camera.getX();

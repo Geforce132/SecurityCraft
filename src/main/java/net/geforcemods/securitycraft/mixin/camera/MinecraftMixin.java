@@ -15,7 +15,7 @@ import net.minecraft.client.settings.PointOfView;
 @Mixin(value = Minecraft.class, priority = 1100)
 public class MinecraftMixin {
 	@Redirect(method = "handleKeybinds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/GameSettings;setCameraType(Lnet/minecraft/client/settings/PointOfView;)V"))
-	private void handleKeybinds(GameSettings gameSettings, PointOfView newPov) {
+	private void securitycraft$preventPOVSwitching(GameSettings gameSettings, PointOfView newPov) {
 		if (!ClientHandler.isPlayerMountedOnCamera())
 			gameSettings.setCameraType(newPov);
 	}

@@ -17,7 +17,7 @@ import net.minecraft.item.PotionItem;
 @Mixin(BrewingStandContainer.class)
 public class BrewingStandContainerMixin {
 	@Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/container/Slot;mayPlace(Lnet/minecraft/item/ItemStack;)Z"))
-	private boolean preventPotionShiftClickToTopSlot(Slot ingredientSlot, ItemStack stack) {
+	private boolean securitycraft$preventPotionShiftClickToTopSlot(Slot ingredientSlot, ItemStack stack) {
 		return !(stack.getItem() instanceof PotionItem) && ingredientSlot.mayPlace(stack);
 	}
 }

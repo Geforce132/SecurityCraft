@@ -24,7 +24,7 @@ public class WorldMixin {
 	public List<TileEntity> tickableBlockEntities;
 
 	@Inject(method = "tickBlockEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/IProfiler;popPush(Ljava/lang/String;)V"))
-	private void onTickBlockEntities(CallbackInfo ci) {
+	private void securitycraft$onTickBlockEntities(CallbackInfo ci) {
 		if (!ReinforcedPistonBlockEntity.SCHEDULED_TICKING_BLOCK_ENTITIES.isEmpty()) {
 			tickableBlockEntities.addAll(ReinforcedPistonBlockEntity.SCHEDULED_TICKING_BLOCK_ENTITIES);
 			ReinforcedPistonBlockEntity.SCHEDULED_TICKING_BLOCK_ENTITIES.clear();

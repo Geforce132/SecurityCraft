@@ -43,7 +43,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 * Initializes the camera storage
 	 */
 	@Inject(method = "<init>", at = @At(value = "TAIL"))
-	public void onInit(ClientWorld world, int viewDistance, CallbackInfo ci) {
+	public void securitycraft$onInit(ClientWorld world, int viewDistance, CallbackInfo ci) {
 		CameraController.setCameraStorage(newStorage(Math.max(2, viewDistance) + 3));
 	}
 
@@ -51,7 +51,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 * Updates the camera storage with the new view radius
 	 */
 	@Inject(method = "updateViewRadius", at = @At(value = "FIELD", target = "Lnet/minecraft/client/multiplayer/ClientChunkProvider;storage:Lnet/minecraft/client/multiplayer/ClientChunkProvider$ChunkArray;", ordinal = 1))
-	public void onUpdateViewRadius(int viewDistance, CallbackInfo ci) {
+	public void securitycraft$onUpdateViewRadius(int viewDistance, CallbackInfo ci) {
 		CameraController.setCameraStorage(newStorage(Math.max(2, viewDistance) + 3));
 	}
 
@@ -59,7 +59,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 * Handles chunks that are unloaded in range of the camera storage
 	 */
 	@Inject(method = "drop", at = @At(value = "HEAD"))
-	public void onDrop(int x, int z, CallbackInfo ci) {
+	public void securitycraft$onDrop(int x, int z, CallbackInfo ci) {
 		ClientChunkProvider.ChunkArray cameraStorage = CameraController.getCameraStorage();
 
 		if (cameraStorage.inRange(x, z)) {
@@ -78,7 +78,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 * them to be acquired afterwards
 	 */
 	@Inject(method = "replaceWithPacketData", at = @At(value = "HEAD"), cancellable = true)
-	private void onReplace(int x, int z, BiomeContainer biomeContainer, PacketBuffer buffer, CompoundNBT chunkTag, int size, boolean fullChunk, CallbackInfoReturnable<Chunk> callback) {
+	private void securitycraft$onReplace(int x, int z, BiomeContainer biomeContainer, PacketBuffer buffer, CompoundNBT chunkTag, int size, boolean fullChunk, CallbackInfoReturnable<Chunk> callback) {
 		ClientChunkProvider.ChunkArray cameraStorage = CameraController.getCameraStorage();
 
 		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && cameraStorage.inRange(x, z)) {
@@ -113,7 +113,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 * If chunks in range of a camera storage need to be acquired, ask the camera storage about these chunks
 	 */
 	@Inject(method = "getChunk(IILnet/minecraft/world/chunk/ChunkStatus;Z)Lnet/minecraft/world/chunk/Chunk;", at = @At("TAIL"), cancellable = true)
-	private void onGetChunk(int x, int z, ChunkStatus requiredStatus, boolean load, CallbackInfoReturnable<Chunk> callback) {
+	private void securitycraft$onGetChunk(int x, int z, ChunkStatus requiredStatus, boolean load, CallbackInfoReturnable<Chunk> callback) {
 		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && CameraController.getCameraStorage().inRange(x, z)) {
 			Chunk chunk = CameraController.getCameraStorage().getChunk(CameraController.getCameraStorage().getIndex(x, z));
 

@@ -20,7 +20,7 @@ import net.minecraft.world.gen.trunkplacer.AbstractTrunkPlacer;
 @Mixin(AbstractTrunkPlacer.class)
 public class AbstractTrunkPlacerMixin {
 	@Inject(method = "setDirtAt", at = @At("HEAD"), cancellable = true)
-	private static void onSetDirtAt(IWorldGenerationReader world, BlockPos pos, CallbackInfo callback) {
+	private static void securitycraft$onSetDirtAt(IWorldGenerationReader world, BlockPos pos, CallbackInfo callback) {
 		if (world instanceof IWorldReader) {
 			Block block = ((IWorldReader) world).getBlockState(pos).getBlock();
 
