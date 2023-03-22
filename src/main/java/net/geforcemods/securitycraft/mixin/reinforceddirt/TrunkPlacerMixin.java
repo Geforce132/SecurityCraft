@@ -25,7 +25,7 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 @Mixin(TrunkPlacer.class)
 public class TrunkPlacerMixin {
 	@Inject(method = "setDirtAt", at = @At("HEAD"), cancellable = true)
-	private static void onSetDirtAt(LevelSimulatedReader simulatedLevel, BiConsumer<BlockPos, BlockState> blockSetter, Random random, BlockPos pos, TreeConfiguration config, CallbackInfo callback) {
+	private static void securitycraft$onSetDirtAt(LevelSimulatedReader simulatedLevel, BiConsumer<BlockPos, BlockState> blockSetter, Random random, BlockPos pos, TreeConfiguration config, CallbackInfo callback) {
 		if (simulatedLevel instanceof LevelReader level) {
 			Block block = level.getBlockState(pos).getBlock();
 

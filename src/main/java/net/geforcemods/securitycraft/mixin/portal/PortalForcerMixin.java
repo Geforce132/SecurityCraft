@@ -18,7 +18,7 @@ import net.minecraft.world.level.portal.PortalForcer;
 @Mixin(PortalForcer.class)
 public class PortalForcerMixin {
 	@Redirect(method = "canHostFrame", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
-	private BlockState addReinforcedBlockCheck(ServerLevel level, BlockPos offsetPos) {
+	private BlockState securitycraft$addReinforcedBlockCheck(ServerLevel level, BlockPos offsetPos) {
 		BlockState offsetState = level.getBlockState(offsetPos);
 
 		if (offsetState.getBlock() instanceof IReinforcedBlock)
