@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.GameRenderer;
 @Mixin(value = GameRenderer.class, priority = 1100)
 public class GameRendererMixin {
 	@ModifyConstant(method = "tickFov", constant = @Constant(floatValue = 1.0F))
-	private float modifyInitialFValue(float f) {
+	private float securitycraft$modifyInitialFValue(float f) {
 		if (Minecraft.getInstance().cameraEntity instanceof SecurityCamera cam)
 			return cam.getZoomAmount();
 		else
