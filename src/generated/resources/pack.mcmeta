@@ -1,0 +1,9 @@
+{
+  "pack": {
+    "description": {
+      "text": "SecurityCraft resources & data"
+    },
+    "forge:data_pack_format": 10,
+    "pack_format": 12
+  }
+}
