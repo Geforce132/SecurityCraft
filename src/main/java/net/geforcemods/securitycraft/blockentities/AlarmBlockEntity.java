@@ -70,7 +70,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 		super.save(tag);
 		tag.putInt("cooldown", cooldown);
 		tag.putBoolean("isPowered", isPowered);
-		tag.putString("sound", sound.getLocation().toString());
+		tag.putString("sound", sound.location.toString());
 		tag.putInt("delay", soundLength);
 		return tag;
 	}

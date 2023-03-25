@@ -45,7 +45,7 @@ public class SyncAlarmSettings {
 				AlarmBlockEntity be = (AlarmBlockEntity) tile;
 
 				if (be.isOwnedBy(ctx.get().getSender())) {
-					if (!message.soundEvent.equals(be.getSound().getLocation()))
+					if (!message.soundEvent.equals(be.getSound().location))
 						be.setSound(message.soundEvent);
 
 					if (message.soundLength != be.getSoundLength())

@@ -1,6 +1,7 @@
---------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
+--------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------
 
 - Fix: Mounting two cameras after one another in different dimensions causes severe lag
+- Fix: Placing an Alarm on a server leads to a crash
   
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
 

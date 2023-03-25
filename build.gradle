@@ -21,7 +21,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'eclipse'
 
-version = 'v1.9.6'
+version = 'v1.9.6.1'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
