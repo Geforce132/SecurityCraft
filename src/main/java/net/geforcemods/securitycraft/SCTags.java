@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Block;
 public class SCTags {
 	public static class Blocks {
 		public static final TagKey<Block> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
+		public static final TagKey<Block> REINFORCED_BAMBOO_BLOCKS = tag("reinforced/bamboo_blocks");
 		public static final TagKey<Block> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
 		public static final TagKey<Block> REINFORCED_BUTTONS = tag("reinforced/buttons");
 		public static final TagKey<Block> REINFORCED_COBBLESTONE = tag("reinforced/cobblestone");
@@ -50,6 +51,7 @@ public class SCTags {
 		public static final TagKey<Item> CAN_INTERACT_WITH_DOORS = tag("can_interact_with_doors");
 		public static final TagKey<Item> MODULES = tag("modules");
 		public static final TagKey<Item> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
+		public static final TagKey<Item> REINFORCED_BAMBOO_BLOCKS = tag("reinforced/bamboo_blocks");
 		public static final TagKey<Item> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
 		public static final TagKey<Item> REINFORCED_BUTTONS = tag("reinforced/buttons");
 		public static final TagKey<Item> REINFORCED_COBBLESTONE = tag("reinforced/cobblestone");

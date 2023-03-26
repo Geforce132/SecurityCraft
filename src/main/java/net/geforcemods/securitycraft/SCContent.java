@@ -205,6 +205,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.flag.FeatureFlag;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
@@ -2194,6 +2196,48 @@ public class SCContent {
 	@Reinforced(registerBlockItem = false)
 	public static final RegistryObject<Block> REINFORCED_POWDER_SNOW_CAULDRON = BLOCKS.register("reinforced_powder_snow_cauldron", () -> new ReinforcedLayeredCauldronBlock(prop(Material.METAL, MaterialColor.STONE).noOcclusion(), LayeredCauldronBlock.SNOW, IReinforcedCauldronInteraction.POWDER_SNOW, Blocks.POWDER_SNOW_CAULDRON));
 
+	//1.19.3+ content
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_BAMBOO_BLOCK = BLOCKS.register("reinforced_bamboo_block", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.BAMBOO_WOOD), Blocks.BAMBOO_BLOCK));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_STRIPPED_BAMBOO_BLOCK = BLOCKS.register("reinforced_stripped_bamboo_block", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.COLOR_YELLOW, FeatureFlags.UPDATE_1_20).sound(SoundType.BAMBOO_WOOD), Blocks.STRIPPED_BAMBOO_BLOCK));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_BAMBOO_PLANKS = BLOCKS.register("reinforced_bamboo_planks", () -> new BaseReinforcedBlock(prop(Material.WOOD, MaterialColor.COLOR_YELLOW, FeatureFlags.UPDATE_1_20).sound(SoundType.BAMBOO_WOOD), Blocks.BAMBOO_PLANKS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_BAMBOO_MOSAIC = BLOCKS.register("reinforced_bamboo_mosaic", () -> new BaseReinforcedBlock(prop(Material.WOOD, MaterialColor.COLOR_YELLOW, FeatureFlags.UPDATE_1_20).sound(SoundType.BAMBOO_WOOD), Blocks.BAMBOO_MOSAIC));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_BAMBOO_STAIRS = BLOCKS.register("reinforced_bamboo_stairs", () -> new ReinforcedStairsBlock(prop(Material.WOOD, MaterialColor.COLOR_YELLOW, FeatureFlags.UPDATE_1_20).sound(SoundType.BAMBOO_WOOD), Blocks.BAMBOO_STAIRS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_BAMBOO_MOSAIC_STAIRS = BLOCKS.register("reinforced_bamboo_mosaic_stairs", () -> new ReinforcedStairsBlock(prop(Material.WOOD, MaterialColor.COLOR_YELLOW, FeatureFlags.UPDATE_1_20).sound(SoundType.BAMBOO_WOOD), Blocks.BAMBOO_MOSAIC_STAIRS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_BAMBOO_SLAB = BLOCKS.register("reinforced_bamboo_slab", () -> new ReinforcedSlabBlock(prop(Material.WOOD, MaterialColor.COLOR_YELLOW, FeatureFlags.UPDATE_1_20).sound(SoundType.BAMBOO_WOOD), Blocks.BAMBOO_SLAB));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_BAMBOO_MOSAIC_SLAB = BLOCKS.register("reinforced_bamboo_mosaic_slab", () -> new ReinforcedSlabBlock(prop(Material.WOOD, MaterialColor.COLOR_YELLOW, FeatureFlags.UPDATE_1_20).sound(SoundType.BAMBOO_WOOD), Blocks.BAMBOO_MOSAIC_SLAB));
+	@HasManualPage(PageGroup.PRESSURE_PLATES)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_BAMBOO_PRESSURE_PLATE = BLOCKS.register("reinforced_bamboo_pressure_plate", () -> woodenPressurePlate(Blocks.BAMBOO_PRESSURE_PLATE, BlockSetType.BAMBOO, FeatureFlags.UPDATE_1_20));
+	@HasManualPage(PageGroup.BUTTONS)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_BAMBOO_BUTTON = BLOCKS.register("reinforced_bamboo_button", () -> woodenButton(Blocks.BAMBOO_BUTTON, BlockSetType.BAMBOO, FeatureFlags.UPDATE_1_20));
+	public static final RegistryObject<Block> SECRET_BAMBOO_SIGN = BLOCKS.register("secret_bamboo_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD).sound(SoundType.BAMBOO).requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.BAMBOO));
+	public static final RegistryObject<Block> SECRET_BAMBOO_WALL_SIGN = BLOCKS.register("secret_bamboo_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD).sound(SoundType.BAMBOO).requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.BAMBOO));
+
 	//misc
 	@RegisterItemBlock
 	public static final RegistryObject<Block> CRYSTAL_QUARTZ_SLAB = BLOCKS.register("crystal_quartz_slab", () -> new SlabBlock(Block.Properties.of(Material.STONE).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
@@ -2316,6 +2360,8 @@ public class SCContent {
 	public static final RegistryObject<Item> SECRET_DARK_OAK_SIGN_ITEM = ITEMS.register("secret_dark_oak_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_DARK_OAK_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_SIGN.get(), "item.securitycraft.secret_dark_oak_sign_item"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_MANGROVE_SIGN_ITEM = ITEMS.register("secret_mangrove_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_MANGROVE_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_SIGN.get(), "item.securitycraft.secret_mangrove_sign_item"));
+	@HasManualPage(PageGroup.SECRET_SIGNS)
+	public static final RegistryObject<Item> SECRET_BAMBOO_SIGN_ITEM = ITEMS.register("secret_bamboo_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_BAMBOO_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_SIGN.get(), "item.securitycraft.secret_bamboo_sign_item"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_CRIMSON_SIGN_ITEM = ITEMS.register("secret_crimson_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get(), "item.securitycraft.secret_crimson_sign_item"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
@@ -2446,6 +2492,8 @@ public class SCContent {
 			SCContent.SECRET_DARK_OAK_WALL_SIGN.get(),
 			SCContent.SECRET_MANGROVE_SIGN.get(),
 			SCContent.SECRET_MANGROVE_WALL_SIGN.get(),
+			SCContent.SECRET_BAMBOO_SIGN.get(),
+			SCContent.SECRET_BAMBOO_WALL_SIGN.get(),
 			SCContent.SECRET_CRIMSON_SIGN.get(),
 			SCContent.SECRET_CRIMSON_WALL_SIGN.get(),
 			SCContent.SECRET_WARPED_SIGN.get(),
@@ -2462,6 +2510,7 @@ public class SCContent {
 	public static final RegistryObject<BlockEntityType<AllowlistOnlyBlockEntity>> ALLOWLIST_ONLY_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_pressure_plate", () -> BlockEntityType.Builder.of(AllowlistOnlyBlockEntity::new,
 			SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_BAMBOO_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
@@ -2473,6 +2522,7 @@ public class SCContent {
 			SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_STONE_BUTTON.get(),
 			SCContent.REINFORCED_ACACIA_BUTTON.get(),
+			SCContent.REINFORCED_BAMBOO_BUTTON.get(),
 			SCContent.REINFORCED_BIRCH_BUTTON.get(),
 			SCContent.REINFORCED_CRIMSON_BUTTON.get(),
 			SCContent.REINFORCED_DARK_OAK_BUTTON.get(),
@@ -2565,12 +2615,20 @@ public class SCContent {
 		return Block.Properties.of(mat).strength(-1.0F, Float.MAX_VALUE);
 	}
 
+	private static final Block.Properties prop(Material mat, FeatureFlag... requiredFeatures) {
+		return prop(mat).requiredFeatures(requiredFeatures);
+	}
+
 	private static final Block.Properties prop(Material mat, float hardness) {
 		return Block.Properties.of(mat).strength(hardness, Float.MAX_VALUE);
 	}
 
 	private static final Block.Properties prop(Material mat, MaterialColor color) {
 		return Block.Properties.of(mat, color).strength(-1.0F, Float.MAX_VALUE);
+	}
+
+	private static final Block.Properties prop(Material mat, MaterialColor color, FeatureFlag... requiredFeatures) {
+		return prop(mat, color).requiredFeatures(requiredFeatures);
 	}
 
 	private static final Block.Properties propDisguisable() {
@@ -2621,6 +2679,10 @@ public class SCContent {
 		return new ReinforcedButtonBlock(prop(Material.DECORATION).noCollission(), vanillaBlock, blockSetType, 30, true);
 	}
 
+	private static ReinforcedButtonBlock woodenButton(Block vanillaBlock, BlockSetType blockSetType, FeatureFlag... requiredFeatures) {
+		return new ReinforcedButtonBlock(prop(Material.DECORATION).noCollission().requiredFeatures(requiredFeatures), vanillaBlock, blockSetType, 30, true);
+	}
+
 	private static ReinforcedButtonBlock stoneButton(Block vanillaBlock, BlockSetType blockSetType) {
 		return new ReinforcedButtonBlock(prop().noCollission(), vanillaBlock, blockSetType, 20, false);
 	}
@@ -2629,8 +2691,16 @@ public class SCContent {
 		return woodenPressurePlate(vanillaBlock, Material.WOOD, blockSetType);
 	}
 
+	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, BlockSetType blockSetType, FeatureFlag... requiredFeatures) {
+		return woodenPressurePlate(vanillaBlock, Material.WOOD, blockSetType, requiredFeatures);
+	}
+
 	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, Material material, BlockSetType blockSetType) {
 		return new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(material).noCollission(), vanillaBlock, blockSetType);
+	}
+
+	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, Material material, BlockSetType blockSetType, FeatureFlag... requiredFeatures) {
+		return new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(material).noCollission().requiredFeatures(requiredFeatures), vanillaBlock, blockSetType);
 	}
 
 	private static ReinforcedPressurePlateBlock stonePressurePlate(Block vanillaBlock, BlockSetType blockSetType) {

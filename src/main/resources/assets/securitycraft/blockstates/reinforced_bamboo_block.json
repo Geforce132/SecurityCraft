@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "securitycraft:block/reinforced_bamboo_block_x"
+    },
+    "axis=y": {
+      "model": "securitycraft:block/reinforced_bamboo_block_y"
+    },
+    "axis=z": {
+      "model": "securitycraft:block/reinforced_bamboo_block_z"
+    }
+  }
+}

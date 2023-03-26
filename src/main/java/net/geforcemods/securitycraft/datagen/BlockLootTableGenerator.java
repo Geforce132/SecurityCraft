@@ -92,6 +92,8 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 		putDoorLootTable(SCContent.SCANNER_DOOR, SCContent.SCANNER_DOOR_ITEM);
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_WALL_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_BAMBOO_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_BAMBOO_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_BIRCH_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_BIRCH_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_CRIMSON_SIGN);

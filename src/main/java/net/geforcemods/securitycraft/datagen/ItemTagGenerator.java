@@ -40,6 +40,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				SCContent.SPEED_MODULE.get(),
 				SCContent.STORAGE_MODULE.get());
 		copy(SCTags.Blocks.REINFORCED_ACACIA_LOGS, SCTags.Items.REINFORCED_ACACIA_LOGS);
+		copy(SCTags.Blocks.REINFORCED_BAMBOO_BLOCKS, SCTags.Items.REINFORCED_BAMBOO_BLOCKS);
 		copy(SCTags.Blocks.REINFORCED_BIRCH_LOGS, SCTags.Items.REINFORCED_BIRCH_LOGS);
 		copy(SCTags.Blocks.REINFORCED_BUTTONS, SCTags.Items.REINFORCED_BUTTONS);
 		copy(SCTags.Blocks.REINFORCED_WOOL_CARPETS, SCTags.Items.REINFORCED_WOOL_CARPETS);
@@ -69,6 +70,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		copy(SCTags.Blocks.REINFORCED_WOOL, SCTags.Items.REINFORCED_WOOL);
 		tag(SCTags.Items.SECRET_SIGNS).add(
 				SCContent.SECRET_ACACIA_SIGN_ITEM.get(),
+				SCContent.SECRET_BAMBOO_SIGN_ITEM.get(),
 				SCContent.SECRET_BIRCH_SIGN_ITEM.get(),
 				SCContent.SECRET_CRIMSON_SIGN_ITEM.get(),
 				SCContent.SECRET_DARK_OAK_SIGN_ITEM.get(),
