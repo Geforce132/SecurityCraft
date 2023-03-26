@@ -57,7 +57,6 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private PictureButton[] descriptionButtons = new PictureButton[5];
 	private AbstractWidget[] optionButtons;
 	private final Block block;
-	private final String blockName;
 	private final Component name;
 	private final int maxNumberOfModules;
 	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
@@ -66,7 +65,6 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		super(menu, inv, title);
 		moduleInv = menu.moduleInv;
 		block = menu.moduleInv.getBlockEntity().getBlockState().getBlock();
-		blockName = block.getDescriptionId().substring(5);
 		name = Utils.localize(block.getDescriptionId());
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
 		menu.addSlotListener(this);
@@ -89,7 +87,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			int column = i % numberOfColumns;
 
 			addRenderableWidget(descriptionButtons[i] = new ModuleButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked));
-			descriptionButtons[i].setTooltip(Tooltip.create(getModuleDescription(i)));
+			descriptionButtons[i].setTooltip(Tooltip.create(getModuleTooltipText(i)));
 			descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
 
@@ -230,15 +228,13 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		}
 	}
 
-	private Component getModuleDescription(int moduleId) {
+	private Component getModuleTooltipText(int moduleId) {
 		//@formatter:off
-		String moduleDescription = "module" + blockName + "." + descriptionButtons[moduleId].getItemStack().getDescriptionId().substring(5).replace("securitycraft.", "") + ".description";
-
 		return Utils.localize(descriptionButtons[moduleId].getItemStack().getDescriptionId())
 				.append(Component.literal(":"))
 				.withStyle(ChatFormatting.RESET)
 				.append(Component.literal("\n\n"))
-				.append(Utils.localize(moduleDescription));
+				.append(Utils.localize(moduleInv.getModuleDescriptionId(block.getDescriptionId().substring(6), ((ModuleItem) descriptionButtons[moduleId].getItemStack().getItem()).getModuleType())));
 		//@formatter:on
 	}
 
