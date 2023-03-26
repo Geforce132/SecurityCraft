@@ -542,4 +542,16 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	public default boolean shouldDropModules() {
 		return true;
 	}
+
+	/**
+	 * Get the description text's translation key that is shown in the customize screen tooltip when hovering over a module
+	 * button
+	 *
+	 * @param blockName The name of the block that is being customized
+	 * @param module The type of the module whose module button is being hovered
+	 * @return The translation key to use for the description
+	 */
+	public default String getModuleDescriptionId(String blockName, ModuleType module) {
+		return "module." + blockName + "." + module.getTranslationKey().substring(5).replace("securitycraft.", "") + ".description";
+	}
 }

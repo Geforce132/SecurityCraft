@@ -529,7 +529,7 @@ public class SCManualScreen extends Screen {
 					display.add(Component.literal("---"));
 
 					for (ModuleType module : moduleInv.acceptedModules()) {
-						display.add(Component.literal("- ").append(Utils.localize("module" + block.getDescriptionId().substring(5) + "." + module.getItem().getDescriptionId().substring(5).replace("securitycraft.", "") + ".description")));
+						display.add(Component.literal("- ").append(Utils.localize(moduleInv.getModuleDescriptionId(block.getDescriptionId().substring(6), module))));
 						display.add(Component.empty());
 					}
 
