@@ -349,6 +349,7 @@ public class RegistrationHandler {
 									new ItemStack(SCContent.SECRET_ACACIA_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_DARK_OAK_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_MANGROVE_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_BAMBOO_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_CRIMSON_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_WARPED_SIGN_ITEM.get())));
 							//@formatter:on

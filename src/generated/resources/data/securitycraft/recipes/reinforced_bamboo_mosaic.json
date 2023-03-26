@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_bamboo_mosaic_slab"
+    }
+  },
+  "pattern": [
+    "B",
+    "B"
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_bamboo_mosaic"
+  },
+  "show_notification": true
+}

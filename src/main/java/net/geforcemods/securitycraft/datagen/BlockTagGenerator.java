@@ -12,7 +12,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
@@ -31,6 +31,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_ACACIA_WOOD.get(),
 				SCContent.REINFORCED_STRIPPED_ACACIA_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_ACACIA_WOOD.get());
+		tag(SCTags.Blocks.REINFORCED_BAMBOO_BLOCKS).add(
+				SCContent.REINFORCED_BAMBOO_BLOCK.get(),
+				SCContent.REINFORCED_STRIPPED_BAMBOO_BLOCK.get());
 		tag(SCTags.Blocks.REINFORCED_BIRCH_LOGS).add(
 				SCContent.REINFORCED_BIRCH_LOG.get(),
 				SCContent.REINFORCED_BIRCH_WOOD.get(),
@@ -44,6 +47,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_JUNGLE_BUTTON.get(),
 				SCContent.REINFORCED_ACACIA_BUTTON.get(),
 				SCContent.REINFORCED_DARK_OAK_BUTTON.get(),
+				SCContent.REINFORCED_MANGROVE_BUTTON.get(),
+				SCContent.REINFORCED_BAMBOO_BUTTON.get(),
 				SCContent.REINFORCED_CRIMSON_BUTTON.get(),
 				SCContent.REINFORCED_WARPED_BUTTON.get(),
 				SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get());
@@ -106,6 +111,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_STRIPPED_OAK_WOOD.get());
 		tag(SCTags.Blocks.REINFORCED_PLANKS).add(
 				SCContent.REINFORCED_ACACIA_PLANKS.get(),
+				SCContent.REINFORCED_BAMBOO_PLANKS.get(),
 				SCContent.REINFORCED_BIRCH_PLANKS.get(),
 				SCContent.REINFORCED_CRIMSON_PLANKS.get(),
 				SCContent.REINFORCED_DARK_OAK_PLANKS.get(),
@@ -122,6 +128,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_MANGROVE_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_BAMBOO_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(),
@@ -171,6 +178,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_ACACIA_SLAB.get(),
 				SCContent.REINFORCED_DARK_OAK_SLAB.get(),
 				SCContent.REINFORCED_MANGROVE_SLAB.get(),
+				SCContent.REINFORCED_BAMBOO_SLAB.get(),
+				SCContent.REINFORCED_BAMBOO_MOSAIC_SLAB.get(),
 				SCContent.REINFORCED_CRIMSON_SLAB.get(),
 				SCContent.REINFORCED_WARPED_SLAB.get());
 		tag(SCTags.Blocks.REINFORCED_WOODEN_STAIRS).add(
@@ -181,6 +190,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_ACACIA_STAIRS.get(),
 				SCContent.REINFORCED_DARK_OAK_STAIRS.get(),
 				SCContent.REINFORCED_MANGROVE_STAIRS.get(),
+				SCContent.REINFORCED_BAMBOO_STAIRS.get(),
+				SCContent.REINFORCED_BAMBOO_MOSAIC_STAIRS.get(),
 				SCContent.REINFORCED_CRIMSON_STAIRS.get(),
 				SCContent.REINFORCED_WARPED_STAIRS.get());
 		tag(SCTags.Blocks.REINFORCED_WOOL).add(
@@ -203,6 +214,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(SCTags.Blocks.SECRET_SIGNS).addTag(SCTags.Blocks.SECRET_STANDING_SIGNS).addTag(SCTags.Blocks.SECRET_WALL_SIGNS);
 		tag(SCTags.Blocks.SECRET_STANDING_SIGNS).add(
 				SCContent.SECRET_ACACIA_SIGN.get(),
+				SCContent.SECRET_BAMBOO_SIGN.get(),
 				SCContent.SECRET_BIRCH_SIGN.get(),
 				SCContent.SECRET_CRIMSON_SIGN.get(),
 				SCContent.SECRET_DARK_OAK_SIGN.get(),
@@ -213,6 +225,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.SECRET_WARPED_SIGN.get());
 		tag(SCTags.Blocks.SECRET_WALL_SIGNS).add(
 				SCContent.SECRET_ACACIA_WALL_SIGN.get(),
+				SCContent.SECRET_BAMBOO_WALL_SIGN.get(),
 				SCContent.SECRET_BIRCH_WALL_SIGN.get(),
 				SCContent.SECRET_CRIMSON_WALL_SIGN.get(),
 				SCContent.SECRET_DARK_OAK_WALL_SIGN.get(),
@@ -410,13 +423,19 @@ public class BlockTagGenerator extends BlockTagsProvider {
 			}
 
 			//ugly way of checking if slabs/stairs are wood. they do not need to be added to the tag explicitly, as they are already present in the wooden equivalent tag
-			if (block instanceof ReinforcedSlabBlock && block.getSoundType(block.defaultBlockState()) != SoundType.WOOD)
+			if (block instanceof ReinforcedSlabBlock && !isWoodMaterial(block))
 				tag(SCTags.Blocks.REINFORCED_SLABS).add(block);
-			else if (block instanceof ReinforcedStairsBlock && block.getSoundType(block.defaultBlockState()) != SoundType.WOOD)
+			else if (block instanceof ReinforcedStairsBlock && !isWoodMaterial(block))
 				tag(SCTags.Blocks.REINFORCED_STAIRS).add(block);
 			else if (block instanceof ReinforcedWallBlock)
 				tag(BlockTags.WALLS).add(block);
 		}
+	}
+
+	private boolean isWoodMaterial(Block block) {
+		Material material = block.defaultBlockState().getMaterial();
+
+		return material == Material.WOOD || material == Material.NETHER_WOOD;
 	}
 
 	@Override

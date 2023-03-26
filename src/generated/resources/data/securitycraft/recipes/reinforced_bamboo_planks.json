@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "securitycraft:reinforced_planks",
+  "ingredients": [
+    {
+      "tag": "securitycraft:reinforced/bamboo_blocks"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "item": "securitycraft:reinforced_bamboo_planks"
+  }
+}
