@@ -1,4 +1,4 @@
---------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------
+--------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
 - New: Reinforced Blocks:*
 	- Block of Bamboo
@@ -14,7 +14,7 @@
 - New: Secret Bamboo Sign*
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 
-* only available if the update_1_20_ datapack is enabled
+* only available if the update_1_20 datapack is enabled
 
 --------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------
 
