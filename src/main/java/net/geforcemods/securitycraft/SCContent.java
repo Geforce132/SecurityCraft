@@ -2391,25 +2391,25 @@ public class SCContent {
 	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_WARPED_SIGN_ITEM = ITEMS.register("secret_warped_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_WARPED_SIGN.get(), SCContent.SECRET_WARPED_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_OAK_HANGING_SIGN_ITEM = ITEMS.register("secret_oak_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_OAK_HANGING_SIGN.get(), SCContent.SECRET_OAK_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_OAK_HANGING_SIGN_ITEM = ITEMS.register("secret_oak_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_OAK_HANGING_SIGN.get(), SCContent.SECRET_OAK_WALL_HANGING_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_SPRUCE_HANGING_SIGN_ITEM = ITEMS.register("secret_spruce_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_SPRUCE_HANGING_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_SPRUCE_HANGING_SIGN_ITEM = ITEMS.register("secret_spruce_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_SPRUCE_HANGING_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_HANGING_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_BIRCH_HANGING_SIGN_ITEM = ITEMS.register("secret_birch_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_BIRCH_HANGING_SIGN.get(), SCContent.SECRET_BIRCH_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_BIRCH_HANGING_SIGN_ITEM = ITEMS.register("secret_birch_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_BIRCH_HANGING_SIGN.get(), SCContent.SECRET_BIRCH_WALL_HANGING_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_JUNGLE_HANGING_SIGN_ITEM = ITEMS.register("secret_jungle_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_JUNGLE_HANGING_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_JUNGLE_HANGING_SIGN_ITEM = ITEMS.register("secret_jungle_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_JUNGLE_HANGING_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_HANGING_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_ACACIA_HANGING_SIGN_ITEM = ITEMS.register("secret_acacia_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_ACACIA_HANGING_SIGN.get(), SCContent.SECRET_ACACIA_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_ACACIA_HANGING_SIGN_ITEM = ITEMS.register("secret_acacia_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_ACACIA_HANGING_SIGN.get(), SCContent.SECRET_ACACIA_WALL_HANGING_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_DARK_OAK_HANGING_SIGN_ITEM = ITEMS.register("secret_dark_oak_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_DARK_OAK_HANGING_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_DARK_OAK_HANGING_SIGN_ITEM = ITEMS.register("secret_dark_oak_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_DARK_OAK_HANGING_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_HANGING_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_MANGROVE_HANGING_SIGN_ITEM = ITEMS.register("secret_mangrove_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_MANGROVE_HANGING_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_MANGROVE_HANGING_SIGN_ITEM = ITEMS.register("secret_mangrove_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_MANGROVE_HANGING_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_HANGING_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_BAMBOO_HANGING_SIGN_ITEM = ITEMS.register("secret_bamboo_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_BAMBOO_HANGING_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_BAMBOO_HANGING_SIGN_ITEM = ITEMS.register("secret_bamboo_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_BAMBOO_HANGING_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_HANGING_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_CRIMSON_HANGING_SIGN_ITEM = ITEMS.register("secret_crimson_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_CRIMSON_HANGING_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_CRIMSON_HANGING_SIGN_ITEM = ITEMS.register("secret_crimson_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_CRIMSON_HANGING_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_HANGING_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_WARPED_HANGING_SIGN_ITEM = ITEMS.register("secret_warped_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_WARPED_HANGING_SIGN.get(), SCContent.SECRET_WARPED_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_WARPED_HANGING_SIGN_ITEM = ITEMS.register("secret_warped_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_WARPED_HANGING_SIGN.get(), SCContent.SECRET_WARPED_WALL_HANGING_SIGN.get()));
 	@HasManualPage(designedBy = "Henzoid")
 	public static final RegistryObject<Item> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp()));
 	public static final RegistryObject<Item> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp().stacksTo(1)));
