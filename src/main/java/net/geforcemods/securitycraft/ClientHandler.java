@@ -187,7 +187,8 @@ public class ClientHandler {
 				"redstone_ore",
 				"sand",
 				"smoker",
-				"stone"
+				"stone",
+				"suspicious_sand"
 		};
 		//@formatter:on
 

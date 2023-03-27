@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.RegistrationHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
+import net.geforcemods.securitycraft.blocks.mines.BrushableMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.DeepslateMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
@@ -67,7 +68,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				else if (block instanceof IReinforcedBlock)
 					simpleReinforcedParent(block);
 			}
-			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
+			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock || mine instanceof BrushableMineBlock))
 				blockMine(mine.getBlockDisguisedAs(), block);
 		}
 

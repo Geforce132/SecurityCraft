@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BrushableMineBlockEntity;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
@@ -94,6 +95,7 @@ import net.geforcemods.securitycraft.blocks.TrophySystemBlock;
 import net.geforcemods.securitycraft.blocks.UsernameLoggerBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.BouncingBettyBlock;
+import net.geforcemods.securitycraft.blocks.mines.BrushableMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.blocks.mines.DeepslateMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.FallingBlockMineBlock;
@@ -506,6 +508,10 @@ public class SCContent {
 	@OwnableBE
 	@RegisterItemBlock
 	public static final RegistryObject<Block> BLAST_FURNACE_MINE = BLOCKS.register("blast_furnace_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F).requiresCorrectToolForDrops(), Blocks.BLAST_FURNACE));
+	@HasManualPage
+	@OwnableBE
+	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
+	public static final RegistryObject<Block> SUSPICIOUS_SAND_MINE = BLOCKS.register("suspicious_sand_mine", () -> new BrushableMineBlock(mineProp(Blocks.SUSPICIOUS_SAND), Blocks.SUSPICIOUS_SAND));
 
 	//reinforced blocks (ordered by vanilla <1.19.3 building blocks creative tab order)
 	@HasManualPage(PageGroup.REINFORCED)
@@ -2619,6 +2625,7 @@ public class SCContent {
 	public static final RegistryObject<BlockEntityType<DisplayCaseBlockEntity>> DISPLAY_CASE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("display_case", () -> BlockEntityType.Builder.of(DisplayCaseBlockEntity::new, SCContent.DISPLAY_CASE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<GlowDisplayCaseBlockEntity>> GLOW_DISPLAY_CASE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("glow_display_case", () -> BlockEntityType.Builder.of(GlowDisplayCaseBlockEntity::new, SCContent.GLOW_DISPLAY_CASE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<KeypadBarrelBlockEntity>> KEYPAD_BARREL_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_barrel", () -> BlockEntityType.Builder.of(KeypadBarrelBlockEntity::new, SCContent.KEYPAD_BARREL.get()).build(null));
+	public static final RegistryObject<BlockEntityType<BrushableMineBlockEntity>> BRUSHABLE_MINE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("brushable_mine", () -> BlockEntityType.Builder.of(BrushableMineBlockEntity::new, SCContent.SUSPICIOUS_SAND_MINE.get()).build(null));
 
 	//entity types
 	public static final RegistryObject<EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",

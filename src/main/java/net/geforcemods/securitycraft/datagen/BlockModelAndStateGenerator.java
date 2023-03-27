@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.RegistrationHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
+import net.geforcemods.securitycraft.blocks.mines.BrushableMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.DeepslateMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
@@ -81,7 +82,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 				else if (block instanceof ReinforcedCarpetBlock)
 					reinforcedCarpetBlock(block);
 			}
-			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
+			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock || mine instanceof BrushableMineBlock))
 				blockMine(mine.getBlockDisguisedAs(), block);
 		}
 

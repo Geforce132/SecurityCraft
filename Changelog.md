@@ -13,7 +13,9 @@
 	- Bamboo Button
 - New: Secret Bamboo Sign*
 - New: Secret Hanging Signs*
+- New: Suspicious Sand Mine (can be defused to get the item without it exploding)*
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
+- Fix: Jade does not properly hide blocks
 
 * only available if the update_1_20 datapack is enabled
 

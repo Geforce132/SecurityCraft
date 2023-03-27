@@ -17,7 +17,8 @@
 		"camera.ServerPlayerMixin",
 		"camera.TrackedEntityMixin",
 		"portal.PortalForcerMixin",
-		"potion.BrewingStandMenuMixin"
+		"potion.BrewingStandMenuMixin",
+		"sussandmine.BrushItemMixin"
 	],
 	"minVersion": "0.8"
 }

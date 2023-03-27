@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -43,7 +44,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 			if (entity instanceof ItemEntity)
 				return Shapes.block();
 			else if (entity instanceof Player player) {
-				if (level.getBlockEntity(pos) instanceof OwnableBlockEntity ownableTe) {
+				if (level.getBlockEntity(pos) instanceof IOwnable ownableTe) {
 					if (ownableTe.isOwnedBy(player) || player.isCreative())
 						return Shapes.block();
 				}

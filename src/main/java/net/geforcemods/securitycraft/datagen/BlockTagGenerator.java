@@ -373,8 +373,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.END_STONE_MINE.get());
 		tag(BlockTags.MINEABLE_WITH_SHOVEL).add(
 				SCContent.DIRT_MINE.get(),
+				SCContent.GRAVEL_MINE.get(),
 				SCContent.SAND_MINE.get(),
-				SCContent.GRAVEL_MINE.get());
+				SCContent.SUSPICIOUS_SAND_MINE.get());
 		tag(BlockTags.MUSHROOM_GROW_BLOCK).add(
 				SCContent.REINFORCED_MYCELIUM.get(),
 				SCContent.REINFORCED_PODZOL.get(),
