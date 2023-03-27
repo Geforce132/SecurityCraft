@@ -298,6 +298,14 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('P', SCTags.Items.REINFORCED_PLANKS)
 		.unlockedBy("has_book", has(Items.BOOK))
 		.save(consumer);
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_CHISELED_BOOKSHELF.get())
+		.pattern("PPP")
+		.pattern("SSS")
+		.pattern("PPP")
+		.define('P', SCTags.Items.REINFORCED_PLANKS)
+		.define('S', SCTags.Items.REINFORCED_WOODEN_SLABS)
+		.unlockedBy("has_book", has(Items.BOOK))
+		.save(consumer);
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_COARSE_DIRT.get(), 4)
 		.pattern("DG")
 		.pattern("GD")

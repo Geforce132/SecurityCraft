@@ -11,6 +11,7 @@
 	- Bamboo Mosaic Slab
 	- Bamboo Pressure Plate
 	- Bamboo Button
+    - Chiseled Bookshelf
 - New: Secret Bamboo Sign*
 - New: Secret Hanging Signs*
 - New: Suspicious Sand Mine (can be defused to get the item without it exploding)*
