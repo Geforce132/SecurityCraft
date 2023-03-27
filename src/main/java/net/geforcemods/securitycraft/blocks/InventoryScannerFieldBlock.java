@@ -286,7 +286,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 
 	@Override
 	public ItemStack getDisplayStack(Level level, BlockState state, BlockPos pos) {
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override

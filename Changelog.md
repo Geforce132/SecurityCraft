@@ -14,6 +14,7 @@
 - New: Secret Bamboo Sign*
 - New: Secret Hanging Signs*
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
+- Fix: Jade does not properly hide blocks
 
 * only available if the update_1_20 datapack is enabled
 

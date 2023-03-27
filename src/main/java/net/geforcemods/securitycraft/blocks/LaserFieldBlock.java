@@ -147,7 +147,7 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay {
 
 	@Override
 	public ItemStack getDisplayStack(Level level, BlockState state, BlockPos pos) {
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
