@@ -343,15 +343,25 @@ public class RegistrationHandler {
 						if (decorationGroupItems.get(i).getItem() == SCContent.REINFORCED_BOOKSHELF.get().asItem()) {
 							decorationGroupItems.addAll(i + 1, List.of( //@formatter:off
 									new ItemStack(SCContent.SECRET_OAK_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_OAK_HANGING_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_SPRUCE_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_SPRUCE_HANGING_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_BIRCH_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_BIRCH_HANGING_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_JUNGLE_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_JUNGLE_HANGING_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_ACACIA_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_ACACIA_HANGING_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_DARK_OAK_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_DARK_OAK_HANGING_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_MANGROVE_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_MANGROVE_HANGING_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_BAMBOO_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_BAMBOO_HANGING_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_CRIMSON_SIGN_ITEM.get()),
-									new ItemStack(SCContent.SECRET_WARPED_SIGN_ITEM.get())));
+									new ItemStack(SCContent.SECRET_CRIMSON_HANGING_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_WARPED_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_WARPED_HANGING_SIGN_ITEM.get())));
 							//@formatter:on
 							break;
 						}
