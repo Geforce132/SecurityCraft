@@ -15,22 +15,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SecretSignItem extends StandingAndWallBlockItem {
-	private final String translationKey;
-
-	public SecretSignItem(Item.Properties properties, Block floor, Block wall, String translationKey) {
+	public SecretSignItem(Item.Properties properties, Block floor, Block wall) {
 		super(floor, wall, properties, Direction.DOWN);
-
-		this.translationKey = translationKey;
-	}
-
-	@Override
-	public String getDescriptionId() {
-		return translationKey;
-	}
-
-	@Override
-	public String getDescriptionId(ItemStack stack) {
-		return getDescriptionId();
 	}
 
 	@Override

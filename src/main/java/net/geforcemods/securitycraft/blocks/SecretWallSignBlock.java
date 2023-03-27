@@ -4,8 +4,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -13,7 +11,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WallSignBlock;
@@ -21,9 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.MinecraftForge;
 
 public class SecretWallSignBlock extends WallSignBlock {
@@ -32,14 +26,9 @@ public class SecretWallSignBlock extends WallSignBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return Shapes.empty();
-	}
-
-	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if (placer instanceof Player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (Player) placer));
+		if (placer instanceof Player player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override
@@ -67,9 +56,7 @@ public class SecretWallSignBlock extends WallSignBlock {
 		if (!level.isClientSide && player.getItemInHand(hand).getItem() == SCContent.ADMIN_TOOL.get())
 			return SCContent.ADMIN_TOOL.get().useOn(new UseOnContext(player, hand, hit));
 
-		SecretSignBlockEntity be = (SecretSignBlockEntity) level.getBlockEntity(pos);
-
-		if (be != null && be.isPlayerAllowedToSeeText(player))
+		if (level.getBlockEntity(pos) instanceof SecretSignBlockEntity be && be.isPlayerAllowedToSeeText(player))
 			return super.use(state, level, pos, player, hand, hit);
 
 		return InteractionResult.FAIL;
@@ -78,10 +65,5 @@ public class SecretWallSignBlock extends WallSignBlock {
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new SecretSignBlockEntity(pos, state);
-	}
-
-	@Override
-	public String getDescriptionId() {
-		return Util.makeDescriptionId("block", Utils.getRegistryName(this)).replace("_wall", "");
 	}
 }

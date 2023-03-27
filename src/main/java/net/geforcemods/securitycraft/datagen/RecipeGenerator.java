@@ -742,6 +742,16 @@ public class RecipeGenerator extends RecipeProvider {
 		addSecretSignRecipe(consumer, Items.OAK_SIGN, SCContent.SECRET_OAK_SIGN.get());
 		addSecretSignRecipe(consumer, Items.SPRUCE_SIGN, SCContent.SECRET_SPRUCE_SIGN.get());
 		addSecretSignRecipe(consumer, Items.WARPED_SIGN, SCContent.SECRET_WARPED_SIGN.get());
+		addSecretSignRecipe(consumer, Items.ACACIA_HANGING_SIGN, SCContent.SECRET_ACACIA_HANGING_SIGN.get());
+		addSecretSignRecipe(consumer, Items.BAMBOO_HANGING_SIGN, SCContent.SECRET_BAMBOO_HANGING_SIGN.get());
+		addSecretSignRecipe(consumer, Items.BIRCH_HANGING_SIGN, SCContent.SECRET_BIRCH_HANGING_SIGN.get());
+		addSecretSignRecipe(consumer, Items.CRIMSON_HANGING_SIGN, SCContent.SECRET_CRIMSON_HANGING_SIGN.get());
+		addSecretSignRecipe(consumer, Items.DARK_OAK_HANGING_SIGN, SCContent.SECRET_DARK_OAK_HANGING_SIGN.get());
+		addSecretSignRecipe(consumer, Items.JUNGLE_HANGING_SIGN, SCContent.SECRET_JUNGLE_HANGING_SIGN.get());
+		addSecretSignRecipe(consumer, Items.MANGROVE_HANGING_SIGN, SCContent.SECRET_MANGROVE_HANGING_SIGN.get());
+		addSecretSignRecipe(consumer, Items.OAK_HANGING_SIGN, SCContent.SECRET_OAK_HANGING_SIGN.get());
+		addSecretSignRecipe(consumer, Items.SPRUCE_HANGING_SIGN, SCContent.SECRET_SPRUCE_HANGING_SIGN.get());
+		addSecretSignRecipe(consumer, Items.WARPED_HANGING_SIGN, SCContent.SECRET_WARPED_HANGING_SIGN.get());
 		addSlabRecipe(consumer, Ingredient.of(SCContent.CRYSTAL_QUARTZ_BLOCK.get(), SCContent.CRYSTAL_QUARTZ_PILLAR.get(), SCContent.CHISELED_CRYSTAL_QUARTZ.get()), SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_ANDESITE.get(), SCContent.REINFORCED_ANDESITE_SLAB.get());

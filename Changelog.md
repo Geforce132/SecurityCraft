@@ -12,6 +12,7 @@
 	- Bamboo Pressure Plate
 	- Bamboo Button
 - New: Secret Bamboo Sign*
+- New: Secret Hanging Signs*
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 
 * only available if the update_1_20 datapack is enabled

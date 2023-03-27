@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 
 public class SCTags {
 	public static class Blocks {
+		public static final TagKey<Block> ALL_SECRET_SIGNS = tag("all_secret_signs");
 		public static final TagKey<Block> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
 		public static final TagKey<Block> REINFORCED_BAMBOO_BLOCKS = tag("reinforced/bamboo_blocks");
 		public static final TagKey<Block> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
@@ -38,8 +39,11 @@ public class SCTags {
 		public static final TagKey<Block> REINFORCED_WOODEN_STAIRS = tag("reinforced/wooden_stairs");
 		public static final TagKey<Block> REINFORCED_WOOL = tag("reinforced/wool");
 		public static final TagKey<Block> REINFORCED_WOOL_CARPETS = tag("reinforced/wool_carpets");
+		public static final TagKey<Block> SECRET_CEILING_HANGING_SIGNS = tag("secret_ceiling_hanging_signs");
+		public static final TagKey<Block> SECRET_HANGING_SIGNS = tag("secret_hanging_signs");
 		public static final TagKey<Block> SECRET_SIGNS = tag("secret_signs");
 		public static final TagKey<Block> SECRET_STANDING_SIGNS = tag("secret_standing_signs");
+		public static final TagKey<Block> SECRET_WALL_HANGING_SIGNS = tag("secret_wall_hanging_signs");
 		public static final TagKey<Block> SECRET_WALL_SIGNS = tag("secret_wall_signs");
 
 		private static TagKey<Block> tag(String name) {
@@ -79,6 +83,7 @@ public class SCTags {
 		public static final TagKey<Item> REINFORCED_WOODEN_STAIRS = tag("reinforced/wooden_stairs");
 		public static final TagKey<Item> REINFORCED_WOOL = tag("reinforced/wool");
 		public static final TagKey<Item> REINFORCED_WOOL_CARPETS = tag("reinforced/wool_carpets");
+		public static final TagKey<Item> SECRET_HANGING_SIGNS = tag("secret_hanging_signs");
 		public static final TagKey<Item> SECRET_SIGNS = tag("secret_signs");
 
 		private static TagKey<Item> tag(String name) {

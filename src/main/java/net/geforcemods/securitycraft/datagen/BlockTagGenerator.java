@@ -26,6 +26,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	protected void addTags(HolderLookup.Provider provider) {
 		//@formatter:off
 		//securitycraft tags
+		tag(SCTags.Blocks.ALL_SECRET_SIGNS).addTag(SCTags.Blocks.SECRET_HANGING_SIGNS).addTag(SCTags.Blocks.SECRET_SIGNS);
 		tag(SCTags.Blocks.REINFORCED_ACACIA_LOGS).add(
 				SCContent.REINFORCED_ACACIA_LOG.get(),
 				SCContent.REINFORCED_ACACIA_WOOD.get(),
@@ -211,7 +212,19 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_GREEN_WOOL.get(),
 				SCContent.REINFORCED_RED_WOOL.get(),
 				SCContent.REINFORCED_BLACK_WOOL.get());
+		tag(SCTags.Blocks.SECRET_HANGING_SIGNS).addTag(SCTags.Blocks.SECRET_CEILING_HANGING_SIGNS).addTag(SCTags.Blocks.SECRET_WALL_HANGING_SIGNS);
 		tag(SCTags.Blocks.SECRET_SIGNS).addTag(SCTags.Blocks.SECRET_STANDING_SIGNS).addTag(SCTags.Blocks.SECRET_WALL_SIGNS);
+		tag(SCTags.Blocks.SECRET_CEILING_HANGING_SIGNS).add(
+				SCContent.SECRET_ACACIA_HANGING_SIGN.get(),
+				SCContent.SECRET_BAMBOO_HANGING_SIGN.get(),
+				SCContent.SECRET_BIRCH_HANGING_SIGN.get(),
+				SCContent.SECRET_CRIMSON_HANGING_SIGN.get(),
+				SCContent.SECRET_DARK_OAK_HANGING_SIGN.get(),
+				SCContent.SECRET_JUNGLE_HANGING_SIGN.get(),
+				SCContent.SECRET_MANGROVE_HANGING_SIGN.get(),
+				SCContent.SECRET_OAK_HANGING_SIGN.get(),
+				SCContent.SECRET_SPRUCE_HANGING_SIGN.get(),
+				SCContent.SECRET_WARPED_HANGING_SIGN.get());
 		tag(SCTags.Blocks.SECRET_STANDING_SIGNS).add(
 				SCContent.SECRET_ACACIA_SIGN.get(),
 				SCContent.SECRET_BAMBOO_SIGN.get(),
@@ -223,6 +236,17 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.SECRET_OAK_SIGN.get(),
 				SCContent.SECRET_SPRUCE_SIGN.get(),
 				SCContent.SECRET_WARPED_SIGN.get());
+		tag(SCTags.Blocks.SECRET_WALL_HANGING_SIGNS).add(
+				SCContent.SECRET_ACACIA_WALL_HANGING_SIGN.get(),
+				SCContent.SECRET_BAMBOO_WALL_HANGING_SIGN.get(),
+				SCContent.SECRET_BIRCH_WALL_HANGING_SIGN.get(),
+				SCContent.SECRET_CRIMSON_WALL_HANGING_SIGN.get(),
+				SCContent.SECRET_DARK_OAK_WALL_HANGING_SIGN.get(),
+				SCContent.SECRET_JUNGLE_WALL_HANGING_SIGN.get(),
+				SCContent.SECRET_MANGROVE_WALL_HANGING_SIGN.get(),
+				SCContent.SECRET_OAK_WALL_HANGING_SIGN.get(),
+				SCContent.SECRET_SPRUCE_WALL_HANGING_SIGN.get(),
+				SCContent.SECRET_WARPED_WALL_HANGING_SIGN.get());
 		tag(SCTags.Blocks.SECRET_WALL_SIGNS).add(
 				SCContent.SECRET_ACACIA_WALL_SIGN.get(),
 				SCContent.SECRET_BAMBOO_WALL_SIGN.get(),
@@ -261,7 +285,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_BLACK_CARPET.get());
 
 		//minecraft tags
-		tag(BlockTags.ALL_SIGNS).addTag(SCTags.Blocks.SECRET_SIGNS);
+		tag(BlockTags.ALL_SIGNS).addTag(SCTags.Blocks.ALL_SECRET_SIGNS);
 		tag(BlockTags.BAMBOO_PLANTABLE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_DIRT).add(SCContent.REINFORCED_GRAVEL.get());
 		tag(BlockTags.BEACON_BASE_BLOCKS).add(
 				SCContent.REINFORCED_DIAMOND_BLOCK.get(),
