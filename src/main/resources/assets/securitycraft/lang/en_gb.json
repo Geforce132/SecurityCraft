@@ -29,6 +29,7 @@
 	"block.securitycraft.reinforced_packed_ice": "Reinforced Compressed Ice",
 	"block.securitycraft.reinforced_redstone_block": "Reinforced Redstone Block",
 	"help.securitycraft.block_pocket_manager.info": "The Block Pocket Manager is used to manage the Block Pocket, which is a room that only its owner and players on the allowlist can enter. When opening its GUI, you see a selection of sizes. Choose one, then build the Block Pocket around the manager. Make sure that the manager is placed on the outside of the bottom layer. The Block Pocket is a cube of the size you chose. The corners are built with Reinforced Chiselled Crystal Quartz, the blocks between the corners are built with correctly oriented Reinforced Crystal Quartz Pillars, and the floor/wall/ceiling is built with Block Pocket Walls. See this image for an example of how it looks: https://i.imgur.com/opc7dqO.png - Clicking \"Activate\" after the structure is built will activate any added modules. See the customization GUI for more information (rightclick with Universal Block Modifier).",
+	"help.securitycraft.reinforced_chiseled_bookshelf.info": "The Reinforced Chiselled Bookshelf has the same features as its vanilla counterpart, though only the owner and players on the allowlist can add and remove books.",
 	"module.securitycraft.reinforced_chiseled_bookshelf.whitelist_module.description": "Adding an allowlist module to a Reinforced Chiselled Bookshelf will allow listed players to interact with the Reinforced Chiselled Bookshelf.",
 	"securitycraft.subtitle.get_item": "Item got!"
 }

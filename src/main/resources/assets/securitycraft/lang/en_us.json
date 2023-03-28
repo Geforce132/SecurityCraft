@@ -809,6 +809,7 @@
 	"help.securitycraft.redstone_module.info": "The redstone module adds power properties to a block.",
 	"help.securitycraft.reinforced.info": "Reinforced blocks are unbreakable building blocks with vanilla equivalents. Only the person who placed them down can destroy them using the universal block remover.",
 	"help.securitycraft.reinforced_buttons.info": "The reinforced buttons can only be activated by their owner or players on the allowlist.",
+	"help.securitycraft.reinforced_chiseled_bookshelf.info": "The Reinforced Chiseled Bookshelf has the same features as its vanilla counterpart, though only the owner and players on the allowlist can add and remove books.",
 	"help.securitycraft.reinforced_crystal_quartz.info": "Reinforced Crystal Quartz Blocks are used to build the Block Pocket. More info on the Block Pocket Manager's page.",
 	"help.securitycraft.reinforced_fence_gate.info": "The electrified iron fence gate acts the same as a vanilla fence gate, except it is unbreakable, and can only be opened by Keypads, Inventory Scanners, etc.. It will also hurt anyone but the owner when they get in contact with it.",
 	"help.securitycraft.reinforced_glass_pane.info": "The reinforced glass pane is the same as a vanilla glass, except only the person who placed it down can destroy it using the universal block remover.",

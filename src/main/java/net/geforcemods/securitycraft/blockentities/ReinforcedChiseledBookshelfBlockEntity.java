@@ -17,12 +17,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ReinforcedChiseledBookShelfBlockEntity extends ChiseledBookShelfBlockEntity implements IOwnable, IModuleInventory {
+public class ReinforcedChiseledBookshelfBlockEntity extends ChiseledBookShelfBlockEntity implements IOwnable, IModuleInventory {
 	private NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private Owner owner = new Owner();
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
-	public ReinforcedChiseledBookShelfBlockEntity(BlockPos pos, BlockState state) {
+	public ReinforcedChiseledBookshelfBlockEntity(BlockPos pos, BlockState state) {
 		super(pos, state);
 	}
 
