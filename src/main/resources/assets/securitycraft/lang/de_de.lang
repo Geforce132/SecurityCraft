@@ -566,8 +566,8 @@ option.securitycraft:alarm.delay.description=Wenn ein Alarm aktiviert wird, wie 
 option.securitycraft:alarm.delay=Verzögerung: #
 option.securitycraft:alarm.range.description=Wie viele Blöcke weit kann der Alarm-Sound gehört werden?
 option.securitycraft:alarm.range=Reichweite: #
-option.securitycraft:alarm.resetCooldown=Abklingzeit zurücksetzen: #
 option.securitycraft:alarm.resetCooldown.description=Soll die Abklingzeit zwischen Alarmsounds zurückgesetzt werden, sobald der Alarm ein Redstonesignal bekommt, sodass der Alarmsound immer sofort abgespielt wird?
+option.securitycraft:alarm.resetCooldown=Abklingzeit zurücksetzen: #
 option.securitycraft:block_change_detector.range.description=Wie weit weg soll der Detektor Blöcke, die von Spielern platziert/zerbrochen wurden, detektieren?
 option.securitycraft:block_change_detector.range=Detektionsradius: #
 option.securitycraft:block_change_detector.signalLength.description=Wie lange soll das Redstonesignal nach Detektion einer Block-Änderung sein? (In Ticks, 20 Ticks = 1 Sekunde)

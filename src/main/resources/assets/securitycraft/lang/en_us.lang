@@ -574,8 +574,8 @@ option.securitycraft:alarm.delay.description=If an alarm is activated, how many 
 option.securitycraft:alarm.delay=Delay: #
 option.securitycraft:alarm.range.description=How many blocks away can the alarm sound be heard?
 option.securitycraft:alarm.range=Range: #
-option.securitycraft:alarm.resetCooldown=Reset Cooldown: #
 option.securitycraft:alarm.resetCooldown.description=Should the cooldown between alarm sounds be reset when the alarm is powered on, meaning the sound is always played immediately?
+option.securitycraft:alarm.resetCooldown=Reset Cooldown: #
 option.securitycraft:block_change_detector.range.description=How far away should the detector be able to detect block changes by players?
 option.securitycraft:block_change_detector.range=Detection radius: #
 option.securitycraft:block_change_detector.signalLength.description=How long should the redstone signal after detecting a block change be? (In ticks, 20 ticks = 1 second)
