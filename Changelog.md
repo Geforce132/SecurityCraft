@@ -28,8 +28,9 @@
 - New: Sonic Security Systems and Portable Tune Players now support mob head and custom note block sounds*
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 - Fix: Jade does not properly hide blocks
+- Fix: Shields do not take damage when blocking a taser that deals high enough damage
 
-* only available if the update_1_20 datapack is enabled
+[*] only available if the update_1_20 datapack is enabled
 
 --------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------
 
