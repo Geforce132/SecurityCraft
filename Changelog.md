@@ -30,6 +30,7 @@
 - Fix: Jade does not properly hide blocks
 - Fix: Shields do not take damage when blocking a taser that deals high enough damage
 - Fix: A player shooting a guardian with a taser gets damaged by the guardian's thorns
+- Fix: The death message of a player killed by a taser does not contain the player firing the taser
 
 [*] only available if the update_1_20 datapack is enabled
 
