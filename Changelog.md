@@ -11,8 +11,18 @@
 	- Bamboo Mosaic Slab
 	- Bamboo Pressure Plate
 	- Bamboo Button
-    - Chiseled Bookshelf
+	- Chiseled Bookshelf
+	- Cherry Log
+	- Cherry Wood
+	- Stripped Cherry Log
+	- Stripped Cherry Wood
+	- Cherry Planks
+	- Cherry Stairs
+	- Cherry Slab
+	- Cherry Pressure Plate
+	- Cherry Button
 - New: Secret Bamboo Sign*
+- New: Secret Cherry Sign*
 - New: Secret Hanging Signs*
 - New: Suspicious Sand Mine (can be defused to get the item without it exploding)*
 - New: Sonic Security Systems and Portable Tune Players now support mob head and custom note block sounds*

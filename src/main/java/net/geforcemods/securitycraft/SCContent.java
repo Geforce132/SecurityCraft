@@ -2247,8 +2247,11 @@ public class SCContent {
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_BAMBOO_BUTTON = BLOCKS.register("reinforced_bamboo_button", () -> woodenButton(Blocks.BAMBOO_BUTTON, BlockSetType.BAMBOO, FeatureFlags.UPDATE_1_20));
-	public static final RegistryObject<Block> SECRET_BAMBOO_SIGN = BLOCKS.register("secret_bamboo_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD).sound(SoundType.BAMBOO).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.BAMBOO));
-	public static final RegistryObject<Block> SECRET_BAMBOO_WALL_SIGN = BLOCKS.register("secret_bamboo_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD).sound(SoundType.BAMBOO).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.BAMBOO));
+	public static final RegistryObject<Block> SECRET_CHERRY_SIGN = BLOCKS.register("secret_cherry_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.CHERRY));
+	public static final RegistryObject<Block> SECRET_CHERRY_WALL_SIGN = BLOCKS.register("secret_cherry_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.CHERRY));
+	public static final RegistryObject<Block> SECRET_BAMBOO_SIGN = BLOCKS.register("secret_bamboo_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.BAMBOO));
+	public static final RegistryObject<Block> SECRET_BAMBOO_WALL_SIGN = BLOCKS.register("secret_bamboo_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.BAMBOO));
+	//hanging signs
 	public static final RegistryObject<Block> SECRET_OAK_HANGING_SIGN = BLOCKS.register("secret_oak_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.OAK));
 	public static final RegistryObject<Block> SECRET_OAK_WALL_HANGING_SIGN = BLOCKS.register("secret_oak_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.OAK));
 	public static final RegistryObject<Block> SECRET_SPRUCE_HANGING_SIGN = BLOCKS.register("secret_spruce_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.SPRUCE));
@@ -2263,15 +2266,52 @@ public class SCContent {
 	public static final RegistryObject<Block> SECRET_DARK_OAK_WALL_HANGING_SIGN = BLOCKS.register("secret_dark_oak_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.DARK_OAK));
 	public static final RegistryObject<Block> SECRET_MANGROVE_HANGING_SIGN = BLOCKS.register("secret_mangrove_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.MANGROVE));
 	public static final RegistryObject<Block> SECRET_MANGROVE_WALL_HANGING_SIGN = BLOCKS.register("secret_mangrove_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.MANGROVE));
+	public static final RegistryObject<Block> SECRET_CHERRY_HANGING_SIGN = BLOCKS.register("secret_cherry_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.CHERRY));
+	public static final RegistryObject<Block> SECRET_CHERRY_WALL_HANGING_SIGN = BLOCKS.register("secret_cherry_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.CHERRY));
 	public static final RegistryObject<Block> SECRET_BAMBOO_HANGING_SIGN = BLOCKS.register("secret_bamboo_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.BAMBOO));
 	public static final RegistryObject<Block> SECRET_BAMBOO_WALL_HANGING_SIGN = BLOCKS.register("secret_bamboo_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.BAMBOO));
 	public static final RegistryObject<Block> SECRET_CRIMSON_HANGING_SIGN = BLOCKS.register("secret_crimson_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.CRIMSON));
 	public static final RegistryObject<Block> SECRET_CRIMSON_WALL_HANGING_SIGN = BLOCKS.register("secret_crimson_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.CRIMSON));
 	public static final RegistryObject<Block> SECRET_WARPED_HANGING_SIGN = BLOCKS.register("secret_warped_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.WARPED));
 	public static final RegistryObject<Block> SECRET_WARPED_WALL_HANGING_SIGN = BLOCKS.register("secret_warped_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.WARPED));
+	//end hanging signs
 	@HasManualPage
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_CHISELED_BOOKSHELF = BLOCKS.register("reinforced_chiseled_bookshelf", () -> new ReinforcedChiseledBookshelfBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHISELED_BOOKSHELF)));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_LOG = BLOCKS.register("reinforced_cherry_log", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHERRY_WOOD), Blocks.CHERRY_LOG));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_WOOD = BLOCKS.register("reinforced_cherry_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHERRY_WOOD), Blocks.CHERRY_WOOD));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_STRIPPED_CHERRY_LOG = BLOCKS.register("reinforced_stripped_cherry_log", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHERRY_WOOD), Blocks.STRIPPED_CHERRY_LOG));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_STRIPPED_CHERRY_WOOD = BLOCKS.register("reinforced_stripped_cherry_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHERRY_WOOD), Blocks.STRIPPED_CHERRY_WOOD));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_PLANKS = BLOCKS.register("reinforced_cherry_planks", () -> new BaseReinforcedBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHERRY_WOOD), Blocks.CHERRY_PLANKS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_STAIRS = BLOCKS.register("reinforced_cherry_stairs", () -> new ReinforcedStairsBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHERRY_WOOD), Blocks.CHERRY_STAIRS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_SLAB = BLOCKS.register("reinforced_cherry_slab", () -> new ReinforcedSlabBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHERRY_WOOD), Blocks.CHERRY_SLAB));
+	@HasManualPage(PageGroup.PRESSURE_PLATES)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_PRESSURE_PLATE = BLOCKS.register("reinforced_cherry_pressure_plate", () -> woodenPressurePlate(Blocks.CHERRY_PRESSURE_PLATE, BlockSetType.CHERRY, FeatureFlags.UPDATE_1_20));
+	@HasManualPage(PageGroup.BUTTONS)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_BUTTON = BLOCKS.register("reinforced_cherry_button", () -> woodenButton(Blocks.CHERRY_BUTTON, BlockSetType.CHERRY, FeatureFlags.UPDATE_1_20));
 
 	//misc
 	@RegisterItemBlock
@@ -2396,6 +2436,8 @@ public class SCContent {
 	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_MANGROVE_SIGN_ITEM = ITEMS.register("secret_mangrove_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_MANGROVE_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
+	public static final RegistryObject<Item> SECRET_CHERRY_SIGN_ITEM = ITEMS.register("secret_cherry_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_CHERRY_SIGN.get(), SCContent.SECRET_CHERRY_WALL_SIGN.get()));
+	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_BAMBOO_SIGN_ITEM = ITEMS.register("secret_bamboo_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_BAMBOO_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_CRIMSON_SIGN_ITEM = ITEMS.register("secret_crimson_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get()));
@@ -2415,6 +2457,8 @@ public class SCContent {
 	public static final RegistryObject<Item> SECRET_DARK_OAK_HANGING_SIGN_ITEM = ITEMS.register("secret_dark_oak_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_DARK_OAK_HANGING_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_HANGING_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
 	public static final RegistryObject<Item> SECRET_MANGROVE_HANGING_SIGN_ITEM = ITEMS.register("secret_mangrove_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_MANGROVE_HANGING_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_HANGING_SIGN.get()));
+	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
+	public static final RegistryObject<Item> SECRET_CHERRY_HANGING_SIGN_ITEM = ITEMS.register("secret_cherry_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_CHERRY_HANGING_SIGN.get(), SCContent.SECRET_CHERRY_WALL_HANGING_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
 	public static final RegistryObject<Item> SECRET_BAMBOO_HANGING_SIGN_ITEM = ITEMS.register("secret_bamboo_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_BAMBOO_HANGING_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_HANGING_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
@@ -2547,6 +2591,8 @@ public class SCContent {
 			SCContent.SECRET_DARK_OAK_WALL_SIGN.get(),
 			SCContent.SECRET_MANGROVE_SIGN.get(),
 			SCContent.SECRET_MANGROVE_WALL_SIGN.get(),
+			SCContent.SECRET_CHERRY_SIGN.get(),
+			SCContent.SECRET_CHERRY_WALL_SIGN.get(),
 			SCContent.SECRET_BAMBOO_SIGN.get(),
 			SCContent.SECRET_BAMBOO_WALL_SIGN.get(),
 			SCContent.SECRET_CRIMSON_SIGN.get(),
@@ -2568,6 +2614,8 @@ public class SCContent {
 			SCContent.SECRET_DARK_OAK_WALL_HANGING_SIGN.get(),
 			SCContent.SECRET_MANGROVE_HANGING_SIGN.get(),
 			SCContent.SECRET_MANGROVE_WALL_HANGING_SIGN.get(),
+			SCContent.SECRET_CHERRY_HANGING_SIGN.get(),
+			SCContent.SECRET_CHERRY_WALL_HANGING_SIGN.get(),
 			SCContent.SECRET_BAMBOO_HANGING_SIGN.get(),
 			SCContent.SECRET_BAMBOO_WALL_HANGING_SIGN.get(),
 			SCContent.SECRET_CRIMSON_HANGING_SIGN.get(),
@@ -2588,6 +2636,7 @@ public class SCContent {
 			SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_BAMBOO_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_CHERRY_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(),
@@ -2600,6 +2649,7 @@ public class SCContent {
 			SCContent.REINFORCED_ACACIA_BUTTON.get(),
 			SCContent.REINFORCED_BAMBOO_BUTTON.get(),
 			SCContent.REINFORCED_BIRCH_BUTTON.get(),
+			SCContent.REINFORCED_CHERRY_BUTTON.get(),
 			SCContent.REINFORCED_CRIMSON_BUTTON.get(),
 			SCContent.REINFORCED_DARK_OAK_BUTTON.get(),
 			SCContent.REINFORCED_JUNGLE_BUTTON.get(),

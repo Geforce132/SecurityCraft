@@ -49,10 +49,16 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_ACACIA_BUTTON.get(),
 				SCContent.REINFORCED_DARK_OAK_BUTTON.get(),
 				SCContent.REINFORCED_MANGROVE_BUTTON.get(),
+				SCContent.REINFORCED_CHERRY_BUTTON.get(),
 				SCContent.REINFORCED_BAMBOO_BUTTON.get(),
 				SCContent.REINFORCED_CRIMSON_BUTTON.get(),
 				SCContent.REINFORCED_WARPED_BUTTON.get(),
 				SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get());
+	    tag(SCTags.Blocks.REINFORCED_CHERRY_LOGS).add(
+	    		SCContent.REINFORCED_CHERRY_LOG.get(),
+	    		SCContent.REINFORCED_CHERRY_WOOD.get(),
+	    		SCContent.REINFORCED_STRIPPED_CHERRY_LOG.get(),
+	    		SCContent.REINFORCED_STRIPPED_CHERRY_WOOD.get());
 		tag(SCTags.Blocks.REINFORCED_COBBLESTONE).add(
 				SCContent.REINFORCED_COBBLESTONE.get(),
 				SCContent.REINFORCED_MOSSY_COBBLESTONE.get());
@@ -89,6 +95,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(SCTags.Blocks.REINFORCED_LOGS)
 		.addTag(SCTags.Blocks.REINFORCED_ACACIA_LOGS)
 		.addTag(SCTags.Blocks.REINFORCED_BIRCH_LOGS)
+		.addTag(SCTags.Blocks.REINFORCED_CHERRY_LOGS)
 		.addTag(SCTags.Blocks.REINFORCED_CRIMSON_STEMS)
 		.addTag(SCTags.Blocks.REINFORCED_DARK_OAK_LOGS)
 		.addTag(SCTags.Blocks.REINFORCED_JUNGLE_LOGS)
@@ -114,6 +121,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_ACACIA_PLANKS.get(),
 				SCContent.REINFORCED_BAMBOO_PLANKS.get(),
 				SCContent.REINFORCED_BIRCH_PLANKS.get(),
+				SCContent.REINFORCED_CHERRY_PLANKS.get(),
 				SCContent.REINFORCED_CRIMSON_PLANKS.get(),
 				SCContent.REINFORCED_DARK_OAK_PLANKS.get(),
 				SCContent.REINFORCED_JUNGLE_PLANKS.get(),
@@ -129,6 +137,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_MANGROVE_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_CHERRY_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_BAMBOO_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get(),
@@ -179,6 +188,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_ACACIA_SLAB.get(),
 				SCContent.REINFORCED_DARK_OAK_SLAB.get(),
 				SCContent.REINFORCED_MANGROVE_SLAB.get(),
+				SCContent.REINFORCED_CHERRY_SLAB.get(),
 				SCContent.REINFORCED_BAMBOO_SLAB.get(),
 				SCContent.REINFORCED_BAMBOO_MOSAIC_SLAB.get(),
 				SCContent.REINFORCED_CRIMSON_SLAB.get(),
@@ -191,6 +201,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_ACACIA_STAIRS.get(),
 				SCContent.REINFORCED_DARK_OAK_STAIRS.get(),
 				SCContent.REINFORCED_MANGROVE_STAIRS.get(),
+				SCContent.REINFORCED_CHERRY_STAIRS.get(),
 				SCContent.REINFORCED_BAMBOO_STAIRS.get(),
 				SCContent.REINFORCED_BAMBOO_MOSAIC_STAIRS.get(),
 				SCContent.REINFORCED_CRIMSON_STAIRS.get(),
@@ -218,17 +229,18 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.SECRET_ACACIA_HANGING_SIGN.get(),
 				SCContent.SECRET_BAMBOO_HANGING_SIGN.get(),
 				SCContent.SECRET_BIRCH_HANGING_SIGN.get(),
+				SCContent.SECRET_CHERRY_HANGING_SIGN.get(),
 				SCContent.SECRET_CRIMSON_HANGING_SIGN.get(),
 				SCContent.SECRET_DARK_OAK_HANGING_SIGN.get(),
 				SCContent.SECRET_JUNGLE_HANGING_SIGN.get(),
 				SCContent.SECRET_MANGROVE_HANGING_SIGN.get(),
-				SCContent.SECRET_OAK_HANGING_SIGN.get(),
 				SCContent.SECRET_SPRUCE_HANGING_SIGN.get(),
 				SCContent.SECRET_WARPED_HANGING_SIGN.get());
 		tag(SCTags.Blocks.SECRET_STANDING_SIGNS).add(
 				SCContent.SECRET_ACACIA_SIGN.get(),
 				SCContent.SECRET_BAMBOO_SIGN.get(),
 				SCContent.SECRET_BIRCH_SIGN.get(),
+				SCContent.SECRET_CHERRY_SIGN.get(),
 				SCContent.SECRET_CRIMSON_SIGN.get(),
 				SCContent.SECRET_DARK_OAK_SIGN.get(),
 				SCContent.SECRET_JUNGLE_SIGN.get(),
@@ -240,6 +252,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.SECRET_ACACIA_WALL_HANGING_SIGN.get(),
 				SCContent.SECRET_BAMBOO_WALL_HANGING_SIGN.get(),
 				SCContent.SECRET_BIRCH_WALL_HANGING_SIGN.get(),
+				SCContent.SECRET_CHERRY_WALL_HANGING_SIGN.get(),
 				SCContent.SECRET_CRIMSON_WALL_HANGING_SIGN.get(),
 				SCContent.SECRET_DARK_OAK_WALL_HANGING_SIGN.get(),
 				SCContent.SECRET_JUNGLE_WALL_HANGING_SIGN.get(),
@@ -251,6 +264,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.SECRET_ACACIA_WALL_SIGN.get(),
 				SCContent.SECRET_BAMBOO_WALL_SIGN.get(),
 				SCContent.SECRET_BIRCH_WALL_SIGN.get(),
+				SCContent.SECRET_CHERRY_WALL_SIGN.get(),
 				SCContent.SECRET_CRIMSON_WALL_SIGN.get(),
 				SCContent.SECRET_DARK_OAK_WALL_SIGN.get(),
 				SCContent.SECRET_JUNGLE_WALL_SIGN.get(),
@@ -414,6 +428,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_SPRUCE_LOG.get(),
 				SCContent.REINFORCED_DARK_OAK_LOG.get(),
 				SCContent.REINFORCED_MANGROVE_LOG.get(),
+				SCContent.REINFORCED_CHERRY_LOG.get(),
 				SCContent.REINFORCED_STONE.get(),
 				SCContent.REINFORCED_PACKED_ICE.get(),
 				SCContent.IRON_ORE_MINE.get(),

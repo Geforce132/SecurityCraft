@@ -356,6 +356,8 @@ public class RegistrationHandler {
 									new ItemStack(SCContent.SECRET_DARK_OAK_HANGING_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_MANGROVE_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_MANGROVE_HANGING_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_CHERRY_SIGN_ITEM.get()),
+									new ItemStack(SCContent.SECRET_CHERRY_HANGING_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_BAMBOO_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_BAMBOO_HANGING_SIGN_ITEM.get()),
 									new ItemStack(SCContent.SECRET_CRIMSON_SIGN_ITEM.get()),

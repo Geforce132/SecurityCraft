@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "securitycraft:slabs",
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_cherry_planks"
+    }
+  },
+  "pattern": [
+    "BBB"
+  ],
+  "result": {
+    "count": 6,
+    "item": "securitycraft:reinforced_cherry_slab"
+  },
+  "show_notification": true
+}
