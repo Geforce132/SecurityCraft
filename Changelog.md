@@ -11,6 +11,7 @@
 	- Bamboo Mosaic Slab
 	- Bamboo Pressure Plate
 	- Bamboo Button
+    - Chiseled Bookshelf
 - New: Secret Bamboo Sign*
 - New: Secret Hanging Signs*
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions

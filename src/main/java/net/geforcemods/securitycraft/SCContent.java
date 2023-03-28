@@ -35,6 +35,7 @@ import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedChiseledBookShelfBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonMovingBlockEntity;
@@ -111,6 +112,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock.IReinforcedCauldronInteraction;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChainBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChiseledBookShelfBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCobwebBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCryingObsidianBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDirtPathBlock;
@@ -2262,6 +2264,9 @@ public class SCContent {
 	public static final RegistryObject<Block> SECRET_CRIMSON_WALL_HANGING_SIGN = BLOCKS.register("secret_crimson_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().sound(SoundType.NETHER_WOOD_HANGING_SIGN).requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.CRIMSON));
 	public static final RegistryObject<Block> SECRET_WARPED_HANGING_SIGN = BLOCKS.register("secret_warped_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop(Material.WOOD).noCollission().sound(SoundType.NETHER_WOOD_HANGING_SIGN).requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.WARPED));
 	public static final RegistryObject<Block> SECRET_WARPED_WALL_HANGING_SIGN = BLOCKS.register("secret_warped_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().sound(SoundType.NETHER_WOOD_HANGING_SIGN).requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.WARPED));
+	@HasManualPage
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHISELED_BOOKSHELF = BLOCKS.register("reinforced_chiseled_bookshelf", () -> new ReinforcedChiseledBookShelfBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHISELED_BOOKSHELF)));
 
 	//misc
 	@RegisterItemBlock
@@ -2620,6 +2625,7 @@ public class SCContent {
 	public static final RegistryObject<BlockEntityType<DisplayCaseBlockEntity>> DISPLAY_CASE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("display_case", () -> BlockEntityType.Builder.of(DisplayCaseBlockEntity::new, SCContent.DISPLAY_CASE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<GlowDisplayCaseBlockEntity>> GLOW_DISPLAY_CASE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("glow_display_case", () -> BlockEntityType.Builder.of(GlowDisplayCaseBlockEntity::new, SCContent.GLOW_DISPLAY_CASE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<KeypadBarrelBlockEntity>> KEYPAD_BARREL_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_barrel", () -> BlockEntityType.Builder.of(KeypadBarrelBlockEntity::new, SCContent.KEYPAD_BARREL.get()).build(null));
+	public static final RegistryObject<BlockEntityType<ReinforcedChiseledBookShelfBlockEntity>> REINFORCED_CHISELED_BOOKSHELF_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_chiseled_bookshelf", () -> BlockEntityType.Builder.of(ReinforcedChiseledBookShelfBlockEntity::new, SCContent.REINFORCED_CHISELED_BOOKSHELF.get()).build(null));
 
 	//entity types
 	public static final RegistryObject<EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",
