@@ -55,6 +55,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -73,6 +74,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -118,11 +120,12 @@ public class SCEventHandler {
 					NoteWrapper note = pair.getRight().poll();
 
 					if (note != null) {
-						SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase()).getSoundEvent().get();
-						float pitch = (float) Math.pow(2.0D, (note.noteID() - 12) / 12.0D);
+						NoteBlockInstrument instrument = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase());
+						SoundEvent sound = instrument.hasCustomSound() && !note.customSoundId().isEmpty() ? SoundEvent.createVariableRangeEvent(new ResourceLocation(note.customSoundId())) : instrument.getSoundEvent().get();
+						float pitch = instrument.isTunable() ? (float) Math.pow(2.0D, (note.noteID() - 12) / 12.0D) : 1.0F;
 
 						player.level.playSound(null, player.blockPosition(), sound, SoundSource.RECORDS, 3.0F, pitch);
-						handlePlayedNote(player.level, player.blockPosition(), note.noteID(), note.instrumentName());
+						handlePlayedNote(player.level, player.blockPosition(), note.noteID(), instrument, note.customSoundId());
 						player.gameEvent(GameEvent.NOTE_BLOCK_PLAY);
 						pair.setLeft(NOTE_DELAY);
 					}
@@ -469,11 +472,21 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onNoteBlockPlayed(NoteBlockEvent.Play event) {
-		handlePlayedNote((Level) event.getLevel(), event.getPos(), event.getVanillaNoteId(), event.getInstrument().getSerializedName());
+		handlePlayedNote((Level) event.getLevel(), event.getPos(), event.getVanillaNoteId(), event.getInstrument(), "");
 	}
 
-	private static void handlePlayedNote(Level level, BlockPos pos, int vanillaNoteId, String instrumentName) {
+	private static void handlePlayedNote(Level level, BlockPos pos, int vanillaNoteId, NoteBlockInstrument instrument, String customSoundId) {
 		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = BlockEntityTracker.SONIC_SECURITY_SYSTEM.getBlockEntitiesInRange(level, pos);
+
+		// If no custom sound id is given, check if a custom sound was played, and if so, store its id
+		if (customSoundId.isEmpty() && instrument.hasCustomSound()) {
+			if (level.getBlockEntity(pos.above()) instanceof SkullBlockEntity be) {
+				ResourceLocation noteBlockSound = be.getNoteBlockSound();
+
+				if (noteBlockSound != null)
+					customSoundId = noteBlockSound.toString();
+			}
+		}
 
 		for (SonicSecuritySystemBlockEntity be : sonicSecuritySystems) {
 			// If the SSS is disabled, don't listen to any notes
@@ -484,8 +497,8 @@ public class SCEventHandler {
 			// Otherwise, check to see if the note being played matches the saved combination.
 			// If so, toggle its redstone power output on
 			if (be.isRecording())
-				be.recordNote(vanillaNoteId, instrumentName);
-			else if (be.listenToNote(vanillaNoteId, instrumentName)) {
+				be.recordNote(vanillaNoteId, instrument, customSoundId);
+			else if (be.listenToNote(vanillaNoteId, instrument, customSoundId)) {
 				be.correctTuneWasPlayed = true;
 				be.powerCooldown = be.signalLength.get();
 

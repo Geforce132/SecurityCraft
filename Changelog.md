@@ -15,6 +15,7 @@
 - New: Secret Bamboo Sign*
 - New: Secret Hanging Signs*
 - New: Suspicious Sand Mine (can be defused to get the item without it exploding)*
+- New: Sonic Security Systems and Portable Tune Players now support mob head and custom note block sounds*
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 - Fix: Jade does not properly hide blocks
 

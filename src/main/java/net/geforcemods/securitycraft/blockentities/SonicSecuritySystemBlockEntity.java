@@ -29,6 +29,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 
 public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE {
 	/** The delay between each ping sound in ticks */
@@ -247,6 +248,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 			noteNbt.putInt("noteID", note.noteID);
 			noteNbt.putString("instrument", note.instrumentName);
+			noteNbt.putString("customSoundId", note.customSoundId);
 			notes.add(noteNbt);
 		}
 
@@ -266,7 +268,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 			for (int i = 0; i < list.size(); i++) {
 				CompoundTag note = list.getCompound(i);
 
-				recordedNotes.add(new NoteWrapper(note.getInt("noteID"), note.getString("instrument")));
+				recordedNotes.add(new NoteWrapper(note.getInt("noteID"), note.getString("instrument"), note.getString("customSoundId")));
 			}
 		}
 	}
@@ -428,10 +430,11 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 * Record a note to use in the audio "passcode"
 	 *
 	 * @param noteID the ID of the note that was played
-	 * @param instrumentName the name of the instrument that played the note
+	 * @param instrument the instrument that played the note
+	 * @param customSoundId the id of an optional custom sound, empty if none was played
 	 */
-	public void recordNote(int noteID, String instrumentName) {
-		recordedNotes.add(new NoteWrapper(noteID, instrumentName));
+	public void recordNote(int noteID, NoteBlockInstrument instrument, String customSoundId) {
+		recordedNotes.add(new NoteWrapper(noteID, instrument.getSerializedName(), customSoundId));
 
 		if (!level.isClientSide)
 			sync();
@@ -441,9 +444,10 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 * Listen to a note and check whether or not it is the next correct note that was recorded by the Sonic Security System
 	 *
 	 * @param noteID the ID of the note that was played
-	 * @param instrumentName the name of the instrument that played the note
+	 * @param instrument the instrument that played the note
+	 * @param customSoundId the id of an optional custom sound, empty if none was played
 	 */
-	public boolean listenToNote(int noteID, String instrumentName) {
+	public boolean listenToNote(int noteID, NoteBlockInstrument instrument, String customSoundId) {
 		// No notes
 		if (getNumberOfNotes() == 0 || listenPos >= getNumberOfNotes())
 			return false;
@@ -453,7 +457,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 			sync();
 		}
 
-		if (recordedNotes.get(listenPos++).isSameNote(noteID, instrumentName)) {
+		if (recordedNotes.get(listenPos++).isSameNote(noteID, instrument, customSoundId)) {
 			resetListeningTimer();
 			// true if the entire tune was correctly played, false if it was only partly played but more notes are needed
 			return listenPos >= recordedNotes.size();
@@ -516,16 +520,16 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	/**
 	 * A simple wrapper that makes it slightly easier to store and compare notes with
 	 */
-	public static record NoteWrapper(int noteID, String instrumentName) {
+	public static record NoteWrapper(int noteID, String instrumentName, String customSoundId) {
 		/**
 		 * Checks to see if a passed note ID and instrument matches the info of this note
 		 *
 		 * @param note the note ID to check
-		 * @param instrument the instrument name of the note
-		 * @return
+		 * @param instrument the instrument to check
+		 * @param customSoundId the id of a potentially played custom sound
 		 */
-		public boolean isSameNote(int note, String instrument) {
-			return noteID == note && instrumentName.equals(instrument);
+		public boolean isSameNote(int note, NoteBlockInstrument instrument, String customSoundId) {
+			return instrumentName.equals(instrument.getSerializedName()) && (!instrument.isTunable() || noteID == note) && (this.customSoundId.isEmpty() || this.customSoundId.equals(customSoundId));
 		}
 	}
 }
