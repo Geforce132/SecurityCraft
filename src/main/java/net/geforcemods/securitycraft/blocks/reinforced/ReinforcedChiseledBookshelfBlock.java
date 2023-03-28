@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.geforcemods.securitycraft.blockentities.ReinforcedChiseledBookShelfBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedChiseledBookshelfBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -18,14 +18,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedChiseledBookShelfBlock extends ChiseledBookShelfBlock implements IReinforcedBlock {
-	public ReinforcedChiseledBookShelfBlock(Properties properties) {
+public class ReinforcedChiseledBookshelfBlock extends ChiseledBookShelfBlock implements IReinforcedBlock {
+	public ReinforcedChiseledBookshelfBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (level.getBlockEntity(pos) instanceof ReinforcedChiseledBookShelfBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)))
+		if (level.getBlockEntity(pos) instanceof ReinforcedChiseledBookshelfBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)))
 			return super.use(state, level, pos, player, hand, hit);
 
 		return InteractionResult.PASS;
@@ -41,7 +41,7 @@ public class ReinforcedChiseledBookShelfBlock extends ChiseledBookShelfBlock imp
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new ReinforcedChiseledBookShelfBlockEntity(pos, state);
+		return new ReinforcedChiseledBookshelfBlockEntity(pos, state);
 	}
 
 	@Override
