@@ -14,6 +14,7 @@
     - Chiseled Bookshelf
 - New: Secret Bamboo Sign*
 - New: Secret Hanging Signs*
+- New: Sonic Security Systems and Portable Tune Players now support mob head and custom note block sounds*
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 - Fix: Jade does not properly hide blocks
 
