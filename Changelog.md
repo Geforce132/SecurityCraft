@@ -1,5 +1,7 @@
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
+- New: The Alarm, Motion Activated Light, and Portable Radar can now be waterlogged
+- New: Laser and inventory scanner fields can now be waterlogged, which means the Laser and Inventory Scanner now properly work underwater without air pockets
 - Fix: Crashes when rendering some modded block entities in a Projector, or using them as a disguise
 
 --------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------
