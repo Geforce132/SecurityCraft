@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
+
+- Fix: Crashes when rendering some modded block entities in a Projector, or using them as a disguise
+
 --------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------
 
 - Fix: Mounting two cameras after one another in different dimensions causes severe lag
