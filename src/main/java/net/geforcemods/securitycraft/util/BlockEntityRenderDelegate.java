@@ -3,6 +3,9 @@ package net.geforcemods.securitycraft.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.minecraft.block.BlockState;
@@ -13,6 +16,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.tileentity.TileEntity;
 
 public class BlockEntityRenderDelegate {
+	private static final Logger LOGGER = LogManager.getLogger();
 	private final Map<TileEntity, DelegateRendererInfo> renderDelegates = new HashMap<>();
 
 	public void putDelegateFor(TileEntity originalBlockEntity, BlockState delegateState) {
@@ -48,7 +52,21 @@ public class BlockEntityRenderDelegate {
 		DelegateRendererInfo delegateRendererInfo = renderDelegates.get(originalBlockEntity);
 
 		if (delegateRendererInfo != null) {
-			delegateRendererInfo.delegateRenderer().render(delegateRendererInfo.delegateBlockEntity(), partialTicks, pose, buffer, combinedLight, combinedOverlay);
+			try {
+				MatrixStack copyPose = new MatrixStack();
+
+				copyPose.pushPose();
+				copyPose.last().pose().multiply(pose.last().pose());
+				copyPose.last().normal().mul(pose.last().normal());
+				delegateRendererInfo.delegateRenderer().render(delegateRendererInfo.delegateBlockEntity(), partialTicks, copyPose, buffer, combinedLight, combinedOverlay);
+				copyPose.popPose();
+			}
+			catch (Exception e) {
+				LOGGER.warn("Error when delegate-rendering " + delegateRendererInfo.delegateBlockEntity().getType().getRegistryName());
+				e.printStackTrace();
+				removeDelegateOf(originalBlockEntity);
+			}
+
 			return true;
 		}
 
