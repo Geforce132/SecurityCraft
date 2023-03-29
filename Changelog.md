@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
+
+- Fix: Entities around a player sometimes get invisible when the player dismounts a camera
+
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
 
 - New: Support for teams from FTB Utilities when having team ownership enabled in the config

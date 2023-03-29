@@ -152,12 +152,14 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 			BlockPos pos = new BlockPos(posX, posY, posZ);
 			Chunk chunk = serverWorld.getChunk(pos);
 			ChunkPos chunkPos = chunk.getPos();
+			ChunkPos playerChunkPos = new ChunkPos(player.getPosition());
 			int viewDistance = player.server.getPlayerList().getViewDistance();
-
-			setDead();
 
 			for (int cx = chunkPos.x - viewDistance; cx <= chunkPos.x + viewDistance; cx++) {
 				for (int cz = chunkPos.z - viewDistance; cz <= chunkPos.z + viewDistance; cz++) {
+					if (cx >= playerChunkPos.x - viewDistance && cx <= playerChunkPos.x + viewDistance && cz >= playerChunkPos.z - viewDistance && cz <= playerChunkPos.z + viewDistance)
+						continue; //Do not remove players from chunks that the player entity is supposed to see
+
 					serverWorld.getPlayerChunkMap().getOrCreateEntry(cx, cz).removePlayer(player);
 				}
 			}
@@ -173,6 +175,8 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 					entry.updatePlayerEntity(player);
 				}
 			}
+
+			setDead();
 		}
 	}
 
