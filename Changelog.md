@@ -17,6 +17,7 @@
 - New: Sonic Security Systems and Portable Tune Players now support mob head and custom note block sounds*
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 - Fix: Jade does not properly hide blocks
+- Fix: Crashes when rendering some modded block entities in a Projector, or using them as a disguise
 
 * only available if the update_1_20 datapack is enabled
 
