@@ -41,10 +41,14 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 		forceSpawn = true;
 		height = 0.0001F;
 		width = 0.0001F;
+
+		if (!world.isRemote)
+			isDead = true; //If a new camera entity gets spawned by any means other than the player viewing a camera, it should be removed immediately
 	}
 
 	public SecurityCamera(World world, double x, double y, double z) {
 		this(world);
+		isDead = false; //Do not remove the camera entity if it was spawned by a player viewing a camera
 
 		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 
