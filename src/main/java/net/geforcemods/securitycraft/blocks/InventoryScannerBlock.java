@@ -43,6 +43,7 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -121,7 +122,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		for (int i = 1; i < loopBoundary; i++) {
 			BlockPos offsetPos = pos.relative(facing, i);
 
-			level.setBlockAndUpdate(offsetPos, SCContent.INVENTORY_SCANNER_FIELD.get().defaultBlockState().setValue(FACING, facing).setValue(HORIZONTAL, horizontal));
+			level.setBlockAndUpdate(offsetPos, SCContent.INVENTORY_SCANNER_FIELD.get().defaultBlockState().setValue(FACING, facing).setValue(HORIZONTAL, horizontal).setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER));
 
 			if (level.getBlockEntity(offsetPos) instanceof IOwnable ownable)
 				ownable.setOwner(thisBe.getOwner().getUUID(), thisBe.getOwner().getName());

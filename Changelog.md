@@ -15,6 +15,8 @@
 - New: Secret Bamboo Sign*
 - New: Secret Hanging Signs*
 - New: Sonic Security Systems and Portable Tune Players now support mob head and custom note block sounds*
+- New: The Alarm, Motion Activated Light, and Portable Radar can now be waterlogged
+- New: Laser and inventory scanner fields can now be waterlogged, which means the Laser and Inventory Scanner now properly work underwater without air pockets
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 - Fix: Jade does not properly hide blocks
 - Fix: Crashes when rendering some modded block entities in a Projector, or using them as a disguise
