@@ -12,8 +12,11 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -33,14 +36,16 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class AlarmBlock extends OwnableBlock {
+public class AlarmBlock extends OwnableBlock implements IWaterLoggable {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final VoxelShape SHAPE_EAST = Block.box(0, 4, 4, 8, 12, 12);
 	private static final VoxelShape SHAPE_WEST = Block.box(8, 4, 4, 16, 12, 12);
 	private static final VoxelShape SHAPE_NORTH = Block.box(4, 4, 8, 12, 12, 16);
@@ -51,7 +56,7 @@ public class AlarmBlock extends OwnableBlock {
 	public AlarmBlock(Block.Properties properties) {
 		super(properties);
 
-		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP).setValue(LIT, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP).setValue(LIT, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -99,14 +104,25 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
-		return BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing) : null;
+		return BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing).setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER) : null;
+	}
+
+	@Override
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED))
+			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
 	public void onPlace(BlockState state, World world, BlockPos pos, BlockState oldState, boolean flag) {
-		if (world.isClientSide)
-			return;
-		else
+		if (!world.isClientSide)
 			world.getBlockTicks().scheduleTick(pos, state.getBlock(), 5);
 	}
 
@@ -219,8 +235,7 @@ public class AlarmBlock extends OwnableBlock {
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING);
-		builder.add(LIT);
+		builder.add(FACING, LIT, WATERLOGGED);
 	}
 
 	@Override

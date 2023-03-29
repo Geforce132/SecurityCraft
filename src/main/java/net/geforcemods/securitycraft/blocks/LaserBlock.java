@@ -120,7 +120,7 @@ public class LaserBlock extends DisguisableBlock {
 						offsetState = world.getBlockState(offsetPos);
 
 						if (offsetState.isAir(world, offsetPos) || offsetState.getMaterial().isReplaceable()) {
-							world.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().defaultBlockState().setValue(LaserFieldBlock.BOUNDTYPE, boundType));
+							world.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().getPotentiallyWaterloggedState(boundType, world, offsetPos));
 
 							TileEntity te = world.getBlockEntity(offsetPos);
 

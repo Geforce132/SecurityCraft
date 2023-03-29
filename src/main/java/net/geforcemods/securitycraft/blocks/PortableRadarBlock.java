@@ -7,7 +7,10 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -23,12 +26,14 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public class PortableRadarBlock extends OwnableBlock {
+public class PortableRadarBlock extends OwnableBlock implements IWaterLoggable {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final VoxelShape SHAPE_UP = Block.box(5, 0, 5, 11, 7, 11);
 	private static final VoxelShape SHAPE_DOWN = Block.box(5, 9, 5, 11, 16, 11);
 	private static final VoxelShape SHAPE_EAST = Block.box(0, 5, 5, 7, 11, 11);
@@ -39,7 +44,7 @@ public class PortableRadarBlock extends OwnableBlock {
 	public PortableRadarBlock(Block.Properties properties) {
 		super(properties);
 
-		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(FACING, Direction.UP));
+		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(FACING, Direction.UP).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -68,7 +73,20 @@ public class PortableRadarBlock extends OwnableBlock {
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		Direction facing = ctx.getClickedFace();
 
-		return BlockUtils.isSideSolid(ctx.getLevel(), ctx.getClickedPos().relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing) : null;
+		return BlockUtils.isSideSolid(ctx.getLevel(), ctx.getClickedPos().relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing).setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER) : null;
+	}
+
+	@Override
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED))
+			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
@@ -143,7 +161,7 @@ public class PortableRadarBlock extends OwnableBlock {
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(POWERED, FACING);
+		builder.add(POWERED, FACING, WATERLOGGED);
 	}
 
 	@Override

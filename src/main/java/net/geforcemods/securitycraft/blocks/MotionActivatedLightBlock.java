@@ -5,7 +5,10 @@ import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEnti
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -22,12 +25,14 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public class MotionActivatedLightBlock extends OwnableBlock {
+public class MotionActivatedLightBlock extends OwnableBlock implements IWaterLoggable {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final VoxelShape SHAPE_NORTH = VoxelShapes.or(Block.box(6, 3, 13, 10, 4, 14), VoxelShapes.or(Block.box(6, 6, 13, 10, 9, 14), VoxelShapes.joinUnoptimized(Block.box(7, 3, 14, 9, 8, 16), Block.box(7, 4, 15, 9, 7, 14), IBooleanFunction.ONLY_FIRST)));
 	private static final VoxelShape SHAPE_EAST = VoxelShapes.or(Block.box(3, 3, 6, 2, 4, 10), VoxelShapes.or(Block.box(3, 6, 6, 2, 9, 10), VoxelShapes.joinUnoptimized(Block.box(2, 3, 7, 0, 8, 9), Block.box(1, 4, 7, 2, 7, 9), IBooleanFunction.ONLY_FIRST)));
 	private static final VoxelShape SHAPE_SOUTH = VoxelShapes.or(Block.box(6, 3, 2, 10, 4, 3), VoxelShapes.or(Block.box(6, 6, 2, 10, 9, 3), VoxelShapes.joinUnoptimized(Block.box(7, 3, 0, 9, 8, 2), Block.box(7, 4, 1, 9, 7, 2), IBooleanFunction.ONLY_FIRST)));
@@ -35,7 +40,7 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 
 	public MotionActivatedLightBlock(Block.Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -67,7 +72,20 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
-		return facing != Direction.UP && facing != Direction.DOWN && BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing) : null;
+		return facing != Direction.UP && facing != Direction.DOWN && BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing).setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER) : null;
+	}
+
+	@Override
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED))
+			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
@@ -104,8 +122,7 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING);
-		builder.add(LIT);
+		builder.add(FACING, LIT, WATERLOGGED);
 	}
 
 	@Override

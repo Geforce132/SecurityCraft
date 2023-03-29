@@ -22,6 +22,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -125,7 +126,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		for (int i = 1; i < loopBoundary; i++) {
 			BlockPos offsetPos = pos.relative(facing, i);
 
-			world.setBlockAndUpdate(offsetPos, SCContent.INVENTORY_SCANNER_FIELD.get().defaultBlockState().setValue(FACING, facing).setValue(HORIZONTAL, horizontal));
+			world.setBlockAndUpdate(offsetPos, SCContent.INVENTORY_SCANNER_FIELD.get().defaultBlockState().setValue(FACING, facing).setValue(HORIZONTAL, horizontal).setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER));
 
 			TileEntity te = world.getBlockEntity(offsetPos);
 
