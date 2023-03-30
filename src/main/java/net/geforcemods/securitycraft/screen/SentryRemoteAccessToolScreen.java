@@ -47,7 +47,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private final int[] lengths = new int[12];
 
 	public SentryRemoteAccessToolScreen(ItemStack item, int viewDistance) {
-		super(new TranslatableComponent(item.getDescriptionId()));
+		super(item.getHoverName());
 
 		srat = item;
 		this.viewDistance = viewDistance;
@@ -60,7 +60,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		int paddingX = 22;
-		int paddingY = 25;
+		int paddingY = 50;
 		int[] coords = null;
 		int id = 0;
 		boolean foundSentry = false;
@@ -78,7 +78,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 		for (int i = 0; i < 12; i++) {
 			int x = (i / 6) * xSize / 2; //first six sentries in the left column, second six sentries in the right column
-			int y = ((i % 6) + 1) * 30 + paddingY;
+			int y = ((i % 6) + 1) * 25 + paddingY;
 			coords = getSentryCoordinates(i);
 
 			for (int j = 0; j < 3; j++) {
@@ -187,10 +187,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		RenderSystem._setShaderTexture(0, TEXTURE);
 		blit(pose, startX, startY, 0, 0, xSize, ySize, 512, 256);
 		super.render(pose, mouseX, mouseY, partialTicks);
-		font.draw(pose, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getDescriptionId()), startX + 5, startY - 25 + 13, 0xFF0000);
+		font.draw(pose, title, startX + xSize / 2 - font.width(title) / 2, startY + 6, 4210752);
 
 		for (int i = 0; i < 12; i++) {
-			font.draw(pose, lines[i], startX + xSize / 4 - lengths[i] + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
+			font.draw(pose, lines[i], startX + xSize / 4 - lengths[i] + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 25 + 33, 4210752);
 		}
 
 		font.draw(pose, modifyAll, startX + xSize / 2 - font.width(modifyAll) + 25, startY + 194, 4210752);
