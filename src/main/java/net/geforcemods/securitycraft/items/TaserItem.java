@@ -113,7 +113,7 @@ public class TaserItem extends Item {
 				EntityLivingBase entity = (EntityLivingBase) entityRayTraceResult.entityHit;
 				double damage = powered ? ConfigHandler.poweredTaserDamage : ConfigHandler.taserDamage;
 
-				if (!entity.isActiveItemStackBlocking() && (damage == 0.0D || entity.attackEntityFrom(CustomDamageSources.TASER, (float) damage))) {
+				if ((damage == 0.0D || entity.attackEntityFrom(CustomDamageSources.taser(player), (float) damage)) && !entity.isActiveItemStackBlocking()) {
 					List<Supplier<PotionEffect>> effects = powered ? ConfigHandler.POWERED_TASER_EFFECTS : ConfigHandler.TASER_EFFECTS;
 
 					effects.forEach(effect -> entity.addPotionEffect(effect.get()));
