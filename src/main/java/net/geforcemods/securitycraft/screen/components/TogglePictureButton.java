@@ -64,9 +64,9 @@ public class TogglePictureButton extends ExtendedButton implements IToggleableBu
 	}
 
 	@Override
-	public void onClick(double mouseX, double mouseY) {
+	public void onPress() {
 		setCurrentIndex(currentIndex + 1);
-		super.onClick(mouseX, mouseY);
+		super.onPress();
 	}
 
 	@Override
