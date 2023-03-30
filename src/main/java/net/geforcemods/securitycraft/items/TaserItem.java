@@ -103,7 +103,7 @@ public class TaserItem extends Item {
 				LivingEntity entity = (LivingEntity) entityRayTraceResult.getEntity();
 				double damage = powered ? ConfigHandler.SERVER.poweredTaserDamage.get() : ConfigHandler.SERVER.taserDamage.get();
 
-				if (!entity.isBlocking() && (damage == 0.0D || entity.hurt(CustomDamageSources.TASER, (float) damage))) {
+				if ((damage == 0.0D || entity.hurt(CustomDamageSources.taser(player), (float) damage)) && !entity.isBlocking()) {
 					List<Supplier<EffectInstance>> effects = powered ? ConfigHandler.SERVER.poweredTaserEffects : ConfigHandler.SERVER.taserEffects;
 
 					effects.forEach(effect -> entity.addEffect(effect.get()));
