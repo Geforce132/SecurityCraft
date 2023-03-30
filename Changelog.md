@@ -20,6 +20,7 @@
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 - Fix: Jade does not properly hide blocks
 - Fix: Crashes when rendering some modded block entities in a Projector, or using them as a disguise
+- Fix: The Sentry-/Mine Remote Access Tool screens do not show the item's custom name
 
 * only available if the update_1_20 datapack is enabled
 
