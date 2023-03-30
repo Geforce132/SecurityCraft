@@ -2,6 +2,7 @@
 
 - Fix: Entities around a player sometimes get invisible when the player dismounts a camera
 - Fix: Shields do not take damage when blocking a taser that deals high enough damage
+- Fix: The death message of a player killed by a taser does not contain the player firing the taser
 - Fix: The Sentry-/Mine Remote Access Tool screens do not show the item's custom name
 
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
