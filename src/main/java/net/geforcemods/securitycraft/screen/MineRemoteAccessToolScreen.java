@@ -33,7 +33,6 @@ import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 public class MineRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
 	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png"); //for the explosion icon
-	private final TranslationTextComponent mratName = Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId());
 	private ItemStack mrat;
 	private Button[][] guiButtons = new Button[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
@@ -44,7 +43,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 	private final int[] lengths = new int[6];
 
 	public MineRemoteAccessToolScreen(ItemStack item) {
-		super(new TranslationTextComponent(item.getDescriptionId()));
+		super(item.getHoverName());
 
 		mrat = item;
 	}
@@ -54,14 +53,14 @@ public class MineRemoteAccessToolScreen extends Screen {
 		super.init();
 
 		int padding = 25;
-		int y = padding;
+		int y = 50;
 		int[] coords = null;
 		int id = 0;
 
 		hoverCheckers.clear();
 
 		for (int i = 0; i < 6; i++) {
-			y += 30;
+			y += 25;
 			coords = getMineCoordinates(i);
 			int startX = (width - xSize) / 2;
 			int startY = (height - ySize) / 2;
@@ -153,10 +152,10 @@ public class MineRemoteAccessToolScreen extends Screen {
 		minecraft.getTextureManager().bind(TEXTURE);
 		blit(matrix, startX, startY, 0, 0, xSize, ySize);
 		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.draw(matrix, mratName, startX + xSize / 2 - font.width(mratName), startY + -25 + 13, 0xFF0000);
+		font.draw(matrix, title, startX + xSize / 2 - font.width(title) / 2, startY + 6, 4210752);
 
 		for (int i = 0; i < 6; i++) {
-			font.draw(matrix, lines[i], startX + xSize / 2 - lengths[i] + 25, startY + i * 30 + 13, 4210752);
+			font.draw(matrix, lines[i], startX + xSize / 2 - lengths[i] + 25, startY + i * 25 + 33, 4210752);
 		}
 
 		for (TextHoverChecker chc : hoverCheckers) {
