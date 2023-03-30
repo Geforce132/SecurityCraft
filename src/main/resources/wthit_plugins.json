@@ -1,0 +1,6 @@
+{
+	"securitycraft:plugin": {
+		"initializer": "net.geforcemods.securitycraft.compat.waila.WTHITDataProvider",
+		"side": "*"
+	}
+}

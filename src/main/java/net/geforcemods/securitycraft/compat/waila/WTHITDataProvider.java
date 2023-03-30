@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.compat.waila;
 
+import java.awt.Rectangle;
 import java.util.Optional;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -17,9 +18,7 @@ import mcp.mobius.waila.api.ITooltipComponent;
 import mcp.mobius.waila.api.IWailaPlugin;
 import mcp.mobius.waila.api.TooltipPosition;
 import mcp.mobius.waila.api.WailaConstants;
-import mcp.mobius.waila.api.WailaPlugin;
 import mcp.mobius.waila.api.component.ItemComponent;
-import me.shedaniel.math.Rectangle;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -43,7 +42,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fml.ModList;
 
-@WailaPlugin(id = SecurityCraft.MODID)
 public class WTHITDataProvider extends WailaCompatConstants implements IWailaPlugin, IBlockComponentProvider, IEntityComponentProvider, IEventListener {
 	public static final WTHITDataProvider INSTANCE = new WTHITDataProvider();
 
@@ -171,6 +169,7 @@ public class WTHITDataProvider extends WailaCompatConstants implements IWailaPlu
 		}
 	}
 
+	@Override
 	public void onBeforeTooltipRender(PoseStack pose, Rectangle rectangle, ICommonAccessor accessor, IPluginConfig config, Canceller canceller) {
 		if (ClientHandler.isPlayerMountedOnCamera())
 			canceller.cancel();
