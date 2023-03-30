@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blockentities;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.blocks.mines.BrushableMineBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -44,8 +45,12 @@ public class BrushableMineBlockEntity extends SuspiciousSandBlockEntity implemen
 
 				int newCompletionState = getCompletionState();
 
-				if (previousCompletionState != newCompletionState)
-					level.setBlock(getBlockPos(), getBlockState().setValue(BlockStateProperties.DUSTED, newCompletionState), 3);
+				if (previousCompletionState != newCompletionState) {
+					if (newCompletionState > 1 && !getBlockState().getValue(BrushableMineBlock.SAFE) && !isOwnedBy(player))
+						((BrushableMineBlock) getBlockState().getBlock()).explode(level, worldPosition);
+					else
+						level.setBlock(getBlockPos(), getBlockState().setValue(BlockStateProperties.DUSTED, newCompletionState), 3);
+				}
 			}
 		}
 
