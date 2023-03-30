@@ -44,13 +44,13 @@ public class MineRemoteAccessToolScreen extends GuiContainer {
 		super.initGui();
 
 		int padding = 25;
-		int y = padding;
+		int y = 50;
 		int[] coords = null;
 		int id = 0;
 		hoverCheckers.clear();
 
 		for (int i = 0; i < 6; i++) {
-			y += 30;
+			y += 25;
 			coords = getMineCoordinates(i);
 
 			//initialize buttons
@@ -118,7 +118,7 @@ public class MineRemoteAccessToolScreen extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(Utils.localize("item.securitycraft:remoteAccessMine.name").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("item.securitycraft:remoteAccessMine.name").getFormattedText()), -25 + 13, 0xFF0000);
+		fontRenderer.drawString(mrat.getDisplayName(), xSize / 2 - fontRenderer.getStringWidth(mrat.getDisplayName()) / 2, 6, 4210752);
 
 		for (int i = 0; i < 6; i++) {
 			int[] coords = getMineCoordinates(i);
@@ -129,7 +129,7 @@ public class MineRemoteAccessToolScreen extends GuiContainer {
 			else
 				line = Utils.localize("gui.securitycraft:mrat.mineLocations", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).getFormattedText();
 
-			fontRenderer.drawString(line, xSize / 2 - fontRenderer.getStringWidth(line) + 25, i * 30 + 13, 4210752);
+			fontRenderer.drawString(line, xSize / 2 - fontRenderer.getStringWidth(line) + 25, i * 25 + 33, 4210752);
 		}
 	}
 

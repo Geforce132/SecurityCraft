@@ -52,7 +52,7 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 		super.initGui();
 
 		int paddingX = 22;
-		int paddingY = 25;
+		int paddingY = 50;
 		int[] coords = null;
 		int id = 0;
 		boolean foundSentry = false;
@@ -70,7 +70,7 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 
 		for (int i = 0; i < 12; i++) {
 			int x = (i / 6) * xSize / 2; //first six sentries in the left column, second six sentries in the right column
-			int y = ((i % 6) + 1) * 30 + paddingY;
+			int y = ((i % 6) + 1) * 25 + paddingY;
 			coords = getSentryCoordinates(i);
 
 			//initialize buttons
@@ -162,7 +162,7 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String modifyAll = Utils.localize("gui.securitycraft:srat.modifyAll").getFormattedText();
-		fontRenderer.drawString(Utils.localize("item.securitycraft:remoteAccessSentry.name").getFormattedText(), 5, -25 + 13, 0xFF0000);
+		fontRenderer.drawString(srat.getDisplayName(), xSize / 2 - fontRenderer.getStringWidth(srat.getDisplayName()) / 2, 6, 4210752);
 
 		for (int i = 0; i < 12; i++) {
 			int[] coords = getSentryCoordinates(i);
@@ -175,7 +175,7 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 			else
 				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])).getFormattedText();
 
-			fontRenderer.drawString(line, xSize / 4 - fontRenderer.getStringWidth(line) + 35 + (i / 6) * xSize / 2, (i % 6) * 30 + 13, 4210752);
+			fontRenderer.drawString(line, xSize / 4 - fontRenderer.getStringWidth(line) + 35 + (i / 6) * xSize / 2, (i % 6) * 25 + 33, 4210752);
 		}
 
 		fontRenderer.drawString(modifyAll, xSize / 2 - fontRenderer.getStringWidth(modifyAll) + 25, 194, 4210752);
