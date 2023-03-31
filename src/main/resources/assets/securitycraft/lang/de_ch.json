@@ -635,6 +635,7 @@
 	"gui.securitycraft:keycard_reader.level_mismatch": "Der Level dieser Schlüsselkarte ist in diesem Schlüsselkarten-Leser nicht aktiviert!",
 	"gui.securitycraft:keycard_reader.link": "Verbinden",
 	"gui.securitycraft:keycard_reader.noSmartModule": "Du musst ein schlaues Modul installieren, um die Schlüsselkarten-Level individuell zu kontrollieren.",
+	"gui.securitycraft:keycard_reader.randomize_signature": "Zufällige Signatur",
 	"gui.securitycraft:keycard_reader.signature": "Signatur: %s",
 	"gui.securitycraft:keycard_reader.smartModule": "Individuelle Kontrolle von Schlüsselkarten-Level aktiv!",
 	"gui.securitycraft:laser.downEnabled": "Unten aktiviert",
