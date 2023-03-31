@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.SetKeycardUses;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.screen.components.ActiveBasedTextureButton;
+import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -35,6 +36,7 @@ import net.minecraftforge.client.gui.widget.ExtendedButton;
 public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_reader.png");
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+	private static final ResourceLocation RANDOM_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/random.png");
 	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
 	private static final ResourceLocation RESET_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset_inactive.png");
 	private static final ResourceLocation RETURN_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/return.png");
@@ -60,7 +62,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	private Button minusThree, minusTwo, minusOne, reset, plusOne, plusTwo, plusThree;
 	private TogglePictureButton[] toggleButtons = new TogglePictureButton[5];
 	private EditBox usesTextField;
-	private TextHoverChecker usesHoverChecker;
+	private TextHoverChecker usesHoverChecker, randomizeHoverChecker;
 	private Button setUsesButton;
 	private Button linkButton;
 	//fixes link and set uses buttons being on for a split second when opening the container
@@ -135,6 +137,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		plusOne = addRenderableWidget(new ExtendedButton(leftPos + 96, buttonY, 12, buttonHeight, new TextComponent("+"), b -> changeSignature(signature + 1)));
 		plusTwo = addRenderableWidget(new ExtendedButton(leftPos + 110, buttonY, 18, buttonHeight, new TextComponent("++"), b -> changeSignature(signature + 10)));
 		plusThree = addRenderableWidget(new ExtendedButton(leftPos + 130, buttonY, 24, buttonHeight, new TextComponent("+++"), b -> changeSignature(signature + 100)));
+		Button randomizeButton = addRenderableWidget(new PictureButton(leftPos + 156, buttonY, 12, buttonHeight, RANDOM_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(minecraft.level.random.nextInt(32767))));
 		//set correct signature
 		changeSignature(signature);
 		//link button
@@ -156,6 +159,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		usesTextField.setMaxLength(3);
 		//info text when hovering over text field
 		usesHoverChecker = new TextHoverChecker(topPos + 107, topPos + 122, leftPos + 28, leftPos + 58, limitedInfo);
+		randomizeHoverChecker = new TextHoverChecker(randomizeButton, Utils.localize("gui.securitycraft:keycard_reader.randomize_signature"));
 
 		//add =/>= button and handle it being set to the correct state, as well as changing keycard level buttons' states if a smart module was removed
 		if (!hasSmartModule) {
@@ -264,6 +268,9 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 
 		if (!usesTextField.active && !stack.isEmpty() && usesHoverChecker.checkHover(mouseX, mouseY))
 			renderComponentTooltip(pose, usesHoverChecker.getLines(), mouseX, mouseY);
+
+		if (randomizeHoverChecker.checkHover(mouseX, mouseY))
+			renderComponentTooltip(pose, randomizeHoverChecker.getLines(), mouseX, mouseY);
 
 		renderTooltip(pose, mouseX, mouseY);
 		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
