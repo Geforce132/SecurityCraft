@@ -34,6 +34,7 @@ import net.minecraftforge.fml.client.config.GuiUtils;
 public class KeycardReaderScreen extends GuiContainer {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_reader.png");
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+	private static final ResourceLocation RANDOM_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/random.png");
 	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
 	private static final ResourceLocation RESET_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset_inactive.png");
 	private static final ResourceLocation RETURN_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/return.png");
@@ -61,7 +62,7 @@ public class KeycardReaderScreen extends GuiContainer {
 	private GuiButton minusThree, minusTwo, minusOne, reset, plusOne, plusTwo, plusThree;
 	private TogglePictureButton[] toggleButtons = new TogglePictureButton[5];
 	private GuiTextField usesTextField;
-	private StringHoverChecker usesHoverChecker;
+	private StringHoverChecker usesHoverChecker, randomizeHoverChecker;
 	private GuiButton setUsesButton;
 	private GuiButton linkButton;
 	//fixes link and set uses buttons being on for a split second when opening the container
@@ -144,6 +145,7 @@ public class KeycardReaderScreen extends GuiContainer {
 		plusOne = addButton(new ClickButton(id++, guiLeft + 96, buttonY, 12, buttonHeight, "+", b -> changeSignature(signature + 1)));
 		plusTwo = addButton(new ClickButton(id++, guiLeft + 110, buttonY, 18, buttonHeight, "++", b -> changeSignature(signature + 10)));
 		plusThree = addButton(new ClickButton(id++, guiLeft + 130, buttonY, 24, buttonHeight, "+++", b -> changeSignature(signature + 100)));
+		GuiButton randomizeButton = addButton(new PictureButton(id++, guiLeft + 156, buttonY, 12, buttonHeight, RANDOM_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(mc.world.rand.nextInt(32767))));
 		//set correct signature
 		changeSignature(signature);
 		//link button
@@ -174,6 +176,7 @@ public class KeycardReaderScreen extends GuiContainer {
 		usesTextField.setMaxStringLength(3);
 		//info text when hovering over text field
 		usesHoverChecker = new StringHoverChecker(guiTop + 107, guiTop + 122, guiLeft + 28, guiLeft + 58, limitedInfo);
+		randomizeHoverChecker = new StringHoverChecker(randomizeButton, Utils.localize("gui.securitycraft:keycard_reader.randomize_signature").getFormattedText());
 
 		//add =/>= button and handle it being set to the correct state, as well as changing keycard level buttons' states if a smart module was removed
 		if (!hasSmartModule) {
@@ -290,6 +293,9 @@ public class KeycardReaderScreen extends GuiContainer {
 
 		if (!usesTextField.isEnabled && !stack.isEmpty() && usesHoverChecker.checkHover(mouseX, mouseY))
 			GuiUtils.drawHoveringText(usesHoverChecker.getLines(), mouseX, mouseY, width, height, -1, fontRenderer);
+
+		if (randomizeHoverChecker.checkHover(mouseX, mouseY))
+			GuiUtils.drawHoveringText(randomizeHoverChecker.getLines(), mouseX, mouseY, width, height, -1, fontRenderer);
 
 		renderHoveredToolTip(mouseX, mouseY);
 		net.geforcemods.securitycraft.util.GuiUtils.renderModuleInfo(ModuleType.SMART, smartModuleTooltip, hasSmartModule, guiLeft + 5, guiTop + 5, width, height, mouseX, mouseY);
