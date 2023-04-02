@@ -12,6 +12,7 @@
 	- Bamboo Pressure Plate
 	- Bamboo Button
 	- Chiseled Bookshelf
+- New: Reinforced Blocks:*
 	- Cherry Log
 	- Cherry Wood
 	- Stripped Cherry Log
@@ -29,6 +30,7 @@
 - New: The Alarm, Motion Activated Light, and Portable Radar can now be waterlogged
 - New: Laser and inventory scanner fields can now be waterlogged, which means the Laser and Inventory Scanner now properly work underwater without air pockets
 - New: Randomize signature button for the Keycard Reader
+- Change: Several technical blocks' sounds have been adjusted to better match how they look
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 - Fix: Jade does not properly hide blocks
 - Fix: Shields do not take damage when blocking a taser that deals high enough damage
