@@ -55,9 +55,9 @@ public class KeypadChestBlock extends OwnableBlock {
 	protected static final AxisAlignedBB NOT_CONNECTED_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.875D, 0.9375D);
 
 	public KeypadChestBlock() {
-		super(Material.WOOD);
+		super(Material.IRON);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-		setSoundType(SoundType.WOOD);
+		setSoundType(SoundType.METAL);
 	}
 
 	@Override

@@ -35,7 +35,7 @@ public class KeypadBlock extends DisguisableBlock {
 
 	public KeypadBlock(Material material) {
 		super(material);
-		setSoundType(SoundType.STONE);
+		setSoundType(SoundType.METAL);
 	}
 
 	@Override

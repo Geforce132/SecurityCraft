@@ -143,16 +143,16 @@ import net.minecraft.item.Item;
 
 public class SetupHandler {
 	public static void setupBlocks() {
-		SCContent.laserBlock = new LaserBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("laser_block").setTranslationKey("securitycraft:laserBlock");
+		SCContent.laserBlock = new LaserBlock(Material.ROCK).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("laser_block").setTranslationKey("securitycraft:laserBlock");
 		SCContent.laserField = new LaserFieldBlock(Material.ROCK).setBlockUnbreakable().setRegistryName("laser").setTranslationKey("securitycraft:laserField");
 		SCContent.keypad = new KeypadBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad").setTranslationKey("securitycraft:keypad");
-		SCContent.retinalScanner = new RetinalScannerBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("retinal_scanner").setTranslationKey("securitycraft:retinalScanner");
+		SCContent.retinalScanner = new RetinalScannerBlock(Material.ROCK).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("retinal_scanner").setTranslationKey("securitycraft:retinalScanner");
 		SCContent.reinforcedDoor = new ReinforcedDoorBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("iron_door_reinforced").setTranslationKey("securitycraft:ironDoorReinforced");
 		SCContent.fakeLava = (BlockStaticLiquid) new FakeLavaBaseBlock(Material.LAVA).setHardness(100.0F).setLightLevel(1.0F).setRegistryName("bogus_lava").setTranslationKey("securitycraft:bogusLava");
 		SCContent.bogusLavaFlowing = new FakeLavaBlock(Material.LAVA).setHardness(0.0F).setLightLevel(1.0F).setRegistryName("bogus_lava_flowing").setTranslationKey("securitycraft:bogusLavaFlowing");
 		SCContent.fakeWater = (BlockStaticLiquid) new FakeWaterBaseBlock(Material.WATER).setHardness(100.0F).setRegistryName("bogus_water").setTranslationKey("securitycraft:bogusWater");
 		SCContent.bogusWaterFlowing = new FakeWaterBlock(Material.WATER).setHardness(0.0F).setRegistryName("bogus_water_flowing").setTranslationKey("securitycraft:bogusWaterFlowing");
-		SCContent.keycardReader = new KeycardReaderBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keycard_reader").setTranslationKey("securitycraft:keycardReader");
+		SCContent.keycardReader = new KeycardReaderBlock(Material.ROCK).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keycard_reader").setTranslationKey("securitycraft:keycardReader");
 		SCContent.reinforcedIronTrapdoor = new ReinforcedIronTrapDoorBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_iron_trapdoor").setTranslationKey("securitycraft:reinforcedIronTrapdoor");
 		SCContent.inventoryScanner = new InventoryScannerBlock(Material.ROCK).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("inventory_scanner").setTranslationKey("securitycraft:inventoryScanner");
 		SCContent.inventoryScannerField = new InventoryScannerFieldBlock(Material.GLASS).setBlockUnbreakable().setRegistryName("inventory_scanner_field").setTranslationKey("securitycraft:inventoryScannerField");

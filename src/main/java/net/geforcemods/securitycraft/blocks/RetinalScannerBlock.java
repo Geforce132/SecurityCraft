@@ -5,7 +5,6 @@ import java.util.Random;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
@@ -29,7 +28,6 @@ public class RetinalScannerBlock extends DisguisableBlock {
 
 	public RetinalScannerBlock(Material par1) {
 		super(par1);
-		setSoundType(SoundType.METAL);
 	}
 
 	@Override

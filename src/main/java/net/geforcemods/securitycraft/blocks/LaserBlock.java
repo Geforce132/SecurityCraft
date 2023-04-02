@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -39,7 +38,6 @@ public class LaserBlock extends DisguisableBlock {
 
 	public LaserBlock(Material material) {
 		super(material);
-		setSoundType(SoundType.METAL);
 	}
 
 	@Override
