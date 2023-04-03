@@ -255,7 +255,7 @@ public class SCClientEventHandler {
 	}
 
 	private static int getUCoord(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords, boolean loop, BiFunction<CompoundTag, BlockPos, Boolean> useCheckmark) {
-		double reachDistance = player.getReachDistance();
+		double reachDistance = player.getBlockReach();
 		double eyeHeight = player.getEyeHeight();
 		Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
 		BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));

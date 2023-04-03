@@ -97,7 +97,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.4-45.0.23'
+    minecraft 'net.minecraftforge:forge:1.19.4-45.0.40'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     
 //    implementation fg.deobf("curse.maven:architectury-api-419699:4147231") //ftb teams dependency
