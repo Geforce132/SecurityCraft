@@ -42,6 +42,10 @@
 
 [*] only available if the update_1_20 datapack is enabled
 
+--------------------------Changelog for v1.9.6.2 of SecurityCraft--------------------------
+
+- Fix: JEI integration
+
 --------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------
 
 - Fix: Mounting two cameras after one another in different dimensions causes severe lag
