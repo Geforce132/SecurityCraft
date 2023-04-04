@@ -185,119 +185,84 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	/**
 	 * Old method, renamed because I am lazy. Called by neighborChanged
 	 *
-	 * @param world The world the change occured in
-	 * @param pos The position of this block
+	 * @param level The level the change occured in
+	 * @param firstDoorPos The position of this block
 	 * @param neighbor The position of the changed block
 	 */
-	public void onNeighborChanged(World world, BlockPos pos, BlockPos neighbor) {
-		BlockState state = world.getBlockState(pos);
-		Block neighborBlock = world.getBlockState(neighbor).getBlock();
+	public void onNeighborChanged(World level, BlockPos firstDoorPos, BlockPos neighbor) {
+		BlockState firstDoorState = level.getBlockState(firstDoorPos);
+		Block neighborBlock = level.getBlockState(neighbor).getBlock();
 		Owner previousOwner = null;
 
-		if (world.getBlockEntity(pos) instanceof OwnableBlockEntity)
-			previousOwner = ((OwnableBlockEntity) world.getBlockEntity(pos)).getOwner();
+		if (level.getBlockEntity(firstDoorPos) instanceof OwnableBlockEntity)
+			previousOwner = ((OwnableBlockEntity) level.getBlockEntity(firstDoorPos)).getOwner();
 
-		if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
-			BlockPos blockBelow = pos.below();
-			BlockState stateBelow = world.getBlockState(blockBelow);
+		if (firstDoorState.getValue(HALF) == DoubleBlockHalf.UPPER) {
+			BlockPos blockBelow = firstDoorPos.below();
+			BlockState stateBelow = level.getBlockState(blockBelow);
 
 			if (stateBelow.getBlock() != this)
-				world.destroyBlock(pos, false);
+				level.destroyBlock(firstDoorPos, false);
 			else if (neighborBlock != this)
-				onNeighborChanged(world, blockBelow, neighbor);
+				onNeighborChanged(level, blockBelow, neighbor);
 		}
 		else {
 			boolean drop = false;
-			BlockPos blockAbove = pos.above();
-			BlockState stateAbove = world.getBlockState(blockAbove);
+			BlockPos blockAbove = firstDoorPos.above();
+			BlockState stateAbove = level.getBlockState(blockAbove);
 
 			if (stateAbove.getBlock() != this) {
-				world.destroyBlock(pos, false);
+				level.destroyBlock(firstDoorPos, false);
 				drop = true;
 			}
 
-			if (!BlockUtils.isSideSolid(world, pos.below(), Direction.UP)) {
-				world.destroyBlock(pos, false);
+			if (!BlockUtils.isSideSolid(level, firstDoorPos.below(), Direction.UP)) {
+				level.destroyBlock(firstDoorPos, false);
 				drop = true;
 
 				if (stateAbove.getBlock() == this)
-					world.destroyBlock(pos, false);
+					level.destroyBlock(firstDoorPos, false);
 			}
 
 			if (drop) {
-				if (!world.isClientSide) {
-					world.destroyBlock(pos, false);
-					Block.popResource(world, pos, new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()));
+				if (!level.isClientSide) {
+					level.destroyBlock(firstDoorPos, false);
+					Block.popResource(level, firstDoorPos, new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()));
 				}
 			}
-			else {
-				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos) || BlockUtils.hasActiveSCBlockNextTo(world, pos.above());
+			else if (neighborBlock != this) {
+				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, firstDoorPos) || BlockUtils.hasActiveSCBlockNextTo(level, firstDoorPos.above());
+				Direction directionToCheck = firstDoorState.getValue(FACING).getClockWise();
+				BlockPos secondDoorPos = null;
+				BlockState secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.relative(directionToCheck));
 
-				if (neighborBlock != this && hasActiveSCBlock != stateAbove.getValue(OPEN)) {
-					if (hasActiveSCBlock != state.getValue(OPEN)) {
-						world.setBlock(pos, state.setValue(OPEN, hasActiveSCBlock), 2);
+				if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get())) {
+					secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.relative(directionToCheck.getOpposite()));
 
-						BlockState secondDoorState;
-
-						if (state.getValue(FACING) == Direction.WEST) {
-							secondDoorState = world.getBlockState(pos.north());
-
-							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-								world.setBlock(pos.north(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							else {
-								secondDoorState = world.getBlockState(pos.south());
-
-								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-									world.setBlock(pos.south(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							}
-						}
-						else if (state.getValue(FACING) == Direction.NORTH) {
-							secondDoorState = world.getBlockState(pos.east());
-
-							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-								world.setBlock(pos.east(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							else {
-								secondDoorState = world.getBlockState(pos.west());
-
-								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-									world.setBlock(pos.west(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							}
-						}
-						else if (state.getValue(FACING) == Direction.EAST) {
-							secondDoorState = world.getBlockState(pos.south());
-
-							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-								world.setBlock(pos.south(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							else {
-								secondDoorState = world.getBlockState(pos.north());
-
-								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-									world.setBlock(pos.north(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							}
-						}
-						else if (state.getValue(FACING) == Direction.SOUTH) {
-							secondDoorState = world.getBlockState(pos.west());
-
-							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-								world.setBlock(pos.west(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							else {
-								secondDoorState = world.getBlockState(pos.east());
-
-								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-									world.setBlock(pos.east(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							}
-						}
-
-						world.levelEvent((PlayerEntity) null, hasActiveSCBlock ? 1005 : 1011, pos, 0);
-					}
+					if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get()))
+						secondDoorPos = null;
 				}
+
+				boolean hasSecondDoorActiveSCBlock = secondDoorPos != null && (BlockUtils.hasActiveSCBlockNextTo(level, secondDoorPos) || BlockUtils.hasActiveSCBlockNextTo(level, secondDoorPos.above()));
+				boolean shouldBeOpen = hasActiveSCBlock != hasSecondDoorActiveSCBlock || hasActiveSCBlock;
+
+				if (shouldBeOpen != firstDoorState.getValue(OPEN))
+					setDoorState(level, firstDoorPos, firstDoorState, shouldBeOpen);
+
+				if (secondDoorPos != null && shouldBeOpen != secondDoorState.getValue(OPEN))
+					setDoorState(level, secondDoorPos, secondDoorState, shouldBeOpen);
 			}
 		}
 
-		if (previousOwner != null && world.getBlockEntity(pos) instanceof OwnableBlockEntity && world.getBlockEntity(pos.above()) instanceof OwnableBlockEntity) {
-			((OwnableBlockEntity) world.getBlockEntity(pos)).setOwner(previousOwner.getUUID(), previousOwner.getName());
-			((OwnableBlockEntity) world.getBlockEntity(pos.above())).setOwner(previousOwner.getUUID(), previousOwner.getName());
+		if (previousOwner != null && level.getBlockEntity(firstDoorPos) instanceof OwnableBlockEntity && level.getBlockEntity(firstDoorPos.above()) instanceof OwnableBlockEntity) {
+			((OwnableBlockEntity) level.getBlockEntity(firstDoorPos)).setOwner(previousOwner.getUUID(), previousOwner.getName());
+			((OwnableBlockEntity) level.getBlockEntity(firstDoorPos.above())).setOwner(previousOwner.getUUID(), previousOwner.getName());
 		}
+	}
+
+	public void setDoorState(World level, BlockPos pos, BlockState state, boolean open) {
+		level.setBlock(pos, state.setValue(OPEN, open), 2);
+		level.levelEvent((PlayerEntity) null, open ? 1005 : 1011, pos, 0);
 	}
 
 	@Override
