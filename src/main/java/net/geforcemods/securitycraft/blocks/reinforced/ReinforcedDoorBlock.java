@@ -180,119 +180,84 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	 * Old method, renamed because I am lazy. Called by neighborChanged
 	 *
 	 * @param level The level the change occured in
-	 * @param pos The position of this block
+	 * @param firstDoorPos The position of this block
 	 * @param neighbor The position of the changed block
 	 */
-	public void onNeighborChanged(Level level, BlockPos pos, BlockPos neighbor) {
-		BlockState state = level.getBlockState(pos);
+	public void onNeighborChanged(Level level, BlockPos firstDoorPos, BlockPos neighbor) {
+		BlockState firstDoorState = level.getBlockState(firstDoorPos);
 		Block neighborBlock = level.getBlockState(neighbor).getBlock();
 		Owner previousOwner = null;
 
-		if (level.getBlockEntity(pos) instanceof OwnableBlockEntity)
-			previousOwner = ((OwnableBlockEntity) level.getBlockEntity(pos)).getOwner();
+		if (level.getBlockEntity(firstDoorPos) instanceof OwnableBlockEntity)
+			previousOwner = ((OwnableBlockEntity) level.getBlockEntity(firstDoorPos)).getOwner();
 
-		if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
-			BlockPos blockBelow = pos.below();
+		if (firstDoorState.getValue(HALF) == DoubleBlockHalf.UPPER) {
+			BlockPos blockBelow = firstDoorPos.below();
 			BlockState stateBelow = level.getBlockState(blockBelow);
 
 			if (stateBelow.getBlock() != this)
-				level.destroyBlock(pos, false);
+				level.destroyBlock(firstDoorPos, false);
 			else if (neighborBlock != this)
 				onNeighborChanged(level, blockBelow, neighbor);
 		}
 		else {
 			boolean drop = false;
-			BlockPos blockAbove = pos.above();
+			BlockPos blockAbove = firstDoorPos.above();
 			BlockState stateAbove = level.getBlockState(blockAbove);
 
 			if (stateAbove.getBlock() != this) {
-				level.destroyBlock(pos, false);
+				level.destroyBlock(firstDoorPos, false);
 				drop = true;
 			}
 
-			if (!BlockUtils.isSideSolid(level, pos.below(), Direction.UP)) {
-				level.destroyBlock(pos, false);
+			if (!BlockUtils.isSideSolid(level, firstDoorPos.below(), Direction.UP)) {
+				level.destroyBlock(firstDoorPos, false);
 				drop = true;
 
 				if (stateAbove.getBlock() == this)
-					level.destroyBlock(pos, false);
+					level.destroyBlock(firstDoorPos, false);
 			}
 
 			if (drop) {
 				if (!level.isClientSide) {
-					level.destroyBlock(pos, false);
-					Block.popResource(level, pos, new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()));
+					level.destroyBlock(firstDoorPos, false);
+					Block.popResource(level, firstDoorPos, new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()));
 				}
 			}
-			else {
-				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, pos) || BlockUtils.hasActiveSCBlockNextTo(level, pos.above());
+			else if (neighborBlock != this) {
+				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, firstDoorPos) || BlockUtils.hasActiveSCBlockNextTo(level, firstDoorPos.above());
+				Direction directionToCheck = firstDoorState.getValue(FACING).getClockWise();
+				BlockPos secondDoorPos = null;
+				BlockState secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.relative(directionToCheck));
 
-				if (neighborBlock != this && hasActiveSCBlock != stateAbove.getValue(OPEN)) {
-					if (hasActiveSCBlock != state.getValue(OPEN)) {
-						level.setBlock(pos, state.setValue(OPEN, hasActiveSCBlock), 2);
+				if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get())) {
+					secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.relative(directionToCheck.getOpposite()));
 
-						BlockState secondDoorState;
-
-						if (state.getValue(FACING) == Direction.WEST) {
-							secondDoorState = level.getBlockState(pos.north());
-
-							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-								level.setBlock(pos.north(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							else {
-								secondDoorState = level.getBlockState(pos.south());
-
-								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-									level.setBlock(pos.south(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							}
-						}
-						else if (state.getValue(FACING) == Direction.NORTH) {
-							secondDoorState = level.getBlockState(pos.east());
-
-							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-								level.setBlock(pos.east(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							else {
-								secondDoorState = level.getBlockState(pos.west());
-
-								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-									level.setBlock(pos.west(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							}
-						}
-						else if (state.getValue(FACING) == Direction.EAST) {
-							secondDoorState = level.getBlockState(pos.south());
-
-							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-								level.setBlock(pos.south(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							else {
-								secondDoorState = level.getBlockState(pos.north());
-
-								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-									level.setBlock(pos.north(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							}
-						}
-						else if (state.getValue(FACING) == Direction.SOUTH) {
-							secondDoorState = level.getBlockState(pos.west());
-
-							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-								level.setBlock(pos.west(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							else {
-								secondDoorState = level.getBlockState(pos.east());
-
-								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
-									level.setBlock(pos.east(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							}
-						}
-
-						level.playSound(null, pos, hasActiveSCBlock ? SoundEvents.IRON_DOOR_OPEN : SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 1.0F, 1.0F);
-						level.gameEvent(null, hasActiveSCBlock ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
-					}
+					if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get()))
+						secondDoorPos = null;
 				}
+
+				boolean hasSecondDoorActiveSCBlock = secondDoorPos != null && (BlockUtils.hasActiveSCBlockNextTo(level, secondDoorPos) || BlockUtils.hasActiveSCBlockNextTo(level, secondDoorPos.above()));
+				boolean shouldBeOpen = hasActiveSCBlock != hasSecondDoorActiveSCBlock || hasActiveSCBlock;
+
+				if (shouldBeOpen != firstDoorState.getValue(OPEN))
+					setDoorState(level, firstDoorPos, firstDoorState, shouldBeOpen);
+
+				if (secondDoorPos != null && shouldBeOpen != secondDoorState.getValue(OPEN))
+					setDoorState(level, secondDoorPos, secondDoorState, shouldBeOpen);
 			}
 		}
 
-		if (previousOwner != null && level.getBlockEntity(pos) instanceof OwnableBlockEntity thisBe && level.getBlockEntity(pos.above()) instanceof OwnableBlockEntity aboveBe) {
+		if (previousOwner != null && level.getBlockEntity(firstDoorPos) instanceof OwnableBlockEntity thisBe && level.getBlockEntity(firstDoorPos.above()) instanceof OwnableBlockEntity aboveBe) {
 			thisBe.setOwner(previousOwner.getUUID(), previousOwner.getName());
 			aboveBe.setOwner(previousOwner.getUUID(), previousOwner.getName());
 		}
+	}
+
+	public void setDoorState(Level level, BlockPos pos, BlockState state, boolean open) {
+		level.setBlock(pos, state.setValue(OPEN, open), 2);
+		level.playSound(null, pos, open ? SoundEvents.IRON_DOOR_OPEN : SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 1.0F, 1.0F);
+		level.gameEvent(null, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
 	}
 
 	@Override
