@@ -7,6 +7,7 @@
 - Fix: The death message of a player killed by a taser does not contain the player firing the taser
 - Fix: The Sentry-/Mine Remote Access Tool screens do not show the item's custom name
 - Fix: Reinforced Doors can be closed by giving them a block update
+- Fix: Reinforced Doors that are next to, but don't face, each other can act as double doors
 
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
 

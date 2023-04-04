@@ -102,13 +102,13 @@ public class ReinforcedDoorBlock extends BlockDoor implements ITileEntityProvide
 			else if (neighborBlock != this) {
 				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, firstDoorPos) || BlockUtils.hasActiveSCBlockNextTo(level, firstDoorPos.up());
 				EnumFacing directionToCheck = firstDoorState.getValue(FACING).rotateY();
-				BlockPos secondDoorPos = null;
-				IBlockState secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.offset(directionToCheck));
+				BlockPos secondDoorPos = firstDoorPos.offset(directionToCheck);
+				IBlockState secondDoorState = level.getBlockState(secondDoorPos);
 
-				if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor)) {
+				if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && firstDoorState.getValue(HINGE) != secondDoorState.getValue(HINGE))) {
 					secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.offset(directionToCheck.getOpposite()));
 
-					if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor))
+					if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && firstDoorState.getValue(HINGE) != secondDoorState.getValue(HINGE)))
 						secondDoorPos = null;
 				}
 
