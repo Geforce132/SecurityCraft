@@ -39,6 +39,7 @@
 - Fix: Crashes when rendering some modded block entities in a Projector, or using them as a disguise
 - Fix: The Sentry-/Mine Remote Access Tool screens do not show the item's custom name
 - Fix: Reinforced Doors can be closed by giving them a block update
+- Fix: Reinforced Doors that are next to, but don't face, each other can act as double doors
 - Misc.: The minimum required Forge version is 45.0.39
 
 [*] only available if the update_1_20 datapack is enabled
