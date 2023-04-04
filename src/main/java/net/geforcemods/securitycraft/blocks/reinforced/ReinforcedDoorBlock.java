@@ -59,128 +59,75 @@ public class ReinforcedDoorBlock extends BlockDoor implements ITileEntityProvide
 	/**
 	 * Old method, renamed because I am lazy. Called by neighborChanged
 	 *
-	 * @param world The world the change occured in
-	 * @param pos The position of this block
+	 * @param access The world the change occured in
+	 * @param firstDoorPos The position of this block
 	 * @param neighbor The position of the changed block
 	 */
-	public void onNeighborChanged(IBlockAccess access, BlockPos pos, BlockPos neighbor) {
-		World world = (World) access;
-		IBlockState state = world.getBlockState(pos);
-		Block neighborBlock = world.getBlockState(neighbor).getBlock();
+	public void onNeighborChanged(IBlockAccess access, BlockPos firstDoorPos, BlockPos neighbor) {
+		World level = (World) access;
+		IBlockState firstDoorState = level.getBlockState(firstDoorPos);
+		Block neighborBlock = level.getBlockState(neighbor).getBlock();
 
-		if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER) {
-			BlockPos blockBelow = pos.down();
-			IBlockState stateBelow = world.getBlockState(blockBelow);
+		if (firstDoorState.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER) {
+			BlockPos blockBelow = firstDoorPos.down();
+			IBlockState stateBelow = level.getBlockState(blockBelow);
 
 			if (stateBelow.getBlock() != this)
-				world.setBlockToAir(pos);
+				level.setBlockToAir(firstDoorPos);
 			else if (neighborBlock != this)
-				onNeighborChanged(world, blockBelow, neighbor);
+				onNeighborChanged(level, blockBelow, neighbor);
 		}
 		else {
 			boolean drop = false;
-			BlockPos blockAbove = pos.up();
-			IBlockState stateAbove = world.getBlockState(blockAbove);
+			BlockPos blockAbove = firstDoorPos.up();
+			IBlockState stateAbove = level.getBlockState(blockAbove);
 
 			if (stateAbove.getBlock() != this) {
-				world.setBlockToAir(pos);
+				level.setBlockToAir(firstDoorPos);
 				drop = true;
 			}
 
-			if (!world.isSideSolid(pos.down(), EnumFacing.UP)) {
-				world.setBlockToAir(pos);
+			if (!level.isSideSolid(firstDoorPos.down(), EnumFacing.UP)) {
+				level.setBlockToAir(firstDoorPos);
 				drop = true;
 
 				if (stateAbove.getBlock() == this)
-					world.setBlockToAir(blockAbove);
+					level.setBlockToAir(blockAbove);
 			}
 
 			if (drop) {
-				if (!world.isRemote)
-					dropBlockAsItem(world, pos, state, 0);
+				if (!level.isRemote)
+					dropBlockAsItem(level, firstDoorPos, firstDoorState, 0);
 			}
-			else {
-				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos) || BlockUtils.hasActiveSCBlockNextTo(world, pos.up());
+			else if (neighborBlock != this) {
+				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, firstDoorPos) || BlockUtils.hasActiveSCBlockNextTo(level, firstDoorPos.up());
+				EnumFacing directionToCheck = firstDoorState.getValue(FACING).rotateY();
+				BlockPos secondDoorPos = null;
+				IBlockState secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.offset(directionToCheck));
 
-				if (neighborBlock != this && hasActiveSCBlock != stateAbove.getValue(POWERED)) {
-					world.setBlockState(blockAbove, stateAbove.withProperty(POWERED, hasActiveSCBlock), 2);
+				if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor)) {
+					secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.offset(directionToCheck.getOpposite()));
 
-					if (hasActiveSCBlock != state.getValue(OPEN)) {
-						world.setBlockState(pos, state.withProperty(OPEN, hasActiveSCBlock), 2);
-						world.markBlockRangeForRenderUpdate(pos, pos);
-
-						IBlockState secondDoorState;
-
-						if (state.getValue(FACING) == EnumFacing.WEST) {
-							secondDoorState = world.getBlockState(pos.north());
-
-							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock) {
-								world.setBlockState(pos.north(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-								world.markBlockRangeForRenderUpdate(pos.north(), pos.north());
-							}
-							else {
-								secondDoorState = world.getBlockState(pos.south());
-
-								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock) {
-									world.setBlockState(pos.south(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-									world.markBlockRangeForRenderUpdate(pos.south(), pos.south());
-								}
-							}
-						}
-						else if (state.getValue(FACING) == EnumFacing.NORTH) {
-							secondDoorState = world.getBlockState(pos.east());
-
-							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock) {
-								world.setBlockState(pos.east(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-								world.markBlockRangeForRenderUpdate(pos.east(), pos.east());
-							}
-							else {
-								secondDoorState = world.getBlockState(pos.west());
-
-								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock) {
-									world.setBlockState(pos.west(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-									world.markBlockRangeForRenderUpdate(pos.west(), pos.west());
-								}
-							}
-						}
-						else if (state.getValue(FACING) == EnumFacing.EAST) {
-							secondDoorState = world.getBlockState(pos.south());
-
-							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock) {
-								world.setBlockState(pos.south(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-								world.markBlockRangeForRenderUpdate(pos.south(), pos.south());
-							}
-							else {
-								secondDoorState = world.getBlockState(pos.north());
-
-								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock) {
-									world.setBlockState(pos.north(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-									world.markBlockRangeForRenderUpdate(pos.north(), pos.north());
-								}
-							}
-						}
-						else if (state.getValue(FACING) == EnumFacing.SOUTH) {
-							secondDoorState = world.getBlockState(pos.west());
-
-							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock) {
-								world.setBlockState(pos.west(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-								world.markBlockRangeForRenderUpdate(pos.west(), pos.west());
-							}
-							else {
-								secondDoorState = world.getBlockState(pos.east());
-
-								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock) {
-									world.setBlockState(pos.east(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-									world.markBlockRangeForRenderUpdate(pos.east(), pos.east());
-								}
-							}
-						}
-
-						world.playEvent((EntityPlayer) null, hasActiveSCBlock ? 1005 : 1011, pos, 0);
-					}
+					if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor))
+						secondDoorPos = null;
 				}
+
+				boolean hasSecondDoorActiveSCBlock = secondDoorPos != null && (BlockUtils.hasActiveSCBlockNextTo(level, secondDoorPos) || BlockUtils.hasActiveSCBlockNextTo(level, secondDoorPos.up()));
+				boolean shouldBeOpen = hasActiveSCBlock != hasSecondDoorActiveSCBlock || hasActiveSCBlock;
+
+				if (shouldBeOpen != firstDoorState.getValue(OPEN))
+					setDoorState(level, firstDoorPos, firstDoorState, shouldBeOpen);
+
+				if (secondDoorPos != null && shouldBeOpen != secondDoorState.getValue(OPEN))
+					setDoorState(level, secondDoorPos, secondDoorState, shouldBeOpen);
 			}
 		}
+	}
+
+	public void setDoorState(World level, BlockPos pos, IBlockState state, boolean open) {
+		level.setBlockState(pos, state.withProperty(OPEN, open), 2);
+		level.playEvent((EntityPlayer) null, open ? 1005 : 1011, pos, 0);
+		level.markBlockRangeForRenderUpdate(pos, pos);
 	}
 
 	@Override
