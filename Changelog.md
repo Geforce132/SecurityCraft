@@ -27,6 +27,7 @@
 - Fix: The Sentry-/Mine Remote Access Tool screens do not show the item's custom name
 - Fix: Reinforced Doors can be closed by giving them a block update
 - Fix: Reinforced Doors that are next to, but don't face, each other can act as double doors
+- Fix: The Reinforced Mangrove Button and Pressure Plate can't open reinforced doors
 
 * only available if the update_1_20 datapack is enabled
 

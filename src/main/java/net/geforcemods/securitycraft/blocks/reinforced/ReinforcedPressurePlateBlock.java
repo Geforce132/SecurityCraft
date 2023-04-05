@@ -1,9 +1,8 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
@@ -29,8 +28,8 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 
 	public ReinforcedPressurePlateBlock(Sensitivity sensitivity, Block.Properties properties, Block vanillaBlock, SoundEvent soundOff, SoundEvent soundOn) {
 		super(sensitivity, properties, soundOff, soundOn);
-
 		this.vanillaBlock = vanillaBlock;
+		DoorActivator.addActivator(this);
 	}
 
 	@Override
@@ -113,19 +112,14 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	}
 
 	public static class DoorActivator implements IDoorActivator {
-		//@formatter:off
-		private final List<Block> blocks = Arrays.asList(
-				SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(),
-				SCContent.REINFORCED_OAK_PRESSURE_PLATE.get(),
-				SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get(),
-				SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(),
-				SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(),
-				SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
-				SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
-				SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
-				SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get(),
-				SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get());
-		//@formatter:on
+		private static final List<Block> BLOCKS = new ArrayList<>();
+
+		public static boolean addActivator(Block block) {
+			if (BLOCKS.contains(block))
+				return false;
+			else
+				return BLOCKS.add(block);
+		}
 
 		@Override
 		public boolean isPowering(Level level, BlockPos pos, BlockState state, BlockEntity be, Direction direction, int distance) {
@@ -134,7 +128,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 
 		@Override
 		public List<Block> getBlocks() {
-			return blocks;
+			return BLOCKS;
 		}
 	}
 }
