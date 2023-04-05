@@ -43,10 +43,12 @@ public class CommonDoorActivator implements Function<Object, IDoorActivator>, ID
 	@Override
 	public boolean isPowering(World world, BlockPos pos, IBlockState state, TileEntity te, EnumFacing direction, int distance) {
 		if (state.getValue(poweredProperty)) {
-			if (state.getPropertyKeys().contains(BlockLever.FACING))
-				return direction == state.getValue(BlockLever.FACING).getFacing();
-			else if (state.getPropertyKeys().contains(BlockDirectional.FACING))
-				return direction == state.getValue(BlockDirectional.FACING);
+			if (distance == 2) {
+				if (state.getPropertyKeys().contains(BlockLever.FACING))
+					return direction == state.getValue(BlockLever.FACING).getFacing();
+				else if (state.getPropertyKeys().contains(BlockDirectional.FACING))
+					return direction == state.getValue(BlockDirectional.FACING);
+			}
 
 			return true;
 		}
