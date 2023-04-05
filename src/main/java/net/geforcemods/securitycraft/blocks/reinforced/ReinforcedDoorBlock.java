@@ -105,10 +105,10 @@ public class ReinforcedDoorBlock extends BlockDoor implements ITileEntityProvide
 				BlockPos secondDoorPos = firstDoorPos.offset(directionToCheck);
 				IBlockState secondDoorState = level.getBlockState(secondDoorPos);
 
-				if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && firstDoorState.getValue(HINGE) != secondDoorState.getValue(HINGE))) {
+				if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(HINGE) == EnumHingePosition.RIGHT && firstDoorState.getValue(HINGE) != secondDoorState.getValue(HINGE))) {
 					secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.offset(directionToCheck.getOpposite()));
 
-					if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && firstDoorState.getValue(HINGE) != secondDoorState.getValue(HINGE)))
+					if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(HINGE) == EnumHingePosition.LEFT && firstDoorState.getValue(HINGE) != secondDoorState.getValue(HINGE)))
 						secondDoorPos = null;
 				}
 
