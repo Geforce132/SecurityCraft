@@ -207,6 +207,11 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			for (int i = 10; i < te.getSizeInventory(); i++) {
 				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), te.getContents().get(i));
 			}
+
+			if (te.shouldProvidePower()) {
+				world.notifyNeighborsOfStateChange(pos, this, false);
+				BlockUtils.updateIndirectNeighbors(world, pos, this);
+			}
 		}
 
 		if (connectedScanner != null) {

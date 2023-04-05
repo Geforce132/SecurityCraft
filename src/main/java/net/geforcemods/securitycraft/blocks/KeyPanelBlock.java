@@ -125,6 +125,11 @@ public abstract class KeyPanelBlock extends OwnableBlock {
 		if (te instanceof IModuleInventory)
 			((IModuleInventory) te).dropAllModules();
 
+		if (state.getValue(POWERED)) {
+			world.notifyNeighborsOfStateChange(pos, this, false);
+			BlockUtils.updateIndirectNeighbors(world, pos, this);
+		}
+
 		super.breakBlock(world, pos, state);
 	}
 

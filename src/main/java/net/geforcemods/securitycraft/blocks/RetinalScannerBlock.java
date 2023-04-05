@@ -68,6 +68,16 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		if (state.getValue(POWERED)) {
+			world.notifyNeighborsOfStateChange(pos, this, false);
+			BlockUtils.updateIndirectNeighbors(world, pos, this);
+		}
+
+		super.breakBlock(world, pos, state);
+	}
+
+	@Override
 	public boolean canProvidePower(IBlockState state) {
 		return true;
 	}

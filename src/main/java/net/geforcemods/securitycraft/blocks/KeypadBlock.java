@@ -82,6 +82,16 @@ public class KeypadBlock extends DisguisableBlock {
 	}
 
 	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		if (state.getValue(POWERED)) {
+			world.notifyNeighborsOfStateChange(pos, this, false);
+			BlockUtils.updateIndirectNeighbors(world, pos, this);
+		}
+
+		super.breakBlock(world, pos, state);
+	}
+
+	@Override
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		setDefaultFacing(world, pos, state);
 	}

@@ -175,6 +175,16 @@ public class KeycardReaderBlock extends DisguisableBlock {
 	}
 
 	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		if (state.getValue(POWERED)) {
+			world.notifyNeighborsOfStateChange(pos, this, false);
+			BlockUtils.updateIndirectNeighbors(world, pos, this);
+		}
+
+		super.breakBlock(world, pos, state);
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		if ((state.getValue(POWERED))) {
