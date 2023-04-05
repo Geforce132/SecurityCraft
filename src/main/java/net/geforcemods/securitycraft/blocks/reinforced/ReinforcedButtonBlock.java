@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
+import net.geforcemods.securitycraft.misc.CommonDoorActivator;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -25,6 +26,7 @@ public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlo
 	public ReinforcedButtonBlock(Block.Properties properties, Block vb, BlockSetType blockSetType, int ticksToStayPressed, boolean arrowsCanPush) {
 		super(properties, blockSetType, ticksToStayPressed, arrowsCanPush);
 		this.vanillaBlock = vb;
+		CommonDoorActivator.addActivator(this);
 	}
 
 	@Override
