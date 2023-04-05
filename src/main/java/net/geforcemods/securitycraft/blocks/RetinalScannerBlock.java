@@ -57,6 +57,18 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			if (state.getValue(POWERED)) {
+				level.updateNeighborsAt(pos, this);
+				BlockUtils.updateIndirectNeighbors(level, pos, this);
+			}
+
+			super.onRemove(state, level, pos, newState, isMoving);
+		}
+	}
+
+	@Override
 	public boolean isSignalSource(BlockState state) {
 		return true;
 	}
