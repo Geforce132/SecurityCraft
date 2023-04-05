@@ -214,6 +214,11 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 			if (te instanceof IModuleInventory)
 				((IModuleInventory) te).dropAllModules();
 
+			if (state.getValue(POWERED)) {
+				level.updateNeighborsAt(pos, this);
+				level.updateNeighborsAt(pos.relative(state.getValue(FACING).getOpposite()), this);
+			}
+
 			if (!newState.hasTileEntity())
 				level.removeBlockEntity(pos);
 		}

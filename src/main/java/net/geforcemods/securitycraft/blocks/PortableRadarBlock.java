@@ -131,13 +131,9 @@ public class PortableRadarBlock extends OwnableBlock implements IWaterLoggable {
 	public static void togglePowerOutput(World world, BlockPos pos, boolean shouldPower) {
 		BlockState state = world.getBlockState(pos);
 
-		if (shouldPower && !state.getValue(POWERED)) {
-			world.setBlockAndUpdate(pos, state.setValue(POWERED, true));
-			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING));
-		}
-		else if (!shouldPower && state.getValue(POWERED)) {
-			world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING));
+		if (shouldPower != state.getValue(POWERED)) {
+			world.setBlockAndUpdate(pos, state.setValue(POWERED, shouldPower));
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING).getOpposite());
 		}
 	}
 

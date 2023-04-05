@@ -153,6 +153,18 @@ public class KeycardReaderBlock extends DisguisableBlock {
 	}
 
 	@Override
+	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			if (state.getValue(POWERED)) {
+				world.updateNeighborsAt(pos, this);
+				BlockUtils.updateIndirectNeighbors(world, pos, this);
+			}
+
+			super.onRemove(state, world, pos, newState, isMoving);
+		}
+	}
+
+	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
 		if ((state.getValue(POWERED))) {
