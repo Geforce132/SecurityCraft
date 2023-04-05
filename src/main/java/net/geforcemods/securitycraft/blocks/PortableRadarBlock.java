@@ -120,13 +120,9 @@ public class PortableRadarBlock extends OwnableBlock implements SimpleWaterlogge
 	public static void togglePowerOutput(Level level, BlockPos pos, boolean shouldPower) {
 		BlockState state = level.getBlockState(pos);
 
-		if (shouldPower && !state.getValue(POWERED)) {
-			level.setBlockAndUpdate(pos, state.setValue(POWERED, true));
-			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING));
-		}
-		else if (!shouldPower && state.getValue(POWERED)) {
-			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING));
+		if (shouldPower != state.getValue(POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, shouldPower));
+			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING).getOpposite());
 		}
 	}
 

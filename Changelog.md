@@ -40,6 +40,7 @@
 - Fix: The Sentry-/Mine Remote Access Tool screens do not show the item's custom name
 - Fix: Reinforced Doors can be closed by giving them a block update
 - Fix: Reinforced Doors that are next to, but don't face, each other can act as double doors
+- Fix: Certain blocks don't update their indirect neighbors properly when getting destroyed while in a powered state
 - Misc.: The minimum required Forge version is 45.0.39
 
 [*] only available if the update_1_20 datapack is enabled
