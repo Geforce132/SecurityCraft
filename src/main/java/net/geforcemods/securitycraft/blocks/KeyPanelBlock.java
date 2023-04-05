@@ -188,6 +188,11 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 			if (level.getBlockEntity(pos) instanceof IModuleInventory inv)
 				inv.dropAllModules();
 
+			if (state.getValue(POWERED)) {
+				level.updateNeighborsAt(pos, this);
+				level.updateNeighborsAt(pos.relative(state.getValue(FACING).getOpposite()), this);
+			}
+
 			if (!newState.hasBlockEntity())
 				level.removeBlockEntity(pos);
 		}
