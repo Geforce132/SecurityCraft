@@ -10,6 +10,7 @@
 - Fix: Reinforced Doors that are next to, but don't face, each other can act as double doors
 - Fix: Certain blocks don't update their indirect neighbors properly when getting destroyed while in a powered state
 - Fix: Directional power sources like Reinforced Levers and Reinforced Buttons cannot toggle adjacent blocks
+- Fix: Inserting a module into a Laser Block or Keypad/Scanner Door via the GUI will disable the module in all other connected blocks
 
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
 

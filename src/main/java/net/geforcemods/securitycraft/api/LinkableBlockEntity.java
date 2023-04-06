@@ -163,11 +163,16 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 *            Always add your tile entity to the list whenever using this method
 	 */
 	public void createLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedTEs) {
-		for (LinkedBlock block : linkedBlocks)
-			if (!excludedTEs.contains(block.asTileEntity(world))) {
-				block.asTileEntity(world).onLinkedBlockAction(action, excludedTEs);
-				block.asTileEntity(world).sync();
+		for (LinkedBlock block : linkedBlocks) {
+			LinkableBlockEntity linkedTe = block.asTileEntity(world);
+
+			if (!excludedTEs.contains(linkedTe)) {
+				linkedTe.onLinkedBlockAction(action, excludedTEs);
+
+				if (!world.isRemote)
+					linkedTe.sync();
 			}
+		}
 	}
 
 	/**
