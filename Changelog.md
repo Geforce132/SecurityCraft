@@ -44,6 +44,7 @@
 - Fix: The Reinforced Mangrove Button and Pressure Plate can't open reinforced doors
 - Fix: Blocks cannot be placed on the side of any of SecurityCraft's doors
 - Fix: Some reinforced blocks and mines can be destroyed by using a piston
+- Fix: Reinforced Lever duplication exploit
 - Misc.: The minimum required Forge version is 45.0.39
 
 [*] only available if the update_1_20 datapack is enabled
