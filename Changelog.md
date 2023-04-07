@@ -10,6 +10,7 @@
 - Fix: Certain blocks don't update their indirect neighbors properly when getting destroyed while in a powered state
 - Fix: Blocks cannot be placed on the side of any of SecurityCraft's doors
 - Fix: Some reinforced blocks and mines can be destroyed by using a piston
+- Fix: Reinforced Lever duplication exploit
 
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
 
