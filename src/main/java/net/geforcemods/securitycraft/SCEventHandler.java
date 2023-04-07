@@ -185,7 +185,7 @@ public class SCEventHandler {
 	public static void highestPriorityOnRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
 		ItemStack stack = event.getItemStack();
 
-		if (!stack.isEmpty() && !stack.getItem().is(SCTags.Items.CAN_INTERACT_WITH_DOORS)) {
+		if (!stack.isEmpty() && !(stack.getItem() instanceof BlockItem) && !stack.getItem().is(SCTags.Items.CAN_INTERACT_WITH_DOORS)) {
 			Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
 
 			if (block == SCContent.KEYPAD_DOOR.get())

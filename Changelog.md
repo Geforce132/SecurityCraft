@@ -11,6 +11,7 @@
 - Fix: Reinforced Doors can be closed by giving them a block update
 - Fix: Reinforced Doors that are next to, but don't face, each other can act as double doors
 - Fix: Certain blocks don't update their indirect neighbors properly when getting destroyed while in a powered state
+- Fix: Blocks cannot be placed on the side of any of SecurityCraft's doors
 
 --------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------
 
