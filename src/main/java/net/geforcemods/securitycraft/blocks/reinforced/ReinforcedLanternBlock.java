@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
@@ -82,5 +83,10 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock {
 	@Override
 	public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
 		return false;
+	}
+
+	@Override
+	public PushReaction getPistonPushReaction(BlockState state) {
+		return PushReaction.BLOCK; //Can't be PushReaction.NORMAL because of a duplication exploit
 	}
 }

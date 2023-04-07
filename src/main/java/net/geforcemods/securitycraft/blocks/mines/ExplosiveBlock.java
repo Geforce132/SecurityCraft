@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResultType;
@@ -62,6 +63,11 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 		}
 
 		return ActionResultType.PASS;
+	}
+
+	@Override
+	public PushReaction getPistonPushReaction(BlockState state) {
+		return PushReaction.NORMAL; //Any push reaction other than PushReaction.DESTROY makes mines non-pushable by pistons due to them having block entities
 	}
 
 	/**

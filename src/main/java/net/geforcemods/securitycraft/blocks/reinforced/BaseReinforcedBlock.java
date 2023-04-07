@@ -16,6 +16,7 @@ import net.minecraft.block.LilyPadBlock;
 import net.minecraft.block.NetherRootsBlock;
 import net.minecraft.block.NetherSproutsBlock;
 import net.minecraft.block.WitherRoseBlock;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.tags.FluidTags;
@@ -103,6 +104,13 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 			return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
 
 		return false;
+	}
+
+	@Override
+	public PushReaction getPistonPushReaction(BlockState state) {
+		PushReaction originalPushReaction = super.getPistonPushReaction(state);
+
+		return originalPushReaction == PushReaction.DESTROY ? PushReaction.NORMAL : originalPushReaction;
 	}
 
 	@Override

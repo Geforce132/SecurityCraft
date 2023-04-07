@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -90,6 +91,11 @@ public class ReinforcedButtonBlock extends AbstractButtonBlock implements IReinf
 	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+	}
+
+	@Override
+	public PushReaction getPistonPushReaction(BlockState state) {
+		return PushReaction.BLOCK; //Can't be PushReaction.NORMAL because buttons rely on scheduled ticks which don't support moving the block
 	}
 
 	@Override
