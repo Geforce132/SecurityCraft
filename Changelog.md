@@ -29,6 +29,7 @@
 - Fix: Reinforced Doors that are next to, but don't face, each other can act as double doors
 - Fix: Certain blocks don't update their indirect neighbors properly when getting destroyed while in a powered state
 - Fix: The Reinforced Mangrove Button and Pressure Plate can't open reinforced doors
+- Fix: Blocks cannot be placed on the side of any of SecurityCraft's doors
 
 [*] only available if the update_1_20 datapack is enabled
 
