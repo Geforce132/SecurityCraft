@@ -248,13 +248,13 @@ public class SCContent {
 	public static final RegistryObject<Block> BLOCK_POCKET_WALL = BLOCKS.register("block_pocket_wall", () -> new BlockPocketWallBlock(prop().noCollission().isRedstoneConductor((s, w, p) -> false).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation)));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> BOUNCING_BETTY = BLOCKS.register("bouncing_betty", () -> new BouncingBettyBlock(prop(Material.DECORATION, 1.0F)));
+	public static final RegistryObject<Block> BOUNCING_BETTY = BLOCKS.register("bouncing_betty", () -> new BouncingBettyBlock(prop(Material.METAL, 1.0F)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> CAGE_TRAP = BLOCKS.register("cage_trap", () -> new CageTrapBlock(propDisguisable(Material.METAL).sound(SoundType.METAL).noCollission()));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> CLAYMORE = BLOCKS.register("claymore", () -> new ClaymoreBlock(prop(Material.DECORATION)));
+	public static final RegistryObject<Block> CLAYMORE = BLOCKS.register("claymore", () -> new ClaymoreBlock(prop(Material.METAL)));
 	@HasManualPage
 	public static final RegistryObject<Block> DISPLAY_CASE = BLOCKS.register(DISPLAY_CASE_PATH, () -> new DisplayCaseBlock(prop(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage
@@ -356,7 +356,7 @@ public class SCContent {
 	@HasManualPage
 	@OwnableTE
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(prop(Material.DECORATION, 1.0F)));
+	public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(prop(Material.METAL, 1.0F)));
 	public static final RegistryObject<Block> FAKE_WATER_BLOCK = BLOCKS.register("fake_water_block", () -> new FakeWaterBlock(prop(Material.WATER).noCollission(), FAKE_WATER));
 	public static final RegistryObject<Block> FAKE_LAVA_BLOCK = BLOCKS.register("fake_lava_block", () -> new FakeLavaBlock(prop(Material.LAVA).noCollission().randomTicks().lightLevel(state -> 15), FAKE_LAVA));
 
@@ -1469,11 +1469,11 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COBWEB = BLOCKS.register("reinforced_cobweb", () -> new ReinforcedCobwebBlock(prop(Material.WEB, MaterialColor.WOOL).noCollission(), Blocks.COBWEB));
+	public static final RegistryObject<Block> REINFORCED_COBWEB = BLOCKS.register("reinforced_cobweb", () -> new ReinforcedCobwebBlock(prop(Material.GLASS, MaterialColor.WOOL).noCollission(), Blocks.COBWEB));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_END_ROD = BLOCKS.register("reinforced_end_rod", () -> new ReinforcedEndRodBlock(prop(Material.DECORATION).lightLevel(state -> 14).sound(SoundType.WOOD).noOcclusion()));
+	public static final RegistryObject<Block> REINFORCED_END_ROD = BLOCKS.register("reinforced_end_rod", () -> new ReinforcedEndRodBlock(prop().lightLevel(state -> 14).sound(SoundType.WOOD).noOcclusion()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
@@ -1768,7 +1768,7 @@ public class SCContent {
 	public static final RegistryObject<Block> REINFORCED_PISTON = BLOCKS.register("reinforced_piston", () -> new ReinforcedPistonBlock(false, prop(Material.PISTON).isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> !s.getValue(PistonBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBlock.EXTENDED))));
 	@HasManualPage
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop(Material.DECORATION).noCollission().sound(SoundType.WOOD)));
+	public static final RegistryObject<Block> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop().noCollission().sound(SoundType.WOOD)));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_STONE_PRESSURE_PLATE = BLOCKS.register("reinforced_stone_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.MOBS, prop().noCollission(), Blocks.STONE_PRESSURE_PLATE));
