@@ -296,8 +296,8 @@ public class SetupHandler {
 	}
 
 	public static void setupMines() {
-		SCContent.mine = (MineBlock) new MineBlock(Material.CIRCUITS).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("mine").setTranslationKey("securitycraft:mine");
-		SCContent.mineCut = (MineBlock) new MineBlock(Material.CIRCUITS).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setRegistryName("mine_cut").setTranslationKey("securitycraft:mineCut");
+		SCContent.mine = (MineBlock) new MineBlock(Material.IRON).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("mine").setTranslationKey("securitycraft:mine");
+		SCContent.mineCut = (MineBlock) new MineBlock(Material.IRON).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setRegistryName("mine_cut").setTranslationKey("securitycraft:mineCut");
 		SCContent.dirtMine = new BaseFullMineBlock(Material.GROUND, Blocks.DIRT, 0).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 0.5F).setRegistryName("dirt_mine").setTranslationKey("securitycraft:dirtMine");
 		SCContent.stoneMine = new BaseFullMineBlock(Material.ROCK, Blocks.STONE, 0).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1.5F).setRegistryName("stone_mine").setTranslationKey("securitycraft:stoneMine");
 		SCContent.cobblestoneMine = new BaseFullMineBlock(Material.ROCK, Blocks.COBBLESTONE, 0).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 2.0F).setRegistryName("cobblestone_mine").setTranslationKey("securitycraft:cobblestoneMine");
@@ -306,8 +306,8 @@ public class SetupHandler {
 		SCContent.furnaceMine = new FurnaceMineBlock(Material.ROCK).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.5F).setRegistryName("furnace_mine").setTranslationKey("securitycraft:furnaceMine");
 		SCContent.gravelMine = new FallingBlockMineBlock(Material.GROUND, Blocks.GRAVEL).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 0.6F).setRegistryName("gravel_mine").setTranslationKey("securitycraft:gravelMine");
 		SCContent.trackMine = new TrackMineBlock().setHardness(!ConfigHandler.ableToBreakMines ? -1F : 0.7F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("track_mine").setTranslationKey("securitycraft:trackMine");
-		SCContent.bouncingBetty = new BouncingBettyBlock(Material.CIRCUITS).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("bouncing_betty").setTranslationKey("securitycraft:bouncingBetty");
-		SCContent.claymore = new ClaymoreBlock(Material.CIRCUITS).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("claymore").setTranslationKey("securitycraft:claymore");
+		SCContent.bouncingBetty = new BouncingBettyBlock(Material.IRON).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("bouncing_betty").setTranslationKey("securitycraft:bouncingBetty");
+		SCContent.claymore = new ClaymoreBlock(Material.IRON).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("claymore").setTranslationKey("securitycraft:claymore");
 		SCContent.ims = new IMSBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("ims").setTranslationKey("securitycraft:ims");
 		SCContent.coalOreMine = new BaseFullMineBlock(Material.ROCK, Blocks.COAL_ORE, 0).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("coal_mine").setTranslationKey("securitycraft:coal_mine");
 		SCContent.emeraldOreMine = new BaseFullMineBlock(Material.ROCK, Blocks.EMERALD_ORE, 2).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("emerald_mine").setTranslationKey("securitycraft:emerald_mine");

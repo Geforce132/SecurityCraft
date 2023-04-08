@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEndRod;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,6 +46,11 @@ public class ReinforcedEndRodBlock extends BlockEndRod implements IReinforcedBlo
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new OwnableBlockEntity();
+	}
+
+	@Override
+	public Material getMaterial(IBlockState state) {
+		return Material.ROCK;
 	}
 
 	@Override

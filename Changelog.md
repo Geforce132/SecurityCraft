@@ -11,7 +11,7 @@
 - Fix: Certain blocks don't update their indirect neighbors properly when getting destroyed while in a powered state
 - Fix: Directional power sources like Reinforced Levers and Reinforced Buttons cannot toggle adjacent blocks
 - Fix: Inserting a module into a Laser Block or Keypad/Scanner Door via the GUI will disable the module in all other connected blocks
-- Fix: Some reinforced blocks and mines can be destroyed by using a piston
+- Fix: Some reinforced blocks and mines can be destroyed by pistons or flowing fluids
 
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
 
