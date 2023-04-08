@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class ReinforcedCobwebBlock extends BaseReinforcedBlock {
 	public ReinforcedCobwebBlock() {
-		super(Material.CACTUS, 1, Blocks.WEB);
+		super(Material.WEB, 1, Blocks.WEB);
 	}
 
 	@Override

@@ -157,7 +157,7 @@ public class SetupHandler {
 		SCContent.inventoryScanner = new InventoryScannerBlock(Material.ROCK).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("inventory_scanner").setTranslationKey("securitycraft:inventoryScanner");
 		SCContent.inventoryScannerField = new InventoryScannerFieldBlock(Material.GLASS).setBlockUnbreakable().setRegistryName("inventory_scanner_field").setTranslationKey("securitycraft:inventoryScannerField");
 		SCContent.cageTrap = new CageTrapBlock(Material.ROCK).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("cage_trap").setTranslationKey("securitycraft:cageTrap");
-		SCContent.portableRadar = new PortableRadarBlock(Material.CIRCUITS).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("portable_radar").setTranslationKey("securitycraft:portableRadar");
+		SCContent.portableRadar = new PortableRadarBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("portable_radar").setTranslationKey("securitycraft:portableRadar");
 		SCContent.reinforcedIronBars = new ReinforcedIronBarsBlock(Material.IRON, true).setCreativeTab(SecurityCraft.tabSCDecoration).setBlockUnbreakable().setRegistryName("reinforced_iron_bars").setTranslationKey("securitycraft:reinforcedIronBars");
 		SCContent.keypadChest = new KeypadChestBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad_chest").setTranslationKey("securitycraft:keypadChest");
 		SCContent.usernameLogger = new UsernameLoggerBlock(Material.ROCK).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("username_logger").setTranslationKey("securitycraft:usernameLogger");

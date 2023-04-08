@@ -10,6 +10,7 @@ import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockDeadBush;
 import net.minecraft.block.BlockLilyPad;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -74,6 +75,13 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 			default:
 				return false;
 		}
+	}
+
+	@Override
+	public EnumPushReaction getPushReaction(IBlockState state) {
+		EnumPushReaction originalPushReaction = super.getPushReaction(state);
+
+		return originalPushReaction == EnumPushReaction.DESTROY ? EnumPushReaction.NORMAL : originalPushReaction;
 	}
 
 	@Override

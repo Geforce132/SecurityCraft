@@ -107,7 +107,7 @@ public class ReinforcedButtonBlock extends BlockButton implements IReinforcedBlo
 
 	@Override
 	public EnumPushReaction getPushReaction(IBlockState state) {
-		return EnumPushReaction.IGNORE;
+		return EnumPushReaction.NORMAL;
 	}
 
 	@Override
