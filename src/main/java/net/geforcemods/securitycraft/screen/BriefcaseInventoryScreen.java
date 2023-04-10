@@ -10,12 +10,12 @@ import net.minecraft.util.ResourceLocation;
 
 public class BriefcaseInventoryScreen extends GuiContainer {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/briefcase_inventory.png");
-	private String briefcaseName;
+	private final String briefcaseName, inventoryName;
 
 	public BriefcaseInventoryScreen(InventoryPlayer inventory, ItemStack briefcase) {
 		super(new BriefcaseMenu(inventory, new BriefcaseContainer(briefcase)));
-
-		this.briefcaseName = briefcase.getDisplayName();
+		briefcaseName = briefcase.getDisplayName();
+		inventoryName = inventory.getDisplayName().getUnformattedText();
 	}
 
 	@Override
@@ -28,7 +28,8 @@ public class BriefcaseInventoryScreen extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(briefcaseName, xSize / 2 - fontRenderer.getStringWidth(briefcaseName) / 2, 6, 4210752);
+		fontRenderer.drawString(briefcaseName, xSize / 2 - fontRenderer.getStringWidth(briefcaseName) / 2, 6, 0x404040);
+		fontRenderer.drawString(inventoryName, 8, ySize - 96 + 2, 0x404040);
 	}
 
 	@Override
@@ -36,8 +37,6 @@ public class BriefcaseInventoryScreen extends GuiContainer {
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 	}
 }
