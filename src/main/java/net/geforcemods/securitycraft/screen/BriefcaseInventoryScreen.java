@@ -14,12 +14,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class BriefcaseInventoryScreen extends ContainerScreen<BriefcaseMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/briefcase_inventory.png");
-	private final String formattedTitle;
 
 	public BriefcaseInventoryScreen(BriefcaseMenu container, PlayerInventory inventory, ITextComponent name) {
 		super(container, inventory, name);
+	}
 
-		formattedTitle = name.getString();
+	@Override
+	protected void init() {
+		super.init();
+		titleLabelX = imageWidth / 2 - font.width(title) / 2;
 	}
 
 	@Override
@@ -28,11 +31,6 @@ public class BriefcaseInventoryScreen extends ContainerScreen<BriefcaseMenu> {
 
 		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
 			renderTooltip(matrix, getSlotUnderMouse().getItem(), mouseX, mouseY);
-	}
-
-	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, formattedTitle, imageWidth / 2 - font.width(formattedTitle) / 2, 6, 4210752);
 	}
 
 	@Override
