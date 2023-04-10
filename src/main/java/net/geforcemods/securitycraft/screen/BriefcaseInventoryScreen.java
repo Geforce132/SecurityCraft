@@ -11,12 +11,15 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class BriefcaseInventoryScreen extends AbstractContainerScreen<BriefcaseMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/briefcase_inventory.png");
-	private final String formattedTitle;
 
 	public BriefcaseInventoryScreen(BriefcaseMenu menu, Inventory inventory, Component title) {
 		super(menu, inventory, title);
+	}
 
-		formattedTitle = title.getString();
+	@Override
+	protected void init() {
+		super.init();
+		titleLabelX = imageWidth / 2 - font.width(title) / 2;
 	}
 
 	@Override
@@ -25,11 +28,6 @@ public class BriefcaseInventoryScreen extends AbstractContainerScreen<BriefcaseM
 
 		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
 			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
-	}
-
-	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, formattedTitle, imageWidth / 2 - font.width(formattedTitle) / 2, 6, 4210752);
 	}
 
 	@Override
