@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
+import net.geforcemods.securitycraft.items.TaserItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -121,8 +122,22 @@ public class SCClientEventHandler {
 
 	@SubscribeEvent
 	public static void renderHandEvent(RenderHandEvent event) {
-		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player))
+		PlayerEntity player = Minecraft.getInstance().player;
+
+		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			event.setCanceled(true);
+		else if (event.getItemStack().getItem() instanceof TaserItem) {
+			boolean isRightHanded = Minecraft.getInstance().options.mainHand == HandSide.RIGHT;
+			boolean isMainHand = event.getHand() == Hand.MAIN_HAND;
+
+			if (!isMainHand && player.getOffhandItem().getItem() instanceof TaserItem)
+				event.setCanceled(true);
+
+			if (isRightHanded == isMainHand)
+				event.getMatrixStack().translate(-0.54F, 0.0F, 0.0F);
+			else
+				event.getMatrixStack().translate(0.58F, 0.0F, 0.0F);
+		}
 	}
 
 	@SubscribeEvent

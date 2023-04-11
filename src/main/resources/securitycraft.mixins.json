@@ -9,7 +9,8 @@
 		"camera.MinecraftMixin",
 		"camera.WorldRendererMixin",
 		"f3.BetterF3TargetModuleMixin",
-		"f3.DebugOverlayGuiMixin"
+		"f3.DebugOverlayGuiMixin",
+		"taser.BipedModelMixin"
 	],
 	"mixins": [
 		"camera.ChunkManagerMixin",
