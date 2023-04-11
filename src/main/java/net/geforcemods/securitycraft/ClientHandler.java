@@ -80,7 +80,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.HangingSignEditScreen;
 import net.minecraft.client.gui.screens.inventory.SignEditScreen;
+import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -154,6 +156,14 @@ public class ClientHandler {
 			SCContent.USERNAME_LOGGER.get()
 	});
 	//@formatter:on
+	public static final ArmPose TASER_ARM_POSE = ArmPose.create("securitycraft_taser", true, (model, entity, arm) -> {
+		ModelPart leftArm = model.leftArm;
+		ModelPart rightArm = model.rightArm;
+
+		leftArm.yRot = 0.5F;
+		rightArm.yRot = -0.5F;
+		leftArm.xRot = rightArm.xRot = -1.5F;
+	});
 
 	@SubscribeEvent
 	public static void onModelBakingCompleted(ModelEvent.ModifyBakingResult event) {
