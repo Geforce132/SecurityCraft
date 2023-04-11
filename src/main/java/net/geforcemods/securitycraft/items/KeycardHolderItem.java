@@ -42,6 +42,11 @@ public class KeycardHolderItem extends Item {
 		return InteractionResultHolder.consume(stack);
 	}
 
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return !oldStack.is(newStack.getItem());
+	}
+
 	public static int getCardCount(ItemStack stack) {
 		int count = 0;
 		ListTag items = stack.getOrCreateTag().getList("ItemInventory", Tag.TAG_COMPOUND);
