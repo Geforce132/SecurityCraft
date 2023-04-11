@@ -1,0 +1,38 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "securitycraft:item/keycard_holder_0"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "securitycraft:keycard_count": 0.2
+            },
+            "model": "securitycraft:item/keycard_holder_1"
+        },
+        {
+            "predicate": {
+                "securitycraft:keycard_count": 0.4
+            },
+            "model": "securitycraft:item/keycard_holder_2"
+        },
+        {
+            "predicate": {
+                "securitycraft:keycard_count": 0.6
+            },
+            "model": "securitycraft:item/keycard_holder_3"
+        },
+        {
+            "predicate": {
+                "securitycraft:keycard_count": 0.8
+            },
+            "model": "securitycraft:item/keycard_holder_4"
+        },
+        {
+            "predicate": {
+                "securitycraft:keycard_count": 1.0
+            },
+            "model": "securitycraft:item/keycard_holder_5"
+        }
+    ]
+}
