@@ -9,7 +9,9 @@
 		"camera.LevelRendererMixin",
 		"camera.MinecraftMixin",
 		"f3.BetterF3TargetModuleMixin",
-		"f3.DebugScreenOverlayMixin"
+		"f3.DebugScreenOverlayMixin",
+		"taser.HumanoidModelMixin",
+		"taser.ItemInHandRendererMixin"
 	],
 	"mixins": [
 		"camera.ChunkMapMixin",
