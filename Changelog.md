@@ -47,6 +47,7 @@
 - Fix: Some reinforced blocks and mines can be destroyed by pistons or flowing fluids
 - Fix: Reinforced Lever duplication exploit
 - Misc.: The minimum required Forge version is 45.0.39
+- Misc.: More texture updates
 
 [*] only available if the update_1_20 datapack is enabled
 
