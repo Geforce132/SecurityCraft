@@ -126,17 +126,26 @@ public class SCClientEventHandler {
 
 		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			event.setCanceled(true);
-		else if (event.getItemStack().getItem() instanceof TaserItem) {
-			boolean isRightHanded = Minecraft.getInstance().options.mainHand == HandSide.RIGHT;
-			boolean isMainHand = event.getHand() == Hand.MAIN_HAND;
+		else {
+			boolean mainHandTaser = player.getMainHandItem().getItem() instanceof TaserItem;
+			boolean offhandTaser = player.getOffhandItem().getItem() instanceof TaserItem;
 
-			if (!isMainHand && player.getOffhandItem().getItem() instanceof TaserItem)
-				event.setCanceled(true);
+			if (mainHandTaser || offhandTaser) {
+				boolean isRightHanded = Minecraft.getInstance().options.mainHand == HandSide.RIGHT;
+				boolean isMainHand = event.getHand() == Hand.MAIN_HAND;
 
-			if (isRightHanded == isMainHand)
-				event.getMatrixStack().translate(-0.54F, 0.0F, 0.0F);
-			else
-				event.getMatrixStack().translate(0.58F, 0.0F, 0.0F);
+				if (mainHandTaser && offhandTaser)
+					event.setCanceled(!isMainHand);
+				else if ((isMainHand && offhandTaser || !isMainHand && mainHandTaser)) {
+					event.setCanceled(true);
+					return;
+				}
+
+				if (isRightHanded == isMainHand)
+					event.getMatrixStack().translate(-0.54F, 0.0F, 0.0F);
+				else
+					event.getMatrixStack().translate(0.58F, 0.0F, 0.0F);
+			}
 		}
 	}
 
