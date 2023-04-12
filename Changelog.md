@@ -11,6 +11,7 @@
 - Fix: Blocks cannot be placed on the side of any of SecurityCraft's doors
 - Fix: Some reinforced blocks and mines can be destroyed by pistons or flowing fluids
 - Fix: Reinforced Lever duplication exploit
+- Misc.: More texture updates
 
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
 
