@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
+import net.geforcemods.securitycraft.items.TaserItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.ClientProxy;
@@ -42,7 +43,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -102,9 +103,33 @@ public class SCClientEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void renderHandEvent(RenderHandEvent event) {
-		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player))
+	public static void renderHandEvent(RenderSpecificHandEvent event) {
+		Minecraft mc = Minecraft.getMinecraft();
+		EntityPlayer player = mc.player;
+
+		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			event.setCanceled(true);
+		else {
+			boolean mainHandTaser = player.getHeldItemMainhand().getItem() instanceof TaserItem;
+			boolean offhandTaser = player.getHeldItemOffhand().getItem() instanceof TaserItem;
+
+			if (mainHandTaser || offhandTaser) {
+				boolean isRightHanded = mc.gameSettings.mainHand == EnumHandSide.RIGHT;
+				boolean isMainHand = event.getHand() == EnumHand.MAIN_HAND;
+
+				if (mainHandTaser && offhandTaser)
+					event.setCanceled(!isMainHand);
+				else if ((isMainHand && offhandTaser || !isMainHand && mainHandTaser)) {
+					event.setCanceled(true);
+					return;
+				}
+
+				if (isRightHanded == isMainHand)
+					GlStateManager.translate(-0.54F, 0.0F, 0.0F);
+				else
+					GlStateManager.translate(0.58F, 0.0F, 0.0F);
+			}
+		}
 	}
 
 	@SubscribeEvent
