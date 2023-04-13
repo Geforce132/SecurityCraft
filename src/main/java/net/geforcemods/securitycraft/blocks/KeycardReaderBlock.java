@@ -108,9 +108,9 @@ public class KeycardReaderBlock extends DisguisableBlock {
 							}
 
 							if (feedback == null)
-								PlayerUtils.sendMessageToPlayer(player, Component.translatable(getDescriptionId()), Utils.localize("messages.securitycraft.keycard_holder.no_keycards"), ChatFormatting.RED);
+								PlayerUtils.sendMessageToPlayer(player, Component.translatable(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_holder.no_keycards"), ChatFormatting.RED);
 							else
-								PlayerUtils.sendMessageToPlayer(player, Component.translatable(getDescriptionId()), Utils.localize("messages.securitycraft.keycard_holder.fail"), ChatFormatting.RED);
+								PlayerUtils.sendMessageToPlayer(player, Component.translatable(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_holder.fail"), ChatFormatting.RED);
 						}
 						else {
 							MutableComponent feedback = insertCard(level, pos, be, stack, player);
