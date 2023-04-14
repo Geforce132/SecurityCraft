@@ -2457,6 +2457,18 @@
         ]
       },
       {
+        "output": "securitycraft:reinforced_crystal_quartz_slab",
+        "ingredients": [
+          "securitycraft:crystal_quartz_slab"
+        ]
+      },
+      {
+        "output": "securitycraft:reinforced_smooth_crystal_quartz",
+        "ingredients": [
+          "securitycraft:smooth_crystal_quartz"
+        ]
+      },
+      {
         "output": "securitycraft:reinforced_chiseled_crystal_quartz_block",
         "ingredients": [
           "securitycraft:chiseled_crystal_quartz"
@@ -2469,21 +2481,33 @@
         ]
       },
       {
+        "output": "securitycraft:reinforced_crystal_quartz_bricks",
+        "ingredients": [
+          "securitycraft:crystal_quartz_bricks"
+        ]
+      },
+      {
         "output": "securitycraft:reinforced_crystal_quartz_pillar",
         "ingredients": [
           "securitycraft:crystal_quartz_pillar"
         ]
       },
       {
-        "output": "securitycraft:reinforced_crystal_quartz_slab",
-        "ingredients": [
-          "securitycraft:crystal_quartz_slab"
-        ]
-      },
-      {
         "output": "securitycraft:reinforced_crystal_quartz_stairs",
         "ingredients": [
           "securitycraft:crystal_quartz_stairs"
+        ]
+      },
+      {
+        "output": "securitycraft:reinforced_smooth_crystal_quartz_stairs",
+        "ingredients": [
+          "securitycraft:smooth_crystal_quartz_stairs"
+        ]
+      },
+      {
+        "output": "securitycraft:reinforced_smooth_crystal_quartz_slab",
+        "ingredients": [
+          "securitycraft:smooth_crystal_quartz_slab"
         ]
       },
       {
