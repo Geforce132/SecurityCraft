@@ -31,8 +31,11 @@ public class SCTags {
 		public static final IOptionalNamedTag<Block> REINFORCED_STAIRS = tag("reinforced/stairs");
 		public static final IOptionalNamedTag<Block> REINFORCED_STONE = tag("reinforced/stone");
 		public static final IOptionalNamedTag<Block> REINFORCED_STONE_BRICKS = tag("reinforced/stone_bricks");
+		public static final IOptionalNamedTag<Block> REINFORCED_STONE_PRESSURE_PLATES = tag("reinforced/stone_pressure_plates");
 		public static final IOptionalNamedTag<Block> REINFORCED_TERRACOTTA = tag("reinforced/terracotta");
 		public static final IOptionalNamedTag<Block> REINFORCED_WARPED_STEMS = tag("reinforced/warped_stems");
+		public static final IOptionalNamedTag<Block> REINFORCED_WOODEN_BUTTONS = tag("reinforced/wooden_buttons");
+		public static final IOptionalNamedTag<Block> REINFORCED_WOODEN_PRESSURE_PLATES = tag("reinforced/wooden_pressure_plates");
 		public static final IOptionalNamedTag<Block> REINFORCED_WOODEN_SLABS = tag("reinforced/wooden_slabs");
 		public static final IOptionalNamedTag<Block> REINFORCED_WOODEN_STAIRS = tag("reinforced/wooden_stairs");
 		public static final IOptionalNamedTag<Block> REINFORCED_WOOL = tag("reinforced/wool");
@@ -63,7 +66,6 @@ public class SCTags {
 		public static final IOptionalNamedTag<Item> REINFORCED_NYLIUM = tag("reinforced/nylium");
 		public static final IOptionalNamedTag<Item> REINFORCED_OAK_LOGS = tag("reinforced/oak_logs");
 		public static final IOptionalNamedTag<Item> REINFORCED_PLANKS = tag("reinforced/planks");
-		public static final IOptionalNamedTag<Item> REINFORCED_PRESSURE_PLATES = tag("reinforced/pressure_plates");
 		public static final IOptionalNamedTag<Item> REINFORCED_SAND = tag("reinforced/sand");
 		public static final IOptionalNamedTag<Item> REINFORCED_SLABS = tag("reinforced/slabs");
 		public static final IOptionalNamedTag<Item> REINFORCED_SPRUCE_LOGS = tag("reinforced/spruce_logs");
@@ -72,6 +74,8 @@ public class SCTags {
 		public static final IOptionalNamedTag<Item> REINFORCED_STONE_BRICKS = tag("reinforced/stone_bricks");
 		public static final IOptionalNamedTag<Item> REINFORCED_TERRACOTTA = tag("reinforced/terracotta");
 		public static final IOptionalNamedTag<Item> REINFORCED_WARPED_STEMS = tag("reinforced/warped_stems");
+		public static final IOptionalNamedTag<Item> REINFORCED_WOODEN_BUTTONS = tag("reinforced/wooden_buttons");
+		public static final IOptionalNamedTag<Item> REINFORCED_WOODEN_PRESSURE_PLATES = tag("reinforced/wooden_pressure_plates");
 		public static final IOptionalNamedTag<Item> REINFORCED_WOODEN_SLABS = tag("reinforced/wooden_slabs");
 		public static final IOptionalNamedTag<Item> REINFORCED_WOODEN_STAIRS = tag("reinforced/wooden_stairs");
 		public static final IOptionalNamedTag<Item> REINFORCED_WOOL = tag("reinforced/wool");
