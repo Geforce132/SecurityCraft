@@ -15,6 +15,8 @@
 - Fix: Blocks cannot be placed on the side of any of SecurityCraft's doors
 - Fix: Some reinforced blocks and mines can be destroyed by pistons or flowing fluids
 - Fix: Reinforced Lever duplication exploit
+- Fix: The new crystal quartz blocks from v1.9.5 don't have an EMC value associated with them
+- Fix: The Keypad Barrel does not drop itself when removed and can be destroyed by the wither and ender dragon
 - Misc.: More texture updates
 
 --------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------

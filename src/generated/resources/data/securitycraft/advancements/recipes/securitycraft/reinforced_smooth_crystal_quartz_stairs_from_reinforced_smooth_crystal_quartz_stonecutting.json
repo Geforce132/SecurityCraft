@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:reinforced_smooth_crystal_quartz"
-            ]
+            "item": "securitycraft:reinforced_smooth_crystal_quartz"
           }
         ]
       }
