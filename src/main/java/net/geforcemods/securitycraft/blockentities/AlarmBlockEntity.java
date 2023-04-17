@@ -51,8 +51,9 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 			if (soundPlaying && (isDisabled() || !getBlockState().getValue(AlarmBlock.LIT)))
 				stopPlayingSound();
 		}
-		else if (!isDisabled() && --cooldown <= 0) {
-			if (isPowered) {
+
+		if (!isDisabled() && --cooldown <= 0) {
+			if (!level.isClientSide && isPowered) {
 				double rangeSqr = Math.pow(range.get(), 2);
 				Holder<SoundEvent> soundEventHolder = BuiltInRegistries.SOUND_EVENT.wrapAsHolder(isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event);
 
@@ -127,6 +128,10 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	public void setCooldown(int cooldown) {
 		this.cooldown = cooldown;
 		setChanged();
+	}
+
+	public int getCooldown() {
+		return cooldown;
 	}
 
 	public boolean isPowered() {
