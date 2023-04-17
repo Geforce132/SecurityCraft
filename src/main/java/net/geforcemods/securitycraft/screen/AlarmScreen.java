@@ -51,6 +51,7 @@ public class AlarmScreen extends Screen {
 	private int imageWidth = 256, imageHeight = 246, leftPos, topPos;
 	private SoundScrollList soundList;
 	protected int previousSoundLength, soundLength;
+	protected float previousPitch, pitch;
 
 	public AlarmScreen(AlarmBlockEntity be, ResourceLocation selectedSoundEvent) {
 		super(be.getDisplayName());
@@ -60,6 +61,8 @@ public class AlarmScreen extends Screen {
 		previousSelectedSoundEvent = selectedSoundEvent;
 		previousSoundLength = be.getSoundLength();
 		soundLength = previousSoundLength;
+		previousPitch = be.getPitch();
+		pitch = previousPitch;
 		selectSound(selectedSoundEvent);
 	}
 
@@ -111,13 +114,18 @@ public class AlarmScreen extends Screen {
 			changed = true;
 		}
 
+		if (pitch != previousPitch) {
+			be.setPitch(pitch);
+			changed = true;
+		}
+
 		if (soundLength != previousSoundLength) {
 			be.setSoundLength(soundLength);
 			changed = true;
 		}
 
 		if (changed)
-			SecurityCraft.channel.sendToServer(new SyncAlarmSettings(be.getBlockPos(), selectedSoundEvent, soundLength));
+			SecurityCraft.channel.sendToServer(new SyncAlarmSettings(be.getBlockPos(), selectedSoundEvent, pitch, soundLength));
 	}
 
 	@Override
@@ -270,7 +278,7 @@ public class AlarmScreen extends Screen {
 			if (playingSound != null)
 				soundManager.stop(playingSound);
 
-			playingSound = SimpleSoundInstance.forUI(soundEvent, 1.0F, 1.0F);
+			playingSound = SimpleSoundInstance.forUI(soundEvent, pitch, 1.0F);
 			soundManager.play(playingSound);
 		}
 

@@ -37,6 +37,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	private int cooldown = 0;
 	private boolean isPowered = false;
 	private SoundEvent sound = SCSounds.ALARM.event;
+	private float pitch = 1.0F;
 	private boolean soundPlaying = false;
 	private int soundLength = 2;
 
@@ -58,7 +59,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 				for (ServerPlayer player : ((ServerLevel) level).getPlayers(p -> p.blockPosition().distSqr(pos) <= rangeSqr)) {
 					float volume = (float) (1.0F - ((player.blockPosition().distSqr(pos)) / rangeSqr));
 
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new PlayAlarmSound(worldPosition, soundEventHolder, volume, player.getCommandSenderWorld().random.nextLong()));
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new PlayAlarmSound(worldPosition, soundEventHolder, volume, getPitch(), player.getCommandSenderWorld().random.nextLong()));
 				}
 			}
 
@@ -72,6 +73,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 		tag.putInt("cooldown", cooldown);
 		tag.putBoolean("isPowered", isPowered);
 		tag.putString("sound", sound.getLocation().toString());
+		tag.putFloat("pitch", pitch);
 		tag.putInt("delay", soundLength);
 	}
 
@@ -87,6 +89,11 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 		else
 			setSound(SCSounds.ALARM.location);
 
+		if (tag.contains("pitch"))
+			pitch = tag.getFloat("pitch");
+		else
+			pitch = 1.0F;
+
 		soundLength = tag.getInt("delay");
 	}
 
@@ -97,6 +104,14 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 
 	public SoundEvent getSound() {
 		return isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event;
+	}
+
+	public void setPitch(float pitch) {
+		this.pitch = pitch;
+	}
+
+	public float getPitch() {
+		return pitch;
 	}
 
 	public int getSoundLength() {
@@ -153,8 +168,8 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 			stopPlayingSound();
 	}
 
-	public void playSound(Level level, double x, double y, double z, Holder<SoundEvent> sound, float volume, long seed) {
-		AlarmSoundHandler.playSound(this, level, x, y, z, sound, SoundSource.BLOCKS, volume, 1.0F, seed);
+	public void playSound(Level level, double x, double y, double z, Holder<SoundEvent> sound, float volume, float pitch, long seed) {
+		AlarmSoundHandler.playSound(this, level, x, y, z, sound, SoundSource.BLOCKS, volume, pitch, seed);
 		soundPlaying = true;
 	}
 
