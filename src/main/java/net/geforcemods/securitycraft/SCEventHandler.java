@@ -643,7 +643,7 @@ public class SCEventHandler {
 				EntityPlayer player = ((EntityPlayer) entity);
 
 				world.playSound(null, source.x, source.y, source.z, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.5F);
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.riftStabilizer.getTranslationKey() + ".name"), Utils.localize(targetPosProhibited ? "messages.securitycraft:rift_stabilizer.no_teleport_to" : "messages.securitycraft:rift_stabilizer.no_teleport_from"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.riftStabilizer), Utils.localize(targetPosProhibited ? "messages.securitycraft:rift_stabilizer.no_teleport_to" : "messages.securitycraft:rift_stabilizer.no_teleport_from"), TextFormatting.RED);
 
 				if (riftStabilizer.isModuleEnabled(ModuleType.HARMING))
 					player.attackEntityFrom(DamageSource.FALL, 5.0F);
