@@ -17,6 +17,7 @@
 - Fix: Reinforced Lever duplication exploit
 - Fix: The new crystal quartz blocks from v1.9.5 don't have an EMC value associated with them
 - Fix: The Keypad Barrel does not drop itself when removed and can be destroyed by the wither and ender dragon
+- Fix: Teleporting near a Rift Stabilizer leads to a crash on a dedicated server
 - Misc.: More texture updates
 
 --------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------

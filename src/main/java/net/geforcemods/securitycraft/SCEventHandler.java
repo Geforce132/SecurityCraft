@@ -461,7 +461,7 @@ public class SCEventHandler {
 				PlayerEntity player = ((PlayerEntity) entity);
 
 				level.playSound(null, event.getPrevX(), event.getPrevY(), event.getPrevZ(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.5F);
-				PlayerUtils.sendMessageToPlayer(player, SCContent.RIFT_STABILIZER.get().getName(), new TranslationTextComponent(targetPosProhibited ? "messages.securitycraft:rift_stabilizer.no_teleport_to" : "messages.securitycraft:rift_stabilizer.no_teleport_from"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RIFT_STABILIZER.get().getDescriptionId()), new TranslationTextComponent(targetPosProhibited ? "messages.securitycraft:rift_stabilizer.no_teleport_to" : "messages.securitycraft:rift_stabilizer.no_teleport_from"), TextFormatting.RED);
 
 				if (riftStabilizer.isModuleEnabled(ModuleType.HARMING))
 					player.hurt(DamageSource.FALL, 5.0F);
