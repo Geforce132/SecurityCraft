@@ -18,8 +18,10 @@
 - New: The Alarm, Motion Activated Light, and Portable Radar can now be waterlogged
 - New: Laser and inventory scanner fields can now be waterlogged, which means the Laser and Inventory Scanner now properly work underwater without air pockets
 - New: Randomize signature button for the Keycard Reader
+- New: The pitch of the sound an alarm plays can now be changed
 - Change: Several technical blocks' sounds have been adjusted to better match how they look
 - Change: Improved visuals when holding a taser
+- Change: Some alarm options have been moved to a separate screen
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 - Fix: Jade does not properly hide blocks
 - Fix: Shields do not take damage when blocking a taser that deals high enough damage
