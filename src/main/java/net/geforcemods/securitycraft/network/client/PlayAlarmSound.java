@@ -16,17 +16,18 @@ public class PlayAlarmSound {
 	private BlockPos bePos;
 	private SoundEvent sound;
 	private int soundX, soundY, soundZ;
-	private float volume;
+	private float volume, pitch;
 
 	public PlayAlarmSound() {}
 
-	public PlayAlarmSound(BlockPos bePos, SoundEvent sound, float volume) {
+	public PlayAlarmSound(BlockPos bePos, SoundEvent sound, float volume, float pitch) {
 		this.bePos = bePos;
 		this.sound = sound;
 		this.soundX = (int) (bePos.getX() * ClientboundSoundPacket.LOCATION_ACCURACY);
 		this.soundY = (int) (bePos.getY() * ClientboundSoundPacket.LOCATION_ACCURACY);
 		this.soundZ = (int) (bePos.getZ() * ClientboundSoundPacket.LOCATION_ACCURACY);
 		this.volume = volume;
+		this.pitch = pitch;
 	}
 
 	public static void encode(PlayAlarmSound message, FriendlyByteBuf buf) {
@@ -36,6 +37,7 @@ public class PlayAlarmSound {
 		buf.writeInt(message.soundY);
 		buf.writeInt(message.soundZ);
 		buf.writeFloat(message.volume);
+		buf.writeFloat(message.pitch);
 	}
 
 	public static PlayAlarmSound decode(FriendlyByteBuf buf) {
@@ -47,6 +49,7 @@ public class PlayAlarmSound {
 		message.soundY = buf.readInt();
 		message.soundZ = buf.readInt();
 		message.volume = buf.readFloat();
+		message.pitch = buf.readFloat();
 		return message;
 	}
 
@@ -67,7 +70,7 @@ public class PlayAlarmSound {
 			Level level = ClientHandler.getClientLevel();
 
 			if (level.getBlockEntity(message.bePos) instanceof AlarmBlockEntity be)
-				be.playSound(level, message.getX(), message.getY(), message.getZ(), message.sound, message.volume);
+				be.playSound(level, message.getX(), message.getY(), message.getZ(), message.sound, message.volume, message.pitch);
 		});
 
 		ctx.get().setPacketHandled(true);

@@ -6,9 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.lwjgl.glfw.GLFW;
-
 import com.google.common.collect.Iterables;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
@@ -21,13 +20,11 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
-import net.geforcemods.securitycraft.screen.components.ActiveBasedTextureButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
@@ -35,8 +32,6 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -46,22 +41,17 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class AlarmScreen extends Screen {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm.png");
-	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
-	private static final ResourceLocation RESET_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset_inactive.png");
-	private final AlarmBlockEntity be;
+	protected final AlarmBlockEntity be;
 	private final boolean hasSmartModule;
 	private final Component smartModuleTooltip;
 	private final Component currentlySelectedText = Utils.localize("gui.securitycraft:alarm.currently_selected").withStyle(ChatFormatting.UNDERLINE);
-	private final Component soundLengthText = new TranslatableComponent("gui.securitycraft:alarm.sound_length").withStyle(ChatFormatting.UNDERLINE);
 	private final ResourceLocation previousSelectedSoundEvent;
 	private ResourceLocation selectedSoundEvent;
 	private Component selectedSoundEventText;
 	private int imageWidth = 256, imageHeight = 246, leftPos, topPos;
 	private SoundScrollList soundList;
-	private Button minusMinute, minusTenSeconds, minusSecond, reset, plusSecond, plusTenSeconds, plusMinute;
-	private int previousSoundLength, soundLength;
-	private int soundLengthTextXPosition;
-	private EditBox timeEditBox;
+	protected int previousSoundLength, soundLength;
+	protected float previousPitch, pitch;
 
 	public AlarmScreen(AlarmBlockEntity be, ResourceLocation selectedSoundEvent) {
 		super(be.getDisplayName());
@@ -71,6 +61,8 @@ public class AlarmScreen extends Screen {
 		previousSelectedSoundEvent = selectedSoundEvent;
 		previousSoundLength = be.getSoundLength();
 		soundLength = previousSoundLength;
+		previousPitch = be.getPitch();
+		pitch = previousPitch;
 		selectSound(selectedSoundEvent);
 	}
 
@@ -82,29 +74,13 @@ public class AlarmScreen extends Screen {
 
 		HintEditBox searchBar;
 		Component searchText = Utils.localize("gui.securitycraft:alarm.search");
-		int buttonHeight = 13;
-		int buttonsX = leftPos + 20;
-		int buttonY = topPos + imageHeight - 20;
-		int timeEditBoxWidth = 34;
-		int soundLengthTextWidthPlusBuffer = font.width(soundLengthText) + 5;
-		int combinedTextAndBoxWidth = soundLengthTextWidthPlusBuffer + timeEditBoxWidth;
 
-		soundLengthTextXPosition = width / 2 - combinedTextAndBoxWidth / 2;
 		soundList = addRenderableWidget(new SoundScrollList(minecraft, imageWidth - 10, imageHeight - 105, topPos + 40, leftPos + 5));
 		searchBar = addRenderableWidget(new HintEditBox(font, leftPos + 30, topPos + 20, imageWidth - 60, 15, searchText));
 		searchBar.setHint(searchText);
 		searchBar.setFilter(s -> s.matches("[a-zA-Z0-9\\._]*"));
 		searchBar.setResponder(soundList::updateFilteredEntries);
-		timeEditBox = addRenderableWidget(new SoundLengthEditBox(font, soundLengthTextXPosition + soundLengthTextWidthPlusBuffer, buttonY - 15, timeEditBoxWidth, 12, TextComponent.EMPTY));
-		timeEditBox.setFilter(string -> string.matches("[0-9:]*"));
-		minusMinute = addRenderableWidget(new ExtendedButton(buttonsX, buttonY, 32, buttonHeight, new TranslatableComponent("gui.securitycraft:alarm.minus_one_minute"), b -> changeSoundLength(soundLength - 60)));
-		minusTenSeconds = addRenderableWidget(new ExtendedButton(buttonsX + 34, buttonY, 32, buttonHeight, new TranslatableComponent("gui.securitycraft:alarm.minus_ten_seconds"), b -> changeSoundLength(soundLength - 10)));
-		minusSecond = addRenderableWidget(new ExtendedButton(buttonsX + 68, buttonY, 32, buttonHeight, new TranslatableComponent("gui.securitycraft:alarm.minus_one_second"), b -> changeSoundLength(soundLength - 1)));
-		reset = addRenderableWidget(new ActiveBasedTextureButton(buttonsX + 102, buttonY, 12, buttonHeight, RESET_TEXTURE, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSoundLength(previousSoundLength)));
-		plusSecond = addRenderableWidget(new ExtendedButton(buttonsX + 116, buttonY, 32, buttonHeight, new TranslatableComponent("gui.securitycraft:alarm.plus_one_second"), b -> changeSoundLength(soundLength + 1)));
-		plusTenSeconds = addRenderableWidget(new ExtendedButton(buttonsX + 150, buttonY, 32, buttonHeight, new TranslatableComponent("gui.securitycraft:alarm.plus_ten_seconds"), b -> changeSoundLength(soundLength + 10)));
-		plusMinute = addRenderableWidget(new ExtendedButton(buttonsX + 184, buttonY, 32, buttonHeight, new TranslatableComponent("gui.securitycraft:alarm.plus_one_minute"), b -> changeSoundLength(soundLength + 60)));
-		changeSoundLength(soundLength);
+		addRenderableWidget(new ExtendedButton(leftPos + imageWidth / 2 - 170 / 2, topPos + 215, 170, 20, Utils.localize("menu.options"), b -> Minecraft.getInstance().pushGuiLayer(new AlarmOptionsScreen(this))));
 	}
 
 	@Override
@@ -118,17 +94,11 @@ public class AlarmScreen extends Screen {
 		font.draw(pose, currentlySelectedText, width / 2 - font.width(currentlySelectedText) / 2, topPos + imageHeight - 62, 4210752);
 		font.draw(pose, selectedSoundEventText, width / 2 - font.width(selectedSoundEventText) / 2, topPos + imageHeight - 49, 4210752);
 		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
-		font.draw(pose, soundLengthText, soundLengthTextXPosition, topPos + imageHeight - 33, 4210752);
 	}
 
 	public void selectSound(ResourceLocation eventId) {
 		this.selectedSoundEvent = eventId;
 		selectedSoundEventText = Utils.localize(toLanguageKey(selectedSoundEvent));
-	}
-
-	@Override
-	public boolean isPauseScreen() {
-		return false;
 	}
 
 	@Override
@@ -145,37 +115,33 @@ public class AlarmScreen extends Screen {
 			changed = true;
 		}
 
+		if (pitch != previousPitch) {
+			be.setPitch(pitch);
+			changed = true;
+		}
+
 		if (soundLength != previousSoundLength) {
 			be.setSoundLength(soundLength);
 			changed = true;
 		}
 
 		if (changed)
-			SecurityCraft.channel.sendToServer(new SyncAlarmSettings(be.getBlockPos(), selectedSoundEvent, soundLength));
+			SecurityCraft.channel.sendToServer(new SyncAlarmSettings(be.getBlockPos(), selectedSoundEvent, pitch, soundLength));
 	}
 
-	public void changeSoundLength(int newSoundLength) {
-		changeSoundLength(newSoundLength, true);
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+			onClose();
+			return true;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
-	public void changeSoundLength(int newSoundLength, boolean updateTimeEditBox) {
-		boolean enablePlusButtons;
-		boolean enableMinusButtons;
-
-		soundLength = Math.max(1, Math.min(newSoundLength, AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH));
-
-		if (updateTimeEditBox)
-			timeEditBox.setValue(String.format("%02d:%02d", soundLength / 60, soundLength % 60));
-
-		enablePlusButtons = soundLength < AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH;
-		enableMinusButtons = soundLength > 1;
-		minusMinute.active = enableMinusButtons;
-		minusTenSeconds.active = enableMinusButtons;
-		minusSecond.active = enableMinusButtons;
-		reset.active = soundLength != previousSoundLength;
-		plusSecond.active = enablePlusButtons;
-		plusTenSeconds.active = enablePlusButtons;
-		plusMinute.active = enablePlusButtons;
+	@Override
+	public boolean isPauseScreen() {
+		return false;
 	}
 
 	private String toLanguageKey(ResourceLocation resourceLocation) {
@@ -320,7 +286,7 @@ public class AlarmScreen extends Screen {
 			if (playingSound != null)
 				soundManager.stop(playingSound);
 
-			playingSound = SimpleSoundInstance.forUI(soundEvent, 1.0F, 1.0F);
+			playingSound = SimpleSoundInstance.forUI(soundEvent, pitch, 1.0F);
 			soundManager.play(playingSound);
 		}
 
@@ -360,74 +326,6 @@ public class AlarmScreen extends Screen {
 
 		@Override
 		public void updateNarration(NarrationElementOutput narrationElementOutput) {}
-	}
-
-	public class SoundLengthEditBox extends EditBox {
-		public SoundLengthEditBox(Font font, int x, int y, int width, int height, Component message) {
-			super(font, x, y, width, height, message);
-		}
-
-		@Override
-		public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-			changeSoundLength(soundLength + (int) Math.signum(delta));
-			return super.mouseScrolled(mouseX, mouseY, delta);
-		}
-
-		@Override
-		public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-			if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER)
-				checkAndProcessInput();
-
-			return super.keyPressed(keyCode, scanCode, modifiers);
-		}
-
-		@Override
-		public void setFocus(boolean focused) {
-			if (isFocused() && !focused)
-				checkAndProcessInput();
-
-			super.setFocus(focused);
-		}
-
-		private void checkAndProcessInput() {
-			int minutes = 0;
-			int seconds = 2;
-
-			if (value != null && !value.isEmpty() && !value.isBlank()) {
-				if (!value.contains(":")) {
-					int numeric = Integer.parseInt(value);
-
-					minutes = numeric / 60;
-					seconds = numeric % 60;
-				}
-				else {
-					String[] split = value.split(":");
-
-					if (split.length == 2) {
-						if (!split[0].isEmpty() && !split[0].isBlank()) {
-							try {
-								minutes = Integer.parseInt(split[0]);
-							}
-							catch (NumberFormatException e) { //usually happens when the entered number is too big
-								minutes = 60;
-							}
-						}
-
-						if (!split[1].isEmpty() && !split[1].isBlank()) {
-							try {
-								seconds = Integer.parseInt(split[1]);
-							}
-							catch (NumberFormatException e) {} //usually happens when the entered number is too big
-						}
-						else
-							seconds = 0;
-					}
-				}
-			}
-
-			changeSoundLength(minutes * 60 + seconds, true);
-			moveCursorToEnd();
-		}
 	}
 
 	public class HintEditBox extends EditBox {
