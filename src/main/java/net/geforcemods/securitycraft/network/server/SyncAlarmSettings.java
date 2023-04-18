@@ -12,19 +12,22 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public class SyncAlarmSettings {
 	private BlockPos pos;
 	private ResourceLocation soundEvent;
+	private float pitch;
 	private int soundLength;
 
 	public SyncAlarmSettings() {}
 
-	public SyncAlarmSettings(BlockPos pos, ResourceLocation soundEvent, int soundLength) {
+	public SyncAlarmSettings(BlockPos pos, ResourceLocation soundEvent, float pitch, int soundLength) {
 		this.pos = pos;
 		this.soundEvent = soundEvent;
+		this.pitch = pitch;
 		this.soundLength = soundLength;
 	}
 
 	public static void encode(SyncAlarmSettings message, PacketBuffer buf) {
 		buf.writeLong(message.pos.asLong());
 		buf.writeResourceLocation(message.soundEvent);
+		buf.writeFloat(message.pitch);
 		buf.writeVarInt(message.soundLength);
 	}
 
@@ -33,6 +36,7 @@ public class SyncAlarmSettings {
 
 		message.pos = BlockPos.of(buf.readLong());
 		message.soundEvent = buf.readResourceLocation();
+		message.pitch = buf.readFloat();
 		message.soundLength = buf.readVarInt();
 		return message;
 	}
@@ -47,6 +51,9 @@ public class SyncAlarmSettings {
 				if (be.isOwnedBy(ctx.get().getSender())) {
 					if (!message.soundEvent.equals(be.getSound().location))
 						be.setSound(message.soundEvent);
+
+				if (message.pitch != be.getPitch())
+					be.setPitch(message.pitch);
 
 					if (message.soundLength != be.getSoundLength())
 						be.setSoundLength(message.soundLength);

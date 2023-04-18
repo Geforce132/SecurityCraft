@@ -34,6 +34,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 	private int cooldown = 0;
 	private boolean isPowered = false;
 	private SoundEvent sound = SCSounds.ALARM.event;
+	private float pitch = 1.0F;
 	private boolean soundPlaying = false;
 	private int soundLength = 2;
 
@@ -47,21 +48,20 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 			if (soundPlaying && (isDisabled() || !isPowered))
 				stopPlayingSound();
 		}
-		else {
-			if (!isDisabled() && --cooldown <= 0) {
-				if (isPowered) {
-					double rangeSqr = Math.pow(range.get(), 2);
-					SoundEvent soundEvent = isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event;
 
-					for (ServerPlayerEntity player : ((ServerWorld) level).getPlayers(p -> p.blockPosition().distSqr(worldPosition) <= rangeSqr)) {
-						float volume = (float) (1.0F - ((player.blockPosition().distSqr(worldPosition)) / rangeSqr));
+		if (!isDisabled() && --cooldown <= 0) {
+			if (!level.isClientSide && isPowered) {
+				double rangeSqr = Math.pow(range.get(), 2);
+				SoundEvent soundEvent = isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event;
 
-						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new PlayAlarmSound(worldPosition, soundEvent, volume));
-					}
+				for (ServerPlayerEntity player : ((ServerWorld) level).getPlayers(p -> p.blockPosition().distSqr(worldPosition) <= rangeSqr)) {
+					float volume = (float) (1.0F - ((player.blockPosition().distSqr(worldPosition)) / rangeSqr));
+
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new PlayAlarmSound(worldPosition, soundEvent, volume, pitch));
 				}
-
-				setCooldown(soundLength * 20);
 			}
+
+			setCooldown(soundLength * 20);
 		}
 	}
 
@@ -71,6 +71,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 		tag.putInt("cooldown", cooldown);
 		tag.putBoolean("isPowered", isPowered);
 		tag.putString("sound", sound.location.toString());
+		tag.putFloat("pitch", pitch);
 		tag.putInt("delay", soundLength);
 		return tag;
 	}
@@ -87,6 +88,11 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 		else
 			setSound(SCSounds.ALARM.location);
 
+		if (tag.contains("pitch"))
+			pitch = tag.getFloat("pitch");
+		else
+			pitch = 1.0F;
+
 		soundLength = tag.getInt("delay");
 	}
 
@@ -97,6 +103,14 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 
 	public SoundEvent getSound() {
 		return isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event;
+	}
+
+	public void setPitch(float pitch) {
+		this.pitch = pitch;
+	}
+
+	public float getPitch() {
+		return pitch;
 	}
 
 	public int getSoundLength() {
@@ -111,6 +125,10 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 
 	public void setCooldown(int cooldown) {
 		this.cooldown = cooldown;
+	}
+
+	public int getCooldown() {
+		return cooldown;
 	}
 
 	public boolean isPowered() {
@@ -152,8 +170,8 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 			stopPlayingSound();
 	}
 
-	public void playSound(World level, double x, double y, double z, SoundEvent sound, float volume) {
-		AlarmSoundHandler.playSound(this, level, x, y, z, sound, SoundCategory.BLOCKS, volume, 1.0F);
+	public void playSound(World level, double x, double y, double z, SoundEvent sound, float volume, float pitch) {
+		AlarmSoundHandler.playSound(this, level, x, y, z, sound, SoundCategory.BLOCKS, volume, pitch);
 		soundPlaying = true;
 	}
 

@@ -16,17 +16,18 @@ public class PlayAlarmSound {
 	private BlockPos bePos;
 	private SoundEvent sound;
 	private int soundX, soundY, soundZ;
-	private float volume;
+	private float volume, pitch;
 
 	public PlayAlarmSound() {}
 
-	public PlayAlarmSound(BlockPos bePos, SoundEvent sound, float volume) {
+	public PlayAlarmSound(BlockPos bePos, SoundEvent sound, float volume, float pitch) {
 		this.bePos = bePos;
 		this.sound = sound;
 		this.soundX = (int) (bePos.getX() * 8.0F);
 		this.soundY = (int) (bePos.getY() * 8.0F);
 		this.soundZ = (int) (bePos.getZ() * 8.0F);
 		this.volume = volume;
+		this.pitch = pitch;
 	}
 
 	public static void encode(PlayAlarmSound message, PacketBuffer buf) {
@@ -36,6 +37,7 @@ public class PlayAlarmSound {
 		buf.writeInt(message.soundY);
 		buf.writeInt(message.soundZ);
 		buf.writeFloat(message.volume);
+		buf.writeFloat(message.pitch);
 	}
 
 	public static PlayAlarmSound decode(PacketBuffer buf) {
@@ -47,6 +49,7 @@ public class PlayAlarmSound {
 		message.soundY = buf.readInt();
 		message.soundZ = buf.readInt();
 		message.volume = buf.readFloat();
+		message.pitch = buf.readFloat();
 		return message;
 	}
 
@@ -69,7 +72,7 @@ public class PlayAlarmSound {
 
 			if (te instanceof AlarmBlockEntity) {
 				((AlarmBlockEntity) te).setPowered(true);
-				((AlarmBlockEntity) te).playSound(level, message.getX(), message.getY(), message.getZ(), message.sound, message.volume);
+				((AlarmBlockEntity) te).playSound(level, message.getX(), message.getY(), message.getZ(), message.sound, message.volume, message.pitch);
 			}
 		});
 
