@@ -76,7 +76,7 @@ public class AlarmOptionsScreen extends Screen {
 		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
 		font.draw(pose, soundLengthText, soundLengthTextXPosition, topPos + 27, 4210752);
 
-		if (alarmScreen.be.isPowered()) {
+		if (alarmScreen.be.isPowered() && !alarmScreen.be.isDisabled()) {
 			int cooldownSeconds = alarmScreen.be.getCooldown() / 20;
 			Component nextSoundText = Utils.localize("gui.securitycraft:alarm.nextSound", String.format("%02d:%02d", cooldownSeconds / 60, cooldownSeconds % 60 + 1));
 
