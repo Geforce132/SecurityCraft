@@ -17,18 +17,19 @@ public class PlayAlarmSound {
 	private BlockPos bePos;
 	private Holder<SoundEvent> sound;
 	private int soundX, soundY, soundZ;
-	private float volume;
+	private float volume, pitch;
 	private long seed;
 
 	public PlayAlarmSound() {}
 
-	public PlayAlarmSound(BlockPos bePos, Holder<SoundEvent> sound, float volume, long seed) {
+	public PlayAlarmSound(BlockPos bePos, Holder<SoundEvent> sound, float volume, float pitch, long seed) {
 		this.bePos = bePos;
 		this.sound = sound;
 		this.soundX = (int) (bePos.getX() * ClientboundSoundPacket.LOCATION_ACCURACY);
 		this.soundY = (int) (bePos.getY() * ClientboundSoundPacket.LOCATION_ACCURACY);
 		this.soundZ = (int) (bePos.getZ() * ClientboundSoundPacket.LOCATION_ACCURACY);
 		this.volume = volume;
+		this.pitch = pitch;
 		this.seed = seed;
 	}
 
@@ -39,6 +40,7 @@ public class PlayAlarmSound {
 		buf.writeInt(message.soundY);
 		buf.writeInt(message.soundZ);
 		buf.writeFloat(message.volume);
+		buf.writeFloat(message.pitch);
 		buf.writeLong(message.seed);
 	}
 
@@ -51,6 +53,7 @@ public class PlayAlarmSound {
 		message.soundY = buf.readInt();
 		message.soundZ = buf.readInt();
 		message.volume = buf.readFloat();
+		message.pitch = buf.readFloat();
 		message.seed = buf.readLong();
 		return message;
 	}
@@ -72,7 +75,7 @@ public class PlayAlarmSound {
 			Level level = ClientHandler.getClientLevel();
 
 			if (level.getBlockEntity(message.bePos) instanceof AlarmBlockEntity be)
-				be.playSound(level, message.getX(), message.getY(), message.getZ(), message.sound, message.volume, message.seed);
+				be.playSound(level, message.getX(), message.getY(), message.getZ(), message.sound, message.volume, message.pitch, message.seed);
 		});
 
 		ctx.get().setPacketHandled(true);
