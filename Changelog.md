@@ -1,8 +1,10 @@
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
 - New: Randomize signature button for the Keycard Reader
+- New: The pitch of the sound an alarm plays can now be changed
 - Change: Several technical blocks' sounds have been adjusted to better match how they look
 - Change: Improved visuals when holding a taser
+- Change: Some alarm options have been moved to a separate screen
 - Fix: Entities around a player sometimes get invisible when the player dismounts a camera
 - Fix: Shields do not take damage when blocking a taser that deals high enough damage
 - Fix: The death message of a player killed by a taser does not contain the player firing the taser

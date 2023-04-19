@@ -31,16 +31,16 @@ public abstract class ColorableScrollPanel {
 	}
 
 	private final Minecraft client;
-	protected final int listWidth;
-	protected final int listHeight;
-	protected final int top;
-	protected final int bottom;
-	protected final int right;
-	protected final int left;
+	public final int listWidth;
+	public final int listHeight;
+	public int top;
+	public int bottom;
+	public int right;
+	public int left;
 	protected final int slotHeight;
-	protected final int scrollBarWidth = 6;
-	protected final int scrollBarRight;
-	protected final int scrollBarLeft;
+	public final int scrollBarWidth = 6;
+	public int scrollBarRight;
+	public int scrollBarLeft;
 	protected final int viewHeight;
 	protected final int border = 4;
 	protected int mouseX;

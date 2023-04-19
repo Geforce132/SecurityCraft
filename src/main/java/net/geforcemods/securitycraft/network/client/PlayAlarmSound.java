@@ -20,17 +20,18 @@ public class PlayAlarmSound implements IMessage {
 	private BlockPos bePos;
 	private SoundEvent sound;
 	private int soundX, soundY, soundZ;
-	private float volume;
+	private float volume, pitch;
 
 	public PlayAlarmSound() {}
 
-	public PlayAlarmSound(BlockPos bePos, SoundEvent sound, float volume) {
+	public PlayAlarmSound(BlockPos bePos, SoundEvent sound, float volume, float pitch) {
 		this.bePos = bePos;
 		this.sound = sound;
 		this.soundX = (int) (bePos.getX() * 8.0F);
 		this.soundY = (int) (bePos.getY() * 8.0F);
 		this.soundZ = (int) (bePos.getZ() * 8.0F);
 		this.volume = volume;
+		this.pitch = pitch;
 	}
 
 	@Override
@@ -41,6 +42,7 @@ public class PlayAlarmSound implements IMessage {
 		buf.writeInt(soundY);
 		buf.writeInt(soundZ);
 		buf.writeFloat(volume);
+		buf.writeFloat(pitch);
 	}
 
 	@Override
@@ -51,6 +53,7 @@ public class PlayAlarmSound implements IMessage {
 		soundY = buf.readInt();
 		soundZ = buf.readInt();
 		volume = buf.readFloat();
+		pitch = buf.readFloat();
 	}
 
 	public double getX() {
@@ -75,7 +78,7 @@ public class PlayAlarmSound implements IMessage {
 
 				if (te instanceof AlarmBlockEntity) {
 					((AlarmBlockEntity) te).setPowered(true);
-					((AlarmBlockEntity) te).playSound(level, message.getX(), message.getY(), message.getZ(), message.sound, message.volume);
+					((AlarmBlockEntity) te).playSound(level, message.getX(), message.getY(), message.getZ(), message.sound, message.volume, message.pitch);
 				}
 			});
 

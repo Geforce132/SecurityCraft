@@ -33,6 +33,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 	private int cooldown = 0;
 	private boolean isPowered = false;
 	private SoundEvent sound = SCSounds.ALARM.event;
+	private float pitch = 1.0F;
 	private boolean soundPlaying = false;
 	private int soundLength = 2;
 
@@ -56,21 +57,20 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 			if (soundPlaying && (isDisabled() || !isPowered))
 				stopPlayingSound();
 		}
-		else {
-			if (!isDisabled() && --cooldown <= 0) {
-				if (isPowered) {
-					double rangeSqr = Math.pow(range.get(), 2);
-					SoundEvent soundEvent = isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event;
 
-					for (EntityPlayerMP player : world.getPlayers(EntityPlayerMP.class, p -> p.getPosition().distanceSq(pos) <= rangeSqr)) {
-						float volume = (float) (1.0F - ((player.getPosition().distanceSq(pos)) / rangeSqr));
+		if (!isDisabled() && --cooldown <= 0) {
+			if (!world.isRemote && isPowered) {
+				double rangeSqr = Math.pow(range.get(), 2);
+				SoundEvent soundEvent = isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event;
 
-						SecurityCraft.network.sendTo(new PlayAlarmSound(pos, soundEvent, volume), player);
-					}
+				for (EntityPlayerMP player : world.getPlayers(EntityPlayerMP.class, p -> p.getPosition().distanceSq(pos) <= rangeSqr)) {
+					float volume = (float) (1.0F - ((player.getPosition().distanceSq(pos)) / rangeSqr));
+
+					SecurityCraft.network.sendTo(new PlayAlarmSound(pos, soundEvent, volume, pitch), player);
 				}
-
-				setCooldown(soundLength * 20);
 			}
+
+			setCooldown(soundLength * 20);
 		}
 	}
 
@@ -80,6 +80,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 		tag.setInteger("cooldown", cooldown);
 		tag.setBoolean("isPowered", isPowered);
 		tag.setString("sound", sound.getRegistryName().toString());
+		tag.setFloat("pitch", pitch);
 		tag.setInteger("delay", soundLength);
 		return tag;
 	}
@@ -94,6 +95,11 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 			setSound(new ResourceLocation(tag.getString("sound")));
 		else
 			setSound(SCSounds.ALARM.location);
+
+		if (tag.hasKey("pitch"))
+			pitch = tag.getFloat("pitch");
+		else
+			pitch = 1.0F;
 
 		soundLength = tag.getInteger("delay");
 	}
@@ -111,6 +117,14 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 		return isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event;
 	}
 
+	public void setPitch(float pitch) {
+		this.pitch = pitch;
+	}
+
+	public float getPitch() {
+		return pitch;
+	}
+
 	public int getSoundLength() {
 		return soundLength;
 	}
@@ -123,6 +137,10 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 
 	public void setCooldown(int cooldown) {
 		this.cooldown = cooldown;
+	}
+
+	public int getCooldown() {
+		return cooldown;
 	}
 
 	public boolean isPowered() {
@@ -164,8 +182,8 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 			stopPlayingSound();
 	}
 
-	public void playSound(World level, double x, double y, double z, SoundEvent sound, float volume) {
-		AlarmSoundHandler.playSound(this, level, x, y, z, sound, SoundCategory.BLOCKS, volume, 1.0F);
+	public void playSound(World level, double x, double y, double z, SoundEvent sound, float volume, float pitch) {
+		AlarmSoundHandler.playSound(this, level, x, y, z, sound, SoundCategory.BLOCKS, volume, pitch);
 		soundPlaying = true;
 	}
 

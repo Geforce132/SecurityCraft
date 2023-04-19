@@ -17,13 +17,15 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 public class SyncAlarmSettings implements IMessage {
 	private BlockPos pos;
 	private SoundEvent soundEvent;
+	private float pitch;
 	private int soundLength;
 
 	public SyncAlarmSettings() {}
 
-	public SyncAlarmSettings(BlockPos pos, ResourceLocation soundEvent, int soundLength) {
+	public SyncAlarmSettings(BlockPos pos, ResourceLocation soundEvent, float pitch, int soundLength) {
 		this.pos = pos;
 		this.soundEvent = ForgeRegistries.SOUND_EVENTS.getValue(soundEvent);
+		this.pitch = pitch;
 		this.soundLength = soundLength;
 	}
 
@@ -31,6 +33,7 @@ public class SyncAlarmSettings implements IMessage {
 	public void toBytes(ByteBuf buf) {
 		buf.writeLong(pos.toLong());
 		ByteBufUtils.writeRegistryEntry(buf, soundEvent);
+		buf.writeFloat(pitch);
 		ByteBufUtils.writeVarInt(buf, soundLength, 5);
 	}
 
@@ -38,6 +41,7 @@ public class SyncAlarmSettings implements IMessage {
 	public void fromBytes(ByteBuf buf) {
 		pos = BlockPos.fromLong(buf.readLong());
 		soundEvent = ByteBufUtils.readRegistryEntry(buf, ForgeRegistries.SOUND_EVENTS);
+		pitch = buf.readFloat();
 		soundLength = ByteBufUtils.readVarInt(buf, 5);
 	}
 
@@ -54,6 +58,9 @@ public class SyncAlarmSettings implements IMessage {
 					if (be.isOwnedBy(player)) {
 						if (!message.soundEvent.equals(be.getSound()))
 							be.setSound(message.soundEvent);
+
+						if (message.pitch != be.getPitch())
+							be.setPitch(message.pitch);
 
 						if (message.soundLength != be.getSoundLength())
 							be.setSoundLength(message.soundLength);
