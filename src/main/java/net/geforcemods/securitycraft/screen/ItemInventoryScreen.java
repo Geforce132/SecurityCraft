@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
@@ -18,13 +17,6 @@ public abstract class ItemInventoryScreen<T extends AbstractContainerMenu> exten
 
 	public ItemInventoryScreen(T menu, Inventory inventory, Component title) {
 		super(menu, inventory, title);
-
-		if (menu.getType() == SCContent.BRIEFCASE_INVENTORY_MENU.get())
-			texture = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/briefcase_inventory.png");
-		else if (menu.getType() == SCContent.KEYCARD_HOLDER_MENU.get()) {
-			texture = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_holder.png");
-			imageHeight = 133;
-		}
 	}
 
 	@Override
@@ -52,12 +44,15 @@ public abstract class ItemInventoryScreen<T extends AbstractContainerMenu> exten
 	public static class Briefcase extends ItemInventoryScreen<BriefcaseMenu> {
 		public Briefcase(BriefcaseMenu menu, Inventory inventory, Component title) {
 			super(menu, inventory, title);
+			texture = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/briefcase_inventory.png");
 		}
 	}
 
 	public static class KeycardHolder extends ItemInventoryScreen<KeycardHolderMenu> {
 		public KeycardHolder(KeycardHolderMenu menu, Inventory inventory, Component title) {
 			super(menu, inventory, title);
+			texture = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_holder.png");
+			imageHeight = 133;
 		}
 	}
 }
