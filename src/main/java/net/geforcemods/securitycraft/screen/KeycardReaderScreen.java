@@ -247,7 +247,7 @@ public class KeycardReaderScreen extends GuiContainer {
 		ItemStack stack = container.keycardSlot.getStack();
 		boolean isEmpty = stack.isEmpty();
 		boolean wasActive = usesTextField.isEnabled;
-		boolean hasTag = stack.hasTagCompound();
+		boolean hasTag = stack.hasTagCompound() && !stack.getTagCompound().isEmpty();
 		boolean enabled = !isEmpty && hasTag && stack.getTagCompound().getBoolean("limited");
 		int cardSignature = hasTag ? stack.getTagCompound().getInteger("signature") : -1;
 

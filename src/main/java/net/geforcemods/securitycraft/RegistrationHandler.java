@@ -405,6 +405,7 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.crystalQuartzItem);
 		registerItem(event, SCContent.keypadDoorItem);
 		registerItem(event, SCContent.portableTunePlayer);
+		registerItem(event, SCContent.keycardHolder);
 
 		SecurityCraft.proxy.registerVariants();
 		pageTypeBlocks.forEach((pageType, list) -> {
@@ -926,6 +927,7 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.keypadDoorItem, 0, "keypad_door_item");
 		registerInventoryModel(SCContent.sonicSecuritySystemItem, 0, "sonic_security_system");
 		registerInventoryModel(SCContent.portableTunePlayer, 0, "portable_tune_player");
+		registerInventoryModel(SCContent.keycardHolder, 0, "keycard_holder");
 
 		//mines
 		registerInventoryModel(SCContent.mine, 0, "mine");

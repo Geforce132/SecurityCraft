@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
+import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.screen.ScreenHandler;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -88,9 +89,10 @@ public class KeycardReaderBlock extends DisguisableBlock {
 				ItemStack stack = player.getHeldItem(hand);
 				Item item = stack.getItem();
 				boolean isCodebreaker = item == SCContent.codebreaker;
+				boolean isKeycardHolder = item == SCContent.keycardHolder;
 
 				//either no keycard, or an unlinked keycard, or an admin tool
-				if ((!(item instanceof KeycardItem) || !stack.hasTagCompound() || !stack.getTagCompound().getBoolean("linked")) && !isCodebreaker) {
+				if (!isKeycardHolder && (!(item instanceof KeycardItem) || !stack.hasTagCompound() || !stack.getTagCompound().getBoolean("linked")) && !isCodebreaker) {
 					//only allow the owner and whitelisted players to open the gui
 					if (te.isOwnedBy(player) || te.isAllowed(player))
 						player.openGui(SecurityCraft.instance, ScreenHandler.KEYCARD_READER_ID, world, pos.getX(), pos.getY(), pos.getZ());
@@ -112,10 +114,32 @@ public class KeycardReaderBlock extends DisguisableBlock {
 						}
 					}
 					else {
-						ITextComponent feedback = insertCard(world, pos, state, te, stack, player);
+						if (isKeycardHolder) {
+							ItemContainer holderInventory = ItemContainer.keycardHolder(stack);
+							ITextComponent feedback = null;
 
-						if (feedback != null)
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(this), feedback, TextFormatting.RED);
+							for (int i = 0; i < holderInventory.getSizeInventory(); i++) {
+								ItemStack keycardStack = holderInventory.getStackInSlot(i);
+
+								if (keycardStack.getItem() instanceof KeycardItem && keycardStack.hasTagCompound()) {
+									feedback = insertCard(world, pos, state, te, keycardStack, player);
+
+									if (feedback == null)
+										return true;
+								}
+							}
+
+							if (feedback == null)
+								PlayerUtils.sendMessageToPlayer(player, Utils.localize(this), Utils.localize("messages.securitycraft:keycard_holder.no_keycards"), TextFormatting.RED);
+							else
+								PlayerUtils.sendMessageToPlayer(player, Utils.localize(this), Utils.localize("messages.securitycraft:keycard_holder.fail"), TextFormatting.RED);
+						}
+						else {
+							ITextComponent feedback = insertCard(world, pos, state, te, stack, player);
+
+							if (feedback != null)
+								PlayerUtils.sendMessageToPlayer(player, Utils.localize(this), feedback, TextFormatting.RED);
+						}
 					}
 				}
 			}

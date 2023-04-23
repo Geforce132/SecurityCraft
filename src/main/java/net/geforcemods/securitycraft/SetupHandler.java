@@ -115,6 +115,7 @@ import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.FakeLiquidBucketItem;
 import net.geforcemods.securitycraft.items.KeyPanelItem;
+import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -363,5 +364,6 @@ public class SetupHandler {
 		SCContent.keypadDoorItem = new SpecialDoorItem(SCContent.keypadDoor).setRegistryName("keypad_door_item").setTranslationKey("securitycraft:keypad_door_item").setCreativeTab(SecurityCraft.tabSCDecoration);
 		SCContent.sonicSecuritySystemItem = new SonicSecuritySystemItem().setTranslationKey("securitycraft:sonic_security_system").setCreativeTab(SecurityCraft.tabSCTechnical);
 		SCContent.portableTunePlayer = new PortableTunePlayerItem().setRegistryName("portable_tune_player").setTranslationKey("securitycraft:portable_tune_player").setCreativeTab(SecurityCraft.tabSCTechnical);
+		SCContent.keycardHolder = new KeycardHolderItem().setRegistryName("keycard_holder").setTranslationKey("securitycraft:keycard_holder").setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 }

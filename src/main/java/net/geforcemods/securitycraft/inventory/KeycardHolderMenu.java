@@ -1,32 +1,28 @@
 package net.geforcemods.securitycraft.inventory;
 
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.items.BriefcaseItem;
+import net.geforcemods.securitycraft.items.KeycardItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class BriefcaseMenu extends Container {
-	public static final int CONTAINER_SIZE = 12;
+public class KeycardHolderMenu extends Container {
+	public static final int CONTAINER_SIZE = 5;
 
-	public BriefcaseMenu(InventoryPlayer playerInventory, ItemContainer briefcaseInventory) {
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 4; j++) {
-				addSlotToContainer(new ItemRestrictedSlot(briefcaseInventory, j + (i * 4), 53 + (j * 18), 17 + (i * 18), stack -> stack.getItem() != SCContent.briefcase));
-			}
+	public KeycardHolderMenu(InventoryPlayer playerInventory, ItemContainer keycardHolderInv) {
+		for (int i = 0; i < CONTAINER_SIZE; i++) {
+			addSlotToContainer(new ItemRestrictedSlot(keycardHolderInv, i, 44 + (i * 18), 20, stack -> stack.getItem() instanceof KeycardItem));
 		}
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, i * 18 + 51));
 			}
 		}
 
 		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 109));
 		}
 	}
 
@@ -40,7 +36,7 @@ public class BriefcaseMenu extends Container {
 			slotStackCopy = slotStack.copy();
 
 			if (index < CONTAINER_SIZE) {
-				if (!mergeItemStack(slotStack, CONTAINER_SIZE, 48, true))
+				if (!mergeItemStack(slotStack, CONTAINER_SIZE, 36 + CONTAINER_SIZE, true))
 					return ItemStack.EMPTY;
 
 				slot.onSlotChange(slotStack, slotStackCopy);
@@ -62,14 +58,6 @@ public class BriefcaseMenu extends Container {
 		}
 
 		return slotStackCopy;
-	}
-
-	@Override
-	public ItemStack slotClick(int slot, int dragType, ClickType clickType, EntityPlayer player) {
-		if (slot >= 0 && getSlot(slot) != null && getSlot(slot).getStack().getItem() instanceof BriefcaseItem)
-			return ItemStack.EMPTY;
-
-		return super.slotClick(slot, dragType, clickType, player);
 	}
 
 	@Override

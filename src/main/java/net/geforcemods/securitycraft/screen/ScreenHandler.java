@@ -17,12 +17,13 @@ import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
-import net.geforcemods.securitycraft.inventory.BriefcaseContainer;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
+import net.geforcemods.securitycraft.inventory.ItemContainer;
+import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
@@ -65,6 +66,7 @@ public class ScreenHandler implements IGuiHandler {
 	public static final int SSS_ITEM = 109;
 	public static final int RIFT_STABILIZER = 110;
 	public static final int ALARM = 111;
+	public static final int KEYCARD_HOLDER = 112;
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -101,7 +103,7 @@ public class ScreenHandler implements IGuiHandler {
 			case BRIEFCASE_GUI_ID:
 				if (!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
 					return null;
-				return new BriefcaseMenu(player.inventory, new BriefcaseContainer(PlayerUtils.getSelectedItemStack(player, SCContent.briefcase)));
+				return new BriefcaseMenu(player.inventory, ItemContainer.briefcase(PlayerUtils.getSelectedItemStack(player, SCContent.briefcase)));
 			case KEY_CHANGER_GUI_ID:
 				if (te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger, null))
 					return null;
@@ -141,6 +143,10 @@ public class ScreenHandler implements IGuiHandler {
 				return new GenericMenu(player.inventory, te);
 			case ALARM:
 				return new GenericMenu(player.inventory, te);
+			case KEYCARD_HOLDER:
+				if (!PlayerUtils.isHoldingItem(player, SCContent.keycardHolder, null))
+					return null;
+				return new KeycardHolderMenu(player.inventory, ItemContainer.keycardHolder(PlayerUtils.getSelectedItemStack(player, SCContent.keycardHolder)));
 			default:
 				return null;
 		}
@@ -188,9 +194,12 @@ public class ScreenHandler implements IGuiHandler {
 					return null;
 				return new BriefcasePasswordScreen(player.inventory, null);
 			case BRIEFCASE_GUI_ID:
-				if (!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
+				ItemStack briefcase = PlayerUtils.getSelectedItemStack(player, SCContent.briefcase);
+
+				if (!briefcase.isEmpty())
+					return new ItemInventoryScreen.Briefcase(new BriefcaseMenu(player.inventory, ItemContainer.keycardHolder(briefcase)), player.inventory, briefcase.getDisplayName());
+				else
 					return null;
-				return new BriefcaseInventoryScreen(player.inventory, PlayerUtils.getSelectedItemStack(player, SCContent.briefcase));
 			case KEY_CHANGER_GUI_ID:
 				if (te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger, null))
 					return null;
@@ -235,6 +244,11 @@ public class ScreenHandler implements IGuiHandler {
 				return new ToggleListScreen<>((RiftStabilizerBlockEntity) te, te.getDisplayName(), Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes"), Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired"), Utils.localize("gui.securitycraft:rift_stabilizer.toggle"));
 			case ALARM:
 				return new AlarmScreen((AlarmBlockEntity) te, ((AlarmBlockEntity) te).getSound().getRegistryName());
+			case KEYCARD_HOLDER:
+				ItemStack keycardHolder = PlayerUtils.getSelectedItemStack(player, SCContent.keycardHolder);
+
+				if (!keycardHolder.isEmpty())
+					return new ItemInventoryScreen.KeycardHolder(new KeycardHolderMenu(player.inventory, ItemContainer.keycardHolder(keycardHolder)), player.inventory, keycardHolder.getDisplayName());
 			default:
 				return null;
 		}
