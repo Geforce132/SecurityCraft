@@ -7,13 +7,15 @@
   ],
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     },
     "T": {
       "item": "minecraft:redstone_torch"
     },
     "R": {
-      "item": "minecraft:redstone"
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
     }
   },
   "result": {

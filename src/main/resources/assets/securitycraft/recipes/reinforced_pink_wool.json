@@ -3,8 +3,8 @@
   "group": "securitycraft:reinforced_wool",
   "ingredients": [
     {
-      "item": "minecraft:dye",
-      "data": 9
+      "type": "forge:ore_dict",
+      "ore": "dyePink"
     },
     {
       "item": "securitycraft:reinforced_wool",

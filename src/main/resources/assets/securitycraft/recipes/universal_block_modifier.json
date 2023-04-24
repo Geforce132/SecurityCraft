@@ -7,13 +7,16 @@
   ],
   "key": {
     "R": {
-      "item": "minecraft:redstone"
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
     },
     "E": {
-      "item": "minecraft:emerald"
+      "type": "forge:ore_dict",
+      "ore": "gemEmerald"
     },
     "I": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     }
   },
   "result": {

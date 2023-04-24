@@ -7,22 +7,27 @@
   ],
   "key": {
     "D": {
-      "item": "minecraft:diamond"
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
     },
     "T": {
       "item": "minecraft:redstone_torch"
     },
     "G": {
-      "item": "minecraft:gold_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
     },
     "S": {
-      "item": "minecraft:nether_star"
+      "type": "forge:ore_dict",
+      "ore": "netherStar"
     },
     "R": {
-      "item": "minecraft:redstone"
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
     },
     "E": {
-      "item": "minecraft:emerald"
+      "type": "forge:ore_dict",
+      "ore": "gemEmerald"
     }
   },
   "result": {

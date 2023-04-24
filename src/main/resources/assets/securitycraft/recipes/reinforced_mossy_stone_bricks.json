@@ -6,7 +6,8 @@
       "data": 0
     },
     {
-      "item": "minecraft:vine"
+      "type": "forge:ore_dict",
+      "ore": "vine"
     }
   ],
   "result": {

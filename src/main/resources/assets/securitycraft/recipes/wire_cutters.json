@@ -10,7 +10,8 @@
       "item": "minecraft:shears"
     },
     "I": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     }
   },
   "result": {

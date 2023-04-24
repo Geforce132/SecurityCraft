@@ -11,8 +11,8 @@
       "item": "securitycraft:reinforced_glass_block"
     },
     "D": {
-      "item": "minecraft:dye",
-	  "data": 7
+      "type": "forge:ore_dict",
+      "ore": "dyeLightGray"
     }
   },
   "result": {

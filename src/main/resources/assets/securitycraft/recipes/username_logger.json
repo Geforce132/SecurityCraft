@@ -14,7 +14,8 @@
       "item": "securitycraft:portable_radar"
     },
     "R": {
-      "item": "minecraft:redstone"
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
     }
   },
   "result": {

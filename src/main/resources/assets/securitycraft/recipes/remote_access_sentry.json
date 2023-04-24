@@ -10,13 +10,16 @@
       "item": "minecraft:redstone_torch"
     },
     "D": {
-      "item": "minecraft:diamond"
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
     },
     "I": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     },
     "S": {
-      "item": "minecraft:stick"
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
     }
   },
   "result": {

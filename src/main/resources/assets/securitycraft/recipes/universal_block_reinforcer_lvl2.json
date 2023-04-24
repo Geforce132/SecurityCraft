@@ -19,10 +19,12 @@
       "item": "securitycraft:laser_block"
     },
     "R": {
-      "item": "minecraft:redstone"
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
     },
     "S": {
-      "item": "minecraft:stick"
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
     }
   },
   "result": {

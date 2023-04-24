@@ -7,13 +7,15 @@
   ],
   "key": {
     "R": {
-      "item": "minecraft:redstone"
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
     },
     "L": {
       "item": "securitycraft:laser_block"
     },
     "I": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     }
   },
   "result": {

@@ -12,10 +12,12 @@
   ],
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     },
     "B": {
-      "item": "minecraft:brick"
+      "type": "forge:ore_dict",
+      "ore": "ingotBrick"
     }
   },
   "result": {

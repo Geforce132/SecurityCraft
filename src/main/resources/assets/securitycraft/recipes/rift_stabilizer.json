@@ -7,7 +7,8 @@
   ],
   "key": {
     "G": {
-      "item": "minecraft:gold_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
     },
     "E": {
       "item": "minecraft:ender_eye"

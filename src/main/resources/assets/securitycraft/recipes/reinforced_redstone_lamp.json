@@ -10,7 +10,8 @@
       "item": "securitycraft:reinforced_glowstone"
     },
     "R": {
-      "item": "minecraft:redstone"
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
     }
   },
   "result": {

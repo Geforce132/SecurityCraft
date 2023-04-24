@@ -12,11 +12,12 @@
   ],
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     },
     "B": {
-      "item": "minecraft:dye",
-      "data": 13
+      "type": "forge:ore_dict",
+      "ore": "dyeMagenta"
     }
   },
   "result": {

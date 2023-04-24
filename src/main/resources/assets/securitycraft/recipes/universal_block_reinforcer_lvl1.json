@@ -8,19 +8,23 @@
   ],
   "key": {
     "G": {
-      "item": "minecraft:glass"
+      "type": "forge:ore_dict",
+      "ore": "blockGlassColorless"
     },
     "D": {
-      "item": "minecraft:diamond"
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
     },
     "L": {
       "item": "securitycraft:laser_block"
     },
     "R": {
-      "item": "minecraft:redstone"
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
     },
     "S": {
-      "item": "minecraft:stick"
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
     }
   },
   "result": {

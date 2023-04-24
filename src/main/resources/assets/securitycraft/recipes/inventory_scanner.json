@@ -14,7 +14,8 @@
       "item": "securitycraft:laser_block"
     },
     "C": {
-      "item": "minecraft:ender_chest"
+      "type": "forge:ore_dict",
+      "ore": "chestEnder"
     }
   },
   "result": {

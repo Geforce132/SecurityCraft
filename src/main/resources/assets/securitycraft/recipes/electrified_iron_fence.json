@@ -7,28 +7,13 @@
   ],
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     },
-    "F": [
-      {
-        "item": "minecraft:fence"
-      },
-      {
-        "item": "minecraft:spruce_fence"
-      },
-      {
-        "item": "minecraft:birch_fence"
-      },
-      {
-        "item": "minecraft:jungle_fence"
-      },
-      {
-        "item": "minecraft:dark_oak_fence"
-      },
-      {
-        "item": "minecraft:acacia_fence"
-      }
-    ]
+    "F": {
+      "type": "forge:ore_dict",
+      "ore": "fenceWood"
+    }
   },
   "result": {
     "item": "securitycraft:electrified_iron_fence",

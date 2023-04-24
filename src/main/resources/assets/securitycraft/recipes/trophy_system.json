@@ -10,7 +10,8 @@
       "item": "securitycraft:sentry"
     },
     "S": {
-      "item": "minecraft:stick"
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
     },
     "B": {
       "item": "securitycraft:reinforced_metals",

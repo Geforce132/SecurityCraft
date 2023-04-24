@@ -16,14 +16,16 @@
       "data": 3
     },
     "N": {
-      "item": "minecraft:nether_star"
+      "type": "forge:ore_dict",
+      "ore": "netherStar"
     },
     "R": {
       "item": "securitycraft:reinforced_metals",
       "data": 4
     },
     "S": {
-      "item": "minecraft:stick"
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
     }
   },
   "result": {

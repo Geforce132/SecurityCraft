@@ -11,8 +11,8 @@
       "item": "securitycraft:reinforced_hardened_clay"
     },
     "D": {
-      "item": "minecraft:dye",
-	  "data": 10
+      "type": "forge:ore_dict",
+      "ore": "dyeLime"
     }
   },
   "result": {

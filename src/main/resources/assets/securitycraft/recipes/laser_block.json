@@ -7,14 +7,16 @@
   ],
   "key": {
     "S": {
-      "item": "minecraft:stone",
-      "data": 0
+      "type": "forge:ore_dict",
+      "ore": "stone"
     },
     "R": {
-      "item": "minecraft:redstone_block"
+      "type": "forge:ore_dict",
+      "ore": "blockRedstone"
     },
     "G": {
-      "item": "minecraft:glass_pane"
+      "type": "forge:ore_dict",
+      "ore": "paneGlassColorless"
     }
   },
   "result": {

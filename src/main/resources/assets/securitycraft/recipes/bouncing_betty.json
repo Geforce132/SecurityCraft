@@ -14,10 +14,12 @@
       "item": "minecraft:heavy_weighted_pressure_plate"
     },
     "I": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     },
     "G": {
-      "item": "minecraft:gunpowder"
+      "type": "forge:ore_dict",
+      "ore": "gunpowder"
     }
   },
   "result": {

@@ -7,13 +7,15 @@
   ],
   "key": {
     "R": {
-      "item": "minecraft:redstone"
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
     },
     "D": {
       "item": "minecraft:dispenser"
     },
     "I": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     },
     "P": {
       "item": "securitycraft:portable_radar"

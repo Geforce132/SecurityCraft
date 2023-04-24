@@ -13,10 +13,12 @@
       "item": "minecraft:bowl"
     },
     "S": {
-      "item": "minecraft:stick"
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
     },
     "I": {
-      "item": "minecraft:iron_block"
+      "type": "forge:ore_dict",
+      "ore": "blockIron"
     }
   },
   "result": {

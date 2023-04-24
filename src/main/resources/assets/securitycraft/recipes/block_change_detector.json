@@ -10,7 +10,8 @@
       "item": "minecraft:redstone_torch"
     },
     "I": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     },
     "L": {
       "item": "securitycraft:username_logger"

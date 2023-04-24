@@ -10,13 +10,16 @@
       "item": "securitycraft:reinforced_iron_bars"
     },
     "G": {
-      "item": "minecraft:gold_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
     },
     "R": {
-      "item": "minecraft:redstone"
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
     },
     "I": {
-      "item": "minecraft:iron_block"
+      "type": "forge:ore_dict",
+      "ore": "blockIron"
     }
   },
   "result": {

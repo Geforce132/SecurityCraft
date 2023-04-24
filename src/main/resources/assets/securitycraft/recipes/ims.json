@@ -18,7 +18,8 @@
       "item": "securitycraft:portable_radar"
     },
     "I": {
-      "item": "minecraft:iron_block"
+      "type": "forge:ore_dict",
+      "ore": "blockIron"
     }
   },
   "result": {

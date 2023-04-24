@@ -6,7 +6,8 @@
       "data": 3
     },
     {
-      "item": "minecraft:quartz"
+      "type": "forge:ore_dict",
+      "ore": "gemQuartz"
     }
   ],
   "result": {

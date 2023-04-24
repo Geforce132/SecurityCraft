@@ -15,16 +15,19 @@
       "item": "minecraft:tripwire_hook"
     },
     "S": {
-      "item": "minecraft:string"
+      "type": "forge:ore_dict",
+      "ore": "string"
     },
     "B": {
       "item": "securitycraft:bouncing_betty"
     },
     "R": {
-      "item": "minecraft:redstone"
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
     },
     "G": {
-      "item": "minecraft:gunpowder"
+      "type": "forge:ore_dict",
+      "ore": "gunpowder"
     }
   },
   "result": {

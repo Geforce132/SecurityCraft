@@ -7,10 +7,12 @@
   ],
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     },
     "G": {
-      "item": "minecraft:glass_pane"
+      "type": "forge:ore_dict",
+      "ore": "paneGlassColorless"
     }
   },
   "result": {

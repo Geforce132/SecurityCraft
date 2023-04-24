@@ -12,13 +12,16 @@
   ],
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     },
     "S": {
-      "item": "minecraft:stick"
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
     },
     "G": {
-      "item": "minecraft:gunpowder"
+      "type": "forge:ore_dict",
+      "ore": "gunpowder"
     }
   },
   "result": {

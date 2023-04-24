@@ -8,13 +8,16 @@
   ],
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
     },
     "P": {
-      "item": "minecraft:paper"
+      "type": "forge:ore_dict",
+      "ore": "paper"
     },
     "R": {
-      "item": "minecraft:redstone"
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
     }
   },
   "result": {

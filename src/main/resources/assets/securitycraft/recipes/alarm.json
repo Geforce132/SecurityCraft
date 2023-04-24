@@ -13,7 +13,8 @@
       "item": "minecraft:noteblock"
     },
     "R": {
-      "item": "minecraft:redstone"
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
     }
   },
   "result": {

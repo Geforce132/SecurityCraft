@@ -10,10 +10,12 @@
       "item": "securitycraft:reinforced_cobblestone"
     },
     "Q": {
-      "item": "minecraft:quartz"
+      "type": "forge:ore_dict",
+      "ore": "gemQuartz"
     },
     "R": {
-      "item": "minecraft:redstone"
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
     }
   },
   "result": {
