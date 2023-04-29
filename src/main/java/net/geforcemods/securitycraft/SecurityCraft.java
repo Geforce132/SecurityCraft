@@ -154,7 +154,7 @@ public class SecurityCraft {
 			}
 		}
 
-		if (Loader.isModLoaded("projecte") && !Loader.isModLoaded("projecteintegration")) //ProjectE Integration already adds support for SecurityCraft, so no need to add our own
+		if (Loader.isModLoaded("projecte"))
 			ProjectECompat.registerConversions();
 
 		ForgeChunkManager.setForcedChunkLoadingCallback(instance, (tickets, world) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCameraEntity) somewhere
