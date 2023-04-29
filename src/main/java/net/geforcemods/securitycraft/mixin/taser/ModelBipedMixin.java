@@ -16,7 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
  */
 @Mixin(ModelBiped.class)
 public class ModelBipedMixin {
-	@Inject(method = "setRotationAngles", at = @At(value = "FIELD", target = "swingProgress:F"))
+	@Inject(method = "setRotationAngles", at = @At(value = "FIELD", target = "Lnet/minecraft/client/model/ModelBiped;swingProgress:F", ordinal = 0))
 	private void securitycraft$positionArmsWhenHoldingTaser(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity e, CallbackInfo ci) {
 		if (e instanceof EntityLivingBase) {
 			EntityLivingBase entity = (EntityLivingBase) e;
