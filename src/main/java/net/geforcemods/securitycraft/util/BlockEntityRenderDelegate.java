@@ -3,7 +3,10 @@ package net.geforcemods.securitycraft.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,8 +15,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class BlockEntityRenderDelegate {
+	private static final Logger LOGGER = LogUtils.getLogger();
 	private final Map<BlockEntity, DelegateRendererInfo> renderDelegates = new HashMap<>();
 
 	public void putDelegateFor(BlockEntity originalBlockEntity, BlockState delegateState) {
@@ -51,7 +56,21 @@ public class BlockEntityRenderDelegate {
 		DelegateRendererInfo delegateRendererInfo = renderDelegates.get(originalBlockEntity);
 
 		if (delegateRendererInfo != null) {
-			delegateRendererInfo.delegateRenderer().render(delegateRendererInfo.delegateBlockEntity(), partialTicks, pose, buffer, combinedLight, combinedOverlay);
+			try {
+				PoseStack copyPose = new PoseStack();
+
+				copyPose.pushPose();
+				copyPose.last().pose().multiply(pose.last().pose());
+				copyPose.last().normal().mul(pose.last().normal());
+				delegateRendererInfo.delegateRenderer().render(delegateRendererInfo.delegateBlockEntity(), partialTicks, copyPose, buffer, combinedLight, combinedOverlay);
+				copyPose.popPose();
+			}
+			catch (Exception e) {
+				LOGGER.warn("Error when delegate-rendering " + ForgeRegistries.BLOCK_ENTITY_TYPES.getKey(delegateRendererInfo.delegateBlockEntity().getType()));
+				e.printStackTrace();
+				removeDelegateOf(originalBlockEntity);
+			}
+
 			return true;
 		}
 
