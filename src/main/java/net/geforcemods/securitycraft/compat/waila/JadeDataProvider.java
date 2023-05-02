@@ -63,7 +63,7 @@ public class JadeDataProvider extends WailaCompatConstants implements IWailaPlug
 					BlockState state = blockAccessor.getBlockState();
 					BlockPos pos = blockAccessor.getPosition();
 
-					if (overlayDisplay.shouldShowSCInfo(level, state, pos))
+					if (!overlayDisplay.shouldShowSCInfo(level, state, pos))
 						return registration.blockAccessor().from(blockAccessor).fakeBlock(overlayDisplay.getDisplayStack(level, state, pos)).build();
 				}
 				else if (block instanceof FakeWaterBlock)
