@@ -2,7 +2,7 @@
 
 - New: The reinforced block tint color can now be changed with a config setting
 - New: Netherrack Mine and End Stone Mine
-- New: The damage of a Laser Block containing a Harming Module can now be changed with a config setting
+- New: The damage dealt by a Laser Block containing a Harming Module can now be changed with a config setting
 - New: More modded wooden chests can now be converted to a Password-protected Chest
 - API: Changed IPasswordConvertible#getOriginalBlock to IPasswordConvertible#isValidStateForConversion for finer control over what can be converted
 - API: New methods IModuleInventory#isAllowed and IModuleInventory#isDenied to check whether an entity is listed on an allowlist or denylist module respectively
