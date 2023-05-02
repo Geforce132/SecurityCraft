@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "building",
   "key": {
     "B": {
       "item": "securitycraft:crystal_quartz"
