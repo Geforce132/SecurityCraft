@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------
 
+- Change: Several technical blocks' sounds have been adjusted to better match how they look
 - Fix: Mounting two cameras after one another in different dimensions causes severe lag
 - Fix: Jade does not properly hide blocks
 - Fix: Crashes when rendering some modded block entities in a Projector, or using them as a disguise
