@@ -6,8 +6,8 @@
 - Fix: Crashes when rendering some modded block entities in a Projector, or using them as a disguise
 - Fix: The Sentry-/Mine Remote Access Tool screens do not show the item's custom name
 - Fix: Reinforced Doors can be closed by giving them a block update
-- Fix: Reinforced Doors that are next to, but don't face each other can act as double doors.
-
+- Fix: Reinforced Doors that are next to, but don't face, each other can act as double doors
+- Fix: Certain blocks don't update their indirect neighbors properly when getting destroyed while in a powered state
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
 
 - New: Support for FTB Teams when having team ownership enabled in the config
