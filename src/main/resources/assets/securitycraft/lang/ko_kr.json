@@ -413,7 +413,7 @@
 	"block.securitycraft.quartz_mine": "네더 석영 광석 지뢰",
 	"block.securitycraft.gilded_blackstone_mine": "황금이 박힌 흑암 지뢰",
 	"block.securitycraft.ancient_debris_mine": "고대 잔해 지뢰",
-    "block.securitycraft.reinforced_redstone_lamp": "강화된 레드스톤 조명",
+	"block.securitycraft.reinforced_redstone_lamp": "강화된 레드스톤 조명",
 	"block.securitycraft.reinforced_hopper": "강화된 호퍼",
 	"block.securitycraft.keypad_door": "키패드 문",
 	"block.securitycraft.reinforced_cauldron": "강화된 가마솥",
@@ -764,7 +764,7 @@
 	"gui.securitycraft:sonic_security_system.recording": "녹음 중",
 	"gui.securitycraft:sonic_security_system.listening": "청취 중",
 	"gui.securitycraft:customize.currentSetting": "현재: %s",
-	
+
 	"messages.securitycraft:bugReport": "우리 Discord 서버의 #bugreport 채널에 버그를 보고하십시오. 먼저 규칙을 읽어주시길 바랍니다.",
 	"messages.securitycraft:retinalScanner.hello": "%s님 안녕하세요.",
 	"messages.securitycraft:retinalScanner.notOwner": "죄송합니다. 이 감지기는 사용할 수 없습니다. 이 감지기는 %s의 소유입니다.",
@@ -1008,7 +1008,7 @@
 	"module.securitycraft.key_panel.blacklist_module.description": "거부목록 모듈을 키 패널에 추가하면 목록에 있는 플레이어가 블록과 상호 작용할 수 없습니다.",
 	"module.securitycraft.sonic_security_system.whitelist_module.description": "소닉 보안 시스템에 허용목록 모듈을 추가하면 나열된 플레이어들이 시스템의 음정을 휴대용 음정 플레이어에 저장할 수 있을 뿐만 아니라 시스템의 GUI에서 튜닝을 들을 수 있습니다.",
 	"module.securitycraft.sonic_security_system.redstone_module.description": "소닉 보안 시스템에 레드스톤 모듈을 추가하면 올바른 음정이 재생되었을 때 시스템이 레드스톤 신호를 방출할 수 있습니다.",
-	
+
 	"option.securitycraft.portable_radar.searchRadius": "검색 반경: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "레이더가 검색하는 반경입니다.",
 	"option.securitycraft.portable_radar.searchDelay": "검색 지연: %s초",
