@@ -61,6 +61,7 @@ public class BlockLootTableGenerator implements DataProvider {
 		lootTables.remove(SCContent.REINFORCED_PISTON_HEAD);
 		putMineLootTable(SCContent.ANCIENT_DEBRIS_MINE);
 		putSlabLootTable(SCContent.CRYSTAL_QUARTZ_SLAB);
+		putSlabLootTable(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB);
 
 		LootPoolSingletonContainer.Builder<?> imsLootEntryBuilder = LootItem.lootTableItem(SCContent.BOUNCING_BETTY.get());
 
@@ -114,7 +115,8 @@ public class BlockLootTableGenerator implements DataProvider {
 		putStandardBlockLootTable(SCContent.SECRET_WARPED_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_WARPED_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECURITY_CAMERA);
-		putStandardBlockLootTable(SCContent.STAIRS_CRYSTAL_QUARTZ);
+		putStandardBlockLootTable(SCContent.CRYSTAL_QUARTZ_STAIRS);
+		putStandardBlockLootTable(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS);
 		lootTables.put(SCContent.SONIC_SECURITY_SYSTEM, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))
