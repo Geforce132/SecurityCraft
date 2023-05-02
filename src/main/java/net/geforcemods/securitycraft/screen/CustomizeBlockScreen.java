@@ -56,7 +56,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private final List<Rect2i> extraAreas = new ArrayList<>();
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
-	private AbstractWidget[] optionButtons = new AbstractWidget[5];
+	private AbstractWidget[] optionButtons;
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
 	private final Block block;
 	private final String blockName;
@@ -99,6 +99,8 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			Option<?>[] options = customizable.customOptions();
 
 			if (options != null) {
+				optionButtons = new AbstractWidget[options.length];
+
 				for (int i = 0; i < options.length; i++) {
 					Option<?> option = options[i];
 
