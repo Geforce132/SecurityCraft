@@ -186,6 +186,9 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	protected void containerTick() {
 		if (colorChooser != null)
 			colorChooser.tick();
+
+		if (changeEntryList != null)
+			changeEntryList.tick();
 	}
 
 	@Override
@@ -310,6 +313,10 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			}
 		}
 
+		public void tick() {
+			filteredEntries.forEach(CollapsibleTextList::tick);
+		}
+
 		public void addEntry(ContentSavingCollapsileTextList entry) {
 			entry.setWidth(154);
 			entry.setHeight(slotHeight);
@@ -369,7 +376,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		public void recalculateContentHeight() {
-			int height = filteredEntries.stream().reduce(0, (accumulated, ctl) -> accumulated + ctl.getHeight(), (identity, accumulated) -> identity + accumulated);
+			int height = filteredEntries.stream().reduce(0, (accumulated, ctl) -> accumulated + ctl.getMaximumHeight(), (identity, accumulated) -> identity + accumulated);
 
 			if (height < bottom - top - 8)
 				height = bottom - top - 8;
