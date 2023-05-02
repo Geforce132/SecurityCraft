@@ -20,6 +20,7 @@
 - Fix: The Cage Trap and Password-protected Furnace/Smoker/Blast Furnace are black instead of see-through
 - Fix: Breaking an Inventory Scanner/Laser or one of its field does not break all fields, if the respective config setting is lower than the amount of fields present
 - Fix: Breaking an Inventory Scanner Fields with the inventoryScannerRange config setting set to >=3 does not break and reinstate all fields properly
+- Fix: Players that are on the allowlist of a Security Camera, cannot toggle the camera's redstone output
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
