@@ -15,7 +15,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.SetKeycardUses;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
-import net.geforcemods.securitycraft.screen.components.PictureButton;
+import net.geforcemods.securitycraft.screen.components.ActiveBasedTextureButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -321,20 +321,5 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			toggleButtons[i].setCurrentIndex(active ? 1 : 0);
 
 		acceptedLevels[i] = active;
-	}
-
-	private static class ActiveBasedTextureButton extends PictureButton {
-		private final ResourceLocation inactiveTexture;
-
-		public ActiveBasedTextureButton(int xPos, int yPos, int width, int height, ResourceLocation texture, ResourceLocation inactiveTexture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, OnPress onPress) {
-			super(xPos, yPos, width, height, texture, textureX, textureY, drawOffsetX, drawOffsetY, drawWidth, drawHeight, textureWidth, textureHeight, onPress);
-
-			this.inactiveTexture = inactiveTexture;
-		}
-
-		@Override
-		public ResourceLocation getTextureLocation() {
-			return active ? super.getTextureLocation() : inactiveTexture;
-		}
 	}
 }
