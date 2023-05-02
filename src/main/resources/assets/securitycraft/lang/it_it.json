@@ -1212,7 +1212,7 @@
 	"securitycraft.subtitle.alarm": "L'allarme sta suonando",
 	"securitycraft.subtitle.camerasnap": "La camera si spegne",
 	"securitycraft.subtitle.camerazoomin": "La camera sta zoomando",
-	"securitycraft.subtitle.display_case_close": "La teca è ora chiusa"
+	"securitycraft.subtitle.display_case_close": "La teca è ora chiusa",
 	"securitycraft.subtitle.display_case_open": "La teca è ora aperta",
 	"securitycraft.subtitle.electrified": "Entità folgorata",
 	"securitycraft.subtitle.get_item": "Oggetto preso!",
@@ -1242,22 +1242,5 @@
 	"waila.securitycraft:equipped": "Equipaggiato con:",
 	"waila.securitycraft:owner": "Possessore: %s",
 	"waila.securitycraft:password": "Password: %s",
-	"waila.securitycraft:password.notSet": "Non impostata",
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	"waila.securitycraft:password.notSet": "Non impostata"
 }

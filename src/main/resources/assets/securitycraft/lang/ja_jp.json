@@ -1242,7 +1242,7 @@
 	"securitycraft.subtitle.alarm": "アラーム音",
 	"securitycraft.subtitle.camerasnap": "カメラシャッター",
 	"securitycraft.subtitle.camerazoomin": "カメラズーム",
-	"securitycraft.subtitle.display_case_close": "ディスプレイケースが閉じる"
+	"securitycraft.subtitle.display_case_close": "ディスプレイケースが閉じる",
 	"securitycraft.subtitle.display_case_open": "ディスプレイケースが開く",
 	"securitycraft.subtitle.electrified": "感電死したエンティティ",
 	"securitycraft.subtitle.get_item": "アイテムゲット！",
@@ -1272,22 +1272,5 @@
 	"waila.securitycraft:equipped": "装備：",
 	"waila.securitycraft:owner": "所有者：%s",
 	"waila.securitycraft:password": "パスワード：%s",
-	"waila.securitycraft:password.notSet": "未設定",
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	"waila.securitycraft:password.notSet": "未設定"
 }

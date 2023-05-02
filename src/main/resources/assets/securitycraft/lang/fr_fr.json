@@ -1241,7 +1241,7 @@
 	"securitycraft.subtitle.alarm": "Sonnerie d‘alarme",
 	"securitycraft.subtitle.camerasnap": "Obturateur de la caméra",
 	"securitycraft.subtitle.camerazoomin": "Zoom de la caméra",
-	"securitycraft.subtitle.display_case_close": "Vitrine ferme"
+	"securitycraft.subtitle.display_case_close": "Vitrine ferme",
 	"securitycraft.subtitle.display_case_open": "Vitrine ouvre",
 	"securitycraft.subtitle.electrified": "Entité électrocuté",
 	"securitycraft.subtitle.get_item": "Objet obtenu !",
@@ -1271,22 +1271,5 @@
 	"waila.securitycraft:equipped": "Équipé avec :",
 	"waila.securitycraft:owner": "Propriétaire : %s",
 	"waila.securitycraft:password": "Mot de passe : %s",
-	"waila.securitycraft:password.notSet": "Pas défini",
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	"waila.securitycraft:password.notSet": "Pas défini"
 }

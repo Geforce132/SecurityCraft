@@ -1078,7 +1078,7 @@
 	"securitycraft.subtitle.electrified": "엔티티 감전",
 	"securitycraft.subtitle.get_item": "아이템 획득!",
 	"securitycraft.subtitle.lock": "컨테이너 잠금",
-	"securitycraft.subtitle.ping": "소닉 보안 시스템이 탱하는 소리가 납니다."
+	"securitycraft.subtitle.ping": "소닉 보안 시스템이 탱하는 소리가 납니다.",
 	"securitycraft.subtitle.taserfire": "테이저 발사",
 	"tooltip.securitycraft:briefcase.owner": "소유자: %s",
 	"tooltip.securitycraft:camera": "카메라",
@@ -1100,21 +1100,5 @@
 	"waila.securitycraft:equipped": "장착:",
 	"waila.securitycraft:owner": "소유자: %s",
 	"waila.securitycraft:password": "비밀번호: %s",
-	"waila.securitycraft:password.notSet": "설정되지 않음",
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	"waila.securitycraft:password.notSet": "설정되지 않음"
 }

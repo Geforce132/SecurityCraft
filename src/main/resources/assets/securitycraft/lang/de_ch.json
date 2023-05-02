@@ -1237,7 +1237,7 @@
 	"securitycraft.subtitle.alarm": "Alarm geht los",
 	"securitycraft.subtitle.camerasnap": "Kamerablende",
 	"securitycraft.subtitle.camerazoomin": "Kamerazoom",
-	"securitycraft.subtitle.display_case_close": "Vitrine wird geschlossen"
+	"securitycraft.subtitle.display_case_close": "Vitrine wird geschlossen",
 	"securitycraft.subtitle.display_case_open": "Vitrine wird geöffnet",
 	"securitycraft.subtitle.electrified": "Stromschlag",
 	"securitycraft.subtitle.get_item": "Item bekommen!",
@@ -1267,21 +1267,5 @@
 	"waila.securitycraft:equipped": "Installierte Module:",
 	"waila.securitycraft:owner": "Besitzer: %s",
 	"waila.securitycraft:password": "Passwort: %s",
-	"waila.securitycraft:password.notSet": "Nicht gesetzt",
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	"waila.securitycraft:password.notSet": "Nicht gesetzt"
 }

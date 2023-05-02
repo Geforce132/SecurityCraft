@@ -1245,7 +1245,7 @@
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.camerasnap": "Camera shutter",
 	"securitycraft.subtitle.camerazoomin": "Camera zooming",
-	"securitycraft.subtitle.display_case_close": "Display Case closes"
+	"securitycraft.subtitle.display_case_close": "Display Case closes",
 	"securitycraft.subtitle.display_case_open": "Display Case opens",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",
 	"securitycraft.subtitle.get_item": "Item gotten!",
@@ -1275,21 +1275,5 @@
 	"waila.securitycraft:equipped": "Equipped with:",
 	"waila.securitycraft:owner": "Owner: %s",
 	"waila.securitycraft:password": "Password: %s",
-	"waila.securitycraft:password.notSet": "Not set",
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	"waila.securitycraft:password.notSet": "Not set"
 }

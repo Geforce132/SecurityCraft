@@ -1240,7 +1240,7 @@
 	"securitycraft.subtitle.alarm": "Alarma suena",
 	"securitycraft.subtitle.camerasnap": "Sonido fotográfico",
 	"securitycraft.subtitle.camerazoomin": "Cámara acercándose",
-	"securitycraft.subtitle.display_case_close": "Expositor se cierra"
+	"securitycraft.subtitle.display_case_close": "Expositor se cierra",
 	"securitycraft.subtitle.display_case_open": "Expositor se abre",
 	"securitycraft.subtitle.electrified": "Entidad se electrocuta",
 	"securitycraft.subtitle.get_item": "¡Objeto conseguido!",
@@ -1270,22 +1270,5 @@
 	"waila.securitycraft:equipped": "Equipado con:",
 	"waila.securitycraft:owner": "Propietario: %s",
 	"waila.securitycraft:password": "Contraseña: %s",
-	"waila.securitycraft:password.notSet": "Sin establecer",
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	"waila.securitycraft:password.notSet": "Sin establecer"
 }
