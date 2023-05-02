@@ -37,6 +37,8 @@
 - Fix: The Codebreaker sometimes loses durability when rightclicking a block even though no codebreaking attempt has been made
 - Fix: Taking an item out of a Display Case does not work when the offhand is not empty
 - Fix: Issues when unloading and saving chunks containing linkable block entities
+- Fix: Some scroll lists can be scrolled a tiny bit even though there is no scrollbar
+- Fix: Some scroll lists cannot be scrolled far enough to show all entries
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 

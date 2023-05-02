@@ -345,10 +345,10 @@ public class EditModuleScreen extends Screen {
 
 		@Override
 		protected int getContentHeight() {
-			int height = 50 + (listLength * font.lineHeight);
+			int height = listLength * (font.lineHeight + 3);
 
-			if (height < bottom - top - 8)
-				height = bottom - top - 8;
+			if (height < bottom - top - 4)
+				height = bottom - top - 4;
 
 			return height;
 		}
@@ -422,10 +422,10 @@ public class EditModuleScreen extends Screen {
 
 		@Override
 		protected int getContentHeight() {
-			int height = 50 + (listLength * font.lineHeight);
+			int height = listLength * (font.lineHeight + 3);
 
-			if (height < bottom - top - 8)
-				height = bottom - top - 8;
+			if (height < bottom - top - 4)
+				height = bottom - top - 4;
 
 			return height;
 		}
