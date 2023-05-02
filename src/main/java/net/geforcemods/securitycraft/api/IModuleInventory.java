@@ -79,10 +79,9 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	public default void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
 		BlockEntity be = getBlockEntity();
 
-		if (!be.getLevel().isClientSide) {
-			if (!toggled)
-				toggleModuleState(module, true);
+		toggleModuleState(module, true);
 
+		if (!be.getLevel().isClientSide) {
 			be.setChanged();
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		}
@@ -98,10 +97,9 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	public default void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		BlockEntity be = getBlockEntity();
 
-		if (!be.getLevel().isClientSide) {
-			if (!toggled)
-				toggleModuleState(module, false);
+		toggleModuleState(module, false);
 
+		if (!be.getLevel().isClientSide) {
 			be.setChanged();
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		}
@@ -328,13 +326,10 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			if (predicate.test(modules.get(i))) {
 				ItemStack toInsert = module.copy();
 
-				if (toggled)
-					toggleModuleState(moduleItem.getModuleType(), true);
-				else {
+				if (!toggled)
 					modules.set(i, toInsert);
-					onModuleInserted(toInsert, moduleItem.getModuleType(), toggled);
-				}
 
+				onModuleInserted(toInsert, moduleItem.getModuleType(), toggled);
 				break;
 			}
 		}
@@ -351,10 +346,10 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 		for (int i = 0; i < modules.size(); i++) {
 			if (!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ModuleItem moduleItem && moduleItem.getModuleType() == module) {
-				if (toggled)
-					toggleModuleState(module, false);
-				else
+				if (!toggled)
 					modules.set(i, ItemStack.EMPTY);
+
+				onModuleRemoved(modules.get(i), module, false);
 			}
 		}
 	}
