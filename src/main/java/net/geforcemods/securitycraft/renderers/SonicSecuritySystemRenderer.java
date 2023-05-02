@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSecuritySystemBlockEntity> {
 	private static final Quaternion POSITIVE_X_180 = Vector3f.XP.rotationDegrees(180.0F);
@@ -57,7 +58,7 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 		}
 
 		pose.mulPose(POSITIVE_X_180);
-		model.setRadarRotation(be.radarRotationDegrees);
+		model.setRadarRotation(Mth.lerp(partialTicks, be.oRadarRotationDegrees, be.radarRotationDegrees));
 		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }
