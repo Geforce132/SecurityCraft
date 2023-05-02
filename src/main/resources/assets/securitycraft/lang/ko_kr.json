@@ -1107,6 +1107,7 @@
 	"option.securitycraft.rift_stabilizer.signalLength": "신호 길이: %s",
 	"option.securitycraft.display_case.sendMessage": "메시지: %s",
 	"option.securitycraft.glow_display_case.sendMessage": "메시지: %s",
+	"option.securitycraft.keypad_barrel.sendMessage": "메시지: %s",
 
 	"securitycraft.subtitle.alarm": "알람 소리",
 	"securitycraft.subtitle.electrified": "엔티티 감전",

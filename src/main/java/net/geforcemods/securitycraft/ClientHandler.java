@@ -135,6 +135,7 @@ public class ClientHandler {
 			SCContent.INVENTORY_SCANNER.get(),
 			SCContent.KEYCARD_READER.get(),
 			SCContent.KEYPAD.get(),
+			SCContent.KEYPAD_BARREL.get(),
 			SCContent.KEYPAD_BLAST_FURNACE.get(),
 			SCContent.KEYPAD_FURNACE.get(),
 			SCContent.KEYPAD_SMOKER.get(),
@@ -284,6 +285,7 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.INVENTORY_SCANNER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYCARD_READER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.KEYPAD_BARREL_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_BLAST_FURNACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_FURNACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_SMOKER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
