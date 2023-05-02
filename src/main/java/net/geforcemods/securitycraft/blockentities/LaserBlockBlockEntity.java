@@ -56,27 +56,10 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			disabled.copy(option);
 			toggleLaser((BooleanOption) option);
 		}
-		else if (action instanceof ILinkedAction.ModuleInserted moduleInserted) {
-			ItemStack module = moduleInserted.stack();
-			boolean toggled = moduleInserted.wasModuleToggled();
-
-			insertModule(module, toggled);
-
-			if (moduleInserted.module().getModuleType() == ModuleType.DISGUISE)
-				onInsertDisguiseModule(module, toggled);
-		}
-		else if (action instanceof ILinkedAction.ModuleRemoved moduleRemoved) {
-			ModuleType module = moduleRemoved.moduleType();
-			ItemStack moduleStack = getModule(module);
-			boolean toggled = moduleRemoved.wasModuleToggled();
-
-			removeModule(module, toggled);
-
-			if (module == ModuleType.DISGUISE)
-				onRemoveDisguiseModule(moduleStack, toggled);
-			else if (module == ModuleType.REDSTONE)
-				onRemoveRedstoneModule();
-		}
+		else if (action instanceof ILinkedAction.ModuleInserted moduleInserted)
+			insertModule(moduleInserted.stack(), moduleInserted.wasModuleToggled());
+		else if (action instanceof ILinkedAction.ModuleRemoved moduleRemoved)
+			removeModule(moduleRemoved.moduleType(), moduleRemoved.wasModuleToggled());
 		else if (action instanceof ILinkedAction.OwnerChanged ownerChanged) {
 			Owner owner = ownerChanged.newOwner();
 
@@ -91,63 +74,54 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
 		super.onModuleInserted(stack, module, toggled);
 
-		if (module == ModuleType.DISGUISE)
-			onInsertDisguiseModule(stack, toggled);
+		if (module == ModuleType.DISGUISE) {
+			BlockState state = getBlockState();
+
+			if (!level.isClientSide) {
+				SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
+
+				if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
+					level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+					level.updateNeighborsAt(worldPosition, state.getBlock());
+				}
+			}
+			else {
+				ClientHandler.putDisguisedBeRenderer(this, stack);
+
+				if (state.getLightEmission(level, worldPosition) > 0)
+					level.getChunkSource().getLightEngine().checkBlock(worldPosition);
+			}
+		}
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		super.onModuleRemoved(stack, module, toggled);
 
-		if (module == ModuleType.DISGUISE)
-			onRemoveDisguiseModule(stack, toggled);
-		else if (module == ModuleType.REDSTONE)
-			onRemoveRedstoneModule();
-	}
+		if (module == ModuleType.DISGUISE) {
+			if (!level.isClientSide) {
+				BlockState state = getBlockState();
 
-	private void onInsertDisguiseModule(ItemStack stack, boolean toggled) {
-		BlockState state = getBlockState();
+				SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
 
-		if (!level.isClientSide) {
-			SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
-
-			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
-				level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-				level.updateNeighborsAt(worldPosition, state.getBlock());
+				if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
+					level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+					level.updateNeighborsAt(worldPosition, state.getBlock());
+				}
+			}
+			else {
+				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
+				DisguisableBlock.getDisguisedBlockStateFromStack(stack).ifPresent(disguisedState -> {
+					if (disguisedState.getLightEmission(level, worldPosition) > 0)
+						level.getChunkSource().getLightEngine().checkBlock(worldPosition);
+				});
 			}
 		}
-		else {
-			ClientHandler.putDisguisedBeRenderer(this, stack);
-
-			if (state.getLightEmission(level, worldPosition) > 0)
-				level.getChunkSource().getLightEngine().checkBlock(worldPosition);
-		}
-	}
-
-	private void onRemoveDisguiseModule(ItemStack stack, boolean toggled) {
-		if (!level.isClientSide) {
-			BlockState state = getBlockState();
-
-			SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
-
-			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
-				level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-				level.updateNeighborsAt(worldPosition, state.getBlock());
+		else if (module == ModuleType.REDSTONE) {
+			if (getBlockState().getValue(LaserBlock.POWERED)) {
+				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(LaserBlock.POWERED, false));
+				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
 			}
-		}
-		else {
-			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
-			DisguisableBlock.getDisguisedBlockStateFromStack(stack).ifPresent(disguisedState -> {
-				if (disguisedState.getLightEmission(level, worldPosition) > 0)
-					level.getChunkSource().getLightEngine().checkBlock(worldPosition);
-			});
-		}
-	}
-
-	private void onRemoveRedstoneModule() {
-		if (getBlockState().getValue(LaserBlock.POWERED)) {
-			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(LaserBlock.POWERED, false));
-			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
 		}
 	}
 
