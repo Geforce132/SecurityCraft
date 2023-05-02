@@ -77,7 +77,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 		//minecraft tags
 		tag(ItemTags.DAMPENS_VIBRATIONS).addTag(SCTags.Items.REINFORCED_WOOL);
-		tag(ItemTags.FENCE_GATES).add(SCContent.REINFORCED_FENCE_GATE.get().asItem());
 		tag(ItemTags.FENCES).add(SCContent.IRON_FENCE.get().asItem());
 		tag(ItemTags.PIGLIN_LOVED).add(
 				SCContent.DEEPSLATE_GOLD_ORE_MINE.get().asItem(),
