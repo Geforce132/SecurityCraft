@@ -3,6 +3,7 @@
 - Fix: Mounting two cameras after one another in different dimensions causes severe lag
 - Fix: Jade does not properly hide blocks
 - Fix: Crashes when rendering some modded block entities in a Projector, or using them as a disguise
+- Fix: The Sentry-/Mine Remote Access Tool screens do not show the item's custom name
 
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
 
