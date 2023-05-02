@@ -16,6 +16,7 @@
 - Fix: Using /kill to remove a camera entity, or removing it by other non-standard means, does not update the camera block properly
 - Fix: Error when unbinding the last mine/sentry from a Mine/Sentry Remote Access Tool
 - Fix: Placing an Inventory Scanner facing a disguised scanner does not update the placed scanner's disguise
+- Fix: The Cage Trap and Password-protected Furnace/Smoker/Blast Furnace are black instead of see through
 
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
