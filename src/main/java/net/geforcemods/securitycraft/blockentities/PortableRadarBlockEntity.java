@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -35,7 +36,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private boolean shouldSendNewMessage = true;
-	private String lastPlayerName = "";
+	private Owner lastPlayer = new Owner();
 	private int ticksUntilNextSearch = getSearchDelay();
 
 	public PortableRadarBlockEntity(BlockPos pos, BlockState state) {
@@ -84,9 +85,11 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	@Override
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
+		CompoundTag lastPlayerTag = new CompoundTag();
 
 		tag.putBoolean("shouldSendNewMessage", shouldSendNewMessage);
-		tag.putString("lastPlayerName", lastPlayerName);
+		lastPlayer.save(lastPlayerTag, false);
+		tag.put("lastPlayer", lastPlayerTag);
 	}
 
 	@Override
@@ -94,7 +97,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 		super.load(tag);
 
 		shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
-		lastPlayerName = tag.getString("lastPlayerName");
+		lastPlayer = Owner.fromCompound(tag.getCompound("lastPlayer"));
 	}
 
 	@Override
@@ -108,13 +111,15 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	}
 
 	public boolean shouldSendMessage(Player player) {
-		if (!player.getName().getString().equals(lastPlayerName)) {
+		Owner currentPlayer = new Owner(player);
+
+		if (!currentPlayer.equals(lastPlayer)) {
 			shouldSendNewMessage = true;
-			lastPlayerName = player.getName().getString();
+			lastPlayer = currentPlayer;
 			setChanged();
 		}
 
-		boolean lastPlayerOwns = ConfigHandler.SERVER.enableTeamOwnership.get() ? PlayerUtils.areOnSameTeam(lastPlayerName, getOwner().getName()) : lastPlayerName.equals(getOwner().getName());
+		boolean lastPlayerOwns = ConfigHandler.SERVER.enableTeamOwnership.get() ? PlayerUtils.areOnSameTeam(lastPlayer, getOwner()) : lastPlayer.owns(this);
 
 		return (shouldSendNewMessage || repeatMessageOption.get()) && !(lastPlayerOwns && ignoresOwner());
 	}

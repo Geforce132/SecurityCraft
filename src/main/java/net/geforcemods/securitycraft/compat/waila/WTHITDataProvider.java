@@ -100,7 +100,7 @@ public class WTHITDataProvider extends WailaCompatConstants implements IWailaPlu
 
 		//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
 		if (config.getBoolean(SHOW_OWNER) && be instanceof IOwnable && Utils.getRegistryName(block).getNamespace().equals(SecurityCraft.MODID))
-			tooltip.addLine(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) be).getOwner().getName())));
+			tooltip.addLine(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) be).getOwner())));
 
 		if (disguised)
 			return;
@@ -145,7 +145,7 @@ public class WTHITDataProvider extends WailaCompatConstants implements IWailaPlu
 			SentryMode mode = sentry.getMode();
 
 			if (config.getBoolean(SHOW_OWNER))
-				tooltip.addLine(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner().getName())));
+				tooltip.addLine(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())));
 
 			if (config.getBoolean(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer())) {
 				if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {

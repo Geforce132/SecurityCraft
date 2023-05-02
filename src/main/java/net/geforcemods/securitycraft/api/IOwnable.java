@@ -77,21 +77,22 @@ public interface IOwnable {
 	/**
 	 * Checks whether the given owner owns this IOwnable.
 	 *
-	 * @param player The owner to check ownership of
+	 * @param otherOwner The owner to check ownership of
 	 * @return true if the given owner owns this IOwnable, false otherwise
 	 */
-	public default boolean isOwnedBy(Owner owner) {
-		String thisUUID = getOwner().getUUID();
-		String thisName = getOwner().getName();
-		String otherUUID = owner.getUUID();
-		String otherName = owner.getName();
+	public default boolean isOwnedBy(Owner otherOwner) {
+		Owner self = getOwner();
 
-		if (ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(thisName, otherName))
+		if (ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(self, otherOwner))
 			return true;
 
-		if (otherUUID != null && otherUUID.equals(thisUUID))
+		String selfUUID = self.getUUID();
+		String otherUUID = otherOwner.getUUID();
+		String otherName = otherOwner.getName();
+
+		if (otherUUID != null && otherUUID.equals(selfUUID))
 			return true;
 
-		return otherName != null && thisUUID.equals("ownerUUID") && otherName.equals(thisName);
+		return otherName != null && selfUUID.equals("ownerUUID") && otherName.equals(self.getName());
 	}
 }

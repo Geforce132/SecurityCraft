@@ -100,6 +100,9 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.2.9'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     
+    implementation fg.deobf("curse.maven:architectury-api-419699:4476084") //ftb teams dependency
+    implementation fg.deobf("curse.maven:ftb-library-forge-404465:4500548") //ftb teams dependency
+    implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4477315")
     implementation fg.deobf("curse.maven:jei-238222:4494410")
     implementation fg.deobf("curse.maven:the-one-probe-245211:3965693")
     implementation fg.deobf("curse.maven:jade-324717:4433884")
