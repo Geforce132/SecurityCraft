@@ -2195,24 +2195,24 @@ public class SCContent {
 	public static final RegistryObject<Block> REINFORCED_POWDER_SNOW_CAULDRON = BLOCKS.register("reinforced_powder_snow_cauldron", () -> new ReinforcedLayeredCauldronBlock(prop(Material.METAL, MaterialColor.STONE).noOcclusion(), LayeredCauldronBlock.SNOW, IReinforcedCauldronInteraction.POWDER_SNOW, Blocks.POWDER_SNOW_CAULDRON));
 
 	//misc
-	@RegisterItemBlock
+	@RegisterItemBlock(SCItemGroup.DECORATION)
 	public static final RegistryObject<Block> CRYSTAL_QUARTZ_SLAB = BLOCKS.register("crystal_quartz_slab", () -> new SlabBlock(Block.Properties.of(Material.STONE).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
-	@RegisterItemBlock
+	@RegisterItemBlock(SCItemGroup.DECORATION)
 	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ = BLOCKS.register("smooth_crystal_quartz", () -> new Block(Block.Properties.of(Material.STONE).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
-	@RegisterItemBlock
+	@RegisterItemBlock(SCItemGroup.DECORATION)
 	public static final RegistryObject<Block> CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("chiseled_crystal_quartz", () -> new Block(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
 	@HasManualPage
-	@RegisterItemBlock
+	@RegisterItemBlock(SCItemGroup.DECORATION)
 	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BLOCK = BLOCKS.register("crystal_quartz", () -> new Block(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
-	@RegisterItemBlock
+	@RegisterItemBlock(SCItemGroup.DECORATION)
 	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BRICKS = BLOCKS.register("crystal_quartz_bricks", () -> new Block(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
-	@RegisterItemBlock
+	@RegisterItemBlock(SCItemGroup.DECORATION)
 	public static final RegistryObject<Block> CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("crystal_quartz_pillar", () -> new RotatedPillarBlock(Block.Properties.of(Material.STONE).strength(0.8F).requiresCorrectToolForDrops()));
-	@RegisterItemBlock
+	@RegisterItemBlock(SCItemGroup.DECORATION)
 	public static final RegistryObject<Block> CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("crystal_quartz_stairs", () -> new StairBlock(() -> CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), Block.Properties.copy(CRYSTAL_QUARTZ_BLOCK.get())));
-	@RegisterItemBlock
+	@RegisterItemBlock(SCItemGroup.DECORATION)
 	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("smooth_crystal_quartz_stairs", () -> new StairBlock(() -> SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), Block.Properties.copy(SMOOTH_CRYSTAL_QUARTZ.get())));
-	@RegisterItemBlock
+	@RegisterItemBlock(SCItemGroup.DECORATION)
 	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("smooth_crystal_quartz_slab", () -> new SlabBlock(Block.Properties.of(Material.STONE).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced(customTint = 0x15B3A2)
