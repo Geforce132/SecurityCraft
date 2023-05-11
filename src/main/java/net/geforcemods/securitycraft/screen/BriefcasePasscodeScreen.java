@@ -19,7 +19,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public class BriefcasePasswordScreen extends Screen {
+public class BriefcasePasscodeScreen extends Screen {
 	public static final String UP_ARROW = "\u2191";
 	public static final String DOWN_ARROW = "\u2193";
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
@@ -33,7 +33,7 @@ public class BriefcasePasswordScreen extends Screen {
 			0, 0, 0, 0
 	};
 
-	public BriefcasePasswordScreen(Component title) {
+	public BriefcasePasscodeScreen(Component title) {
 		super(title);
 	}
 

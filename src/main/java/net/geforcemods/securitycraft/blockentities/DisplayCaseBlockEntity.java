@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blockentities;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, IPasswordProtected, ILockable {
+public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, IPasscodeProtected, ILockable {
 	private final AABB renderBoundingBox;
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
@@ -68,17 +68,17 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 			return false;
 		}
 
-		return !isOpen() && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
+		return !isOpen() && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override
-	public String getPassword() {
+	public String getPasscode() {
 		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
 	}
 
 	@Override
-	public void setPassword(String password) {
-		passcode = password;
+	public void setPasscode(String passcode) {
+		this.passcode = passcode;
 		setChanged();
 	}
 

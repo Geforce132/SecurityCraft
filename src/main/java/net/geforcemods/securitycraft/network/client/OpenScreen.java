@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
@@ -46,9 +46,9 @@ public class OpenScreen {
 						ClientHandler.displayAlarmScreen(be);
 
 					break;
-				case CHECK_PASSWORD:
-					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof IPasswordProtected be)
-						ClientHandler.displayCheckPasswordScreen((BlockEntity) be);
+				case CHECK_PASSCODE:
+					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof IPasscodeProtected be)
+						ClientHandler.displayCheckPasscodeScreen((BlockEntity) be);
 
 					break;
 				case IMS:
@@ -61,9 +61,9 @@ public class OpenScreen {
 						ClientHandler.displayRiftStabilizerScreen(riftStabilizer);
 
 					break;
-				case SET_PASSWORD:
-					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof IPasswordProtected be)
-						ClientHandler.displaySetPasswordScreen((BlockEntity) be);
+				case SET_PASSCODE:
+					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof IPasscodeProtected be)
+						ClientHandler.displaySetPasscodeScreen((BlockEntity) be);
 
 					break;
 				case SONIC_SECURITY_SYSTEM:
@@ -77,8 +77,8 @@ public class OpenScreen {
 
 					break;
 				case UNIVERSAL_KEY_CHANGER:
-					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof IPasswordProtected passwordProtected)
-						ClientHandler.displayUniversalKeyChangerScreen((BlockEntity) passwordProtected);
+					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof IPasscodeProtected passcodeProtected)
+						ClientHandler.displayUniversalKeyChangerScreen((BlockEntity) passcodeProtected);
 			}
 		});
 		ctx.get().setPacketHandled(true);
@@ -86,10 +86,10 @@ public class OpenScreen {
 
 	public enum DataType {
 		ALARM,
-		CHECK_PASSWORD,
+		CHECK_PASSCODE,
 		IMS,
 		RIFT_STABILIZER,
-		SET_PASSWORD,
+		SET_PASSCODE,
 		SONIC_SECURITY_SYSTEM,
 		TROPHY_SYSTEM,
 		UNIVERSAL_KEY_CHANGER;

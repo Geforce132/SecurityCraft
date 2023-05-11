@@ -148,7 +148,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 			else {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				else if (be.verifyPasswordSet(level, pos, be, player)) {
+				else if (be.verifyPasscodeSet(level, pos, be, player)) {
 					if (be.isDenied(player)) {
 						if (be.sendsMessages())
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
@@ -160,7 +160,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 						activate(be);
 					}
 					else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-						be.openPasswordGUI(level, pos, player);
+						be.openPasscodeGUI(level, pos, player);
 				}
 			}
 		}

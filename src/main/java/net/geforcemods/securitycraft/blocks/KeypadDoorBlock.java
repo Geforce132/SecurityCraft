@@ -35,7 +35,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (be.verifyPasswordSet(level, pos, be, player)) {
+			else if (be.verifyPasscodeSet(level, pos, be, player)) {
 				if (be.isDenied(player)) {
 					if (be.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
@@ -47,7 +47,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 					activate(state, level, pos, player, be.getSignalLength());
 				}
 				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-					be.openPasswordGUI(level, pos, player);
+					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 

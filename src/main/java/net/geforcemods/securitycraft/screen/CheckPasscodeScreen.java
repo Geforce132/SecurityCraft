@@ -8,9 +8,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.CheckPassword;
+import net.geforcemods.securitycraft.network.server.CheckPasscode;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -23,12 +23,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class CheckPasswordScreen extends Screen {
+public class CheckPasscodeScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private static final int MAX_CHARS = 20;
-	private static final Component COOLDOWN_TEXT_1 = Component.translatable("gui.securitycraft:password.cooldown1");
+	private static final Component COOLDOWN_TEXT_1 = Component.translatable("gui.securitycraft:passcode.cooldown1");
 	private int cooldownText1XPos;
-	private IPasswordProtected be;
+	private IPasscodeProtected be;
 	private char[] allowedChars = {
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\u0008', '\u001B'
 	}; //0-9, backspace and escape
@@ -40,9 +40,9 @@ public class CheckPasswordScreen extends Screen {
 	private String currentString = "";
 	private boolean wasOnCooldownLastRenderTick = false;
 
-	public CheckPasswordScreen(BlockEntity be, Component title) {
+	public CheckPasscodeScreen(BlockEntity be, Component title) {
 		super(title);
-		this.be = (IPasswordProtected) be;
+		this.be = (IPasscodeProtected) be;
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class CheckPasswordScreen extends Screen {
 		if (be.isOnCooldown()) {
 			long cooldownEnd = be.getCooldownEnd();
 			long secondsLeft = Math.max(cooldownEnd - System.currentTimeMillis(), 0) / 1000 + 1; //+1 so that the text doesn't say "0 seconds left" for a whole second
-			Component text = Component.translatable("gui.securitycraft:password.cooldown2", secondsLeft);
+			Component text = Component.translatable("gui.securitycraft:passcode.cooldown2", secondsLeft);
 
 			font.draw(pose, COOLDOWN_TEXT_1, cooldownText1XPos, height / 2 + 55, 4210752);
 			font.draw(pose, text, width / 2 - font.width(text) / 2, height / 2 + 65, 4210752);
@@ -201,6 +201,6 @@ public class CheckPasswordScreen extends Screen {
 
 		currentString = "";
 		keycodeTextbox.setValue("");
-		SecurityCraft.channel.sendToServer(new CheckPassword(pos.getX(), pos.getY(), pos.getZ(), code));
+		SecurityCraft.channel.sendToServer(new CheckPasscode(pos.getX(), pos.getY(), pos.getZ(), code));
 	}
 }

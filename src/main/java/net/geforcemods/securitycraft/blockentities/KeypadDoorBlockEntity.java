@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.INameSetter;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
-public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasswordProtected {
+public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasscodeProtected {
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
 	private long cooldownEnd = 0;
 	private String passcode;
@@ -60,24 +60,24 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 			return false;
 		}
 
-		return !state.getValue(DoorBlock.OPEN) && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
+		return !state.getValue(DoorBlock.OPEN) && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override
-	public String getPassword() {
+	public String getPasscode() {
 		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
 	}
 
 	@Override
-	public void setPassword(String password) {
-		passcode = password;
-		runForOtherHalf(otherHalf -> otherHalf.setPasswordExclusively(password));
+	public void setPasscode(String passcode) {
+		this.passcode = passcode;
+		runForOtherHalf(otherHalf -> otherHalf.setPasscodeExclusively(passcode));
 		setChanged();
 	}
 
-	//only set the password for this door half
-	public void setPasswordExclusively(String password) {
-		passcode = password;
+	//only set the passcode for this door half
+	public void setPasscodeExclusively(String passcode) {
+		this.passcode = passcode;
 		setChanged();
 	}
 

@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -94,7 +94,7 @@ public class KeypadChestBlock extends ChestBlock {
 		if (!level.isClientSide && !isBlocked(level, pos)) {
 			KeypadChestBlockEntity be = (KeypadChestBlockEntity) level.getBlockEntity(pos);
 
-			if (be.verifyPasswordSet(level, pos, be, player)) {
+			if (be.verifyPasscodeSet(level, pos, be, player)) {
 				if (be.isDenied(player)) {
 					if (be.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
@@ -106,7 +106,7 @@ public class KeypadChestBlock extends ChestBlock {
 					activate(state, level, pos, player);
 				}
 				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-					be.openPasswordGUI(level, pos, player);
+					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 
@@ -142,7 +142,7 @@ public class KeypadChestBlock extends ChestBlock {
 					}
 
 					thisBe.readOptions(be.writeOptions(new CompoundTag()));
-					thisBe.setPassword(be.getPassword());
+					thisBe.setPasscode(be.getPasscode());
 				}
 			}
 		}
@@ -218,7 +218,7 @@ public class KeypadChestBlock extends ChestBlock {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
-	public static class Convertible implements IPasswordConvertible {
+	public static class Convertible implements IPasscodeConvertible {
 		@Override
 		public boolean isValidStateForConversion(BlockState state) {
 			return state.is(Tags.Blocks.CHESTS_WOODEN);

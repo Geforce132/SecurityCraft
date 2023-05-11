@@ -6,8 +6,8 @@ import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
-import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
-import net.geforcemods.securitycraft.screen.SetPasswordScreen;
+import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
+import net.geforcemods.securitycraft.screen.SetPasscodeScreen;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -20,45 +20,45 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.PacketDistributor;
 
 /**
- * Implementing this interface designates a block entity as being password-protected. Implementing this allows you to use
- * {@link SetPasswordScreen} and {@link CheckPasswordScreen} to easily set your block's password. Extends
- * {@link ICodebreakable} as most password-protected blocks are likely able to be hacked using the Codebreaker by default.
+ * Implementing this interface designates a block entity as being passcode-protected. Implementing this allows you to use
+ * {@link SetPasscodeScreen} and {@link CheckPasscodeScreen} to easily set your block's passcode. Extends
+ * {@link ICodebreakable} as most passcode-protected blocks are likely able to be hacked using the Codebreaker by default.
  *
  * @author Geforce
  */
-public interface IPasswordProtected extends ICodebreakable {
+public interface IPasscodeProtected extends ICodebreakable {
 	/**
-	 * Open the check password GUI if a password is set. <p>
+	 * Open the check passcode GUI if a passcode is set. <p>
 	 *
 	 * @param level The level of this block entity
 	 * @param pos The position of this block entity
 	 * @param player The player who the GUI should be opened to.
 	 */
-	public default void openPasswordGUI(Level level, BlockPos pos, Player player) {
+	public default void openPasscodeGUI(Level level, BlockPos pos, Player player) {
 		if (!level.isClientSide) {
-			if (getPassword() != null)
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.CHECK_PASSWORD, pos));
+			if (getPasscode() != null)
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.CHECK_PASSCODE, pos));
 		}
 	}
 
 	/**
-	 * Check that a password has been set, and if not, opens the set password screen or sends a warning message. <p>
+	 * Check that a passcode has been set, and if not, opens the set passcode screen or sends a warning message. <p>
 	 *
 	 * @param level The level of this block entity
 	 * @param pos The position of this block entity
 	 * @param ownable This block entity
 	 * @param player The player who interacted with this block entity
-	 * @return true if a password has been set, false otherwise
+	 * @return true if a passcode has been set, false otherwise
 	 */
-	default boolean verifyPasswordSet(Level level, BlockPos pos, IOwnable ownable, Player player) {
+	default boolean verifyPasscodeSet(Level level, BlockPos pos, IOwnable ownable, Player player) {
 		if (!level.isClientSide) {
-			if (getPassword() != null)
+			if (getPasscode() != null)
 				return true;
 
 			if (ownable.isOwnedBy(player))
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SET_PASSWORD, pos));
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SET_PASSCODE, pos));
 			else
-				PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.notSetUp"), ChatFormatting.DARK_RED);
 		}
 
 		return false;
@@ -66,8 +66,8 @@ public interface IPasswordProtected extends ICodebreakable {
 
 	@Override
 	default boolean shouldAttemptCodebreak(BlockState state, Player player) {
-		if (getPassword() == null) {
-			PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
+		if (getPasscode() == null) {
+			PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.notSetUp"), ChatFormatting.DARK_RED);
 			return false;
 		}
 
@@ -80,25 +80,25 @@ public interface IPasswordProtected extends ICodebreakable {
 	}
 
 	/**
-	 * Called whenever a player correctly enters this block's password in the password GUI.<p>
+	 * Called whenever a player correctly enters this block's passcode in the passcode GUI.<p>
 	 *
-	 * @param player The player who entered the password.
+	 * @param player The player who entered the passcode.
 	 */
 	public void activate(Player player);
 
 	/**
-	 * Return your block entity's password variable here. If the password is empty or not set yet, return null.
+	 * Return your block entity's passcode variable here. If the passcode is empty or not set yet, return null.
 	 *
-	 * @return The password.
+	 * @return The passcode.
 	 */
-	public String getPassword();
+	public String getPasscode();
 
 	/**
-	 * Save newly created passwords to your block entity here.
+	 * Save newly created passcodes to your block entity here.
 	 *
-	 * @param password The new password to be saved.
+	 * @param passcode The new passcode to be saved.
 	 */
-	public void setPassword(String password);
+	public void setPasscode(String passcode);
 
 	/**
 	 * Sets this block to be on cooldown and starts the cooldown

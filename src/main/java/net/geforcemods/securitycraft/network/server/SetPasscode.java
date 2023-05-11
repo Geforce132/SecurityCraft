@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.minecraft.core.BlockPos;
@@ -14,48 +14,48 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraftforge.network.NetworkEvent;
 
-public class SetPassword {
-	private String password;
+public class SetPasscode {
+	private String passcode;
 	private int x, y, z;
 
-	public SetPassword() {}
+	public SetPasscode() {}
 
-	public SetPassword(int x, int y, int z, String code) {
+	public SetPasscode(int x, int y, int z, String code) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		password = code;
+		passcode = code;
 	}
 
-	public static void encode(SetPassword message, FriendlyByteBuf buf) {
+	public static void encode(SetPasscode message, FriendlyByteBuf buf) {
 		buf.writeInt(message.x);
 		buf.writeInt(message.y);
 		buf.writeInt(message.z);
-		buf.writeUtf(message.password);
+		buf.writeUtf(message.passcode);
 	}
 
-	public static SetPassword decode(FriendlyByteBuf buf) {
-		SetPassword message = new SetPassword();
+	public static SetPasscode decode(FriendlyByteBuf buf) {
+		SetPasscode message = new SetPasscode();
 
 		message.x = buf.readInt();
 		message.y = buf.readInt();
 		message.z = buf.readInt();
-		message.password = buf.readUtf(Integer.MAX_VALUE / 4);
+		message.passcode = buf.readUtf(Integer.MAX_VALUE / 4);
 		return message;
 	}
 
-	public static void onMessage(SetPassword message, Supplier<NetworkEvent.Context> ctx) {
+	public static void onMessage(SetPasscode message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
-			String password = message.password;
+			String passcode = message.passcode;
 			Player player = ctx.get().getSender();
 			Level level = player.level;
 
-			if (level.getBlockEntity(pos) instanceof IPasswordProtected be && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
-				be.setPassword(password);
+			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+				be.setPasscode(passcode);
 
 				if (be instanceof KeypadChestBlockEntity chestBe)
-					checkAndUpdateAdjacentChest(chestBe, level, pos, password, player);
+					checkAndUpdateAdjacentChest(chestBe, level, pos, passcode, player);
 			}
 		});
 
@@ -68,7 +68,7 @@ public class SetPassword {
 			BlockEntity otherBe = level.getBlockEntity(offsetPos);
 
 			if (otherBe instanceof KeypadChestBlockEntity chestBe && te.getOwner().owns(chestBe)) {
-				chestBe.setPassword(codeToSet);
+				chestBe.setPasscode(codeToSet);
 				level.sendBlockUpdated(offsetPos, otherBe.getBlockState(), otherBe.getBlockState(), 2);
 			}
 		}

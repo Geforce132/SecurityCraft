@@ -46,7 +46,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 			if (!stack.getOrCreateTag().contains("passcode"))
 				ClientHandler.displayBriefcaseSetupScreen(stack.getHoverName());
 			else
-				ClientHandler.displayBriefcasePasswordScreen(stack.getHoverName());
+				ClientHandler.displayBriefcasePasscodeScreen(stack.getHoverName());
 		}
 	}
 

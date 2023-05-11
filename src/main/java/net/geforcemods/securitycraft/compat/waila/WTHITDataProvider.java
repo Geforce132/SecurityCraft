@@ -23,7 +23,7 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
@@ -50,7 +50,7 @@ public class WTHITDataProvider extends WailaCompatConstants implements IWailaPlu
 		registrar.addEventListener(INSTANCE);
 		registrar.addSyncedConfig(SHOW_OWNER, true, true);
 		registrar.addSyncedConfig(SHOW_MODULES, true, true);
-		registrar.addSyncedConfig(SHOW_PASSWORDS, true, true);
+		registrar.addSyncedConfig(SHOW_PASSCODES, true, true);
 		registrar.addSyncedConfig(SHOW_CUSTOM_NAME, true, true);
 		registrar.addComponent((IBlockComponentProvider) INSTANCE, TooltipPosition.HEAD, IOverlayDisplay.class);
 		registrar.addComponent((IBlockComponentProvider) INSTANCE, TooltipPosition.BODY, IOwnable.class);
@@ -113,10 +113,10 @@ public class WTHITDataProvider extends WailaCompatConstants implements IWailaPlu
 			}
 		}
 
-		if (config.getBoolean(SHOW_PASSWORDS) && be instanceof IPasswordProtected && !(be instanceof KeycardReaderBlockEntity) && ((IOwnable) be).isOwnedBy(data.getPlayer())) {
-			String password = ((IPasswordProtected) be).getPassword();
+		if (config.getBoolean(SHOW_PASSCODES) && be instanceof IPasscodeProtected && !(be instanceof KeycardReaderBlockEntity) && ((IOwnable) be).isOwnedBy(data.getPlayer())) {
+			String passcode = ((IPasscodeProtected) be).getPasscode();
 
-			tooltip.addLine(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))));
+			tooltip.addLine(Utils.localize("waila.securitycraft:passcode", (passcode != null && !passcode.isEmpty() ? passcode : Utils.localize("waila.securitycraft:passcode.notSet"))));
 		}
 
 		if (config.getBoolean(SHOW_CUSTOM_NAME) && be instanceof Nameable nameable && nameable.hasCustomName()) {
