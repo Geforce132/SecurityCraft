@@ -941,8 +941,6 @@
 	"module.securitycraft.username_logger.whitelist_module.description": "사용자 이름 기록기에 허용목록 모듈을 추가하면 목록에 있는 플레이어가 기록되지 않습니다.",
 	"option.generic.secret_sign.isSecret": "비밀: %s",
 	"option.generic.secret_sign.isSecret.description": "비밀 표지판의 텍스트는 화이트리스트의 소유자와 플레이어만 볼 수 있어야 합니까?",
-	"option.securitycraft.alarm.delay": "지연: %s",
-	"option.securitycraft.alarm.delay.description": "경보가 활성화된 경우 경보음이 영향을 받는 간격(초)은 얼마입니까?",
 	"option.securitycraft.alarm.range": "범위: %s",
 	"option.securitycraft.alarm.range.description": "경보음이 몇 블록 떨어진 곳에서도 들립니까?",
 	"option.securitycraft.block_change_detector.signalLength": "신호 길이: %s",

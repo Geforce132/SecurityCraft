@@ -1088,8 +1088,6 @@
 	"option.generic.secret_sign.isSecret.description": "¿El texto del cartel secreto solo debería ser visible para el propietario y los jugadores en dicha lista de permitidos?",
 	"option.generic.smartModuleCooldown": "Enfriamiento: %s",
 	"option.generic.smartModuleCooldown.description": "¿Cuánto debería esperar un jugador para teclear una contraseña tras haber introducido otra incorrecta? (En ticks, 20 ticks = 1 segundo)",
-	"option.securitycraft.alarm.delay": "Retraso: %s",
-	"option.securitycraft.alarm.delay.description": "Si una alarma está activada, ¿cuántos segundos deberían pasar entre los efectos de sonido de la alarma?",
 	"option.securitycraft.alarm.range": "Alcance: %s",
 	"option.securitycraft.alarm.range.description": "¿A cuántos bloques de distancia se debería poder escuchar la alarma?",
 	"option.securitycraft.alarm.resetCooldown": "Reiniciar enfriamiento: %s",
