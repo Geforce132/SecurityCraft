@@ -517,7 +517,7 @@ public class SCManualScreen extends Screen {
 						display.add(Component.literal("---"));
 
 						for (Option<?> option : options) {
-							display.add(Component.literal("- ").append(Utils.localize(option.getDescriptionKey(block))));
+							display.add(Component.translatable("gui.securitycraft:scManual.option_text", Component.translatable(option.getDescriptionKey(block)), option.getDefaultInfo()));
 							display.add(Component.empty());
 						}
 

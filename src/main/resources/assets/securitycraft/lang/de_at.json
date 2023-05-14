@@ -1218,6 +1218,8 @@
 	"option.securitycraft.sonic_security_system.signalLength.description": "Wie lange soll das Schallsicherheitssystem Blöcke entsperren/ein Redstonesignal ausgeben, nachdem die korrekte Melodie gespielt wurde? (In Ticks, 20 Ticks = 1 Sekunde)",
 	"option.securitycraft.username_logger.searchRadius": "Suchradius: %s",
 	"option.securitycraft.username_logger.searchRadius.description": "Der Radius in Blöcken, in dem der Protokollierer nach Spielern sucht.",
+	"securitycraft.option.default": "(Standardmäßig %s)",
+	"securitycraft.option.default_with_range": "(Standardmäßig %s, mit einem Intervall von %s bis %s)",
 	"securitycraft.subtitle.alarm": "Alarm geht los",
 	"securitycraft.subtitle.camerasnap": "Kamerablende",
 	"securitycraft.subtitle.camerazoomin": "Kamerazoom",

@@ -31,6 +31,7 @@
 - New: Laser and inventory scanner fields can now be waterlogged, which means the Laser and Inventory Scanner now properly work underwater without air pockets
 - New: Randomize signature button for the Keycard Reader
 - New: The pitch of the sound an alarm plays can now be changed
+- New: The SecurityCraft Manual now shows default values and the range (if applicable) of a block's options
 - Change: Several technical blocks' sounds have been adjusted to better match how they look
 - Change: Improved visuals when holding a taser
 - Change: Some alarm options have been moved to a separate screen
