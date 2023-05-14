@@ -48,6 +48,7 @@
 - Fix: Blocks cannot be placed on the side of any of SecurityCraft's doors
 - Fix: Some reinforced blocks and mines can be destroyed by pistons or flowing fluids
 - Fix: Reinforced Lever duplication exploit
+- Fix: Several items like the Admin Tool or Universal Block Remover (and more) cannot be placed into a Display Case
 - Misc.: The minimum required Forge version is 45.0.39
 - Misc.: More texture updates
 
