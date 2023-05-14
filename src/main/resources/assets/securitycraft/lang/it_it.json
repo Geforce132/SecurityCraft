@@ -1063,8 +1063,6 @@
 	"option.generic.secret_sign.isSecret.description": "Il testo di questo cartello segreto dovrebbe essere visibile solo al proprietario ed ai giocatori nella lista consentiti?",
 	"option.generic.smartModuleCooldown": "Ricarica: %s",
 	"option.generic.smartModuleCooldown.description": "Per quanto i giocatori non possono inserire un codice dopo averne inserito uno errato? (In tick, 20 tick = 1 secondo; richiede modulo intelligente)",
-	"option.securitycraft.alarm.delay": "Ritardo: %s",
-	"option.securitycraft.alarm.delay.description": "Se un allarme viene attivato, quanti secondi ci sono tra due suoni d'allarme?",
 	"option.securitycraft.alarm.range": "Raggio: %s",
 	"option.securitycraft.alarm.range.description": "Da quanti blocchi di distanza si può udire il suono dell'allarme?",
 	"option.securitycraft.block_change_detector.range": "Raggio rilevamento: %s",
