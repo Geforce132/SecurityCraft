@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
+import java.util.Arrays;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -130,7 +132,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @return Whether the given passcode matches the stored one after hashing with the salt
 	 */
 	default boolean checkPasscode(String passcode) {
-		return getPasscode().equals(Utils.hashPasscode(passcode, getSalt()));
+		return Arrays.equals(getPasscode(), Utils.hashPasscode(passcode, getSalt()));
 	}
 
 	/**
@@ -142,7 +144,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 		String passcode = tag.getString(tag.contains("Passcode", Tag.TAG_STRING) ? "Passcode" : "passcode"); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
 
 		//SecurityCraft's passcode-protected blocks do not support passwords longer than 20 characters, so if such a short passcode is encountered instead of a hash, store the properly hashed version inside the block
-		if (!passcode.isEmpty() && passcode.length() < 128)
+		if (!passcode.isEmpty() && passcode.length() <= 20)
 			hashAndSetPasscode(Utils.hashPasscodeWithoutSalt(passcode));
 		else
 			setPasscode(passcode);

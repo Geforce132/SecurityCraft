@@ -25,7 +25,7 @@ public class SetPasscode {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		passcode = Utils.hashPasscode(code, null);
+		passcode = Utils.hashPasscodeWithoutSalt(code);
 	}
 
 	public static void encode(SetPasscode message, FriendlyByteBuf buf) {

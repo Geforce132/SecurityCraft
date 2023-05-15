@@ -1,9 +1,14 @@
 package net.geforcemods.securitycraft.util;
 
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.KeySpec;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -61,20 +66,31 @@ public class Utils {
 		return tag;
 	}
 
-	public static String hashPasscode(String original, byte[] salt) {
+	public static String hashPasscodeWithoutSalt(String original) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-512");
 
-			if (salt != null)
-				md.update(salt);
-
 			return Utils.bytesToString(md.digest(original.getBytes(StandardCharsets.UTF_8)));
 		}
-		catch (NoSuchAlgorithmException e) {
+        catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
 
-		return original;
+		return null;
+	}
+
+	public static String hashPasscode(String passcode, byte[] salt) {
+		try {
+			KeySpec spec = new PBEKeySpec(passcode.toCharArray(), salt, 65536, 128);
+			SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+
+			return Utils.bytesToString(factory.generateSecret(spec).getEncoded());
+		}
+        catch (GeneralSecurityException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	public static String bytesToString(byte[] bytes) {

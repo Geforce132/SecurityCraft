@@ -19,7 +19,7 @@ public class CheckPasscode {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		passcode = Utils.hashPasscode(code, null);
+		passcode = Utils.hashPasscodeWithoutSalt(passcode);
 	}
 
 	public static void encode(CheckPasscode message, FriendlyByteBuf buf) {

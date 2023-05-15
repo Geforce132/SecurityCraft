@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.network.server;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -27,7 +28,7 @@ public class CheckBriefcasePasscode {
 	public CheckBriefcasePasscode() {}
 
 	public CheckBriefcasePasscode(String passcode) {
-		this.passcode = Utils.hashPasscode(passcode, null);
+		this.passcode = Utils.hashPasscodeWithoutSalt(passcode);
 	}
 
 	public static void encode(CheckBriefcasePasscode message, FriendlyByteBuf buf) {
@@ -53,12 +54,12 @@ public class CheckBriefcasePasscode {
 				String briefcaseCode = tag.getString("passcode");
 				byte[] salt = Utils.stringToBytes(tag.getString("salt"));
 
-				if (briefcaseCode.length() < 128) { //If an old plaintext passcode is encountered, generate and store the hashed variant
-					BriefcaseItem.hashAndSetPasscode(tag, Utils.hashPasscode(briefcaseCode, null));
+				if (briefcaseCode.length() == 4) { //If an old plaintext passcode is encountered, generate and store the hashed variant
+					BriefcaseItem.hashAndSetPasscode(tag, Utils.hashPasscodeWithoutSalt(briefcaseCode));
 					briefcaseCode = tag.getString("passcode");
 				}
 
-				if (briefcaseCode.equals(Utils.hashPasscode(passcode, salt))) {
+				if (Arrays.equals(Utils.stringToBytes(briefcaseCode), Utils.hashPasscode(passcode, salt))) {
 					if (!tag.contains("owner")) { //If the briefcase doesn't have an owner (that usually gets set when assigning a new passcode), set the player that first enters the correct password as the owner
 						tag.putString("owner", player.getName().getString());
 						tag.putString("ownerUUID", player.getUUID().toString());

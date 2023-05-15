@@ -18,7 +18,7 @@ public class SetBriefcasePasscodeAndOwner {
 	public SetBriefcasePasscodeAndOwner() {}
 
 	public SetBriefcasePasscodeAndOwner(String passcode) {
-		this.passcode = passcode.isEmpty() ? passcode : Utils.hashPasscode(passcode, null);
+		this.passcode = passcode.isEmpty() ? passcode : Utils.hashPasscodeWithoutSalt(passcode);
 	}
 
 	public static void encode(SetBriefcasePasscodeAndOwner message, FriendlyByteBuf buf) {
