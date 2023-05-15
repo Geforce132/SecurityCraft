@@ -69,7 +69,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 		byte[] salt = Utils.generateSalt();
 
 		briefcaseTag.putString("salt", Utils.bytesToString(salt));
-		briefcaseTag.putString("passcode", Utils.hashPasscode(passcode, salt));
+		briefcaseTag.putString("passcode", Utils.bytesToString(Utils.hashPasscode(passcode, salt)));
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, Player player) {

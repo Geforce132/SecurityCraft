@@ -49,7 +49,7 @@ import net.minecraftforge.items.IItemHandler;
 public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity implements IPasscodeProtected, MenuProvider, IOwnable, INameSetter, IModuleInventory, ICustomizable, ILockable {
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private Owner owner = new Owner();
-	private String passcode;
+	private byte[] passcode;
 	private byte[] salt;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
@@ -115,8 +115,8 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		if (salt != null)
 			tag.putString("salt", Utils.bytesToString(salt));
 
-		if (passcode != null && !passcode.isEmpty())
-			tag.putString("passcode", passcode);
+		if (passcode != null)
+			tag.putString("passcode", Utils.bytesToString(passcode));
 	}
 
 	@Override
@@ -236,12 +236,12 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	}
 
 	@Override
-	public String getPasscode() {
-		return passcode != null && !passcode.isEmpty() ? passcode : null;
+	public byte[] getPasscode() {
+		return passcode;
 	}
 
 	@Override
-	public void setPasscode(String passcode) {
+	public void setPasscode(byte[] passcode) {
 		this.passcode = passcode;
 		setChanged();
 	}

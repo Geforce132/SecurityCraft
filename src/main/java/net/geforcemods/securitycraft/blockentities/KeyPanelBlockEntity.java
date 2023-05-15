@@ -18,7 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPasscodeProtected, ILockable {
-	private String passcode;
+	private byte[] passcode;
 	private byte[] salt;
 	private BooleanOption isAlwaysActive = new BooleanOption("isAlwaysActive", false) {
 		@Override
@@ -48,8 +48,8 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 		if (salt != null)
 			tag.putString("salt", Utils.bytesToString(salt));
 
-		if (passcode != null && !passcode.isEmpty())
-			tag.putString("passcode", passcode);
+		if (passcode != null)
+			tag.putString("passcode", Utils.bytesToString(passcode));
 
 		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 	}
@@ -125,12 +125,12 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	}
 
 	@Override
-	public String getPasscode() {
-		return passcode != null && !passcode.isEmpty() ? passcode : null;
+	public byte[] getPasscode() {
+		return passcode;
 	}
 
 	@Override
-	public void setPasscode(String passcode) {
+	public void setPasscode(byte[] passcode) {
 		this.passcode = passcode;
 		setChanged();
 	}

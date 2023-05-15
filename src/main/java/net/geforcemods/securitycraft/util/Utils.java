@@ -79,12 +79,12 @@ public class Utils {
 		return null;
 	}
 
-	public static String hashPasscode(String passcode, byte[] salt) {
+	public static byte[] hashPasscode(String passcode, byte[] salt) {
 		try {
 			KeySpec spec = new PBEKeySpec(passcode.toCharArray(), salt, 65536, 128);
 			SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 
-			return Utils.bytesToString(factory.generateSecret(spec).getEncoded());
+			return factory.generateSecret(spec).getEncoded();
 		}
         catch (GeneralSecurityException e) {
 			e.printStackTrace();

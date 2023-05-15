@@ -84,18 +84,18 @@ public interface IPasscodeProtected extends ICodebreakable {
 	}
 
 	/**
-	 * Called whenever a player correctly enters this block's passcode in the passcode GUI.<p>
+	 * Called whenever a player correctly enters this block's passcode in the passcode GUI.
 	 *
 	 * @param player The player who entered the passcode.
 	 */
 	public void activate(Player player);
 
 	/**
-	 * Return your block entity's passcode variable here. If the passcode is empty or not set yet, return null.
+	 * Returns the block entity's passcode.
 	 *
-	 * @return The passcode.
+	 * @return The passcode, null if the passcode is not set yet
 	 */
-	public String getPasscode();
+	public byte[] getPasscode();
 
 	/**
 	 * Hashes and stores the given passcode using a new, randomly generated salt, which also gets stored in the process.
@@ -123,7 +123,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 *
 	 * @param passcode The new passcode to be saved
 	 */
-	public void setPasscode(String passcode);
+	public void setPasscode(byte[] passcode);
 
 	/**
 	 * Check whether the given passcode matches the stored one after it has been hashed with the salt.
@@ -147,13 +147,13 @@ public interface IPasscodeProtected extends ICodebreakable {
 		if (!passcode.isEmpty() && passcode.length() <= 20)
 			hashAndSetPasscode(Utils.hashPasscodeWithoutSalt(passcode));
 		else
-			setPasscode(passcode);
+			setPasscode(Utils.stringToBytes(passcode));
 	}
 
 	/**
 	 * Returns the block entity's salt.
 	 *
-	 * @return The stored salt, null if the passcode is empty not set yet
+	 * @return The stored salt, null if the passcode is empty or not set yet
 	 */
 	public byte[] getSalt();
 

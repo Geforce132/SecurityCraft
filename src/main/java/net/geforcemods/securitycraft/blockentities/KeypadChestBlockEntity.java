@@ -43,7 +43,7 @@ import net.minecraftforge.items.IItemHandler;
 
 public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscodeProtected, IOwnable, IModuleInventory, ICustomizable, ILockable, ISentryBulletContainer {
 	private LazyOptional<IItemHandler> insertOnlyHandler;
-	private String passcode;
+	private byte[] passcode;
 	private byte[] salt;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
@@ -68,8 +68,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		if (salt != null)
 			tag.putString("salt", Utils.bytesToString(salt));
 
-		if (passcode != null && !passcode.isEmpty())
-			tag.putString("passcode", passcode);
+		if (passcode != null)
+			tag.putString("passcode", Utils.bytesToString(passcode));
 
 		if (owner != null)
 			owner.save(tag, false);
@@ -279,12 +279,12 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	}
 
 	@Override
-	public String getPasscode() {
-		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
+	public byte[] getPasscode() {
+		return passcode;
 	}
 
 	@Override
-	public void setPasscode(String passcode) {
+	public void setPasscode(byte[] passcode) {
 		this.passcode = passcode;
 		setChanged();
 	}

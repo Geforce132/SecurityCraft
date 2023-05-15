@@ -75,7 +75,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		}
 	};
 	private LazyOptional<IItemHandler> insertOnlyHandler;
-	private String passcode;
+	private byte[] passcode;
 	private byte[] salt;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
@@ -103,8 +103,8 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		if (salt != null)
 			tag.putString("salt", Utils.bytesToString(salt));
 
-		if (passcode != null && !passcode.isEmpty())
-			tag.putString("passcode", passcode);
+		if (passcode != null)
+			tag.putString("passcode", Utils.bytesToString(passcode));
 
 		if (owner != null)
 			owner.save(tag, false);
@@ -257,12 +257,12 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	}
 
 	@Override
-	public String getPasscode() {
-		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
+	public byte[] getPasscode() {
+		return passcode;
 	}
 
 	@Override
-	public void setPasscode(String passcode) {
+	public void setPasscode(byte[] passcode) {
 		this.passcode = passcode;
 		setChanged();
 	}

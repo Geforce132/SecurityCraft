@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasscodeProtected {
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
 	private long cooldownEnd = 0;
-	private String passcode;
+	private byte[] passcode;
 	private byte[] salt;
 
 	public KeypadDoorBlockEntity(BlockPos pos, BlockState state) {
@@ -37,8 +37,8 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 		if (salt != null)
 			tag.putString("salt", Utils.bytesToString(salt));
 
-		if (passcode != null && !passcode.isEmpty())
-			tag.putString("passcode", passcode);
+		if (passcode != null)
+			tag.putString("passcode", Utils.bytesToString(passcode));
 
 		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 	}
@@ -69,12 +69,12 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	}
 
 	@Override
-	public String getPasscode() {
-		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
+	public byte[] getPasscode() {
+		return passcode;
 	}
 
 	@Override
-	public void setPasscode(String passcode) {
+	public void setPasscode(byte[] passcode) {
 		this.passcode = passcode;
 		runForOtherHalf(otherHalf -> otherHalf.setPasscodeAndSaltExclusively(passcode, salt));
 		setChanged();
@@ -91,7 +91,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	}
 
 	//only set the passcode and salt for this door half
-	public void setPasscodeAndSaltExclusively(String passcode, byte[] salt) {
+	public void setPasscodeAndSaltExclusively(byte[] passcode, byte[] salt) {
 		this.passcode = passcode;
 		this.salt = salt;
 		setChanged();

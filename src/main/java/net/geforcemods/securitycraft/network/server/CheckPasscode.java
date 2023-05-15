@@ -15,11 +15,11 @@ public class CheckPasscode {
 
 	public CheckPasscode() {}
 
-	public CheckPasscode(int x, int y, int z, String code) {
+	public CheckPasscode(int x, int y, int z, String passcode) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		passcode = Utils.hashPasscodeWithoutSalt(passcode);
+		this.passcode = Utils.hashPasscodeWithoutSalt(passcode);
 	}
 
 	public static void encode(CheckPasscode message, FriendlyByteBuf buf) {
