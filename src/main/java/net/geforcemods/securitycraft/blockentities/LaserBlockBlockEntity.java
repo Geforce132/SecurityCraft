@@ -167,7 +167,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			tag.putBoolean("disabled", !tag.getBoolean("enabled")); //legacy support
 
 		for (Option<?> option : customOptions()) {
-			option.readFromNBT(tag);
+			option.load(tag);
 		}
 	}
 

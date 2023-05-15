@@ -28,7 +28,7 @@ public interface ICustomizable {
 	public default void readOptions(CompoundNBT tag) {
 		if (customOptions() != null) {
 			for (Option<?> option : customOptions()) {
-				option.readFromNBT(tag);
+				option.load(tag);
 			}
 		}
 	}
@@ -42,7 +42,7 @@ public interface ICustomizable {
 	public default CompoundNBT writeOptions(CompoundNBT tag) {
 		if (customOptions() != null) {
 			for (Option<?> option : customOptions()) {
-				option.writeToNBT(tag);
+				option.save(tag);
 			}
 		}
 
