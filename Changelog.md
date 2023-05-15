@@ -18,6 +18,7 @@
 - Fix: Some reinforced blocks and mines can be destroyed by pistons or flowing fluids
 - Fix: Reinforced Lever duplication exploit
 - Fix: The new crystal quartz blocks from v1.9.5 don't have an EMC value associated with them
+- Fix: Several items like the Admin Tool or Universal Block Remover (and more) cannot be placed into a Display Case
 - Misc.: More texture updates
 
 --------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------
