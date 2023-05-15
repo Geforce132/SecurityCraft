@@ -3,34 +3,36 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 
-public class SetBriefcaseOwner {
+public class SetBriefcasePasscodeAndOwner {
 	private String passcode;
 
-	public SetBriefcaseOwner() {}
+	public SetBriefcasePasscodeAndOwner() {}
 
-	public SetBriefcaseOwner(String passcode) {
-		this.passcode = passcode;
+	public SetBriefcasePasscodeAndOwner(String passcode) {
+		this.passcode = passcode.isEmpty() ? passcode : Utils.hashPasscode(passcode, null);
 	}
 
-	public static void encode(SetBriefcaseOwner message, FriendlyByteBuf buf) {
+	public static void encode(SetBriefcasePasscodeAndOwner message, FriendlyByteBuf buf) {
 		buf.writeUtf(message.passcode);
 	}
 
-	public static SetBriefcaseOwner decode(FriendlyByteBuf buf) {
-		SetBriefcaseOwner message = new SetBriefcaseOwner();
+	public static SetBriefcasePasscodeAndOwner decode(FriendlyByteBuf buf) {
+		SetBriefcasePasscodeAndOwner message = new SetBriefcasePasscodeAndOwner();
 
 		message.passcode = buf.readUtf();
 		return message;
 	}
 
-	public static void onMessage(SetBriefcaseOwner message, Supplier<NetworkEvent.Context> ctx) {
+	public static void onMessage(SetBriefcasePasscodeAndOwner message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			Player player = ctx.get().getSender();
 			ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get());
@@ -43,8 +45,8 @@ public class SetBriefcaseOwner {
 					tag.putString("ownerUUID", player.getUUID().toString());
 				}
 
-				if (!tag.contains("passcode") && message.passcode.matches("[0-9]{4}"))
-					tag.putString("passcode", message.passcode);
+				if (!message.passcode.isEmpty() && !tag.contains("passcode"))
+					BriefcaseItem.hashAndSetPasscode(tag, message.passcode);
 			}
 		});
 

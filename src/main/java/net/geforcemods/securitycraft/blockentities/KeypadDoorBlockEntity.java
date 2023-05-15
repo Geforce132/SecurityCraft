@@ -24,6 +24,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
 	private long cooldownEnd = 0;
 	private String passcode;
+	private byte[] salt;
 
 	public KeypadDoorBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.KEYPAD_DOOR_BLOCK_ENTITY.get(), pos, state);
@@ -32,6 +33,9 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
+
+		if (salt != null)
+			tag.putString("salt", Utils.bytesToString(salt));
 
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
@@ -43,7 +47,8 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	public void load(CompoundTag tag) {
 		super.load(tag);
 
-		passcode = tag.getString("passcode");
+		salt = Utils.stringToBytes(tag.getString("salt"));
+		loadPasscode(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 	}
 
@@ -71,13 +76,24 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public void setPasscode(String passcode) {
 		this.passcode = passcode;
-		runForOtherHalf(otherHalf -> otherHalf.setPasscodeExclusively(passcode));
+		runForOtherHalf(otherHalf -> otherHalf.setPasscodeAndSalt(passcode, salt));
 		setChanged();
 	}
 
-	//only set the passcode for this door half
-	public void setPasscodeExclusively(String passcode) {
+	@Override
+	public byte[] getSalt() {
+		return salt;
+	}
+
+	@Override
+	public void setSalt(byte[] salt) {
+		this.salt = salt;
+	}
+
+	//only set the passcode and salt for this door half
+	public void setPasscodeAndSalt(String passcode, byte[] salt) {
 		this.passcode = passcode;
+		this.salt = salt;
 		setChanged();
 	}
 
@@ -136,6 +152,9 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 	public void runForOtherHalf(Consumer<KeypadDoorBlockEntity> action) {
 		BlockEntity be = null;
+
+		if (level == null) //Happens when loading the BE, in that case running the same code for the other half is unnecessary
+			return;
 
 		if (getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
 			be = level.getBlockEntity(worldPosition.above());

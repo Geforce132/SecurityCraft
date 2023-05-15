@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +25,7 @@ public class SetPasscode {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		passcode = code;
+		passcode = Utils.hashPasscode(code, null);
 	}
 
 	public static void encode(SetPasscode message, FriendlyByteBuf buf) {
@@ -52,23 +53,23 @@ public class SetPasscode {
 			Level level = player.level;
 
 			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
-				be.setPasscode(passcode);
+				be.hashAndSetPasscode(passcode);
 
 				if (be instanceof KeypadChestBlockEntity chestBe)
-					checkAndUpdateAdjacentChest(chestBe, level, pos, passcode, player);
+					checkAndUpdateAdjacentChest(chestBe, level, pos, passcode, be.getSalt());
 			}
 		});
 
 		ctx.get().setPacketHandled(true);
 	}
 
-	private static void checkAndUpdateAdjacentChest(KeypadChestBlockEntity te, Level level, BlockPos pos, String codeToSet, Player player) {
+	private static void checkAndUpdateAdjacentChest(KeypadChestBlockEntity te, Level level, BlockPos pos, String codeToSet, byte[] salt) {
 		if (te.getBlockState().getValue(KeypadChestBlock.TYPE) != ChestType.SINGLE) {
 			BlockPos offsetPos = pos.relative(KeypadChestBlock.getConnectedDirection(te.getBlockState()));
 			BlockEntity otherBe = level.getBlockEntity(offsetPos);
 
 			if (otherBe instanceof KeypadChestBlockEntity chestBe && te.getOwner().owns(chestBe)) {
-				chestBe.setPasscode(codeToSet);
+				chestBe.hashAndSetPasscode(codeToSet, salt);
 				level.sendBlockUpdated(offsetPos, otherBe.getBlockState(), otherBe.getBlockState(), 2);
 			}
 		}

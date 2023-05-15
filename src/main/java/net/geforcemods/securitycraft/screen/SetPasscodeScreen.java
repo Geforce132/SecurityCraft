@@ -5,7 +5,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.network.server.SetPasscode;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -85,7 +84,6 @@ public class SetPasscodeScreen extends Screen {
 	}
 
 	private void saveAndContinueButtonClicked(Button button) {
-		((IPasscodeProtected) be).setPasscode(keycodeTextbox.getValue());
 		SecurityCraft.channel.sendToServer(new SetPasscode(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ(), keycodeTextbox.getValue()));
 		Minecraft.getInstance().player.closeContainer();
 	}

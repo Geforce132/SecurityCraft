@@ -6,18 +6,15 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.server.OpenBriefcaseInventory;
-import net.geforcemods.securitycraft.network.server.SetBriefcaseOwner;
+import net.geforcemods.securitycraft.network.server.CheckBriefcasePasscode;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 
 public class BriefcasePasscodeScreen extends Screen {
 	public static final String UP_ARROW = "\u2191";
@@ -83,21 +80,8 @@ public class BriefcasePasscodeScreen extends Screen {
 	}
 
 	private void continueButtonClicked(Button button) {
-		if (PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
-			ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get());
-			CompoundTag nbt = briefcase.getTag();
-			String code = digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3];
-
-			if (nbt.getString("passcode").equals(code)) {
-				if (!nbt.contains("owner")) {
-					nbt.putString("owner", Minecraft.getInstance().player.getName().getString());
-					nbt.putString("ownerUUID", Minecraft.getInstance().player.getUUID().toString());
-					SecurityCraft.channel.sendToServer(new SetBriefcaseOwner(""));
-				}
-
-				SecurityCraft.channel.sendToServer(new OpenBriefcaseInventory(getTitle()));
-			}
-		}
+		if (PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null))
+			SecurityCraft.channel.sendToServer(new CheckBriefcasePasscode(digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3]));
 	}
 
 	private void keycodeButtonClicked(int id) {

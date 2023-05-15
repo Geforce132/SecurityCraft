@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,7 +19,7 @@ public class CheckPasscode {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		passcode = code;
+		passcode = Utils.hashPasscode(code, null);
 	}
 
 	public static void encode(CheckPasscode message, FriendlyByteBuf buf) {
@@ -45,11 +46,12 @@ public class CheckPasscode {
 			ServerPlayer player = ctx.get().getSender();
 
 			if (player.level.getBlockEntity(pos) instanceof IPasscodeProtected passcodeProtected) {
-				boolean isPasscodeCorrect = passcodeProtected.getPasscode().equals(passcode);
-
 				if (passcodeProtected.isOnCooldown())
 					return;
-				else if (isPasscodeCorrect) {
+
+				boolean isPasscodeCorrect = passcodeProtected.checkPasscode(passcode);
+
+				if (isPasscodeCorrect) {
 					player.closeContainer();
 					passcodeProtected.activate(player);
 				}

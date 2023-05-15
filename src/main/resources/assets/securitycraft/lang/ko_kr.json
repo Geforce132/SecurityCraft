@@ -489,12 +489,10 @@
 	"config.jade.plugin_securitycraft.showcustomname": "명명된 블록을 표시합니까?",
 	"config.jade.plugin_securitycraft.showmodules": "모듈을 표시합니까?",
 	"config.jade.plugin_securitycraft.showowner": "소유자를 표시합니까?",
-	"config.jade.plugin_securitycraft.showpasscodes": "비밀번호를 표시합니까?",
 	"config.waila.plugin_securitycraft": "시큐리티크래프트",
 	"config.waila.plugin_securitycraft.showcustomname": "명명된 블록을 표시합니까?",
 	"config.waila.plugin_securitycraft.showmodules": "모듈을 표시합니까?",
 	"config.waila.plugin_securitycraft.showowner": "소유자를 표시합니까?",
-	"config.waila.plugin_securitycraft.showpasscodes": "비밀번호를 표시합니까?",
 	"death.attack.securitycraft.electricity": "%s이(가) 감전되었습니다.",
 	"death.attack.securitycraft.electricity.player": "%1$s이(가) %2$s과(와) 싸우는 동안 감전되었습니다.",
 	"death.attack.securitycraft.fakeWater": "%s이(가) 독수에 빠졌습니다...?",
@@ -1048,7 +1046,5 @@
 	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "%s 블록에 연결되었습니다.",
 	"waila.securitycraft:customName": "사용자 지정 이름: %s",
 	"waila.securitycraft:equipped": "장착:",
-	"waila.securitycraft:owner": "소유자: %s",
-	"waila.securitycraft:passcode": "비밀번호: %s",
-	"waila.securitycraft:passcode.notSet": "설정되지 않음"
+	"waila.securitycraft:owner": "소유자: %s"
 }

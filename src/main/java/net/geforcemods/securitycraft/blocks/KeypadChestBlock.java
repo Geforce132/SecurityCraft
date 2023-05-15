@@ -142,6 +142,7 @@ public class KeypadChestBlock extends ChestBlock {
 					}
 
 					thisBe.readOptions(be.writeOptions(new CompoundTag()));
+					thisBe.setSalt(be.getSalt());
 					thisBe.setPasscode(be.getPasscode());
 				}
 			}

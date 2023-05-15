@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -74,8 +75,11 @@ public class UniversalKeyChangerItem extends Item {
 			ItemStack briefcase = player.getOffhandItem();
 
 			if (BriefcaseItem.isOwnedBy(briefcase, player)) {
-				if (briefcase.hasTag() && briefcase.getTag().contains("passcode")) {
-					briefcase.getTag().remove("passcode");
+				CompoundTag tag = briefcase.getTag();
+
+				if (tag != null && tag.contains("passcode")) {
+					tag.remove("salt");
+					tag.remove("passcode");
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), ChatFormatting.GREEN);
 					return InteractionResultHolder.success(keyChanger);
 				}

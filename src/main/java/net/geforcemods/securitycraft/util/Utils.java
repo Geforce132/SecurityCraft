@@ -1,7 +1,13 @@
 package net.geforcemods.securitycraft.util;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -47,6 +53,65 @@ public class Utils {
 		}
 
 		return Component.translatable(key, params);
+	}
+
+	public static CompoundTag filterPasscodesFromTag(CompoundTag tag) {
+		tag.remove("passcode");
+		tag.remove("salt");
+		return tag;
+	}
+
+	public static String hashPasscode(String original, byte[] salt) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-512");
+
+			if (salt != null)
+				md.update(salt);
+
+			return Utils.bytesToString(md.digest(original.getBytes(StandardCharsets.UTF_8)));
+		}
+		catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+
+		return original;
+	}
+
+	public static String bytesToString(byte[] bytes) {
+		if (bytes == null)
+			return "";
+
+		StringBuilder sb = new StringBuilder();
+
+		for (byte currentByte : bytes) {
+			sb.append(Integer.toString((currentByte & 0xFF) + 0x100, 16).substring(1));
+		}
+
+		return sb.toString();
+	}
+
+	public static byte[] stringToBytes(String string) {
+		if (string == null || string.isEmpty())
+			return null;
+
+		byte[] bytes = new byte[string.length() / 2];
+
+		for (int i = 0; i < string.length() / 2; i++) {
+			int index = i * 2;
+
+			int parsedInt = Integer.parseInt(string.substring(index, index + 2), 16);
+			bytes[i] = (byte)(parsedInt);
+		}
+
+		return bytes;
+	}
+
+	public static byte[] generateSalt() {
+		SecureRandom random = new SecureRandom();
+		byte[] salt = new byte[16];
+
+		random.nextBytes(salt);
+		return salt;
 	}
 
 	public static ResourceLocation getRegistryName(Block block) {

@@ -540,12 +540,10 @@
 	"config.jade.plugin_securitycraft.showcustomname": "Mostra blocchi rinominati?",
 	"config.jade.plugin_securitycraft.showmodules": "Mostra moduli?",
 	"config.jade.plugin_securitycraft.showowner": "Possessore dello schermo?",
-	"config.jade.plugin_securitycraft.showpasscodes": "Mostra password?",
 	"config.waila.plugin_securitycraft": "SecurityCraft",
 	"config.waila.plugin_securitycraft.showcustomname": "Mostra blocchi rinominati?",
 	"config.waila.plugin_securitycraft.showmodules": "Mostra moduli?",
 	"config.waila.plugin_securitycraft.showowner": "Possessore dello schermo?",
-	"config.waila.plugin_securitycraft.showpasscodes": "Mostra password?",
 	"death.attack.securitycraft.electricity": "%s è stato folgorato",
 	"death.attack.securitycraft.electricity.player": "%1$s è stato elettrizzato combattendo contro %2$s",
 	"death.attack.securitycraft.fakeWater": "%s è caduto nell'acqua avvelenata...?",
@@ -1183,7 +1181,5 @@
 	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "Collegato a %s blocco/i.",
 	"waila.securitycraft:customName": "Nome personalizzato: %s",
 	"waila.securitycraft:equipped": "Equipaggiato con:",
-	"waila.securitycraft:owner": "Possessore: %s",
-	"waila.securitycraft:passcode": "Password: %s",
-	"waila.securitycraft:passcode.notSet": "Non impostata"
+	"waila.securitycraft:owner": "Possessore: %s"
 }

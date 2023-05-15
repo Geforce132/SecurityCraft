@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasscodeProtected, ILockable {
 	private String passcode;
+	private byte[] salt;
 	private BooleanOption isAlwaysActive = new BooleanOption("isAlwaysActive", false) {
 		@Override
 		public void toggle() {
@@ -43,6 +44,9 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 
+		if (salt != null)
+			tag.putString("salt", Utils.bytesToString(salt));
+
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
@@ -53,7 +57,8 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 	public void load(CompoundTag tag) {
 		super.load(tag);
 
-		passcode = tag.getString("passcode");
+		salt = Utils.stringToBytes(tag.getString("salt"));
+		loadPasscode(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 	}
 
@@ -94,6 +99,16 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 	public void setPasscode(String passcode) {
 		this.passcode = passcode;
 		setChanged();
+	}
+
+	@Override
+	public byte[] getSalt() {
+		return salt;
+	}
+
+	@Override
+	public void setSalt(byte[] salt) {
+		this.salt = salt;
 	}
 
 	@Override

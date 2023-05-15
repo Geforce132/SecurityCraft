@@ -44,6 +44,7 @@ import net.minecraftforge.items.IItemHandler;
 public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscodeProtected, IOwnable, IModuleInventory, ICustomizable, ILockable, ISentryBulletContainer {
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private String passcode;
+	private byte[] salt;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
@@ -64,6 +65,9 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		writeOptions(tag);
 		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 
+		if (salt != null)
+			tag.putString("salt", Utils.bytesToString(salt));
+
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
@@ -79,13 +83,14 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
-		passcode = tag.getString("passcode");
+		salt = Utils.stringToBytes(tag.getString("salt"));
+		loadPasscode(tag);
 		owner.load(tag);
 	}
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return saveWithoutMetadata();
+		return Utils.filterPasscodesFromTag(saveWithoutMetadata());
 	}
 
 	@Override
@@ -282,6 +287,16 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	public void setPasscode(String passcode) {
 		this.passcode = passcode;
 		setChanged();
+	}
+
+	@Override
+	public byte[] getSalt() {
+		return salt;
+	}
+
+	@Override
+	public void setSalt(byte[] salt) {
+		this.salt = salt;
 	}
 
 	@Override

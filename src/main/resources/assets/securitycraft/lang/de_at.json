@@ -575,12 +575,10 @@
 	"config.jade.plugin_securitycraft.showcustomname": "Benannte Blöcke anzeigen?",
 	"config.jade.plugin_securitycraft.showmodules": "Module anzeigen?",
 	"config.jade.plugin_securitycraft.showowner": "Besitzer anzeigen?",
-	"config.jade.plugin_securitycraft.showpasscodes": "Passwörter anzeigen?",
 	"config.waila.plugin_securitycraft": "SecurityCraft",
 	"config.waila.plugin_securitycraft.showcustomname": "Benannte Blöcke anzeigen?",
 	"config.waila.plugin_securitycraft.showmodules": "Module anzeigen?",
 	"config.waila.plugin_securitycraft.showowner": "Besitzer anzeigen?",
-	"config.waila.plugin_securitycraft.showpasscodes": "Passwörter anzeigen?",
 	"death.attack.securitycraft.electricity": "%s erlitt einen Stromschlag",
 	"death.attack.securitycraft.electricity.player": "%1$s erlitt während des Kampfes mit %2$s einen Stromschlag",
 	"death.attack.securitycraft.fakeWater": "%s fiel in giftiges Wasser...?",
@@ -1249,7 +1247,5 @@
 	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "Anzahl an verbundenen Blöcken: %s",
 	"waila.securitycraft:customName": "Benutzerdefinierter Name: %s",
 	"waila.securitycraft:equipped": "Installierte Module:",
-	"waila.securitycraft:owner": "Besitzer: %s",
-	"waila.securitycraft:passcode": "Passwort: %s",
-	"waila.securitycraft:passcode.notSet": "Nicht gesetzt"
+	"waila.securitycraft:owner": "Besitzer: %s"
 }

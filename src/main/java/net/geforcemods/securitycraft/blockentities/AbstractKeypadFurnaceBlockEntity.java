@@ -50,6 +50,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private Owner owner = new Owner();
 	private String passcode;
+	private byte[] salt;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
@@ -111,6 +112,9 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		if (owner != null)
 			owner.save(tag, false);
 
+		if (salt != null)
+			tag.putString("salt", Utils.bytesToString(salt));
+
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 	}
@@ -124,12 +128,13 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 		owner.load(tag);
-		passcode = tag.getString("passcode");
+		salt = Utils.stringToBytes(tag.getString("salt"));
+		loadPasscode(tag);
 	}
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return saveWithoutMetadata();
+		return Utils.filterPasscodesFromTag(saveWithoutMetadata());
 	}
 
 	@Override
@@ -239,6 +244,16 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	public void setPasscode(String passcode) {
 		this.passcode = passcode;
 		setChanged();
+	}
+
+	@Override
+	public byte[] getSalt() {
+		return salt;
+	}
+
+	@Override
+	public void setSalt(byte[] salt) {
+		this.salt = salt;
 	}
 
 	public ContainerData getFurnaceData() {

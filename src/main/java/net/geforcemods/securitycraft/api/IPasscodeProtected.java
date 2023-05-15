@@ -6,12 +6,15 @@ import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
+import net.geforcemods.securitycraft.network.server.SetPasscode;
 import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
 import net.geforcemods.securitycraft.screen.SetPasscodeScreen;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -94,11 +97,77 @@ public interface IPasscodeProtected extends ICodebreakable {
 	public String getPasscode();
 
 	/**
-	 * Save newly created passcodes to your block entity here.
+	 * Hashes and stores the given passcode using a new, randomly generated salt, which also gets stored in the process.
 	 *
-	 * @param passcode The new passcode to be saved.
+	 * @param passcode The passcode
+	 */
+	default void hashAndSetPasscode(String passcode) {
+		hashAndSetPasscode(passcode, Utils.generateSalt());
+	}
+
+	/**
+	 * Hashes and stores the given passcode using the given salt, which also gets stored in the process.
+	 *
+	 * @param passcode The passcode
+	 * @param salt The salt used for hashing
+	 */
+	default void hashAndSetPasscode(String passcode, byte[] salt) {
+		setSalt(salt);
+		setPasscode(Utils.hashPasscode(passcode, salt));
+	}
+
+	/**
+	 * Save newly created passcodes to your block entity here. Note that this bypasses hashing the passcode first, so
+	 * preferably make use one of the above methods to store the passcode in a secure manner.
+	 *
+	 * @param passcode The new passcode to be saved
 	 */
 	public void setPasscode(String passcode);
+
+	/**
+	 * Check whether the given passcode matches the stored one. More concretely, the given passcode is first hashed using
+	 * the stored salt and then compared to the already hashed, stored passcode.
+	 *
+	 * @param passcode The passcode that needs to be checked
+	 * @return Whether the given (and in this implementation, hashed) passcode matches the stored one
+	 */
+	default boolean checkPasscode(String passcode) {
+		return getPasscode().equals(Utils.hashPasscode(passcode, getSalt()));
+	}
+
+	/**
+	 * Sets the passcode from the information stored in the given CompoundTag.
+	 * The passcode string is read from the tag by accessing the "passcode" string tag. The "Passcode" tag key is also
+	 * checked in order to support old versions where both spellings were used to store passcode information.
+	 * If the accessed passcode is not 128 characters long (and therefore not a hash), we simulate the client newly setting
+	 * up this passcode-protected block by first hashing the original passcode without a salt (which is normally done on
+	 * the client side, see {@link SetPasscode}) and then hashing and storing it using a newly generated salt.
+	 * Otherwise, the passcode gets set from the given tag without modification.
+	 *
+	 * @param tag The tag that the passcode information is stored in
+	 */
+	default void loadPasscode(CompoundTag tag) {
+		String passcode = tag.getString(tag.contains("Passcode", Tag.TAG_STRING) ? "Passcode" : "passcode");
+
+		if (!passcode.isEmpty() && passcode.length() < 128)
+			hashAndSetPasscode(Utils.hashPasscode(passcode, null));
+		else
+			setPasscode(passcode);
+	}
+
+	/**
+	 * Return your block entity's salt variable here. If the passcode is empty or not set yet, return null.
+	 *
+	 * @return The stored salt
+	 */
+	public byte[] getSalt();
+
+	/**
+	 * Sets the block's salt, which is used for hashing incoming passcodes.
+	 *
+	 * @param salt The new salt
+	 */
+	public void setSalt(byte[] salt);
 
 	/**
 	 * Sets this block to be on cooldown and starts the cooldown

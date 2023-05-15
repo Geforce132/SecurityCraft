@@ -540,11 +540,9 @@
 	"config.jade.plugin_securitycraft.showcustomname": "名前付きブロックを表示する？",
 	"config.jade.plugin_securitycraft.showmodules": "モジュールを表示する？",
 	"config.jade.plugin_securitycraft.showowner": "所有者を表示する？",
-	"config.jade.plugin_securitycraft.showpasscodes": "パスワードを表示する？",
 	"config.waila.plugin_securitycraft.showcustomname": "名前付きブロックを表示する？",
 	"config.waila.plugin_securitycraft.showmodules": "モジュールを表示する？",
 	"config.waila.plugin_securitycraft.showowner": "所有者を表示する？",
-	"config.waila.plugin_securitycraft.showpasscodes": "パスワードを表示する？",
 	"death.attack.securitycraft.electricity": "%sは感電死した",
 	"death.attack.securitycraft.electricity.player": "%1$sは%2$sとの戦闘中に感電死した",
 	"death.attack.securitycraft.fakeWater": "%sは毒水に落ちた…？",
@@ -1213,7 +1211,5 @@
 	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "%sブロックへリンクしました。",
 	"waila.securitycraft:customName": "カスタム名：%s",
 	"waila.securitycraft:equipped": "装備：",
-	"waila.securitycraft:owner": "所有者：%s",
-	"waila.securitycraft:passcode": "パスワード：%s",
-	"waila.securitycraft:passcode.notSet": "未設定"
+	"waila.securitycraft:owner": "所有者：%s"
 }

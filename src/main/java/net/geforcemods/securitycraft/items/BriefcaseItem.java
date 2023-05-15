@@ -2,11 +2,14 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 
-import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -17,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.network.PacketDistributor;
 
 public class BriefcaseItem extends Item implements DyeableLeatherItem {
 	public BriefcaseItem(Item.Properties properties) {
@@ -29,7 +33,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 	}
 
 	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, InteractionHand hand) {
-		handle(stack, level, player, hand);
+		handle(stack, level, player);
 		return InteractionResult.CONSUME;
 	}
 
@@ -37,17 +41,13 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		handle(stack, level, player, hand);
+		handle(stack, level, player);
 		return InteractionResultHolder.consume(stack);
 	}
 
-	private void handle(ItemStack stack, Level level, Player player, InteractionHand hand) {
-		if (level.isClientSide) {
-			if (!stack.getOrCreateTag().contains("passcode"))
-				ClientHandler.displayBriefcaseSetupScreen(stack.getHoverName());
-			else
-				ClientHandler.displayBriefcasePasscodeScreen(stack.getHoverName());
-		}
+	private void handle(ItemStack stack, Level level, Player player) {
+		if (!level.isClientSide)
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(stack.getOrCreateTag().contains("passcode") ? OpenScreen.DataType.CHECK_BRIEFCASE_PASSCODE : OpenScreen.DataType.SET_BRIEFCASE_PASSCODE, player.blockPosition()));
 	}
 
 	@Override
@@ -56,6 +56,20 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 
 		if (!ownerName.isEmpty())
 			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(Utils.GRAY_STYLE));
+	}
+
+	@Override
+	public CompoundTag getShareTag(ItemStack stack) {
+		CompoundTag tag = super.getShareTag(stack);
+
+		return tag == null ? null : Utils.filterPasscodesFromTag(tag.copy());
+	}
+
+	public static void hashAndSetPasscode(CompoundTag briefcaseTag, String passcode) {
+		byte[] salt = Utils.generateSalt();
+
+		briefcaseTag.putString("salt", Utils.bytesToString(salt));
+		briefcaseTag.putString("passcode", Utils.hashPasscode(passcode, salt));
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, Player player) {

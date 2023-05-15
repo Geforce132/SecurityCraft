@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -37,7 +38,7 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return saveWithoutMetadata();
+		return Utils.filterPasscodesFromTag(saveWithoutMetadata());
 	}
 
 	@Override

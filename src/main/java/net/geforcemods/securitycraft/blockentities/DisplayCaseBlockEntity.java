@@ -35,6 +35,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	private float openness;
 	private float oOpenness;
 	private String passcode;
+	private byte[] salt;
 
 	public DisplayCaseBlockEntity(BlockPos pos, BlockState state) {
 		this(SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), pos, state);
@@ -83,14 +84,27 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	}
 
 	@Override
+	public byte[] getSalt() {
+		return salt;
+	}
+
+	@Override
+	public void setSalt(byte[] salt) {
+		this.salt = salt;
+	}
+
+	@Override
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		tag.put("DisplayedStack", getDisplayedStack().save(new CompoundTag()));
 		tag.putBoolean("ShouldBeOpen", shouldBeOpen);
 		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 
+		if (salt != null)
+			tag.putString("salt", Utils.bytesToString(salt));
+
 		if (passcode != null && !passcode.isEmpty())
-			tag.putString("Passcode", passcode);
+			tag.putString("passcode", passcode);
 	}
 
 	@Override
@@ -103,7 +117,8 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		setDisplayedStack(ItemStack.of((CompoundTag) tag.get("DisplayedStack")));
 		shouldBeOpen = tag.getBoolean("ShouldBeOpen");
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
-		passcode = tag.getString("Passcode");
+		salt = Utils.stringToBytes(tag.getString("salt"));
+		loadPasscode(tag);
 
 		if (forceOpenness)
 			forceOpen(shouldBeOpen);
