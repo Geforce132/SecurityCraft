@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -53,6 +54,9 @@ public class AdminToolItem extends Item {
 			TileEntity te = world.getBlockEntity(pos);
 
 			if (te != null) {
+				if (te instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) te).isOpen() && ((DisplayCaseBlockEntity) te).getDisplayedStack().isEmpty()))
+					return ActionResultType.PASS;
+
 				boolean hasInfo = false;
 
 				if (te instanceof IOwnable) {
