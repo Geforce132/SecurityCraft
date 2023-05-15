@@ -35,7 +35,15 @@
 - Change: Several technical blocks' sounds have been adjusted to better match how they look
 - Change: Improved visuals when holding a taser
 - Change: Some alarm options have been moved to a separate screen
+- Change: Passcodes of passcode-protected blocks are no longer directly accessible by clients, and are thus no longer displayable using mods like Jade/TOP
+- Change: Passcodes are now stored and compared using secure hashing functions like PBKDF2, using a randomly generated salt that is stored on the server
+- Change: All occurrences of "Password" in block or item names have been switched out with "Passcode" (for example, Password-protected Chest -> Passcode-protected Chest)
+- Change: The storage location of passwords in the NBT data of Display Cases has been changed from "Passcode" to "passcode"
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
+- API: All occurrences of "password" in API class and method names have been switched out with "passcode" (for example, IPasswordProtected#getPassword -> IPasscodeProtected#getPasscode)
+- API: IPasscodeProtected#setPasscode now returns a byte array, IPasscodeProtected#getPasscode now takes a byte arrays as its only parameter
+- API: New methods IPasscodeProtected#getSalt and IPasscodeProtected#setSalt to get and set the block entity's "salt" field
+- API: New methods IPasscodeProtected#hashAndSetPasscode, #checkPasscode, #loadPasscode for easier passcode management
 - Fix: Jade does not properly hide blocks
 - Fix: Shields do not take damage when blocking a taser that deals high enough damage
 - Fix: A player shooting a guardian with a taser gets damaged by the guardian's thorns
@@ -50,6 +58,7 @@
 - Fix: Some reinforced blocks and mines can be destroyed by pistons or flowing fluids
 - Fix: Reinforced Lever duplication exploit
 - Fix: Several items like the Admin Tool or Universal Block Remover (and more) cannot be placed into a Display Case
+- Fix: Briefcase Inventory Access Exploit
 - Misc.: The minimum required Forge version is 45.0.39
 - Misc.: More texture updates
 
