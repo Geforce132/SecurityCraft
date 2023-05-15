@@ -24,6 +24,7 @@
 - Change: Improved visuals when holding a taser
 - Change: Some alarm options have been moved to a separate screen
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
+- API: Renamed Option#readFromNBT to Option#load and Option#writeToNBT to Option#save
 - Fix: Jade does not properly hide blocks
 - Fix: Shields do not take damage when blocking a taser that deals high enough damage
 - Fix: The death message of a player killed by a taser does not contain the player firing the taser
