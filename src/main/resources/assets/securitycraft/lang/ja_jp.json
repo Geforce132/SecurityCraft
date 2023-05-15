@@ -1029,8 +1029,6 @@
 	"option.generic.ignoreOwner.description": "このブロックは所有者を無視する、つまり所有者にはどんな機能も働かないようにするか？",
 	"option.generic.smartModuleCooldown": "クールダウン: %s",
 	"option.generic.smartModuleCooldown.description": "不正なパスコードが入力された後、どれくらいの時間パスコードを入力できなくするか(単位はティック、20ティック＝1秒で要スマートモジュール)",
-	"option.securitycraft.alarm.delay": "遅延：%s",
-	"option.securitycraft.alarm.delay.description": "アラームが作動した場合、アラーム音を何秒おきに鳴らすか？",
 	"option.securitycraft.alarm.range": "範囲：%s",
 	"option.securitycraft.alarm.range.description": "アラーム音は何ブロック先まで聞こえるか？",
 	"option.securitycraft.alarm.resetCooldown": "クールダウンリセット: %s",

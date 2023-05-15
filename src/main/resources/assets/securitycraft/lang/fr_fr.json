@@ -1027,8 +1027,6 @@
 	"option.generic.ignoreOwner.description": "Ce bloc devrait-il ignorer son propriétaire, ce qui signifie que toutes les fonctionnalités qu'il possède ne fonctionneront pas pour le propriétaire ?",
 	"option.generic.smartModuleCooldown": "Attente : %s",
 	"option.generic.smartModuleCooldown.description": "Pendant combien de temps les joueurs ne peuvent-ils pas saisir un code d'accès après la saisie d'un code incorrect ? (En ticks, 20 ticks = 1 seconde ; requiert un module d'intelligence)",
-	"option.securitycraft.alarm.delay": "Retard : %s",
-	"option.securitycraft.alarm.delay.description": "Si une alarme est activée, combien de secondes entre les sonneries ?",
 	"option.securitycraft.alarm.range": "Portée : %s",
 	"option.securitycraft.alarm.range.description": "À combien de blocs de distance la sonnerie peut-elle être entendue ?",
 	"option.securitycraft.alarm.resetCooldown": "Réinitialisation du temps de recharge : %s",
