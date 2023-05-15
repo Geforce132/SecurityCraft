@@ -62,7 +62,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 	public CompoundTag getShareTag(ItemStack stack) {
 		CompoundTag tag = super.getShareTag(stack);
 
-		return tag == null ? null : Utils.filterPasscodesFromTag(tag.copy());
+		return tag == null ? null : Utils.filterPasscodeAndSaltFromTag(tag.copy());
 	}
 
 	public static void hashAndSetPasscode(CompoundTag briefcaseTag, String passcode) {

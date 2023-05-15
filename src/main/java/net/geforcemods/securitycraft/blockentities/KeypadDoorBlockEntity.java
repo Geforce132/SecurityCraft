@@ -76,7 +76,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public void setPasscode(String passcode) {
 		this.passcode = passcode;
-		runForOtherHalf(otherHalf -> otherHalf.setPasscodeAndSalt(passcode, salt));
+		runForOtherHalf(otherHalf -> otherHalf.setPasscodeAndSaltExclusively(passcode, salt));
 		setChanged();
 	}
 
@@ -91,7 +91,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	}
 
 	//only set the passcode and salt for this door half
-	public void setPasscodeAndSalt(String passcode, byte[] salt) {
+	public void setPasscodeAndSaltExclusively(String passcode, byte[] salt) {
 		this.passcode = passcode;
 		this.salt = salt;
 		setChanged();

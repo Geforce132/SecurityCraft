@@ -90,7 +90,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return Utils.filterPasscodesFromTag(saveWithoutMetadata());
+		return Utils.filterPasscodeAndSaltFromTag(saveWithoutMetadata());
 	}
 
 	@Override

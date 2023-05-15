@@ -134,7 +134,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return Utils.filterPasscodesFromTag(saveWithoutMetadata());
+		return Utils.filterPasscodeAndSaltFromTag(saveWithoutMetadata());
 	}
 
 	@Override

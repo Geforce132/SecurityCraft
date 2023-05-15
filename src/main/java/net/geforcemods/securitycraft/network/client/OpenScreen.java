@@ -49,6 +49,13 @@ public class OpenScreen {
 						ClientHandler.displayAlarmScreen(be);
 
 					break;
+				case CHECK_BRIEFCASE_PASSCODE:
+					ItemStack briefcaseStack = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
+
+					if (!briefcaseStack.isEmpty())
+						ClientHandler.displayBriefcasePasscodeScreen(briefcaseStack.getHoverName());
+
+					break;
 				case CHECK_PASSCODE:
 					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof IPasscodeProtected be)
 						ClientHandler.displayCheckPasscodeScreen((BlockEntity) be);
@@ -62,6 +69,13 @@ public class OpenScreen {
 				case RIFT_STABILIZER:
 					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof RiftStabilizerBlockEntity riftStabilizer)
 						ClientHandler.displayRiftStabilizerScreen(riftStabilizer);
+
+					break;
+				case SET_BRIEFCASE_PASSCODE:
+					ItemStack briefcase = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
+
+					if (!briefcase.isEmpty())
+						ClientHandler.displayBriefcaseSetupScreen(briefcase.getHoverName());
 
 					break;
 				case SET_PASSCODE:
@@ -84,18 +98,6 @@ public class OpenScreen {
 						ClientHandler.displayUniversalKeyChangerScreen((BlockEntity) passcodeProtected);
 
 					break;
-				case SET_BRIEFCASE_PASSCODE:
-					ItemStack briefcase = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
-
-					if (!briefcase.isEmpty())
-						ClientHandler.displayBriefcaseSetupScreen(briefcase.getHoverName());
-
-					break;
-				case CHECK_BRIEFCASE_PASSCODE:
-					ItemStack briefcaseStack = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
-
-					if (!briefcaseStack.isEmpty())
-						ClientHandler.displayBriefcasePasscodeScreen(briefcaseStack.getHoverName());
 			}
 		});
 		ctx.get().setPacketHandled(true);
@@ -103,14 +105,14 @@ public class OpenScreen {
 
 	public enum DataType {
 		ALARM,
+		CHECK_BRIEFCASE_PASSCODE,
 		CHECK_PASSCODE,
 		IMS,
 		RIFT_STABILIZER,
+		SET_BRIEFCASE_PASSCODE,
 		SET_PASSCODE,
 		SONIC_SECURITY_SYSTEM,
 		TROPHY_SYSTEM,
-		UNIVERSAL_KEY_CHANGER,
-		SET_BRIEFCASE_PASSCODE,
-		CHECK_BRIEFCASE_PASSCODE;
+		UNIVERSAL_KEY_CHANGER;
 	}
 }

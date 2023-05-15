@@ -55,7 +55,7 @@ public class Utils {
 		return Component.translatable(key, params);
 	}
 
-	public static CompoundTag filterPasscodesFromTag(CompoundTag tag) {
+	public static CompoundTag filterPasscodeAndSaltFromTag(CompoundTag tag) {
 		tag.remove("passcode");
 		tag.remove("salt");
 		return tag;
@@ -100,7 +100,7 @@ public class Utils {
 			int index = i * 2;
 
 			int parsedInt = Integer.parseInt(string.substring(index, index + 2), 16);
-			bytes[i] = (byte)(parsedInt);
+			bytes[i] = (byte) parsedInt;
 		}
 
 		return bytes;
