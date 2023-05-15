@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
@@ -43,7 +44,9 @@ public class UniversalKeyChangerItem extends Item {
 
 		BlockEntity be = level.getBlockEntity(pos);
 
-		if (be instanceof IPasswordProtected) {
+		if (be instanceof DisplayCaseBlockEntity displayCase && (displayCase.isOpen() && displayCase.getDisplayedStack().isEmpty()))
+			return InteractionResult.PASS;
+		else if (be instanceof IPasswordProtected) {
 			if (((IOwnable) be).isOwnedBy(player)) {
 				if (!level.isClientSide)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.UNIVERSAL_KEY_CHANGER, pos));

@@ -24,6 +24,7 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
+import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
@@ -517,6 +518,9 @@ public class SCEventHandler {
 		BlockPos pos = event.getPos();
 
 		if (level.getBlockEntity(pos) instanceof ICodebreakable codebreakable) {
+			if (codebreakable instanceof DisplayCaseBlockEntity displayCase && (displayCase.isOpen() && displayCase.getDisplayedStack().isEmpty()))
+				return false;
+
 			double chance = ConfigHandler.SERVER.codebreakerChance.get();
 
 			if (chance < 0.0D) {

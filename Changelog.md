@@ -35,6 +35,7 @@
 - Fix: Blocks cannot be placed on the side of any of SecurityCraft's doors
 - Fix: Some reinforced blocks and mines can be destroyed by pistons or flowing fluids
 - Fix: Reinforced Lever duplication exploit
+- Fix: Several items like the Admin Tool or Universal Block Remover (and more) cannot be placed into a Display Case
 - Misc.: More texture updates
 
 [*] only available if the update_1_20 datapack is enabled
