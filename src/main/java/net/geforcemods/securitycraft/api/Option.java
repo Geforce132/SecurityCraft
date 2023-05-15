@@ -3,8 +3,11 @@ package net.geforcemods.securitycraft.api;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
 
 /**
@@ -42,9 +45,9 @@ public abstract class Option<T> {
 	 */
 	public abstract void toggle();
 
-	public abstract void readFromNBT(CompoundTag tag);
+	public abstract void load(CompoundTag tag);
 
-	public abstract void writeToNBT(CompoundTag tag);
+	public abstract void save(CompoundTag tag);
 
 	public void copy(Option<?> option) {
 		value = (T) option.get();
@@ -125,6 +128,13 @@ public abstract class Option<T> {
 		return getKey(block) + ".description";
 	}
 
+	/**
+	 * @return A component containing information about the default value and min/max range of this option
+	 */
+	public Component getDefaultInfo() {
+		return Utils.localize("securitycraft.option.default_with_range", getDefaultValue(), getMin(), getMax()).withStyle(ChatFormatting.GRAY);
+	}
+
 	@Override
 	public String toString() {
 		return (value) + "";
@@ -144,7 +154,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(CompoundTag tag) {
+		public void load(CompoundTag tag) {
 			if (tag.contains(getName()))
 				value = tag.getBoolean(getName());
 			else
@@ -152,8 +162,13 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void writeToNBT(CompoundTag tag) {
+		public void save(CompoundTag tag) {
 			tag.putBoolean(getName(), value);
+		}
+
+		@Override
+		public Component getDefaultInfo() {
+			return Utils.localize("securitycraft.option.default", getDefaultValue()).withStyle(ChatFormatting.GRAY);
 		}
 	}
 
@@ -185,10 +200,6 @@ public abstract class Option<T> {
 	public static class IntOption extends Option<Integer> {
 		private boolean isSlider;
 
-		public IntOption(String optionName, Integer value) {
-			super(optionName, value);
-		}
-
 		public IntOption(String optionName, Integer value, Integer min, Integer max, Integer increment) {
 			super(optionName, value, min, max, increment);
 		}
@@ -217,7 +228,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(CompoundTag tag) {
+		public void load(CompoundTag tag) {
 			if (tag.contains(getName()))
 				value = tag.getInt(getName());
 			else
@@ -225,7 +236,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void writeToNBT(CompoundTag tag) {
+		public void save(CompoundTag tag) {
 			tag.putInt(getName(), value);
 		}
 
@@ -251,11 +262,6 @@ public abstract class Option<T> {
 	 */
 	public static class DoubleOption extends Option<Double> {
 		private boolean isSlider;
-
-		public DoubleOption(String optionName, Double value) {
-			super(optionName, value);
-			isSlider = false;
-		}
 
 		public DoubleOption(String optionName, Double value, Double min, Double max, Double increment) {
 			super(optionName, value, min, max, increment);
@@ -286,7 +292,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(CompoundTag tag) {
+		public void load(CompoundTag tag) {
 			if (tag.contains(getName()))
 				value = tag.getDouble(getName());
 			else
@@ -294,7 +300,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void writeToNBT(CompoundTag tag) {
+		public void save(CompoundTag tag) {
 			tag.putDouble(getName(), value);
 		}
 
@@ -313,10 +319,6 @@ public abstract class Option<T> {
 	 * A subclass of {@link Option}, set up to handle floats.
 	 */
 	public static class FloatOption extends Option<Float> {
-		public FloatOption(String optionName, Float value) {
-			super(optionName, value);
-		}
-
 		public FloatOption(String optionName, Float value, Float min, Float max, Float increment) {
 			super(optionName, value, min, max, increment);
 		}
@@ -337,7 +339,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(CompoundTag tag) {
+		public void load(CompoundTag tag) {
 			if (tag.contains(getName()))
 				value = tag.getFloat(getName());
 			else
@@ -345,7 +347,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void writeToNBT(CompoundTag tag) {
+		public void save(CompoundTag tag) {
 			tag.putFloat(getName(), value);
 		}
 
