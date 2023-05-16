@@ -60,7 +60,7 @@ public class CheckBriefcasePasscode {
 				}
 
 				if (Arrays.equals(Utils.stringToBytes(briefcaseCode), Utils.hashPasscode(passcode, salt))) {
-					if (!tag.contains("owner")) { //If the briefcase doesn't have an owner (that usually gets set when assigning a new passcode), set the player that first enters the correct password as the owner
+					if (!tag.contains("owner")) { //If the briefcase doesn't have an owner (that usually gets set when assigning a new passcode), set the player that first enters the correct passcode as the owner
 						tag.putString("owner", player.getName().getString());
 						tag.putString("ownerUUID", player.getUUID().toString());
 					}

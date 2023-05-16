@@ -70,7 +70,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 	@Override
 	public byte[] getPasscode() {
-		return passcode;
+		return passcode == null || passcode.length == 0 ? null : passcode;
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 	@Override
 	public byte[] getSalt() {
-		return salt;
+		return salt == null || salt.length == 0 ? null : salt;
 	}
 
 	@Override

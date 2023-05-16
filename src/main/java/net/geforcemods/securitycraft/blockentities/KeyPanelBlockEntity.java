@@ -126,7 +126,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 
 	@Override
 	public byte[] getPasscode() {
-		return passcode;
+		return passcode == null || passcode.length == 0 ? null : passcode;
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 
 	@Override
 	public byte[] getSalt() {
-		return salt;
+		return salt == null || salt.length == 0 ? null : salt;
 	}
 
 	@Override

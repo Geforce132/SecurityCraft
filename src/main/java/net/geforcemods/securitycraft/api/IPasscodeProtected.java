@@ -119,7 +119,8 @@ public interface IPasscodeProtected extends ICodebreakable {
 
 	/**
 	 * Sets a new passcode. Note that this should not hash the passcode. Prefer calling {@link #hashAndSetPasscode}
-	 * instead, if you are calling this without a salted and hashed passcode.
+	 * instead, if you are calling this without a salted and hashed passcode. The passcode should always be set alongside
+	 * the salt.
 	 *
 	 * @param passcode The new passcode to be saved
 	 */
@@ -143,7 +144,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	default void loadPasscode(CompoundTag tag) {
 		String passcode = tag.getString(tag.contains("Passcode", Tag.TAG_STRING) ? "Passcode" : "passcode"); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
 
-		//SecurityCraft's passcode-protected blocks do not support passwords longer than 20 characters, so if such a short passcode is encountered instead of a hash, store the properly hashed version inside the block
+		//SecurityCraft's passcode-protected blocks do not support passcodes longer than 20 characters, so if such a short passcode is encountered instead of a hash, store the properly hashed version inside the block
 		if (!passcode.isEmpty() && passcode.length() <= 20)
 			hashAndSetPasscode(Utils.hashPasscodeWithoutSalt(passcode));
 		else
@@ -153,12 +154,13 @@ public interface IPasscodeProtected extends ICodebreakable {
 	/**
 	 * Returns the block entity's salt.
 	 *
-	 * @return The stored salt, null if the passcode is empty or not set yet
+	 * @return The stored salt, null if the passcode and salt are not set yet
 	 */
 	public byte[] getSalt();
 
 	/**
-	 * Sets the block's salt, which is used for hashing incoming passcodes.
+	 * Sets the block's salt, which is used for hashing incoming passcodes. The salt should always be set alongside the
+	 * passcode.
 	 *
 	 * @param salt The new salt
 	 */
