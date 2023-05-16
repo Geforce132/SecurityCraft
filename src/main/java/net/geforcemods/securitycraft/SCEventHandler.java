@@ -25,6 +25,7 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.EnumDetectionMode;
+import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
@@ -327,7 +328,9 @@ public class SCEventHandler {
 		}
 
 		if (PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.universalBlockModifier, event.getHand())) {
-			if (te instanceof IModuleInventory) {
+			if (te instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) te).isOpen() && ((DisplayCaseBlockEntity) te).getDisplayedStack().isEmpty()))
+				return;
+			else if (te instanceof IModuleInventory) {
 				event.setCanceled(true);
 				event.setCancellationResult(EnumActionResult.SUCCESS);
 
@@ -701,6 +704,9 @@ public class SCEventHandler {
 		TileEntity tileEntity = world.getTileEntity(pos);
 
 		if (tileEntity instanceof ICodebreakable) {
+			if (tileEntity instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) tileEntity).isOpen() && ((DisplayCaseBlockEntity) tileEntity).getDisplayedStack().isEmpty()))
+				return false;
+
 			double chance = ConfigHandler.codebreakerChance;
 
 			if (chance < 0.0D) {

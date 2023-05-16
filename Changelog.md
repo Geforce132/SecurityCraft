@@ -17,6 +17,7 @@
 - Fix: Inserting a module into a Laser Block or Keypad/Scanner Door via the GUI will disable the module in all other connected blocks
 - Fix: Some reinforced blocks and mines can be destroyed by pistons or flowing fluids
 - Fix: EMC values do not load when ProjectE Integration is installed
+- Fix: Several items like the Admin Tool or Universal Block Remover (and more) cannot be placed into a Display Case
 
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
 
