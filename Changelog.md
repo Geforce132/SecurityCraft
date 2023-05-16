@@ -7,6 +7,7 @@
 - Change: Improved visuals when holding a taser
 - Change: Some alarm options have been moved to a separate screen
 - Change: SecurityCraft's recipes now work with the ore dictionary wherever possible
+- Change: The minimum radius of the Portable Radar is now one block
 - API: Renamed Option#readFromNBT to Option#load and Option#writeToNBT to Option#save
 - Fix: Entities around a player sometimes get invisible when the player dismounts a camera
 - Fix: Shields do not take damage when blocking a taser that deals high enough damage
