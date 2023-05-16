@@ -540,8 +540,6 @@ option.generic.ignoreOwner.description=Questo blocco dovrebbe ignorare il suo pr
 option.generic.ignoreOwner=Ignora proprietario: #
 option.generic.smartModuleCooldown.description=Per quanto i giocatori non possono inserire un codice dopo averne inserito uno errato? (In tick, 20 tick = 1 secondo; richiede modulo intelligente)
 option.generic.smartModuleCooldown=Ricarica: #
-option.securitycraft:alarm.delay.description=Se un allarme viene attivato, quanti secondi ci sono tra due suoni d'allarme?
-option.securitycraft:alarm.delay=Ritardo: #
 option.securitycraft:alarm.range.description=Da quanti blocchi di distanza si può udire il suono dell'allarme?
 option.securitycraft:alarm.range=Raggio: #
 option.securitycraft:block_change_detector.range.description=Fino a che distanza il rilevatore dovrebbe funzionare?

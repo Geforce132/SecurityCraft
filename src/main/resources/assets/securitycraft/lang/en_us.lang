@@ -249,7 +249,7 @@ help.securitycraft.reinforced.info=Reinforced blocks are unbreakable building bl
 help.securitycraft.reinforced_buttons.info=The reinforced buttons can only be activated by their owner or players on the allowlist.
 help.securitycraft.reinforced_pressure_plates.info=The reinforced pressure plates can only be activated by their owner or players on the allowlist.
 help.securitycraft:adminTool.info=The admin tool's main purpose is to display information about a SecurityCraft block. It will show the owner's UUID and name, and other information, like passcodes and any inserted modules.
-help.securitycraft:alarm.info=The alarm will emit a siren sound effect and flash red whenever it is powered by redstone, and in 2-second intervals after that (modifiable in the config file).
+help.securitycraft:alarm.info=The alarm will emit a siren sound effect and flash red whenever it is powered by redstone, and in 2-second intervals after that. The interval is modifiable in the Alarm's options.
 help.securitycraft:blacklistModule.info=The denylist module usually adds player(s) to a block's effect or blocks them from using a certain function of the block.
 help.securitycraft:blockPocketManager.info=The Block Pocket Manager is used to manage the Block Pocket, which is a room that only its owner and players on the allowlist can enter. When opening its GUI, you see a selection of sizes. Choose one, then build the Block Pocket around the manager. Make sure that the manager is placed on the outside of the bottom layer. The Block Pocket is a cube of the size you chose. The corners are built with Reinforced Chiseled Crystal Quartz, the blocks between the corners are built with correctly oriented Reinforced Crystal Quartz Pillars, and the floor/wall/ceiling is built with Block Pocket Walls. See this image for an example of how it looks (the Block Pocket Manager is marked with a red arrow) https://i.imgur.com/KLQzMeY.png - Clicking "Activate" after the structure is built will activate any added modules. See the customization GUI for more information (rightclick with Universal Block Modifier).
 help.securitycraft:blockPocketWall.info=Block Pocket Walls are used to build the Block Pocket. More info on the Block Pocket Manager's page.
@@ -574,8 +574,6 @@ option.generic.ignoreOwner.description=Should this block ignore its owner, meani
 option.generic.ignoreOwner=Ignore Owner: #
 option.generic.smartModuleCooldown.description=How long can players not enter a passcode after an incorrect code has been entered? (In Ticks, 20 ticks = 1 second; requires Smart Module)
 option.generic.smartModuleCooldown=Cooldown: #
-option.securitycraft:alarm.delay.description=If an alarm is activated, how many seconds in-between alarm sounds effects?
-option.securitycraft:alarm.delay=Delay: #
 option.securitycraft:alarm.range.description=How many blocks away can the alarm sound be heard?
 option.securitycraft:alarm.range=Range: #
 option.securitycraft:alarm.resetCooldown.description=Should the cooldown between alarm sounds be reset when the alarm is powered on, meaning the sound is always played immediately?
