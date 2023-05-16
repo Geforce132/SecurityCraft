@@ -58,6 +58,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.ClickEvent.Action;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
@@ -541,7 +542,7 @@ public class SCManualScreen extends GuiScreen {
 						display.add("---");
 
 						for (Option<?> option : scte.customOptions()) {
-							display.add("- " + Utils.localize(option.getDescriptionKey(block)).getFormattedText());
+							display.add(new TextComponentTranslation("gui.securitycraft:scManual.option_text", Utils.localize(option.getDescriptionKey(block)), option.getDefaultInfo()).getFormattedText());
 							display.add("");
 						}
 

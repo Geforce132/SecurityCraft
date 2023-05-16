@@ -11,10 +11,13 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextFormatting;
 
 /**
- * A class that allows blocks that have {@link CustomizableBlockEntity}s to have custom, "per-block" options that are separate from
- * the main SecurityCraft configuration options.
+ * A class that allows blocks that have {@link CustomizableBlockEntity}s to have custom, "per-block" options that are
+ * separate from the main SecurityCraft configuration options.
  *
  * @author Geforce
  * @param <T> The Class of the type of value this option should use
@@ -43,14 +46,14 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * Called when this option's button in {@link CustomizeBlockScreen} is pressed. Update the option's value here. <p> NOTE: This
-	 * gets called on the server side, not on the client! Use TileEntitySCTE.sync() to update values on the client-side.
+	 * Called when this option's button in {@link CustomizeBlockScreen} is pressed. Update the option's value here. <p> NOTE:
+	 * This gets called on the server side, not on the client! Use TileEntitySCTE.sync() to update values on the client-side.
 	 */
 	public abstract void toggle();
 
-	public abstract void readFromNBT(NBTTagCompound tag);
+	public abstract void load(NBTTagCompound tag);
 
-	public abstract void writeToNBT(NBTTagCompound tag);
+	public abstract void save(NBTTagCompound tag);
 
 	public void copy(Option<?> option) {
 		value = (T) option.get();
@@ -131,6 +134,13 @@ public abstract class Option<T> {
 		return getKey(block) + ".description";
 	}
 
+	/**
+	 * @return A component containing information about the default value and min/max range of this option
+	 */
+	public ITextComponent getDefaultInfo() {
+		return Utils.localize("securitycraft.option.default_with_range", getDefaultValue(), getMin(), getMax()).setStyle(new Style().setColor(TextFormatting.GRAY));
+	}
+
 	@Override
 	public String toString() {
 		return (value) + "";
@@ -150,7 +160,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(NBTTagCompound tag) {
+		public void load(NBTTagCompound tag) {
 			if (tag.hasKey(getName()))
 				value = tag.getBoolean(getName());
 			else
@@ -158,8 +168,13 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void writeToNBT(NBTTagCompound tag) {
+		public void save(NBTTagCompound tag) {
 			tag.setBoolean(getName(), value);
+		}
+
+		@Override
+		public ITextComponent getDefaultInfo() {
+			return Utils.localize("securitycraft.option.default", getDefaultValue()).setStyle(new Style().setColor(TextFormatting.GRAY));
 		}
 	}
 
@@ -192,11 +207,6 @@ public abstract class Option<T> {
 		private boolean isSlider;
 		private Supplier<BlockPos> pos;
 
-		public IntOption(String optionName, Integer value) {
-			super(optionName, value);
-			isSlider = false;
-		}
-
 		public IntOption(String optionName, Integer value, Integer min, Integer max, Integer increment) {
 			super(optionName, value, min, max, increment);
 			isSlider = false;
@@ -227,7 +237,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(NBTTagCompound tag) {
+		public void load(NBTTagCompound tag) {
 			if (tag.hasKey(getName()))
 				value = tag.getInteger(getName());
 			else
@@ -235,7 +245,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void writeToNBT(NBTTagCompound tag) {
+		public void save(NBTTagCompound tag) {
 			tag.setInteger(getName(), value);
 		}
 
@@ -277,11 +287,6 @@ public abstract class Option<T> {
 		private boolean isSlider;
 		private Supplier<BlockPos> pos;
 
-		public DoubleOption(String optionName, Double value) {
-			super(optionName, value);
-			isSlider = false;
-		}
-
 		public DoubleOption(String optionName, Double value, Double min, Double max, Double increment) {
 			super(optionName, value, min, max, increment);
 			isSlider = false;
@@ -312,7 +317,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(NBTTagCompound tag) {
+		public void load(NBTTagCompound tag) {
 			if (tag.hasKey(getName()))
 				value = tag.getDouble(getName());
 			else
@@ -320,7 +325,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void writeToNBT(NBTTagCompound tag) {
+		public void save(NBTTagCompound tag) {
 			tag.setDouble(getName(), value);
 		}
 
@@ -353,10 +358,6 @@ public abstract class Option<T> {
 	 * A subclass of {@link Option}, set up to handle floats.
 	 */
 	public static class FloatOption extends Option<Float> {
-		public FloatOption(String optionName, Float value) {
-			super(optionName, value);
-		}
-
 		public FloatOption(String optionName, Float value, Float min, Float max, Float increment) {
 			super(optionName, value, min, max, increment);
 		}
@@ -377,7 +378,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(NBTTagCompound tag) {
+		public void load(NBTTagCompound tag) {
 			if (tag.hasKey(getName()))
 				value = tag.getFloat(getName());
 			else
@@ -385,7 +386,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void writeToNBT(NBTTagCompound tag) {
+		public void save(NBTTagCompound tag) {
 			tag.setFloat(getName(), value);
 		}
 

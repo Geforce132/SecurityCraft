@@ -2,10 +2,12 @@
 
 - New: Randomize signature button for the Keycard Reader
 - New: The pitch of the sound an alarm plays can now be changed
+- New: The SecurityCraft Manual now shows default values and the range (if applicable) of a block's options
 - Change: Several technical blocks' sounds have been adjusted to better match how they look
 - Change: Improved visuals when holding a taser
 - Change: Some alarm options have been moved to a separate screen
 - Change: SecurityCraft's recipes now work with the ore dictionary wherever possible
+- API: Renamed Option#readFromNBT to Option#load and Option#writeToNBT to Option#save
 - Fix: Entities around a player sometimes get invisible when the player dismounts a camera
 - Fix: Shields do not take damage when blocking a taser that deals high enough damage
 - Fix: The death message of a player killed by a taser does not contain the player firing the taser

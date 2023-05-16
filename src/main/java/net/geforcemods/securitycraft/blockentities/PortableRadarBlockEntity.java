@@ -90,7 +90,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 			tag.setBoolean("disabled", !tag.getBoolean("enabled")); //legacy support
 
 		for (Option<?> option : customOptions()) {
-			option.readFromNBT(tag);
+			option.load(tag);
 		}
 	}
 
