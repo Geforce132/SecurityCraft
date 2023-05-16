@@ -23,6 +23,7 @@
 - Change: Several technical blocks' sounds have been adjusted to better match how they look
 - Change: Improved visuals when holding a taser
 - Change: Some alarm options have been moved to a separate screen
+- Change: The minimum radius of the Portable Radar is now one block
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 - API: Renamed Option#readFromNBT to Option#load and Option#writeToNBT to Option#save
 - Fix: Jade does not properly hide blocks
