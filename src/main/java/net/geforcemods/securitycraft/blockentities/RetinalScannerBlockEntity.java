@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
@@ -39,6 +40,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -50,6 +52,12 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption("signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private DoubleOption maximumDistance = new DoubleOption("maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D, true) {
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.viewActivated.maximumDistance";
+		}
+	};
 	private DisabledOption disabled = new DisabledOption(false);
 	private GameProfile ownerProfile;
 	private int viewCooldown = 0;
@@ -140,6 +148,11 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
+	public double getMaximumDistance() {
+		return maximumDistance.get();
+	}
+
+	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
 				ModuleType.ALLOWLIST, ModuleType.DISGUISE
@@ -149,7 +162,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				activatedByEntities, sendMessage, signalLength, disabled
+				activatedByEntities, sendMessage, signalLength, disabled, maximumDistance
 		};
 	}
 
