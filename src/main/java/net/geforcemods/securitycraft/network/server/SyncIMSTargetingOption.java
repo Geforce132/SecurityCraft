@@ -20,28 +20,20 @@ public class SyncIMSTargetingOption {
 		this.targetingMode = targetingMode;
 	}
 
-	public static void encode(SyncIMSTargetingOption message, FriendlyByteBuf buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeEnum(message.targetingMode);
+	public SyncIMSTargetingOption(FriendlyByteBuf buf) {
+		pos = buf.readBlockPos();
+		targetingMode = buf.readEnum(IMSTargetingMode.class);
 	}
 
-	public static SyncIMSTargetingOption decode(FriendlyByteBuf buf) {
-		SyncIMSTargetingOption message = new SyncIMSTargetingOption();
-
-		message.pos = buf.readBlockPos();
-		message.targetingMode = buf.readEnum(IMSTargetingMode.class);
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
+		buf.writeEnum(targetingMode);
 	}
 
-	public static void onMessage(SyncIMSTargetingOption message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = message.pos;
-			Player player = ctx.get().getSender();
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		Player player = ctx.get().getSender();
 
-			if (player.level.getBlockEntity(pos) instanceof IMSBlockEntity be && be.isOwnedBy(player))
-				be.setTargetingMode(message.targetingMode);
-		});
-
-		ctx.get().setPacketHandled(true);
+		if (player.level.getBlockEntity(pos) instanceof IMSBlockEntity be && be.isOwnedBy(player))
+			be.setTargetingMode(targetingMode);
 	}
 }

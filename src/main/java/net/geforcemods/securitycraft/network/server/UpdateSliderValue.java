@@ -27,54 +27,45 @@ public class UpdateSliderValue {
 		value = v;
 	}
 
-	public static void encode(UpdateSliderValue message, FriendlyByteBuf buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeUtf(message.option);
-		buf.writeDouble(message.value);
+	public UpdateSliderValue(FriendlyByteBuf buf) {
+		pos = buf.readBlockPos();
+		option = buf.readUtf();
+		value = buf.readDouble();
 	}
 
-	public static UpdateSliderValue decode(FriendlyByteBuf buf) {
-		UpdateSliderValue message = new UpdateSliderValue();
-
-		message.pos = buf.readBlockPos();
-		message.option = buf.readUtf();
-		message.value = buf.readDouble();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
+		buf.writeUtf(option);
+		buf.writeDouble(value);
 	}
 
-	public static void onMessage(UpdateSliderValue message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = message.pos;
-			String optionName = message.option;
-			double value = message.value;
-			Player player = ctx.get().getSender();
-			BlockEntity be = player.level.getBlockEntity(pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		String optionName = option;
+		Player player = ctx.get().getSender();
+		BlockEntity be = player.level.getBlockEntity(pos);
 
-			if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
-				Option<?> option = null;
+		if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+			Option<?> option = null;
 
-				for (Option<?> o : customizable.customOptions()) {
-					if (o.getName().equals(optionName)) {
-						option = o;
-						break;
-					}
+			for (Option<?> o : customizable.customOptions()) {
+				if (o.getName().equals(optionName)) {
+					option = o;
+					break;
 				}
-
-				if (option == null)
-					return;
-
-				if (option instanceof DoubleOption o)
-					o.setValue(value);
-				else if (option instanceof IntOption o)
-					o.setValue((int) value);
-
-				customizable.onOptionChanged(option);
-
-				if (be instanceof CustomizableBlockEntity)
-					player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
 			}
-		});
 
-		ctx.get().setPacketHandled(true);
+			if (option == null)
+				return;
+
+			if (option instanceof DoubleOption o)
+				o.setValue(value);
+			else if (option instanceof IntOption o)
+				o.setValue((int) value);
+
+			customizable.onOptionChanged(option);
+
+			if (be instanceof CustomizableBlockEntity)
+				player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
+		}
 	}
 }

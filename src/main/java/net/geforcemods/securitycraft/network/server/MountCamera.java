@@ -24,34 +24,26 @@ public class MountCamera {
 		this.pos = pos;
 	}
 
-	public static void encode(MountCamera message, FriendlyByteBuf buf) {
-		buf.writeBlockPos(message.pos);
+	public MountCamera(FriendlyByteBuf buf) {
+		pos = buf.readBlockPos();
 	}
 
-	public static MountCamera decode(FriendlyByteBuf buf) {
-		MountCamera message = new MountCamera();
-
-		message.pos = buf.readBlockPos();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
 	}
 
-	public static void onMessage(MountCamera message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = message.pos;
-			ServerPlayer player = ctx.get().getSender();
-			Level level = player.level;
-			BlockState state = level.getBlockState(pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		ServerPlayer player = ctx.get().getSender();
+		Level level = player.level;
+		BlockState state = level.getBlockState(pos);
 
-			if (level.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
-				if (be.isOwnedBy(player) || be.isAllowed(player))
-					((SecurityCameraBlock) state.getBlock()).mountCamera(level, pos, player);
-				else
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", be.getOwner().getName()), ChatFormatting.RED);
-			}
+		if (level.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
+			if (be.isOwnedBy(player) || be.isAllowed(player))
+				((SecurityCameraBlock) state.getBlock()).mountCamera(level, pos, player);
 			else
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", pos), ChatFormatting.RED);
-		});
-
-		ctx.get().setPacketHandled(true);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", be.getOwner().getName()), ChatFormatting.RED);
+		}
+		else
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", pos), ChatFormatting.RED);
 	}
 }

@@ -27,47 +27,39 @@ public class SetPassword {
 		password = code;
 	}
 
-	public static void encode(SetPassword message, FriendlyByteBuf buf) {
-		buf.writeInt(message.x);
-		buf.writeInt(message.y);
-		buf.writeInt(message.z);
-		buf.writeUtf(message.password);
+	public SetPassword(FriendlyByteBuf buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		password = buf.readUtf(Integer.MAX_VALUE / 4);
 	}
 
-	public static SetPassword decode(FriendlyByteBuf buf) {
-		SetPassword message = new SetPassword();
-
-		message.x = buf.readInt();
-		message.y = buf.readInt();
-		message.z = buf.readInt();
-		message.password = buf.readUtf(Integer.MAX_VALUE / 4);
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		buf.writeUtf(password);
 	}
 
-	public static void onMessage(SetPassword message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = new BlockPos(message.x, message.y, message.z);
-			String password = message.password;
-			Player player = ctx.get().getSender();
-			Level level = player.level;
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		BlockPos pos = new BlockPos(x, y, z);
+		Player player = ctx.get().getSender();
+		Level level = player.level;
 
-			if (level.getBlockEntity(pos) instanceof IPasswordProtected be && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
-				be.setPassword(password);
+		if (level.getBlockEntity(pos) instanceof IPasswordProtected be && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+			be.setPassword(password);
 
-				if (be instanceof KeypadChestBlockEntity chestBe)
-					checkAndUpdateAdjacentChest(chestBe, level, pos, password, player);
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
+			if (be instanceof KeypadChestBlockEntity chestBe)
+				checkAndUpdateAdjacentChest(chestBe, level, pos, password, player);
+		}
 	}
 
-	private static void checkAndUpdateAdjacentChest(KeypadChestBlockEntity te, Level level, BlockPos pos, String codeToSet, Player player) {
-		if (te.getBlockState().getValue(KeypadChestBlock.TYPE) != ChestType.SINGLE) {
-			BlockPos offsetPos = pos.relative(KeypadChestBlock.getConnectedDirection(te.getBlockState()));
+	private void checkAndUpdateAdjacentChest(KeypadChestBlockEntity be, Level level, BlockPos pos, String codeToSet, Player player) {
+		if (be.getBlockState().getValue(KeypadChestBlock.TYPE) != ChestType.SINGLE) {
+			BlockPos offsetPos = pos.relative(KeypadChestBlock.getConnectedDirection(be.getBlockState()));
 			BlockEntity otherBe = level.getBlockEntity(offsetPos);
 
-			if (otherBe instanceof KeypadChestBlockEntity chestBe && te.getOwner().owns(chestBe)) {
+			if (otherBe instanceof KeypadChestBlockEntity chestBe && be.getOwner().owns(chestBe)) {
 				chestBe.setPassword(codeToSet);
 				level.sendBlockUpdated(offsetPos, otherBe.getBlockState(), otherBe.getBlockState(), 2);
 			}

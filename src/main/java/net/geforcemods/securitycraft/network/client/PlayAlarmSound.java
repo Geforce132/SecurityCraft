@@ -33,29 +33,26 @@ public class PlayAlarmSound {
 		this.seed = seed;
 	}
 
-	public static void encode(PlayAlarmSound message, FriendlyByteBuf buf) {
-		buf.writeBlockPos(message.bePos);
-		buf.writeId(BuiltInRegistries.SOUND_EVENT.asHolderIdMap(), message.sound, (buffer, soundEvent) -> soundEvent.writeToNetwork(buffer));
-		buf.writeInt(message.soundX);
-		buf.writeInt(message.soundY);
-		buf.writeInt(message.soundZ);
-		buf.writeFloat(message.volume);
-		buf.writeFloat(message.pitch);
-		buf.writeLong(message.seed);
+	public PlayAlarmSound(FriendlyByteBuf buf) {
+		bePos = buf.readBlockPos();
+		sound = buf.readById(BuiltInRegistries.SOUND_EVENT.asHolderIdMap(), SoundEvent::readFromNetwork);
+		soundX = buf.readInt();
+		soundY = buf.readInt();
+		soundZ = buf.readInt();
+		volume = buf.readFloat();
+		pitch = buf.readFloat();
+		seed = buf.readLong();
 	}
 
-	public static PlayAlarmSound decode(FriendlyByteBuf buf) {
-		PlayAlarmSound message = new PlayAlarmSound();
-
-		message.bePos = buf.readBlockPos();
-		message.sound = buf.readById(BuiltInRegistries.SOUND_EVENT.asHolderIdMap(), SoundEvent::readFromNetwork);
-		message.soundX = buf.readInt();
-		message.soundY = buf.readInt();
-		message.soundZ = buf.readInt();
-		message.volume = buf.readFloat();
-		message.pitch = buf.readFloat();
-		message.seed = buf.readLong();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(bePos);
+		buf.writeId(BuiltInRegistries.SOUND_EVENT.asHolderIdMap(), sound, (buffer, soundEvent) -> soundEvent.writeToNetwork(buffer));
+		buf.writeInt(soundX);
+		buf.writeInt(soundY);
+		buf.writeInt(soundZ);
+		buf.writeFloat(volume);
+		buf.writeFloat(pitch);
+		buf.writeLong(seed);
 	}
 
 	public double getX() {
@@ -70,14 +67,10 @@ public class PlayAlarmSound {
 		return soundZ / ClientboundSoundPacket.LOCATION_ACCURACY;
 	}
 
-	public static void onMessage(PlayAlarmSound message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			Level level = ClientHandler.getClientLevel();
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		Level level = ClientHandler.getClientLevel();
 
-			if (level.getBlockEntity(message.bePos) instanceof AlarmBlockEntity be)
-				be.playSound(level, message.getX(), message.getY(), message.getZ(), message.sound, message.volume, message.pitch, message.seed);
-		});
-
-		ctx.get().setPacketHandled(true);
+		if (level.getBlockEntity(bePos) instanceof AlarmBlockEntity be)
+			be.playSound(level, getX(), getY(), getZ(), sound, volume, pitch, seed);
 	}
 }

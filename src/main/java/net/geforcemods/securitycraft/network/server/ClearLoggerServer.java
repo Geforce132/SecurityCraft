@@ -17,27 +17,20 @@ public class ClearLoggerServer {
 		this.pos = pos;
 	}
 
-	public static void encode(ClearLoggerServer message, FriendlyByteBuf buf) {
-		buf.writeBlockPos(message.pos);
+	public ClearLoggerServer(FriendlyByteBuf buf) {
+		pos = buf.readBlockPos();
 	}
 
-	public static ClearLoggerServer decode(FriendlyByteBuf buf) {
-		ClearLoggerServer message = new ClearLoggerServer();
-
-		message.pos = buf.readBlockPos();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
 	}
 
-	public static void onMessage(ClearLoggerServer message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			ServerPlayer player = ctx.get().getSender();
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		ServerPlayer player = ctx.get().getSender();
 
-			if (player.level.getBlockEntity(message.pos) instanceof UsernameLoggerBlockEntity be && be.isOwnedBy(player)) {
-				be.players = new String[100];
-				be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 2);
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
+		if (player.level.getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be && be.isOwnedBy(player)) {
+			be.players = new String[100];
+			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 2);
+		}
 	}
 }

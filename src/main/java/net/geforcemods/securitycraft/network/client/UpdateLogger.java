@@ -26,42 +26,34 @@ public class UpdateLogger {
 		this.timestamp = timestamp;
 	}
 
-	public static void encode(UpdateLogger message, FriendlyByteBuf buf) {
-		buf.writeInt(message.x);
-		buf.writeInt(message.y);
-		buf.writeInt(message.z);
-		buf.writeInt(message.i);
-		buf.writeUtf(message.username);
-		buf.writeUtf(message.uuid);
-		buf.writeLong(message.timestamp);
+	public UpdateLogger(FriendlyByteBuf buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		i = buf.readInt();
+		username = buf.readUtf(Integer.MAX_VALUE / 4);
+		uuid = buf.readUtf(Integer.MAX_VALUE / 4);
+		timestamp = buf.readLong();
 	}
 
-	public static UpdateLogger decode(FriendlyByteBuf buf) {
-		UpdateLogger message = new UpdateLogger();
-
-		message.x = buf.readInt();
-		message.y = buf.readInt();
-		message.z = buf.readInt();
-		message.i = buf.readInt();
-		message.username = buf.readUtf(Integer.MAX_VALUE / 4);
-		message.uuid = buf.readUtf(Integer.MAX_VALUE / 4);
-		message.timestamp = buf.readLong();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		buf.writeInt(i);
+		buf.writeUtf(username);
+		buf.writeUtf(uuid);
+		buf.writeLong(timestamp);
 	}
 
-	public static void onMessage(UpdateLogger message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = new BlockPos(message.x, message.y, message.z);
-			int i = message.i;
-			UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) Minecraft.getInstance().player.level.getBlockEntity(pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		BlockPos pos = new BlockPos(x, y, z);
+		UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) Minecraft.getInstance().player.level.getBlockEntity(pos);
 
-			if (be != null) {
-				be.players[i] = message.username;
-				be.uuids[i] = message.uuid;
-				be.timestamps[i] = message.timestamp;
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
+		if (be != null) {
+			be.players[i] = username;
+			be.uuids[i] = uuid;
+			be.timestamps[i] = timestamp;
+		}
 	}
 }

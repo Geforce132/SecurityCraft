@@ -23,36 +23,30 @@ public class SyncAlarmSettings {
 		this.soundLength = soundLength;
 	}
 
-	public static void encode(SyncAlarmSettings message, FriendlyByteBuf buf) {
-		buf.writeLong(message.pos.asLong());
-		buf.writeResourceLocation(message.soundEvent);
-		buf.writeFloat(message.pitch);
-		buf.writeVarInt(message.soundLength);
+	public SyncAlarmSettings(FriendlyByteBuf buf) {
+		pos = BlockPos.of(buf.readLong());
+		soundEvent = buf.readResourceLocation();
+		pitch = buf.readFloat();
+		soundLength = buf.readVarInt();
 	}
 
-	public static SyncAlarmSettings decode(FriendlyByteBuf buf) {
-		SyncAlarmSettings message = new SyncAlarmSettings();
-
-		message.pos = BlockPos.of(buf.readLong());
-		message.soundEvent = buf.readResourceLocation();
-		message.pitch = buf.readFloat();
-		message.soundLength = buf.readVarInt();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeLong(pos.asLong());
+		buf.writeResourceLocation(soundEvent);
+		buf.writeFloat(pitch);
+		buf.writeVarInt(soundLength);
 	}
 
-	public static void onMessage(SyncAlarmSettings message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			if (ctx.get().getSender().level.getBlockEntity(message.pos) instanceof AlarmBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
-				if (!message.soundEvent.equals(be.getSound().getLocation()))
-					be.setSound(message.soundEvent);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		if (ctx.get().getSender().level.getBlockEntity(pos) instanceof AlarmBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
+			if (!soundEvent.equals(be.getSound().getLocation()))
+				be.setSound(soundEvent);
 
-				if (message.pitch != be.getPitch())
-					be.setPitch(message.pitch);
+			if (pitch != be.getPitch())
+				be.setPitch(pitch);
 
-				if (message.soundLength != be.getSoundLength())
-					be.setSoundLength(message.soundLength);
-			}
-		});
-		ctx.get().setPacketHandled(true);
+			if (soundLength != be.getSoundLength())
+				be.setSoundLength(soundLength);
+		}
 	}
 }
