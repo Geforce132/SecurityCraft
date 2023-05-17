@@ -24,33 +24,25 @@ public class SyncLaserSideConfig {
 		this.sideConfig = LaserBlockBlockEntity.saveSideConfig(sideConfig);
 	}
 
-	public static void encode(SyncLaserSideConfig message, FriendlyByteBuf buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeNbt(message.sideConfig);
+	public SyncLaserSideConfig(FriendlyByteBuf buf) {
+		pos = buf.readBlockPos();
+		sideConfig = buf.readNbt();
 	}
 
-	public static SyncLaserSideConfig decode(FriendlyByteBuf buf) {
-		SyncLaserSideConfig message = new SyncLaserSideConfig();
-
-		message.pos = buf.readBlockPos();
-		message.sideConfig = buf.readNbt();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
+		buf.writeNbt(sideConfig);
 	}
 
-	public static void onMessage(SyncLaserSideConfig message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			Player player = ctx.get().getSender();
-			Level level = player.level;
-			BlockPos pos = message.pos;
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		Player player = ctx.get().getSender();
+		Level level = player.level;
 
-			if (level.getBlockEntity(pos) instanceof LaserBlockBlockEntity be && be.isOwnedBy(player)) {
-				BlockState state = level.getBlockState(pos);
+		if (level.getBlockEntity(pos) instanceof LaserBlockBlockEntity be && be.isOwnedBy(player)) {
+			BlockState state = level.getBlockState(pos);
 
-				be.applyNewSideConfig(LaserBlockBlockEntity.loadSideConfig(message.sideConfig), player);
-				level.sendBlockUpdated(pos, state, state, 2);
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
+			be.applyNewSideConfig(LaserBlockBlockEntity.loadSideConfig(sideConfig), player);
+			level.sendBlockUpdated(pos, state, state, 2);
+		}
 	}
 }

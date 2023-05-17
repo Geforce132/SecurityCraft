@@ -17,19 +17,15 @@ public class OpenSRATScreen {
 		this.viewDistance = viewDistance;
 	}
 
-	public static void encode(OpenSRATScreen message, FriendlyByteBuf buf) {
-		buf.writeInt(message.viewDistance);
+	public OpenSRATScreen(FriendlyByteBuf buf) {
+		viewDistance = buf.readInt();
 	}
 
-	public static OpenSRATScreen decode(FriendlyByteBuf buf) {
-		OpenSRATScreen message = new OpenSRATScreen();
-
-		message.viewDistance = buf.readInt();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeInt(viewDistance);
 	}
 
-	public static void onMessage(OpenSRATScreen message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> ClientHandler.displaySRATScreen(PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.REMOTE_ACCESS_SENTRY.get()), message.viewDistance));
-		ctx.get().setPacketHandled(true);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		ClientHandler.displaySRATScreen(PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.REMOTE_ACCESS_SENTRY.get()), viewDistance);
 	}
 }

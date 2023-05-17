@@ -24,51 +24,42 @@ public class SyncKeycardSettings {
 		this.link = link;
 	}
 
-	public static void encode(SyncKeycardSettings message, FriendlyByteBuf buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeVarInt(message.signature);
-		buf.writeBoolean(message.link);
+	public SyncKeycardSettings(FriendlyByteBuf buf) {
+		pos = buf.readBlockPos();
+		signature = buf.readVarInt();
+		link = buf.readBoolean();
+		acceptedLevels = new boolean[5];
 
 		for (int i = 0; i < 5; i++) {
-			buf.writeBoolean(message.acceptedLevels[i]);
+			acceptedLevels[i] = buf.readBoolean();
 		}
 	}
 
-	public static SyncKeycardSettings decode(FriendlyByteBuf buf) {
-		SyncKeycardSettings message = new SyncKeycardSettings();
-
-		message.pos = buf.readBlockPos();
-		message.signature = buf.readVarInt();
-		message.link = buf.readBoolean();
-		message.acceptedLevels = new boolean[5];
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
+		buf.writeVarInt(signature);
+		buf.writeBoolean(link);
 
 		for (int i = 0; i < 5; i++) {
-			message.acceptedLevels[i] = buf.readBoolean();
+			buf.writeBoolean(acceptedLevels[i]);
 		}
-
-		return message;
 	}
 
-	public static void onMessage(SyncKeycardSettings message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = message.pos;
-			Player player = ctx.get().getSender();
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		Player player = ctx.get().getSender();
 
-			if (player.level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity be) {
-				boolean isOwner = be.isOwnedBy(player);
+		if (player.level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity be) {
+			boolean isOwner = be.isOwnedBy(player);
 
-				if (isOwner || be.isAllowed(player)) {
-					if (isOwner) {
-						be.setAcceptedLevels(message.acceptedLevels);
-						be.setSignature(message.signature);
-					}
-
-					if (message.link && player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
-						keycardReaderContainer.link();
+			if (isOwner || be.isAllowed(player)) {
+				if (isOwner) {
+					be.setAcceptedLevels(acceptedLevels);
+					be.setSignature(signature);
 				}
-			}
-		});
 
-		ctx.get().setPacketHandled(true);
+				if (link && player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
+					keycardReaderContainer.link();
+			}
+		}
 	}
 }

@@ -17,25 +17,18 @@ public class UpdateNBTTagOnClient {
 		this.stack = stack;
 	}
 
-	public static void encode(UpdateNBTTagOnClient message, FriendlyByteBuf buf) {
-		buf.writeItem(message.stack);
+	public UpdateNBTTagOnClient(FriendlyByteBuf buf) {
+		stack = buf.readItem();
 	}
 
-	public static UpdateNBTTagOnClient decode(FriendlyByteBuf buf) {
-		UpdateNBTTagOnClient message = new UpdateNBTTagOnClient();
-
-		message.stack = buf.readItem();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeItem(stack);
 	}
 
-	public static void onMessage(UpdateNBTTagOnClient message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			ItemStack stackToUpdate = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), message.stack.getItem());
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		ItemStack stackToUpdate = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), stack.getItem());
 
-			if (!stackToUpdate.isEmpty())
-				stackToUpdate.setTag(message.stack.getTag());
-		});
-
-		ctx.get().setPacketHandled(true);
+		if (!stackToUpdate.isEmpty())
+			stackToUpdate.setTag(stack.getTag());
 	}
 }

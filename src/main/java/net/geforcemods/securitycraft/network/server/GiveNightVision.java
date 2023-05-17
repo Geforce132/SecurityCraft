@@ -11,17 +11,12 @@ import net.minecraftforge.network.NetworkEvent;
 public class GiveNightVision {
 	public GiveNightVision() {}
 
-	public static void encode(GiveNightVision message, FriendlyByteBuf buf) {}
+	public GiveNightVision(FriendlyByteBuf buf) {}
 
-	public static GiveNightVision decode(FriendlyByteBuf buf) {
-		return new GiveNightVision();
-	}
+	public void encode(FriendlyByteBuf buf) {}
 
-	public static void onMessage(GiveNightVision message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			if (PlayerUtils.isPlayerMountedOnCamera(ctx.get().getSender()))
-				ctx.get().getSender().addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 3, -1, false, false));
-		});
-		ctx.get().setPacketHandled(true);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		if (PlayerUtils.isPlayerMountedOnCamera(ctx.get().getSender()))
+			ctx.get().getSender().addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 3, -1, false, false));
 	}
 }

@@ -27,48 +27,39 @@ public class ToggleModule {
 		this.moduleType = moduleType;
 	}
 
-	public static void encode(ToggleModule message, FriendlyByteBuf buf) {
-		buf.writeLong(message.pos.asLong());
-		buf.writeEnum(message.moduleType);
+	public ToggleModule(FriendlyByteBuf buf) {
+		pos = BlockPos.of(buf.readLong());
+		moduleType = buf.readEnum(ModuleType.class);
 	}
 
-	public static ToggleModule decode(FriendlyByteBuf buf) {
-		ToggleModule message = new ToggleModule();
-
-		message.pos = BlockPos.of(buf.readLong());
-		message.moduleType = buf.readEnum(ModuleType.class);
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeLong(pos.asLong());
+		buf.writeEnum(moduleType);
 	}
 
-	public static void onMessage(ToggleModule message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = message.pos;
-			Player player = ctx.get().getSender();
-			BlockEntity be = player.level.getBlockEntity(pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		Player player = ctx.get().getSender();
+		BlockEntity be = player.level.getBlockEntity(pos);
 
-			if (be instanceof IModuleInventory moduleInv && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
-				ModuleType moduleType = message.moduleType;
+		if (be instanceof IModuleInventory moduleInv && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+			if (moduleInv.isModuleEnabled(moduleType)) {
+				moduleInv.removeModule(moduleType, true);
 
-				if (moduleInv.isModuleEnabled(moduleType)) {
-					moduleInv.removeModule(moduleType, true);
-
-					if (be instanceof LinkableBlockEntity linkable)
-						linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(moduleType, true), linkable);
-				}
-				else {
-					moduleInv.insertModule(moduleInv.getModule(moduleType), true);
-
-					if (be instanceof LinkableBlockEntity linkable) {
-						ItemStack stack = moduleInv.getModule(moduleType);
-
-						linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), true), linkable);
-					}
-				}
-
-				if (be instanceof CustomizableBlockEntity)
-					player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
+				if (be instanceof LinkableBlockEntity linkable)
+					linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(moduleType, true), linkable);
 			}
-		});
-		ctx.get().setPacketHandled(true);
+			else {
+				moduleInv.insertModule(moduleInv.getModule(moduleType), true);
+
+				if (be instanceof LinkableBlockEntity linkable) {
+					ItemStack stack = moduleInv.getModule(moduleType);
+
+					linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), true), linkable);
+				}
+			}
+
+			if (be instanceof CustomizableBlockEntity)
+				player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
+		}
 	}
 }

@@ -24,33 +24,26 @@ public class SetCameraPowered {
 		this.powered = powered;
 	}
 
-	public static void encode(SetCameraPowered message, FriendlyByteBuf buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeBoolean(message.powered);
+	public SetCameraPowered(FriendlyByteBuf buf) {
+		pos = buf.readBlockPos();
+		powered = buf.readBoolean();
 	}
 
-	public static SetCameraPowered decode(FriendlyByteBuf buf) {
-		SetCameraPowered message = new SetCameraPowered();
-
-		message.pos = buf.readBlockPos();
-		message.powered = buf.readBoolean();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
+		buf.writeBoolean(powered);
 	}
 
-	public static void onMessage(SetCameraPowered message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = message.pos;
-			Player player = ctx.get().getSender();
-			Level level = player.level;
-			BlockEntity be = level.getBlockEntity(pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		Player player = ctx.get().getSender();
+		Level level = player.level;
+		BlockEntity be = level.getBlockEntity(pos);
 
-			if ((be instanceof IOwnable ownable && ownable.isOwnedBy(player)) || (be instanceof IModuleInventory moduleInv && moduleInv.isAllowed(player))) {
-				BlockState state = level.getBlockState(pos);
+		if ((be instanceof IOwnable ownable && ownable.isOwnedBy(player)) || (be instanceof IModuleInventory moduleInv && moduleInv.isAllowed(player))) {
+			BlockState state = level.getBlockState(pos);
 
-				level.setBlockAndUpdate(pos, state.setValue(SecurityCameraBlock.POWERED, message.powered));
-				level.updateNeighborsAt(pos.relative(state.getValue(SecurityCameraBlock.FACING), -1), state.getBlock());
-			}
-		});
-		ctx.get().setPacketHandled(true);
+			level.setBlockAndUpdate(pos, state.setValue(SecurityCameraBlock.POWERED, powered));
+			level.updateNeighborsAt(pos.relative(state.getValue(SecurityCameraBlock.FACING), -1), state.getBlock());
+		}
 	}
 }

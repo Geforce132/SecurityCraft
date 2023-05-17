@@ -25,39 +25,31 @@ public class SyncBlockChangeDetector {
 		this.color = color;
 	}
 
-	public static void encode(SyncBlockChangeDetector message, FriendlyByteBuf buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeEnum(message.mode);
-		buf.writeBoolean(message.showHighlights);
-		buf.writeInt(message.color);
+	public SyncBlockChangeDetector(FriendlyByteBuf buf) {
+		pos = buf.readBlockPos();
+		mode = buf.readEnum(DetectionMode.class);
+		showHighlights = buf.readBoolean();
+		color = buf.readInt();
 	}
 
-	public static SyncBlockChangeDetector decode(FriendlyByteBuf buf) {
-		SyncBlockChangeDetector message = new SyncBlockChangeDetector();
-
-		message.pos = buf.readBlockPos();
-		message.mode = buf.readEnum(DetectionMode.class);
-		message.showHighlights = buf.readBoolean();
-		message.color = buf.readInt();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
+		buf.writeEnum(mode);
+		buf.writeBoolean(showHighlights);
+		buf.writeInt(color);
 	}
 
-	public static void onMessage(SyncBlockChangeDetector message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			Level level = ctx.get().getSender().level;
-			BlockPos pos = message.pos;
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		Level level = ctx.get().getSender().level;
 
-			if (level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
-				BlockState state = level.getBlockState(pos);
+		if (level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
+			BlockState state = level.getBlockState(pos);
 
-				be.setMode(message.mode);
-				be.showHighlights(message.showHighlights);
-				be.setColor(message.color);
-				be.setChanged();
-				level.sendBlockUpdated(pos, state, state, 2);
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
+			be.setMode(mode);
+			be.showHighlights(showHighlights);
+			be.setColor(color);
+			be.setChanged();
+			level.sendBlockUpdated(pos, state, state, 2);
+		}
 	}
 }
