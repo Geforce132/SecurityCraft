@@ -49,7 +49,7 @@ public class UniversalKeyChangerItem extends Item {
 		if (be instanceof DisplayCaseBlockEntity displayCase && (displayCase.isOpen() && displayCase.getDisplayedStack().isEmpty()))
 			return InteractionResult.PASS;
 		else if (be instanceof IPasscodeProtected) {
-			if (((IOwnable) be).isOwnedBy(player)) {
+			if (((IOwnable) be).isOwnedBy(player) || player.isCreative()) {
 				if (!level.isClientSide)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.UNIVERSAL_KEY_CHANGER, pos));
 
