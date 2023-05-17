@@ -1112,6 +1112,8 @@
 	"option.generic.secret_sign.isSecret.description": "Soll der Text des geheimen Schildes nur für den Besitzer und zugelassenen Spieler sichtbar sein?",
 	"option.generic.smartModuleCooldown": "Abklingzeit: %s",
 	"option.generic.smartModuleCooldown.description": "Wie lange können Spieler keinen Code mehr eingeben, nachdem ein falscher Code eingegeben wurde? (In Ticks, 20 Ticks = 1 Sekunde; benötigt ein schlaues Modul)",
+	"option.generic.viewActivated.maximumDistance": "Maximale Distanz: %s",
+	"option.generic.viewActivated.maximumDistance.description": "Von wie vielen Blöcken weit weg ist es maximal möglich, diesen Block zu aktivieren?",
 	"option.securitycraft.alarm.range": "Reichweite: %s",
 	"option.securitycraft.alarm.range.description": "Wie viele Blöcke weit kann der Alarm-Sound gehört werden?",
 	"option.securitycraft.alarm.resetCooldown": "Abklingzeit zurücksetzen: %s",

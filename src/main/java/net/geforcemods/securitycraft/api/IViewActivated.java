@@ -30,11 +30,12 @@ public interface IViewActivated {
 			return;
 		}
 
-		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(5), e -> !e.isSpectator() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof Player));
+		double maximumDistance = getMaximumDistance();
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(maximumDistance), e -> !e.isSpectator() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof Player));
 
 		for (LivingEntity entity : entities) {
 			double eyeHeight = entity.getEyeHeight();
-			Vec3 lookVec = new Vec3(entity.getX() + (entity.getLookAngle().x * 5), (eyeHeight + entity.getY()) + (entity.getLookAngle().y * 5), entity.getZ() + (entity.getLookAngle().z * 5));
+			Vec3 lookVec = new Vec3(entity.getX() + (entity.getLookAngle().x * maximumDistance), (eyeHeight + entity.getY()) + (entity.getLookAngle().y * maximumDistance), entity.getZ() + (entity.getLookAngle().z * maximumDistance));
 			BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, Block.COLLIDER, Fluid.NONE, entity));
 
 			if (hitResult != null && hitResult.getBlockPos().getX() == pos.getX() && hitResult.getBlockPos().getY() == pos.getY() && hitResult.getBlockPos().getZ() == pos.getZ()) {
@@ -78,4 +79,12 @@ public interface IViewActivated {
 	public default boolean activatedOnlyByPlayer() {
 		return true;
 	}
+
+	/**
+	 * Returns the maximum distance from which a view check is performed. If an entity is further away than this distance, this
+	 * block entity cannot be activated
+	 *
+	 * @return The maximum distance in blocks from which a view check is performed
+	 */
+	public double getMaximumDistance();
 }
