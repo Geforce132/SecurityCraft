@@ -35,7 +35,7 @@
 - Change: Several technical blocks' sounds have been adjusted to better match how they look
 - Change: Improved visuals when holding a taser
 - Change: Some alarm options have been moved to a separate screen
-- Change: Passcodes of passcode-protected blocks are no longer directly accessible by clients, and are thus no longer displayable using mods like Jade/TOP
+- Change: Passcodes of passcode-protected blocks are no longer directly accessible by clients, and are thus no longer displayable using mods like Jade/TOP or the admin tool
 - Change: Passcodes are now stored and compared using secure hashing functions like PBKDF2, using a randomly generated salt that is stored on the server
 - Change: All occurrences of "Password" in block or item names have been switched out with "Passcode" (for example, Password-protected Chest -> Passcode-protected Chest)
 - Change: The storage location of passcodes in the NBT data of Display Cases has been changed from "Passcode" to "passcode"

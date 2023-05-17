@@ -866,7 +866,6 @@
 	"messages.securitycraft:adminTool.noInfo": "Ce bloc n’a aucune information à afficher !",
 	"messages.securitycraft:adminTool.owner.name": "Propriétaire : %s",
 	"messages.securitycraft:adminTool.owner.uuid": "L´UUID du propriétaire : %s",
-	"messages.securitycraft:adminTool.passcode": "Mot de passe : %s",
 	"messages.securitycraft:blockpocket.activated": "Poche bloc activée !",
 	"messages.securitycraft:blockpocket.alreadyAssembled": "La poche bloc a déjà été assemblé !",
 	"messages.securitycraft:blockpocket.assembled": "Poche bloc assemblée !",

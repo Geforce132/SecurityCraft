@@ -868,7 +868,6 @@
 	"messages.securitycraft:adminTool.noInfo": "¡Este bloque no tiene información para mostrar!",
 	"messages.securitycraft:adminTool.owner.name": "Propietario: %s",
 	"messages.securitycraft:adminTool.owner.uuid": "UUID del propietario: %s",
-	"messages.securitycraft:adminTool.passcode": "Contraseña: %s",
 	"messages.securitycraft:blockpocket.activated": "¡Bolsillo de bloques activado!",
 	"messages.securitycraft:blockpocket.alreadyAssembled": "¡El bolsillo de bloques ya ha sido ensamblado!",
 	"messages.securitycraft:blockpocket.assembled": "¡Bolsillo de bloques ensamblado!",

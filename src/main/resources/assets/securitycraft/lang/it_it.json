@@ -850,7 +850,6 @@
 	"messages.securitycraft:adminTool.noInfo": "Questo blocco non ha informazioni da mostrare!",
 	"messages.securitycraft:adminTool.owner.name": "Possessore: %s",
 	"messages.securitycraft:adminTool.owner.uuid": "UUID del possessore: %s",
-	"messages.securitycraft:adminTool.passcode": "Password: %s",
 	"messages.securitycraft:blockpocket.activated": "Blocco tascabile attivato!",
 	"messages.securitycraft:blockpocket.alreadyAssembled": "Il blocco tascabile è già stato assemblato!",
 	"messages.securitycraft:blockpocket.assembled": "Blocco tascabile assemblato!",

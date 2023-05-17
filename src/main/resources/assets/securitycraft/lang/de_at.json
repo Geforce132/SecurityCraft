@@ -902,7 +902,6 @@
 	"messages.securitycraft:adminTool.noInfo": "Dieser Block enthält keine Informationen!",
 	"messages.securitycraft:adminTool.owner.name": "Besitzer: %s",
 	"messages.securitycraft:adminTool.owner.uuid": "UUID des Besitzers: %s",
-	"messages.securitycraft:adminTool.passcode": "Passwort: %s",
 	"messages.securitycraft:blockpocket.activated": "Blocktasche aktiviert!",
 	"messages.securitycraft:blockpocket.alreadyAssembled": "Die Blocktasche wurde bereits aufgebaut!",
 	"messages.securitycraft:blockpocket.assembled": "Blocktasche aufgebaut!",

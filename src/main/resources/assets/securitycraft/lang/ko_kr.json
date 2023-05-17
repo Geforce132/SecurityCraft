@@ -767,7 +767,6 @@
 	"messages.securitycraft:adminTool.noInfo": "이 블록에는 표시할 정보가 없습니다!",
 	"messages.securitycraft:adminTool.owner.name": "소유자: %s",
 	"messages.securitycraft:adminTool.owner.uuid": "소유자 UUID: %s",
-	"messages.securitycraft:adminTool.passcode": "비밀번호: %s",
 	"messages.securitycraft:blockpocket.activated": "블록 포켓이 활성화되었습니다!",
 	"messages.securitycraft:blockpocket.alreadyAssembled": "블록 포켓이 이미 조립되었습니다!",
 	"messages.securitycraft:blockpocket.assembled": "블록 포켓이 조립되었습니다!",

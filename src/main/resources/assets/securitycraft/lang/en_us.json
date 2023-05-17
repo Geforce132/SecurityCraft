@@ -912,7 +912,6 @@
 	"messages.securitycraft:adminTool.noInfo": "This block has no information to display!",
 	"messages.securitycraft:adminTool.owner.name": "Owner: %s",
 	"messages.securitycraft:adminTool.owner.uuid": "Owner's UUID: %s",
-	"messages.securitycraft:adminTool.passcode": "Passcode: %s",
 	"messages.securitycraft:blockpocket.activated": "Block Pocket activated!",
 	"messages.securitycraft:blockpocket.alreadyAssembled": "The Block Pocket has already been assembled!",
 	"messages.securitycraft:blockpocket.assembled": "Block Pocket assembled!",

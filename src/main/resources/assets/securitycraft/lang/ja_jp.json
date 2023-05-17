@@ -870,7 +870,6 @@
 	"messages.securitycraft:adminTool.noInfo": "このブロックは表示する情報がありません！",
 	"messages.securitycraft:adminTool.owner.name": "所有者：%s",
 	"messages.securitycraft:adminTool.owner.uuid": "所有者のUUID：%s",
-	"messages.securitycraft:adminTool.passcode": "パスワード：%s",
 	"messages.securitycraft:blockpocket.activated": "ポケットブロックが有効化されました！",
 	"messages.securitycraft:blockpocket.alreadyAssembled": "ポケットブロックは組み立て済みです！",
 	"messages.securitycraft:blockpocket.assembled": "ポケットブロックが組み立てられました！",

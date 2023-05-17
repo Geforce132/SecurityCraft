@@ -64,11 +64,6 @@ public class AdminToolItem extends Item {
 					hasInfo = true;
 				}
 
-				if (be instanceof IPasscodeProtected passcodeProtected) {
-					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.passcode", (passcodeProtected.getPasscode() == null ? "????" : passcodeProtected.getPasscode())), ChatFormatting.DARK_PURPLE);
-					hasInfo = true;
-				}
-
 				if (be instanceof IModuleInventory inv) {
 					List<ModuleType> modules = inv.getInsertedModules();
 
