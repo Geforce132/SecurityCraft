@@ -31,11 +31,12 @@ public interface IViewActivated {
 				return;
 			}
 
-			List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(pos).inflate(5), e -> !e.isSpectator() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof PlayerEntity));
+			double maximumDistance = getMaximumDistance();
+			List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(pos).inflate(maximumDistance), e -> !e.isSpectator() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof PlayerEntity));
 
 			for (LivingEntity entity : entities) {
 				double eyeHeight = entity.getEyeHeight();
-				Vector3d lookVec = new Vector3d(entity.getX() + (entity.getLookAngle().x * 5), (eyeHeight + entity.getY()) + (entity.getLookAngle().y * 5), entity.getZ() + (entity.getLookAngle().z * 5));
+				Vector3d lookVec = new Vector3d(entity.getX() + (entity.getLookAngle().x * maximumDistance), (eyeHeight + entity.getY()) + (entity.getLookAngle().y * maximumDistance), entity.getZ() + (entity.getLookAngle().z * maximumDistance));
 				BlockRayTraceResult rtr = world.clip(new RayTraceContext(new Vector3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
 
 				if (rtr != null && rtr.getBlockPos().getX() == pos.getX() && rtr.getBlockPos().getY() == pos.getY() && rtr.getBlockPos().getZ() == pos.getZ()) {
@@ -80,4 +81,12 @@ public interface IViewActivated {
 	public default boolean activatedOnlyByPlayer() {
 		return true;
 	}
+
+	/**
+	 * Returns the maximum distance from which a view check is performed. If an entity is further away than this distance, this
+	 * block entity cannot be activated
+	 *
+	 * @return The maximum distance in blocks from which a view check is performed
+	 */
+	public double getMaximumDistance();
 }
