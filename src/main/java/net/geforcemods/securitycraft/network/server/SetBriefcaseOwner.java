@@ -19,35 +19,28 @@ public class SetBriefcaseOwner {
 		this.passcode = passcode;
 	}
 
-	public static void encode(SetBriefcaseOwner message, FriendlyByteBuf buf) {
-		buf.writeUtf(message.passcode);
+	public SetBriefcaseOwner(FriendlyByteBuf buf) {
+		passcode = buf.readUtf();
 	}
 
-	public static SetBriefcaseOwner decode(FriendlyByteBuf buf) {
-		SetBriefcaseOwner message = new SetBriefcaseOwner();
-
-		message.passcode = buf.readUtf();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeUtf(passcode);
 	}
 
-	public static void onMessage(SetBriefcaseOwner message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			Player player = ctx.get().getSender();
-			ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get());
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		Player player = ctx.get().getSender();
+		ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get());
 
-			if (!stack.isEmpty()) {
-				CompoundTag tag = stack.getOrCreateTag();
+		if (!stack.isEmpty()) {
+			CompoundTag tag = stack.getOrCreateTag();
 
-				if (!tag.contains("owner")) {
-					tag.putString("owner", player.getName().getString());
-					tag.putString("ownerUUID", player.getUUID().toString());
-				}
-
-				if (!tag.contains("passcode") && message.passcode.matches("[0-9]{4}"))
-					tag.putString("passcode", message.passcode);
+			if (!tag.contains("owner")) {
+				tag.putString("owner", player.getName().getString());
+				tag.putString("ownerUUID", player.getUUID().toString());
 			}
-		});
 
-		ctx.get().setPacketHandled(true);
+			if (!tag.contains("passcode") && passcode.matches("[0-9]{4}"))
+				tag.putString("passcode", passcode);
+		}
 	}
 }

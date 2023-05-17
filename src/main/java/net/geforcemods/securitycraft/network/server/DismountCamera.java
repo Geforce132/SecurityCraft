@@ -10,20 +10,14 @@ import net.minecraftforge.network.NetworkEvent;
 public class DismountCamera {
 	public DismountCamera() {}
 
-	public static void encode(DismountCamera message, FriendlyByteBuf buf) {}
+	public DismountCamera(FriendlyByteBuf buf) {}
 
-	public static DismountCamera decode(FriendlyByteBuf buf) {
-		return new DismountCamera();
-	}
+	public void encode(FriendlyByteBuf buf) {}
 
-	public static void onMessage(DismountCamera message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			ServerPlayer player = ctx.get().getSender();
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		ServerPlayer player = ctx.get().getSender();
 
-			if (player.getCamera() instanceof SecurityCamera cam)
-				cam.stopViewing(player);
-		});
-
-		ctx.get().setPacketHandled(true);
+		if (player.getCamera() instanceof SecurityCamera cam)
+			cam.stopViewing(player);
 	}
 }

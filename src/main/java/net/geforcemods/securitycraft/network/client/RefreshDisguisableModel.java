@@ -26,37 +26,30 @@ public class RefreshDisguisableModel {
 		this.toggled = toggled;
 	}
 
-	public static void encode(RefreshDisguisableModel message, FriendlyByteBuf buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeBoolean(message.insert);
-		buf.writeItem(message.stack);
-		buf.writeBoolean(message.toggled);
+	public RefreshDisguisableModel(FriendlyByteBuf buf) {
+		pos = buf.readBlockPos();
+		insert = buf.readBoolean();
+		stack = buf.readItem();
+		toggled = buf.readBoolean();
 	}
 
-	public static RefreshDisguisableModel decode(FriendlyByteBuf buf) {
-		RefreshDisguisableModel message = new RefreshDisguisableModel();
-
-		message.pos = buf.readBlockPos();
-		message.insert = buf.readBoolean();
-		message.stack = buf.readItem();
-		message.toggled = buf.readBoolean();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
+		buf.writeBoolean(insert);
+		buf.writeItem(stack);
+		buf.writeBoolean(toggled);
 	}
 
-	public static void onMessage(RefreshDisguisableModel message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			IModuleInventory be = (IModuleInventory) Minecraft.getInstance().level.getBlockEntity(message.pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		IModuleInventory be = (IModuleInventory) Minecraft.getInstance().level.getBlockEntity(pos);
 
-			if (be != null) {
-				if (message.insert)
-					be.insertModule(message.stack, message.toggled);
-				else
-					be.removeModule(ModuleType.DISGUISE, message.toggled);
+		if (be != null) {
+			if (insert)
+				be.insertModule(stack, toggled);
+			else
+				be.removeModule(ModuleType.DISGUISE, toggled);
 
-				ClientHandler.refreshModelData(be.getBlockEntity());
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
+			ClientHandler.refreshModelData(be.getBlockEntity());
+		}
 	}
 }

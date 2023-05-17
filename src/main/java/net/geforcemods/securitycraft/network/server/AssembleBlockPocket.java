@@ -18,27 +18,21 @@ public class AssembleBlockPocket {
 		this.size = size;
 	}
 
-	public static void encode(AssembleBlockPocket message, FriendlyByteBuf buf) {
-		buf.writeLong(message.pos.asLong());
-		buf.writeInt(message.size);
+	public AssembleBlockPocket(FriendlyByteBuf buf) {
+		pos = BlockPos.of(buf.readLong());
+		size = buf.readInt();
 	}
 
-	public static AssembleBlockPocket decode(FriendlyByteBuf buf) {
-		AssembleBlockPocket message = new AssembleBlockPocket();
-
-		message.pos = BlockPos.of(buf.readLong());
-		message.size = buf.readInt();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeLong(pos.asLong());
+		buf.writeInt(size);
 	}
 
-	public static void onMessage(AssembleBlockPocket message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			if (ctx.get().getSender().level.getBlockEntity(message.pos) instanceof BlockPocketManagerBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
-				be.size = message.size;
-				be.autoAssembleMultiblock();
-				be.setChanged();
-			}
-		});
-		ctx.get().setPacketHandled(true);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		if (ctx.get().getSender().level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
+			be.size = size;
+			be.autoAssembleMultiblock();
+			be.setChanged();
+		}
 	}
 }

@@ -27,43 +27,35 @@ public class SyncBlockPocketManager {
 		this.color = color;
 	}
 
-	public static void encode(SyncBlockPocketManager message, FriendlyByteBuf buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeVarInt(message.size);
-		buf.writeBoolean(message.showOutline);
-		buf.writeVarInt(message.autoBuildOffset);
-		buf.writeInt(message.color);
+	public SyncBlockPocketManager(FriendlyByteBuf buf) {
+		pos = buf.readBlockPos();
+		size = buf.readVarInt();
+		showOutline = buf.readBoolean();
+		autoBuildOffset = buf.readVarInt();
+		color = buf.readInt();
 	}
 
-	public static SyncBlockPocketManager decode(FriendlyByteBuf buf) {
-		SyncBlockPocketManager message = new SyncBlockPocketManager();
-
-		message.pos = buf.readBlockPos();
-		message.size = buf.readVarInt();
-		message.showOutline = buf.readBoolean();
-		message.autoBuildOffset = buf.readVarInt();
-		message.color = buf.readInt();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
+		buf.writeVarInt(size);
+		buf.writeBoolean(showOutline);
+		buf.writeVarInt(autoBuildOffset);
+		buf.writeInt(color);
 	}
 
-	public static void onMessage(SyncBlockPocketManager message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = message.pos;
-			Player player = ctx.get().getSender();
-			Level level = player.level;
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		Player player = ctx.get().getSender();
+		Level level = player.level;
 
-			if (level.isLoaded(pos) && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity bpm && bpm.isOwnedBy(player)) {
-				BlockState state = level.getBlockState(pos);
+		if (level.isLoaded(pos) && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity bpm && bpm.isOwnedBy(player)) {
+			BlockState state = level.getBlockState(pos);
 
-				bpm.size = message.size;
-				bpm.showOutline = message.showOutline;
-				bpm.autoBuildOffset = message.autoBuildOffset;
-				bpm.setColor(message.color);
-				bpm.setChanged();
-				level.sendBlockUpdated(pos, state, state, 2);
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
+			bpm.size = size;
+			bpm.showOutline = showOutline;
+			bpm.autoBuildOffset = autoBuildOffset;
+			bpm.setColor(color);
+			bpm.setChanged();
+			level.sendBlockUpdated(pos, state, state, 2);
+		}
 	}
 }

@@ -30,18 +30,15 @@ public class SendTip {
 
 	public SendTip() {}
 
-	public static void encode(SendTip message, FriendlyByteBuf packet) {}
+	public SendTip(FriendlyByteBuf packet) {}
 
-	public static SendTip decode(FriendlyByteBuf packet) {
-		return new SendTip();
-	}
+	public void encode(FriendlyByteBuf packet) {}
 
-	public static void onMessage(SendTip packet, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			if (!ConfigHandler.CLIENT.sayThanksMessage.get())
-				return;
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		if (!ConfigHandler.CLIENT.sayThanksMessage.get())
+			return;
 
-			//@formatter:off
+		//@formatter:off
 			String tipKey = getRandomTip();
 			MutableComponent message = new TextComponent("[")
 					.append(new TextComponent("SecurityCraft").withStyle(ChatFormatting.GOLD))
@@ -52,16 +49,13 @@ public class SendTip {
 							Utils.localize(tipKey)));
 			//@formatter:on
 
-			if (tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-				message = message.append(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+		if (tipsWithLink.containsKey(tipKey.split("\\.")[2]))
+			message = message.append(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 
-			ClientHandler.getClientPlayer().sendMessage(message, Util.NIL_UUID);
-		});
-
-		ctx.get().setPacketHandled(true);
+		ClientHandler.getClientPlayer().sendMessage(message, Util.NIL_UUID);
 	}
 
-	private static String getRandomTip() {
+	private String getRandomTip() {
 		//@formatter:off
 		String[] tips = {
 				"messages.securitycraft:tip.scHelp",
@@ -75,7 +69,7 @@ public class SendTip {
 		return tips[new Random().nextInt(isOutdated() ? tips.length : tips.length - 1)];
 	}
 
-	private static boolean isOutdated() {
+	private boolean isOutdated() {
 		return VersionChecker.getResult(ModList.get().getModContainerById(SecurityCraft.MODID).get().getModInfo()).status() == Status.OUTDATED;
 	}
 }
