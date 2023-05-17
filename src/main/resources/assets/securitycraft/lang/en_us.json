@@ -1136,6 +1136,8 @@
 	"option.generic.secret_sign.isSecret.description": "Should the text of the secret sign only be visible to the owner and players on the allowlist?",
 	"option.generic.smartModuleCooldown": "Cooldown: %s",
 	"option.generic.smartModuleCooldown.description": "How long can players not enter a passcode after an incorrect code has been entered? (In Ticks, 20 ticks = 1 second; requires Smart Module)",
+	"option.generic.viewActivated.maximumDistance": "Maximum Distance: %s",
+	"option.generic.viewActivated.maximumDistance.description": "From at most how many blocks away is it possible to activate this block?",
 	"option.securitycraft.alarm.range": "Range: %s",
 	"option.securitycraft.alarm.range.description": "How many blocks away can the alarm sound be heard?",
 	"option.securitycraft.alarm.resetCooldown": "Reset Cooldown: %s",
