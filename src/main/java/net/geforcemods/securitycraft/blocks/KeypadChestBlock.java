@@ -5,9 +5,11 @@ import java.util.Optional;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -142,7 +144,7 @@ public class KeypadChestBlock extends ChestBlock {
 					}
 
 					thisBe.readOptions(be.writeOptions(new CompoundTag()));
-					thisBe.setSalt(be.getSalt());
+					thisBe.setSaltKey(be.getSaltKey());
 					thisBe.setPasscode(be.getPasscode());
 				}
 			}
@@ -184,6 +186,16 @@ public class KeypadChestBlock extends ChestBlock {
 
 		if (level.getBlockEntity(pos) instanceof KeypadChestBlockEntity be)
 			be.setBlockState(state);
+	}
+
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+				SaltData.removeKey(be.getSaltKey());
+
+			super.onRemove(state, level, pos, newState, isMoving);
+		}
 	}
 
 	@Override

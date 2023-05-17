@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -24,7 +25,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
 	private long cooldownEnd = 0;
 	private byte[] passcode;
-	private byte[] salt;
+	private UUID saltKey;
 
 	public KeypadDoorBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.KEYPAD_DOOR_BLOCK_ENTITY.get(), pos, state);
@@ -34,8 +35,8 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 
-		if (salt != null)
-			tag.putString("salt", Utils.bytesToString(salt));
+		if (saltKey != null)
+			tag.putUUID("saltKey", saltKey);
 
 		if (passcode != null)
 			tag.putString("passcode", Utils.bytesToString(passcode));
@@ -47,7 +48,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	public void load(CompoundTag tag) {
 		super.load(tag);
 
-		salt = Utils.stringToBytes(tag.getString("salt"));
+		loadSaltKey(tag);
 		loadPasscode(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 	}
@@ -76,24 +77,24 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public void setPasscode(byte[] passcode) {
 		this.passcode = passcode;
-		runForOtherHalf(otherHalf -> otherHalf.setPasscodeAndSaltExclusively(passcode, salt));
+		runForOtherHalf(otherHalf -> otherHalf.setPasscodeAndSaltKeyExclusively(passcode, saltKey));
 		setChanged();
 	}
 
 	@Override
-	public byte[] getSalt() {
-		return salt == null || salt.length == 0 ? null : salt;
+	public UUID getSaltKey() {
+		return saltKey;
 	}
 
 	@Override
-	public void setSalt(byte[] salt) {
-		this.salt = salt;
+	public void setSaltKey(UUID saltKey) {
+		this.saltKey = saltKey;
 	}
 
 	//only set the passcode and salt for this door half
-	public void setPasscodeAndSaltExclusively(byte[] passcode, byte[] salt) {
+	public void setPasscodeAndSaltKeyExclusively(byte[] passcode, UUID saltKey) {
 		this.passcode = passcode;
-		this.salt = salt;
+		this.saltKey = saltKey;
 		setChanged();
 	}
 

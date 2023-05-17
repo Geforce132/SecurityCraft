@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
@@ -25,6 +26,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -76,7 +78,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	};
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private byte[] passcode;
-	private byte[] salt;
+	private UUID saltKey;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
@@ -100,8 +102,8 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		writeOptions(tag);
 		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 
-		if (salt != null)
-			tag.putString("salt", Utils.bytesToString(salt));
+		if (saltKey != null)
+			tag.putUUID("saltKey", saltKey);
 
 		if (passcode != null)
 			tag.putString("passcode", Utils.bytesToString(passcode));
@@ -123,7 +125,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
-		salt = Utils.stringToBytes(tag.getString("salt"));
+		loadSaltKey(tag);
 		loadPasscode(tag);
 		owner.load(tag);
 	}
@@ -268,13 +270,13 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	}
 
 	@Override
-	public byte[] getSalt() {
-		return salt == null || salt.length == 0 ? null : salt;
+	public UUID getSaltKey() {
+		return saltKey;
 	}
 
 	@Override
-	public void setSalt(byte[] salt) {
-		this.salt = salt;
+	public void setSaltKey(UUID saltKey) {
+		this.saltKey = saltKey;
 	}
 
 	@Override

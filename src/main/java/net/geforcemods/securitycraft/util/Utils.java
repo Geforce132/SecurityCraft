@@ -62,7 +62,7 @@ public class Utils {
 
 	public static CompoundTag filterPasscodeAndSaltFromTag(CompoundTag tag) {
 		tag.remove("passcode");
-		tag.remove("salt");
+		tag.remove("saltKey");
 		return tag;
 	}
 

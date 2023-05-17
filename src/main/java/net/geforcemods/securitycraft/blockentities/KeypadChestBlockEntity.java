@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -44,7 +45,7 @@ import net.minecraftforge.items.IItemHandler;
 public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscodeProtected, IOwnable, IModuleInventory, ICustomizable, ILockable, ISentryBulletContainer {
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private byte[] passcode;
-	private byte[] salt;
+	private UUID saltKey;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
@@ -65,8 +66,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		writeOptions(tag);
 		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 
-		if (salt != null)
-			tag.putString("salt", Utils.bytesToString(salt));
+		if (saltKey != null)
+			tag.putUUID("saltKey", saltKey);
 
 		if (passcode != null)
 			tag.putString("passcode", Utils.bytesToString(passcode));
@@ -83,7 +84,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
-		salt = Utils.stringToBytes(tag.getString("salt"));
+		loadSaltKey(tag);
 		loadPasscode(tag);
 		owner.load(tag);
 	}
@@ -290,13 +291,13 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	}
 
 	@Override
-	public byte[] getSalt() {
-		return salt == null || salt.length == 0 ? null : salt;
+	public UUID getSaltKey() {
+		return saltKey;
 	}
 
 	@Override
-	public void setSalt(byte[] salt) {
-		this.salt = salt;
+	public void setSaltKey(UUID saltKey) {
+		this.saltKey = saltKey;
 	}
 
 	@Override

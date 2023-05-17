@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.items;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
@@ -68,7 +69,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 	public static void hashAndSetPasscode(CompoundTag briefcaseTag, String passcode) {
 		byte[] salt = Utils.generateSalt();
 
-		briefcaseTag.putString("salt", Utils.bytesToString(salt));
+		briefcaseTag.putUUID("saltKey", SaltData.putSalt(salt));
 		briefcaseTag.putString("passcode", Utils.bytesToString(Utils.hashPasscode(passcode, salt)));
 	}
 

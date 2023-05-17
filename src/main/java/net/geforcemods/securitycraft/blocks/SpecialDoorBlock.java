@@ -3,7 +3,9 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -90,6 +92,9 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock 
 		if (!state.is(newState.getBlock())) {
 			if (level.getBlockEntity(pos) instanceof IModuleInventory inv && state.getValue(HALF) == DoubleBlockHalf.LOWER)
 				inv.dropAllModules();
+
+			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+				SaltData.removeKey(be.getSaltKey());
 
 			if (!newState.hasBlockEntity())
 				level.removeBlockEntity(pos);

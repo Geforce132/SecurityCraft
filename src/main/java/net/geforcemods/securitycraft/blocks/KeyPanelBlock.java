@@ -2,7 +2,9 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeyPanelBlockEntity;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -191,6 +193,9 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 				level.updateNeighborsAt(pos, this);
 				level.updateNeighborsAt(pos.relative(state.getValue(FACING).getOpposite()), this);
 			}
+
+			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+				SaltData.removeKey(be.getSaltKey());
 
 			if (!newState.hasBlockEntity())
 				level.removeBlockEntity(pos);

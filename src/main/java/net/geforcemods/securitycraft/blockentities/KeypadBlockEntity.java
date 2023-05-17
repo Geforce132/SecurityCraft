@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.UUID;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
@@ -18,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasscodeProtected, ILockable {
 	private byte[] passcode;
-	private byte[] salt;
+	private UUID saltKey;
 	private BooleanOption isAlwaysActive = new BooleanOption("isAlwaysActive", false) {
 		@Override
 		public void toggle() {
@@ -44,8 +46,8 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 
-		if (salt != null)
-			tag.putString("salt", Utils.bytesToString(salt));
+		if (saltKey != null)
+			tag.putUUID("saltKey", saltKey);
 
 		if (passcode != null)
 			tag.putString("passcode", Utils.bytesToString(passcode));
@@ -57,7 +59,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 	public void load(CompoundTag tag) {
 		super.load(tag);
 
-		salt = Utils.stringToBytes(tag.getString("salt"));
+		loadSaltKey(tag);
 		loadPasscode(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 	}
@@ -102,13 +104,13 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 	}
 
 	@Override
-	public byte[] getSalt() {
-		return salt == null || salt.length == 0 ? null : salt;
+	public UUID getSaltKey() {
+		return saltKey;
 	}
 
 	@Override
-	public void setSalt(byte[] salt) {
-		this.salt = salt;
+	public void setSaltKey(UUID saltKey) {
+		this.saltKey = saltKey;
 	}
 
 	@Override

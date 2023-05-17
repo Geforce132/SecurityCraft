@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.UUID;
 
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -50,7 +51,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private Owner owner = new Owner();
 	private byte[] passcode;
-	private byte[] salt;
+	private UUID saltKey;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
@@ -112,8 +113,8 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		if (owner != null)
 			owner.save(tag, false);
 
-		if (salt != null)
-			tag.putString("salt", Utils.bytesToString(salt));
+		if (saltKey != null)
+			tag.putUUID("saltKey", saltKey);
 
 		if (passcode != null)
 			tag.putString("passcode", Utils.bytesToString(passcode));
@@ -128,7 +129,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 		owner.load(tag);
-		salt = Utils.stringToBytes(tag.getString("salt"));
+		loadSaltKey(tag);
 		loadPasscode(tag);
 	}
 
@@ -247,13 +248,13 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	}
 
 	@Override
-	public byte[] getSalt() {
-		return salt == null || salt.length == 0 ? null : salt;
+	public UUID getSaltKey() {
+		return saltKey;
 	}
 
 	@Override
-	public void setSalt(byte[] salt) {
-		this.salt = salt;
+	public void setSaltKey(UUID saltKey) {
+		this.saltKey = saltKey;
 	}
 
 	public ContainerData getFurnaceData() {

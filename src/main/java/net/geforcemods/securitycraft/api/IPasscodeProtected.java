@@ -1,11 +1,13 @@
 package net.geforcemods.securitycraft.api;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
@@ -98,7 +100,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	public byte[] getPasscode();
 
 	/**
-	 * Hashes and stores the given passcode using a new, randomly generated salt, which also gets stored in the process.
+	 * Hashes and stores the given passcode using a new, randomly generated salt.
 	 *
 	 * @param passcode The passcode
 	 */
@@ -107,13 +109,14 @@ public interface IPasscodeProtected extends ICodebreakable {
 	}
 
 	/**
-	 * Hashes and stores the given passcode using the given salt, which also gets stored in the process.
+	 * Hashes and stores the given passcode using the given salt.
 	 *
 	 * @param passcode The passcode
 	 * @param salt The salt used for hashing
 	 */
 	default void hashAndSetPasscode(String passcode, byte[] salt) {
-		setSalt(salt);
+		SaltData.removeKey(getSaltKey());
+		setSaltKey(SaltData.putSalt(salt));
 		setPasscode(Utils.hashPasscode(passcode, salt));
 	}
 
@@ -137,6 +140,20 @@ public interface IPasscodeProtected extends ICodebreakable {
 	}
 
 	/**
+	 * Sets the salt key from the information stored in the given CompoundTag.
+	 *
+	 * @param tag The tag that the salt key information is stored in
+	 */
+	default void loadSaltKey(CompoundTag tag) {
+		UUID saltKey = tag.contains("saltKey") ? tag.getUUID("saltKey") : null;
+
+		if (!SaltData.containsKey(saltKey)) //If no salt key or no salt associated with the given key can be found, a new password needs to be set
+			Utils.filterPasscodeAndSaltFromTag(tag);
+		else
+			setSaltKey(saltKey);
+	}
+
+	/**
 	 * Sets the passcode from the information stored in the given CompoundTag.
 	 *
 	 * @param tag The tag that the passcode information is stored in
@@ -145,26 +162,37 @@ public interface IPasscodeProtected extends ICodebreakable {
 		String passcode = tag.getString(tag.contains("Passcode", Tag.TAG_STRING) ? "Passcode" : "passcode"); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
 
 		//SecurityCraft's passcode-protected blocks do not support passcodes longer than 20 characters, so if such a short passcode is encountered instead of a hash, store the properly hashed version inside the block
-		if (!passcode.isEmpty() && passcode.length() <= 20)
-			hashAndSetPasscode(Utils.hashPasscodeWithoutSalt(passcode));
-		else
-			setPasscode(Utils.stringToBytes(passcode));
+		if (!passcode.isEmpty()) {
+			if (passcode.length() <= 20)
+				hashAndSetPasscode(Utils.hashPasscodeWithoutSalt(passcode));
+			else
+				setPasscode(Utils.stringToBytes(passcode));
+		}
 	}
 
 	/**
-	 * Returns the block entity's salt.
+	 * Returns the block entity's salt, which is used for hashing incoming passcodes.
 	 *
-	 * @return The stored salt, null if the passcode and salt are not set yet
+	 * @return The salt, null if the passcode and salt are not set yet
 	 */
-	public byte[] getSalt();
+	default byte[] getSalt() {
+		return SaltData.getSalt(getSaltKey());
+	}
 
 	/**
-	 * Sets the block's salt, which is used for hashing incoming passcodes. The salt should always be set alongside the
-	 * passcode.
+	 * Returns the block entity's salt key, which is used for retrieving the salt from the external salt list.
 	 *
-	 * @param salt The new salt
+	 * @return The stored salt key, null if the passcode and salt are not set yet
 	 */
-	public void setSalt(byte[] salt);
+	public UUID getSaltKey();
+
+	/**
+	 * Sets the block entity's salt key, which is used for retrieving the salt from the external salt list. The salt
+	 * key should always be set alongside the passcode.
+	 *
+	 * @param saltKey The new key associated with the salt
+	 */
+	public void setSaltKey(UUID saltKey);
 
 	/**
 	 * Sets this block to be on cooldown and starts the cooldown

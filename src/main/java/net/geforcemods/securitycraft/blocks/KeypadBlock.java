@@ -3,7 +3,9 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadBlockEntity;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -87,6 +89,9 @@ public class KeypadBlock extends DisguisableBlock {
 				level.updateNeighborsAt(pos, this);
 				BlockUtils.updateIndirectNeighbors(level, pos, this);
 			}
+
+			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+				SaltData.removeKey(be.getSaltKey());
 
 			super.onRemove(state, level, pos, newState, isMoving);
 		}

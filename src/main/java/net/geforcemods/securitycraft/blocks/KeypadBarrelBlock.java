@@ -2,8 +2,10 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadBarrelBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -115,6 +117,9 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 				Containers.dropContents(level, pos, container);
 				level.updateNeighbourForOutputSignal(pos, this);
 			}
+
+			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+				SaltData.removeKey(be.getSaltKey());
 
 			super.onRemove(state, level, pos, newState, isMoving);
 		}

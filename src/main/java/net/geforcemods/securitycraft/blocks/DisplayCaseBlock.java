@@ -1,8 +1,10 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.GlowDisplayCaseBlockEntity;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -177,6 +179,9 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 		if (!(newState.getBlock() instanceof DisplayCaseBlock)) {
 			if (level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be)
 				Block.popResource(level, pos, be.getDisplayedStack());
+
+			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+				SaltData.removeKey(be.getSaltKey());
 
 			super.onRemove(state, level, pos, newState, isMoving);
 		}

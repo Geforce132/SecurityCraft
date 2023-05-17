@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -78,8 +79,10 @@ public class UniversalKeyChangerItem extends Item {
 				CompoundTag tag = briefcase.getTag();
 
 				if (tag != null && tag.contains("passcode")) {
-					tag.remove("salt");
-					tag.remove("passcode");
+					if (tag.contains("saltKey"))
+						SaltData.removeKey(tag.getUUID("saltKey"));
+
+					Utils.filterPasscodeAndSaltFromTag(tag);
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), ChatFormatting.GREEN);
 					return InteractionResultHolder.success(keyChanger);
 				}

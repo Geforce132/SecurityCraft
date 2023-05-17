@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.UUID;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -35,7 +37,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	private float openness;
 	private float oOpenness;
 	private byte[] passcode;
-	private byte[] salt;
+	private UUID saltKey;
 
 	public DisplayCaseBlockEntity(BlockPos pos, BlockState state) {
 		this(SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), pos, state);
@@ -84,13 +86,13 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	}
 
 	@Override
-	public byte[] getSalt() {
-		return salt == null || salt.length == 0 ? null : salt;
+	public UUID getSaltKey() {
+		return saltKey;
 	}
 
 	@Override
-	public void setSalt(byte[] salt) {
-		this.salt = salt;
+	public void setSaltKey(UUID saltKey) {
+		this.saltKey = saltKey;
 	}
 
 	@Override
@@ -100,8 +102,8 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		tag.putBoolean("ShouldBeOpen", shouldBeOpen);
 		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 
-		if (salt != null)
-			tag.putString("salt", Utils.bytesToString(salt));
+		if (saltKey != null)
+			tag.putUUID("saltKey", saltKey);
 
 		if (passcode != null)
 			tag.putString("passcode", Utils.bytesToString(passcode));
@@ -117,7 +119,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		setDisplayedStack(ItemStack.of((CompoundTag) tag.get("DisplayedStack")));
 		shouldBeOpen = tag.getBoolean("ShouldBeOpen");
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
-		salt = Utils.stringToBytes(tag.getString("salt"));
+		loadSaltKey(tag);
 		loadPasscode(tag);
 
 		if (forceOpenness)

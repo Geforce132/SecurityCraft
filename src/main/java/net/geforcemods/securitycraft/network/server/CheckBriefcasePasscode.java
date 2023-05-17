@@ -1,16 +1,19 @@
 package net.geforcemods.securitycraft.network.server;
 
 import java.util.Arrays;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.inventory.BriefcaseContainer;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -52,11 +55,18 @@ public class CheckBriefcasePasscode {
 			if (!briefcase.isEmpty()) {
 				CompoundTag tag = briefcase.getOrCreateTag();
 				String briefcaseCode = tag.getString("passcode");
-				byte[] salt = Utils.stringToBytes(tag.getString("salt"));
 
 				if (briefcaseCode.length() == 4) { //If an old plaintext passcode is encountered, generate and store the hashed variant
 					BriefcaseItem.hashAndSetPasscode(tag, Utils.hashPasscodeWithoutSalt(briefcaseCode));
 					briefcaseCode = tag.getString("passcode");
+				}
+
+				UUID saltKey = tag.contains("saltKey", Tag.TAG_INT_ARRAY) ? tag.getUUID("saltKey") : null;
+				byte[] salt = SaltData.getSalt(saltKey);
+
+				if (salt == null) { //If no salt key or no salt associated with the given key can be found, a new password needs to be set
+					Utils.filterPasscodeAndSaltFromTag(tag);
+					return;
 				}
 
 				if (Arrays.equals(Utils.stringToBytes(briefcaseCode), Utils.hashPasscode(passcode, salt))) {
