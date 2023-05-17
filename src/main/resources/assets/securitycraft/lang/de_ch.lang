@@ -565,6 +565,8 @@ option.generic.ignoreOwner.description=Soll dieser Block seinen Besitzer ignorie
 option.generic.ignoreOwner=Besitzer ignorieren: #
 option.generic.smartModuleCooldown.description=Wie lange können Spieler keinen Code mehr eingeben, nachdem ein falscher Code eingegeben wurde? (In Ticks, 20 Ticks = 1 Sekunde; benötigt ein schlaues Modul)
 option.generic.smartModuleCooldown=Abklingzeit: #
+option.generic.viewActivated.maximumDistance.description="Von wie vielen Blöcken weit weg ist es maximal möglich, diesen Block zu aktivieren?
+option.generic.viewActivated.maximumDistance=Maximale Distanz: #
 option.securitycraft:alarm.range.description=Wie viele Blöcke weit kann der Alarm-Sound gehört werden?
 option.securitycraft:alarm.range=Reichweite: #
 option.securitycraft:alarm.resetCooldown.description=Soll die Abklingzeit zwischen Alarmsounds zurückgesetzt werden, sobald der Alarm ein Redstonesignal bekommt, sodass der Alarmsound immer sofort abgespielt wird?

@@ -27,11 +27,12 @@ public interface IViewActivated {
 				return;
 			}
 
-			List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(5));
+			double maximumDistance = getMaximumDistance();
+			List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(maximumDistance));
 
 			for (EntityLivingBase entity : entities) {
 				double eyeHeight = entity.getEyeHeight();
-				Vec3d lookVec = new Vec3d(entity.posX + (entity.getLookVec().x * 5), (eyeHeight + entity.posY) + (entity.getLookVec().y * 5), entity.posZ + (entity.getLookVec().z * 5));
+				Vec3d lookVec = new Vec3d(entity.posX + (entity.getLookVec().x * maximumDistance), (eyeHeight + entity.posY) + (entity.getLookVec().y * maximumDistance), entity.posZ + (entity.getLookVec().z * maximumDistance));
 				RayTraceResult mop = world.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), lookVec);
 
 				if (mop != null && mop.typeOfHit == Type.BLOCK && mop.getBlockPos().getX() == pos.getX() && mop.getBlockPos().getY() == pos.getY() && mop.getBlockPos().getZ() == pos.getZ()) {
@@ -76,4 +77,12 @@ public interface IViewActivated {
 	public default boolean activatedOnlyByPlayer() {
 		return true;
 	}
+
+	/**
+	 * Returns the maximum distance from which a view check is performed. If an entity is further away than this distance, this
+	 * block entity cannot be activated
+	 *
+	 * @return The maximum distance in blocks from which a view check is performed
+	 */
+	public double getMaximumDistance();
 }

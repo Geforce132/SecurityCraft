@@ -3,11 +3,15 @@ package net.geforcemods.securitycraft.blockentities;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IViewActivated;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,6 +24,12 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.util.Constants;
 
 public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IViewActivated {
+	private DoubleOption maximumDistance = new DoubleOption(this::getPos, "maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D, true) {
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.viewActivated.maximumDistance";
+		}
+	};
 	private int viewCooldown = 0;
 
 	@Override
@@ -90,7 +100,26 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 	}
 
 	@Override
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST
+		};
+	}
+
+	@Override
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				sendMessage, signalLength, disabled, maximumDistance
+		};
+	}
+
+	@Override
 	public int defaultSignalLength() {
 		return 0;
+	}
+
+	@Override
+	public double getMaximumDistance() {
+		return maximumDistance.get();
 	}
 }
