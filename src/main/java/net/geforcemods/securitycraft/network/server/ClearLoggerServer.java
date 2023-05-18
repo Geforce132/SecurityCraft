@@ -18,32 +18,25 @@ public class ClearLoggerServer {
 		this.pos = pos;
 	}
 
-	public static void encode(ClearLoggerServer message, PacketBuffer buf) {
-		buf.writeBlockPos(message.pos);
+	public ClearLoggerServer(PacketBuffer buf) {
+		pos = buf.readBlockPos();
 	}
 
-	public static ClearLoggerServer decode(PacketBuffer buf) {
-		ClearLoggerServer message = new ClearLoggerServer();
-
-		message.pos = buf.readBlockPos();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
 	}
 
-	public static void onMessage(ClearLoggerServer message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.level.getBlockEntity(message.pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		PlayerEntity player = ctx.get().getSender();
+		TileEntity te = player.level.getBlockEntity(pos);
 
-			if (te instanceof UsernameLoggerBlockEntity) {
-				UsernameLoggerBlockEntity logger = (UsernameLoggerBlockEntity) te;
+		if (te instanceof UsernameLoggerBlockEntity) {
+			UsernameLoggerBlockEntity logger = (UsernameLoggerBlockEntity) te;
 
-				if (logger.isOwnedBy(player)) {
-					logger.players = new String[100];
-					logger.getLevel().sendBlockUpdated(logger.getBlockPos(), logger.getBlockState(), logger.getBlockState(), 2);
-				}
+			if (logger.isOwnedBy(player)) {
+				logger.players = new String[100];
+				logger.getLevel().sendBlockUpdated(logger.getBlockPos(), logger.getBlockState(), logger.getBlockState(), 2);
 			}
-		});
-
-		ctx.get().setPacketHandled(true);
+		}
 	}
 }

@@ -30,27 +30,34 @@ public class PlayAlarmSound {
 		this.pitch = pitch;
 	}
 
-	public static void encode(PlayAlarmSound message, PacketBuffer buf) {
-		buf.writeBlockPos(message.bePos);
-		buf.writeResourceLocation(ForgeRegistries.SOUND_EVENTS.getKey(message.sound));
-		buf.writeInt(message.soundX);
-		buf.writeInt(message.soundY);
-		buf.writeInt(message.soundZ);
-		buf.writeFloat(message.volume);
-		buf.writeFloat(message.pitch);
+	public PlayAlarmSound(PacketBuffer buf) {
+		bePos = buf.readBlockPos();
+		sound = ForgeRegistries.SOUND_EVENTS.getValue(buf.readResourceLocation());
+		soundX = buf.readInt();
+		soundY = buf.readInt();
+		soundZ = buf.readInt();
+		volume = buf.readFloat();
+		pitch = buf.readFloat();
 	}
 
-	public static PlayAlarmSound decode(PacketBuffer buf) {
-		PlayAlarmSound message = new PlayAlarmSound();
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(bePos);
+		buf.writeResourceLocation(ForgeRegistries.SOUND_EVENTS.getKey(sound));
+		buf.writeInt(soundX);
+		buf.writeInt(soundY);
+		buf.writeInt(soundZ);
+		buf.writeFloat(volume);
+		buf.writeFloat(pitch);
+	}
 
-		message.bePos = buf.readBlockPos();
-		message.sound = ForgeRegistries.SOUND_EVENTS.getValue(buf.readResourceLocation());
-		message.soundX = buf.readInt();
-		message.soundY = buf.readInt();
-		message.soundZ = buf.readInt();
-		message.volume = buf.readFloat();
-		message.pitch = buf.readFloat();
-		return message;
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		World level = ClientHandler.getClientLevel();
+		TileEntity te = level.getBlockEntity(bePos);
+
+		if (te instanceof AlarmBlockEntity) {
+			((AlarmBlockEntity) te).setPowered(true);
+			((AlarmBlockEntity) te).playSound(level, getX(), getY(), getZ(), sound, volume, pitch);
+		}
 	}
 
 	public double getX() {
@@ -63,19 +70,5 @@ public class PlayAlarmSound {
 
 	public double getZ() {
 		return soundZ / 8.0F;
-	}
-
-	public static void onMessage(PlayAlarmSound message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			World level = ClientHandler.getClientLevel();
-			TileEntity te = level.getBlockEntity(message.bePos);
-
-			if (te instanceof AlarmBlockEntity) {
-				((AlarmBlockEntity) te).setPowered(true);
-				((AlarmBlockEntity) te).playSound(level, message.getX(), message.getY(), message.getZ(), message.sound, message.volume, message.pitch);
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
 	}
 }

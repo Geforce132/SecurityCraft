@@ -26,40 +26,31 @@ public class SyncTrophySystem {
 		this.allowed = allowed;
 	}
 
-	public static void encode(SyncTrophySystem message, PacketBuffer buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeResourceLocation(message.projectileType);
-		buf.writeBoolean(message.allowed);
+	public SyncTrophySystem(PacketBuffer buf) {
+		pos = buf.readBlockPos();
+		projectileType = buf.readResourceLocation();
+		allowed = buf.readBoolean();
 	}
 
-	public static SyncTrophySystem decode(PacketBuffer buf) {
-		SyncTrophySystem message = new SyncTrophySystem();
-
-		message.pos = buf.readBlockPos();
-		message.projectileType = buf.readResourceLocation();
-		message.allowed = buf.readBoolean();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
+		buf.writeResourceLocation(projectileType);
+		buf.writeBoolean(allowed);
 	}
 
-	public static void onMessage(SyncTrophySystem message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			EntityType<?> projectileType = ForgeRegistries.ENTITIES.getValue(message.projectileType);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		EntityType<?> projectileType = ForgeRegistries.ENTITIES.getValue(this.projectileType);
 
-			if (projectileType != null) {
-				World world = ctx.get().getSender().level;
-				BlockPos pos = message.pos;
-				boolean allowed = message.allowed;
-				TileEntity te = world.getBlockEntity(pos);
+		if (projectileType != null) {
+			World world = ctx.get().getSender().level;
+			TileEntity te = world.getBlockEntity(pos);
 
-				if (te instanceof TrophySystemBlockEntity && ((TrophySystemBlockEntity) te).isOwnedBy(ctx.get().getSender())) {
-					BlockState state = world.getBlockState(pos);
+			if (te instanceof TrophySystemBlockEntity && ((TrophySystemBlockEntity) te).isOwnedBy(ctx.get().getSender())) {
+				BlockState state = world.getBlockState(pos);
 
-					((TrophySystemBlockEntity) te).setFilter(projectileType, allowed);
-					world.sendBlockUpdated(pos, state, state, 2);
-				}
+				((TrophySystemBlockEntity) te).setFilter(projectileType, allowed);
+				world.sendBlockUpdated(pos, state, state, 2);
 			}
-		});
-
-		ctx.get().setPacketHandled(true);
+		}
 	}
 }

@@ -21,29 +21,22 @@ public class SetSentryMode {
 		this.mode = mode;
 	}
 
-	public static void encode(SetSentryMode message, PacketBuffer buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeInt(message.mode);
+	public SetSentryMode(PacketBuffer buf) {
+		pos = buf.readBlockPos();
+		mode = buf.readInt();
 	}
 
-	public static SetSentryMode decode(PacketBuffer buf) {
-		SetSentryMode message = new SetSentryMode();
-
-		message.pos = buf.readBlockPos();
-		message.mode = buf.readInt();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
+		buf.writeInt(mode);
 	}
 
-	public static void onMessage(SetSentryMode message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = ctx.get().getSender();
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		PlayerEntity player = ctx.get().getSender();
 
-			List<Sentry> sentries = player.level.<Sentry>getEntitiesOfClass(Sentry.class, new AxisAlignedBB(message.pos));
+		List<Sentry> sentries = player.level.<Sentry>getEntitiesOfClass(Sentry.class, new AxisAlignedBB(pos));
 
-			if (!sentries.isEmpty() && sentries.get(0).isOwnedBy(player))
-				sentries.get(0).toggleMode(player, message.mode, false);
-		});
-
-		ctx.get().setPacketHandled(true);
+		if (!sentries.isEmpty() && sentries.get(0).isOwnedBy(player))
+			sentries.get(0).toggleMode(player, mode, false);
 	}
 }

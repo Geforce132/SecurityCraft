@@ -22,45 +22,37 @@ public class CheckPassword {
 		password = code;
 	}
 
-	public static void encode(CheckPassword message, PacketBuffer buf) {
-		buf.writeInt(message.x);
-		buf.writeInt(message.y);
-		buf.writeInt(message.z);
-		buf.writeUtf(message.password);
+	public CheckPassword(PacketBuffer buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		password = buf.readUtf(Integer.MAX_VALUE / 4);
 	}
 
-	public static CheckPassword decode(PacketBuffer buf) {
-		CheckPassword message = new CheckPassword();
-
-		message.x = buf.readInt();
-		message.y = buf.readInt();
-		message.z = buf.readInt();
-		message.password = buf.readUtf(Integer.MAX_VALUE / 4);
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		buf.writeUtf(password);
 	}
 
-	public static void onMessage(CheckPassword message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = new BlockPos(message.x, message.y, message.z);
-			String password = message.password;
-			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.level.getBlockEntity(pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		BlockPos pos = new BlockPos(x, y, z);
+		PlayerEntity player = ctx.get().getSender();
+		TileEntity te = player.level.getBlockEntity(pos);
 
-			if (te instanceof IPasswordProtected) {
-				IPasswordProtected passwordProtected = (IPasswordProtected) te;
-				boolean isPasscodeCorrect = passwordProtected.getPassword().equals(password);
+		if (te instanceof IPasswordProtected) {
+			IPasswordProtected passwordProtected = (IPasswordProtected) te;
+			boolean isPasscodeCorrect = passwordProtected.getPassword().equals(password);
 
-				if (passwordProtected.isOnCooldown())
-					return;
-				else if (isPasscodeCorrect) {
-					player.closeContainer();
-					passwordProtected.activate(player);
-				}
-				else
-					passwordProtected.onIncorrectPasscodeEntered(player, password);
+			if (passwordProtected.isOnCooldown())
+				return;
+			else if (isPasscodeCorrect) {
+				player.closeContainer();
+				passwordProtected.activate(player);
 			}
-		});
-
-		ctx.get().setPacketHandled(true);
+			else
+				passwordProtected.onIncorrectPasscodeEntered(player, password);
+		}
 	}
 }

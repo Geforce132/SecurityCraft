@@ -21,38 +21,32 @@ public class SetCameraView {
 		id = camera.getId();
 	}
 
-	public static void encode(SetCameraView message, PacketBuffer buf) {
-		buf.writeVarInt(message.id);
+	public SetCameraView(PacketBuffer buf) {
+		id = buf.readVarInt();
 	}
 
-	public static SetCameraView decode(PacketBuffer buf) {
-		SetCameraView message = new SetCameraView();
-
-		message.id = buf.readVarInt();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeVarInt(id);
 	}
 
-	public static void onMessage(SetCameraView message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			Minecraft mc = Minecraft.getInstance();
-			Entity entity = mc.level.getEntity(message.id);
-			boolean isCamera = entity instanceof SecurityCamera;
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		Minecraft mc = Minecraft.getInstance();
+		Entity entity = mc.level.getEntity(id);
+		boolean isCamera = entity instanceof SecurityCamera;
 
-			if (isCamera || entity instanceof PlayerEntity) {
-				mc.setCameraEntity(entity);
+		if (isCamera || entity instanceof PlayerEntity) {
+			mc.setCameraEntity(entity);
 
-				if (isCamera) {
-					CameraController.previousCameraType = mc.options.getCameraType();
-					mc.options.setCameraType(PointOfView.FIRST_PERSON);
-					mc.gui.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);
-					CameraController.setRenderPosition(entity);
-				}
-				else if (CameraController.previousCameraType != null)
-					mc.options.setCameraType(CameraController.previousCameraType);
-
-				mc.levelRenderer.allChanged();
+			if (isCamera) {
+				CameraController.previousCameraType = mc.options.getCameraType();
+				mc.options.setCameraType(PointOfView.FIRST_PERSON);
+				mc.gui.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);
+				CameraController.setRenderPosition(entity);
 			}
-		});
-		ctx.get().setPacketHandled(true);
+			else if (CameraController.previousCameraType != null)
+				mc.options.setCameraType(CameraController.previousCameraType);
+
+			mc.levelRenderer.allChanged();
+		}
 	}
 }

@@ -23,54 +23,47 @@ public class SetListModuleData {
 		this.tag = tag;
 	}
 
-	public static void encode(SetListModuleData message, PacketBuffer buf) {
-		buf.writeNbt(message.tag);
+	public SetListModuleData(PacketBuffer buf) {
+		tag = buf.readNbt();
 	}
 
-	public static SetListModuleData decode(PacketBuffer buf) {
-		SetListModuleData message = new SetListModuleData();
-
-		message.tag = buf.readNbt();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeNbt(tag);
 	}
 
-	public static void onMessage(SetListModuleData message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = ctx.get().getSender();
-			ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.ALLOWLIST_MODULE.get());
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		PlayerEntity player = ctx.get().getSender();
+		ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.ALLOWLIST_MODULE.get());
 
-			if (stack.isEmpty())
-				stack = PlayerUtils.getSelectedItemStack(player, SCContent.DENYLIST_MODULE.get());
+		if (stack.isEmpty())
+			stack = PlayerUtils.getSelectedItemStack(player, SCContent.DENYLIST_MODULE.get());
 
-			if (!stack.isEmpty()) {
-				CompoundNBT clientTag = message.tag;
-				CompoundNBT serverTag = stack.getOrCreateTag();
+		if (!stack.isEmpty()) {
+			CompoundNBT clientTag = tag;
+			CompoundNBT serverTag = stack.getOrCreateTag();
 
-				for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
-					String key = "Player" + i;
+			for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
+				String key = "Player" + i;
 
-					if (clientTag.contains(key))
-						serverTag.putString(key, clientTag.getString(key));
-					else //prevent two same players being on the list
-						serverTag.remove(key);
-				}
-
-				if (clientTag.contains("ListedTeams")) {
-					ListNBT listedTeams = new ListNBT();
-
-					for (INBT tag : clientTag.getList("ListedTeams", Constants.NBT.TAG_STRING)) {
-						//make sure the team the client sent is actually a team that exists
-						if (player.getScoreboard().getTeamNames().contains(tag.getAsString()))
-							listedTeams.add(tag);
-					}
-
-					serverTag.put("ListedTeams", listedTeams);
-				}
-
-				serverTag.putBoolean("affectEveryone", clientTag.getBoolean("affectEveryone"));
+				if (clientTag.contains(key))
+					serverTag.putString(key, clientTag.getString(key));
+				else //prevent two same players being on the list
+					serverTag.remove(key);
 			}
-		});
 
-		ctx.get().setPacketHandled(true);
+			if (clientTag.contains("ListedTeams")) {
+				ListNBT listedTeams = new ListNBT();
+
+				for (INBT tag : clientTag.getList("ListedTeams", Constants.NBT.TAG_STRING)) {
+					//make sure the team the client sent is actually a team that exists
+					if (player.getScoreboard().getTeamNames().contains(tag.getAsString()))
+						listedTeams.add(tag);
+				}
+
+				serverTag.put("ListedTeams", listedTeams);
+			}
+
+			serverTag.putBoolean("affectEveryone", clientTag.getBoolean("affectEveryone"));
+		}
 	}
 }

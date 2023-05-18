@@ -26,37 +26,30 @@ public class OpenBriefcaseInventory {
 		this.name = name;
 	}
 
-	public static void encode(OpenBriefcaseInventory message, PacketBuffer buf) {
-		buf.writeComponent(message.name);
+	public OpenBriefcaseInventory(PacketBuffer buf) {
+		name = buf.readComponent();
 	}
 
-	public static OpenBriefcaseInventory decode(PacketBuffer buf) {
-		OpenBriefcaseInventory message = new OpenBriefcaseInventory();
-
-		message.name = buf.readComponent();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeComponent(name);
 	}
 
-	public static void onMessage(OpenBriefcaseInventory message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			ServerPlayerEntity player = ctx.get().getSender();
-			BlockPos pos = player.blockPosition();
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		ServerPlayerEntity player = ctx.get().getSender();
+		BlockPos pos = player.blockPosition();
 
-			if (PlayerUtils.isHoldingItem(player, SCContent.BRIEFCASE.get(), null)) {
-				NetworkHooks.openGui(player, new INamedContainerProvider() {
-					@Override
-					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-						return new BriefcaseMenu(windowId, inv, new BriefcaseContainer(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));
-					}
+		if (PlayerUtils.isHoldingItem(player, SCContent.BRIEFCASE.get(), null)) {
+			NetworkHooks.openGui(player, new INamedContainerProvider() {
+				@Override
+				public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
+					return new BriefcaseMenu(windowId, inv, new BriefcaseContainer(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));
+				}
 
-					@Override
-					public ITextComponent getDisplayName() {
-						return message.name;
-					}
-				}, pos);
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
+				@Override
+				public ITextComponent getDisplayName() {
+					return name;
+				}
+			}, pos);
+		}
 	}
 }

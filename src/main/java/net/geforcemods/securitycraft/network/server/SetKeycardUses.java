@@ -22,37 +22,29 @@ public class SetKeycardUses {
 		this.uses = uses;
 	}
 
-	public static void encode(SetKeycardUses message, PacketBuffer buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeVarInt(message.uses);
+	public SetKeycardUses(PacketBuffer buf) {
+		pos = buf.readBlockPos();
+		uses = buf.readVarInt();
 	}
 
-	public static SetKeycardUses decode(PacketBuffer buf) {
-		SetKeycardUses message = new SetKeycardUses();
-
-		message.pos = buf.readBlockPos();
-		message.uses = buf.readVarInt();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
+		buf.writeVarInt(uses);
 	}
 
-	public static void onMessage(SetKeycardUses message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = message.pos;
-			PlayerEntity player = ctx.get().getSender();
-			TileEntity tile = player.level.getBlockEntity(pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		PlayerEntity player = ctx.get().getSender();
+		TileEntity tile = player.level.getBlockEntity(pos);
 
-			if (tile instanceof KeycardReaderBlockEntity) {
-				KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;
+		if (tile instanceof KeycardReaderBlockEntity) {
+			KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;
 
-				if (te.isOwnedBy(player) || te.isAllowed(player)) {
-					Container container = player.containerMenu;
+			if (te.isOwnedBy(player) || te.isAllowed(player)) {
+				Container container = player.containerMenu;
 
-					if (container instanceof KeycardReaderMenu)
-						((KeycardReaderMenu) container).setKeycardUses(message.uses);
-				}
+				if (container instanceof KeycardReaderMenu)
+					((KeycardReaderMenu) container).setKeycardUses(uses);
 			}
-		});
-
-		ctx.get().setPacketHandled(true);
+		}
 	}
 }

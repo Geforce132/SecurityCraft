@@ -31,69 +31,60 @@ public class SyncProjector {
 		this.dataType = DataType.BLOCK_STATE;
 	}
 
-	public static void encode(SyncProjector message, PacketBuffer buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeEnum(message.dataType);
+	public SyncProjector(PacketBuffer buf) {
+		pos = buf.readBlockPos();
+		dataType = buf.readEnum(DataType.class);
 
-		if (message.dataType == DataType.HORIZONTAL)
-			buf.writeBoolean(message.data == 1);
+		if (dataType == DataType.HORIZONTAL)
+			data = buf.readBoolean() ? 1 : 0;
 		else
-			buf.writeVarInt(message.data);
+			data = buf.readVarInt();
 	}
 
-	public static SyncProjector decode(PacketBuffer buf) {
-		SyncProjector message = new SyncProjector();
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
+		buf.writeEnum(dataType);
 
-		message.pos = buf.readBlockPos();
-		message.dataType = buf.readEnum(DataType.class);
-
-		if (message.dataType == DataType.HORIZONTAL)
-			message.data = buf.readBoolean() ? 1 : 0;
+		if (dataType == DataType.HORIZONTAL)
+			buf.writeBoolean(data == 1);
 		else
-			message.data = buf.readVarInt();
-
-		return message;
+			buf.writeVarInt(data);
 	}
 
-	public static void onMessage(SyncProjector message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = message.pos;
-			PlayerEntity player = ctx.get().getSender();
-			World world = player.level;
-			TileEntity te = world.getBlockEntity(pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		PlayerEntity player = ctx.get().getSender();
+		World world = player.level;
+		TileEntity te = world.getBlockEntity(pos);
 
-			if (world.isLoaded(pos) && te instanceof ProjectorBlockEntity && ((ProjectorBlockEntity) te).isOwnedBy(player)) {
-				ProjectorBlockEntity projector = (ProjectorBlockEntity) te;
-				BlockState state = world.getBlockState(pos);
+		if (world.isLoaded(pos) && te instanceof ProjectorBlockEntity && ((ProjectorBlockEntity) te).isOwnedBy(player)) {
+			ProjectorBlockEntity projector = (ProjectorBlockEntity) te;
+			BlockState state = world.getBlockState(pos);
 
-				switch (message.dataType) {
-					case WIDTH:
-						projector.setProjectionWidth(message.data);
-						break;
-					case HEIGHT:
-						projector.setProjectionHeight(message.data);
-						break;
-					case RANGE:
-						projector.setProjectionRange(message.data);
-						break;
-					case OFFSET:
-						projector.setProjectionOffset(message.data);
-						break;
-					case HORIZONTAL:
-						projector.setHorizontal(message.data == 1);
-						break;
-					case BLOCK_STATE:
-						projector.setProjectedState(Block.stateById(message.data));
-						break;
-					case INVALID:
-						break;
-				}
-
-				world.sendBlockUpdated(pos, state, state, 2);
+			switch (dataType) {
+				case WIDTH:
+					projector.setProjectionWidth(data);
+					break;
+				case HEIGHT:
+					projector.setProjectionHeight(data);
+					break;
+				case RANGE:
+					projector.setProjectionRange(data);
+					break;
+				case OFFSET:
+					projector.setProjectionOffset(data);
+					break;
+				case HORIZONTAL:
+					projector.setHorizontal(data == 1);
+					break;
+				case BLOCK_STATE:
+					projector.setProjectedState(Block.stateById(data));
+					break;
+				case INVALID:
+					break;
 			}
-		});
 
-		ctx.get().setPacketHandled(true);
+			world.sendBlockUpdated(pos, state, state, 2);
+		}
 	}
 
 	public enum DataType {

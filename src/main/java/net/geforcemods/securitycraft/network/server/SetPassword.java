@@ -27,43 +27,35 @@ public class SetPassword {
 		password = code;
 	}
 
-	public static void encode(SetPassword message, PacketBuffer buf) {
-		buf.writeInt(message.x);
-		buf.writeInt(message.y);
-		buf.writeInt(message.z);
-		buf.writeUtf(message.password);
+	public SetPassword(PacketBuffer buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		password = buf.readUtf(Integer.MAX_VALUE / 4);
 	}
 
-	public static SetPassword decode(PacketBuffer buf) {
-		SetPassword message = new SetPassword();
-
-		message.x = buf.readInt();
-		message.y = buf.readInt();
-		message.z = buf.readInt();
-		message.password = buf.readUtf(Integer.MAX_VALUE / 4);
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		buf.writeUtf(password);
 	}
 
-	public static void onMessage(SetPassword message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = new BlockPos(message.x, message.y, message.z);
-			String password = message.password;
-			PlayerEntity player = ctx.get().getSender();
-			World world = player.level;
-			TileEntity te = world.getBlockEntity(pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		BlockPos pos = new BlockPos(x, y, z);
+		PlayerEntity player = ctx.get().getSender();
+		World world = player.level;
+		TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
-				((IPasswordProtected) te).setPassword(password);
+		if (te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
+			((IPasswordProtected) te).setPassword(password);
 
-				if (te instanceof KeypadChestBlockEntity)
-					checkAndUpdateAdjacentChest((KeypadChestBlockEntity) te, world, pos, password, player);
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
+			if (te instanceof KeypadChestBlockEntity)
+				checkAndUpdateAdjacentChest((KeypadChestBlockEntity) te, world, pos, password, player);
+		}
 	}
 
-	private static void checkAndUpdateAdjacentChest(KeypadChestBlockEntity te, World world, BlockPos pos, String codeToSet, PlayerEntity player) {
+	private void checkAndUpdateAdjacentChest(KeypadChestBlockEntity te, World world, BlockPos pos, String codeToSet, PlayerEntity player) {
 		if (te.getBlockState().getValue(KeypadChestBlock.TYPE) != ChestType.SINGLE) {
 			BlockPos offsetPos = pos.relative(KeypadChestBlock.getConnectedDirection(te.getBlockState()));
 			TileEntity otherTe = world.getBlockEntity(offsetPos);

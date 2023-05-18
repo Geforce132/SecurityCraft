@@ -20,26 +20,19 @@ public class RemovePositionFromSSS {
 		this.pos = pos;
 	}
 
-	public static void encode(RemovePositionFromSSS message, PacketBuffer buf) {
-		buf.writeBlockPos(message.pos);
+	public RemovePositionFromSSS(PacketBuffer buf) {
+		pos = buf.readBlockPos();
 	}
 
-	public static RemovePositionFromSSS decode(PacketBuffer buf) {
-		RemovePositionFromSSS message = new RemovePositionFromSSS();
-
-		message.pos = buf.readBlockPos();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
 	}
 
-	public static void onMessage(RemovePositionFromSSS message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = ctx.get().getSender();
-			ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		PlayerEntity player = ctx.get().getSender();
+		ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
 
-			if (!stack.isEmpty())
-				SonicSecuritySystemItem.removeLinkedBlock(stack.getOrCreateTag(), message.pos);
-		});
-
-		ctx.get().setPacketHandled(true);
+		if (!stack.isEmpty())
+			SonicSecuritySystemItem.removeLinkedBlock(stack.getOrCreateTag(), pos);
 	}
 }

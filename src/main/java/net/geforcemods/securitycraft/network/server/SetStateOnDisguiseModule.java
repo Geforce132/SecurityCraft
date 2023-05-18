@@ -25,32 +25,25 @@ public class SetStateOnDisguiseModule {
 		this.standingOrWall = standingOrWall;
 	}
 
-	public static void encode(SetStateOnDisguiseModule message, PacketBuffer buf) {
-		buf.writeInt(GameData.getBlockStateIDMap().getId(message.state));
-		buf.writeEnum(message.standingOrWall);
+	public SetStateOnDisguiseModule(PacketBuffer buf) {
+		state = GameData.getBlockStateIDMap().byId(buf.readInt());
+		standingOrWall = buf.readEnum(StandingOrWallType.class);
 	}
 
-	public static SetStateOnDisguiseModule decode(PacketBuffer buf) {
-		SetStateOnDisguiseModule message = new SetStateOnDisguiseModule();
-
-		message.state = GameData.getBlockStateIDMap().byId(buf.readInt());
-		message.standingOrWall = buf.readEnum(StandingOrWallType.class);
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeInt(GameData.getBlockStateIDMap().getId(state));
+		buf.writeEnum(standingOrWall);
 	}
 
-	public static void onMessage(SetStateOnDisguiseModule message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = ctx.get().getSender();
-			ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.DISGUISE_MODULE.get());
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		PlayerEntity player = ctx.get().getSender();
+		ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.DISGUISE_MODULE.get());
 
-			if (!stack.isEmpty()) {
-				CompoundNBT tag = stack.getOrCreateTag();
+		if (!stack.isEmpty()) {
+			CompoundNBT tag = stack.getOrCreateTag();
 
-				tag.put("SavedState", NBTUtil.writeBlockState(message.state));
-				tag.putInt("StandingOrWall", message.standingOrWall.ordinal());
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
+			tag.put("SavedState", NBTUtil.writeBlockState(state));
+			tag.putInt("StandingOrWall", standingOrWall.ordinal());
+		}
 	}
 }

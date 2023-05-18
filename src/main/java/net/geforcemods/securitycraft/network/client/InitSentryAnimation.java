@@ -23,36 +23,29 @@ public class InitSentryAnimation {
 		this.isShutDown = isShutDown;
 	}
 
-	public static void encode(InitSentryAnimation message, PacketBuffer buf) {
-		buf.writeLong(message.pos.asLong());
-		buf.writeBoolean(message.animate);
-		buf.writeBoolean(message.animateUpwards);
-		buf.writeBoolean(message.isShutDown);
+	public InitSentryAnimation(PacketBuffer buf) {
+		pos = BlockPos.of(buf.readLong());
+		animate = buf.readBoolean();
+		animateUpwards = buf.readBoolean();
+		isShutDown = buf.readBoolean();
 	}
 
-	public static InitSentryAnimation decode(PacketBuffer buf) {
-		InitSentryAnimation message = new InitSentryAnimation();
-
-		message.pos = BlockPos.of(buf.readLong());
-		message.animate = buf.readBoolean();
-		message.animateUpwards = buf.readBoolean();
-		message.isShutDown = buf.readBoolean();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeLong(pos.asLong());
+		buf.writeBoolean(animate);
+		buf.writeBoolean(animateUpwards);
+		buf.writeBoolean(isShutDown);
 	}
 
-	public static void onMessage(InitSentryAnimation message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			List<Sentry> sentries = Minecraft.getInstance().level.<Sentry>getEntitiesOfClass(Sentry.class, new AxisAlignedBB(message.pos));
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		List<Sentry> sentries = Minecraft.getInstance().level.<Sentry>getEntitiesOfClass(Sentry.class, new AxisAlignedBB(pos));
 
-			if (!sentries.isEmpty()) {
-				Sentry sentry = sentries.get(0);
+		if (!sentries.isEmpty()) {
+			Sentry sentry = sentries.get(0);
 
-				sentry.setShutDown(message.isShutDown);
-				sentry.animateUpwards = message.animateUpwards;
-				sentry.animate = message.animate;
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
+			sentry.setShutDown(isShutDown);
+			sentry.animateUpwards = animateUpwards;
+			sentry.animate = animate;
+		}
 	}
 }

@@ -25,38 +25,30 @@ public class SyncLaserSideConfig {
 		this.sideConfig = LaserBlockBlockEntity.saveSideConfig(sideConfig);
 	}
 
-	public static void encode(SyncLaserSideConfig message, PacketBuffer buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeNbt(message.sideConfig);
+	public SyncLaserSideConfig(PacketBuffer buf) {
+		pos = buf.readBlockPos();
+		sideConfig = buf.readNbt();
 	}
 
-	public static SyncLaserSideConfig decode(PacketBuffer buf) {
-		SyncLaserSideConfig message = new SyncLaserSideConfig();
-
-		message.pos = buf.readBlockPos();
-		message.sideConfig = buf.readNbt();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
+		buf.writeNbt(sideConfig);
 	}
 
-	public static void onMessage(SyncLaserSideConfig message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = ctx.get().getSender();
-			World level = player.level;
-			BlockPos pos = message.pos;
-			TileEntity te = level.getBlockEntity(pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		PlayerEntity player = ctx.get().getSender();
+		World level = player.level;
+		TileEntity te = level.getBlockEntity(pos);
 
-			if (te instanceof LaserBlockBlockEntity) {
-				LaserBlockBlockEntity be = (LaserBlockBlockEntity) te;
+		if (te instanceof LaserBlockBlockEntity) {
+			LaserBlockBlockEntity be = (LaserBlockBlockEntity) te;
 
-				if (be.isOwnedBy(player)) {
-					BlockState state = level.getBlockState(pos);
+			if (be.isOwnedBy(player)) {
+				BlockState state = level.getBlockState(pos);
 
-					be.applyNewSideConfig(LaserBlockBlockEntity.loadSideConfig(message.sideConfig), player);
-					level.sendBlockUpdated(pos, state, state, 2);
-				}
+				be.applyNewSideConfig(LaserBlockBlockEntity.loadSideConfig(sideConfig), player);
+				level.sendBlockUpdated(pos, state, state, 2);
 			}
-		});
-
-		ctx.get().setPacketHandled(true);
+		}
 	}
 }

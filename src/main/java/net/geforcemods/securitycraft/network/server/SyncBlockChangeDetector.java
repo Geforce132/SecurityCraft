@@ -27,45 +27,37 @@ public class SyncBlockChangeDetector {
 		this.color = color;
 	}
 
-	public static void encode(SyncBlockChangeDetector message, PacketBuffer buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeEnum(message.mode);
-		buf.writeBoolean(message.showHighlights);
-		buf.writeInt(message.color);
+	public SyncBlockChangeDetector(PacketBuffer buf) {
+		pos = buf.readBlockPos();
+		mode = buf.readEnum(DetectionMode.class);
+		showHighlights = buf.readBoolean();
+		color = buf.readInt();
 	}
 
-	public static SyncBlockChangeDetector decode(PacketBuffer buf) {
-		SyncBlockChangeDetector message = new SyncBlockChangeDetector();
-
-		message.pos = buf.readBlockPos();
-		message.mode = buf.readEnum(DetectionMode.class);
-		message.showHighlights = buf.readBoolean();
-		message.color = buf.readInt();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
+		buf.writeEnum(mode);
+		buf.writeBoolean(showHighlights);
+		buf.writeInt(color);
 	}
 
-	public static void onMessage(SyncBlockChangeDetector message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			ServerPlayerEntity player = ctx.get().getSender();
-			World level = player.level;
-			BlockPos pos = message.pos;
-			TileEntity tile = level.getBlockEntity(message.pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		ServerPlayerEntity player = ctx.get().getSender();
+		World level = player.level;
+		TileEntity tile = level.getBlockEntity(pos);
 
-			if (tile instanceof BlockChangeDetectorBlockEntity) {
-				BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) tile;
+		if (tile instanceof BlockChangeDetectorBlockEntity) {
+			BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) tile;
 
-				if (be.isOwnedBy(player)) {
-					BlockState state = level.getBlockState(pos);
+			if (be.isOwnedBy(player)) {
+				BlockState state = level.getBlockState(pos);
 
-					be.setMode(message.mode);
-					be.showHighlights(message.showHighlights);
-					be.setColor(message.color);
-					be.setChanged();
-					level.sendBlockUpdated(pos, state, state, 2);
-				}
+				be.setMode(mode);
+				be.showHighlights(showHighlights);
+				be.setColor(color);
+				be.setChanged();
+				level.sendBlockUpdated(pos, state, state, 2);
 			}
-		});
-
-		ctx.get().setPacketHandled(true);
+		}
 	}
 }

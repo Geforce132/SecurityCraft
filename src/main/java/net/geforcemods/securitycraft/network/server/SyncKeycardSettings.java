@@ -26,57 +26,48 @@ public class SyncKeycardSettings {
 		this.link = link;
 	}
 
-	public static void encode(SyncKeycardSettings message, PacketBuffer buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeVarInt(message.signature);
-		buf.writeBoolean(message.link);
+	public SyncKeycardSettings(PacketBuffer buf) {
+		pos = buf.readBlockPos();
+		signature = buf.readVarInt();
+		link = buf.readBoolean();
+		acceptedLevels = new boolean[5];
 
 		for (int i = 0; i < 5; i++) {
-			buf.writeBoolean(message.acceptedLevels[i]);
+			acceptedLevels[i] = buf.readBoolean();
 		}
 	}
 
-	public static SyncKeycardSettings decode(PacketBuffer buf) {
-		SyncKeycardSettings message = new SyncKeycardSettings();
-
-		message.pos = buf.readBlockPos();
-		message.signature = buf.readVarInt();
-		message.link = buf.readBoolean();
-		message.acceptedLevels = new boolean[5];
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
+		buf.writeVarInt(signature);
+		buf.writeBoolean(link);
 
 		for (int i = 0; i < 5; i++) {
-			message.acceptedLevels[i] = buf.readBoolean();
+			buf.writeBoolean(acceptedLevels[i]);
 		}
-
-		return message;
 	}
 
-	public static void onMessage(SyncKeycardSettings message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = message.pos;
-			PlayerEntity player = ctx.get().getSender();
-			TileEntity tile = player.level.getBlockEntity(pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		PlayerEntity player = ctx.get().getSender();
+		TileEntity tile = player.level.getBlockEntity(pos);
 
-			if (tile instanceof KeycardReaderBlockEntity) {
-				KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;
-				boolean isOwner = te.isOwnedBy(player);
+		if (tile instanceof KeycardReaderBlockEntity) {
+			KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;
+			boolean isOwner = te.isOwnedBy(player);
 
-				if (isOwner || te.isAllowed(player)) {
-					if (isOwner) {
-						te.setAcceptedLevels(message.acceptedLevels);
-						te.setSignature(message.signature);
-					}
+			if (isOwner || te.isAllowed(player)) {
+				if (isOwner) {
+					te.setAcceptedLevels(acceptedLevels);
+					te.setSignature(signature);
+				}
 
-					if (message.link) {
-						Container container = player.containerMenu;
+				if (link) {
+					Container container = player.containerMenu;
 
-						if (container instanceof KeycardReaderMenu)
-							((KeycardReaderMenu) container).link();
-					}
+					if (container instanceof KeycardReaderMenu)
+						((KeycardReaderMenu) container).link();
 				}
 			}
-		});
-
-		ctx.get().setPacketHandled(true);
+		}
 	}
 }

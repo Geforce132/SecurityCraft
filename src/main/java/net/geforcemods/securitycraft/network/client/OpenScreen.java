@@ -26,64 +26,59 @@ public class OpenScreen {
 		this.pos = pos;
 	}
 
-	public static void encode(OpenScreen message, PacketBuffer buf) {
-		buf.writeEnum(message.dataType);
-		buf.writeBlockPos(message.pos);
+	public OpenScreen(PacketBuffer buf) {
+		dataType = buf.readEnum(DataType.class);
+		pos = buf.readBlockPos();
 	}
 
-	public static OpenScreen decode(PacketBuffer buf) {
-		DataType dataType = buf.readEnum(DataType.class);
-		BlockPos pos = buf.readBlockPos();
-
-		return new OpenScreen(dataType, pos);
+	public void encode(PacketBuffer buf) {
+		buf.writeEnum(dataType);
+		buf.writeBlockPos(pos);
 	}
 
-	public static void onMessage(OpenScreen message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			TileEntity te = Minecraft.getInstance().level.getBlockEntity(message.pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		TileEntity te = Minecraft.getInstance().level.getBlockEntity(pos);
 
-			switch (message.dataType) {
-				case ALARM:
-					if (te instanceof AlarmBlockEntity)
-						ClientHandler.displayAlarmScreen((AlarmBlockEntity) te);
+		switch (dataType) {
+			case ALARM:
+				if (te instanceof AlarmBlockEntity)
+					ClientHandler.displayAlarmScreen((AlarmBlockEntity) te);
 
-					break;
-				case CHECK_PASSWORD:
-					if (te instanceof IPasswordProtected)
-						ClientHandler.displayCheckPasswordScreen(te);
+				break;
+			case CHECK_PASSWORD:
+				if (te instanceof IPasswordProtected)
+					ClientHandler.displayCheckPasswordScreen(te);
 
-					break;
-				case IMS:
-					if (te instanceof IMSBlockEntity)
-						ClientHandler.displayIMSScreen((IMSBlockEntity) te);
+				break;
+			case IMS:
+				if (te instanceof IMSBlockEntity)
+					ClientHandler.displayIMSScreen((IMSBlockEntity) te);
 
-					break;
-				case RIFT_STABILIZER:
-					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof RiftStabilizerBlockEntity)
-						ClientHandler.displayRiftStabilizerScreen(((RiftStabilizerBlockEntity) te));
+				break;
+			case RIFT_STABILIZER:
+				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity)
+					ClientHandler.displayRiftStabilizerScreen(((RiftStabilizerBlockEntity) te));
 
-					break;
-				case SET_PASSWORD:
-					if (te instanceof IPasswordProtected)
-						ClientHandler.displaySetPasswordScreen(te);
+				break;
+			case SET_PASSWORD:
+				if (te instanceof IPasswordProtected)
+					ClientHandler.displaySetPasswordScreen(te);
 
-					break;
-				case SONIC_SECURITY_SYSTEM:
-					if (te instanceof SonicSecuritySystemBlockEntity)
-						ClientHandler.displaySonicSecuritySystemScreen((SonicSecuritySystemBlockEntity) te);
+				break;
+			case SONIC_SECURITY_SYSTEM:
+				if (te instanceof SonicSecuritySystemBlockEntity)
+					ClientHandler.displaySonicSecuritySystemScreen((SonicSecuritySystemBlockEntity) te);
 
-					break;
-				case TROPHY_SYSTEM:
-					if (te instanceof TrophySystemBlockEntity)
-						ClientHandler.displayTrophySystemScreen((TrophySystemBlockEntity) te);
+				break;
+			case TROPHY_SYSTEM:
+				if (te instanceof TrophySystemBlockEntity)
+					ClientHandler.displayTrophySystemScreen((TrophySystemBlockEntity) te);
 
-					break;
-				case UNIVERSAL_KEY_CHANGER:
-					if (te instanceof IPasswordProtected)
-						ClientHandler.displayUniversalKeyChangerScreen(te);
-			}
-		});
-		ctx.get().setPacketHandled(true);
+				break;
+			case UNIVERSAL_KEY_CHANGER:
+				if (te instanceof IPasswordProtected)
+					ClientHandler.displayUniversalKeyChangerScreen(te);
+		}
 	}
 
 	public enum DataType {

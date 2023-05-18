@@ -22,36 +22,29 @@ public class ToggleBlockPocketManager {
 		this.size = size;
 	}
 
-	public static void encode(ToggleBlockPocketManager message, PacketBuffer buf) {
-		buf.writeLong(message.pos.asLong());
-		buf.writeBoolean(message.enabling);
-		buf.writeInt(message.size);
+	public ToggleBlockPocketManager(PacketBuffer buf) {
+		pos = BlockPos.of(buf.readLong());
+		enabling = buf.readBoolean();
+		size = buf.readInt();
 	}
 
-	public static ToggleBlockPocketManager decode(PacketBuffer buf) {
-		ToggleBlockPocketManager message = new ToggleBlockPocketManager();
-
-		message.pos = BlockPos.of(buf.readLong());
-		message.enabling = buf.readBoolean();
-		message.size = buf.readInt();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeLong(pos.asLong());
+		buf.writeBoolean(enabling);
+		buf.writeInt(size);
 	}
 
-	public static void onMessage(ToggleBlockPocketManager message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.level.getBlockEntity(message.pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		PlayerEntity player = ctx.get().getSender();
+		TileEntity te = player.level.getBlockEntity(pos);
 
-			if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
-				((BlockPocketManagerBlockEntity) te).size = message.size;
+		if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
+			((BlockPocketManagerBlockEntity) te).size = size;
 
-				if (message.enabling)
-					((BlockPocketManagerBlockEntity) te).enableMultiblock();
-				else
-					((BlockPocketManagerBlockEntity) te).disableMultiblock();
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
+			if (enabling)
+				((BlockPocketManagerBlockEntity) te).enableMultiblock();
+			else
+				((BlockPocketManagerBlockEntity) te).disableMultiblock();
+		}
 	}
 }

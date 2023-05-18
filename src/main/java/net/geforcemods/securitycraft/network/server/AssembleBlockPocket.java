@@ -19,28 +19,22 @@ public class AssembleBlockPocket {
 		this.size = size;
 	}
 
-	public static void encode(AssembleBlockPocket message, PacketBuffer buf) {
-		buf.writeLong(message.pos.asLong());
-		buf.writeInt(message.size);
+	public AssembleBlockPocket(PacketBuffer buf) {
+		pos = BlockPos.of(buf.readLong());
+		size = buf.readInt();
 	}
 
-	public static AssembleBlockPocket decode(PacketBuffer buf) {
-		AssembleBlockPocket message = new AssembleBlockPocket();
-
-		message.pos = BlockPos.of(buf.readLong());
-		message.size = buf.readInt();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeLong(pos.asLong());
+		buf.writeInt(size);
 	}
 
-	public static void onMessage(AssembleBlockPocket message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			TileEntity te = ctx.get().getSender().level.getBlockEntity(message.pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		TileEntity te = ctx.get().getSender().level.getBlockEntity(pos);
 
-			if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(ctx.get().getSender())) {
-				((BlockPocketManagerBlockEntity) te).size = message.size;
-				((BlockPocketManagerBlockEntity) te).autoAssembleMultiblock();
-			}
-		});
-		ctx.get().setPacketHandled(true);
+		if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(ctx.get().getSender())) {
+			((BlockPocketManagerBlockEntity) te).size = size;
+			((BlockPocketManagerBlockEntity) te).autoAssembleMultiblock();
+		}
 	}
 }

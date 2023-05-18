@@ -22,32 +22,25 @@ public class SetTrophySystemTarget {
 		this.targetID = targetID;
 	}
 
-	public static void encode(SetTrophySystemTarget message, PacketBuffer buf) {
-		buf.writeBlockPos(message.trophyPos);
-		buf.writeInt(message.targetID);
+	public SetTrophySystemTarget(PacketBuffer buf) {
+		trophyPos = buf.readBlockPos();
+		targetID = buf.readInt();
 	}
 
-	public static SetTrophySystemTarget decode(PacketBuffer buf) {
-		SetTrophySystemTarget message = new SetTrophySystemTarget();
-
-		message.trophyPos = buf.readBlockPos();
-		message.targetID = buf.readInt();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(trophyPos);
+		buf.writeInt(targetID);
 	}
 
-	public static void onMessage(SetTrophySystemTarget message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			TileEntity te = Minecraft.getInstance().level.getBlockEntity(message.trophyPos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		TileEntity te = Minecraft.getInstance().level.getBlockEntity(trophyPos);
 
-			if (te instanceof TrophySystemBlockEntity) {
-				TrophySystemBlockEntity trophySystemTE = (TrophySystemBlockEntity) te;
-				Entity target = Minecraft.getInstance().level.getEntity(message.targetID);
+		if (te instanceof TrophySystemBlockEntity) {
+			TrophySystemBlockEntity trophySystemTE = (TrophySystemBlockEntity) te;
+			Entity target = Minecraft.getInstance().level.getEntity(targetID);
 
-				if (target instanceof ProjectileEntity)
-					trophySystemTE.setTarget((ProjectileEntity) target);
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
+			if (target instanceof ProjectileEntity)
+				trophySystemTE.setTarget((ProjectileEntity) target);
+		}
 	}
 }

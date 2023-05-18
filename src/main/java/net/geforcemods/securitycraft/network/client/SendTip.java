@@ -30,38 +30,32 @@ public class SendTip {
 
 	public SendTip() {}
 
-	public static void encode(SendTip message, PacketBuffer packet) {}
+	public SendTip(PacketBuffer packet) {}
 
-	public static SendTip decode(PacketBuffer packet) {
-		return new SendTip();
+	public void encode(PacketBuffer packet) {}
+
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		if (!ConfigHandler.CLIENT.sayThanksMessage.get())
+			return;
+
+		//@formatter:off
+		String tipKey = getRandomTip();
+		IFormattableTextComponent message = new StringTextComponent("[")
+				.append(new StringTextComponent("SecurityCraft").withStyle(TextFormatting.GOLD))
+				.append(new StringTextComponent("] "))
+				.append(Utils.localize("messages.securitycraft:thanks",
+						SecurityCraft.getVersion(),
+						Utils.localize("messages.securitycraft:tip"),
+						Utils.localize(tipKey)));
+		//@formatter:on
+
+		if (tipsWithLink.containsKey(tipKey.split("\\.")[2]))
+			message = message.append(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+
+		ClientHandler.getClientPlayer().sendMessage(message, Util.NIL_UUID);
 	}
 
-	public static void onMessage(SendTip packet, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			if (!ConfigHandler.CLIENT.sayThanksMessage.get())
-				return;
-
-			//@formatter:off
-			String tipKey = getRandomTip();
-			IFormattableTextComponent message = new StringTextComponent("[")
-					.append(new StringTextComponent("SecurityCraft").withStyle(TextFormatting.GOLD))
-					.append(new StringTextComponent("] "))
-					.append(Utils.localize("messages.securitycraft:thanks",
-							SecurityCraft.getVersion(),
-							Utils.localize("messages.securitycraft:tip"),
-							Utils.localize(tipKey)));
-			//@formatter:on
-
-			if (tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-				message = message.append(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
-
-			ClientHandler.getClientPlayer().sendMessage(message, Util.NIL_UUID);
-		});
-
-		ctx.get().setPacketHandled(true);
-	}
-
-	private static String getRandomTip() {
+	private String getRandomTip() {
 		//@formatter:off
 		String[] tips = {
 				"messages.securitycraft:tip.scHelp",
@@ -75,7 +69,7 @@ public class SendTip {
 		return tips[new Random().nextInt(isOutdated() ? tips.length : tips.length - 1)];
 	}
 
-	private static boolean isOutdated() {
+	private boolean isOutdated() {
 		return VersionChecker.getResult(ModList.get().getModContainerById(SecurityCraft.MODID).get().getModInfo()).status == Status.OUTDATED;
 	}
 }

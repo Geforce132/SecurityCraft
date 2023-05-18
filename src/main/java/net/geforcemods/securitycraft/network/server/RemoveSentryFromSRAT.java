@@ -19,34 +19,27 @@ public class RemoveSentryFromSRAT {
 		this.sentryIndex = mineIndex;
 	}
 
-	public static void encode(RemoveSentryFromSRAT message, PacketBuffer buf) {
-		buf.writeVarInt(message.sentryIndex);
+	public RemoveSentryFromSRAT(PacketBuffer buf) {
+		sentryIndex = buf.readVarInt();
 	}
 
-	public static RemoveSentryFromSRAT decode(PacketBuffer buf) {
-		RemoveSentryFromSRAT message = new RemoveSentryFromSRAT();
-
-		message.sentryIndex = buf.readVarInt();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeVarInt(sentryIndex);
 	}
 
-	public static void onMessage(RemoveSentryFromSRAT message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = ctx.get().getSender();
-			ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.REMOTE_ACCESS_SENTRY.get());
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		PlayerEntity player = ctx.get().getSender();
+		ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.REMOTE_ACCESS_SENTRY.get());
 
-			if (!stack.isEmpty()) {
-				CompoundNBT tag = stack.getOrCreateTag();
-				String key = "sentry" + message.sentryIndex;
+		if (!stack.isEmpty()) {
+			CompoundNBT tag = stack.getOrCreateTag();
+			String key = "sentry" + sentryIndex;
 
-				if (tag.contains(key)) {
-					tag.putIntArray(key, new int[] {
-							0, 0, 0
-					});
-				}
+			if (tag.contains(key)) {
+				tag.putIntArray(key, new int[] {
+						0, 0, 0
+				});
 			}
-		});
-
-		ctx.get().setPacketHandled(true);
+		}
 	}
 }

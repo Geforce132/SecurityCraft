@@ -24,26 +24,20 @@ public class OpenLaserScreen {
 		this.sideConfig = LaserBlockBlockEntity.saveSideConfig(sideConfig);
 	}
 
-	public static void encode(OpenLaserScreen message, PacketBuffer buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeNbt(message.sideConfig);
+	public OpenLaserScreen(PacketBuffer buf) {
+		pos = buf.readBlockPos();
+		sideConfig = buf.readNbt();
 	}
 
-	public static OpenLaserScreen decode(PacketBuffer buf) {
-		OpenLaserScreen message = new OpenLaserScreen();
-
-		message.pos = buf.readBlockPos();
-		message.sideConfig = buf.readNbt();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
+		buf.writeNbt(sideConfig);
 	}
 
-	public static void onMessage(OpenLaserScreen message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			TileEntity te = Minecraft.getInstance().level.getBlockEntity(message.pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		TileEntity te = Minecraft.getInstance().level.getBlockEntity(pos);
 
-			if (te instanceof LaserBlockBlockEntity)
-				ClientHandler.displayLaserScreen((LaserBlockBlockEntity) te, LaserBlockBlockEntity.loadSideConfig(message.sideConfig));
-		});
-		ctx.get().setPacketHandled(true);
+		if (te instanceof LaserBlockBlockEntity)
+			ClientHandler.displayLaserScreen((LaserBlockBlockEntity) te, LaserBlockBlockEntity.loadSideConfig(sideConfig));
 	}
 }

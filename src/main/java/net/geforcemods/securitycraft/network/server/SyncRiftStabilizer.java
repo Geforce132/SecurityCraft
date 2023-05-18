@@ -23,41 +23,32 @@ public class SyncRiftStabilizer {
 		this.allowed = allowed;
 	}
 
-	public static void encode(SyncRiftStabilizer message, PacketBuffer buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeEnum(message.teleportationType);
-		buf.writeBoolean(message.allowed);
+	public SyncRiftStabilizer(PacketBuffer buf) {
+		pos = buf.readBlockPos();
+		teleportationType = buf.readEnum(TeleportationType.class);
+		allowed = buf.readBoolean();
 	}
 
-	public static SyncRiftStabilizer decode(PacketBuffer buf) {
-		SyncRiftStabilizer message = new SyncRiftStabilizer();
-
-		message.pos = buf.readBlockPos();
-		message.teleportationType = buf.readEnum(TeleportationType.class);
-		message.allowed = buf.readBoolean();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
+		buf.writeEnum(teleportationType);
+		buf.writeBoolean(allowed);
 	}
 
-	public static void onMessage(SyncRiftStabilizer message, Supplier<Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			if (message.teleportationType != null) {
-				World level = ctx.get().getSender().level;
-				BlockPos pos = message.pos;
-				boolean allowed = message.allowed;
+	public void handle(Supplier<Context> ctx) {
+		if (teleportationType != null) {
+			World level = ctx.get().getSender().level;
 
-				if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity) {
-					RiftStabilizerBlockEntity be = ((RiftStabilizerBlockEntity) level.getBlockEntity(pos));
+			if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity) {
+				RiftStabilizerBlockEntity be = ((RiftStabilizerBlockEntity) level.getBlockEntity(pos));
 
-					if (be.isOwnedBy(ctx.get().getSender())) {
-						BlockState state = level.getBlockState(pos);
+				if (be.isOwnedBy(ctx.get().getSender())) {
+					BlockState state = level.getBlockState(pos);
 
-						be.setFilter(message.teleportationType, allowed);
-						level.sendBlockUpdated(pos, state, state, 2);
-					}
+					be.setFilter(teleportationType, allowed);
+					level.sendBlockUpdated(pos, state, state, 2);
 				}
 			}
-		});
-
-		ctx.get().setPacketHandled(true);
+		}
 	}
 }

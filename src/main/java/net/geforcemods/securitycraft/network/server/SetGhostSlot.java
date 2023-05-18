@@ -19,30 +19,24 @@ public class SetGhostSlot {
 		this.stack = stack;
 	}
 
-	public static void encode(SetGhostSlot message, PacketBuffer buf) {
-		buf.writeVarInt(message.slotIndex);
-		buf.writeItemStack(message.stack, false);
+	public SetGhostSlot(PacketBuffer buf) {
+		slotIndex = buf.readVarInt();
+		stack = buf.readItem();
 	}
 
-	public static SetGhostSlot decode(PacketBuffer buf) {
-		SetGhostSlot message = new SetGhostSlot();
-
-		message.slotIndex = buf.readVarInt();
-		message.stack = buf.readItem();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeVarInt(slotIndex);
+		buf.writeItemStack(stack, false);
 	}
 
-	public static void onMessage(SetGhostSlot message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = ctx.get().getSender();
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		PlayerEntity player = ctx.get().getSender();
 
-			if (player.containerMenu instanceof InventoryScannerMenu) {
-				InventoryScannerMenu menu = (InventoryScannerMenu) player.containerMenu;
+		if (player.containerMenu instanceof InventoryScannerMenu) {
+			InventoryScannerMenu menu = (InventoryScannerMenu) player.containerMenu;
 
-				if (menu.te.isOwnedBy(player))
-					menu.te.getContents().set(message.slotIndex, message.stack);
-			}
-		});
-		ctx.get().setPacketHandled(true);
+			if (menu.te.isOwnedBy(player))
+				menu.te.getContents().set(slotIndex, stack);
+		}
 	}
 }

@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
+import org.apache.logging.log4j.util.TriConsumer;
+
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.block.BlockState;
@@ -14,56 +16,59 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class RemoteControlMine {
 	private int x, y, z;
-	private String state;
+	private Action action;
 
 	public RemoteControlMine() {}
 
-	public RemoteControlMine(int x, int y, int z, String state) {
+	public RemoteControlMine(int x, int y, int z, Action action) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.state = state;
+		this.action = action;
 	}
 
-	public static void encode(RemoteControlMine message, PacketBuffer buf) {
-		buf.writeInt(message.x);
-		buf.writeInt(message.y);
-		buf.writeInt(message.z);
-		buf.writeUtf(message.state);
+	public RemoteControlMine(PacketBuffer buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		action = buf.readEnum(Action.class);
 	}
 
-	public static RemoteControlMine decode(PacketBuffer buf) {
-		RemoteControlMine message = new RemoteControlMine();
-
-		message.x = buf.readInt();
-		message.y = buf.readInt();
-		message.z = buf.readInt();
-		message.state = buf.readUtf(Integer.MAX_VALUE / 4);
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		buf.writeEnum(action);
 	}
 
-	public static void onMessage(RemoteControlMine message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = ctx.get().getSender();
-			World world = player.level;
-			BlockPos pos = new BlockPos(message.x, message.y, message.z);
-			BlockState state = world.getBlockState(pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		PlayerEntity player = ctx.get().getSender();
+		World world = player.level;
+		BlockPos pos = new BlockPos(x, y, z);
+		BlockState state = world.getBlockState(pos);
 
-			if (state.getBlock() instanceof IExplosive) {
-				IExplosive explosive = ((IExplosive) state.getBlock());
-				TileEntity te = world.getBlockEntity(pos);
+		if (state.getBlock() instanceof IExplosive) {
+			IExplosive explosive = ((IExplosive) state.getBlock());
+			TileEntity te = world.getBlockEntity(pos);
 
-				if (te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player)) {
-					if (message.state.equalsIgnoreCase("activate"))
-						explosive.activateMine(world, pos);
-					else if (message.state.equalsIgnoreCase("defuse"))
-						explosive.defuseMine(world, pos);
-					else if (message.state.equalsIgnoreCase("detonate"))
-						explosive.explode(world, pos);
-				}
-			}
-		});
+			if (te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player))
+				action.act(explosive, world, pos);
+		}
+	}
 
-		ctx.get().setPacketHandled(true);
+	public static enum Action {
+		ACTIVATE(IExplosive::activateMine),
+		DEFUSE(IExplosive::defuseMine),
+		DETONATE(IExplosive::explode);
+
+		private final TriConsumer<IExplosive, World, BlockPos> action;
+
+		Action(TriConsumer<IExplosive, World, BlockPos> action) {
+			this.action = action;
+		}
+
+		public void act(IExplosive explosive, World level, BlockPos pos) {
+			action.accept(explosive, level, pos);
+		}
 	}
 }

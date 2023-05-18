@@ -18,33 +18,26 @@ public class ClearChangeDetectorServer {
 		this.pos = pos;
 	}
 
-	public static void encode(ClearChangeDetectorServer message, PacketBuffer buf) {
-		buf.writeBlockPos(message.pos);
+	public ClearChangeDetectorServer(PacketBuffer buf) {
+		pos = buf.readBlockPos();
 	}
 
-	public static ClearChangeDetectorServer decode(PacketBuffer buf) {
-		ClearChangeDetectorServer message = new ClearChangeDetectorServer();
-
-		message.pos = buf.readBlockPos();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeBlockPos(pos);
 	}
 
-	public static void onMessage(ClearChangeDetectorServer message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			ServerPlayerEntity player = ctx.get().getSender();
-			TileEntity tile = player.level.getBlockEntity(message.pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		ServerPlayerEntity player = ctx.get().getSender();
+		TileEntity tile = player.level.getBlockEntity(pos);
 
-			if (tile instanceof BlockChangeDetectorBlockEntity) {
-				BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) tile;
+		if (tile instanceof BlockChangeDetectorBlockEntity) {
+			BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) tile;
 
-				if (be.isOwnedBy(player)) {
-					be.getEntries().clear();
-					be.setChanged();
-					be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 2);
-				}
+			if (be.isOwnedBy(player)) {
+				be.getEntries().clear();
+				be.setChanged();
+				be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 2);
 			}
-		});
-
-		ctx.get().setPacketHandled(true);
+		}
 	}
 }

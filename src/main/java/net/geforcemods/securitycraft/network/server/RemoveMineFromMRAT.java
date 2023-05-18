@@ -19,34 +19,27 @@ public class RemoveMineFromMRAT {
 		this.mineIndex = mineIndex;
 	}
 
-	public static void encode(RemoveMineFromMRAT message, PacketBuffer buf) {
-		buf.writeVarInt(message.mineIndex);
+	public RemoveMineFromMRAT(PacketBuffer buf) {
+		mineIndex = buf.readVarInt();
 	}
 
-	public static RemoveMineFromMRAT decode(PacketBuffer buf) {
-		RemoveMineFromMRAT message = new RemoveMineFromMRAT();
-
-		message.mineIndex = buf.readVarInt();
-		return message;
+	public void encode(PacketBuffer buf) {
+		buf.writeVarInt(mineIndex);
 	}
 
-	public static void onMessage(RemoveMineFromMRAT message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = ctx.get().getSender();
-			ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.REMOTE_ACCESS_MINE.get());
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		PlayerEntity player = ctx.get().getSender();
+		ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.REMOTE_ACCESS_MINE.get());
 
-			if (!stack.isEmpty()) {
-				CompoundNBT tag = stack.getOrCreateTag();
-				String key = "mine" + message.mineIndex;
+		if (!stack.isEmpty()) {
+			CompoundNBT tag = stack.getOrCreateTag();
+			String key = "mine" + mineIndex;
 
-				if (tag.contains(key)) {
-					stack.getTag().putIntArray(key, new int[] {
-							0, 0, 0
-					});
-				}
+			if (tag.contains(key)) {
+				stack.getTag().putIntArray(key, new int[] {
+						0, 0, 0
+				});
 			}
-		});
-
-		ctx.get().setPacketHandled(true);
+		}
 	}
 }
