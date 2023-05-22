@@ -94,7 +94,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock 
 				inv.dropAllModules();
 
 			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
-				SaltData.removeKey(be.getSaltKey());
+				SaltData.removeSalt(be.getSaltKey());
 
 			if (!newState.hasBlockEntity())
 				level.removeBlockEntity(pos);

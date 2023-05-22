@@ -14,6 +14,8 @@ public class SaltData extends SavedData {
 	private static SaltData instance;
 	private final Map<UUID, byte[]> saltMap = new HashMap<>();
 
+	private SaltData() {}
+
 	public static void refreshLevel(ServerLevel level) {
 		instance = level.getDataStorage().computeIfAbsent(SaltData::load, SaltData::new, "securitycraft-salts");
 	}
@@ -42,7 +44,7 @@ public class SaltData extends SavedData {
 		return saltKey;
 	}
 
-	public static void removeKey(UUID saltKey) {
+	public static void removeSalt(UUID saltKey) {
 		if (saltKey != null) {
 			instance.saltMap.remove(saltKey);
 			instance.setDirty();

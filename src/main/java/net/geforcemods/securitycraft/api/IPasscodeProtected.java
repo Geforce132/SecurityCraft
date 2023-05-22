@@ -115,7 +115,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @param salt The salt used for hashing
 	 */
 	default void hashAndSetPasscode(String passcode, byte[] salt) {
-		SaltData.removeKey(getSaltKey());
+		SaltData.removeSalt(getSaltKey());
 		setSaltKey(SaltData.putSalt(salt));
 		setPasscode(Utils.hashPasscode(passcode, salt));
 	}

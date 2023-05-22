@@ -181,7 +181,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 				Block.popResource(level, pos, be.getDisplayedStack());
 
 			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
-				SaltData.removeKey(be.getSaltKey());
+				SaltData.removeSalt(be.getSaltKey());
 
 			super.onRemove(state, level, pos, newState, isMoving);
 		}

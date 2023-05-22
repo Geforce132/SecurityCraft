@@ -192,7 +192,7 @@ public class KeypadChestBlock extends ChestBlock {
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
 			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
-				SaltData.removeKey(be.getSaltKey());
+				SaltData.removeSalt(be.getSaltKey());
 
 			super.onRemove(state, level, pos, newState, isMoving);
 		}

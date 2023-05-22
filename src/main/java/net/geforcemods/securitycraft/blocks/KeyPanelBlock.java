@@ -195,7 +195,7 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 			}
 
 			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
-				SaltData.removeKey(be.getSaltKey());
+				SaltData.removeSalt(be.getSaltKey());
 
 			if (!newState.hasBlockEntity())
 				level.removeBlockEntity(pos);

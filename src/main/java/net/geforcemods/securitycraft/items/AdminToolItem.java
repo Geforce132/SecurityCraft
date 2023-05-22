@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;

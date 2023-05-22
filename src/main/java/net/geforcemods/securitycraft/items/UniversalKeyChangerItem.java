@@ -80,7 +80,7 @@ public class UniversalKeyChangerItem extends Item {
 
 				if (tag != null && tag.contains("passcode")) {
 					if (tag.contains("saltKey"))
-						SaltData.removeKey(tag.getUUID("saltKey"));
+						SaltData.removeSalt(tag.getUUID("saltKey"));
 
 					Utils.filterPasscodeAndSaltFromTag(tag);
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), ChatFormatting.GREEN);
