@@ -100,6 +100,7 @@ import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.level.NoteBlockEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -181,6 +182,11 @@ public class SCEventHandler {
 	public static void onLevelLoad(LevelEvent.Load event) {
 		if (event.getLevel() instanceof ServerLevel level && level.dimension() == Level.OVERWORLD)
 			SaltData.refreshLevel(level);
+	}
+
+	@SubscribeEvent
+	public static void onServerStop(ServerStoppedEvent event) {
+		PasscodeUtils.stopHashingThread();
 	}
 
 	@SubscribeEvent

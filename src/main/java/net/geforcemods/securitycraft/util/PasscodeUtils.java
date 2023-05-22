@@ -23,6 +23,11 @@ public class PasscodeUtils {
 		hashingThread.start();
 	}
 
+	public static void stopHashingThread() {
+		hashingThread.interrupt();
+		hashingThread = null;
+	}
+
 	public static CompoundTag filterPasscodeAndSaltFromTag(CompoundTag tag) {
 		tag.remove("passcode");
 		tag.remove("saltKey");
@@ -104,6 +109,8 @@ public class PasscodeUtils {
 
 		private HashingThread(Executor mainExecutor) {
 			this.mainExecutor = mainExecutor;
+			setDaemon(true);
+			setName("SecurityCraft Passcode Hashing");
 		}
 
 		@Override
@@ -128,7 +135,7 @@ public class PasscodeUtils {
 						Thread.sleep(sleepTime);
 				}
 				catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
+					interrupt();
 				}
 			}
 		}
