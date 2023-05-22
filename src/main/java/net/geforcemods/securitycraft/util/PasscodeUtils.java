@@ -6,6 +6,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.Executor;
+import java.util.function.Consumer;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -13,6 +16,13 @@ import javax.crypto.spec.PBEKeySpec;
 import net.minecraft.nbt.CompoundTag;
 
 public class PasscodeUtils {
+	private static HashingThread hashingThread;
+
+	public static void startHashingThread(Executor executor) {
+		hashingThread = new HashingThread(executor);
+		hashingThread.start();
+	}
+
 	public static CompoundTag filterPasscodeAndSaltFromTag(CompoundTag tag) {
 		tag.remove("passcode");
 		tag.remove("saltKey");
@@ -25,21 +35,25 @@ public class PasscodeUtils {
 
 			return bytesToString(md.digest(original.getBytes(StandardCharsets.UTF_8)));
 		}
-        catch (NoSuchAlgorithmException e) {
+		catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
 
 		return null;
 	}
 
-	public static byte[] hashPasscode(String passcode, byte[] salt) {
+	public static void hashPasscode(String passcode, byte[] salt, Consumer<byte[]> afterHashing) {
+		hashingThread.workList.addLast(new HashingWork(passcode, salt, afterHashing));
+	}
+
+	private static byte[] hashPasscode(String passcode, byte[] salt) {
 		try {
 			KeySpec spec = new PBEKeySpec(passcode.toCharArray(), salt, 65536, 128);
 			SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 
 			return factory.generateSecret(spec).getEncoded();
 		}
-        catch (GeneralSecurityException e) {
+		catch (GeneralSecurityException e) {
 			e.printStackTrace();
 		}
 
@@ -82,4 +96,43 @@ public class PasscodeUtils {
 		random.nextBytes(salt);
 		return salt;
 	}
+
+	private static class HashingThread extends Thread {
+		private double sleepOverhead = 0.0D;
+		private final ConcurrentLinkedDeque<HashingWork> workList = new ConcurrentLinkedDeque<>();
+		private final Executor mainExecutor;
+
+		private HashingThread(Executor mainExecutor) {
+			this.mainExecutor = mainExecutor;
+		}
+
+		@Override
+		public void run() {
+			while (!isInterrupted()) {
+				try {
+					long start = System.nanoTime();
+
+					if (!workList.isEmpty()) {
+						HashingWork work = workList.pop();
+						byte[] hash = hashPasscode(work.passcode, work.salt);
+
+						mainExecutor.execute(() -> work.afterHashing.accept(hash));
+					}
+
+					double d = (System.nanoTime() - start) / 1_000_000.0D + sleepOverhead;
+					long sleepTime = 10 - (long) d;
+
+					sleepOverhead = d % 1.0D;
+
+					if (sleepTime > 0)
+						Thread.sleep(sleepTime);
+				}
+				catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
+			}
+		}
+	}
+
+	private record HashingWork(String passcode, byte[] salt, Consumer<byte[]> afterHashing) {}
 }

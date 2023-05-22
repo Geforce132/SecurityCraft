@@ -71,7 +71,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 		byte[] salt = PasscodeUtils.generateSalt();
 
 		briefcaseTag.putUUID("saltKey", SaltData.putSalt(salt));
-		briefcaseTag.putString("passcode", PasscodeUtils.bytesToString(PasscodeUtils.hashPasscode(passcode, salt)));
+		PasscodeUtils.hashPasscode(passcode, salt, p -> briefcaseTag.putString("passcode", PasscodeUtils.bytesToString(p)));
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, Player player) {

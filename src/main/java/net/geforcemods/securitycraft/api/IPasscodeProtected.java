@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.api;
 
-import java.util.Arrays;
 import java.util.UUID;
 
 import net.geforcemods.securitycraft.ConfigHandler;
@@ -118,7 +117,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	default void hashAndSetPasscode(String passcode, byte[] salt) {
 		SaltData.removeSalt(getSaltKey());
 		setSaltKey(SaltData.putSalt(salt));
-		setPasscode(PasscodeUtils.hashPasscode(passcode, salt));
+		PasscodeUtils.hashPasscode(passcode, salt, this::setPasscode);
 	}
 
 	/**
@@ -129,16 +128,6 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @param passcode The new passcode to be saved
 	 */
 	public void setPasscode(byte[] passcode);
-
-	/**
-	 * Check whether the given passcode matches the stored one after it has been hashed with the salt.
-	 *
-	 * @param passcode the passcode prior to hashing with the salt
-	 * @return Whether the given passcode matches the stored one after hashing with the salt
-	 */
-	default boolean checkPasscode(String passcode) {
-		return Arrays.equals(getPasscode(), PasscodeUtils.hashPasscode(passcode, getSalt()));
-	}
 
 	/**
 	 * Sets the salt key from the information stored in the given CompoundTag.

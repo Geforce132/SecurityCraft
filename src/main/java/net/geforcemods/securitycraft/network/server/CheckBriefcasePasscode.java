@@ -54,13 +54,14 @@ public class CheckBriefcasePasscode {
 
 			if (!briefcase.isEmpty()) {
 				CompoundTag tag = briefcase.getOrCreateTag();
-				String briefcaseCode = tag.getString("passcode");
+				String tagCode = tag.getString("passcode");
 
-				if (briefcaseCode.length() == 4) { //If an old plaintext passcode is encountered, generate and store the hashed variant
+				if (tagCode.length() == 4) { //If an old plaintext passcode is encountered, generate and store the hashed variant
 					BriefcaseItem.hashAndSetPasscode(tag, PasscodeUtils.hashPasscodeWithoutSalt(tagCode));
-					briefcaseCode = tag.getString("passcode");
+					tagCode = tag.getString("passcode");
 				}
 
+				String briefcaseCode = tagCode;
 				UUID saltKey = tag.contains("saltKey", Tag.TAG_INT_ARRAY) ? tag.getUUID("saltKey") : null;
 				byte[] salt = SaltData.getSalt(saltKey);
 
@@ -69,24 +70,26 @@ public class CheckBriefcasePasscode {
 					return;
 				}
 
-				if (Arrays.equals(PasscodeUtils.stringToBytes(briefcaseCode), PasscodeUtils.hashPasscode(passcode, salt))) {
-					if (!tag.contains("owner")) { //If the briefcase doesn't have an owner (that usually gets set when assigning a new passcode), set the player that first enters the correct passcode as the owner
-						tag.putString("owner", player.getName().getString());
-						tag.putString("ownerUUID", player.getUUID().toString());
+				PasscodeUtils.hashPasscode(passcode, salt, p -> {
+					if (Arrays.equals(PasscodeUtils.stringToBytes(briefcaseCode), p)) {
+						if (!tag.contains("owner")) { //If the briefcase doesn't have an owner (that usually gets set when assigning a new passcode), set the player that first enters the correct passcode as the owner
+							tag.putString("owner", player.getName().getString());
+							tag.putString("ownerUUID", player.getUUID().toString());
+						}
+
+						NetworkHooks.openScreen(player, new MenuProvider() {
+							@Override
+							public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
+								return new BriefcaseMenu(windowId, inv, new BriefcaseContainer(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));
+							}
+
+							@Override
+							public Component getDisplayName() {
+								return briefcase.getHoverName();
+							}
+						}, pos);
 					}
-
-					NetworkHooks.openScreen(player, new MenuProvider() {
-						@Override
-						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-							return new BriefcaseMenu(windowId, inv, new BriefcaseContainer(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));
-						}
-
-						@Override
-						public Component getDisplayName() {
-							return briefcase.getHoverName();
-						}
-					}, pos);
-				}
+				});
 			}
 		});
 

@@ -50,6 +50,7 @@ import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -98,6 +99,7 @@ import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.level.NoteBlockEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -168,6 +170,11 @@ public class SCEventHandler {
 
 			cam.discard();
 		}
+	}
+
+	@SubscribeEvent
+	public static void onServerStart(ServerStartedEvent event) {
+		PasscodeUtils.startHashingThread(event.getServer());
 	}
 
 	@SubscribeEvent

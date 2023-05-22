@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.network.server;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
@@ -45,18 +46,18 @@ public class CheckPasscode {
 			String passcode = message.passcode;
 			ServerPlayer player = ctx.get().getSender();
 
-			if (player.level.getBlockEntity(pos) instanceof IPasscodeProtected passcodeProtected) {
-				if (passcodeProtected.isOnCooldown())
+			if (player.level.getBlockEntity(pos) instanceof IPasscodeProtected be) {
+				if (be.isOnCooldown())
 					return;
 
-				boolean isPasscodeCorrect = passcodeProtected.checkPasscode(passcode);
-
-				if (isPasscodeCorrect) {
-					player.closeContainer();
-					passcodeProtected.activate(player);
-				}
-				else
-					passcodeProtected.onIncorrectPasscodeEntered(player, passcode);
+				PasscodeUtils.hashPasscode(passcode, be.getSalt(), p -> {
+					if (Arrays.equals(be.getPasscode(), p)) {
+						player.closeContainer();
+						be.activate(player);
+					}
+					else
+						be.onIncorrectPasscodeEntered(player, passcode);
+				});
 			}
 		});
 
