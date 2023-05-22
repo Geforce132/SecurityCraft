@@ -5,6 +5,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -63,14 +64,14 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 	public CompoundTag getShareTag(ItemStack stack) {
 		CompoundTag tag = super.getShareTag(stack);
 
-		return tag == null ? null : Utils.filterPasscodeAndSaltFromTag(tag.copy());
+		return tag == null ? null : PasscodeUtils.filterPasscodeAndSaltFromTag(tag.copy());
 	}
 
 	public static void hashAndSetPasscode(CompoundTag briefcaseTag, String passcode) {
-		byte[] salt = Utils.generateSalt();
+		byte[] salt = PasscodeUtils.generateSalt();
 
 		briefcaseTag.putUUID("saltKey", SaltData.putSalt(salt));
-		briefcaseTag.putString("passcode", Utils.bytesToString(Utils.hashPasscode(passcode, salt)));
+		briefcaseTag.putString("passcode", PasscodeUtils.bytesToString(PasscodeUtils.hashPasscode(passcode, salt)));
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, Player player) {

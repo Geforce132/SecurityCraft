@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
 import net.geforcemods.securitycraft.screen.SetPasscodeScreen;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -105,7 +106,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @param passcode The passcode
 	 */
 	default void hashAndSetPasscode(String passcode) {
-		hashAndSetPasscode(passcode, Utils.generateSalt());
+		hashAndSetPasscode(passcode, PasscodeUtils.generateSalt());
 	}
 
 	/**
@@ -117,7 +118,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	default void hashAndSetPasscode(String passcode, byte[] salt) {
 		SaltData.removeSalt(getSaltKey());
 		setSaltKey(SaltData.putSalt(salt));
-		setPasscode(Utils.hashPasscode(passcode, salt));
+		setPasscode(PasscodeUtils.hashPasscode(passcode, salt));
 	}
 
 	/**
@@ -136,7 +137,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @return Whether the given passcode matches the stored one after hashing with the salt
 	 */
 	default boolean checkPasscode(String passcode) {
-		return Arrays.equals(getPasscode(), Utils.hashPasscode(passcode, getSalt()));
+		return Arrays.equals(getPasscode(), PasscodeUtils.hashPasscode(passcode, getSalt()));
 	}
 
 	/**
@@ -148,7 +149,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 		UUID saltKey = tag.contains("saltKey") ? tag.getUUID("saltKey") : null;
 
 		if (!SaltData.containsKey(saltKey)) //If no salt key or no salt associated with the given key can be found, a new password needs to be set
-			Utils.filterPasscodeAndSaltFromTag(tag);
+			PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
 		else
 			setSaltKey(saltKey);
 	}
@@ -164,9 +165,9 @@ public interface IPasscodeProtected extends ICodebreakable {
 		//SecurityCraft's passcode-protected blocks do not support passcodes longer than 20 characters, so if such a short passcode is encountered instead of a hash, store the properly hashed version inside the block
 		if (!passcode.isEmpty()) {
 			if (passcode.length() <= 20)
-				hashAndSetPasscode(Utils.hashPasscodeWithoutSalt(passcode));
+				hashAndSetPasscode(PasscodeUtils.hashPasscodeWithoutSalt(passcode));
 			else
-				setPasscode(Utils.stringToBytes(passcode));
+				setPasscode(PasscodeUtils.stringToBytes(passcode));
 		}
 	}
 

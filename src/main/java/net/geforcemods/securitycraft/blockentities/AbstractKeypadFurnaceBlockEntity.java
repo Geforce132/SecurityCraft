@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.inventory.AbstractKeypadFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -117,7 +118,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 			tag.putUUID("saltKey", saltKey);
 
 		if (passcode != null)
-			tag.putString("passcode", Utils.bytesToString(passcode));
+			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
 	}
 
 	@Override
@@ -135,7 +136,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return Utils.filterPasscodeAndSaltFromTag(saveWithoutMetadata());
+		return PasscodeUtils.filterPasscodeAndSaltFromTag(saveWithoutMetadata());
 	}
 
 	@Override

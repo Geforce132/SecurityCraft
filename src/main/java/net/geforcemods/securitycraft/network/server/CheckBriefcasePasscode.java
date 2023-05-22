@@ -9,8 +9,8 @@ import net.geforcemods.securitycraft.inventory.BriefcaseContainer;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.misc.SaltData;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -31,7 +31,7 @@ public class CheckBriefcasePasscode {
 	public CheckBriefcasePasscode() {}
 
 	public CheckBriefcasePasscode(String passcode) {
-		this.passcode = Utils.hashPasscodeWithoutSalt(passcode);
+		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
 	}
 
 	public static void encode(CheckBriefcasePasscode message, FriendlyByteBuf buf) {
@@ -57,7 +57,7 @@ public class CheckBriefcasePasscode {
 				String briefcaseCode = tag.getString("passcode");
 
 				if (briefcaseCode.length() == 4) { //If an old plaintext passcode is encountered, generate and store the hashed variant
-					BriefcaseItem.hashAndSetPasscode(tag, Utils.hashPasscodeWithoutSalt(briefcaseCode));
+					BriefcaseItem.hashAndSetPasscode(tag, PasscodeUtils.hashPasscodeWithoutSalt(tagCode));
 					briefcaseCode = tag.getString("passcode");
 				}
 
@@ -65,11 +65,11 @@ public class CheckBriefcasePasscode {
 				byte[] salt = SaltData.getSalt(saltKey);
 
 				if (salt == null) { //If no salt key or no salt associated with the given key can be found, a new password needs to be set
-					Utils.filterPasscodeAndSaltFromTag(tag);
+					PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
 					return;
 				}
 
-				if (Arrays.equals(Utils.stringToBytes(briefcaseCode), Utils.hashPasscode(passcode, salt))) {
+				if (Arrays.equals(PasscodeUtils.stringToBytes(briefcaseCode), PasscodeUtils.hashPasscode(passcode, salt))) {
 					if (!tag.contains("owner")) { //If the briefcase doesn't have an owner (that usually gets set when assigning a new passcode), set the player that first enters the correct passcode as the owner
 						tag.putString("owner", player.getName().getString());
 						tag.putString("ownerUUID", player.getUUID().toString());

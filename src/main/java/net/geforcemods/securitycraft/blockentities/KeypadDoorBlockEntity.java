@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -39,7 +40,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 			tag.putUUID("saltKey", saltKey);
 
 		if (passcode != null)
-			tag.putString("passcode", Utils.bytesToString(passcode));
+			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
 
 		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 	}

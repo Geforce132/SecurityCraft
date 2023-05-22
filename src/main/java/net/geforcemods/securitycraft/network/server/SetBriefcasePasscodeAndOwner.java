@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +18,7 @@ public class SetBriefcasePasscodeAndOwner {
 	public SetBriefcasePasscodeAndOwner() {}
 
 	public SetBriefcasePasscodeAndOwner(String passcode) {
-		this.passcode = passcode.isEmpty() ? passcode : Utils.hashPasscodeWithoutSalt(passcode);
+		this.passcode = passcode.isEmpty() ? passcode : PasscodeUtils.hashPasscodeWithoutSalt(passcode);
 	}
 
 	public static void encode(SetBriefcasePasscodeAndOwner message, FriendlyByteBuf buf) {

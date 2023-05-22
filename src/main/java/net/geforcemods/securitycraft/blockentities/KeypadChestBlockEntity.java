@@ -21,6 +21,7 @@ import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -70,7 +71,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 			tag.putUUID("saltKey", saltKey);
 
 		if (passcode != null)
-			tag.putString("passcode", Utils.bytesToString(passcode));
+			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
 
 		if (owner != null)
 			owner.save(tag, false);
@@ -91,7 +92,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return Utils.filterPasscodeAndSaltFromTag(saveWithoutMetadata());
+		return PasscodeUtils.filterPasscodeAndSaltFromTag(saveWithoutMetadata());
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -106,7 +107,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 			tag.putUUID("saltKey", saltKey);
 
 		if (passcode != null)
-			tag.putString("passcode", Utils.bytesToString(passcode));
+			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
 	}
 
 	@Override

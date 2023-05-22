@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
-import net.geforcemods.securitycraft.util.Utils;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -25,7 +25,7 @@ public class SetPasscode {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		passcode = Utils.hashPasscodeWithoutSalt(code);
+		passcode = PasscodeUtils.hashPasscodeWithoutSalt(code);
 	}
 
 	public static void encode(SetPasscode message, FriendlyByteBuf buf) {

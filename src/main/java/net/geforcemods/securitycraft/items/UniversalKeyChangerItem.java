@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -82,7 +83,7 @@ public class UniversalKeyChangerItem extends Item {
 					if (tag.contains("saltKey"))
 						SaltData.removeSalt(tag.getUUID("saltKey"));
 
-					Utils.filterPasscodeAndSaltFromTag(tag);
+					PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), ChatFormatting.GREEN);
 					return InteractionResultHolder.success(keyChanger);
 				}

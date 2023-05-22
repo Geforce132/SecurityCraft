@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
-import net.geforcemods.securitycraft.util.Utils;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,7 +19,7 @@ public class CheckPasscode {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.passcode = Utils.hashPasscodeWithoutSalt(passcode);
+		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
 	}
 
 	public static void encode(CheckPasscode message, FriendlyByteBuf buf) {
