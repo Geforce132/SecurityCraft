@@ -75,7 +75,7 @@ public class UniversalKeyChangerItem extends Item {
 		if (hand == InteractionHand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get()) {
 			ItemStack briefcase = player.getOffhandItem();
 
-			if (BriefcaseItem.isOwnedBy(briefcase, player)) {
+			if (BriefcaseItem.isOwnedBy(briefcase, player) || player.isCreative()) {
 				CompoundTag tag = briefcase.getTag();
 
 				if (tag != null && tag.contains("passcode")) {
