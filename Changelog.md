@@ -43,8 +43,9 @@
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 - API: All occurrences of "password" in API class and method names have been switched out with "passcode" (for example, IPasswordProtected#getPassword -> IPasscodeProtected#getPasscode)
 - API: IPasscodeProtected#setPasscode now returns a byte array, IPasscodeProtected#getPasscode now takes a byte array as its only parameter
-- API: New methods IPasscodeProtected#getSalt and IPasscodeProtected#setSalt to get and set the block entity's "salt" field
-- API: New methods IPasscodeProtected#hashAndSetPasscode, IPasscodeProtected#checkPasscode, IPasscodeProtected#loadPasscode for easier passcode management
+- API: New methods IPasscodeProtected#getSaltKey, IPasscodeProtected#setSaltKey, IPasscodeProtected#loadSaltKey to get and set the block entity's salt key or read it from a block entity tag
+- API: New methods IPasscodeProtected#getSalt to access the block entity's salt using the stored salt key
+- API: New methods IPasscodeProtected#hashAndSetPasscode and IPasscodeProtected#loadPasscode for easier passcode management
 - Fix: Jade does not properly hide blocks
 - Fix: Shields do not take damage when blocking a taser that deals high enough damage
 - Fix: A player shooting a guardian with a taser gets damaged by the guardian's thorns
