@@ -28,6 +28,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -48,6 +49,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 	private static final ResourceLocation WORLD_SELECTION_ICONS = new ResourceLocation("textures/gui/world_selection.png");
 	private static final ITextComponent EQUALS = new StringTextComponent("=");
 	private static final ITextComponent GREATER_THAN_EQUALS = new StringTextComponent(">=");
+	private static final int MAX_SIGNATURE = 99999;
 	private final ITextComponent keycardLevelsText = Utils.localize("gui.securitycraft:keycard_reader.keycard_levels");
 	private final ITextComponent linkText = Utils.localize("gui.securitycraft:keycard_reader.link");
 	private final ITextComponent levelMismatchInfo = Utils.localize("gui.securitycraft:keycard_reader.level_mismatch");
@@ -141,7 +143,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 		plusOne = addButton(new ExtendedButton(leftPos + 96, buttonY, 12, buttonHeight, new StringTextComponent("+"), b -> changeSignature(signature + 1)));
 		plusTwo = addButton(new ExtendedButton(leftPos + 110, buttonY, 18, buttonHeight, new StringTextComponent("++"), b -> changeSignature(signature + 10)));
 		plusThree = addButton(new ExtendedButton(leftPos + 130, buttonY, 24, buttonHeight, new StringTextComponent("+++"), b -> changeSignature(signature + 100)));
-		Button randomizeButton = addButton(new PictureButton(leftPos + 156, buttonY, 12, buttonHeight, RANDOM_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(minecraft.level.random.nextInt(32767))));
+		Button randomizeButton = addButton(new PictureButton(leftPos + 156, buttonY, 12, buttonHeight, RANDOM_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(minecraft.level.random.nextInt(MAX_SIGNATURE))));
 		//set correct signature
 		changeSignature(signature);
 		//link button
@@ -313,13 +315,12 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 		boolean enableMinusButtons;
 
 		if (isOwner)
-			signature = Math.max(0, Math.min(newSignature, Short.MAX_VALUE)); //keep between 0 and 32767 (disallow negative numbers)
+			signature = MathHelper.clamp(newSignature, 0, MAX_SIGNATURE); //keep between 0 and the max allowed (disallow negative numbers)
 
 		signatureText = new TranslationTextComponent("gui.securitycraft:keycard_reader.signature", StringUtils.leftPad("" + signature, 5, "0"));
 		signatureTextLength = font.width(signatureText);
 		signatureTextStartX = imageWidth / 2 - signatureTextLength / 2;
-
-		enablePlusButtons = isOwner && signature != Short.MAX_VALUE;
+		enablePlusButtons = isOwner && signature != MAX_SIGNATURE;
 		enableMinusButtons = isOwner && signature != 0;
 		minusThree.active = enableMinusButtons;
 		minusTwo.active = enableMinusButtons;
