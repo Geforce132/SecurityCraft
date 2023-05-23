@@ -78,7 +78,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 		super(container, inv, title);
 
 		te = container.te;
-		previousSignature = te.getSignature();
+		previousSignature = Mth.clamp(te.getSignature(), 0, MAX_SIGNATURE);
 		signature = previousSignature;
 		acceptedLevels = te.getAcceptedLevels();
 		hasSmartModule = te.isModuleEnabled(ModuleType.SMART);
