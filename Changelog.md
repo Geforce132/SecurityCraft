@@ -23,6 +23,7 @@
 - Fix: Some reinforced blocks and mines can be destroyed by pistons or flowing fluids
 - Fix: EMC values do not load when ProjectE Integration is installed
 - Fix: Several items like the Admin Tool or Universal Block Remover (and more) cannot be placed into a Display Case
+- Fix: The Keycard Reader can accept signatures that are not within the allowed range
 - Fix: The Ignore Owner option is inaccessible in the Rift Stabilizer
 
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------

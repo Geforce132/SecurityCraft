@@ -76,7 +76,7 @@ public class KeycardReaderScreen extends GuiContainer {
 
 		container = (KeycardReaderMenu) inventorySlots;
 		te = tile;
-		previousSignature = te.getSignature();
+		previousSignature = MathHelper.clamp(te.getSignature(), 0, MAX_SIGNATURE);
 		signature = previousSignature;
 		acceptedLevels = te.getAcceptedLevels();
 		hasSmartModule = te.isModuleEnabled(ModuleType.SMART);
