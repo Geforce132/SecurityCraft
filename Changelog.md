@@ -24,6 +24,7 @@
 - Fix: Reinforced Lever duplication exploit
 - Fix: The new crystal quartz blocks from v1.9.5 don't have an EMC value associated with them
 - Fix: Several items like the Admin Tool or Universal Block Remover (and more) cannot be placed into a Display Case
+- Fix: The Keycard Reader can accept signatures that are not within the allowed range
 - Misc.: More texture updates
 
 --------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------
