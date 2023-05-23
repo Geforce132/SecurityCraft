@@ -54,6 +54,7 @@
 - Fix: Some reinforced blocks and mines can be destroyed by pistons or flowing fluids
 - Fix: Reinforced Lever duplication exploit
 - Fix: Several items like the Admin Tool or Universal Block Remover (and more) cannot be placed into a Display Case
+- Fix: The Keycard Reader can accept signatures that are not within the allowed range
 - Misc.: The minimum required Forge version is 45.0.58
 - Misc.: More texture updates
 
