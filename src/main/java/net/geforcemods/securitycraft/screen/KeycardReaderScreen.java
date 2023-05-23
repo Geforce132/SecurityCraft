@@ -28,6 +28,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
@@ -42,6 +43,7 @@ public class KeycardReaderScreen extends GuiContainer {
 	private static final ResourceLocation WORLD_SELECTION_ICONS = new ResourceLocation("textures/gui/world_selection.png");
 	private static final String EQUALS = "=";
 	private static final String GREATER_THAN_EQUALS = ">=";
+	private static final int MAX_SIGNATURE = 99999;
 	private final String title;
 	private final String inventoryText = Utils.localize("container.inventory").getFormattedText();
 	private final String keycardLevelsText = Utils.localize("gui.securitycraft:keycard_reader.keycard_levels").getFormattedText();
@@ -145,7 +147,7 @@ public class KeycardReaderScreen extends GuiContainer {
 		plusOne = addButton(new ClickButton(id++, guiLeft + 96, buttonY, 12, buttonHeight, "+", b -> changeSignature(signature + 1)));
 		plusTwo = addButton(new ClickButton(id++, guiLeft + 110, buttonY, 18, buttonHeight, "++", b -> changeSignature(signature + 10)));
 		plusThree = addButton(new ClickButton(id++, guiLeft + 130, buttonY, 24, buttonHeight, "+++", b -> changeSignature(signature + 100)));
-		GuiButton randomizeButton = addButton(new PictureButton(id++, guiLeft + 156, buttonY, 12, buttonHeight, RANDOM_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(mc.world.rand.nextInt(32767))));
+		GuiButton randomizeButton = addButton(new PictureButton(id++, guiLeft + 156, buttonY, 12, buttonHeight, RANDOM_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(mc.world.rand.nextInt(MAX_SIGNATURE))));
 		//set correct signature
 		changeSignature(signature);
 		//link button
@@ -353,13 +355,12 @@ public class KeycardReaderScreen extends GuiContainer {
 		boolean enableMinusButtons;
 
 		if (isOwner)
-			signature = Math.max(0, Math.min(newSignature, Short.MAX_VALUE)); //keep between 0 and 32767 (disallow negative numbers)
+			signature = MathHelper.clamp(newSignature, 0, MAX_SIGNATURE); //keep between 0 and the max allowed (disallow negative numbers)
 
 		signatureText = new TextComponentTranslation("gui.securitycraft:keycard_reader.signature", StringUtils.leftPad("" + signature, 5, "0")).getFormattedText();
 		signatureTextLength = fontRenderer.getStringWidth(signatureText);
 		signatureTextStartX = xSize / 2 - signatureTextLength / 2;
-
-		enablePlusButtons = isOwner && signature != Short.MAX_VALUE;
+		enablePlusButtons = isOwner && signature != MAX_SIGNATURE;
 		enableMinusButtons = isOwner && signature != 0;
 		minusThree.enabled = enableMinusButtons;
 		minusTwo.enabled = enableMinusButtons;
