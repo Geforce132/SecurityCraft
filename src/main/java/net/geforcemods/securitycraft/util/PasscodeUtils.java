@@ -19,13 +19,17 @@ public class PasscodeUtils {
 	private static HashingThread hashingThread;
 
 	public static void startHashingThread(Executor executor) {
-		hashingThread = new HashingThread(executor);
-		hashingThread.start();
+		if (hashingThread == null) {
+			hashingThread = new HashingThread(executor);
+			hashingThread.start();
+		}
 	}
 
 	public static void stopHashingThread() {
-		hashingThread.interrupt();
-		hashingThread = null;
+		if (hashingThread != null) {
+			hashingThread.interrupt();
+			hashingThread = null;
+		}
 	}
 
 	public static CompoundTag filterPasscodeAndSaltFromTag(CompoundTag tag) {
@@ -49,20 +53,6 @@ public class PasscodeUtils {
 
 	public static void hashPasscode(String passcode, byte[] salt, Consumer<byte[]> afterHashing) {
 		hashingThread.workList.addLast(new HashingWork(passcode, salt, afterHashing));
-	}
-
-	private static byte[] hashPasscode(String passcode, byte[] salt) {
-		try {
-			KeySpec spec = new PBEKeySpec(passcode.toCharArray(), salt, 65536, 128);
-			SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-
-			return factory.generateSecret(spec).getEncoded();
-		}
-		catch (GeneralSecurityException e) {
-			e.printStackTrace();
-		}
-
-		return null;
 	}
 
 	public static String bytesToString(byte[] bytes) {
@@ -138,6 +128,20 @@ public class PasscodeUtils {
 					interrupt();
 				}
 			}
+		}
+
+		private static byte[] hashPasscode(String passcode, byte[] salt) {
+			try {
+				KeySpec spec = new PBEKeySpec(passcode.toCharArray(), salt, 65536, 128);
+				SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+
+				return factory.generateSecret(spec).getEncoded();
+			}
+			catch (GeneralSecurityException e) {
+				e.printStackTrace();
+			}
+
+			return null;
 		}
 	}
 
