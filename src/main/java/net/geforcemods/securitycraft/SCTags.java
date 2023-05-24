@@ -80,6 +80,7 @@ public class SCTags {
 		public static final TagKey<Item> REINFORCED_SPRUCE_LOGS = tag("reinforced/spruce_logs");
 		public static final TagKey<Item> REINFORCED_STAIRS = tag("reinforced/stairs");
 		public static final TagKey<Item> REINFORCED_STONE = tag("reinforced/stone");
+		public static final TagKey<Item> REINFORCED_STONE_CRAFTING_MATERIALS = tag("reinforced/stone_crafting_materials");
 		public static final TagKey<Item> REINFORCED_STONE_BRICKS = tag("reinforced/stone_bricks");
 		public static final TagKey<Item> REINFORCED_TERRACOTTA = tag("reinforced/terracotta");
 		public static final TagKey<Item> REINFORCED_WARPED_STEMS = tag("reinforced/warped_stems");
