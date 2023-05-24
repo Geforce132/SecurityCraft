@@ -7,7 +7,7 @@
   ],
   "key": {
     "S": {
-      "tag": "securitycraft:reinforced/stone"
+      "tag": "securitycraft:reinforced/stone_crafting_materials"
     },
     "P": {
       "item": "securitycraft:portable_radar"

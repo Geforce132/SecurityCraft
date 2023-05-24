@@ -11,6 +11,7 @@
 - Change: Some alarm options have been moved to a separate screen
 - Change: The minimum radius of the Portable Radar is now one block
 - Change: The maximum allowed signature for a Keycard Reader is now 99999
+- Change: Where applicable, recipes now use the securitycraft:reinforced_stone_crafting materials tag (similar to minecraft:stone_crafting_materials, but with the reinforced variants)
 - API: Renamed Option#readFromNBT to Option#load and Option#writeToNBT to Option#save
 - Fix: Shields do not take damage when blocking a taser that deals high enough damage
 - Fix: The death message of a player killed by a taser does not contain the player firing the taser
