@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.CheckPasscode;
+import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -34,7 +35,7 @@ public class CheckPasscodeScreen extends Screen {
 	private int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
-	private EditBox keycodeTextbox;
+	private CensoringEditBox keycodeTextbox;
 	private boolean wasOnCooldownLastRenderTick = false;
 
 	public CheckPasscodeScreen(BlockEntity be, Component title) {
@@ -50,18 +51,19 @@ public class CheckPasscodeScreen extends Screen {
 		topPos = (height - imageHeight) / 2;
 		cooldownText1XPos = width / 2 - font.width(COOLDOWN_TEXT_1) / 2;
 
-		addRenderableWidget(new Button(width / 2 - 33, height / 2 - 45, 20, 20, Component.literal("1"), b -> addNumberToString(1), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 8, height / 2 - 45, 20, 20, Component.literal("2"), b -> addNumberToString(2), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 + 17, height / 2 - 45, 20, 20, Component.literal("3"), b -> addNumberToString(3), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 33, height / 2 - 20, 20, 20, Component.literal("4"), b -> addNumberToString(4), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 8, height / 2 - 20, 20, 20, Component.literal("5"), b -> addNumberToString(5), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 + 17, height / 2 - 20, 20, 20, Component.literal("6"), b -> addNumberToString(6), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 33, height / 2 + 5, 20, 20, Component.literal("7"), b -> addNumberToString(7), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 8, height / 2 + 5, 20, 20, Component.literal("8"), b -> addNumberToString(8), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 + 17, height / 2 + 5, 20, 20, Component.literal("9"), b -> addNumberToString(9), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 33, height / 2 + 30, 20, 20, Component.literal("←"), b -> removeLastCharacter(), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 8, height / 2 + 30, 20, 20, Component.literal("0"), b -> addNumberToString(0), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 + 17, height / 2 + 30, 20, 20, Component.literal("✔"), b -> checkCode(keycodeTextbox.getValue()), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 33, height / 2 - 25, 20, 20, Component.literal("1"), b -> addNumberToString(1), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 8, height / 2 - 25, 20, 20, Component.literal("2"), b -> addNumberToString(2), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 + 17, height / 2 - 25, 20, 20, Component.literal("3"), b -> addNumberToString(3), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 33, height / 2, 20, 20, Component.literal("4"), b -> addNumberToString(4), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 8, height / 2, 20, 20, Component.literal("5"), b -> addNumberToString(5), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 + 17, height / 2, 20, 20, Component.literal("6"), b -> addNumberToString(6), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 33, height / 2 + 25, 20, 20, Component.literal("7"), b -> addNumberToString(7), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 8, height / 2 + 25, 20, 20, Component.literal("8"), b -> addNumberToString(8), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 + 17, height / 2 + 25, 20, 20, Component.literal("9"), b -> addNumberToString(9), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 33, height / 2 + 50, 20, 20, Component.literal("←"), b -> removeLastCharacter(), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 8, height / 2 + 50, 20, 20, Component.literal("0"), b -> addNumberToString(0), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 + 17, height / 2 + 50, 20, 20, Component.literal("✔"), b -> checkCode(keycodeTextbox.getValue()), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new CallbackCheckbox(width / 2 - 37, height / 2 - 45, 12, 12, Component.translatable("gui.securitycraft:passcode.showPasscode"), false, newState -> keycodeTextbox.setCensoring(!newState), 0x404040));
 
 		addRenderableWidget(keycodeTextbox = new CensoringEditBox(font, width / 2 - 37, height / 2 - 62, 77, 12, Component.empty()) {
 			@Override
@@ -181,10 +183,11 @@ public class CheckPasscodeScreen extends Screen {
 
 	public static class CensoringEditBox extends EditBox {
 		private String renderedText = "";
+		private boolean shouldCensor = true;
 
 		public CensoringEditBox(Font font, int x, int y, int width, int height, Component message) {
 			super(font, x, y, width, height, message);
-			setResponder(s -> renderedText = censorText(s));
+			setResponder(this::updateRenderedText);
 		}
 
 		@Override
@@ -212,20 +215,29 @@ public class CheckPasscodeScreen extends Screen {
 		public void setHighlightPos(int position) {
 			String originalValue = value;
 
-			renderedText = censorText(originalValue);
+			updateRenderedText(originalValue);
 			value = renderedText;
 			super.setHighlightPos(position);
 			value = originalValue;
 		}
 
-		private String censorText(String original) {
-			String x = "";
+		public void setCensoring(boolean shouldCensor) {
+			this.shouldCensor = shouldCensor;
+			updateRenderedText(value);
+		}
 
-			for (int i = 1; i <= original.length(); i++) {
-				x += "*";
+		private void updateRenderedText(String original) {
+			if (shouldCensor) {
+				String x = "";
+
+				for (int i = 1; i <= original.length(); i++) {
+					x += "*";
+				}
+
+				renderedText = x;
 			}
-
-			return x;
+			else
+				renderedText = original;
 		}
 	}
 }

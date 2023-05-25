@@ -32,6 +32,7 @@
 - New: Randomize signature button for the Keycard Reader
 - New: The pitch of the sound an alarm plays can now be changed
 - New: The SecurityCraft Manual now shows default values and the range (if applicable) of a block's options
+- New: Passcodes entered in the text box of check passcode screens can now be shown using a checkbox
 - Change: Several technical blocks' sounds have been adjusted to better match how they look
 - Change: Improved visuals when holding a taser
 - Change: Some alarm options have been moved to a separate screen
@@ -40,7 +41,7 @@
 - Change: All occurrences of "Password" in block or item names have been switched out with "Passcode" (for example, Password-protected Chest -> Passcode-protected Chest)
 - Change: The storage location of passcodes in the NBT data of Display Cases has been changed from "Passcode" to "passcode"
 - Change: The Universal Key Changer can now be used by players in creative mode on any passcode-protected block or briefcase, regardless of its owner
-- Change: Passcodes no longer have a character size restriction
+- Change: Passcodes no longer have a maximum length restriction
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 - API: All occurrences of "password" in API class and method names have been switched out with "passcode" (for example, IPasswordProtected#getPassword -> IPasscodeProtected#getPasscode)
 - API: IPasscodeProtected#setPasscode now returns a byte array, IPasscodeProtected#getPasscode now takes a byte array as its only parameter

@@ -675,6 +675,7 @@
 	"gui.securitycraft:passcode.invalidCode": "Ungültiger Code!",
 	"gui.securitycraft:passcode.save": "Speichern",
 	"gui.securitycraft:passcode.setup": "aufsetzen",
+	"gui.securitycraft:passcode.showPasscode": "Passwort zeigen",
 	"gui.securitycraft:projector.block": "Block zum Projizieren einfügen",
 	"gui.securitycraft:projector.height": "Höhe: %s",
 	"gui.securitycraft:projector.height.description": "Die Höhe der Projektion.",
