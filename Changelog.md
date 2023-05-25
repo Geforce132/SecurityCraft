@@ -40,6 +40,7 @@
 - Change: All occurrences of "Password" in block or item names have been switched out with "Passcode" (for example, Password-protected Chest -> Passcode-protected Chest)
 - Change: The storage location of passcodes in the NBT data of Display Cases has been changed from "Passcode" to "passcode"
 - Change: The Universal Key Changer can now be used by players in creative mode on any passcode-protected block or briefcase, regardless of its owner
+- Change: Passcodes do no longer have a character size restriction
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 - API: All occurrences of "password" in API class and method names have been switched out with "passcode" (for example, IPasswordProtected#getPassword -> IPasscodeProtected#getPasscode)
 - API: IPasscodeProtected#setPasscode now returns a byte array, IPasscodeProtected#getPasscode now takes a byte array as its only parameter

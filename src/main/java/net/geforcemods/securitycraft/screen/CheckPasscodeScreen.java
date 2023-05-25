@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class CheckPasscodeScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private static final int MAX_CHARS = 20;
 	private static final Component COOLDOWN_TEXT_1 = Component.translatable("gui.securitycraft:passcode.cooldown1");
 	private int cooldownText1XPos;
 	private IPasscodeProtected be;
@@ -77,7 +76,6 @@ public class CheckPasscodeScreen extends Screen {
 				return active && super.canConsumeInput();
 			}
 		});
-		keycodeTextbox.setMaxLength(MAX_CHARS);
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*\\**")); //allow any amount of numbers and any amount of asterisks
 
 		if (be.isOnCooldown())
@@ -141,7 +139,7 @@ public class CheckPasscodeScreen extends Screen {
 
 	@Override
 	public boolean charTyped(char typedChar, int keyCode) {
-		if (!be.isOnCooldown() && isValidChar(typedChar) && currentString.length() < MAX_CHARS) {
+		if (!be.isOnCooldown() && isValidChar(typedChar)) {
 			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
 			currentString += typedChar;
 			setTextboxCensoredText(keycodeTextbox, currentString);
@@ -162,10 +160,8 @@ public class CheckPasscodeScreen extends Screen {
 	}
 
 	private void addNumberToString(int number) {
-		if (currentString.length() < MAX_CHARS) {
-			currentString += "" + number;
-			setTextboxCensoredText(keycodeTextbox, currentString);
-		}
+		currentString += number;
+		setTextboxCensoredText(keycodeTextbox, currentString);
 	}
 
 	private void removeLastCharacter() {
