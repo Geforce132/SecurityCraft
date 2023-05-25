@@ -136,8 +136,9 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 */
 	default void loadSaltKey(CompoundTag tag) {
 		UUID saltKey = tag.contains("saltKey") ? tag.getUUID("saltKey") : null;
+		String passcode = tag.getString(tag.contains("Passcode", Tag.TAG_STRING) ? "Passcode" : "passcode"); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
 
-		if (!SaltData.containsKey(saltKey)) //If no salt key or no salt associated with the given key can be found, a new password needs to be set
+		if (passcode.length() == 32 && !SaltData.containsKey(saltKey)) //If the passcode hash is set correctly, but no salt key or no salt associated with the given key can be found, a new password needs to be set
 			PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
 		else
 			setSaltKey(saltKey);
