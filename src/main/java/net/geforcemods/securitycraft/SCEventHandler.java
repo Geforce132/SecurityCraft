@@ -174,7 +174,7 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onServerStarting(ServerAboutToStartEvent event) {
+	public static void onServerAboutToStart(ServerAboutToStartEvent event) {
 		PasscodeUtils.startHashingThread(event.getServer());
 	}
 

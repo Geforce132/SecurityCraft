@@ -11,8 +11,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.CheckPasscode;
-import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -36,7 +35,6 @@ public class CheckPasscodeScreen extends Screen {
 	private int leftPos;
 	private int topPos;
 	private EditBox keycodeTextbox;
-	private String currentString = "";
 	private boolean wasOnCooldownLastRenderTick = false;
 
 	public CheckPasscodeScreen(BlockEntity be, Component title) {
@@ -63,9 +61,9 @@ public class CheckPasscodeScreen extends Screen {
 		addRenderableWidget(new Button(width / 2 + 17, height / 2 + 5, 20, 20, Component.literal("9"), b -> addNumberToString(9), Button.DEFAULT_NARRATION));
 		addRenderableWidget(new Button(width / 2 - 33, height / 2 + 30, 20, 20, Component.literal("←"), b -> removeLastCharacter(), Button.DEFAULT_NARRATION));
 		addRenderableWidget(new Button(width / 2 - 8, height / 2 + 30, 20, 20, Component.literal("0"), b -> addNumberToString(0), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 + 17, height / 2 + 30, 20, 20, Component.literal("✔"), b -> checkCode(currentString), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 + 17, height / 2 + 30, 20, 20, Component.literal("✔"), b -> checkCode(keycodeTextbox.getValue()), Button.DEFAULT_NARRATION));
 
-		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 62, 77, 12, Component.empty()) {
+		addRenderableWidget(keycodeTextbox = new CensoringEditBox(font, width / 2 - 37, height / 2 - 62, 77, 12, Component.empty()) {
 			@Override
 			public boolean mouseClicked(double mouseX, double mouseY, int button) {
 				return active && super.mouseClicked(mouseX, mouseY, button);
@@ -76,6 +74,7 @@ public class CheckPasscodeScreen extends Screen {
 				return active && super.canConsumeInput();
 			}
 		});
+		keycodeTextbox.setMaxLength(Integer.MAX_VALUE);
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*\\**")); //allow any amount of numbers and any amount of asterisks
 
 		if (be.isOnCooldown())
@@ -111,20 +110,17 @@ public class CheckPasscodeScreen extends Screen {
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		boolean isBackspace = keyCode == GLFW.GLFW_KEY_BACKSPACE;
+		if (keyCode == GLFW.GLFW_KEY_BACKSPACE && keycodeTextbox.getValue().length() > 0)
+			minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
 
-		if (isBackspace || !super.keyPressed(keyCode, scanCode, modifiers)) {
+		if (!super.keyPressed(keyCode, scanCode, modifiers)) {
 			if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode)))
 				onClose();
 
 			if (!be.isOnCooldown()) {
-				if (isBackspace && currentString.length() > 0) {
-					Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
-					removeLastCharacter();
-				}
-				else if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
-					Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
-					checkCode(currentString);
+				if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
+					minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
+					checkCode(keycodeTextbox.getValue());
 				}
 			}
 		}
@@ -140,19 +136,16 @@ public class CheckPasscodeScreen extends Screen {
 	@Override
 	public boolean charTyped(char typedChar, int keyCode) {
 		if (!be.isOnCooldown() && isValidChar(typedChar)) {
-			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
-			currentString += typedChar;
-			setTextboxCensoredText(keycodeTextbox, currentString);
+			super.charTyped(typedChar, keyCode);
+			minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
 		}
-		else
-			return super.charTyped(typedChar, keyCode);
 
 		return true;
 	}
 
 	private boolean isValidChar(char c) {
-		for (int i = 0; i < allowedChars.length; i++) {
-			if (c == allowedChars[i])
+		for (char allowedChar : allowedChars) {
+			if (c == allowedChar)
 				return true;
 		}
 
@@ -160,25 +153,12 @@ public class CheckPasscodeScreen extends Screen {
 	}
 
 	private void addNumberToString(int number) {
-		currentString += number;
-		setTextboxCensoredText(keycodeTextbox, currentString);
+		keycodeTextbox.insertText("" + number);
 	}
 
 	private void removeLastCharacter() {
-		if (currentString.length() > 0) {
-			currentString = Utils.removeLastChar(currentString);
-			setTextboxCensoredText(keycodeTextbox, currentString);
-		}
-	}
-
-	private void setTextboxCensoredText(EditBox textField, String text) {
-		String x = "";
-
-		for (int i = 1; i <= text.length(); i++) {
-			x += "*";
-		}
-
-		textField.setValue(x);
+		if (keycodeTextbox.getValue().length() > 0)
+			keycodeTextbox.deleteChars(-1);
 	}
 
 	private void toggleChildrenActive(boolean setActive) {
@@ -195,8 +175,57 @@ public class CheckPasscodeScreen extends Screen {
 		if (be instanceof IModuleInventory moduleInv && moduleInv.isModuleEnabled(ModuleType.SMART))
 			toggleChildrenActive(false);
 
-		currentString = "";
 		keycodeTextbox.setValue("");
 		SecurityCraft.channel.sendToServer(new CheckPasscode(pos.getX(), pos.getY(), pos.getZ(), code));
+	}
+
+	public static class CensoringEditBox extends EditBox {
+		private String renderedText = "";
+
+		public CensoringEditBox(Font font, int x, int y, int width, int height, Component message) {
+			super(font, x, y, width, height, message);
+			setResponder(s -> renderedText = censorText(s));
+		}
+
+		@Override
+		public boolean mouseClicked(double mouseX, double mouseY, int button) {
+			String originalValue = value;
+
+			value = renderedText;
+
+			boolean success = super.mouseClicked(mouseX, mouseY, button);
+
+			value = originalValue;
+			return success;
+		}
+
+		@Override
+		public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partialTick) {
+			String originalValue = value;
+
+			value = renderedText;
+			super.renderWidget(pose, mouseX, mouseY, partialTick);
+			value = originalValue;
+		}
+
+		@Override
+		public void setHighlightPos(int position) {
+			String originalValue = value;
+
+			renderedText = censorText(originalValue);
+			value = renderedText;
+			super.setHighlightPos(position);
+			value = originalValue;
+		}
+
+		private String censorText(String original) {
+			String x = "";
+
+			for (int i = 1; i <= original.length(); i++) {
+				x += "*";
+			}
+
+			return x;
+		}
 	}
 }

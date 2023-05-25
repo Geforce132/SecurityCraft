@@ -62,6 +62,7 @@
 - Fix: Reinforced Lever duplication exploit
 - Fix: Several items like the Admin Tool or Universal Block Remover (and more) cannot be placed into a Display Case
 - Fix: Briefcase inventory access exploit
+- Fix: The text box within the check passcode screen always places inserted characters at the end of the string rather than the cursor position
 - Misc.: The minimum required Forge version is 45.0.39
 - Misc.: More texture updates
 
