@@ -99,7 +99,7 @@ import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.level.NoteBlockEvent;
-import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -174,7 +174,7 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onServerStart(ServerStartedEvent event) {
+	public static void onServerStarting(ServerAboutToStartEvent event) {
 		PasscodeUtils.startHashingThread(event.getServer());
 	}
 
