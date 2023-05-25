@@ -46,7 +46,7 @@ public class SetBriefcasePasscodeAndOwner {
 				}
 
 				if (!message.passcode.isEmpty() && !tag.contains("passcode"))
-					BriefcaseItem.hashAndSetPasscode(tag, message.passcode);
+					BriefcaseItem.hashAndSetPasscode(tag, message.passcode, p -> {});
 			}
 		});
 
