@@ -193,11 +193,10 @@ public class CheckPasscodeScreen extends Screen {
 		@Override
 		public boolean mouseClicked(double mouseX, double mouseY, int button) {
 			String originalValue = value;
+			boolean success;
 
 			value = renderedText;
-
-			boolean success = super.mouseClicked(mouseX, mouseY, button);
-
+			success = super.mouseClicked(mouseX, mouseY, button);
 			value = originalValue;
 			return success;
 		}
