@@ -8,19 +8,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * Defines a block that can be converted to a password-protected variant by rightclicking it with a Key Panel. Call
+ * Defines a block that can be converted to a passcode-protected variant by rightclicking it with a Key Panel. Call
  *
  * <pre>
- * InterModComms.sendTo("securitycraft", SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, ClassThatImplementsIPasswordConvertible::new);
+ * InterModComms.sendTo("securitycraft", SecurityCraftAPI.IMC_PASSCODE_CONVERTIBLE_MSG, ClassThatImplementsIPasscodeConvertible::new);
  * </pre>
  *
  * during InterModEnqueueEvent to register this with SecurityCraft. <p> - If you are converting a chest into a
- * password-protected chest, you can extend {@link KeypadChestBlock.Convertible}.<br> - If you are converting a furnace into
- * a password-protected furnace, you can extend {@link AbstractKeypadFurnaceBlock.Convertible}.
+ * passcode-protected chest, you can extend {@link KeypadChestBlock.Convertible}.<br> - If you are converting a furnace into
+ * a passcode-protected furnace, you can extend {@link AbstractKeypadFurnaceBlock.Convertible}.
  *
  * @author bl4ckscor3
  */
-public interface IPasswordConvertible {
+public interface IPasscodeConvertible {
 	/**
 	 * Checks whether the given block state is valid for this conversion
 	 *
@@ -30,7 +30,7 @@ public interface IPasswordConvertible {
 	public boolean isValidStateForConversion(BlockState state);
 
 	/**
-	 * Converts the original block to the password-protected one
+	 * Converts the original block to the passcode-protected one
 	 *
 	 * @param player The player who initiated the conversion
 	 * @param level The level in which the conversion takes place

@@ -24,7 +24,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
@@ -62,7 +61,6 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public static final WailaDataProvider INSTANCE = new WailaDataProvider();
 	public static final ResourceLocation SHOW_OWNER = new ResourceLocation(SecurityCraft.MODID, "showowner");
 	public static final ResourceLocation SHOW_MODULES = new ResourceLocation(SecurityCraft.MODID, "showmodules");
-	public static final ResourceLocation SHOW_PASSWORDS = new ResourceLocation(SecurityCraft.MODID, "showpasswords");
 	public static final ResourceLocation SHOW_CUSTOM_NAME = new ResourceLocation(SecurityCraft.MODID, "showcustomname");
 	private static final Style MOD_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.BLUE).withItalic(true);
 	private static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.WHITE);
@@ -80,7 +78,6 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public void register(IWailaCommonRegistration registration) {
 		registration.addSyncedConfig(SHOW_OWNER, true);
 		registration.addSyncedConfig(SHOW_MODULES, true);
-		registration.addSyncedConfig(SHOW_PASSWORDS, true);
 		registration.addSyncedConfig(SHOW_CUSTOM_NAME, true);
 	}
 
@@ -162,12 +159,6 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 						for (ModuleType module : inv.getInsertedModules()) {
 							tooltip.add(new TextComponent("- ").append(new TranslatableComponent(module.getTranslationKey())));
 						}
-					}
-
-					if (config.get(SHOW_PASSWORDS) && be instanceof IPasswordProtected ipp && ((IOwnable) be).isOwnedBy(data.getPlayer())) {
-						String password = ipp.getPassword();
-
-						tooltip.add(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))));
 					}
 				}
 

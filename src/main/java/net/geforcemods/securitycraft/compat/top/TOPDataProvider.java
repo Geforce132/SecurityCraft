@@ -14,8 +14,6 @@ import mcjty.theoneprobe.api.ProbeMode;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -100,12 +98,6 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 							probeInfo.mcText(new TextComponent("- ").append(new TranslatableComponent(module.getTranslationKey())).withStyle(ChatFormatting.GRAY));
 						}
 					}
-				}
-
-				if (be instanceof IPasswordProtected passwordProtected && !(be instanceof KeycardReaderBlockEntity) && ((IOwnable) be).isOwnedBy(player)) {
-					String password = passwordProtected.getPassword();
-
-					probeInfo.mcText(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))).withStyle(ChatFormatting.GRAY));
 				}
 
 				if (be instanceof Nameable nameable && nameable.hasCustomName()) {

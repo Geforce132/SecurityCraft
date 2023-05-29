@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.UUID;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -11,14 +13,16 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPasswordProtected, ILockable {
-	private String passcode;
+public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPasscodeProtected, ILockable {
+	private byte[] passcode;
+	private UUID saltKey;
 	private BooleanOption isAlwaysActive = new BooleanOption("isAlwaysActive", false) {
 		@Override
 		public void toggle() {
@@ -44,8 +48,11 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 
-		if (passcode != null && !passcode.isEmpty())
-			tag.putString("passcode", passcode);
+		if (saltKey != null)
+			tag.putUUID("saltKey", saltKey);
+
+		if (passcode != null)
+			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
 
 		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 	}
@@ -54,7 +61,8 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	public void load(CompoundTag tag) {
 		super.load(tag);
 
-		passcode = tag.getString("passcode");
+		loadSaltKey(tag);
+		loadPasscode(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 	}
 
@@ -104,7 +112,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 			return false;
 		}
 
-		return !state.getValue(KeyPanelBlock.POWERED) && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
+		return !state.getValue(KeyPanelBlock.POWERED) && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override
@@ -120,14 +128,24 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	}
 
 	@Override
-	public String getPassword() {
-		return passcode != null && !passcode.isEmpty() ? passcode : null;
+	public byte[] getPasscode() {
+		return passcode == null || passcode.length == 0 ? null : passcode;
 	}
 
 	@Override
-	public void setPassword(String password) {
-		passcode = password;
+	public void setPasscode(byte[] passcode) {
+		this.passcode = passcode;
 		setChanged();
+	}
+
+	@Override
+	public UUID getSaltKey() {
+		return saltKey;
+	}
+
+	@Override
+	public void setSaltKey(UUID saltKey) {
+		this.saltKey = saltKey;
 	}
 
 	public boolean sendsMessages() {

@@ -17,7 +17,7 @@ public class ProjectECompatConversionProvider extends CustomConversionProvider {
 	@Override
 	protected void addCustomConversions() {
 		CustomConversionBuilder reinforcedBlocksconversionBuilder = createConversionBuilder(new ResourceLocation(SecurityCraft.MODID, "reinforced_blocks"));
-		CustomConversionBuilder passwordProtectedConversionBuilder = createConversionBuilder(new ResourceLocation(SecurityCraft.MODID, "password_protected"));
+		CustomConversionBuilder passcodeProtectedConversionBuilder = createConversionBuilder(new ResourceLocation(SecurityCraft.MODID, "passcode_protected"));
 		long keyPanelEMC = 520;
 
 		SecurityCraft.collectSCContentData();
@@ -27,11 +27,11 @@ public class ProjectECompatConversionProvider extends CustomConversionProvider {
 			.filter(entry -> entry.getKey().asItem() != Items.AIR && entry.getValue().asItem() != Items.AIR)
 			.forEach(entry -> reinforcedBlocksconversionBuilder.conversion(entry.getValue()).ingredient(entry.getKey()).end());
 		//@formatter:on
-		passwordProtectedConversionBuilder.comment("Password-protected blocks are created by rightclicking a non-password-protected block with a key panel, so the EMC is that block's EMC + the key panel's EMC.");
-		passwordProtectedConversionBuilder.before(SCContent.KEYPAD.get(), 1856 + keyPanelEMC);
-		passwordProtectedConversionBuilder.before(SCContent.KEYPAD_CHEST.get(), 64 + keyPanelEMC);
-		passwordProtectedConversionBuilder.before(SCContent.KEYPAD_FURNACE.get(), 8 + keyPanelEMC);
-		passwordProtectedConversionBuilder.before(SCContent.KEYPAD_SMOKER.get(), 136 + keyPanelEMC);
-		passwordProtectedConversionBuilder.before(SCContent.KEYPAD_BLAST_FURNACE.get(), 1291 + keyPanelEMC);
+		passcodeProtectedConversionBuilder.comment("Passcode-protected blocks are created by rightclicking a non-passcode-protected block with a key panel, so the EMC is that block's EMC + the key panel's EMC.");
+		passcodeProtectedConversionBuilder.before(SCContent.KEYPAD.get(), 1856 + keyPanelEMC);
+		passcodeProtectedConversionBuilder.before(SCContent.KEYPAD_CHEST.get(), 64 + keyPanelEMC);
+		passcodeProtectedConversionBuilder.before(SCContent.KEYPAD_FURNACE.get(), 8 + keyPanelEMC);
+		passcodeProtectedConversionBuilder.before(SCContent.KEYPAD_SMOKER.get(), 136 + keyPanelEMC);
+		passcodeProtectedConversionBuilder.before(SCContent.KEYPAD_BLAST_FURNACE.get(), 1291 + keyPanelEMC);
 	}
 }
