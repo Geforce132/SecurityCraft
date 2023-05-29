@@ -24,7 +24,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class CheckPasscodeScreen extends Screen {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/check_passcode.png");
 	private static final Component COOLDOWN_TEXT_1 = Component.translatable("gui.securitycraft:passcode.cooldown1");
 	private int cooldownText1XPos;
 	private IPasscodeProtected be;
@@ -32,7 +32,7 @@ public class CheckPasscodeScreen extends Screen {
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\u0008', '\u001B'
 	}; //0-9, backspace and escape
 	private int imageWidth = 176;
-	private int imageHeight = 166;
+	private int imageHeight = 186;
 	private int leftPos;
 	private int topPos;
 	private CensoringEditBox keycodeTextbox;
@@ -51,21 +51,21 @@ public class CheckPasscodeScreen extends Screen {
 		topPos = (height - imageHeight) / 2;
 		cooldownText1XPos = width / 2 - font.width(COOLDOWN_TEXT_1) / 2;
 
-		addRenderableWidget(new Button(width / 2 - 33, height / 2 - 25, 20, 20, Component.literal("1"), b -> addNumberToString(1), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 8, height / 2 - 25, 20, 20, Component.literal("2"), b -> addNumberToString(2), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 + 17, height / 2 - 25, 20, 20, Component.literal("3"), b -> addNumberToString(3), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 33, height / 2, 20, 20, Component.literal("4"), b -> addNumberToString(4), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 8, height / 2, 20, 20, Component.literal("5"), b -> addNumberToString(5), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 + 17, height / 2, 20, 20, Component.literal("6"), b -> addNumberToString(6), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 33, height / 2 + 25, 20, 20, Component.literal("7"), b -> addNumberToString(7), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 8, height / 2 + 25, 20, 20, Component.literal("8"), b -> addNumberToString(8), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 + 17, height / 2 + 25, 20, 20, Component.literal("9"), b -> addNumberToString(9), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 33, height / 2 + 50, 20, 20, Component.literal("←"), b -> removeLastCharacter(), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 8, height / 2 + 50, 20, 20, Component.literal("0"), b -> addNumberToString(0), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 + 17, height / 2 + 50, 20, 20, Component.literal("✔"), b -> checkCode(keycodeTextbox.getValue()), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new CallbackCheckbox(width / 2 - 37, height / 2 - 45, 12, 12, Component.translatable("gui.securitycraft:passcode.showPasscode"), false, newState -> keycodeTextbox.setCensoring(!newState), 0x404040));
+		addRenderableWidget(new Button(width / 2 - 33, height / 2 - 35, 20, 20, Component.literal("1"), b -> addNumberToString(1), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 8, height / 2 - 35, 20, 20, Component.literal("2"), b -> addNumberToString(2), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 + 17, height / 2 - 35, 20, 20, Component.literal("3"), b -> addNumberToString(3), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 33, height / 2 - 10, 20, 20, Component.literal("4"), b -> addNumberToString(4), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 8, height / 2 - 10, 20, 20, Component.literal("5"), b -> addNumberToString(5), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 + 17, height / 2 - 10, 20, 20, Component.literal("6"), b -> addNumberToString(6), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 33, height / 2 + 15, 20, 20, Component.literal("7"), b -> addNumberToString(7), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 8, height / 2 + 15, 20, 20, Component.literal("8"), b -> addNumberToString(8), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 + 17, height / 2 + 15, 20, 20, Component.literal("9"), b -> addNumberToString(9), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 33, height / 2 + 40, 20, 20, Component.literal("←"), b -> removeLastCharacter(), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 - 8, height / 2 + 40, 20, 20, Component.literal("0"), b -> addNumberToString(0), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new Button(width / 2 + 17, height / 2 + 40, 20, 20, Component.literal("✔"), b -> checkCode(keycodeTextbox.getValue()), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new CallbackCheckbox(width / 2 - 37, height / 2 - 55, 12, 12, Component.translatable("gui.securitycraft:passcode.showPasscode"), false, newState -> keycodeTextbox.setCensoring(!newState), 0x404040));
 
-		addRenderableWidget(keycodeTextbox = new CensoringEditBox(font, width / 2 - 37, height / 2 - 62, 77, 12, Component.empty()) {
+		addRenderableWidget(keycodeTextbox = new CensoringEditBox(font, width / 2 - 37, height / 2 - 72, 77, 12, Component.empty()) {
 			@Override
 			public boolean mouseClicked(double mouseX, double mouseY, int button) {
 				return active && super.mouseClicked(mouseX, mouseY, button);
@@ -98,8 +98,8 @@ public class CheckPasscodeScreen extends Screen {
 			long secondsLeft = Math.max(cooldownEnd - System.currentTimeMillis(), 0) / 1000 + 1; //+1 so that the text doesn't say "0 seconds left" for a whole second
 			Component text = Component.translatable("gui.securitycraft:passcode.cooldown2", secondsLeft);
 
-			font.draw(pose, COOLDOWN_TEXT_1, cooldownText1XPos, height / 2 + 55, 4210752);
-			font.draw(pose, text, width / 2 - font.width(text) / 2, height / 2 + 65, 4210752);
+			font.draw(pose, COOLDOWN_TEXT_1, cooldownText1XPos, height / 2 + 65, 4210752);
+			font.draw(pose, text, width / 2 - font.width(text) / 2, height / 2 + 75, 4210752);
 
 			if (!wasOnCooldownLastRenderTick)
 				wasOnCooldownLastRenderTick = true;
