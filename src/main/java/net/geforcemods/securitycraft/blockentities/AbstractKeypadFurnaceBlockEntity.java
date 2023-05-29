@@ -104,12 +104,14 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 
 	@Override
 	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+		long cooldownLeft;
 
+		super.saveAdditional(tag);
 		writeModuleInventory(tag);
 		writeModuleStates(tag);
 		writeOptions(tag);
-		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
+		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
+		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 
 		if (owner != null)
 			owner.save(tag, false);

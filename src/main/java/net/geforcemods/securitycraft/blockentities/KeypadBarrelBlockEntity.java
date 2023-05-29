@@ -92,6 +92,8 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 
 	@Override
 	public void saveAdditional(CompoundTag tag) {
+		long cooldownLeft;
+
 		super.saveAdditional(tag);
 
 		if (!trySaveLootTable(tag))
@@ -100,7 +102,8 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		writeModuleInventory(tag);
 		writeModuleStates(tag);
 		writeOptions(tag);
-		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
+		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
+		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 
 		if (saltKey != null)
 			tag.putUUID("saltKey", saltKey);
