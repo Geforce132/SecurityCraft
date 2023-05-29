@@ -125,7 +125,6 @@ public class AdminToolItem extends Item {
 
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.name", ownerName.isEmpty() ? "????" : ownerName), ChatFormatting.DARK_PURPLE);
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.uuid", ownerUUID.isEmpty() ? "????" : ownerUUID), ChatFormatting.DARK_PURPLE);
-			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.passcode", briefcase.hasTag() ? briefcase.getTag().getString("passcode") : "????"), ChatFormatting.DARK_PURPLE);
 			return InteractionResultHolder.success(adminTool);
 		}
 
