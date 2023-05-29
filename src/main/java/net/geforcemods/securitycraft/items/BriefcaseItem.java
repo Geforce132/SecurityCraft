@@ -93,7 +93,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 		UUID saltKey = tag.contains("saltKey", Tag.TAG_INT_ARRAY) ? tag.getUUID("saltKey") : null;
 		byte[] salt = SaltData.getSalt(saltKey);
 
-		if (salt == null) { //If no salt key or no salt associated with the given key can be found, a new password needs to be set
+		if (salt == null) { //If no salt key or no salt associated with the given key can be found, a new passcode needs to be set
 			PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
 			return;
 		}
