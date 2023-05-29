@@ -557,8 +557,6 @@
 	"gui.securitycraft:block_change_detector.mode.place": "Colocar",
 	"gui.securitycraft:block_change_detector.show_all_checkbox": "Mostrar todas las entradas",
 	"gui.securitycraft:block_change_detector.smart_module_hint": "¡Instalar un módulo inteligente permitirá detector un tipo específico de bloque!",
-	"gui.securitycraft:briefcase.enterPasscode": "Introducir contraseña:",
-	"gui.securitycraft:briefcase.setupTitle": "Contraseña de 4 dígitos:",
 	"gui.securitycraft:camera.activateNightVision": "%s - Activar visión nocturna",
 	"gui.securitycraft:camera.exit": "%s - Salir de la cámara",
 	"gui.securitycraft:camera.lookAround": "%1$s%2$s%3$s%4$s - Mirar alrededor",

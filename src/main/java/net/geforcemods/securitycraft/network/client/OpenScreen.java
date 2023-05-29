@@ -11,9 +11,11 @@ import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkEvent;
@@ -71,7 +73,7 @@ public class OpenScreen {
 				ItemStack briefcase = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
 
 				if (!briefcase.isEmpty())
-					ClientHandler.displayBriefcaseSetupScreen(briefcase.getHoverName());
+					ClientHandler.displayBriefcaseSetupScreen(briefcase.getHoverName().plainCopy().append(new TextComponent(" ")).append(Utils.localize("gui.securitycraft:passcode.setup")));
 
 				break;
 			case SET_PASSCODE:
