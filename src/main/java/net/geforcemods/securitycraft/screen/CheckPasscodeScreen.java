@@ -52,6 +52,7 @@ public class CheckPasscodeScreen extends Screen {
 		topPos = (height - imageHeight) / 2;
 		cooldownText1XPos = width / 2 - font.width(COOLDOWN_TEXT_1) / 2;
 
+		addRenderableWidget(new CallbackCheckbox(width / 2 - 37, height / 2 - 55, 12, 12, Component.translatable("gui.securitycraft:passcode.showPasscode"), false, newState -> keycodeTextbox.setCensoring(!newState), 0x404040));
 		addRenderableWidget(new ExtendedButton(width / 2 - 33, height / 2 - 35, 20, 20, Component.literal("1"), b -> addNumberToString(1)));
 		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 35, 20, 20, Component.literal("2"), b -> addNumberToString(2)));
 		addRenderableWidget(new ExtendedButton(width / 2 + 17, height / 2 - 35, 20, 20, Component.literal("3"), b -> addNumberToString(3)));
@@ -64,7 +65,6 @@ public class CheckPasscodeScreen extends Screen {
 		addRenderableWidget(new ExtendedButton(width / 2 - 33, height / 2 + 40, 20, 20, Component.literal("←"), b -> removeLastCharacter()));
 		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 40, 20, 20, Component.literal("0"), b -> addNumberToString(0)));
 		addRenderableWidget(new ExtendedButton(width / 2 + 17, height / 2 + 40, 20, 20, Component.literal("✔"), b -> checkCode(keycodeTextbox.getValue())));
-		addRenderableWidget(new CallbackCheckbox(width / 2 - 37, height / 2 - 55, 12, 12, Component.translatable("gui.securitycraft:passcode.showPasscode"), false, newState -> keycodeTextbox.setCensoring(!newState), 0x404040));
 
 		addRenderableWidget(keycodeTextbox = new CensoringEditBox(font, width / 2 - 37, height / 2 - 72, 77, 12, Component.empty()) {
 			@Override
@@ -140,9 +140,7 @@ public class CheckPasscodeScreen extends Screen {
 	@Override
 	public boolean charTyped(char typedChar, int keyCode) {
 		if (!be.isOnCooldown() && isValidChar(typedChar)) {
-			if (!super.charTyped(typedChar, keyCode))
-				keycodeTextbox.charTyped(typedChar, keyCode);
-
+			keycodeTextbox.charTyped(typedChar, keyCode);
 			minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
 		}
 
