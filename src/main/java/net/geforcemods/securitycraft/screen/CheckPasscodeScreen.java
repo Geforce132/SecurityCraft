@@ -74,7 +74,7 @@ public class CheckPasscodeScreen extends Screen {
 
 			@Override
 			public boolean canConsumeInput() {
-				return active && super.canConsumeInput();
+				return active && isVisible();
 			}
 		});
 		keycodeTextbox.setMaxLength(Integer.MAX_VALUE);
@@ -117,7 +117,7 @@ public class CheckPasscodeScreen extends Screen {
 		if (keyCode == GLFW.GLFW_KEY_BACKSPACE && keycodeTextbox.getValue().length() > 0)
 			minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
 
-		if (!super.keyPressed(keyCode, scanCode, modifiers)) {
+		if (!super.keyPressed(keyCode, scanCode, modifiers) && !keycodeTextbox.keyPressed(keyCode, scanCode, modifiers)) {
 			if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode)))
 				onClose();
 
@@ -140,7 +140,9 @@ public class CheckPasscodeScreen extends Screen {
 	@Override
 	public boolean charTyped(char typedChar, int keyCode) {
 		if (!be.isOnCooldown() && isValidChar(typedChar)) {
-			super.charTyped(typedChar, keyCode);
+			if (!super.charTyped(typedChar, keyCode))
+				keycodeTextbox.charTyped(typedChar, keyCode);
+
 			minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
 		}
 
