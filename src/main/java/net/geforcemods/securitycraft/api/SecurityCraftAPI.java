@@ -13,23 +13,23 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class SecurityCraftAPI {
 	private static List<IExtractionBlock> registeredExtractionBlocks = new ArrayList<>();
-	private static List<IPasswordConvertible> registeredPasswordConvertibles = new ArrayList<>();
+	private static List<IPasscodeConvertible> registeredPasscodeConvertibles = new ArrayList<>();
 	private static List<IAttackTargetCheck> registeredSentryAttackTargetChecks = new ArrayList<>();
 	private static List<IDoorActivator> registeredDoorActivators = new ArrayList<>();
 	public static final String IMC_EXTRACTION_BLOCK_MSG = "registerExtractionBlock";
-	public static final String IMC_PASSWORD_CONVERTIBLE_MSG = "registerPasswordConvertible";
+	public static final String IMC_PASSCODE_CONVERTIBLE_MSG = "registerPasscodeConvertible";
 	public static final String IMC_SENTRY_ATTACK_TARGET_MSG = "registerSentryAttackTargetCheck";
 	public static final String IMC_DOOR_ACTIVATOR_MSG = "registerDoorActivator";
 
 	@SubscribeEvent
 	public static void onInterModProcess(InterModProcessEvent event) {
 		event.getIMCStream(s -> s.equals(IMC_EXTRACTION_BLOCK_MSG)).forEach(msg -> registeredExtractionBlocks.add((IExtractionBlock) msg.messageSupplier().get()));
-		event.getIMCStream(s -> s.equals(IMC_PASSWORD_CONVERTIBLE_MSG)).forEach(msg -> registeredPasswordConvertibles.add((IPasswordConvertible) msg.messageSupplier().get()));
+		event.getIMCStream(s -> s.equals(IMC_PASSCODE_CONVERTIBLE_MSG)).forEach(msg -> registeredPasscodeConvertibles.add((IPasscodeConvertible) msg.messageSupplier().get()));
 		event.getIMCStream(s -> s.equals(IMC_SENTRY_ATTACK_TARGET_MSG)).forEach(msg -> registeredSentryAttackTargetChecks.add((IAttackTargetCheck) msg.messageSupplier().get()));
 		event.getIMCStream(s -> s.equals(IMC_DOOR_ACTIVATOR_MSG)).forEach(msg -> registeredDoorActivators.add((IDoorActivator) msg.messageSupplier().get()));
 
 		registeredExtractionBlocks = Collections.unmodifiableList(registeredExtractionBlocks);
-		registeredPasswordConvertibles = Collections.unmodifiableList(registeredPasswordConvertibles);
+		registeredPasscodeConvertibles = Collections.unmodifiableList(registeredPasscodeConvertibles);
 		registeredSentryAttackTargetChecks = Collections.unmodifiableList(registeredSentryAttackTargetChecks);
 		registeredDoorActivators = Collections.unmodifiableList(registeredDoorActivators);
 	}
@@ -38,8 +38,8 @@ public class SecurityCraftAPI {
 		return registeredExtractionBlocks;
 	}
 
-	public static List<IPasswordConvertible> getRegisteredPasswordConvertibles() {
-		return registeredPasswordConvertibles;
+	public static List<IPasscodeConvertible> getRegisteredPasscodeConvertibles() {
+		return registeredPasscodeConvertibles;
 	}
 
 	public static List<IAttackTargetCheck> getRegisteredSentryAttackTargetChecks() {

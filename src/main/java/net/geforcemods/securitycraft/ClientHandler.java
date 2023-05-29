@@ -49,10 +49,10 @@ import net.geforcemods.securitycraft.screen.BlockChangeDetectorScreen;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
 import net.geforcemods.securitycraft.screen.BriefcaseInventoryScreen;
-import net.geforcemods.securitycraft.screen.BriefcasePasswordScreen;
+import net.geforcemods.securitycraft.screen.BriefcasePasscodeScreen;
 import net.geforcemods.securitycraft.screen.BriefcaseSetupScreen;
 import net.geforcemods.securitycraft.screen.CameraMonitorScreen;
-import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
+import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
 import net.geforcemods.securitycraft.screen.EditModuleScreen;
@@ -69,7 +69,7 @@ import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SSSItemScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
-import net.geforcemods.securitycraft.screen.SetPasswordScreen;
+import net.geforcemods.securitycraft.screen.SetPasscodeScreen;
 import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
 import net.geforcemods.securitycraft.screen.ToggleListScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
@@ -484,8 +484,8 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new SonicSecuritySystemScreen(be));
 	}
 
-	public static void displayBriefcasePasswordScreen(Component title) {
-		Minecraft.getInstance().setScreen(new BriefcasePasswordScreen(title));
+	public static void displayBriefcasePasscodeScreen(Component title) {
+		Minecraft.getInstance().setScreen(new BriefcasePasscodeScreen(title));
 	}
 
 	public static void displayBriefcaseSetupScreen(Component title) {
@@ -513,16 +513,16 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new ToggleListScreen<>(be, be.getName(), Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles"), Utils.localize("gui.securitycraft:trophy_system.moduleRequired"), Utils.localize("gui.securitycraft:trophy_system.toggle")));
 	}
 
-	public static void displayCheckPasswordScreen(BlockEntity be) {
+	public static void displayCheckPasscodeScreen(BlockEntity be) {
 		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
-		Minecraft.getInstance().setScreen(new CheckPasswordScreen(be, displayName));
+		Minecraft.getInstance().setScreen(new CheckPasscodeScreen(be, displayName));
 	}
 
-	public static void displaySetPasswordScreen(BlockEntity be) {
+	public static void displaySetPasscodeScreen(BlockEntity be) {
 		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
-		Minecraft.getInstance().setScreen(new SetPasswordScreen(be, displayName));
+		Minecraft.getInstance().setScreen(new SetPasscodeScreen(be, displayName));
 	}
 
 	public static void displaySSSItemScreen(ItemStack stack) {

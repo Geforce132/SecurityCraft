@@ -4,8 +4,10 @@ import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.AbstractKeypadFurnaceBlockEntity;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -104,6 +106,9 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 				level.updateNeighbourForOutputSignal(pos, this);
 			}
 
+			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+				SaltData.removeSalt(be.getSaltKey());
+
 			super.onRemove(state, level, pos, newState, isMoving);
 		}
 	}
@@ -115,7 +120,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (be.verifyPasswordSet(level, pos, be, player)) {
+			else if (be.verifyPasscodeSet(level, pos, be, player)) {
 				if (be.isDenied(player)) {
 					if (be.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
@@ -127,7 +132,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 					activate(be, state, level, pos, player);
 				}
 				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-					be.openPasswordGUI(level, pos, player);
+					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 
@@ -167,7 +172,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
-	public class Convertible implements IPasswordConvertible {
+	public class Convertible implements IPasscodeConvertible {
 		private final Block originalBlock;
 
 		public Convertible(Block originalBlock) {

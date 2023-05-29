@@ -2,7 +2,9 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeyPanelBlockEntity;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -99,7 +101,7 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (be.verifyPasswordSet(level, pos, be, player)) {
+			else if (be.verifyPasscodeSet(level, pos, be, player)) {
 				if (be.isDenied(player)) {
 					if (be.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
@@ -111,7 +113,7 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 					activate(state, level, pos, be.getSignalLength());
 				}
 				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-					be.openPasswordGUI(level, pos, player);
+					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 
@@ -191,6 +193,9 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 				level.updateNeighborsAt(pos, this);
 				level.updateNeighborsAt(pos.relative(state.getValue(FACING).getOpposite()), this);
 			}
+
+			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+				SaltData.removeSalt(be.getSaltKey());
 
 			if (!newState.hasBlockEntity())
 				level.removeBlockEntity(pos);
