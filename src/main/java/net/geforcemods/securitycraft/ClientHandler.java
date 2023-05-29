@@ -50,7 +50,6 @@ import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
 import net.geforcemods.securitycraft.screen.BriefcaseInventoryScreen;
 import net.geforcemods.securitycraft.screen.BriefcasePasscodeScreen;
-import net.geforcemods.securitycraft.screen.BriefcaseSetupScreen;
 import net.geforcemods.securitycraft.screen.CameraMonitorScreen;
 import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
@@ -484,11 +483,11 @@ public class ClientHandler {
 	}
 
 	public static void displayBriefcasePasscodeScreen(Component title) {
-		Minecraft.getInstance().setScreen(new BriefcasePasscodeScreen(title));
+		Minecraft.getInstance().setScreen(new BriefcasePasscodeScreen(title, false));
 	}
 
 	public static void displayBriefcaseSetupScreen(Component title) {
-		Minecraft.getInstance().setScreen(new BriefcaseSetupScreen(title));
+		Minecraft.getInstance().setScreen(new BriefcasePasscodeScreen(title, true));
 	}
 
 	public static void displayUsernameLoggerScreen(Level level, BlockPos pos) {
