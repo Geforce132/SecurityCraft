@@ -1,22 +1,40 @@
 package net.geforcemods.securitycraft.items;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+import java.util.function.Consumer;
 
-import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.inventory.BriefcaseContainer;
+import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
+import net.geforcemods.securitycraft.misc.SaltData;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PacketDistributor;
 
 public class BriefcaseItem extends Item implements DyeableLeatherItem {
 	public BriefcaseItem(Item.Properties properties) {
@@ -29,7 +47,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 	}
 
 	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, InteractionHand hand) {
-		handle(stack, level, player, hand);
+		handle(stack, level, player);
 		return InteractionResult.CONSUME;
 	}
 
@@ -37,17 +55,13 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		handle(stack, level, player, hand);
+		handle(stack, level, player);
 		return InteractionResultHolder.consume(stack);
 	}
 
-	private void handle(ItemStack stack, Level level, Player player, InteractionHand hand) {
-		if (level.isClientSide) {
-			if (!stack.getOrCreateTag().contains("passcode"))
-				ClientHandler.displayBriefcaseSetupScreen(stack.getHoverName());
-			else
-				ClientHandler.displayBriefcasePasswordScreen(stack.getHoverName());
-		}
+	private void handle(ItemStack stack, Level level, Player player) {
+		if (!level.isClientSide)
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(stack.getOrCreateTag().contains("passcode") ? OpenScreen.DataType.CHECK_BRIEFCASE_PASSCODE : OpenScreen.DataType.SET_BRIEFCASE_PASSCODE, player.blockPosition()));
 	}
 
 	@Override
@@ -56,6 +70,54 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 
 		if (!ownerName.isEmpty())
 			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(Utils.GRAY_STYLE));
+	}
+
+	@Override
+	public CompoundTag getShareTag(ItemStack stack) {
+		CompoundTag tag = super.getShareTag(stack);
+
+		return tag == null ? null : PasscodeUtils.filterPasscodeAndSaltFromTag(tag.copy());
+	}
+
+	public static void hashAndSetPasscode(CompoundTag briefcaseTag, String passcode, Consumer<byte[]> afterSet) {
+		byte[] salt = PasscodeUtils.generateSalt();
+
+		briefcaseTag.putUUID("saltKey", SaltData.putSalt(salt));
+		PasscodeUtils.hashPasscode(passcode, salt, p -> {
+			briefcaseTag.putString("passcode", PasscodeUtils.bytesToString(p));
+			afterSet.accept(p);
+		});
+	}
+
+	public static void checkPasscode(ServerPlayer player, ItemStack briefcase, String incomingCode, String briefcaseCode, CompoundTag tag) {
+		UUID saltKey = tag.contains("saltKey", Tag.TAG_INT_ARRAY) ? tag.getUUID("saltKey") : null;
+		byte[] salt = SaltData.getSalt(saltKey);
+
+		if (salt == null) { //If no salt key or no salt associated with the given key can be found, a new passcode needs to be set
+			PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
+			return;
+		}
+
+		PasscodeUtils.hashPasscode(incomingCode, salt, p -> {
+			if (Arrays.equals(PasscodeUtils.stringToBytes(briefcaseCode), p)) {
+				if (!tag.contains("owner")) { //If the briefcase doesn't have an owner (that usually gets set when assigning a new passcode), set the player that first enters the correct passcode as the owner
+					tag.putString("owner", player.getName().getString());
+					tag.putString("ownerUUID", player.getUUID().toString());
+				}
+
+				NetworkHooks.openScreen(player, new MenuProvider() {
+					@Override
+					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
+						return new BriefcaseMenu(windowId, inv, new BriefcaseContainer(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));
+					}
+
+					@Override
+					public Component getDisplayName() {
+						return briefcase.getHoverName();
+					}
+				}, player.blockPosition());
+			}
+		});
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, Player player) {

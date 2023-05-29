@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.FakeLavaBlock;
 import net.geforcemods.securitycraft.blocks.FakeWaterBlock;
@@ -47,7 +46,6 @@ public class JadeDataProvider extends WailaCompatConstants implements IWailaPlug
 	public void registerClient(IWailaClientRegistration registration) {
 		registration.addConfig(SHOW_OWNER, true);
 		registration.addConfig(SHOW_MODULES, true);
-		registration.addConfig(SHOW_PASSWORDS, true);
 		registration.addConfig(SHOW_CUSTOM_NAME, true);
 
 		registration.registerBlockComponent(SECURITYCRAFT_INFO, Block.class);
@@ -115,12 +113,6 @@ public class JadeDataProvider extends WailaCompatConstants implements IWailaPlug
 					for (ModuleType module : inv.getInsertedModules()) {
 						tooltip.add(Component.literal("- ").append(Component.translatable(module.getTranslationKey())));
 					}
-				}
-
-				if (config.get(SHOW_PASSWORDS) && be instanceof IPasswordProtected ipp && ((IOwnable) be).isOwnedBy(data.getPlayer())) {
-					String password = ipp.getPassword();
-
-					tooltip.add(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))));
 				}
 			}
 		}
