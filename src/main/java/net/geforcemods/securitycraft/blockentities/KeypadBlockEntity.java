@@ -53,7 +53,9 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 		if (passcode != null)
 			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
 
-		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
+		long cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
+
+		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 	}
 
 	@Override
