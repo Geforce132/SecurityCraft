@@ -40,7 +40,7 @@
 - Change: The minimum radius of the Portable Radar is now one block
 - Change: The maximum allowed signature for a Keycard Reader is now 99999
 - Change: Where applicable, recipes now use the securitycraft:reinforced_stone_crafting_materials tag (similar to minecraft:stone_crafting_materials, but with the reinforced variants)
-- Change: Passcodes of passcode-protected blocks are no longer directly accessible by clients, and are thus no longer displayable using mods like Jade/TOP or the admin tool
+- Change: Passcodes of passcode-protected blocks and briefcases are no longer directly accessible by clients, and are thus no longer displayable using mods like Jade/TOP or the admin tool
 - Change: Passcodes are now stored and compared using secure hashing functions like PBKDF2, using a randomly generated salt that is stored on the server
 - Change: All occurrences of "Password" in block or item names have been switched out with "Passcode" (for example, Password-protected Chest -> Passcode-protected Chest)
 - Change: The storage location of passcodes in the NBT data of Display Cases has been changed from "Passcode" to "passcode"
