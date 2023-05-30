@@ -3,20 +3,20 @@ package net.geforcemods.securitycraft.screen;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.CheckBriefcasePasscode;
+import net.geforcemods.securitycraft.network.server.SetBriefcasePasscodeAndOwner;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
@@ -24,9 +24,10 @@ import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 @OnlyIn(Dist.CLIENT)
 public class BriefcasePasscodeScreen extends Screen {
 	public static final String UP_ARROW = "\u2191";
+	public static final String RIGHT_ARROW = "\u2192";
 	public static final String DOWN_ARROW = "\u2193";
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslationTextComponent enterPasscode = Utils.localize("gui.securitycraft:briefcase.enterPasscode");
+	private final boolean isSetup;
 	private int imageWidth = 176;
 	private int imageHeight = 166;
 	private int leftPos;
@@ -36,8 +37,9 @@ public class BriefcasePasscodeScreen extends Screen {
 			0, 0, 0, 0
 	};
 
-	public BriefcasePasscodeScreen(ITextComponent title) {
+	public BriefcasePasscodeScreen(ITextComponent title, boolean isSetup) {
 		super(title);
+		this.isSetup = isSetup;
 	}
 
 	@Override
@@ -52,7 +54,7 @@ public class BriefcasePasscodeScreen extends Screen {
 
 			addButton(new ExtendedButton(width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, new StringTextComponent(UP_ARROW), b -> keycodeButtonClicked(id)));
 			addButton(new ExtendedButton(width / 2 - 40 + (i * 20), height / 2, 20, 20, new StringTextComponent(DOWN_ARROW), b -> keycodeButtonClicked(4 + id)));
-			//text boxes are not added via addButton because they should not be selectable
+			//text boxes are not added via addRenderableWidget because they should not be accessible by the player
 			keycodeTextboxes[i] = new TextFieldWidget(font, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12, StringTextComponent.EMPTY);
 			keycodeTextboxes[i].setMaxLength(1);
 			keycodeTextboxes[i].setValue("0");
@@ -74,7 +76,7 @@ public class BriefcasePasscodeScreen extends Screen {
 			textfield.render(pose, mouseX, mouseY, partialTicks);
 		}
 
-		font.draw(pose, enterPasscode, width / 2 - font.width(enterPasscode) / 2, topPos + 6, 4210752);
+		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
 	}
 
 	@Override
@@ -93,8 +95,18 @@ public class BriefcasePasscodeScreen extends Screen {
 	}
 
 	private void continueButtonClicked(Button button) {
-		if (PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null))
-			SecurityCraft.channel.sendToServer(new CheckBriefcasePasscode(digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3]));
+		ItemStack briefcase = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
+
+		if (!briefcase.isEmpty()) {
+			String passcode = digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3];
+
+			if (isSetup) {
+				SecurityCraft.channel.sendToServer(new SetBriefcasePasscodeAndOwner(passcode));
+				ClientHandler.displayBriefcasePasscodeScreen(briefcase.getHoverName());
+			}
+			else
+				SecurityCraft.channel.sendToServer(new CheckBriefcasePasscode(passcode));
+		}
 	}
 
 	private void keycodeButtonClicked(int id) {

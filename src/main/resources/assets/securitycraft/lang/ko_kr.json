@@ -448,8 +448,6 @@
 	"gui.securitycraft:blockPocketManager.youNeed": "필요한 것:",
 	"gui.securitycraft:blockReinforcer.output": "출력:",
 	"gui.securitycraft:blockReinforcer.title": "만능 블록 강화기",
-	"gui.securitycraft:briefcase.enterPasscode": "비밀번호 입력:",
-	"gui.securitycraft:briefcase.setupTitle": "4자리 비밀번호 입력:",
 	"gui.securitycraft:camera.activateNightVision": "%s - 야간 투시 활성화",
 	"gui.securitycraft:camera.exit": "%s - 카메라 나가기",
 	"gui.securitycraft:camera.lookAround": "%1$s%2$s%3$s%4$s - 구경",

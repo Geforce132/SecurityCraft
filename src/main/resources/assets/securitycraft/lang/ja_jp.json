@@ -497,8 +497,6 @@
 	"gui.securitycraft:block_change_detector.mode.place": "設置",
 	"gui.securitycraft:block_change_detector.show_all_checkbox": "全エントリーを表示",
 	"gui.securitycraft:block_change_detector.smart_module_hint": "特定のブロックタイプのみを検出できるようにするにはスマートモジュールをインストールしてください！",
-	"gui.securitycraft:briefcase.enterPasscode": "パスコードを入力:",
-	"gui.securitycraft:briefcase.setupTitle": "4桁のパスコードを入力:",
 	"gui.securitycraft:camera.activateNightVision": "%s - 暗視の有効化",
 	"gui.securitycraft:camera.exit": "%s - カメラ終了",
 	"gui.securitycraft:camera.lookAround": "%1$s%2$s%3$s%4$s - 見回す",

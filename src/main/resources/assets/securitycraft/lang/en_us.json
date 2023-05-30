@@ -500,8 +500,6 @@
 	"gui.securitycraft:block_change_detector.mode.place": "Place",
 	"gui.securitycraft:block_change_detector.show_all_checkbox": "Show all entries",
 	"gui.securitycraft:block_change_detector.smart_module_hint": "You need to install a Smart Module to allow the detector to only detect a specific block type!",
-	"gui.securitycraft:briefcase.enterPasscode": "Enter passcode:",
-	"gui.securitycraft:briefcase.setupTitle": "Enter a 4-digit passcode:",
 	"gui.securitycraft:camera.activateNightVision": "%s - Activate night vision",
 	"gui.securitycraft:camera.exit": "%s - Exit Camera",
 	"gui.securitycraft:camera.lookAround": "%1$s%2$s%3$s%4$s - Look around",

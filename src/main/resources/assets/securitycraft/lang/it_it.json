@@ -486,8 +486,6 @@
 	"gui.securitycraft:block_change_detector.mode.place": "Piazzamento",
 	"gui.securitycraft:block_change_detector.show_all_checkbox": "Mostra tutte le entrate",
 	"gui.securitycraft:block_change_detector.smart_module_hint": "Installa un modulo intelligente per permettere al rilevatore di rilevare solo uno specifico tipo di blocchi!",
-	"gui.securitycraft:briefcase.enterPasscode": "Inserisci codice:",
-	"gui.securitycraft:briefcase.setupTitle": "Inserisci un codice di 4 cifre:",
 	"gui.securitycraft:camera.activateNightVision": "%s - Attiva visione notturna",
 	"gui.securitycraft:camera.exit": "%s - Esci",
 	"gui.securitycraft:camera.lookAround": "%1$s%2$s%3$s%4$s - Guardati intorno",
