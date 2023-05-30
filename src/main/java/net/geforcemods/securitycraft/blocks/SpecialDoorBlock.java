@@ -3,7 +3,9 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.ITileEntityProvider;
@@ -141,6 +143,9 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 
 		if (te instanceof IModuleInventory)
 			((IModuleInventory) te).dropAllModules();
+
+		if (te instanceof IPasscodeProtected)
+			SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
 
 		world.removeTileEntity(pos);
 	}

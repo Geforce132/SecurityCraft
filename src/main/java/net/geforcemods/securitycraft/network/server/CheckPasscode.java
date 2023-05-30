@@ -1,8 +1,11 @@
 package net.geforcemods.securitycraft.network.server;
 
+import java.util.Arrays;
+
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -11,17 +14,17 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class CheckPassword implements IMessage {
-	private String password;
+public class CheckPasscode implements IMessage {
+	private String passcode;
 	private int x, y, z;
 
-	public CheckPassword() {}
+	public CheckPasscode() {}
 
-	public CheckPassword(int x, int y, int z, String code) {
+	public CheckPasscode(int x, int y, int z, String passcode) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		password = code;
+		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
 	}
 
 	@Override
@@ -29,7 +32,7 @@ public class CheckPassword implements IMessage {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
-		ByteBufUtils.writeUTF8String(buf, password);
+		ByteBufUtils.writeUTF8String(buf, passcode);
 	}
 
 	@Override
@@ -37,29 +40,31 @@ public class CheckPassword implements IMessage {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
-		password = ByteBufUtils.readUTF8String(buf);
+		passcode = ByteBufUtils.readUTF8String(buf);
 	}
 
-	public static class Handler implements IMessageHandler<CheckPassword, IMessage> {
+	public static class Handler implements IMessageHandler<CheckPasscode, IMessage> {
 		@Override
-		public IMessage onMessage(CheckPassword message, MessageContext ctx) {
+		public IMessage onMessage(CheckPasscode message, MessageContext ctx) {
 			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				BlockPos pos = new BlockPos(message.x, message.y, message.z);
 				EntityPlayer player = ctx.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);
 
-				if (te instanceof IPasswordProtected) {
-					IPasswordProtected passwordProtected = (IPasswordProtected) te;
-					boolean isPasscodeCorrect = passwordProtected.getPassword().equals(message.password);
+				if (te instanceof IPasscodeProtected) {
+					IPasscodeProtected be = (IPasscodeProtected) te;
 
-					if (passwordProtected.isOnCooldown())
+					if (be.isOnCooldown())
 						return;
-					else if (isPasscodeCorrect) {
-						player.closeScreen();
-						passwordProtected.activate(player);
-					}
-					else
-						passwordProtected.onIncorrectPasscodeEntered(player, message.password);
+
+					PasscodeUtils.hashPasscode(message.passcode, be.getSalt(), p -> {
+						if (Arrays.equals(be.getPasscode(), p)) {
+							player.closeScreen();
+							be.activate(player);
+						}
+						else
+							be.onIncorrectPasscodeEntered(player, message.passcode);
+					});
 				}
 			});
 

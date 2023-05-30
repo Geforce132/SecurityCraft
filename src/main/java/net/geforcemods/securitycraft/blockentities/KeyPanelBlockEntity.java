@@ -1,21 +1,25 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.UUID;
+
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPasswordProtected, ILockable {
-	private String passcode;
+public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPasscodeProtected, ILockable {
+	private byte[] passcode;
+	private UUID saltKey;
 	private BooleanOption isAlwaysActive = new BooleanOption("isAlwaysActive", false) {
 		@Override
 		public void toggle() {
@@ -37,8 +41,11 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
-		if (passcode != null && !passcode.isEmpty())
-			tag.setString("passcode", passcode);
+		if (saltKey != null)
+			tag.setUniqueId("saltKey", saltKey);
+
+		if (passcode != null)
+			tag.setString("passcode", PasscodeUtils.bytesToString(passcode));
 
 		tag.setLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 		return tag;
@@ -47,7 +54,8 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		passcode = tag.getString("passcode");
+		loadSaltKey(tag);
+		loadPasscode(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 	}
 
@@ -94,7 +102,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 
 	@Override
 	public boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
-		return !state.getValue(KeyPanelBlock.POWERED) && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
+		return !state.getValue(KeyPanelBlock.POWERED) && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override
@@ -112,13 +120,23 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	}
 
 	@Override
-	public String getPassword() {
-		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
+	public byte[] getPasscode() {
+		return passcode == null || passcode.length == 0 ? null : passcode;
 	}
 
 	@Override
-	public void setPassword(String password) {
-		passcode = password;
+	public void setPasscode(byte[] passcode) {
+		this.passcode = passcode;
+	}
+
+	@Override
+	public UUID getSaltKey() {
+		return saltKey;
+	}
+
+	@Override
+	public void setSaltKey(UUID saltKey) {
+		this.saltKey = saltKey;
 	}
 
 	public boolean sendsMessages() {

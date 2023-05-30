@@ -5,8 +5,10 @@ import java.util.function.Function;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.screen.ScreenHandler;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -96,6 +98,9 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 			world.updateComparatorOutputLevel(pos, this);
 		}
 
+		if (te instanceof IPasscodeProtected)
+			SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
+
 		super.breakBlock(world, pos, state);
 	}
 
@@ -106,7 +111,7 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 
 			if (te.isDisabled())
 				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (te.verifyPasswordSet(world, pos, te, player)) {
+			else if (te.verifyPasscodeSet(world, pos, te, player)) {
 				if (te.isDenied(player)) {
 					if (te.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
@@ -120,7 +125,7 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 					activate(state, world, pos, player);
 				}
 				else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
-					te.openPasswordGUI(world, pos, player);
+					te.openPasscodeGUI(world, pos, player);
 			}
 		}
 
@@ -230,9 +235,9 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
 	}
 
-	public static class Convertible implements Function<Object, IPasswordConvertible>, IPasswordConvertible {
+	public static class Convertible implements Function<Object, IPasscodeConvertible>, IPasscodeConvertible {
 		@Override
-		public IPasswordConvertible apply(Object o) {
+		public IPasscodeConvertible apply(Object o) {
 			return this;
 		}
 

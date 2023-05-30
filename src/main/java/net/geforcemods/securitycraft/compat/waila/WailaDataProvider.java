@@ -12,8 +12,6 @@ import mcp.mobius.waila.api.event.WailaRenderEvent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -38,7 +36,6 @@ import net.minecraftforge.fml.relauncher.Side;
 public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvider {
 	private static final String SHOW_OWNER = "securitycraft.showowner";
 	private static final String SHOW_MODULES = "securitycraft.showmodules";
-	private static final String SHOW_PASSWORDS = "securitycraft.showpasswords";
 	private static final String SHOW_CUSTOM_NAME = "securitycraft.showcustomname";
 
 	static {
@@ -49,7 +46,6 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 	public static void callbackRegister(IWailaRegistrar registrar) {
 		registrar.addConfigRemote("SecurityCraft", SHOW_OWNER, Utils.localize("waila.securitycraft:displayOwner").getFormattedText());
 		registrar.addConfigRemote("SecurityCraft", SHOW_MODULES, Utils.localize("waila.securitycraft:showModules").getFormattedText());
-		registrar.addConfigRemote("SecurityCraft", SHOW_PASSWORDS, Utils.localize("waila.securitycraft:showPasswords").getFormattedText());
 		registrar.addConfigRemote("SecurityCraft", SHOW_CUSTOM_NAME, Utils.localize("waila.securitycraft:showCustomName").getFormattedText());
 		registrar.registerBodyProvider((IWailaDataProvider) new WailaDataProvider(), IOwnable.class);
 		registrar.registerStackProvider(new WailaDataProvider(), IOverlayDisplay.class);
@@ -103,12 +99,6 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 				for (ModuleType module : ((IModuleInventory) te).getInsertedModules()) {
 					body.add("- " + Utils.localize(module.getTranslationKey()).getFormattedText());
 				}
-			}
-
-			if (config.getConfig(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof KeycardReaderBlockEntity) && ((IOwnable) te).isOwnedBy(data.getPlayer())) {
-				String password = ((IPasswordProtected) te).getPassword();
-
-				body.add(Utils.localize("waila.securitycraft:password").getFormattedText() + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getFormattedText()));
 			}
 
 			if (config.getConfig(SHOW_CUSTOM_NAME) && te instanceof IWorldNameable && ((IWorldNameable) te).hasCustomName()) {

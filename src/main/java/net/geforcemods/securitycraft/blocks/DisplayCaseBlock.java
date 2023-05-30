@@ -5,7 +5,9 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.AttachFace;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -182,7 +184,7 @@ public class DisplayCaseBlock extends OwnableBlock {
 				else {
 					if (be.isDisabled())
 						player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-					else if (be.verifyPasswordSet(world, pos, be, player)) {
+					else if (be.verifyPasscodeSet(world, pos, be, player)) {
 						if (be.isDenied(player)) {
 							if (be.sendsMessages())
 								PlayerUtils.sendMessageToPlayer(player, Utils.localize(this), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
@@ -194,7 +196,7 @@ public class DisplayCaseBlock extends OwnableBlock {
 							activate(be);
 						}
 						else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
-							be.openPasswordGUI(world, pos, player);
+							be.openPasscodeGUI(world, pos, player);
 					}
 				}
 			}
@@ -230,6 +232,9 @@ public class DisplayCaseBlock extends OwnableBlock {
 			be.dropAllModules();
 			Block.spawnAsEntity(world, pos, be.getDisplayedStack());
 		}
+
+		if (te instanceof IPasscodeProtected)
+			SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
 
 		super.breakBlock(world, pos, state);
 	}

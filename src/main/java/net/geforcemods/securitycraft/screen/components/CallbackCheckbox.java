@@ -33,8 +33,8 @@ public class CallbackCheckbox extends ClickButton {
 		GlStateManager.enableBlend();
 		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		drawModalRectWithCustomSizedTexture(x, y, 0, selected ? 20 : 0, 20, height, 32, 64);
-		minecraft.fontRenderer.drawString(displayString, x + 24, y + (height - 8) / 2, textColor | MathHelper.ceil(255.0F) << 24);
+		drawScaledCustomSizeModalRect(x, y, 0, selected ? 20.0F : 0.0F, 20, 20, width, height, 32, 64);
+		minecraft.fontRenderer.drawString(displayString, x + (int) (width * 1.2F), y + (height - 8) / 2, textColor | MathHelper.ceil(255.0F) << 24);
 	}
 
 	public void setSelected(boolean selected) {

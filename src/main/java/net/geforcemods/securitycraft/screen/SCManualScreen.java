@@ -24,7 +24,7 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.items.SCManualItem;
@@ -84,7 +84,7 @@ public class SCManualScreen extends GuiScreen {
 	private List<String> intro2;
 	private PatronList patronList;
 	private GuiButton patreonLinkButton;
-	private boolean explosive, ownable, passwordProtected, viewActivated, customizable, lockable, moduleInventory;
+	private boolean explosive, ownable, passcodeProtected, viewActivated, customizable, lockable, moduleInventory;
 	private IngredientDisplay pageIcon;
 	private String pageTitle, designedBy;
 	private PageGroup pageType = PageGroup.SINGLE_ITEM;
@@ -165,7 +165,7 @@ public class SCManualScreen extends GuiScreen {
 			if (ownable)
 				drawTexturedModalRect(startX + 29, 118, 1, 1, 16, 16);
 
-			if (passwordProtected)
+			if (passcodeProtected)
 				drawTexturedModalRect(startX + 55, 118, 18, 1, 17, 16);
 
 			if (viewActivated)
@@ -525,8 +525,8 @@ public class SCManualScreen extends GuiScreen {
 				if (ownable = te instanceof IOwnable)
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock").getFormattedText()));
 
-				if (passwordProtected = te instanceof IPasswordProtected)
-					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passwordProtectedBlock").getFormattedText()));
+				if (passcodeProtected = te instanceof IPasscodeProtected)
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passcodeProtectedBlock").getFormattedText()));
 
 				if (viewActivated = te instanceof IViewActivated)
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock").getFormattedText()));
@@ -620,7 +620,7 @@ public class SCManualScreen extends GuiScreen {
 	private void resetTileEntityInfo() {
 		explosive = false;
 		ownable = false;
-		passwordProtected = false;
+		passcodeProtected = false;
 		viewActivated = false;
 		customizable = false;
 		lockable = false;

@@ -46,8 +46,8 @@ public class ScreenHandler implements IGuiHandler {
 	public static final int INVENTORY_SCANNER_GUI_ID = 6;
 	public static final int USERNAME_LOGGER_GUI_ID = 7;
 	public static final int KEYPAD_FURNACE_GUI_ID = 8;
-	public static final int SETUP_PASSWORD_ID = 9;
-	public static final int INSERT_PASSWORD_ID = 10;
+	public static final int SETUP_PASSCODE_ID = 9;
+	public static final int INSERT_PASSCODE_ID = 10;
 	public static final int IMS_GUI_ID = 11;
 	public static final int CAMERA_MONITOR_GUI_ID = 12;
 	public static final int BRIEFCASE_CODE_SETUP_GUI_ID = 13;
@@ -85,9 +85,9 @@ public class ScreenHandler implements IGuiHandler {
 				return new GenericMenu(player.inventory, te);
 			case KEYPAD_FURNACE_GUI_ID:
 				return new KeypadFurnaceMenu(player.inventory, (KeypadFurnaceBlockEntity) te);
-			case SETUP_PASSWORD_ID:
+			case SETUP_PASSCODE_ID:
 				return new GenericMenu(player.inventory, te);
-			case INSERT_PASSWORD_ID:
+			case INSERT_PASSCODE_ID:
 				return new GenericMenu(player.inventory, te);
 			case IMS_GUI_ID:
 				return new GenericMenu(player.inventory, te);
@@ -99,7 +99,7 @@ public class ScreenHandler implements IGuiHandler {
 			case BRIEFCASE_INSERT_CODE_GUI_ID:
 				if (!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
 					return null;
-				return null;
+				return new GenericMenu(player.inventory, te);
 			case BRIEFCASE_GUI_ID:
 				if (!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
 					return null;
@@ -175,10 +175,10 @@ public class ScreenHandler implements IGuiHandler {
 				return new UsernameLoggerScreen(player.inventory, (UsernameLoggerBlockEntity) te);
 			case KEYPAD_FURNACE_GUI_ID:
 				return new KeypadFurnaceScreen(player.inventory, (KeypadFurnaceBlockEntity) te);
-			case SETUP_PASSWORD_ID:
-				return new SetPasswordScreen(player.inventory, te);
-			case INSERT_PASSWORD_ID:
-				return new CheckPasswordScreen(player.inventory, te);
+			case SETUP_PASSCODE_ID:
+				return new SetPasscodeScreen(player.inventory, te);
+			case INSERT_PASSCODE_ID:
+				return new CheckPasscodeScreen(player.inventory, te);
 			case IMS_GUI_ID:
 				return new IMSScreen(player.inventory, (IMSBlockEntity) te);
 			case CAMERA_MONITOR_GUI_ID:
@@ -192,12 +192,12 @@ public class ScreenHandler implements IGuiHandler {
 			case BRIEFCASE_INSERT_CODE_GUI_ID:
 				if (!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
 					return null;
-				return new BriefcasePasswordScreen(player.inventory, null);
+				return new BriefcasePasscodeScreen(player.inventory, null);
 			case BRIEFCASE_GUI_ID:
 				ItemStack briefcase = PlayerUtils.getSelectedItemStack(player, SCContent.briefcase);
 
 				if (!briefcase.isEmpty())
-					return new ItemInventoryScreen.Briefcase(new BriefcaseMenu(player.inventory, ItemContainer.keycardHolder(briefcase)), player.inventory, briefcase.getDisplayName());
+					return new ItemInventoryScreen.Briefcase(new BriefcaseMenu(player.inventory, ItemContainer.briefcase(briefcase)), player.inventory, briefcase.getDisplayName());
 				else
 					return null;
 			case KEY_CHANGER_GUI_ID:

@@ -5,9 +5,8 @@ import java.io.IOException;
 import org.lwjgl.input.Keyboard;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
-import net.geforcemods.securitycraft.network.server.SetPassword;
+import net.geforcemods.securitycraft.network.server.SetPasscode;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -141,9 +140,7 @@ public class KeyChangerScreen extends GuiContainer {
 	@Override
 	protected void actionPerformed(GuiButton button) {
 		if (button.id == 0) {
-			((IPasswordProtected) tileEntity).setPassword(textboxNewPasscode.getText());
-			SecurityCraft.network.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), textboxNewPasscode.getText()));
-
+			SecurityCraft.network.sendToServer(new SetPasscode(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), textboxNewPasscode.getText()));
 			Minecraft.getMinecraft().player.closeScreen();
 			PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, Utils.localize("item.securitycraft:universalKeyChanger.name"), Utils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN, true);
 		}

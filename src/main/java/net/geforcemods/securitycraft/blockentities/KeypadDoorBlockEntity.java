@@ -1,15 +1,17 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.api.INameSetter;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.blocks.SpecialDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
@@ -17,17 +19,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasswordProtected {
+public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasscodeProtected {
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
 	private long cooldownEnd = 0;
-	private String passcode;
+	private byte[] passcode;
+	private UUID saltKey;
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
-		if (passcode != null && !passcode.isEmpty())
-			tag.setString("passcode", passcode);
+		if (saltKey != null)
+			tag.setUniqueId("saltKey", saltKey);
+
+		if (passcode != null)
+			tag.setString("passcode", PasscodeUtils.bytesToString(passcode));
 
 		tag.setLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 		return tag;
@@ -36,7 +42,8 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		passcode = tag.getString("passcode");
+		loadSaltKey(tag);
+		loadPasscode(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 	}
 
@@ -59,23 +66,39 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 	@Override
 	public boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
-		return !state.getValue(KeypadBlock.POWERED) && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
+		return !state.getValue(KeypadBlock.POWERED) && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override
-	public String getPassword() {
-		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
+	public byte[] getPasscode() {
+		return passcode == null || passcode.length == 0 ? null : passcode;
 	}
 
 	@Override
-	public void setPassword(String password) {
-		passcode = password;
-		runForOtherHalf(otherHalf -> otherHalf.setPasswordExclusively(password));
+	public void setPasscode(byte[] passcode) {
+		this.passcode = passcode;
+		runForOtherHalf(otherHalf -> otherHalf.setPasscodeExclusively(passcode));
 	}
 
-	//only set the password for this door half
-	public void setPasswordExclusively(String password) {
-		passcode = password;
+	@Override
+	public UUID getSaltKey() {
+		return saltKey;
+	}
+
+	@Override
+	public void setSaltKey(UUID saltKey) {
+		this.saltKey = saltKey;
+		runForOtherHalf(otherHalf -> otherHalf.setSaltKeyExclusively(saltKey));
+	}
+
+	//only set the passcode for this door half
+	public void setPasscodeExclusively(byte[] passcode) {
+		this.passcode = passcode;
+	}
+
+	//only set the salt key for this door half
+	public void setSaltKeyExclusively(UUID saltKey) {
+		this.saltKey = saltKey;
 	}
 
 	@Override
@@ -134,6 +157,9 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	}
 
 	public void runForOtherHalf(Consumer<KeypadDoorBlockEntity> action) {
+		if (world == null) //Happens when loading the BE, in that case running the same code for the other half is unnecessary
+			return;
+
 		TileEntity te = null;
 		IBlockState state = world.getBlockState(pos);
 

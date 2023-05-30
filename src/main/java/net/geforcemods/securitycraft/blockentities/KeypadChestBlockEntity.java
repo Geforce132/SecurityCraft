@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
@@ -8,7 +9,7 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
@@ -19,6 +20,7 @@ import net.geforcemods.securitycraft.inventory.InsertOnlyDoubleChestHandler;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -40,9 +42,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class KeypadChestBlockEntity extends TileEntityChest implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable, INameSetter, ILockable {
+public class KeypadChestBlockEntity extends TileEntityChest implements IPasscodeProtected, IOwnable, IModuleInventory, ICustomizable, INameSetter, ILockable {
 	private InsertOnlyDoubleChestHandler insertOnlyHandler;
-	private String passcode;
+	private byte[] passcode;
+	private UUID saltKey;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
@@ -59,8 +62,11 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPassword
 		writeOptions(tag);
 		tag.setLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 
-		if (passcode != null && !passcode.isEmpty())
-			tag.setString("passcode", passcode);
+		if (saltKey != null)
+			tag.setUniqueId("saltKey", saltKey);
+
+		if (passcode != null)
+			tag.setString("passcode", PasscodeUtils.bytesToString(passcode));
 
 		if (owner != null)
 			owner.writeToNBT(tag, false);
@@ -81,13 +87,14 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPassword
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
-		passcode = tag.getString("passcode");
+		loadSaltKey(tag);
+		loadPasscode(tag);
 		owner.readFromNBT(tag);
 	}
 
 	@Override
 	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(new NBTTagCompound());
+		return PasscodeUtils.filterPasscodeAndSaltFromTag(writeToNBT(new NBTTagCompound()));
 	}
 
 	@Override
@@ -139,9 +146,9 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPassword
 	}
 
 	@Override
-	public void openPasswordGUI(World world, BlockPos pos, EntityPlayer player) {
+	public void openPasscodeGUI(World world, BlockPos pos, EntityPlayer player) {
 		if (!world.isRemote && !isBlocked())
-			IPasswordProtected.super.openPasswordGUI(world, pos, player);
+			IPasscodeProtected.super.openPasscodeGUI(world, pos, player);
 	}
 
 	@Override
@@ -252,13 +259,23 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPassword
 	}
 
 	@Override
-	public String getPassword() {
-		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
+	public byte[] getPasscode() {
+		return passcode == null || passcode.length == 0 ? null : passcode;
 	}
 
 	@Override
-	public void setPassword(String password) {
-		passcode = password;
+	public void setPasscode(byte[] passcode) {
+		this.passcode = passcode;
+	}
+
+	@Override
+	public UUID getSaltKey() {
+		return saltKey;
+	}
+
+	@Override
+	public void setSaltKey(UUID saltKey) {
+		this.saltKey = saltKey;
 	}
 
 	@Override

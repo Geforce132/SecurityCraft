@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -39,7 +40,7 @@ public class OwnableBlockEntity extends TileEntity implements IOwnable {
 
 	@Override
 	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(new NBTTagCompound());
+		return PasscodeUtils.filterPasscodeAndSaltFromTag(writeToNBT(new NBTTagCompound()));
 	}
 
 	@Override

@@ -14,12 +14,12 @@ import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 
 public class SecurityCraftAPI {
 	private static List<IExtractionBlock> registeredExtractionBlocks = new ArrayList<>();
+	private static List<IPasscodeConvertible> registeredPasscodeConvertibles = new ArrayList<>();
 	private static List<IAttackTargetCheck> registeredSentryAttackTargetChecks = new ArrayList<>();
-	private static List<IPasswordConvertible> registeredPasswordConvertibles = new ArrayList<>();
 	private static List<IDoorActivator> registeredDoorActivators = new ArrayList<>();
 	public static final String IMC_EXTRACTION_BLOCK_MSG = "registerExtractionBlock";
+	public static final String IMC_PASSCODE_CONVERTIBLE_MSG = "registerPasscodeConvertible";
 	public static final String IMC_SENTRY_ATTACK_TARGET_MSG = "registerSentryAttackTargetCheck";
-	public static final String IMC_PASSWORD_CONVERTIBLE_MSG = "registerPasswordConvertible";
 	public static final String IMC_DOOR_ACTIVATOR_MSG = "registerDoorActivator";
 	private static Logger logger = LogManager.getLogger(SecurityCraftAPI.class);
 
@@ -41,13 +41,13 @@ public class SecurityCraftAPI {
 				else
 					logger.error("Mod {} did not supply sufficient sufficient sentry attack target information.", msg.getSender());
 			}
-			else if (msg.key.equals(IMC_PASSWORD_CONVERTIBLE_MSG)) {
-				Optional<Function<Object, IPasswordConvertible>> value = msg.getFunctionValue(Object.class, IPasswordConvertible.class);
+			else if (msg.key.equals(IMC_PASSCODE_CONVERTIBLE_MSG)) {
+				Optional<Function<Object, IPasscodeConvertible>> value = msg.getFunctionValue(Object.class, IPasscodeConvertible.class);
 
 				if (value.isPresent())
-					registeredPasswordConvertibles.add(value.get().apply(null));
+					registeredPasscodeConvertibles.add(value.get().apply(null));
 				else
-					logger.error("Mod {} did not supply sufficient password convertible information.", msg.getSender());
+					logger.error("Mod {} did not supply sufficient passcode convertible information.", msg.getSender());
 			}
 			else if (msg.key.equals(IMC_DOOR_ACTIVATOR_MSG)) {
 				Optional<Function<Object, IDoorActivator>> value = msg.getFunctionValue(Object.class, IDoorActivator.class);
@@ -60,7 +60,7 @@ public class SecurityCraftAPI {
 		}
 
 		registeredExtractionBlocks = Collections.unmodifiableList(registeredExtractionBlocks);
-		registeredPasswordConvertibles = Collections.unmodifiableList(registeredPasswordConvertibles);
+		registeredPasscodeConvertibles = Collections.unmodifiableList(registeredPasscodeConvertibles);
 		registeredSentryAttackTargetChecks = Collections.unmodifiableList(registeredSentryAttackTargetChecks);
 		registeredDoorActivators = Collections.unmodifiableList(registeredDoorActivators);
 	}
@@ -73,8 +73,8 @@ public class SecurityCraftAPI {
 		return registeredSentryAttackTargetChecks;
 	}
 
-	public static List<IPasswordConvertible> getRegisteredPasswordConvertibles() {
-		return registeredPasswordConvertibles;
+	public static List<IPasscodeConvertible> getRegisteredPasscodeConvertibles() {
+		return registeredPasscodeConvertibles;
 	}
 
 	public static List<IDoorActivator> getRegisteredDoorActivators() {

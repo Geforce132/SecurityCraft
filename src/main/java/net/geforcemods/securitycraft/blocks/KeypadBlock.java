@@ -5,9 +5,11 @@ import java.util.function.Function;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeypadBlockEntity;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -47,7 +49,7 @@ public class KeypadBlock extends DisguisableBlock {
 
 			if (te.isDisabled())
 				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (te.verifyPasswordSet(world, pos, te, player)) {
+			else if (te.verifyPasscodeSet(world, pos, te, player)) {
 				if (te.isDenied(player)) {
 					if (te.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
@@ -62,7 +64,7 @@ public class KeypadBlock extends DisguisableBlock {
 					return true;
 				}
 				else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
-					te.openPasswordGUI(world, pos, player);
+					te.openPasscodeGUI(world, pos, player);
 			}
 		}
 
@@ -83,10 +85,15 @@ public class KeypadBlock extends DisguisableBlock {
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
+
 		if (state.getValue(POWERED)) {
 			world.notifyNeighborsOfStateChange(pos, this, false);
 			BlockUtils.updateIndirectNeighbors(world, pos, this);
 		}
+
+		if (te instanceof IPasscodeProtected)
+			SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
 
 		super.breakBlock(world, pos, state);
 	}
@@ -184,9 +191,9 @@ public class KeypadBlock extends DisguisableBlock {
 		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
 	}
 
-	public static class Convertible implements Function<Object, IPasswordConvertible>, IPasswordConvertible {
+	public static class Convertible implements Function<Object, IPasscodeConvertible>, IPasscodeConvertible {
 		@Override
-		public IPasswordConvertible apply(Object o) {
+		public IPasscodeConvertible apply(Object o) {
 			return this;
 		}
 

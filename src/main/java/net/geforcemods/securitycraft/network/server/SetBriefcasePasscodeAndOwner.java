@@ -2,7 +2,9 @@ package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,13 +14,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class SetBriefcaseOwner implements IMessage {
+public class SetBriefcasePasscodeAndOwner implements IMessage {
 	private String passcode;
 
-	public SetBriefcaseOwner() {}
+	public SetBriefcasePasscodeAndOwner() {}
 
-	public SetBriefcaseOwner(String passcode) {
-		this.passcode = passcode;
+	public SetBriefcasePasscodeAndOwner(String passcode) {
+		this.passcode = passcode.isEmpty() ? passcode : PasscodeUtils.hashPasscodeWithoutSalt(passcode);
 	}
 
 	@Override
@@ -31,9 +33,9 @@ public class SetBriefcaseOwner implements IMessage {
 		passcode = ByteBufUtils.readUTF8String(buf);
 	}
 
-	public static class Handler implements IMessageHandler<SetBriefcaseOwner, IMessage> {
+	public static class Handler implements IMessageHandler<SetBriefcasePasscodeAndOwner, IMessage> {
 		@Override
-		public IMessage onMessage(SetBriefcaseOwner message, MessageContext context) {
+		public IMessage onMessage(SetBriefcasePasscodeAndOwner message, MessageContext context) {
 			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
 				ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.briefcase);
@@ -49,10 +51,11 @@ public class SetBriefcaseOwner implements IMessage {
 						tag.setString("ownerUUID", player.getUniqueID().toString());
 					}
 
-					if (!tag.hasKey("passcode") && message.passcode.matches("[0-9]{4}"))
-						tag.setString("passcode", message.passcode);
+					if (!message.passcode.isEmpty() && !tag.hasKey("passcode"))
+						BriefcaseItem.hashAndSetPasscode(tag, message.passcode, p -> {});
 				}
 			});
+
 			return null;
 		}
 	}

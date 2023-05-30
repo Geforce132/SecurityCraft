@@ -20,7 +20,7 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
@@ -49,6 +49,7 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SCWorldListener;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.screen.ScreenHandler;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
@@ -83,7 +84,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.ForgeVersion.Status;
@@ -203,6 +206,14 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
+	public static void onLevelLoad(WorldEvent.Load event) {
+		World world = event.getWorld();
+
+		if (world instanceof WorldServer && world.provider.getDimensionType() == DimensionType.OVERWORLD)
+			SaltData.refreshLevel(((WorldServer) world));
+	}
+
+	@SubscribeEvent
 	public static void onDamageTaken(LivingHurtEvent event) {
 		EntityLivingBase entity = event.getEntityLiving();
 		World world = entity.world;
@@ -311,7 +322,7 @@ public class SCEventHandler {
 		}
 
 		if (PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.keyPanel, event.getHand())) {
-			for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
+			for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
 				if (pc.isValidStateForConversion(state)) {
 					event.setUseBlock(Result.DENY);
 					event.setUseItem(Result.ALLOW);

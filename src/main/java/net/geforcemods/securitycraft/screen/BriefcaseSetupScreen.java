@@ -7,7 +7,7 @@ import org.lwjgl.input.Keyboard;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
-import net.geforcemods.securitycraft.network.server.SetBriefcaseOwner;
+import net.geforcemods.securitycraft.network.server.SetBriefcasePasscodeAndOwner;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -17,8 +17,6 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
@@ -38,7 +36,7 @@ public class BriefcaseSetupScreen extends GuiContainer implements GuiResponder {
 	public void initGui() {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save").getFormattedText()));
+		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:passcode.save").getFormattedText()));
 		saveAndContinueButton.enabled = false;
 
 		keycodeTextbox = new GuiTextField(1, fontRenderer, width / 2 - 37, height / 2 - 47, 77, 12);
@@ -107,20 +105,7 @@ public class BriefcaseSetupScreen extends GuiContainer implements GuiResponder {
 	protected void actionPerformed(GuiButton button) {
 		if (button.id == saveAndContinueButton.id) {
 			if (PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase, null)) {
-				ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getMinecraft().player, SCContent.briefcase);
-				String passcode = keycodeTextbox.getText();
-
-				if (!briefcase.hasTagCompound())
-					briefcase.setTagCompound(new NBTTagCompound());
-
-				briefcase.getTagCompound().setString("passcode", passcode);
-
-				if (!briefcase.getTagCompound().hasKey("owner")) {
-					briefcase.getTagCompound().setString("owner", Minecraft.getMinecraft().player.getName());
-					briefcase.getTagCompound().setString("ownerUUID", Minecraft.getMinecraft().player.getUniqueID().toString());
-				}
-
-				SecurityCraft.network.sendToServer(new SetBriefcaseOwner(passcode));
+				SecurityCraft.network.sendToServer(new SetBriefcasePasscodeAndOwner(keycodeTextbox.getText()));
 				Minecraft.getMinecraft().player.openGui(SecurityCraft.instance, ScreenHandler.BRIEFCASE_INSERT_CODE_GUI_ID, Minecraft.getMinecraft().world, (int) Minecraft.getMinecraft().player.posX, (int) Minecraft.getMinecraft().player.posY, (int) Minecraft.getMinecraft().player.posZ);
 			}
 		}

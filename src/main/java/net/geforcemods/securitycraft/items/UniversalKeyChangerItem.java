@@ -3,16 +3,19 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -34,7 +37,7 @@ public class UniversalKeyChangerItem extends Item {
 
 		if (te instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) te).isOpen() && ((DisplayCaseBlockEntity) te).getDisplayedStack().isEmpty()))
 			return EnumActionResult.PASS;
-		else if (te instanceof IPasswordProtected) {
+		else if (te instanceof IPasscodeProtected) {
 			if (((IOwnable) te).isOwnedBy(player)) {
 				player.openGui(SecurityCraft.instance, ScreenHandler.KEY_CHANGER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
 				return EnumActionResult.SUCCESS;
@@ -59,9 +62,14 @@ public class UniversalKeyChangerItem extends Item {
 		if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase) {
 			ItemStack briefcase = player.getHeldItemOffhand();
 
-			if (BriefcaseItem.isOwnedBy(briefcase, player)) {
-				if (briefcase.hasTagCompound() && briefcase.getTagCompound().hasKey("passcode")) {
-					briefcase.getTagCompound().removeTag("passcode");
+			if (BriefcaseItem.isOwnedBy(briefcase, player) || player.isCreative()) {
+				NBTTagCompound tag = briefcase.getTagCompound();
+
+				if (tag != null && tag.hasKey("passcode")) {
+					if (tag.hasKey("saltKey"))
+						SaltData.removeSalt(tag.getUniqueId("saltKey"));
+
+					PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalKeyChanger.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), TextFormatting.GREEN);
 					return ActionResult.newResult(EnumActionResult.SUCCESS, keyChanger);
 				}

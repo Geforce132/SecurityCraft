@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.screen;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
-import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
+import net.geforcemods.securitycraft.network.server.CheckBriefcasePasscode;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -12,12 +12,10 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class BriefcasePasswordScreen extends GuiContainer {
+public class BriefcasePasscodeScreen extends GuiContainer {
 	public static final String UP_ARROW = "\u2191";
 	public static final String DOWN_ARROW = "\u2193";
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
@@ -29,7 +27,7 @@ public class BriefcasePasswordScreen extends GuiContainer {
 			0, 0, 0, 0
 	};
 
-	public BriefcasePasswordScreen(InventoryPlayer inventoryPlayer, TileEntity tileEntity) {
+	public BriefcasePasscodeScreen(InventoryPlayer inventoryPlayer, TileEntity tileEntity) {
 		super(new GenericMenu(inventoryPlayer, tileEntity));
 	}
 
@@ -90,20 +88,8 @@ public class BriefcasePasswordScreen extends GuiContainer {
 	@Override
 	protected void actionPerformed(GuiButton button) {
 		if (button.id == 8) {
-			if (PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase, null)) {
-				ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getMinecraft().player, SCContent.briefcase);
-				NBTTagCompound nbt = briefcase.getTagCompound();
-				String code = digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3];
-
-				if (nbt.getString("passcode").equals(code)) {
-					if (!nbt.hasKey("owner")) {
-						nbt.setString("owner", Minecraft.getMinecraft().player.getName());
-						nbt.setString("ownerUUID", Minecraft.getMinecraft().player.getUniqueID().toString());
-					}
-
-					SecurityCraft.network.sendToServer(new OpenBriefcaseGui());
-				}
-			}
+			if (PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase, null))
+				SecurityCraft.network.sendToServer(new CheckBriefcasePasscode(digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3]));
 		}
 		else {
 			int index = button.id % 4;

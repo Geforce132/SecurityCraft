@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 public class ProjectECompat {
 	public static void registerConversions() {
 		IConversionProxy reinforcedBlocksConversionProxy = ProjectEAPI.getConversionProxy();
-		IEMCProxy passwordProtectedEMCProxy = ProjectEAPI.getEMCProxy();
+		IEMCProxy passcodeProtectedEMCProxy = ProjectEAPI.getEMCProxy();
 		long keyPanelEMC = 520;
 
 		IReinforcedBlock.BLOCKS.forEach(block -> {
@@ -42,8 +42,8 @@ public class ProjectECompat {
 				}
 			}
 		});
-		passwordProtectedEMCProxy.registerCustomEMC(new ItemStack(SCContent.keypad), 1856 + keyPanelEMC);
-		passwordProtectedEMCProxy.registerCustomEMC(new ItemStack(SCContent.keypadChest), 64 + keyPanelEMC);
-		passwordProtectedEMCProxy.registerCustomEMC(new ItemStack(SCContent.keypadFurnace), 8 + keyPanelEMC);
+		passcodeProtectedEMCProxy.registerCustomEMC(new ItemStack(SCContent.keypad), 1856 + keyPanelEMC);
+		passcodeProtectedEMCProxy.registerCustomEMC(new ItemStack(SCContent.keypadChest), 64 + keyPanelEMC);
+		passcodeProtectedEMCProxy.registerCustomEMC(new ItemStack(SCContent.keypadFurnace), 8 + keyPanelEMC);
 	}
 }

@@ -5,13 +5,12 @@ import java.io.IOException;
 import org.lwjgl.input.Keyboard;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
-import net.geforcemods.securitycraft.network.server.SetPassword;
+import net.geforcemods.securitycraft.network.server.SetPasscode;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
+import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -22,7 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class SetPasswordScreen extends GuiContainer implements GuiResponder {
+public class SetPasscodeScreen extends GuiContainer implements GuiPageButtonList.GuiResponder {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntity tileEntity;
 	private char[] allowedChars = {
@@ -32,7 +31,7 @@ public class SetPasswordScreen extends GuiContainer implements GuiResponder {
 	private GuiTextField keycodeTextbox;
 	private GuiButton saveAndContinueButton;
 
-	public SetPasswordScreen(InventoryPlayer inventoryPlayer, TileEntity tileEntity) {
+	public SetPasscodeScreen(InventoryPlayer inventoryPlayer, TileEntity tileEntity) {
 		super(new GenericMenu(inventoryPlayer, tileEntity));
 		this.tileEntity = tileEntity;
 		title = tileEntity.getDisplayName().getFormattedText();
@@ -42,14 +41,14 @@ public class SetPasswordScreen extends GuiContainer implements GuiResponder {
 	public void initGui() {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save").getFormattedText()));
+		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:passcode.save").getFormattedText()));
 		saveAndContinueButton.enabled = false;
 
 		keycodeTextbox = new GuiTextField(1, fontRenderer, width / 2 - 37, height / 2 - 47, 77, 12);
 		keycodeTextbox.setTextColor(-1);
 		keycodeTextbox.setDisabledTextColour(-1);
 		keycodeTextbox.setEnableBackgroundDrawing(true);
-		keycodeTextbox.setMaxStringLength(11);
+		keycodeTextbox.setMaxStringLength(Integer.MAX_VALUE);
 		keycodeTextbox.setFocused(true);
 		keycodeTextbox.setGuiResponder(this);
 	}
@@ -70,7 +69,7 @@ public class SetPasswordScreen extends GuiContainer implements GuiResponder {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		String setup = Utils.localize("gui.securitycraft:password.setup").getFormattedText();
+		String setup = Utils.localize("gui.securitycraft:passcode.setup").getFormattedText();
 		String combined = title + " " + setup;
 
 		if (fontRenderer.getStringWidth(combined) < xSize - 10)
@@ -118,8 +117,7 @@ public class SetPasswordScreen extends GuiContainer implements GuiResponder {
 	@Override
 	protected void actionPerformed(GuiButton button) {
 		if (button.id == saveAndContinueButton.id) {
-			((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getText());
-			SecurityCraft.network.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
+			SecurityCraft.network.sendToServer(new SetPasscode(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
 			Minecraft.getMinecraft().player.closeScreen();
 		}
 	}

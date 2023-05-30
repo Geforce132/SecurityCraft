@@ -1,17 +1,20 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.UUID;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.INameSetter;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +40,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements ISidedInventory, IPasswordProtected, ITickable, INameSetter, ILockable {
+public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements ISidedInventory, IPasscodeProtected, ITickable, INameSetter, ILockable {
 	private IItemHandler insertOnlyHandler;
 	private static final int[] slotsTop = {
 			0
@@ -54,7 +57,8 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 	public int cookTime;
 	public int totalCookTime;
 	private String furnaceCustomName;
-	private String passcode;
+	private byte[] passcode;
+	private UUID saltKey;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
@@ -165,7 +169,8 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 		cookTime = tag.getShort("CookTime");
 		totalCookTime = tag.getShort("CookTimeTotal");
 		currentItemBurnTime = TileEntityFurnace.getItemBurnTime(furnaceItemStacks.get(1));
-		passcode = tag.getString("passcode");
+		loadSaltKey(tag);
+		loadPasscode(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 		furnaceCustomName = tag.getString("CustomName");
 	}
@@ -190,8 +195,11 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 
 		tag.setTag("Items", list);
 
-		if (passcode != null && !passcode.isEmpty())
-			tag.setString("passcode", passcode);
+		if (saltKey != null)
+			tag.setUniqueId("saltKey", saltKey);
+
+		if (passcode != null)
+			tag.setString("passcode", PasscodeUtils.bytesToString(passcode));
 
 		tag.setLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 
@@ -199,6 +207,11 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 			tag.setString("CustomName", furnaceCustomName);
 
 		return tag;
+	}
+
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		return PasscodeUtils.filterPasscodeAndSaltFromTag(writeToNBT(new NBTTagCompound()));
 	}
 
 	@Override
@@ -454,13 +467,23 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 	}
 
 	@Override
-	public String getPassword() {
-		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
+	public byte[] getPasscode() {
+		return passcode == null || passcode.length == 0 ? null : passcode;
 	}
 
 	@Override
-	public void setPassword(String password) {
-		passcode = password;
+	public void setPasscode(byte[] passcode) {
+		this.passcode = passcode;
+	}
+
+	@Override
+	public UUID getSaltKey() {
+		return saltKey;
+	}
+
+	@Override
+	public void setSaltKey(UUID saltKey) {
+		this.saltKey = saltKey;
 	}
 
 	@Override

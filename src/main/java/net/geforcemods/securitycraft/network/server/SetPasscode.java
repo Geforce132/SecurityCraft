@@ -2,9 +2,10 @@ package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -16,17 +17,17 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class SetPassword implements IMessage {
-	private String password;
+public class SetPasscode implements IMessage {
+	private String passcode;
 	private int x, y, z;
 
-	public SetPassword() {}
+	public SetPasscode() {}
 
-	public SetPassword(int x, int y, int z, String code) {
+	public SetPasscode(int x, int y, int z, String code) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		password = code;
+		passcode = PasscodeUtils.hashPasscodeWithoutSalt(code);
 	}
 
 	@Override
@@ -34,7 +35,7 @@ public class SetPassword implements IMessage {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
-		ByteBufUtils.writeUTF8String(buf, password);
+		ByteBufUtils.writeUTF8String(buf, passcode);
 	}
 
 	@Override
@@ -42,39 +43,41 @@ public class SetPassword implements IMessage {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
-		password = ByteBufUtils.readUTF8String(buf);
+		passcode = ByteBufUtils.readUTF8String(buf);
 	}
 
-	public static class Handler implements IMessageHandler<SetPassword, IMessage> {
+	public static class Handler implements IMessageHandler<SetPasscode, IMessage> {
 		@Override
-		public IMessage onMessage(SetPassword message, MessageContext ctx) {
+		public IMessage onMessage(SetPasscode message, MessageContext ctx) {
 			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				BlockPos pos = new BlockPos(message.x, message.y, message.z);
-				String password = message.password;
+				String passcode = message.passcode;
 				EntityPlayer player = ctx.getServerHandler().player;
 				World world = player.world;
-				TileEntity te = world.getTileEntity(pos);
+				TileEntity tile = world.getTileEntity(pos);
 
-				if (te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
-					((IPasswordProtected) te).setPassword(password);
+				if (tile instanceof IPasscodeProtected && (!(tile instanceof IOwnable) || ((IOwnable) tile).isOwnedBy(player))) {
+					IPasscodeProtected be = ((IPasscodeProtected) tile);
 
-					if (te instanceof KeypadChestBlockEntity)
-						checkAndUpdateAdjacentChest(world, pos, password, player);
+					be.hashAndSetPasscode(passcode);
+
+					if (be instanceof KeypadChestBlockEntity)
+						checkAndUpdateAdjacentChest(((KeypadChestBlockEntity) tile), world, pos, passcode, be.getSalt());
 				}
 			});
 
 			return null;
 		}
 
-		private void checkAndUpdateAdjacentChest(World world, BlockPos pos, String codeToSet, EntityPlayer player) {
+		private void checkAndUpdateAdjacentChest(KeypadChestBlockEntity te, World world, BlockPos pos, String codeToSet, byte[] salt) {
 			for (EnumFacing facing : EnumFacing.HORIZONTALS) {
 				BlockPos offsetPos = pos.offset(facing);
-				TileEntity te = world.getTileEntity(offsetPos);
+				TileEntity otherTe = world.getTileEntity(offsetPos);
 
-				if (te instanceof KeypadChestBlockEntity) {
+				if (otherTe instanceof KeypadChestBlockEntity && te.getOwner().owns(((KeypadChestBlockEntity) otherTe))) {
 					IBlockState state = world.getBlockState(offsetPos);
 
-					((IPasswordProtected) te).setPassword(codeToSet);
+					((KeypadChestBlockEntity) te).hashAndSetPasscode(codeToSet, salt);
 					world.notifyBlockUpdate(offsetPos, state, state, 2);
 					break;
 				}

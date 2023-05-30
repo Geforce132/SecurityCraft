@@ -1,15 +1,21 @@
 package net.geforcemods.securitycraft.items;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -56,7 +62,7 @@ public class BriefcaseItem extends Item {
 			return EnumActionResult.FAIL;
 		}
 
-		handle(stack, world, player, hand);
+		handle(stack, world, player);
 		return EnumActionResult.SUCCESS;
 	}
 
@@ -64,19 +70,16 @@ public class BriefcaseItem extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		handle(stack, world, player, hand);
+		handle(stack, world, player);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 
-	private void handle(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-		if (world.isRemote) {
+	private void handle(ItemStack stack, World level, EntityPlayer player) {
+		if (!level.isRemote) {
 			if (!stack.hasTagCompound())
 				stack.setTagCompound(new NBTTagCompound());
 
-			if (!stack.getTagCompound().hasKey("passcode"))
-				player.openGui(SecurityCraft.instance, ScreenHandler.BRIEFCASE_CODE_SETUP_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
-			else
-				player.openGui(SecurityCraft.instance, ScreenHandler.BRIEFCASE_INSERT_CODE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+			player.openGui(SecurityCraft.instance, stack.getTagCompound().hasKey("passcode") ? ScreenHandler.BRIEFCASE_INSERT_CODE_GUI_ID : ScreenHandler.BRIEFCASE_CODE_SETUP_GUI_ID, level, (int) player.posX, (int) player.posY, (int) player.posZ);
 		}
 	}
 
@@ -132,6 +135,44 @@ public class BriefcaseItem extends Item {
 			tag.setTag("display", displayTag);
 
 		displayTag.setInteger("color", color);
+	}
+
+	@Override
+	public NBTTagCompound getNBTShareTag(ItemStack stack) {
+		NBTTagCompound tag = super.getNBTShareTag(stack);
+
+		return tag == null ? null : PasscodeUtils.filterPasscodeAndSaltFromTag(tag.copy());
+	}
+
+	public static void hashAndSetPasscode(NBTTagCompound briefcaseTag, String passcode, Consumer<byte[]> afterSet) {
+		byte[] salt = PasscodeUtils.generateSalt();
+
+		briefcaseTag.setUniqueId("saltKey", SaltData.putSalt(salt));
+		PasscodeUtils.hashPasscode(passcode, salt, p -> {
+			briefcaseTag.setString("passcode", PasscodeUtils.bytesToString(p));
+			afterSet.accept(p);
+		});
+	}
+
+	public static void checkPasscode(EntityPlayerMP player, ItemStack briefcase, String incomingCode, String briefcaseCode, NBTTagCompound tag) {
+		UUID saltKey = tag.hasUniqueId("saltKey") ? tag.getUniqueId("saltKey") : null;
+		byte[] salt = SaltData.getSalt(saltKey);
+
+		if (salt == null) { //If no salt key or no salt associated with the given key can be found, a new passcode needs to be set
+			PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
+			return;
+		}
+
+		PasscodeUtils.hashPasscode(incomingCode, salt, p -> {
+			if (Arrays.equals(PasscodeUtils.stringToBytes(briefcaseCode), p)) {
+				if (!tag.hasKey("owner")) { //If the briefcase doesn't have an owner (that usually gets set when assigning a new passcode), set the player that first enters the correct passcode as the owner
+					tag.setString("owner", player.getName());
+					tag.setString("ownerUUID", player.getUniqueID().toString());
+				}
+
+				player.openGui(SecurityCraft.instance, ScreenHandler.BRIEFCASE_GUI_ID, player.world, (int) player.posX, (int) player.posY, (int) player.posZ);
+			}
+		});
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, EntityPlayer player) {

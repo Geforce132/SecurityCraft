@@ -6,7 +6,9 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeyPanelBlockEntity;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -69,7 +71,7 @@ public abstract class KeyPanelBlock extends OwnableBlock {
 
 			if (te.isDisabled())
 				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (te.verifyPasswordSet(world, pos, te, player)) {
+			else if (te.verifyPasscodeSet(world, pos, te, player)) {
 				if (te.isDenied(player)) {
 					if (te.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
@@ -84,7 +86,7 @@ public abstract class KeyPanelBlock extends OwnableBlock {
 					return true;
 				}
 				else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
-					te.openPasswordGUI(world, pos, player);
+					te.openPasscodeGUI(world, pos, player);
 			}
 		}
 
@@ -129,6 +131,9 @@ public abstract class KeyPanelBlock extends OwnableBlock {
 			world.notifyNeighborsOfStateChange(pos, this, false);
 			BlockUtils.updateIndirectNeighbors(world, pos, this);
 		}
+
+		if (te instanceof IPasscodeProtected)
+			SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
 
 		super.breakBlock(world, pos, state);
 	}

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IPasswordConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -29,7 +29,7 @@ public class KeyPanelItem extends ItemBlock {
 		ItemStack stack = player.getHeldItem(hand);
 		IBlockState state = world.getBlockState(pos);
 
-		for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
+		for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
 			if (pc.isValidStateForConversion(state)) {
 				if (pc.convert(player, world, pos)) {
 					if (!player.capabilities.isCreativeMode)
