@@ -224,6 +224,7 @@ public class RegistrationHandler {
 							new ItemStack(SCContent.KEYCARD_LVL_3.get()),
 							new ItemStack(SCContent.KEYCARD_LVL_4.get()),
 							new ItemStack(SCContent.KEYCARD_LVL_5.get()),
+							new ItemStack(SCContent.KEYCARD_HOLDER.get()),
 							new ItemStack(SCContent.LIMITED_USE_KEYCARD.get()),
 							new ItemStack(SCContent.CODEBREAKER.get()),
 							new ItemStack(SCContent.UNIVERSAL_KEY_CHANGER.get()),
