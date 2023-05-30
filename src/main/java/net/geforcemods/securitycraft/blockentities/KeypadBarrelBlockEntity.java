@@ -65,12 +65,14 @@ public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPassco
 
 	@Override
 	public CompoundNBT save(CompoundNBT tag) {
-		super.save(tag);
+		long cooldownLeft;
 
+		super.save(tag);
 		writeModuleInventory(tag);
 		writeModuleStates(tag);
 		writeOptions(tag);
-		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
+		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
+		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 
 		if (saltKey != null)
 			tag.putUUID("saltKey", saltKey);

@@ -103,10 +103,13 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 
 	@Override
 	public CompoundNBT save(CompoundNBT tag) {
+		long cooldownLeft;
+
 		super.save(tag);
 		tag.put("DisplayedStack", getDisplayedStack().save(new CompoundNBT()));
 		tag.putBoolean("ShouldBeOpen", shouldBeOpen);
-		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
+		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
+		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 
 		if (saltKey != null)
 			tag.putUUID("saltKey", saltKey);
