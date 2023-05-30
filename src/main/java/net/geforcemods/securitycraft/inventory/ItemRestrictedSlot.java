@@ -1,18 +1,19 @@
 package net.geforcemods.securitycraft.inventory;
 
+import java.util.function.Predicate;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ItemRestrictedSlot extends Slot {
 	private final IInventory inventory;
-	private final Item[] prohibitedItems;
+	private final Predicate<ItemStack> stackAllowed;
 
-	public ItemRestrictedSlot(IInventory inventory, int index, int xPos, int yPos, Item... prohibitedItems) {
+	public ItemRestrictedSlot(IInventory inventory, int index, int xPos, int yPos, Predicate<ItemStack> stackAllowed) {
 		super(inventory, index, xPos, yPos);
 		this.inventory = inventory;
-		this.prohibitedItems = prohibitedItems;
+		this.stackAllowed = stackAllowed;
 	}
 
 	@Override
@@ -20,12 +21,7 @@ public class ItemRestrictedSlot extends Slot {
 		if (stack.getItem() == null)
 			return false;
 
-		// Only allows items not in prohibitedItems[] to be placed in the slot.
-		for (Item prohibitedItem : prohibitedItems)
-			if (stack.getItem() == prohibitedItem)
-				return false;
-
-		return true;
+		return stackAllowed.test(stack);
 	}
 
 	@Override

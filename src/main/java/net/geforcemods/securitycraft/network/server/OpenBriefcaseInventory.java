@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.inventory.BriefcaseContainer;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
+import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -42,7 +42,7 @@ public class OpenBriefcaseInventory {
 			NetworkHooks.openGui(player, new INamedContainerProvider() {
 				@Override
 				public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-					return new BriefcaseMenu(windowId, inv, new BriefcaseContainer(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));
+					return new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));
 				}
 
 				@Override

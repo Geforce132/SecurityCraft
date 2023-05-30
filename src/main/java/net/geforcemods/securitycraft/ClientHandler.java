@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import me.shedaniel.architectury.registry.ItemPropertiesRegistry;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
@@ -18,7 +19,9 @@ import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
+import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
@@ -43,7 +46,6 @@ import net.geforcemods.securitycraft.screen.AlarmScreen;
 import net.geforcemods.securitycraft.screen.BlockChangeDetectorScreen;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
-import net.geforcemods.securitycraft.screen.BriefcaseInventoryScreen;
 import net.geforcemods.securitycraft.screen.BriefcasePasswordScreen;
 import net.geforcemods.securitycraft.screen.BriefcaseSetupScreen;
 import net.geforcemods.securitycraft.screen.CameraMonitorScreen;
@@ -53,6 +55,7 @@ import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
 import net.geforcemods.securitycraft.screen.EditModuleScreen;
 import net.geforcemods.securitycraft.screen.IMSScreen;
 import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
+import net.geforcemods.securitycraft.screen.ItemInventoryScreen;
 import net.geforcemods.securitycraft.screen.KeyChangerScreen;
 import net.geforcemods.securitycraft.screen.KeycardReaderScreen;
 import net.geforcemods.securitycraft.screen.KeypadBlastFurnaceScreen;
@@ -303,7 +306,7 @@ public class ClientHandler {
 		ScreenManager.register(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), BlockChangeDetectorScreen::new);
 		ScreenManager.register(SCContent.BLOCK_POCKET_MANAGER_MENU.get(), BlockPocketManagerScreen::new);
 		ScreenManager.register(SCContent.BLOCK_REINFORCER_MENU.get(), BlockReinforcerScreen::new);
-		ScreenManager.register(SCContent.BRIEFCASE_INVENTORY_MENU.get(), BriefcaseInventoryScreen::new);
+		ScreenManager.register(SCContent.BRIEFCASE_INVENTORY_MENU.get(), ItemInventoryScreen.Briefcase::new);
 		ScreenManager.register(SCContent.CUSTOMIZE_BLOCK_MENU.get(), CustomizeBlockScreen::new);
 		ScreenManager.register(SCContent.DISGUISE_MODULE_MENU.get(), DisguiseModuleScreen::new);
 		ScreenManager.register(SCContent.INVENTORY_SCANNER_MENU.get(), InventoryScannerScreen::new);
@@ -312,6 +315,8 @@ public class ClientHandler {
 		ScreenManager.register(SCContent.KEYPAD_BLAST_FURNACE_MENU.get(), KeypadBlastFurnaceScreen::new);
 		ScreenManager.register(SCContent.KEYCARD_READER_MENU.get(), KeycardReaderScreen::new);
 		ScreenManager.register(SCContent.PROJECTOR_MENU.get(), ProjectorScreen::new);
+		ScreenManager.register(SCContent.KEYCARD_HOLDER_MENU.get(), ItemInventoryScreen.KeycardHolder::new);
+		ItemPropertiesRegistry.register(SCContent.KEYCARD_HOLDER.get(), new ResourceLocation(SecurityCraft.MODID, "keycard_count"), (stack, level, entity) -> KeycardHolderItem.getCardCount(stack) / (float) KeycardHolderMenu.CONTAINER_SIZE);
 		KeyBindings.init();
 	}
 
