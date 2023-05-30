@@ -17,8 +17,6 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -48,7 +46,6 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public static final WailaDataProvider INSTANCE = new WailaDataProvider();
 	public static final ResourceLocation SHOW_OWNER = new ResourceLocation(SecurityCraft.MODID, "showowner");
 	public static final ResourceLocation SHOW_MODULES = new ResourceLocation(SecurityCraft.MODID, "showmodules");
-	public static final ResourceLocation SHOW_PASSWORDS = new ResourceLocation(SecurityCraft.MODID, "showpasswords");
 	public static final ResourceLocation SHOW_CUSTOM_NAME = new ResourceLocation(SecurityCraft.MODID, "showcustomname");
 	private static final Style MOD_NAME_STYLE = Style.EMPTY.withColor(TextFormatting.BLUE).withItalic(true);
 	private static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormat(TextFormatting.WHITE);
@@ -62,7 +59,6 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public void register(IRegistrar registrar) {
 		registrar.addSyncedConfig(SHOW_OWNER, true);
 		registrar.addSyncedConfig(SHOW_MODULES, true);
-		registrar.addSyncedConfig(SHOW_PASSWORDS, true);
 		registrar.addSyncedConfig(SHOW_CUSTOM_NAME, true);
 		registrar.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.HEAD, IOverlayDisplay.class);
 		registrar.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.BODY, IOwnable.class);
@@ -123,12 +119,6 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			for (ModuleType module : ((IModuleInventory) te).getInsertedModules()) {
 				body.add(new StringTextComponent("- ").append(new TranslationTextComponent(module.getTranslationKey())));
 			}
-		}
-
-		if (config.get(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof KeycardReaderBlockEntity) && ((IOwnable) te).isOwnedBy(data.getPlayer())) {
-			String password = ((IPasswordProtected) te).getPassword();
-
-			body.add(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))));
 		}
 	}
 

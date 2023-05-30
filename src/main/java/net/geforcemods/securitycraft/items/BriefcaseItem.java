@@ -1,16 +1,31 @@
 package net.geforcemods.securitycraft.items;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+import java.util.function.Consumer;
 
-import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
+import net.geforcemods.securitycraft.inventory.ItemContainer;
+import net.geforcemods.securitycraft.misc.SaltData;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.CauldronBlock;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -20,6 +35,9 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class BriefcaseItem extends Item implements IDyeableArmorItem {
 	public BriefcaseItem(Item.Properties properties) {
@@ -35,7 +53,7 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 		if (world.getBlockState(pos).getBlock() instanceof CauldronBlock) //don't open the briefcase when a cauldron is rightclicked for removing the dye
 			return ActionResultType.SUCCESS;
 
-		handle(stack, world, player, hand);
+		handle(stack, world, player);
 		return ActionResultType.CONSUME;
 	}
 
@@ -43,17 +61,13 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		handle(stack, world, player, hand);
+		handle(stack, world, player);
 		return ActionResult.consume(stack);
 	}
 
-	private void handle(ItemStack stack, World world, PlayerEntity player, Hand hand) {
-		if (world.isClientSide) {
-			if (!stack.getOrCreateTag().contains("passcode"))
-				ClientHandler.displayBriefcaseSetupScreen(stack.getHoverName());
-			else
-				ClientHandler.displayBriefcasePasswordScreen(stack.getHoverName());
-		}
+	private void handle(ItemStack stack, World level, PlayerEntity player) {
+		if (!level.isClientSide)
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(stack.getOrCreateTag().contains("passcode") ? OpenScreen.DataType.CHECK_BRIEFCASE_PASSCODE : OpenScreen.DataType.SET_BRIEFCASE_PASSCODE, player.blockPosition()));
 	}
 
 	@Override
@@ -63,6 +77,54 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 
 		if (!ownerName.isEmpty())
 			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(Utils.GRAY_STYLE));
+	}
+
+	@Override
+	public CompoundNBT getShareTag(ItemStack stack) {
+		CompoundNBT tag = super.getShareTag(stack);
+
+		return tag == null ? null : PasscodeUtils.filterPasscodeAndSaltFromTag(tag.copy());
+	}
+
+	public static void hashAndSetPasscode(CompoundNBT briefcaseTag, String passcode, Consumer<byte[]> afterSet) {
+		byte[] salt = PasscodeUtils.generateSalt();
+
+		briefcaseTag.putUUID("saltKey", SaltData.putSalt(salt));
+		PasscodeUtils.hashPasscode(passcode, salt, p -> {
+			briefcaseTag.putString("passcode", PasscodeUtils.bytesToString(p));
+			afterSet.accept(p);
+		});
+	}
+
+	public static void checkPasscode(ServerPlayerEntity player, ItemStack briefcase, String incomingCode, String briefcaseCode, CompoundNBT tag) {
+		UUID saltKey = tag.contains("saltKey", Constants.NBT.TAG_INT_ARRAY) ? tag.getUUID("saltKey") : null;
+		byte[] salt = SaltData.getSalt(saltKey);
+
+		if (salt == null) { //If no salt key or no salt associated with the given key can be found, a new passcode needs to be set
+			PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
+			return;
+		}
+
+		PasscodeUtils.hashPasscode(incomingCode, salt, p -> {
+			if (Arrays.equals(PasscodeUtils.stringToBytes(briefcaseCode), p)) {
+				if (!tag.contains("owner")) { //If the briefcase doesn't have an owner (that usually gets set when assigning a new passcode), set the player that first enters the correct passcode as the owner
+					tag.putString("owner", player.getName().getString());
+					tag.putString("ownerUUID", player.getUUID().toString());
+				}
+
+				NetworkHooks.openGui(player, new INamedContainerProvider() {
+					@Override
+					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
+						return new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));
+					}
+
+					@Override
+					public ITextComponent getDisplayName() {
+						return briefcase.getHoverName();
+					}
+				}, player.blockPosition());
+			}
+		});
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, PlayerEntity player) {

@@ -1,13 +1,14 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
@@ -20,6 +21,7 @@ import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -45,9 +47,10 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable, ILockable, ISentryBulletContainer {
+public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPasscodeProtected, IOwnable, IModuleInventory, ICustomizable, ILockable, ISentryBulletContainer {
 	private LazyOptional<IItemHandler> insertOnlyHandler;
-	private String passcode;
+	private byte[] passcode;
+	private UUID saltKey;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
@@ -69,8 +72,11 @@ public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPasswo
 		writeOptions(tag);
 		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 
-		if (passcode != null && !passcode.isEmpty())
-			tag.putString("passcode", passcode);
+		if (saltKey != null)
+			tag.putUUID("saltKey", saltKey);
+
+		if (passcode != null)
+			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
 
 		if (owner != null)
 			owner.write(tag, false);
@@ -86,7 +92,8 @@ public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPasswo
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
-		passcode = tag.getString("passcode");
+		loadSaltKey(tag);
+		loadPasscode(tag);
 		owner.read(tag);
 	}
 
@@ -108,7 +115,7 @@ public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPasswo
 
 	@Override
 	public CompoundNBT getUpdateTag() {
-		return save(new CompoundNBT());
+		return PasscodeUtils.filterPasscodeAndSaltFromTag(save(new CompoundNBT()));
 	}
 
 	@Override
@@ -199,14 +206,24 @@ public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPasswo
 	}
 
 	@Override
-	public String getPassword() {
-		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
+	public byte[] getPasscode() {
+		return passcode == null || passcode.length == 0 ? null : passcode;
 	}
 
 	@Override
-	public void setPassword(String password) {
-		passcode = password;
+	public void setPasscode(byte[] passcode) {
+		this.passcode = passcode;
 		setChanged();
+	}
+
+	@Override
+	public UUID getSaltKey() {
+		return saltKey;
+	}
+
+	@Override
+	public void setSaltKey(UUID saltKey) {
+		this.saltKey = saltKey;
 	}
 
 	@Override

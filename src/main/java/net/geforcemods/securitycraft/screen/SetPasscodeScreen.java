@@ -4,8 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.network.server.SetPassword;
+import net.geforcemods.securitycraft.network.server.SetPasscode;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -23,7 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
-public class SetPasswordScreen extends Screen {
+public class SetPasscodeScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private int imageWidth = 176;
 	private int imageHeight = 166;
@@ -34,10 +33,10 @@ public class SetPasswordScreen extends Screen {
 	private IFormattableTextComponent combined;
 	private TextFieldWidget keycodeTextbox;
 
-	public SetPasswordScreen(TileEntity te, ITextComponent title) {
+	public SetPasscodeScreen(TileEntity te, ITextComponent title) {
 		super(title);
 		tileEntity = te;
-		setup = Utils.localize("gui.securitycraft:password.setup");
+		setup = Utils.localize("gui.securitycraft:passcode.setup");
 		combined = title.plainCopy().append(new StringTextComponent(" ")).append(setup);
 	}
 
@@ -48,13 +47,13 @@ public class SetPasswordScreen extends Screen {
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
 
-		Button saveAndContinueButton = addButton(new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save"), this::saveAndContinueButtonClicked));
+		Button saveAndContinueButton = addButton(new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:passcode.save"), this::saveAndContinueButtonClicked));
 
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		saveAndContinueButton.active = false;
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, StringTextComponent.EMPTY));
-		keycodeTextbox.setMaxLength(20);
+		keycodeTextbox.setMaxLength(Integer.MAX_VALUE);
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*"));
 		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = !text.isEmpty());
 		setInitialFocus(keycodeTextbox);
@@ -99,8 +98,7 @@ public class SetPasswordScreen extends Screen {
 	}
 
 	private void saveAndContinueButtonClicked(Button button) {
-		((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getValue());
-		SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ(), keycodeTextbox.getValue()));
+		SecurityCraft.channel.sendToServer(new SetPasscode(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ(), keycodeTextbox.getValue()));
 		Minecraft.getInstance().player.closeContainer();
 	}
 }

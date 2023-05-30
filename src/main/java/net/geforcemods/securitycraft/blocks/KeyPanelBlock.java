@@ -4,7 +4,9 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeyPanelBlockEntity;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -120,7 +122,7 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 
 			if (te.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (te.verifyPasswordSet(world, pos, te, player)) {
+			else if (te.verifyPasscodeSet(world, pos, te, player)) {
 				if (te.isDenied(player)) {
 					if (te.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
@@ -132,7 +134,7 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 					activate(state, world, pos, te.getSignalLength());
 				}
 				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-					te.openPasswordGUI(world, pos, player);
+					te.openPasscodeGUI(world, pos, player);
 			}
 		}
 
@@ -218,6 +220,9 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 				level.updateNeighborsAt(pos, this);
 				level.updateNeighborsAt(pos.relative(state.getValue(FACING).getOpposite()), this);
 			}
+
+			if (te instanceof IPasscodeProtected)
+				SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
 
 			if (!newState.hasTileEntity())
 				level.removeBlockEntity(pos);

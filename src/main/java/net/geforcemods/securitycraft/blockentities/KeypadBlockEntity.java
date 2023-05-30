@@ -1,8 +1,10 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.UUID;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -10,13 +12,15 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
-public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswordProtected, ILockable {
-	private String passcode;
+public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasscodeProtected, ILockable {
+	private byte[] passcode;
+	private UUID saltKey;
 	private BooleanOption isAlwaysActive = new BooleanOption("isAlwaysActive", false) {
 		@Override
 		public void toggle() {
@@ -42,8 +46,11 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 	public CompoundNBT save(CompoundNBT tag) {
 		super.save(tag);
 
-		if (passcode != null && !passcode.isEmpty())
-			tag.putString("passcode", passcode);
+		if (saltKey != null)
+			tag.putUUID("saltKey", saltKey);
+
+		if (passcode != null)
+			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
 
 		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 		return tag;
@@ -53,7 +60,8 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 	public void load(BlockState state, CompoundNBT tag) {
 		super.load(state, tag);
 
-		passcode = tag.getString("passcode");
+		loadSaltKey(tag);
+		loadPasscode(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 	}
 
@@ -70,7 +78,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 			return false;
 		}
 
-		return !state.getValue(KeypadBlock.POWERED) && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
+		return !state.getValue(KeypadBlock.POWERED) && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override
@@ -86,13 +94,23 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 	}
 
 	@Override
-	public String getPassword() {
-		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
+	public byte[] getPasscode() {
+		return passcode == null || passcode.length == 0 ? null : passcode;
 	}
 
 	@Override
-	public void setPassword(String password) {
-		passcode = password;
+	public void setPasscode(byte[] passcode) {
+		this.passcode = passcode;
+	}
+
+	@Override
+	public UUID getSaltKey() {
+		return saltKey;
+	}
+
+	@Override
+	public void setSaltKey(UUID saltKey) {
+		this.saltKey = saltKey;
 	}
 
 	@Override

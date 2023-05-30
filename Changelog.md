@@ -6,6 +6,7 @@
 - New: The pitch of the sound an alarm plays can now be changed
 - New: The SecurityCraft Manual now shows default values and the range (if applicable) of a block's options
 - New: Maximum Distance option for Retinal Scanner and Scanner Door, to define the maximum amount of blocks from which the block can be activated
+- New: Passcodes entered in the text box of check passcode screens can now be shown using a checkbox
 - New: Keycard Holder
 - Change: Several technical blocks' sounds have been adjusted to better match how they look
 - Change: Improved visuals when holding a taser
@@ -13,7 +14,18 @@
 - Change: The minimum radius of the Portable Radar is now one block
 - Change: The maximum allowed signature for a Keycard Reader is now 99999
 - Change: Where applicable, recipes now use the securitycraft:reinforced_stone_crafting_materials tag (similar to minecraft:stone_crafting_materials, but with the reinforced variants)
+- Change: Passcodes of passcode-protected blocks and briefcases are no longer directly accessible by clients, and are thus no longer displayable using mods like Jade/TOP or the admin tool
+- Change: Passcodes are now stored and compared using secure hashing functions like PBKDF2, using a randomly generated salt that is stored on the server
+- Change: All occurrences of "Password" in block or item names have been switched out with "Passcode" (for example, Password-protected Chest -> Passcode-protected Chest)
+- Change: The storage location of passcodes in the NBT data of Display Cases has been changed from "Passcode" to "passcode"
+- Change: The Universal Key Changer can now be used by players in creative mode on any passcode-protected block or briefcase, regardless of its owner
+- Change: Passcodes no longer have a maximum length restriction
 - API: Renamed Option#readFromNBT to Option#load and Option#writeToNBT to Option#save
+- API: All occurrences of "password" in API class and method names have been switched out with "passcode" (for example, IPasswordProtected#getPassword -> IPasscodeProtected#getPasscode)
+- API: IPasscodeProtected#setPasscode now returns a byte array, IPasscodeProtected#getPasscode now takes a byte array as its only parameter
+- API: New methods IPasscodeProtected#getSaltKey, IPasscodeProtected#setSaltKey, IPasscodeProtected#loadSaltKey to get and set the block entity's salt key or read it from a block entity tag
+- API: New methods IPasscodeProtected#getSalt to access the block entity's salt using the stored salt key
+- API: New methods IPasscodeProtected#hashAndSetPasscode and IPasscodeProtected#loadPasscode for easier passcode management
 - Fix: Shields do not take damage when blocking a taser that deals high enough damage
 - Fix: The death message of a player killed by a taser does not contain the player firing the taser
 - Fix: Crashes when rendering some modded block entities in a Projector, or using them as a disguise
@@ -29,6 +41,8 @@
 - Fix: Teleporting near a Rift Stabilizer leads to a crash on a dedicated server
 - Fix: Several items like the Admin Tool or Universal Block Remover (and more) cannot be placed into a Display Case
 - Fix: The Keycard Reader can accept signatures that are not within the allowed range
+- Fix: Briefcase inventory access exploit
+- Fix: The text box within the check passcode screen always places inserted characters at the end of the string rather than the cursor position
 - Misc.: More texture updates
 
 --------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------

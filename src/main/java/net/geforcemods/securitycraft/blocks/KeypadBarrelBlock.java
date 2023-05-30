@@ -3,9 +3,11 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IPasswordConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadBarrelBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BarrelBlock;
@@ -78,7 +80,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 		if (!level.isClientSide) {
 			KeypadBarrelBlockEntity be = (KeypadBarrelBlockEntity) level.getBlockEntity(pos);
 
-			if (be.verifyPasswordSet(level, pos, be, player)) {
+			if (be.verifyPasscodeSet(level, pos, be, player)) {
 				if (be.isDenied(player)) {
 					if (be.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
@@ -90,7 +92,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 					activate(state, level, pos, player);
 				}
 				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-					be.openPasswordGUI(level, pos, player);
+					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 
@@ -124,6 +126,9 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 				InventoryHelper.dropContents(level, pos, (IInventory) te);
 				level.updateNeighbourForOutputSignal(pos, this);
 			}
+
+			if (te instanceof IPasscodeProtected)
+				SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
 
 			super.onRemove(state, level, pos, newState, isMoving);
 		}
@@ -172,7 +177,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 		builder.add(HORIZONTAL_FACING, LID_FACING, OPEN, FROG, WATERLOGGED);
 	}
 
-	public static class Convertible implements IPasswordConvertible {
+	public static class Convertible implements IPasscodeConvertible {
 		@Override
 		public boolean isValidStateForConversion(BlockState state) {
 			return state.is(Tags.Blocks.BARRELS_WOODEN);

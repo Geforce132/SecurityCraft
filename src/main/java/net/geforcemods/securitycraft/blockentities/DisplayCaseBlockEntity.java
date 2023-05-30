@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.UUID;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -11,6 +13,7 @@ import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -24,7 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity, IPasswordProtected, ILockable {
+public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity, IPasscodeProtected, ILockable {
 	private AxisAlignedBB renderBoundingBox = AxisAlignedBB.ofSize(0.0D, 0.0D, 0.0D);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
@@ -34,7 +37,8 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	private boolean shouldBeOpen;
 	private float openness;
 	private float oOpenness;
-	private String passcode;
+	private byte[] passcode;
+	private UUID saltKey;
 
 	public DisplayCaseBlockEntity() {
 		super(SCContent.DISPLAY_CASE_BLOCK_ENTITY.get());
@@ -73,18 +77,28 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 			return false;
 		}
 
-		return !isOpen() && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
+		return !isOpen() && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override
-	public String getPassword() {
-		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
+	public byte[] getPasscode() {
+		return passcode == null || passcode.length == 0 ? null : passcode;
 	}
 
 	@Override
-	public void setPassword(String password) {
-		passcode = password;
+	public void setPasscode(byte[] passcode) {
+		this.passcode = passcode;
 		setChanged();
+	}
+
+	@Override
+	public UUID getSaltKey() {
+		return saltKey;
+	}
+
+	@Override
+	public void setSaltKey(UUID saltKey) {
+		this.saltKey = saltKey;
 	}
 
 	@Override
@@ -94,8 +108,11 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		tag.putBoolean("ShouldBeOpen", shouldBeOpen);
 		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 
-		if (passcode != null && !passcode.isEmpty())
-			tag.putString("Passcode", passcode);
+		if (saltKey != null)
+			tag.putUUID("saltKey", saltKey);
+
+		if (passcode != null)
+			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
 
 		return tag;
 	}
@@ -110,7 +127,8 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		setDisplayedStack(ItemStack.of((CompoundNBT) tag.get("DisplayedStack")));
 		shouldBeOpen = tag.getBoolean("ShouldBeOpen");
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
-		passcode = tag.getString("Passcode");
+		loadSaltKey(tag);
+		loadPasscode(tag);
 
 		if (forceOpenness)
 			forceOpen(shouldBeOpen);

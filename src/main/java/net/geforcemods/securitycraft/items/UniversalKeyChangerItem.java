@@ -3,11 +3,13 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,6 +18,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
@@ -46,7 +49,7 @@ public class UniversalKeyChangerItem extends Item {
 
 		if (te instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) te).isOpen() && ((DisplayCaseBlockEntity) te).getDisplayedStack().isEmpty()))
 			return ActionResultType.PASS;
-		else if (te instanceof IPasswordProtected) {
+		else if (te instanceof IPasscodeProtected) {
 			if (((IOwnable) te).isOwnedBy(player)) {
 				if (!world.isClientSide)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.UNIVERSAL_KEY_CHANGER, pos));
@@ -73,9 +76,14 @@ public class UniversalKeyChangerItem extends Item {
 		if (hand == Hand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get()) {
 			ItemStack briefcase = player.getOffhandItem();
 
-			if (BriefcaseItem.isOwnedBy(briefcase, player)) {
-				if (briefcase.hasTag() && briefcase.getTag().contains("passcode")) {
-					briefcase.getTag().remove("passcode");
+			if (BriefcaseItem.isOwnedBy(briefcase, player) || player.isCreative()) {
+				CompoundNBT tag = briefcase.getTag();
+
+				if (tag != null && tag.contains("passcode")) {
+					if (tag.contains("saltKey"))
+						SaltData.removeSalt(tag.getUUID("saltKey"));
+
+					PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), TextFormatting.GREEN);
 					return ActionResult.success(keyChanger);
 				}

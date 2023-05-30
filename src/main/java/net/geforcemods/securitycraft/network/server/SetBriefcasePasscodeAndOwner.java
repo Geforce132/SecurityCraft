@@ -3,6 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.items.BriefcaseItem;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -10,16 +12,16 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SetBriefcaseOwner {
+public class SetBriefcasePasscodeAndOwner {
 	private String passcode;
 
-	public SetBriefcaseOwner() {}
+	public SetBriefcasePasscodeAndOwner() {}
 
-	public SetBriefcaseOwner(String passcode) {
-		this.passcode = passcode;
+	public SetBriefcasePasscodeAndOwner(String passcode) {
+		this.passcode = passcode.isEmpty() ? passcode : PasscodeUtils.hashPasscodeWithoutSalt(passcode);
 	}
 
-	public SetBriefcaseOwner(PacketBuffer buf) {
+	public SetBriefcasePasscodeAndOwner(PacketBuffer buf) {
 		passcode = buf.readUtf();
 	}
 
@@ -37,10 +39,10 @@ public class SetBriefcaseOwner {
 			if (!tag.contains("owner")) {
 				tag.putString("owner", player.getName().getString());
 				tag.putString("ownerUUID", player.getUUID().toString());
-			}
 
-			if (!tag.contains("passcode") && passcode.matches("[0-9]{4}"))
-				tag.putString("passcode", passcode);
+				if (!passcode.isEmpty() && !tag.contains("passcode"))
+					BriefcaseItem.hashAndSetPasscode(tag, passcode, p -> {});
+			}
 		}
 	}
 }

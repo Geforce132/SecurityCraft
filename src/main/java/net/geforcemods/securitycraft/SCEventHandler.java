@@ -20,7 +20,7 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
@@ -47,9 +47,11 @@ import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -79,7 +81,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.living.EntityTeleportEvent;
@@ -93,10 +97,13 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.NoteBlockEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
+import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID)
@@ -164,6 +171,24 @@ public class SCEventHandler {
 
 			cam.remove();
 		}
+	}
+
+	@SubscribeEvent
+	public static void onServerAboutToStart(FMLServerAboutToStartEvent event) {
+		PasscodeUtils.startHashingThread(event.getServer());
+	}
+
+	@SubscribeEvent
+	public static void onLevelLoad(WorldEvent.Load event) {
+		IWorld world = event.getWorld();
+
+		if (world instanceof ServerWorld && ((ServerWorld) world).dimension() == World.OVERWORLD)
+			SaltData.refreshLevel(((ServerWorld) world));
+	}
+
+	@SubscribeEvent
+	public static void onServerStop(FMLServerStoppedEvent event) {
+		PasscodeUtils.stopHashingThread();
 	}
 
 	@SubscribeEvent
@@ -253,7 +278,7 @@ public class SCEventHandler {
 			}
 
 			if (PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.KEY_PANEL, event.getHand())) {
-				for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
+				for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
 					if (pc.isValidStateForConversion(state)) {
 						event.setUseBlock(Result.DENY);
 						event.setUseItem(Result.ALLOW);

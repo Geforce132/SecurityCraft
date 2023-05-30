@@ -5,7 +5,9 @@ import java.util.Random;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
@@ -98,6 +100,9 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 
 			if (te instanceof IModuleInventory && state.getValue(HALF) == DoubleBlockHalf.LOWER)
 				((IModuleInventory) te).dropAllModules();
+
+			if (te instanceof IPasscodeProtected)
+				SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
 
 			if (!newState.hasTileEntity())
 				level.removeBlockEntity(pos);

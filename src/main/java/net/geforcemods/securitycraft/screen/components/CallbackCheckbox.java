@@ -42,9 +42,9 @@ public class CallbackCheckbox extends AbstractButton {
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		blit(matrix, x, y, isFocused() ? 20.0F : 0.0F, selected ? 20.0F : 0.0F, 20, height, 64, 64);
+		blit(matrix, x, y, width, height, isFocused() ? 20.0F : 0.0F, selected ? 20.0F : 0.0F, 20, 20, 64, 64);
 		renderBg(matrix, minecraft, mouseX, mouseY);
-		minecraft.font.draw(matrix, getMessage(), x + 24, y + (height - 8) / 2, textColor | MathHelper.ceil(alpha * 255.0F) << 24);
+		minecraft.font.draw(matrix, getMessage(), x + (width * 1.2F), y + (height - 8) / 2, textColor | MathHelper.ceil(alpha * 255.0F) << 24);
 	}
 
 	public void setSelected(boolean selected) {

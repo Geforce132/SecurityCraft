@@ -3,13 +3,16 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -44,10 +47,16 @@ public class OpenScreen {
 				if (te instanceof AlarmBlockEntity)
 					ClientHandler.displayAlarmScreen((AlarmBlockEntity) te);
 
+			case CHECK_BRIEFCASE_PASSCODE:
+				ItemStack briefcaseStack = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
+
+				if (!briefcaseStack.isEmpty())
+					ClientHandler.displayBriefcasePasscodeScreen(briefcaseStack.getHoverName());
+
 				break;
-			case CHECK_PASSWORD:
-				if (te instanceof IPasswordProtected)
-					ClientHandler.displayCheckPasswordScreen(te);
+			case CHECK_PASSCODE:
+				if (te instanceof IPasscodeProtected)
+					ClientHandler.displayCheckPasscodeScreen(te);
 
 				break;
 			case IMS:
@@ -60,9 +69,16 @@ public class OpenScreen {
 					ClientHandler.displayRiftStabilizerScreen(((RiftStabilizerBlockEntity) te));
 
 				break;
-			case SET_PASSWORD:
-				if (te instanceof IPasswordProtected)
-					ClientHandler.displaySetPasswordScreen(te);
+			case SET_BRIEFCASE_PASSCODE:
+				ItemStack briefcase = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
+
+				if (!briefcase.isEmpty())
+					ClientHandler.displayBriefcaseSetupScreen(briefcase.getHoverName());
+
+				break;
+			case SET_PASSCODE:
+				if (te instanceof IPasscodeProtected)
+					ClientHandler.displaySetPasscodeScreen(te);
 
 				break;
 			case SONIC_SECURITY_SYSTEM:
@@ -76,17 +92,19 @@ public class OpenScreen {
 
 				break;
 			case UNIVERSAL_KEY_CHANGER:
-				if (te instanceof IPasswordProtected)
+				if (te instanceof IPasscodeProtected)
 					ClientHandler.displayUniversalKeyChangerScreen(te);
 		}
 	}
 
 	public enum DataType {
 		ALARM,
-		CHECK_PASSWORD,
+		CHECK_BRIEFCASE_PASSCODE,
+		CHECK_PASSCODE,
 		IMS,
 		RIFT_STABILIZER,
-		SET_PASSWORD,
+		SET_BRIEFCASE_PASSCODE,
+		SET_PASSCODE,
 		SONIC_SECURITY_SYSTEM,
 		TROPHY_SYSTEM,
 		UNIVERSAL_KEY_CHANGER;

@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * Defines a block that can extract from a Password-protected Chest, Password-protected Furnace, and Block Pocket Manager.
+ * Defines a block that can extract from a Passcode-protected Chest, Passcode-protected Furnace, and Block Pocket Manager.
  * Call
  *
  * <pre>
@@ -30,7 +30,7 @@ public interface IExtractionBlock {
 	public boolean canExtract(IOwnable te, World world, BlockPos pos, BlockState state);
 
 	/**
-	 * @return The block that is trying to extract from a password-protected chest/furnace
+	 * @return The block that is trying to extract from a passcode-protected chest/furnace
 	 */
 	public Block getBlock();
 }

@@ -5,8 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.server.OpenBriefcaseInventory;
-import net.geforcemods.securitycraft.network.server.SetBriefcaseOwner;
+import net.geforcemods.securitycraft.network.server.CheckBriefcasePasscode;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -14,8 +13,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -25,7 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
-public class BriefcasePasswordScreen extends Screen {
+public class BriefcasePasscodeScreen extends Screen {
 	public static final String UP_ARROW = "\u2191";
 	public static final String DOWN_ARROW = "\u2193";
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
@@ -39,7 +36,7 @@ public class BriefcasePasswordScreen extends Screen {
 			0, 0, 0, 0
 	};
 
-	public BriefcasePasswordScreen(ITextComponent title) {
+	public BriefcasePasscodeScreen(ITextComponent title) {
 		super(title);
 	}
 
@@ -65,19 +62,19 @@ public class BriefcasePasswordScreen extends Screen {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(matrix);
+	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
-		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		super.render(matrix, mouseX, mouseY, partialTicks);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(pose, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 
 		for (TextFieldWidget textfield : keycodeTextboxes) {
-			textfield.render(matrix, mouseX, mouseY, partialTicks);
+			textfield.render(pose, mouseX, mouseY, partialTicks);
 		}
 
-		font.draw(matrix, enterPasscode, width / 2 - font.width(enterPasscode) / 2, topPos + 6, 4210752);
+		font.draw(pose, enterPasscode, width / 2 - font.width(enterPasscode) / 2, topPos + 6, 4210752);
 	}
 
 	@Override
@@ -95,22 +92,9 @@ public class BriefcasePasswordScreen extends Screen {
 		return false;
 	}
 
-	protected void continueButtonClicked(Button button) {
-		if (PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
-			ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get());
-			CompoundNBT nbt = briefcase.getTag();
-			String code = digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3];
-
-			if (nbt.getString("passcode").equals(code)) {
-				if (!nbt.contains("owner")) {
-					nbt.putString("owner", Minecraft.getInstance().player.getName().getString());
-					nbt.putString("ownerUUID", Minecraft.getInstance().player.getUUID().toString());
-					SecurityCraft.channel.sendToServer(new SetBriefcaseOwner(""));
-				}
-
-				SecurityCraft.channel.sendToServer(new OpenBriefcaseInventory(getTitle()));
-			}
-		}
+	private void continueButtonClicked(Button button) {
+		if (PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null))
+			SecurityCraft.channel.sendToServer(new CheckBriefcasePasscode(digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3]));
 	}
 
 	private void keycodeButtonClicked(int id) {

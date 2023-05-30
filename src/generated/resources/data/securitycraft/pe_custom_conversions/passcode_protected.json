@@ -1,5 +1,5 @@
 {
-  "comment": "Password-protected blocks are created by rightclicking a non-password-protected block with a key panel, so the EMC is that block\u0027s EMC + the key panel\u0027s EMC.",
+  "comment": "Passcode-protected blocks are created by rightclicking a non-passcode-protected block with a key panel, so the EMC is that block\u0027s EMC + the key panel\u0027s EMC.",
   "values": {
     "before": {
       "securitycraft:keypad": 2376,

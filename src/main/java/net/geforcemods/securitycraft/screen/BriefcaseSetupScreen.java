@@ -6,7 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.server.SetBriefcaseOwner;
+import net.geforcemods.securitycraft.network.server.SetBriefcasePasscodeAndOwner;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -14,7 +14,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -46,7 +45,7 @@ public class BriefcaseSetupScreen extends Screen {
 		topPos = (height - imageHeight) / 2;
 
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		addButton(saveAndContinueButton = new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save"), this::saveAndContinueButtonClicked));
+		addButton(saveAndContinueButton = new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:passcode.save"), this::saveAndContinueButtonClicked));
 		saveAndContinueButton.active = false;
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, StringTextComponent.EMPTY));
@@ -90,18 +89,8 @@ public class BriefcaseSetupScreen extends Screen {
 
 	private void saveAndContinueButtonClicked(Button button) {
 		if (PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
-			ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get());
-			String passcode = keycodeTextbox.getValue();
-
-			briefcase.getOrCreateTag().putString("passcode", passcode);
-
-			if (!briefcase.getTag().contains("owner")) {
-				briefcase.getTag().putString("owner", Minecraft.getInstance().player.getName().getString());
-				briefcase.getTag().putString("ownerUUID", Minecraft.getInstance().player.getUUID().toString());
-			}
-
-			SecurityCraft.channel.sendToServer(new SetBriefcaseOwner(passcode));
-			ClientHandler.displayBriefcasePasswordScreen(getTitle());
+			SecurityCraft.channel.sendToServer(new SetBriefcasePasscodeAndOwner(keycodeTextbox.getValue()));
+			ClientHandler.displayBriefcasePasscodeScreen(getTitle());
 		}
 	}
 }

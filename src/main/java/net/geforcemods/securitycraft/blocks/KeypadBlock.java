@@ -4,8 +4,10 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadBlockEntity;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -50,7 +52,7 @@ public class KeypadBlock extends DisguisableBlock {
 
 			if (te.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (te.verifyPasswordSet(world, pos, te, player)) {
+			else if (te.verifyPasscodeSet(world, pos, te, player)) {
 				if (te.isDenied(player)) {
 					if (te.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
@@ -62,7 +64,7 @@ public class KeypadBlock extends DisguisableBlock {
 					activate(state, world, pos, te.getSignalLength());
 				}
 				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-					te.openPasswordGUI(world, pos, player);
+					te.openPasscodeGUI(world, pos, player);
 			}
 		}
 
@@ -84,10 +86,15 @@ public class KeypadBlock extends DisguisableBlock {
 	@Override
 	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
+			TileEntity be = world.getBlockEntity(pos);
+
 			if (state.getValue(POWERED)) {
 				world.updateNeighborsAt(pos, this);
 				BlockUtils.updateIndirectNeighbors(world, pos, this);
 			}
+
+			if (be instanceof IPasscodeProtected)
+				SaltData.removeSalt(((IPasscodeProtected) be).getSaltKey());
 
 			super.onRemove(state, world, pos, newState, isMoving);
 		}
@@ -149,7 +156,7 @@ public class KeypadBlock extends DisguisableBlock {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
-	public static class Convertible implements IPasswordConvertible {
+	public static class Convertible implements IPasscodeConvertible {
 		@Override
 		public boolean isValidStateForConversion(BlockState state) {
 			return state.is(SCContent.FRAME.get());

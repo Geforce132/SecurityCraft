@@ -4,10 +4,12 @@ import java.util.Optional;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -92,7 +94,7 @@ public class KeypadChestBlock extends ChestBlock {
 		if (!world.isClientSide && !isBlocked(world, pos)) {
 			KeypadChestBlockEntity te = (KeypadChestBlockEntity) world.getBlockEntity(pos);
 
-			if (te.verifyPasswordSet(world, pos, te, player)) {
+			if (te.verifyPasscodeSet(world, pos, te, player)) {
 				if (te.isDenied(player)) {
 					if (te.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
@@ -104,7 +106,7 @@ public class KeypadChestBlock extends ChestBlock {
 					activate(state, world, pos, player);
 				}
 				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-					te.openPasswordGUI(world, pos, player);
+					te.openPasscodeGUI(world, pos, player);
 			}
 		}
 
@@ -144,7 +146,11 @@ public class KeypadChestBlock extends ChestBlock {
 					}
 
 					thisTe.readOptions(te.writeOptions(new CompoundNBT()));
-					thisTe.setPassword(te.getPassword());
+
+					if (te.getSaltKey() != null)
+						thisTe.setSaltKey(SaltData.putSalt(te.getSalt()));
+
+					thisTe.setPasscode(te.getPasscode());
 				}
 			}
 		}
@@ -195,6 +201,18 @@ public class KeypadChestBlock extends ChestBlock {
 	}
 
 	@Override
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			TileEntity be = level.getBlockEntity(pos);
+
+			if (be instanceof IPasscodeProtected)
+				SaltData.removeSalt(((IPasscodeProtected) be).getSaltKey());
+
+			super.onRemove(state, level, pos, newState, isMoving);
+		}
+	}
+
+	@Override
 	public INamedContainerProvider getMenuProvider(BlockState state, World world, BlockPos pos) {
 		return combine(state, world, pos, false).apply(CONTAINER_MERGER).orElse(null);
 	}
@@ -222,7 +240,7 @@ public class KeypadChestBlock extends ChestBlock {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
-	public static class Convertible implements IPasswordConvertible {
+	public static class Convertible implements IPasscodeConvertible {
 		@Override
 		public boolean isValidStateForConversion(BlockState state) {
 			return state.is(Tags.Blocks.CHESTS_WOODEN);
