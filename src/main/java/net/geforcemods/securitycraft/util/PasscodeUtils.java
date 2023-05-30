@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.util;
 
 import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -52,7 +51,8 @@ public class PasscodeUtils {
 	}
 
 	public static void hashPasscode(String passcode, byte[] salt, Consumer<byte[]> afterHashing) {
-		hashingThread.workList.addLast(new HashingWork(passcode, salt, afterHashing));
+		if (passcode != null && salt != null)
+			hashingThread.workList.addLast(new HashingWork(passcode, salt, afterHashing));
 	}
 
 	public static String bytesToString(byte[] bytes) {
@@ -137,7 +137,7 @@ public class PasscodeUtils {
 
 				return factory.generateSecret(spec).getEncoded();
 			}
-			catch (GeneralSecurityException e) {
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 
