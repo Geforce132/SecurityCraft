@@ -39,10 +39,10 @@ public class SetBriefcasePasscodeAndOwner {
 			if (!tag.contains("owner")) {
 				tag.putString("owner", player.getName().getString());
 				tag.putString("ownerUUID", player.getUUID().toString());
-
-				if (!passcode.isEmpty() && !tag.contains("passcode"))
-					BriefcaseItem.hashAndSetPasscode(tag, passcode, p -> {});
 			}
+
+			if (!passcode.isEmpty() && !tag.contains("passcode"))
+				BriefcaseItem.hashAndSetPasscode(tag, passcode, p -> {});
 		}
 	}
 }
