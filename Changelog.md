@@ -22,6 +22,7 @@
 - New: The SecurityCraft Manual now shows default values and the range (if applicable) of a block's options
 - New: Maximum Distance option for Retinal Scanner and Scanner Door, to define the maximum amount of blocks from which the block can be activated
 - New: Passcodes entered in the text box of check passcode screens can now be shown using a checkbox
+- New: Keycard Holder
 - Change: Several technical blocks' sounds have been adjusted to better match how they look
 - Change: Improved visuals when holding a taser
 - Change: Some alarm options have been moved to a separate screen
