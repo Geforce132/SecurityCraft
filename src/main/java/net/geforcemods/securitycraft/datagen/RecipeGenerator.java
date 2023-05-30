@@ -192,6 +192,14 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('C', Tags.Items.CHESTS_ENDER)
 		.unlockedBy("has_stone", has(SCTags.Items.REINFORCED_STONE_CRAFTING_MATERIALS))
 		.save(consumer);
+		ShapedRecipeBuilder.shaped(SCContent.KEYCARD_HOLDER.get())
+		.pattern("IHI")
+		.pattern("LIL")
+		.define('I', Tags.Items.INGOTS_IRON)
+		.define('H', SCContent.REINFORCED_HOPPER.get())
+		.define('L', Tags.Items.LEATHER)
+		.unlockedBy("has_stone", has(SCContent.KEYCARD_READER.get()))
+		.save(consumer);
 		ShapedRecipeBuilder.shaped(SCContent.KEYCARD_READER.get())
 		.pattern("SSS")
 		.pattern("SHS")

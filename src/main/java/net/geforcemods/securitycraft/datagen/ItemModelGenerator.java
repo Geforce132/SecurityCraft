@@ -78,6 +78,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				SCContent.BRIEFCASE,
 				SCContent.DISPLAY_CASE,
 				SCContent.GLOW_DISPLAY_CASE,
+				SCContent.KEYCARD_HOLDER,
 				SCContent.KEYPAD_CHEST_ITEM,
 				SCContent.REDSTONE_MODULE,
 				SCContent.SPEED_MODULE,
