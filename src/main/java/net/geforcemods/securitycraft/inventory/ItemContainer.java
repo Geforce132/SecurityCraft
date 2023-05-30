@@ -8,31 +8,37 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class BriefcaseContainer implements Container {
-	public static final int SIZE = 12;
-	private final ItemStack briefcase;
-	private NonNullList<ItemStack> briefcaseInventory = NonNullList.<ItemStack>withSize(SIZE, ItemStack.EMPTY);
+public class ItemContainer implements Container {
+	private final ItemStack containerStack;
+	private final NonNullList<ItemStack> inventory;
+	private final int maxStackSize;
 
-	public BriefcaseContainer(ItemStack briefcaseItem) {
-		briefcase = briefcaseItem;
+	private ItemContainer(ItemStack containerStack, int inventorySize, int maxStackSize) {
+		this.containerStack = containerStack;
+		this.maxStackSize = maxStackSize;
+		inventory = NonNullList.<ItemStack>withSize(inventorySize, ItemStack.EMPTY);
+		load(containerStack.getOrCreateTag());
+	}
 
-		if (!briefcase.hasTag())
-			briefcase.setTag(new CompoundTag());
+	public static ItemContainer briefcase(ItemStack briefcase) {
+		return new ItemContainer(briefcase, BriefcaseMenu.CONTAINER_SIZE, 64);
+	}
 
-		readFromNBT(briefcase.getTag());
+	public static ItemContainer keycardHolder(ItemStack keycardHolder) {
+		return new ItemContainer(keycardHolder, KeycardHolderMenu.CONTAINER_SIZE, 1);
 	}
 
 	@Override
 	public int getContainerSize() {
-		return SIZE;
+		return inventory.size();
 	}
 
 	@Override
 	public ItemStack getItem(int index) {
-		return briefcaseInventory.get(index);
+		return inventory.get(index);
 	}
 
-	public void readFromNBT(CompoundTag tag) {
+	public void load(CompoundTag tag) {
 		ListTag items = tag.getList("ItemInventory", Tag.TAG_COMPOUND);
 
 		for (int i = 0; i < items.size(); i++) {
@@ -40,21 +46,22 @@ public class BriefcaseContainer implements Container {
 			int slot = item.getInt("Slot");
 
 			if (slot < getContainerSize())
-				briefcaseInventory.set(slot, ItemStack.of(item));
+				inventory.set(slot, ItemStack.of(item));
 		}
 	}
 
-	public void writeToNBT(CompoundTag tag) {
+	public void save(CompoundTag tag) {
 		ListTag items = new ListTag();
 
-		for (int i = 0; i < getContainerSize(); i++)
+		for (int i = 0; i < getContainerSize(); i++) {
 			if (!getItem(i).isEmpty()) {
 				CompoundTag item = new CompoundTag();
+
 				item.putInt("Slot", i);
 				getItem(i).save(item);
-
 				items.add(item);
 			}
+		}
 
 		tag.put("ItemInventory", items);
 	}
@@ -77,13 +84,14 @@ public class BriefcaseContainer implements Container {
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
 		ItemStack stack = getItem(index);
+
 		setItem(index, ItemStack.EMPTY);
 		return stack;
 	}
 
 	@Override
 	public void setItem(int index, ItemStack itemStack) {
-		briefcaseInventory.set(index, itemStack);
+		inventory.set(index, itemStack);
 
 		if (!itemStack.isEmpty() && itemStack.getCount() > getMaxStackSize())
 			itemStack.setCount(getMaxStackSize());
@@ -93,17 +101,17 @@ public class BriefcaseContainer implements Container {
 
 	@Override
 	public int getMaxStackSize() {
-		return 64;
+		return maxStackSize;
 	}
 
 	@Override
 	public void setChanged() {
 		for (int i = 0; i < getContainerSize(); i++) {
 			if (!getItem(i).isEmpty() && getItem(i).getCount() == 0)
-				briefcaseInventory.set(i, ItemStack.EMPTY);
+				inventory.set(i, ItemStack.EMPTY);
 		}
 
-		writeToNBT(briefcase.getTag());
+		save(containerStack.getTag());
 	}
 
 	@Override
@@ -124,14 +132,14 @@ public class BriefcaseContainer implements Container {
 
 	@Override
 	public void clearContent() {
-		for (int i = 0; i < SIZE; i++) {
-			briefcaseInventory.set(i, ItemStack.EMPTY);
+		for (int i = 0; i < inventory.size(); i++) {
+			inventory.set(i, ItemStack.EMPTY);
 		}
 	}
 
 	@Override
 	public boolean isEmpty() {
-		for (ItemStack stack : briefcaseInventory) {
+		for (ItemStack stack : inventory) {
 			if (!stack.isEmpty())
 				return false;
 		}
