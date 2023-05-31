@@ -80,7 +80,6 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public void setPasscode(byte[] passcode) {
 		this.passcode = passcode;
-		runForOtherHalf(otherHalf -> otherHalf.setPasscodeAndSaltKeyExclusively(passcode, saltKey));
 		setChanged();
 	}
 
@@ -92,12 +91,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
-	}
-
-	//only set the passcode and salt for this door half
-	public void setPasscodeAndSaltKeyExclusively(byte[] passcode, UUID saltKey) {
-		this.passcode = passcode;
-		this.saltKey = saltKey;
+		setChanged();
 	}
 
 	@Override
