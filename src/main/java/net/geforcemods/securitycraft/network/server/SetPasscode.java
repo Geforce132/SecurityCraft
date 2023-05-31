@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadDoorBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.block.state.IBlockState;
@@ -62,7 +63,9 @@ public class SetPasscode implements IMessage {
 					be.hashAndSetPasscode(passcode);
 
 					if (be instanceof KeypadChestBlockEntity)
-						checkAndUpdateAdjacentChest(((KeypadChestBlockEntity) tile), world, pos, passcode, be.getSalt());
+						checkAndUpdateAdjacentChest(((KeypadChestBlockEntity) be), world, pos, passcode, be.getSalt());
+                    else if (be instanceof KeypadDoorBlockEntity)
+				        checkAndUpdateAdjacentDoor(((KeypadDoorBlockEntity) be), world, pos, passcode, be.getSalt());
 				}
 			});
 
@@ -77,11 +80,23 @@ public class SetPasscode implements IMessage {
 				if (otherTe instanceof KeypadChestBlockEntity && te.getOwner().owns(((KeypadChestBlockEntity) otherTe))) {
 					IBlockState state = world.getBlockState(offsetPos);
 
-					((KeypadChestBlockEntity) te).hashAndSetPasscode(codeToSet, salt);
+					te.hashAndSetPasscode(codeToSet, salt);
 					world.notifyBlockUpdate(offsetPos, state, state, 2);
 					break;
 				}
 			}
 		}
+	}
+
+	private static void checkAndUpdateAdjacentDoor(KeypadDoorBlockEntity be, World level, BlockPos pos, String codeToSet, byte[] salt) {
+		be.runForOtherHalf(otherBe -> {
+			BlockPos otherPos = otherBe.getPos();
+			IBlockState state = level.getBlockState(otherPos);
+
+			if (be.getOwner().owns(otherBe)) {
+				otherBe.hashAndSetPasscode(codeToSet, salt);
+				level.notifyBlockUpdate(otherPos, state, state, 2);
+			}
+		});
 	}
 }
