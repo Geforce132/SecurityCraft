@@ -103,7 +103,9 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		if (passcode != null)
 			tag.setString("passcode", PasscodeUtils.bytesToString(passcode));
 
-		tag.setLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
+		long cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
+
+		tag.setLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 		return tag;
 	}
 

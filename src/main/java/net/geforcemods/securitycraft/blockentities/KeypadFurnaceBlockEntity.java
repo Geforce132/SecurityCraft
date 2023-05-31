@@ -154,7 +154,9 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 
+		long cooldownLeft;
 		NBTTagList list = tag.getTagList("Items", 10);
+
 		furnaceItemStacks = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.tagCount(); ++i) {
@@ -171,7 +173,8 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 		currentItemBurnTime = TileEntityFurnace.getItemBurnTime(furnaceItemStacks.get(1));
 		loadSaltKey(tag);
 		loadPasscode(tag);
-		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
+		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
+		tag.setLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 		furnaceCustomName = tag.getString("CustomName");
 	}
 

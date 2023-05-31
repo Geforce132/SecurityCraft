@@ -55,12 +55,14 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		super.writeToNBT(tag);
+		long cooldownLeft;
 
+		super.writeToNBT(tag);
 		writeModuleInventory(tag);
 		writeModuleStates(tag);
 		writeOptions(tag);
-		tag.setLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
+		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
+		tag.setLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 
 		if (saltKey != null)
 			tag.setUniqueId("saltKey", saltKey);

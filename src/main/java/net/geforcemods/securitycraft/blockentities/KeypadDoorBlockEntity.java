@@ -41,10 +41,13 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
+		long cooldownLeft;
+
 		super.readFromNBT(tag);
 		loadSaltKey(tag);
 		loadPasscode(tag);
-		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
+		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
+		tag.setLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 	}
 
 	@Override
