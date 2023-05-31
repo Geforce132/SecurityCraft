@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadDoorBlockEntity;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.core.BlockPos;
@@ -53,6 +54,8 @@ public class SetPasscode {
 
 			if (be instanceof KeypadChestBlockEntity chestBe)
 				checkAndUpdateAdjacentChest(chestBe, level, pos, passcode, be.getSalt());
+			else if (be instanceof KeypadDoorBlockEntity doorBe)
+				checkAndUpdateAdjacentDoor(doorBe, level, pos, passcode, be.getSalt());
 		}
 	}
 
@@ -66,5 +69,14 @@ public class SetPasscode {
 				level.sendBlockUpdated(offsetPos, otherBe.getBlockState(), otherBe.getBlockState(), 2);
 			}
 		}
+	}
+
+	private static void checkAndUpdateAdjacentDoor(KeypadDoorBlockEntity be, Level level, BlockPos pos, String codeToSet, byte[] salt) {
+		be.runForOtherHalf(otherBe -> {
+			if (be.getOwner().owns(otherBe)) {
+				otherBe.hashAndSetPasscode(codeToSet, salt);
+				level.sendBlockUpdated(otherBe.getBlockPos(), otherBe.getBlockState(), otherBe.getBlockState(), 2);
+			}
+		});
 	}
 }
