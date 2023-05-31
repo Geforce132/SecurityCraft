@@ -40,6 +40,7 @@
 - Fix: The Ignore Owner option is inaccessible in the Rift Stabilizer
 - Fix: Briefcase inventory access exploit
 - Fix: The text box within the check passcode screen always places inserted characters at the end of the string rather than the cursor position
+- Fix: Keypad Doors always have the custom name "Air" when placed as the last item of the stack
 
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
 

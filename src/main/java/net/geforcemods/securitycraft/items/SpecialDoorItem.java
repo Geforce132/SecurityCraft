@@ -42,7 +42,6 @@ public class SpecialDoorItem extends ItemBlock {
 				placeDoor(world, pos, angleFacing, getBlock(), flag);
 				SoundType soundtype = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);
 				world.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-				stack.shrink(1);
 
 				TileEntity te = world.getTileEntity(pos);
 
@@ -53,10 +52,14 @@ public class SpecialDoorItem extends ItemBlock {
 					lowerTe.setOwner(player.getGameProfile().getId().toString(), player.getName());
 					upperTe.setOwner(player.getGameProfile().getId().toString(), player.getName());
 					LinkableBlockEntity.link(lowerTe, upperTe);
-					lowerTe.setCustomName(stack.getDisplayName());
-					upperTe.setCustomName(stack.getDisplayName());
+
+					if (stack.hasDisplayName()) {
+						lowerTe.setCustomName(stack.getDisplayName());
+						upperTe.setCustomName(stack.getDisplayName());
+					}
 				}
 
+				stack.shrink(1);
 				return EnumActionResult.SUCCESS;
 			}
 			else
