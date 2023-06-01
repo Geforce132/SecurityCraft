@@ -186,18 +186,22 @@ public class ScreenHandler implements IGuiHandler {
 					return null;
 				return new CameraMonitorScreen(player.inventory, (CameraMonitorItem) PlayerUtils.getSelectedItemStack(player.inventory, SCContent.cameraMonitor).getItem(), PlayerUtils.getSelectedItemStack(player.inventory, SCContent.cameraMonitor).getTagCompound());
 			case BRIEFCASE_CODE_SETUP_GUI_ID:
-				if (!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
-					return null;
-				return new BriefcaseSetupScreen(player.inventory, null);
-			case BRIEFCASE_INSERT_CODE_GUI_ID:
-				if (!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
-					return null;
-				return new BriefcasePasscodeScreen(player.inventory, null);
-			case BRIEFCASE_GUI_ID:
-				ItemStack briefcase = PlayerUtils.getSelectedItemStack(player, SCContent.briefcase);
+				ItemStack briefcase0 = PlayerUtils.getSelectedItemStack(player, SCContent.briefcase);
 
-				if (!briefcase.isEmpty())
-					return new ItemInventoryScreen.Briefcase(new BriefcaseMenu(player.inventory, ItemContainer.briefcase(briefcase)), player.inventory, briefcase.getDisplayName());
+				if (!briefcase0.isEmpty())
+					return new BriefcasePasscodeScreen(player.inventory, true, briefcase0.getDisplayName() + " " + Utils.localize("gui.securitycraft:passcode.setup").getFormattedText());
+				return null;
+			case BRIEFCASE_INSERT_CODE_GUI_ID:
+				ItemStack briefcase1 = PlayerUtils.getSelectedItemStack(player, SCContent.briefcase);
+
+				if (!briefcase1.isEmpty())
+					return new BriefcasePasscodeScreen(player.inventory, false, briefcase1.getDisplayName());
+				return null;
+			case BRIEFCASE_GUI_ID:
+				ItemStack briefcase2 = PlayerUtils.getSelectedItemStack(player, SCContent.briefcase);
+
+				if (!briefcase2.isEmpty())
+					return new ItemInventoryScreen.Briefcase(new BriefcaseMenu(player.inventory, ItemContainer.briefcase(briefcase2)), player.inventory, briefcase2.getDisplayName());
 				else
 					return null;
 			case KEY_CHANGER_GUI_ID:
