@@ -18,7 +18,6 @@ import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
@@ -26,7 +25,6 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.EnumDetectionMode;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
-import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
@@ -355,28 +353,6 @@ public class SCEventHandler {
 				event.getEntityPlayer().openGui(SecurityCraft.instance, ScreenHandler.CUSTOMIZE_BLOCK, world, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
 				return;
 			}
-		}
-
-		if (te instanceof INameSetter && (te instanceof SecurityCameraBlockEntity || te instanceof PortableRadarBlockEntity) && PlayerUtils.isHoldingItem(event.getEntityPlayer(), Items.NAME_TAG, event.getHand()) && event.getEntityPlayer().getHeldItem(event.getHand()).hasDisplayName()) {
-			ItemStack nametag = event.getEntityPlayer().getHeldItem(event.getHand());
-			INameSetter nameable = (INameSetter) te;
-
-			event.setCanceled(true);
-			event.setCancellationResult(EnumActionResult.SUCCESS);
-
-			if (nameable.getName().equals(nametag.getDisplayName())) {
-				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:naming.alreadyMatches", nameable.getDisplayName()), TextFormatting.RED);
-				return;
-			}
-
-			if (!event.getEntityPlayer().isCreative())
-				nametag.shrink(1);
-
-			if (!world.isRemote)
-				nameable.setCustomName(nametag.getDisplayName());
-
-			PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:naming.named", nameable.getDisplayName()), TextFormatting.GREEN);
-			return;
 		}
 
 		if (block instanceof DisplayCaseBlock && event.getEntity().isSneaking() && event.getEntityPlayer().getHeldItemMainhand().isEmpty() && !event.getEntityPlayer().getHeldItemOffhand().isEmpty()) {

@@ -254,10 +254,6 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 			}
 			else if (item == SCContent.remoteAccessSentry)
 				item.onItemUse(player, world, pos, hand, EnumFacing.NORTH, 0.0F, 0.0F, 0.0F);
-			else if (item == Items.NAME_TAG) {
-				setCustomNameTag(player.getHeldItemMainhand().getDisplayName());
-				player.getHeldItemMainhand().shrink(1);
-			}
 			else if (item == SCContent.universalOwnerChanger) {
 				String newOwner = player.getHeldItemMainhand().getDisplayName();
 
