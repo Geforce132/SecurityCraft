@@ -33,5 +33,7 @@
 //		passcodeProtectedConversionBuilder.before(SCContent.KEYPAD_FURNACE.get(), 8 + keyPanelEMC);
 //		passcodeProtectedConversionBuilder.before(SCContent.KEYPAD_SMOKER.get(), 136 + keyPanelEMC);
 //		passcodeProtectedConversionBuilder.before(SCContent.KEYPAD_BLAST_FURNACE.get(), 1291 + keyPanelEMC);
+//		passcodeProtectedConversionBuilder.before(SCContent.KEYPAD_TRAPDOOR.get(), 1024 + keyPanelEMC);
+//		passcodeProtectedConversionBuilder.before(SCContent.KEYPAD_BARREL.get(), 56 + keyPanelEMC);
 //	}
 //}
