@@ -251,6 +251,7 @@ public class RegistrationHandler {
 							new ItemStack(SCContent.IRON_FENCE.get()),
 							new ItemStack(SCContent.REINFORCED_FENCE_GATE.get()),
 							new ItemStack(SCContent.REINFORCED_IRON_TRAPDOOR.get()),
+							new ItemStack(SCContent.KEYPAD_TRAPDOOR.get()),
 							new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()),
 							new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()),
 							new ItemStack(SCContent.KEYPAD_DOOR_ITEM.get()),
