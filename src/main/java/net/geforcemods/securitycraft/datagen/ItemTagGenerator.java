@@ -100,6 +100,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		copy(SCTags.Blocks.REINFORCED_WOOL_CARPETS, SCTags.Items.REINFORCED_WOOL_CARPETS);
 
 		//minecraft tags
+		tag(ItemTags.BOOKSHELF_BOOKS).add(SCContent.SC_MANUAL.get());
 		tag(ItemTags.BUTTONS).addTag(SCTags.Items.REINFORCED_BUTTONS);
 		tag(ItemTags.DAMPENS_VIBRATIONS).addTag(SCTags.Items.REINFORCED_WOOL);
 		tag(ItemTags.FENCE_GATES).add(SCContent.REINFORCED_FENCE_GATE.get().asItem());
