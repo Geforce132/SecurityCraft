@@ -17,7 +17,6 @@ import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
@@ -25,7 +24,6 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
-import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
@@ -284,25 +282,6 @@ public class SCEventHandler {
 
 			if (PlayerUtils.isHoldingItem(event.getEntity(), SCContent.CODEBREAKER, event.getHand()) && handleCodebreaking(event)) {
 				event.setCanceled(true);
-				return;
-			}
-
-			if (be instanceof INameSetter nameable && (be instanceof SecurityCameraBlockEntity || be instanceof PortableRadarBlockEntity) && PlayerUtils.isHoldingItem(event.getEntity(), Items.NAME_TAG, event.getHand()) && event.getEntity().getItemInHand(event.getHand()).hasCustomHoverName()) {
-				ItemStack nametag = event.getEntity().getItemInHand(event.getHand());
-
-				event.setCanceled(true);
-				event.setCancellationResult(InteractionResult.SUCCESS);
-
-				if (nameable.getCustomName().equals(nametag.getHoverName())) {
-					PlayerUtils.sendMessageToPlayer(event.getEntity(), Component.translatable(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.alreadyMatches", nameable.getCustomName()), ChatFormatting.RED);
-					return;
-				}
-
-				if (!event.getEntity().isCreative())
-					nametag.shrink(1);
-
-				nameable.setCustomName(nametag.getHoverName());
-				PlayerUtils.sendMessageToPlayer(event.getEntity(), Component.translatable(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.named", nameable.getCustomName()), ChatFormatting.RED);
 				return;
 			}
 		}
