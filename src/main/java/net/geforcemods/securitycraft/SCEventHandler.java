@@ -18,7 +18,6 @@ import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
@@ -26,7 +25,6 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
-import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
@@ -290,26 +288,6 @@ public class SCEventHandler {
 
 			if (PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.CODEBREAKER, event.getHand()) && handleCodebreaking(event)) {
 				event.setCanceled(true);
-				return;
-			}
-
-			if (te instanceof INameSetter && (te instanceof SecurityCameraBlockEntity || te instanceof PortableRadarBlockEntity) && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG, event.getHand()) && event.getPlayer().getItemInHand(event.getHand()).hasCustomHoverName()) {
-				ItemStack nametag = event.getPlayer().getItemInHand(event.getHand());
-				INameSetter nameable = (INameSetter) te;
-
-				event.setCanceled(true);
-				event.setCancellationResult(ActionResultType.SUCCESS);
-
-				if (nameable.getCustomName().equals(nametag.getHoverName())) {
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(te.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.alreadyMatches", nameable.getCustomName()), TextFormatting.RED);
-					return;
-				}
-
-				if (!event.getPlayer().isCreative())
-					nametag.shrink(1);
-
-				nameable.setCustomName(nametag.getHoverName());
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(te.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.named", nameable.getCustomName()), TextFormatting.RED);
 				return;
 			}
 		}
