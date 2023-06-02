@@ -1009,6 +1009,8 @@
 	"option.securitycraft.keypad_furnace.sendMessage.description": "활성화 시 이 화로는 메시지를 전송합니까(허용목록/거부목록 모듈 사용 시)?",
 	"option.securitycraft.keypad_smoker.sendMessage": "메시지: %s",
 	"option.securitycraft.keypad_smoker.sendMessage.description": "활성화 시 이 훈연기는 메시지를 전송합니까(허용목록/거부목록 모듈 사용 시)?",
+	"option.securitycraft.keypad_trapdoor.sendMessage": "메시지: %s",
+	"option.securitycraft.keypad_trapdoor.signalLength": "신호 길이: %s",
 	"option.securitycraft.motion_activated_light.searchRadius": "검색 반경: %s",
 	"option.securitycraft.motion_activated_light.searchRadius.description": "빛은 얼마나 멀리 있는 엔티티를 감지합니까?",
 	"option.securitycraft.portable_radar.repeatMessage": "메시지 반복: %s",
