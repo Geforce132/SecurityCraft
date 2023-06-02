@@ -229,10 +229,6 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			}
 			else if (item == SCContent.REMOTE_ACCESS_SENTRY.get())
 				item.useOn(new UseOnContext(player, hand, new BlockHitResult(new Vec3(0.0D, 0.0D, 0.0D), Direction.NORTH, pos, false)));
-			else if (item == Items.NAME_TAG) {
-				setCustomName(player.getMainHandItem().getHoverName());
-				player.getMainHandItem().shrink(1);
-			}
 			else if (item == SCContent.UNIVERSAL_OWNER_CHANGER.get()) {
 				String newOwner = player.getMainHandItem().getHoverName().getString();
 
