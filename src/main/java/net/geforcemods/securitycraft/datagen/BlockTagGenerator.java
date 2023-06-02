@@ -432,7 +432,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.STRIDER_WARM_BLOCKS).add(SCContent.FAKE_LAVA_BLOCK.get());
 		tag(BlockTags.STANDING_SIGNS).addTag(SCTags.Blocks.SECRET_STANDING_SIGNS);
 		tag(BlockTags.TERRACOTTA).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA);
-		tag(BlockTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get());
+		tag(BlockTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get(), SCContent.KEYPAD_TRAPDOOR.get());
 		tag(BlockTags.WALL_SIGNS).addTag(SCTags.Blocks.SECRET_WALL_SIGNS);
 		tag(BlockTags.WITHER_SUMMON_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SOIL.get());
 		tag(BlockTags.WOOL_CARPETS).addTag(SCTags.Blocks.REINFORCED_WOOL_CARPETS);
