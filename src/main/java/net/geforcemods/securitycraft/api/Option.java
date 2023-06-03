@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
 /**
@@ -174,7 +175,7 @@ public abstract class Option<T> {
 
 		@Override
 		public ITextComponent getDefaultInfo() {
-			return Utils.localize("securitycraft.option.default", getDefaultValue()).setStyle(new Style().setColor(TextFormatting.GRAY));
+			return Utils.localize("securitycraft.option.default", new TextComponentTranslation(getDefaultValue() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no").getFormattedText()).setStyle(new Style().setColor(TextFormatting.GRAY));
 		}
 	}
 
