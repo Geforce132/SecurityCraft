@@ -45,5 +45,6 @@ public class ProjectECompat {
 		passcodeProtectedEMCProxy.registerCustomEMC(new ItemStack(SCContent.keypad), 1856 + keyPanelEMC);
 		passcodeProtectedEMCProxy.registerCustomEMC(new ItemStack(SCContent.keypadChest), 64 + keyPanelEMC);
 		passcodeProtectedEMCProxy.registerCustomEMC(new ItemStack(SCContent.keypadFurnace), 8 + keyPanelEMC);
+		passcodeProtectedEMCProxy.registerCustomEMC(new ItemStack(SCContent.keypadTrapdoor), 1024 + keyPanelEMC);
 	}
 }

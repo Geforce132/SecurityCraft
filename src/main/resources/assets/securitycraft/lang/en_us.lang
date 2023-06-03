@@ -203,6 +203,7 @@ gui.securitycraft:scManual.recipe.bucket_f_water=The Fake Water Bucket is create
 gui.securitycraft:scManual.recipe.keypad=Place down a Frame and rightclick it with a Key Panel.
 gui.securitycraft:scManual.recipe.keypad_chest=Place down a Chest and rightclick it with a Key Panel.
 gui.securitycraft:scManual.recipe.keypad_furnace=Place down a Furnace and rightclick it with a Key Panel.
+gui.securitycraft:scManual.recipe.keypad_trapdoor=Place down a Reinforced Iron Trapdoor and rightclick it with a Key Panel.
 gui.securitycraft:scManual.recipe.reinforced=Any reinforced block can be crafted as follows, if not otherwise specified in this book. Place down the vanilla equivalent (e.g. Reinforced Stone -> Stone) and break it with a Universal Block Reinforcer, or rightclick the Universal Block Reinforcer, put it into the slot and close the GUI.
 gui.securitycraft:scManual.recipe.reinforced_crystal_quartz=Made from regular Crystal Quartz Blocks in a Universal Block Reinforcer.
 gui.securitycraft:scManual.recipe.reinforced_iron_trapdoor=Any reinforced block can be crafted as follows, if not otherwise specified in this book. Place down the vanilla equivalent (e.g. Reinforced Stone -> Stone) and break it with a Universal Block Reinforcer, or rightclick the Universal Block Reinforcer, put it into the slot and close the GUI
@@ -279,6 +280,7 @@ help.securitycraft:keypadChest.info=The passcode-protected chest is equipped wit
 help.securitycraft:keypadFrame.info=The frame is used to craft keypads and to display camera views. Rightclick it with a key panel to craft a keypad.
 help.securitycraft:keypadFurnace.info=The passcode-protected furnace will require you to enter a passcode when you first place it down. After that, entering the correct code into the GUI will allow you to access the furnace's inventory.
 help.securitycraft:keypad_door.info=The Keypad Door acts like a Keypad combined with a Reinforced Iron Door, where a code has to be inserted in order to open the door.
+help.securitycraft:keypad_trapdoor.info=The Keypad Trapdoor acts like a Keypad combined with a Reinforced Iron Trapdoor, where a code has to be inserted in order to open the trapdoor.
 help.securitycraft:laserBlock.info=The laser block is used by putting two of them within five blocks of each other. When the blocks are placed correctly, a laser should form between them.
 help.securitycraft:limitedUseKeycard.info=This keycard is a crafting component used to add limited usability to the level 1-5 keycards.
 help.securitycraft:mine.info=The mine explodes when stepped on by any entity other than creepers, cats, and ocelots. Rightclicking the mine while holding wire cutters will defuse the mine and allow you to break it. Rightclicking with flint and steel equipped will re-enable it.
@@ -532,6 +534,10 @@ module.securitycraft:keypad_door.blacklistModule.description=Adding a denylist m
 module.securitycraft:keypad_door.harmingModule.description=Adding a harming module to a block that requires a passcode will result in the player getting damaged, if they enter an incorrect code.
 module.securitycraft:keypad_door.smartModule.description=Adding a smart module to a block that requires a passcode will result in a cooldown being applied after an incorrect code has been entered. During that time, no new code can be entered.
 module.securitycraft:keypad_door.whitelistModule.description=Adding an allowlist module to a keypad door will allow listed players to use the block without knowing the code.
+module.securitycraft:keypad_trapdoor.blacklistModule.description=Adding a denylist module to a keypad trapdoor will ban listed players from interacting with the block.
+module.securitycraft:keypad_trapdoor.harmingModule.description=Adding a harming module to a block that requires a passcode will result in the player getting damaged, if they enter an incorrect code.
+module.securitycraft:keypad_trapdoor.smartModule.description=Adding a smart module to a block that requires a passcode will result in a cooldown being applied after an incorrect code has been entered. During that time, no new code can be entered.
+module.securitycraft:keypad_trapdoor.whitelistModule.description=Adding an allowlist module to a keypad trapdoor will allow listed players to use the block without knowing the code.
 module.securitycraft:laserBlock.disguiseModule.description=Adding a disguise module to a laser block will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.
 module.securitycraft:laserBlock.harmingModule.description=Adding a harming module to a laser block will cause players to take damage if they step through the lasers.
 module.securitycraft:laserBlock.redstoneModule.description=Adding a redstone module to a laser block will cause it to emit a 15-block redstone signal when a mob or player walks through the laser.
@@ -620,8 +626,12 @@ option.securitycraft:keypadFurnace.sendMessage.description=Does this furnace sen
 option.securitycraft:keypadFurnace.sendMessage=Message: #
 option.securitycraft:keypad_door.sendMessage.description=Does this keypad door send a message upon activation (when using allowlist/denylist modules)?
 option.securitycraft:keypad_door.sendMessage=Message: #
-option.securitycraft:keypad_door.signalLength.description=How long should the door stay open? (In Ticks, 20 ticks = 1 second. Set to 0 to have the door stay open)
+option.securitycraft:keypad_door.signalLength.description=How long should the door stay open? (In ticks, 20 ticks = 1 second. Set to 0 to have the door stay open)
 option.securitycraft:keypad_door.signalLength=Signal length: #
+option.securitycraft:keypad_trapdoor.sendMessage.description=Does this keypad trapdoor send a message upon activation (when using allowlist/denylist modules)?
+option.securitycraft:keypad_trapdoor.sendMessage=Message: #
+option.securitycraft:keypad_trapdoor.signalLength.description=How long should the trapdoor stay open? (In ticks, 20 ticks = 1 second. Set to 0 to have the trapdoor stay open)
+option.securitycraft:keypad_trapdoor.signalLength=Signal length: #
 option.securitycraft:motionActivatedLight.searchRadius.description=How far will the light detect an entity?
 option.securitycraft:motionActivatedLight.searchRadius=Search radius: #
 option.securitycraft:portableRadar.repeatMessage.description=Should the radar repeat the message as long as someone is in its radius?
@@ -644,7 +654,7 @@ option.securitycraft:rift_stabilizer.signalLength.description=How long should th
 option.securitycraft:rift_stabilizer.signalLength=Signal length: #
 option.securitycraft:scannerDoor.sendMessage.description=Does this scanner door send a message upon activation?
 option.securitycraft:scannerDoor.sendMessage=Message: #
-option.securitycraft:scannerDoor.signalLength.description=How long should the door stay open? (In Ticks, 20 ticks = 1 second. Set to 0 to have the door stay open)
+option.securitycraft:scannerDoor.signalLength.description=How long should the door stay open? (In ticks, 20 ticks = 1 second. Set to 0 to have the door stay open)
 option.securitycraft:scannerDoor.signalLength=Time until closing: #
 option.securitycraft:secret_sign.isSecret.description=Should the text of the secret sign only be visible to the owner and players on the allowlist?
 option.securitycraft:secret_sign.isSecret=Secret: #
@@ -708,6 +718,7 @@ tile.securitycraft:keypadChest.name=Passcode-protected Chest
 tile.securitycraft:keypadFrame.name=Frame
 tile.securitycraft:keypadFurnace.name=Passcode-protected Furnace
 tile.securitycraft:keypad_door.name=Keypad Door
+tile.securitycraft:keypad_trapdoor.name=Keypad Trapdoor
 tile.securitycraft:lapis_mine.name=Lapis Lazuli Ore Mine
 tile.securitycraft:laser.name=Laser
 tile.securitycraft:laserActive.name=Active Laser

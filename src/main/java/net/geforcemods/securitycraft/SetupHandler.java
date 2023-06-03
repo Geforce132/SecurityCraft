@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
+import net.geforcemods.securitycraft.blocks.KeypadTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
@@ -294,6 +295,7 @@ public class SetupHandler {
 		SCContent.reinforcedBlackGlazedTerracotta = new ReinforcedGlazedTerracottaBlock(EnumDyeColor.BLACK, Blocks.BLACK_GLAZED_TERRACOTTA).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_black_glazed_terracotta").setTranslationKey("securitycraft:reinforced_black_glazed_terracotta");
 		SCContent.riftStabilizer = new RiftStabilizerBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("rift_stabilizer").setTranslationKey("securitycraft:rift_stabilizer");
 		SCContent.displayCase = new DisplayCaseBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("display_case").setTranslationKey("securitycraft:display_case");
+		SCContent.keypadTrapdoor = (KeypadTrapDoorBlock) new KeypadTrapDoorBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("keypad_trapdoor").setTranslationKey("securitycraft:keypad_trapdoor");
 	}
 
 	public static void setupMines() {

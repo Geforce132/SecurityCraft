@@ -504,6 +504,8 @@ module.securitycraft:keypad_door.blacklistModule.description=L`ajout d`un module
 module.securitycraft:keypad_door.harmingModule.description=L'ajout d'un module de dégâts à un bloc qui requiert un code d'accès fera subir des dégâts au joueur, s'il entre un code incorrect.
 module.securitycraft:keypad_door.smartModule.description=L'ajout d'un module d'intelligence à un bloc qui requiert un code d'accès en résultera d'application d'une attente après la saisie d'un code incorrect. Pendant ce temps, aucun nouveau code ne peut être saisi.
 module.securitycraft:keypad_door.whitelistModule.description=L`ajout d`un module de liste d´autorisation à une porte de clavier à code permettra aux joueurs inscrits d`utiliser le bloc sans savoir le code.
+module.securitycraft:keypad_trapdoor.harmingModule.description=L'ajout d'un module de dégâts à un bloc qui requiert un code d'accès fera subir des dégâts au joueur, s'il entre un code incorrect.
+module.securitycraft:keypad_trapdoor.smartModule.description=L'ajout d'un module d'intelligence à un bloc qui requiert un code d'accès en résultera d'application d'une attente après la saisie d'un code incorrect. Pendant ce temps, aucun nouveau code ne peut être saisi.
 module.securitycraft:laserBlock.disguiseModule.description=L`ajout d`un module de déguisement à un bloc laser entraînera la modification de la texture et du modèle de celui-ci en texture et modèle du bloc ajouté au module de déguisement.
 module.securitycraft:laserBlock.harmingModule.description=L´ajout d´un module de dégâts à un bloc laser fera subir des dégâts aux joueurs s´ils passent à travers les lasers.
 module.securitycraft:laserBlock.redstoneModule.description=L'ajout d'un module de redstone à un bloc laser le provoquera à émettre un signal de 15 blocs quand un mob ou un joueur traverse le laser.
@@ -590,6 +592,8 @@ option.securitycraft:keypad_door.sendMessage.description=Cette porte de clavier 
 option.securitycraft:keypad_door.sendMessage=Message : #
 option.securitycraft:keypad_door.signalLength.description=Pour combien de temps la porte resterait ouverte ? (En Ticks, 20 ticks = 1 seconde. Régler à 0 pour que la porte reste ouverte)
 option.securitycraft:keypad_door.signalLength=Largeur du signal : #
+option.securitycraft:keypad_trapdoor.sendMessage=Message : #
+option.securitycraft:keypad_trapdoor.signalLength=Largeur du signal : #
 option.securitycraft:motionActivatedLight.searchRadius.description=A quelle distance la lumière pourra détecter une entité?
 option.securitycraft:motionActivatedLight.searchRadius=Rayon de recherche: #
 option.securitycraft:portableRadar.repeatMessage.description=Est-ce que le Radar répète le message tant que quelqu`un est dans son rayon d‘action?

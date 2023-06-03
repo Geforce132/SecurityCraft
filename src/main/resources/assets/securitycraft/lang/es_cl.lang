@@ -509,6 +509,8 @@ module.securitycraft:keypad_door.blacklistModule.description=Añadir un módulo 
 module.securitycraft:keypad_door.harmingModule.description=Añadir un módulo de daño a un bloque que requiera una contraseña dañará al jugador si introduce un código incorrecto.
 module.securitycraft:keypad_door.smartModule.description=Añadir un módulo inteligente a un bloque que requiera una contraseña añadirá un tiempo de enfriamiento cuando se introduzca una contraseña incorrecta. Durante dicho periodo, no se podrá introducir ningún código.
 module.securitycraft:keypad_door.whitelistModule.description=Añadir un módulo de lista de permitidos a una puerta con contraseña permitirá a los jugadores de dicha lista usar la puerta sin conocer el código.
+module.securitycraft:keypad_trapdoor.harmingModule.description=Añadir un módulo de daño a un bloque que requiera una contraseña dañará al jugador si introduce un código incorrecto.
+module.securitycraft:keypad_trapdoor.smartModule.description=Añadir un módulo inteligente a un bloque que requiera una contraseña añadirá un tiempo de enfriamiento cuando se introduzca una contraseña incorrecta. Durante dicho periodo, no se podrá introducir ningún código.
 module.securitycraft:laserBlock.disguiseModule.description=Añadir un módulo de disfraz a un bloque láser hará que este cambie su modelo y textura al modelo y textura del bloque añadido en el módulo de disfraz.
 module.securitycraft:laserBlock.harmingModule.description=Añadir un módulo de daño a un bloque láser hará que los jugadores que crucen el láser reciban daño.
 module.securitycraft:laserBlock.redstoneModule.description=Añadir un módulo de redstone a un bloque láser hará que este emita una señal de redstone de 15 bloques cuando una criatura o un jugador crucen el láser.
@@ -596,6 +598,8 @@ option.securitycraft:keypad_door.sendMessage.description=¿Debería esta puerta 
 option.securitycraft:keypad_door.sendMessage=Mensaje: #
 option.securitycraft:keypad_door.signalLength.description=¿Cuánto tiempo debería permanecer abierta la puerta? (En ticks, 20 ticks = 1 segundo. Establecer en 0 para mantener la puerta abierta)
 option.securitycraft:keypad_door.signalLength=Longitud de la señal: #
+option.securitycraft:keypad_trapdoor.sendMessage=Mensaje: #
+option.securitycraft:keypad_trapdoor.signalLength=Longitud de la señal: #
 option.securitycraft:motionActivatedLight.searchRadius.description=¿A cuánta distancia detecta la luz a una entidad?
 option.securitycraft:motionActivatedLight.searchRadius=Radio de búsqueda: #
 option.securitycraft:portableRadar.repeatMessage.description=¿El radar debería repetir el mensaje mientras que alguien se mantenga en su radio?

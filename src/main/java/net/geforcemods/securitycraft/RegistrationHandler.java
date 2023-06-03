@@ -29,6 +29,7 @@ import net.geforcemods.securitycraft.blockentities.KeypadBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadDoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadTrapdoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
@@ -323,6 +324,7 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedBlackGlazedTerracotta, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.riftStabilizer);
 		registerBlock(event, SCContent.displayCase);
+		registerBlock(event, SCContent.keypadTrapdoor);
 
 		//block mines
 		registerBlockMine(event, SCContent.stoneMine);
@@ -480,6 +482,7 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(RiftStabilizerBlockEntity.class, new ResourceLocation("securitycraft:rift_stabilizer"));
 		GameRegistry.registerTileEntity(DisguisableBlockEntity.class, new ResourceLocation("securitycraft:disguisable"));
 		GameRegistry.registerTileEntity(DisplayCaseBlockEntity.class, new ResourceLocation("securitycraft:display_case"));
+		GameRegistry.registerTileEntity(KeypadTrapdoorBlockEntity.class, new ResourceLocation("securitycraft:keypad_trapdoor"));
 	}
 
 	@SubscribeEvent
@@ -883,6 +886,7 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.reinforcedBlackGlazedTerracotta, 0, "reinforced_black_glazed_terracotta");
 		registerInventoryModel(SCContent.riftStabilizer, 0, "rift_stabilizer");
 		registerInventoryModel(SCContent.displayCase, 0, "display_case");
+		registerInventoryModel(SCContent.keypadTrapdoor, 0, "keypad_trapdoor");
 
 		//items
 		registerInventoryModel(SCContent.codebreaker, 0, "codebreaker");

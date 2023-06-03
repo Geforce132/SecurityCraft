@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft;
 
+import net.geforcemods.securitycraft.blocks.KeypadTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.mines.MineBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.util.Reinforced;
@@ -54,6 +55,7 @@ public class SCContent {
 	public static Block keypadChest;
 	public static Block keypadDoor;
 	public static Block keypadFurnace;
+	public static KeypadTrapDoorBlock keypadTrapdoor;
 	public static Block lapisOreMine;
 	public static Block laserBlock;
 	public static Block laserField;
