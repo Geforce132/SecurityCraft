@@ -71,7 +71,7 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 
 		moduleInv = te;
 		block = te.getTileEntity().getBlockType();
-		title = Utils.localize(block).getFormattedText();
+		title = te.getTileEntity().getDisplayName().getFormattedText();
 		inventorySlots.addListener(this);
 
 		for (ModuleType type : ModuleType.values()) {
