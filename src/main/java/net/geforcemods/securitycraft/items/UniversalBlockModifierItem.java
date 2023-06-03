@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.INameable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -56,7 +57,10 @@ public class UniversalBlockModifierItem extends Item {
 
 					@Override
 					public ITextComponent getDisplayName() {
-						return new TranslationTextComponent(te.getBlockState().getBlock().getDescriptionId());
+						if (te instanceof INameable)
+							return ((INameable) te).getDisplayName();
+						else
+							return new TranslationTextComponent(te.getBlockState().getBlock().getDescriptionId());
 					}
 				}, pos);
 			}

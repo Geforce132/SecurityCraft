@@ -182,9 +182,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 
 	@Override
 	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		TranslationTextComponent s = Utils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getDescriptionId());
-
-		font.draw(matrix, s, imageWidth / 2 - font.width(s) / 2, 6, 4210752);
+		font.draw(matrix, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
 		font.draw(matrix, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
 	}
 
