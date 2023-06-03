@@ -58,7 +58,6 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private PictureButton[] descriptionButtons = new PictureButton[5];
 	private AbstractWidget[] optionButtons;
 	private final Block block;
-	private final Component name;
 	private final int maxNumberOfModules;
 	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
 
@@ -66,7 +65,6 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		super(menu, inv, title);
 		moduleInv = menu.moduleInv;
 		block = menu.moduleInv.getBlockEntity().getBlockState().getBlock();
-		name = Utils.localize(block.getDescriptionId());
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
 		menu.addSlotListener(this);
 
@@ -162,7 +160,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 	@Override
 	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, name, imageWidth / 2 - font.width(name) / 2, 6, 4210752);
+		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
 		font.draw(pose, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
 	}
 

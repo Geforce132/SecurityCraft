@@ -14,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -54,7 +55,10 @@ public class UniversalBlockModifierItem extends Item {
 
 					@Override
 					public Component getDisplayName() {
-						return Component.translatable(be.getBlockState().getBlock().getDescriptionId());
+						if (be instanceof Nameable nameable)
+							return nameable.getDisplayName();
+						else
+							return Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 					}
 				}, pos);
 			}
