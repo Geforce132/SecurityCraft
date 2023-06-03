@@ -167,7 +167,7 @@ public abstract class Option<T> {
 
 		@Override
 		public Component getDefaultInfo() {
-			return Component.translatable("securitycraft.option.default", getDefaultValue()).withStyle(ChatFormatting.GRAY);
+			return Component.translatable("securitycraft.option.default", Component.translatable(getDefaultValue() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no")).withStyle(ChatFormatting.GRAY);
 		}
 	}
 
