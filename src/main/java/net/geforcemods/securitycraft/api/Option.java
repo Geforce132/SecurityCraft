@@ -174,7 +174,7 @@ public abstract class Option<T> {
 
 		@Override
 		public ITextComponent getDefaultInfo() {
-			return Utils.localize("securitycraft.option.default", getDefaultValue()).withStyle(TextFormatting.GRAY);
+			return Utils.localize("securitycraft.option.default", Utils.localize(getDefaultValue() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no")).withStyle(TextFormatting.GRAY);
 		}
 	}
 
