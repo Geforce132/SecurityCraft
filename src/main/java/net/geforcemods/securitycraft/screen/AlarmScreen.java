@@ -68,7 +68,7 @@ public class AlarmScreen extends GuiScreen {
 		soundLength = previousSoundLength;
 		previousPitch = be.getPitch();
 		pitch = previousPitch;
-		title = be.getName();
+		title = be.getDisplayName().getFormattedText();
 		selectSound(selectedSoundEvent);
 	}
 
