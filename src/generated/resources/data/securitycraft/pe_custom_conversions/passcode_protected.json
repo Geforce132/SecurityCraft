@@ -6,7 +6,8 @@
       "securitycraft:keypad_chest": 584,
       "securitycraft:keypad_furnace": 528,
       "securitycraft:keypad_smoker": 656,
-      "securitycraft:keypad_blast_furnace": 1811
+      "securitycraft:keypad_blast_furnace": 1811,
+      "securitycraft:keypad_trapdoor": 1544
     }
   }
 }

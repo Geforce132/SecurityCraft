@@ -222,6 +222,7 @@ public class ClientHandler {
 		RenderTypeLookup.setRenderLayer(SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(SCContent.INVENTORY_SCANNER_FIELD.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.KEYPAD_DOOR.get(), cutout);
+		RenderTypeLookup.setRenderLayer(SCContent.KEYPAD_TRAPDOOR.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.LASER_FIELD.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get(), translucent);

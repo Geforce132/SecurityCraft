@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "securitycraft:reinforced_iron_trapdoor"
+    "securitycraft:reinforced_iron_trapdoor",
+    "securitycraft:keypad_trapdoor"
   ]
 }
