@@ -48,10 +48,10 @@ public class SentryItem extends Item {
 		if (replacesTargetedBlock)
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 
-		if (!world.isRemote)
+		if (!world.isRemote) {
 			LevelUtils.addScheduledTask(world, () -> world.spawnEntity(entity));
-
-		player.sendStatusMessage(Utils.localize(EnumSentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(Utils.localize(EnumSentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
+			player.sendStatusMessage(Utils.localize(EnumSentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(Utils.localize(EnumSentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
+		}
 
 		if (!player.isCreative())
 			player.getHeldItem(hand).shrink(1);

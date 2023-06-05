@@ -44,6 +44,7 @@
 - Fix: The text box within the check passcode screen always places inserted characters at the end of the string rather than the cursor position
 - Fix: Keypad Doors always have the custom name "Air" when placed as the last item of the stack
 - Fix: The Alarm's name does not show up in its GUI
+- Fix: Duplicate status message when placing a Sentry
 - Removed: Ability to use name tags on the Sentry and other certain blocks. To give them a name, rename them in an anvil before placing
 
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------
