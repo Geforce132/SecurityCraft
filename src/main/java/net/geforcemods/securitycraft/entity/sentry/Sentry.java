@@ -87,7 +87,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 
 	public Sentry(World world) {
 		super(world);
-		setSize(1.0F, 1.0F);
+		setSize(1.0001F, 1.0001F);
 	}
 
 	public Sentry(World world, EntityPlayer owner) {
@@ -95,8 +95,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 	}
 
 	public Sentry(World world, Owner owner) {
-		super(world);
-		setSize(1.0F, 1.0F);
+		this(world);
 		dataManager.set(OWNER, owner);
 		dataManager.set(ALLOWLIST, new NBTTagCompound());
 		dataManager.set(HAS_SPEED_MODULE, false);
