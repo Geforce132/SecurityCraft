@@ -114,8 +114,6 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 							optionButtons[i] = new Slider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, true, (ISlider) option);
 						else if (option instanceof IntOption)
 							optionButtons[i] = new Slider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, true, (ISlider) option);
-
-						optionButtons[i].packedFGColour = 14737632;
 					}
 					else {
 						optionButtons[i] = new GuiButton(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option));

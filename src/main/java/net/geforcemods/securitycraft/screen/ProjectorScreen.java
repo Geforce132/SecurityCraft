@@ -63,19 +63,15 @@ public class ProjectorScreen extends GuiContainer implements ISlider, IHasExtraA
 		int left = guiLeft + ((xSize - sliderWidth) / 2);
 
 		projectionWidthSlider = addButton(new Slider(Utils.localize("gui.securitycraft:projector.width", te.getProjectionWidth()).getFormattedText(), block, id, left, guiTop + 57, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.width", "").getFormattedText(), ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, te.getProjectionWidth(), false, true, this));
-		projectionWidthSlider.packedFGColour = 0xE0E0E0;
 		hoverCheckers[id++] = new StringHoverChecker(projectionWidthSlider, Utils.localize("gui.securitycraft:projector.width.description").getFormattedText());
 
 		projectionHeightSlider = addButton(new Slider(Utils.localize("gui.securitycraft:projector.height", te.getProjectionHeight()).getFormattedText(), block, id, left, guiTop + 78, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.height", "").getFormattedText(), ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, te.getProjectionHeight(), false, true, this));
-		projectionHeightSlider.packedFGColour = 0xE0E0E0;
 		hoverCheckers[id++] = new StringHoverChecker(projectionHeightSlider, Utils.localize("gui.securitycraft:projector.height.description").getFormattedText());
 
 		projectionRangeSlider = addButton(new Slider(Utils.localize("gui.securitycraft:projector.range", te.getProjectionRange()).getFormattedText(), block, id, left, guiTop + 99, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.range", "").getFormattedText(), ProjectorBlockEntity.MIN_RANGE, ProjectorBlockEntity.MAX_RANGE, te.getProjectionRange(), false, true, this));
-		projectionWidthSlider.packedFGColour = 0xE0E0E0;
 		hoverCheckers[id++] = new StringHoverChecker(projectionRangeSlider, Utils.localize("gui.securitycraft:projector.range.description").getFormattedText());
 
 		projectionOffsetSlider = addButton(new Slider(Utils.localize("gui.securitycraft:projector.offset", te.getProjectionOffset()).getFormattedText(), block, id, left, guiTop + 120, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.offset", "").getFormattedText(), ProjectorBlockEntity.MIN_OFFSET, ProjectorBlockEntity.MAX_OFFSET, te.getProjectionOffset(), false, true, this));
-		projectionWidthSlider.packedFGColour = 0xE0E0E0;
 		hoverCheckers[id++] = new StringHoverChecker(projectionOffsetSlider, Utils.localize("gui.securitycraft:projector.offset.description").getFormattedText());
 
 		//@formatter:off

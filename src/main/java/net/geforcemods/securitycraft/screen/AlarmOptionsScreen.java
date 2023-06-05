@@ -75,7 +75,6 @@ public class AlarmOptionsScreen extends GuiScreen implements ISlider {
 		setSoundLength(alarmScreen.soundLength);
 		pitchSlider = addButton(new Slider(Utils.localize("gui.securitycraft:alarm.pitch", "" + alarmScreen.pitch).getFormattedText(), SCContent.alarm, id++, leftPos + imageWidth / 2 - 50, buttonY + 25, 100, 20, Utils.localize("gui.securitycraft:alarm.pitch", "").getFormattedText(), 0.5D, 2.0D, alarmScreen.pitch, true, true, this));
 		pitchSlider.precision = 2;
-		pitchSlider.packedFGColour = 0xE0E0E0;
 	}
 
 	private void updateAlarmScreenSizes() {
