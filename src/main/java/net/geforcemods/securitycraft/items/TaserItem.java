@@ -1,17 +1,24 @@
 package net.geforcemods.securitycraft.items;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.minecraft.client.model.HumanoidModel.ArmPose;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -23,6 +30,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class TaserItem extends Item {
 	public boolean powered;
@@ -95,7 +103,7 @@ public class TaserItem extends Item {
 				LivingEntity entity = (LivingEntity) hitResult.getEntity();
 				double damage = powered ? ConfigHandler.SERVER.poweredTaserDamage.get() : ConfigHandler.SERVER.taserDamage.get();
 
-				if (!entity.isBlocking() && (damage == 0.0D || entity.hurt(CustomDamageSources.taser(player), (float) damage))) {
+				if ((damage == 0.0D || entity.hurt(CustomDamageSources.taser(player), (float) damage)) && !entity.isBlocking()) {
 					List<Supplier<MobEffectInstance>> effects = powered ? ConfigHandler.SERVER.poweredTaserEffects : ConfigHandler.SERVER.taserEffects;
 
 					effects.forEach(effect -> entity.addEffect(effect.get()));
@@ -128,5 +136,27 @@ public class TaserItem extends Item {
 	@Override
 	public boolean isEnchantable(ItemStack stack) {
 		return false;
+	}
+
+	@Override
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
+			//first person
+			@Override
+			public boolean applyForgeHandTransform(PoseStack pose, LocalPlayer player, HumanoidArm arm, ItemStack stack, float partialTick, float equippedProgress, float swingProgress) {
+				if (swingProgress < 0.001F) {
+					pose.translate(0.02F, -0.4F, -0.5F);
+					return true;
+				}
+
+				return false;
+			}
+
+			//third person
+			@Override
+			public ArmPose getArmPose(LivingEntity entity, InteractionHand hand, ItemStack stack) {
+				return ClientHandler.TASER_ARM_POSE;
+			}
+		});
 	}
 }

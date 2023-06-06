@@ -22,37 +22,29 @@ public class ToggleOption {
 		this.id = id;
 	}
 
-	public static void encode(ToggleOption message, FriendlyByteBuf buf) {
-		buf.writeInt(message.x);
-		buf.writeInt(message.y);
-		buf.writeInt(message.z);
-		buf.writeInt(message.id);
+	public ToggleOption(FriendlyByteBuf buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		id = buf.readInt();
 	}
 
-	public static ToggleOption decode(FriendlyByteBuf buf) {
-		ToggleOption message = new ToggleOption();
-
-		message.x = buf.readInt();
-		message.y = buf.readInt();
-		message.z = buf.readInt();
-		message.id = buf.readInt();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		buf.writeInt(id);
 	}
 
-	public static void onMessage(ToggleOption message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = new BlockPos(message.x, message.y, message.z);
-			int id = message.id;
-			Player player = ctx.get().getSender();
-			BlockEntity be = player.level.getBlockEntity(pos);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		BlockPos pos = new BlockPos(x, y, z);
+		Player player = ctx.get().getSender();
+		BlockEntity be = player.level.getBlockEntity(pos);
 
-			if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
-				customizable.customOptions()[id].toggle();
-				customizable.onOptionChanged(customizable.customOptions()[id]);
-				player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
+		if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+			customizable.customOptions()[id].toggle();
+			customizable.onOptionChanged(customizable.customOptions()[id]);
+			player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
+		}
 	}
 }

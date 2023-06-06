@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class PortableRadarBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
-	private DoubleOption searchRadiusOption = new DoubleOption("searchRadius", 25.0D, 5.0D, 50.0D, 1.0D, true);
+	private DoubleOption searchRadiusOption = new DoubleOption("searchRadius", 25.0D, 1.0D, 50.0D, 1.0D, true);
 	private IntOption searchDelayOption = new IntOption("searchDelay", 4, 4, 10, 1, true);
 	private BooleanOption repeatMessageOption = new BooleanOption("repeatMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
@@ -105,7 +105,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 			tag.putBoolean("disabled", !tag.getBoolean("enabled")); //legacy support
 
 		for (Option<?> option : customOptions()) {
-			option.readFromNBT(tag);
+			option.load(tag);
 		}
 	}
 

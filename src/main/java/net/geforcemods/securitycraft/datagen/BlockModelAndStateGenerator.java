@@ -103,8 +103,9 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		reinforcedSlabBlock(SCContent.REINFORCED_JUNGLE_SLAB.get(), "reinforced_jungle_planks", "jungle_planks");
 		reinforcedSlabBlock(SCContent.REINFORCED_ACACIA_SLAB.get(), "reinforced_acacia_planks", "acacia_planks");
 		reinforcedSlabBlock(SCContent.REINFORCED_DARK_OAK_SLAB.get(), "reinforced_dark_oak_planks", "dark_oak_planks");
-		reinforcedSlabBlock(SCContent.REINFORCED_BAMBOO_SLAB.get(), "reinforced_bamboo_planks", "bamboo_planks");
 		reinforcedSlabBlock(SCContent.REINFORCED_MANGROVE_SLAB.get(), "reinforced_mangrove_planks", "mangrove_planks");
+		reinforcedSlabBlock(SCContent.REINFORCED_CHERRY_SLAB.get(), "reinforced_cherry_planks", "cherry_planks");
+		reinforcedSlabBlock(SCContent.REINFORCED_BAMBOO_SLAB.get(), "reinforced_bamboo_planks", "bamboo_planks");
 		reinforcedSlabBlock(SCContent.REINFORCED_CRIMSON_SLAB.get(), "reinforced_crimson_planks", "crimson_planks");
 		reinforcedSlabBlock(SCContent.REINFORCED_WARPED_SLAB.get(), "reinforced_warped_planks", "warped_planks");
 		reinforcedSlabBlock(SCContent.REINFORCED_NORMAL_STONE_SLAB.get(), "reinforced_stone", "stone");
@@ -158,6 +159,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		reinforcedStairsBlock(SCContent.REINFORCED_ACACIA_STAIRS.get(), "acacia_planks");
 		reinforcedStairsBlock(SCContent.REINFORCED_DARK_OAK_STAIRS.get(), "dark_oak_planks");
 		reinforcedStairsBlock(SCContent.REINFORCED_MANGROVE_STAIRS.get(), "mangrove_planks");
+		reinforcedStairsBlock(SCContent.REINFORCED_CHERRY_STAIRS.get(), "cherry_planks");
 		reinforcedStairsBlock(SCContent.REINFORCED_BAMBOO_STAIRS.get(), "bamboo_planks");
 		reinforcedStairsBlock(SCContent.REINFORCED_PRISMARINE_BRICK_STAIRS.get(), "prismarine_bricks");
 		reinforcedStairsBlock(SCContent.REINFORCED_RED_SANDSTONE_STAIRS.get(), "red_sandstone", "red_sandstone_bottom", "red_sandstone_top");

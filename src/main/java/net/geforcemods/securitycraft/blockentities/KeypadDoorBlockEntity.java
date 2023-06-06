@@ -1,14 +1,16 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.INameSetter;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -20,10 +22,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
-public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasswordProtected {
+public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasscodeProtected {
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
 	private long cooldownEnd = 0;
-	private String passcode;
+	private byte[] passcode;
+	private UUID saltKey;
 
 	public KeypadDoorBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.KEYPAD_DOOR_BLOCK_ENTITY.get(), pos, state);
@@ -33,17 +36,23 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 
-		if (passcode != null && !passcode.isEmpty())
-			tag.putString("passcode", passcode);
+		if (saltKey != null)
+			tag.putUUID("saltKey", saltKey);
 
-		tag.putLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
+		if (passcode != null)
+			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
+
+		long cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
+
+		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 	}
 
 	@Override
 	public void load(CompoundTag tag) {
 		super.load(tag);
 
-		passcode = tag.getString("passcode");
+		loadSaltKey(tag);
+		loadPasscode(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 	}
 
@@ -60,24 +69,28 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 			return false;
 		}
 
-		return !state.getValue(DoorBlock.OPEN) && IPasswordProtected.super.shouldAttemptCodebreak(state, player);
+		return !state.getValue(DoorBlock.OPEN) && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override
-	public String getPassword() {
-		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
+	public byte[] getPasscode() {
+		return passcode == null || passcode.length == 0 ? null : passcode;
 	}
 
 	@Override
-	public void setPassword(String password) {
-		passcode = password;
-		runForOtherHalf(otherHalf -> otherHalf.setPasswordExclusively(password));
+	public void setPasscode(byte[] passcode) {
+		this.passcode = passcode;
 		setChanged();
 	}
 
-	//only set the password for this door half
-	public void setPasswordExclusively(String password) {
-		passcode = password;
+	@Override
+	public UUID getSaltKey() {
+		return saltKey;
+	}
+
+	@Override
+	public void setSaltKey(UUID saltKey) {
+		this.saltKey = saltKey;
 		setChanged();
 	}
 
@@ -136,6 +149,9 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 	public void runForOtherHalf(Consumer<KeypadDoorBlockEntity> action) {
 		BlockEntity be = null;
+
+		if (level == null) //Happens when loading the BE, in that case running the same code for the other half is unnecessary
+			return;
 
 		if (getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
 			be = level.getBlockEntity(worldPosition.above());

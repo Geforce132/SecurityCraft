@@ -26,39 +26,30 @@ public class SyncTrophySystem {
 		this.allowed = allowed;
 	}
 
-	public static void encode(SyncTrophySystem message, FriendlyByteBuf buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeResourceLocation(message.projectileType);
-		buf.writeBoolean(message.allowed);
+	public SyncTrophySystem(FriendlyByteBuf buf) {
+		pos = buf.readBlockPos();
+		projectileType = buf.readResourceLocation();
+		allowed = buf.readBoolean();
 	}
 
-	public static SyncTrophySystem decode(FriendlyByteBuf buf) {
-		SyncTrophySystem message = new SyncTrophySystem();
-
-		message.pos = buf.readBlockPos();
-		message.projectileType = buf.readResourceLocation();
-		message.allowed = buf.readBoolean();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
+		buf.writeResourceLocation(projectileType);
+		buf.writeBoolean(allowed);
 	}
 
-	public static void onMessage(SyncTrophySystem message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			EntityType<?> projectileType = ForgeRegistries.ENTITY_TYPES.getValue(message.projectileType);
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		EntityType<?> projectileType = ForgeRegistries.ENTITY_TYPES.getValue(this.projectileType);
 
-			if (projectileType != null) {
-				Level level = ctx.get().getSender().level;
-				BlockPos pos = message.pos;
-				boolean allowed = message.allowed;
+		if (projectileType != null) {
+			Level level = ctx.get().getSender().level;
 
-				if (level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
-					BlockState state = level.getBlockState(pos);
+			if (level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
+				BlockState state = level.getBlockState(pos);
 
-					be.setFilter(projectileType, allowed);
-					level.sendBlockUpdated(pos, state, state, 2);
-				}
+				be.setFilter(projectileType, allowed);
+				level.sendBlockUpdated(pos, state, state, 2);
 			}
-		});
-
-		ctx.get().setPacketHandled(true);
+		}
 	}
 }

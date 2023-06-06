@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -52,16 +52,14 @@ public class AdminToolItem extends Item {
 			BlockEntity be = level.getBlockEntity(pos);
 
 			if (be != null) {
+				if (be instanceof DisplayCaseBlockEntity displayCase && (displayCase.isOpen() && displayCase.getDisplayedStack().isEmpty()))
+					return InteractionResult.PASS;
+
 				boolean hasInfo = false;
 
 				if (be instanceof IOwnable ownable) {
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.name", (ownable.getOwner().getName() == null ? "????" : ownable.getOwner().getName())), ChatFormatting.DARK_PURPLE);
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.uuid", (ownable.getOwner().getUUID() == null ? "????" : ownable.getOwner().getUUID())), ChatFormatting.DARK_PURPLE);
-					hasInfo = true;
-				}
-
-				if (be instanceof IPasswordProtected passwordProtected) {
-					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.password", (passwordProtected.getPassword() == null ? "????" : passwordProtected.getPassword())), ChatFormatting.DARK_PURPLE);
 					hasInfo = true;
 				}
 
@@ -127,7 +125,6 @@ public class AdminToolItem extends Item {
 
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.name", ownerName.isEmpty() ? "????" : ownerName), ChatFormatting.DARK_PURPLE);
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.uuid", ownerUUID.isEmpty() ? "????" : ownerUUID), ChatFormatting.DARK_PURPLE);
-			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.password", briefcase.hasTag() ? briefcase.getTag().getString("passcode") : "????"), ChatFormatting.DARK_PURPLE);
 			return InteractionResultHolder.success(adminTool);
 		}
 

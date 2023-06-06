@@ -38,7 +38,7 @@ public interface ICustomizable {
 	public default void readOptions(CompoundTag tag) {
 		if (customOptions() != null) {
 			for (Option<?> option : customOptions()) {
-				option.readFromNBT(tag);
+				option.load(tag);
 			}
 		}
 	}
@@ -52,7 +52,7 @@ public interface ICustomizable {
 	public default CompoundTag writeOptions(CompoundTag tag) {
 		if (customOptions() != null) {
 			for (Option<?> option : customOptions()) {
-				option.writeToNBT(tag);
+				option.save(tag);
 			}
 		}
 

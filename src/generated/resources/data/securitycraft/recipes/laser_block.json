@@ -9,7 +9,7 @@
       "tag": "forge:storage_blocks/redstone"
     },
     "S": {
-      "tag": "forge:stone"
+      "tag": "minecraft:stone_crafting_materials"
     }
   },
   "pattern": [

@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.blocks.mines.BrushableMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.DeepslateMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChiseledBookshelfBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBaseBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
@@ -63,7 +64,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 					reinforcedStainedPane(block);
 				else if (block instanceof ReinforcedWallBlock wall)
 					reinforcedWallInventory(block, wall.getVanillaBlock());
-				else if (block instanceof ReinforcedButtonBlock || block instanceof ReinforcedPistonBaseBlock)
+				else if (block instanceof ReinforcedButtonBlock || block instanceof ReinforcedPistonBaseBlock || block instanceof ReinforcedChiseledBookshelfBlock)
 					reinforcedBlockInventory(block);
 				else if (block instanceof IReinforcedBlock)
 					simpleReinforcedParent(block);
@@ -85,6 +86,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				SCContent.BRIEFCASE,
 				SCContent.DISPLAY_CASE,
 				SCContent.GLOW_DISPLAY_CASE,
+				SCContent.KEYCARD_HOLDER,
 				SCContent.KEYPAD_CHEST_ITEM,
 				SCContent.REDSTONE_MODULE,
 				SCContent.SPEED_MODULE,
@@ -124,6 +126,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		simpleParent(SCContent.BLOCK_CHANGE_DETECTOR.get());
 		simpleParent(SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		simpleParent(SCContent.CRYSTAL_QUARTZ_STAIRS.get());
+		simpleParent(SCContent.KEYPAD_TRAPDOOR.get(), "keypad_trapdoor_bottom");
 		simpleParent(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get());
 		simpleParent(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get());
 		simpleReinforcedParent(SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK.get());

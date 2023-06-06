@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "securitycraft:reinforced_planks",
+  "ingredients": [
+    {
+      "tag": "securitycraft:reinforced/cherry_logs"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "item": "securitycraft:reinforced_cherry_planks"
+  }
+}

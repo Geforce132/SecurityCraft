@@ -10,12 +10,14 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class BriefcaseMenu extends AbstractContainerMenu {
-	public BriefcaseMenu(int windowId, Inventory playerInventory, BriefcaseContainer briefcaseInventory) {
+	public static final int CONTAINER_SIZE = 12;
+
+	public BriefcaseMenu(int windowId, Inventory playerInventory, ItemContainer briefcaseInventory) {
 		super(SCContent.BRIEFCASE_INVENTORY_MENU.get(), windowId);
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
-				addSlot(new ItemRestrictedSlot(briefcaseInventory, j + (i * 4), 53 + (j * 18), 17 + (i * 18), SCContent.BRIEFCASE.get()));
+				addSlot(new ItemRestrictedSlot(briefcaseInventory, j + (i * 4), 53 + (j * 18), 17 + (i * 18), stack -> stack.getItem() != SCContent.BRIEFCASE.get()));
 			}
 		}
 
@@ -39,14 +41,14 @@ public class BriefcaseMenu extends AbstractContainerMenu {
 			ItemStack slotStack = slot.getItem();
 			slotStackCopy = slotStack.copy();
 
-			if (index < BriefcaseContainer.SIZE) {
-				if (!moveItemStackTo(slotStack, BriefcaseContainer.SIZE, 48, true))
+			if (index < CONTAINER_SIZE) {
+				if (!moveItemStackTo(slotStack, CONTAINER_SIZE, 48, true))
 					return ItemStack.EMPTY;
 
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if (index >= BriefcaseContainer.SIZE) {
-				if (!moveItemStackTo(slotStack, 0, BriefcaseContainer.SIZE, false))
+			else if (index >= CONTAINER_SIZE) {
+				if (!moveItemStackTo(slotStack, 0, CONTAINER_SIZE, false))
 					return ItemStack.EMPTY;
 			}
 

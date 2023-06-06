@@ -22,8 +22,8 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
 
 public class BrushableMineBlock extends FallingBlockMineBlock implements IBlockMine {
-	private static final IntegerProperty DUSTED = BlockStateProperties.DUSTED;
-	private static final BooleanProperty SAFE = BooleanProperty.create("safe");
+	public static final IntegerProperty DUSTED = BlockStateProperties.DUSTED;
+	public static final BooleanProperty SAFE = BooleanProperty.create("safe");
 
 	public BrushableMineBlock(Properties properties, Block disguisedBlock) {
 		super(properties, disguisedBlock);
@@ -33,19 +33,6 @@ public class BrushableMineBlock extends FallingBlockMineBlock implements IBlockM
 	@Override
 	public PushReaction getPistonPushReaction(BlockState state) {
 		return PushReaction.DESTROY;
-	}
-
-	@Override
-	public void onRemove(BlockState oldState, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (newState.is(oldState.getBlock())) {
-			boolean isNewSafe = newState.getValue(SAFE);
-
-			//only explode if the SAFE property has not changed
-			if (oldState.getValue(SAFE) == isNewSafe && !isNewSafe && newState.getValue(DUSTED) > 1)
-				explode(level, pos);
-		}
-		else
-			super.onRemove(oldState, level, pos, newState, isMoving);
 	}
 
 	@Override

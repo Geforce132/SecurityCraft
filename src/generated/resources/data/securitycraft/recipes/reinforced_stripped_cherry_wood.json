@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "securitycraft:bark",
+  "key": {
+    "L": {
+      "item": "securitycraft:reinforced_stripped_cherry_log"
+    }
+  },
+  "pattern": [
+    "LL",
+    "LL"
+  ],
+  "result": {
+    "count": 3,
+    "item": "securitycraft:reinforced_stripped_cherry_wood"
+  },
+  "show_notification": true
+}

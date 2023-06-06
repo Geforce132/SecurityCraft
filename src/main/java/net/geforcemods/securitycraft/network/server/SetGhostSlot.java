@@ -19,26 +19,20 @@ public class SetGhostSlot {
 		this.stack = stack;
 	}
 
-	public static void encode(SetGhostSlot message, FriendlyByteBuf buf) {
-		buf.writeVarInt(message.slotIndex);
-		buf.writeItemStack(message.stack, false);
+	public SetGhostSlot(FriendlyByteBuf buf) {
+		slotIndex = buf.readVarInt();
+		stack = buf.readItem();
 	}
 
-	public static SetGhostSlot decode(FriendlyByteBuf buf) {
-		SetGhostSlot message = new SetGhostSlot();
-
-		message.slotIndex = buf.readVarInt();
-		message.stack = buf.readItem();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeVarInt(slotIndex);
+		buf.writeItemStack(stack, false);
 	}
 
-	public static void onMessage(SetGhostSlot message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			Player player = ctx.get().getSender();
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		Player player = ctx.get().getSender();
 
-			if (player.containerMenu instanceof InventoryScannerMenu menu && menu.be.isOwnedBy(player))
-				menu.be.getContents().set(message.slotIndex, message.stack);
-		});
-		ctx.get().setPacketHandled(true);
+		if (player.containerMenu instanceof InventoryScannerMenu menu && menu.be.isOwnedBy(player))
+			menu.be.getContents().set(slotIndex, stack);
 	}
 }

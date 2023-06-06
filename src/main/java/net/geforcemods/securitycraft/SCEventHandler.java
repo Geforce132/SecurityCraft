@@ -17,14 +17,13 @@ import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IPasswordConvertible;
+import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
-import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
+import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
@@ -45,9 +44,11 @@ import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -55,6 +56,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -73,6 +76,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -91,7 +95,10 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.level.NoteBlockEvent;
+import net.minecraftforge.event.server.ServerAboutToStartEvent;
+import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -118,11 +125,12 @@ public class SCEventHandler {
 					NoteWrapper note = pair.getRight().poll();
 
 					if (note != null) {
-						SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase()).getSoundEvent().get();
-						float pitch = (float) Math.pow(2.0D, (note.noteID() - 12) / 12.0D);
+						NoteBlockInstrument instrument = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase());
+						SoundEvent sound = instrument.hasCustomSound() && !note.customSoundId().isEmpty() ? SoundEvent.createVariableRangeEvent(new ResourceLocation(note.customSoundId())) : instrument.getSoundEvent().get();
+						float pitch = instrument.isTunable() ? (float) Math.pow(2.0D, (note.noteID() - 12) / 12.0D) : 1.0F;
 
 						player.level.playSound(null, player.blockPosition(), sound, SoundSource.RECORDS, 3.0F, pitch);
-						handlePlayedNote(player.level, player.blockPosition(), note.noteID(), note.instrumentName());
+						handlePlayedNote(player.level, player.blockPosition(), note.noteID(), instrument, note.customSoundId());
 						player.gameEvent(GameEvent.NOTE_BLOCK_PLAY);
 						pair.setLeft(NOTE_DELAY);
 					}
@@ -164,6 +172,22 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
+	public static void onServerAboutToStart(ServerAboutToStartEvent event) {
+		PasscodeUtils.startHashingThread(event.getServer());
+	}
+
+	@SubscribeEvent
+	public static void onLevelLoad(LevelEvent.Load event) {
+		if (event.getLevel() instanceof ServerLevel level && level.dimension() == Level.OVERWORLD)
+			SaltData.refreshLevel(level);
+	}
+
+	@SubscribeEvent
+	public static void onServerStop(ServerStoppedEvent event) {
+		PasscodeUtils.stopHashingThread();
+	}
+
+	@SubscribeEvent
 	public static void onDamageTaken(LivingHurtEvent event) {
 		LivingEntity entity = event.getEntity();
 		Level level = entity.level;
@@ -180,7 +204,7 @@ public class SCEventHandler {
 	public static void highestPriorityOnRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
 		ItemStack stack = event.getItemStack();
 
-		if (!stack.isEmpty() && !stack.is(SCTags.Items.CAN_INTERACT_WITH_DOORS)) {
+		if (!stack.isEmpty() && !(stack.getItem() instanceof BlockItem) && !stack.is(SCTags.Items.CAN_INTERACT_WITH_DOORS)) {
 			Block block = event.getLevel().getBlockState(event.getPos()).getBlock();
 
 			if (block == SCContent.KEYPAD_DOOR.get())
@@ -246,7 +270,7 @@ public class SCEventHandler {
 			}
 
 			if (PlayerUtils.isHoldingItem(event.getEntity(), SCContent.KEY_PANEL, event.getHand())) {
-				for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
+				for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
 					if (pc.isValidStateForConversion(state)) {
 						event.setUseBlock(Result.DENY);
 						event.setUseItem(Result.ALLOW);
@@ -258,25 +282,6 @@ public class SCEventHandler {
 
 			if (PlayerUtils.isHoldingItem(event.getEntity(), SCContent.CODEBREAKER, event.getHand()) && handleCodebreaking(event)) {
 				event.setCanceled(true);
-				return;
-			}
-
-			if (be instanceof INameSetter nameable && (be instanceof SecurityCameraBlockEntity || be instanceof PortableRadarBlockEntity) && PlayerUtils.isHoldingItem(event.getEntity(), Items.NAME_TAG, event.getHand()) && event.getEntity().getItemInHand(event.getHand()).hasCustomHoverName()) {
-				ItemStack nametag = event.getEntity().getItemInHand(event.getHand());
-
-				event.setCanceled(true);
-				event.setCancellationResult(InteractionResult.SUCCESS);
-
-				if (nameable.getCustomName().equals(nametag.getHoverName())) {
-					PlayerUtils.sendMessageToPlayer(event.getEntity(), Component.translatable(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.alreadyMatches", nameable.getCustomName()), ChatFormatting.RED);
-					return;
-				}
-
-				if (!event.getEntity().isCreative())
-					nametag.shrink(1);
-
-				nameable.setCustomName(nametag.getHoverName());
-				PlayerUtils.sendMessageToPlayer(event.getEntity(), Component.translatable(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.named", nameable.getCustomName()), ChatFormatting.RED);
 				return;
 			}
 		}
@@ -469,11 +474,21 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onNoteBlockPlayed(NoteBlockEvent.Play event) {
-		handlePlayedNote((Level) event.getLevel(), event.getPos(), event.getVanillaNoteId(), event.getInstrument().getSerializedName());
+		handlePlayedNote((Level) event.getLevel(), event.getPos(), event.getVanillaNoteId(), event.getInstrument(), "");
 	}
 
-	private static void handlePlayedNote(Level level, BlockPos pos, int vanillaNoteId, String instrumentName) {
+	private static void handlePlayedNote(Level level, BlockPos pos, int vanillaNoteId, NoteBlockInstrument instrument, String customSoundId) {
 		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = BlockEntityTracker.SONIC_SECURITY_SYSTEM.getBlockEntitiesInRange(level, pos);
+
+		// If no custom sound id is given, check if a custom sound was played, and if so, store its id
+		if (customSoundId.isEmpty() && instrument.hasCustomSound()) {
+			if (level.getBlockEntity(pos.above()) instanceof SkullBlockEntity be) {
+				ResourceLocation noteBlockSound = be.getNoteBlockSound();
+
+				if (noteBlockSound != null)
+					customSoundId = noteBlockSound.toString();
+			}
+		}
 
 		for (SonicSecuritySystemBlockEntity be : sonicSecuritySystems) {
 			// If the SSS is disabled, don't listen to any notes
@@ -484,8 +499,8 @@ public class SCEventHandler {
 			// Otherwise, check to see if the note being played matches the saved combination.
 			// If so, toggle its redstone power output on
 			if (be.isRecording())
-				be.recordNote(vanillaNoteId, instrumentName);
-			else if (be.listenToNote(vanillaNoteId, instrumentName)) {
+				be.recordNote(vanillaNoteId, instrument, customSoundId);
+			else if (be.listenToNote(vanillaNoteId, instrument, customSoundId)) {
 				be.correctTuneWasPlayed = true;
 				be.powerCooldown = be.signalLength.get();
 
@@ -503,6 +518,9 @@ public class SCEventHandler {
 		BlockPos pos = event.getPos();
 
 		if (level.getBlockEntity(pos) instanceof ICodebreakable codebreakable) {
+			if (codebreakable instanceof DisplayCaseBlockEntity displayCase && (displayCase.isOpen() && displayCase.getDisplayedStack().isEmpty()))
+				return false;
+
 			double chance = ConfigHandler.SERVER.codebreakerChance.get();
 
 			if (chance < 0.0D) {

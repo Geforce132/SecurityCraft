@@ -19,30 +19,23 @@ public class RemoveMineFromMRAT {
 		this.mineIndex = mineIndex;
 	}
 
-	public static void encode(RemoveMineFromMRAT message, FriendlyByteBuf buf) {
-		buf.writeVarInt(message.mineIndex);
+	public RemoveMineFromMRAT(FriendlyByteBuf buf) {
+		mineIndex = buf.readVarInt();
 	}
 
-	public static RemoveMineFromMRAT decode(FriendlyByteBuf buf) {
-		RemoveMineFromMRAT message = new RemoveMineFromMRAT();
-
-		message.mineIndex = buf.readVarInt();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeVarInt(mineIndex);
 	}
 
-	public static void onMessage(RemoveMineFromMRAT message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			Player player = ctx.get().getSender();
-			ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.REMOTE_ACCESS_MINE.get());
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		Player player = ctx.get().getSender();
+		ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.REMOTE_ACCESS_MINE.get());
 
-			if (!stack.isEmpty()) {
-				CompoundTag tag = stack.getOrCreateTag();
+		if (!stack.isEmpty()) {
+			CompoundTag tag = stack.getOrCreateTag();
 
-				if (tag.contains("mine" + message.mineIndex))
-					tag.remove("mine" + message.mineIndex);
-			}
-		});
-
-		ctx.get().setPacketHandled(true);
+			if (tag.contains("mine" + mineIndex))
+				tag.remove("mine" + mineIndex);
+		}
 	}
 }

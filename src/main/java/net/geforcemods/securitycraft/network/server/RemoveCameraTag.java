@@ -18,25 +18,18 @@ public class RemoveCameraTag {
 		camID = cid;
 	}
 
-	public static void encode(RemoveCameraTag message, FriendlyByteBuf buf) {
-		buf.writeInt(message.camID);
+	public RemoveCameraTag(FriendlyByteBuf buf) {
+		camID = buf.readInt();
 	}
 
-	public static RemoveCameraTag decode(FriendlyByteBuf buf) {
-		RemoveCameraTag message = new RemoveCameraTag();
-
-		message.camID = buf.readInt();
-		return message;
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeInt(camID);
 	}
 
-	public static void onMessage(RemoveCameraTag message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			ItemStack monitor = PlayerUtils.getSelectedItemStack(ctx.get().getSender().getInventory(), SCContent.CAMERA_MONITOR.get());
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		ItemStack monitor = PlayerUtils.getSelectedItemStack(ctx.get().getSender().getInventory(), SCContent.CAMERA_MONITOR.get());
 
-			if (!monitor.isEmpty())
-				monitor.getTag().remove(CameraMonitorItem.getTagNameFromPosition(monitor.getTag(), ((CameraMonitorItem) monitor.getItem()).getCameraPositions(monitor.getTag()).get(message.camID - 1)));
-		});
-
-		ctx.get().setPacketHandled(true);
+		if (!monitor.isEmpty())
+			monitor.getTag().remove(CameraMonitorItem.getTagNameFromPosition(monitor.getTag(), ((CameraMonitorItem) monitor.getItem()).getCameraPositions(monitor.getTag()).get(camID - 1)));
 	}
 }

@@ -14,6 +14,7 @@ public class SCTags {
 		public static final TagKey<Block> REINFORCED_BAMBOO_BLOCKS = tag("reinforced/bamboo_blocks");
 		public static final TagKey<Block> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
 		public static final TagKey<Block> REINFORCED_BUTTONS = tag("reinforced/buttons");
+		public static final TagKey<Block> REINFORCED_CHERRY_LOGS = tag("reinforced/cherry_logs");
 		public static final TagKey<Block> REINFORCED_COBBLESTONE = tag("reinforced/cobblestone");
 		public static final TagKey<Block> REINFORCED_CRIMSON_STEMS = tag("reinforced/crimson_stems");
 		public static final TagKey<Block> REINFORCED_DARK_OAK_LOGS = tag("reinforced/dark_oak_logs");
@@ -33,8 +34,11 @@ public class SCTags {
 		public static final TagKey<Block> REINFORCED_STAIRS = tag("reinforced/stairs");
 		public static final TagKey<Block> REINFORCED_STONE = tag("reinforced/stone");
 		public static final TagKey<Block> REINFORCED_STONE_BRICKS = tag("reinforced/stone_bricks");
+		public static final TagKey<Block> REINFORCED_STONE_PRESSURE_PLATES = tag("reinforced/stone_pressure_plates");
 		public static final TagKey<Block> REINFORCED_TERRACOTTA = tag("reinforced/terracotta");
 		public static final TagKey<Block> REINFORCED_WARPED_STEMS = tag("reinforced/warped_stems");
+		public static final TagKey<Block> REINFORCED_WOODEN_BUTTONS = tag("reinforced/wooden_buttons");
+		public static final TagKey<Block> REINFORCED_WOODEN_PRESSURE_PLATES = tag("reinforced/wooden_pressure_plates");
 		public static final TagKey<Block> REINFORCED_WOODEN_SLABS = tag("reinforced/wooden_slabs");
 		public static final TagKey<Block> REINFORCED_WOODEN_STAIRS = tag("reinforced/wooden_stairs");
 		public static final TagKey<Block> REINFORCED_WOOL = tag("reinforced/wool");
@@ -58,6 +62,7 @@ public class SCTags {
 		public static final TagKey<Item> REINFORCED_BAMBOO_BLOCKS = tag("reinforced/bamboo_blocks");
 		public static final TagKey<Item> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
 		public static final TagKey<Item> REINFORCED_BUTTONS = tag("reinforced/buttons");
+		public static final TagKey<Item> REINFORCED_CHERRY_LOGS = tag("reinforced/cherry_logs");
 		public static final TagKey<Item> REINFORCED_COBBLESTONE = tag("reinforced/cobblestone");
 		public static final TagKey<Item> REINFORCED_CRIMSON_STEMS = tag("reinforced/crimson_stems");
 		public static final TagKey<Item> REINFORCED_DARK_OAK_LOGS = tag("reinforced/dark_oak_logs");
@@ -70,15 +75,17 @@ public class SCTags {
 		public static final TagKey<Item> REINFORCED_NYLIUM = tag("reinforced/nylium");
 		public static final TagKey<Item> REINFORCED_OAK_LOGS = tag("reinforced/oak_logs");
 		public static final TagKey<Item> REINFORCED_PLANKS = tag("reinforced/planks");
-		public static final TagKey<Item> REINFORCED_PRESSURE_PLATES = tag("reinforced/pressure_plates");
 		public static final TagKey<Item> REINFORCED_SAND = tag("reinforced/sand");
 		public static final TagKey<Item> REINFORCED_SLABS = tag("reinforced/slabs");
 		public static final TagKey<Item> REINFORCED_SPRUCE_LOGS = tag("reinforced/spruce_logs");
 		public static final TagKey<Item> REINFORCED_STAIRS = tag("reinforced/stairs");
 		public static final TagKey<Item> REINFORCED_STONE = tag("reinforced/stone");
+		public static final TagKey<Item> REINFORCED_STONE_CRAFTING_MATERIALS = tag("reinforced/stone_crafting_materials");
 		public static final TagKey<Item> REINFORCED_STONE_BRICKS = tag("reinforced/stone_bricks");
 		public static final TagKey<Item> REINFORCED_TERRACOTTA = tag("reinforced/terracotta");
 		public static final TagKey<Item> REINFORCED_WARPED_STEMS = tag("reinforced/warped_stems");
+		public static final TagKey<Item> REINFORCED_WOODEN_BUTTONS = tag("reinforced/wooden_buttons");
+		public static final TagKey<Item> REINFORCED_WOODEN_PRESSURE_PLATES = tag("reinforced/wooden_pressure_plates");
 		public static final TagKey<Item> REINFORCED_WOODEN_SLABS = tag("reinforced/wooden_slabs");
 		public static final TagKey<Item> REINFORCED_WOODEN_STAIRS = tag("reinforced/wooden_stairs");
 		public static final TagKey<Item> REINFORCED_WOOL = tag("reinforced/wool");

@@ -1,7 +1,8 @@
 {
   "values": [
     "securitycraft:dirt_mine",
+    "securitycraft:gravel_mine",
     "securitycraft:sand_mine",
-    "securitycraft:gravel_mine"
+    "securitycraft:suspicious_sand_mine"
   ]
 }

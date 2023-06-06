@@ -30,67 +30,58 @@ public class SyncProjector {
 		this.dataType = DataType.BLOCK_STATE;
 	}
 
-	public static void encode(SyncProjector message, FriendlyByteBuf buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeEnum(message.dataType);
+	public SyncProjector(FriendlyByteBuf buf) {
+		pos = buf.readBlockPos();
+		dataType = buf.readEnum(DataType.class);
 
-		if (message.dataType == DataType.HORIZONTAL)
-			buf.writeBoolean(message.data == 1);
+		if (dataType == DataType.HORIZONTAL)
+			data = buf.readBoolean() ? 1 : 0;
 		else
-			buf.writeVarInt(message.data);
+			data = buf.readVarInt();
 	}
 
-	public static SyncProjector decode(FriendlyByteBuf buf) {
-		SyncProjector message = new SyncProjector();
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
+		buf.writeEnum(dataType);
 
-		message.pos = buf.readBlockPos();
-		message.dataType = buf.readEnum(DataType.class);
-
-		if (message.dataType == DataType.HORIZONTAL)
-			message.data = buf.readBoolean() ? 1 : 0;
+		if (dataType == DataType.HORIZONTAL)
+			buf.writeBoolean(data == 1);
 		else
-			message.data = buf.readVarInt();
-
-		return message;
+			buf.writeVarInt(data);
 	}
 
-	public static void onMessage(SyncProjector message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> {
-			BlockPos pos = message.pos;
-			Player player = ctx.get().getSender();
-			Level level = player.level;
+	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		Player player = ctx.get().getSender();
+		Level level = player.level;
 
-			if (level.isLoaded(pos) && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be && be.isOwnedBy(player)) {
-				BlockState state = level.getBlockState(pos);
+		if (level.isLoaded(pos) && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be && be.isOwnedBy(player)) {
+			BlockState state = level.getBlockState(pos);
 
-				switch (message.dataType) {
-					case WIDTH:
-						be.setProjectionWidth(message.data);
-						break;
-					case HEIGHT:
-						be.setProjectionHeight(message.data);
-						break;
-					case RANGE:
-						be.setProjectionRange(message.data);
-						break;
-					case OFFSET:
-						be.setProjectionOffset(message.data);
-						break;
-					case HORIZONTAL:
-						be.setHorizontal(message.data == 1);
-						break;
-					case BLOCK_STATE:
-						be.setProjectedState(Block.stateById(message.data));
-						break;
-					case INVALID:
-						break;
-				}
-
-				level.sendBlockUpdated(pos, state, state, 2);
+			switch (dataType) {
+				case WIDTH:
+					be.setProjectionWidth(data);
+					break;
+				case HEIGHT:
+					be.setProjectionHeight(data);
+					break;
+				case RANGE:
+					be.setProjectionRange(data);
+					break;
+				case OFFSET:
+					be.setProjectionOffset(data);
+					break;
+				case HORIZONTAL:
+					be.setHorizontal(data == 1);
+					break;
+				case BLOCK_STATE:
+					be.setProjectedState(Block.stateById(data));
+					break;
+				case INVALID:
+					break;
 			}
-		});
 
-		ctx.get().setPacketHandled(true);
+			level.sendBlockUpdated(pos, state, state, 2);
+		}
 	}
 
 	public enum DataType {

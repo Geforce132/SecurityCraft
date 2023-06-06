@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mezz.jei.api.gui.handlers.IGhostIngredientHandler;
+import mezz.jei.api.ingredients.ITypedIngredient;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.OwnerRestrictedSlot;
 import net.geforcemods.securitycraft.network.server.SetGhostSlot;
@@ -15,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class InventoryScannerGhostIngredientHandler implements IGhostIngredientHandler<InventoryScannerScreen> {
 	@Override
-	public <I> List<Target<I>> getTargets(InventoryScannerScreen screen, I ingredient, boolean doStart) {
+	public <I> List<Target<I>> getTargetsTyped(InventoryScannerScreen screen, ITypedIngredient<I> ingredient, boolean doStart) {
 		if (!screen.be.isOwnedBy(Minecraft.getInstance().player))
 			return List.of();
 

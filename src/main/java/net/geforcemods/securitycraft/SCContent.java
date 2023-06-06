@@ -30,12 +30,14 @@ import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadDoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadSmokerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadTrapdoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedChiseledBookshelfBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonMovingBlockEntity;
@@ -74,6 +76,7 @@ import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.KeypadSmokerBlock;
+import net.geforcemods.securitycraft.blocks.KeypadTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
@@ -113,6 +116,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock.IReinforcedCauldronInteraction;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChainBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChiseledBookshelfBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCobwebBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCryingObsidianBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDirtPathBlock;
@@ -160,11 +164,12 @@ import net.geforcemods.securitycraft.fluids.FakeWaterFluid;
 import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
-import net.geforcemods.securitycraft.inventory.BriefcaseContainer;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
+import net.geforcemods.securitycraft.inventory.ItemContainer;
+import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.inventory.KeypadBlastFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
@@ -178,6 +183,7 @@ import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.DisplayCaseItem;
 import net.geforcemods.securitycraft.items.FakeLiquidBucketItem;
 import net.geforcemods.securitycraft.items.KeyPanelItem;
+import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.items.KeypadChestItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
@@ -293,13 +299,13 @@ public class SCContent {
 	public static final RegistryObject<Block> BLOCK_POCKET_WALL = BLOCKS.register("block_pocket_wall", () -> new BlockPocketWallBlock(prop().noCollission().isRedstoneConductor((s, w, p) -> false).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation)));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> BOUNCING_BETTY = BLOCKS.register("bouncing_betty", () -> new BouncingBettyBlock(prop(Material.DECORATION, 1.0F)));
+	public static final RegistryObject<Block> BOUNCING_BETTY = BLOCKS.register("bouncing_betty", () -> new BouncingBettyBlock(prop(Material.METAL, 1.0F)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> CAGE_TRAP = BLOCKS.register("cage_trap", () -> new CageTrapBlock(propDisguisable(Material.METAL).sound(SoundType.METAL).noCollission()));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> CLAYMORE = BLOCKS.register("claymore", () -> new ClaymoreBlock(prop(Material.DECORATION)));
+	public static final RegistryObject<Block> CLAYMORE = BLOCKS.register("claymore", () -> new ClaymoreBlock(prop(Material.METAL)));
 	@HasManualPage(PageGroup.DISPLAY_CASES)
 	public static final RegistryObject<Block> DISPLAY_CASE = BLOCKS.register(DISPLAY_CASE_PATH, () -> new DisplayCaseBlock(prop(Material.METAL).sound(SoundType.METAL), false));
 	@HasManualPage
@@ -318,19 +324,22 @@ public class SCContent {
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> IRON_FENCE = BLOCKS.register("electrified_iron_fence", () -> new IronFenceBlock(prop(Material.METAL, MaterialColor.METAL).sound(SoundType.METAL)));
-	public static final RegistryObject<Block> KEY_PANEL_BLOCK = BLOCKS.register("key_panel", () -> new KeyPanelBlock(prop(Material.METAL)));
+	public static final RegistryObject<Block> KEY_PANEL_BLOCK = BLOCKS.register("key_panel", () -> new KeyPanelBlock(prop(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> KEYCARD_READER = BLOCKS.register("keycard_reader", () -> new KeycardReaderBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
+	public static final RegistryObject<Block> KEYCARD_READER = BLOCKS.register("keycard_reader", () -> new KeycardReaderBlock(propDisguisable()));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final RegistryObject<Block> KEYPAD = BLOCKS.register("keypad", () -> new KeypadBlock(propDisguisable(Material.METAL)));
+	public static final RegistryObject<Block> KEYPAD = BLOCKS.register("keypad", () -> new KeypadBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
 	public static final RegistryObject<Block> KEYPAD_BARREL = BLOCKS.register("keypad_barrel", () -> new KeypadBarrelBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage(hasRecipeDescription = true)
-	public static final RegistryObject<Block> KEYPAD_CHEST = BLOCKS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestBlock(prop(Material.WOOD).sound(SoundType.WOOD)));
+	public static final RegistryObject<Block> KEYPAD_CHEST = BLOCKS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestBlock(prop(Material.METAL).sound(SoundType.METAL)));
 	public static final RegistryObject<Block> KEYPAD_DOOR = BLOCKS.register("keypad_door", () -> new KeypadDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion(), BlockSetType.IRON));
+	@HasManualPage(hasRecipeDescription = true)
+	@RegisterItemBlock
+	public static final RegistryObject<KeypadTrapDoorBlock> KEYPAD_TRAPDOOR = BLOCKS.register("keypad_trapdoor", () -> new KeypadTrapDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion().isValidSpawn(SCContent::never), BlockSetType.IRON));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
 	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_FURNACE = BLOCKS.register("keypad_furnace", () -> new KeypadFurnaceBlock(prop(Material.METAL).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0)));
@@ -342,8 +351,8 @@ public class SCContent {
 	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_BLAST_FURNACE = BLOCKS.register("keypad_blast_furnace", () -> new KeypadBlastFurnaceBlock(prop(Material.METAL).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0)));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> LASER_BLOCK = BLOCKS.register("laser_block", () -> new LaserBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
-	public static final RegistryObject<Block> LASER_FIELD = BLOCKS.register("laser", () -> new LaserFieldBlock(prop()));
+	public static final RegistryObject<Block> LASER_BLOCK = BLOCKS.register("laser_block", () -> new LaserBlock(propDisguisable()));
+	public static final RegistryObject<LaserFieldBlock> LASER_FIELD = BLOCKS.register("laser", () -> new LaserFieldBlock(prop()));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> MOTION_ACTIVATED_LIGHT = BLOCKS.register("motion_activated_light", () -> new MotionActivatedLightBlock(prop(Material.GLASS).sound(SoundType.GLASS).lightLevel(state -> state.getValue(MotionActivatedLightBlock.LIT) ? 15 : 0)));
@@ -353,7 +362,7 @@ public class SCContent {
 	public static final RegistryObject<Block> PANIC_BUTTON = BLOCKS.register("panic_button", () -> new PanicButtonBlock(prop().lightLevel(state -> state.getValue(PanicButtonBlock.POWERED) ? 4 : 0), BlockSetType.STONE, -1, false));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> PORTABLE_RADAR = BLOCKS.register("portable_radar", () -> new PortableRadarBlock(prop(Material.DECORATION)));
+	public static final RegistryObject<Block> PORTABLE_RADAR = BLOCKS.register("portable_radar", () -> new PortableRadarBlock(prop(Material.METAL)));
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
@@ -368,7 +377,7 @@ public class SCContent {
 	public static final RegistryObject<Block> REINFORCED_FENCE_GATE = BLOCKS.register("reinforced_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> RETINAL_SCANNER = BLOCKS.register("retinal_scanner", () -> new RetinalScannerBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
+	public static final RegistryObject<Block> RETINAL_SCANNER = BLOCKS.register("retinal_scanner", () -> new RetinalScannerBlock(propDisguisable()));
 	public static final RegistryObject<Block> RIFT_STABILIZER = BLOCKS.register("rift_stabilizer", () -> new RiftStabilizerBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
 	public static final RegistryObject<Block> SCANNER_DOOR = BLOCKS.register("scanner_door", () -> new ScannerDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion(), BlockSetType.IRON));
 	public static final RegistryObject<Block> SECRET_OAK_SIGN = BLOCKS.register("secret_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD).sound(SoundType.WOOD).noCollission(), WoodType.OAK));
@@ -405,7 +414,7 @@ public class SCContent {
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(prop(Material.DECORATION, 1.0F)));
+	public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(prop(Material.METAL, 1.0F)));
 	public static final RegistryObject<? extends LiquidBlock> FAKE_WATER_BLOCK = BLOCKS.register("fake_water_block", () -> new FakeWaterBlock(prop(Material.WATER).noCollission(), FAKE_WATER));
 	public static final RegistryObject<? extends LiquidBlock> FAKE_LAVA_BLOCK = BLOCKS.register("fake_lava_block", () -> new FakeLavaBlock(prop(Material.LAVA).noCollission().randomTicks().lightLevel(state -> 15), FAKE_LAVA));
 
@@ -1770,7 +1779,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COBWEB = BLOCKS.register("reinforced_cobweb", () -> new ReinforcedCobwebBlock(prop(Material.CACTUS, MaterialColor.WOOL).noCollission(), Blocks.COBWEB));
+	public static final RegistryObject<Block> REINFORCED_COBWEB = BLOCKS.register("reinforced_cobweb", () -> new ReinforcedCobwebBlock(prop(Material.GLASS, MaterialColor.WOOL).noCollission(), Blocks.COBWEB));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1782,7 +1791,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_END_ROD = BLOCKS.register("reinforced_end_rod", () -> new ReinforcedEndRodBlock(prop(Material.DECORATION).lightLevel(state -> 14).sound(SoundType.WOOD).noOcclusion()));
+	public static final RegistryObject<Block> REINFORCED_END_ROD = BLOCKS.register("reinforced_end_rod", () -> new ReinforcedEndRodBlock(prop().lightLevel(state -> 14).sound(SoundType.WOOD).noOcclusion()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
@@ -2120,7 +2129,7 @@ public class SCContent {
 	public static final RegistryObject<Block> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(prop(Material.METAL, MaterialColor.STONE).sound(SoundType.METAL).noOcclusion()));
 	@HasManualPage
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop(Material.WOOD).noCollission().sound(SoundType.WOOD)));
+	public static final RegistryObject<Block> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop().noCollission().sound(SoundType.WOOD)));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2245,8 +2254,11 @@ public class SCContent {
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_BAMBOO_BUTTON = BLOCKS.register("reinforced_bamboo_button", () -> woodenButton(Blocks.BAMBOO_BUTTON, BlockSetType.BAMBOO, FeatureFlags.UPDATE_1_20));
-	public static final RegistryObject<Block> SECRET_BAMBOO_SIGN = BLOCKS.register("secret_bamboo_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD).sound(SoundType.BAMBOO).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.BAMBOO));
-	public static final RegistryObject<Block> SECRET_BAMBOO_WALL_SIGN = BLOCKS.register("secret_bamboo_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD).sound(SoundType.BAMBOO).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.BAMBOO));
+	public static final RegistryObject<Block> SECRET_CHERRY_SIGN = BLOCKS.register("secret_cherry_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.CHERRY));
+	public static final RegistryObject<Block> SECRET_CHERRY_WALL_SIGN = BLOCKS.register("secret_cherry_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.CHERRY));
+	public static final RegistryObject<Block> SECRET_BAMBOO_SIGN = BLOCKS.register("secret_bamboo_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.BAMBOO));
+	public static final RegistryObject<Block> SECRET_BAMBOO_WALL_SIGN = BLOCKS.register("secret_bamboo_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.BAMBOO));
+	//hanging signs
 	public static final RegistryObject<Block> SECRET_OAK_HANGING_SIGN = BLOCKS.register("secret_oak_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.OAK));
 	public static final RegistryObject<Block> SECRET_OAK_WALL_HANGING_SIGN = BLOCKS.register("secret_oak_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.OAK));
 	public static final RegistryObject<Block> SECRET_SPRUCE_HANGING_SIGN = BLOCKS.register("secret_spruce_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.SPRUCE));
@@ -2261,12 +2273,52 @@ public class SCContent {
 	public static final RegistryObject<Block> SECRET_DARK_OAK_WALL_HANGING_SIGN = BLOCKS.register("secret_dark_oak_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.DARK_OAK));
 	public static final RegistryObject<Block> SECRET_MANGROVE_HANGING_SIGN = BLOCKS.register("secret_mangrove_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.MANGROVE));
 	public static final RegistryObject<Block> SECRET_MANGROVE_WALL_HANGING_SIGN = BLOCKS.register("secret_mangrove_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.MANGROVE));
+	public static final RegistryObject<Block> SECRET_CHERRY_HANGING_SIGN = BLOCKS.register("secret_cherry_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.CHERRY));
+	public static final RegistryObject<Block> SECRET_CHERRY_WALL_HANGING_SIGN = BLOCKS.register("secret_cherry_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.CHERRY));
 	public static final RegistryObject<Block> SECRET_BAMBOO_HANGING_SIGN = BLOCKS.register("secret_bamboo_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.BAMBOO));
 	public static final RegistryObject<Block> SECRET_BAMBOO_WALL_HANGING_SIGN = BLOCKS.register("secret_bamboo_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.BAMBOO));
 	public static final RegistryObject<Block> SECRET_CRIMSON_HANGING_SIGN = BLOCKS.register("secret_crimson_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.CRIMSON));
 	public static final RegistryObject<Block> SECRET_CRIMSON_WALL_HANGING_SIGN = BLOCKS.register("secret_crimson_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.CRIMSON));
 	public static final RegistryObject<Block> SECRET_WARPED_HANGING_SIGN = BLOCKS.register("secret_warped_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.WARPED));
 	public static final RegistryObject<Block> SECRET_WARPED_WALL_HANGING_SIGN = BLOCKS.register("secret_warped_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop(Material.WOOD).noCollission().requiredFeatures(FeatureFlags.UPDATE_1_20), WoodType.WARPED));
+	//end hanging signs
+	@HasManualPage
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHISELED_BOOKSHELF = BLOCKS.register("reinforced_chiseled_bookshelf", () -> new ReinforcedChiseledBookshelfBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHISELED_BOOKSHELF)));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_LOG = BLOCKS.register("reinforced_cherry_log", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHERRY_WOOD), Blocks.CHERRY_LOG));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_WOOD = BLOCKS.register("reinforced_cherry_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHERRY_WOOD), Blocks.CHERRY_WOOD));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_STRIPPED_CHERRY_LOG = BLOCKS.register("reinforced_stripped_cherry_log", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHERRY_WOOD), Blocks.STRIPPED_CHERRY_LOG));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_STRIPPED_CHERRY_WOOD = BLOCKS.register("reinforced_stripped_cherry_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHERRY_WOOD), Blocks.STRIPPED_CHERRY_WOOD));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_PLANKS = BLOCKS.register("reinforced_cherry_planks", () -> new BaseReinforcedBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHERRY_WOOD), Blocks.CHERRY_PLANKS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_STAIRS = BLOCKS.register("reinforced_cherry_stairs", () -> new ReinforcedStairsBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHERRY_WOOD), Blocks.CHERRY_STAIRS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_SLAB = BLOCKS.register("reinforced_cherry_slab", () -> new ReinforcedSlabBlock(prop(Material.WOOD, FeatureFlags.UPDATE_1_20).sound(SoundType.CHERRY_WOOD), Blocks.CHERRY_SLAB));
+	@HasManualPage(PageGroup.PRESSURE_PLATES)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_PRESSURE_PLATE = BLOCKS.register("reinforced_cherry_pressure_plate", () -> woodenPressurePlate(Blocks.CHERRY_PRESSURE_PLATE, BlockSetType.CHERRY, FeatureFlags.UPDATE_1_20));
+	@HasManualPage(PageGroup.BUTTONS)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_BUTTON = BLOCKS.register("reinforced_cherry_button", () -> woodenButton(Blocks.CHERRY_BUTTON, BlockSetType.CHERRY, FeatureFlags.UPDATE_1_20));
 
 	//misc
 	@RegisterItemBlock
@@ -2345,6 +2397,8 @@ public class SCContent {
 	@HasManualPage(hasRecipeDescription = true)
 	public static final RegistryObject<Item> FAKE_WATER_BUCKET = ITEMS.register("bucket_f_water", () -> new FakeLiquidBucketItem(SCContent.FAKE_WATER, itemProp().stacksTo(1)));
 	public static final RegistryObject<Item> GLOW_DISPLAY_CASE_ITEM = ITEMS.register(GLOW_DISPLAY_CASE_PATH, () -> new DisplayCaseItem(SCContent.GLOW_DISPLAY_CASE.get(), itemProp(), true));
+	@HasManualPage
+	public static final RegistryObject<Item> KEYCARD_HOLDER = ITEMS.register("keycard_holder", () -> new KeycardHolderItem(itemProp().stacksTo(1)));
 	@HasManualPage(PageGroup.KEYCARDS)
 	public static final RegistryObject<Item> KEYCARD_LVL_1 = ITEMS.register("keycard_lv1", () -> new KeycardItem(itemProp(), 0));
 	@HasManualPage(PageGroup.KEYCARDS)
@@ -2391,6 +2445,8 @@ public class SCContent {
 	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_MANGROVE_SIGN_ITEM = ITEMS.register("secret_mangrove_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_MANGROVE_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
+	public static final RegistryObject<Item> SECRET_CHERRY_SIGN_ITEM = ITEMS.register("secret_cherry_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_CHERRY_SIGN.get(), SCContent.SECRET_CHERRY_WALL_SIGN.get()));
+	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_BAMBOO_SIGN_ITEM = ITEMS.register("secret_bamboo_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_BAMBOO_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_CRIMSON_SIGN_ITEM = ITEMS.register("secret_crimson_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get()));
@@ -2410,6 +2466,8 @@ public class SCContent {
 	public static final RegistryObject<Item> SECRET_DARK_OAK_HANGING_SIGN_ITEM = ITEMS.register("secret_dark_oak_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_DARK_OAK_HANGING_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_HANGING_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
 	public static final RegistryObject<Item> SECRET_MANGROVE_HANGING_SIGN_ITEM = ITEMS.register("secret_mangrove_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_MANGROVE_HANGING_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_HANGING_SIGN.get()));
+	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
+	public static final RegistryObject<Item> SECRET_CHERRY_HANGING_SIGN_ITEM = ITEMS.register("secret_cherry_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_CHERRY_HANGING_SIGN.get(), SCContent.SECRET_CHERRY_WALL_HANGING_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
 	public static final RegistryObject<Item> SECRET_BAMBOO_HANGING_SIGN_ITEM = ITEMS.register("secret_bamboo_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16).requiredFeatures(FeatureFlags.UPDATE_1_20), SCContent.SECRET_BAMBOO_HANGING_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_HANGING_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
@@ -2542,6 +2600,8 @@ public class SCContent {
 			SCContent.SECRET_DARK_OAK_WALL_SIGN.get(),
 			SCContent.SECRET_MANGROVE_SIGN.get(),
 			SCContent.SECRET_MANGROVE_WALL_SIGN.get(),
+			SCContent.SECRET_CHERRY_SIGN.get(),
+			SCContent.SECRET_CHERRY_WALL_SIGN.get(),
 			SCContent.SECRET_BAMBOO_SIGN.get(),
 			SCContent.SECRET_BAMBOO_WALL_SIGN.get(),
 			SCContent.SECRET_CRIMSON_SIGN.get(),
@@ -2563,6 +2623,8 @@ public class SCContent {
 			SCContent.SECRET_DARK_OAK_WALL_HANGING_SIGN.get(),
 			SCContent.SECRET_MANGROVE_HANGING_SIGN.get(),
 			SCContent.SECRET_MANGROVE_WALL_HANGING_SIGN.get(),
+			SCContent.SECRET_CHERRY_HANGING_SIGN.get(),
+			SCContent.SECRET_CHERRY_WALL_HANGING_SIGN.get(),
 			SCContent.SECRET_BAMBOO_HANGING_SIGN.get(),
 			SCContent.SECRET_BAMBOO_WALL_HANGING_SIGN.get(),
 			SCContent.SECRET_CRIMSON_HANGING_SIGN.get(),
@@ -2583,6 +2645,7 @@ public class SCContent {
 			SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_BAMBOO_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_CHERRY_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(),
@@ -2595,6 +2658,7 @@ public class SCContent {
 			SCContent.REINFORCED_ACACIA_BUTTON.get(),
 			SCContent.REINFORCED_BAMBOO_BUTTON.get(),
 			SCContent.REINFORCED_BIRCH_BUTTON.get(),
+			SCContent.REINFORCED_CHERRY_BUTTON.get(),
 			SCContent.REINFORCED_CRIMSON_BUTTON.get(),
 			SCContent.REINFORCED_DARK_OAK_BUTTON.get(),
 			SCContent.REINFORCED_JUNGLE_BUTTON.get(),
@@ -2626,6 +2690,8 @@ public class SCContent {
 	public static final RegistryObject<BlockEntityType<GlowDisplayCaseBlockEntity>> GLOW_DISPLAY_CASE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("glow_display_case", () -> BlockEntityType.Builder.of(GlowDisplayCaseBlockEntity::new, SCContent.GLOW_DISPLAY_CASE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<KeypadBarrelBlockEntity>> KEYPAD_BARREL_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_barrel", () -> BlockEntityType.Builder.of(KeypadBarrelBlockEntity::new, SCContent.KEYPAD_BARREL.get()).build(null));
 	public static final RegistryObject<BlockEntityType<BrushableMineBlockEntity>> BRUSHABLE_MINE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("brushable_mine", () -> BlockEntityType.Builder.of(BrushableMineBlockEntity::new, SCContent.SUSPICIOUS_SAND_MINE.get()).build(null));
+	public static final RegistryObject<BlockEntityType<ReinforcedChiseledBookshelfBlockEntity>> REINFORCED_CHISELED_BOOKSHELF_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_chiseled_bookshelf", () -> BlockEntityType.Builder.of(ReinforcedChiseledBookshelfBlockEntity::new, SCContent.REINFORCED_CHISELED_BOOKSHELF.get()).build(null));
+	public static final RegistryObject<BlockEntityType<KeypadTrapdoorBlockEntity>> KEYPAD_TRAPDOOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_trapdoor", () -> BlockEntityType.Builder.of(KeypadTrapdoorBlockEntity::new, SCContent.KEYPAD_TRAPDOOR.get()).build(null));
 
 	//entity types
 	public static final RegistryObject<EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",
@@ -2667,7 +2733,7 @@ public class SCContent {
 
 	//container types
 	public static final RegistryObject<MenuType<BlockReinforcerMenu>> BLOCK_REINFORCER_MENU = MENU_TYPES.register("block_reinforcer", () -> IForgeMenuType.create((windowId, inv, data) -> new BlockReinforcerMenu(windowId, inv, data.readBoolean())));
-	public static final RegistryObject<MenuType<BriefcaseMenu>> BRIEFCASE_INVENTORY_MENU = MENU_TYPES.register("briefcase_inventory", () -> IForgeMenuType.create((windowId, inv, data) -> new BriefcaseMenu(windowId, inv, new BriefcaseContainer(PlayerUtils.getSelectedItemStack(inv, SCContent.BRIEFCASE.get())))));
+	public static final RegistryObject<MenuType<BriefcaseMenu>> BRIEFCASE_INVENTORY_MENU = MENU_TYPES.register("briefcase_inventory", () -> IForgeMenuType.create((windowId, inv, data) -> new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(PlayerUtils.getSelectedItemStack(inv, SCContent.BRIEFCASE.get())))));
 	public static final RegistryObject<MenuType<CustomizeBlockMenu>> CUSTOMIZE_BLOCK_MENU = MENU_TYPES.register("customize_block", () -> IForgeMenuType.create((windowId, inv, data) -> new CustomizeBlockMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
 	public static final RegistryObject<MenuType<DisguiseModuleMenu>> DISGUISE_MODULE_MENU = MENU_TYPES.register("disguise_module", () -> IForgeMenuType.create((windowId, inv, data) -> new DisguiseModuleMenu(windowId, inv, new ModuleItemContainer(PlayerUtils.getSelectedItemStack(inv, SCContent.DISGUISE_MODULE.get())))));
 	public static final RegistryObject<MenuType<InventoryScannerMenu>> INVENTORY_SCANNER_MENU = MENU_TYPES.register("inventory_scanner", () -> IForgeMenuType.create((windowId, inv, data) -> new InventoryScannerMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
@@ -2678,6 +2744,7 @@ public class SCContent {
 	public static final RegistryObject<MenuType<KeycardReaderMenu>> KEYCARD_READER_MENU = MENU_TYPES.register("keycard_setup", () -> IForgeMenuType.create((windowId, inv, data) -> new KeycardReaderMenu(windowId, inv, inv.player.level, data.readBlockPos())));
 	public static final RegistryObject<MenuType<BlockPocketManagerMenu>> BLOCK_POCKET_MANAGER_MENU = MENU_TYPES.register("block_pocket_manager", () -> IForgeMenuType.create((windowId, inv, data) -> new BlockPocketManagerMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
 	public static final RegistryObject<MenuType<BlockChangeDetectorMenu>> BLOCK_CHANGE_DETECTOR_MENU = MENU_TYPES.register("block_change_detector", () -> IForgeMenuType.create((windowId, inv, data) -> new BlockChangeDetectorMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
+	public static final RegistryObject<MenuType<KeycardHolderMenu>> KEYCARD_HOLDER_MENU = MENU_TYPES.register("keycard_holder", () -> IForgeMenuType.create((windowId, inv, data) -> new KeycardHolderMenu(windowId, inv, ItemContainer.keycardHolder(PlayerUtils.getSelectedItemStack(inv, SCContent.KEYCARD_HOLDER.get())))));
 
 	private static final Block.Properties prop() {
 		return prop(Material.STONE);
@@ -2748,11 +2815,11 @@ public class SCContent {
 	}
 
 	private static ReinforcedButtonBlock woodenButton(Block vanillaBlock, BlockSetType blockSetType) {
-		return new ReinforcedButtonBlock(prop(Material.DECORATION).noCollission(), vanillaBlock, blockSetType, 30, true);
+		return new ReinforcedButtonBlock(prop(Material.WOOD).noCollission(), vanillaBlock, blockSetType, 30, true);
 	}
 
 	private static ReinforcedButtonBlock woodenButton(Block vanillaBlock, BlockSetType blockSetType, FeatureFlag... requiredFeatures) {
-		return new ReinforcedButtonBlock(prop(Material.DECORATION).noCollission().requiredFeatures(requiredFeatures), vanillaBlock, blockSetType, 30, true);
+		return new ReinforcedButtonBlock(prop(Material.WOOD).noCollission().requiredFeatures(requiredFeatures), vanillaBlock, blockSetType, 30, true);
 	}
 
 	private static ReinforcedButtonBlock stoneButton(Block vanillaBlock, BlockSetType blockSetType) {

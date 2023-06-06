@@ -16,22 +16,26 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.SetKeycardUses;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.screen.components.ActiveBasedTextureButton;
+import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
 public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_reader.png");
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+	private static final ResourceLocation RANDOM_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/random.png");
 	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
 	private static final ResourceLocation RESET_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset_inactive.png");
 	private static final ResourceLocation RETURN_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/return.png");
@@ -39,6 +43,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	private static final ResourceLocation WORLD_SELECTION_ICONS = new ResourceLocation("textures/gui/world_selection.png");
 	private static final Component EQUALS = Component.literal("=");
 	private static final Component GREATER_THAN_EQUALS = Component.literal(">=");
+	private static final int MAX_SIGNATURE = 99999;
 	private final Component keycardLevelsText = Utils.localize("gui.securitycraft:keycard_reader.keycard_levels");
 	private final Component linkText = Utils.localize("gui.securitycraft:keycard_reader.link");
 	private final Component levelMismatchInfo = Utils.localize("gui.securitycraft:keycard_reader.level_mismatch");
@@ -67,7 +72,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		super(menu, inv, title);
 
 		be = menu.be;
-		previousSignature = be.getSignature();
+		previousSignature = Mth.clamp(be.getSignature(), 0, MAX_SIGNATURE);
 		signature = previousSignature;
 		acceptedLevels = be.getAcceptedLevels();
 		hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
@@ -132,6 +137,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		plusOne = addRenderableWidget(new Button(leftPos + 96, buttonY, 12, buttonHeight, Component.literal("+"), b -> changeSignature(signature + 1), Button.DEFAULT_NARRATION));
 		plusTwo = addRenderableWidget(new Button(leftPos + 110, buttonY, 18, buttonHeight, Component.literal("++"), b -> changeSignature(signature + 10), Button.DEFAULT_NARRATION));
 		plusThree = addRenderableWidget(new Button(leftPos + 130, buttonY, 24, buttonHeight, Component.literal("+++"), b -> changeSignature(signature + 100), Button.DEFAULT_NARRATION));
+		addRenderableWidget(new PictureButton(leftPos + 156, buttonY, 12, buttonHeight, RANDOM_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(minecraft.level.random.nextInt(MAX_SIGNATURE)))).setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:keycard_reader.randomize_signature")));
 		//set correct signature
 		changeSignature(signature);
 		//link button
@@ -298,12 +304,12 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		boolean enableMinusButtons;
 
 		if (isOwner)
-			signature = Math.max(0, Math.min(newSignature, Short.MAX_VALUE)); //keep between 0 and 32767 (disallow negative numbers)
+			signature = Mth.clamp(newSignature, 0, MAX_SIGNATURE); //keep between 0 and the max allowed (disallow negative numbers)
 
 		signatureText = Component.translatable("gui.securitycraft:keycard_reader.signature", StringUtils.leftPad("" + signature, 5, "0"));
 		signatureTextLength = font.width(signatureText);
 		signatureTextStartX = imageWidth / 2 - signatureTextLength / 2;
-		enablePlusButtons = isOwner && signature != Short.MAX_VALUE;
+		enablePlusButtons = isOwner && signature != MAX_SIGNATURE;
 		enableMinusButtons = isOwner && signature != 0;
 		minusThree.active = enableMinusButtons;
 		minusTwo.active = enableMinusButtons;

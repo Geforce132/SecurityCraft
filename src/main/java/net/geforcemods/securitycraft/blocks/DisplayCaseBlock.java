@@ -1,8 +1,10 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.GlowDisplayCaseBlockEntity;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -148,7 +150,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 			else {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				else if (be.verifyPasswordSet(level, pos, be, player)) {
+				else if (be.verifyPasscodeSet(level, pos, be, player)) {
 					if (be.isDenied(player)) {
 						if (be.sendsMessages())
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
@@ -160,7 +162,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 						activate(be);
 					}
 					else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-						be.openPasswordGUI(level, pos, player);
+						be.openPasscodeGUI(level, pos, player);
 				}
 			}
 		}
@@ -177,6 +179,9 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 		if (!(newState.getBlock() instanceof DisplayCaseBlock)) {
 			if (level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be)
 				Block.popResource(level, pos, be.getDisplayedStack());
+
+			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+				SaltData.removeSalt(be.getSaltKey());
 
 			super.onRemove(state, level, pos, newState, isMoving);
 		}

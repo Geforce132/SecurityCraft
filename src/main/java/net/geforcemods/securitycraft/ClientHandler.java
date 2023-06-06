@@ -18,7 +18,9 @@ import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
+import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.BulletModel;
@@ -48,16 +50,15 @@ import net.geforcemods.securitycraft.screen.AlarmScreen;
 import net.geforcemods.securitycraft.screen.BlockChangeDetectorScreen;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
-import net.geforcemods.securitycraft.screen.BriefcaseInventoryScreen;
-import net.geforcemods.securitycraft.screen.BriefcasePasswordScreen;
-import net.geforcemods.securitycraft.screen.BriefcaseSetupScreen;
+import net.geforcemods.securitycraft.screen.BriefcasePasscodeScreen;
 import net.geforcemods.securitycraft.screen.CameraMonitorScreen;
-import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
+import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
 import net.geforcemods.securitycraft.screen.EditModuleScreen;
 import net.geforcemods.securitycraft.screen.IMSScreen;
 import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
+import net.geforcemods.securitycraft.screen.ItemInventoryScreen;
 import net.geforcemods.securitycraft.screen.KeyChangerScreen;
 import net.geforcemods.securitycraft.screen.KeycardReaderScreen;
 import net.geforcemods.securitycraft.screen.KeypadBlastFurnaceScreen;
@@ -69,7 +70,7 @@ import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SSSItemScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
-import net.geforcemods.securitycraft.screen.SetPasswordScreen;
+import net.geforcemods.securitycraft.screen.SetPasscodeScreen;
 import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
 import net.geforcemods.securitycraft.screen.ToggleListScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
@@ -80,11 +81,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.HangingSignEditScreen;
 import net.minecraft.client.gui.screens.inventory.SignEditScreen;
+import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
@@ -154,6 +158,14 @@ public class ClientHandler {
 			SCContent.USERNAME_LOGGER.get()
 	});
 	//@formatter:on
+	public static final ArmPose TASER_ARM_POSE = ArmPose.create("securitycraft_taser", true, (model, entity, arm) -> {
+		ModelPart leftArm = model.leftArm;
+		ModelPart rightArm = model.rightArm;
+
+		leftArm.yRot = 0.5F;
+		rightArm.yRot = -0.5F;
+		leftArm.xRot = rightArm.xRot = -1.5F;
+	});
 
 	@SubscribeEvent
 	public static void onModelBakingCompleted(ModelEvent.ModifyBakingResult event) {
@@ -227,7 +239,7 @@ public class ClientHandler {
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), translucent);
 		event.enqueueWork(() -> {
 			MenuScreens.register(SCContent.BLOCK_REINFORCER_MENU.get(), BlockReinforcerScreen::new);
-			MenuScreens.register(SCContent.BRIEFCASE_INVENTORY_MENU.get(), BriefcaseInventoryScreen::new);
+			MenuScreens.register(SCContent.BRIEFCASE_INVENTORY_MENU.get(), ItemInventoryScreen.Briefcase::new);
 			MenuScreens.register(SCContent.CUSTOMIZE_BLOCK_MENU.get(), CustomizeBlockScreen::new);
 			MenuScreens.register(SCContent.DISGUISE_MODULE_MENU.get(), DisguiseModuleScreen::new);
 			MenuScreens.register(SCContent.INVENTORY_SCANNER_MENU.get(), InventoryScannerScreen::new);
@@ -238,6 +250,8 @@ public class ClientHandler {
 			MenuScreens.register(SCContent.BLOCK_POCKET_MANAGER_MENU.get(), BlockPocketManagerScreen::new);
 			MenuScreens.register(SCContent.PROJECTOR_MENU.get(), ProjectorScreen::new);
 			MenuScreens.register(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), BlockChangeDetectorScreen::new);
+			MenuScreens.register(SCContent.KEYCARD_HOLDER_MENU.get(), ItemInventoryScreen.KeycardHolder::new);
+			ItemProperties.register(SCContent.KEYCARD_HOLDER.get(), new ResourceLocation(SecurityCraft.MODID, "keycard_count"), (stack, level, entity, id) -> KeycardHolderItem.getCardCount(stack) / (float) KeycardHolderMenu.CONTAINER_SIZE);
 		});
 	}
 
@@ -474,12 +488,12 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new SonicSecuritySystemScreen(be));
 	}
 
-	public static void displayBriefcasePasswordScreen(Component title) {
-		Minecraft.getInstance().setScreen(new BriefcasePasswordScreen(title));
+	public static void displayBriefcasePasscodeScreen(Component title) {
+		Minecraft.getInstance().setScreen(new BriefcasePasscodeScreen(title, false));
 	}
 
 	public static void displayBriefcaseSetupScreen(Component title) {
-		Minecraft.getInstance().setScreen(new BriefcaseSetupScreen(title));
+		Minecraft.getInstance().setScreen(new BriefcasePasscodeScreen(title, true));
 	}
 
 	public static void displayUsernameLoggerScreen(Level level, BlockPos pos) {
@@ -503,16 +517,16 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new ToggleListScreen<>(be, be.getName(), Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles"), Utils.localize("gui.securitycraft:trophy_system.moduleRequired"), Utils.localize("gui.securitycraft:trophy_system.toggle")));
 	}
 
-	public static void displayCheckPasswordScreen(BlockEntity be) {
+	public static void displayCheckPasscodeScreen(BlockEntity be) {
 		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
-		Minecraft.getInstance().setScreen(new CheckPasswordScreen(be, displayName));
+		Minecraft.getInstance().setScreen(new CheckPasscodeScreen(be, displayName));
 	}
 
-	public static void displaySetPasswordScreen(BlockEntity be) {
+	public static void displaySetPasscodeScreen(BlockEntity be) {
 		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
-		Minecraft.getInstance().setScreen(new SetPasswordScreen(be, displayName));
+		Minecraft.getInstance().setScreen(new SetPasscodeScreen(be, displayName));
 	}
 
 	public static void displaySSSItemScreen(ItemStack stack) {

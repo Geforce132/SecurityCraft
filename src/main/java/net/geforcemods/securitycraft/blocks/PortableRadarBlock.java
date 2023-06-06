@@ -13,11 +13,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -26,13 +28,16 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class PortableRadarBlock extends OwnableBlock {
+public class PortableRadarBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final VoxelShape SHAPE_UP = Block.box(5, 0, 5, 11, 7, 11);
 	private static final VoxelShape SHAPE_DOWN = Block.box(5, 9, 5, 11, 16, 11);
 	private static final VoxelShape SHAPE_EAST = Block.box(0, 5, 5, 7, 11, 11);
@@ -43,7 +48,7 @@ public class PortableRadarBlock extends OwnableBlock {
 	public PortableRadarBlock(Block.Properties properties) {
 		super(properties);
 
-		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(FACING, Direction.UP));
+		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(FACING, Direction.UP).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -63,7 +68,20 @@ public class PortableRadarBlock extends OwnableBlock {
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		Direction facing = ctx.getClickedFace();
 
-		return BlockUtils.isSideSolid(ctx.getLevel(), ctx.getClickedPos().relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing) : null;
+		return BlockUtils.isSideSolid(ctx.getLevel(), ctx.getClickedPos().relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing).setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER) : null;
+	}
+
+	@Override
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED))
+			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
@@ -102,13 +120,9 @@ public class PortableRadarBlock extends OwnableBlock {
 	public static void togglePowerOutput(Level level, BlockPos pos, boolean shouldPower) {
 		BlockState state = level.getBlockState(pos);
 
-		if (shouldPower && !state.getValue(POWERED)) {
-			level.setBlockAndUpdate(pos, state.setValue(POWERED, true));
-			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING));
-		}
-		else if (!shouldPower && state.getValue(POWERED)) {
-			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING));
+		if (shouldPower != state.getValue(POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, shouldPower));
+			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING).getOpposite());
 		}
 	}
 
@@ -132,7 +146,7 @@ public class PortableRadarBlock extends OwnableBlock {
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(POWERED, FACING);
+		builder.add(POWERED, FACING, WATERLOGGED);
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
+import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -66,9 +67,10 @@ public class KeycardReaderBlock extends DisguisableBlock {
 				ItemStack stack = player.getItemInHand(hand);
 				Item item = stack.getItem();
 				boolean isCodebreaker = item == SCContent.CODEBREAKER.get();
+				boolean isKeycardHolder = item == SCContent.KEYCARD_HOLDER.get();
 
 				//either no keycard, or an unlinked keycard, or an admin tool
-				if ((!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker) {
+				if (!isKeycardHolder && (!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker) {
 					//only allow the owner and players on the allowlist to open the gui
 					if (be.isOwnedBy(player) || be.isAllowed(player))
 						NetworkHooks.openScreen((ServerPlayer) player, be, pos);
@@ -90,10 +92,32 @@ public class KeycardReaderBlock extends DisguisableBlock {
 						}
 					}
 					else {
-						MutableComponent feedback = insertCard(level, pos, be, stack, player);
+						if (isKeycardHolder) {
+							ItemContainer holderInventory = ItemContainer.keycardHolder(stack);
+							MutableComponent feedback = null;
 
-						if (feedback != null)
-							PlayerUtils.sendMessageToPlayer(player, Component.translatable(getDescriptionId()), feedback, ChatFormatting.RED);
+							for (int i = 0; i < holderInventory.getContainerSize(); i++) {
+								ItemStack keycardStack = holderInventory.getItem(i);
+
+								if (keycardStack.getItem() instanceof KeycardItem && keycardStack.hasTag()) {
+									feedback = insertCard(level, pos, be, keycardStack, player);
+
+									if (feedback == null)
+										return InteractionResult.SUCCESS;
+								}
+							}
+
+							if (feedback == null)
+								PlayerUtils.sendMessageToPlayer(player, Component.translatable(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_holder.no_keycards"), ChatFormatting.RED);
+							else
+								PlayerUtils.sendMessageToPlayer(player, Component.translatable(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_holder.fail"), ChatFormatting.RED);
+						}
+						else {
+							MutableComponent feedback = insertCard(level, pos, be, stack, player);
+
+							if (feedback != null)
+								PlayerUtils.sendMessageToPlayer(player, Component.translatable(getDescriptionId()), feedback, ChatFormatting.RED);
+						}
 					}
 				}
 			}
@@ -148,6 +172,18 @@ public class KeycardReaderBlock extends DisguisableBlock {
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
 		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYCARD_READER.get());
+	}
+
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			if (state.getValue(POWERED)) {
+				level.updateNeighborsAt(pos, this);
+				BlockUtils.updateIndirectNeighbors(level, pos, this);
+			}
+
+			super.onRemove(state, level, pos, newState, isMoving);
+		}
 	}
 
 	@Override
