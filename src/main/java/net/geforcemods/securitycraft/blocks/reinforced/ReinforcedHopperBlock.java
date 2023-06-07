@@ -35,10 +35,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 		if (placer instanceof Player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (Player) placer));
 
-		if (stack.hasCustomHoverName()) {
-			if (level.getBlockEntity(pos) instanceof ReinforcedHopperBlockEntity be)
-				be.setCustomName(stack.getHoverName());
-		}
+		super.setPlacedBy(level, pos, state, placer, stack);
 	}
 
 	@Override
