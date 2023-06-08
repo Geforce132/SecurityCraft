@@ -769,7 +769,6 @@
 	"gui.securitycraft:universalKeyChanger.confirmNewPasscode": "Confirmer le nouveau code :",
 	"gui.securitycraft:universalKeyChanger.enterNewPasscode": "Entrer le nouveau code :",
 	"help.securitycraft.admin_tool.info": "L’objectif principal de l´outil d´administration est d´afficher des informations sur un bloc SecurityCraft. Il affichera l´UUID et le nom du propriétaire, ainsi que d´autres informations, comme les codes d´accès et tout module inséré.",
-	"help.securitycraft.alarm.info": "L´alarme émettra un effet sonore de sirène et clignote en rouge chaque fois qu´elle est alimentée par redstone, et toutes les 2 secondes par la suite (modifiable dans le fichier de configuration).",
 	"help.securitycraft.alarm.info": "L´alarme émettra un effet sonore de sirène et clignote en rouge chaque fois qu´elle est alimentée par redstone, et toutes les 2 secondes par la suite (modifiable dans les paramètres de l'alarme).",
 	"help.securitycraft.blacklist_module.info": "Le module de liste de refus ajoute généralement le.s joueur.s à l´effet d´un bloc ou le.s empêche d´utiliser une certaine fonction du bloc.",
 	"help.securitycraft.block_change_detector.info": "Le détecteur de changements de blocs détecte les joueurs qui minent et/ou placent des blocs à proximité (5 blocs par défaut, ce qui peut être changé en utilisant le modificateur de bloc universel). Un clic droit ouvrira son interface, où une liste des changements détectés peut être affichée, ainsi que s'il ne détecte que soit la mine soit le placement de blocs, ou les deux.",
