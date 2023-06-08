@@ -30,7 +30,6 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -65,9 +64,6 @@ public class SecurityCraft {
 	public static final GameRules.Key<GameRules.BooleanValue> RULE_FAKE_WATER_SOURCE_CONVERSION = GameRules.register("fakeWaterSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true));
 	public static final GameRules.Key<GameRules.BooleanValue> RULE_FAKE_LAVA_SOURCE_CONVERSION = GameRules.register("fakeLavaSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(false));
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> getVersion(), getVersion()::equals, getVersion()::equals);
-	public static CreativeModeTab technicalTab;
-	public static CreativeModeTab mineTab;
-	public static CreativeModeTab decorationTab;
 
 	public SecurityCraft() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -84,6 +80,7 @@ public class SecurityCraft {
 		SCContent.LOOT_ITEM_CONDITION_TYPES.register(modEventBus);
 		SCContent.MENU_TYPES.register(modEventBus);
 		SCContent.RECIPE_SERIALIZERS.register(modEventBus);
+		SCCreativeModeTabs.CREATIVE_MODE_TABS.register(modEventBus);
 	}
 
 	@SubscribeEvent

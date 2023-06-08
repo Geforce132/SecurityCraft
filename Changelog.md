@@ -78,7 +78,7 @@
 - Misc.: The minimum required Forge version is 45.0.58
 - Misc.: More texture updates
 
-[*] only available if the update_1_20 datapack is enabled
+[*] in Minecraft 1.19.3 and 1.19.4, these are only available if the update_1_20 datapack is enabled
 
 --------------------------Changelog for v1.9.6.2 of SecurityCraft--------------------------
 
