@@ -46,6 +46,7 @@
 - Fix: Briefcase inventory access exploit
 - Fix: The text box within the check passcode screen always places inserted characters at the end of the string rather than the cursor position
 - Fix: Crash when using the Disguise Module
+- Fix: Crash when placing any type of named passcode-protected furnace
 - Removed: Ability to use name tags on the Sentry and other certain blocks. To give them a name, rename them in an anvil before placing
 - Misc.: More texture updates
 
