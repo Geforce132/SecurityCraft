@@ -104,7 +104,7 @@ public class SentryRemoteAccessToolItem extends Item {
 				tooltip.add(Component.literal(ChatFormatting.GRAY + "---"));
 			else {
 				BlockPos pos = new BlockPos(coords[0], coords[1], coords[2]);
-				List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(pos));
+				List<Sentry> sentries = Minecraft.getInstance().player.level().getEntitiesOfClass(Sentry.class, new AABB(pos));
 				String nameToShow;
 
 				if (!sentries.isEmpty() && sentries.get(0).hasCustomName())
@@ -127,7 +127,7 @@ public class SentryRemoteAccessToolItem extends Item {
 			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
 				stack.getTag().remove("sentry" + i);
 
-				if (!player.level.isClientSide && !stack.isEmpty())
+				if (!player.level().isClientSide && !stack.isEmpty())
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
 				return;

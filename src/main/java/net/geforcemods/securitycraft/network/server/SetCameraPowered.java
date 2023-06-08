@@ -36,7 +36,7 @@ public class SetCameraPowered {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
-		Level level = player.level;
+		Level level = player.level();
 		BlockEntity be = level.getBlockEntity(pos);
 
 		if ((be instanceof IOwnable ownable && ownable.isOwnedBy(player)) || (be instanceof IModuleInventory moduleInv && moduleInv.isAllowed(player))) {

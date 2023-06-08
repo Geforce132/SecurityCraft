@@ -36,7 +36,7 @@ public class SyncRiftStabilizer {
 
 	public void handle(Supplier<Context> ctx) {
 		if (teleportationType != null) {
-			Level level = ctx.get().getSender().level;
+			Level level = ctx.get().getSender().level();
 
 			if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
 				BlockState state = level.getBlockState(pos);

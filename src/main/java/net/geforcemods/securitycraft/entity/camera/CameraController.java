@@ -146,7 +146,7 @@ public class CameraController {
 	}
 
 	public static void moveViewHorizontally(SecurityCamera cam, float yRot, float next) {
-		BlockState state = cam.level.getBlockState(cam.blockPosition());
+		BlockState state = cam.level().getBlockState(cam.blockPosition());
 
 		if (state.hasProperty(SecurityCameraBlock.FACING)) {
 			float checkNext = next;

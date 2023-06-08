@@ -42,7 +42,7 @@ public class SyncTrophySystem {
 		EntityType<?> projectileType = ForgeRegistries.ENTITY_TYPES.getValue(this.projectileType);
 
 		if (projectileType != null) {
-			Level level = ctx.get().getSender().level;
+			Level level = ctx.get().getSender().level();
 
 			if (level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
 				BlockState state = level.getBlockState(pos);

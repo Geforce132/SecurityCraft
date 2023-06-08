@@ -89,7 +89,7 @@ public class DisguiseModuleMenu extends StateSelectorAccessMenu {
 
 	@Override
 	public BlockState getSavedState() {
-		return NbtUtils.readBlockState(playerInventory.player.level.holderLookup(Registries.BLOCK), inventory.getModule().getOrCreateTag().getCompound("SavedState"));
+		return NbtUtils.readBlockState(playerInventory.player.level().holderLookup(Registries.BLOCK), inventory.getModule().getOrCreateTag().getCompound("SavedState"));
 	}
 
 	@Override

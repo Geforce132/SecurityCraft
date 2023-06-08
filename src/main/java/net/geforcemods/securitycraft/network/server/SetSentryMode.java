@@ -33,7 +33,7 @@ public class SetSentryMode {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
-		List<Sentry> sentries = player.level.<Sentry>getEntitiesOfClass(Sentry.class, new AABB(pos));
+		List<Sentry> sentries = player.level().<Sentry>getEntitiesOfClass(Sentry.class, new AABB(pos));
 
 		if (!sentries.isEmpty() && sentries.get(0).isOwnedBy(player))
 			sentries.get(0).toggleMode(player, mode, false);

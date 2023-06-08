@@ -48,7 +48,7 @@ public class UpdateLogger {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		BlockPos pos = new BlockPos(x, y, z);
-		UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) Minecraft.getInstance().player.level.getBlockEntity(pos);
+		UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) Minecraft.getInstance().player.level().getBlockEntity(pos);
 
 		if (be != null) {
 			be.players[i] = username;

@@ -92,7 +92,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 				guiButtons[i][UNBIND].active = true;
 				lines[i] = Utils.localize("gui.securitycraft:mrat.mineLocations", minePos);
 
-				if (Minecraft.getInstance().player.level.isLoaded(minePos)) {
+				if (Minecraft.getInstance().player.level().isLoaded(minePos)) {
 					Block block = minecraft.level.getBlockState(minePos).getBlock();
 
 					if (block instanceof IExplosive explosive) {
@@ -152,14 +152,14 @@ public class MineRemoteAccessToolScreen extends Screen {
 		if (coords.length == 3) {
 			switch (action) {
 				case DEFUSE:
-					((IExplosive) Minecraft.getInstance().player.level.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getInstance().player.level, new BlockPos(coords[0], coords[1], coords[2]));
+					((IExplosive) Minecraft.getInstance().player.level().getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getInstance().player.level(), new BlockPos(coords[0], coords[1], coords[2]));
 					SecurityCraft.channel.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], Action.DEFUSE));
 					guiButtons[mine][DEFUSE].active = false;
 					guiButtons[mine][ACTIVATE].active = true;
 					guiButtons[mine][DETONATE].active = false;
 					break;
 				case ACTIVATE:
-					((IExplosive) Minecraft.getInstance().player.level.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getInstance().player.level, new BlockPos(coords[0], coords[1], coords[2]));
+					((IExplosive) Minecraft.getInstance().player.level().getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getInstance().player.level(), new BlockPos(coords[0], coords[1], coords[2]));
 					SecurityCraft.channel.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], Action.ACTIVATE));
 					guiButtons[mine][DEFUSE].active = true;
 					guiButtons[mine][ACTIVATE].active = false;

@@ -110,8 +110,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				lines[i] = Utils.getFormattedCoordinates(sentryPos);
 				guiButtons[i][UNBIND].active = true;
 
-				if (Minecraft.getInstance().player.level.isLoaded(sentryPos) && isSentryVisibleToPlayer(sentryPos)) {
-					List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(sentryPos));
+				if (Minecraft.getInstance().player.level().isLoaded(sentryPos) && isSentryVisibleToPlayer(sentryPos)) {
+					List<Sentry> sentries = Minecraft.getInstance().player.level().getEntitiesOfClass(Sentry.class, new AABB(sentryPos));
 
 					if (!sentries.isEmpty()) {
 						Sentry sentry = sentries.get(0);
@@ -207,7 +207,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		int[] coords = getSentryCoordinates(sentry);
 
 		if (coords.length == 3) {
-			List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(new BlockPos(coords[0], coords[1], coords[2])));
+			List<Sentry> sentries = Minecraft.getInstance().player.level().getEntitiesOfClass(Sentry.class, new AABB(new BlockPos(coords[0], coords[1], coords[2])));
 
 			if (!sentries.isEmpty()) {
 				int resultingMode = Math.max(0, Math.min(targets + mode * 3, 6)); //bind between 0 and 6

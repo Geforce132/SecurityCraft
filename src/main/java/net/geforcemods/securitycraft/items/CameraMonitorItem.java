@@ -54,7 +54,7 @@ public class CameraMonitorItem extends Item {
 			if (stack.getTag() == null)
 				stack.setTag(new CompoundTag());
 
-			GlobalPos view = GlobalPos.of(player.level.dimension(), pos);
+			GlobalPos view = GlobalPos.of(player.level().dimension(), pos);
 
 			if (isCameraAdded(stack.getTag(), view)) {
 				stack.getTag().remove(getTagNameFromPosition(stack.getTag(), view));
