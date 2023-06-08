@@ -46,7 +46,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		if (disguisedState.getBlock() != state.getBlock())
 			return disguisedState.isRedstoneConductor(level, pos);
 		else
-			return state.getMaterial().isSolidBlocking() && state.isCollisionShapeFullBlock(level, pos);
+			return state.isSolid() && state.isCollisionShapeFullBlock(level, pos);
 	}
 
 	public static boolean isSuffocating(BlockState state, BlockGetter level, BlockPos pos) {
@@ -55,7 +55,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		if (disguisedState.getBlock() != state.getBlock())
 			return disguisedState.isSuffocating(level, pos);
 		else
-			return state.getMaterial().blocksMotion() && state.isCollisionShapeFullBlock(level, pos);
+			return state.blocksMotion() && state.isCollisionShapeFullBlock(level, pos);
 	}
 
 	@Override

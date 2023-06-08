@@ -12,7 +12,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
@@ -467,19 +466,13 @@ public class BlockTagGenerator extends BlockTagsProvider {
 			}
 
 			//ugly way of checking if slabs/stairs are wood. they do not need to be added to the tag explicitly, as they are already present in the wooden equivalent tag
-			if (block instanceof ReinforcedSlabBlock && !isWoodMaterial(block))
+			if (block instanceof ReinforcedSlabBlock && !block.defaultBlockState().is(SCTags.Blocks.REINFORCED_WOODEN_SLABS))
 				tag(SCTags.Blocks.REINFORCED_SLABS).add(block);
-			else if (block instanceof ReinforcedStairsBlock && !isWoodMaterial(block))
+			else if (block instanceof ReinforcedStairsBlock && !block.defaultBlockState().is(SCTags.Blocks.REINFORCED_WOODEN_STAIRS))
 				tag(SCTags.Blocks.REINFORCED_STAIRS).add(block);
 			else if (block instanceof ReinforcedWallBlock)
 				tag(BlockTags.WALLS).add(block);
 		}
-	}
-
-	private boolean isWoodMaterial(Block block) {
-		Material material = block.defaultBlockState().getMaterial();
-
-		return material == Material.WOOD || material == Material.NETHER_WOOD;
 	}
 
 	@Override
