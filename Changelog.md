@@ -74,11 +74,12 @@
 - Fix: Briefcase inventory access exploit
 - Fix: The text box within the check passcode screen always places inserted characters at the end of the string rather than the cursor position
 - Fix: Crash when placing any type of named passcode-protected furnace
+- Fix: Iron fences don't connect to fences they should connect to
 - Removed: Ability to use name tags on the Sentry and other certain blocks. To give them a name, rename them in an anvil before placing
 - Misc.: The minimum required Forge version is 45.0.58
 - Misc.: More texture updates
 
-[*] only available if the update_1_20 datapack is enabled
+[*] in Minecraft 1.19.3 and 1.19.4, these are only available if the update_1_20 datapack is enabled
 
 --------------------------Changelog for v1.9.6.2 of SecurityCraft--------------------------
 
