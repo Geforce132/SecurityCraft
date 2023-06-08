@@ -112,12 +112,12 @@ public class IronFenceBlock extends OwnableBlock {
 		return collisionShapes[getIndex(state)];
 	}
 
-	public boolean connectsTo(BlockState state, boolean pIsSideSolid, Direction direction) {
+	public boolean connectsTo(BlockState state, boolean isSideSolid, Direction direction) {
 		Block block = state.getBlock();
-		boolean flag = block.is(BlockTags.FENCES) && state.getMaterial() == material;
-		boolean flag1 = block instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, direction);
+		boolean isFence = state.is(BlockTags.FENCES) && !state.is(BlockTags.WOODEN_FENCES);
+		boolean isFenceGate = block instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, direction);
 
-		return !isExceptionForConnection(block) && pIsSideSolid || flag || flag1;
+		return !isExceptionForConnection(block) && isSideSolid || isFence || isFenceGate;
 	}
 
 	private static int getMask(Direction facing) {
