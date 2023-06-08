@@ -8,8 +8,6 @@ import java.util.function.Predicate;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Function;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -264,9 +262,8 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		}
 
 		@Override
-		public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partialTick) {
-			RenderSystem._setShaderTexture(0, TEXTURE);
-			blit(pose, getX() + (int) (value * (width - 8)), getY(), isHoveredOrFocused() ? 151 : 145, 0, 6, height);
+		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+			guiGraphics.blit(TEXTURE, getX() + (int) (value * (width - 8)), getY(), isHoveredOrFocused() ? 151 : 145, 0, 6, height);
 		}
 	}
 

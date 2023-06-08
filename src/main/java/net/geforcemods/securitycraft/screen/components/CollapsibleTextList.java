@@ -12,7 +12,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
-import net.minecraftforge.client.gui.ScreenUtils;
 
 public class CollapsibleTextList extends Button {
 	private static final Component PLUS = Component.literal("+ ");
@@ -66,7 +65,7 @@ public class CollapsibleTextList extends Button {
 		int v = !active ? 0 : (isHoveredOrFocused() ? 2 : 1);
 		int heightOffset = (height - 8) / 2;
 
-		ScreenUtils.blitWithBorder(guiGraphics, WIDGETS_LOCATION, getX(), getY(), 0, 46 + v * 20, width, height, 200, 20, 2, 3, 2, 2, 0);
+		guiGraphics.blitWithBorder(WIDGETS_LOCATION, getX(), getY(), 0, 46 + v * 20, width, height, 200, 20, 2, 3, 2, 2);
 		guiGraphics.drawCenteredString(font, getMessage(), getX() + font.width(getMessage()) / 2 + 3, getY() + heightOffset, getFGColor());
 
 		int renderedLines = 0;
