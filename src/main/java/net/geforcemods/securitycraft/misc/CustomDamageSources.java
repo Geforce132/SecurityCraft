@@ -29,7 +29,7 @@ public class CustomDamageSources {
 	}
 
 	public static DamageSource taser(Entity shooter) {
-		return new DamageSource(shooter.level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(TASER), null, shooter);
+		return new DamageSource(shooter.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(TASER), null, shooter);
 	}
 
 	public static DamageSource incorrectPasscode(RegistryAccess registryAccess) {

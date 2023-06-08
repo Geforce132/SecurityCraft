@@ -33,7 +33,7 @@ public class SyncIMSTargetingOption {
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
 
-		if (player.level.getBlockEntity(pos) instanceof IMSBlockEntity be && be.isOwnedBy(player))
+		if (player.level().getBlockEntity(pos) instanceof IMSBlockEntity be && be.isOwnedBy(player))
 			be.setTargetingMode(targetingMode);
 	}
 }

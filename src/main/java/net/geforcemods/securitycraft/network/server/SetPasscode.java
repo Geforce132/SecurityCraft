@@ -46,8 +46,7 @@ public class SetPasscode {
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		BlockPos pos = new BlockPos(x, y, z);
 		Player player = ctx.get().getSender();
-		Level level = player.level;
-
+		Level level = player.level();
 
 		if (level.getBlockEntity(pos) instanceof IPasscodeProtected be && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 			be.hashAndSetPasscode(passcode);

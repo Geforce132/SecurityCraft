@@ -121,10 +121,10 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	public void tick() {
 		super.tick();
 
-		if (!level.isClientSide) {
+		if (!level().isClientSide) {
 			BlockPos downPos = getBlockPosBelowThatAffectsMyMovement();
 
-			if (level.getBlockState(downPos).isAir() || level.noCollision(new AABB(downPos)))
+			if (level().getBlockState(downPos).isAir() || level().noCollision(new AABB(downPos)))
 				discard();
 		}
 		else {
@@ -191,7 +191,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 				//drop the old module as to not override it with the new one
 				if (!module.isEmpty())
-					Block.popResource(level, pos, module);
+					Block.popResource(level(), pos, module);
 
 				addDisguiseModule(player.getMainHandItem());
 
@@ -202,7 +202,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 				ItemStack module = getAllowlistModule();
 
 				if (!module.isEmpty())
-					Block.popResource(level, pos, module);
+					Block.popResource(level(), pos, module);
 
 				setAllowlistModule(player.getMainHandItem());
 
@@ -218,14 +218,14 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 				}
 			}
 			else if (item == SCContent.UNIVERSAL_BLOCK_MODIFIER.get()) {
-				Block.popResource(level, pos, getDisguiseModule());
-				Block.popResource(level, pos, getAllowlistModule());
+				Block.popResource(level(), pos, getDisguiseModule());
+				Block.popResource(level(), pos, getAllowlistModule());
 
 				if (hasSpeedModule())
-					Block.popResource(level, pos, new ItemStack(SCContent.SPEED_MODULE.get()));
+					Block.popResource(level(), pos, new ItemStack(SCContent.SPEED_MODULE.get()));
 
 				getSentryDisguiseBlockEntity().ifPresent(be -> be.removeModule(ModuleType.DISGUISE, false));
-				level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, true));
+				level().setBlockAndUpdate(blockPosition(), level().getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, true));
 				entityData.set(ALLOWLIST, new CompoundTag());
 				entityData.set(HAS_SPEED_MODULE, false);
 			}
@@ -259,13 +259,13 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		BlockPos pos = blockPosition();
 
 		super.remove(reason);
-		Block.popResource(level, pos, new ItemStack(SCContent.SENTRY.get()));
-		Block.popResource(level, pos, getDisguiseModule()); //if there is none, nothing will drop
-		Block.popResource(level, pos, getAllowlistModule()); //if there is none, nothing will drop
-		level.setBlockAndUpdate(pos, level.getFluidState(pos).createLegacyBlock());
+		Block.popResource(level(), pos, new ItemStack(SCContent.SENTRY.get()));
+		Block.popResource(level(), pos, getDisguiseModule()); //if there is none, nothing will drop
+		Block.popResource(level(), pos, getAllowlistModule()); //if there is none, nothing will drop
+		level().setBlockAndUpdate(pos, level().getFluidState(pos).createLegacyBlock());
 
 		if (hasSpeedModule())
-			Block.popResource(level, pos, new ItemStack(SCContent.SPEED_MODULE.get()));
+			Block.popResource(level(), pos, new ItemStack(SCContent.SPEED_MODULE.get()));
 	}
 
 	@Override
@@ -299,7 +299,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		if (sendMessage)
 			player.displayClientMessage(Utils.localize(SentryMode.values()[mode].getModeKey()).append(Utils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
 
-		if (!player.level.isClientSide)
+		if (!player.level().isClientSide)
 			SecurityCraft.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, SentryMode.values()[mode].isAggressive(), isShutDown()));
 	}
 
@@ -338,7 +338,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		if (isShutDown())
 			return;
 
-		BlockEntity blockEntity = level.getBlockEntity(blockPosition().below());
+		BlockEntity blockEntity = level().getBlockEntity(blockPosition().below());
 		Projectile throwableEntity = null;
 		SoundEvent shootSound = SoundEvents.ARROW_SHOOT;
 		AbstractProjectileDispenseBehavior pdb = null;
@@ -362,7 +362,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 						ItemStack extracted = handler.extractItem(i, 1, false);
 
 						pdb = projectileDispenseBehavior;
-						throwableEntity = pdb.getProjectile(level, position().add(0.0D, 1.6D, 0.0D), extracted);
+						throwableEntity = pdb.getProjectile(level(), position().add(0.0D, 1.6D, 0.0D), extracted);
 						throwableEntity.setOwner(this);
 						shootSound = null;
 						break;
@@ -372,7 +372,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		}
 
 		if (throwableEntity == null)
-			throwableEntity = new Bullet(level, this);
+			throwableEntity = new Bullet(level(), this);
 
 		double baseY = target.getY() + target.getEyeHeight() - 1.100000023841858D;
 		double x = target.getX() - getX();
@@ -384,13 +384,13 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		throwableEntity.shoot(x, y + yOffset, z, 1.6F, 0.0F); //no inaccuracy for sentries!
 
 		if (shootSound == null) {
-			if (!level.isClientSide)
-				pdb.playSound(new BlockSourceImpl((ServerLevel) level, blockPosition()));
+			if (!level().isClientSide)
+				pdb.playSound(new BlockSourceImpl((ServerLevel) level(), blockPosition()));
 		}
 		else
 			playSound(shootSound, 1.0F, 1.0F / (getRandom().nextFloat() * 0.4F + 0.8F));
 
-		level.addFreshEntity(throwableEntity);
+		level().addFreshEntity(throwableEntity);
 	}
 
 	@Override
@@ -426,7 +426,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 				if (!module.isEmpty() && module.getItem() instanceof ModuleItem moduleItem && moduleItem.getBlockAddon(module.getOrCreateTag()) != null) {
 					be.insertModule(module, false);
-					level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, false));
+					level().setBlockAndUpdate(blockPosition(), level().getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, false));
 				}
 			}
 		});
@@ -464,7 +464,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 				//remove a possibly existing old disguise module
 				be.removeModule(ModuleType.DISGUISE, false);
 				be.insertModule(module, false);
-				level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, false));
+				level().setBlockAndUpdate(blockPosition(), level().getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, false));
 			});
 		}
 	}
@@ -538,11 +538,11 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	 */
 	public Optional<DisguisableBlockEntity> getSentryDisguiseBlockEntity() {
 		BlockEntity be;
-		Block blockAtSentryPos = level.getBlockState(blockPosition()).getBlock();
+		Block blockAtSentryPos = level().getBlockState(blockPosition()).getBlock();
 
 		if (blockAtSentryPos != SCContent.SENTRY_DISGUISE.get()) {
-			level.setBlockAndUpdate(blockPosition(), SCContent.SENTRY_DISGUISE.get().defaultBlockState().setValue(SentryDisguiseBlock.WATERLOGGED, blockAtSentryPos == Blocks.WATER));
-			be = level.getBlockEntity(blockPosition());
+			level().setBlockAndUpdate(blockPosition(), SCContent.SENTRY_DISGUISE.get().defaultBlockState().setValue(SentryDisguiseBlock.WATERLOGGED, blockAtSentryPos == Blocks.WATER));
+			be = level().getBlockEntity(blockPosition());
 
 			if (be instanceof IOwnable ownable) {
 				Owner owner = getOwner();
@@ -551,7 +551,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			}
 		}
 		else
-			be = level.getBlockEntity(blockPosition());
+			be = level().getBlockEntity(blockPosition());
 
 		if (be instanceof DisguisableBlockEntity dbe)
 			return Optional.of(dbe);
@@ -596,7 +596,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	public void setShutDown(boolean shutDown) {
 		this.shutDown = shutDown;
 
-		if (!level.isClientSide) {
+		if (!level().isClientSide) {
 			if (shutDown)
 				SecurityCraft.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, false, shutDown));
 			else

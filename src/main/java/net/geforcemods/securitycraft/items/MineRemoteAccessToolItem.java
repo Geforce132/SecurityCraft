@@ -109,7 +109,7 @@ public class MineRemoteAccessToolItem extends Item {
 			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
 				stack.getTag().remove("mine" + i);
 
-				if (!player.level.isClientSide && !stack.isEmpty())
+				if (!player.level().isClientSide && !stack.isEmpty())
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
 				return;

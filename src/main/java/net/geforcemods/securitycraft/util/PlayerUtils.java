@@ -101,7 +101,7 @@ public class PlayerUtils {
 	}
 
 	public static void sendMessageToPlayer(Player player, MutableComponent prefix, MutableComponent text, ChatFormatting color, boolean shouldSendFromClient) {
-		if (player.level.isClientSide == shouldSendFromClient) {
+		if (player.level().isClientSide == shouldSendFromClient) {
 			//@formatter:off
 			player.sendSystemMessage(Component.literal("[")
 					.append(prefix.setStyle(Style.EMPTY.withColor(color)))
@@ -193,7 +193,7 @@ public class PlayerUtils {
 		if (!(entity instanceof Player player))
 			return false;
 
-		if (player.level.isClientSide)
+		if (player.level().isClientSide)
 			return ClientHandler.isPlayerMountedOnCamera();
 		else
 			return ((ServerPlayer) player).getCamera() instanceof SecurityCamera;

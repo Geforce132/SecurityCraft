@@ -54,19 +54,19 @@ public class BouncingBetty extends Entity {
 		move(MoverType.SELF, getDeltaMovement());
 		setDeltaMovement(getDeltaMovement().multiply(0.9800000190734863D, 0.9800000190734863D, 0.9800000190734863D));
 
-		if (onGround)
+		if (onGround())
 			setDeltaMovement(getDeltaMovement().multiply(0.699999988079071D, 0.699999988079071D, -0.5D));
 
-		if (!level.isClientSide && fuse-- <= 0) {
+		if (!level().isClientSide && fuse-- <= 0) {
 			discard();
 			explode();
 		}
-		else if (level.isClientSide)
-			level.addParticle(ParticleTypes.SMOKE, false, getX(), getY() + 0.5D, getZ(), 0.0D, 0.0D, 0.0D);
+		else if (level().isClientSide)
+			level().addParticle(ParticleTypes.SMOKE, false, getX(), getY() + 0.5D, getZ(), 0.0D, 0.0D, 0.0D);
 	}
 
 	private void explode() {
-		level.explode(this, getX(), getY(), getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.0F : 6.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionInteraction());
+		level().explode(this, getX(), getY(), getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.0F : 6.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionInteraction());
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class CheckPasscode {
 		BlockPos pos = new BlockPos(x, y, z);
 		ServerPlayer player = ctx.get().getSender();
 
-		if (player.level.getBlockEntity(pos) instanceof IPasscodeProtected be) {
+		if (player.level().getBlockEntity(pos) instanceof IPasscodeProtected be) {
 			if (be.isOnCooldown())
 				return;
 

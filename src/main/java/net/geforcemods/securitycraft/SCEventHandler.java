@@ -129,8 +129,8 @@ public class SCEventHandler {
 						SoundEvent sound = instrument.hasCustomSound() && !note.customSoundId().isEmpty() ? SoundEvent.createVariableRangeEvent(new ResourceLocation(note.customSoundId())) : instrument.getSoundEvent().get();
 						float pitch = instrument.isTunable() ? (float) Math.pow(2.0D, (note.noteID() - 12) / 12.0D) : 1.0F;
 
-						player.level.playSound(null, player.blockPosition(), sound, SoundSource.RECORDS, 3.0F, pitch);
-						handlePlayedNote(player.level, player.blockPosition(), note.noteID(), instrument, note.customSoundId());
+						player.level().playSound(null, player.blockPosition(), sound, SoundSource.RECORDS, 3.0F, pitch);
+						handlePlayedNote(player.level(), player.blockPosition(), note.noteID(), instrument, note.customSoundId());
 						player.gameEvent(GameEvent.NOTE_BLOCK_PLAY);
 						pair.setLeft(NOTE_DELAY);
 					}
@@ -164,7 +164,7 @@ public class SCEventHandler {
 		ServerPlayer player = (ServerPlayer) event.getEntity();
 
 		if (player.getCamera() instanceof SecurityCamera cam) {
-			if (player.level.getBlockEntity(cam.blockPosition()) instanceof SecurityCameraBlockEntity camBe)
+			if (player.level().getBlockEntity(cam.blockPosition()) instanceof SecurityCameraBlockEntity camBe)
 				camBe.stopViewing();
 
 			cam.discard();
@@ -190,7 +190,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onDamageTaken(LivingHurtEvent event) {
 		LivingEntity entity = event.getEntity();
-		Level level = entity.level;
+		Level level = entity.level();
 
 		if (event.getSource().is(CustomDamageSources.ELECTRICITY))
 			level.playSound(null, entity.blockPosition(), SCSounds.ELECTRIFIED.event, SoundSource.BLOCKS, 0.25F, 1.0F);
@@ -426,7 +426,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onEntityTeleport(EntityTeleportEvent event) {
 		Entity entity = event.getEntity();
-		Level level = entity.getLevel();
+		Level level = entity.level();
 		List<RiftStabilizerBlockEntity> targetPosBlockEntities = BlockEntityTracker.RIFT_STABILIZER.getBlockEntitiesInRange(level, event.getTarget());
 		List<RiftStabilizerBlockEntity> sourcePosBlockEntities = BlockEntityTracker.RIFT_STABILIZER.getBlockEntitiesInRange(level, event.getPrev());
 		List<RiftStabilizerBlockEntity> blockEntities = new ArrayList<>();
@@ -514,7 +514,7 @@ public class SCEventHandler {
 
 	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
 		Player player = event.getEntity();
-		Level level = player.level;
+		Level level = player.level();
 		BlockPos pos = event.getPos();
 
 		if (level.getBlockEntity(pos) instanceof ICodebreakable codebreakable) {

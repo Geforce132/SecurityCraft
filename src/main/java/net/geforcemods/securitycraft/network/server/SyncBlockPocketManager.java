@@ -45,7 +45,7 @@ public class SyncBlockPocketManager {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
-		Level level = player.level;
+		Level level = player.level();
 
 		if (level.isLoaded(pos) && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity bpm && bpm.isOwnedBy(player)) {
 			BlockState state = level.getBlockState(pos);

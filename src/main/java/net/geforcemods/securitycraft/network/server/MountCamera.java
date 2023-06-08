@@ -34,7 +34,7 @@ public class MountCamera {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		ServerPlayer player = ctx.get().getSender();
-		Level level = player.level;
+		Level level = player.level();
 		BlockState state = level.getBlockState(pos);
 
 		if (level.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {

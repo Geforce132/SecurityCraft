@@ -40,7 +40,7 @@ public class SyncBlockChangeDetector {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		Level level = ctx.get().getSender().level;
+		Level level = ctx.get().getSender().level();
 
 		if (level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
 			BlockState state = level.getBlockState(pos);

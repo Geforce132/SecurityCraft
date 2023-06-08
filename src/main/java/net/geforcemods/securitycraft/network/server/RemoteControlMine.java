@@ -42,7 +42,7 @@ public class RemoteControlMine {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
-		Level level = player.level;
+		Level level = player.level();
 		BlockPos pos = new BlockPos(x, y, z);
 		BlockState state = level.getBlockState(pos);
 

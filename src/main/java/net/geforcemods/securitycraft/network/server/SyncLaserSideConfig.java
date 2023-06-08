@@ -36,7 +36,7 @@ public class SyncLaserSideConfig {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
-		Level level = player.level;
+		Level level = player.level();
 
 		if (level.getBlockEntity(pos) instanceof LaserBlockBlockEntity be && be.isOwnedBy(player)) {
 			BlockState state = level.getBlockState(pos);
