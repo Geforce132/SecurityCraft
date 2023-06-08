@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.screen.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -48,16 +48,14 @@ public class TogglePictureButton extends Button implements IToggleableButton {
 	}
 
 	@Override
-	public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+	public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		if (visible) {
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
-			ScreenUtils.blitWithBorder(pose, WIDGETS_LOCATION, getX(), getY(), 0, 46 + (!active ? 0 : (isHoveredOrFocused() ? 40 : 20)), width, height, 200, 20, 2, 3, 2, 2, 0);
+			guiGraphics.blitWithBorder(WIDGETS_LOCATION, getX(), getY(), 0, 46 + (!active ? 0 : (isHoveredOrFocused() ? 40 : 20)), width, height, 200, 20, 2, 3, 2, 2);
 
-			if (getTextureLocation() != null) {
-				RenderSystem._setShaderTexture(0, getTextureLocation());
-				blit(pose, getX() + drawOffset, getY() + drawOffset, drawWidth, drawHeight, u[currentIndex], v[currentIndex], uWidth, vHeight, textureWidth, textureHeight);
-			}
+			if (getTextureLocation() != null)
+				guiGraphics.blit(getTextureLocation(), getX() + drawOffset, getY() + drawOffset, drawWidth, drawHeight, u[currentIndex], v[currentIndex], uWidth, vHeight, textureWidth, textureHeight);
 		}
 	}
 

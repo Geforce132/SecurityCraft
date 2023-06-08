@@ -2,9 +2,6 @@ package net.geforcemods.securitycraft.screen;
 
 import java.util.List;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
@@ -16,6 +13,7 @@ import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
@@ -91,25 +89,24 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-		super.render(pose, mouseX, mouseY, partialTicks);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-		renderTooltip(pose, mouseX, mouseY);
+		renderTooltip(guiGraphics, mouseX, mouseY);
 
 		if (slotHoverChecker.checkHover(mouseX, mouseY) && menu.be.isEmpty())
-			renderTooltip(pose, slotHoverChecker.getName(), mouseX, mouseY);
+			guiGraphics.renderTooltip(font, slotHoverChecker.getName(), mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, 6, 0x404040);
+	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+		guiGraphics.drawString(font, title, imageWidth / 2 - font.width(title) / 2, 6, 0x404040);
 	}
 
 	@Override
-	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+		renderBackground(guiGraphics);
+		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override

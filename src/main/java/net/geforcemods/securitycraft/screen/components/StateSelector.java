@@ -8,7 +8,6 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.mojang.math.MatrixUtil;
@@ -18,6 +17,7 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -119,14 +119,14 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+		PoseStack pose = guiGraphics.pose();
 
-		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, xStart, yStart, 0, 0, 193, 150);
-		super.render(pose, mouseX, mouseY, partialTick);
-		previousPageButton.render(pose, mouseX, mouseY, partialTick);
-		nextPageButton.render(pose, mouseX, mouseY, partialTick);
+		guiGraphics.blit(TEXTURE, xStart, yStart, 0, 0, 193, 150);
+		super.render(guiGraphics, mouseX, mouseY, partialTick);
+		previousPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
+		nextPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
 		pose.pushPose();
 		pose.translate(previewXTranslation, previewYTranslation, 0);
 		MatrixUtil.mulComponentWise(pose.last().pose(), 1.5F);
@@ -144,10 +144,10 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		for (int i = 0; i < buttons.size(); i++) {
 			String propertyName = buttons.get(i).getProperty().getName();
 
-			font.draw(pose, propertyName, xStart + 91 - font.width(propertyName) - 2, yStart + i * 23 + 10, 0x404040);
+			guiGraphics.drawString(font, propertyName, xStart + 91 - font.width(propertyName) - 2, yStart + i * 23 + 10, 0x404040);
 		}
 
-		font.draw(pose, page + "/" + amountOfPages, xStart + 100, yStart + 130, 0x404040);
+		guiGraphics.drawString(font, page + "/" + amountOfPages, xStart + 100, yStart + 130, 0x404040);
 	}
 
 	public void updateButtons(boolean updateInfo, boolean slotChanged) {

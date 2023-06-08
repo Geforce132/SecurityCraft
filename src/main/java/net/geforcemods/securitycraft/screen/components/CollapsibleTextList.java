@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -61,27 +59,27 @@ public class CollapsibleTextList extends Button {
 	}
 
 	@Override
-	public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partialTick) {
+	public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		isHovered &= extraHoverCheck.test(mouseX, mouseY);
 
 		Font font = Minecraft.getInstance().font;
 		int v = !active ? 0 : (isHoveredOrFocused() ? 2 : 1);
 		int heightOffset = (height - 8) / 2;
 
-		ScreenUtils.blitWithBorder(pose, WIDGETS_LOCATION, getX(), getY(), 0, 46 + v * 20, width, height, 200, 20, 2, 3, 2, 2, 0);
-		drawCenteredString(pose, font, getMessage(), getX() + font.width(getMessage()) / 2 + 3, getY() + heightOffset, getFGColor());
+		ScreenUtils.blitWithBorder(guiGraphics, WIDGETS_LOCATION, getX(), getY(), 0, 46 + v * 20, width, height, 200, 20, 2, 3, 2, 2, 0);
+		guiGraphics.drawCenteredString(font, getMessage(), getX() + font.width(getMessage()) / 2 + 3, getY() + heightOffset, getFGColor());
 
 		int renderedLines = 0;
 		int interpolatedHeight = (int) Mth.lerp(partialTick, previousHeight, currentHeight);
 
-		GuiComponent.fillGradient(pose, getX(), getY() + height, getX() + width, getY() + interpolatedHeight, 0xC0101010, 0xD0101010, 0);
+		guiGraphics.fillGradient(getX(), getY() + height, getX() + width, getY() + interpolatedHeight, 0xC0101010, 0xD0101010, 0);
 
 		for (int i = 0; i < textLines.size(); i++) {
 			int textY = getY() + 2 + height + renderedLines * font.lineHeight + (i * 12);
 			List<FormattedCharSequence> linesToDraw = textLines.get(i);
 
 			if (i > 0)
-				GuiComponent.fillGradient(pose, getX() + 1, textY - 3, getX() + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0, 0);
+				guiGraphics.fillGradient(getX() + 1, textY - 3, getX() + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0, 0);
 
 			for (int lineIndex = 0; lineIndex < linesToDraw.size(); lineIndex++) {
 				int lineY = textY + lineIndex * font.lineHeight;
@@ -90,19 +88,19 @@ public class CollapsibleTextList extends Button {
 				if (lineY + font.lineHeight > getY() + interpolatedHeight)
 					return;
 
-				font.draw(pose, linesToDraw.get(lineIndex), getX() + 2, lineY, getFGColor());
+				guiGraphics.drawString(font, linesToDraw.get(lineIndex), getX() + 2, lineY, getFGColor());
 			}
 
 			renderedLines += linesToDraw.size() - 1;
 		}
 	}
 
-	public void renderLongMessageTooltip(PoseStack pose) {
+	public void renderLongMessageTooltip(GuiGraphics guiGraphics, Font font) {
 		if (isMessageTooLong && isHoveredOrFocused()) {
 			Screen currentScreen = Minecraft.getInstance().screen;
 
 			if (currentScreen != null)
-				currentScreen.renderTooltip(pose, originalDisplayString, getX() + 1, getY() + height + 2);
+				guiGraphics.renderTooltip(font, originalDisplayString, getX() + 1, getY() + height + 2);
 		}
 	}
 

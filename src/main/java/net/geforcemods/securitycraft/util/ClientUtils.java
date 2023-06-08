@@ -9,7 +9,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
@@ -18,6 +17,8 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -52,12 +53,12 @@ public class ClientUtils {
 		return String.format("%02d:%02d %s", Integer.valueOf(hours < 1 ? 12 : hours), Integer.valueOf(minutes), hours24 < 12 ? "AM" : "PM");
 	}
 
-	public static void renderModuleInfo(PoseStack pose, ModuleType module, Component moduleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY) {
+	public static void renderModuleInfo(GuiGraphics guiGraphics, Font font, ModuleType module, Component moduleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY) {
 		Minecraft mc = Minecraft.getInstance();
 		float alpha = isModuleInstalled ? 1.0F : 0.5F;
 		int moduleRight = moduleLeft + 16;
 		int moduleBottom = moduleTop + 16;
-		Matrix4f m4f = pose.last().pose();
+		Matrix4f m4f = guiGraphics.pose().last().pose();
 		BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
 
 		RenderSystem.enableBlend();
@@ -78,7 +79,7 @@ public class ClientUtils {
 		RenderSystem.disableBlend();
 
 		if (moduleTooltip != null && mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom && mc.screen != null)
-			mc.screen.renderComponentTooltip(pose, Arrays.asList(moduleTooltip), mouseX, mouseY);
+			guiGraphics.renderComponentTooltip(font, Arrays.asList(moduleTooltip), mouseX, mouseY);
 	}
 
 	private static void drawTexture(BufferBuilder bufferBuilder, Matrix4f m4f, int moduleLeft, int moduleTop, int moduleRight, int moduleBottom, float alpha) {
@@ -138,7 +139,7 @@ public class ClientUtils {
 		builder.vertex(positionMatrix, maxX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
 	}
 
-	public static void fillHorizontalGradient(PoseStack pose, int zLevel, int left, int top, int right, int bottom, int fromColor, int toColor) {
+	public static void fillHorizontalGradient(GuiGraphics guiGraphics, int zLevel, int left, int top, int right, int bottom, int fromColor, int toColor) {
 		float fromAlpha = (fromColor >> 24 & 255) / 255.0F;
 		float fromRed = (fromColor >> 16 & 255) / 255.0F;
 		float fromGreen = (fromColor >> 8 & 255) / 255.0F;
@@ -147,7 +148,7 @@ public class ClientUtils {
 		float toRed = (toColor >> 16 & 255) / 255.0F;
 		float toGreen = (toColor >> 8 & 255) / 255.0F;
 		float toBlue = (toColor & 255) / 255.0F;
-		Matrix4f mat = pose.last().pose();
+		Matrix4f mat = guiGraphics.pose().last().pose();
 		Tesselator tessellator = Tesselator.getInstance();
 		BufferBuilder buffer = tessellator.getBuilder();
 

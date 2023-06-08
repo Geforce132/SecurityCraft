@@ -3,8 +3,6 @@ package net.geforcemods.securitycraft.screen;
 import java.util.Set;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
@@ -16,6 +14,7 @@ import net.geforcemods.securitycraft.screen.components.SSSConnectionList.Connect
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -141,18 +140,17 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		int textWidth = font.width(title);
 		int soundTextLength = font.width(SOUND_TEXT);
 
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, startX, startY, 0, 0, xSize, ySize, 512, 512);
-		super.render(pose, mouseX, mouseY, partialTicks);
-		font.draw(pose, title, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752);
-		font.draw(pose, SOUND_TEXT, soundButton.getX() - soundTextLength - 5, startY + 141, 4210752);
+		renderBackground(guiGraphics);
+		guiGraphics.blit(TEXTURE, startX, startY, 0, 0, xSize, ySize, 512, 512);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		guiGraphics.drawString(font, title, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752);
+		guiGraphics.drawString(font, SOUND_TEXT, soundButton.getX() - soundTextLength - 5, startY + 141, 4210752);
 	}
 
 	@Override

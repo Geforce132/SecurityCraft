@@ -10,7 +10,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
@@ -22,6 +21,7 @@ import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -60,14 +60,13 @@ public class ToggleListScreen<T> extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, GUI_TEXTURE);
-		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		super.render(pose, mouseX, mouseY, partialTicks);
-		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
-		font.draw(pose, scrollListTitle, width / 2 - font.width(scrollListTitle) / 2, topPos + 31, 4210752);
-		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(guiGraphics);
+		guiGraphics.blit(GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
+		guiGraphics.drawString(font, scrollListTitle, width / 2 - font.width(scrollListTitle) / 2, topPos + 31, 4210752);
+		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override
@@ -137,8 +136,8 @@ public class ToggleListScreen<T> extends Screen {
 		}
 
 		@Override
-		public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
-			super.render(pose, mouseX, mouseY, partialTick);
+		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+			super.render(guiGraphics, mouseX, mouseY, partialTick);
 
 			int baseY = top + border - (int) scrollDistance;
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
@@ -149,12 +148,12 @@ public class ToggleListScreen<T> extends Screen {
 				int comparatorOutput = be.getComparatorOutputFunction().applyAsInt(orderedFilterList.get(slotIndex));
 
 				if (comparatorOutput > 0)
-					renderTooltip(pose, Component.translatable("gui.securitycraft:toggleList.comparatorOutput", comparatorOutput), right - 8, slotBottom);
+					guiGraphics.renderTooltip(font, Component.translatable("gui.securitycraft:toggleList.comparatorOutput", comparatorOutput), right - 8, slotBottom);
 			}
 		}
 
 		@Override
-		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY) {
 			Font font = Minecraft.getInstance().font;
 			int baseY = top + border - (int) scrollDistance;
 			int slotBuffer = slotHeight - 4;
@@ -190,9 +189,8 @@ public class ToggleListScreen<T> extends Screen {
 				Component name = typeNames.computeIfAbsent(type, t -> Utils.localize(t == be.getDefaultType() ? be.getDefaultTypeName() : t.toString()));
 				int yStart = relativeY + (slotHeight * i);
 
-				font.draw(pose, name, left + width / 2 - font.width(name) / 2, yStart, 0xC6C6C6);
-				RenderSystem._setShaderTexture(0, BEACON_GUI);
-				blit(pose, left, yStart - 3, 14, 14, be.getFilter(type) ? 88 : 110, 219, 21, 22, 256, 256);
+				guiGraphics.drawString(font, name, left + width / 2 - font.width(name) / 2, yStart, 0xC6C6C6);
+				guiGraphics.blit(BEACON_GUI, left, yStart - 3, 14, 14, be.getFilter(type) ? 88 : 110, 219, 21, 22, 256, 256);
 				i++;
 			}
 		}

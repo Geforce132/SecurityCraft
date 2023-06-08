@@ -4,9 +4,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
@@ -22,6 +19,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -136,50 +134,50 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, title, (storage ? 123 : imageWidth) / 2 - font.width(title) / 2, 6, 4210752);
+	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+		guiGraphics.drawString(font, title, (storage ? 123 : imageWidth) / 2 - font.width(title) / 2, 6, 4210752);
 
 		if (storage) {
-			font.draw(pose, playerInventoryTitle, 8, imageHeight - 94, 4210752);
-			renderTooltip(pose, mouseX - leftPos, mouseY - topPos);
+			guiGraphics.drawString(font, playerInventoryTitle, 8, imageHeight - 94, 4210752);
+			renderTooltip(guiGraphics, mouseX - leftPos, mouseY - topPos);
 		}
 
 		if (!be.enabled && isOwner) {
 			if (!storage) {
-				font.draw(pose, youNeed, imageWidth / 2 - font.width(youNeed) / 2, 83, 4210752);
+				guiGraphics.drawString(font, youNeed, imageWidth / 2 - font.width(youNeed) / 2, 83, 4210752);
 
-				font.draw(pose, wallsNeededOverall + "", 42, 100, 4210752);
-				minecraft.getItemRenderer().renderAndDecorateItem(pose, BLOCK_POCKET_WALL, 25, 96);
+				guiGraphics.drawString(font, wallsNeededOverall + "", 42, 100, 4210752);
+				guiGraphics.renderItem(BLOCK_POCKET_WALL, 25, 96);
 
-				font.draw(pose, pillarsNeededOverall + "", 94, 100, 4210752);
-				minecraft.getItemRenderer().renderAndDecorateItem(pose, REINFORCED_CRYSTAL_QUARTZ_PILLAR, 77, 96);
+				guiGraphics.drawString(font, pillarsNeededOverall + "", 94, 100, 4210752);
+				guiGraphics.renderItem(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 77, 96);
 
-				font.draw(pose, chiseledNeededOverall + "", 147, 100, 4210752);
-				minecraft.getItemRenderer().renderAndDecorateItem(pose, REINFORCED_CHISELED_CRYSTAL_QUARTZ, 130, 96);
+				guiGraphics.drawString(font, chiseledNeededOverall + "", 147, 100, 4210752);
+				guiGraphics.renderItem(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 130, 96);
 			}
 			else {
-				font.draw(pose, youNeed, 169 + 87 / 2 - font.width(youNeed) / 2, imageHeight - 83, 4210752);
+				guiGraphics.drawString(font, youNeed, 169 + 87 / 2 - font.width(youNeed) / 2, imageHeight - 83, 4210752);
 
-				font.draw(pose, Math.max(0, wallsStillNeeded) + "", 192, imageHeight - 66, 4210752);
-				minecraft.getItemRenderer().renderAndDecorateItem(pose, BLOCK_POCKET_WALL, 175, imageHeight - 70);
+				guiGraphics.drawString(font, Math.max(0, wallsStillNeeded) + "", 192, imageHeight - 66, 4210752);
+				guiGraphics.renderItem(BLOCK_POCKET_WALL, 175, imageHeight - 70);
 
-				font.draw(pose, Math.max(0, pillarsStillNeeded) + "", 192, imageHeight - 44, 4210752);
-				minecraft.getItemRenderer().renderAndDecorateItem(pose, REINFORCED_CRYSTAL_QUARTZ_PILLAR, 175, imageHeight - 48);
+				guiGraphics.drawString(font, Math.max(0, pillarsStillNeeded) + "", 192, imageHeight - 44, 4210752);
+				guiGraphics.renderItem(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 175, imageHeight - 48);
 
-				font.draw(pose, Math.max(0, chiseledStillNeeded) + "", 192, imageHeight - 22, 4210752);
-				minecraft.getItemRenderer().renderAndDecorateItem(pose, REINFORCED_CHISELED_CRYSTAL_QUARTZ, 175, imageHeight - 26);
+				guiGraphics.drawString(font, Math.max(0, chiseledStillNeeded) + "", 192, imageHeight - 22, 4210752);
+				guiGraphics.renderItem(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 175, imageHeight - 26);
 			}
 		}
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-		super.render(pose, mouseX, mouseY, partialTicks);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 		if (!be.enabled && isOwner) {
 			for (StackHoverChecker shc : hoverCheckers) {
 				if (shc.checkHover(mouseX, mouseY)) {
-					renderTooltip(pose, shc.getStack(), mouseX, mouseY);
+					guiGraphics.renderTooltip(font, shc.getStack(), mouseX, mouseY);
 					break;
 				}
 			}
@@ -187,10 +185,9 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	}
 
 	@Override
-	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, storage ? TEXTURE_STORAGE : TEXTURE);
-		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+		renderBackground(guiGraphics);
+		guiGraphics.blit(storage ? TEXTURE_STORAGE : TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override

@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -11,6 +9,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -60,14 +59,13 @@ public class KeyChangerScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		super.render(pose, mouseX, mouseY, partialTick);
-		font.draw(pose, ukcName, width / 2 - font.width(ukcName) / 2, topPos + 6, 4210752);
-		font.draw(pose, enterPasscode, width / 2 - font.width(enterPasscode) / 2, topPos + 25, 4210752);
-		font.draw(pose, confirmPasscode, width / 2 - font.width(confirmPasscode) / 2, topPos + 65, 4210752);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		renderBackground(guiGraphics);
+		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(guiGraphics, mouseX, mouseY, partialTick);
+		guiGraphics.drawString(font, ukcName, width / 2 - font.width(ukcName) / 2, topPos + 6, 4210752);
+		guiGraphics.drawString(font, enterPasscode, width / 2 - font.width(enterPasscode) / 2, topPos + 25, 4210752);
+		guiGraphics.drawString(font, confirmPasscode, width / 2 - font.width(confirmPasscode) / 2, topPos + 65, 4210752);
 	}
 
 	@Override

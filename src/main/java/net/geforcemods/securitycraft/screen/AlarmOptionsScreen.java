@@ -3,8 +3,6 @@ package net.geforcemods.securitycraft.screen;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
@@ -15,6 +13,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -68,19 +67,18 @@ public class AlarmOptionsScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, GUI_TEXTURE);
-		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		super.render(pose, mouseX, mouseY, partialTick);
-		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 0x404040);
-		font.draw(pose, soundLengthText, soundLengthTextXPosition, topPos + 27, 0x404040);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		renderBackground(guiGraphics);
+		guiGraphics.blit(GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(guiGraphics, mouseX, mouseY, partialTick);
+		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 0x404040);
+		guiGraphics.drawString(font, soundLengthText, soundLengthTextXPosition, topPos + 27, 0x404040);
 
 		if (alarmScreen.be.isPowered() && !alarmScreen.be.isDisabled()) {
 			int cooldownSeconds = (alarmScreen.be.getCooldown() - 1) / 20;
 			Component nextSoundText = Utils.localize("gui.securitycraft:alarm.nextSound", String.format("%02d:%02d", cooldownSeconds / 60, cooldownSeconds % 60 + 1));
 
-			font.draw(pose, nextSoundText, width / 2 - font.width(nextSoundText) / 2, topPos + 95, 0x404040);
+			guiGraphics.drawString(font, nextSoundText, width / 2 - font.width(nextSoundText) / 2, topPos + 95, 0x404040);
 		}
 	}
 

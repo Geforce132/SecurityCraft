@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.screen.components;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
@@ -15,10 +14,10 @@ public class ColorChooserButton extends Button {
 	}
 
 	@Override
-	public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partialTick) {
+	public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		int color = colorChooser.getRGBColor();
 
-		super.renderWidget(pose, mouseX, mouseY, partialTick);
-		fillGradient(pose, getX() + 2, getY() + 2, getX() + width - 2, getY() + height - 2, color, color, 0);
+		super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
+		guiGraphics.fillGradient(getX() + 2, getY() + 2, getX() + width - 2, getY() + height - 2, color, color, 0);
 	}
 }

@@ -13,7 +13,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
@@ -24,6 +23,7 @@ import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -124,15 +124,14 @@ public class EditModuleScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, startX, startY, 0, 0, xSize, ySize);
-		super.render(pose, mouseX, mouseY, partialTicks);
-		font.drawWordWrap(pose, editModule, startX + xSize / 2 - font.width(editModule) / 2, startY + 6, width, 4210752);
+		renderBackground(guiGraphics);
+		guiGraphics.blit(TEXTURE, startX, startY, 0, 0, xSize, ySize);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		guiGraphics.drawWordWrap(font, editModule, startX + xSize / 2 - font.width(editModule) / 2, startY + 6, width, 4210752);
 	}
 
 	@Override
@@ -351,7 +350,7 @@ public class EditModuleScreen extends Screen {
 		}
 
 		@Override
-		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY) {
 			if (module.hasTag()) {
 				CompoundTag tag = module.getTag();
 				int baseY = top + border - (int) scrollDistance;
@@ -373,7 +372,7 @@ public class EditModuleScreen extends Screen {
 						String name = tag.getString("Player" + (i + 1));
 
 						if (!name.isEmpty())
-							font.draw(pose, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
+							guiGraphics.drawString(font, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
 					}
 				}
 			}
@@ -434,9 +433,9 @@ public class EditModuleScreen extends Screen {
 		}
 
 		@Override
-		public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
+		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 			if (active) {
-				super.render(pose, mouseX, mouseY, partialTick);
+				super.render(guiGraphics, mouseX, mouseY, partialTick);
 
 				//draw tooltip for long patron names
 				int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
@@ -448,13 +447,13 @@ public class EditModuleScreen extends Screen {
 					int baseY = top + border - (int) scrollDistance;
 
 					if (length >= width - 6) //6 = barWidth
-						renderTooltip(pose, name, left + 3, baseY + (slotHeight * slotIndex + slotHeight));
+						guiGraphics.renderTooltip(font, name, left + 3, baseY + (slotHeight * slotIndex + slotHeight));
 				}
 			}
 		}
 
 		@Override
-		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY) {
 			int baseY = top + border - (int) scrollDistance;
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
 			int slotIndex = mouseListY / slotHeight;
@@ -468,9 +467,8 @@ public class EditModuleScreen extends Screen {
 				int yStart = relativeY + (slotHeight * i);
 				PlayerTeam team = availableTeams.get(i);
 
-				font.draw(pose, team.getDisplayName(), left + 15, yStart, 0xC6C6C6);
-				RenderSystem._setShaderTexture(0, BEACON_GUI);
-				blit(pose, left, yStart - 3, 14, 14, teamsListedStatus.get(team) ? 88 : 110, 219, 21, 22, 256, 256);
+				guiGraphics.drawString(font, team.getDisplayName(), left + 15, yStart, 0xC6C6C6);
+				guiGraphics.blit(BEACON_GUI, left, yStart - 3, 14, 14, teamsListedStatus.get(team) ? 88 : 110, 219, 21, 22, 256, 256);
 			}
 		}
 

@@ -31,7 +31,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -135,7 +135,7 @@ public class SCClientEventHandler {
 		}
 	}
 
-	public static void cameraOverlay(ForgeGui gui, PoseStack pose, float partialTicks, int width, int height) {
+	public static void cameraOverlay(ForgeGui gui, GuiGraphics guiGraphics, float partialTicks, int width, int height) {
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
 		BlockPos pos = mc.cameraEntity.blockPosition();
@@ -162,42 +162,39 @@ public class SCClientEventHandler {
 		if (be.hasCustomName()) {
 			Component cameraName = be.getCustomName();
 
-			font.drawShadow(pose, cameraName, window.getGuiScaledWidth() - font.width(cameraName) - 8, 25, 16777215);
+			guiGraphics.drawString(font, cameraName, window.getGuiScaledWidth() - font.width(cameraName) - 8, 25, 16777215, true);
 			timeY += 10;
 		}
 
-		font.drawShadow(pose, time, window.getGuiScaledWidth() - font.width(time) - 4, timeY, 16777215);
-		font.drawShadow(pose, lookAround, window.getGuiScaledWidth() - font.width(lookAround) - 8, window.getGuiScaledHeight() - 80, 16777215);
-		font.drawShadow(pose, exit, window.getGuiScaledWidth() - font.width(exit) - 8, window.getGuiScaledHeight() - 70, 16777215);
-		font.drawShadow(pose, zoom, window.getGuiScaledWidth() - font.width(zoom) - 8, window.getGuiScaledHeight() - 60, 16777215);
-		font.drawShadow(pose, nightVision, window.getGuiScaledWidth() - font.width(nightVision) - 8, window.getGuiScaledHeight() - 50, 16777215);
-		font.drawShadow(pose, redstone, window.getGuiScaledWidth() - font.width(redstone) - 8, window.getGuiScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
-		font.drawShadow(pose, REDSTONE_NOTE, window.getGuiScaledWidth() - font.width(REDSTONE_NOTE) - 8, window.getGuiScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
+		guiGraphics.drawString(font, time, window.getGuiScaledWidth() - font.width(time) - 4, timeY, 16777215, true);
+		guiGraphics.drawString(font, lookAround, window.getGuiScaledWidth() - font.width(lookAround) - 8, window.getGuiScaledHeight() - 80, 16777215, true);
+		guiGraphics.drawString(font, exit, window.getGuiScaledWidth() - font.width(exit) - 8, window.getGuiScaledHeight() - 70, 16777215, true);
+		guiGraphics.drawString(font, zoom, window.getGuiScaledWidth() - font.width(zoom) - 8, window.getGuiScaledHeight() - 60, 16777215, true);
+		guiGraphics.drawString(font, nightVision, window.getGuiScaledWidth() - font.width(nightVision) - 8, window.getGuiScaledHeight() - 50, 16777215, true);
+		guiGraphics.drawString(font, redstone, window.getGuiScaledWidth() - font.width(redstone) - 8, window.getGuiScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855, true);
+		guiGraphics.drawString(font, REDSTONE_NOTE, window.getGuiScaledWidth() - font.width(REDSTONE_NOTE) - 8, window.getGuiScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855, true);
 
-		RenderSystem._setShaderTexture(0, CAMERA_DASHBOARD);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		GuiComponent.blit(pose, 5, 0, 0, 0, 90, 20);
-		GuiComponent.blit(pose, window.getGuiScaledWidth() - 70, 5, 190, 0, 65, 30);
+		guiGraphics.blit(CAMERA_DASHBOARD, 5, 0, 0, 0, 90, 20);
+		guiGraphics.blit(CAMERA_DASHBOARD, window.getGuiScaledWidth() - 70, 5, 190, 0, 65, 30);
 
 		if (!mc.player.hasEffect(MobEffects.NIGHT_VISION))
-			GuiComponent.blit(pose, 28, 4, 90, 12, 16, 11);
+			guiGraphics.blit(CAMERA_DASHBOARD, 28, 4, 90, 12, 16, 11);
 		else {
-			RenderSystem._setShaderTexture(0, NIGHT_VISION);
-			GuiComponent.blit(pose, 27, -1, 0, 0, 18, 18, 18, 18);
-			RenderSystem._setShaderTexture(0, CAMERA_DASHBOARD);
+			guiGraphics.blit(NIGHT_VISION, 27, -1, 0, 0, 18, 18, 18, 18);
 		}
 
 		if (state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 			if (!hasRedstoneModule)
-				GuiComponent.blit(pose, 12, 2, 104, 0, 12, 12);
+				guiGraphics.blit(CAMERA_DASHBOARD, 12, 2, 104, 0, 12, 12);
 			else
-				GuiComponent.blit(pose, 12, 3, 90, 0, 12, 11);
+				guiGraphics.blit(CAMERA_DASHBOARD, 12, 3, 90, 0, 12, 11);
 		}
 		else
-			Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(pose, REDSTONE, 10, 0);
+			guiGraphics.renderItem(REDSTONE, 10, 0);
 	}
 
-	public static void hotbarBindOverlay(ForgeGui gui, PoseStack pose, float partialTicks, int width, int height) {
+	public static void hotbarBindOverlay(ForgeGui gui, GuiGraphics guiGraphics, float partialTicks, int width, int height) {
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
 		Level level = player.getCommandSenderWorld();
@@ -243,10 +240,8 @@ public class SCClientEventHandler {
 				}, 0, null, false, SonicSecuritySystemItem::isAdded);
 			}
 
-			if (uCoord != 0) {
-				RenderSystem._setShaderTexture(0, BEACON_GUI);
-				GuiComponent.blit(pose, Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 90 + (hand == InteractionHand.MAIN_HAND ? player.getInventory().selected * 20 : (mc.options.mainHand().get() == HumanoidArm.LEFT ? 189 : -29)), Minecraft.getInstance().getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
-			}
+			if (uCoord != 0)
+				guiGraphics.blit(BEACON_GUI, Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 90 + (hand == InteractionHand.MAIN_HAND ? player.getInventory().selected * 20 : (mc.options.mainHand().get() == HumanoidArm.LEFT ? 189 : -29)), Minecraft.getInstance().getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
 		}
 	}
 

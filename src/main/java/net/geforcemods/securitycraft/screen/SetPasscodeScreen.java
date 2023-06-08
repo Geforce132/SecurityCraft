@@ -1,13 +1,12 @@
 package net.geforcemods.securitycraft.screen;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.SetPasscode;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -53,18 +52,17 @@ public class SetPasscodeScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		super.render(pose, mouseX, mouseY, partialTicks);
-		drawString(pose, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(guiGraphics);
+		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		guiGraphics.drawString(font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 
 		if (font.width(combined) < imageWidth - 10)
-			font.draw(pose, combined, width / 2 - font.width(combined) / 2, topPos + 6, 4210752);
+			guiGraphics.drawString(font, combined, width / 2 - font.width(combined) / 2, topPos + 6, 4210752);
 		else {
-			font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
-			font.draw(pose, setup, width / 2 - font.width(setup) / 2, topPos + 16, 4210752);
+			guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
+			guiGraphics.drawString(font, setup, width / 2 - font.width(setup) / 2, topPos + 16, 4210752);
 		}
 	}
 

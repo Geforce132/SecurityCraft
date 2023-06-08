@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -25,12 +22,12 @@ import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -84,7 +81,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		for (int i = 0; i < maxNumberOfModules; i++) {
 			int column = i % numberOfColumns;
 
-			addRenderableWidget(descriptionButtons[i] = new ModuleButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked));
+			addRenderableWidget(descriptionButtons[i] = new ModuleButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked));
 			descriptionButtons[i].setTooltip(Tooltip.create(getModuleTooltipText(i)));
 			descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
@@ -137,10 +134,8 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-		super.render(pose, mouseX, mouseY, partialTicks);
-
-		RenderSystem._setShaderTexture(0, BEACON_GUI);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 		for (int i = 36; i < menu.maxSlots; i++) {
 			Slot slot = menu.slots.get(i);
@@ -149,25 +144,24 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 				ModuleType type = ((ModuleItem) slot.getItem().getItem()).getModuleType();
 
 				if (indicators.containsKey(type))
-					blit(pose, leftPos + slot.x - 2, topPos + slot.y + 16, 20, 20, indicators.get(type) ? 88 : 110, 219, 21, 22, 256, 256);
+					guiGraphics.blit(BEACON_GUI, leftPos + slot.x - 2, topPos + slot.y + 16, 20, 20, indicators.get(type) ? 88 : 110, 219, 21, 22, 256, 256);
 			}
 		}
 
 		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
-			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
+			guiGraphics.renderTooltip(font, getSlotUnderMouse().getItem(), mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
-		font.draw(pose, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
+	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+		guiGraphics.drawString(font, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
+		guiGraphics.drawString(font, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURES[maxNumberOfModules]);
-		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+		renderBackground(guiGraphics);
+		guiGraphics.blit(TEXTURES[maxNumberOfModules], leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
@@ -264,8 +258,8 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private class ModuleButton extends PictureButton {
 		private final ModuleItem module;
 
-		public ModuleButton(int xPos, int yPos, int width, int height, ItemRenderer itemRenderer, ModuleItem itemToRender, OnPress onPress) {
-			super(xPos, yPos, width, height, itemRenderer, new ItemStack(itemToRender), onPress);
+		public ModuleButton(int xPos, int yPos, int width, int height, ModuleItem itemToRender, OnPress onPress) {
+			super(xPos, yPos, width, height, new ItemStack(itemToRender), onPress);
 
 			module = itemToRender;
 		}

@@ -8,8 +8,6 @@ import java.util.Locale;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -29,6 +27,7 @@ import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.Tooltip;
@@ -151,24 +150,23 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, 6, 0x404040);
-		renderTooltip(pose, mouseX - leftPos, mouseY - topPos);
+	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+		guiGraphics.drawString(font, title, imageWidth / 2 - font.width(title) / 2, 6, 0x404040);
+		renderTooltip(guiGraphics, mouseX - leftPos, mouseY - topPos);
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
-		super.render(pose, mouseX, mouseY, partialTick);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		super.render(guiGraphics, mouseX, mouseY, partialTick);
 
 		if (smartModuleHoverChecker != null && smartModuleHoverChecker.checkHover(mouseX, mouseY) && !be.isModuleEnabled(ModuleType.SMART))
-			renderComponentTooltip(pose, smartModuleHoverChecker.getLines(), mouseX, mouseY);
+			guiGraphics.renderComponentTooltip(font, smartModuleHoverChecker.getLines(), mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderBg(PoseStack pose, float partialTick, int mouseX, int mouseY) {
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+		renderBackground(guiGraphics);
+		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
@@ -284,7 +282,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		@Override
-		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 			int height = 0;
 
 			for (int i = 0; i < filteredEntries.size(); i++) {
@@ -296,17 +294,17 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			}
 
 			applyScrollLimits();
-			super.render(pose, mouseX, mouseY, partialTicks);
+			super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 			for (int i = 0; i < filteredEntries.size(); i++) {
-				filteredEntries.get(i).renderLongMessageTooltip(pose);
+				filteredEntries.get(i).renderLongMessageTooltip(guiGraphics, font);
 			}
 		}
 
 		@Override
-		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
 			for (int i = 0; i < filteredEntries.size(); i++) {
-				filteredEntries.get(i).render(pose, mouseX, mouseY, 0.0F);
+				filteredEntries.get(i).render(guiGraphics, mouseX, mouseY, 0.0F);
 			}
 		}
 
@@ -432,16 +430,16 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		@Override
-		public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
-			super.render(pose, mouseX, mouseY, partialTick);
+		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+			super.render(guiGraphics, mouseX, mouseY, partialTick);
 
 			if (currentIndex == DetectionMode.BREAK.ordinal())
-				minecraft.getItemRenderer().renderAndDecorateItem(pose, ironPickaxe, getX() + 2, getY() + 2);
+				guiGraphics.renderItem(ironPickaxe, getX() + 2, getY() + 2);
 			else if (currentIndex == DetectionMode.PLACE.ordinal())
-				minecraft.getItemRenderer().renderAndDecorateItem(pose, grassBlock, getX() + 2, getY() + 2);
+				guiGraphics.renderItem(grassBlock, getX() + 2, getY() + 2);
 			else if (currentIndex == DetectionMode.BOTH.ordinal()) {
-				minecraft.getItemRenderer().renderAndDecorateItem(pose, grassBlock, getX() + 2, getY() + 2, 0, -100);
-				minecraft.getItemRenderer().renderAndDecorateItem(pose, ironPickaxe, getX() + 2, getY() + 2);
+				guiGraphics.renderItem(grassBlock, getX() + 2, getY() + 2, 0, -100);
+				guiGraphics.renderItem(ironPickaxe, getX() + 2, getY() + 2);
 			}
 		}
 

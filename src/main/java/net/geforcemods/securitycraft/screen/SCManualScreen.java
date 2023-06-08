@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -40,6 +39,7 @@ import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -131,70 +131,61 @@ public class SCManualScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(pose);
-
-		if (currentPage == -1)
-			RenderSystem._setShaderTexture(0, TITLE_PAGE);
-		else if (recipe != null && recipe.size() > 0)
-			RenderSystem._setShaderTexture(0, PAGE);
-		else
-			RenderSystem._setShaderTexture(0, PAGE_WITH_SCROLL);
-
-		blit(pose, startX, 5, 0, 0, 256, 250);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(guiGraphics);
+		guiGraphics.blit(currentPage == -1 ? TITLE_PAGE : (recipe != null && recipe.size() > 0 ? PAGE : PAGE_WITH_SCROLL), startX, 5, 0, 0, 256, 250);
 
 		for (Renderable renderable : renderables) {
-			renderable.render(pose, mouseX, mouseY, partialTicks);
+			renderable.render(guiGraphics, mouseX, mouseY, partialTicks);
 		}
 
 		if (currentPage > -1) {
 			String pageNumberText = (currentPage + 2) + "/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
 			if (subpages.size() > 1)
-				font.draw(pose, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
+				guiGraphics.drawString(font, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
 			if (designedBy != null)
-				font.drawWordWrap(pose, designedBy, startX + 18, 150, 75, 0);
+				guiGraphics.drawWordWrap(font, designedBy, startX + 18, 150, 75, 0);
 
-			font.draw(pose, pageTitle, startX + 39, 27, 0);
-			font.drawWordWrap(pose, subpages.get(currentSubpage), startX + 18, 45, 225, 0);
-			font.draw(pose, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
-			RenderSystem._setShaderTexture(0, ICONS);
+			guiGraphics.drawString(font, pageTitle, startX + 39, 27, 0);
+			guiGraphics.drawWordWrap(font, subpages.get(currentSubpage), startX + 18, 45, 225, 0);
+			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
 
 			if (ownable)
-				blit(pose, startX + 29, 118, 1, 1, 16, 16);
+				guiGraphics.blit(ICONS, startX + 29, 118, 1, 1, 16, 16);
 
 			if (passcodeProtected)
-				blit(pose, startX + 55, 118, 18, 1, 17, 16);
+				guiGraphics.blit(ICONS, startX + 55, 118, 18, 1, 17, 16);
 
 			if (viewActivated)
-				blit(pose, startX + 81, 118, 36, 1, 17, 16);
+				guiGraphics.blit(ICONS, startX + 81, 118, 36, 1, 17, 16);
 
 			if (explosive)
-				blit(pose, startX + 107, 117, 54, 1, 18, 18);
+				guiGraphics.blit(ICONS,  startX + 107, 117, 54, 1, 18, 18);
 
 			if (customizable)
-				blit(pose, startX + 136, 118, 88, 1, 16, 16);
+				guiGraphics.blit(ICONS, startX + 136, 118, 88, 1, 16, 16);
 
 			if (moduleInventory)
-				blit(pose, startX + 163, 118, 105, 1, 16, 16);
+				guiGraphics.blit(ICONS, startX + 163, 118, 105, 1, 16, 16);
 
 			if (lockable)
-				blit(pose, startX + 189, 118, 154, 1, 16, 16);
+				guiGraphics.blit(ICONS, startX + 189, 118, 154, 1, 16, 16);
 
 			if (customizable || moduleInventory)
-				blit(pose, startX + 213, 118, 72, 1, 16, 16);
+				guiGraphics.blit(ICONS, startX + 213, 118, 72, 1, 16, 16);
 
 			for (int i = 0; i < hoverCheckers.size(); i++) {
 				HoverChecker chc = hoverCheckers.get(i);
 
 				if (chc != null && chc.checkHover(mouseX, mouseY)) {
 					if (chc instanceof TextHoverChecker thc && thc.getName() != null) {
-						renderComponentTooltip(pose, thc.getLines(), mouseX, mouseY);
+						guiGraphics.renderComponentTooltip(font, thc.getLines(), mouseX, mouseY);
 						break;
 					}
 					else if (i < displays.length && !displays[i].getCurrentStack().isEmpty()) {
-						renderTooltip(pose, displays[i].getCurrentStack(), mouseX, mouseY);
+						guiGraphics.renderTooltip(font, displays[i].getCurrentStack(), mouseX, mouseY);
 						break;
 					}
 				}
@@ -203,22 +194,22 @@ public class SCManualScreen extends Screen {
 		else { //"welcome" page
 			String pageNumberText = "1/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
-			font.draw(pose, intro1, width / 2 - font.width(intro1) / 2, 22, 0);
+			guiGraphics.drawString(font, intro1, width / 2 - font.width(intro1) / 2, 22, 0);
 
 			for (int i = 0; i < intro2.size(); i++) {
 				FormattedCharSequence text = intro2.get(i);
 
-				font.draw(pose, text, width / 2 - font.width(text) / 2, 150 + 10 * i, 0);
+				guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, 150 + 10 * i, 0);
 			}
 
 			for (int i = 0; i < author.size(); i++) {
 				FormattedCharSequence text = author.get(i);
 
-				font.draw(pose, text, width / 2 - font.width(text) / 2, 180 + 10 * i, 0);
+				guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, 180 + 10 * i, 0);
 			}
 
-			font.draw(pose, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
-			font.draw(pose, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 30, 40, 0);
+			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
+			guiGraphics.drawString(font, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 30, 40, 0);
 		}
 	}
 
@@ -631,10 +622,10 @@ public class SCManualScreen extends Screen {
 		}
 
 		@Override
-		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 			if (currentPage == -1) {
 				if (patronsAvailable) {
-					super.render(pose, mouseX, mouseY, partialTicks);
+					super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 					//draw tooltip for long patron names
 					int mouseListY = (int) (mouseY - top + scrollDistance - border);
@@ -646,14 +637,14 @@ public class SCManualScreen extends Screen {
 						int baseY = top + border - (int) scrollDistance;
 
 						if (length >= width - 6) //6 = barWidth
-							renderTooltip(pose, List.of(Component.literal(patron)), Optional.empty(), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
+							guiGraphics.renderTooltip(font, List.of(Component.literal(patron)), Optional.empty(), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
 					}
 
 					if (patrons.isEmpty()) {
 						for (int i = 0; i < noPatronsLines.size(); i++) {
 							FormattedCharSequence line = noPatronsLines.get(i);
 
-							font.draw(pose, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFF333333);
+							guiGraphics.drawString(font, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFF333333);
 						}
 					}
 				}
@@ -661,7 +652,7 @@ public class SCManualScreen extends Screen {
 					for (int i = 0; i < fetchErrorLines.size(); i++) {
 						FormattedCharSequence line = fetchErrorLines.get(i);
 
-						font.draw(pose, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFFB00101);
+						guiGraphics.drawString(font, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFFB00101);
 					}
 				}
 				else if (patronRequestFuture != null && patronRequestFuture.isDone()) {
@@ -675,18 +666,18 @@ public class SCManualScreen extends Screen {
 					}
 				}
 				else
-					font.draw(pose, loadingText, left + width / 2 - font.width(loadingText) / 2, top + 30, 0);
+					guiGraphics.drawString(font, loadingText, left + width / 2 - font.width(loadingText) / 2, top + 30, 0);
 			}
 		}
 
 		@Override
-		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
 			//draw entry strings
 			for (int i = 0; i < patrons.size(); i++) {
 				String patron = patrons.get(i);
 
 				if (patron != null && !patron.isEmpty())
-					font.draw(pose, patron, left + 2, relativeY + (slotHeight * i), 0);
+					guiGraphics.drawString(font, patron, left + 2, relativeY + (slotHeight * i), 0);
 			}
 		}
 
@@ -724,11 +715,10 @@ public class SCManualScreen extends Screen {
 		}
 
 		@Override
-		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 			if (visible) {
 				isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
-				RenderSystem._setShaderTexture(0, VANILLA_BOOK);
-				blit(pose, getX(), getY(), isHoveredOrFocused() ? 23 : 0, textureY, 23, 13);
+				guiGraphics.blit(VANILLA_BOOK, getX(), getY(), isHoveredOrFocused() ? 23 : 0, textureY, 23, 13);
 			}
 		}
 	}
@@ -739,10 +729,10 @@ public class SCManualScreen extends Screen {
 		}
 
 		@Override
-		public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partial) {
+		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
 			RenderSystem._setShaderTexture(0, ICONS);
 			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
-			blit(pose, getX(), getY(), isHoveredOrFocused() ? 138 : 122, 1, 16, 16);
+			guiGraphics.blit(ICONS, getX(), getY(), isHoveredOrFocused() ? 138 : 122, 1, 16, 16);
 		}
 	}
 

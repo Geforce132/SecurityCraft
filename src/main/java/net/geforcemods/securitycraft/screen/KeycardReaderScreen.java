@@ -4,9 +4,6 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
@@ -21,6 +18,7 @@ import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
@@ -201,17 +199,17 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
-		font.draw(pose, signatureText, imageWidth / 2 - font.width(signatureText) / 2, 23, 4210752);
-		font.draw(pose, keycardLevelsText, 170 - font.width(keycardLevelsText), 56, 4210752);
+	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+		guiGraphics.drawString(font, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
+		guiGraphics.drawString(font, signatureText, imageWidth / 2 - font.width(signatureText) / 2, 23, 4210752);
+		guiGraphics.drawString(font, keycardLevelsText, 170 - font.width(keycardLevelsText), 56, 4210752);
 
 		//numbers infront of keycard levels buttons
 		for (int i = 1; i <= 5; i++) {
-			font.draw(pose, "" + i, 91, 55 + 17 * i, 4210752);
+			guiGraphics.drawString(font, "" + i, 91, 55 + 17 * i, 4210752);
 		}
 
-		font.draw(pose, Utils.INVENTORY_TEXT, 8, imageHeight - 93, 4210752);
+		guiGraphics.drawString(font, Utils.INVENTORY_TEXT, 8, imageHeight - 93, 4210752);
 	}
 
 	@Override
@@ -248,8 +246,8 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-		super.render(pose, mouseX, mouseY, partialTicks);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 		ItemStack stack = menu.keycardSlot.getItem();
 
@@ -258,25 +256,23 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			int left = leftPos + 40;
 			int top = topPos + 60;
 
-			RenderSystem._setShaderTexture(0, WORLD_SELECTION_ICONS);
-			blit(pose, left, top, 22, 22, 70, 37, 22, 22, 256, 256);
+			guiGraphics.blit(WORLD_SELECTION_ICONS, left, top, 22, 22, 70, 37, 22, 22, 256, 256);
 
 			if (mouseX >= left - 7 && mouseX < left + 13 && mouseY >= top && mouseY <= top + 22)
-				renderComponentTooltip(pose, Arrays.asList(levelMismatchInfo), mouseX, mouseY);
+				guiGraphics.renderComponentTooltip(font, Arrays.asList(levelMismatchInfo), mouseX, mouseY);
 		}
 
 		if (!usesTextField.active && !stack.isEmpty() && usesHoverChecker.checkHover(mouseX, mouseY))
-			renderComponentTooltip(pose, usesHoverChecker.getLines(), mouseX, mouseY);
+			guiGraphics.renderComponentTooltip(font, usesHoverChecker.getLines(), mouseX, mouseY);
 
-		renderTooltip(pose, mouseX, mouseY);
-		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+		renderTooltip(guiGraphics, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+		renderBackground(guiGraphics);
+		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
