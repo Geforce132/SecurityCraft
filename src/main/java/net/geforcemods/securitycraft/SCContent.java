@@ -2749,6 +2749,7 @@ public class SCContent {
 		return Block.Properties.of().strength(-1.0F, Float.MAX_VALUE);
 	}
 
+	@SuppressWarnings("unused")
 	private static final Block.Properties prop(FeatureFlag... requiredFeatures) {
 		return prop().requiredFeatures(requiredFeatures);
 	}
@@ -2761,6 +2762,7 @@ public class SCContent {
 		return Block.Properties.of().mapColor(color).strength(-1.0F, Float.MAX_VALUE);
 	}
 
+	@SuppressWarnings("unused")
 	private static final Block.Properties prop(MapColor color, FeatureFlag... requiredFeatures) {
 		return prop().mapColor(color).requiredFeatures(requiredFeatures);
 	}
@@ -2809,6 +2811,7 @@ public class SCContent {
 		return new ReinforcedButtonBlock(prop().noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType, 30, true);
 	}
 
+	@SuppressWarnings("unused")
 	private static ReinforcedButtonBlock woodenButton(Block vanillaBlock, BlockSetType blockSetType, FeatureFlag... requiredFeatures) {
 		return new ReinforcedButtonBlock(prop().noCollission().pushReaction(PushReaction.BLOCK).requiredFeatures(requiredFeatures), vanillaBlock, blockSetType, 30, true);
 	}
@@ -2821,6 +2824,7 @@ public class SCContent {
 		return new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop().noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
 	}
 
+	@SuppressWarnings("unused")
 	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, BlockSetType blockSetType, FeatureFlag... requiredFeatures) {
 		return new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop().noCollission().requiredFeatures(requiredFeatures).pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
 	}
