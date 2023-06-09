@@ -135,36 +135,36 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-		guiGraphics.drawString(font, title, (storage ? 123 : imageWidth) / 2 - font.width(title) / 2, 6, 4210752);
+		guiGraphics.drawString(font, title, (storage ? 123 : imageWidth) / 2 - font.width(title) / 2, 6, 4210752, false);
 
 		if (storage) {
-			guiGraphics.drawString(font, playerInventoryTitle, 8, imageHeight - 94, 4210752);
+			guiGraphics.drawString(font, playerInventoryTitle, 8, imageHeight - 94, 4210752, false);
 			renderTooltip(guiGraphics, mouseX - leftPos, mouseY - topPos);
 		}
 
 		if (!be.enabled && isOwner) {
 			if (!storage) {
-				guiGraphics.drawString(font, youNeed, imageWidth / 2 - font.width(youNeed) / 2, 83, 4210752);
+				guiGraphics.drawString(font, youNeed, imageWidth / 2 - font.width(youNeed) / 2, 83, 4210752, false);
 
-				guiGraphics.drawString(font, wallsNeededOverall + "", 42, 100, 4210752);
+				guiGraphics.drawString(font, wallsNeededOverall + "", 42, 100, 4210752, false);
 				guiGraphics.renderItem(BLOCK_POCKET_WALL, 25, 96);
 
-				guiGraphics.drawString(font, pillarsNeededOverall + "", 94, 100, 4210752);
+				guiGraphics.drawString(font, pillarsNeededOverall + "", 94, 100, 4210752, false);
 				guiGraphics.renderItem(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 77, 96);
 
-				guiGraphics.drawString(font, chiseledNeededOverall + "", 147, 100, 4210752);
+				guiGraphics.drawString(font, chiseledNeededOverall + "", 147, 100, 4210752, false);
 				guiGraphics.renderItem(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 130, 96);
 			}
 			else {
-				guiGraphics.drawString(font, youNeed, 169 + 87 / 2 - font.width(youNeed) / 2, imageHeight - 83, 4210752);
+				guiGraphics.drawString(font, youNeed, 169 + 87 / 2 - font.width(youNeed) / 2, imageHeight - 83, 4210752, false);
 
-				guiGraphics.drawString(font, Math.max(0, wallsStillNeeded) + "", 192, imageHeight - 66, 4210752);
+				guiGraphics.drawString(font, Math.max(0, wallsStillNeeded) + "", 192, imageHeight - 66, 4210752, false);
 				guiGraphics.renderItem(BLOCK_POCKET_WALL, 175, imageHeight - 70);
 
-				guiGraphics.drawString(font, Math.max(0, pillarsStillNeeded) + "", 192, imageHeight - 44, 4210752);
+				guiGraphics.drawString(font, Math.max(0, pillarsStillNeeded) + "", 192, imageHeight - 44, 4210752, false);
 				guiGraphics.renderItem(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 175, imageHeight - 48);
 
-				guiGraphics.drawString(font, Math.max(0, chiseledStillNeeded) + "", 192, imageHeight - 22, 4210752);
+				guiGraphics.drawString(font, Math.max(0, chiseledStillNeeded) + "", 192, imageHeight - 22, 4210752, false);
 				guiGraphics.renderItem(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 175, imageHeight - 26);
 			}
 		}

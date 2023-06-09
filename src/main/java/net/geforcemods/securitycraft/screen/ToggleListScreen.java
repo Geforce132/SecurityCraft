@@ -64,8 +64,8 @@ public class ToggleListScreen<T> extends Screen {
 		renderBackground(guiGraphics);
 		guiGraphics.blit(GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
-		guiGraphics.drawString(font, scrollListTitle, width / 2 - font.width(scrollListTitle) / 2, topPos + 31, 4210752);
+		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752, false);
+		guiGraphics.drawString(font, scrollListTitle, width / 2 - font.width(scrollListTitle) / 2, topPos + 31, 4210752, false);
 		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
@@ -189,7 +189,7 @@ public class ToggleListScreen<T> extends Screen {
 				Component name = typeNames.computeIfAbsent(type, t -> Utils.localize(t == be.getDefaultType() ? be.getDefaultTypeName() : t.toString()));
 				int yStart = relativeY + (slotHeight * i);
 
-				guiGraphics.drawString(font, name, left + width / 2 - font.width(name) / 2, yStart, 0xC6C6C6);
+				guiGraphics.drawString(font, name, left + width / 2 - font.width(name) / 2, yStart, 0xC6C6C6, false);
 				guiGraphics.blit(BEACON_GUI, left, yStart - 3, 14, 14, be.getFilter(type) ? 88 : 110, 219, 21, 22, 256, 256);
 				i++;
 			}

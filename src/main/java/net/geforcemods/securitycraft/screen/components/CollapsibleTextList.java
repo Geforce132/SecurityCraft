@@ -87,7 +87,7 @@ public class CollapsibleTextList extends Button {
 				if (lineY + font.lineHeight > getY() + interpolatedHeight)
 					return;
 
-				guiGraphics.drawString(font, linesToDraw.get(lineIndex), getX() + 2, lineY, getFGColor());
+				guiGraphics.drawString(font, linesToDraw.get(lineIndex), getX() + 2, lineY, getFGColor(), false);
 			}
 
 			renderedLines += linesToDraw.size() - 1;

@@ -149,8 +149,8 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 		renderBackground(guiGraphics);
 		guiGraphics.blit(TEXTURE, startX, startY, 0, 0, xSize, ySize, 512, 512);
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawString(font, title, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752);
-		guiGraphics.drawString(font, SOUND_TEXT, soundButton.getX() - soundTextLength - 5, startY + 141, 4210752);
+		guiGraphics.drawString(font, title, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752, false);
+		guiGraphics.drawString(font, SOUND_TEXT, soundButton.getX() - soundTextLength - 5, startY + 141, 4210752, false);
 	}
 
 	@Override

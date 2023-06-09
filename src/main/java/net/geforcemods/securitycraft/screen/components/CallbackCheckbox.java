@@ -43,7 +43,7 @@ public class CallbackCheckbox extends AbstractButton {
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		guiGraphics.blit(TEXTURE, getX(), getY(), width, height, isFocused() ? 20.0F : 0.0F, selected ? 20.0F : 0.0F, 20, 20, 64, 64);
-		guiGraphics.drawString(minecraft.font, getMessage(), getX() + (int)(width * 1.2F), getY() + (height - 8) / 2, textColor | Mth.ceil(alpha * 255.0F) << 24);
+		guiGraphics.drawString(minecraft.font, getMessage(), getX() + (int)(width * 1.2F), getY() + (height - 8) / 2, textColor | Mth.ceil(alpha * 255.0F) << 24, false);
 	}
 
 	@Override

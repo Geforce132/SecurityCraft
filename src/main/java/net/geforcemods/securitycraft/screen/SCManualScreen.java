@@ -143,14 +143,14 @@ public class SCManualScreen extends Screen {
 			String pageNumberText = (currentPage + 2) + "/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
 			if (subpages.size() > 1)
-				guiGraphics.drawString(font, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
+				guiGraphics.drawString(font, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270, false);
 
 			if (designedBy != null)
 				guiGraphics.drawWordWrap(font, designedBy, startX + 18, 150, 75, 0);
 
-			guiGraphics.drawString(font, pageTitle, startX + 39, 27, 0);
+			guiGraphics.drawString(font, pageTitle, startX + 39, 27, 0, false);
 			guiGraphics.drawWordWrap(font, subpages.get(currentSubpage), startX + 18, 45, 225, 0);
-			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
+			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270, false);
 
 			if (ownable)
 				guiGraphics.blit(ICONS, startX + 29, 118, 1, 1, 16, 16);
@@ -194,22 +194,22 @@ public class SCManualScreen extends Screen {
 		else { //"welcome" page
 			String pageNumberText = "1/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
-			guiGraphics.drawString(font, intro1, width / 2 - font.width(intro1) / 2, 22, 0);
+			guiGraphics.drawString(font, intro1, width / 2 - font.width(intro1) / 2, 22, 0, false);
 
 			for (int i = 0; i < intro2.size(); i++) {
 				FormattedCharSequence text = intro2.get(i);
 
-				guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, 150 + 10 * i, 0);
+				guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, 150 + 10 * i, 0, false);
 			}
 
 			for (int i = 0; i < author.size(); i++) {
 				FormattedCharSequence text = author.get(i);
 
-				guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, 180 + 10 * i, 0);
+				guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, 180 + 10 * i, 0, false);
 			}
 
-			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
-			guiGraphics.drawString(font, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 30, 40, 0);
+			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270, false);
+			guiGraphics.drawString(font, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 30, 40, 0, false);
 		}
 	}
 
@@ -644,7 +644,7 @@ public class SCManualScreen extends Screen {
 						for (int i = 0; i < noPatronsLines.size(); i++) {
 							FormattedCharSequence line = noPatronsLines.get(i);
 
-							guiGraphics.drawString(font, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFF333333);
+							guiGraphics.drawString(font, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFF333333, false);
 						}
 					}
 				}
@@ -652,7 +652,7 @@ public class SCManualScreen extends Screen {
 					for (int i = 0; i < fetchErrorLines.size(); i++) {
 						FormattedCharSequence line = fetchErrorLines.get(i);
 
-						guiGraphics.drawString(font, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFFB00101);
+						guiGraphics.drawString(font, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFFB00101, false);
 					}
 				}
 				else if (patronRequestFuture != null && patronRequestFuture.isDone()) {
@@ -666,7 +666,7 @@ public class SCManualScreen extends Screen {
 					}
 				}
 				else
-					guiGraphics.drawString(font, loadingText, left + width / 2 - font.width(loadingText) / 2, top + 30, 0);
+					guiGraphics.drawString(font, loadingText, left + width / 2 - font.width(loadingText) / 2, top + 30, 0, false);
 			}
 		}
 
@@ -677,7 +677,7 @@ public class SCManualScreen extends Screen {
 				String patron = patrons.get(i);
 
 				if (patron != null && !patron.isEmpty())
-					guiGraphics.drawString(font, patron, left + 2, relativeY + (slotHeight * i), 0);
+					guiGraphics.drawString(font, patron, left + 2, relativeY + (slotHeight * i), 0, false);
 			}
 		}
 

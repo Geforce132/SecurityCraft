@@ -151,7 +151,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-		guiGraphics.drawString(font, title, imageWidth / 2 - font.width(title) / 2, 6, 0x404040);
+		guiGraphics.drawString(font, title, imageWidth / 2 - font.width(title) / 2, 6, 0x404040, false);
 		renderTooltip(guiGraphics, mouseX - leftPos, mouseY - topPos);
 	}
 

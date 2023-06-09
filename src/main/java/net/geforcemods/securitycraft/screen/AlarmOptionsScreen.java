@@ -71,14 +71,14 @@ public class AlarmOptionsScreen extends Screen {
 		renderBackground(guiGraphics);
 		guiGraphics.blit(GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
-		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 0x404040);
-		guiGraphics.drawString(font, soundLengthText, soundLengthTextXPosition, topPos + 27, 0x404040);
+		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 0x404040, false);
+		guiGraphics.drawString(font, soundLengthText, soundLengthTextXPosition, topPos + 27, 0x404040, false);
 
 		if (alarmScreen.be.isPowered() && !alarmScreen.be.isDisabled()) {
 			int cooldownSeconds = (alarmScreen.be.getCooldown() - 1) / 20;
 			Component nextSoundText = Utils.localize("gui.securitycraft:alarm.nextSound", String.format("%02d:%02d", cooldownSeconds / 60, cooldownSeconds % 60 + 1));
 
-			guiGraphics.drawString(font, nextSoundText, width / 2 - font.width(nextSoundText) / 2, topPos + 95, 0x404040);
+			guiGraphics.drawString(font, nextSoundText, width / 2 - font.width(nextSoundText) / 2, topPos + 95, 0x404040, false);
 		}
 	}
 

@@ -128,7 +128,7 @@ public class CameraMonitorScreen extends Screen {
 		renderBackground(guiGraphics);
 		guiGraphics.blit(TEXTURE, startX, startY, 0, 0, xSize, ySize);
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawString(font, selectCameras, startX + xSize / 2 - font.width(selectCameras) / 2, startY + 6, 4210752);
+		guiGraphics.drawString(font, selectCameras, startX + xSize / 2 - font.width(selectCameras) / 2, startY + 6, 4210752, false);
 	}
 
 	private void cameraButtonClicked(Button button, int buttonId) {

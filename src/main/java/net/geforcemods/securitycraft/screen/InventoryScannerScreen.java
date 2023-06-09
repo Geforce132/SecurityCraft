@@ -66,13 +66,13 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-		guiGraphics.drawString(font, prohibitedItems, 8, 6, 4210752);
-		guiGraphics.drawString(font, be.isOwnedBy(minecraft.player) ? adminMode : viewMode, 112, 6, 4210752);
+		guiGraphics.drawString(font, prohibitedItems, 8, 6, 4210752, false);
+		guiGraphics.drawString(font, be.isOwnedBy(minecraft.player) ? adminMode : viewMode, 112, 6, 4210752, false);
 
 		if (hasStorageModule && owns)
-			guiGraphics.drawString(font, storage, 188, 18, 4210752);
+			guiGraphics.drawString(font, storage, 188, 18, 4210752, false);
 
-		guiGraphics.drawString(font, Utils.INVENTORY_TEXT, 15, imageHeight - 93, 4210752);
+		guiGraphics.drawString(font, Utils.INVENTORY_TEXT, 15, imageHeight - 93, 4210752, false);
 	}
 
 	@Override

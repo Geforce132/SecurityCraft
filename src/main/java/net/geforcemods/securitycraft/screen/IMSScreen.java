@@ -44,8 +44,8 @@ public class IMSScreen extends Screen {
 		renderBackground(guiGraphics);
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
-		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
-		guiGraphics.drawString(font, target, width / 2 - font.width(target) / 2, topPos + 30, 4210752);
+		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752, false);
+		guiGraphics.drawString(font, target, width / 2 - font.width(target) / 2, topPos + 30, 4210752, false);
 	}
 
 	@Override

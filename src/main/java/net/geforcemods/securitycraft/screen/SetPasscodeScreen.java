@@ -59,10 +59,10 @@ public class SetPasscodeScreen extends Screen {
 		guiGraphics.drawString(font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 
 		if (font.width(combined) < imageWidth - 10)
-			guiGraphics.drawString(font, combined, width / 2 - font.width(combined) / 2, topPos + 6, 4210752);
+			guiGraphics.drawString(font, combined, width / 2 - font.width(combined) / 2, topPos + 6, 4210752, false);
 		else {
-			guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
-			guiGraphics.drawString(font, setup, width / 2 - font.width(setup) / 2, topPos + 16, 4210752);
+			guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752, false);
+			guiGraphics.drawString(font, setup, width / 2 - font.width(setup) / 2, topPos + 16, 4210752, false);
 		}
 	}
 

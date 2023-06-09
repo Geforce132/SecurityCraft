@@ -109,7 +109,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 		for (ConnectionInfo info : connectionInfo) {
 			int yStart = relativeY + (slotHeight * i++);
 
-			guiGraphics.drawString(font, info.blockName, left + 13, yStart, 0xC6C6C6);
+			guiGraphics.drawString(font, info.blockName, left + 13, yStart, 0xC6C6C6, false);
 		}
 	}
 
@@ -129,7 +129,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			if (length + 13 >= width - 6) //6 = barWidth
 				guiGraphics.renderTooltip(font, List.of(blockName), Optional.empty(), left + 1, baseY + (slotHeight * slotIndex + slotHeight));
 
-			guiGraphics.drawString(font, Utils.getFormattedCoordinates(connectionInfo.get(slotIndex).pos), left + 13, top + height + 5, 4210752);
+			guiGraphics.drawString(font, Utils.getFormattedCoordinates(connectionInfo.get(slotIndex).pos), left + 13, top + height + 5, 4210752, false);
 		}
 	}
 

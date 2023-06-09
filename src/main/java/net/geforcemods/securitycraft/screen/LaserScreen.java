@@ -57,7 +57,7 @@ public class LaserScreen extends Screen {
 		renderBackground(guiGraphics);
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, xSize, ySize);
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawString(font, title, leftPos + xSize / 2 - font.width(title) / 2, topPos + 6, 0x404040);
+		guiGraphics.drawString(font, title, leftPos + xSize / 2 - font.width(title) / 2, topPos + 6, 0x404040, false);
 		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 

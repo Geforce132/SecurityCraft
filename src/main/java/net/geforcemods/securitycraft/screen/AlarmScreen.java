@@ -89,9 +89,9 @@ public class AlarmScreen extends Screen {
 		RenderSystem._setShaderTexture(0, GUI_TEXTURE);
 		guiGraphics.blit(GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
-		guiGraphics.drawString(font, currentlySelectedText, width / 2 - font.width(currentlySelectedText) / 2, topPos + imageHeight - 62, 4210752);
-		guiGraphics.drawString(font, selectedSoundEventText, width / 2 - font.width(selectedSoundEventText) / 2, topPos + imageHeight - 49, 4210752);
+		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752, false);
+		guiGraphics.drawString(font, currentlySelectedText, width / 2 - font.width(currentlySelectedText) / 2, topPos + imageHeight - 62, 4210752, false);
+		guiGraphics.drawString(font, selectedSoundEventText, width / 2 - font.width(selectedSoundEventText) / 2, topPos + imageHeight - 49, 4210752, false);
 		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
@@ -237,7 +237,7 @@ public class AlarmScreen extends Screen {
 				SoundEvent soundEvent = filteredSoundEvents.get(i);
 				Component name = getSoundEventComponent(soundEvent);
 
-				guiGraphics.drawString(font, name, left + textOffset, yStart, 0xC6C6C6);
+				guiGraphics.drawString(font, name, left + textOffset, yStart, 0xC6C6C6, false);
 				guiGraphics.blit(GUI_TEXTURE, left, yStart - 1, 0, i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? 9 : 0, 246, 10, 10, 256, 256);
 			}
 		}

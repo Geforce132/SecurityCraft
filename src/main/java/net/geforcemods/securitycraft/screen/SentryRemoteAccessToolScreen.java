@@ -182,13 +182,13 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		renderBackground(guiGraphics);
 		guiGraphics.blit(TEXTURE, startX, startY, 0, 0, xSize, ySize, 512, 256);
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawString(font, title, startX + xSize / 2 - font.width(title) / 2, startY + 6, 4210752);
+		guiGraphics.drawString(font, title, startX + xSize / 2 - font.width(title) / 2, startY + 6, 4210752, false);
 
 		for (int i = 0; i < 12; i++) {
-			guiGraphics.drawString(font, lines[i], startX + xSize / 4 - lengths[i] + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 25 + 33, 4210752);
+			guiGraphics.drawString(font, lines[i], startX + xSize / 4 - lengths[i] + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 25 + 33, 4210752, false);
 		}
 
-		guiGraphics.drawString(font, modifyAll, startX + xSize / 2 - font.width(modifyAll) + 25, startY + 194, 4210752);
+		guiGraphics.drawString(font, modifyAll, startX + xSize / 2 - font.width(modifyAll) + 25, startY + 194, 4210752, false);
 
 		for (TextHoverChecker chc : hoverCheckers) {
 			if (chc != null && chc.checkHover(mouseX, mouseY)) {

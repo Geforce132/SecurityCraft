@@ -372,7 +372,7 @@ public class EditModuleScreen extends Screen {
 						String name = tag.getString("Player" + (i + 1));
 
 						if (!name.isEmpty())
-							guiGraphics.drawString(font, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
+							guiGraphics.drawString(font, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (slotHeight * i), 0xC6C6C6, false);
 					}
 				}
 			}
@@ -467,7 +467,7 @@ public class EditModuleScreen extends Screen {
 				int yStart = relativeY + (slotHeight * i);
 				PlayerTeam team = availableTeams.get(i);
 
-				guiGraphics.drawString(font, team.getDisplayName(), left + 15, yStart, 0xC6C6C6);
+				guiGraphics.drawString(font, team.getDisplayName(), left + 15, yStart, 0xC6C6C6, false);
 				guiGraphics.blit(BEACON_GUI, left, yStart - 3, 14, 14, teamsListedStatus.get(team) ? 88 : 110, 219, 21, 22, 256, 256);
 			}
 		}

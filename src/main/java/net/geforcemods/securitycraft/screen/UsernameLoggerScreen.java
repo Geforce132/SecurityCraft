@@ -64,7 +64,7 @@ public class UsernameLoggerScreen extends Screen {
 		renderBackground(guiGraphics);
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
-		guiGraphics.drawString(font, logged, width / 2 - font.width(logged) / 2, topPos + 6, 4210752);
+		guiGraphics.drawString(font, logged, width / 2 - font.width(logged) / 2, topPos + 6, 4210752, false);
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class UsernameLoggerScreen extends Screen {
 						if (be.uuids[slotIndex] != null && !be.uuids[slotIndex].isEmpty())
 							guiGraphics.renderTooltip(font, Component.literal(be.uuids[slotIndex]), mouseX, mouseY);
 
-						guiGraphics.drawString(font, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, 4210752);
+						guiGraphics.drawString(font, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, 4210752, false);
 					}
 				}
 			}
@@ -171,7 +171,7 @@ public class UsernameLoggerScreen extends Screen {
 			//draw entry strings
 			for (int i = 0; i < be.players.length; i++) {
 				if (be.players[i] != null && !be.players[i].equals(""))
-					guiGraphics.drawString(font, be.players[i], left + width / 2 - font.width(be.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
+					guiGraphics.drawString(font, be.players[i], left + width / 2 - font.width(be.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6, false);
 			}
 		}
 

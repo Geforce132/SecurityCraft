@@ -63,9 +63,9 @@ public class KeyChangerScreen extends Screen {
 		renderBackground(guiGraphics);
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
-		guiGraphics.drawString(font, ukcName, width / 2 - font.width(ukcName) / 2, topPos + 6, 4210752);
-		guiGraphics.drawString(font, enterPasscode, width / 2 - font.width(enterPasscode) / 2, topPos + 25, 4210752);
-		guiGraphics.drawString(font, confirmPasscode, width / 2 - font.width(confirmPasscode) / 2, topPos + 65, 4210752);
+		guiGraphics.drawString(font, ukcName, width / 2 - font.width(ukcName) / 2, topPos + 6, 4210752, false);
+		guiGraphics.drawString(font, enterPasscode, width / 2 - font.width(enterPasscode) / 2, topPos + 25, 4210752, false);
+		guiGraphics.drawString(font, confirmPasscode, width / 2 - font.width(confirmPasscode) / 2, topPos + 65, 4210752, false);
 	}
 
 	@Override

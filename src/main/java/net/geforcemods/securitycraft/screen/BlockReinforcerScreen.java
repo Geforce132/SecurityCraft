@@ -36,11 +36,11 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		NonNullList<ItemStack> inv = menu.getItems();
 
-		guiGraphics.drawString(font, ubr, (imageWidth - font.width(ubr)) / 2, 5, 4210752);
-		guiGraphics.drawString(font, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
+		guiGraphics.drawString(font, ubr, (imageWidth - font.width(ubr)) / 2, 5, 4210752, false);
+		guiGraphics.drawString(font, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752, false);
 
 		if (!inv.get(36).isEmpty()) {
-			guiGraphics.drawString(font, output, 50, 25, 4210752);
+			guiGraphics.drawString(font, output, 50, 25, 4210752, false);
 			guiGraphics.renderItem(menu.reinforcingSlot.getOutput(), 116, 20);
 			guiGraphics.renderItemDecorations(minecraft.font, menu.reinforcingSlot.getOutput(), 116, 20, null);
 
@@ -49,7 +49,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 		}
 
 		if (!isLvl1 && !inv.get(37).isEmpty()) {
-			guiGraphics.drawString(font, output, 50, 50, 4210752);
+			guiGraphics.drawString(font, output, 50, 50, 4210752, false);
 			guiGraphics.renderItem(menu.unreinforcingSlot.getOutput(), 116, 46);
 			guiGraphics.renderItemDecorations(minecraft.font, menu.unreinforcingSlot.getOutput(), 116, 46, null);
 

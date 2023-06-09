@@ -200,16 +200,16 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-		guiGraphics.drawString(font, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
-		guiGraphics.drawString(font, signatureText, imageWidth / 2 - font.width(signatureText) / 2, 23, 4210752);
-		guiGraphics.drawString(font, keycardLevelsText, 170 - font.width(keycardLevelsText), 56, 4210752);
+		guiGraphics.drawString(font, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752, false);
+		guiGraphics.drawString(font, signatureText, imageWidth / 2 - font.width(signatureText) / 2, 23, 4210752, false);
+		guiGraphics.drawString(font, keycardLevelsText, 170 - font.width(keycardLevelsText), 56, 4210752, false);
 
 		//numbers infront of keycard levels buttons
 		for (int i = 1; i <= 5; i++) {
-			guiGraphics.drawString(font, "" + i, 91, 55 + 17 * i, 4210752);
+			guiGraphics.drawString(font, "" + i, 91, 55 + 17 * i, 4210752, false);
 		}
 
-		guiGraphics.drawString(font, Utils.INVENTORY_TEXT, 8, imageHeight - 93, 4210752);
+		guiGraphics.drawString(font, Utils.INVENTORY_TEXT, 8, imageHeight - 93, 4210752, false);
 	}
 
 	@Override

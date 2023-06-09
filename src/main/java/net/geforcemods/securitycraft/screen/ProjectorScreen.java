@@ -100,7 +100,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-		guiGraphics.drawString(font, title, imageWidth / 2 - font.width(title) / 2, 6, 0x404040);
+		guiGraphics.drawString(font, title, imageWidth / 2 - font.width(title) / 2, 6, 0x404040, false);
 	}
 
 	@Override

@@ -89,15 +89,15 @@ public class CheckPasscodeScreen extends Screen {
 		renderBackground(guiGraphics);
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
-		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
+		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752, false);
 
 		if (be.isOnCooldown()) {
 			long cooldownEnd = be.getCooldownEnd();
 			long secondsLeft = Math.max(cooldownEnd - System.currentTimeMillis(), 0) / 1000 + 1; //+1 so that the text doesn't say "0 seconds left" for a whole second
 			Component text = Component.translatable("gui.securitycraft:passcode.cooldown2", secondsLeft);
 
-			guiGraphics.drawString(font, COOLDOWN_TEXT_1, cooldownText1XPos, height / 2 + 65, 4210752);
-			guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, height / 2 + 75, 4210752);
+			guiGraphics.drawString(font, COOLDOWN_TEXT_1, cooldownText1XPos, height / 2 + 65, 4210752, false);
+			guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, height / 2 + 75, 4210752, false);
 
 			if (!wasOnCooldownLastRenderTick)
 				wasOnCooldownLastRenderTick = true;

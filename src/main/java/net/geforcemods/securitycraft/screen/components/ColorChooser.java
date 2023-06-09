@@ -130,10 +130,10 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 			guiGraphics.fillGradient(colorFieldLeft, colorFieldTop, colorFieldRight + 1, colorFieldBottom + 1, 0x00000000, 0xFF000000, 0);
 			guiGraphics.blit(TEXTURE, (int) selectionX - 1, (int) selectionY - 1, colorFieldHoverChecker.checkHover(mouseX, mouseY) ? 148 : 145, 20, 3, 3); //color field indicator
 			super.render(guiGraphics, mouseX, mouseY, partialTick);
-			guiGraphics.drawString(font, rText, colorFieldRight + 5, colorFieldTop + 1, 0x404040);
-			guiGraphics.drawString(font, gText, colorFieldRight + 5, colorFieldTop + 16, 0x404040);
-			guiGraphics.drawString(font, bText, colorFieldRight + 5, colorFieldTop + 31, 0x404040);
-			guiGraphics.drawString(font, rgbHexText, colorFieldRight + 5, colorFieldTop + 46, 0x404040);
+			guiGraphics.drawString(font, rText, colorFieldRight + 5, colorFieldTop + 1, 0x404040, false);
+			guiGraphics.drawString(font, gText, colorFieldRight + 5, colorFieldTop + 16, 0x404040, false);
+			guiGraphics.drawString(font, bText, colorFieldRight + 5, colorFieldTop + 31, 0x404040, false);
+			guiGraphics.drawString(font, rgbHexText, colorFieldRight + 5, colorFieldTop + 46, 0x404040, false);
 		}
 	}
 

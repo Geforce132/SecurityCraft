@@ -51,7 +51,7 @@ public class SSSItemScreen extends Screen implements ConnectionAccessor {
 		renderBackground(guiGraphics);
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawString(font, title, leftPos + imageWidth / 2 - textWidth / 2, topPos + 6, 4210752);
+		guiGraphics.drawString(font, title, leftPos + imageWidth / 2 - textWidth / 2, topPos + 6, 4210752, false);
 	}
 
 	@Override
