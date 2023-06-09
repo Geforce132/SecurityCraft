@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:deepslate_iron_mine"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

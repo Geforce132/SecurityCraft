@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:lapis_mine"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

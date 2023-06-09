@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:reinforced_smooth_stone"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

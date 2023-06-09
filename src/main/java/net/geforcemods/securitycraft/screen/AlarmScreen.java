@@ -12,7 +12,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
@@ -25,6 +24,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -84,15 +84,15 @@ public class AlarmScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(pose);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(guiGraphics);
 		RenderSystem._setShaderTexture(0, GUI_TEXTURE);
-		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		super.render(pose, mouseX, mouseY, partialTicks);
-		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
-		font.draw(pose, currentlySelectedText, width / 2 - font.width(currentlySelectedText) / 2, topPos + imageHeight - 62, 4210752);
-		font.draw(pose, selectedSoundEventText, width / 2 - font.width(selectedSoundEventText) / 2, topPos + imageHeight - 49, 4210752);
-		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+		guiGraphics.blit(GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752, false);
+		guiGraphics.drawString(font, currentlySelectedText, width / 2 - font.width(currentlySelectedText) / 2, topPos + imageHeight - 62, 4210752, false);
+		guiGraphics.drawString(font, selectedSoundEventText, width / 2 - font.width(selectedSoundEventText) / 2, topPos + imageHeight - 49, 4210752, false);
+		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	public void selectSound(ResourceLocation eventId) {
@@ -193,8 +193,8 @@ public class AlarmScreen extends Screen {
 		}
 
 		@Override
-		public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
-			super.render(pose, mouseX, mouseY, partialTick);
+		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+			super.render(guiGraphics, mouseX, mouseY, partialTick);
 
 			int baseY = top + border - (int) scrollDistance;
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
@@ -205,12 +205,12 @@ public class AlarmScreen extends Screen {
 				int length = font.width(soundEventKey);
 
 				if (length >= width - 6 - textOffset)
-					renderTooltip(pose, List.of(soundEventKey), Optional.empty(), left + textOffset - 12, baseY + (slotHeight * slotIndex + slotHeight));
+					guiGraphics.renderTooltip(font, List.of(soundEventKey), Optional.empty(), left + textOffset - 12, baseY + (slotHeight * slotIndex + slotHeight));
 			}
 		}
 
 		@Override
-		protected void drawPanel(PoseStack pose, int entryRight, int baseY, Tesselator tesselator, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int baseY, Tesselator tesselator, int mouseX, int mouseY) {
 			Font font = Minecraft.getInstance().font;
 			int slotBuffer = slotHeight - 4;
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
@@ -237,9 +237,8 @@ public class AlarmScreen extends Screen {
 				SoundEvent soundEvent = filteredSoundEvents.get(i);
 				Component name = getSoundEventComponent(soundEvent);
 
-				font.draw(pose, name, left + textOffset, yStart, 0xC6C6C6);
-				RenderSystem._setShaderTexture(0, GUI_TEXTURE);
-				blit(pose, left, yStart - 1, 0, i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? 9 : 0, 246, 10, 10, 256, 256);
+				guiGraphics.drawString(font, name, left + textOffset, yStart, 0xC6C6C6, false);
+				guiGraphics.blit(GUI_TEXTURE, left, yStart - 1, 0, i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? 9 : 0, 246, 10, 10, 256, 256);
 			}
 		}
 

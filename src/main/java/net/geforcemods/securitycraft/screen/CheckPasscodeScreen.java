@@ -3,8 +3,6 @@ package net.geforcemods.securitycraft.screen;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -13,6 +11,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.CheckPasscode;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -86,20 +85,19 @@ public class CheckPasscodeScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		super.render(pose, mouseX, mouseY, partialTick);
-		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		renderBackground(guiGraphics);
+		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(guiGraphics, mouseX, mouseY, partialTick);
+		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752, false);
 
 		if (be.isOnCooldown()) {
 			long cooldownEnd = be.getCooldownEnd();
 			long secondsLeft = Math.max(cooldownEnd - System.currentTimeMillis(), 0) / 1000 + 1; //+1 so that the text doesn't say "0 seconds left" for a whole second
 			Component text = Component.translatable("gui.securitycraft:passcode.cooldown2", secondsLeft);
 
-			font.draw(pose, COOLDOWN_TEXT_1, cooldownText1XPos, height / 2 + 65, 4210752);
-			font.draw(pose, text, width / 2 - font.width(text) / 2, height / 2 + 75, 4210752);
+			guiGraphics.drawString(font, COOLDOWN_TEXT_1, cooldownText1XPos, height / 2 + 65, 4210752, false);
+			guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, height / 2 + 75, 4210752, false);
 
 			if (!wasOnCooldownLastRenderTick)
 				wasOnCooldownLastRenderTick = true;
@@ -202,11 +200,11 @@ public class CheckPasscodeScreen extends Screen {
 		}
 
 		@Override
-		public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partialTick) {
+		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 			String originalValue = value;
 
 			value = renderedText;
-			super.renderWidget(pose, mouseX, mouseY, partialTick);
+			super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
 			value = originalValue;
 		}
 

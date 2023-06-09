@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:reinforced_end_stone_brick_wall_from_reinforced_end_stone_stonecutting"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

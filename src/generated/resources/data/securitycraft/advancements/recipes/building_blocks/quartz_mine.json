@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:quartz_mine"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

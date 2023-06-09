@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:smart_module"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

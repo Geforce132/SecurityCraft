@@ -9,7 +9,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
@@ -19,6 +18,7 @@ import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.screen.components.SmallXButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -60,12 +60,11 @@ public class UsernameLoggerScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		super.render(pose, mouseX, mouseY, partialTick);
-		font.draw(pose, logged, width / 2 - font.width(logged) / 2, topPos + 6, 4210752);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		renderBackground(guiGraphics);
+		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(guiGraphics, mouseX, mouseY, partialTick);
+		guiGraphics.drawString(font, logged, width / 2 - font.width(logged) / 2, topPos + 6, 4210752, false);
 	}
 
 	@Override
@@ -118,8 +117,8 @@ public class UsernameLoggerScreen extends Screen {
 		}
 
 		@Override
-		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-			super.render(pose, mouseX, mouseY, partialTicks);
+		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+			super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 			if (be.isOwnedBy(minecraft.player)) {
 				int mouseListY = (int) (mouseY - top + scrollDistance - border);
@@ -130,16 +129,16 @@ public class UsernameLoggerScreen extends Screen {
 						Component localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(be.timestamps[slotIndex])));
 
 						if (be.uuids[slotIndex] != null && !be.uuids[slotIndex].isEmpty())
-							renderTooltip(pose, Component.literal(be.uuids[slotIndex]), mouseX, mouseY);
+							guiGraphics.renderTooltip(font, Component.literal(be.uuids[slotIndex]), mouseX, mouseY);
 
-						font.draw(pose, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, 4210752);
+						guiGraphics.drawString(font, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, 4210752, false);
 					}
 				}
 			}
 		}
 
 		@Override
-		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY) {
 			int baseY = top + border - (int) scrollDistance;
 			int slotBuffer = slotHeight - 4;
 			int mouseListY = (int) (mouseY - top + scrollDistance - border);
@@ -172,7 +171,7 @@ public class UsernameLoggerScreen extends Screen {
 			//draw entry strings
 			for (int i = 0; i < be.players.length; i++) {
 				if (be.players[i] != null && !be.players[i].equals(""))
-					font.draw(pose, be.players[i], left + width / 2 - font.width(be.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
+					guiGraphics.drawString(font, be.players[i], left + width / 2 - font.width(be.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6, false);
 			}
 		}
 

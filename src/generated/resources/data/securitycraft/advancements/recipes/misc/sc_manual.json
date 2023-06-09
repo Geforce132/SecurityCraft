@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:sc_manual"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

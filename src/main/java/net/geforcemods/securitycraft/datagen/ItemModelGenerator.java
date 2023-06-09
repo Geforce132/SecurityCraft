@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.geforcemods.securitycraft.RegistrationHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SCCreativeModeTabs;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.BrushableMineBlock;
@@ -40,8 +40,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
-		List<Item> mineTabItems = RegistrationHandler.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES).stream().map(ItemStack::getItem).toList();
-		List<Item> decorationTabItems = RegistrationHandler.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION).stream().map(ItemStack::getItem).toList();
+		List<Item> mineTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES).stream().map(ItemStack::getItem).toList();
+		List<Item> decorationTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION).stream().map(ItemStack::getItem).toList();
 		Map<Block, String> flatReinforcedItems = new HashMap<>();
 
 		flatReinforcedItems.put(SCContent.REINFORCED_CAULDRON.get(), "item/cauldron");

@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:disguise_module"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

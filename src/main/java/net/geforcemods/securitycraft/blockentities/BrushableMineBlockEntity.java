@@ -12,11 +12,11 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.SuspiciousSandBlockEntity;
+import net.minecraft.world.level.block.entity.BrushableBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public class BrushableMineBlockEntity extends SuspiciousSandBlockEntity implements IOwnable {
+public class BrushableMineBlockEntity extends BrushableBlockEntity implements IOwnable {
 	private Owner owner = new Owner();
 
 	public BrushableMineBlockEntity(BlockPos pos, BlockState state) {

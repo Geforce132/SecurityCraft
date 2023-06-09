@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -18,6 +16,7 @@ import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
@@ -176,25 +175,24 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, startX, startY, 0, 0, xSize, ySize, 512, 256);
-		super.render(pose, mouseX, mouseY, partialTicks);
-		font.draw(pose, title, startX + xSize / 2 - font.width(title) / 2, startY + 6, 4210752);
+		renderBackground(guiGraphics);
+		guiGraphics.blit(TEXTURE, startX, startY, 0, 0, xSize, ySize, 512, 256);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		guiGraphics.drawString(font, title, startX + xSize / 2 - font.width(title) / 2, startY + 6, 4210752, false);
 
 		for (int i = 0; i < 12; i++) {
-			font.draw(pose, lines[i], startX + xSize / 4 - lengths[i] + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 25 + 33, 4210752);
+			guiGraphics.drawString(font, lines[i], startX + xSize / 4 - lengths[i] + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 25 + 33, 4210752, false);
 		}
 
-		font.draw(pose, modifyAll, startX + xSize / 2 - font.width(modifyAll) + 25, startY + 194, 4210752);
+		guiGraphics.drawString(font, modifyAll, startX + xSize / 2 - font.width(modifyAll) + 25, startY + 194, 4210752, false);
 
 		for (TextHoverChecker chc : hoverCheckers) {
 			if (chc != null && chc.checkHover(mouseX, mouseY)) {
-				renderTooltip(pose, chc.getName(), mouseX, mouseY);
+				guiGraphics.renderTooltip(font, chc.getName(), mouseX, mouseY);
 				break;
 			}
 		}

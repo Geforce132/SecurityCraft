@@ -88,7 +88,7 @@ public abstract class FakeLavaFluid extends ForgeFlowingFluid {
 							return;
 						}
 					}
-					else if (stateToUpdate.getMaterial().blocksMotion())
+					else if (stateToUpdate.blocksMotion())
 						return;
 				}
 			}
@@ -99,7 +99,7 @@ public abstract class FakeLavaFluid extends ForgeFlowingFluid {
 					if (!level.isLoaded(posToUpdate))
 						return;
 
-					if (level.isEmptyBlock(posToUpdate.above()) && this.getCanBlockBurn(level, posToUpdate))
+					if (level.isEmptyBlock(posToUpdate.above()) && isFlammable(level, posToUpdate, Direction.UP))
 						level.setBlockAndUpdate(posToUpdate.above(), Blocks.FIRE.defaultBlockState());
 				}
 			}
@@ -107,16 +107,16 @@ public abstract class FakeLavaFluid extends ForgeFlowingFluid {
 	}
 
 	private boolean isSurroundingBlockFlammable(Level level, BlockPos pos) {
-		for (Direction Direction : Direction.values()) {
-			if (getCanBlockBurn(level, pos.relative(Direction)))
+		for (Direction direction : Direction.values()) {
+			if (isFlammable(level, pos.relative(direction), direction.getOpposite()))
 				return true;
 		}
 
 		return false;
 	}
 
-	private boolean getCanBlockBurn(Level level, BlockPos pos) {
-		return !level.isLoaded(pos) ? false : level.getBlockState(pos).getMaterial().isFlammable();
+	private boolean isFlammable(LevelReader level, BlockPos pos, Direction face) {
+		return pos.getY() >= level.getMinBuildHeight() && pos.getY() < level.getMaxBuildHeight() && !level.hasChunkAt(pos) ? false : level.getBlockState(pos).isFlammable(level, pos, face);
 	}
 
 	@Nullable

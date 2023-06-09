@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.screen.components;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.item.ItemStack;
@@ -22,11 +20,11 @@ public class IngredientDisplay implements Renderable {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		if (stacks == null || stacks.length == 0)
 			return;
 
-		Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(pose, stacks[currentRenderingStack], x, y);
+		guiGraphics.renderItem(stacks[currentRenderingStack], x, y);
 
 		if (!Screen.hasShiftDown()) {
 			ticksToChange -= partialTick;

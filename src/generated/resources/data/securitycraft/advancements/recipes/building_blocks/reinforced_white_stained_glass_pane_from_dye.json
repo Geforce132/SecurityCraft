@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:reinforced_white_stained_glass_pane_from_dye"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -8,12 +8,11 @@ import java.util.function.Predicate;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Function;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -124,18 +123,17 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		if (!disabled) {
-			RenderSystem._setShaderTexture(0, TEXTURE);
-			blit(pose, xStart, yStart, 0, 0, 145, 109);
-			ClientUtils.fillHorizontalGradient(pose, 0, colorFieldLeft, colorFieldTop, colorFieldRight + 1, colorFieldBottom + 1, 0xFFFFFFFF, ClientUtils.HSBtoRGB(h, 1.0F, 1.0F));
-			fillGradient(pose, colorFieldLeft, colorFieldTop, colorFieldRight + 1, colorFieldBottom + 1, 0x00000000, 0xFF000000, 0);
-			blit(pose, (int) selectionX - 1, (int) selectionY - 1, colorFieldHoverChecker.checkHover(mouseX, mouseY) ? 148 : 145, 20, 3, 3); //color field indicator
-			super.render(pose, mouseX, mouseY, partialTick);
-			font.draw(pose, rText, colorFieldRight + 5, colorFieldTop + 1, 0x404040);
-			font.draw(pose, gText, colorFieldRight + 5, colorFieldTop + 16, 0x404040);
-			font.draw(pose, bText, colorFieldRight + 5, colorFieldTop + 31, 0x404040);
-			font.draw(pose, rgbHexText, colorFieldRight + 5, colorFieldTop + 46, 0x404040);
+			guiGraphics.blit(TEXTURE, xStart, yStart, 0, 0, 145, 109);
+			ClientUtils.fillHorizontalGradient(guiGraphics, 0, colorFieldLeft, colorFieldTop, colorFieldRight + 1, colorFieldBottom + 1, 0xFFFFFFFF, ClientUtils.HSBtoRGB(h, 1.0F, 1.0F));
+			guiGraphics.fillGradient(colorFieldLeft, colorFieldTop, colorFieldRight + 1, colorFieldBottom + 1, 0x00000000, 0xFF000000, 0);
+			guiGraphics.blit(TEXTURE, (int) selectionX - 1, (int) selectionY - 1, colorFieldHoverChecker.checkHover(mouseX, mouseY) ? 148 : 145, 20, 3, 3); //color field indicator
+			super.render(guiGraphics, mouseX, mouseY, partialTick);
+			guiGraphics.drawString(font, rText, colorFieldRight + 5, colorFieldTop + 1, 0x404040, false);
+			guiGraphics.drawString(font, gText, colorFieldRight + 5, colorFieldTop + 16, 0x404040, false);
+			guiGraphics.drawString(font, bText, colorFieldRight + 5, colorFieldTop + 31, 0x404040, false);
+			guiGraphics.drawString(font, rgbHexText, colorFieldRight + 5, colorFieldTop + 46, 0x404040, false);
 		}
 	}
 
@@ -264,9 +262,8 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		}
 
 		@Override
-		public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partialTick) {
-			RenderSystem._setShaderTexture(0, TEXTURE);
-			blit(pose, getX() + (int) (value * (width - 8)), getY(), isHoveredOrFocused() ? 151 : 145, 0, 6, height);
+		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+			guiGraphics.blit(TEXTURE, getX() + (int) (value * (width - 8)), getY(), isHoveredOrFocused() ? 151 : 145, 0, 6, height);
 		}
 	}
 

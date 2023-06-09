@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
@@ -10,6 +7,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -54,33 +52,32 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-		super.render(pose, mouseX, mouseY, partialTicks);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-		font.drawWordWrap(pose, infoStringRedstone, leftPos + 28, topPos + 45, 150, 4210752);
-		font.drawWordWrap(pose, infoStringStorage, leftPos + 28, topPos + 75, 150, 4210752);
-		ClientUtils.renderModuleInfo(pose, ModuleType.REDSTONE, redstoneModuleTooltip, hasRedstoneModule, leftPos + 8, topPos + 45, width, height, mouseX, mouseY);
-		ClientUtils.renderModuleInfo(pose, ModuleType.STORAGE, storageModuleTooltip, hasStorageModule, leftPos + 8, topPos + 75, width, height, mouseX, mouseY);
+		guiGraphics.drawWordWrap(font, infoStringRedstone, leftPos + 28, topPos + 45, 150, 4210752);
+		guiGraphics.drawWordWrap(font, infoStringStorage, leftPos + 28, topPos + 75, 150, 4210752);
+		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.REDSTONE, redstoneModuleTooltip, hasRedstoneModule, leftPos + 8, topPos + 45, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.STORAGE, storageModuleTooltip, hasStorageModule, leftPos + 8, topPos + 75, width, height, mouseX, mouseY);
 
 		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
-			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
+			guiGraphics.renderTooltip(font, getSlotUnderMouse().getItem(), mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, prohibitedItems, 8, 6, 4210752);
-		font.draw(pose, be.isOwnedBy(minecraft.player) ? adminMode : viewMode, 112, 6, 4210752);
+	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+		guiGraphics.drawString(font, prohibitedItems, 8, 6, 4210752, false);
+		guiGraphics.drawString(font, be.isOwnedBy(minecraft.player) ? adminMode : viewMode, 112, 6, 4210752, false);
 
 		if (hasStorageModule && owns)
-			font.draw(pose, storage, 188, 18, 4210752);
+			guiGraphics.drawString(font, storage, 188, 18, 4210752, false);
 
-		font.draw(pose, Utils.INVENTORY_TEXT, 15, imageHeight - 93, 4210752);
+		guiGraphics.drawString(font, Utils.INVENTORY_TEXT, 15, imageHeight - 93, 4210752, false);
 	}
 
 	@Override
-	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY);
-		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight + 30);
+	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+		renderBackground(guiGraphics);
+		guiGraphics.blit(hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY, leftPos, topPos, 0, 0, imageWidth, imageHeight + 30);
 	}
 }

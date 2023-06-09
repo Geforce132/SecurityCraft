@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -21,11 +20,6 @@ public class SentryDisguiseBlock extends DisguisableBlock {
 	public SentryDisguiseBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(INVISIBLE, true).setValue(WATERLOGGED, false));
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.BLOCK;
 	}
 
 	@Override

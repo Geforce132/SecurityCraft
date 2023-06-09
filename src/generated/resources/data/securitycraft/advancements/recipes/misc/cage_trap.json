@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:cage_trap"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
