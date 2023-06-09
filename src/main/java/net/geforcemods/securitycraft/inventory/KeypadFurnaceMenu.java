@@ -24,6 +24,7 @@ public class KeypadFurnaceMenu extends ContainerFurnace {
 
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
 		te.getWorld().playEvent(null, Constants.WorldEvents.IRON_DOOR_CLOSE_SOUND, te.getPos(), 0);
 		te.getWorld().setBlockState(te.getPos(), te.getWorld().getBlockState(te.getPos()).withProperty(KeypadFurnaceBlock.OPEN, false));
 	}

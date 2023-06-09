@@ -55,6 +55,8 @@ public class BlockReinforcerMenu extends Container {
 
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
+
 		if (!itemInventory.getStackInSlot(0).isEmpty()) {
 			if (itemInventory.getStackInSlot(0).getCount() > reinforcingSlot.output.getCount()) { //if there's more in the slot than the reinforcer can reinforce (due to durability)
 				ItemStack overflowStack = itemInventory.getStackInSlot(0).copy();
