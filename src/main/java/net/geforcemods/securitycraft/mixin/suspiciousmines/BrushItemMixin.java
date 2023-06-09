@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.mixin.sussandmine;
+package net.geforcemods.securitycraft.mixin.suspiciousmines;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.blockentities.BrushableMineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -19,14 +19,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 /**
- * The brush is hardcoded to only be able to successfully brush suspicious sand. Because the suspicious sand mine should also
+ * The brush is hardcoded to only be able to successfully brush vanilla blocks. Because the suspicious mines should also
  * yield items when being brushed while disarmed, the brush needs to check for that as well.
  */
 @Mixin(BrushItem.class)
 public class BrushItemMixin {
 	@Inject(method = "onUseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;isClientSide()Z"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
-	private void securitycraft$checkForSuspiciousSandMine(Level level, LivingEntity entity, ItemStack stack, int tick, CallbackInfo ci, Player player, BlockHitResult blockHitResult, BlockPos pos, int newUseDuration, BlockState brushedState) {
-		if (!level.isClientSide() && brushedState.is(SCContent.SUSPICIOUS_SAND_MINE.get())) {
+	private void securitycraft$checkForSuspiciousMine(Level level, LivingEntity entity, ItemStack stack, int tick, CallbackInfo ci, Player player, BlockHitResult blockHitResult, BlockPos pos, int newUseDuration, BlockState brushedState) {
+		if (!level.isClientSide() && brushedState.is(SCTags.Blocks.SUSPICIOUS_MINES)) {
 			if (level.getBlockEntity(pos) instanceof BrushableMineBlockEntity be) {
 				boolean brushFinished = be.brush(level.getGameTime(), player, blockHitResult.getDirection());
 

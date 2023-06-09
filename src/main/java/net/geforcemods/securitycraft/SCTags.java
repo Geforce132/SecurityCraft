@@ -49,6 +49,7 @@ public class SCTags {
 		public static final TagKey<Block> SECRET_STANDING_SIGNS = tag("secret_standing_signs");
 		public static final TagKey<Block> SECRET_WALL_HANGING_SIGNS = tag("secret_wall_hanging_signs");
 		public static final TagKey<Block> SECRET_WALL_SIGNS = tag("secret_wall_signs");
+		public static final TagKey<Block> SUSPICIOUS_MINES = tag("suspicious_mines");
 
 		private static TagKey<Block> tag(String name) {
 			return BlockTags.create(new ResourceLocation(SecurityCraft.MODID, name));

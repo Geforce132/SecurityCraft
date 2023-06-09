@@ -10,6 +10,7 @@ import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BrushableBlock;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -81,5 +82,9 @@ public class BrushableMineBlock extends FallingBlockMineBlock implements IBlockM
 	@Override
 	public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
 		return getBlockDisguisedAs().defaultBlockState().setValue(DUSTED, state.getValue(DUSTED));
+	}
+
+	public Block getTurnsInto() {
+		return ((BrushableBlock) getBlockDisguisedAs()).getTurnsInto();
 	}
 }

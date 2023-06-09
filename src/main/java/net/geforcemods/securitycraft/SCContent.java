@@ -282,6 +282,7 @@ public class SCContent {
 	public static final RegistryObject<FlowingFluid> FAKE_WATER = FLUIDS.register("fake_water", () -> new FakeWaterFluid.Source(fakeWaterProperties()));
 	public static final RegistryObject<FlowingFluid> FLOWING_FAKE_LAVA = FLUIDS.register("flowing_fake_lava", () -> new FakeLavaFluid.Flowing(fakeLavaProperties()));
 	public static final RegistryObject<FlowingFluid> FAKE_LAVA = FLUIDS.register("fake_lava", () -> new FakeLavaFluid.Source(fakeLavaProperties()));
+
 	//blocks
 	@HasManualPage
 	@RegisterItemBlock
@@ -519,6 +520,10 @@ public class SCContent {
 	@OwnableBE
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> SUSPICIOUS_SAND_MINE = BLOCKS.register("suspicious_sand_mine", () -> new BrushableMineBlock(mineProp(Blocks.SUSPICIOUS_SAND).pushReaction(PushReaction.DESTROY), Blocks.SUSPICIOUS_SAND));
+	@HasManualPage
+	@OwnableBE
+	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
+	public static final RegistryObject<Block> SUSPICIOUS_GRAVEL_MINE = BLOCKS.register("suspicious_gravel_mine", () -> new BrushableMineBlock(mineProp(Blocks.SUSPICIOUS_GRAVEL), Blocks.SUSPICIOUS_GRAVEL));
 
 	//reinforced blocks (ordered by vanilla <1.19.3 building blocks creative tab order)
 	@HasManualPage(PageGroup.REINFORCED)
@@ -2687,7 +2692,7 @@ public class SCContent {
 	public static final RegistryObject<BlockEntityType<DisplayCaseBlockEntity>> DISPLAY_CASE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("display_case", () -> BlockEntityType.Builder.of(DisplayCaseBlockEntity::new, SCContent.DISPLAY_CASE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<GlowDisplayCaseBlockEntity>> GLOW_DISPLAY_CASE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("glow_display_case", () -> BlockEntityType.Builder.of(GlowDisplayCaseBlockEntity::new, SCContent.GLOW_DISPLAY_CASE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<KeypadBarrelBlockEntity>> KEYPAD_BARREL_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_barrel", () -> BlockEntityType.Builder.of(KeypadBarrelBlockEntity::new, SCContent.KEYPAD_BARREL.get()).build(null));
-	public static final RegistryObject<BlockEntityType<BrushableMineBlockEntity>> BRUSHABLE_MINE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("brushable_mine", () -> BlockEntityType.Builder.of(BrushableMineBlockEntity::new, SCContent.SUSPICIOUS_SAND_MINE.get()).build(null));
+	public static final RegistryObject<BlockEntityType<BrushableMineBlockEntity>> BRUSHABLE_MINE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("brushable_mine", () -> BlockEntityType.Builder.of(BrushableMineBlockEntity::new, SCContent.SUSPICIOUS_SAND_MINE.get(), SCContent.SUSPICIOUS_GRAVEL_MINE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<ReinforcedChiseledBookshelfBlockEntity>> REINFORCED_CHISELED_BOOKSHELF_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_chiseled_bookshelf", () -> BlockEntityType.Builder.of(ReinforcedChiseledBookshelfBlockEntity::new, SCContent.REINFORCED_CHISELED_BOOKSHELF.get()).build(null));
 	public static final RegistryObject<BlockEntityType<KeypadTrapdoorBlockEntity>> KEYPAD_TRAPDOOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_trapdoor", () -> BlockEntityType.Builder.of(KeypadTrapdoorBlockEntity::new, SCContent.KEYPAD_TRAPDOOR.get()).build(null));
 

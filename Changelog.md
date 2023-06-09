@@ -26,6 +26,7 @@
 - New: Secret Cherry Sign*
 - New: Secret Hanging Signs*
 - New: Suspicious Sand Mine (can be defused to get the item without it exploding)*
+- New: Suspicious Gravel Mine
 - New: Sonic Security Systems and Portable Tune Players now support mob head and custom note block sounds*
 - New: The Alarm, Motion Activated Light, and Portable Radar can now be waterlogged
 - New: Laser and inventory scanner fields can now be waterlogged, which means the Laser and Inventory Scanner now properly work underwater without air pockets

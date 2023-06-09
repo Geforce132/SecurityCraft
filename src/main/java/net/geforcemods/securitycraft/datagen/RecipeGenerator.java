@@ -650,6 +650,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addBlockMineRecipe(consumer, Blocks.NETHERRACK, SCContent.NETHERRACK_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.END_STONE, SCContent.END_STONE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.SUSPICIOUS_SAND, SCContent.SUSPICIOUS_SAND_MINE.get());
+		addBlockMineRecipe(consumer, Blocks.SUSPICIOUS_GRAVEL, SCContent.SUSPICIOUS_GRAVEL_MINE.get());
 		addButtonRecipe(consumer, SCContent.REINFORCED_STONE.get(), SCContent.REINFORCED_STONE_BUTTON.get());
 		addButtonRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_BUTTON.get());
 		addButtonRecipe(consumer, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_BUTTON.get());

@@ -200,6 +200,7 @@ public class ClientHandler {
 				"sand",
 				"smoker",
 				"stone",
+				"suspicious_gravel",
 				"suspicious_sand"
 		};
 		//@formatter:on
