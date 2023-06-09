@@ -190,8 +190,6 @@ import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.PortableTunePlayerItem;
 import net.geforcemods.securitycraft.items.SCManualItem;
-import net.geforcemods.securitycraft.items.SecretHangingSignItem;
-import net.geforcemods.securitycraft.items.SecretSignItem;
 import net.geforcemods.securitycraft.items.SentryItem;
 import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
@@ -222,7 +220,9 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SignItem;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.BlockGetter;
@@ -282,7 +282,6 @@ public class SCContent {
 	public static final RegistryObject<FlowingFluid> FAKE_WATER = FLUIDS.register("fake_water", () -> new FakeWaterFluid.Source(fakeWaterProperties()));
 	public static final RegistryObject<FlowingFluid> FLOWING_FAKE_LAVA = FLUIDS.register("flowing_fake_lava", () -> new FakeLavaFluid.Flowing(fakeLavaProperties()));
 	public static final RegistryObject<FlowingFluid> FAKE_LAVA = FLUIDS.register("fake_lava", () -> new FakeLavaFluid.Source(fakeLavaProperties()));
-
 	//blocks
 	@HasManualPage
 	@RegisterItemBlock
@@ -379,24 +378,24 @@ public class SCContent {
 	public static final RegistryObject<Block> RETINAL_SCANNER = BLOCKS.register("retinal_scanner", () -> new RetinalScannerBlock(propDisguisable()));
 	public static final RegistryObject<Block> RIFT_STABILIZER = BLOCKS.register("rift_stabilizer", () -> new RiftStabilizerBlock(propDisguisable().sound(SoundType.METAL)));
 	public static final RegistryObject<Block> SCANNER_DOOR = BLOCKS.register("scanner_door", () -> new ScannerDoorBlock(prop().sound(SoundType.METAL).noOcclusion().pushReaction(PushReaction.BLOCK), BlockSetType.IRON));
-	public static final RegistryObject<Block> SECRET_OAK_SIGN = BLOCKS.register("secret_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.WOOD).noCollission(), WoodType.OAK));
-	public static final RegistryObject<Block> SECRET_OAK_WALL_SIGN = BLOCKS.register("secret_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.WOOD).noCollission(), WoodType.OAK));
-	public static final RegistryObject<Block> SECRET_SPRUCE_SIGN = BLOCKS.register("secret_spruce_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.WOOD).noCollission(), WoodType.SPRUCE));
-	public static final RegistryObject<Block> SECRET_SPRUCE_WALL_SIGN = BLOCKS.register("secret_spruce_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.WOOD).noCollission(), WoodType.SPRUCE));
-	public static final RegistryObject<Block> SECRET_BIRCH_SIGN = BLOCKS.register("secret_birch_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.WOOD).noCollission(), WoodType.BIRCH));
-	public static final RegistryObject<Block> SECRET_BIRCH_WALL_SIGN = BLOCKS.register("secret_birch_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.WOOD).noCollission(), WoodType.BIRCH));
-	public static final RegistryObject<Block> SECRET_JUNGLE_SIGN = BLOCKS.register("secret_jungle_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.WOOD).noCollission(), WoodType.JUNGLE));
-	public static final RegistryObject<Block> SECRET_JUNGLE_WALL_SIGN = BLOCKS.register("secret_jungle_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.WOOD).noCollission(), WoodType.JUNGLE));
-	public static final RegistryObject<Block> SECRET_ACACIA_SIGN = BLOCKS.register("secret_acacia_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.WOOD).noCollission(), WoodType.ACACIA));
-	public static final RegistryObject<Block> SECRET_ACACIA_WALL_SIGN = BLOCKS.register("secret_acacia_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.WOOD).noCollission(), WoodType.ACACIA));
-	public static final RegistryObject<Block> SECRET_DARK_OAK_SIGN = BLOCKS.register("secret_dark_oak_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.WOOD).noCollission(), WoodType.DARK_OAK));
-	public static final RegistryObject<Block> SECRET_DARK_OAK_WALL_SIGN = BLOCKS.register("secret_dark_oak_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.WOOD).noCollission(), WoodType.DARK_OAK));
-	public static final RegistryObject<Block> SECRET_MANGROVE_SIGN = BLOCKS.register("secret_mangrove_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.WOOD).noCollission(), WoodType.MANGROVE));
-	public static final RegistryObject<Block> SECRET_MANGROVE_WALL_SIGN = BLOCKS.register("secret_mangrove_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.WOOD).noCollission(), WoodType.MANGROVE));
-	public static final RegistryObject<Block> SECRET_CRIMSON_SIGN = BLOCKS.register("secret_crimson_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.NETHER_WOOD).noCollission(), WoodType.CRIMSON));
-	public static final RegistryObject<Block> SECRET_CRIMSON_WALL_SIGN = BLOCKS.register("secret_crimson_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.NETHER_WOOD).noCollission(), WoodType.CRIMSON));
-	public static final RegistryObject<Block> SECRET_WARPED_SIGN = BLOCKS.register("secret_warped_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.NETHER_WOOD).noCollission(), WoodType.WARPED));
-	public static final RegistryObject<Block> SECRET_WARPED_WALL_SIGN = BLOCKS.register("secret_warped_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.NETHER_WOOD).noCollission(), WoodType.WARPED));
+	public static final RegistryObject<Block> SECRET_OAK_SIGN = BLOCKS.register("secret_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.WOOD).noCollission().forceSolidOn(), WoodType.OAK));
+	public static final RegistryObject<Block> SECRET_OAK_WALL_SIGN = BLOCKS.register("secret_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.WOOD).noCollission().forceSolidOn(), WoodType.OAK));
+	public static final RegistryObject<Block> SECRET_SPRUCE_SIGN = BLOCKS.register("secret_spruce_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.WOOD).noCollission().forceSolidOn(), WoodType.SPRUCE));
+	public static final RegistryObject<Block> SECRET_SPRUCE_WALL_SIGN = BLOCKS.register("secret_spruce_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.WOOD).noCollission().forceSolidOn(), WoodType.SPRUCE));
+	public static final RegistryObject<Block> SECRET_BIRCH_SIGN = BLOCKS.register("secret_birch_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.WOOD).noCollission().forceSolidOn(), WoodType.BIRCH));
+	public static final RegistryObject<Block> SECRET_BIRCH_WALL_SIGN = BLOCKS.register("secret_birch_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.WOOD).noCollission().forceSolidOn(), WoodType.BIRCH));
+	public static final RegistryObject<Block> SECRET_JUNGLE_SIGN = BLOCKS.register("secret_jungle_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.WOOD).noCollission().forceSolidOn(), WoodType.JUNGLE));
+	public static final RegistryObject<Block> SECRET_JUNGLE_WALL_SIGN = BLOCKS.register("secret_jungle_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.WOOD).noCollission().forceSolidOn(), WoodType.JUNGLE));
+	public static final RegistryObject<Block> SECRET_ACACIA_SIGN = BLOCKS.register("secret_acacia_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.WOOD).noCollission().forceSolidOn(), WoodType.ACACIA));
+	public static final RegistryObject<Block> SECRET_ACACIA_WALL_SIGN = BLOCKS.register("secret_acacia_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.WOOD).noCollission().forceSolidOn(), WoodType.ACACIA));
+	public static final RegistryObject<Block> SECRET_DARK_OAK_SIGN = BLOCKS.register("secret_dark_oak_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.WOOD).noCollission().forceSolidOn(), WoodType.DARK_OAK));
+	public static final RegistryObject<Block> SECRET_DARK_OAK_WALL_SIGN = BLOCKS.register("secret_dark_oak_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.WOOD).noCollission().forceSolidOn(), WoodType.DARK_OAK));
+	public static final RegistryObject<Block> SECRET_MANGROVE_SIGN = BLOCKS.register("secret_mangrove_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.WOOD).noCollission().forceSolidOn(), WoodType.MANGROVE));
+	public static final RegistryObject<Block> SECRET_MANGROVE_WALL_SIGN = BLOCKS.register("secret_mangrove_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.WOOD).noCollission().forceSolidOn(), WoodType.MANGROVE));
+	public static final RegistryObject<Block> SECRET_CRIMSON_SIGN = BLOCKS.register("secret_crimson_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.NETHER_WOOD).noCollission().forceSolidOn(), WoodType.CRIMSON));
+	public static final RegistryObject<Block> SECRET_CRIMSON_WALL_SIGN = BLOCKS.register("secret_crimson_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.NETHER_WOOD).noCollission().forceSolidOn(), WoodType.CRIMSON));
+	public static final RegistryObject<Block> SECRET_WARPED_SIGN = BLOCKS.register("secret_warped_sign_standing", () -> new SecretStandingSignBlock(prop().sound(SoundType.NETHER_WOOD).noCollission().forceSolidOn(), WoodType.WARPED));
+	public static final RegistryObject<Block> SECRET_WARPED_WALL_SIGN = BLOCKS.register("secret_warped_sign_wall", () -> new SecretWallSignBlock(prop().sound(SoundType.NETHER_WOOD).noCollission().forceSolidOn(), WoodType.WARPED));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(prop()));
@@ -2253,33 +2252,33 @@ public class SCContent {
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_BAMBOO_BUTTON = BLOCKS.register("reinforced_bamboo_button", () -> woodenButton(Blocks.BAMBOO_BUTTON, BlockSetType.BAMBOO));
-	public static final RegistryObject<Block> SECRET_CHERRY_SIGN = BLOCKS.register("secret_cherry_sign_standing", () -> new SecretStandingSignBlock(prop().noCollission(), WoodType.CHERRY));
-	public static final RegistryObject<Block> SECRET_CHERRY_WALL_SIGN = BLOCKS.register("secret_cherry_sign_wall", () -> new SecretWallSignBlock(prop().noCollission(), WoodType.CHERRY));
-	public static final RegistryObject<Block> SECRET_BAMBOO_SIGN = BLOCKS.register("secret_bamboo_sign_standing", () -> new SecretStandingSignBlock(prop().noCollission(), WoodType.BAMBOO));
-	public static final RegistryObject<Block> SECRET_BAMBOO_WALL_SIGN = BLOCKS.register("secret_bamboo_sign_wall", () -> new SecretWallSignBlock(prop().noCollission(), WoodType.BAMBOO));
+	public static final RegistryObject<Block> SECRET_CHERRY_SIGN = BLOCKS.register("secret_cherry_sign_standing", () -> new SecretStandingSignBlock(prop().noCollission().forceSolidOn(), WoodType.CHERRY));
+	public static final RegistryObject<Block> SECRET_CHERRY_WALL_SIGN = BLOCKS.register("secret_cherry_sign_wall", () -> new SecretWallSignBlock(prop().noCollission().forceSolidOn(), WoodType.CHERRY));
+	public static final RegistryObject<Block> SECRET_BAMBOO_SIGN = BLOCKS.register("secret_bamboo_sign_standing", () -> new SecretStandingSignBlock(prop().noCollission().forceSolidOn(), WoodType.BAMBOO));
+	public static final RegistryObject<Block> SECRET_BAMBOO_WALL_SIGN = BLOCKS.register("secret_bamboo_sign_wall", () -> new SecretWallSignBlock(prop().noCollission().forceSolidOn(), WoodType.BAMBOO));
 	//hanging signs
-	public static final RegistryObject<Block> SECRET_OAK_HANGING_SIGN = BLOCKS.register("secret_oak_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission(), WoodType.OAK));
-	public static final RegistryObject<Block> SECRET_OAK_WALL_HANGING_SIGN = BLOCKS.register("secret_oak_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission(), WoodType.OAK));
-	public static final RegistryObject<Block> SECRET_SPRUCE_HANGING_SIGN = BLOCKS.register("secret_spruce_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission(), WoodType.SPRUCE));
-	public static final RegistryObject<Block> SECRET_SPRUCE_WALL_HANGING_SIGN = BLOCKS.register("secret_spruce_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission(), WoodType.SPRUCE));
-	public static final RegistryObject<Block> SECRET_BIRCH_HANGING_SIGN = BLOCKS.register("secret_birch_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission(), WoodType.BIRCH));
-	public static final RegistryObject<Block> SECRET_BIRCH_WALL_HANGING_SIGN = BLOCKS.register("secret_birch_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission(), WoodType.BIRCH));
-	public static final RegistryObject<Block> SECRET_JUNGLE_HANGING_SIGN = BLOCKS.register("secret_jungle_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission(), WoodType.JUNGLE));
-	public static final RegistryObject<Block> SECRET_JUNGLE_WALL_HANGING_SIGN = BLOCKS.register("secret_jungle_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission(), WoodType.JUNGLE));
-	public static final RegistryObject<Block> SECRET_ACACIA_HANGING_SIGN = BLOCKS.register("secret_acacia_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission(), WoodType.ACACIA));
-	public static final RegistryObject<Block> SECRET_ACACIA_WALL_HANGING_SIGN = BLOCKS.register("secret_acacia_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission(), WoodType.ACACIA));
-	public static final RegistryObject<Block> SECRET_DARK_OAK_HANGING_SIGN = BLOCKS.register("secret_dark_oak_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission(), WoodType.DARK_OAK));
-	public static final RegistryObject<Block> SECRET_DARK_OAK_WALL_HANGING_SIGN = BLOCKS.register("secret_dark_oak_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission(), WoodType.DARK_OAK));
-	public static final RegistryObject<Block> SECRET_MANGROVE_HANGING_SIGN = BLOCKS.register("secret_mangrove_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission(), WoodType.MANGROVE));
-	public static final RegistryObject<Block> SECRET_MANGROVE_WALL_HANGING_SIGN = BLOCKS.register("secret_mangrove_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission(), WoodType.MANGROVE));
-	public static final RegistryObject<Block> SECRET_CHERRY_HANGING_SIGN = BLOCKS.register("secret_cherry_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission(), WoodType.CHERRY));
-	public static final RegistryObject<Block> SECRET_CHERRY_WALL_HANGING_SIGN = BLOCKS.register("secret_cherry_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission(), WoodType.CHERRY));
-	public static final RegistryObject<Block> SECRET_BAMBOO_HANGING_SIGN = BLOCKS.register("secret_bamboo_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission(), WoodType.BAMBOO));
-	public static final RegistryObject<Block> SECRET_BAMBOO_WALL_HANGING_SIGN = BLOCKS.register("secret_bamboo_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission(), WoodType.BAMBOO));
-	public static final RegistryObject<Block> SECRET_CRIMSON_HANGING_SIGN = BLOCKS.register("secret_crimson_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission(), WoodType.CRIMSON));
-	public static final RegistryObject<Block> SECRET_CRIMSON_WALL_HANGING_SIGN = BLOCKS.register("secret_crimson_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission(), WoodType.CRIMSON));
-	public static final RegistryObject<Block> SECRET_WARPED_HANGING_SIGN = BLOCKS.register("secret_warped_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission(), WoodType.WARPED));
-	public static final RegistryObject<Block> SECRET_WARPED_WALL_HANGING_SIGN = BLOCKS.register("secret_warped_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission(), WoodType.WARPED));
+	public static final RegistryObject<Block> SECRET_OAK_HANGING_SIGN = BLOCKS.register("secret_oak_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.OAK));
+	public static final RegistryObject<Block> SECRET_OAK_WALL_HANGING_SIGN = BLOCKS.register("secret_oak_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.OAK));
+	public static final RegistryObject<Block> SECRET_SPRUCE_HANGING_SIGN = BLOCKS.register("secret_spruce_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.SPRUCE));
+	public static final RegistryObject<Block> SECRET_SPRUCE_WALL_HANGING_SIGN = BLOCKS.register("secret_spruce_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.SPRUCE));
+	public static final RegistryObject<Block> SECRET_BIRCH_HANGING_SIGN = BLOCKS.register("secret_birch_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.BIRCH));
+	public static final RegistryObject<Block> SECRET_BIRCH_WALL_HANGING_SIGN = BLOCKS.register("secret_birch_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.BIRCH));
+	public static final RegistryObject<Block> SECRET_JUNGLE_HANGING_SIGN = BLOCKS.register("secret_jungle_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.JUNGLE));
+	public static final RegistryObject<Block> SECRET_JUNGLE_WALL_HANGING_SIGN = BLOCKS.register("secret_jungle_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.JUNGLE));
+	public static final RegistryObject<Block> SECRET_ACACIA_HANGING_SIGN = BLOCKS.register("secret_acacia_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.ACACIA));
+	public static final RegistryObject<Block> SECRET_ACACIA_WALL_HANGING_SIGN = BLOCKS.register("secret_acacia_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.ACACIA));
+	public static final RegistryObject<Block> SECRET_DARK_OAK_HANGING_SIGN = BLOCKS.register("secret_dark_oak_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.DARK_OAK));
+	public static final RegistryObject<Block> SECRET_DARK_OAK_WALL_HANGING_SIGN = BLOCKS.register("secret_dark_oak_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.DARK_OAK));
+	public static final RegistryObject<Block> SECRET_MANGROVE_HANGING_SIGN = BLOCKS.register("secret_mangrove_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.MANGROVE));
+	public static final RegistryObject<Block> SECRET_MANGROVE_WALL_HANGING_SIGN = BLOCKS.register("secret_mangrove_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.MANGROVE));
+	public static final RegistryObject<Block> SECRET_CHERRY_HANGING_SIGN = BLOCKS.register("secret_cherry_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.CHERRY));
+	public static final RegistryObject<Block> SECRET_CHERRY_WALL_HANGING_SIGN = BLOCKS.register("secret_cherry_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.CHERRY));
+	public static final RegistryObject<Block> SECRET_BAMBOO_HANGING_SIGN = BLOCKS.register("secret_bamboo_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.BAMBOO));
+	public static final RegistryObject<Block> SECRET_BAMBOO_WALL_HANGING_SIGN = BLOCKS.register("secret_bamboo_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.BAMBOO));
+	public static final RegistryObject<Block> SECRET_CRIMSON_HANGING_SIGN = BLOCKS.register("secret_crimson_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.CRIMSON));
+	public static final RegistryObject<Block> SECRET_CRIMSON_WALL_HANGING_SIGN = BLOCKS.register("secret_crimson_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.CRIMSON));
+	public static final RegistryObject<Block> SECRET_WARPED_HANGING_SIGN = BLOCKS.register("secret_warped_hanging_sign", () -> new SecretCeilingHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.WARPED));
+	public static final RegistryObject<Block> SECRET_WARPED_WALL_HANGING_SIGN = BLOCKS.register("secret_warped_wall_hanging_sign", () -> new SecretWallHangingSignBlock(prop().noCollission().forceSolidOn(), WoodType.WARPED));
 	//end hanging signs
 	@HasManualPage
 	@Reinforced
@@ -2430,49 +2429,49 @@ public class SCContent {
 	@HasManualPage
 	public static final RegistryObject<Item> SC_MANUAL = ITEMS.register("sc_manual", () -> new SCManualItem(itemProp().stacksTo(1)));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_OAK_SIGN_ITEM = ITEMS.register("secret_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_OAK_SIGN.get(), SCContent.SECRET_OAK_WALL_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_OAK_SIGN_ITEM = ITEMS.register("secret_sign_item", () -> new SignItem(itemProp().stacksTo(16), SCContent.SECRET_OAK_SIGN.get(), SCContent.SECRET_OAK_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_SPRUCE_SIGN_ITEM = ITEMS.register("secret_spruce_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_SPRUCE_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_SPRUCE_SIGN_ITEM = ITEMS.register("secret_spruce_sign_item", () -> new SignItem(itemProp().stacksTo(16), SCContent.SECRET_SPRUCE_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_BIRCH_SIGN_ITEM = ITEMS.register("secret_birch_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_BIRCH_SIGN.get(), SCContent.SECRET_BIRCH_WALL_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_BIRCH_SIGN_ITEM = ITEMS.register("secret_birch_sign_item", () -> new SignItem(itemProp().stacksTo(16), SCContent.SECRET_BIRCH_SIGN.get(), SCContent.SECRET_BIRCH_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_JUNGLE_SIGN_ITEM = ITEMS.register("secret_jungle_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_JUNGLE_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_JUNGLE_SIGN_ITEM = ITEMS.register("secret_jungle_sign_item", () -> new SignItem(itemProp().stacksTo(16), SCContent.SECRET_JUNGLE_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_ACACIA_SIGN_ITEM = ITEMS.register("secret_acacia_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_ACACIA_SIGN.get(), SCContent.SECRET_ACACIA_WALL_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_ACACIA_SIGN_ITEM = ITEMS.register("secret_acacia_sign_item", () -> new SignItem(itemProp().stacksTo(16), SCContent.SECRET_ACACIA_SIGN.get(), SCContent.SECRET_ACACIA_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_DARK_OAK_SIGN_ITEM = ITEMS.register("secret_dark_oak_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_DARK_OAK_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_DARK_OAK_SIGN_ITEM = ITEMS.register("secret_dark_oak_sign_item", () -> new SignItem(itemProp().stacksTo(16), SCContent.SECRET_DARK_OAK_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_MANGROVE_SIGN_ITEM = ITEMS.register("secret_mangrove_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_MANGROVE_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_MANGROVE_SIGN_ITEM = ITEMS.register("secret_mangrove_sign_item", () -> new SignItem(itemProp().stacksTo(16), SCContent.SECRET_MANGROVE_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_CHERRY_SIGN_ITEM = ITEMS.register("secret_cherry_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_CHERRY_SIGN.get(), SCContent.SECRET_CHERRY_WALL_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_CHERRY_SIGN_ITEM = ITEMS.register("secret_cherry_sign_item", () -> new SignItem(itemProp().stacksTo(16), SCContent.SECRET_CHERRY_SIGN.get(), SCContent.SECRET_CHERRY_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_BAMBOO_SIGN_ITEM = ITEMS.register("secret_bamboo_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_BAMBOO_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_BAMBOO_SIGN_ITEM = ITEMS.register("secret_bamboo_sign_item", () -> new SignItem(itemProp().stacksTo(16), SCContent.SECRET_BAMBOO_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_CRIMSON_SIGN_ITEM = ITEMS.register("secret_crimson_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_CRIMSON_SIGN_ITEM = ITEMS.register("secret_crimson_sign_item", () -> new SignItem(itemProp().stacksTo(16), SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_WARPED_SIGN_ITEM = ITEMS.register("secret_warped_sign_item", () -> new SecretSignItem(itemProp().stacksTo(16), SCContent.SECRET_WARPED_SIGN.get(), SCContent.SECRET_WARPED_WALL_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_WARPED_SIGN_ITEM = ITEMS.register("secret_warped_sign_item", () -> new SignItem(itemProp().stacksTo(16), SCContent.SECRET_WARPED_SIGN.get(), SCContent.SECRET_WARPED_WALL_SIGN.get()));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_OAK_HANGING_SIGN_ITEM = ITEMS.register("secret_oak_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_OAK_HANGING_SIGN.get(), SCContent.SECRET_OAK_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_OAK_HANGING_SIGN_ITEM = ITEMS.register("secret_oak_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_OAK_HANGING_SIGN.get(), SCContent.SECRET_OAK_WALL_HANGING_SIGN.get(), itemProp().stacksTo(16)));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_SPRUCE_HANGING_SIGN_ITEM = ITEMS.register("secret_spruce_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_SPRUCE_HANGING_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_SPRUCE_HANGING_SIGN_ITEM = ITEMS.register("secret_spruce_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_SPRUCE_HANGING_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_HANGING_SIGN.get(), itemProp().stacksTo(16)));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_BIRCH_HANGING_SIGN_ITEM = ITEMS.register("secret_birch_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_BIRCH_HANGING_SIGN.get(), SCContent.SECRET_BIRCH_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_BIRCH_HANGING_SIGN_ITEM = ITEMS.register("secret_birch_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_BIRCH_HANGING_SIGN.get(), SCContent.SECRET_BIRCH_WALL_HANGING_SIGN.get(), itemProp().stacksTo(16)));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_JUNGLE_HANGING_SIGN_ITEM = ITEMS.register("secret_jungle_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_JUNGLE_HANGING_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_JUNGLE_HANGING_SIGN_ITEM = ITEMS.register("secret_jungle_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_JUNGLE_HANGING_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_HANGING_SIGN.get(), itemProp().stacksTo(16)));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_ACACIA_HANGING_SIGN_ITEM = ITEMS.register("secret_acacia_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_ACACIA_HANGING_SIGN.get(), SCContent.SECRET_ACACIA_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_ACACIA_HANGING_SIGN_ITEM = ITEMS.register("secret_acacia_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_ACACIA_HANGING_SIGN.get(), SCContent.SECRET_ACACIA_WALL_HANGING_SIGN.get(), itemProp().stacksTo(16)));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_DARK_OAK_HANGING_SIGN_ITEM = ITEMS.register("secret_dark_oak_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_DARK_OAK_HANGING_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_DARK_OAK_HANGING_SIGN_ITEM = ITEMS.register("secret_dark_oak_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_DARK_OAK_HANGING_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_HANGING_SIGN.get(), itemProp().stacksTo(16)));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_MANGROVE_HANGING_SIGN_ITEM = ITEMS.register("secret_mangrove_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_MANGROVE_HANGING_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_MANGROVE_HANGING_SIGN_ITEM = ITEMS.register("secret_mangrove_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_MANGROVE_HANGING_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_HANGING_SIGN.get(), itemProp().stacksTo(16)));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_CHERRY_HANGING_SIGN_ITEM = ITEMS.register("secret_cherry_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_CHERRY_HANGING_SIGN.get(), SCContent.SECRET_CHERRY_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_CHERRY_HANGING_SIGN_ITEM = ITEMS.register("secret_cherry_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_CHERRY_HANGING_SIGN.get(), SCContent.SECRET_CHERRY_WALL_HANGING_SIGN.get(), itemProp().stacksTo(16)));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_BAMBOO_HANGING_SIGN_ITEM = ITEMS.register("secret_bamboo_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_BAMBOO_HANGING_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_BAMBOO_HANGING_SIGN_ITEM = ITEMS.register("secret_bamboo_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_BAMBOO_HANGING_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_HANGING_SIGN.get(), itemProp().stacksTo(16)));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_CRIMSON_HANGING_SIGN_ITEM = ITEMS.register("secret_crimson_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_CRIMSON_HANGING_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_CRIMSON_HANGING_SIGN_ITEM = ITEMS.register("secret_crimson_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_CRIMSON_HANGING_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_HANGING_SIGN.get(), itemProp().stacksTo(16)));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final RegistryObject<Item> SECRET_WARPED_HANGING_SIGN_ITEM = ITEMS.register("secret_warped_hanging_sign", () -> new SecretHangingSignItem(itemProp().stacksTo(16), SCContent.SECRET_WARPED_HANGING_SIGN.get(), SCContent.SECRET_WARPED_WALL_HANGING_SIGN.get()));
+	public static final RegistryObject<Item> SECRET_WARPED_HANGING_SIGN_ITEM = ITEMS.register("secret_warped_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_WARPED_HANGING_SIGN.get(), SCContent.SECRET_WARPED_WALL_HANGING_SIGN.get(), itemProp().stacksTo(16)));
 	@HasManualPage(designedBy = "Henzoid")
 	public static final RegistryObject<Item> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp()));
 	public static final RegistryObject<Item> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp().stacksTo(1)));

@@ -58,7 +58,7 @@ public class SecretWallHangingSignBlock extends WallHangingSignBlock {
 		if (level.getBlockEntity(pos) instanceof SecretHangingSignBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)))
 			return super.use(state, level, pos, player, hand, hit);
 
-		return InteractionResult.FAIL;
+		return InteractionResult.PASS;
 	}
 
 	@Override
