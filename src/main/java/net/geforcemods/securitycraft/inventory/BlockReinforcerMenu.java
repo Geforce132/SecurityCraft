@@ -54,6 +54,8 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 
 	@Override
 	public void removed(Player player) {
+		super.removed(player);
+
 		if (!player.isAlive() || player instanceof ServerPlayer serverPlayer && serverPlayer.hasDisconnected()) {
 			for (int slot = 0; slot < itemInventory.getContainerSize(); ++slot) {
 				player.drop(itemInventory.removeItemNoUpdate(slot), false);
