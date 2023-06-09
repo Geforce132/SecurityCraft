@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:keypad_frame"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

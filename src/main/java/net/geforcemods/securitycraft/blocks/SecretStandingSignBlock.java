@@ -53,10 +53,10 @@ public class SecretStandingSignBlock extends StandingSignBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (!level.isClientSide && player.getItemInHand(hand).getItem() == SCContent.ADMIN_TOOL.get())
+		if (!level.isClientSide && player.getItemInHand(hand).is(SCContent.ADMIN_TOOL.get()))
 			return SCContent.ADMIN_TOOL.get().useOn(new UseOnContext(player, hand, hit));
 
-		if (level.getBlockEntity(pos) instanceof SecretSignBlockEntity be && be.isPlayerAllowedToSeeText(player))
+		if (level.getBlockEntity(pos) instanceof SecretSignBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)))
 			return super.use(state, level, pos, player, hand, hit);
 
 		return InteractionResult.FAIL;

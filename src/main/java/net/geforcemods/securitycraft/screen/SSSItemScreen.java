@@ -3,8 +3,6 @@ package net.geforcemods.securitycraft.screen;
 import java.util.Set;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -13,6 +11,7 @@ import net.geforcemods.securitycraft.network.server.RemovePositionFromSSS;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList.ConnectionAccessor;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -46,14 +45,13 @@ public class SSSItemScreen extends Screen implements ConnectionAccessor {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		int textWidth = font.width(title);
 
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		super.render(pose, mouseX, mouseY, partialTicks);
-		font.draw(pose, title, leftPos + imageWidth / 2 - textWidth / 2, topPos + 6, 4210752);
+		renderBackground(guiGraphics);
+		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		guiGraphics.drawString(font, title, leftPos + imageWidth / 2 - textWidth / 2, topPos + 6, 4210752, false);
 	}
 
 	@Override

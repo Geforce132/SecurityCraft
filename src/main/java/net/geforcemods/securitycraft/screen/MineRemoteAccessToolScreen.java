@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -13,6 +11,7 @@ import net.geforcemods.securitycraft.network.server.RemoveMineFromMRAT;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
@@ -66,11 +65,11 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 				switch (j) {
 					case DEFUSE:
-						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, itemRenderer, new ItemStack(SCContent.WIRE_CUTTERS.get()), b -> buttonClicked(mine, action));
+						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, new ItemStack(SCContent.WIRE_CUTTERS.get()), b -> buttonClicked(mine, action));
 						guiButtons[i][j].active = false;
 						break;
 					case ACTIVATE:
-						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, itemRenderer, new ItemStack(Items.FLINT_AND_STEEL), b -> buttonClicked(mine, action));
+						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, new ItemStack(Items.FLINT_AND_STEEL), b -> buttonClicked(mine, action));
 						guiButtons[i][j].active = false;
 						break;
 					case DETONATE:
@@ -131,18 +130,17 @@ public class MineRemoteAccessToolScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, startX, startY, 0, 0, xSize, ySize);
-		super.render(pose, mouseX, mouseY, partialTicks);
-		font.draw(pose, title, startX + xSize / 2 - font.width(title) / 2, startY + 6, 4210752);
+		renderBackground(guiGraphics);
+		guiGraphics.blit(TEXTURE, startX, startY, 0, 0, xSize, ySize);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		guiGraphics.drawString(font, title, startX + xSize / 2 - font.width(title) / 2, startY + 6, 4210752);
 
 		for (int i = 0; i < 6; i++) {
-			font.draw(pose, lines[i], startX + xSize / 2 - lengths[i] + 25, startY + i * 25 + 33, 4210752);
+			guiGraphics.drawString(font, lines[i], startX + xSize / 2 - lengths[i] + 25, startY + i * 25 + 33, 4210752);
 		}
 	}
 

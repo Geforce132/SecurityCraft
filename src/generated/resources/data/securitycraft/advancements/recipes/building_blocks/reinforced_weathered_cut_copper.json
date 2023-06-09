@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:reinforced_weathered_cut_copper"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

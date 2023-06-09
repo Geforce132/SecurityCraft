@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:block_change_detector"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:keypad_door_item"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

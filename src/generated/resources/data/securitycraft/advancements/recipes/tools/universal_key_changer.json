@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:universal_key_changer"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:reinforced_smooth_red_sandstone_stairs_from_reinforced_smooth_red_sandstone_stonecutting"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

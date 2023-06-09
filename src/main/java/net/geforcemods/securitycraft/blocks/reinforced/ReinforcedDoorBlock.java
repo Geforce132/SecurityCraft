@@ -37,7 +37,6 @@ import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -269,11 +268,6 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			return stateBelow.isFaceSturdy(level, posBelow, Direction.UP);
 		else
 			return stateBelow.is(this);
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.BLOCK;
 	}
 
 	@Override

@@ -14,7 +14,7 @@ public class ReinforcedGlazedTerracottaBlock extends BaseReinforcedBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
 	public ReinforcedGlazedTerracottaBlock(Properties properties, Block vB) {
-		super(properties, vB);
+		super(properties.pushReaction(PushReaction.PUSH_ONLY), vB);
 	}
 
 	@Override
@@ -25,11 +25,6 @@ public class ReinforcedGlazedTerracottaBlock extends BaseReinforcedBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.PUSH_ONLY;
 	}
 
 	@Override

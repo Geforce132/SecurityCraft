@@ -476,12 +476,12 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new SCManualScreen());
 	}
 
-	public static void displayEditSecretSignScreen(SecretSignBlockEntity be) {
-		Minecraft.getInstance().setScreen(new SignEditScreen(be, Minecraft.getInstance().isTextFilteringEnabled()));
+	public static void displayEditSecretSignScreen(SecretSignBlockEntity be, boolean isFront) {
+		Minecraft.getInstance().setScreen(new SignEditScreen(be, isFront, Minecraft.getInstance().isTextFilteringEnabled()));
 	}
 
-	public static void displayEditSecretHangingSignScreen(SecretHangingSignBlockEntity be) {
-		Minecraft.getInstance().setScreen(new HangingSignEditScreen(be, Minecraft.getInstance().isTextFilteringEnabled()));
+	public static void displayEditSecretHangingSignScreen(SecretHangingSignBlockEntity be, boolean isFront) {
+		Minecraft.getInstance().setScreen(new HangingSignEditScreen(be, isFront, Minecraft.getInstance().isTextFilteringEnabled()));
 	}
 
 	public static void displaySonicSecuritySystemScreen(SonicSecuritySystemBlockEntity be) {

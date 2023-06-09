@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SignText;
 
 public class AdminToolItem extends Item {
 	public AdminToolItem(Item.Properties properties) {
@@ -77,16 +77,12 @@ public class AdminToolItem extends Item {
 					}
 				}
 
-				if (be instanceof SecretSignBlockEntity signTe) {
-					PlayerUtils.sendMessageToPlayer(player, adminToolName, Component.literal(""), ChatFormatting.DARK_PURPLE); //EMPTY
-
-					for (int i = 0; i < 4; i++) {
-						FormattedText text = signTe.getMessage(i, false);
-
-						if (text instanceof MutableComponent mutableComponent)
-							PlayerUtils.sendMessageToPlayer(player, adminToolName, mutableComponent, ChatFormatting.DARK_PURPLE);
-					}
-
+				if (be instanceof SecretSignBlockEntity signBe) {
+					PlayerUtils.sendMessageToPlayer(player, adminToolName, Component.literal(""), ChatFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.signFrontText"), ChatFormatting.DARK_PURPLE);
+					sendSignText(signBe.getFrontText(), player, adminToolName);
+					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.signBackText"), ChatFormatting.DARK_PURPLE);
+					sendSignText(signBe.getBackText(), player, adminToolName);
 					hasInfo = true;
 				}
 
@@ -102,6 +98,15 @@ public class AdminToolItem extends Item {
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.disabled"), ChatFormatting.DARK_PURPLE);
 
 		return InteractionResult.FAIL;
+	}
+
+	private void sendSignText(SignText signText, Player player, MutableComponent adminToolName) {
+		for (int i = 0; i < 4; i++) {
+			Component text = signText.getMessage(i, false);
+
+			if (text instanceof MutableComponent mutableComponent)
+				PlayerUtils.sendMessageToPlayer(player, adminToolName, mutableComponent, ChatFormatting.DARK_PURPLE);
+		}
 	}
 
 	@Override

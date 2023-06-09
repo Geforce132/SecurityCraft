@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:deepslate_copper_mine"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -3,8 +3,6 @@ package net.geforcemods.securitycraft.screen;
 import java.util.EnumMap;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
@@ -13,6 +11,7 @@ import net.geforcemods.securitycraft.network.server.SyncLaserSideConfig;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -54,13 +53,12 @@ public class LaserScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, leftPos, topPos, 0, 0, xSize, ySize);
-		super.render(pose, mouseX, mouseY, partialTicks);
-		font.draw(pose, title, leftPos + xSize / 2 - font.width(title) / 2, topPos + 6, 0x404040);
-		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(guiGraphics);
+		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, xSize, ySize);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		guiGraphics.drawString(font, title, leftPos + xSize / 2 - font.width(title) / 2, topPos + 6, 0x404040, false);
+		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	public void onChangeValue(Direction dir, boolean newValue) {

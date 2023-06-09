@@ -114,7 +114,7 @@ public class IronFenceBlock extends OwnableBlock {
 
 	public boolean connectsTo(BlockState state, boolean isFaceSturdy, Direction direction) {
 		Block block = state.getBlock();
-		boolean isFence = state.is(BlockTags.FENCES) && state.getMaterial() == material;
+		boolean isFence = state.is(BlockTags.FENCES) && !state.is(BlockTags.WOODEN_FENCES);
 		boolean isFenceGate = block instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, direction);
 
 		return !isExceptionForConnection(state) && isFaceSturdy || isFence || isFenceGate;

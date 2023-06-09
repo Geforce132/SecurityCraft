@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:reinforced_polished_basalt_from_reinforced_basalt_stonecutting"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

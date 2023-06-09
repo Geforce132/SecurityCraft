@@ -4,9 +4,9 @@ import java.util.function.Consumer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -35,16 +35,15 @@ public class CallbackCheckbox extends AbstractButton {
 	}
 
 	@Override
-	public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+	public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		Minecraft minecraft = Minecraft.getInstance();
 
-		RenderSystem.setShaderTexture(0, TEXTURE);
 		RenderSystem.enableDepthTest();
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		blit(pose, getX(), getY(), width, height, isFocused() ? 20.0F : 0.0F, selected ? 20.0F : 0.0F, 20, 20, 64, 64);
-		minecraft.font.draw(pose, getMessage(), getX() + (width * 1.2F), getY() + (height - 8) / 2, textColor | Mth.ceil(alpha * 255.0F) << 24);
+		guiGraphics.blit(TEXTURE, getX(), getY(), width, height, isFocused() ? 20.0F : 0.0F, selected ? 20.0F : 0.0F, 20, 20, 64, 64);
+		guiGraphics.drawString(minecraft.font, getMessage(), getX() + (int)(width * 1.2F), getY() + (height - 8) / 2, textColor | Mth.ceil(alpha * 255.0F) << 24, false);
 	}
 
 	@Override

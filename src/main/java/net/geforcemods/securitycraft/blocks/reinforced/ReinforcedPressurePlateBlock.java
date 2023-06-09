@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -95,11 +94,6 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof Player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (Player) placer));
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.BLOCK; //Can't be PushReaction.NORMAL because pressure plates rely on scheduled ticks which don't support moving the block
 	}
 
 	@Override

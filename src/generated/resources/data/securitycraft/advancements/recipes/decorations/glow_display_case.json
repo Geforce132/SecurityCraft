@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:glow_display_case"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

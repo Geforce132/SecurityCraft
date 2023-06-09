@@ -1,22 +1,19 @@
 package net.geforcemods.securitycraft.screen.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.gui.ScreenUtils;
 
 public class PictureButton extends Button {
-	private final ItemRenderer itemRenderer;
 	private ItemStack blockToRender = ItemStack.EMPTY;
 	private ItemStack itemToRender = ItemStack.EMPTY;
 	private ResourceLocation textureLocation;
@@ -29,13 +26,12 @@ public class PictureButton extends Button {
 	private int textureWidth;
 	private int textureHeight;
 
-	public PictureButton(int xPos, int yPos, int width, int height, ItemRenderer itemRenderer, ItemStack itemToRender) {
-		this(xPos, yPos, width, height, itemRenderer, itemToRender, b -> {});
+	public PictureButton(int xPos, int yPos, int width, int height, ItemStack itemToRender) {
+		this(xPos, yPos, width, height, itemToRender, b -> {});
 	}
 
-	public PictureButton(int xPos, int yPos, int width, int height, ItemRenderer itemRenderer, ItemStack itemToRender, OnPress onPress) {
+	public PictureButton(int xPos, int yPos, int width, int height, ItemStack itemToRender, OnPress onPress) {
 		super(xPos, yPos, width, height, Component.empty(), onPress, DEFAULT_NARRATION);
-		this.itemRenderer = itemRenderer;
 
 		if (!itemToRender.isEmpty() && itemToRender.getItem() instanceof BlockItem)
 			blockToRender = new ItemStack(Block.byItem(itemToRender.getItem()));
@@ -46,7 +42,6 @@ public class PictureButton extends Button {
 	public PictureButton(int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, OnPress onPress) {
 		super(xPos, yPos, width, height, Component.empty(), onPress, DEFAULT_NARRATION);
 
-		itemRenderer = null;
 		textureLocation = texture;
 		u = textureX;
 		v = textureY;
@@ -59,30 +54,28 @@ public class PictureButton extends Button {
 	}
 
 	@Override
-	public void renderWidget(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+	public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		if (visible) {
 			Minecraft mc = Minecraft.getInstance();
 			Font font = mc.font;
 
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
-			ScreenUtils.blitWithBorder(pose, WIDGETS_LOCATION, getX(), getY(), 0, 46 + (!active ? 0 : (isHoveredOrFocused() ? 40 : 20)), width, height, 200, 20, 2, 3, 2, 2, 0);
+			guiGraphics.blitWithBorder(WIDGETS_LOCATION, getX(), getY(), 0, 46 + (!active ? 0 : (isHoveredOrFocused() ? 40 : 20)), width, height, 200, 20, 2, 3, 2, 2);
 
 			if (!blockToRender.isEmpty()) {
-				itemRenderer.renderAndDecorateItem(pose, blockToRender, getX() + 2, getY() + 3);
-				itemRenderer.renderGuiItemDecorations(pose, font, blockToRender, getX() + 2, getY() + 3, "");
+				guiGraphics.renderItem(blockToRender, getX() + 2, getY() + 3);
+				guiGraphics.renderItemDecorations(font, blockToRender, getX() + 2, getY() + 3, "");
 			}
 			else if (!itemToRender.isEmpty()) {
-				itemRenderer.renderAndDecorateItem(pose, itemToRender, getX() + 2, getY() + 2);
-				itemRenderer.renderGuiItemDecorations(pose, font, itemToRender, getX() + 2, getY() + 2, "");
+				guiGraphics.renderItem(itemToRender, getX() + 2, getY() + 2);
+				guiGraphics.renderItemDecorations(font, itemToRender, getX() + 2, getY() + 2, "");
 			}
 			else {
 				ResourceLocation texture = getTextureLocation();
 
-				if (texture != null) {
-					RenderSystem._setShaderTexture(0, texture);
-					blit(pose, getX() + drawOffsetX, getY() + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
-				}
+				if (texture != null)
+					guiGraphics.blit(texture, getX() + drawOffsetX, getY() + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
 			}
 		}
 	}

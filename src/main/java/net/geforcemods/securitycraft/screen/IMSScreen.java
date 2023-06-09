@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
@@ -10,6 +8,7 @@ import net.geforcemods.securitycraft.blockentities.IMSBlockEntity.IMSTargetingMo
 import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -41,13 +40,12 @@ public class IMSScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
-		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		super.render(pose, mouseX, mouseY, partialTick);
-		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
-		font.draw(pose, target, width / 2 - font.width(target) / 2, topPos + 30, 4210752);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		renderBackground(guiGraphics);
+		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(guiGraphics, mouseX, mouseY, partialTick);
+		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752, false);
+		guiGraphics.drawString(font, target, width / 2 - font.width(target) / 2, topPos + 30, 4210752, false);
 	}
 
 	@Override

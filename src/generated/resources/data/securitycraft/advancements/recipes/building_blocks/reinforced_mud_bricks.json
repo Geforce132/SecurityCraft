@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:reinforced_mud_bricks"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -9,7 +9,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
@@ -17,6 +16,7 @@ import net.geforcemods.securitycraft.screen.components.SSSConnectionList.Connect
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -74,7 +74,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 	}
 
 	@Override
-	protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
+	protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
 		int baseY = top + border - (int) scrollDistance;
 		int slotBuffer = slotHeight - 4;
 		int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
@@ -101,8 +101,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			BufferUploader.drawWithShader(bufferBuilder.end());
 			RenderSystem.disableBlend();
 
-			RenderSystem._setShaderTexture(0, BEACON_GUI);
-			blit(pose, left, slotTop - 3, 14, 14, 110, 219, 21, 22, 256, 256);
+			guiGraphics.blit(BEACON_GUI, left, slotTop - 3, 14, 14, 110, 219, 21, 22, 256, 256);
 		}
 
 		int i = 0;
@@ -110,13 +109,13 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 		for (ConnectionInfo info : connectionInfo) {
 			int yStart = relativeY + (slotHeight * i++);
 
-			font.draw(pose, info.blockName, left + 13, yStart, 0xC6C6C6);
+			guiGraphics.drawString(font, info.blockName, left + 13, yStart, 0xC6C6C6, false);
 		}
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-		super.render(pose, mouseX, mouseY, partialTicks);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 		//draw tooltip for long block names
 		int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
@@ -128,9 +127,9 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			int baseY = top + border - (int) scrollDistance;
 
 			if (length + 13 >= width - 6) //6 = barWidth
-				parent.renderTooltip(pose, List.of(blockName), Optional.empty(), left + 1, baseY + (slotHeight * slotIndex + slotHeight));
+				guiGraphics.renderTooltip(font, List.of(blockName), Optional.empty(), left + 1, baseY + (slotHeight * slotIndex + slotHeight));
 
-			font.draw(pose, Utils.getFormattedCoordinates(connectionInfo.get(slotIndex).pos), left + 13, top + height + 5, 4210752);
+			guiGraphics.drawString(font, Utils.getFormattedCoordinates(connectionInfo.get(slotIndex).pos), left + 13, top + height + 5, 4210752, false);
 		}
 	}
 

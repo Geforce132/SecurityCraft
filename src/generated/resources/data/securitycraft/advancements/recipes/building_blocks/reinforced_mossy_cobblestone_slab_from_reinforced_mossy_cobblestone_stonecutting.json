@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:reinforced_mossy_cobblestone_slab_from_reinforced_mossy_cobblestone_stonecutting"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

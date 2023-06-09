@@ -1,8 +1,7 @@
 package net.geforcemods.securitycraft.screen.components;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -13,7 +12,7 @@ public class SmallXButton extends Button {
 	}
 
 	@Override
-	public void renderString(PoseStack poseStack, Font font, int color) {
-		drawCenteredString(poseStack, font, Language.getInstance().getVisualOrder(getMessage()), getX() + width / 2, getY() + (height - 8) / 2, color);
+	public void renderString(GuiGraphics guiGraphics, Font font, int color) {
+		guiGraphics.drawCenteredString(font, Language.getInstance().getVisualOrder(getMessage()), getX() + width / 2, getY() + (height - 8) / 2, color);
 	}
 }

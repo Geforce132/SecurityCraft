@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:laser_block"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

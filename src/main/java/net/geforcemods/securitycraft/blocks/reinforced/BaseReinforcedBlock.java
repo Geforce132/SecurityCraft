@@ -26,7 +26,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 
@@ -113,12 +112,13 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		return false;
 	}
 
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		PushReaction originalPushReaction = super.getPistonPushReaction(state);
-
-		return originalPushReaction == PushReaction.DESTROY ? PushReaction.NORMAL : originalPushReaction;
-	}
+	//TODO: does outright removing this affect anything?
+	//	@Override
+	//	public PushReaction getPistonPushReaction(BlockState state) {
+	//		PushReaction originalPushReaction = super.getPistonPushReaction(state);
+	//
+	//		return originalPushReaction == PushReaction.DESTROY ? PushReaction.NORMAL : originalPushReaction;
+	//	}
 
 	@Override
 	public Block getVanillaBlock() {

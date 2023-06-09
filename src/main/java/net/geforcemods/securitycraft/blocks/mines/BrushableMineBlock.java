@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
 
 public class BrushableMineBlock extends FallingBlockMineBlock implements IBlockMine {
@@ -28,11 +27,6 @@ public class BrushableMineBlock extends FallingBlockMineBlock implements IBlockM
 	public BrushableMineBlock(Properties properties, Block disguisedBlock) {
 		super(properties, disguisedBlock);
 		registerDefaultState(stateDefinition.any().setValue(DUSTED, 0).setValue(SAFE, false));
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.DESTROY;
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.datagen;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -12,7 +14,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
@@ -25,6 +26,33 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
 		//@formatter:off
+		List<Block> woodenSlabs = Arrays.asList(
+				SCContent.REINFORCED_OAK_SLAB.get(),
+				SCContent.REINFORCED_SPRUCE_SLAB.get(),
+				SCContent.REINFORCED_BIRCH_SLAB.get(),
+				SCContent.REINFORCED_JUNGLE_SLAB.get(),
+				SCContent.REINFORCED_ACACIA_SLAB.get(),
+				SCContent.REINFORCED_DARK_OAK_SLAB.get(),
+				SCContent.REINFORCED_MANGROVE_SLAB.get(),
+				SCContent.REINFORCED_CHERRY_SLAB.get(),
+				SCContent.REINFORCED_BAMBOO_SLAB.get(),
+				SCContent.REINFORCED_BAMBOO_MOSAIC_SLAB.get(),
+				SCContent.REINFORCED_CRIMSON_SLAB.get(),
+				SCContent.REINFORCED_WARPED_SLAB.get());
+		List<Block> woodenStairs = Arrays.asList(
+				SCContent.REINFORCED_OAK_STAIRS.get(),
+				SCContent.REINFORCED_SPRUCE_STAIRS.get(),
+				SCContent.REINFORCED_BIRCH_STAIRS.get(),
+				SCContent.REINFORCED_JUNGLE_STAIRS.get(),
+				SCContent.REINFORCED_ACACIA_STAIRS.get(),
+				SCContent.REINFORCED_DARK_OAK_STAIRS.get(),
+				SCContent.REINFORCED_MANGROVE_STAIRS.get(),
+				SCContent.REINFORCED_CHERRY_STAIRS.get(),
+				SCContent.REINFORCED_BAMBOO_STAIRS.get(),
+				SCContent.REINFORCED_BAMBOO_MOSAIC_STAIRS.get(),
+				SCContent.REINFORCED_CRIMSON_STAIRS.get(),
+				SCContent.REINFORCED_WARPED_STAIRS.get());
+
 		//securitycraft tags
 		tag(SCTags.Blocks.ALL_SECRET_SIGNS).addTag(SCTags.Blocks.SECRET_HANGING_SIGNS).addTag(SCTags.Blocks.SECRET_SIGNS);
 		tag(SCTags.Blocks.REINFORCED_ACACIA_LOGS).add(
@@ -183,32 +211,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_BAMBOO_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get());
-		tag(SCTags.Blocks.REINFORCED_WOODEN_SLABS).add(
-				SCContent.REINFORCED_OAK_SLAB.get(),
-				SCContent.REINFORCED_SPRUCE_SLAB.get(),
-				SCContent.REINFORCED_BIRCH_SLAB.get(),
-				SCContent.REINFORCED_JUNGLE_SLAB.get(),
-				SCContent.REINFORCED_ACACIA_SLAB.get(),
-				SCContent.REINFORCED_DARK_OAK_SLAB.get(),
-				SCContent.REINFORCED_MANGROVE_SLAB.get(),
-				SCContent.REINFORCED_CHERRY_SLAB.get(),
-				SCContent.REINFORCED_BAMBOO_SLAB.get(),
-				SCContent.REINFORCED_BAMBOO_MOSAIC_SLAB.get(),
-				SCContent.REINFORCED_CRIMSON_SLAB.get(),
-				SCContent.REINFORCED_WARPED_SLAB.get());
-		tag(SCTags.Blocks.REINFORCED_WOODEN_STAIRS).add(
-				SCContent.REINFORCED_OAK_STAIRS.get(),
-				SCContent.REINFORCED_SPRUCE_STAIRS.get(),
-				SCContent.REINFORCED_BIRCH_STAIRS.get(),
-				SCContent.REINFORCED_JUNGLE_STAIRS.get(),
-				SCContent.REINFORCED_ACACIA_STAIRS.get(),
-				SCContent.REINFORCED_DARK_OAK_STAIRS.get(),
-				SCContent.REINFORCED_MANGROVE_STAIRS.get(),
-				SCContent.REINFORCED_CHERRY_STAIRS.get(),
-				SCContent.REINFORCED_BAMBOO_STAIRS.get(),
-				SCContent.REINFORCED_BAMBOO_MOSAIC_STAIRS.get(),
-				SCContent.REINFORCED_CRIMSON_STAIRS.get(),
-				SCContent.REINFORCED_WARPED_STAIRS.get());
+		tag(SCTags.Blocks.REINFORCED_WOODEN_SLABS).add(woodenSlabs.toArray(new Block[woodenSlabs.size()]));
+		tag(SCTags.Blocks.REINFORCED_WOODEN_STAIRS).add(woodenStairs.toArray(new Block[woodenStairs.size()]));
 		tag(SCTags.Blocks.REINFORCED_WOOL).add(
 				SCContent.REINFORCED_WHITE_WOOL.get(),
 				SCContent.REINFORCED_ORANGE_WOOL.get(),
@@ -466,20 +470,13 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				witherImmune.add(ro.getKey());
 			}
 
-			//ugly way of checking if slabs/stairs are wood. they do not need to be added to the tag explicitly, as they are already present in the wooden equivalent tag
-			if (block instanceof ReinforcedSlabBlock && !isWoodMaterial(block))
+			if (block instanceof ReinforcedSlabBlock && !woodenSlabs.contains(block))
 				tag(SCTags.Blocks.REINFORCED_SLABS).add(block);
-			else if (block instanceof ReinforcedStairsBlock && !isWoodMaterial(block))
+			else if (block instanceof ReinforcedStairsBlock && !woodenStairs.contains(block))
 				tag(SCTags.Blocks.REINFORCED_STAIRS).add(block);
 			else if (block instanceof ReinforcedWallBlock)
 				tag(BlockTags.WALLS).add(block);
 		}
-	}
-
-	private boolean isWoodMaterial(Block block) {
-		Material material = block.defaultBlockState().getMaterial();
-
-		return material == Material.WOOD || material == Material.NETHER_WOOD;
 	}
 
 	@Override

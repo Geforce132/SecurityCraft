@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:reinforced_magenta_terracotta"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

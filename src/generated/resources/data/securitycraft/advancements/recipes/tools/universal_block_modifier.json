@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:universal_block_modifier"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
