@@ -58,7 +58,7 @@ public class SecretCeilingHangingSignBlock extends CeilingHangingSignBlock {
 		if (level.getBlockEntity(pos) instanceof SecretHangingSignBlockEntity be && be.isPlayerAllowedToSeeText(player))
 			return super.use(state, level, pos, player, hand, hit);
 
-		return InteractionResult.FAIL;
+		return InteractionResult.PASS;
 	}
 
 	@Override
