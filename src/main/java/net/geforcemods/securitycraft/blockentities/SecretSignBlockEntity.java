@@ -24,10 +24,16 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, IModuleInventory, ICustomizable {
 	private Owner owner = new Owner();
-	private BooleanOption isSecret = new BooleanOption("isSecret", true) {
+	private BooleanOption isFrontSecret = new BooleanOption("isFrontSecret", true) {
 		@Override
 		public String getKey(Block block) {
-			return "option.generic.secret_sign.isSecret";
+			return "option.generic.secret_sign.isFrontSecret";
+		}
+	};
+	private BooleanOption isBackSecret = new BooleanOption("isBackSecret", true) {
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.secret_sign.isBackSecret";
 		}
 	};
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
@@ -65,6 +71,16 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 	}
 
 	@Override
+	public void readOptions(CompoundTag tag) {
+		if (tag.contains("isSecret")) {
+			tag.putBoolean(isFrontSecret.getName(), tag.getBoolean("isSecret"));
+			tag.remove("isSecret");
+		}
+
+		ICustomizable.super.readOptions(tag);
+	}
+
+	@Override
 	public NonNullList<ItemStack> getInventory() {
 		return modules;
 	}
@@ -79,16 +95,20 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				isSecret
+				isFrontSecret, isBackSecret
 		};
 	}
 
-	public boolean isSecret() {
-		return isSecret.get();
+	public boolean isFrontSecret() {
+		return isFrontSecret.get();
 	}
 
-	public boolean isPlayerAllowedToSeeText(Player player) {
-		return !isSecret() || isOwnedBy(player) || isAllowed(player);
+	public boolean isBackSecret() {
+		return isBackSecret.get();
+	}
+
+	public boolean isPlayerAllowedToSeeText(Player player, boolean isFront) {
+		return !(isFront ? isFrontSecret() : isBackSecret()) || isOwnedBy(player) || isAllowed(player);
 	}
 
 	@Override

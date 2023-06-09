@@ -17,7 +17,7 @@ public class SecretHangingSignBlockEntity extends SecretSignBlockEntity {
 
 	@Override
 	public int getMaxTextLineWidth() {
-		return 50;
+		return 60;
 	}
 
 	@Override

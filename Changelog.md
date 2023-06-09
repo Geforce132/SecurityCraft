@@ -36,6 +36,8 @@
 - New: Passcodes entered in the text box of check passcode screens can now be shown using a checkbox
 - New: Keycard Holder
 - New: Keypad Trapdoor
+- New: Secret signs have been updated to match vanilla functionality (editing, double sidedness, waxing, ...)
+- New: Secret signs now have separate options for making the front and back side secret
 - Change: Several technical blocks' sounds have been adjusted to better match how they look
 - Change: Improved visuals when holding a taser
 - Change: Some alarm options have been moved to a separate screen
