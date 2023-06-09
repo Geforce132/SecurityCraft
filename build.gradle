@@ -107,7 +107,7 @@ dependencies {
 //  implementation fg.deobf("curse.maven:architectury-api-419699:4147231") //ftb teams dependency
 //  implementation fg.deobf("curse.maven:ftb-library-forge-404465:4210935") //ftb teams dependency
 //  implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4229138")
-//  implementation fg.deobf("curse.maven:jei-238222:4536209")
+	implementation fg.deobf("curse.maven:jei-238222:4574528")
 //  implementation fg.deobf("curse.maven:the-one-probe-245211:4442439")
 //  implementation fg.deobf("curse.maven:jade-324717:4538674")
 //  implementation fg.deobf("curse.maven:betterf3-401648:4553937")
