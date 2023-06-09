@@ -48,6 +48,7 @@
 - Fix: Crash when using the Disguise Module
 - Fix: Crash when placing any type of named passcode-protected furnace
 - Fix: Iron fences don't connect to fences they should connect to
+- Fix: Items carried by the cursor get deleted when closing the Universal Block Reinforcer screen
 - Removed: Ability to use name tags on the Sentry and other certain blocks. To give them a name, rename them in an anvil before placing
 - Misc.: More texture updates
 
