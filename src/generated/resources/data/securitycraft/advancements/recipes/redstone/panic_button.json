@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:panic_button"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

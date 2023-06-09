@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:reinforced_cobblestone_wall"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

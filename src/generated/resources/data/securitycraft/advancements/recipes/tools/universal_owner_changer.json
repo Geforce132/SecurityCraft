@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:universal_owner_changer"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

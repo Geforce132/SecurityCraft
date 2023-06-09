@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:trophy_system"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:retinal_scanner"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

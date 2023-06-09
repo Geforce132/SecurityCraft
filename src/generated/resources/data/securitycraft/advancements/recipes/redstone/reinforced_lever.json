@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:reinforced_lever"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

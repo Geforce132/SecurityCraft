@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:bouncing_betty"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

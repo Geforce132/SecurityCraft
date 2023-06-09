@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:reinforced_observer"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:netherrack_mine"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:reinforced_yellow_carpet"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

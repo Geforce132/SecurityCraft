@@ -30,5 +30,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "securitycraft:blocks/reinforced_end_stone_brick_slab"
 }

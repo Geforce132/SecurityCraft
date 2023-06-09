@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:ims"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

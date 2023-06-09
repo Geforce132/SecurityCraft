@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:sonic_security_system"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

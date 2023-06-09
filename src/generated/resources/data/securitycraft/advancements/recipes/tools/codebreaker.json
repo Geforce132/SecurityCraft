@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:codebreaker"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

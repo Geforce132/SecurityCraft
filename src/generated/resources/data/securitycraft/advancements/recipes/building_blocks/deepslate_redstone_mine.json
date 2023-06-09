@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:deepslate_redstone_mine"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

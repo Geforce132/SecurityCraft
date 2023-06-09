@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:camera_monitor"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

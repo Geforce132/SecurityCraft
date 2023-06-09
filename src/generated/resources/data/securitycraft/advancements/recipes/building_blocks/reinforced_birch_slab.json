@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:reinforced_birch_slab"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

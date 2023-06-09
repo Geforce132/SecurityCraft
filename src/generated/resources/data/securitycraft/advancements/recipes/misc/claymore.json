@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:claymore"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

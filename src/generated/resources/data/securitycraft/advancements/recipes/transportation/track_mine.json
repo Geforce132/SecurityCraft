@@ -28,5 +28,6 @@
     "recipes": [
       "securitycraft:track_mine"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

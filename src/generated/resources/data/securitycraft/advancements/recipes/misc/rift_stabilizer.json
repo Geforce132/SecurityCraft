@@ -30,5 +30,6 @@
     "recipes": [
       "securitycraft:rift_stabilizer"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
