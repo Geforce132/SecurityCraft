@@ -1135,7 +1135,7 @@
 	"option.generic.ignoreOwner.description": "このブロックは所有者を無視する、つまり所有者にはどんな機能も働かないようにするか？",
 	"option.generic.secret_sign.isBackSecret": "秘密の看板の背面: %s",
 	"option.generic.secret_sign.isBackSecret.description": "秘密の看板の背面の文章は、所有者と許可リストのプレイヤーにのみ見えるようにする必要があるか？",
-	"option.generic.secret_sign.isFrontSecret": "秘密の看板の前面：%s",
+	"option.generic.secret_sign.isFrontSecret": "秘密の看板の前面： %s",
 	"option.generic.secret_sign.isFrontSecret.description": "秘密の看板の前面の文章は、所有者と許可リストのプレイヤーにのみ見えるようにする必要があるか？",
 	"option.generic.smartModuleCooldown": "クールダウン: %s",
 	"option.generic.smartModuleCooldown.description": "不正なパスコードが入力された後、どれくらいの時間パスコードを入力できなくするか(単位はティック、20ティック＝1秒で要スマートモジュール)",
