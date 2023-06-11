@@ -79,6 +79,7 @@
 - Fix: Crash when placing any type of named passcode-protected furnace
 - Fix: Iron fences don't connect to fences they should connect to
 - Fix: Items carried by the cursor get deleted when closing the Universal Block Reinforcer screen
+- Fix: Reinforced pistons can push vanilla's reinforced deepslate
 - Removed: Ability to use name tags on the Sentry and other certain blocks. To give them a name, rename them in an anvil before placing
 - Misc.: The minimum required Forge version is 45.0.58
 - Misc.: More texture updates
