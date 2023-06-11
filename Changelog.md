@@ -1,4 +1,4 @@
---------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
+--------------------------Changelog for v1.9.7-beta1 of SecurityCraft--------------------------
 
 - New: Reinforced Blocks:*
 	- Block of Bamboo
@@ -85,16 +85,3 @@
 - Misc.: More texture updates
 
 [*] in Minecraft 1.19.3 and 1.19.4, these are only available if the update_1_20 datapack is enabled
-
---------------------------Changelog for v1.9.6.2 of SecurityCraft--------------------------
-
-- Fix: JEI integration
-
---------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------
-
-- Fix: Mounting two cameras after one another in different dimensions causes severe lag
-- Misc.: The minimum required Forge version is 45.0.18
-
---------------------------Changelog for v1.9.6-beta1 of SecurityCraft--------------------------
-
-- Misc.: The minimum required Forge version is 45.0.2
