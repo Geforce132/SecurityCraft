@@ -127,7 +127,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		if (!disabled) {
 			guiGraphics.blit(TEXTURE, xStart, yStart, 0, 0, 145, 109);
 			ClientUtils.fillHorizontalGradient(guiGraphics, 0, colorFieldLeft, colorFieldTop, colorFieldRight + 1, colorFieldBottom + 1, 0xFFFFFFFF, ClientUtils.HSBtoRGB(h, 1.0F, 1.0F));
-			guiGraphics.fillGradient(colorFieldRight + 1, colorFieldBottom + 1, colorFieldLeft, colorFieldTop, 0x00000000, 0xFF000000, 0);
+			guiGraphics.fillGradient(colorFieldLeft, colorFieldTop, colorFieldRight + 1, colorFieldBottom + 1, 0x00000000, 0xFF000000);
 			guiGraphics.blit(TEXTURE, (int) selectionX - 1, (int) selectionY - 1, colorFieldHoverChecker.checkHover(mouseX, mouseY) ? 148 : 145, 20, 3, 3); //color field indicator
 			super.render(guiGraphics, mouseX, mouseY, partialTick);
 			guiGraphics.drawString(font, rText, colorFieldRight + 5, colorFieldTop + 1, 0x404040, false);
