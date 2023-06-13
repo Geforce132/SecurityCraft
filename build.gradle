@@ -48,7 +48,7 @@ sourceSets.main.resources {
 }
 
 minecraft {
-	mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.20'
+	mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.20.1'
 	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 	copyIdeResources = true
 
@@ -101,7 +101,7 @@ repositories {
 }
 
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.20-46.0.12'
+	minecraft 'net.minecraftforge:forge:1.20.1-47.0.1'
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 	
 //  implementation fg.deobf("curse.maven:architectury-api-419699:4147231") //ftb teams dependency
