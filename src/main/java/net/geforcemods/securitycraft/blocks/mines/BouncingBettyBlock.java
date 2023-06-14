@@ -13,12 +13,11 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -109,7 +108,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 		entitytntprimed.fuse = 15;
 		entitytntprimed.motionY = 0.5D;
 		LevelUtils.addScheduledTask(world, () -> world.spawnEntity(entitytntprimed));
-		entitytntprimed.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.tnt.primed")), 1.0F, 1.0F);
+		entitytntprimed.playSound(SoundEvents.ENTITY_TNT_PRIMED, 1.0F, 1.0F);
 	}
 
 	@Override
@@ -124,7 +123,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(DEACTIVATED, meta == 1 ? true : false);
+		return getDefaultState().withProperty(DEACTIVATED, (meta == 1) == true);
 	}
 
 	@Override

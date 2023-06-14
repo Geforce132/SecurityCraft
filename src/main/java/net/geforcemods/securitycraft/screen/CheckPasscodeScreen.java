@@ -21,9 +21,9 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -131,14 +131,14 @@ public class CheckPasscodeScreen extends GuiContainer {
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		if (!be.isOnCooldown()) {
 			if (keyCode == Keyboard.KEY_BACK && keycodeTextbox.getText().length() > 0)
-				Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("ui.button.click")), 0.15F, 1.0F);
+				Minecraft.getMinecraft().player.playSound(SoundEvents.UI_BUTTON_CLICK, 0.15F, 1.0F);
 
 			if (isValidChar(typedChar) && keycodeTextbox.textboxKeyTyped(typedChar, keyCode)) {
-				Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("ui.button.click")), 0.15F, 1.0F);
+				Minecraft.getMinecraft().player.playSound(SoundEvents.UI_BUTTON_CLICK, 0.15F, 1.0F);
 				return;
 			}
 			else if (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER) {
-				Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("ui.button.click")), 0.15F, 1.0F);
+				Minecraft.getMinecraft().player.playSound(SoundEvents.UI_BUTTON_CLICK, 0.15F, 1.0F);
 				checkCode(keycodeTextbox.getText());
 			}
 		}
