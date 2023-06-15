@@ -222,7 +222,7 @@ public class SCClientEventHandler {
 				});
 			}
 			else if (stack.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get()) {
-				if (Minecraft.getInstance().crosshairPickEntity instanceof Sentry sentry)
+				if (mc.crosshairPickEntity instanceof Sentry sentry)
 					uCoord = loop(12, (tag, i) -> Arrays.stream(tag.getIntArray("sentry" + i)).boxed().toArray(Integer[]::new), stack.getOrCreateTag(), sentry.blockPosition());
 			}
 			else if (stack.getItem() == SCContent.SONIC_SECURITY_SYSTEM_ITEM.get()) {
@@ -240,8 +240,10 @@ public class SCClientEventHandler {
 				}, 0, null, false, SonicSecuritySystemItem::isAdded);
 			}
 
-			if (uCoord != 0)
-				guiGraphics.blit(BEACON_GUI, Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 90 + (hand == InteractionHand.MAIN_HAND ? player.getInventory().selected * 20 : (mc.options.mainHand().get() == HumanoidArm.LEFT ? 189 : -29)), Minecraft.getInstance().getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
+			if (uCoord != 0) {
+				RenderSystem.disableDepthTest();
+				guiGraphics.blit(BEACON_GUI, mc.getWindow().getGuiScaledWidth() / 2 - 90 + (hand == InteractionHand.MAIN_HAND ? player.getInventory().selected * 20 : (mc.options.mainHand().get() == HumanoidArm.LEFT ? 189 : -29)), mc.getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
+			}
 		}
 	}
 
