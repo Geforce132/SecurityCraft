@@ -2539,11 +2539,7 @@ public class SCContent {
 	}
 
 	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock) {
-		return woodenPressurePlate(vanillaBlock, Material.WOOD, SoundType.WOOD);
-	}
-
-	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, Material material, SoundType soundType) {
-		return new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(material, vanillaBlock.defaultMaterialColor()).noCollission().sound(soundType), vanillaBlock);
+		return new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(Material.WOOD, vanillaBlock.defaultMaterialColor()).noCollission().sound(SoundType.WOOD), vanillaBlock);
 	}
 
 	private static ReinforcedPressurePlateBlock stonePressurePlate(Block vanillaBlock) {
