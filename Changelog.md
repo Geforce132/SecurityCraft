@@ -64,6 +64,7 @@
 - Fix: Iron fences don't connect to fences they should connect to
 - Fix: Items carried by the cursor get deleted when closing the Universal Block Reinforcer screen
 - Fix: Reinforced pistons can push vanilla's reinforced deepslate
+- Fix: Some SecurityCraft blocks are displayed with the wrong color on a map
 - Removed: Ability to use name tags on the Sentry and other certain blocks. To give them a name, rename them in an anvil before placing
 - Misc.: More texture updates
 
