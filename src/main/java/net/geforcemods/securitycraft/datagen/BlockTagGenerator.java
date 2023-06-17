@@ -121,7 +121,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(SCTags.Blocks.REINFORCED_PRESSURE_PLATES).addTag(SCTags.Blocks.REINFORCED_WOODEN_PRESSURE_PLATES).addTag(SCTags.Blocks.REINFORCED_STONE_PRESSURE_PLATES);
 		tag(SCTags.Blocks.REINFORCED_SAND).add(
 				SCContent.REINFORCED_RED_SAND.get(),
-				SCContent.REINFORCED_SAND.get());
+				SCContent.REINFORCED_SAND.get(),
+				SCContent.SUSPICIOUS_SAND_MINE.get());
 		tag(SCTags.Blocks.REINFORCED_SLABS).addTag(SCTags.Blocks.REINFORCED_WOODEN_SLABS);
 		tag(SCTags.Blocks.REINFORCED_SPRUCE_LOGS).add(
 				SCContent.REINFORCED_SPRUCE_LOG.get(),
