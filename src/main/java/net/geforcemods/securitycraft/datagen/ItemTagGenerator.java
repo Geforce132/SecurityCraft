@@ -39,6 +39,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				SCContent.SMART_MODULE.get(),
 				SCContent.SPEED_MODULE.get(),
 				SCContent.STORAGE_MODULE.get());
+		tag(SCTags.Items.REINFORCED_MOSS).add(SCContent.REINFORCED_MOSS_BLOCK.get().asItem());
 		tag(SCTags.Items.SECRET_HANGING_SIGNS).add(
 				SCContent.SECRET_ACACIA_HANGING_SIGN_ITEM.get(),
 				SCContent.SECRET_BAMBOO_HANGING_SIGN_ITEM.get(),

@@ -664,23 +664,23 @@ public class RecipeGenerator extends RecipeProvider {
 		addButtonRecipe(consumer, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_BUTTON.get());
 		addButtonRecipe(consumer, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_BUTTON.get());
 		addButtonRecipe(consumer, SCContent.REINFORCED_POLISHED_BLACKSTONE.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_BLACK_WOOL.get(), SCContent.REINFORCED_BLACK_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_BLUE_WOOL.get(), SCContent.REINFORCED_BLUE_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_BROWN_WOOL.get(), SCContent.REINFORCED_BROWN_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_CYAN_WOOL.get(), SCContent.REINFORCED_CYAN_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_GRAY_WOOL.get(), SCContent.REINFORCED_GRAY_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_GREEN_WOOL.get(), SCContent.REINFORCED_GREEN_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_LIGHT_BLUE_WOOL.get(), SCContent.REINFORCED_LIGHT_BLUE_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_LIGHT_GRAY_WOOL.get(), SCContent.REINFORCED_LIGHT_GRAY_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_LIME_WOOL.get(), SCContent.REINFORCED_LIME_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_MAGENTA_WOOL.get(), SCContent.REINFORCED_MAGENTA_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_MOSS_BLOCK.get(), SCContent.REINFORCED_MOSS_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_ORANGE_WOOL.get(), SCContent.REINFORCED_ORANGE_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_PINK_WOOL.get(), SCContent.REINFORCED_PINK_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_PURPLE_WOOL.get(), SCContent.REINFORCED_PURPLE_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_RED_WOOL.get(), SCContent.REINFORCED_RED_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_WHITE_WOOL.get(), SCContent.REINFORCED_WHITE_CARPET.get());
-		addCarpetRecipe(consumer, SCContent.REINFORCED_YELLOW_WOOL.get(), SCContent.REINFORCED_YELLOW_CARPET.get());
+		addCarpetRecipe(consumer, SCContent.REINFORCED_MOSS_BLOCK.get(), SCContent.REINFORCED_MOSS_CARPET.get(), SCTags.Items.REINFORCED_MOSS);
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_BLACK, SCContent.REINFORCED_BLACK_WOOL.get(), SCContent.REINFORCED_BLACK_CARPET.get());
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_BLUE, SCContent.REINFORCED_BLUE_WOOL.get(), SCContent.REINFORCED_BLUE_CARPET.get());
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_BROWN, SCContent.REINFORCED_BROWN_WOOL.get(), SCContent.REINFORCED_BROWN_CARPET.get());
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_CYAN, SCContent.REINFORCED_CYAN_WOOL.get(), SCContent.REINFORCED_CYAN_CARPET.get());
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_GRAY, SCContent.REINFORCED_GRAY_WOOL.get(), SCContent.REINFORCED_GRAY_CARPET.get());
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_GREEN, SCContent.REINFORCED_GREEN_WOOL.get(), SCContent.REINFORCED_GREEN_CARPET.get());
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_LIGHT_BLUE, SCContent.REINFORCED_LIGHT_BLUE_WOOL.get(), SCContent.REINFORCED_LIGHT_BLUE_CARPET.get());
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_LIGHT_GRAY, SCContent.REINFORCED_LIGHT_GRAY_WOOL.get(), SCContent.REINFORCED_LIGHT_GRAY_CARPET.get());
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_LIME, SCContent.REINFORCED_LIME_WOOL.get(), SCContent.REINFORCED_LIME_CARPET.get());
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_MAGENTA, SCContent.REINFORCED_MAGENTA_WOOL.get(), SCContent.REINFORCED_MAGENTA_CARPET.get());
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_ORANGE, SCContent.REINFORCED_ORANGE_WOOL.get(), SCContent.REINFORCED_ORANGE_CARPET.get());
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_PINK, SCContent.REINFORCED_PINK_WOOL.get(), SCContent.REINFORCED_PINK_CARPET.get());
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_PURPLE, SCContent.REINFORCED_PURPLE_WOOL.get(), SCContent.REINFORCED_PURPLE_CARPET.get());
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_RED, SCContent.REINFORCED_RED_WOOL.get(), SCContent.REINFORCED_RED_CARPET.get());
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_WHITE, SCContent.REINFORCED_WHITE_WOOL.get(), SCContent.REINFORCED_WHITE_CARPET.get());
+		addColoredCarpetRecipes(consumer, Tags.Items.DYES_YELLOW, SCContent.REINFORCED_YELLOW_WOOL.get(), SCContent.REINFORCED_YELLOW_CARPET.get());
 		addChiselingRecipe(consumer, SCContent.CRYSTAL_QUARTZ_SLAB.get(), SCContent.CHISELED_CRYSTAL_QUARTZ.get());
 		addChiselingRecipe(consumer, SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get(), SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get());
 		addChiselingRecipe(consumer, SCContent.REINFORCED_PURPUR_SLAB.get(), SCContent.REINFORCED_PURPUR_PILLAR.get());
@@ -1257,14 +1257,26 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addCarpetRecipe(Consumer<FinishedRecipe> consumer, ItemLike wool, ItemLike carpet) {
+	protected final void addCarpetRecipe(Consumer<FinishedRecipe> consumer, ItemLike carpetMaterial, ItemLike carpet, TagKey<Item> unlockedBy) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, carpet, 3)
 		.group("securitycraft:reinforced_carpets")
-		.pattern("WW")
-		.define('W', wool)
-		.unlockedBy("has_wool", has(SCTags.Items.REINFORCED_WOOL))
+		.pattern("MM")
+		.define('M', carpetMaterial)
+		.unlockedBy("has_item", has(unlockedBy))
 		.save(consumer);
+		//@formatter:on
+	}
+
+	protected final void addColoredCarpetRecipes(Consumer<FinishedRecipe> consumer, TagKey<Item> dye, ItemLike wool, ItemLike carpet) {
+		addCarpetRecipe(consumer, wool, carpet, SCTags.Items.REINFORCED_WOOL);
+		//@formatter:off
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, carpet)
+		.group("securitycraft:reinforced_carpets")
+		.requires(dye)
+		.requires(SCTags.Items.REINFORCED_WOOL_CARPETS)
+		.unlockedBy("has_wool_carpet", has(SCTags.Items.REINFORCED_WOOL_CARPETS))
+		.save(consumer, new ResourceLocation(Utils.getRegistryName(carpet.asItem()).toString() + "_from_dye"));
 		//@formatter:on
 	}
 
@@ -1284,8 +1296,8 @@ public class RecipeGenerator extends RecipeProvider {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result)
 		.group("securitycraft:reinforced_wool")
 		.requires(dye)
-		.requires(SCContent.REINFORCED_WHITE_WOOL.get())
-		.unlockedBy("has_wool", has(SCContent.REINFORCED_WHITE_WOOL.get()))
+		.requires(SCTags.Items.REINFORCED_WOOL)
+		.unlockedBy("has_wool", has(SCTags.Items.REINFORCED_WOOL))
 		.save(consumer);
 		//@formatter:on
 	}

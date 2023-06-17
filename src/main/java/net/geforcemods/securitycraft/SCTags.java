@@ -73,6 +73,7 @@ public class SCTags {
 		public static final TagKey<Item> REINFORCED_JUNGLE_LOGS = tag("reinforced/jungle_logs");
 		public static final TagKey<Item> REINFORCED_LOGS = tag("reinforced/logs");
 		public static final TagKey<Item> REINFORCED_MANGROVE_LOGS = tag("reinforced/mangrove_logs");
+		public static final TagKey<Item> REINFORCED_MOSS = tag("reinforced/moss");
 		public static final TagKey<Item> REINFORCED_NYLIUM = tag("reinforced/nylium");
 		public static final TagKey<Item> REINFORCED_OAK_LOGS = tag("reinforced/oak_logs");
 		public static final TagKey<Item> REINFORCED_PLANKS = tag("reinforced/planks");
