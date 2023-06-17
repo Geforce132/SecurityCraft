@@ -48,6 +48,7 @@
 - Fix: Disguising a Sentry makes it inaccessible
 - Fix: Some sliders don't get colored when hovering over them
 - Fix: Items carried by the cursor disappear when closing the Universal Block Reinforcer or Passcode-protected Furnace screen until the screen is opened again
+- Fix: Some SecurityCraft blocks are displayed with the wrong color on a map
 - Removed: Ability to use name tags on the Sentry and other certain blocks. To give them a name, rename them in an anvil before placing
 
 --------------------------Changelog for v1.9.6 of SecurityCraft--------------------------

@@ -5,6 +5,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -27,7 +28,7 @@ public class FurnaceMineBlock extends BaseFullMineBlock {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
 	public FurnaceMineBlock(Material material) {
-		super(material, Blocks.FURNACE, 0);
+		super(material, Blocks.FURNACE, 0, MapColor.STONE);
 	}
 
 	@Override

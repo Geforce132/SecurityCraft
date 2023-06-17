@@ -9,9 +9,8 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockColored;
+import net.minecraft.block.BlockStainedHardenedClay;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,11 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedStainedHardenedClayBlock extends BlockColored implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock {
-	public ReinforcedStainedHardenedClayBlock() {
-		super(Material.ROCK);
-	}
-
+public class ReinforcedStainedHardenedClayBlock extends BlockStainedHardenedClay implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock {
 	@Override
 	public float getExplosionResistance(Entity exploder) {
 		return Float.MAX_VALUE;

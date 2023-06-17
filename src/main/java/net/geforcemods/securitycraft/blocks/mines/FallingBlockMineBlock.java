@@ -5,6 +5,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.entity.FallingOwnableBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -17,8 +18,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class FallingBlockMineBlock extends BaseFullMineBlock {
 	public static boolean fallInstantly;
 
-	public FallingBlockMineBlock(Material material, Block disguisedBlock) {
-		super(material, disguisedBlock, 0);
+	public FallingBlockMineBlock(Material material, Block disguisedBlock, MapColor color) {
+		super(material, disguisedBlock, 0, color);
 	}
 
 	@Override

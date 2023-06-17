@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -21,7 +22,7 @@ public class RedstoneOreMineBlock extends BaseFullMineBlock {
 	public static final PropertyBool LIT = PropertyBool.create("lit");
 
 	public RedstoneOreMineBlock() {
-		super(Material.ROCK, Blocks.REDSTONE_ORE, 2);
+		super(Material.ROCK, Blocks.REDSTONE_ORE, 2, MapColor.STONE);
 
 		setTickRandomly(true);
 		setDefaultState(getDefaultState().withProperty(LIT, false));

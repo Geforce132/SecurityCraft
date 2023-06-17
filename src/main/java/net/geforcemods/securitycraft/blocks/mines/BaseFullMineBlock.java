@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -26,9 +27,10 @@ import net.minecraft.world.World;
 public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay, IBlockMine {
 	private final Block blockDisguisedAs;
 
-	public BaseFullMineBlock(Material material, Block disguisedBlock, int harvestLevel) {
+	public BaseFullMineBlock(Material material, Block disguisedBlock, int harvestLevel, MapColor color) {
 		super(material);
 		blockDisguisedAs = disguisedBlock;
+		blockMapColor = color;
 
 		if (material == Material.SAND) {
 			setSoundType(SoundType.SAND);
@@ -51,25 +53,21 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState) {
-		if (entity instanceof EntityItem) {
+		if (entity instanceof EntityItem)
 			addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
-			return;
-		}
 		else if (entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entity;
 			TileEntity te = world.getTileEntity(pos);
 
 			if (te instanceof OwnableBlockEntity) {
 				OwnableBlockEntity ownableTe = (OwnableBlockEntity) te;
+				EntityPlayer player = (EntityPlayer) entity;
 
-				if (ownableTe.isOwnedBy(player) || player.isCreative()) {
+				if (ownableTe.isOwnedBy(player) || player.isCreative())
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
-					return;
-				}
 			}
 		}
-
-		addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
+		else
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
 	}
 
 	@Override

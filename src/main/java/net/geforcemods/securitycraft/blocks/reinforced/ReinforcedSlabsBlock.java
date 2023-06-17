@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -26,6 +27,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -43,6 +45,11 @@ public class ReinforcedSlabsBlock extends BlockSlab implements ITileEntityProvid
 
 		setSoundType(SoundType.STONE);
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.STONE));
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		return state.getValue(VARIANT).getColor();
 	}
 
 	@Override
@@ -138,27 +145,25 @@ public class ReinforcedSlabsBlock extends BlockSlab implements ITileEntityProvid
 	}
 
 	public static enum EnumType implements IStringSerializable {
-		STONE(0, "stone"),
-		COBBLESTONE(1, "cobblestone", "cobble"),
-		SANDSTONE(2, "sandstone", "sandstone"),
-		STONEBRICK(3, "stonebrick", "stonebrick"),
-		BRICK(4, "brick", "brick"),
-		NETHERBRICK(5, "netherbrick", "netherbrick"),
-		QUARTZ(6, "quartz", "quartz");
+		STONE(0, "stone", "stone", MapColor.STONE),
+		COBBLESTONE(1, "cobblestone", "cobble", MapColor.STONE),
+		SANDSTONE(2, "sandstone", "sandstone", MapColor.SAND),
+		STONEBRICK(3, "stonebrick", "stonebrick", MapColor.STONE),
+		BRICK(4, "brick", "brick", MapColor.RED),
+		NETHERBRICK(5, "netherbrick", "netherbrick", MapColor.NETHERRACK),
+		QUARTZ(6, "quartz", "quartz", MapColor.QUARTZ);
 
 		private static final EnumType[] META_LOOKUP = new EnumType[values().length];
 		private final int meta;
 		private final String name;
 		private final String unlocalizedName;
+		private final MapColor color;
 
-		private EnumType(int meta, String name) {
-			this(meta, name, name);
-		}
-
-		private EnumType(int meta, String name, String unlocalizedName) {
+		private EnumType(int meta, String name, String unlocalizedName, MapColor color) {
 			this.meta = meta;
 			this.name = name;
 			this.unlocalizedName = unlocalizedName;
+			this.color = color;
 		}
 
 		public int getMetadata() {
@@ -184,6 +189,10 @@ public class ReinforcedSlabsBlock extends BlockSlab implements ITileEntityProvid
 
 		public String getTranslationKey() {
 			return unlocalizedName;
+		}
+
+		public MapColor getColor() {
+			return color;
 		}
 
 		static {

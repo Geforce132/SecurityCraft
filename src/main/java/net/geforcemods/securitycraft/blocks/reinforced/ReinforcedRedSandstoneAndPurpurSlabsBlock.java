@@ -9,8 +9,10 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -29,6 +31,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -45,6 +48,11 @@ public class ReinforcedRedSandstoneAndPurpurSlabsBlock extends BlockSlab impleme
 			useNeighborBrightness = true;
 
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.RED_SANDSTONE));
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getValue(VARIANT).getColor();
 	}
 
 	@Override
@@ -150,22 +158,18 @@ public class ReinforcedRedSandstoneAndPurpurSlabsBlock extends BlockSlab impleme
 	}
 
 	public static enum EnumType implements IStringSerializable {
-		RED_SANDSTONE(0, "red_sandstone"),
-		PURPUR(1, "purpur");
+		RED_SANDSTONE(0, "red_sandstone", BlockSand.EnumType.RED_SAND.getMapColor()),
+		PURPUR(1, "purpur", MapColor.MAGENTA);
 
 		private static final EnumType[] META_LOOKUP = new EnumType[values().length];
 		private final int meta;
 		private final String name;
-		private final String unlocalizedName;
+		private final MapColor color;
 
-		private EnumType(int meta, String name) {
-			this(meta, name, name);
-		}
-
-		private EnumType(int meta, String name, String unlocalizedName) {
+		private EnumType(int meta, String name, MapColor color) {
 			this.meta = meta;
 			this.name = name;
-			this.unlocalizedName = unlocalizedName;
+			this.color = color;
 		}
 
 		public int getMetadata() {
@@ -190,7 +194,11 @@ public class ReinforcedRedSandstoneAndPurpurSlabsBlock extends BlockSlab impleme
 		}
 
 		public String getTranslationKey() {
-			return unlocalizedName;
+			return name;
+		}
+
+		public MapColor getColor() {
+			return color;
 		}
 
 		static {

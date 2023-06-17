@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockPlanks.EnumType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -9,6 +10,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 
 public class ReinforcedNewLogBlock extends ReinforcedLogBlock implements IReinforcedBlock {
 	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class, type -> type.getMetadata() >= 4);
@@ -16,6 +19,23 @@ public class ReinforcedNewLogBlock extends ReinforcedLogBlock implements IReinfo
 	public ReinforcedNewLogBlock() {
 		super(2, Blocks.LOG2);
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.ACACIA).withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		EnumType type = state.getValue(VARIANT);
+
+		switch (state.getValue(LOG_AXIS)) {
+			default:
+				switch (type) {
+					default:
+						return MapColor.STONE;
+					case DARK_OAK:
+						return EnumType.DARK_OAK.getMapColor();
+				}
+			case Y:
+				return type.getMapColor();
+		}
 	}
 
 	@Override

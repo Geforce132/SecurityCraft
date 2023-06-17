@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -15,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class CrystalQuartzSlabBlock extends BlockSlab implements IOverlayDisplay {
@@ -29,6 +31,11 @@ public class CrystalQuartzSlabBlock extends BlockSlab implements IOverlayDisplay
 			useNeighborBrightness = true;
 
 		setSoundType(SoundType.STONE);
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return MapColor.CYAN;
 	}
 
 	@Override

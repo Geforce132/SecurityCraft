@@ -11,6 +11,7 @@ import net.minecraft.block.BlockDeadBush;
 import net.minecraft.block.BlockLilyPad;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -31,12 +32,19 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		amount = a;
 	}
 
-	public BaseReinforcedBlock(Material mat, int a, SoundType sound, Block... vB) {
-		super(mat);
+	public BaseReinforcedBlock(Material mat, int a, MapColor color, Block... vB) {
+		this(mat, a, vB);
+		blockMapColor = color;
+	}
 
+	public BaseReinforcedBlock(Material mat, int a, SoundType sound, Block... vB) {
+		this(mat, a, vB);
 		setSoundType(sound);
-		vanillaBlocks = Arrays.asList(vB);
-		amount = a;
+	}
+
+	public BaseReinforcedBlock(Material mat, int a, SoundType sound, MapColor color, Block... vB) {
+		this(mat, a, vB);
+		blockMapColor = color;
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.entity.FallingOwnableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -21,9 +22,13 @@ public class ReinforcedFallingBlock extends BaseReinforcedBlock {
 	public ReinforcedFallingBlock(Material material, Block disguisedBlock) {
 		super(material, 1, disguisedBlock);
 
-		if (material == Material.SAND) {
+		if (material == Material.SAND)
 			setSoundType(SoundType.SAND);
-		}
+	}
+
+	public ReinforcedFallingBlock(Material material, Block disguisedBlock, MapColor color) {
+		this(material, disguisedBlock);
+		blockMapColor = color;
 	}
 
 	@Override

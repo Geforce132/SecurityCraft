@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -30,11 +31,12 @@ import net.minecraftforge.common.MinecraftForge;
 public class ReinforcedPressurePlateBlock extends BlockPressurePlate implements IReinforcedBlock {
 	private final Block vanillaBlock;
 
-	public ReinforcedPressurePlateBlock(Material material, Sensitivity sensitivity, SoundType soundType, Block vanillaBlock) {
+	public ReinforcedPressurePlateBlock(Material material, Sensitivity sensitivity, SoundType soundType, Block vanillaBlock, MapColor color) {
 		super(material, sensitivity);
 
 		setSoundType(soundType);
 		this.vanillaBlock = vanillaBlock;
+		blockMapColor = color;
 	}
 
 	@Override

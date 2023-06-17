@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -18,7 +19,7 @@ public class ReinforcedBoneBlock extends BaseReinforcedBlock {
 	public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.<EnumFacing.Axis>create("axis", EnumFacing.Axis.class);
 
 	public ReinforcedBoneBlock(Material mat) {
-		super(mat, 1, Blocks.BONE_BLOCK);
+		super(mat, 1, MapColor.SAND, Blocks.BONE_BLOCK);
 	}
 
 	@Override

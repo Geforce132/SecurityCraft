@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -33,6 +34,11 @@ public class ReinforcedMetalsBlock extends OwnableBlock implements IOverlayDispl
 		super(Material.ROCK);
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.GOLD));
 		setSoundType(SoundType.METAL);
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getValue(VARIANT).getColor();
 	}
 
 	@Override
@@ -100,19 +106,21 @@ public class ReinforcedMetalsBlock extends OwnableBlock implements IOverlayDispl
 	}
 
 	public static enum EnumType implements IStringSerializable {
-		GOLD(0, "gold"),
-		IRON(1, "iron"),
-		DIAMOND(2, "diamond"),
-		EMERALD(3, "emerald"),
-		REDSTONE(4, "redstone");
+		GOLD(0, "gold", MapColor.GOLD),
+		IRON(1, "iron", MapColor.IRON),
+		DIAMOND(2, "diamond", MapColor.DIAMOND),
+		EMERALD(3, "emerald", MapColor.EMERALD),
+		REDSTONE(4, "redstone", MapColor.TNT);
 
 		private static final EnumType[] META_LOOKUP = new EnumType[values().length];
 		private final int meta;
 		private final String name;
+		private final MapColor color;
 
-		private EnumType(int meta, String name) {
+		private EnumType(int meta, String name, MapColor color) {
 			this.meta = meta;
 			this.name = name;
+			this.color = color;
 		}
 
 		public int getMetadata() {
@@ -134,6 +142,10 @@ public class ReinforcedMetalsBlock extends OwnableBlock implements IOverlayDispl
 		@Override
 		public String getName() {
 			return name;
+		}
+
+		public MapColor getColor() {
+			return color;
 		}
 
 		static {

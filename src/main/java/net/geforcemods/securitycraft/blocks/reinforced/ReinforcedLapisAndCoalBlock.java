@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -18,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class ReinforcedLapisAndCoalBlock extends OwnableBlock implements IOverlayDisplay, IReinforcedBlock {
@@ -26,6 +28,11 @@ public class ReinforcedLapisAndCoalBlock extends OwnableBlock implements IOverla
 	public ReinforcedLapisAndCoalBlock() {
 		super(Material.ROCK);
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.LAPIS));
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getValue(VARIANT).getColor();
 	}
 
 	@Override
@@ -78,16 +85,18 @@ public class ReinforcedLapisAndCoalBlock extends OwnableBlock implements IOverla
 	}
 
 	public static enum EnumType implements IStringSerializable {
-		LAPIS(0, "lapis"),
-		COAL(1, "coal");
+		LAPIS(0, "lapis", MapColor.LAPIS),
+		COAL(1, "coal", MapColor.BLACK);
 
 		private static final EnumType[] META_LOOKUP = new EnumType[values().length];
 		private final int meta;
 		private final String name;
+		private final MapColor color;
 
-		private EnumType(int meta, String name) {
+		private EnumType(int meta, String name, MapColor color) {
 			this.meta = meta;
 			this.name = name;
+			this.color = color;
 		}
 
 		public int getMetadata() {
@@ -109,6 +118,10 @@ public class ReinforcedLapisAndCoalBlock extends OwnableBlock implements IOverla
 		@Override
 		public String getName() {
 			return name;
+		}
+
+		public MapColor getColor() {
+			return color;
 		}
 
 		static {
