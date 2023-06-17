@@ -119,16 +119,20 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 		BlockEntity be = level.getBlockEntity(pos);
 
 		if (fluid == Fluids.WATER) {
-			level.setBlockAndUpdate(pos, SCContent.REINFORCED_WATER_CAULDRON.get().defaultBlockState());
+			BlockState waterCauldronState = SCContent.REINFORCED_WATER_CAULDRON.get().defaultBlockState();
+
+			level.setBlockAndUpdate(pos, waterCauldronState);
 			level.setBlockEntity(be);
 			level.levelEvent(LevelEvent.SOUND_DRIP_WATER_INTO_CAULDRON, pos, 0);
-			level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
+			level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(waterCauldronState));
 		}
 		else if (fluid == Fluids.LAVA) {
-			level.setBlockAndUpdate(pos, SCContent.REINFORCED_LAVA_CAULDRON.get().defaultBlockState());
+			BlockState lavaCauldronState = SCContent.REINFORCED_LAVA_CAULDRON.get().defaultBlockState();
+
+			level.setBlockAndUpdate(pos, lavaCauldronState);
 			level.setBlockEntity(be);
 			level.levelEvent(LevelEvent.SOUND_DRIP_LAVA_INTO_CAULDRON, pos, 0);
-			level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
+			level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(lavaCauldronState));
 		}
 	}
 
