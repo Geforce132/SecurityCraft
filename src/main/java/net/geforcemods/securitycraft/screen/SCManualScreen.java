@@ -162,7 +162,7 @@ public class SCManualScreen extends Screen {
 				guiGraphics.blit(ICONS, startX + 81, 118, 36, 1, 17, 16);
 
 			if (explosive)
-				guiGraphics.blit(ICONS,  startX + 107, 117, 54, 1, 18, 18);
+				guiGraphics.blit(ICONS, startX + 107, 117, 54, 1, 18, 18);
 
 			if (customizable)
 				guiGraphics.blit(ICONS, startX + 136, 118, 88, 1, 16, 16);

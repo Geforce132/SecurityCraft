@@ -26,8 +26,8 @@ import net.minecraftforge.registries.RegistryObject;
 public class SCCreativeModeTabs {
 	public static final Map<SCItemGroup, List<ItemStack>> STACKS_FOR_ITEM_GROUPS = Util.make(new EnumMap<>(SCItemGroup.class), map -> Arrays.stream(SCItemGroup.values()).forEach(key -> map.put(key, new ArrayList<>())));
 	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SecurityCraft.MODID);
-	public static final RegistryObject<CreativeModeTab> TECHNICAL_TAB = CREATIVE_MODE_TABS.register("technical", () -> CreativeModeTab.builder()
 	//@formatter:off
+	public static final RegistryObject<CreativeModeTab> TECHNICAL_TAB = CREATIVE_MODE_TABS.register("technical", () -> CreativeModeTab.builder()
 			.withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
 			.icon(() -> new ItemStack(SCContent.USERNAME_LOGGER.get()))
 			.title(Component.translatable("itemGroup.securitycraft.technical"))
