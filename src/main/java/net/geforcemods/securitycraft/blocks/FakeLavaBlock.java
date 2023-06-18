@@ -21,6 +21,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -110,7 +111,7 @@ public class FakeLavaBlock extends BlockDynamicLiquid {
 
 		if (canFlowInto(world, pos.down(), stateBelow)) {
 			if (material == Material.LAVA && world.getBlockState(pos.down()).getMaterial() == Material.WATER) {
-				world.setBlockState(pos.down(), Blocks.STONE.getDefaultState());
+				world.setBlockState(pos.down(), ForgeEventFactory.fireFluidPlaceBlockEvent(world, pos.down(), pos, Blocks.STONE.getDefaultState()));
 				triggerMixEffects(world, pos.down());
 				return;
 			}
