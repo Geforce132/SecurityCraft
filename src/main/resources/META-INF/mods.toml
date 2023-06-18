@@ -1,12 +1,12 @@
 modLoader="javafml"
-loaderVersion="[46,)"
+loaderVersion="${loader_version_range}"
 logoFile="sc_banner.png"
-license="GNU GPL v3.0 https://github.com/Geforce132/SecurityCraft/blob/1.20/LICENSE"
+license="GNU GPL v3.0 https://github.com/Geforce132/SecurityCraft/blob/${git_branch}/LICENSE"
 issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 
 [[mods]]
 	modId="securitycraft"
-	version="${file.jarVersion}"
+	version="${mod_version}"
 	displayName="SecurityCraft"
 	updateJSONURL="https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json"
 	description='''Adds a load of things to keep your house safe with and defend yourself from attackers.'''
@@ -17,14 +17,14 @@ issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 [[dependencies.securitycraft]]
     modId="forge"
     mandatory=true
-    versionRange="[46,)"
+    versionRange="${forge_version_range}"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.securitycraft]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.20,1.21)"
+    versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
 

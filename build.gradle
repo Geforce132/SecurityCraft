@@ -1,27 +1,15 @@
-buildscript {
-	repositories {
-		maven { url = 'https://maven.minecraftforge.net' }
-		maven { url = 'https://maven.parchmentmc.org' }
-		maven { url = 'https://repo.spongepowered.org/maven' }
-		mavenCentral()
-	}
-
-	dependencies {
-		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '[6.0,6.2)', changing: true
-		classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.+'
-		classpath 'org.parchmentmc:librarian:1.+'
-	}
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'eclipse'
-
-version = '1.9.6.1'
+version = mod_version
 group = 'net.geforcemods.securitycraft'
 
 base {
@@ -31,9 +19,24 @@ base {
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
+def replaceProperties = [
+	mod_version: mod_version,
+	git_branch: git_branch,
+	loader_version_range: loader_version_range,
+	forge_version_range: forge_version_range,
+	minecraft_version_range: minecraft_version_range
+]
+
 processResources {
 	exclude ".cache"
 	duplicatesStrategy = 'include'
+
+	inputs.properties replaceProperties
+	replaceProperties.put 'project', project
+
+	filesMatching(['META-INF/mods.toml']) {
+		expand replaceProperties
+	}
 
 	//minify json resources
 	doLast {
@@ -48,7 +51,7 @@ sourceSets.main.resources {
 }
 
 minecraft {
-	mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.20.1'
+	mappings channel: 'parchment', version: mappings_version
 	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 	copyIdeResources = true
 
@@ -101,8 +104,8 @@ repositories {
 }
 
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.20.1-47.0.1'
-	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+	minecraft "net.minecraftforge:forge:${forge_version}"
+	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 	
 	implementation fg.deobf("curse.maven:architectury-api-419699:4581905") //ftb teams dependency
 	implementation fg.deobf("curse.maven:ftb-library-forge-404465:4591153") //ftb teams dependency
