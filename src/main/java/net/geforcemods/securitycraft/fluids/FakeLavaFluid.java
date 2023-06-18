@@ -28,6 +28,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidAttributes;
 
 public abstract class FakeLavaFluid extends FlowingFluid {
@@ -95,7 +96,7 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 
 					if (blockState.isAir()) {
 						if (isSurroundingBlockFlammable(world, blockpos)) {
-							world.setBlockAndUpdate(blockpos, Blocks.FIRE.defaultBlockState());
+							world.setBlockAndUpdate(blockpos, ForgeEventFactory.fireFluidPlaceBlockEvent(world, blockpos, pos, Blocks.FIRE.defaultBlockState()));
 							return;
 						}
 					}
@@ -110,8 +111,10 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 					if (!world.isLoaded(blockpos1))
 						return;
 
-					if (world.isEmptyBlock(blockpos1.above()) && this.getCanBlockBurn(world, blockpos1))
-						world.setBlockAndUpdate(blockpos1.above(), Blocks.FIRE.defaultBlockState());
+					BlockPos posAbove = blockpos1.above();
+
+					if (world.isEmptyBlock(posAbove) && this.getCanBlockBurn(world, blockpos1))
+						world.setBlockAndUpdate(posAbove, ForgeEventFactory.fireFluidPlaceBlockEvent(world, posAbove, pos, Blocks.FIRE.defaultBlockState()));
 				}
 			}
 		}
@@ -198,7 +201,7 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 
 			if (is(FluidTags.LAVA) && ifluidstate.is(FluidTags.WATER)) {
 				if (blockState.getBlock() instanceof FlowingFluidBlock)
-					world.setBlock(pos, Blocks.STONE.defaultBlockState(), 3);
+					world.setBlock(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(world, pos, pos, Blocks.STONE.defaultBlockState()), 3);
 
 				triggerEffects(world, pos);
 				return;
