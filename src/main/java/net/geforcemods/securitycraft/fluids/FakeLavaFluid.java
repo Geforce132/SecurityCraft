@@ -100,8 +100,10 @@ public abstract class FakeLavaFluid extends ForgeFlowingFluid {
 					if (!level.isLoaded(posToUpdate))
 						return;
 
-					if (level.isEmptyBlock(posToUpdate.above()) && isFlammable(level, posToUpdate, Direction.UP))
-						level.setBlockAndUpdate(posToUpdate.above(), ForgeEventFactory.fireFluidPlaceBlockEvent(level, posToUpdate, pos, Blocks.FIRE.defaultBlockState()));
+					BlockPos posAbove = posToUpdate.above();
+
+					if (level.isEmptyBlock(posAbove) && isFlammable(level, posToUpdate, Direction.UP))
+						level.setBlockAndUpdate(posAbove, ForgeEventFactory.fireFluidPlaceBlockEvent(level, posAbove, pos, Blocks.FIRE.defaultBlockState()));
 				}
 			}
 		}
