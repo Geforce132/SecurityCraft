@@ -9,7 +9,7 @@ plugins {
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-version = mod_version
+version = '1.9.6.1'
 group = 'net.geforcemods.securitycraft'
 
 base {
@@ -19,24 +19,9 @@ base {
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
-def replaceProperties = [
-	mod_version: mod_version,
-	git_branch: git_branch,
-	loader_version_range: loader_version_range,
-	forge_version_range: forge_version_range,
-	minecraft_version_range: minecraft_version_range
-]
-
 processResources {
 	exclude ".cache"
 	duplicatesStrategy = 'include'
-
-	inputs.properties replaceProperties
-	replaceProperties.put 'project', project
-
-	filesMatching(['META-INF/mods.toml']) {
-		expand replaceProperties
-	}
 
 	//minify json resources
 	doLast {
@@ -51,7 +36,7 @@ sourceSets.main.resources {
 }
 
 minecraft {
-	mappings channel: 'parchment', version: mappings_version
+	mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.20.1'
 	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 	copyIdeResources = true
 
@@ -104,8 +89,8 @@ repositories {
 }
 
 dependencies {
-	minecraft "net.minecraftforge:forge:${forge_version}"
-	annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+	minecraft 'net.minecraftforge:forge:1.20.1-47.0.4'
+	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 	
 	implementation fg.deobf("curse.maven:architectury-api-419699:4581905") //ftb teams dependency
 	implementation fg.deobf("curse.maven:ftb-library-forge-404465:4591153") //ftb teams dependency
