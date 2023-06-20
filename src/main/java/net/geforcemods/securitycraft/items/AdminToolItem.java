@@ -6,8 +6,8 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
-import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -25,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 
 public class AdminToolItem extends Item {
 	public AdminToolItem(Item.Properties properties) {
@@ -56,10 +57,13 @@ public class AdminToolItem extends Item {
 					return InteractionResult.PASS;
 
 				boolean hasInfo = false;
+				boolean isOwnable = be instanceof IOwnable;
 
-				if (be instanceof IOwnable ownable) {
-					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.name", (ownable.getOwner().getName() == null ? "????" : ownable.getOwner().getName())), ChatFormatting.DARK_PURPLE);
-					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.uuid", (ownable.getOwner().getUUID() == null ? "????" : ownable.getOwner().getUUID())), ChatFormatting.DARK_PURPLE);
+				if (isOwnable) {
+					Owner owner = ((IOwnable) be).getOwner();
+
+					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.name", (owner.getName() == null ? "????" : owner.getName())), ChatFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.uuid", (owner.getUUID() == null ? "????" : owner.getUUID())), ChatFormatting.DARK_PURPLE);
 					hasInfo = true;
 				}
 
@@ -77,7 +81,7 @@ public class AdminToolItem extends Item {
 					}
 				}
 
-				if (be instanceof SecretSignBlockEntity signTe) {
+				if (isOwnable && be instanceof SignBlockEntity signTe) {
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, Component.literal(""), ChatFormatting.DARK_PURPLE); //EMPTY
 
 					for (int i = 0; i < 4; i++) {
