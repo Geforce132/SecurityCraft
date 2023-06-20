@@ -82,6 +82,7 @@
 - Fix: Items carried by the cursor get deleted when closing the Universal Block Reinforcer screen
 - Fix: Reinforced pistons can push vanilla's reinforced deepslate
 - Fix: Some SecurityCraft blocks are displayed with the wrong color on a map
+- Fix: Using tab to navigate through the SC Manual has an unintuitive order
 - Removed: Ability to use name tags on the Sentry and other certain blocks. To give them a name, rename them in an anvil before placing
 - Misc.: The minimum required Forge version is 45.0.58
 - Misc.: More texture updates
