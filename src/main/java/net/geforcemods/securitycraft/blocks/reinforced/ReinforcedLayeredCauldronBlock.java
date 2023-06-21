@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -63,17 +64,15 @@ public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock impleme
 	public static void lowerFillLevel(BlockState state, Level level, BlockPos pos) {
 		int fillLevel = state.getValue(LEVEL) - 1;
 		BlockEntity be = level.getBlockEntity(pos);
+		CompoundTag tag = be.saveWithoutMetadata();
 
 		level.setBlockAndUpdate(pos, fillLevel == 0 ? SCContent.REINFORCED_CAULDRON.get().defaultBlockState() : state.setValue(LEVEL, fillLevel));
-		level.setBlockEntity(be);
+		level.getBlockEntity(pos).load(tag);
 	}
 
 	@Override
 	protected void handleEntityOnFireInside(BlockState state, Level level, BlockPos pos) {
-		BlockEntity be = level.getBlockEntity(pos);
-
-		lowerFillLevel(SCContent.REINFORCED_WATER_CAULDRON.get().defaultBlockState().setValue(LEVEL, state.getValue(LEVEL)), level, pos);
-		level.setBlockEntity(be);
+		lowerFillLevel(state, level, pos);
 	}
 
 	@Override
