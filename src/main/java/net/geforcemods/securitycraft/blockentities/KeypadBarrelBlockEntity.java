@@ -83,7 +83,7 @@ public class KeypadBarrelBlockEntity extends BarrelBlockEntity implements IPassc
 			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
 
 		if (owner != null)
-			owner.save(tag, false);
+			owner.save(tag, needsValidation());
 	}
 
 	@Override

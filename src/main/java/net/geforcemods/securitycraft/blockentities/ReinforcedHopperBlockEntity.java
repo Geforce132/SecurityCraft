@@ -45,7 +45,7 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 		super.saveAdditional(tag);
 
 		if (owner != null)
-			owner.save(tag, false);
+			owner.save(tag, needsValidation());
 
 		writeModuleInventory(tag);
 		writeModuleStates(tag);
