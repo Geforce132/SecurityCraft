@@ -54,6 +54,7 @@
 - Fix: Some SecurityCraft blocks are displayed with the wrong color on a map
 - Fix: Using tab to navigate through the SC Manual has an unintuitive order
 - Fix: Reinforced hoppers can automatically validate their owner in certain cases
+- Fix: Crash when trying to create a superflat world with a layer of a reinforced block
 - Removed: Ability to use name tags on the Sentry and other certain blocks. To give them a name, rename them in an anvil before placing
 - Misc.: More texture updates
 
