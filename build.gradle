@@ -93,14 +93,14 @@ dependencies {
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 	
 	implementation fg.deobf("curse.maven:architectury-api-419699:4581905") //ftb teams dependency
-	implementation fg.deobf("curse.maven:ftb-library-forge-404465:4591153") //ftb teams dependency
-	implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4591335")
-	implementation fg.deobf("curse.maven:jei-238222:4585879")
+	implementation fg.deobf("curse.maven:ftb-library-forge-404465:4596511") //ftb teams dependency
+	implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4596744")
+	implementation fg.deobf("curse.maven:jei-238222:4597711")
 	implementation fg.deobf("curse.maven:the-one-probe-245211:4579432")
 	implementation fg.deobf("curse.maven:jade-324717:4573193")
 //  implementation fg.deobf("curse.maven:betterf3-401648:4553937")
 //  implementation fg.deobf("curse.maven:cloth-config-348521:4440461") //betterf3 dependency
-	implementation fg.deobf("curse.maven:wthit-forge-455982:4576339")
+	implementation fg.deobf("curse.maven:wthit-forge-455982:4596739")
 	implementation fg.deobf("curse.maven:badpackets-615134:4438956") //wthit dependency
 //  implementation fg.deobf("curse.maven:projecte-226410:3955047")
 }
