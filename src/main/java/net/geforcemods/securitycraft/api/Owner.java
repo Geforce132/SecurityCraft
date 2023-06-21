@@ -54,12 +54,12 @@ public class Owner {
 		Owner owner = new Owner();
 
 		if (tag != null)
-			owner.readFromNBT(tag);
+			owner.load(tag);
 
 		return owner;
 	}
 
-	public void readFromNBT(NBTTagCompound tag) {
+	public void load(NBTTagCompound tag) {
 		if (tag.hasKey("owner"))
 			ownerName = tag.getString("owner");
 
@@ -70,7 +70,7 @@ public class Owner {
 			validated = tag.getBoolean("ownerValidated");
 	}
 
-	public void writeToNBT(NBTTagCompound tag, boolean saveValidationStatus) {
+	public void save(NBTTagCompound tag, boolean saveValidationStatus) {
 		tag.setString("owner", ownerName);
 		tag.setString("ownerUUID", ownerUUID);
 

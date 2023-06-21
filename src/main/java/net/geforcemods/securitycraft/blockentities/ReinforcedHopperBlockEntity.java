@@ -27,7 +27,7 @@ public class ReinforcedHopperBlockEntity extends TileEntityHopper implements IOw
 		super.writeToNBT(tag);
 
 		if (owner != null)
-			owner.writeToNBT(tag, false);
+			owner.save(tag, false);
 
 		writeModuleInventory(tag);
 		writeModuleStates(tag);
@@ -38,7 +38,7 @@ public class ReinforcedHopperBlockEntity extends TileEntityHopper implements IOw
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 
-		owner.readFromNBT(tag);
+		owner.load(tag);
 		modules = readModuleInventory(tag);
 		moduleStates = readModuleStates(tag);
 	}

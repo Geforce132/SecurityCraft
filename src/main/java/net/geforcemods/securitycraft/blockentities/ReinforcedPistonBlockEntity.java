@@ -338,7 +338,7 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements IOwnable,
 		extending = compound.getBoolean("extending");
 		shouldHeadBeRendered = compound.getBoolean("source");
 		tileEntityTag = compound.getCompoundTag("movedTileEntityTag");
-		owner.readFromNBT(compound);
+		owner.load(compound);
 	}
 
 	@Override
@@ -353,7 +353,7 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements IOwnable,
 		compound.setTag("movedTileEntityTag", tileEntityTag);
 
 		if (owner != null)
-			owner.writeToNBT(compound, false);
+			owner.save(compound, false);
 
 		return compound;
 	}

@@ -71,7 +71,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 			tag.setString("passcode", PasscodeUtils.bytesToString(passcode));
 
 		if (owner != null)
-			owner.writeToNBT(tag, false);
+			owner.save(tag, false);
 
 		return tag;
 	}
@@ -91,7 +91,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 		loadSaltKey(tag);
 		loadPasscode(tag);
-		owner.readFromNBT(tag);
+		owner.load(tag);
 	}
 
 	@Override
