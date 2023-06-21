@@ -83,6 +83,7 @@
 - Fix: Reinforced pistons can push vanilla's reinforced deepslate
 - Fix: Some SecurityCraft blocks are displayed with the wrong color on a map
 - Fix: Using tab to navigate through the SC Manual has an unintuitive order
+- Fix: Reinforced cauldrons don't get updated properly when their contents change, leading to unexpected behavior
 - Removed: Ability to use name tags on the Sentry and other certain blocks. To give them a name, rename them in an anvil before placing
 - Misc.: The minimum required Forge version is 45.0.58
 - Misc.: More texture updates
