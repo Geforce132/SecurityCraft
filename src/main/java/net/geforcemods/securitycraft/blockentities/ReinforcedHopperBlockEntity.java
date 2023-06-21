@@ -31,7 +31,7 @@ public class ReinforcedHopperBlockEntity extends HopperTileEntity implements IOw
 	public void load(BlockState state, CompoundNBT tag) {
 		super.load(state, tag);
 
-		owner.read(tag);
+		owner.load(tag);
 		modules = readModuleInventory(tag);
 		moduleStates = readModuleStates(tag);
 	}
@@ -41,7 +41,7 @@ public class ReinforcedHopperBlockEntity extends HopperTileEntity implements IOw
 		super.save(tag);
 
 		if (owner != null)
-			owner.write(tag, false);
+			owner.save(tag, false);
 
 		writeModuleInventory(tag);
 		writeModuleStates(tag);

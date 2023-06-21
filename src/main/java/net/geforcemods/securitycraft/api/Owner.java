@@ -54,12 +54,12 @@ public class Owner {
 		Owner owner = new Owner();
 
 		if (tag != null)
-			owner.read(tag);
+			owner.load(tag);
 
 		return owner;
 	}
 
-	public void read(CompoundNBT tag) {
+	public void load(CompoundNBT tag) {
 		if (tag.contains("owner"))
 			ownerName = tag.getString("owner");
 
@@ -70,13 +70,12 @@ public class Owner {
 			validated = tag.getBoolean("ownerValidated");
 	}
 
-	public void write(CompoundNBT tag, boolean saveValidationStatus) {
+	public void save(CompoundNBT tag, boolean saveValidationStatus) {
 		tag.putString("owner", ownerName);
 		tag.putString("ownerUUID", ownerUUID);
 
-		if (saveValidationStatus) {
+		if (saveValidationStatus)
 			tag.putBoolean("ownerValidated", validated);
-		}
 	}
 
 	/**

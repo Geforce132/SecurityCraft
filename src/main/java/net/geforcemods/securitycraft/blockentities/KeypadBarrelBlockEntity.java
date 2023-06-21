@@ -81,7 +81,7 @@ public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPassco
 			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
 
 		if (owner != null)
-			owner.write(tag, false);
+			owner.save(tag, false);
 
 		return tag;
 	}
@@ -96,7 +96,7 @@ public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPassco
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 		loadSaltKey(tag);
 		loadPasscode(tag);
-		owner.read(tag);
+		owner.load(tag);
 	}
 
 	@Override

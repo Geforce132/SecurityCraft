@@ -86,7 +86,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 		CompoundNBT lastPlayerTag = new CompoundNBT();
 
 		tag.putBoolean("shouldSendNewMessage", shouldSendNewMessage);
-		lastPlayer.write(lastPlayerTag, false);
+		lastPlayer.save(lastPlayerTag, false);
 		tag.put("lastPlayer", lastPlayerTag);
 		return tag;
 	}

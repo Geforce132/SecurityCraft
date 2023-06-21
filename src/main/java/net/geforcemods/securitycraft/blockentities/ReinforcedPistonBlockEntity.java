@@ -355,7 +355,7 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements ITickable
 		extending = compound.getBoolean("extending");
 		shouldHeadBeRendered = compound.getBoolean("source");
 		tileEntityTag = compound.getCompound("movedTileEntityTag");
-		owner.read(compound);
+		owner.load(compound);
 	}
 
 	@Override
@@ -369,7 +369,7 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements ITickable
 		compound.put("movedTileEntityTag", tileEntityTag);
 
 		if (owner != null)
-			owner.write(compound, false);
+			owner.save(compound, false);
 
 		return compound;
 	}

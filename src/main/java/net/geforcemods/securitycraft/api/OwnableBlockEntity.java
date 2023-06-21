@@ -28,7 +28,7 @@ public class OwnableBlockEntity extends TileEntity implements IOwnable {
 		super.save(tag);
 
 		if (owner != null)
-			owner.write(tag, needsValidation());
+			owner.save(tag, needsValidation());
 
 		return tag;
 	}
@@ -37,7 +37,7 @@ public class OwnableBlockEntity extends TileEntity implements IOwnable {
 	public void load(BlockState state, CompoundNBT tag) {
 		super.load(state, tag);
 
-		owner.read(tag);
+		owner.load(tag);
 	}
 
 	@Override

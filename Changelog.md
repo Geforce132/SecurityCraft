@@ -28,6 +28,8 @@
 - API: New methods IPasscodeProtected#getSaltKey, IPasscodeProtected#setSaltKey, IPasscodeProtected#loadSaltKey to get and set the block entity's salt key or read it from a block entity tag
 - API: New methods IPasscodeProtected#getSalt to access the block entity's salt using the stored salt key
 - API: New methods IPasscodeProtected#hashAndSetPasscode and IPasscodeProtected#loadPasscode for easier passcode management
+- API: Renamed Owner#write to Owner#save
+- API: Renamed Owner#read to Owner#load
 - Fix: Shields do not take damage when blocking a taser that deals high enough damage
 - Fix: The death message of a player killed by a taser does not contain the player firing the taser
 - Fix: Crashes when rendering some modded block entities in a Projector, or using them as a disguise

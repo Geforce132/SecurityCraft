@@ -41,7 +41,7 @@ public class SecretSignBlockEntity extends SignTileEntity implements IOwnable, I
 		writeOptions(tag);
 
 		if (owner != null)
-			owner.write(tag, false);
+			owner.save(tag, false);
 
 		return tag;
 	}
@@ -53,7 +53,7 @@ public class SecretSignBlockEntity extends SignTileEntity implements IOwnable, I
 		modules = readModuleInventory(tag);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
-		owner.read(tag);
+		owner.load(tag);
 	}
 
 	@Override

@@ -82,7 +82,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 
 		if (owner != null)
-			owner.write(tag, false);
+			owner.save(tag, false);
 
 		if (saltKey != null)
 			tag.putUUID("saltKey", saltKey);
@@ -101,7 +101,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
-		owner.read(tag);
+		owner.load(tag);
 		loadSaltKey(tag);
 		loadPasscode(tag);
 	}

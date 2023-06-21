@@ -425,7 +425,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 		CompoundNBT tag = new CompoundNBT();
 		Owner owner = entityData.get(OWNER);
 
-		owner.write(tag, false);
+		owner.save(tag, false);
 		return tag;
 	}
 
