@@ -77,7 +77,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
 
 		if (owner != null)
-			owner.save(tag, false);
+			owner.save(tag, needsValidation());
 
 		return tag;
 	}

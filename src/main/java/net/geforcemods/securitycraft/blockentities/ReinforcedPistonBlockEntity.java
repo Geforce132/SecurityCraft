@@ -369,7 +369,7 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements ITickable
 		compound.put("movedTileEntityTag", tileEntityTag);
 
 		if (owner != null)
-			owner.save(compound, false);
+			owner.save(compound, needsValidation());
 
 		return compound;
 	}

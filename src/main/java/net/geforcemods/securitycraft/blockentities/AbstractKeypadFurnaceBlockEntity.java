@@ -82,7 +82,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 
 		if (owner != null)
-			owner.save(tag, false);
+			owner.save(tag, needsValidation());
 
 		if (saltKey != null)
 			tag.putUUID("saltKey", saltKey);

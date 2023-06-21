@@ -41,7 +41,7 @@ public class ReinforcedHopperBlockEntity extends HopperTileEntity implements IOw
 		super.save(tag);
 
 		if (owner != null)
-			owner.save(tag, false);
+			owner.save(tag, needsValidation());
 
 		writeModuleInventory(tag);
 		writeModuleStates(tag);
