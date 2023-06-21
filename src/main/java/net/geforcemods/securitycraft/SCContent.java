@@ -518,7 +518,7 @@ public class SCContent {
 	@OwnableBE
 	@RegisterItemBlock
 	public static final RegistryObject<Block> BLAST_FURNACE_MINE = BLOCKS.register("blast_furnace_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F).requiresCorrectToolForDrops(), Blocks.BLAST_FURNACE));
-	@HasManualPage
+	@HasManualPage(PageGroup.BLOCK_MINES)
 	@OwnableBE
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> SUSPICIOUS_SAND_MINE = BLOCKS.register("suspicious_sand_mine", () -> new BrushableMineBlock(mineProp(Blocks.SUSPICIOUS_SAND), Blocks.SUSPICIOUS_SAND));
