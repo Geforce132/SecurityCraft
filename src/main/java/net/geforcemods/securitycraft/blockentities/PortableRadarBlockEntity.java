@@ -87,7 +87,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 		CompoundTag lastPlayerTag = new CompoundTag();
 
 		tag.putBoolean("shouldSendNewMessage", shouldSendNewMessage);
-		lastPlayer.save(lastPlayerTag, false);
+		lastPlayer.save(lastPlayerTag, needsValidation());
 		tag.put("lastPlayer", lastPlayerTag);
 	}
 

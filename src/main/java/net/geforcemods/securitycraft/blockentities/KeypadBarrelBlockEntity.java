@@ -112,7 +112,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
 
 		if (owner != null)
-			owner.save(tag, false);
+			owner.save(tag, needsValidation());
 	}
 
 	@Override
