@@ -401,6 +401,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.DIRT_MINE.get(),
 				SCContent.GRAVEL_MINE.get(),
 				SCContent.SAND_MINE.get(),
+				SCContent.SUSPICIOUS_GRAVEL_MINE.get(),
 				SCContent.SUSPICIOUS_SAND_MINE.get());
 		tag(BlockTags.MUSHROOM_GROW_BLOCK).add(
 				SCContent.REINFORCED_MYCELIUM.get(),
