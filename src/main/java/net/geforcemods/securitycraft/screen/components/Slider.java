@@ -123,7 +123,7 @@ public class Slider extends GuiButtonExt {
 		}
 		else
 			val = Integer.toString(getValueInt());
-		System.out.println(hovered);
+
 		if (parent != null)
 			parent.onChangeSliderValue(this, block, id);
 	}
