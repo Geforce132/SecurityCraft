@@ -27,7 +27,7 @@ public class ReinforcedHopperBlockEntity extends TileEntityHopper implements IOw
 		super.writeToNBT(tag);
 
 		if (owner != null)
-			owner.save(tag, false);
+			owner.save(tag, needsValidation());
 
 		writeModuleInventory(tag);
 		writeModuleStates(tag);

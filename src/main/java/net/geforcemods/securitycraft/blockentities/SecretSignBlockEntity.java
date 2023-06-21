@@ -33,7 +33,7 @@ public class SecretSignBlockEntity extends TileEntitySign implements IOwnable, I
 		writeOptions(tag);
 
 		if (owner != null)
-			owner.save(tag, false);
+			owner.save(tag, needsValidation());
 
 		return tag;
 	}

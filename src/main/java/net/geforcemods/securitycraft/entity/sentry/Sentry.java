@@ -434,7 +434,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		NBTTagCompound tag = new NBTTagCompound();
 		Owner owner = dataManager.get(OWNER);
 
-		owner.save(tag, false);
+		owner.save(tag, needsValidation());
 		return tag;
 	}
 

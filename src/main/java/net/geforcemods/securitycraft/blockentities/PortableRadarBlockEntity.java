@@ -72,7 +72,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 		NBTTagCompound lastPlayerTag = new NBTTagCompound();
 
 		tag.setBoolean("shouldSendNewMessage", shouldSendNewMessage);
-		lastPlayer.save(lastPlayerTag, false);
+		lastPlayer.save(lastPlayerTag, needsValidation());
 		tag.setTag("lastPlayer", lastPlayerTag);
 		return tag;
 	}

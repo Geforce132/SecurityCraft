@@ -353,7 +353,7 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements IOwnable,
 		compound.setTag("movedTileEntityTag", tileEntityTag);
 
 		if (owner != null)
-			owner.save(compound, false);
+			owner.save(compound, needsValidation());
 
 		return compound;
 	}
