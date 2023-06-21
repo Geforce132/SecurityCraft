@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecretHangingSignBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -16,7 +16,7 @@ public class SecretHangingSignRenderer extends HangingSignRenderer {
 
 	@Override
 	public void renderSignText(SignBlockEntity be, PoseStack pose, MultiBufferSource bufferSource, int packedLight, float scale) {
-		if (be instanceof SecretSignBlockEntity sign && sign.isPlayerAllowedToSeeText(Minecraft.getInstance().player))
+		if (be instanceof SecretHangingSignBlockEntity sign && sign.isPlayerAllowedToSeeText(Minecraft.getInstance().player))
 			super.renderSignText(be, pose, bufferSource, packedLight, scale);
 		else
 			pose.popPose();
