@@ -51,7 +51,7 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 		writeOptions(tag);
 
 		if (owner != null)
-			owner.save(tag, false);
+			owner.save(tag, needsValidation());
 	}
 
 	@Override
