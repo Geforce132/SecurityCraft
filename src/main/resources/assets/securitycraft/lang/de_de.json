@@ -1100,7 +1100,7 @@
 	"module.securitycraft.protecto.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Protecto erlaubt zugelassenen Spielern, sich in dem Angriffsradius aufzuhalten, ohne attackiert zu werden.",
 	"module.securitycraft.reinforced_cauldron.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten Kessel erlaubt zugelassenen Spielern, mit dem Verstärkten Kessel zu interagieren.",
 	"module.securitycraft.reinforced_chiseled_bookshelf.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten gearbeiteten Bücherregal erlaubt zugelassenen Spielern, mit dem Verstärkten gearbeiteten Bücherregal zu interagieren.",
-	"module.securitycraft.reinforced_hopper.whitelist_module.description": "Ein Zulassungslisten-Modul in einem verstärkten Trichter erlaubt zugelassenen Spielern, den Trichter zu benutzen, sowie ihn zum Extrahieren von Items aus ihren passwortgesicherten Truhen/Öfen/... zu verwenden.",
+	"module.securitycraft.reinforced_hopper.whitelist_module.description": "Ein Zulassungslisten-Modul in einem verstärkten Trichter erlaubt zugelassenen Spielern, den Trichter zu benutzen.",
 	"module.securitycraft.reinforced_lava_cauldron.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten Kessel erlaubt zugelassenen Spielern, mit dem Verstärkten Kessel zu interagieren.",
 	"module.securitycraft.reinforced_lever.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten Hebel erlaubt es zugelassenen Spielern, diesen zu aktivieren.",
 	"module.securitycraft.reinforced_powder_snow_cauldron.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten Kessel erlaubt zugelassenen Spielern, mit dem Verstärkten Kessel zu interagieren.",
