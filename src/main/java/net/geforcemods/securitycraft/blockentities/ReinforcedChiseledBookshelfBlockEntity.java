@@ -45,7 +45,7 @@ public class ReinforcedChiseledBookshelfBlockEntity extends ChiseledBookShelfBlo
 		super.saveAdditional(tag);
 
 		if (owner != null)
-			owner.save(tag, false);
+			owner.save(tag, needsValidation());
 
 		writeModuleInventory(tag);
 		writeModuleStates(tag);

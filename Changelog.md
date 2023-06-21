@@ -85,6 +85,7 @@
 - Fix: Using tab to navigate through the SC Manual has an unintuitive order
 - Fix: Reinforced cauldrons don't get updated properly when their contents change, leading to unexpected behavior
 - Fix: Using pick block on reinforced cauldrons containing something doesn't work
+- Fix: Reinforced hoppers can automatically validate their owner in certain cases
 - Removed: Ability to use name tags on the Sentry and other certain blocks. To give them a name, rename them in an anvil before placing
 - Misc.: The minimum required Forge version is 45.0.58
 - Misc.: More texture updates
