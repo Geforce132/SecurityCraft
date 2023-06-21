@@ -431,7 +431,12 @@ public class ClientHandler {
 	}
 
 	private static int mixWithReinforcedTintIfEnabled(int tint1) {
-		boolean tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
+		boolean tintReinforcedBlocks;
+
+		if (Minecraft.getInstance().level == null)
+			tintReinforcedBlocks = ConfigHandler.CLIENT.reinforcedBlockTint.get();
+		else
+			tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
 
 		return tintReinforcedBlocks ? mixTints(tint1, ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint1;
 	}
