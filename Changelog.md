@@ -53,6 +53,7 @@
 - Change: Passcodes no longer have a maximum length restriction
 - Change: Initially setting the passcode of a Briefcase now uses the same UI as inserting the passcode when opening a Briefcase
 - Change: Reinforced wool and carpets can now be dyed using any color wool or carpet
+- Change: The "Reset cooldown" option for alarms is now set to "true" by default (does not apply to already existing alarms)
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 - API: Renamed Option#readFromNBT to Option#load and Option#writeToNBT to Option#save
 - API: All occurrences of "password" in API class and method names have been switched out with "passcode" (for example, IPasswordProtected#getPassword -> IPasscodeProtected#getPasscode)
@@ -89,7 +90,6 @@
 - Fix: Crash when trying to create a superflat world with a layer of a reinforced block
 - Fix: It's impossible to close a Keypad Door that had its "Signal length" option set to 0
 - Removed: Ability to use name tags on the Sentry and other certain blocks. To give them a name, rename them in an anvil before placing
-- Misc.: The minimum required Forge version is 45.0.58
 - Misc.: More texture updates
 
 [*] in Minecraft 1.19.3 and 1.19.4, these are only available if the update_1_20 datapack is enabled
