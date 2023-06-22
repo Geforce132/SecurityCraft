@@ -32,7 +32,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	public static final int MAXIMUM_ALARM_SOUND_LENGTH = 3600; //one hour
 	private IntOption range = new IntOption("range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
-	private BooleanOption resetCooldown = new BooleanOption("resetCooldown", false);
+	private BooleanOption resetCooldown = new BooleanOption("resetCooldown", true);
 	private int cooldown = 0;
 	private boolean isPowered = false;
 	private SoundEvent sound = SCSounds.ALARM.event;

@@ -22,6 +22,7 @@
 - Change: The Universal Key Changer can now be used by players in creative mode on any passcode-protected block or briefcase, regardless of its owner
 - Change: Passcodes no longer have a maximum length restriction
 - Change: Initially setting the passcode of a Briefcase now uses the same UI as inserting the passcode when opening a Briefcase
+- Change: The "Reset cooldown" option for alarms is now set to "true" by default (does not apply to already existing alarms)
 - API: Renamed Option#readFromNBT to Option#load and Option#writeToNBT to Option#save
 - API: All occurrences of "password" in API class and method names have been switched out with "passcode" (for example, IPasswordProtected#getPassword -> IPasscodeProtected#getPasscode)
 - API: IPasscodeProtected#setPasscode now returns a byte array, IPasscodeProtected#getPasscode now takes a byte array as its only parameter
