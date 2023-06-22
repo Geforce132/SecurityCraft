@@ -714,7 +714,7 @@
 	"gui.securitycraft:universalKeyChanger.confirm": "Confirm",
 	"gui.securitycraft:universalKeyChanger.confirmNewPasscode": "Re-enter new passcode:",
 	"gui.securitycraft:universalKeyChanger.enterNewPasscode": "Enter new passcode:",
-	"help.securitycraft.admin_tool.info": "The admin tool's main purpose is to display information about a SecurityCraft block. It will show the owner's UUID and name, and other information, like passcodes and any inserted modules.",
+	"help.securitycraft.admin_tool.info": "The admin tool's main purpose is to display information about a SecurityCraft block. It will show the owner's UUID and name, and other information, like inserted modules.",
 	"help.securitycraft.alarm.info": "The alarm will emit a siren sound effect and flash red whenever it is powered by redstone, and in 2-second intervals after that. The interval is modifiable in the Alarm's options.",
 	"help.securitycraft.blacklist_module.info": "The denylist module usually adds player(s) to a block's effect or blocks them from using a certain function of the block.",
 	"help.securitycraft.block_change_detector.info": "The Block Change Detector detects players breaking and/or placing blocks in its vicinity (5 blocks by default, can be changed with the universal block modifier). Right-clicking the block will open its interface, where a list of detected changes can be seen, as well as whether it only detects breaking or placing blocks, or both.",
