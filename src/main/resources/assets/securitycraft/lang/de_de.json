@@ -766,7 +766,7 @@
 	"gui.securitycraft:universalKeyChanger.confirm": "Bestätigen",
 	"gui.securitycraft:universalKeyChanger.confirmNewPasscode": "Gib es erneut ein:",
 	"gui.securitycraft:universalKeyChanger.enterNewPasscode": "Gib ein neues Passwort ein:",
-	"help.securitycraft.admin_tool.info": "Das Admin-Werkzeug zeigt einem Spieler alle möglichen Informationen über einen SecurityCraft Block an, wie Passwort, Besitzer und installierte Module.",
+	"help.securitycraft.admin_tool.info": "Das Admin-Werkzeug zeigt einem Spieler alle möglichen Informationen über einen SecurityCraft Block an, wie den Namen und die UUID des Besitzers, und installierte Module.",
 	"help.securitycraft.alarm.info": "Der Alarm spielt einen wiederkehrenden Sirenensound ab und blinkt rot, sobald er mit Redstone gepowert wird. Das Intervall lässt sich in den Alarm-Einstellungen anpassen.",
 	"help.securitycraft.blacklist_module.info": "Das Sperrlisten-Modul ist das genaue Gegenteil zum Zulassungslisten-Modul, z.B. blockiert es Spieler von der Eingabe eines Passwortes.",
 	"help.securitycraft.block_change_detector.info": "Der Block-Änderungsdetektor detektiert, wenn Spieler in seiner Nähe Blöcke zerbrechen und/oder platzieren (standardmäßig 5 Blöcke, kann mit dem universellen Blockmodifizierer verändert werden). Ein Rechtsklick auf den Block öffnet sein Interface, in dem alle Detektionen aufgelistet sind. Des Weiteren kann eingestellt werden, ob der Block nur Platzieren oder Zerbrechen von Blöcken, oder beides gleichzeitig detektiert.",
