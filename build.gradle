@@ -36,7 +36,7 @@ sourceSets.main.resources {
 }
 
 minecraft {
-	mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.20.1'
+	mappings channel: 'parchment', version: '2023.06.26-1.20.1'
 	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 	copyIdeResources = true
 
@@ -98,11 +98,11 @@ dependencies {
 	implementation fg.deobf("curse.maven:jei-238222:4597711")
 	implementation fg.deobf("curse.maven:the-one-probe-245211:4579432")
 	implementation fg.deobf("curse.maven:jade-324717:4573193")
-//  implementation fg.deobf("curse.maven:betterf3-401648:4553937")
-//  implementation fg.deobf("curse.maven:cloth-config-348521:4440461") //betterf3 dependency
+//	implementation fg.deobf("curse.maven:betterf3-401648:4553937")
+//	implementation fg.deobf("curse.maven:cloth-config-348521:4440461") //betterf3 dependency
 	implementation fg.deobf("curse.maven:wthit-forge-455982:4596739")
 	implementation fg.deobf("curse.maven:badpackets-615134:4438956") //wthit dependency
-//  implementation fg.deobf("curse.maven:projecte-226410:3955047")
+//	implementation fg.deobf("curse.maven:projecte-226410:3955047")
 }
 
 mixin {
