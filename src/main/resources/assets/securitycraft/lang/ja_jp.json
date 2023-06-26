@@ -772,7 +772,7 @@
 	"gui.securitycraft:universalKeyChanger.confirm": "確認",
 	"gui.securitycraft:universalKeyChanger.confirmNewPasscode": "新しいパスコードを再入力:",
 	"gui.securitycraft:universalKeyChanger.enterNewPasscode": "新しいパスコードを入力:",
-	"help.securitycraft.admin_tool.info": "管理ツールの主な目的は、SecurityCraft ブロックに関する情報を表示することです。所有者の UUID と名前、そしてパスコードや挿入されたモジュールのような他の情報が表示されます。",
+	"help.securitycraft.admin_tool.info": "管理ツールの主な目的は、SecurityCraft ブロックに関する情報を表示することです。所有者の UUID と名前、そして挿入されたモジュールのような他の情報が表示されます。",
 	"help.securitycraft.alarm.info": "アラームはレッドストーンで電源が供給されるたびにサイレンの効果音を発し、その後2秒間隔で赤く点滅します。この間隔は、アラームのオプションで変更可能です。",
 	"help.securitycraft.blacklist_module.info": "拒否リストモジュールは通常、ブロックの効果にプレイヤーを追加したり、プロックの特定の機能を使用できないようにしたりします。",
 	"help.securitycraft.block_change_detector.info": "ブロックチェンジディテクターはその周辺にあるブロック(デフォルトでは5ブロックで汎用ブロック修正機で設定変更可能)の破壊や設置を検出します。ブロックを右クリックするとインターフェースが表示され、検出された変更のリストとブロックの破壊または配置のみを検出するか、または両方検出するかを確認できます。",
