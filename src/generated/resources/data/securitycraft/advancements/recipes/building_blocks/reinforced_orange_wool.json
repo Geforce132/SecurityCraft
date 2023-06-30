@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:reinforced_white_wool"
-            ]
+            "tag": "securitycraft:reinforced/wool"
           }
         ]
       },

@@ -71,14 +71,14 @@ public class CollapsibleTextList extends Button {
 		int renderedLines = 0;
 		int interpolatedHeight = (int) Mth.lerp(partialTick, previousHeight, currentHeight);
 
-		guiGraphics.fillGradient(getX(), getY() + height, getX() + width, getY() + interpolatedHeight, 0xC0101010, 0xD0101010, 0);
+		guiGraphics.fillGradient(getX(), getY() + height, getX() + width, getY() + interpolatedHeight, 0xC0101010, 0xD0101010);
 
 		for (int i = 0; i < textLines.size(); i++) {
 			int textY = getY() + 2 + height + renderedLines * font.lineHeight + (i * 12);
 			List<FormattedCharSequence> linesToDraw = textLines.get(i);
 
 			if (i > 0)
-				guiGraphics.fillGradient(getX() + 1, textY - 3, getX() + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0, 0);
+				guiGraphics.fillGradient(getX() + 1, textY - 3, getX() + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0);
 
 			for (int lineIndex = 0; lineIndex < linesToDraw.size(); lineIndex++) {
 				int lineY = textY + lineIndex * font.lineHeight;

@@ -2,6 +2,7 @@
   "values": [
     "#securitycraft:reinforced/sand",
     "#securitycraft:reinforced/dirt",
-    "securitycraft:reinforced_gravel"
+    "securitycraft:reinforced_gravel",
+    "securitycraft:suspicious_gravel_mine"
   ]
 }

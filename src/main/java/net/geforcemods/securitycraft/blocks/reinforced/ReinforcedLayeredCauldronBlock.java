@@ -7,11 +7,13 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome.Precipitation;
@@ -22,6 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -65,18 +68,16 @@ public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock impleme
 		int fillLevel = state.getValue(LEVEL) - 1;
 		BlockState newState = fillLevel == 0 ? SCContent.REINFORCED_CAULDRON.get().defaultBlockState() : state.setValue(LEVEL, fillLevel);
 		BlockEntity be = level.getBlockEntity(pos);
+		CompoundTag tag = be.saveWithoutMetadata();
 
 		level.setBlockAndUpdate(pos, newState);
-		level.setBlockEntity(be);
+		level.getBlockEntity(pos).load(tag);
 		level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(newState));
 	}
 
 	@Override
 	protected void handleEntityOnFireInside(BlockState state, Level level, BlockPos pos) {
-		BlockEntity be = level.getBlockEntity(pos);
-
-		lowerFillLevel(SCContent.REINFORCED_WATER_CAULDRON.get().defaultBlockState().setValue(LEVEL, state.getValue(LEVEL)), level, pos);
-		level.setBlockEntity(be);
+		lowerFillLevel(state, level, pos);
 	}
 
 	@Override
@@ -87,5 +88,10 @@ public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock impleme
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ReinforcedCauldronBlockEntity(pos, state);
+	}
+
+	@Override
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+		return new ItemStack(SCContent.REINFORCED_CAULDRON.get());
 	}
 }

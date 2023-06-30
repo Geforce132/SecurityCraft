@@ -1,27 +1,15 @@
-buildscript {
-	repositories {
-		maven { url = 'https://maven.minecraftforge.net' }
-		maven { url = 'https://maven.parchmentmc.org' }
-		maven { url = 'https://repo.spongepowered.org/maven' }
-		mavenCentral()
-	}
-
-	dependencies {
-		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '[6.0,6.2)', changing: true
-		classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.+'
-		classpath 'org.parchmentmc:librarian:1.+'
-	}
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'eclipse'
-
-version = '1.9.6.1'
+version = '1.9.7-beta1'
 group = 'net.geforcemods.securitycraft'
 
 base {
@@ -48,7 +36,7 @@ sourceSets.main.resources {
 }
 
 minecraft {
-	mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.20'
+	mappings channel: 'parchment', version: '2023.06.26-1.20.1'
 	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 	copyIdeResources = true
 
@@ -101,20 +89,20 @@ repositories {
 }
 
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.20-46.0.1'
+	minecraft 'net.minecraftforge:forge:1.20.1-47.0.14'
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 	
-//  implementation fg.deobf("curse.maven:architectury-api-419699:4147231") //ftb teams dependency
-//  implementation fg.deobf("curse.maven:ftb-library-forge-404465:4210935") //ftb teams dependency
-//  implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4229138")
-//  implementation fg.deobf("curse.maven:jei-238222:4536209")
-//  implementation fg.deobf("curse.maven:the-one-probe-245211:4442439")
-//  implementation fg.deobf("curse.maven:jade-324717:4538674")
-//  implementation fg.deobf("curse.maven:betterf3-401648:4553937")
-//  implementation fg.deobf("curse.maven:cloth-config-348521:4440461") //betterf3 dependency
-//  implementation fg.deobf("curse.maven:wthit-forge-455982:4546033")
-//  implementation fg.deobf("curse.maven:badpackets-615134:4438956") //wthit dependency
-//  implementation fg.deobf("curse.maven:projecte-226410:3955047")
+	implementation fg.deobf("curse.maven:architectury-api-419699:4581905") //ftb teams dependency
+	implementation fg.deobf("curse.maven:ftb-library-forge-404465:4596511") //ftb teams dependency
+	implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4596744")
+	implementation fg.deobf("curse.maven:jei-238222:4597711")
+	implementation fg.deobf("curse.maven:the-one-probe-245211:4579432")
+	implementation fg.deobf("curse.maven:jade-324717:4573193")
+//	implementation fg.deobf("curse.maven:betterf3-401648:4553937")
+//	implementation fg.deobf("curse.maven:cloth-config-348521:4440461") //betterf3 dependency
+	implementation fg.deobf("curse.maven:wthit-forge-455982:4596739")
+	implementation fg.deobf("curse.maven:badpackets-615134:4438956") //wthit dependency
+//	implementation fg.deobf("curse.maven:projecte-226410:3955047")
 }
 
 mixin {
@@ -136,5 +124,5 @@ tasks.named('jar', Jar).configure {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
+	options.encoding = 'UTF-8'
 }

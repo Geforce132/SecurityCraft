@@ -107,12 +107,12 @@ public class SCManualScreen extends Screen {
 		byte startY = 2;
 
 		startX = (width - 256) / 2;
-		addRenderableWidget(new ChangePageButton(startX + 210, startY + 188, true, b -> nextPage()));
-		addRenderableWidget(new ChangePageButton(startX + 22, startY + 188, false, b -> previousPage()));
-		addRenderableWidget(nextSubpage = new ChangePageButton(startX + 180, startY + 97, true, b -> nextSubpage()));
-		addRenderableWidget(previousSubpage = new ChangePageButton(startX + 155, startY + 97, false, b -> previousSubpage()));
 		addRenderableWidget(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, Component.empty(), b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
 		addRenderableWidget(patronList = new PatronList(minecraft, 115, 90, 50, startX + 125));
+		addRenderableWidget(previousSubpage = new ChangePageButton(startX + 155, startY + 97, false, b -> previousSubpage()));
+		addRenderableWidget(nextSubpage = new ChangePageButton(startX + 180, startY + 97, true, b -> nextSubpage()));
+		addRenderableWidget(new ChangePageButton(startX + 22, startY + 188, false, b -> previousPage()));
+		addRenderableWidget(new ChangePageButton(startX + 210, startY + 188, true, b -> nextPage()));
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -162,7 +162,7 @@ public class SCManualScreen extends Screen {
 				guiGraphics.blit(ICONS, startX + 81, 118, 36, 1, 17, 16);
 
 			if (explosive)
-				guiGraphics.blit(ICONS,  startX + 107, 117, 54, 1, 18, 18);
+				guiGraphics.blit(ICONS, startX + 107, 117, 54, 1, 18, 18);
 
 			if (customizable)
 				guiGraphics.blit(ICONS, startX + 136, 118, 88, 1, 16, 16);

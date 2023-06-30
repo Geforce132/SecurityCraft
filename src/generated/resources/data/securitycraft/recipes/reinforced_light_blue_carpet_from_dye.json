@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "securitycraft:reinforced_carpets",
+  "ingredients": [
+    {
+      "tag": "forge:dyes/light_blue"
+    },
+    {
+      "tag": "securitycraft:reinforced/wool_carpets"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_light_blue_carpet"
+  }
+}

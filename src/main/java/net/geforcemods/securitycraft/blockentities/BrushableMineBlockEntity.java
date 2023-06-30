@@ -11,6 +11,9 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.BrushableBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,7 +44,7 @@ public class BrushableMineBlockEntity extends BrushableBlockEntity implements IO
 				return true;
 			}
 			else {
-				level.scheduleTick(getBlockPos(), SCContent.SUSPICIOUS_SAND_MINE.get(), 40);
+				level.scheduleTick(getBlockPos(), getBlockState().getBlock(), 40);
 
 				int newCompletionState = getCompletionState();
 
@@ -79,7 +82,22 @@ public class BrushableMineBlockEntity extends BrushableBlockEntity implements IO
 				coolDownEndsAtTick = 0L;
 			}
 			else
-				level.scheduleTick(getBlockPos(), SCContent.SUSPICIOUS_SAND_MINE.get(), (int) (brushCountResetsAtTick - level.getGameTime()));
+				level.scheduleTick(getBlockPos(), getBlockState().getBlock(), (int) (brushCountResetsAtTick - level.getGameTime()));
+		}
+	}
+
+	@Override
+	public void brushingCompleted(Player player) {
+		if (level != null && level.getServer() != null) {
+			Block turnInto = Blocks.AIR;
+
+			dropContent(player);
+			level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_BRUSH_BLOCK_COMPLETE, getBlockPos(), Block.getId(getBlockState()));
+
+			if (getBlockState().getBlock() instanceof BrushableMineBlock brushableMineBlock)
+				turnInto = brushableMineBlock.getTurnsInto();
+
+			level.setBlock(worldPosition, turnInto.defaultBlockState(), 3);
 		}
 	}
 

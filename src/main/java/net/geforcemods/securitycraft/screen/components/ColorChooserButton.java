@@ -18,6 +18,6 @@ public class ColorChooserButton extends Button {
 		int color = colorChooser.getRGBColor();
 
 		super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
-		guiGraphics.fillGradient(getX() + 2, getY() + 2, getX() + width - 2, getY() + height - 2, color, color, 0);
+		guiGraphics.fillGradient(getX() + 2, getY() + 2, getX() + width - 2, getY() + height - 2, color, color);
 	}
 }

@@ -103,12 +103,13 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 	@Override
 	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
 		Direction direction = state.getValue(FACING);
+		BlockState extendedState = state.setValue(EXTENDED, true);
 
 		if (!level.isClientSide) {
 			boolean isPowered = getNeighborSignal(level, pos, direction);
 
 			if (isPowered && (id == 1 || id == 2)) {
-				level.setBlock(pos, state.setValue(EXTENDED, true), 2);
+				level.setBlock(pos, extendedState, 2);
 				return false;
 			}
 
@@ -123,9 +124,9 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 			if (!this.moveBlocks(level, pos, direction, true))
 				return false;
 
-			level.setBlock(pos, state.setValue(EXTENDED, true), 67);
+			level.setBlock(pos, extendedState, 67);
 			level.playSound(null, pos, SoundEvents.PISTON_EXTEND, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.25F + 0.6F);
-			level.gameEvent(null, GameEvent.BLOCK_ACTIVATE, pos);
+			level.gameEvent(GameEvent.BLOCK_ACTIVATE, pos, GameEvent.Context.of(extendedState));
 		}
 		else if (id == 1 || id == 2) {
 			if (ForgeEventFactory.onPistonMovePre(level, pos, direction, false))
@@ -167,7 +168,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 				level.removeBlock(pos.relative(direction), false);
 
 			level.playSound(null, pos, SoundEvents.PISTON_CONTRACT, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.15F + 0.6F);
-			level.gameEvent(null, GameEvent.BLOCK_DEACTIVATE, pos);
+			level.gameEvent(GameEvent.BLOCK_DEACTIVATE, pos, GameEvent.Context.of(movingPiston));
 		}
 
 		ForgeEventFactory.onPistonMovePost(level, pos, direction, id == 0);
@@ -178,7 +179,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 		if (pos.getY() >= level.getMinBuildHeight() && pos.getY() <= level.getMaxBuildHeight() - 1 && level.getWorldBorder().isWithinBounds(pos)) {
 			if (state.isAir())
 				return true;
-			else if (!state.is(Blocks.OBSIDIAN) && !state.is(Blocks.CRYING_OBSIDIAN) && !state.is(Blocks.RESPAWN_ANCHOR) && !state.is(SCContent.REINFORCED_OBSIDIAN.get()) && !state.is(SCContent.REINFORCED_CRYING_OBSIDIAN.get())) {
+			else if (!state.is(Blocks.OBSIDIAN) && !state.is(Blocks.CRYING_OBSIDIAN) && !state.is(Blocks.RESPAWN_ANCHOR) && !state.is(Blocks.REINFORCED_DEEPSLATE) && !state.is(SCContent.REINFORCED_OBSIDIAN.get()) && !state.is(SCContent.REINFORCED_CRYING_OBSIDIAN.get())) {
 				if ((facing == Direction.DOWN && pos.getY() == level.getMinBuildHeight()) || (facing == Direction.UP && pos.getY() == level.getMaxBuildHeight() - 1))
 					return false;
 				else {

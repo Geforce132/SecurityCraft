@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "securitycraft:reinforced_carpets",
+  "ingredients": [
+    {
+      "tag": "forge:dyes/lime"
+    },
+    {
+      "tag": "securitycraft:reinforced/wool_carpets"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_lime_carpet"
+  }
+}

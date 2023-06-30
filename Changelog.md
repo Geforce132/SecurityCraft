@@ -1,4 +1,4 @@
---------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
+--------------------------Changelog for v1.9.7-beta1 of SecurityCraft--------------------------
 
 - New: Reinforced Blocks:*
 	- Block of Bamboo
@@ -26,6 +26,7 @@
 - New: Secret Cherry Sign*
 - New: Secret Hanging Signs*
 - New: Suspicious Sand Mine (can be defused to get the item without it exploding)*
+- New: Suspicious Gravel Mine
 - New: Sonic Security Systems and Portable Tune Players now support mob head and custom note block sounds*
 - New: The Alarm, Motion Activated Light, and Portable Radar can now be waterlogged
 - New: Laser and inventory scanner fields can now be waterlogged, which means the Laser and Inventory Scanner now properly work underwater without air pockets
@@ -51,6 +52,8 @@
 - Change: The Universal Key Changer can now be used by players in creative mode on any passcode-protected block or briefcase, regardless of its owner
 - Change: Passcodes no longer have a maximum length restriction
 - Change: Initially setting the passcode of a Briefcase now uses the same UI as inserting the passcode when opening a Briefcase
+- Change: Reinforced wool and carpets can now be dyed using any color wool or carpet
+- Change: The "Reset cooldown" option for alarms is now set to "true" by default (does not apply to already existing alarms)
 - API: IModuleInventory#getModuleDescriptionId to make it possible to have shared descriptions
 - API: Renamed Option#readFromNBT to Option#load and Option#writeToNBT to Option#save
 - API: All occurrences of "password" in API class and method names have been switched out with "passcode" (for example, IPasswordProtected#getPassword -> IPasscodeProtected#getPasscode)
@@ -78,21 +81,15 @@
 - Fix: Crash when placing any type of named passcode-protected furnace
 - Fix: Iron fences don't connect to fences they should connect to
 - Fix: Items carried by the cursor get deleted when closing the Universal Block Reinforcer screen
+- Fix: Reinforced pistons can push vanilla's reinforced deepslate
+- Fix: Some SecurityCraft blocks are displayed with the wrong color on a map
+- Fix: Using tab to navigate through the SC Manual has an unintuitive order
+- Fix: Reinforced cauldrons don't get updated properly when their contents change, leading to unexpected behavior
+- Fix: Using pick block on reinforced cauldrons containing something doesn't work
+- Fix: Reinforced hoppers can automatically validate their owner in certain cases
+- Fix: Crash when trying to create a superflat world with a layer of a reinforced block
+- Fix: It's impossible to close a Keypad Door that had its "Signal length" option set to 0
 - Removed: Ability to use name tags on the Sentry and other certain blocks. To give them a name, rename them in an anvil before placing
-- Misc.: The minimum required Forge version is 45.0.58
 - Misc.: More texture updates
 
 [*] in Minecraft 1.19.3 and 1.19.4, these are only available if the update_1_20 datapack is enabled
-
---------------------------Changelog for v1.9.6.2 of SecurityCraft--------------------------
-
-- Fix: JEI integration
-
---------------------------Changelog for v1.9.6.1 of SecurityCraft--------------------------
-
-- Fix: Mounting two cameras after one another in different dimensions causes severe lag
-- Misc.: The minimum required Forge version is 45.0.18
-
---------------------------Changelog for v1.9.6-beta1 of SecurityCraft--------------------------
-
-- Misc.: The minimum required Forge version is 45.0.2

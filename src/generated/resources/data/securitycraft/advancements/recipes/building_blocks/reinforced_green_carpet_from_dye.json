@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "securitycraft:reinforced_green_carpet_from_dye"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_wool_carpet": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "securitycraft:reinforced/wool_carpets"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_wool_carpet",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "securitycraft:reinforced_green_carpet_from_dye"
+    ]
+  },
+  "sends_telemetry_event": false
+}

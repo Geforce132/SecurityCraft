@@ -59,7 +59,7 @@ public class SecretStandingSignBlock extends StandingSignBlock {
 		if (level.getBlockEntity(pos) instanceof SecretSignBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)))
 			return super.use(state, level, pos, player, hand, hit);
 
-		return InteractionResult.FAIL;
+		return InteractionResult.PASS;
 	}
 
 	@Override
