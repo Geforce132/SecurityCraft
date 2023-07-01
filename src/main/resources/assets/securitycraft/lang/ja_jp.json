@@ -588,7 +588,7 @@
 	"death.attack.securitycraft.laser": "%sはレーザーで切断された",
 	"death.attack.securitycraft.laser.player": "%1$sは$2$sとの戦闘中にレーザーで切断されて死んだ",
 	"death.attack.securitycraft.taser": "%sはテーザー銃で撃たれて死んだ",
-	"death.attack.securitycraft.taser.item": "1$sは%2$sによって%3$sを使ってテーザー銃で撃たれて死んだ",
+	"death.attack.securitycraft.taser.item": "%1$sは%2$sによって%3$sを使ってテーザー銃で撃たれて死んだ",
 	"entity.securitycraft.bullet": "セントリー弾",
 	"entity.securitycraft.imsbomb": "I.M.S.爆弾",
 	"entity.securitycraft.sentry": "セントリー",
