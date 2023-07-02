@@ -10,13 +10,13 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
 import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
-import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer.DataType;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList.ConnectionAccessor;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -33,7 +33,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 	private static final int PLAYBACK_DELAY = 10;
 	private final SonicSecuritySystemBlockEntity be;
 	private int xSize = 300, ySize = 166;
-	private Button recordingButton, clearButton, powerButton, playButton;
+	private Button recordingButton, clearButton, powerButton, playButton, invertButton;
 	private TogglePictureButton soundButton;
 	private SSSConnectionList<SonicSecuritySystemScreen> connectionList;
 	/** If a recording is currently being played back **/
@@ -102,25 +102,32 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 			clearButton.active = toggledState && containsNotes;
 		}, Button.DEFAULT_NARRATION));
 
-		recordingButton = addRenderableWidget(new Button(buttonX, height / 2 - 32, 150, 20, getRecordingString(be.isRecording()), button -> {
+		recordingButton = addRenderableWidget(new Button(buttonX, height / 2 - 37, 150, 20, getRecordingString(be.isRecording()), button -> {
 			boolean recording = !be.isRecording();
 			be.setRecording(recording);
 			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), recording ? SyncSSSSettingsOnServer.DataType.RECORDING_ON : SyncSSSSettingsOnServer.DataType.RECORDING_OFF));
 			recordingButton.setMessage(getRecordingString(be.isRecording()));
 		}, Button.DEFAULT_NARRATION));
 
-		playButton = addRenderableWidget(new Button(buttonX, height / 2 - 10, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.play"), button -> {
+		playButton = addRenderableWidget(new Button(buttonX, height / 2 - 15, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.play"), button -> {
 			// Start playing back any notes that have been recorded
 			if (be.getNumberOfNotes() > 0)
 				playback = true;
 		}, Button.DEFAULT_NARRATION));
 
-		clearButton = addRenderableWidget(new Button(buttonX, height / 2 + 12, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.clear"), button -> {
+		clearButton = addRenderableWidget(new Button(buttonX, height / 2 + 7, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.clear"), button -> {
 			be.clearNotes();
 			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.CLEAR_NOTES));
 			playButton.active = false;
 			clearButton.active = false;
 		}, Button.DEFAULT_NARRATION));
+
+		invertButton = addRenderableWidget(new Button(buttonX, height / 2 + 29, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.invert_functionality"), button -> {
+			be.setDisableBlocksWhenTuneIsPlayed(!be.disablesBlocksWhenTuneIsPlayed());
+			updateInvertButtonTooltip();
+			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.INVERT_FUNCTIONALITY));
+		}, Button.DEFAULT_NARRATION));
+		updateInvertButtonTooltip();
 		//@formatter:off
 		soundButton = addRenderableWidget(new TogglePictureButton(buttonX + 130, height / 2 + 52, 20, 20, STREAMER_ICONS, new int[]{0, 0}, new int[]{32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
 			//@formatter:on
@@ -182,7 +189,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 	public void removePosition(BlockPos pos) {
 		be.delink(pos, true);
 		connectionList.refreshPositions();
-		SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), DataType.REMOVE_POS, pos));
+		SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.REMOVE_POS, pos));
 	}
 
 	private Component getRecordingString(boolean recording) {
@@ -191,5 +198,9 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 
 	private Component getPowerString(boolean on) {
 		return on ? Utils.localize("gui.securitycraft:sonic_security_system.power.on") : Utils.localize("gui.securitycraft:sonic_security_system.power.off");
+	}
+
+	private void updateInvertButtonTooltip() {
+		invertButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft.sonic_security_system.invert.tooltip_" + (be.disablesBlocksWhenTuneIsPlayed() ? "inverted" : "default"))));
 	}
 }

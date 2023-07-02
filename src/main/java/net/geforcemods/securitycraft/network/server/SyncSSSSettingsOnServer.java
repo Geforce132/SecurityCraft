@@ -72,6 +72,9 @@ public class SyncSSSSettingsOnServer {
 					break;
 				case REMOVE_POS:
 					sss.delink(posToRemove, false);
+					break;
+				case INVERT_FUNCTIONALITY:
+					sss.setDisableBlocksWhenTuneIsPlayed(!sss.disablesBlocksWhenTuneIsPlayed());
 			}
 		}
 	}
@@ -84,6 +87,7 @@ public class SyncSSSSettingsOnServer {
 		RECORDING_ON,
 		RECORDING_OFF,
 		CLEAR_NOTES,
-		REMOVE_POS;
+		REMOVE_POS,
+		INVERT_FUNCTIONALITY
 	}
 }
