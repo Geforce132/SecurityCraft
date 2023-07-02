@@ -31,7 +31,7 @@ public interface ILockable {
 
 		for (SonicSecuritySystemBlockEntity te : sonicSecuritySystems) {
 			if (te.isActive() && te.isLinkedToBlock(thisTe.getBlockPos()))
-				return !te.correctTuneWasPlayed; //if the correct tune was recently played, the block should not be locked
+				return te.correctTuneWasPlayed == te.disablesBlocksWhenTuneIsPlayed();
 		}
 
 		return false;

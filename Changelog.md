@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
+
+- New: The Sonic Security System's functionality can now be inverted (blocks are accessible by default, and locked when the correct tune is played)
+
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
 - New: The Alarm, Motion Activated Light, and Portable Radar can now be waterlogged
