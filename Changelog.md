@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
+
+- Fix: The exclamation mark in the Keycard Reader screen is dark
+
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
 - New: Randomize signature button for the Keycard Reader

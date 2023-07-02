@@ -286,8 +286,10 @@ public class KeycardReaderScreen extends GuiContainer {
 			int left = guiLeft + 40;
 			int top = guiTop + 60;
 
+			GlStateManager.disableLighting();
 			mc.getTextureManager().bindTexture(WORLD_SELECTION_ICONS);
 			drawScaledCustomSizeModalRect(left, top, 70, 37, 22, 22, 22, 22, 256, 256);
+			GlStateManager.enableLighting();
 
 			if (mouseX >= left - 7 && mouseX < left + 13 && mouseY >= top && mouseY <= top + 22)
 				GuiUtils.drawHoveringText(Arrays.asList(levelMismatchInfo), mouseX, mouseY, width, height, -1, fontRenderer);
