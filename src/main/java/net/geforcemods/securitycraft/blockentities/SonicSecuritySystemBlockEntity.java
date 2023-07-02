@@ -68,6 +68,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	private int listenPos = 0;
 	private boolean tracked = false;
 	private boolean shutDown = false;
+	private boolean disableBlocksWhenTuneIsPlayed = false;
 
 	@Override
 	public void update() {
@@ -194,6 +195,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		tag.setBoolean("correctTuneWasPlayed", correctTuneWasPlayed);
 		tag.setInteger("powerCooldown", powerCooldown);
 		tag.setBoolean("shutDown", shutDown);
+		tag.setBoolean("disableBlocksWhenTuneIsPlayed", disableBlocksWhenTuneIsPlayed);
 		return tag;
 	}
 
@@ -228,6 +230,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		correctTuneWasPlayed = tag.getBoolean("correctTuneWasPlayed");
 		powerCooldown = tag.getInteger("powerCooldown");
 		shutDown = tag.getBoolean("shutDown");
+		disableBlocksWhenTuneIsPlayed = tag.getBoolean("disableBlocksWhenTuneIsPlayed");
 	}
 
 	/**
@@ -487,6 +490,14 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	public void setShutDown(boolean shutDown) {
 		this.shutDown = shutDown;
 		sync();
+	}
+
+	public void setDisableBlocksWhenTuneIsPlayed(boolean disableBlocksWhenTuneIsPlayed) {
+		this.disableBlocksWhenTuneIsPlayed = disableBlocksWhenTuneIsPlayed;
+	}
+
+	public boolean disablesBlocksWhenTuneIsPlayed() {
+		return disableBlocksWhenTuneIsPlayed;
 	}
 
 	@Override

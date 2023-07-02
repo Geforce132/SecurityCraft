@@ -83,6 +83,9 @@ public class SyncSSSSettingsOnServer implements IMessage {
 							break;
 						case REMOVE_POS:
 							sss.delink(message.posToRemove, false);
+							break;
+						case INVERT_FUNCTIONALITY:
+							sss.setDisableBlocksWhenTuneIsPlayed(!sss.disablesBlocksWhenTuneIsPlayed());
 					}
 				}
 			});
@@ -98,6 +101,7 @@ public class SyncSSSSettingsOnServer implements IMessage {
 		RECORDING_ON,
 		RECORDING_OFF,
 		CLEAR_NOTES,
-		REMOVE_POS;
+		REMOVE_POS,
+		INVERT_FUNCTIONALITY
 	}
 }

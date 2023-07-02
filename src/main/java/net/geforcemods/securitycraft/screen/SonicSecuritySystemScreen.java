@@ -11,10 +11,10 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
 import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
-import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer.DataType;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList.ConnectionAccessor;
+import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockNote;
@@ -30,6 +30,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.event.world.NoteBlockEvent.Instrument;
+import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -41,7 +42,8 @@ public class SonicSecuritySystemScreen extends GuiContainer implements Connectio
 	/** The number of ticks between each note when playing back a recording **/
 	private static final int PLAYBACK_DELAY = 10;
 	private final SonicSecuritySystemBlockEntity te;
-	private ClickButton recordingButton, clearButton, powerButton, playButton;
+	private ClickButton recordingButton, clearButton, powerButton, playButton, invertButton;
+	private StringHoverChecker invertButtonHoverChecker;
 	private TogglePictureButton soundButton;
 	private SSSConnectionList<SonicSecuritySystemScreen> connectionList;
 	/** If a recording is currently being played back **/
@@ -112,28 +114,34 @@ public class SonicSecuritySystemScreen extends GuiContainer implements Connectio
 			clearButton.enabled = toggledState && containsNotes;
 		}));
 
-		recordingButton = addButton(new ClickButton(1, buttonX, height / 2 - 32, 150, 20, getRecordingString(te.isRecording()), button -> {
+		recordingButton = addButton(new ClickButton(1, buttonX, height / 2 - 37, 150, 20, getRecordingString(te.isRecording()), button -> {
 			boolean recording = !te.isRecording();
 			te.setRecording(recording);
 			SecurityCraft.network.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), recording ? SyncSSSSettingsOnServer.DataType.RECORDING_ON : SyncSSSSettingsOnServer.DataType.RECORDING_OFF));
 			recordingButton.displayString = getRecordingString(te.isRecording());
 		}));
 
-		playButton = addButton(new ClickButton(2, buttonX, height / 2 - 10, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.play").getFormattedText(), button -> {
+		playButton = addButton(new ClickButton(2, buttonX, height / 2 - 15, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.play").getFormattedText(), button -> {
 			// Start playing back any notes that have been recorded
 			if (te.getNumberOfNotes() > 0)
 				playback = true;
 		}));
 
-		clearButton = addButton(new ClickButton(3, buttonX, height / 2 + 12, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.clear").getFormattedText(), button -> {
+		clearButton = addButton(new ClickButton(3, buttonX, height / 2 + 7, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.clear").getFormattedText(), button -> {
 			te.clearNotes();
 			SecurityCraft.network.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), SyncSSSSettingsOnServer.DataType.CLEAR_NOTES));
 			playButton.enabled = false;
 			clearButton.enabled = false;
 		}));
 
+		invertButton = addButton(new ClickButton(4, buttonX, height / 2 + 29, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.invert_functionality").getFormattedText(), button -> {
+			te.setDisableBlocksWhenTuneIsPlayed(!te.disablesBlocksWhenTuneIsPlayed());
+			updateInvertButtonTooltip();
+			SecurityCraft.network.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), SyncSSSSettingsOnServer.DataType.INVERT_FUNCTIONALITY));
+		}));
+		updateInvertButtonTooltip();
 		//@formatter:off
-		soundButton = addButton(new TogglePictureButton(4, buttonX + 130, height / 2 + 52, 20, 20, STREAMER_ICONS, new int[] {0, 0}, new int[] {32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
+		soundButton = addButton(new TogglePictureButton(5, buttonX + 130, height / 2 + 52, 20, 20, STREAMER_ICONS, new int[] {0, 0}, new int[] {32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
 			//@formatter:on
 			boolean toggledPing = !te.pings();
 
@@ -176,6 +184,9 @@ public class SonicSecuritySystemScreen extends GuiContainer implements Connectio
 
 		if (connectionList != null)
 			connectionList.drawScreen(mouseX, mouseY, partialTicks);
+
+		if (invertButtonHoverChecker.checkHover(mouseX, mouseY))
+			GuiUtils.drawHoveringText(invertButtonHoverChecker.getLines(), mouseX, mouseY, width, height, -1, fontRenderer);
 	}
 
 	@Override
@@ -213,7 +224,7 @@ public class SonicSecuritySystemScreen extends GuiContainer implements Connectio
 	public void removePosition(BlockPos pos) {
 		te.delink(pos, true);
 		connectionList.refreshPositions();
-		SecurityCraft.network.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), DataType.REMOVE_POS, pos));
+		SecurityCraft.network.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), SyncSSSSettingsOnServer.DataType.REMOVE_POS, pos));
 	}
 
 	private String getRecordingString(boolean recording) {
@@ -222,5 +233,9 @@ public class SonicSecuritySystemScreen extends GuiContainer implements Connectio
 
 	private String getPowerString(boolean on) {
 		return (on ? Utils.localize("gui.securitycraft:sonic_security_system.power.on") : Utils.localize("gui.securitycraft:sonic_security_system.power.off")).getFormattedText();
+	}
+
+	private void updateInvertButtonTooltip() {
+		invertButtonHoverChecker = new StringHoverChecker(invertButton, Utils.localize("gui.securitycraft:sonic_security_system.invert.tooltip_" + (te.disablesBlocksWhenTuneIsPlayed() ? "inverted" : "default")).getFormattedText());
 	}
 }
