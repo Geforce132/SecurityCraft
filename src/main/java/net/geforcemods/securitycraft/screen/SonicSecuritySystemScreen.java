@@ -12,11 +12,11 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList.ConnectionAccessor;
+import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -36,6 +36,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 	private final SonicSecuritySystemBlockEntity be;
 	private int xSize = 300, ySize = 166;
 	private Button recordingButton, clearButton, powerButton, playButton, invertButton;
+	private TextHoverChecker invertButtonHoverChecker;
 	private TogglePictureButton soundButton;
 	private SSSConnectionList<SonicSecuritySystemScreen> connectionList;
 	/** If a recording is currently being played back **/
@@ -162,6 +163,9 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 		super.render(pose, mouseX, mouseY, partialTicks);
 		font.draw(pose, title, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752);
 		font.draw(pose, SOUND_TEXT, soundButton.x - soundTextLength - 5, startY + 141, 4210752);
+
+		if (invertButtonHoverChecker.checkHover(mouseX, mouseY))
+			renderTooltip(pose, invertButtonHoverChecker.getName(), mouseX, mouseY);
 	}
 
 	@Override
@@ -203,6 +207,6 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 	}
 
 	private void updateInvertButtonTooltip() {
-		invertButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft.sonic_security_system.invert.tooltip_" + (be.disablesBlocksWhenTuneIsPlayed() ? "inverted" : "default"))));
+		invertButtonHoverChecker = new TextHoverChecker(invertButton, Utils.localize("gui.securitycraft.sonic_security_system.invert.tooltip_" + (be.disablesBlocksWhenTuneIsPlayed() ? "inverted" : "default")));
 	}
 }
