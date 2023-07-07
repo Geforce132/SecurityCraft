@@ -3,7 +3,9 @@ package net.geforcemods.securitycraft.blocks.mines;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
@@ -177,5 +179,17 @@ public class IMSBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, SCContent.IMS_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
+	}
+
+	public static class ExtractionBlock implements IExtractionBlock {
+		@Override
+		public boolean canExtract(IOwnable be, Level level, BlockPos pos, BlockState state) {
+			return be.getOwner().owns((IMSBlockEntity) level.getBlockEntity(pos));
+		}
+
+		@Override
+		public Block getBlock() {
+			return SCContent.IMS.get();
+		}
 	}
 }

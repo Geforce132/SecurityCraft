@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -21,8 +22,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	private IntOption range = new IntOption("range", 15, 1, 30, 1, true);
@@ -47,10 +50,26 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 		if (!level.isClientSide && updateBombCount) {
 			int mineCount = state.getValue(IMSBlock.MINES);
 
-			if (!(mineCount - 1 < 0 || mineCount > 4))
-				level.setBlockAndUpdate(pos, state.setValue(IMSBlock.MINES, mineCount - 1));
+			if (mineCount != bombsRemaining)
+				level.setBlockAndUpdate(pos, state.setValue(IMSBlock.MINES, bombsRemaining));
 
-			updateBombCount = false;
+			if (bombsRemaining < 4) {
+				BlockEntity be = level.getBlockEntity(pos.below());
+
+				if (be != null) {
+					be.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP).ifPresent(handler -> {
+						for (int i = 0; i < handler.getSlots(); i++) {
+							if (handler.getStackInSlot(i).getItem() == SCContent.BOUNCING_BETTY.get().asItem()) {
+								handler.extractItem(i, 1, false);
+								bombsRemaining++;
+								return;
+							}
+						}
+					});
+				}
+			}
+			else
+				updateBombCount = false;
 		}
 
 		if (!isDisabled() && attackTime-- == 0) {

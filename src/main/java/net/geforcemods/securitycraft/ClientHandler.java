@@ -361,31 +361,31 @@ public class ClientHandler {
 			else
 				return 0xFFFFFF;
 		}, block));
-		event.register((state, world, pos, tintIndex) -> {
+		event.register((state, level, pos, tintIndex) -> {
 			Block block = state.getBlock();
 
 			if (block instanceof DisguisableBlock disguisedBlock) {
-				Block blockFromItem = Block.byItem(disguisedBlock.getDisguisedStack(world, pos).getItem());
+				Block blockFromItem = Block.byItem(disguisedBlock.getDisguisedStack(level, pos).getItem());
 				BlockState defaultBlockState = blockFromItem.defaultBlockState();
 
 				if (!defaultBlockState.isAir() && !(blockFromItem instanceof DisguisableBlock))
-					return Minecraft.getInstance().getBlockColors().getColor(defaultBlockState, world, pos, tintIndex);
+					return Minecraft.getInstance().getBlockColors().getColor(defaultBlockState, level, pos, tintIndex);
 			}
 
 			return 0xFFFFFF;
 		}, disguisableBlocks.orElse(null));
-		event.register((state, world, pos, tintIndex) -> {
+		event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.getValue(ReinforcedSnowyDirtBlock.SNOWY)) {
-				int grassTint = world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColor.get(0.5D, 1.0D);
+				int grassTint = level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos) : GrassColor.get(0.5D, 1.0D);
 
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
 
 			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
 		}, SCContent.REINFORCED_GRASS_BLOCK.get());
-		event.register((state, world, pos, tintIndex) -> {
+		event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 1)
-				return world != null && pos != null ? BiomeColors.getAverageWaterColor(world, pos) : -1;
+				return level != null && pos != null ? BiomeColors.getAverageWaterColor(level, pos) : -1;
 
 			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
 		}, SCContent.REINFORCED_WATER_CAULDRON.get());
