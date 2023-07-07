@@ -5,7 +5,9 @@ import java.util.Random;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
@@ -192,5 +194,17 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new IMSBlockEntity();
+	}
+
+	public static class ExtractionBlock implements IExtractionBlock {
+		@Override
+		public boolean canExtract(IOwnable be, World level, BlockPos pos, BlockState state) {
+			return be.getOwner().owns((IMSBlockEntity) level.getBlockEntity(pos));
+		}
+
+		@Override
+		public Block getBlock() {
+			return SCContent.IMS.get();
+		}
 	}
 }

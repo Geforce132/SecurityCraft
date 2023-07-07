@@ -18,9 +18,12 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public class IMSBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity {
 	private IntOption range = new IntOption(this::getBlockPos, "range", 15, 1, 30, 1, true);
@@ -45,10 +48,26 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 		if (!level.isClientSide && updateBombCount) {
 			int mineCount = getBlockState().getValue(IMSBlock.MINES);
 
-			if (!(mineCount - 1 < 0 || mineCount > 4))
-				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(IMSBlock.MINES, mineCount - 1));
+			if (mineCount != bombsRemaining)
+				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(IMSBlock.MINES, bombsRemaining));
 
-			updateBombCount = false;
+			if (bombsRemaining < 4) {
+				TileEntity be = level.getBlockEntity(worldPosition.below());
+
+				if (be != null) {
+					be.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP).ifPresent(handler -> {
+						for (int i = 0; i < handler.getSlots(); i++) {
+							if (handler.getStackInSlot(i).getItem() == SCContent.BOUNCING_BETTY.get().asItem()) {
+								handler.extractItem(i, 1, false);
+								bombsRemaining++;
+								return;
+							}
+						}
+					});
+				}
+			}
+			else
+				updateBombCount = false;
 		}
 
 		if (!isDisabled() && attackTime-- == 0) {
