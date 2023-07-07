@@ -3,10 +3,13 @@ package net.geforcemods.securitycraft.blocks.mines;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.screen.ScreenHandler;
@@ -171,5 +174,22 @@ public class IMSBlock extends OwnableBlock {
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new IMSBlockEntity();
+	}
+
+	public static class ExtractionBlock implements IExtractionBlock, Function<Object, IExtractionBlock> {
+		@Override
+		public IExtractionBlock apply(Object o) {
+			return this;
+		}
+
+		@Override
+		public boolean canExtract(IOwnable te, World world, BlockPos pos, IBlockState state) {
+			return te.getOwner().owns((IMSBlockEntity) world.getTileEntity(pos));
+		}
+
+		@Override
+		public Block getBlock() {
+			return SCContent.ims;
+		}
 	}
 }

@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blockentities;
 
 import java.util.List;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -17,11 +18,16 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable {
 	private IntOption range = new IntOption(this::getPos, "range", 15, 1, 30, 1, true);
@@ -40,8 +46,31 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 	@Override
 	public void update() {
 		if (!world.isRemote && updateBombCount) {
-			world.setBlockState(pos, world.getBlockState(pos).withProperty(IMSBlock.MINES, bombsRemaining));
-			updateBombCount = false;
+			IBlockState state = world.getBlockState(pos);
+			int mineCount = state.getValue(IMSBlock.MINES);
+
+			if (mineCount != bombsRemaining)
+				world.setBlockState(pos, state.withProperty(IMSBlock.MINES, bombsRemaining));
+
+			if (bombsRemaining < 4) {
+				TileEntity be = world.getTileEntity(pos.down());
+
+				if (be != null) {
+					IItemHandler handler = be.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+
+					if (handler != null) {
+						for (int i = 0; i < handler.getSlots(); i++) {
+							if (handler.getStackInSlot(i).getItem() == Item.getItemFromBlock(SCContent.bouncingBetty)) {
+								handler.extractItem(i, 1, false);
+								bombsRemaining++;
+								break;
+							}
+						}
+					}
+				}
+			}
+			else
+				updateBombCount = false;
 		}
 
 		if (!isDisabled() && attackTime-- == 0) {
