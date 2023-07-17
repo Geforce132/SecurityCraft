@@ -1,4 +1,4 @@
-languages = ["de_de", "en_gb", "en_us", "es_es", "fr_fr", "it_it", "ja_jp", "ko_kr"]
+languages = ["de_de", "en_gb", "en_us", "es_es", "fr_fr", "it_it", "ja_jp", "ko_kr", "zh_cn"]
 
 for language in languages:
 	file_name = "src/main/resources/assets/securitycraft/lang/" + language + ".json"
