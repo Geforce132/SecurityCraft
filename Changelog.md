@@ -2,6 +2,7 @@
 
 - New: The Sonic Security System's functionality can now be inverted (blocks are accessible by default, and locked when the correct tune is played)
 - New: The IMS can now automatically recharge itself with bouncing betties from a chest, barrel, etc. below
+- New: Simplified Chinese translation (Thanks DrIceTea!)
 
 --------------------------Changelog for v1.9.7-beta1 of SecurityCraft--------------------------
 
