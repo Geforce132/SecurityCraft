@@ -63,7 +63,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	private final List<Rectangle2d> extraAreas = new ArrayList<>();
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
-	private Button[] optionButtons;
+	private Button[] optionButtons = {};
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
 	private final Block block;
 	private final String blockName;
