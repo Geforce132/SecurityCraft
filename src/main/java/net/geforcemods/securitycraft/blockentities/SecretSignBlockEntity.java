@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -23,7 +24,12 @@ import net.minecraft.util.NonNullList;
 
 public class SecretSignBlockEntity extends SignTileEntity implements IOwnable, IModuleInventory, ICustomizable {
 	private Owner owner = new Owner();
-	private BooleanOption isSecret = new BooleanOption("isSecret", true);
+	private BooleanOption isSecret = new BooleanOption("isSecret", true) {
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.secret_sign.isSecret";
+		}
+	};
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
@@ -128,5 +134,10 @@ public class SecretSignBlockEntity extends SignTileEntity implements IOwnable, I
 			onModuleInserted(getModule(module), module, true);
 		else
 			onModuleRemoved(getModule(module), module, true);
+	}
+
+	@Override
+	public String getModuleDescriptionId(String blockName, ModuleType module) {
+		return IModuleInventory.super.getModuleDescriptionId("generic.secret_sign", module);
 	}
 }

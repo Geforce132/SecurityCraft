@@ -66,7 +66,6 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	private Button[] optionButtons = {};
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
 	private final Block block;
-	private final String blockName;
 	private final int maxNumberOfModules;
 	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
 
@@ -74,7 +73,6 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 		super(container, inv, name);
 		moduleInv = container.moduleInv;
 		block = menu.moduleInv.getTileEntity().getBlockState().getBlock();
-		blockName = block.getDescriptionId().substring(5);
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
 		container.addSlotListener(this);
 
@@ -96,7 +94,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			int column = i % numberOfColumns;
 
 			addButton(descriptionButtons[i] = new ModuleButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked));
-			hoverCheckers.add(new TextHoverChecker(descriptionButtons[i], getModuleDescription(i)));
+			hoverCheckers.add(new TextHoverChecker(descriptionButtons[i], getModuleTooltipText(i)));
 			descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
 
@@ -244,15 +242,13 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 		}
 	}
 
-	private ITextComponent getModuleDescription(int moduleId) {
-		String moduleDescription = "module" + blockName + "." + descriptionButtons[moduleId].getItemStack().getDescriptionId().substring(5).replace("securitycraft.", "") + ".description";
-
+	private ITextComponent getModuleTooltipText(int moduleId) {
 		//@formatter:off
 		return Utils.localize(descriptionButtons[moduleId].getItemStack().getDescriptionId())
 				.append(new StringTextComponent(":"))
 				.withStyle(TextFormatting.RESET)
 				.append(new StringTextComponent("\n\n"))
-				.append(Utils.localize(moduleDescription));
+				.append(Utils.localize(moduleInv.getModuleDescriptionId(block.getDescriptionId().substring(6), ((ModuleItem) descriptionButtons[moduleId].getItemStack().getItem()).getModuleType())));
 		//@formatter:on
 	}
 
