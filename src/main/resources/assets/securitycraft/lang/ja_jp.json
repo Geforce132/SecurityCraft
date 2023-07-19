@@ -714,7 +714,7 @@
 	"help.securitycraft.remote_access_sentry.info": "セントリーリモートアクセスツールを使用すると、セントリーにリモートでアクセスすることができます。セントリー上で右クリックすると、ツールに「バインド」されます。ツールを装備した状態で空中で右クリックするとツールのGUIが表示され、設定した各セントリーまたは全セントリーのモードを同時に変更することができます。",
 	"help.securitycraft.retinal_scanner.info": "網膜スキャナーにカーソルを合わせると15ブロックのレッドストーン信号が出力されます。",
 	"help.securitycraft.rift_stabilizer.info": "リフトスタビライザーはその周辺にいるエンティティによるテレポートの試みを検知し、阻止(デフォルトでは5ブロックで汎用ブロック修正機で変更可能)します。テレポート元またはテレポート先の位置がブロックの範囲内にある場合、テレポートの試みは禁止されます。ブロックを右クリックすると、検出可能な全てのテレポートタイプのリストが表示されます。",
-	"help.securitycraft.sc_manual.info": "SecurityCraft マニュアルには、SecurityCraft が追加するすべてのブロックとアイテムに関する基本情報が記載されています。より詳細な説明については、FTB wiki（https://ftb.gamepedia.com/SecurityCraft）をご覧ください。",
+	"help.securitycraft.sc_manual.info": "SecurityCraft マニュアルには、SecurityCraft が追加するすべてのブロックとアイテムに関する基本情報が記載されています。より詳細な説明については、GitHub wiki（https://github.com/Geforce132/SecurityCraft/wiki）をご覧ください。",
 	"help.securitycraft.scanner_door.info": "スキャナードアは網膜スキャナーと強化された鉄のドアを組み合わせたような機能で、オーナーがドア上部を見ることで開閉できます。",
 	"help.securitycraft.secret_signs.info": "秘密の看板はバニラの看板の様に機能しますが、看板のオーナーと許可リストに登録されているプレイヤーのみが看板を見たり、やりとりしたりすることができるという若干の違いがあります。この看板が置かれているブロックは誰にも壊されないように注意してください！",
 	"help.securitycraft.security_camera.info": "防犯カメラはその位置からの様子を確認することができます。カメラを配置後にカメラモニターで右クリックしてバインドするだけです。",
