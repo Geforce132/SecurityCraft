@@ -65,7 +65,7 @@ public class ReinforcedDoorBlock extends BlockDoor implements ITileEntityProvide
 	 */
 	public void onNeighborChanged(IBlockAccess access, BlockPos firstDoorPos, BlockPos neighbor) {
 		World level = (World) access;
-		IBlockState firstDoorState = level.getBlockState(firstDoorPos);
+		IBlockState firstDoorState = level.getBlockState(firstDoorPos).getActualState(access, firstDoorPos);
 		Block neighborBlock = level.getBlockState(neighbor).getBlock();
 
 		if (firstDoorState.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER) {
@@ -103,10 +103,10 @@ public class ReinforcedDoorBlock extends BlockDoor implements ITileEntityProvide
 				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, firstDoorPos) || BlockUtils.hasActiveSCBlockNextTo(level, firstDoorPos.up());
 				EnumFacing directionToCheck = firstDoorState.getValue(FACING).rotateY();
 				BlockPos secondDoorPos = firstDoorPos.offset(directionToCheck);
-				IBlockState secondDoorState = level.getBlockState(secondDoorPos);
+				IBlockState secondDoorState = level.getBlockState(secondDoorPos).getActualState(access, secondDoorPos);
 
 				if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(HINGE) == EnumHingePosition.RIGHT && firstDoorState.getValue(HINGE) != secondDoorState.getValue(HINGE))) {
-					secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.offset(directionToCheck.getOpposite()));
+					secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.offset(directionToCheck.getOpposite())).getActualState(access, secondDoorPos);
 
 					if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(HINGE) == EnumHingePosition.LEFT && firstDoorState.getValue(HINGE) != secondDoorState.getValue(HINGE)))
 						secondDoorPos = null;

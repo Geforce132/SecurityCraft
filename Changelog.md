@@ -3,6 +3,7 @@
 - New: The Sonic Security System's functionality can now be inverted (blocks are accessible by default, and locked when the correct tune is played)
 - New: The IMS can now automatically recharge itself with bouncing betties from a chest, barrel, etc. below
 - Fix: The exclamation mark in the Keycard Reader screen is dark
+- Fix: Reinforced Doors placed next to each other don't open properly after the chunk they're in is reloaded
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
