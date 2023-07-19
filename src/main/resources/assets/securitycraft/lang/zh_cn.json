@@ -781,7 +781,7 @@
 	"help.securitycraft.remote_access_sentry.info": "战斗哨石远程访问工具允许你远程操控战斗哨石。右键点击战斗哨石以将其“绑定”到工具。右键点击空气可以打开GUI以改变每个已绑定的战斗哨石的模式，或同时改变所有已绑定的战斗哨石的模式。",
 	"help.securitycraft.retinal_scanner.info": "当虹膜扫描仪位于其所属玩家的可破坏范围内，并被其所属玩家用光标指向时，它将会发出一个15格的红石信号。",
 	"help.securitycraft.rift_stabilizer.info": "裂缝稳定器检测并阻止其附近实体的传送请求（默认距离为5格，可通过通用方块修改器调整）。如果传送的起点或目标位置在该方块一定范围内，传送请求将被阻止。右键点击它会显示一个所有可检测的传送类型的列表。",
-	"help.securitycraft.sc_manual.info": "安全工艺指南包含有关安全工艺添加的所有方块和物品的基本信息。如需更深入的描述，请查看FTB wiki: https://ftb.gamepedia.com/SecurityCraft。",
+	"help.securitycraft.sc_manual.info": "安全工艺指南包含有关安全工艺添加的所有方块和物品的基本信息。如需更深入的描述，请查看GitHub wiki: https://github.com/Geforce132/SecurityCraft/wiki。",
 	"help.securitycraft.scanner_door.info": "扫描门类似于虹膜扫描仪与强化铁门的结合，其所属玩家看向顶部就能打开它。",
 	"help.securitycraft.secret_signs.info": "私密告示牌的作用与原版告示牌一样，但只有它的所属玩家和白名单上的玩家能够与它交互，并查看上面的文字。请确保没有人可以破坏它所放置的方块！",
 	"help.securitycraft.security_camera.info": "安防摄像头能够查看其周围的情况。放置在方块侧面，使用摄像头监视器右键点击它即可绑定并使用。",
