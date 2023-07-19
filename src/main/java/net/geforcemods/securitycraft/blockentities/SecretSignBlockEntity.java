@@ -17,13 +17,19 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, IModuleInventory, ICustomizable {
 	private Owner owner = new Owner();
-	private BooleanOption isSecret = new BooleanOption("isSecret", true);
+	private BooleanOption isSecret = new BooleanOption("isSecret", true) {
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.secret_sign.isSecret";
+		}
+	};
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
@@ -136,5 +142,10 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 			onModuleInserted(getModule(module), module, true);
 		else
 			onModuleRemoved(getModule(module), module, true);
+	}
+
+	@Override
+	public String getModuleDescriptionId(String blockName, ModuleType module) {
+		return IModuleInventory.super.getModuleDescriptionId("generic.secret_sign", module);
 	}
 }
