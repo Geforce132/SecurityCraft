@@ -689,7 +689,7 @@
 	"help.securitycraft.remote_access_mine.info": "지뢰 원격 접속기는 당신이 지뢰에 원격으로 접근할 수 있게 해줄 것입니다. 지뢰를 마우스 오른쪽 버튼으로 클릭하여 도구에 바인드합니다. (도구가 장착된 상태에서) 허공을 마우스 오른쪽 버튼으로 클릭하여 도구의 GUI를 열면 바인딩된 지뢰를 활성화, 비활성화, 폭발 또는 분리할 수 있습니다.",
 	"help.securitycraft.remote_access_sentry.info": "센트리 건 원격 접속기를 사용하면 센트리 건에게 원격으로 접속할 수 있습니다. 센트리 건를 마우스 오른쪽 버튼으로 클릭하여 도구에 바인드합니다. 도구를 장착한 상태에서 공기를 마우스 오른쪽 버튼으로 눌러 각 경계 센트리 건 또는 모든 경계 센트리 건의 모드를 동시에 변경할 수 있는 도구의 GUI를 엽니다.",
 	"help.securitycraft.retinal_scanner.info": "망막 감지기는 소유자가 커서를 파단 거리 내의 가시 각도에서 커서를 위로 올릴 때 15블록의 레드스톤 신호를 발생합니다.",
-	"help.securitycraft.sc_manual.info": "시큐리티크래프트 설명서는 시큐리티크래프트가 추가하는 모든 블록 및 항목에 대한 기본 정보를 보여줍니다. 자세한 설명은 에서 FTB Wiki에서 https://ftb.gamepedia.com/SecurityCraft를 참조하시기 바랍니다.",
+	"help.securitycraft.sc_manual.info": "시큐리티크래프트 설명서는 시큐리티크래프트가 추가하는 모든 블록 및 항목에 대한 기본 정보를 보여줍니다. 자세한 설명은 에서 GitHub Wiki에서 https://github.com/Geforce132/SecurityCraft/wiki를 참조하시기 바랍니다.",
 	"help.securitycraft.scanner_door.info": "감지문은 강화된 철문과 결합된 망막 감지기와 같은 역할을 하는데, 이 경우 소유자가 상단을 보고 열지만 수동으로 닫아야 합니다.",
 	"help.securitycraft.secret_signs.info": "비밀 표지판은 바닐라 표지판과 같이 작동하는데, 표지판 소유자만이 그 위에 있는 텍스트를 볼 수 있다는 약간의 차이가 있습니다. 아무도 그 블록을 어길 수 없도록 합니다!",
 	"help.securitycraft.security_camera.info": "보안 카메라는 당신이 그 위치에서 가까운 지역을 볼 수 있게 해줍니다. 카메라를 내려놓은 다음 카메라 모니터로 마우스 오른쪽을 클릭하여 사용할 수 있도록 묶습니다.",
