@@ -15,7 +15,7 @@ import net.minecraft.world.WorldServer;
  * Makes sure that a portal cannot spawn and replace reinforced blocks with its bottom layer. The rest of the portal frame
  * cannot replace reinforced blocks, as it needs empty blocks to spawn there.
  */
-@Mixin(Teleporter.class)
+@Mixin(value = Teleporter.class, priority = 1100)
 public class TeleporterMixin {
 	@Redirect(method = "makePortal", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldServer;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;"))
 	private IBlockState securitycraft$addReinforcedBlockCheck(WorldServer level, BlockPos offsetPos) {

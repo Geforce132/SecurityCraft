@@ -5,6 +5,7 @@
 - New: Simplified Chinese translation (Thanks DrIceTea!)
 - Fix: The exclamation mark in the Keycard Reader screen is dark
 - Fix: Reinforced Doors placed next to each other don't open properly after the chunk they're in is reloaded
+- Fix: Startup crash with some versions of SpongeForge 
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
