@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
@@ -115,7 +116,6 @@ import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -138,7 +138,7 @@ public class ClientHandler {
 	private static Map<Block, Integer> blocksWithReinforcedTint = new HashMap<>();
 	private static Map<Block, Integer> blocksWithCustomTint = new HashMap<>();
 	//@formatter:off
-	private static LazyOptional<Block[]> disguisableBlocks = LazyOptional.of(() -> new Block[] {
+	private static Supplier<Block[]> disguisableBlocks = () -> new Block[] {
 			SCContent.BLOCK_CHANGE_DETECTOR.get(),
 			SCContent.CAGE_TRAP.get(),
 			SCContent.INVENTORY_SCANNER.get(),
@@ -156,7 +156,7 @@ public class ClientHandler {
 			SCContent.SENTRY_DISGUISE.get(),
 			SCContent.TROPHY_SYSTEM.get(),
 			SCContent.USERNAME_LOGGER.get()
-	});
+	};
 	//@formatter:on
 	public static final ArmPose TASER_ARM_POSE = ArmPose.create("securitycraft_taser", true, (model, entity, arm) -> {
 		ModelPart leftArm = model.leftArm;
@@ -207,7 +207,7 @@ public class ClientHandler {
 
 		Map<ResourceLocation, BakedModel> modelRegistry = event.getModels();
 
-		for (Block block : disguisableBlocks.orElse(null)) {
+		for (Block block : disguisableBlocks.get()) {
 			for (BlockState state : block.getStateDefinition().getPossibleStates()) {
 				registerDisguisedModel(modelRegistry, Utils.getRegistryName(block), state.getValues().entrySet().stream().map(StateHolder.PROPERTY_ENTRY_TO_STRING_FUNCTION).collect(Collectors.joining(",")));
 			}
@@ -374,7 +374,7 @@ public class ClientHandler {
 			}
 
 			return 0xFFFFFF;
-		}, disguisableBlocks.orElse(null));
+		}, disguisableBlocks.get());
 		event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.getValue(ReinforcedSnowyDirtBlock.SNOWY)) {
 				int grassTint = level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos) : GrassColor.get(0.5D, 1.0D);

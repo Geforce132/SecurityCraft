@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.Random;
-
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
 import net.minecraft.client.gui.screens.inventory.AbstractFurnaceScreen;
 import net.minecraft.client.gui.screens.recipebook.SmeltingRecipeBookComponent;
@@ -13,6 +12,6 @@ public class KeypadFurnaceScreen extends AbstractFurnaceScreen<KeypadFurnaceMenu
 	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/container/furnace.png");
 
 	public KeypadFurnaceScreen(KeypadFurnaceMenu menu, Inventory inv, Component title) {
-		super(menu, new SmeltingRecipeBookComponent(), inv, new Random().nextInt(100) < 5 ? Component.literal("Keypad Gurnace") : (menu.be.hasCustomName() ? menu.be.getCustomName() : title), TEXTURE);
+		super(menu, new SmeltingRecipeBookComponent(), inv, SecurityCraft.RANDOM.nextInt(100) < 5 ? Component.literal("Keypad Gurnace") : (menu.be.hasCustomName() ? menu.be.getCustomName() : title), TEXTURE);
 	}
 }

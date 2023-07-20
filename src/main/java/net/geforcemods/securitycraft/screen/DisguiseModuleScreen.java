@@ -42,9 +42,7 @@ public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModule
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-
-		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
-			guiGraphics.renderTooltip(font, getSlotUnderMouse().getItem(), mouseX, mouseY);
+		renderTooltip(guiGraphics, mouseX, mouseY);
 	}
 
 	@Override

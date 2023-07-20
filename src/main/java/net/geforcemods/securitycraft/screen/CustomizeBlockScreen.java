@@ -148,8 +148,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			}
 		}
 
-		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
-			guiGraphics.renderTooltip(font, getSlotUnderMouse().getItem(), mouseX, mouseY);
+		renderTooltip(guiGraphics, mouseX, mouseY);
 	}
 
 	@Override
