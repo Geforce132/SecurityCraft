@@ -48,7 +48,6 @@ public class SetPasscode {
 		Player player = ctx.get().getSender();
 		Level level = player.level;
 
-
 		if (level.getBlockEntity(pos) instanceof IPasscodeProtected be && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 			be.hashAndSetPasscode(passcode);
 
