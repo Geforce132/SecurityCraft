@@ -140,10 +140,8 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
 		font.draw(pose, title, (storage ? 123 : imageWidth) / 2 - font.width(title) / 2, 6, 4210752);
 
-		if (storage) {
+		if (storage)
 			font.draw(pose, playerInventoryTitle, 8, imageHeight - 94, 4210752);
-			renderTooltip(pose, mouseX - leftPos, mouseY - topPos);
-		}
 
 		if (!be.enabled && isOwner) {
 			if (!storage) {
@@ -176,6 +174,9 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	@Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		super.render(pose, mouseX, mouseY, partialTicks);
+
+		if (storage)
+			renderTooltip(pose, mouseX, mouseY);
 
 		if (!be.enabled && isOwner) {
 			for (StackHoverChecker shc : hoverCheckers) {
@@ -211,11 +212,12 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (colorChooser != null)
+		if (colorChooser != null) {
 			colorChooser.keyPressed(keyCode, scanCode, modifiers);
 
-		if (!colorChooser.rgbHexBox.isFocused())
-			return super.keyPressed(keyCode, scanCode, modifiers);
+			if (!colorChooser.rgbHexBox.isFocused())
+				return super.keyPressed(keyCode, scanCode, modifiers);
+		}
 
 		return true;
 	}

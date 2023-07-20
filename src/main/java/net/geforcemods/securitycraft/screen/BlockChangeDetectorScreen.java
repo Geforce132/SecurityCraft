@@ -153,7 +153,6 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	@Override
 	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
 		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, 6, 0x404040);
-		renderTooltip(pose, mouseX - leftPos, mouseY - topPos);
 	}
 
 	@Override
@@ -162,6 +161,8 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 		if (smartModuleHoverChecker != null && smartModuleHoverChecker.checkHover(mouseX, mouseY) && !be.isModuleEnabled(ModuleType.SMART))
 			renderComponentTooltip(pose, smartModuleHoverChecker.getLines(), mouseX, mouseY);
+
+		renderTooltip(pose, mouseX, mouseY);
 	}
 
 	@Override
@@ -218,11 +219,12 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (colorChooser != null)
+		if (colorChooser != null) {
 			colorChooser.keyPressed(keyCode, scanCode, modifiers);
 
-		if (!colorChooser.rgbHexBox.isFocused())
-			return super.keyPressed(keyCode, scanCode, modifiers);
+			if (!colorChooser.rgbHexBox.isFocused())
+				return super.keyPressed(keyCode, scanCode, modifiers);
+		}
 
 		return true;
 	}

@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class BouncingBettyBlock extends ExplosiveBlock {
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
@@ -105,7 +104,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 		bouncingBettyEntity.fuse = 15;
 		bouncingBettyEntity.setDeltaMovement(bouncingBettyEntity.getDeltaMovement().multiply(1, 0, 1).add(0, 0.5D, 0));
 		LevelUtils.addScheduledTask(level, () -> level.addFreshEntity(bouncingBettyEntity));
-		bouncingBettyEntity.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.tnt.primed")), 1.0F, 1.0F);
+		bouncingBettyEntity.playSound(SoundEvents.TNT_PRIMED, 1.0F, 1.0F);
 	}
 
 	@Override
