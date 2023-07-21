@@ -58,15 +58,12 @@ public class LinkedBlock {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof LinkedBlock)
-			return ((LinkedBlock) o).getPos().equals(blockPos);
-
-		return false;
+		return blockPos != null && o instanceof LinkedBlock && blockPos.equals(((LinkedBlock) o).getPos());
 	}
 
 	@Override
 	public int hashCode() {
-		return blockPos.hashCode();
+		return blockPos == null ? 0 : blockPos.hashCode();
 	}
 
 	@Override
