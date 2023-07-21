@@ -30,9 +30,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	@Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		super.render(pose, mouseX, mouseY, partialTicks);
-
-		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
-			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
+		renderTooltip(pose, mouseX, mouseY);
 	}
 
 	@Override

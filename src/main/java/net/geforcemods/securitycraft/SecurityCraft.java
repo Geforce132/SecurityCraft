@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
@@ -65,6 +66,7 @@ import net.minecraftforge.registries.RegistryObject;
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
+	public static final Random RANDOM = new Random();
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> getVersion(), getVersion()::equals, getVersion()::equals);
 	public static CreativeModeTab technicalTab = new SCTechnicalTab();
 	public static CreativeModeTab mineTab = new SCExplosivesTab();
