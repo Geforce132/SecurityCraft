@@ -103,12 +103,13 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 		if (world.isRemote || world.getBlockState(pos).getValue(DEACTIVATED))
 			return;
 
+		BouncingBetty bouncingBetty = new BouncingBetty(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
+
 		world.setBlockToAir(pos);
-		BouncingBetty entitytntprimed = new BouncingBetty(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
-		entitytntprimed.fuse = 15;
-		entitytntprimed.motionY = 0.5D;
-		LevelUtils.addScheduledTask(world, () -> world.spawnEntity(entitytntprimed));
-		entitytntprimed.playSound(SoundEvents.ENTITY_TNT_PRIMED, 1.0F, 1.0F);
+		bouncingBetty.fuse = 15;
+		bouncingBetty.motionY = 0.5D;
+		LevelUtils.addScheduledTask(world, () -> world.spawnEntity(bouncingBetty));
+		bouncingBetty.playSound(SoundEvents.ENTITY_TNT_PRIMED, 1.0F, 1.0F);
 	}
 
 	@Override
@@ -123,7 +124,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(DEACTIVATED, (meta == 1) == true);
+		return getDefaultState().withProperty(DEACTIVATED, meta == 1);
 	}
 
 	@Override

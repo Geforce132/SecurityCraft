@@ -25,9 +25,7 @@ public class BlockReinforcerScreen extends GuiContainer {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
-
-		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			renderToolTip(getSlotUnderMouse().getStack(), mouseX, mouseY);
+		renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	@Override

@@ -107,7 +107,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 							if (!player.isCreative())
 								stack.damageItem(1, player);
 
-							if (player.isCreative() || new Random().nextDouble() < chance)
+							if (player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance)
 								activate(world, pos, state, te.getSignalLength());
 							else
 								PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.codebreaker), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);

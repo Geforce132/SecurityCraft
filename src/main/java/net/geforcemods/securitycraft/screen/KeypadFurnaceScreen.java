@@ -1,8 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.Random;
-
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -23,7 +22,7 @@ public class KeypadFurnaceScreen extends GuiContainer {
 		super(new ContainerFurnace(inventory, te));
 		tileFurnace = te;
 
-		s = new Random().nextInt(100) < 5 ? "Keypad Gurnace" : (te.hasCustomName() ? te.getName() : Utils.localize(SCContent.keypadFurnace).getFormattedText());
+		s = SecurityCraft.RANDOM.nextInt(100) < 5 ? "Keypad Gurnace" : (te.hasCustomName() ? te.getName() : Utils.localize(SCContent.keypadFurnace).getFormattedText());
 	}
 
 	@Override

@@ -150,8 +150,7 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 			}
 		}
 
-		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			renderToolTip(getSlotUnderMouse().getStack(), mouseX, mouseY);
+		renderHoveredToolTip(mouseX, mouseY);
 
 		for (int i = 0; i < hoverCheckers.length; i++)
 			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))

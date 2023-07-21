@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.items;
 
-import java.util.Random;
-
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -39,7 +37,7 @@ public class CodebreakerItem extends Item {
 			else {
 				codebreaker.damageItem(1, player);
 
-				if (!world.isRemote && (player.isCreative() || new Random().nextDouble() < chance))
+				if (!world.isRemote && (player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance))
 					player.openGui(SecurityCraft.instance, ScreenHandler.BRIEFCASE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 				else
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:codebreaker.name"), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);

@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -712,7 +711,7 @@ public class SCEventHandler {
 				if (stackInHand.getItem() == SCContent.codebreaker)
 					stackInHand.damageItem(1, player);
 
-				if (player.isCreative() || new Random().nextDouble() < chance)
+				if (player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance)
 					codebreakable.useCodebreaker(state, player);
 				else
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.codebreaker), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
@@ -735,7 +734,7 @@ public class SCEventHandler {
 		};
 		//@formatter:on
 
-		return tips[new Random().nextInt(isOutdated() ? tips.length : tips.length - 1)];
+		return tips[SecurityCraft.RANDOM.nextInt(isOutdated() ? tips.length : tips.length - 1)];
 	}
 
 	private static boolean isOutdated() {

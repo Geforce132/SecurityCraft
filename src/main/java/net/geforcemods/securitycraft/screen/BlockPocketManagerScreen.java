@@ -77,8 +77,8 @@ public class BlockPocketManagerScreen extends GuiContainer implements ISlider, I
 
 		this.te = te;
 		playerInventory = inventory;
-		size = te.size;
-		isOwner = te.isOwnedBy(inventory.player);
+		size = te != null ? te.size : 5;
+		isOwner = te != null && te.isOwnedBy(inventory.player);
 		storage = te != null && te.isModuleEnabled(ModuleType.STORAGE) && isOwner;
 
 		if (storage)
@@ -172,15 +172,16 @@ public class BlockPocketManagerScreen extends GuiContainer implements ISlider, I
 			}
 		}
 
-		if (storage) {
+		if (storage)
 			fontRenderer.drawString(playerInventory.getDisplayName().getFormattedText(), 8, ySize - 94, 4210752);
-			renderHoveredToolTip(mouseX - guiLeft, mouseY - guiTop);
-		}
 	}
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
+
+		if (storage)
+			renderHoveredToolTip(mouseX, mouseY);
 
 		if (!te.enabled && isOwner) {
 			for (StackHoverChecker shc : hoverCheckers) {

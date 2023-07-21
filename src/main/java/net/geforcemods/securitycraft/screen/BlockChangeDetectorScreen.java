@@ -162,7 +162,6 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRenderer.drawString(title, xSize / 2 - fontRenderer.getStringWidth(title) / 2, 6, 0x404040);
-		renderHoveredToolTip(mouseX - guiLeft, mouseY - guiTop);
 	}
 
 	@Override
@@ -179,6 +178,8 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 
 		if (changeEntryList != null)
 			changeEntryList.renderLongMessageTooltips();
+
+		renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	@Override

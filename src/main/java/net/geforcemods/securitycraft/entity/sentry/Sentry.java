@@ -409,8 +409,10 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		dataManager.set(HEAD_ROTATION, (float) (MathHelper.atan2(x, -z) * (180D / Math.PI)));
 		throwableEntity.shoot(x, y + yOffset, z, 1.6F, 0.0F); //no inaccuracy for sentries!
 
-		if (shootSound == null)
-			pdb.playDispenseSound(new BlockSourceImpl(world, getPosition()));
+		if (shootSound == null) {
+			if (pdb != null)
+				pdb.playDispenseSound(new BlockSourceImpl(world, getPosition()));
+		}
 		else
 			playSound(shootSound, 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
 

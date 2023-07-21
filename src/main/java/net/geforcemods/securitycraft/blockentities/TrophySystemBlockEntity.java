@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -58,7 +57,6 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	private final Map<EntityEntry, Boolean> projectileFilter = new LinkedHashMap<>();
 	public Entity entityBeingTargeted = null;
 	public int cooldown = getCooldownTime();
-	private final Random random = new Random();
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 
@@ -208,7 +206,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 			return null;
 
 		// Return a random entity to target from the list of all possible targets
-		int target = random.nextInt(potentialTargets.size());
+		int target = SecurityCraft.RANDOM.nextInt(potentialTargets.size());
 
 		return potentialTargets.get(target);
 	}

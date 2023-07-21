@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IThreadListener;
 
 public class PasscodeUtils {
+	private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 	private static HashingThread hashingThread;
 
 	public static void startHashingThread(IThreadListener executor) {
@@ -86,10 +87,9 @@ public class PasscodeUtils {
 	}
 
 	public static byte[] generateSalt() {
-		SecureRandom random = new SecureRandom();
 		byte[] salt = new byte[16];
 
-		random.nextBytes(salt);
+		SECURE_RANDOM.nextBytes(salt);
 		return salt;
 	}
 

@@ -65,6 +65,11 @@ public class LinkedBlock {
 	}
 
 	@Override
+	public int hashCode() {
+		return blockPos.hashCode();
+	}
+
+	@Override
 	public String toString() {
 		return (blockName + " | " + blockPos.getX() + " " + blockPos.getY() + " " + blockPos.getZ());
 	}

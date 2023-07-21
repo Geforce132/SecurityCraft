@@ -67,9 +67,7 @@ public class InventoryScannerScreen extends GuiContainer {
 		fontRenderer.drawSplitString(infoStringStorage, guiLeft + 28, guiTop + 75, 150, 4210752);
 		GuiUtils.renderModuleInfo(ModuleType.REDSTONE, redstoneModuleTooltip, hasRedstoneModule, guiLeft + 8, guiTop + 45, width, height, mouseX, mouseY);
 		GuiUtils.renderModuleInfo(ModuleType.STORAGE, storageModuleTooltip, hasStorageModule, guiLeft + 8, guiTop + 75, width, height, mouseX, mouseY);
-
-		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			renderToolTip(getSlotUnderMouse().getStack(), mouseX, mouseY);
+		renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	@Override
