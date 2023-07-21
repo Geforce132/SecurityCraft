@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
@@ -106,7 +107,6 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelDataManager;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -122,7 +122,7 @@ public class ClientHandler {
 	private static Map<Block, Integer> blocksWithReinforcedTint = new HashMap<>();
 	private static Map<Block, Integer> blocksWithCustomTint = new HashMap<>();
 	//@formatter:off
-	private static LazyOptional<Block[]> disguisableBlocks = LazyOptional.of(() -> new Block[] {
+	private static Supplier<Block[]> disguisableBlocks = () -> new Block[] {
 			SCContent.BLOCK_CHANGE_DETECTOR.get(),
 			SCContent.CAGE_TRAP.get(),
 			SCContent.INVENTORY_SCANNER.get(),
@@ -140,7 +140,7 @@ public class ClientHandler {
 			SCContent.SENTRY_DISGUISE.get(),
 			SCContent.TROPHY_SYSTEM.get(),
 			SCContent.USERNAME_LOGGER.get()
-	});
+	};
 	//@formatter:on
 
 	@SubscribeEvent
@@ -170,7 +170,7 @@ public class ClientHandler {
 
 		Map<ResourceLocation, IBakedModel> modelRegistry = event.getModelRegistry();
 
-		for (Block block : disguisableBlocks.orElse(null)) {
+		for (Block block : disguisableBlocks.get()) {
 			for (BlockState state : block.getStateDefinition().getPossibleStates()) {
 				registerDisguisedModel(modelRegistry, block.getRegistryName(), state.getValues().entrySet().stream().map(StateHolder.PROPERTY_ENTRY_TO_STRING_FUNCTION).collect(Collectors.joining(",")));
 			}
@@ -270,7 +270,7 @@ public class ClientHandler {
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.SCANNER_DOOR.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.TRACK_MINE.get(), cutout);
-		Arrays.stream(disguisableBlocks.orElse(null)).forEach(block -> RenderTypeLookup.setRenderLayer(block, translucent));
+		Arrays.stream(disguisableBlocks.get()).forEach(block -> RenderTypeLookup.setRenderLayer(block, translucent));
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeBouncingBetty.get(), BouncingBettyRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeImsBomb.get(), IMSBombRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSecurityCamera.get(), EmptyRenderer::new);
@@ -379,7 +379,7 @@ public class ClientHandler {
 			}
 
 			return 0xFFFFFF;
-		}, disguisableBlocks.orElse(null));
+		}, disguisableBlocks.get());
 		event.getBlockColors().register((state, world, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.getValue(ReinforcedSnowyDirtBlock.SNOWY)) {
 				int grassTint = world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);

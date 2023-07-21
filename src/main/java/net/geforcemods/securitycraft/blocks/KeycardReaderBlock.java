@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
@@ -84,7 +85,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 							if (!player.isCreative())
 								stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-							if (player.isCreative() || new Random().nextDouble() < chance)
+							if (player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance)
 								activate(world, pos, te.getSignalLength());
 							else
 								PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);

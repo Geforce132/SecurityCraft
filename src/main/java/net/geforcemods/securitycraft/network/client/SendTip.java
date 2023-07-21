@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.network.client;
 
 import java.util.HashMap;
-import java.util.Random;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
@@ -66,7 +65,7 @@ public class SendTip {
 		};
 		//@formatter:on
 
-		return tips[new Random().nextInt(isOutdated() ? tips.length : tips.length - 1)];
+		return tips[SecurityCraft.RANDOM.nextInt(isOutdated() ? tips.length : tips.length - 1)];
 	}
 
 	private boolean isOutdated() {

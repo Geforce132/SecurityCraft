@@ -28,9 +28,7 @@ public abstract class ItemInventoryScreen<T extends Container> extends Container
 	@Override
 	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
 		super.render(pose, mouseX, mouseY, partialTicks);
-
-		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
-			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
+		renderTooltip(pose, mouseX, mouseY);
 	}
 
 	@Override

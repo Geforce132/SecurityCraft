@@ -167,8 +167,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			}
 		}
 
-		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
-			renderTooltip(matrix, getSlotUnderMouse().getItem(), mouseX, mouseY);
+		renderTooltip(matrix, mouseX, mouseY);
 
 		for (TextHoverChecker hoverChecker : hoverCheckers) {
 			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY)) {

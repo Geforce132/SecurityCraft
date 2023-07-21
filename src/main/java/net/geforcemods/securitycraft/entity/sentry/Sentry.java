@@ -401,7 +401,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 		throwableEntity.shoot(x, y + yOffset, z, 1.6F, 0.0F); //no inaccuracy for sentries!
 
 		if (shootSound == null) {
-			if (!level.isClientSide)
+			if (!level.isClientSide && pdb != null)
 				pdb.playSound(new ProxyBlockSource((ServerWorld) level, blockPosition()));
 		}
 		else

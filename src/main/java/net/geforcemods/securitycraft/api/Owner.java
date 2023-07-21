@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -173,6 +175,11 @@ public class Owner {
 	@Deprecated
 	public boolean equals(Object obj) {
 		return obj instanceof Owner && getName().equals(((Owner) obj).getName()) && getUUID().equals(((Owner) obj).getUUID());
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(ownerName).append(ownerUUID).build();
 	}
 
 	public static IDataSerializer<Owner> getSerializer() {

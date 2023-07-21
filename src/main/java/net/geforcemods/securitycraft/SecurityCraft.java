@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
@@ -65,6 +66,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
+	public static final Random RANDOM = new Random();
 	public static SimpleChannel channel;
 	public static ItemGroup groupSCTechnical = new SCTechnicalTab();
 	public static ItemGroup groupSCMine = new SCExplosivesTab();

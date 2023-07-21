@@ -15,14 +15,13 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class BouncingBettyBlock extends ExplosiveBlock {
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
@@ -99,12 +98,13 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 		if (world.getBlockState(pos).getValue(DEACTIVATED))
 			return;
 
+		BouncingBetty bouncingBetty = new BouncingBetty(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
+
 		world.destroyBlock(pos, false);
-		BouncingBetty entitytntprimed = new BouncingBetty(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
-		entitytntprimed.fuse = 15;
-		entitytntprimed.setDeltaMovement(entitytntprimed.getDeltaMovement().multiply(1, 0, 1).add(0, 0.5D, 0));
-		LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(entitytntprimed));
-		entitytntprimed.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.tnt.primed")), 1.0F, 1.0F);
+		bouncingBetty.fuse = 15;
+		bouncingBetty.setDeltaMovement(bouncingBetty.getDeltaMovement().multiply(1, 0, 1).add(0, 0.5D, 0));
+		LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(bouncingBetty));
+		bouncingBetty.playSound(SoundEvents.TNT_PRIMED, 1.0F, 1.0F);
 	}
 
 	@Override

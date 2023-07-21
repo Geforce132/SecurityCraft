@@ -33,9 +33,7 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerMenu> 
 	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrix, mouseX, mouseY, partialTicks);
-
-		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
-			renderTooltip(matrix, getSlotUnderMouse().getItem(), mouseX, mouseY);
+		renderTooltip(matrix, mouseX, mouseY);
 	}
 
 	@Override

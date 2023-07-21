@@ -142,10 +142,8 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
 		font.draw(matrix, title, (storage ? 123 : imageWidth) / 2 - font.width(title) / 2, 6, 4210752);
 
-		if (storage) {
+		if (storage)
 			font.draw(matrix, inventory.getDisplayName(), 8, imageHeight - 94, 4210752);
-			renderTooltip(matrix, mouseX - leftPos, mouseY - topPos);
-		}
 
 		if (!te.enabled && isOwner) {
 			if (!storage) {
@@ -178,6 +176,9 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrix, mouseX, mouseY, partialTicks);
+
+		if (storage)
+			renderTooltip(matrix, mouseX, mouseY);
 
 		if (!te.enabled && isOwner) {
 			if (colorChooser != null)
@@ -226,11 +227,12 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (colorChooser != null)
+		if (colorChooser != null) {
 			colorChooser.keyPressed(keyCode, scanCode, modifiers);
 
-		if (!colorChooser.rgbHexBox.isFocused())
-			return super.keyPressed(keyCode, scanCode, modifiers);
+			if (!colorChooser.rgbHexBox.isFocused())
+				return super.keyPressed(keyCode, scanCode, modifiers);
+		}
 
 		return true;
 	}

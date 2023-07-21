@@ -1,9 +1,8 @@
 package net.geforcemods.securitycraft.items;
 
-import java.util.Random;
-
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -44,7 +43,7 @@ public class CodebreakerItem extends Item {
 			else {
 				codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				if (!world.isClientSide && (player.isCreative() || new Random().nextDouble() < chance)) {
+				if (!world.isClientSide && (player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance)) {
 					ItemStack briefcase = player.getOffhandItem();
 
 					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {

@@ -71,9 +71,7 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerMenu
 		font.drawWordWrap(infoStringStorage, leftPos + 28, topPos + 75, 150, 4210752);
 		ClientUtils.renderModuleInfo(matrix, ModuleType.REDSTONE, redstoneModuleTooltip, hasRedstoneModule, leftPos + 8, topPos + 45, width, height, mouseX, mouseY);
 		ClientUtils.renderModuleInfo(matrix, ModuleType.STORAGE, storageModuleTooltip, hasStorageModule, leftPos + 8, topPos + 75, width, height, mouseX, mouseY);
-
-		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
-			renderTooltip(matrix, getSlotUnderMouse().getItem(), mouseX, mouseY);
+		renderTooltip(matrix, mouseX, mouseY);
 	}
 
 	@Override
