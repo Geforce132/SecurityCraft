@@ -87,6 +87,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 
 	public Sentry(World world) {
 		super(world);
+		preventEntitySpawning = false;
 		setSize(1.0001F, 1.0001F);
 	}
 

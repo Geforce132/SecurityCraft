@@ -364,8 +364,12 @@ public class SCEventHandler {
 		List<Sentry> sentries = world.getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(event.getPos()));
 
 		if (!sentries.isEmpty()) {
-			event.setCanceled(sentries.get(0).processInteract(event.getEntityPlayer(), event.getHand())); //cancel if an action was taken
-			event.setCancellationResult(EnumActionResult.SUCCESS);
+			Sentry sentry = sentries.get(0);
+
+			if (event.getPos().equals(sentry.getPosition())) {
+				event.setCanceled(sentry.processInteract(event.getEntityPlayer(), event.getHand())); //cancel if an action was taken
+				event.setCancellationResult(EnumActionResult.SUCCESS);
+			}
 		}
 	}
 
@@ -394,8 +398,12 @@ public class SCEventHandler {
 			List<Sentry> sentries = world.getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(event.getPos()));
 
 			if (!sentries.isEmpty()) {
-				event.setCanceled(true);
-				return;
+				Sentry sentry = sentries.get(0);
+
+				if (event.getPos().equals(sentry.getPosition())) {
+					event.setCanceled(true);
+					return;
+				}
 			}
 		}
 
