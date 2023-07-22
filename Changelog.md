@@ -4,6 +4,7 @@
 - New: The IMS can now automatically recharge itself with bouncing betties from a chest, barrel, etc. below
 - New: Simplified Chinese translation (Thanks DrIceTea!)
 - Fix: Crash when opening the customization GUI of a block that has no options (like the Projector)
+- Fix: Blocks can be pushed into a sentry using a piston
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
