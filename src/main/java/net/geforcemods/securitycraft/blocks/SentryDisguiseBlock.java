@@ -30,11 +30,6 @@ public class SentryDisguiseBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public boolean isAir(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return state.getValue(INVISIBLE);
-	}
-
-	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return state.getValue(INVISIBLE) ? EMPTY_AABB : super.getBoundingBox(state, world, pos);
 	}
