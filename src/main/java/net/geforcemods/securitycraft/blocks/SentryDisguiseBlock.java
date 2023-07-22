@@ -23,11 +23,6 @@ public class SentryDisguiseBlock extends DisguisableBlock {
 	}
 
 	@Override
-	protected boolean isAir(BlockState state) {
-		return state.getValue(INVISIBLE);
-	}
-
-	@Override
 	public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
 		return state.getValue(INVISIBLE);
 	}
