@@ -7,6 +7,7 @@
 - Fix: Reinforced Doors placed next to each other don't open properly after the chunk they're in is reloaded
 - Fix: Startup crash with some versions of SpongeForge
 - Fix: Blocks can be pushed into a sentry using a piston
+- Fix: The block at x=0, y=0, z=0 gets removed when placing a sentry
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 

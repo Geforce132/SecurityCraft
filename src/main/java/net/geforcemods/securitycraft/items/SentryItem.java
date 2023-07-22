@@ -37,10 +37,8 @@ public class SentryItem extends Item {
 			}
 		}
 
-		Entity entity = new Sentry(world, player);
+		Entity entity = new Sentry(world, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, player);
 		ItemStack stack = player.getHeldItem(hand);
-
-		entity.setPosition(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
 
 		if (stack.hasDisplayName())
 			entity.setCustomNameTag(stack.getDisplayName());

@@ -90,17 +90,18 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		setSize(1.0001F, 1.0001F);
 	}
 
-	public Sentry(World world, EntityPlayer owner) {
-		this(world, new Owner(owner.getName(), EntityPlayer.getUUID(owner.getGameProfile()).toString()));
+	public Sentry(World world, double x, double y, double z, EntityPlayer owner) {
+		this(world, x, y, z, new Owner(owner.getName(), EntityPlayer.getUUID(owner.getGameProfile()).toString()));
 	}
 
-	public Sentry(World world, Owner owner) {
+	public Sentry(World world, double x, double y, double z, Owner owner) {
 		this(world);
 		dataManager.set(OWNER, owner);
 		dataManager.set(ALLOWLIST, new NBTTagCompound());
 		dataManager.set(HAS_SPEED_MODULE, false);
 		dataManager.set(MODE, EnumSentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.set(HEAD_ROTATION, 0.0F);
+		setPosition(x, y, z);
 		getSentryDisguiseBlockEntity(); //here to set the disguise block and its owner
 	}
 
