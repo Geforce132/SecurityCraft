@@ -397,13 +397,9 @@ public class SCEventHandler {
 		if (event.getPlayer().isCreative()) {
 			List<Sentry> sentries = world.getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(event.getPos()));
 
-			if (!sentries.isEmpty()) {
-				Sentry sentry = sentries.get(0);
-
-				if (event.getPos().equals(sentry.getPosition())) {
-					event.setCanceled(true);
-					return;
-				}
+			if (!sentries.isEmpty() && event.getPos().equals(sentries.get(0).getPosition())) {
+				event.setCanceled(true);
+				return;
 			}
 		}
 
@@ -510,8 +506,7 @@ public class SCEventHandler {
 						event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
 						break;
 					}
-					else //check other axis
-					{
+					else { //check other axis
 						portalSize = new BlockPortal.Size(event.getWorld(), pos, EnumFacing.Axis.Z);
 
 						if (portalSize.isValid()) {
