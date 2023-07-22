@@ -50,8 +50,8 @@ public class SentryItem extends Item {
 
 		Sentry entity = SCContent.SENTRY_ENTITY.get().create(level);
 
-		entity.setupSentry(player);
 		entity.setPos(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
+		entity.setupSentry(player);
 
 		if (stack.hasCustomHoverName())
 			entity.setCustomName(stack.getHoverName());
