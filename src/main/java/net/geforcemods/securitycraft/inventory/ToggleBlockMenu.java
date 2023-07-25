@@ -1,43 +1,29 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
-import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class BlockChangeDetectorMenu extends AbstractContainerMenu {
-	public final BlockEntity be;
+public class ToggleBlockMenu<T extends BlockEntity> extends AbstractContainerMenu {
+	public final T be;
 	private ContainerLevelAccess containerLevelAccess;
 
-	public BlockChangeDetectorMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
-		super(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), windowId);
+	public ToggleBlockMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
+		super(SCContent.TROPHY_SYSTEM_MENU.get(), windowId);
 
 		containerLevelAccess = ContainerLevelAccess.create(level, pos);
-		be = level.getBlockEntity(pos);
+		be = (T) level.getBlockEntity(pos);
 
-		if (be instanceof IOwnable ownable && ownable.isOwnedBy(inventory.player)) {
-			addSlot(new Slot(new BlockEntityInventoryWrapper<>((BlockChangeDetectorBlockEntity) be, this), 36, 175, 44) {
-				@Override
-				public boolean mayPlace(ItemStack stack) {
-					return ((BlockChangeDetectorBlockEntity) be).isModuleEnabled(ModuleType.SMART) && stack.getItem() instanceof BlockItem;
-				}
-
-				@Override
-				public int getMaxStackSize() {
-					return 1;
-				}
-			});
-		}
+		if (be instanceof TrophySystemBlockEntity trophySystem && trophySystem.isOwnedBy(inventory.player))
+			addSlot(new Slot(trophySystem.getContainer(), 0, 175, 44));
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; ++x) {

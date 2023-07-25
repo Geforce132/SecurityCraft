@@ -14,12 +14,12 @@ import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretHangingSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
-import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
+import net.geforcemods.securitycraft.inventory.ToggleBlockMenu;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
@@ -252,6 +252,7 @@ public class ClientHandler {
 			MenuScreens.register(SCContent.PROJECTOR_MENU.get(), ProjectorScreen::new);
 			MenuScreens.register(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), BlockChangeDetectorScreen::new);
 			MenuScreens.register(SCContent.KEYCARD_HOLDER_MENU.get(), ItemInventoryScreen.KeycardHolder::new);
+			MenuScreens.register(SCContent.TROPHY_SYSTEM_MENU.get(), ToggleListScreen::new);
 			ItemProperties.register(SCContent.KEYCARD_HOLDER.get(), new ResourceLocation(SecurityCraft.MODID, "keycard_count"), (stack, level, entity, id) -> KeycardHolderItem.getCardCount(stack) / (float) KeycardHolderMenu.CONTAINER_SIZE);
 		});
 	}
@@ -419,6 +420,16 @@ public class ClientHandler {
 				return -1;
 		}, SCContent.BRIEFCASE.get());
 		event.register((stack, tintIndex) -> {
+			if (tintIndex == 0) {
+				DyeableLeatherItem item = ((DyeableLeatherItem) stack.getItem());
+
+				if (item.hasCustomColor(stack))
+					return item.getColor(stack);
+			}
+
+			return -1;
+		}, SCContent.LENS.get());
+		event.register((stack, tintIndex) -> {
 			if (tintIndex == 1) {
 				int grassTint = GrassColor.get(0.5D, 1.0D);
 
@@ -519,10 +530,6 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new KeyChangerScreen(be));
 	}
 
-	public static void displayTrophySystemScreen(TrophySystemBlockEntity be) {
-		Minecraft.getInstance().setScreen(new ToggleListScreen<>(be, be.getName(), Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles"), Utils.localize("gui.securitycraft:trophy_system.moduleRequired"), Utils.localize("gui.securitycraft:trophy_system.toggle")));
-	}
-
 	public static void displayCheckPasscodeScreen(BlockEntity be) {
 		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
@@ -540,7 +547,10 @@ public class ClientHandler {
 	}
 
 	public static void displayRiftStabilizerScreen(RiftStabilizerBlockEntity be) {
-		Minecraft.getInstance().setScreen(new ToggleListScreen<>(be, be.getName(), Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes"), Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired"), Utils.localize("gui.securitycraft:rift_stabilizer.toggle")));
+		Inventory inv = Minecraft.getInstance().player.getInventory();
+		ToggleBlockMenu<RiftStabilizerBlockEntity> menu = new ToggleBlockMenu<>(0, be.getLevel(), be.getBlockPos(), inv);
+
+		Minecraft.getInstance().setScreen(new ToggleListScreen<>(menu, inv, be, be.getName(), Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes"), Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired"), Utils.localize("gui.securitycraft:rift_stabilizer.toggle")));
 	}
 
 	public static void displayLaserScreen(LaserBlockBlockEntity be, EnumMap<Direction, Boolean> sideConfig) {

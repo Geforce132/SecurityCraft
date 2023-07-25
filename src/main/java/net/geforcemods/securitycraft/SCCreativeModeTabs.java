@@ -55,6 +55,7 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.CODEBREAKER.get()));
 				output.accept(new ItemStack(SCContent.UNIVERSAL_KEY_CHANGER.get()));
 				output.accept(new ItemStack(SCContent.RETINAL_SCANNER.get()));
+				output.accept(new ItemStack(SCContent.LENS.get()));
 				output.accept(new ItemStack(SCContent.LASER_BLOCK.get()));
 				output.accept(new ItemStack(SCContent.INVENTORY_SCANNER.get()));
 				output.accept(new ItemStack(SCContent.USERNAME_LOGGER.get()));

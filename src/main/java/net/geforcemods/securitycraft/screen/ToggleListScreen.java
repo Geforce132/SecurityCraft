@@ -15,6 +15,7 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.inventory.ToggleBlockMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
@@ -23,14 +24,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 
-public class ToggleListScreen<T> extends Screen {
+public class ToggleListScreen<T, BE extends BlockEntity & IToggleableEntries<T>> extends AbstractContainerScreen<ToggleBlockMenu<BE>> {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
 	public final Component scrollListTitle, smartModuleTooltip;
 	private final int imageWidth = 176;
@@ -40,8 +43,12 @@ public class ToggleListScreen<T> extends Screen {
 	private final boolean hasSmartModule, hasRedstoneModule;
 	private final IToggleableEntries<T> be;
 
-	public ToggleListScreen(IToggleableEntries<T> be, Component title, Component scrollListTitle, Component noSmartModule, Component smartModule) {
-		super(title);
+	public ToggleListScreen(ToggleBlockMenu<BE> menu, Inventory inventory, Component title) {
+		this(menu, inventory, menu.be, title, Component.empty(), Component.empty(), Component.empty());
+	}
+
+	public ToggleListScreen(ToggleBlockMenu<BE> menu, Inventory inventory, BE be, Component title, Component scrollListTitle, Component noSmartModule, Component smartModule) {
+		super(menu, inventory, title);
 
 		this.be = be;
 		hasSmartModule = be instanceof IModuleInventory moduleInventory && moduleInventory.isModuleEnabled(ModuleType.SMART);
@@ -203,4 +210,7 @@ public class ToggleListScreen<T> extends Screen {
 		@Override
 		public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 	}
+
+	@Override
+	protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {}
 }
