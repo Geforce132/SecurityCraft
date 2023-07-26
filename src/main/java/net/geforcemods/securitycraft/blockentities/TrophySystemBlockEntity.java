@@ -18,7 +18,7 @@ import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
-import net.geforcemods.securitycraft.inventory.ToggleBlockMenu;
+import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
@@ -213,7 +213,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 	@Override
 	public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-		return new ToggleBlockMenu<>(id, level, worldPosition, inventory);
+		return new TrophySystemMenu(id, level, worldPosition, inventory);
 	}
 
 	@Override

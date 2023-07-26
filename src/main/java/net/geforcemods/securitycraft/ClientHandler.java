@@ -19,7 +19,6 @@ import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
-import net.geforcemods.securitycraft.inventory.ToggleBlockMenu;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
@@ -68,12 +67,13 @@ import net.geforcemods.securitycraft.screen.KeypadSmokerScreen;
 import net.geforcemods.securitycraft.screen.LaserScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
+import net.geforcemods.securitycraft.screen.RiftStabilizerScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SSSItemScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasscodeScreen;
 import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
-import net.geforcemods.securitycraft.screen.ToggleListScreen;
+import net.geforcemods.securitycraft.screen.TrophySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Reinforced;
@@ -252,7 +252,7 @@ public class ClientHandler {
 			MenuScreens.register(SCContent.PROJECTOR_MENU.get(), ProjectorScreen::new);
 			MenuScreens.register(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), BlockChangeDetectorScreen::new);
 			MenuScreens.register(SCContent.KEYCARD_HOLDER_MENU.get(), ItemInventoryScreen.KeycardHolder::new);
-			MenuScreens.register(SCContent.TROPHY_SYSTEM_MENU.get(), ToggleListScreen::new);
+			MenuScreens.register(SCContent.TROPHY_SYSTEM_MENU.get(), TrophySystemScreen::new);
 			ItemProperties.register(SCContent.KEYCARD_HOLDER.get(), new ResourceLocation(SecurityCraft.MODID, "keycard_count"), (stack, level, entity, id) -> KeycardHolderItem.getCardCount(stack) / (float) KeycardHolderMenu.CONTAINER_SIZE);
 		});
 	}
@@ -547,10 +547,7 @@ public class ClientHandler {
 	}
 
 	public static void displayRiftStabilizerScreen(RiftStabilizerBlockEntity be) {
-		Inventory inv = Minecraft.getInstance().player.getInventory();
-		ToggleBlockMenu<RiftStabilizerBlockEntity> menu = new ToggleBlockMenu<>(0, be.getLevel(), be.getBlockPos(), inv);
-
-		Minecraft.getInstance().setScreen(new ToggleListScreen<>(menu, inv, be, be.getName(), Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes"), Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired"), Utils.localize("gui.securitycraft:rift_stabilizer.toggle")));
+		Minecraft.getInstance().setScreen(new RiftStabilizerScreen(be));
 	}
 
 	public static void displayLaserScreen(LaserBlockBlockEntity be, EnumMap<Direction, Boolean> sideConfig) {

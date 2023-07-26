@@ -175,7 +175,7 @@ import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.KeypadSmokerMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
-import net.geforcemods.securitycraft.inventory.ToggleBlockMenu;
+import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.items.AdminToolItem;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
@@ -2752,7 +2752,7 @@ public class SCContent {
 	public static final RegistryObject<MenuType<BlockPocketManagerMenu>> BLOCK_POCKET_MANAGER_MENU = MENU_TYPES.register("block_pocket_manager", () -> IForgeMenuType.create((windowId, inv, data) -> new BlockPocketManagerMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 	public static final RegistryObject<MenuType<BlockChangeDetectorMenu>> BLOCK_CHANGE_DETECTOR_MENU = MENU_TYPES.register("block_change_detector", () -> IForgeMenuType.create((windowId, inv, data) -> new BlockChangeDetectorMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 	public static final RegistryObject<MenuType<KeycardHolderMenu>> KEYCARD_HOLDER_MENU = MENU_TYPES.register("keycard_holder", () -> IForgeMenuType.create((windowId, inv, data) -> new KeycardHolderMenu(windowId, inv, ItemContainer.keycardHolder(PlayerUtils.getSelectedItemStack(inv, SCContent.KEYCARD_HOLDER.get())))));
-	public static final RegistryObject<MenuType<ToggleBlockMenu<TrophySystemBlockEntity>>> TROPHY_SYSTEM_MENU = MENU_TYPES.register("trophy_system", () -> IForgeMenuType.create((windowId, inv, data) -> new ToggleBlockMenu<>(windowId, inv.player.level(), data.readBlockPos(), inv)));
+	public static final RegistryObject<MenuType<TrophySystemMenu>> TROPHY_SYSTEM_MENU = MENU_TYPES.register("trophy_system", () -> IForgeMenuType.create((windowId, inv, data) -> new TrophySystemMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 
 	private static final Block.Properties prop() {
 		return prop(MapColor.STONE);

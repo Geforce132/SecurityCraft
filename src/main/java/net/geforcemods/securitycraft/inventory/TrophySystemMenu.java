@@ -10,17 +10,16 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class ToggleBlockMenu<T extends BlockEntity> extends AbstractContainerMenu {
-	public final T be;
+public class TrophySystemMenu extends AbstractContainerMenu {
+	public final TrophySystemBlockEntity be;
 	private ContainerLevelAccess containerLevelAccess;
 
-	public ToggleBlockMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
+	public TrophySystemMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
 		super(SCContent.TROPHY_SYSTEM_MENU.get(), windowId);
 
 		containerLevelAccess = ContainerLevelAccess.create(level, pos);
-		be = (T) level.getBlockEntity(pos);
+		be = (TrophySystemBlockEntity) level.getBlockEntity(pos);
 
 		if (be instanceof TrophySystemBlockEntity trophySystem && trophySystem.isOwnedBy(inventory.player))
 			addSlot(new Slot(trophySystem.getContainer(), 0, 175, 44));
