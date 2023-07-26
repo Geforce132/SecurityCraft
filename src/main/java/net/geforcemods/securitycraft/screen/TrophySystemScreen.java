@@ -14,6 +14,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 
 public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu> {
@@ -22,12 +23,12 @@ public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu
 	private boolean hasSmartModule;
 	private boolean hasRedstoneModule;
 	private TrophySystemBlockEntity be;
+	private ToggleScrollList<EntityType<?>> scrollList;
 
 	public TrophySystemScreen(TrophySystemMenu menu, Inventory playerInventory, Component title) {
 		super(menu, playerInventory, title);
 
-		imageWidth = 176;
-		imageHeight = 166;
+		imageHeight = 248;
 		this.be = menu.be;
 		hasSmartModule = be instanceof IModuleInventory moduleInventory && moduleInventory.isModuleEnabled(ModuleType.SMART);
 		hasRedstoneModule = be instanceof IModuleInventory moduleInventory && moduleInventory.isModuleEnabled(ModuleType.REDSTONE);
@@ -38,8 +39,17 @@ public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu
 	@Override
 	protected void init() {
 		super.init();
+		inventoryLabelY = imageHeight - 94;
 		titleLabelX = imageWidth / 2 - font.width(title) / 2;
-		addRenderableWidget(new ToggleScrollList<>(be, hasSmartModule, hasRedstoneModule, minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
+		scrollList = addRenderableWidget(new ToggleScrollList<>(be, hasSmartModule, hasRedstoneModule, minecraft, imageWidth - 24, 106, topPos + 40, leftPos + 12));
+	}
+
+	@Override
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+		if (scrollList != null && scrollList.mouseDragged(mouseX, mouseY, button, dragX, dragY))
+			return true;
+		else
+			return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
 	}
 
 	@Override
@@ -51,6 +61,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
+		renderTooltip(guiGraphics, mouseX, mouseY);
 		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 

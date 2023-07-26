@@ -23,6 +23,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class ToggleScrollList<T> extends ScrollPanel {
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
@@ -141,6 +142,27 @@ public class ToggleScrollList<T> extends ScrollPanel {
 			guiGraphics.blit(BEACON_GUI, left, yStart - 3, 14, 14, be.getFilter(type) ? 88 : 110, 219, 21, 22, 256, 256);
 			i++;
 		}
+	}
+
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		boolean returnValue = super.mouseClicked(mouseX, mouseY, button);
+
+		int barLeft = ObfuscationReflectionHelper.getPrivateValue(ScrollPanel.class, this, "barLeft");
+		int barWidth = ObfuscationReflectionHelper.getPrivateValue(ScrollPanel.class, this, "barWidth");
+		boolean previousScrolling = ObfuscationReflectionHelper.getPrivateValue(ScrollPanel.class, this, "scrolling");
+
+		if (previousScrolling) {
+			boolean scrolling = button == 0 && mouseX >= barLeft && mouseX < barLeft + barWidth && mouseY >= top && mouseY <= bottom;
+
+			if (scrolling != previousScrolling)
+				ObfuscationReflectionHelper.setPrivateValue(ScrollPanel.class, this, scrolling, "scrolling");
+
+			if (!isMouseOver(mouseX, mouseY) || previousScrolling && !scrolling)
+				return clickPanel(mouseX - left, mouseY - top + (int) scrollDistance - border, button);
+		}
+
+		return previousScrolling || (!previousScrolling && returnValue);
 	}
 
 	@Override

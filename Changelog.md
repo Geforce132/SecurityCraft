@@ -4,6 +4,7 @@
 - New: The IMS can now automatically recharge itself with bouncing betties from a chest, barrel, etc. below
 - New: Simplified Chinese translation (Thanks DrIceTea!)
 - Fix: Blocks can be pushed into a sentry using a piston
+- Fix: It's possible to scroll the Trophy System's list by clicking outside the list
 
 --------------------------Changelog for v1.9.7-beta1 of SecurityCraft--------------------------
 
