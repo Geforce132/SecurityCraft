@@ -1,0 +1,64 @@
+name: General Issue
+description: Report a bug or problem with SecurityCraft
+body:
+  - type: markdown
+    attributes:
+      value: "*Please use the search functionality before reporting an issue. Also take a look at the closed issues!*"
+  - type: textarea
+    attributes:
+      label: Issue description
+      description: A clear and concise description of the issue and if appropriate what the expected outcome should have been.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: If there are specific steps that need to be taken to reproduce the issue list them here.
+      placeholder: |
+        1. Start by doing...
+        2. Next do...
+        3. See result described above
+  - type: dropdown
+    id: minecraft-version
+    attributes:
+      label: Minecraft version
+      description: What version of Minecraft are you using?
+      options:
+        - 1.20.1
+        - 1.19.4
+        - 1.19.3
+        - 1.19.2
+        - 1.19
+        - 1.18.2
+        - 1.17.1
+        - 1.16.5
+        - 1.12.2
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Forge version
+      description: What version of Forge are you using?
+      placeholder: e.g. 47.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: securitycraft-version
+    attributes:
+      label: SecurityCraft version
+      description: What version of SecurityCraft are you using?
+      options:
+        - Current Dev Branch (Manually Compiled)
+        - 1.9.7.1 (Latest)
+        - 1.9.7
+        - Older
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Other relevant versions
+      description: If this issue is related to any other mods list their versions here.
+  - type: input
+    attributes:
+      label: "If a (crash)log is relevant for this issue, link it here: (It's almost always relevant)"
+      description: "Please provide a [gist](https://gist.github.com/) / [pastebin](https://pastebin.com/) / etc link here. (Make sure that it isn't set to expire!)"
