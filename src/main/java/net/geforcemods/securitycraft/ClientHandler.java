@@ -53,6 +53,7 @@ import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
 import net.geforcemods.securitycraft.screen.BriefcasePasscodeScreen;
 import net.geforcemods.securitycraft.screen.CameraMonitorScreen;
 import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
+import net.geforcemods.securitycraft.screen.ClaymoreScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
 import net.geforcemods.securitycraft.screen.EditModuleScreen;
@@ -253,6 +254,7 @@ public class ClientHandler {
 			MenuScreens.register(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), BlockChangeDetectorScreen::new);
 			MenuScreens.register(SCContent.KEYCARD_HOLDER_MENU.get(), ItemInventoryScreen.KeycardHolder::new);
 			MenuScreens.register(SCContent.TROPHY_SYSTEM_MENU.get(), TrophySystemScreen::new);
+			MenuScreens.register(SCContent.CLAYMORE_MENU.get(), ClaymoreScreen::new);
 			ItemProperties.register(SCContent.KEYCARD_HOLDER.get(), new ResourceLocation(SecurityCraft.MODID, "keycard_count"), (stack, level, entity, id) -> KeycardHolderItem.getCardCount(stack) / (float) KeycardHolderMenu.CONTAINER_SIZE);
 		});
 	}

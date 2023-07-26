@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -11,18 +11,18 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class TrophySystemMenu extends AbstractContainerMenu {
-	public final TrophySystemBlockEntity be;
+public class ClaymoreMenu extends AbstractContainerMenu {
+	public final ClaymoreBlockEntity be;
 	private ContainerLevelAccess containerLevelAccess;
 
-	public TrophySystemMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
-		super(SCContent.TROPHY_SYSTEM_MENU.get(), windowId);
+	public ClaymoreMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
+		super(SCContent.CLAYMORE_MENU.get(), windowId);
 
 		containerLevelAccess = ContainerLevelAccess.create(level, pos);
-		be = (TrophySystemBlockEntity) level.getBlockEntity(pos);
+		be = (ClaymoreBlockEntity) level.getBlockEntity(pos);
 
-		if (be instanceof TrophySystemBlockEntity trophySystem && trophySystem.isOwnedBy(inventory.player)) {
-			addSlot(new ItemRestrictedSlot(trophySystem.getContainer(), 0, 154, 6, stack -> stack.is(SCContent.LENS.get())) {
+		if (be instanceof ClaymoreBlockEntity claymore && claymore.isOwnedBy(inventory.player)) {
+			addSlot(new ItemRestrictedSlot(claymore.getContainer(), 0, 80, 20, stack -> stack.is(SCContent.LENS.get())) {
 				@Override
 				public int getMaxStackSize() {
 					return 1;
@@ -32,12 +32,12 @@ public class TrophySystemMenu extends AbstractContainerMenu {
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; ++x) {
-				addSlot(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 167 + y * 18));
+				addSlot(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18));
 			}
 		}
 
 		for (int x = 0; x < 9; x++) {
-			addSlot(new Slot(inventory, x, 8 + x * 18, 225));
+			addSlot(new Slot(inventory, x, 8 + x * 18, 142));
 		}
 	}
 

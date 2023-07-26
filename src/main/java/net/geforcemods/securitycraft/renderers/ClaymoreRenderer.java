@@ -14,6 +14,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.ItemStack;
 
 public class ClaymoreRenderer implements BlockEntityRenderer<ClaymoreBlockEntity> {
 	public ClaymoreRenderer(BlockEntityRendererProvider.Context ctx) {}
@@ -40,11 +42,21 @@ public class ClaymoreRenderer implements BlockEntityRenderer<ClaymoreBlockEntity
 		float multiplier = 0.0625F;
 		float xzStart = 9.0F * multiplier;
 		float y = 4.5F * multiplier;
+		ItemStack lens = be.getContainer().getItem(0);
+		int r = 255, g = 255, b = 255;
 
-		builder.vertex(positionMatrix, xzStart, y, xzStart).color(255, 0, 0, 255).normal(normal.getX(), normal.getY(), normal.getZ()).endVertex();
-		builder.vertex(positionMatrix, 11.0F * multiplier, y, 1.0F).color(255, 0, 0, 0).normal(normal.getX(), normal.getY(), normal.getZ()).endVertex();
-		builder.vertex(positionMatrix, 7.0F * multiplier, y, xzStart).color(255, 0, 0, 255).normal(normal.getX(), normal.getY(), normal.getZ()).endVertex();
-		builder.vertex(positionMatrix, 5.0F * multiplier, y, 1.0F).color(255, 0, 0, 0).normal(normal.getX(), normal.getY(), normal.getZ()).endVertex();
+		if (lens.getItem() instanceof DyeableLeatherItem item && item.hasCustomColor(lens)) {
+			int color = item.getColor(lens);
+
+			r = (color >> 0x10) & 0xFF;
+			g = (color >> 0x8) & 0xFF;
+			b = color & 0xFF;
+		}
+
+		builder.vertex(positionMatrix, xzStart, y, xzStart).color(r, g, b, 255).normal(normal.getX(), normal.getY(), normal.getZ()).endVertex();
+		builder.vertex(positionMatrix, 11.0F * multiplier, y, 1.0F).color(r, g, b, 0).normal(normal.getX(), normal.getY(), normal.getZ()).endVertex();
+		builder.vertex(positionMatrix, 7.0F * multiplier, y, xzStart).color(r, g, b, 255).normal(normal.getX(), normal.getY(), normal.getZ()).endVertex();
+		builder.vertex(positionMatrix, 5.0F * multiplier, y, 1.0F).color(r, g, b, 0).normal(normal.getX(), normal.getY(), normal.getZ()).endVertex();
 		pose.popPose();
 	}
 

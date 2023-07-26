@@ -164,6 +164,7 @@ import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
+import net.geforcemods.securitycraft.inventory.ClaymoreMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
@@ -2753,6 +2754,7 @@ public class SCContent {
 	public static final RegistryObject<MenuType<BlockChangeDetectorMenu>> BLOCK_CHANGE_DETECTOR_MENU = MENU_TYPES.register("block_change_detector", () -> IForgeMenuType.create((windowId, inv, data) -> new BlockChangeDetectorMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 	public static final RegistryObject<MenuType<KeycardHolderMenu>> KEYCARD_HOLDER_MENU = MENU_TYPES.register("keycard_holder", () -> IForgeMenuType.create((windowId, inv, data) -> new KeycardHolderMenu(windowId, inv, ItemContainer.keycardHolder(PlayerUtils.getSelectedItemStack(inv, SCContent.KEYCARD_HOLDER.get())))));
 	public static final RegistryObject<MenuType<TrophySystemMenu>> TROPHY_SYSTEM_MENU = MENU_TYPES.register("trophy_system", () -> IForgeMenuType.create((windowId, inv, data) -> new TrophySystemMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
+	public static final RegistryObject<MenuType<ClaymoreMenu>> CLAYMORE_MENU = MENU_TYPES.register("claymore", () -> IForgeMenuType.create((windowId, inv, data) -> new ClaymoreMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 
 	private static final Block.Properties prop() {
 		return prop(MapColor.STONE);
