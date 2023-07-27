@@ -3,6 +3,7 @@
 - New: The Sonic Security System's functionality can now be inverted (blocks are accessible by default, and locked when the correct tune is played)
 - New: The IMS can now automatically recharge itself with bouncing betties from a chest, barrel, etc. below
 - New: Simplified Chinese translation (Thanks DrIceTea!)
+- New: Lens item to be able to color laser and inventory scanner fields, as well as a couple other things
 - New: Item tag "securitycraft:reinforced/glass_panes"
 - Change: The recipe for the laser block now uses 4 glass panes in total
 - Fix: Blocks can be pushed into a sentry using a piston
