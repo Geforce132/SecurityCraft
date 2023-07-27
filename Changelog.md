@@ -4,6 +4,7 @@
 - New: The IMS can now automatically recharge itself with bouncing betties from a chest, barrel, etc. below
 - New: Simplified Chinese translation (Thanks DrIceTea!)
 - New: Item tag "securitycraft:reinforced/glass_panes"
+- Change: The recipe for the laser block now uses 4 glass panes in total
 - Fix: Blocks can be pushed into a sentry using a piston
 - Fix: It's possible to scroll the Trophy System's list by clicking outside the list
 

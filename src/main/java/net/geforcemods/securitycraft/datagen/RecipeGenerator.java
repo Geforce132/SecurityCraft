@@ -229,8 +229,8 @@ public class RecipeGenerator extends RecipeProvider {
 		.save(consumer);
 		//don't change these to reinforced, because the block reinforcer needs a laser block!!!
 		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.LASER_BLOCK.get())
-		.pattern("SSS")
-		.pattern("SRS")
+		.pattern("SGS")
+		.pattern("GRG")
 		.pattern("SGS")
 		.define('S', ItemTags.STONE_CRAFTING_MATERIALS)
 		.define('R', Tags.Items.STORAGE_BLOCKS_REDSTONE)
