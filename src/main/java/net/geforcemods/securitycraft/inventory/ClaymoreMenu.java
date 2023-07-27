@@ -21,14 +21,8 @@ public class ClaymoreMenu extends AbstractContainerMenu {
 		containerLevelAccess = ContainerLevelAccess.create(level, pos);
 		be = (ClaymoreBlockEntity) level.getBlockEntity(pos);
 
-		if (be instanceof ClaymoreBlockEntity claymore && claymore.isOwnedBy(inventory.player)) {
-			addSlot(new ItemRestrictedSlot(claymore.getContainer(), 0, 80, 20, stack -> stack.is(SCContent.LENS.get())) {
-				@Override
-				public int getMaxStackSize() {
-					return 1;
-				}
-			});
-		}
+		if (be instanceof ClaymoreBlockEntity claymore && claymore.isOwnedBy(inventory.player))
+			addSlot(new LensSlot(claymore.getContainer(), 0, 80, 20));
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; ++x) {

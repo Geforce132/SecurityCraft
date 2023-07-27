@@ -21,14 +21,8 @@ public class TrophySystemMenu extends AbstractContainerMenu {
 		containerLevelAccess = ContainerLevelAccess.create(level, pos);
 		be = (TrophySystemBlockEntity) level.getBlockEntity(pos);
 
-		if (be instanceof TrophySystemBlockEntity trophySystem && trophySystem.isOwnedBy(inventory.player)) {
-			addSlot(new ItemRestrictedSlot(trophySystem.getContainer(), 0, 154, 6, stack -> stack.is(SCContent.LENS.get())) {
-				@Override
-				public int getMaxStackSize() {
-					return 1;
-				}
-			});
-		}
+		if (be instanceof TrophySystemBlockEntity trophySystem && trophySystem.isOwnedBy(inventory.player))
+			addSlot(new LensSlot(trophySystem.getContainer(), 0, 154, 6));
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; ++x) {
