@@ -3,6 +3,7 @@
 - New: The Sonic Security System's functionality can now be inverted (blocks are accessible by default, and locked when the correct tune is played)
 - New: The IMS can now automatically recharge itself with bouncing betties from a chest, barrel, etc. below
 - New: Simplified Chinese translation (Thanks DrIceTea!)
+- New: Item tag "securitycraft:reinforced/glass_panes"
 - Fix: Blocks can be pushed into a sentry using a piston
 - Fix: It's possible to scroll the Trophy System's list by clicking outside the list
 

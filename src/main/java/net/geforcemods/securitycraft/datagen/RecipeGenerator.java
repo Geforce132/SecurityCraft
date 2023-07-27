@@ -238,6 +238,14 @@ public class RecipeGenerator extends RecipeProvider {
 		.unlockedBy("has_stone", has(ItemTags.STONE_CRAFTING_MATERIALS))
 		.save(consumer);
 		//k you can change again :)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.LENS.get(), 6)
+		.group("securitycraft:lens")
+		.pattern(" P")
+		.pattern("P ")
+		.pattern(" P")
+		.define('P', SCContent.REINFORCED_GLASS_PANE.get())
+		.unlockedBy("has_glass_pane", has(SCTags.Items.REINFORCED_GLASS_PANES))
+		.save(consumer);
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.MINE.get(), 3)
 		.pattern(" I ")
 		.pattern("IGI")
