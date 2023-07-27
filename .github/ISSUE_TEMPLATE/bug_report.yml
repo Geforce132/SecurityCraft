@@ -57,4 +57,4 @@ body:
   - type: input
     attributes:
       label: "If a (crash)log is relevant for this issue, link it here: (It's almost always relevant)"
-      description: "Please provide a [gist](https://gist.github.com/) / [pastebin](https://pastebin.com/) / etc link here. (Make sure that it isn't set to expire!)"
+      description: "Please provide a [gist](https://gist.github.com/) / [pastebin](https://pastebin.com/) / etc. link here. (Make sure that it isn't set to expire!)"
