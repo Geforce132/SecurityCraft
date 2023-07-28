@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -16,6 +15,7 @@ import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
@@ -66,7 +66,7 @@ import net.geforcemods.securitycraft.screen.KeycardReaderScreen;
 import net.geforcemods.securitycraft.screen.KeypadBlastFurnaceScreen;
 import net.geforcemods.securitycraft.screen.KeypadFurnaceScreen;
 import net.geforcemods.securitycraft.screen.KeypadSmokerScreen;
-import net.geforcemods.securitycraft.screen.LaserScreen;
+import net.geforcemods.securitycraft.screen.LaserBlockScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.geforcemods.securitycraft.screen.RiftStabilizerScreen;
@@ -95,6 +95,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -256,6 +257,7 @@ public class ClientHandler {
 			MenuScreens.register(SCContent.KEYCARD_HOLDER_MENU.get(), ItemInventoryScreen.KeycardHolder::new);
 			MenuScreens.register(SCContent.TROPHY_SYSTEM_MENU.get(), TrophySystemScreen::new);
 			MenuScreens.register(SCContent.CLAYMORE_MENU.get(), ClaymoreScreen::new);
+			MenuScreens.register(SCContent.LASER_BLOCK_MENU.get(), LaserBlockScreen::new);
 			ItemProperties.register(SCContent.KEYCARD_HOLDER.get(), KeycardHolderItem.COUNT_PROPERTY, (stack, level, entity, id) -> KeycardHolderItem.getCardCount(stack) / (float) KeycardHolderMenu.CONTAINER_SIZE);
 			ItemProperties.register(SCContent.LENS.get(), LensItem.COLOR_PROPERTY, (stack, level, entity, id) -> ((DyeableLeatherItem) stack.getItem()).hasCustomColor(stack) ? 1.0F : 0.0F);
 		});
@@ -395,6 +397,25 @@ public class ClientHandler {
 
 			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
 		}, SCContent.REINFORCED_WATER_CAULDRON.get());
+		event.register((state, level, pos, tintIndex) -> {
+			Direction direction = LaserFieldBlock.getFieldDirection(state);
+			MutableBlockPos mutablePos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
+
+			for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
+				if (level.getBlockState(mutablePos).is(SCContent.LASER_BLOCK.get())) {
+					if (level.getBlockEntity(mutablePos) instanceof LaserBlockBlockEntity be) {
+						ItemStack stack = be.getContainer().getItem(direction.getOpposite().ordinal());
+
+						if (stack.getItem() instanceof DyeableLeatherItem lens)
+							return lens.getColor(stack);
+					}
+				}
+				else
+					mutablePos.move(direction);
+			}
+
+			return -1;
+		}, SCContent.LASER_FIELD.get());
 	}
 
 	@SubscribeEvent
@@ -552,10 +573,6 @@ public class ClientHandler {
 
 	public static void displayRiftStabilizerScreen(RiftStabilizerBlockEntity be) {
 		Minecraft.getInstance().setScreen(new RiftStabilizerScreen(be));
-	}
-
-	public static void displayLaserScreen(LaserBlockBlockEntity be, EnumMap<Direction, Boolean> sideConfig) {
-		Minecraft.getInstance().setScreen(new LaserScreen(be, sideConfig));
 	}
 
 	public static void displayAlarmScreen(AlarmBlockEntity be) {

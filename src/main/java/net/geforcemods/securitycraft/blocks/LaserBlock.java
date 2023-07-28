@@ -4,11 +4,9 @@ import org.joml.Vector3f;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.client.OpenLaserScreen;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -39,7 +37,7 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.NetworkHooks;
 
 public class LaserBlock extends DisguisableBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -65,8 +63,12 @@ public class LaserBlock extends DisguisableBlock {
 			if (!level.isClientSide) {
 				if (!be.isEnabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				else
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenLaserScreen(pos, be.getSideConfig()));
+				else {
+					NetworkHooks.openScreen((ServerPlayer) player, be, buf -> {
+						buf.writeBlockPos(pos);
+						buf.writeNbt(LaserBlockBlockEntity.saveSideConfig(be.getSideConfig()));
+					});
+				}
 			}
 
 			return InteractionResult.SUCCESS;
