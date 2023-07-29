@@ -202,7 +202,7 @@ public class SCEventHandler {
 		}
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLevelLoad(WorldEvent.Load event) {
 		World world = event.getWorld();
 
