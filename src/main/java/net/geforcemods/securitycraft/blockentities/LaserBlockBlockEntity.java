@@ -98,6 +98,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		lenses = new LensContainer();
 		lenses.addListener(this);
 		lenses.fromTag(tag.getList("lenses", Tag.TAG_COMPOUND));
+		lenses.setChanged();
 	}
 
 	public static EnumMap<Direction, Boolean> loadSideConfig(CompoundTag sideConfigTag) {
@@ -409,6 +410,11 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	public class LensContainer extends SimpleContainer {
 		public LensContainer() {
 			super(6);
+		}
+
+		@Override
+		public int getMaxStackSize() {
+			return 1;
 		}
 
 		public void setItemExclusively(int index, ItemStack stack) {
