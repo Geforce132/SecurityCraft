@@ -64,6 +64,7 @@ public class ToggleScrollList<T> extends ScrollPanel {
 		return height;
 	}
 
+	//TODO: Remove this fix when updating to NeoForge
 	@Override
 	protected boolean clickPanel(double mouseX, double mouseY, int button) {
 		if (hasSmartModule) {
