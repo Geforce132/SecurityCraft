@@ -170,7 +170,7 @@ public class SCEventHandler {
 		PasscodeUtils.startHashingThread(event.getServer());
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLevelLoad(WorldEvent.Load event) {
 		if (event.getWorld() instanceof ServerLevel level && level.dimension() == Level.OVERWORLD)
 			SaltData.refreshLevel(level);
