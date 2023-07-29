@@ -105,7 +105,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		}
 
 		cooldown = tag.getInt("cooldown");
-		tag.put("lens", lens.createTag());
+		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
+		lens.setChanged();
 	}
 
 	@Override
@@ -125,9 +126,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		tag.put("Items", list);
 		tag.putInt("cooldown", cooldown);
-		lens = new LensContainer(1);
-		lens.addListener(this);
-		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
+		tag.put("lens", lens.createTag());
 	}
 
 	@Override
@@ -237,6 +236,9 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 	@Override
 	public void containerChanged(Container container) {
+		if (level == null)
+			return;
+
 		InventoryScannerBlockEntity otherScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition, getBlockState(), be -> {
 			if (be.getLevel() instanceof ClientLevel clientLevel)
 				Minecraft.getInstance().levelRenderer.blockChanged(clientLevel, be.getBlockPos(), null, null, 0);

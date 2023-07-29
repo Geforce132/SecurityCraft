@@ -27,8 +27,8 @@ public class LaserBlockMenu extends AbstractContainerMenu {
 		be = (LaserBlockBlockEntity) level.getBlockEntity(pos);
 		this.sideConfig = sideConfig;
 
-		if (be instanceof LaserBlockBlockEntity laserBlock && laserBlock.isOwnedBy(inventory.player)) {
-			SimpleContainer container = laserBlock.getContainer();
+		if (be.isOwnedBy(inventory.player)) {
+			SimpleContainer container = be.getContainer();
 
 			for (int i = 0; i < 6; i++) {
 				addSlot(new LensSlot(container, i, 15, i * 22 + 27));

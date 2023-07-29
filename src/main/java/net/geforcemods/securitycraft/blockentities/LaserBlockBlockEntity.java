@@ -66,15 +66,11 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		return map;
 	});
 	private LazyOptional<IItemHandler> insertOnlyHandler, lensHandler;
-	private LensContainer lenses = Util.make(() -> {
-		LensContainer container = new LensContainer(6);
-
-		container.addListener(LaserBlockBlockEntity.this);
-		return container;
-	});
+	private LensContainer lenses = new LensContainer(6);
 
 	public LaserBlockBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), pos, state);
+		lenses.addListener(LaserBlockBlockEntity.this);
 	}
 
 	@Override
@@ -95,8 +91,6 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	public void load(CompoundTag tag) {
 		super.load(tag);
 		sideConfig = loadSideConfig(tag.getCompound("sideConfig"));
-		lenses = new LensContainer(6);
-		lenses.addListener(this);
 		lenses.fromTag(tag.getList("lenses", Tag.TAG_COMPOUND));
 		lenses.setChanged();
 	}
