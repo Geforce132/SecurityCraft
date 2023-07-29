@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
+import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretHangingSignBlockEntity;
@@ -15,6 +16,7 @@ import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -416,6 +418,25 @@ public class ClientHandler {
 
 			return -1;
 		}, SCContent.LASER_FIELD.get());
+		event.register((state, level, pos, tintIndex) -> {
+			Direction direction = state.getValue(InventoryScannerFieldBlock.FACING);
+			MutableBlockPos mutablePos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
+
+			for (int i = 0; i < ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
+				if (level.getBlockState(mutablePos).is(SCContent.INVENTORY_SCANNER.get())) {
+					if (level.getBlockEntity(mutablePos) instanceof InventoryScannerBlockEntity be) {
+						ItemStack stack = be.getLensContainer().getItem(direction.getOpposite().ordinal());
+
+						if (stack.getItem() instanceof DyeableLeatherItem lens)
+							return lens.getColor(stack);
+					}
+				}
+				else
+					mutablePos.move(direction);
+			}
+
+			return -1;
+		}, SCContent.INVENTORY_SCANNER_FIELD.get());
 	}
 
 	@SubscribeEvent

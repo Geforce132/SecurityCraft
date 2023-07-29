@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.inventory.LaserBlockMenu;
+import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -34,7 +35,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -67,7 +67,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	});
 	private LazyOptional<IItemHandler> insertOnlyHandler, lensHandler;
 	private LensContainer lenses = Util.make(() -> {
-		LensContainer container = new LensContainer();
+		LensContainer container = new LensContainer(6);
 
 		container.addListener(LaserBlockBlockEntity.this);
 		return container;
@@ -95,7 +95,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	public void load(CompoundTag tag) {
 		super.load(tag);
 		sideConfig = loadSideConfig(tag.getCompound("sideConfig"));
-		lenses = new LensContainer();
+		lenses = new LensContainer(6);
 		lenses.addListener(this);
 		lenses.fromTag(tag.getList("lenses", Tag.TAG_COMPOUND));
 		lenses.setChanged();
@@ -405,23 +405,5 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		}
 
 		return null;
-	}
-
-	public class LensContainer extends SimpleContainer {
-		public LensContainer() {
-			super(6);
-		}
-
-		@Override
-		public int getMaxStackSize() {
-			return 1;
-		}
-
-		public void setItemExclusively(int index, ItemStack stack) {
-			items.set(index, stack);
-
-			if (!stack.isEmpty() && stack.getCount() > getMaxStackSize())
-				stack.setCount(getMaxStackSize());
-		}
 	}
 }
