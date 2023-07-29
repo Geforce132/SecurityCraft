@@ -425,7 +425,7 @@ public class ClientHandler {
 			for (int i = 0; i < ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
 				if (level.getBlockState(mutablePos).is(SCContent.INVENTORY_SCANNER.get())) {
 					if (level.getBlockEntity(mutablePos) instanceof InventoryScannerBlockEntity be) {
-						ItemStack stack = be.getLensContainer().getItem(direction.getOpposite().ordinal());
+						ItemStack stack = be.getLensContainer().getItem(0);
 
 						if (stack.getItem() instanceof DyeableLeatherItem lens)
 							return lens.getColor(stack);
