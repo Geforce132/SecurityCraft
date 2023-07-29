@@ -6,6 +6,7 @@
 - Fix: Crash when opening the customization GUI of a block that has no options (like the Projector)
 - Fix: Blocks can be pushed into a sentry using a piston
 - Fix: The block at x=0, y=0, z=0 gets removed when placing a sentry
+- Fix: Possible loss of data of passcode blocks
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
