@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.screen;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -30,8 +29,8 @@ public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu
 
 		imageHeight = 248;
 		this.be = menu.be;
-		hasSmartModule = be instanceof IModuleInventory moduleInventory && moduleInventory.isModuleEnabled(ModuleType.SMART);
-		hasRedstoneModule = be instanceof IModuleInventory moduleInventory && moduleInventory.isModuleEnabled(ModuleType.REDSTONE);
+		hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
+		hasRedstoneModule = be.isModuleEnabled(ModuleType.REDSTONE);
 		this.scrollListTitle = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
 		smartModuleTooltip = hasSmartModule ? Utils.localize("gui.securitycraft:trophy_system.toggle") : Utils.localize("gui.securitycraft:trophy_system.moduleRequired");
 	}

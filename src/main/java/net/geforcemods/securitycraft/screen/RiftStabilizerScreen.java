@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.screen;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.screen.components.ToggleScrollList;
@@ -29,8 +28,8 @@ public class RiftStabilizerScreen extends Screen {
 		super(be.getName());
 
 		this.be = be;
-		hasSmartModule = be instanceof IModuleInventory moduleInventory && moduleInventory.isModuleEnabled(ModuleType.SMART);
-		hasRedstoneModule = be instanceof IModuleInventory moduleInventory && moduleInventory.isModuleEnabled(ModuleType.REDSTONE);
+		hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
+		hasRedstoneModule = be.isModuleEnabled(ModuleType.REDSTONE);
 		this.scrollListTitle = Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes");
 		smartModuleTooltip = hasSmartModule ? Utils.localize("gui.securitycraft:rift_stabilizer.toggle") : Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired");
 	}
