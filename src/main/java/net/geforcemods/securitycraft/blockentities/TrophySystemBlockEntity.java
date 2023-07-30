@@ -167,7 +167,6 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 			}
 		}
 
-		lens = new SimpleContainer(1);
 		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
 	}
 

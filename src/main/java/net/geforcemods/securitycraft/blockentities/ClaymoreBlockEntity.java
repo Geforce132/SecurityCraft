@@ -90,7 +90,6 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 
 		readOptions(tag);
 		cooldown = tag.getInt("cooldown");
-		lens = new SimpleContainer(1);
 		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
 	}
 
