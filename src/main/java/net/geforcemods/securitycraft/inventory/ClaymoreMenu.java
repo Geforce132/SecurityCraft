@@ -22,7 +22,7 @@ public class ClaymoreMenu extends AbstractContainerMenu {
 		be = (ClaymoreBlockEntity) level.getBlockEntity(pos);
 
 		if (be instanceof ClaymoreBlockEntity claymore && claymore.isOwnedBy(inventory.player))
-			addSlot(new LensSlot(claymore.getContainer(), 0, 80, 20));
+			addSlot(new LensSlot(claymore.getLensContainer(), 0, 80, 20));
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; ++x) {

@@ -188,7 +188,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			}
 
 			if (level.getBlockEntity(modifiedPos) instanceof LaserBlockBlockEntity otherLaser) {
-				otherLaser.getContainer().setItemExclusively(direction.getOpposite().ordinal(), lenses.getItem(direction.ordinal()));
+				otherLaser.getLensContainer().setItemExclusively(direction.getOpposite().ordinal(), lenses.getItem(direction.ordinal()));
 
 				if (level instanceof ClientLevel clientLevel) {
 					LevelRenderer renderer = Minecraft.getInstance().levelRenderer;
@@ -267,7 +267,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		return super.getDisplayName();
 	}
 
-	public LensContainer getContainer() {
+	public LensContainer getLensContainer() {
 		return lenses;
 	}
 

@@ -39,7 +39,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	private IntOption range = new IntOption("range", 5, 1, 10, 1, true);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private LazyOptional<IItemHandler> insertOnlyHandler, lensHandler;
-	private SimpleContainer items = new SimpleContainer(1);
+	private SimpleContainer lens = new SimpleContainer(1);
 	private int cooldown = -1;
 
 	public ClaymoreBlockEntity(BlockPos pos, BlockState state) {
@@ -81,7 +81,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 		super.saveAdditional(tag);
 		writeOptions(tag);
 		tag.putInt("cooldown", cooldown);
-		tag.put("lens", items.createTag());
+		tag.put("lens", lens.createTag());
 	}
 
 	@Override
@@ -90,8 +90,8 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 
 		readOptions(tag);
 		cooldown = tag.getInt("cooldown");
-		items = new SimpleContainer(1);
-		items.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
+		lens = new SimpleContainer(1);
+		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
 	}
 
 	@Override
@@ -122,14 +122,14 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 
 	private LazyOptional<IItemHandler> getInsertOnlyHandler() {
 		if (insertOnlyHandler == null)
-			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(items));
+			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(lens));
 
 		return insertOnlyHandler;
 	}
 
 	private LazyOptional<IItemHandler> getNormalHandler() {
 		if (lensHandler == null)
-			lensHandler = LazyOptional.of(() -> new InvWrapper(items));
+			lensHandler = LazyOptional.of(() -> new InvWrapper(lens));
 
 		return lensHandler;
 	}
@@ -144,8 +144,8 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 		return super.getDisplayName();
 	}
 
-	public Container getContainer() {
-		return items;
+	public Container getLensContainer() {
+		return lens;
 	}
 
 	@Override

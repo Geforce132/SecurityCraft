@@ -42,7 +42,7 @@ public class ClaymoreRenderer implements BlockEntityRenderer<ClaymoreBlockEntity
 		float multiplier = 0.0625F;
 		float xzStart = 9.0F * multiplier;
 		float y = 4.5F * multiplier;
-		ItemStack lens = be.getContainer().getItem(0);
+		ItemStack lens = be.getLensContainer().getItem(0);
 		int r = 255, g = 255, b = 255;
 
 		if (lens.getItem() instanceof DyeableLeatherItem item && item.hasCustomColor(lens)) {

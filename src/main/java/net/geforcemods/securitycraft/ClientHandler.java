@@ -406,7 +406,7 @@ public class ClientHandler {
 			for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
 				if (level.getBlockState(mutablePos).is(SCContent.LASER_BLOCK.get())) {
 					if (level.getBlockEntity(mutablePos) instanceof LaserBlockBlockEntity be) {
-						ItemStack stack = be.getContainer().getItem(direction.getOpposite().ordinal());
+						ItemStack stack = be.getLensContainer().getItem(direction.getOpposite().ordinal());
 
 						if (stack.getItem() instanceof DyeableLeatherItem lens)
 							return lens.getColor(stack);

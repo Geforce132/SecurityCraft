@@ -71,7 +71,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private LazyOptional<IItemHandler> insertOnlyHandler, lensHandler;
-	private SimpleContainer items = new SimpleContainer(1);
+	private SimpleContainer lens = new SimpleContainer(1);
 
 	public TrophySystemBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get(), pos, state);
@@ -150,7 +150,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		}
 
 		tag.put("projectiles", projectilesNBT);
-		tag.put("lens", items.createTag());
+		tag.put("lens", lens.createTag());
 	}
 
 	@Override
@@ -167,8 +167,8 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 			}
 		}
 
-		items = new SimpleContainer(1);
-		items.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
+		lens = new SimpleContainer(1);
+		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
 	}
 
 	@Override
@@ -199,16 +199,20 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 	private LazyOptional<IItemHandler> getInsertOnlyHandler() {
 		if (insertOnlyHandler == null)
-			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(items));
+			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(lens));
 
 		return insertOnlyHandler;
 	}
 
 	private LazyOptional<IItemHandler> getNormalHandler() {
 		if (lensHandler == null)
-			lensHandler = LazyOptional.of(() -> new InvWrapper(items));
+			lensHandler = LazyOptional.of(() -> new InvWrapper(lens));
 
 		return lensHandler;
+	}
+
+	public SimpleContainer getLensContainer() {
+		return lens;
 	}
 
 	@Override
@@ -324,7 +328,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	}
 
 	public Container getContainer() {
-		return items;
+		return lens;
 	}
 
 	public boolean isDisabled() {

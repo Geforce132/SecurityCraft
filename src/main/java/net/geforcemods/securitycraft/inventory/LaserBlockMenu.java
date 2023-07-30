@@ -28,7 +28,7 @@ public class LaserBlockMenu extends AbstractContainerMenu {
 		this.sideConfig = sideConfig;
 
 		if (be.isOwnedBy(inventory.player)) {
-			SimpleContainer container = be.getContainer();
+			SimpleContainer container = be.getLensContainer();
 
 			for (int i = 0; i < 6; i++) {
 				addSlot(new LensSlot(container, i, 15, i * 22 + 27));

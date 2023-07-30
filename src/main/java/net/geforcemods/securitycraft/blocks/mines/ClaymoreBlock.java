@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -153,8 +154,10 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
-			if (level.getBlockEntity(pos) instanceof IModuleInventory inv)
-				inv.dropAllModules();
+			if (level.getBlockEntity(pos) instanceof ClaymoreBlockEntity be) {
+				be.dropAllModules();
+				Containers.dropContents(level, pos, be.getLensContainer());
+			}
 
 			if (!newState.hasBlockEntity())
 				level.removeBlockEntity(pos);
