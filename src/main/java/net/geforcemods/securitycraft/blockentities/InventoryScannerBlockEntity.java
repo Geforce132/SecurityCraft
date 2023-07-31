@@ -19,8 +19,6 @@ import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -240,8 +238,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			return;
 
 		InventoryScannerBlockEntity otherScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition, getBlockState(), be -> {
-			if (be.getLevel() instanceof ClientLevel clientLevel)
-				Minecraft.getInstance().levelRenderer.blockChanged(clientLevel, be.getBlockPos(), null, null, 0);
+			if (be.getLevel().isClientSide)
+				ClientHandler.updateBlockColorAroundPosition(be.getBlockPos());
 		});
 
 		if (otherScanner != null)

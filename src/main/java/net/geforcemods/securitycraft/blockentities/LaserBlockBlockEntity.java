@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILinkedAction;
@@ -24,9 +25,6 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -190,11 +188,9 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			if (level.getBlockEntity(modifiedPos) instanceof LaserBlockBlockEntity otherLaser) {
 				otherLaser.getLensContainer().setItemExclusively(direction.getOpposite().ordinal(), lenses.getItem(direction.ordinal()));
 
-				if (level instanceof ClientLevel clientLevel) {
-					LevelRenderer renderer = Minecraft.getInstance().levelRenderer;
-
+				if (level.isClientSide) {
 					for (BlockPos position : positionsToUpdate) {
-						renderer.blockChanged(clientLevel, position, null, null, 0);
+						ClientHandler.updateBlockColorAroundPosition(position);
 					}
 				}
 			}
