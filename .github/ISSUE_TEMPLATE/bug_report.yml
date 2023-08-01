@@ -45,8 +45,10 @@ body:
       label: SecurityCraft version
       description: What version of SecurityCraft are you using?
       options:
-        - 1.9.7.1 (Latest)
-        - 1.9.7
+        - v1.9.7.1
+        - v1.9.7
+        - v1.9.7-beta2
+        - v1.9.7-beta1
         - Older (you will need to join Discord.)
     validations:
       required: true
