@@ -6,6 +6,10 @@
 - Fix: Blocks can be pushed into a sentry using a piston
 - Fix: Possible loss of data of passcode blocks
 
+--------------------------Changelog for v1.9.7-beta2 of SecurityCraft--------------------------
+
+- Fix: Client crash on a server when having FTB Teams installed and looking at a block
+
 --------------------------Changelog for v1.9.7-beta1 of SecurityCraft--------------------------
 
 - New: Reinforced Blocks:*
