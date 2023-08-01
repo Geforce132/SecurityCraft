@@ -1,11 +1,13 @@
 package net.geforcemods.securitycraft.items;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
@@ -17,6 +19,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class KeycardHolderItem extends Item {
+	public static final ResourceLocation COUNT_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "keycard_count");
+
 	public KeycardHolderItem(Properties properties) {
 		super(properties);
 	}
