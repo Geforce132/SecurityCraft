@@ -52,9 +52,7 @@ public class LaserBlock extends DisguisableBlock {
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, entity, stack);
-
-		if (!level.isClientSide)
-			setLaser(level, pos, entity instanceof Player player ? player : null);
+		setLaser(level, pos, entity instanceof Player player ? player : null);
 	}
 
 	@Override
@@ -88,10 +86,14 @@ public class LaserBlock extends DisguisableBlock {
 	public void setLaser(Level level, BlockPos pos, Direction facing, Player player) {
 		LaserBlockBlockEntity thisBe = (LaserBlockBlockEntity) level.getBlockEntity(pos);
 
-		if (!thisBe.isSideEnabled(facing))
+		if (!thisBe.isEnabled() || !thisBe.isSideEnabled(facing))
 			return;
 
-		int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
+		int boundType = switch (facing) {
+			case UP, DOWN -> 1;
+			case NORTH, SOUTH -> 2;
+			case EAST, WEST -> 3;
+		};
 
 		for (int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++) {
 			BlockPos offsetPos = pos.relative(facing, i);
@@ -103,7 +105,7 @@ public class LaserBlock extends DisguisableBlock {
 			else if (offsetBlock == SCContent.LASER_BLOCK.get()) {
 				LaserBlockBlockEntity thatBe = (LaserBlockBlockEntity) level.getBlockEntity(offsetPos);
 
-				if (thisBe.getOwner().owns(thatBe) && thisBe.isEnabled() && thatBe.isEnabled()) {
+				if (thisBe.getOwner().owns(thatBe) && thatBe.isEnabled()) {
 					if (!thatBe.isSideEnabled(facing.getOpposite())) {
 						thisBe.setSideEnabled(facing, false, null);
 						return;
@@ -133,6 +135,8 @@ public class LaserBlock extends DisguisableBlock {
 								ownable.setOwner(thisBe.getOwner().getUUID(), thisBe.getOwner().getName());
 						}
 					}
+
+					thatBe.getLensContainer().setChanged();
 				}
 
 				return;
