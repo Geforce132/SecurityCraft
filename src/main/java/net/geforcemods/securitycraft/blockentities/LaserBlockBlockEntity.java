@@ -77,7 +77,10 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		tag.put("sideConfig", saveSideConfig(sideConfig));
-		tag.put("lenses", lenses.createTag());
+
+		for (int i = 0; i < lenses.getContainerSize(); i++) {
+			tag.put("lens" + i, lenses.getItem(i).save(new CompoundTag()));
+		}
 	}
 
 	public static CompoundTag saveSideConfig(Map<Direction, Boolean> sideConfig) {
@@ -91,7 +94,11 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	public void load(CompoundTag tag) {
 		super.load(tag);
 		sideConfig = loadSideConfig(tag.getCompound("sideConfig"));
-		lenses.fromTag(tag.getList("lenses", Tag.TAG_COMPOUND));
+
+		for (int i = 0; i < lenses.getContainerSize(); i++) {
+			lenses.setItemExclusively(i, ItemStack.of(tag.getCompound("lens" + i)));
+		}
+
 		lenses.setChanged();
 	}
 
@@ -194,6 +201,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 					SecurityCraft.CHANNEL.send(PacketDistributor.DIMENSION.with(() -> level.dimension()), new UpdateLaserColors(positionsToUpdate));
 			}
 		}
+
+		setChanged();
 	}
 
 	@Override

@@ -108,7 +108,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -404,12 +403,22 @@ public class ClientHandler {
 		}, SCContent.REINFORCED_WATER_CAULDRON.get());
 		event.register((state, level, pos, tintIndex) -> {
 			Direction direction = LaserFieldBlock.getFieldDirection(state);
-			int returnValue = getLaserColor(level, pos, direction);
+			MutableBlockPos mutablePos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
 
-			if (returnValue == -1)
-				return getLaserColor(level, pos, direction.getOpposite());
-			else
-				return returnValue;
+			for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
+				if (level.getBlockState(mutablePos).is(SCContent.LASER_BLOCK.get()) && level.getBlockEntity(mutablePos) instanceof LaserBlockBlockEntity be) {
+					ItemStack stack = be.getLensContainer().getItem(direction.getOpposite().ordinal());
+
+					if (stack.getItem() instanceof DyeableLeatherItem lens)
+						return lens.getColor(stack);
+
+					break;
+				}
+				else
+					mutablePos.move(direction);
+			}
+
+			return -1;
 		}, SCContent.LASER_FIELD.get());
 		event.register((state, level, pos, tintIndex) -> {
 			Direction direction = state.getValue(InventoryScannerFieldBlock.FACING);
@@ -479,25 +488,6 @@ public class ClientHandler {
 		}, SCContent.REINFORCED_GRASS_BLOCK.get());
 		blocksWithReinforcedTint = null;
 		blocksWithCustomTint = null;
-	}
-
-	private static int getLaserColor(BlockAndTintGetter level, BlockPos pos, Direction direction) {
-		MutableBlockPos mutablePos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
-
-		for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
-			if (level.getBlockState(mutablePos).is(SCContent.LASER_BLOCK.get())) {
-				if (level.getBlockEntity(mutablePos) instanceof LaserBlockBlockEntity be) {
-					ItemStack stack = be.getLensContainer().getItem(direction.getOpposite().ordinal());
-
-					if (stack.getItem() instanceof DyeableLeatherItem lens)
-						return lens.getColor(stack);
-				}
-			}
-			else
-				mutablePos.move(direction);
-		}
-
-		return -1;
 	}
 
 	private static int mixWithReinforcedTintIfEnabled(int tint1) {
