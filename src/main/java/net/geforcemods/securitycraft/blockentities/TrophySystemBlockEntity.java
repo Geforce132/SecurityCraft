@@ -31,7 +31,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
@@ -324,10 +323,6 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	@Override
 	public String getDefaultTypeName() {
 		return "gui.securitycraft:trophy_system.moddedProjectiles";
-	}
-
-	public Container getContainer() {
-		return lens;
 	}
 
 	public boolean isDisabled() {

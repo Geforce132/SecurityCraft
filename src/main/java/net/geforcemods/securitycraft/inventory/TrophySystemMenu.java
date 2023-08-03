@@ -22,7 +22,7 @@ public class TrophySystemMenu extends AbstractContainerMenu {
 		be = (TrophySystemBlockEntity) level.getBlockEntity(pos);
 
 		if (be.isOwnedBy(inventory.player))
-			addSlot(new LensSlot(be.getContainer(), 0, 154, 6));
+			addSlot(new LensSlot(be.getLensContainer(), 0, 154, 6));
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; ++x) {

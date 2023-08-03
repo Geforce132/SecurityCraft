@@ -29,7 +29,7 @@ public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlo
 		VertexConsumer builder = buffer.getBuffer(RenderType.lines());
 		Matrix4f positionMatrix = pose.last().pose();
 		BlockPos pos = be.getBlockPos();
-		ItemStack lens = be.getContainer().getItem(0);
+		ItemStack lens = be.getLensContainer().getItem(0);
 		int r = 255, g = 255, b = 255;
 
 		if (lens.getItem() instanceof DyeableLeatherItem item && item.hasCustomColor(lens)) {
