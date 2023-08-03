@@ -14,7 +14,7 @@ import net.minecraft.world.item.PotionItem;
  * shift-clicked into the ingredient slot, which is not the vanilla behavior. This mixin prevents any potion from being
  * shift-clicked into the ingredient slot, making them always end up in the potion slots
  */
-@Mixin(BrewingStandMenu.class)
+@Mixin(value = BrewingStandMenu.class, priority = 1100)
 public class BrewingStandMenuMixin {
 	@Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/Slot;mayPlace(Lnet/minecraft/world/item/ItemStack;)Z"))
 	private boolean securitycraft$preventPotionShiftClickToTopSlot(Slot ingredientSlot, ItemStack stack) {
