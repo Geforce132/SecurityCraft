@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -35,7 +34,9 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (PlayerUtils.isHoldingItem(player, SCContent.REMOTE_ACCESS_MINE, hand))
+		ItemStack heldItem = player.getItemInHand(hand);
+
+		if (heldItem.is(SCContent.REMOTE_ACCESS_MINE.get()))
 			return InteractionResult.SUCCESS;
 
 		if (isActive(level, pos) && isDefusable() && player.getItemInHand(hand).getItem() == SCContent.WIRE_CUTTERS.get() && defuseMine(level, pos)) {
@@ -46,7 +47,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 			return InteractionResult.SUCCESS;
 		}
 
-		if (!isActive(level, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand) && activateMine(level, pos)) {
+		if (!isActive(level, pos) && heldItem.is(Items.FLINT_AND_STEEL) && activateMine(level, pos)) {
 			if (!player.isCreative())
 				player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 

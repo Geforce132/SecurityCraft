@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.util;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Supplier;
 
 import com.mojang.authlib.GameProfile;
 
@@ -24,7 +23,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -125,35 +123,6 @@ public class PlayerUtils {
 				.append(Component.literal(": "))
 				.append(ForgeHooks.newChatWithLinks(link)));
 		//@formatter:on
-	}
-
-	/**
-	 * Returns true if the player is holding the given item.
-	 */
-	public static boolean isHoldingItem(Player player, Supplier<Item> item, InteractionHand hand) {
-		return isHoldingItem(player, item.get(), hand);
-	}
-
-	/**
-	 * Returns true if the player is holding the given item.
-	 *
-	 * @param player The player that is checked for the item
-	 * @param item The item that is checked
-	 * @param hand The hand in which the item should be; if hand is null, both hands are checked
-	 * @return true if the item was found in the mainhand or offhand, or if no item was found and item was null
-	 */
-	public static boolean isHoldingItem(Player player, Item item, InteractionHand hand) {
-		if (hand != InteractionHand.OFF_HAND && !player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-			if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == item)
-				return true;
-		}
-
-		if (hand != InteractionHand.MAIN_HAND && !player.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
-			if (player.getItemInHand(InteractionHand.OFF_HAND).getItem() == item)
-				return true;
-		}
-
-		return item == null;
 	}
 
 	/**
