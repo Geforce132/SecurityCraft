@@ -42,8 +42,6 @@ import net.minecraftforge.fml.ModList;
 public final class WTHITDataProvider extends WailaCompatConstants implements IWailaPlugin, IBlockComponentProvider, IEntityComponentProvider, IEventListener {
 	public static final WTHITDataProvider INSTANCE = new WTHITDataProvider();
 
-	private WTHITDataProvider() {}
-
 	@Override
 	public void register(IRegistrar registrar) {
 		registrar.addEventListener(INSTANCE);

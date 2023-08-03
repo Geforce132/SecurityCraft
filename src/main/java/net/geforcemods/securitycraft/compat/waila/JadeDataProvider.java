@@ -42,8 +42,6 @@ import snownee.jade.impl.ui.TextElement;
 public final class JadeDataProvider extends WailaCompatConstants implements IWailaPlugin {
 	public static final SecurityCraftInfo SECURITYCRAFT_INFO = new SecurityCraftInfo();
 
-	private JadeDataProvider() {}
-
 	@Override
 	public void registerClient(IWailaClientRegistration registration) {
 		registration.addConfig(SHOW_OWNER, true);
