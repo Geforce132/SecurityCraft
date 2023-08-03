@@ -39,6 +39,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -52,7 +53,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty HORIZONTAL = BooleanProperty.create("horizontal");
 
-	public InventoryScannerBlock(Block.Properties properties) {
+	public InventoryScannerBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HORIZONTAL, false).setValue(WATERLOGGED, false));
 	}
@@ -109,7 +110,11 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			horizontal = true;
 
 		Direction facing = level.getBlockState(pos).getValue(FACING);
-		int loopBoundary = facing == Direction.WEST || facing == Direction.EAST ? Math.abs(pos.getX() - connectedScanner.getBlockPos().getX()) : (facing == Direction.NORTH || facing == Direction.SOUTH ? Math.abs(pos.getZ() - connectedScanner.getBlockPos().getZ()) : 0);
+		int loopBoundary = switch (facing) {
+			case WEST, EAST -> Math.abs(pos.getX() - connectedScanner.getBlockPos().getX());
+			case NORTH, SOUTH -> Math.abs(pos.getZ() - connectedScanner.getBlockPos().getZ());
+			default -> 0;
+		};
 
 		thisBe.setHorizontal(horizontal);
 

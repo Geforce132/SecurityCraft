@@ -9,6 +9,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RedstoneTorchBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -16,7 +17,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 	public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
 
-	public ReinforcedRedstoneLampBlock(Block.Properties properties, Block vB) {
+	public ReinforcedRedstoneLampBlock(BlockBehaviour.Properties properties, Block vB) {
 		super(properties, vB);
 
 		registerDefaultState(defaultBlockState().setValue(LIT, false));

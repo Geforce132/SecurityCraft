@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -28,7 +29,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 	private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 3, 13);
 
-	public BouncingBettyBlock(Block.Properties properties) {
+	public BouncingBettyBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(DEACTIVATED, false));
 	}
@@ -39,13 +40,13 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		if (!level.getBlockState(pos.below()).isAir())
-			return;
-		else if (level.getBlockState(pos).getValue(DEACTIVATED))
-			level.destroyBlock(pos, true);
-		else
-			explode(level, pos);
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+		if (level.getBlockState(pos.below()).isAir()) {
+			if (level.getBlockState(pos).getValue(DEACTIVATED))
+				level.destroyBlock(pos, true);
+			else
+				explode(level, pos);
+		}
 	}
 
 	@Override
@@ -55,9 +56,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
-			return;
-		else if (!EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof Player player && player.isCreative()))
+		if (getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()) && !EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof Player player && player.isCreative()))
 			explode(level, pos);
 	}
 
@@ -101,7 +100,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 		BouncingBetty bouncingBettyEntity = new BouncingBetty(level, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
 
 		level.destroyBlock(pos, false);
-		bouncingBettyEntity.fuse = 15;
+		bouncingBettyEntity.setFuse(15);
 		bouncingBettyEntity.setDeltaMovement(bouncingBettyEntity.getDeltaMovement().multiply(1, 0, 1).add(0, 0.5D, 0));
 		LevelUtils.addScheduledTask(level, () -> level.addFreshEntity(bouncingBettyEntity));
 		bouncingBettyEntity.playSound(SoundEvents.TNT_PRIMED, 1.0F, 1.0F);

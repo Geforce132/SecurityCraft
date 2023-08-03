@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -36,15 +35,15 @@ public class UniversalKeyChangerItem extends Item {
 
 	@Override
 	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx) {
-		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getItemInHand(), ctx.getHand());
-	}
-
-	public InteractionResult onItemUseFirst(Player player, Level level, BlockPos pos, Direction side, ItemStack stack, InteractionHand hand) {
+		Player player = ctx.getPlayer();
+		InteractionHand hand = ctx.getHand();
 		InteractionResult briefcaseResult = handleBriefcase(player, hand).getResult();
 
 		if (briefcaseResult != InteractionResult.PASS)
 			return briefcaseResult;
 
+		Level level = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 		BlockEntity be = level.getBlockEntity(pos);
 
 		if (be instanceof DisplayCaseBlockEntity displayCase && (displayCase.isOpen() && displayCase.getDisplayedStack().isEmpty()))
@@ -52,7 +51,7 @@ public class UniversalKeyChangerItem extends Item {
 		else if (be instanceof IPasscodeProtected) {
 			if (((IOwnable) be).isOwnedBy(player) || player.isCreative()) {
 				if (!level.isClientSide)
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.UNIVERSAL_KEY_CHANGER, pos));
+					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.UNIVERSAL_KEY_CHANGER, pos));
 
 				return InteractionResult.SUCCESS;
 			}

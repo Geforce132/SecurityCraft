@@ -7,6 +7,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -17,7 +18,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class SentryDisguiseBlock extends DisguisableBlock {
 	public static final BooleanProperty INVISIBLE = BooleanProperty.create("invisible");
 
-	public SentryDisguiseBlock(Properties properties) {
+	public SentryDisguiseBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(INVISIBLE, true).setValue(WATERLOGGED, false));
 	}

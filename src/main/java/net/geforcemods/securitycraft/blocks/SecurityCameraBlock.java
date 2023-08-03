@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -49,7 +50,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 	private static final VoxelShape SHAPE = Shapes.create(new AABB(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F));
 	private static final VoxelShape SHAPE_DOWN = Shapes.or(Block.box(7, 15, 5, 9, 16, 11), Shapes.or(Block.box(6, 15, 6, 7, 16, 10), Shapes.or(Block.box(5, 15, 7, 6, 16, 9), Shapes.or(Block.box(9, 15, 6, 10, 16, 10), Shapes.or(Block.box(10, 15, 7, 11, 16, 9), Block.box(7, 14, 7, 9, 15, 9))))));
 
-	public SecurityCameraBlock(Block.Properties properties) {
+	public SecurityCameraBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(BEING_VIEWED, false));
 	}
@@ -102,22 +103,26 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return ctx.getClickedFace() != Direction.UP ? getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer()) : null;
-	}
+		Direction direction = ctx.getClickedFace();
 
-	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer) {
-		BlockState state = defaultBlockState().setValue(FACING, facing);
+		if (direction != Direction.UP) {
+			Level level = ctx.getLevel();
+			BlockPos pos = ctx.getClickedPos();
+			BlockState state = defaultBlockState().setValue(FACING, direction);
 
-		if (!canSurvive(state, level, pos)) {
-			for (Direction newFacing : Direction.Plane.HORIZONTAL) {
-				state = state.setValue(FACING, newFacing);
+			if (!canSurvive(state, level, pos)) {
+				for (Direction newFacing : Direction.Plane.HORIZONTAL) {
+					state = state.setValue(FACING, newFacing);
 
-				if (canSurvive(state, level, pos))
-					break;
+					if (canSurvive(state, level, pos))
+						break;
+				}
 			}
-		}
 
-		return state;
+			return state;
+		}
+		else
+			return null;
 	}
 
 	public void mountCamera(Level level, BlockPos pos, Player player) {
@@ -144,7 +149,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 			//can't use ServerPlayer#setCamera here because it also teleports the player
 			serverPlayer.camera = dummyEntity;
-			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SetCameraView(dummyEntity));
+			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SetCameraView(dummyEntity));
 
 			if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity cam)
 				cam.startViewing();

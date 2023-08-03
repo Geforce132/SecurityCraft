@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -64,7 +65,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	private static final VoxelShape SOUTH_COLLISION = Block.box(0, 0, 0, 16, 16, 14);
 	private static final VoxelShape WEST_COLLISION = Block.box(2, 0, 0, 16, 16, 16);
 
-	public AbstractKeypadFurnaceBlock(Block.Properties properties) {
+	protected AbstractKeypadFurnaceBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, false).setValue(LIT, false).setValue(WATERLOGGED, false));
 	}
@@ -143,7 +144,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 					if (be.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
-					activate(be, state, level, pos, player);
+					activate(be, level, pos, player);
 				}
 				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 					be.openPasscodeGUI(level, pos, player);
@@ -153,7 +154,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 		return InteractionResult.SUCCESS;
 	}
 
-	public void activate(AbstractKeypadFurnaceBlockEntity be, BlockState state, Level level, BlockPos pos, Player player) {
+	public void activate(AbstractKeypadFurnaceBlockEntity be, Level level, BlockPos pos, Player player) {
 		if (player instanceof ServerPlayer serverPlayer) {
 			level.gameEvent(player, GameEvent.CONTAINER_OPEN, pos);
 			NetworkHooks.openScreen(serverPlayer, be, pos);

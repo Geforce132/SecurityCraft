@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import java.util.Arrays;
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
@@ -42,7 +43,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -73,6 +73,8 @@ public class SCClientEventHandler {
 	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final Component REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 	private static final int USE_CHECKMARK = 88, USE_CROSS = 110;
+
+	private SCClientEventHandler() {}
 
 	@SubscribeEvent
 	public static void onRenderLevelStage(RenderLevelStageEvent event) {
@@ -108,8 +110,8 @@ public class SCClientEventHandler {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SecurityCamera camera = (SecurityCamera) Minecraft.getInstance().cameraEntity;
 
-			if (camera.screenshotSoundCooldown == 0) {
-				camera.screenshotSoundCooldown = 7;
+			if (camera.getScreenshotSoundCooldown() == 0) {
+				camera.setScreenshotSoundCooldown(7);
 				Minecraft.getInstance().level.playLocalSound(player.blockPosition(), SCSounds.CAMERASNAP.event, SoundSource.BLOCKS, 1.0F, 1.0F, true);
 			}
 		}
@@ -241,8 +243,16 @@ public class SCClientEventHandler {
 			}
 
 			if (uCoord != 0) {
+				int hotbarPositionOffset = switch (hand) {
+					case MAIN_HAND -> player.getInventory().selected * 20;
+					case OFF_HAND -> switch (mc.options.mainHand().get()) {
+						case LEFT -> 189;
+						case RIGHT -> -29;
+					};
+				};
+
 				RenderSystem.disableDepthTest();
-				guiGraphics.blit(BEACON_GUI, mc.getWindow().getGuiScaledWidth() / 2 - 90 + (hand == InteractionHand.MAIN_HAND ? player.getInventory().selected * 20 : (mc.options.mainHand().get() == HumanoidArm.LEFT ? 189 : -29)), mc.getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
+				guiGraphics.blit(BEACON_GUI, mc.getWindow().getGuiScaledWidth() / 2 - 90 + hotbarPositionOffset, mc.getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
 			}
 		}
 	}
@@ -251,7 +261,7 @@ public class SCClientEventHandler {
 		return getUCoord(level, player, stackInHand, isValidHitResult, tagSize, getCoords, true, null);
 	}
 
-	private static int getUCoord(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords, boolean loop, BiFunction<CompoundTag, BlockPos, Boolean> useCheckmark) {
+	private static int getUCoord(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords, boolean loop, BiPredicate<CompoundTag, BlockPos> useCheckmark) {
 		double reachDistance = player.getBlockReach();
 		double eyeHeight = player.getEyeHeight();
 		Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
@@ -261,7 +271,7 @@ public class SCClientEventHandler {
 			if (loop)
 				return loop(tagSize, getCoords, stackInHand.getOrCreateTag(), hitResult.getBlockPos());
 			else
-				return useCheckmark.apply(stackInHand.getOrCreateTag(), hitResult.getBlockPos()) ? USE_CHECKMARK : USE_CROSS;
+				return useCheckmark.test(stackInHand.getOrCreateTag(), hitResult.getBlockPos()) ? USE_CHECKMARK : USE_CROSS;
 		}
 
 		return 0;
@@ -278,7 +288,7 @@ public class SCClientEventHandler {
 		return USE_CROSS;
 	}
 
-	private static enum BCDBuffer implements MultiBufferSource {
+	private enum BCDBuffer implements MultiBufferSource {
 		INSTANCE;
 
 		private final RenderType overlayLines = new OverlayLines(RenderType.lines());

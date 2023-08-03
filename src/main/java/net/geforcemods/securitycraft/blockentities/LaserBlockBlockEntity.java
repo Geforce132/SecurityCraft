@@ -56,7 +56,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		}
 	};
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
-	private EnumMap<Direction, Boolean> sideConfig = Util.make(() -> {
+	private Map<Direction, Boolean> sideConfig = Util.make(() -> {
 		EnumMap<Direction, Boolean> map = new EnumMap<>(Direction.class);
 
 		for (Direction dir : Direction.values()) {
@@ -80,7 +80,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		tag.put("lenses", lenses.createTag());
 	}
 
-	public static CompoundTag saveSideConfig(EnumMap<Direction, Boolean> sideConfig) {
+	public static CompoundTag saveSideConfig(Map<Direction, Boolean> sideConfig) {
 		CompoundTag sideConfigTag = new CompoundTag();
 
 		sideConfig.forEach((dir, enabled) -> sideConfigTag.putBoolean(dir.getName(), enabled));
@@ -95,7 +95,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		lenses.setChanged();
 	}
 
-	public static EnumMap<Direction, Boolean> loadSideConfig(CompoundTag sideConfigTag) {
+	public static Map<Direction, Boolean> loadSideConfig(CompoundTag sideConfigTag) {
 		EnumMap<Direction, Boolean> sideConfig = new EnumMap<>(Direction.class);
 
 		for (Direction dir : Direction.values()) {
@@ -109,7 +109,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	}
 
 	@Override
-	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {
+	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
 		if (action instanceof ILinkedAction.OptionChanged<?> optionChanged) {
 			Option<?> option = optionChanged.option();
 
@@ -191,7 +191,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 				otherLaser.getLensContainer().setItemExclusively(direction.getOpposite().ordinal(), lenses.getItem(direction.ordinal()));
 
 				if (!level.isClientSide)
-					SecurityCraft.channel.send(PacketDistributor.DIMENSION.with(() -> level.dimension()), new UpdateLaserColors(positionsToUpdate));
+					SecurityCraft.CHANNEL.send(PacketDistributor.DIMENSION.with(() -> level.dimension()), new UpdateLaserColors(positionsToUpdate));
 			}
 		}
 	}
@@ -215,7 +215,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == ForgeCapabilities.ITEM_HANDLER)
-			return BlockUtils.getProtectedCapability(side, this, () -> getNormalHandler(), () -> getInsertOnlyHandler()).cast();
+			return BlockUtils.getProtectedCapability(side, this, this::getNormalHandler, this::getInsertOnlyHandler).cast();
 		else
 			return super.getCapability(cap, side);
 	}
@@ -299,7 +299,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		return ignoreOwner.get();
 	}
 
-	public void applyNewSideConfig(EnumMap<Direction, Boolean> sideConfig, Player player) {
+	public void applyNewSideConfig(Map<Direction, Boolean> sideConfig, Player player) {
 		sideConfig.forEach((direction, enabled) -> setSideEnabled(direction, enabled, player));
 	}
 
@@ -333,15 +333,17 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		if (enabled && getBlockState().getBlock() instanceof LaserBlock block)
 			block.setLaser(level, pos, direction, player);
 		else if (!enabled) {
-			int boundType = direction == Direction.UP || direction == Direction.DOWN ? 1 : (direction == Direction.NORTH || direction == Direction.SOUTH ? 2 : 3);
+			int boundType = switch (direction) {
+				case UP, DOWN -> 1;
+				case NORTH, SOUTH -> 2;
+				case EAST, WEST -> 3;
+			};
 
-			BlockUtils.removeInSequence((directionToCheck, stateToCheck) -> {
-				return stateToCheck.getBlock() == SCContent.LASER_FIELD.get() && stateToCheck.getValue(LaserFieldBlock.BOUNDTYPE) == boundType;
-			}, level, worldPosition, direction);
+			BlockUtils.removeInSequence((directionToCheck, stateToCheck) -> stateToCheck.is(SCContent.LASER_FIELD.get()) && stateToCheck.getValue(LaserFieldBlock.BOUNDTYPE) == boundType, level, worldPosition, direction);
 		}
 	}
 
-	public EnumMap<Direction, Boolean> getSideConfig() {
+	public Map<Direction, Boolean> getSideConfig() {
 		return sideConfig;
 	}
 

@@ -14,6 +14,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class LevelUtils {
+	private LevelUtils() {}
+
 	/**
 	 * Correctly schedules a task for execution on the main thread depending on if the provided level is client- or serverside
 	 */

@@ -83,6 +83,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class RegistrationHandler {
+	private RegistrationHandler() {}
+
 	@SubscribeEvent
 	public static void onRegister(RegisterEvent event) {
 		event.register(Keys.ITEMS, helper -> {
@@ -184,7 +186,7 @@ public class RegistrationHandler {
 	}
 
 	private static <MSG> void registerPacket(int id, Class<MSG> type, BiConsumer<MSG, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> messageHandler) {
-		SecurityCraft.channel.messageBuilder(type, id).encoder(encoder).decoder(decoder).consumerMainThread(messageHandler).add();
+		SecurityCraft.CHANNEL.messageBuilder(type, id).encoder(encoder).decoder(decoder).consumerMainThread(messageHandler).add();
 	}
 
 	@SubscribeEvent

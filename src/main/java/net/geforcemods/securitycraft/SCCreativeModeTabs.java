@@ -270,4 +270,6 @@ public class SCCreativeModeTabs {
 	private static List<Item> getCreativeTabItems(ResourceKey<CreativeModeTab> tabKey) {
 		return BuiltInRegistries.CREATIVE_MODE_TAB.get(tabKey).getDisplayItems().stream().map(ItemStack::getItem).toList();
 	}
+
+	private SCCreativeModeTabs() {}
 }

@@ -39,8 +39,10 @@ import snownee.jade.impl.Tooltip;
 import snownee.jade.impl.ui.TextElement;
 
 @WailaPlugin(SecurityCraft.MODID)
-public class JadeDataProvider extends WailaCompatConstants implements IWailaPlugin {
+public final class JadeDataProvider extends WailaCompatConstants implements IWailaPlugin {
 	public static final SecurityCraftInfo SECURITYCRAFT_INFO = new SecurityCraftInfo();
+
+	private JadeDataProvider() {}
 
 	@Override
 	public void registerClient(IWailaClientRegistration registration) {
@@ -127,19 +129,17 @@ public class JadeDataProvider extends WailaCompatConstants implements IWailaPlug
 				if (config.get(SHOW_OWNER))
 					tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())));
 
-				if (config.get(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer())) {
-					if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
-						tooltip.add(EQUIPPED);
+				if (config.get(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer()) && (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())) {
+					tooltip.add(EQUIPPED);
 
-						if (!sentry.getAllowlistModule().isEmpty())
-							tooltip.add(ALLOWLIST_MODULE);
+					if (!sentry.getAllowlistModule().isEmpty())
+						tooltip.add(ALLOWLIST_MODULE);
 
-						if (!sentry.getDisguiseModule().isEmpty())
-							tooltip.add(DISGUISE_MODULE);
+					if (!sentry.getDisguiseModule().isEmpty())
+						tooltip.add(DISGUISE_MODULE);
 
-						if (sentry.hasSpeedModule())
-							tooltip.add(SPEED_MODULE);
-					}
+					if (sentry.hasSpeedModule())
+						tooltip.add(SPEED_MODULE);
 				}
 
 				MutableComponent modeDescription = Utils.localize(mode.getModeKey());

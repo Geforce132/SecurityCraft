@@ -88,6 +88,10 @@ public class OpenScreen {
 			case UNIVERSAL_KEY_CHANGER:
 				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof IPasscodeProtected passcodeProtected)
 					ClientHandler.displayUniversalKeyChangerScreen((BlockEntity) passcodeProtected);
+
+				break;
+			default:
+				throw new IllegalStateException("Unhandled data type: " + dataType.name());
 		}
 	}
 

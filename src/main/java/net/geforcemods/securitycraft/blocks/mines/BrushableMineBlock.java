@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BrushableBlock;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -25,7 +26,7 @@ public class BrushableMineBlock extends FallingBlockMineBlock implements IBlockM
 	public static final IntegerProperty DUSTED = BlockStateProperties.DUSTED;
 	public static final BooleanProperty SAFE = BooleanProperty.create("safe");
 
-	public BrushableMineBlock(Properties properties, Block disguisedBlock) {
+	public BrushableMineBlock(BlockBehaviour.Properties properties, Block disguisedBlock) {
 		super(properties, disguisedBlock);
 		registerDefaultState(stateDefinition.any().setValue(DUSTED, 0).setValue(SAFE, false));
 	}

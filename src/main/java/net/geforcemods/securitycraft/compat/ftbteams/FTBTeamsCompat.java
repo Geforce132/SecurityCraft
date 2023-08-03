@@ -12,6 +12,8 @@ import dev.ftb.mods.ftbteams.api.property.TeamProperties;
 import net.geforcemods.securitycraft.api.Owner;
 
 public class FTBTeamsCompat {
+	private FTBTeamsCompat() {}
+
 	public static boolean areOnSameTeam(Owner owner1, Owner owner2) {
 		try {
 			API api = FTBTeamsAPI.api();

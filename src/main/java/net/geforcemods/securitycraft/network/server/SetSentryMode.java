@@ -11,8 +11,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkEvent;
 
 public class SetSentryMode {
-	public BlockPos pos;
-	public int mode;
+	private BlockPos pos;
+	private int mode;
 
 	public SetSentryMode() {}
 

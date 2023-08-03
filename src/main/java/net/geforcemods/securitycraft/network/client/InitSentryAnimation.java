@@ -12,7 +12,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 public class InitSentryAnimation {
 	private BlockPos pos;
-	public boolean animate, animateUpwards, isShutDown;
+	private boolean animate, animateUpwards, isShutDown;
 
 	public InitSentryAnimation() {}
 
@@ -44,8 +44,8 @@ public class InitSentryAnimation {
 			Sentry sentry = sentries.get(0);
 
 			sentry.setShutDown(isShutDown);
-			sentry.animateUpwards = animateUpwards;
-			sentry.animate = animate;
+			sentry.setAnimateUpwards(animateUpwards);
+			sentry.setAnimate(animate);
 		}
 	}
 }

@@ -43,18 +43,18 @@ public class KeyChangerScreen extends Screen {
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
 
-		addRenderableWidget(confirmButton = new Button(width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::confirmButtonClicked, Button.DEFAULT_NARRATION));
+		confirmButton = addRenderableWidget(new Button(width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::confirmButtonClicked, Button.DEFAULT_NARRATION));
 		confirmButton.active = false;
 
-		addRenderableWidget(textboxNewPasscode = new EditBox(font, width / 2 - 57, height / 2 - 47, 110, 12, Component.empty()));
+		textboxNewPasscode = addRenderableWidget(new EditBox(font, width / 2 - 57, height / 2 - 47, 110, 12, Component.empty()));
 		textboxNewPasscode.setMaxLength(20);
 		setInitialFocus(textboxNewPasscode);
-		textboxNewPasscode.setFilter(s -> s.matches("[0-9]*"));
+		textboxNewPasscode.setFilter(s -> s.matches("\\d*"));
 		textboxNewPasscode.setResponder(s -> updateConfirmButtonState());
 
-		addRenderableWidget(textboxConfirmPasscode = new EditBox(font, width / 2 - 57, height / 2 - 7, 110, 12, Component.empty()));
+		textboxConfirmPasscode = addRenderableWidget(new EditBox(font, width / 2 - 57, height / 2 - 7, 110, 12, Component.empty()));
 		textboxConfirmPasscode.setMaxLength(20);
-		textboxConfirmPasscode.setFilter(s -> s.matches("[0-9]*"));
+		textboxConfirmPasscode.setFilter(s -> s.matches("\\d*"));
 		textboxConfirmPasscode.setResponder(s -> updateConfirmButtonState());
 	}
 
@@ -85,13 +85,13 @@ public class KeyChangerScreen extends Screen {
 
 	private void updateConfirmButtonState() {
 		String newPasscode = textboxNewPasscode.getValue();
-		String confirmPasscode = textboxConfirmPasscode.getValue();
+		String passcodeConfirmation = textboxConfirmPasscode.getValue();
 
-		confirmButton.active = confirmPasscode != null && newPasscode != null && !confirmPasscode.isEmpty() && !newPasscode.isEmpty() && newPasscode.equals(confirmPasscode);
+		confirmButton.active = passcodeConfirmation != null && newPasscode != null && !passcodeConfirmation.isEmpty() && !newPasscode.isEmpty() && newPasscode.equals(passcodeConfirmation);
 	}
 
 	private void confirmButtonClicked(Button button) {
-		SecurityCraft.channel.sendToServer(new SetPasscode(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ(), textboxNewPasscode.getValue()));
+		SecurityCraft.CHANNEL.sendToServer(new SetPasscode(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ(), textboxNewPasscode.getValue()));
 		Minecraft.getInstance().player.closeContainer();
 		PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), ChatFormatting.GREEN, true);
 	}

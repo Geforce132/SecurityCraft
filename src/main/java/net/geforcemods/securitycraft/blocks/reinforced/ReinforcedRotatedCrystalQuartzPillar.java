@@ -12,10 +12,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ReinforcedRotatedCrystalQuartzPillar extends ReinforcedRotatedPillarBlock implements IBlockPocket {
-	public ReinforcedRotatedCrystalQuartzPillar(Block.Properties properties, Supplier<Block> vB) {
+	public ReinforcedRotatedCrystalQuartzPillar(BlockBehaviour.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
 	}
 

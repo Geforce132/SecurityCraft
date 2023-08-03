@@ -41,10 +41,8 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @param player The player who the GUI should be opened to.
 	 */
 	public default void openPasscodeGUI(Level level, BlockPos pos, Player player) {
-		if (!level.isClientSide) {
-			if (getPasscode() != null)
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.CHECK_PASSCODE, pos));
-		}
+		if (!level.isClientSide && getPasscode() != null)
+			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.CHECK_PASSCODE, pos));
 	}
 
 	/**
@@ -62,7 +60,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 				return true;
 
 			if (ownable.isOwnedBy(player))
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SET_PASSCODE, pos));
+				SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SET_PASSCODE, pos));
 			else
 				PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.notSetUp"), ChatFormatting.DARK_RED);
 		}
@@ -214,10 +212,8 @@ public interface IPasscodeProtected extends ICodebreakable {
 			if (moduleInv.isModuleEnabled(ModuleType.SMART))
 				startCooldown();
 
-			if (moduleInv.isModuleEnabled(ModuleType.HARMING)) {
-				if (player.hurt(CustomDamageSources.incorrectPasscode(player.level().registryAccess()), ConfigHandler.SERVER.incorrectPasscodeDamage.get()))
-					player.closeContainer();
-			}
+			if (moduleInv.isModuleEnabled(ModuleType.HARMING) && player.hurt(CustomDamageSources.incorrectPasscode(player.level().registryAccess()), ConfigHandler.SERVER.incorrectPasscodeDamage.get()))
+				player.closeContainer();
 		}
 	}
 }

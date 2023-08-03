@@ -9,11 +9,12 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 
 public class ReinforcedLavaCauldronBlock extends ReinforcedCauldronBlock {
-	public ReinforcedLavaCauldronBlock(Properties properties) {
+	public ReinforcedLavaCauldronBlock(BlockBehaviour.Properties properties) {
 		super(properties, IReinforcedCauldronInteraction.LAVA);
 	}
 
