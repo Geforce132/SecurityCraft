@@ -6,6 +6,7 @@
 - Fix: Blocks can be pushed into a sentry using a piston
 - Fix: The block at x=0, y=0, z=0 gets removed when placing a sentry
 - Fix: Possible loss of data of passcode blocks
+- Fix: Startup crash when Dave's Potioneering is installed
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
