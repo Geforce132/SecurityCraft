@@ -215,7 +215,9 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-		if (PlayerUtils.isPlayerMountedOnCamera(event.getEntity())) {
+		Player player = event.getEntity();
+
+		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			event.setCanceled(true);
 			return;
 		}
@@ -225,11 +227,11 @@ public class SCEventHandler {
 		BlockState state = level.getBlockState(event.getPos());
 		Block block = state.getBlock();
 
-		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, event.getPos(), event.getEntity()) && !event.getEntity().isShiftKeyDown()) {
+		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, event.getPos(), player) && !player.isShiftKeyDown()) {
 			if (event.getHand() == InteractionHand.MAIN_HAND) {
 				MutableComponent blockName = Utils.localize(block.getDescriptionId());
 
-				PlayerUtils.sendMessageToPlayer(event.getEntity(), blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
+				PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
 			}
 
 			event.setCanceled(true);
@@ -240,12 +242,12 @@ public class SCEventHandler {
 			Owner owner = ownable.getOwner();
 
 			if (!owner.isValidated()) {
-				if (ownable.isOwnedBy(event.getEntity())) {
+				if (ownable.isOwnedBy(player)) {
 					owner.setValidated(true);
-					PlayerUtils.sendMessageToPlayer(event.getEntity(), Utils.localize(block.getDescriptionId()), Component.translatable("messages.securitycraft:ownable.validate"), ChatFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(block.getDescriptionId()), Component.translatable("messages.securitycraft:ownable.validate"), ChatFormatting.GREEN);
 				}
 				else
-					PlayerUtils.sendMessageToPlayer(event.getEntity(), Utils.localize(block.getDescriptionId()), Component.translatable("messages.securitycraft:ownable.ownerNotValidated"), ChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(block.getDescriptionId()), Component.translatable("messages.securitycraft:ownable.ownerNotValidated"), ChatFormatting.RED);
 
 				event.setCanceled(true);
 				event.setCancellationResult(InteractionResult.SUCCESS);
@@ -254,19 +256,21 @@ public class SCEventHandler {
 		}
 
 		if (!level.isClientSide) {
-			if (event.getItemStack().getItem() == Items.REDSTONE && be instanceof IEMPAffected empAffected && empAffected.isShutDown()) {
+			if (event.getItemStack().is(Items.REDSTONE) && be instanceof IEMPAffected empAffected && empAffected.isShutDown()) {
 				empAffected.reactivate();
 
-				if (!event.getEntity().isCreative())
+				if (!player.isCreative())
 					event.getItemStack().shrink(1);
 
-				event.getEntity().swing(event.getHand());
+				player.swing(event.getHand());
 				event.setCanceled(true);
 				event.setCancellationResult(InteractionResult.SUCCESS);
 				return;
 			}
 
-			if (PlayerUtils.isHoldingItem(event.getEntity(), SCContent.KEY_PANEL, event.getHand())) {
+			ItemStack heldItem = player.getItemInHand(event.getHand());
+
+			if (heldItem.is(SCContent.KEY_PANEL.get())) {
 				for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
 					if (pc.isValidStateForConversion(state)) {
 						event.setUseBlock(Result.DENY);
@@ -277,13 +281,13 @@ public class SCEventHandler {
 				return;
 			}
 
-			if (PlayerUtils.isHoldingItem(event.getEntity(), SCContent.CODEBREAKER, event.getHand()) && handleCodebreaking(event)) {
+			if (heldItem.is(SCContent.CODEBREAKER.get()) && handleCodebreaking(event)) {
 				event.setCanceled(true);
 				return;
 			}
 		}
 
-		if (block instanceof DisplayCaseBlock && event.getEntity().isShiftKeyDown() && event.getEntity().getMainHandItem().isEmpty() && !event.getEntity().getOffhandItem().isEmpty()) {
+		if (block instanceof DisplayCaseBlock && player.isShiftKeyDown() && player.getMainHandItem().isEmpty() && !player.getOffhandItem().isEmpty()) {
 			event.setUseBlock(Result.ALLOW);
 			event.setUseItem(Result.DENY);
 			return;
@@ -294,7 +298,7 @@ public class SCEventHandler {
 		List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(event.getPos()));
 
 		if (!sentries.isEmpty())
-			event.setCanceled(sentries.get(0).mobInteract(event.getEntity(), event.getHand()) == InteractionResult.SUCCESS); //cancel if an action was taken
+			event.setCanceled(sentries.get(0).mobInteract(player, event.getHand()) == InteractionResult.SUCCESS); //cancel if an action was taken
 	}
 
 	@SubscribeEvent
