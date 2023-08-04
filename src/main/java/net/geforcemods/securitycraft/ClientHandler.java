@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -9,19 +8,22 @@ import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
+import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretHangingSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
-import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
+import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
+import net.geforcemods.securitycraft.items.LensItem;
 import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.BulletModel;
@@ -54,6 +56,7 @@ import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
 import net.geforcemods.securitycraft.screen.BriefcasePasscodeScreen;
 import net.geforcemods.securitycraft.screen.CameraMonitorScreen;
 import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
+import net.geforcemods.securitycraft.screen.ClaymoreScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
 import net.geforcemods.securitycraft.screen.EditModuleScreen;
@@ -65,15 +68,16 @@ import net.geforcemods.securitycraft.screen.KeycardReaderScreen;
 import net.geforcemods.securitycraft.screen.KeypadBlastFurnaceScreen;
 import net.geforcemods.securitycraft.screen.KeypadFurnaceScreen;
 import net.geforcemods.securitycraft.screen.KeypadSmokerScreen;
-import net.geforcemods.securitycraft.screen.LaserScreen;
+import net.geforcemods.securitycraft.screen.LaserBlockScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
+import net.geforcemods.securitycraft.screen.RiftStabilizerScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SSSItemScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasscodeScreen;
 import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
-import net.geforcemods.securitycraft.screen.ToggleListScreen;
+import net.geforcemods.securitycraft.screen.TrophySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Reinforced;
@@ -93,6 +97,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -250,7 +255,11 @@ public class ClientHandler {
 			MenuScreens.register(SCContent.PROJECTOR_MENU.get(), ProjectorScreen::new);
 			MenuScreens.register(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), BlockChangeDetectorScreen::new);
 			MenuScreens.register(SCContent.KEYCARD_HOLDER_MENU.get(), ItemInventoryScreen.KeycardHolder::new);
-			ItemProperties.register(SCContent.KEYCARD_HOLDER.get(), new ResourceLocation(SecurityCraft.MODID, "keycard_count"), (stack, level, entity, id) -> KeycardHolderItem.getCardCount(stack) / (float) KeycardHolderMenu.CONTAINER_SIZE);
+			MenuScreens.register(SCContent.TROPHY_SYSTEM_MENU.get(), TrophySystemScreen::new);
+			MenuScreens.register(SCContent.CLAYMORE_MENU.get(), ClaymoreScreen::new);
+			MenuScreens.register(SCContent.LASER_BLOCK_MENU.get(), LaserBlockScreen::new);
+			ItemProperties.register(SCContent.KEYCARD_HOLDER.get(), KeycardHolderItem.COUNT_PROPERTY, (stack, level, entity, id) -> KeycardHolderItem.getCardCount(stack) / (float) KeycardHolderMenu.CONTAINER_SIZE);
+			ItemProperties.register(SCContent.LENS.get(), LensItem.COLOR_PROPERTY, (stack, level, entity, id) -> ((DyeableLeatherItem) stack.getItem()).hasCustomColor(stack) ? 1.0F : 0.0F);
 		});
 	}
 
@@ -388,6 +397,44 @@ public class ClientHandler {
 
 			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
 		}, SCContent.REINFORCED_WATER_CAULDRON.get());
+		event.register((state, level, pos, tintIndex) -> {
+			Direction direction = LaserFieldBlock.getFieldDirection(state);
+			MutableBlockPos mutablePos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
+
+			for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
+				if (level.getBlockState(mutablePos).is(SCContent.LASER_BLOCK.get()) && level.getBlockEntity(mutablePos) instanceof LaserBlockBlockEntity be) {
+					ItemStack stack = be.getLensContainer().getItem(direction.getOpposite().ordinal());
+
+					if (stack.getItem() instanceof DyeableLeatherItem lens)
+						return lens.getColor(stack);
+
+					break;
+				}
+				else
+					mutablePos.move(direction);
+			}
+
+			return -1;
+		}, SCContent.LASER_FIELD.get());
+		event.register((state, level, pos, tintIndex) -> {
+			Direction direction = state.getValue(InventoryScannerFieldBlock.FACING);
+			MutableBlockPos mutablePos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
+
+			for (int i = 0; i < ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
+				if (level.getBlockState(mutablePos).is(SCContent.INVENTORY_SCANNER.get()) && level.getBlockEntity(mutablePos) instanceof InventoryScannerBlockEntity be) {
+					ItemStack stack = be.getLensContainer().getItem(0);
+
+					if (stack.getItem() instanceof DyeableLeatherItem lens)
+						return lens.getColor(stack);
+
+					break;
+				}
+				else
+					mutablePos.move(direction);
+			}
+
+			return -1;
+		}, SCContent.INVENTORY_SCANNER_FIELD.get());
 	}
 
 	@SubscribeEvent
@@ -416,6 +463,16 @@ public class ClientHandler {
 			else
 				return -1;
 		}, SCContent.BRIEFCASE.get());
+		event.register((stack, tintIndex) -> {
+			if (tintIndex == 0) {
+				DyeableLeatherItem item = ((DyeableLeatherItem) stack.getItem());
+
+				if (item.hasCustomColor(stack))
+					return item.getColor(stack);
+			}
+
+			return -1;
+		}, SCContent.LENS.get());
 		event.register((stack, tintIndex) -> {
 			if (tintIndex == 1) {
 				int grassTint = GrassColor.get(0.5D, 1.0D);
@@ -517,10 +574,6 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new KeyChangerScreen(be));
 	}
 
-	public static void displayTrophySystemScreen(TrophySystemBlockEntity be) {
-		Minecraft.getInstance().setScreen(new ToggleListScreen<>(be, be.getName(), Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles"), Utils.localize("gui.securitycraft:trophy_system.moduleRequired"), Utils.localize("gui.securitycraft:trophy_system.toggle")));
-	}
-
 	public static void displayCheckPasscodeScreen(BlockEntity be) {
 		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
@@ -538,11 +591,7 @@ public class ClientHandler {
 	}
 
 	public static void displayRiftStabilizerScreen(RiftStabilizerBlockEntity be) {
-		Minecraft.getInstance().setScreen(new ToggleListScreen<>(be, be.getName(), Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes"), Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired"), Utils.localize("gui.securitycraft:rift_stabilizer.toggle")));
-	}
-
-	public static void displayLaserScreen(LaserBlockBlockEntity be, EnumMap<Direction, Boolean> sideConfig) {
-		Minecraft.getInstance().setScreen(new LaserScreen(be, sideConfig));
+		Minecraft.getInstance().setScreen(new RiftStabilizerScreen(be));
 	}
 
 	public static void displayAlarmScreen(AlarmBlockEntity be) {
@@ -562,5 +611,9 @@ public class ClientHandler {
 
 	public static void putDisguisedBeRenderer(BlockEntity disguisableBlockEntity, ItemStack stack) {
 		DISGUISED_BLOCK_RENDER_DELEGATE.putDelegateFor(disguisableBlockEntity, NbtUtils.readBlockState(disguisableBlockEntity.getLevel().holderLookup(Registries.BLOCK), stack.getOrCreateTag().getCompound("SavedState")));
+	}
+
+	public static void updateBlockColorAroundPosition(BlockPos pos) {
+		Minecraft.getInstance().levelRenderer.blockChanged(Minecraft.getInstance().level, pos, null, null, 0);
 	}
 }

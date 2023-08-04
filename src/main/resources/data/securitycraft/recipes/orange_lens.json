@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "securitycraft:lens",
+  "key": {
+    "P": {
+      "item": "securitycraft:reinforced_orange_stained_glass_pane"
+    }
+  },
+  "pattern": [
+    " P",
+    "P ",
+    " P"
+  ],
+  "result": {
+    "type": "forge:nbt",
+    "count": 6,
+    "item": "securitycraft:lens",
+    "nbt": {
+      "display": {
+        "color": 16351261
+      }
+    }
+  }
+}
