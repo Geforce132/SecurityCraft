@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:brown_lens"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

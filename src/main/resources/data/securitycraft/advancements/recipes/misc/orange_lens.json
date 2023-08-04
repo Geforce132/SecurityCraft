@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:orange_lens"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
