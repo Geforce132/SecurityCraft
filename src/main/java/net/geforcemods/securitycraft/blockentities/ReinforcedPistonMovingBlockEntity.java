@@ -26,6 +26,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
@@ -128,7 +129,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	}
 
 	private BlockState getCollisionRelatedBlockState() {
-		return !isExtending() && isSourcePiston() && movedState.getBlock() instanceof ReinforcedPistonBaseBlock ? SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.SHORT, this.progress > 0.25F).setValue(PistonHeadBlock.TYPE, movedState.is(SCContent.REINFORCED_STICKY_PISTON.get()) ? PistonType.STICKY : PistonType.DEFAULT).setValue(PistonHeadBlock.FACING, movedState.getValue(PistonBaseBlock.FACING)) : movedState;
+		return !isExtending() && isSourcePiston() && movedState.getBlock() instanceof ReinforcedPistonBaseBlock ? SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.SHORT, progress > 0.25F).setValue(PistonHeadBlock.TYPE, movedState.is(SCContent.REINFORCED_STICKY_PISTON.get()) ? PistonType.STICKY : PistonType.DEFAULT).setValue(DirectionalBlock.FACING, movedState.getValue(DirectionalBlock.FACING)) : movedState;
 	}
 
 	private static void moveCollidedEntities(Level level, BlockPos pos, float progress, ReinforcedPistonMovingBlockEntity be) {
@@ -188,7 +189,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 						}
 					}
 
-					if (!(d4 <= 0.0D)) {
+					if (d4 > 0.0D) {
 						d4 = Math.min(d4, progressChange) + 0.01D;
 						moveEntityByPiston(direction, entity, d4, direction);
 
@@ -398,14 +399,14 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 			BlockState state;
 
 			if (isSourcePiston())
-				state = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.FACING, direction).setValue(PistonHeadBlock.SHORT, extending != 1.0F - progress < 4.0F);
+				state = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(DirectionalBlock.FACING, direction).setValue(PistonHeadBlock.SHORT, extending != 1.0F - progress < 4.0F);
 			else
 				state = movedState;
 
-			float progress = getExtendedProgress(this.progress);
-			double x = direction.getStepX() * progress;
-			double y = direction.getStepY() * progress;
-			double z = direction.getStepZ() * progress;
+			float extendedProgress = getExtendedProgress(progress);
+			double x = direction.getStepX() * extendedProgress;
+			double y = direction.getStepY() * extendedProgress;
+			double z = direction.getStepZ() * extendedProgress;
 
 			return Shapes.or(shape, state.getCollisionShape(level, pos).move(x, y, z));
 		}

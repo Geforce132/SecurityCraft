@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -14,11 +15,11 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 public class ReinforcedRotatedPillarBlock extends BaseReinforcedBlock {
 	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
 
-	public ReinforcedRotatedPillarBlock(Block.Properties properties, Block vB) {
+	public ReinforcedRotatedPillarBlock(BlockBehaviour.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
 
-	public ReinforcedRotatedPillarBlock(Block.Properties properties, Supplier<Block> vB) {
+	public ReinforcedRotatedPillarBlock(BlockBehaviour.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
 
 		registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.Y));

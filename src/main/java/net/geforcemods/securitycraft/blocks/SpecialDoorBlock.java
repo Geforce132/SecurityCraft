@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -28,11 +29,11 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.HitResult;
 
 public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock {
-	public SpecialDoorBlock(Block.Properties properties) {
+	protected SpecialDoorBlock(BlockBehaviour.Properties properties) {
 		this(properties, SoundEvents.IRON_DOOR_CLOSE, SoundEvents.IRON_DOOR_OPEN);
 	}
 
-	public SpecialDoorBlock(Block.Properties properties, SoundEvent closeSound, SoundEvent openSound) {
+	protected SpecialDoorBlock(BlockBehaviour.Properties properties, SoundEvent closeSound, SoundEvent openSound) {
 		super(properties, closeSound, openSound);
 	}
 
@@ -108,11 +109,9 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock 
 
 	@Override
 	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
-		super.triggerEvent(state, level, pos, id, param);
+		BlockEntity be = level.getBlockEntity(pos);
 
-		BlockEntity blockEntity = level.getBlockEntity(pos);
-
-		return blockEntity == null ? false : blockEntity.triggerEvent(id, param);
+		return be != null && be.triggerEvent(id, param);
 	}
 
 	@Override

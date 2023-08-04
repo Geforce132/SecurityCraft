@@ -30,7 +30,6 @@ public class AlarmOptionsScreen extends Screen {
 	private int imageWidth = 226, imageHeight = 112, leftPos, topPos;
 	private Button minusMinute, minusTenSeconds, minusSecond, reset, plusSecond, plusTenSeconds, plusMinute;
 	private EditBox timeEditBox;
-	private CallbackSlider pitchSlider;
 	private int soundLengthTextXPosition;
 
 	public AlarmOptionsScreen(AlarmScreen alarmScreen) {
@@ -63,8 +62,7 @@ public class AlarmOptionsScreen extends Screen {
 		plusTenSeconds = addRenderableWidget(new ExtendedButton(buttonsX + 150, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.plus_ten_seconds"), b -> changeSoundLength(10)));
 		plusMinute = addRenderableWidget(new ExtendedButton(buttonsX + 184, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.plus_one_minute"), b -> changeSoundLength(60)));
 		setSoundLength(alarmScreen.soundLength);
-		pitchSlider = addRenderableWidget(new CallbackSlider(leftPos + imageWidth / 2 - 50, buttonY + 25, 100, 20, Utils.localize("gui.securitycraft:alarm.pitch", ""), Component.empty(), 0.5D, 2.0D, alarmScreen.pitch, 0.05D, 0, true, slider -> alarmScreen.pitch = (float) slider.getValue()));
-		pitchSlider.setFGColor(0xE0E0E0);
+		addRenderableWidget(new CallbackSlider(leftPos + imageWidth / 2 - 50, buttonY + 25, 100, 20, Utils.localize("gui.securitycraft:alarm.pitch", ""), Component.empty(), 0.5D, 2.0D, alarmScreen.pitch, 0.05D, 0, true, slider -> alarmScreen.pitch = (float) slider.getValue())).setFGColor(0xE0E0E0);
 	}
 
 	@Override

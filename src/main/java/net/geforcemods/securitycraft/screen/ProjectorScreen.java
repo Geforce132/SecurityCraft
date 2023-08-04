@@ -75,7 +75,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 			projectionRangeSlider.setMaxValue(projectionRangeSlider.getMaxValue() - (horizontal ? 16 : -16));
 			projectionRangeSlider.setValue(projectionRangeSlider.getValue() - (horizontal ? 16 : -16));
 			applySliderValue(projectionRangeSlider);
-			SecurityCraft.channel.sendToServer(new SyncProjector(be.getBlockPos(), be.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
+			SecurityCraft.CHANNEL.sendToServer(new SyncProjector(be.getBlockPos(), be.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
 		}));
 		toggleButton.setCurrentIndex(be.isHorizontal() ? 1 : 0);
 		updateToggleButtonTooltip();
@@ -118,7 +118,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 		if (stateSelector != null && stateSelector.mouseDragged(mouseX, mouseY, button, dragX, dragY))
 			return true;
 
-		return (getFocused() != null && isDragging() && button == 0 ? getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY) : false) || super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+		return (getFocused() != null && isDragging() && button == 0 && getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY)) || super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 
 		if (stateSelector.getState() != null) {
 			be.setProjectedState(stateSelector.getState());
-			SecurityCraft.channel.sendToServer(new SyncProjector(be.getBlockPos(), stateSelector.getState()));
+			SecurityCraft.CHANNEL.sendToServer(new SyncProjector(be.getBlockPos(), stateSelector.getState()));
 		}
 	}
 
@@ -144,11 +144,13 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 		DataType dataType = DataType.INVALID;
 
 		if (slider == projectionWidthSlider) {
-			be.setProjectionWidth(data = slider.getValueInt());
+			data = slider.getValueInt();
+			be.setProjectionWidth(data);
 			dataType = DataType.WIDTH;
 		}
 		else if (slider == projectionHeightSlider) {
-			be.setProjectionHeight(data = slider.getValueInt());
+			data = slider.getValueInt();
+			be.setProjectionHeight(data);
 			dataType = DataType.HEIGHT;
 		}
 		else if (slider == projectionRangeSlider) {
@@ -161,10 +163,11 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 			dataType = DataType.RANGE;
 		}
 		else if (slider == projectionOffsetSlider) {
-			be.setProjectionOffset(data = slider.getValueInt());
+			data = slider.getValueInt();
+			be.setProjectionOffset(data);
 			dataType = DataType.OFFSET;
 		}
 
-		SecurityCraft.channel.sendToServer(new SyncProjector(be.getBlockPos(), data, dataType));
+		SecurityCraft.CHANNEL.sendToServer(new SyncProjector(be.getBlockPos(), data, dataType));
 	}
 }

@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -29,7 +30,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class FurnaceMineBlock extends BaseFullMineBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-	public FurnaceMineBlock(Block.Properties properties, Block vanillaBlock) {
+	public FurnaceMineBlock(BlockBehaviour.Properties properties, Block vanillaBlock) {
 		super(properties, vanillaBlock);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
@@ -54,11 +55,7 @@ public class FurnaceMineBlock extends BaseFullMineBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
-	}
-
-	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer) {
-		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
+		return defaultBlockState().setValue(FACING, ctx.getPlayer().getDirection().getOpposite());
 	}
 
 	@Override

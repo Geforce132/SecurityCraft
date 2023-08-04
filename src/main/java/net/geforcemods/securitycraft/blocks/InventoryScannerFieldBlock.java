@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -45,7 +46,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 	private static final VoxelShape SHAPE_NS = Block.box(6, 0, 0, 10, 16, 16);
 	private static final VoxelShape HORIZONTAL_SHAPE = Block.box(0, 6, 0, 16, 10, 16);
 
-	public InventoryScannerFieldBlock(Block.Properties properties) {
+	public InventoryScannerFieldBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HORIZONTAL, false).setValue(WATERLOGGED, false));
 	}
@@ -65,16 +66,14 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 					return Shapes.empty();
 
 				for (int i = 0; i < 10; i++) {
-					if (!connectedScanner.getStackInSlotCopy(i).isEmpty())
-						if (checkInventory(player, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
-							return getShape(state, level, pos, ctx);
+					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && checkInventory(player, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
+						return getShape(state, level, pos, ctx);
 				}
 			}
 			else if (entity instanceof ItemEntity item) {
 				for (int i = 0; i < 10; i++) {
-					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !item.getItem().isEmpty())
-						if (checkItemEntity(item, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
-							return getShape(state, level, pos, ctx);
+					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !item.getItem().isEmpty() && checkItemEntity(item, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
+						return getShape(state, level, pos, ctx);
 				}
 			}
 		}
@@ -182,24 +181,22 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 	}
 
 	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity be, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
-		if (item != null) {
-			if (!item.isEmpty() && item.getTag() != null && Block.byItem(item.getItem()) instanceof ShulkerBoxBlock) {
-				ListTag list = item.getTag().getCompound("BlockEntityTag").getList("Items", Tag.TAG_COMPOUND);
+		if (item != null && !item.isEmpty() && item.getTag() != null && Block.byItem(item.getItem()) instanceof ShulkerBoxBlock) {
+			ListTag list = item.getTag().getCompound("BlockEntityTag").getList("Items", Tag.TAG_COMPOUND);
 
-				for (int i = 0; i < list.size(); i++) {
-					ItemStack itemInChest = ItemStack.of(list.getCompound(i));
+			for (int i = 0; i < list.size(); i++) {
+				ItemStack itemInChest = ItemStack.of(list.getCompound(i));
 
-					if (areItemsEqual(itemInChest, stackToCheck, hasSmartModule)) {
-						if (hasStorageModule) {
-							be.addItemToStorage(itemInChest);
-							list.remove(i);
-						}
-
-						if (hasRedstoneModule)
-							updateInventoryScannerPower(be);
-
-						return true;
+				if (areItemsEqual(itemInChest, stackToCheck, hasSmartModule)) {
+					if (hasStorageModule) {
+						be.addItemToStorage(itemInChest);
+						list.remove(i);
 					}
+
+					if (hasRedstoneModule)
+						updateInventoryScannerPower(be);
+
+					return true;
 				}
 			}
 		}
@@ -288,10 +285,8 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 
 	@Override
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
-		if (side == Direction.UP || side == Direction.DOWN) {
-			if (state.getBlock() == adjacentBlockState.getBlock())
-				return true;
-		}
+		if ((side == Direction.UP || side == Direction.DOWN) && state.getBlock() == adjacentBlockState.getBlock())
+			return true;
 
 		return super.skipRendering(state, adjacentBlockState, side);
 	}

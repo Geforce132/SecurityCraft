@@ -63,7 +63,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 		super.render(pose, mouseX, mouseY, partialTick);
 		renderTooltip(pose, mouseX, mouseY);
-		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, mouseX, mouseY);
 	}
 
 	@Override

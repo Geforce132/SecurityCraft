@@ -11,10 +11,11 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ReinforcedRedstoneBlock extends BaseReinforcedBlock {
-	public ReinforcedRedstoneBlock(Block.Properties properties, Block vB) {
+	public ReinforcedRedstoneBlock(BlockBehaviour.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 

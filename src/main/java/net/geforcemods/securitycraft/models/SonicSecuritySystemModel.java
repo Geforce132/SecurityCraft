@@ -13,12 +13,12 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.Entity;
 
 public class SonicSecuritySystemModel extends EntityModel<Entity> {
-	public ModelPart radar;
-	public ModelPart bb_main;
+	public final ModelPart dish;
+	public final ModelPart main;
 
 	public SonicSecuritySystemModel(ModelPart modelPart) {
-		radar = modelPart.getChild("radar");
-		bb_main = modelPart.getChild("bb_main");
+		dish = modelPart.getChild("dish");
+		main = modelPart.getChild("main");
 	}
 
 	public static LayerDefinition createLayer() {
@@ -26,7 +26,7 @@ public class SonicSecuritySystemModel extends EntityModel<Entity> {
 		PartDefinition partDefinition = meshDefinition.getRoot();
 
 		//@formatter:off
-		partDefinition.addOrReplaceChild("radar", CubeListBuilder.create()
+		partDefinition.addOrReplaceChild("dish", CubeListBuilder.create()
 				.texOffs(15, 0).addBox(-0.5F, -0.5F, -0.5F, 1.0F, 1.0F, 2.0F)
 				.texOffs(15, 3).addBox(-1.5F, -1.5F, 1.0F, 3.0F, 1.0F, 1.0F)
 				.texOffs(15, 5).addBox(0.5F, -0.5F, 1.0F, 1.0F, 1.0F, 1.0F)
@@ -37,7 +37,7 @@ public class SonicSecuritySystemModel extends EntityModel<Entity> {
 				.texOffs(0, 6).addBox(-2.5F, -1.5F, 1.5F, 1.0F, 3.0F, 1.0F)
 				.texOffs(0, 10).addBox(-2.5F, 1.5F, 1.5F, 5.0F, 1.0F, 1.0F),
 				PartPose.offset(0.0F, 10.5F, 0.0F));
-		partDefinition.addOrReplaceChild("bb_main", CubeListBuilder.create()
+		partDefinition.addOrReplaceChild("main", CubeListBuilder.create()
 				.texOffs(0, 28).addBox(-1.5F, -1.0F, -1.5F, 3.0F, 1.0F, 3.0F)
 				.texOffs(0, 25).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 1.0F, 2.0F)
 				.texOffs(12, 20).addBox(-0.5F, -13.0F, -0.5F, 1.0F, 11.0F, 1.0F),
@@ -51,11 +51,11 @@ public class SonicSecuritySystemModel extends EntityModel<Entity> {
 
 	@Override
 	public void renderToBuffer(PoseStack pose, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		radar.render(pose, buffer, packedLight, packedOverlay);
-		bb_main.render(pose, buffer, packedLight, packedOverlay);
+		dish.render(pose, buffer, packedLight, packedOverlay);
+		main.render(pose, buffer, packedLight, packedOverlay);
 	}
 
 	public void setRadarRotation(float rotation) {
-		radar.yRot = rotation;
+		dish.yRot = rotation;
 	}
 }

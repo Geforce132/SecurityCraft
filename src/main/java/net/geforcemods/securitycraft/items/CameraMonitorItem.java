@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -39,10 +38,11 @@ public class CameraMonitorItem extends Item {
 
 	@Override
 	public InteractionResult useOn(UseOnContext ctx) {
-		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
-	}
+		Player player = ctx.getPlayer();
+		Level level = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		ItemStack stack = ctx.getItemInHand();
 
-	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
 		if (level.getBlockState(pos).getBlock() == SCContent.SECURITY_CAMERA.get() && !PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) level.getBlockEntity(pos);
 
@@ -70,7 +70,7 @@ public class CameraMonitorItem extends Item {
 				}
 
 			if (!level.isClientSide && !stack.isEmpty())
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+				SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
 			return InteractionResult.SUCCESS;
 		}
@@ -139,7 +139,7 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public ArrayList<GlobalPos> getCameraPositions(CompoundTag tag) {
+	public List<GlobalPos> getCameraPositions(CompoundTag tag) {
 		ArrayList<GlobalPos> list = new ArrayList<>();
 
 		for (int i = 1; i <= 30; i++) {

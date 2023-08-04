@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -57,7 +58,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public SonicSecuritySystemBlock(Properties properties) {
+	public SonicSecuritySystemBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(WATERLOGGED, false));
@@ -106,7 +107,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 			SonicSecuritySystemBlockEntity be = (SonicSecuritySystemBlockEntity) level.getBlockEntity(pos);
 
 			if (!level.isClientSide && (be.isOwnedBy(player) || be.isAllowed(player)))
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SONIC_SECURITY_SYSTEM, pos));
+				SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SONIC_SECURITY_SYSTEM, pos));
 
 			return InteractionResult.SUCCESS;
 		}
@@ -156,10 +157,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
-		return getItemStackFromBlock(level.getBlockEntity(pos).getUpdateTag());
-	}
-
-	private ItemStack getItemStackFromBlock(CompoundTag blockTag) {
+		CompoundTag blockTag = level.getBlockEntity(pos).getUpdateTag();
 		ItemStack stack = new ItemStack(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
 
 		if (!blockTag.contains("LinkedBlocks"))

@@ -50,12 +50,11 @@ public class EditModuleScreen extends Screen {
 	private final List<PlayerTeam> availableTeams;
 	private final Map<PlayerTeam, Boolean> teamsListedStatus = new HashMap<>();
 	private EditBox inputField;
-	private Button addPlayerButton, editTeamsButton, removePlayerButton, copyButton, pasteButton, clearButton;
+	private Button addPlayerButton, removePlayerButton, copyButton, pasteButton, clearButton;
 	private CallbackCheckbox affectEveryPlayerCheckbox;
 	private int xSize = 247, ySize = 211;
 	private PlayerList playerList;
 	private TeamList teamList;
-	private int guiLeft;
 
 	public EditModuleScreen(ItemStack item) {
 		super(Component.translatable(item.getDescriptionId()));
@@ -68,24 +67,24 @@ public class EditModuleScreen extends Screen {
 	public void init() {
 		super.init();
 
-		guiLeft = (width - xSize) / 2;
-
+		int guiLeft = (width - xSize) / 2;
 		int guiTop = (height - ySize) / 2;
 		int controlsStartX = (int) (guiLeft + xSize * (3.0F / 4.0F)) - 57;
 		int controlsWidth = 107;
 		Component checkboxText = Utils.localize("gui.securitycraft:editModule.affectEveryone");
 		int length = font.width(checkboxText) + 24; //24 = checkbox width + 4 pixels of buffer
+		Button editTeamsButton;
 
-		addRenderableWidget(inputField = new EditBox(font, controlsStartX, height / 2 - 88, 107, 15, Component.empty()));
-		addRenderableWidget(addPlayerButton = new ExtendedButton(controlsStartX, height / 2 - 68, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.add_player"), this::addPlayerButtonClicked));
-		addRenderableWidget(removePlayerButton = new ExtendedButton(controlsStartX, height / 2 - 43, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.remove_player"), this::removePlayerButtonClicked));
-		addRenderableWidget(editTeamsButton = new NonScrollableToggleComponentButton(controlsStartX, height / 2 - 18, controlsWidth, 20, i -> Utils.localize("gui.securitycraft:editModule.edit_teams"), 0, 2, this::editTeamsButtonClicked));
-		addRenderableWidget(copyButton = new ExtendedButton(controlsStartX, height / 2 + 7, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.copy"), this::copyButtonClicked));
-		addRenderableWidget(pasteButton = new ExtendedButton(controlsStartX, height / 2 + 32, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.paste"), this::pasteButtonClicked));
-		addRenderableWidget(clearButton = new ExtendedButton(controlsStartX, height / 2 + 57, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::clearButtonClicked));
-		addRenderableWidget(playerList = new PlayerList(minecraft, 110, 165, height / 2 - 88, guiLeft + 10));
-		addRenderableWidget(teamList = new TeamList(minecraft, editTeamsButton.getWidth(), 75, editTeamsButton.getY() + editTeamsButton.getHeight(), editTeamsButton.getX()));
-		addRenderableWidget(affectEveryPlayerCheckbox = new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.hasTag() && module.getTag().getBoolean("affectEveryone"), newState -> module.getOrCreateTag().putBoolean("affectEveryone", newState), 0x404040));
+		inputField = addRenderableWidget(new EditBox(font, controlsStartX, height / 2 - 88, 107, 15, Component.empty()));
+		addPlayerButton = addRenderableWidget(new ExtendedButton(controlsStartX, height / 2 - 68, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.add_player"), this::addPlayerButtonClicked));
+		removePlayerButton = addRenderableWidget(new ExtendedButton(controlsStartX, height / 2 - 43, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.remove_player"), this::removePlayerButtonClicked));
+		editTeamsButton = addRenderableWidget(new NonScrollableToggleComponentButton(controlsStartX, height / 2 - 18, controlsWidth, 20, i -> Utils.localize("gui.securitycraft:editModule.edit_teams"), 0, 2, this::editTeamsButtonClicked));
+		copyButton = addRenderableWidget(new ExtendedButton(controlsStartX, height / 2 + 7, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.copy"), this::copyButtonClicked));
+		pasteButton = addRenderableWidget(new ExtendedButton(controlsStartX, height / 2 + 32, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.paste"), this::pasteButtonClicked));
+		clearButton = addRenderableWidget(new ExtendedButton(controlsStartX, height / 2 + 57, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::clearButtonClicked));
+		playerList = addRenderableWidget(new PlayerList(minecraft, 110, 165, height / 2 - 88, guiLeft + 10));
+		teamList = addRenderableWidget(new TeamList(minecraft, editTeamsButton.getWidth(), 75, editTeamsButton.getY() + editTeamsButton.getHeight(), editTeamsButton.getX()));
+		affectEveryPlayerCheckbox = addRenderableWidget(new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.hasTag() && module.getTag().getBoolean("affectEveryone"), newState -> module.getOrCreateTag().putBoolean("affectEveryone", newState), 0x404040));
 
 		teamList.active = false;
 		editTeamsButton.active = !availableTeams.isEmpty();
@@ -121,7 +120,7 @@ public class EditModuleScreen extends Screen {
 	public void onClose() {
 		super.onClose();
 
-		SecurityCraft.channel.sendToServer(new SetListModuleData(module.getOrCreateTag()));
+		SecurityCraft.CHANNEL.sendToServer(new SetListModuleData(module.getOrCreateTag()));
 	}
 
 	@Override
@@ -272,7 +271,7 @@ public class EditModuleScreen extends Screen {
 			//@formatter:off
 			List<String> teamNames = tag.getList("ListedTeams", Tag.TAG_STRING)
 					.stream()
-					.filter(e -> e instanceof StringTag)
+					.filter(StringTag.class::isInstance)
 					.map(e -> ((StringTag) e).getAsString())
 					.toList();
 			//@formatter:on
@@ -289,18 +288,6 @@ public class EditModuleScreen extends Screen {
 		}
 
 		return 0;
-	}
-
-	private void toggleTeam(PlayerTeam teamToAdd) {
-		ListTag listedTeams = new ListTag();
-
-		teamsListedStatus.put(teamToAdd, !teamsListedStatus.get(teamToAdd));
-		teamsListedStatus.forEach((team, listed) -> {
-			if (listed)
-				listedTeams.add(StringTag.valueOf(team.getName()));
-		});
-		module.getOrCreateTag().put("ListedTeams", listedTeams);
-		updateButtonStates();
 	}
 
 	private void defragmentTag(CompoundTag tag) {
@@ -321,7 +308,7 @@ public class EditModuleScreen extends Screen {
 	}
 
 	class PlayerList extends ScrollPanel {
-		private final int slotHeight = 12, listLength = ModuleItem.MAX_PLAYERS;
+		private static final int SLOT_HEIGHT = 12, LIST_LENGTH = ModuleItem.MAX_PLAYERS;
 		private int selectedIndex = -1;
 
 		public PlayerList(Minecraft client, int width, int height, int top, int left) {
@@ -330,7 +317,7 @@ public class EditModuleScreen extends Screen {
 
 		@Override
 		protected int getContentHeight() {
-			int height = listLength * (font.lineHeight + 3);
+			int height = LIST_LENGTH * (font.lineHeight + 3);
 
 			if (height < bottom - top - 4)
 				height = bottom - top - 4;
@@ -341,7 +328,7 @@ public class EditModuleScreen extends Screen {
 		@Override
 		public boolean mouseClicked(double mouseX, double mouseY, int button) {
 			if (isMouseOver(mouseX, mouseY) && mouseX < left + width - 6) {
-				int clickedIndex = ((int) (mouseY - top + scrollDistance - border)) / slotHeight;
+				int clickedIndex = ((int) (mouseY - top + scrollDistance - border)) / SLOT_HEIGHT;
 
 				if (module.hasTag() && module.getTag().contains("Player" + (clickedIndex + 1))) {
 					selectedIndex = clickedIndex;
@@ -358,16 +345,16 @@ public class EditModuleScreen extends Screen {
 				CompoundTag tag = module.getTag();
 				int baseY = top + border - (int) scrollDistance;
 				int mouseListY = (int) (mouseY - top + scrollDistance - border);
-				int slotIndex = mouseListY / slotHeight;
+				int slotIndex = mouseListY / SLOT_HEIGHT;
 
 				//highlight hovered slot
-				if (slotIndex != selectedIndex && mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
+				if (slotIndex != selectedIndex && mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < LIST_LENGTH && mouseY >= top && mouseY <= bottom) {
 					if (tag.contains("Player" + (slotIndex + 1)) && !tag.getString("Player" + (slotIndex + 1)).isEmpty())
-						renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + slotIndex * slotHeight, slotHeight - 4, 0x80);
+						renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + slotIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0x80);
 				}
 
 				if (selectedIndex >= 0)
-					renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + selectedIndex * slotHeight, slotHeight - 4, 0xFF);
+					renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + selectedIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0xFF);
 
 				//draw entry strings
 				for (int i = 0; i < ModuleItem.MAX_PLAYERS; i++) {
@@ -375,7 +362,7 @@ public class EditModuleScreen extends Screen {
 						String name = tag.getString("Player" + (i + 1));
 
 						if (!name.isEmpty())
-							font.draw(pose, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
+							font.draw(pose, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (SLOT_HEIGHT * i), 0xC6C6C6);
 					}
 				}
 			}
@@ -395,9 +382,10 @@ public class EditModuleScreen extends Screen {
 	}
 
 	class TeamList extends ScrollPanel {
-		private final int slotHeight = 12, listLength;
+		private static final int SLOT_HEIGHT = 12;
+		private final int listLength;
 		private int selectedIndex = -1;
-		public boolean active = true;
+		private boolean active = true;
 
 		public TeamList(Minecraft client, int width, int height, int top, int left) {
 			super(client, width, height, top, left);
@@ -418,7 +406,7 @@ public class EditModuleScreen extends Screen {
 		@Override
 		protected boolean clickPanel(double mouseX, double mouseY, int button) {
 			if (active) {
-				int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
+				int slotIndex = (int) (mouseY + (border / 2)) / SLOT_HEIGHT;
 
 				if (slotIndex >= 0 && slotIndex < listLength) {
 					Minecraft mc = Minecraft.getInstance();
@@ -442,7 +430,7 @@ public class EditModuleScreen extends Screen {
 
 				//draw tooltip for long patron names
 				int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
-				int slotIndex = mouseListY / slotHeight;
+				int slotIndex = mouseListY / SLOT_HEIGHT;
 
 				if (slotIndex >= 0 && slotIndex < listLength && mouseX >= left && mouseX < right - 6 && mouseListY >= 0 && mouseY >= top && mouseY <= bottom) {
 					Component name = availableTeams.get(slotIndex).getDisplayName();
@@ -450,7 +438,7 @@ public class EditModuleScreen extends Screen {
 					int baseY = top + border - (int) scrollDistance;
 
 					if (length >= width - 6) //6 = barWidth
-						renderTooltip(pose, name, left + 3, baseY + (slotHeight * slotIndex + slotHeight));
+						renderTooltip(pose, name, left + 3, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT));
 				}
 			}
 		}
@@ -459,21 +447,33 @@ public class EditModuleScreen extends Screen {
 		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY) {
 			int baseY = top + border - (int) scrollDistance;
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
-			int slotIndex = mouseListY / slotHeight;
+			int slotIndex = mouseListY / SLOT_HEIGHT;
 
 			//highlight hovered slot
 			if (slotIndex != selectedIndex && mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
-				renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + slotIndex * slotHeight, slotHeight - 4, 0x80);
+				renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + slotIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0x80);
 
 			//draw entry strings and indicators whether the filter is enabled
 			for (int i = 0; i < listLength; i++) {
-				int yStart = relativeY + (slotHeight * i);
+				int yStart = relativeY + (SLOT_HEIGHT * i);
 				PlayerTeam team = availableTeams.get(i);
 
 				font.draw(pose, team.getDisplayName(), left + 15, yStart, 0xC6C6C6);
 				RenderSystem._setShaderTexture(0, BEACON_GUI);
 				blit(pose, left, yStart - 3, 14, 14, teamsListedStatus.get(team) ? 88 : 110, 219, 21, 22, 256, 256);
 			}
+		}
+
+		private void toggleTeam(PlayerTeam teamToAdd) {
+			ListTag listedTeams = new ListTag();
+
+			teamsListedStatus.put(teamToAdd, !teamsListedStatus.get(teamToAdd));
+			teamsListedStatus.forEach((team, listed) -> {
+				if (listed)
+					listedTeams.add(StringTag.valueOf(team.getName()));
+			});
+			module.getOrCreateTag().put("ListedTeams", listedTeams);
+			updateButtonStates();
 		}
 
 		@Override

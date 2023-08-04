@@ -5,12 +5,13 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BeaconBeamBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ReinforcedStainedGlassPaneBlock extends ReinforcedPaneBlock implements BeaconBeamBlock {
 	private final DyeColor color;
 
-	public ReinforcedStainedGlassPaneBlock(Block.Properties properties, DyeColor color, Block vB) {
+	public ReinforcedStainedGlassPaneBlock(BlockBehaviour.Properties properties, DyeColor color, Block vB) {
 		super(properties, vB);
 		this.color = color;
 	}

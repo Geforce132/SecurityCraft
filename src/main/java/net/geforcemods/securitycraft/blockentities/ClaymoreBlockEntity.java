@@ -96,7 +96,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == ForgeCapabilities.ITEM_HANDLER)
-			return BlockUtils.getProtectedCapability(side, this, () -> getNormalHandler(), () -> getInsertOnlyHandler()).cast();
+			return BlockUtils.getProtectedCapability(side, this, this::getNormalHandler, this::getInsertOnlyHandler).cast();
 		else
 			return super.getCapability(cap, side);
 	}

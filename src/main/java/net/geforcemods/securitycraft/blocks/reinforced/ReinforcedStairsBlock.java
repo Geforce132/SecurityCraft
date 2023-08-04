@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -62,11 +63,11 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 	private final Block modelBlock;
 	private final BlockState modelState;
 
-	public ReinforcedStairsBlock(Block.Properties properties, Block vB) {
+	public ReinforcedStairsBlock(BlockBehaviour.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
 
-	public ReinforcedStairsBlock(Block.Properties properties, Supplier<Block> vB) {
+	public ReinforcedStairsBlock(BlockBehaviour.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
 
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HALF, Half.BOTTOM).setValue(SHAPE, StairsShape.STRAIGHT).setValue(WATERLOGGED, false));
@@ -166,7 +167,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 		Direction dir = ctx.getClickedFace();
 		BlockPos pos = ctx.getClickedPos();
 		FluidState fluidState = ctx.getLevel().getFluidState(pos);
-		BlockState state = defaultBlockState().setValue(FACING, ctx.getHorizontalDirection()).setValue(HALF, dir != Direction.DOWN && (dir == Direction.UP || !(ctx.getClickLocation().y - pos.getY() > 0.5D)) ? Half.BOTTOM : Half.TOP).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+		BlockState state = defaultBlockState().setValue(FACING, ctx.getHorizontalDirection()).setValue(HALF, dir != Direction.DOWN && (dir == Direction.UP || ctx.getClickLocation().y - pos.getY() <= 0.5D) ? Half.BOTTOM : Half.TOP).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 
 		return state.setValue(SHAPE, getShapeProperty(state, ctx.getLevel(), pos));
 	}

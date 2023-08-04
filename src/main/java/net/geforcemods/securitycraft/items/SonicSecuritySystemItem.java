@@ -16,7 +16,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -43,42 +42,40 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 	@Override
 	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx) {
-		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), stack, ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
-	}
+		Level level = ctx.getLevel();
+		Player player = ctx.getPlayer();
 
-	public InteractionResult onItemUseFirst(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
-		if (!level.isClientSide) {
-			// If the player is not sneaking, add/remove positions from the item when right-clicking a lockable block
-			if (!player.isShiftKeyDown()) {
-				BlockEntity be = level.getBlockEntity(pos);
+		// If the player is not sneaking, add/remove positions from the item when right-clicking a lockable block
+		if (!level.isClientSide && !player.isShiftKeyDown()) {
+			BlockPos pos = ctx.getClickedPos();
+			BlockEntity be = level.getBlockEntity(pos);
 
-				if (be instanceof ILockable) {
-					if (be instanceof IOwnable ownable && !ownable.isOwnedBy(player)) {
-						//only send message when the block is not disguised
-						if (!(be.getBlockState().getBlock() instanceof DisguisableBlock) || !DisguisableBlock.getDisguisedBlockState(level, pos).isPresent()) {
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ownable.getOwner().getName()), ChatFormatting.GREEN);
-							return InteractionResult.SUCCESS;
-						}
+			if (be instanceof ILockable) {
+				if (be instanceof IOwnable ownable && !ownable.isOwnedBy(player)) {
+					//only send message when the block is not disguised
+					if (!(be.getBlockState().getBlock() instanceof DisguisableBlock) || !DisguisableBlock.getDisguisedBlockState(level, pos).isPresent()) {
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ownable.getOwner().getName()), ChatFormatting.GREEN);
+						return InteractionResult.SUCCESS;
 					}
-					else {
-						if (stack.getTag() == null)
-							stack.setTag(new CompoundTag());
+				}
+				else {
+					if (stack.getTag() == null)
+						stack.setTag(new CompoundTag());
 
-						// Remove a block from the tag if it was already linked to.
-						// If not, link to it
-						if (isAdded(stack.getTag(), pos)) {
-							removeLinkedBlock(stack.getTag(), pos);
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
-							return InteractionResult.SUCCESS;
-						}
-						else if (addLinkedBlock(stack.getTag(), pos, player)) {
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
+					// Remove a block from the tag if it was already linked to.
+					// If not, link to it
+					if (isAdded(stack.getTag(), pos)) {
+						removeLinkedBlock(stack.getTag(), pos);
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
+						return InteractionResult.SUCCESS;
+					}
+					else if (addLinkedBlock(stack.getTag(), pos, player)) {
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
 
-							if (!stack.isEmpty())
-								SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+						if (!stack.isEmpty())
+							SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
-							return InteractionResult.SUCCESS;
-						}
+						return InteractionResult.SUCCESS;
 					}
 				}
 			}
@@ -106,10 +103,8 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 	@Override
 	protected boolean updateCustomBlockEntityTag(BlockPos pos, Level level, Player player, ItemStack stack, BlockState state) {
-		if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss) {
-			if (sss.transferPositionsFromItem(stack.getOrCreateTag()))
-				return true;
-		}
+		if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.transferPositionsFromItem(stack.getOrCreateTag()))
+			return true;
 
 		return super.updateCustomBlockEntityTag(pos, level, player, stack, state);
 	}
@@ -204,7 +199,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 		if (!tag.contains("LinkedBlocks"))
 			return false;
 
-		return tag.getList("LinkedBlocks", Tag.TAG_COMPOUND).size() > 0;
+		return !tag.getList("LinkedBlocks", Tag.TAG_COMPOUND).isEmpty();
 	}
 
 	/**

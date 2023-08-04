@@ -11,10 +11,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Fallable;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ReinforcedFallingBlock extends BaseReinforcedBlock implements Fallable {
-	public ReinforcedFallingBlock(Block.Properties properties, Block vB) {
+	public ReinforcedFallingBlock(BlockBehaviour.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 

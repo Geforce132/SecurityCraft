@@ -31,7 +31,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	private final AABB renderBoundingBox;
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
-	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
+	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
 	private long cooldownEnd = 0;
 	private ItemStack displayedStack = ItemStack.EMPTY;
 	private boolean shouldBeOpen;

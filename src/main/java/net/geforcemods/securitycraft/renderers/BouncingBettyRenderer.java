@@ -25,8 +25,8 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty> {
 		pose.pushPose();
 		pose.translate(0.0D, 0.5D, 0.0D);
 
-		if (entity.fuse - partialTicks + 1.0F < 10.0F) {
-			float alpha = 1.0F - (entity.fuse - partialTicks + 1.0F) / 10.0F;
+		if (entity.getFuse() - partialTicks + 1.0F < 10.0F) {
+			float alpha = 1.0F - (entity.getFuse() - partialTicks + 1.0F) / 10.0F;
 			alpha = Mth.clamp(alpha, 0.0F, 1.0F);
 			alpha *= alpha;
 			alpha *= alpha;

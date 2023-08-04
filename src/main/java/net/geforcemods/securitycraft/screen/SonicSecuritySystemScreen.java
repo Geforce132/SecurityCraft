@@ -90,7 +90,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 			boolean containsNotes = be.getNumberOfNotes() > 0;
 
 			be.setActive(toggledState);
-			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), toggledState ? SyncSSSSettingsOnServer.DataType.POWER_ON : SyncSSSSettingsOnServer.DataType.POWER_OFF));
+			SecurityCraft.CHANNEL.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), toggledState ? SyncSSSSettingsOnServer.DataType.POWER_ON : SyncSSSSettingsOnServer.DataType.POWER_OFF));
 			powerButton.setMessage(getPowerString(toggledState));
 
 			if (!toggledState)
@@ -106,7 +106,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 		recordingButton = addRenderableWidget(new ExtendedButton(buttonX, height / 2 - 37, 150, 20, getRecordingString(be.isRecording()), button -> {
 			boolean recording = !be.isRecording();
 			be.setRecording(recording);
-			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), recording ? SyncSSSSettingsOnServer.DataType.RECORDING_ON : SyncSSSSettingsOnServer.DataType.RECORDING_OFF));
+			SecurityCraft.CHANNEL.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), recording ? SyncSSSSettingsOnServer.DataType.RECORDING_ON : SyncSSSSettingsOnServer.DataType.RECORDING_OFF));
 			recordingButton.setMessage(getRecordingString(be.isRecording()));
 		}));
 
@@ -118,7 +118,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 
 		clearButton = addRenderableWidget(new ExtendedButton(buttonX, height / 2 + 7, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.clear"), button -> {
 			be.clearNotes();
-			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.CLEAR_NOTES));
+			SecurityCraft.CHANNEL.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.CLEAR_NOTES));
 			playButton.active = false;
 			clearButton.active = false;
 		}));
@@ -126,7 +126,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 		invertButton = addRenderableWidget(new ExtendedButton(buttonX, height / 2 + 29, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.invert_functionality"), button -> {
 			be.setDisableBlocksWhenTuneIsPlayed(!be.disablesBlocksWhenTuneIsPlayed());
 			updateInvertButtonTooltip();
-			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.INVERT_FUNCTIONALITY));
+			SecurityCraft.CHANNEL.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.INVERT_FUNCTIONALITY));
 		}));
 		updateInvertButtonTooltip();
 		//@formatter:off
@@ -135,7 +135,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 			boolean toggledPing = !be.pings();
 
 			be.setPings(toggledPing);
-			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), toggledPing ? SyncSSSSettingsOnServer.DataType.SOUND_ON : SyncSSSSettingsOnServer.DataType.SOUND_OFF));
+			SecurityCraft.CHANNEL.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), toggledPing ? SyncSSSSettingsOnServer.DataType.SOUND_ON : SyncSSSSettingsOnServer.DataType.SOUND_OFF));
 		}));
 		soundButton.setCurrentIndex(!be.pings() ? 1 : 0); // Use the disabled mic icon if the SSS is not emitting sounds
 
@@ -191,7 +191,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 	public void removePosition(BlockPos pos) {
 		be.delink(pos, true);
 		connectionList.refreshPositions();
-		SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.REMOVE_POS, pos));
+		SecurityCraft.CHANNEL.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.REMOVE_POS, pos));
 	}
 
 	private Component getRecordingString(boolean recording) {

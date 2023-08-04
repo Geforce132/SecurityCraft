@@ -28,7 +28,8 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class ToggleScrollList<T> extends ScrollPanel {
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
-	private final int slotHeight = 12, listLength;
+	private static final int SLOT_HEIGHT = 12;
+	private final int listLength;
 	private final List<T> orderedFilterList;
 	private final Map<T, Component> typeNames = new HashMap<>();
 	private final Minecraft mc;
@@ -67,14 +68,12 @@ public class ToggleScrollList<T> extends ScrollPanel {
 		return height;
 	}
 
-	//TODO: Remove this fix when updating to NeoForge
 	@Override
 	protected boolean clickPanel(double mouseX, double mouseY, int button) {
 		if (hasSmartModule) {
-			int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
+			int slotIndex = (int) (mouseY + (border / 2)) / SLOT_HEIGHT;
 
 			if (slotIndex >= 0 && slotIndex < listLength) {
-				Minecraft mc = Minecraft.getInstance();
 				double relativeMouseY = mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight();
 
 				if (relativeMouseY >= top && relativeMouseY <= bottom) {
@@ -94,8 +93,8 @@ public class ToggleScrollList<T> extends ScrollPanel {
 
 		int baseY = top + border - (int) scrollDistance;
 		int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
-		int slotIndex = mouseListY / slotHeight;
-		int slotBottom = baseY + (slotIndex + 1) * slotHeight;
+		int slotIndex = mouseListY / SLOT_HEIGHT;
+		int slotBottom = baseY + (slotIndex + 1) * SLOT_HEIGHT;
 
 		if (hasRedstoneModule && mouseX >= left && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
 			int comparatorOutput = be.getComparatorOutputFunction().applyAsInt(orderedFilterList.get(slotIndex));
@@ -109,15 +108,15 @@ public class ToggleScrollList<T> extends ScrollPanel {
 	protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY) {
 		Font font = Minecraft.getInstance().font;
 		int baseY = top + border - (int) scrollDistance;
-		int slotBuffer = slotHeight - 4;
+		int slotBuffer = SLOT_HEIGHT - 4;
 		int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
-		int slotIndex = mouseListY / slotHeight;
+		int slotIndex = mouseListY / SLOT_HEIGHT;
 
 		//highlight hovered slot
 		if (hasSmartModule && mouseX >= left && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
 			int min = left;
 			int max = entryRight - 6; //6 is the width of the scrollbar
-			int slotTop = baseY + slotIndex * slotHeight;
+			int slotTop = baseY + slotIndex * SLOT_HEIGHT;
 			BufferBuilder bufferBuilder = tess.getBuilder();
 
 			RenderSystem.enableBlend();
@@ -140,7 +139,7 @@ public class ToggleScrollList<T> extends ScrollPanel {
 		//draw entry strings and indicators whether the filter is enabled
 		for (T type : orderedFilterList) {
 			Component name = typeNames.computeIfAbsent(type, t -> Utils.localize(t == be.getDefaultType() ? be.getDefaultTypeName() : t.toString()));
-			int yStart = relativeY + (slotHeight * i);
+			int yStart = relativeY + (SLOT_HEIGHT * i);
 
 			font.draw(pose, name, left + width / 2 - font.width(name) / 2, yStart, 0xC6C6C6);
 			RenderSystem.setShaderTexture(0, BEACON_GUI);
@@ -160,10 +159,10 @@ public class ToggleScrollList<T> extends ScrollPanel {
 		if (previousScrolling) {
 			boolean scrolling = button == 0 && mouseX >= barLeft && mouseX < barLeft + barWidth && mouseY >= top && mouseY <= bottom;
 
-			if (scrolling != previousScrolling)
+			if (!scrolling)
 				ObfuscationReflectionHelper.setPrivateValue(ScrollPanel.class, this, scrolling, "scrolling");
 
-			if (!isMouseOver(mouseX, mouseY) || previousScrolling && !scrolling)
+			if (!isMouseOver(mouseX, mouseY) || !scrolling)
 				return clickPanel(mouseX - left, mouseY - top + (int) scrollDistance - border, button);
 		}
 

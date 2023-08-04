@@ -34,7 +34,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBlock {
-	public ReinforcedFenceGateBlock(Block.Properties properties) {
+	public ReinforcedFenceGateBlock(BlockBehaviour.Properties properties) {
 		this(properties, SoundEvents.IRON_DOOR_CLOSE, SoundEvents.IRON_DOOR_OPEN);
 	}
 
@@ -49,8 +49,8 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBl
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if (placer instanceof Player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (Player) placer));
+		if (placer instanceof Player player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override
@@ -99,9 +99,9 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBl
 
 	@Override
 	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
-		super.triggerEvent(state, level, pos, id, param);
-		BlockEntity blockEntity = level.getBlockEntity(pos);
-		return blockEntity != null ? blockEntity.triggerEvent(id, param) : false;
+		BlockEntity be = level.getBlockEntity(pos);
+
+		return be != null && be.triggerEvent(id, param);
 	}
 
 	@Override

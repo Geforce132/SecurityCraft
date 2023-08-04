@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.phys.BlockHitResult;
@@ -42,14 +43,14 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock {
 	private static final VoxelShape CEILING_EW_POWERED = Block.box(5, 15, 3, 11, 16, 13);
 	private static final VoxelShape CEILING_EW_UNPOWERED = Block.box(5, 14, 3, 11, 16, 13);
 
-	public PanicButtonBlock(Block.Properties properties, int ticksToStayPressed, boolean arrowsCanPush, SoundEvent soundOff, SoundEvent soundOn) {
+	public PanicButtonBlock(BlockBehaviour.Properties properties, int ticksToStayPressed, boolean arrowsCanPush, SoundEvent soundOff, SoundEvent soundOn) {
 		super(properties, ticksToStayPressed, arrowsCanPush, soundOff, soundOn);
 	}
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if (placer instanceof Player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (Player) placer));
+		if (placer instanceof Player player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override
@@ -76,9 +77,9 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock {
 
 	@Override
 	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
-		super.triggerEvent(state, level, pos, id, param);
-		BlockEntity blockEntity = level.getBlockEntity(pos);
-		return blockEntity == null ? false : blockEntity.triggerEvent(id, param);
+		BlockEntity be = level.getBlockEntity(pos);
+
+		return be != null && be.triggerEvent(id, param);
 	}
 
 	@Override

@@ -65,8 +65,8 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	 */
 	public static final int RENDER_DISTANCE = 50;
 	private final Map<EntityType<?>, Boolean> projectileFilter = new LinkedHashMap<>();
-	public Projectile entityBeingTargeted = null;
-	public int cooldown = getCooldownTime();
+	private Projectile entityBeingTargeted = null;
+	private int cooldown = getCooldownTime();
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private LazyOptional<IItemHandler> insertOnlyHandler, lensHandler;
@@ -98,26 +98,24 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		if (isDisabled())
 			return;
 
-		if (!level.isClientSide) {
-			// If the trophy does not have a target, try looking for one
-			if (entityBeingTargeted == null) {
-				Projectile target = getPotentialTarget(level, pos);
+		// If the trophy does not have a target, try looking for one
+		if (!level.isClientSide && getTarget() == null) {
+			Projectile target = getPotentialTarget(level, pos);
 
-				if (target != null) {
-					Entity shooter = target.getOwner();
+			if (target != null) {
+				Entity shooter = target.getOwner();
 
-					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-					if (!(shooter != null && ((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(new Owner(shooter), getOwner())) || (ignoresOwner() && (shooter.getUUID() != null && shooter.getUUID().toString().equals(getOwner().getUUID()))) || isAllowed(shooter.getName().getString()))))
-						setTarget(target);
-				}
+				//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
+				if (!(shooter != null && ((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(new Owner(shooter), getOwner())) || (ignoresOwner() && (shooter.getUUID() != null && shooter.getUUID().toString().equals(getOwner().getUUID()))) || isAllowed(shooter.getName().getString()))))
+					setTarget(target);
 			}
 		}
 
 		// If there are no entities to target, return
-		if (entityBeingTargeted == null)
+		if (getTarget() == null)
 			return;
 
-		if (!entityBeingTargeted.isAlive()) {
+		if (!getTarget().isAlive()) {
 			resetTarget();
 			return;
 		}
@@ -172,7 +170,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == ForgeCapabilities.ITEM_HANDLER)
-			return BlockUtils.getProtectedCapability(side, this, () -> getNormalHandler(), () -> getInsertOnlyHandler()).cast();
+			return BlockUtils.getProtectedCapability(side, this, this::getNormalHandler, this::getInsertOnlyHandler).cast();
 		else
 			return super.getCapability(cap, side);
 	}
@@ -228,17 +226,17 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		setChanged();
 
 		if (!level.isClientSide)
-			SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new SetTrophySystemTarget(worldPosition, target.getId()));
+			SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new SetTrophySystemTarget(worldPosition, target.getId()));
 	}
 
 	/**
 	 * Deletes the targeted entity and creates a small explosion where it last was
 	 */
 	private void destroyTarget() {
-		entityBeingTargeted.remove(RemovalReason.KILLED);
+		getTarget().remove(RemovalReason.KILLED);
 
 		if (!level.isClientSide)
-			level.explode(null, entityBeingTargeted.getX(), entityBeingTargeted.getY(), entityBeingTargeted.getZ(), 0.1F, ExplosionInteraction.NONE);
+			level.explode(null, getTarget().getX(), getTarget().getY(), getTarget().getZ(), 0.1F, ExplosionInteraction.NONE);
 
 		resetTarget();
 	}
@@ -264,7 +262,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		potentialTargets = potentialTargets.stream().filter(this::filterSCProjectiles).collect(Collectors.toList());
 
 		// If there are no projectiles, return
-		if (potentialTargets.size() <= 0)
+		if (potentialTargets.isEmpty())
 			return null;
 
 		// Return a random entity to target from the list of all possible targets
@@ -301,7 +299,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 			setChanged();
 
 			if (level.isClientSide)
-				SecurityCraft.channel.sendToServer(new SyncTrophySystem(worldPosition, projectileType, allowed));
+				SecurityCraft.CHANNEL.sendToServer(new SyncTrophySystem(worldPosition, projectileType, allowed));
 		}
 	}
 
@@ -363,5 +361,9 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	 */
 	public int getCooldownTime() {
 		return isModuleEnabled(ModuleType.SPEED) ? 4 : 8;
+	}
+
+	public Projectile getTarget() {
+		return entityBeingTargeted;
 	}
 }

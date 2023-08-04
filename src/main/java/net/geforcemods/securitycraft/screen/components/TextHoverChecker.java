@@ -14,7 +14,7 @@ public class TextHoverChecker extends HoverChecker {
 
 	public TextHoverChecker(int top, int bottom, int left, int right, List<? extends Component> lines) {
 		super(top, bottom, left, right);
-		this.lines = lines.stream().map(component -> (Component) component).toList();
+		this.lines = lines.stream().map(Component.class::cast).toList();
 	}
 
 	public Component getName() {

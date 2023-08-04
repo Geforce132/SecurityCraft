@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.AttachFace;
@@ -58,7 +59,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 	public static final VoxelShape WALL_W = Block.box(10.0D, 2.0D, 2.0D, 16.0D, 14.0D, 14.0D);
 	private final boolean glowing;
 
-	public DisplayCaseBlock(Block.Properties properties, boolean glowing) {
+	public DisplayCaseBlock(BlockBehaviour.Properties properties, boolean glowing) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(ATTACH_FACE, AttachFace.WALL).setValue(WATERLOGGED, false));
 		this.glowing = glowing;

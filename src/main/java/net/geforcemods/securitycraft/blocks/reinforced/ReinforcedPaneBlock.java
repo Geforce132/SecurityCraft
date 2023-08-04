@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -22,7 +23,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class ReinforcedPaneBlock extends IronBarsBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
 
-	public ReinforcedPaneBlock(Block.Properties properties, Block vB) {
+	public ReinforcedPaneBlock(BlockBehaviour.Properties properties, Block vB) {
 		super(properties);
 
 		vanillaBlock = vB;

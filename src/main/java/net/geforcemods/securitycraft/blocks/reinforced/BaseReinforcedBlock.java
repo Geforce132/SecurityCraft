@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.NetherSproutsBlock;
 import net.minecraft.world.level.block.RootsBlock;
 import net.minecraft.world.level.block.WaterlilyBlock;
 import net.minecraft.world.level.block.WitherRoseBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.material.FluidState;
@@ -33,11 +34,11 @@ import net.minecraftforge.common.PlantType;
 public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock {
 	private final Supplier<Block> vanillaBlockSupplier;
 
-	public BaseReinforcedBlock(Block.Properties properties, Block vB) {
+	public BaseReinforcedBlock(BlockBehaviour.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
 
-	public BaseReinforcedBlock(Block.Properties properties, Supplier<Block> vB) {
+	public BaseReinforcedBlock(BlockBehaviour.Properties properties, Supplier<Block> vB) {
 		super(properties);
 
 		vanillaBlockSupplier = vB;
@@ -108,7 +109,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	@Override
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (getVanillaBlock() instanceof HalfTransparentBlock)
-			return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
+			return adjacentBlockState.getBlock() == this || super.skipRendering(state, adjacentBlockState, side);
 
 		return false;
 	}

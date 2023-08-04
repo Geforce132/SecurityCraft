@@ -21,8 +21,8 @@ import net.minecraft.world.item.ItemStack;
 public class SSSItemScreen extends Screen implements ConnectionAccessor {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final ItemStack stack;
-	private final int imageWidth = 176;
-	private final int imageHeight = 166;
+	private int imageWidth = 176;
+	private int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
 	private SSSConnectionList<SSSItemScreen> connectionList;
@@ -80,7 +80,7 @@ public class SSSItemScreen extends Screen implements ConnectionAccessor {
 	@Override
 	public void removePosition(BlockPos pos) {
 		SonicSecuritySystemItem.removeLinkedBlock(stack.getTag(), pos);
-		SecurityCraft.channel.sendToServer(new RemovePositionFromSSS(pos));
+		SecurityCraft.CHANNEL.sendToServer(new RemovePositionFromSSS(pos));
 		connectionList.refreshPositions();
 	}
 }

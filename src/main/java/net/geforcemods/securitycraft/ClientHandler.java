@@ -18,7 +18,6 @@ import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
@@ -112,6 +111,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateHolder;
@@ -171,6 +171,8 @@ public class ClientHandler {
 		rightArm.yRot = -0.5F;
 		leftArm.xRot = rightArm.xRot = -1.5F;
 	});
+
+	private ClientHandler() {}
 
 	@SubscribeEvent
 	public static void onModelBakingCompleted(ModelEvent.ModifyBakingResult event) {
@@ -383,7 +385,7 @@ public class ClientHandler {
 			return 0xFFFFFF;
 		}, disguisableBlocks.get());
 		event.register((state, level, pos, tintIndex) -> {
-			if (tintIndex == 1 && !state.getValue(ReinforcedSnowyDirtBlock.SNOWY)) {
+			if (tintIndex == 1 && !state.getValue(SnowyDirtBlock.SNOWY)) {
 				int grassTint = level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos) : GrassColor.get(0.5D, 1.0D);
 
 				return mixWithReinforcedTintIfEnabled(grassTint);
@@ -485,7 +487,6 @@ public class ClientHandler {
 		blocksWithReinforcedTint = null;
 		blocksWithCustomTint = null;
 	}
-
 	private static int mixWithReinforcedTintIfEnabled(int tint1) {
 		boolean tintReinforcedBlocks;
 
@@ -557,7 +558,7 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new BriefcasePasscodeScreen(title, true));
 	}
 
-	public static void displayUsernameLoggerScreen(Level level, BlockPos pos) {
+	public static void displayUsernameLoggerScreen(BlockPos pos) {
 		if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be) {
 			if (be.isDisabled())
 				getClientPlayer().displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);

@@ -95,7 +95,6 @@ public class SCManualScreen extends Screen {
 	private boolean explosive, ownable, passcodeProtected, viewActivated, customizable, lockable, moduleInventory;
 	private IngredientDisplay pageIcon;
 	private Component pageTitle, designedBy;
-	private PageGroup pageGroup = PageGroup.NONE;
 
 	public SCManualScreen() {
 		super(Component.translatable(SCContent.SC_MANUAL.get().getDescriptionId()));
@@ -106,10 +105,10 @@ public class SCManualScreen extends Screen {
 		byte startY = 2;
 
 		startX = (width - 256) / 2;
-		addRenderableWidget(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, Component.empty(), b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
-		addRenderableWidget(patronList = new PatronList(minecraft, 115, 90, 50, startX + 125));
-		addRenderableWidget(previousSubpage = new ChangePageButton(startX + 155, startY + 97, false, b -> previousSubpage()));
-		addRenderableWidget(nextSubpage = new ChangePageButton(startX + 180, startY + 97, true, b -> nextSubpage()));
+		patreonLinkButton = addRenderableWidget(new HyperlinkButton(startX + 225, 143, 16, 16, Component.empty(), b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
+		patronList = addRenderableWidget(new PatronList(minecraft, 115, 90, 50, startX + 125));
+		previousSubpage = addRenderableWidget(new ChangePageButton(startX + 155, startY + 97, false, b -> previousSubpage()));
+		nextSubpage = addRenderableWidget(new ChangePageButton(startX + 180, startY + 97, true, b -> nextSubpage()));
 		addRenderableWidget(new ChangePageButton(startX + 22, startY + 188, false, b -> previousPage()));
 		addRenderableWidget(new ChangePageButton(startX + 210, startY + 188, true, b -> nextPage()));
 
@@ -136,7 +135,7 @@ public class SCManualScreen extends Screen {
 
 		if (currentPage == -1)
 			RenderSystem._setShaderTexture(0, TITLE_PAGE);
-		else if (recipe != null && recipe.size() > 0)
+		else if (recipe != null && !recipe.isEmpty())
 			RenderSystem._setShaderTexture(0, PAGE);
 		else
 			RenderSystem._setShaderTexture(0, PAGE_WITH_SCROLL);
@@ -350,47 +349,45 @@ public class SCManualScreen extends Screen {
 		}
 
 		SCManualPage page = SCManualItem.PAGES.get(currentPage);
-		String designedBy = page.designedBy();
+		String designerName = page.designedBy();
 		Item item = page.item();
+		PageGroup pageGroup = page.group();
 
-		if (designedBy != null && !designedBy.isEmpty())
-			this.designedBy = Utils.localize("gui.securitycraft:scManual.designedBy", designedBy);
+		if (designerName != null && !designerName.isEmpty())
+			designedBy = Utils.localize("gui.securitycraft:scManual.designedBy", designerName);
 		else
-			this.designedBy = null;
+			designedBy = null;
 
 		recipe = null;
-		pageGroup = page.group();
 
 		if (pageGroup == PageGroup.NONE) {
 			for (Recipe<?> object : Minecraft.getInstance().level.getRecipeManager().getRecipes()) {
-				if (object instanceof ShapedRecipe recipe) {
-					if (!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == item) {
-						NonNullList<Ingredient> ingredients = recipe.getIngredients();
+				if (object instanceof ShapedRecipe shapedRecipe) {
+					if (!shapedRecipe.getResultItem().isEmpty() && shapedRecipe.getResultItem().getItem() == item) {
+						NonNullList<Ingredient> ingredients = shapedRecipe.getIngredients();
 						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(9, Ingredient.EMPTY);
 
 						for (int i = 0; i < ingredients.size(); i++) {
-							recipeItems.set(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()), ingredients.get(i));
+							recipeItems.set(getCraftMatrixPosition(i, shapedRecipe.getWidth(), shapedRecipe.getHeight()), ingredients.get(i));
 						}
 
 						this.recipe = recipeItems;
 						break;
 					}
 				}
-				else if (object instanceof ShapelessRecipe recipe) {
-					if (!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == item) {
-						//don't show keycard reset recipes
-						if (recipe.getId().getPath().endsWith("_reset"))
-							continue;
+				else if (object instanceof ShapelessRecipe shapelessRecipe && !shapelessRecipe.getResultItem().isEmpty() && shapelessRecipe.getResultItem().getItem() == item) {
+					//don't show keycard reset recipes
+					if (shapelessRecipe.getId().getPath().endsWith("_reset"))
+						continue;
 
-						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
+					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(shapelessRecipe.getIngredients().size(), Ingredient.EMPTY);
 
-						for (int i = 0; i < recipeItems.size(); i++) {
-							recipeItems.set(i, recipe.getIngredients().get(i));
-						}
-
-						this.recipe = recipeItems;
-						break;
+					for (int i = 0; i < recipeItems.size(); i++) {
+						recipeItems.set(i, shapelessRecipe.getIngredients().get(i));
 					}
+
+					this.recipe = recipeItems;
+					break;
 				}
 			}
 		}
@@ -407,9 +404,9 @@ public class SCManualScreen extends Screen {
 				if (stacksLeft == 0)
 					break;
 
-				if (object instanceof ShapedRecipe recipe) {
-					if (!recipe.getResultItem().isEmpty() && pageItems.contains(recipe.getResultItem().getItem())) {
-						NonNullList<Ingredient> ingredients = recipe.getIngredients();
+				if (object instanceof ShapedRecipe shapedRecipe) {
+					if (!shapedRecipe.getResultItem().isEmpty() && pageItems.contains(shapedRecipe.getResultItem().getItem())) {
+						NonNullList<Ingredient> ingredients = shapedRecipe.getIngredients();
 
 						for (int i = 0; i < ingredients.size(); i++) {
 							ItemStack[] items = ingredients.get(i).getItems();
@@ -417,37 +414,35 @@ public class SCManualScreen extends Screen {
 							if (items.length == 0)
 								continue;
 
-							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
+							int indexToAddAt = pageItems.indexOf(shapedRecipe.getResultItem().getItem());
 
 							//first item needs to suffice since multiple recipes are being cycled through
-							recipeStacks.get(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()))[indexToAddAt] = items[0];
+							recipeStacks.get(getCraftMatrixPosition(i, shapedRecipe.getWidth(), shapedRecipe.getHeight()))[indexToAddAt] = items[0];
 						}
 
 						stacksLeft--;
 					}
 				}
-				else if (object instanceof ShapelessRecipe recipe) {
-					if (!recipe.getResultItem().isEmpty() && pageItems.contains(recipe.getResultItem().getItem())) {
-						//don't show keycard reset recipes
-						if (recipe.getId().getPath().endsWith("_reset"))
+				else if (object instanceof ShapelessRecipe shapelessRecipe && !shapelessRecipe.getResultItem().isEmpty() && pageItems.contains(shapelessRecipe.getResultItem().getItem())) {
+					//don't show keycard reset recipes
+					if (shapelessRecipe.getId().getPath().endsWith("_reset"))
+						continue;
+
+					NonNullList<Ingredient> ingredients = shapelessRecipe.getIngredients();
+
+					for (int i = 0; i < ingredients.size(); i++) {
+						ItemStack[] items = ingredients.get(i).getItems();
+
+						if (items.length == 0)
 							continue;
 
-						NonNullList<Ingredient> ingredients = recipe.getIngredients();
+						int indexToAddAt = pageItems.indexOf(shapelessRecipe.getResultItem().getItem());
 
-						for (int i = 0; i < ingredients.size(); i++) {
-							ItemStack[] items = ingredients.get(i).getItems();
-
-							if (items.length == 0)
-								continue;
-
-							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
-
-							//first item needs to suffice since multiple recipes are being cycled through
-							recipeStacks.get(i)[indexToAddAt] = items[0];
-						}
-
-						stacksLeft--;
+						//first item needs to suffice since multiple recipes are being cycled through
+						recipeStacks.get(i)[indexToAddAt] = items[0];
 					}
+
+					stacksLeft--;
 				}
 			}
 
@@ -545,7 +540,7 @@ public class SCManualScreen extends Screen {
 			}
 		}
 
-		if (recipe != null && recipe.size() > 0) {
+		if (recipe != null && !recipe.isEmpty()) {
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
 					int index = (i * 3) + j;
@@ -597,7 +592,7 @@ public class SCManualScreen extends Screen {
 
 	class PatronList extends ScrollPanel {
 		private static final String PATRON_LIST_LINK = FMLEnvironment.production ? "https://gist.githubusercontent.com/bl4ckscor3/bdda6596012b1206816db034350b5717/raw" : "https://gist.githubusercontent.com/bl4ckscor3/3196e6740774e386871a74a9606eaa61/raw";
-		private final int slotHeight = 12;
+		private static final int SLOT_HEIGHT = 12;
 		private final ExecutorService executor = Executors.newSingleThreadExecutor();
 		private Future<List<String>> patronRequestFuture;
 		private List<String> patrons = new ArrayList<>();
@@ -633,7 +628,7 @@ public class SCManualScreen extends Screen {
 
 					//draw tooltip for long patron names
 					int mouseListY = (int) (mouseY - top + scrollDistance - border);
-					int slotIndex = mouseListY / slotHeight;
+					int slotIndex = mouseListY / SLOT_HEIGHT;
 
 					if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < patrons.size() && mouseY >= top && mouseY <= bottom) {
 						String patron = patrons.get(slotIndex);
@@ -641,7 +636,7 @@ public class SCManualScreen extends Screen {
 						int baseY = top + border - (int) scrollDistance;
 
 						if (length >= width - 6) //6 = barWidth
-							renderTooltip(pose, List.of(Component.literal(patron)), Optional.empty(), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
+							renderTooltip(pose, List.of(Component.literal(patron)), Optional.empty(), left - 10, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT));
 					}
 
 					if (patrons.isEmpty()) {
@@ -681,7 +676,7 @@ public class SCManualScreen extends Screen {
 				String patron = patrons.get(i);
 
 				if (patron != null && !patron.isEmpty())
-					font.draw(pose, patron, left + 2, relativeY + (slotHeight * i), 0);
+					font.draw(pose, patron, left + 2, relativeY + (SLOT_HEIGHT * i), 0);
 			}
 		}
 

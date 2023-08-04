@@ -21,15 +21,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SecurityCameraBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE {
-	public double cameraRotation = 0.0D;
-	public double oCameraRotation = 0.0D;
-	public boolean addToRotation = true;
-	public boolean down = false, downSet = false;
+	private double cameraRotation = 0.0D;
+	private double oCameraRotation = 0.0D;
+	private boolean addToRotation = true;
+	private boolean down = false, downSet = false;
 	private int playersViewing = 0;
 	private boolean shutDown = false;
 	private DoubleOption rotationSpeedOption = new DoubleOption("rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D, true);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
-	private DoubleOption customRotationOption = new DoubleOption("customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
+	private DoubleOption customRotationOption = new DoubleOption("customRotation", getCameraRotation(), 1.55D, -1.55D, rotationSpeedOption.get(), true);
 	private DisabledOption disabled = new DisabledOption(false);
 
 	public SecurityCameraBlockEntity(BlockPos pos, BlockState state) {
@@ -44,20 +44,20 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 		}
 
 		if (!shutDown) {
-			oCameraRotation = cameraRotation;
+			oCameraRotation = getCameraRotation();
 
 			if (!shouldRotateOption.get()) {
 				cameraRotation = customRotationOption.get();
 				return;
 			}
 
-			if (addToRotation && cameraRotation <= 1.55F)
-				cameraRotation += rotationSpeedOption.get();
+			if (addToRotation && getCameraRotation() <= 1.55F)
+				cameraRotation = getCameraRotation() + rotationSpeedOption.get();
 			else
 				addToRotation = false;
 
-			if (!addToRotation && cameraRotation >= -1.55F)
-				cameraRotation -= rotationSpeedOption.get();
+			if (!addToRotation && getCameraRotation() >= -1.55F)
+				cameraRotation = getCameraRotation() - rotationSpeedOption.get();
 			else
 				addToRotation = true;
 		}
@@ -99,13 +99,11 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals("disabled")) {
-			//make players stop viewing the camera when it's disabled
-			if (!level.isClientSide && ((BooleanOption) option).get()) {
-				for (ServerPlayer player : ((ServerLevel) level).players()) {
-					if (player.getCamera() instanceof SecurityCamera camera && camera.blockPosition().equals(worldPosition))
-						camera.stopViewing(player);
-				}
+		//make players stop viewing the camera when it's disabled
+		if (option.getName().equals("disabled") && !level.isClientSide && ((BooleanOption) option).get()) {
+			for (ServerPlayer player : ((ServerLevel) level).players()) {
+				if (player.getCamera() instanceof SecurityCamera camera && camera.blockPosition().equals(worldPosition))
+					camera.stopViewing(player);
 			}
 		}
 	}
@@ -142,5 +140,17 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 	public boolean isDisabled() {
 		return disabled.get();
+	}
+
+	public double getCameraRotation() {
+		return cameraRotation;
+	}
+
+	public double getOriginalCameraRotation() {
+		return oCameraRotation;
+	}
+
+	public boolean isDown() {
+		return down;
 	}
 }

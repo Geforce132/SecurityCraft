@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -45,7 +46,7 @@ public class PortableRadarBlock extends OwnableBlock implements SimpleWaterlogge
 	private static final VoxelShape SHAPE_NORTH = Block.box(5, 5, 9, 11, 11, 16);
 	private static final VoxelShape SHAPE_SOUTH = Block.box(5, 5, 0, 11, 11, 7);
 
-	public PortableRadarBlock(Block.Properties properties) {
+	public PortableRadarBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(FACING, Direction.UP).setValue(WATERLOGGED, false));

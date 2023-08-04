@@ -19,6 +19,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -39,11 +40,11 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 	protected static final VoxelShape BOTTOM_SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
 	protected static final VoxelShape TOP_SHAPE = Block.box(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
-	public ReinforcedSlabBlock(Block.Properties properties, Block vB) {
+	public ReinforcedSlabBlock(BlockBehaviour.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
 
-	public ReinforcedSlabBlock(Block.Properties properties, Supplier<Block> vB) {
+	public ReinforcedSlabBlock(BlockBehaviour.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
 		registerDefaultState(stateDefinition.any().setValue(TYPE, SlabType.BOTTOM).setValue(WATERLOGGED, false));
 	}
@@ -89,7 +90,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 			BlockState stateToSet = defaultBlockState().setValue(TYPE, SlabType.BOTTOM).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 			Direction dir = ctx.getClickedFace();
 
-			return dir != Direction.DOWN && (dir == Direction.UP || !(ctx.getClickLocation().y - pos.getY() > 0.5D)) ? stateToSet : stateToSet.setValue(TYPE, SlabType.TOP);
+			return dir != Direction.DOWN && (dir == Direction.UP || ctx.getClickLocation().y - pos.getY() <= 0.5D) ? stateToSet : stateToSet.setValue(TYPE, SlabType.TOP);
 		}
 	}
 
@@ -122,12 +123,12 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 
 	@Override
 	public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidState) {
-		return state.getValue(TYPE) != SlabType.DOUBLE ? SimpleWaterloggedBlock.super.placeLiquid(level, pos, state, fluidState) : false;
+		return state.getValue(TYPE) != SlabType.DOUBLE && SimpleWaterloggedBlock.super.placeLiquid(level, pos, state, fluidState);
 	}
 
 	@Override
 	public boolean canPlaceLiquid(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {
-		return state.getValue(TYPE) != SlabType.DOUBLE ? SimpleWaterloggedBlock.super.canPlaceLiquid(level, pos, state, fluid) : false;
+		return state.getValue(TYPE) != SlabType.DOUBLE && SimpleWaterloggedBlock.super.canPlaceLiquid(level, pos, state, fluid);
 	}
 
 	@Override

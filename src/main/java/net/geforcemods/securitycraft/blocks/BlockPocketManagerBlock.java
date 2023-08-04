@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -27,7 +28,7 @@ import net.minecraftforge.network.NetworkHooks;
 public class BlockPocketManagerBlock extends OwnableBlock {
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-	public BlockPocketManagerBlock(Block.Properties properties) {
+	public BlockPocketManagerBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 	}
 

@@ -162,10 +162,8 @@ public class ModuleItem extends Item {
 
 		ListTag items = tag.getList("ItemInventory", Tag.TAG_COMPOUND);
 
-		if (items != null && !items.isEmpty()) {
-			if (ItemStack.of(items.getCompound(0)).getItem() instanceof BlockItem blockItem)
-				return blockItem.getBlock();
-		}
+		if (items != null && !items.isEmpty() && ItemStack.of(items.getCompound(0)).getItem() instanceof BlockItem blockItem)
+			return blockItem.getBlock();
 
 		return null;
 	}
@@ -180,7 +178,7 @@ public class ModuleItem extends Item {
 		//@formatter:off
 		return team != null && module.getOrCreateTag().getList("ListedTeams", Tag.TAG_STRING)
 				.stream()
-				.filter(tag -> tag instanceof StringTag)
+				.filter(StringTag.class::isInstance)
 				.map(tag -> ((StringTag) tag).getAsString())
 				.anyMatch(team.getName()::equals);
 		//@formatter:on

@@ -6,10 +6,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ReinforcedIronTrapDoorBlock extends BaseIronTrapDoorBlock implements IReinforcedBlock {
-	public ReinforcedIronTrapDoorBlock(Properties properties) {
+	public ReinforcedIronTrapDoorBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 	}
 

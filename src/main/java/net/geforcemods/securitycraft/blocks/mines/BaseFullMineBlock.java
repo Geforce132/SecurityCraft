@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.HitResult;
@@ -30,7 +32,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay, IBlockMine {
 	private final Block blockDisguisedAs;
 
-	public BaseFullMineBlock(Block.Properties properties, Block disguisedBlock) {
+	public BaseFullMineBlock(BlockBehaviour.Properties properties, Block disguisedBlock) {
 		super(properties);
 		blockDisguisedAs = disguisedBlock;
 	}
@@ -40,14 +42,8 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 		if (collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity() != null) {
 			Entity entity = ctx.getEntity();
 
-			if (entity instanceof ItemEntity)
+			if ((entity instanceof ItemEntity) || entity instanceof Player player && level.getBlockEntity(pos) instanceof IOwnable ownableTe && (ownableTe.isOwnedBy(player) || player.isCreative()))
 				return Shapes.block();
-			else if (entity instanceof Player player) {
-				if (level.getBlockEntity(pos) instanceof OwnableBlockEntity ownableTe) {
-					if (ownableTe.isOwnedBy(player) || player.isCreative())
-						return Shapes.block();
-				}
-			}
 
 			return Shapes.empty();
 		}

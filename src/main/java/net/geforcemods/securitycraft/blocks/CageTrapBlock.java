@@ -30,6 +30,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -43,7 +44,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class CageTrapBlock extends DisguisableBlock {
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 
-	public CageTrapBlock(Block.Properties properties) {
+	public CageTrapBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(DEACTIVATED, false).setValue(WATERLOGGED, false));
 	}
@@ -148,16 +149,14 @@ public class CageTrapBlock extends DisguisableBlock {
 				return InteractionResult.SUCCESS;
 			}
 		}
-		else if (stack.getItem() == Items.REDSTONE) {
-			if (state.getValue(DEACTIVATED)) {
-				level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
+		else if (stack.getItem() == Items.REDSTONE && state.getValue(DEACTIVATED)) {
+			level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
 
-				if (!player.isCreative())
-					stack.shrink(1);
+			if (!player.isCreative())
+				stack.shrink(1);
 
-				level.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
-				return InteractionResult.SUCCESS;
-			}
+			level.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
+			return InteractionResult.SUCCESS;
 		}
 
 		return InteractionResult.PASS;

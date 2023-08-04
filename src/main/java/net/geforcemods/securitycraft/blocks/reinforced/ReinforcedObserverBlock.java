@@ -11,20 +11,22 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.ObserverBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedObserverBlock extends ObserverBlock implements IReinforcedBlock, EntityBlock {
-	public ReinforcedObserverBlock(Block.Properties properties) {
+	public ReinforcedObserverBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
-		return side == state.getValue(ObserverBlock.FACING);
+		return side == state.getValue(DirectionalBlock.FACING);
 	}
 
 	@Override
