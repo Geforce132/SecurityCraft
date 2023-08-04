@@ -12,16 +12,16 @@
             "to": [9.25,16,9.25],
             "faces": {
                 "west": {
-                    "texture": "#laser"
+                    "texture": "#laser", "tintindex": 0
                 },
                 "east": {
-                    "texture": "#laser"
+                    "texture": "#laser", "tintindex": 0
                 },
                 "north": {
-                    "texture": "#laser"
+                    "texture": "#laser", "tintindex": 0
                 },
                 "south": {
-                    "texture": "#laser"
+                    "texture": "#laser", "tintindex": 0
                 }
             }
         }

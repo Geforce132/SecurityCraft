@@ -13,8 +13,8 @@
     }
   },
   "pattern": [
-    "SSS",
-    "SRS",
+    "SGS",
+    "GRG",
     "SGS"
   ],
   "result": {
