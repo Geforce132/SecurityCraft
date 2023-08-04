@@ -25,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.Half;
@@ -32,7 +33,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
 public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
-	public KeypadTrapDoorBlock(Properties properties, BlockSetType blockSetType) {
+	public KeypadTrapDoorBlock(BlockBehaviour.Properties properties, BlockSetType blockSetType) {
 		super(properties, blockSetType);
 	}
 

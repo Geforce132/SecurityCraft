@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.material.PushReaction;
@@ -24,7 +25,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
 
-	public ReinforcedButtonBlock(Block.Properties properties, Block vb, BlockSetType blockSetType, int ticksToStayPressed, boolean arrowsCanPush) {
+	public ReinforcedButtonBlock(BlockBehaviour.Properties properties, Block vb, BlockSetType blockSetType, int ticksToStayPressed, boolean arrowsCanPush) {
 		super(properties, blockSetType, ticksToStayPressed, arrowsCanPush);
 		this.vanillaBlock = vb;
 		CommonDoorActivator.addActivator(this);
@@ -32,7 +33,7 @@ public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlo
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTrace) {
-		if (isAllowedToPress(level, pos, (AllowlistOnlyBlockEntity) level.getBlockEntity(pos), player))
+		if (isAllowedToPress((AllowlistOnlyBlockEntity) level.getBlockEntity(pos), player))
 			return super.use(state, level, pos, player, hand, rayTrace);
 		return InteractionResult.FAIL;
 	}
@@ -62,7 +63,7 @@ public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlo
 		}
 	}
 
-	public boolean isAllowedToPress(Level level, BlockPos pos, AllowlistOnlyBlockEntity be, Player entity) {
+	public boolean isAllowedToPress(AllowlistOnlyBlockEntity be, Player entity) {
 		return be.isOwnedBy(entity) || be.isAllowed(entity);
 	}
 

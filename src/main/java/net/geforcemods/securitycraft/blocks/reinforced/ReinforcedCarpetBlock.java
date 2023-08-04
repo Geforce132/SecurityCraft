@@ -6,6 +6,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -13,7 +14,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class ReinforcedCarpetBlock extends BaseReinforcedBlock {
 	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
-	public ReinforcedCarpetBlock(Block.Properties properties, Block block) {
+	public ReinforcedCarpetBlock(BlockBehaviour.Properties properties, Block block) {
 		super(properties, block);
 	}
 

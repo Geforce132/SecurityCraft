@@ -94,7 +94,7 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = slots.get(id);
 
-		if (slot != null && slot.hasItem()) {
+		if (slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
 
 			slotStackCopy = slotStack.copy();
@@ -104,10 +104,8 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 					return ItemStack.EMPTY;
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if (id < 36) {
-				if (!moveItemStackTo(slotStack, 36, fixSlot(38), false))
-					return ItemStack.EMPTY;
-			}
+			else if (id < 36 && !moveItemStackTo(slotStack, 36, fixSlot(38), false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.set(ItemStack.EMPTY);
@@ -198,9 +196,7 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 
 	@Override
 	public void clicked(int slot, int dragType, ClickType clickType, Player player) {
-		if (slot >= 0 && getSlot(slot) != null && getSlot(slot).getItem().getItem() instanceof UniversalBlockReinforcerItem)
-			return;
-		else
+		if (!(slot >= 0 && getSlot(slot) != null && getSlot(slot).getItem().getItem() instanceof UniversalBlockReinforcerItem))
 			super.clicked(slot, dragType, clickType, player);
 	}
 

@@ -40,7 +40,7 @@ public class ClaymoreMenu extends AbstractContainerMenu {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
 
-		if (slot != null && slot.hasItem()) {
+		if (slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
 			slotStackCopy = slotStack.copy();
 
@@ -50,10 +50,8 @@ public class ClaymoreMenu extends AbstractContainerMenu {
 
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if (index >= 1) {
-				if (!moveItemStackTo(slotStack, 0, 1, false))
-					return ItemStack.EMPTY;
-			}
+			else if (index >= 1 && !moveItemStackTo(slotStack, 0, 1, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.set(ItemStack.EMPTY);

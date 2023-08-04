@@ -35,7 +35,7 @@ public class InventoryScannerGhostIngredientHandler implements IGhostIngredientH
 					@Override
 					public void accept(I ingredient) {
 						screen.be.getContents().set(slot.index, (ItemStack) ingredient);
-						SecurityCraft.channel.sendToServer(new SetGhostSlot(slot.index, (ItemStack) ingredient));
+						SecurityCraft.CHANNEL.sendToServer(new SetGhostSlot(slot.index, (ItemStack) ingredient));
 					}
 				});
 			}

@@ -14,8 +14,6 @@ import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -43,11 +41,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 
 	@Override
 	public InteractionResult useOn(UseOnContext ctx) {
-		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getHand());
-	}
-
-	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, InteractionHand hand) {
-		handle(stack, level, player);
+		handle(ctx.getItemInHand(), ctx.getLevel(), ctx.getPlayer());
 		return InteractionResult.CONSUME;
 	}
 
@@ -61,7 +55,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 
 	private void handle(ItemStack stack, Level level, Player player) {
 		if (!level.isClientSide)
-			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(stack.getOrCreateTag().contains("passcode") ? OpenScreen.DataType.CHECK_BRIEFCASE_PASSCODE : OpenScreen.DataType.SET_BRIEFCASE_PASSCODE, player.blockPosition()));
+			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(stack.getOrCreateTag().contains("passcode") ? OpenScreen.DataType.CHECK_BRIEFCASE_PASSCODE : OpenScreen.DataType.SET_BRIEFCASE_PASSCODE, player.blockPosition()));
 	}
 
 	@Override

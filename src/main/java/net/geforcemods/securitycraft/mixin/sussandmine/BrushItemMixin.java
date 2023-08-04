@@ -26,15 +26,13 @@ import net.minecraft.world.phys.BlockHitResult;
 public class BrushItemMixin {
 	@Inject(method = "onUseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;isClientSide()Z"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
 	private void securitycraft$checkForSuspiciousSandMine(Level level, LivingEntity entity, ItemStack stack, int tick, CallbackInfo ci, Player player, BlockHitResult blockHitResult, BlockPos pos, int newUseDuration, BlockState brushedState) {
-		if (!level.isClientSide() && brushedState.is(SCContent.SUSPICIOUS_SAND_MINE.get())) {
-			if (level.getBlockEntity(pos) instanceof BrushableMineBlockEntity be) {
-				boolean brushFinished = be.brush(level.getGameTime(), player, blockHitResult.getDirection());
+		if (!level.isClientSide() && brushedState.is(SCContent.SUSPICIOUS_SAND_MINE.get()) && level.getBlockEntity(pos) instanceof BrushableMineBlockEntity be) {
+			boolean brushFinished = be.brush(level.getGameTime(), player, blockHitResult.getDirection());
 
-				if (brushFinished)
-					stack.hurtAndBreak(1, player, livingEntity -> livingEntity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+			if (brushFinished)
+				stack.hurtAndBreak(1, player, livingEntity -> livingEntity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 
-				ci.cancel();
-			}
+			ci.cancel();
 		}
 	}
 }

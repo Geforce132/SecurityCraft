@@ -31,7 +31,7 @@ import net.minecraftforge.client.gui.widget.ScrollPanel;
 
 public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends ScrollPanel {
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
-	private final int slotHeight = 12;
+	private static final int SLOT_HEIGHT = 12;
 	private final T parent;
 	private final List<ConnectionInfo> connectionInfo = new ArrayList<>();
 	private final Font font;
@@ -76,15 +76,15 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 	@Override
 	protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
 		int baseY = top + border - (int) scrollDistance;
-		int slotBuffer = slotHeight - 4;
+		int slotBuffer = SLOT_HEIGHT - 4;
 		int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
-		int slotIndex = mouseListY / slotHeight;
+		int slotIndex = mouseListY / SLOT_HEIGHT;
 
 		//highlight hovered slot
 		if (mouseX >= left && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < connectionInfo.size() && mouseY >= top && mouseY <= bottom) {
 			int min = left;
 			int max = entryRight - 6; //6 is the width of the scrollbar
-			int slotTop = baseY + slotIndex * slotHeight;
+			int slotTop = baseY + slotIndex * SLOT_HEIGHT;
 			BufferBuilder bufferBuilder = tesselator.getBuilder();
 
 			RenderSystem.enableBlend();
@@ -108,7 +108,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 		int i = 0;
 
 		for (ConnectionInfo info : connectionInfo) {
-			int yStart = relativeY + (slotHeight * i++);
+			int yStart = relativeY + (SLOT_HEIGHT * i++);
 
 			font.draw(pose, info.blockName, left + 13, yStart, 0xC6C6C6);
 		}
@@ -120,7 +120,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 
 		//draw tooltip for long block names
 		int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
-		int slotIndex = mouseListY / slotHeight;
+		int slotIndex = mouseListY / SLOT_HEIGHT;
 
 		if (slotIndex >= 0 && slotIndex < connectionInfo.size() && mouseListY >= 0 && mouseX >= left && mouseX < right - 6 && mouseY >= top && mouseY <= bottom) {
 			Component blockName = connectionInfo.get(slotIndex).blockName;
@@ -128,7 +128,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			int baseY = top + border - (int) scrollDistance;
 
 			if (length + 13 >= width - 6) //6 = barWidth
-				parent.renderTooltip(pose, List.of(blockName), Optional.empty(), left + 1, baseY + (slotHeight * slotIndex + slotHeight));
+				parent.renderTooltip(pose, List.of(blockName), Optional.empty(), left + 1, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT));
 
 			font.draw(pose, Utils.getFormattedCoordinates(connectionInfo.get(slotIndex).pos), left + 13, top + height + 5, 4210752);
 		}
@@ -136,7 +136,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 
 	@Override
 	protected boolean clickPanel(double mouseX, double mouseY, int button) {
-		int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
+		int slotIndex = (int) (mouseY + (border / 2)) / SLOT_HEIGHT;
 
 		if (slotIndex >= 0 && slotIndex < connectionInfo.size()) {
 			Minecraft mc = Minecraft.getInstance();

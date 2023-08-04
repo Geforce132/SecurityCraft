@@ -84,7 +84,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		for (int i = 0; i < maxNumberOfModules; i++) {
 			int column = i % numberOfColumns;
 
-			addRenderableWidget(descriptionButtons[i] = new ModuleButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked));
+			descriptionButtons[i] = addRenderableWidget(new ModuleButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked));
 			descriptionButtons[i].setTooltip(Tooltip.create(getModuleTooltipText(i)));
 			descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
@@ -92,7 +92,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		if (moduleInv.getBlockEntity() instanceof ICustomizable customizable) {
 			Option<?>[] options = customizable.customOptions();
 
-			if (options != null) {
+			if (options.length > 0) {
 				optionButtons = new AbstractWidget[options.length];
 
 				for (int i = 0; i < options.length; i++) {
@@ -105,7 +105,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
 								doubleOption.setValue(slider.getValue());
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
-								SecurityCraft.channel.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, doubleOption.get()));
+								SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, doubleOption.get()));
 							});
 						}
 						else if (option instanceof IntOption intOption) {
@@ -114,7 +114,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
 								intOption.setValue(slider.getValueInt());
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
-								SecurityCraft.channel.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, intOption.get()));
+								SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, intOption.get()));
 							});
 						}
 
@@ -171,7 +171,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		return (getFocused() != null && isDragging() && button == 0 ? getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY) : false) || super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+		return getFocused() != null && isDragging() && button == 0 && getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY) || super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
 	}
 
 	@Override
@@ -188,8 +188,8 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 				if (!descriptionButtons[i].active)
 					indicators.remove(type);
-				else if (!indicators.containsKey(type))
-					indicators.put(type, true);
+				else
+					indicators.computeIfAbsent(type, t -> true);
 			}
 		}
 	}
@@ -206,7 +206,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			moduleInv.insertModule(moduleInv.getModule(moduleType), true);
 		}
 
-		SecurityCraft.channel.sendToServer(new ToggleModule(moduleInv.getBlockEntity().getBlockPos(), moduleType));
+		SecurityCraft.CHANNEL.sendToServer(new ToggleModule(moduleInv.getBlockEntity().getBlockPos(), moduleType));
 	}
 
 	private void optionButtonClicked(Button button) {
@@ -220,7 +220,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 			button.setMessage(getOptionButtonTitle(tempOption));
 			optionButtons[i].setTooltip(Tooltip.create(getOptionDescription(i)));
-			SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getBlockEntity().getBlockPos().getX(), moduleInv.getBlockEntity().getBlockPos().getY(), moduleInv.getBlockEntity().getBlockPos().getZ(), i));
+			SecurityCraft.CHANNEL.sendToServer(new ToggleOption(moduleInv.getBlockEntity().getBlockPos().getX(), moduleInv.getBlockEntity().getBlockPos().getY(), moduleInv.getBlockEntity().getBlockPos().getZ(), i));
 			return;
 		}
 	}

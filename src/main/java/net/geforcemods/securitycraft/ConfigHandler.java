@@ -40,6 +40,8 @@ public class ConfigHandler {
 		SERVER = serverSpecPair.getLeft();
 	}
 
+	private ConfigHandler() {}
+
 	public static class Client {
 		public BooleanValue sayThanksMessage;
 		public DoubleValue cameraSpeed;
@@ -187,13 +189,13 @@ public class ConfigHandler {
 					.comment("Add effects to this list that you want the taser to inflict onto the mobs it hits. One entry corresponds to one effect, and is formatted like this:",
 							"effect_namespace:effect_path|duration|amplifier",
 							"Example: The entry \"minecraft:slowness|20|1\" defines slowness 1 for 1 second (20 ticks = 1 second).")
-					.defineList("taser_effects", List.of("minecraft:weakness|200|2", "minecraft:nausea|200|2", "minecraft:slowness|200|2"), e -> e instanceof String);
+					.defineList("taser_effects", List.of("minecraft:weakness|200|2", "minecraft:nausea|200|2", "minecraft:slowness|200|2"), String.class::isInstance);
 
 			poweredTaserEffectsValue = builder
 					.comment("Add effects to this list that you want the powered taser to inflict onto the mobs it hits. One entry corresponds to one effect, and is formatted like this:",
 							"effect_namespace:effect_path|duration|amplifier",
 							"Example: The entry \"minecraft:slowness|20|1\" defines slowness 1 for 1 second (20 ticks = 1 second).")
-					.defineList("powered_taser_effects", List.of("minecraft:weakness|400|5", "minecraft:nausea|400|5", "minecraft:slowness|400|5"), e -> e instanceof String);
+					.defineList("powered_taser_effects", List.of("minecraft:weakness|400|5", "minecraft:nausea|400|5", "minecraft:slowness|400|5"), String.class::isInstance);
 
 			laserDamage = builder
 					.comment("Defines the damage inflicted to an entity if it passes through a laser with installed harming module. This is given in health points, meaning 2 health points = 1 heart")
@@ -206,11 +208,11 @@ public class ConfigHandler {
 
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
-					.defineList("sentry_attackable_entities_allowlist", List.of(), e -> e instanceof String);
+					.defineList("sentry_attackable_entities_allowlist", List.of(), String.class::isInstance);
 
 			sentryAttackableEntitiesDenylist = builder
 					.comment("Add entities to this list that the Sentry currently attacks, but that you want the Sentry to NOT attack. The denylist takes priority over the allowlist.")
-					.defineList("sentry_attackable_entities_denylist", List.of(), e -> e instanceof String);
+					.defineList("sentry_attackable_entities_denylist", List.of(), String.class::isInstance);
 			//@formatter:on
 		}
 	}
@@ -229,26 +231,24 @@ public class ConfigHandler {
 		for (String entry : effectsValue.get()) {
 			String[] split = entry.split("\\|");
 
-			if (split.length != 3) {
+			if (split.length == 3) {
+				int duration = Integer.parseInt(split[1]);
+				int amplifier = Integer.parseInt(split[2]);
+
+				if (validateValue(duration, entry) && validateValue(amplifier, entry)) {
+					ResourceLocation effectLocation = new ResourceLocation(split[0]);
+
+					if (!ForgeRegistries.MOB_EFFECTS.containsKey(effectLocation)) {
+						LOGGER.warn("Effect \"{}\" does not exist, skipping", effectLocation);
+						continue;
+					}
+
+					//the amplifier is actually 0-indexed, but 1-indexed in the config for ease of use
+					effects.add(() -> new MobEffectInstance(ForgeRegistries.MOB_EFFECTS.getValue(effectLocation), duration, amplifier - 1));
+				}
+			}
+			else
 				LOGGER.warn("Not enough information provided for effect \"{}\", skipping", entry);
-				continue;
-			}
-
-			int duration = Integer.parseInt(split[1]);
-			int amplifier = Integer.parseInt(split[2]);
-
-			if (!validateValue(duration, entry) || !validateValue(amplifier, entry))
-				continue;
-
-			ResourceLocation effectLocation = new ResourceLocation(split[0]);
-
-			if (!ForgeRegistries.MOB_EFFECTS.containsKey(effectLocation)) {
-				LOGGER.warn("Effect \"{}\" does not exist, skipping", effectLocation);
-				continue;
-			}
-
-			//the amplifier is actually 0-indexed, but 1-indexed in the config for ease of use
-			effects.add(() -> new MobEffectInstance(ForgeRegistries.MOB_EFFECTS.getValue(effectLocation), duration, amplifier - 1));
 		}
 	}
 

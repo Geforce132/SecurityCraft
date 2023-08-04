@@ -4,8 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
 public class LinkedBlock {
-	public String blockName;
-	public BlockPos blockPos = null;
+	private String blockName;
+	private BlockPos blockPos = null;
 
 	public LinkedBlock(String name, BlockPos pos) {
 		blockName = name;
@@ -28,12 +28,12 @@ public class LinkedBlock {
 		return (LinkableBlockEntity) level.getBlockEntity(blockPos);
 	}
 
-	public String getBlockName() {
-		return blockName;
+	public void setBlockName(String blockName) {
+		this.blockName = blockName;
 	}
 
-	public void setName(String blockName) {
-		this.blockName = blockName;
+	public String getBlockName() {
+		return blockName;
 	}
 
 	public void setPos(BlockPos pos) {

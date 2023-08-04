@@ -17,14 +17,16 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
 public class F3Spoofer {
+	private F3Spoofer() {}
+
 	public static BlockState spoofBlockState(BlockState originalState, BlockPos pos) {
 		Block originalBlock = originalState.getBlock();
 
 		if (FMLEnvironment.production) {
 			if (originalBlock instanceof DisguisableBlock)
 				return DisguisableBlock.getDisguisedStateOrDefault(originalState, Minecraft.getInstance().level, pos);
-			else if (originalBlock instanceof BaseFullMineBlock)
-				return ((BaseFullMineBlock) originalBlock).getBlockDisguisedAs().defaultBlockState();
+			else if (originalBlock instanceof BaseFullMineBlock mine)
+				return mine.getBlockDisguisedAs().defaultBlockState();
 			else if (originalBlock instanceof FurnaceMineBlock)
 				return Blocks.FURNACE.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, originalState.getValue(BlockStateProperties.HORIZONTAL_FACING));
 		}

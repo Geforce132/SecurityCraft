@@ -12,11 +12,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EndRodBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedEndRodBlock extends EndRodBlock implements EntityBlock, IReinforcedBlock {
-	public ReinforcedEndRodBlock(Properties properties) {
+	public ReinforcedEndRodBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 	}
 

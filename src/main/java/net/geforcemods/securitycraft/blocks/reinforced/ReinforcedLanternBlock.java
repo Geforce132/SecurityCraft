@@ -8,6 +8,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -26,7 +27,7 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock {
 	protected static final VoxelShape STANDING_SHAPE = Shapes.or(Block.box(5.0D, 0.0D, 5.0D, 11.0D, 7.0D, 11.0D), Block.box(6.0D, 7.0D, 6.0D, 10.0D, 9.0D, 10.0D));
 	protected static final VoxelShape HANGING_SHAPE = Shapes.or(Block.box(5.0D, 1.0D, 5.0D, 11.0D, 8.0D, 11.0D), Block.box(6.0D, 8.0D, 6.0D, 10.0D, 10.0D, 10.0D));
 
-	public ReinforcedLanternBlock(Block.Properties properties, Block vB) {
+	public ReinforcedLanternBlock(BlockBehaviour.Properties properties, Block vB) {
 		super(properties, vB);
 		registerDefaultState(stateDefinition.any().setValue(HANGING, false).setValue(WATERLOGGED, false));
 	}

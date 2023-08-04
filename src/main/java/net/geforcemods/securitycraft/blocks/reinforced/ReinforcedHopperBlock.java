@@ -21,32 +21,30 @@ import net.minecraft.world.level.block.HopperBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.HopperBlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlock {
-	public ReinforcedHopperBlock(Block.Properties properties) {
+	public ReinforcedHopperBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if (placer instanceof Player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (Player) placer));
+		if (placer instanceof Player player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 
 		super.setPlacedBy(level, pos, state, placer, stack);
 	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (!level.isClientSide) {
-			if (level.getBlockEntity(pos) instanceof ReinforcedHopperBlockEntity be) {
-				//only allow the owner or players on the allowlist to access a reinforced hopper
-				if (be.isOwnedBy(player) || be.isAllowed(player))
-					player.openMenu(be);
-			}
-		}
+		//only allow the owner or players on the allowlist to access a reinforced hopper
+		if (!level.isClientSide && level.getBlockEntity(pos) instanceof ReinforcedHopperBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)))
+			player.openMenu(be);
 
 		return InteractionResult.SUCCESS;
 	}
@@ -68,7 +66,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (level.getBlockEntity(pos) instanceof ReinforcedHopperBlockEntity be)
-			ReinforcedHopperBlockEntity.entityInside(level, pos, state, entity, be);
+			HopperBlockEntity.entityInside(level, pos, state, entity, be);
 	}
 
 	@Override

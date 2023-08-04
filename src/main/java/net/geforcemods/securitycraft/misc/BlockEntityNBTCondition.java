@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.misc;
 
 import java.util.Set;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
@@ -30,7 +29,7 @@ public class BlockEntityNBTCondition implements LootItemCondition {
 
 	@Override
 	public Set<LootContextParam<?>> getReferencedContextParams() {
-		return ImmutableSet.of(LootContextParams.ORIGIN);
+		return Set.of(LootContextParams.ORIGIN);
 	}
 
 	@Override

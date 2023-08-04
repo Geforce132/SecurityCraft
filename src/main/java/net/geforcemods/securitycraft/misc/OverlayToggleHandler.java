@@ -17,6 +17,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class OverlayToggleHandler {
 	private static final Map<IGuiOverlay, Boolean> OVERLAY_STATES = new HashMap<>();
 
+	private OverlayToggleHandler() {}
+
 	@SubscribeEvent
 	public static void onRenderGuiOverlayPre(RenderGuiOverlayEvent.Pre event) {
 		IGuiOverlay overlay = event.getOverlay().overlay();

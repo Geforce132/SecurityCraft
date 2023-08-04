@@ -15,31 +15,31 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class SyncTrophySystem {
 	private BlockPos pos;
-	private ResourceLocation projectileType;
+	private ResourceLocation projectileTypeLocation;
 	private boolean allowed;
 
 	public SyncTrophySystem() {}
 
 	public SyncTrophySystem(BlockPos pos, EntityType<?> projectileType, boolean allowed) {
 		this.pos = pos;
-		this.projectileType = Utils.getRegistryName(projectileType);
+		this.projectileTypeLocation = Utils.getRegistryName(projectileType);
 		this.allowed = allowed;
 	}
 
 	public SyncTrophySystem(FriendlyByteBuf buf) {
 		pos = buf.readBlockPos();
-		projectileType = buf.readResourceLocation();
+		projectileTypeLocation = buf.readResourceLocation();
 		allowed = buf.readBoolean();
 	}
 
 	public void encode(FriendlyByteBuf buf) {
 		buf.writeBlockPos(pos);
-		buf.writeResourceLocation(projectileType);
+		buf.writeResourceLocation(projectileTypeLocation);
 		buf.writeBoolean(allowed);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		EntityType<?> projectileType = ForgeRegistries.ENTITY_TYPES.getValue(this.projectileType);
+		EntityType<?> projectileType = ForgeRegistries.ENTITY_TYPES.getValue(projectileTypeLocation);
 
 		if (projectileType != null) {
 			Level level = ctx.get().getSender().level;

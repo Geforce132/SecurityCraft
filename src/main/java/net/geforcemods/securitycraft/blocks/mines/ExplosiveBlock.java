@@ -15,13 +15,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 
 public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive {
-	public ExplosiveBlock(Block.Properties properties) {
+	protected ExplosiveBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 	}
 

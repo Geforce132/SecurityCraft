@@ -33,11 +33,7 @@ public class SetKeycardUses {
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
 
-		if (player.level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity be) {
-			if (be.isOwnedBy(player) || be.isAllowed(player)) {
-				if (player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
-					keycardReaderContainer.setKeycardUses(uses);
-			}
-		}
+		if (player.level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)) && player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
+			keycardReaderContainer.setKeycardUses(uses);
 	}
 }

@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -36,7 +37,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public abstract class DisguisableBlock extends OwnableBlock implements IOverlayDisplay, SimpleWaterloggedBlock {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public DisguisableBlock(Block.Properties properties) {
+	protected DisguisableBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 	}
 

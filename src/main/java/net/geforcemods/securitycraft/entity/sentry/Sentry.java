@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.SentryDisguiseBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -82,11 +83,11 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	private float headYTranslation = 0.9F;
 	private float oHeadYTranslation = 0.9F;
 	private boolean shutDown = false;
-	public boolean animateUpwards = false;
-	public boolean animate = false;
+	private boolean animateUpwards = false;
+	private boolean animate = false;
 	private long previousTargetId = Long.MIN_VALUE;
-	public float headRotation;
-	public float oHeadRotation;
+	private float headRotation;
+	private float oHeadRotation;
 
 	public Sentry(EntityType<Sentry> type, Level level) {
 		super(SCContent.SENTRY_ENTITY.get(), level);
@@ -128,30 +129,30 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 				discard();
 		}
 		else {
-			oHeadRotation = headRotation;
+			oHeadRotation = getHeadRotation();
 			headRotation = entityData.get(HEAD_ROTATION);
 			oHeadYTranslation = headYTranslation;
 
-			if (!shutDown && !animate && headYTranslation > 0.0F && getMode().isAggressive()) {
-				animateUpwards = true;
-				animate = true;
+			if (!shutDown && !isAnimating() && headYTranslation > 0.0F && getMode().isAggressive()) {
+				setAnimateUpwards(true);
+				setAnimate(true);
 			}
 
-			if (animate) { //no else if because animate can be changed in the above if statement
-				if (animateUpwards && headYTranslation > UPWARDS_ANIMATION_LIMIT) {
+			if (isAnimating()) { //no else if because animate can be changed in the above if statement
+				if (animatesUpwards() && headYTranslation > UPWARDS_ANIMATION_LIMIT) {
 					headYTranslation -= ANIMATION_STEP_SIZE;
 
 					if (headYTranslation <= UPWARDS_ANIMATION_LIMIT) {
-						animateUpwards = false;
-						animate = false;
+						setAnimateUpwards(false);
+						setAnimate(false);
 					}
 				}
-				else if (!animateUpwards && headYTranslation < DOWNWARDS_ANIMATION_LIMIT) {
+				else if (!animatesUpwards() && headYTranslation < DOWNWARDS_ANIMATION_LIMIT) {
 					headYTranslation += ANIMATION_STEP_SIZE;
 
 					if (headYTranslation >= DOWNWARDS_ANIMATION_LIMIT) {
-						animateUpwards = true;
-						animate = false;
+						setAnimateUpwards(true);
+						setAnimate(false);
 					}
 				}
 			}
@@ -243,10 +244,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			player.swing(InteractionHand.MAIN_HAND);
 			return InteractionResult.SUCCESS;
 		}
-		else if (!isOwnedBy(player) && hand == InteractionHand.MAIN_HAND && player.isCreative()) {
-			if (player.isCrouching() || player.getMainHandItem().getItem() == SCContent.UNIVERSAL_BLOCK_REMOVER.get())
-				kill();
-		}
+		else if (!isOwnedBy(player) && hand == InteractionHand.MAIN_HAND && player.isCreative() && (player.isCrouching() || player.getMainHandItem().getItem() == SCContent.UNIVERSAL_BLOCK_REMOVER.get()))
+			kill();
 
 		return super.mobInteract(player, hand);
 	}
@@ -300,7 +299,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			player.displayClientMessage(Utils.localize(SentryMode.values()[mode].getModeKey()).append(Utils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
 
 		if (!player.level.isClientSide)
-			SecurityCraft.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, SentryMode.values()[mode].isAggressive(), isShutDown()));
+			SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, SentryMode.values()[mode].isAggressive(), isShutDown()));
 	}
 
 	@Override
@@ -311,9 +310,9 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		}
 
 		if (!getMode().isAggressive() && (target == null && previousTargetId != Long.MIN_VALUE || (target != null && previousTargetId != target.getId()))) {
-			animateUpwards = getMode().isCamouflage() && target != null;
-			animate = true;
-			SecurityCraft.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), animate, animateUpwards, isShutDown()));
+			setAnimateUpwards(getMode().isCamouflage() && target != null);
+			setAnimate(true);
+			SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), isAnimating(), animatesUpwards(), isShutDown()));
 		}
 
 		previousTargetId = target == null ? Long.MIN_VALUE : target.getId();
@@ -416,7 +415,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	public void readAdditionalSaveData(CompoundTag tag) {
 		CompoundTag teTag = tag.getCompound("TileEntityData");
 		Owner owner = Owner.fromCompound(teTag);
-		float headRotation = tag.getFloat("HeadRotation");
+		float savedHeadRotation = tag.getFloat("HeadRotation");
 
 		entityData.set(OWNER, owner);
 		getSentryDisguiseBlockEntity().ifPresent(be -> {
@@ -433,9 +432,9 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		entityData.set(ALLOWLIST, tag.getCompound("InstalledWhitelist"));
 		entityData.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
 		entityData.set(MODE, tag.getInt("SentryMode"));
-		entityData.set(HEAD_ROTATION, headRotation);
-		oHeadRotation = headRotation;
-		this.headRotation = headRotation;
+		entityData.set(HEAD_ROTATION, savedHeadRotation);
+		oHeadRotation = savedHeadRotation;
+		headRotation = savedHeadRotation;
 		shutDown = tag.getBoolean("ShutDown");
 		super.readAdditionalSaveData(tag);
 	}
@@ -541,7 +540,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		Block blockAtSentryPos = level.getBlockState(blockPosition()).getBlock();
 
 		if (blockAtSentryPos != SCContent.SENTRY_DISGUISE.get()) {
-			level.setBlockAndUpdate(blockPosition(), SCContent.SENTRY_DISGUISE.get().defaultBlockState().setValue(SentryDisguiseBlock.WATERLOGGED, blockAtSentryPos == Blocks.WATER));
+			level.setBlockAndUpdate(blockPosition(), SCContent.SENTRY_DISGUISE.get().defaultBlockState().setValue(DisguisableBlock.WATERLOGGED, blockAtSentryPos == Blocks.WATER));
 			be = level.getBlockEntity(blockPosition());
 
 			if (be instanceof IOwnable ownable) {
@@ -598,9 +597,9 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 		if (!level.isClientSide) {
 			if (shutDown)
-				SecurityCraft.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, false, shutDown));
+				SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, false, shutDown));
 			else
-				SecurityCraft.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, getMode().isAggressive(), shutDown));
+				SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, getMode().isAggressive(), shutDown));
 		}
 	}
 
@@ -688,7 +687,31 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		return new ClientboundAddEntityPacket(this);
 	}
 
-	public static enum SentryMode {
+	public void setAnimateUpwards(boolean animateUpwards) {
+		this.animateUpwards = animateUpwards;
+	}
+
+	public boolean animatesUpwards() {
+		return animateUpwards;
+	}
+
+	public void setAnimate(boolean animate) {
+		this.animate = animate;
+	}
+
+	public boolean isAnimating() {
+		return animate;
+	}
+
+	public float getOriginalHeadRotation() {
+		return oHeadRotation;
+	}
+
+	public float getHeadRotation() {
+		return headRotation;
+	}
+
+	public enum SentryMode {
 		CAMOUFLAGE_HP(1, 0, 1),
 		CAMOUFLAGE_H(1, 1, 3),
 		CAMOUFLAGE_P(1, 2, 5),

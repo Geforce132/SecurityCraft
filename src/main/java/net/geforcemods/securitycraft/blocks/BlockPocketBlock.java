@@ -13,10 +13,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockPocketBlock extends BaseReinforcedBlock implements IBlockPocket {
-	public BlockPocketBlock(Block.Properties properties, Supplier<Block> vB) {
+	public BlockPocketBlock(BlockBehaviour.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
 	}
 

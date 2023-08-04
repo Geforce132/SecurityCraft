@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -25,7 +26,7 @@ public class ProtectoBlock extends DisguisableBlock {
 	public static final BooleanProperty ACTIVATED = BlockStateProperties.ENABLED;
 	public static final VoxelShape SHAPE = Shapes.or(Block.box(0, 0, 5, 16, 16, 11), Block.box(5, 0, 0, 11, 16, 16));
 
-	public ProtectoBlock(Block.Properties properties) {
+	public ProtectoBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(ACTIVATED, false).setValue(WATERLOGGED, false));
 	}

@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
@@ -13,10 +14,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class LinkableBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
-	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
+	protected List<LinkedBlock> linkedBlocks = new ArrayList<>();
 	private ListTag nbtTagStorage = null;
 
-	public LinkableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+	protected LinkableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 
@@ -47,7 +48,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 
-		if (hasLevel() && linkedBlocks.size() > 0) {
+		if (hasLevel() && !linkedBlocks.isEmpty()) {
 			ListTag tagList = new ListTag();
 
 			LevelUtils.addScheduledTask(level, () -> {
@@ -56,12 +57,12 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 					CompoundTag toAppend = new CompoundTag();
 
 					if (block != null) {
-						if (level.isLoaded(block.blockPos) && !block.validate(level)) {
+						if (level.isLoaded(block.getPos()) && !block.validate(level)) {
 							linkedBlocks.remove(i);
 							continue;
 						}
 
-						toAppend.putString("blockName", block.blockName);
+						toAppend.putString("blockName", block.getBlockName());
 						toAppend.putInt("blockX", block.getX());
 						toAppend.putInt("blockY", block.getY());
 						toAppend.putInt("blockZ", block.getZ());
@@ -78,7 +79,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	@Override
 	public void setRemoved() {
 		for (LinkedBlock block : linkedBlocks) {
-			if (level.isLoaded(block.blockPos))
+			if (level.isLoaded(block.getPos()))
 				LinkableBlockEntity.unlink(block.asBlockEntity(level), this);
 		}
 	}
@@ -174,7 +175,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * @param excludedBEs LinkableBlockEntities that shouldn't have onLinkedBlockAction() called on them, prevents infinite
 	 *            loops. Always add your block entity to the list whenever using this method
 	 */
-	public void createLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {
+	public void createLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
 		for (LinkedBlock block : linkedBlocks) {
 			if (!excludedBEs.contains(block.asBlockEntity(level))) {
 				BlockState state = level.getBlockState(block.getPos());
@@ -194,5 +195,5 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 *            block entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link
 	 *            multiple blocks (i.e: like Laser Blocks)
 	 */
-	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {}
+	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {}
 }

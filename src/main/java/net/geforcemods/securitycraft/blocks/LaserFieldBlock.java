@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -43,7 +44,7 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, Si
 	private static final VoxelShape SHAPE_Y = Block.box(6.75, 0, 6.75, 9.25, 16, 9.25);
 	private static final VoxelShape SHAPE_Z = Block.box(6.75, 6.75, 0, 9.25, 9.25, 16);
 
-	public LaserFieldBlock(Block.Properties properties) {
+	public LaserFieldBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(BOUNDTYPE, 1).setValue(WATERLOGGED, false));
 	}
@@ -77,28 +78,26 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, Si
 				BlockState offsetState = level.getBlockState(offsetPos);
 				Block offsetBlock = offsetState.getBlock();
 
-				if (offsetBlock == SCContent.LASER_BLOCK.get()) {
-					if (level.getBlockEntity(offsetPos) instanceof LaserBlockBlockEntity laser) {
-						if (laser.isAllowed(entity))
-							return;
+				if (offsetBlock == SCContent.LASER_BLOCK.get() && level.getBlockEntity(offsetPos) instanceof LaserBlockBlockEntity laser) {
+					if (laser.isAllowed(entity))
+						return;
 
-						if (!(entity instanceof Player player && laser.isOwnedBy(player) && laser.ignoresOwner())) {
-							if (laser.isModuleEnabled(ModuleType.REDSTONE) && !offsetState.getValue(LaserBlock.POWERED)) {
-								level.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
-								BlockUtils.updateIndirectNeighbors(level, offsetPos, SCContent.LASER_BLOCK.get());
-								level.scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
-								laser.createLinkedBlockAction(new ILinkedAction.StateChanged<>(LaserBlock.POWERED, false, true), laser);
-							}
-
-							if (laser.isModuleEnabled(ModuleType.HARMING)) {
-								double damage = ConfigHandler.SERVER.laserDamage.get();
-
-								livingEntity.hurt(CustomDamageSources.laser(level.registryAccess()), (float) damage);
-							}
+					if (!(entity instanceof Player player && laser.isOwnedBy(player) && laser.ignoresOwner())) {
+						if (laser.isModuleEnabled(ModuleType.REDSTONE) && !offsetState.getValue(LaserBlock.POWERED)) {
+							level.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
+							BlockUtils.updateIndirectNeighbors(level, offsetPos, SCContent.LASER_BLOCK.get());
+							level.scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
+							laser.createLinkedBlockAction(new ILinkedAction.StateChanged<>(LaserBlock.POWERED, false, true), laser);
 						}
 
-						break;
+						if (laser.isModuleEnabled(ModuleType.HARMING)) {
+							double damage = ConfigHandler.SERVER.laserDamage.get();
+
+							livingEntity.hurt(CustomDamageSources.laser(level.registryAccess()), (float) damage);
+						}
 					}
+
+					break;
 				}
 			}
 		}
@@ -159,9 +158,11 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, Si
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		int boundType = state.getValue(BOUNDTYPE);
-
-		return rot == Rotation.CLOCKWISE_180 ? state : state.setValue(BOUNDTYPE, boundType == 2 ? 3 : (boundType == 3 ? 2 : 1));
+		return rot == Rotation.CLOCKWISE_180 ? state : state.setValue(BOUNDTYPE, switch (state.getValue(BOUNDTYPE)) {
+			case 2 -> 3;
+			case 3 -> 2;
+			default -> 1;
+		});
 	}
 
 	@Override

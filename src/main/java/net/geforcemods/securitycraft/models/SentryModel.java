@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.models;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -14,15 +15,15 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class SentryModel extends EntityModel<Sentry> {
-	public ModelPart base;
-	public ModelPart body;
-	public ModelPart neck;
-	public ModelPart head;
-	public ModelPart hair;
-	public ModelPart rightEye;
-	public ModelPart leftEye;
-	public ModelPart nose;
-	private final ImmutableList<ModelPart> headPartList;
+	public final ModelPart base;
+	public final ModelPart body;
+	public final ModelPart neck;
+	public final ModelPart head;
+	public final ModelPart hair;
+	public final ModelPart rightEye;
+	public final ModelPart leftEye;
+	public final ModelPart nose;
+	private final List<ModelPart> headPartList;
 
 	public SentryModel(ModelPart modelPart) {
 		base = modelPart.getChild("base");
@@ -33,7 +34,7 @@ public class SentryModel extends EntityModel<Sentry> {
 		rightEye = modelPart.getChild("right_eye");
 		leftEye = modelPart.getChild("left_eye");
 		nose = modelPart.getChild("nose");
-		headPartList = ImmutableList.of(head, neck, rightEye, body, nose, leftEye, hair);
+		headPartList = List.of(head, neck, rightEye, body, nose, leftEye, hair);
 	}
 
 	public static LayerDefinition createLayer() {

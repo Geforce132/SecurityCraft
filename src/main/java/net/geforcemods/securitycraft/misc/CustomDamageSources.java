@@ -16,6 +16,8 @@ public class CustomDamageSources {
 	public static final ResourceKey<DamageType> TASER = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(SecurityCraft.MODID, "taser"));
 	public static final ResourceKey<DamageType> INCORRECT_PASSCODE = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(SecurityCraft.MODID, "incorrect_passcode"));
 
+	private CustomDamageSources() {}
+
 	public static DamageSource laser(RegistryAccess registryAccess) {
 		return new DamageSource(registryAccess.registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(LASER));
 	}

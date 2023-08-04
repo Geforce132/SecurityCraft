@@ -50,9 +50,9 @@ public class SyncBlockPocketManager {
 		if (level.isLoaded(pos) && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity bpm && bpm.isOwnedBy(player)) {
 			BlockState state = level.getBlockState(pos);
 
-			bpm.size = size;
-			bpm.showOutline = showOutline;
-			bpm.autoBuildOffset = autoBuildOffset;
+			bpm.setSize(size);
+			bpm.setShowOutline(showOutline);
+			bpm.setAutoBuildOffset(autoBuildOffset);
 			bpm.setColor(color);
 			bpm.setChanged();
 			level.sendBlockUpdated(pos, state, state, 2);

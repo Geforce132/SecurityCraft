@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.phys.BlockHitResult;
@@ -44,7 +45,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 			Block.box(6.5, 0, 1, 9.5, 1.5, 4)
 			).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).orElse(Shapes.block());
 	//@formatter:on
-	public TrophySystemBlock(Block.Properties properties) {
+	public TrophySystemBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false));
 	}

@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -28,7 +29,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 	public static final BooleanProperty SEE_THROUGH = BooleanProperty.create("see_through");
 	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
 
-	public BlockPocketWallBlock(Block.Properties properties) {
+	public BlockPocketWallBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(SEE_THROUGH, true).setValue(SOLID, false));
@@ -40,17 +41,15 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
-		if (!state.getValue(SOLID) && collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity() != null && ctx.getEntity() instanceof Player player) {
-			if (level.getBlockEntity(pos) instanceof BlockPocketBlockEntity be) {
-				if (be.getManager() == null)
-					return Shapes.empty();
-				else if (be.getManager().isAllowed(player))
-					return Shapes.empty();
-				else if (!be.isOwnedBy(player))
-					return Shapes.block();
-				else
-					return Shapes.empty();
-			}
+		if (!state.getValue(SOLID) && collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity() != null && ctx.getEntity() instanceof Player player && level.getBlockEntity(pos) instanceof BlockPocketBlockEntity be) {
+			if (be.getManager() == null)
+				return Shapes.empty();
+			else if (be.getManager().isAllowed(player))
+				return Shapes.empty();
+			else if (!be.isOwnedBy(player))
+				return Shapes.block();
+			else
+				return Shapes.empty();
 		}
 
 		return Shapes.block();

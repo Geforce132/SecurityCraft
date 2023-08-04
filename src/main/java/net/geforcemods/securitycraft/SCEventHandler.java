@@ -31,7 +31,6 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -52,7 +51,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -109,6 +107,8 @@ public class SCEventHandler {
 	private static final Integer NOTE_DELAY = 9;
 	public static final Map<Player, MutablePair<Integer, Deque<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
 
+	private SCEventHandler() {}
+
 	@SubscribeEvent
 	public static void onServerTick(ServerTickEvent event) {
 		if (event.phase == Phase.END) {
@@ -155,7 +155,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event) {
 		if (!ConfigHandler.SERVER.disableThanksMessage.get())
-			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()), new SendTip());
+			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()), new SendTip());
 	}
 
 	@SubscribeEvent
@@ -225,17 +225,15 @@ public class SCEventHandler {
 		BlockState state = level.getBlockState(event.getPos());
 		Block block = state.getBlock();
 
-		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, event.getPos(), event.getEntity())) {
-			if (!event.getEntity().isShiftKeyDown()) {
-				if (event.getHand() == InteractionHand.MAIN_HAND) {
-					MutableComponent blockName = Utils.localize(block.getDescriptionId());
+		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, event.getPos(), event.getEntity()) && !event.getEntity().isShiftKeyDown()) {
+			if (event.getHand() == InteractionHand.MAIN_HAND) {
+				MutableComponent blockName = Utils.localize(block.getDescriptionId());
 
-					PlayerUtils.sendMessageToPlayer(event.getEntity(), blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
-				}
-
-				event.setCanceled(true);
-				return;
+				PlayerUtils.sendMessageToPlayer(event.getEntity(), blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
 			}
+
+			event.setCanceled(true);
+			return;
 		}
 
 		if (be instanceof IOwnable ownable) {
@@ -480,13 +478,11 @@ public class SCEventHandler {
 		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = BlockEntityTracker.SONIC_SECURITY_SYSTEM.getBlockEntitiesInRange(level, pos);
 
 		// If no custom sound id is given, check if a custom sound was played, and if so, store its id
-		if (customSoundId.isEmpty() && instrument.hasCustomSound()) {
-			if (level.getBlockEntity(pos.above()) instanceof SkullBlockEntity be) {
-				ResourceLocation noteBlockSound = be.getNoteBlockSound();
+		if (customSoundId.isEmpty() && instrument.hasCustomSound() && level.getBlockEntity(pos.above()) instanceof SkullBlockEntity be) {
+			ResourceLocation noteBlockSound = be.getNoteBlockSound();
 
-				if (noteBlockSound != null)
-					customSoundId = noteBlockSound.toString();
-			}
+			if (noteBlockSound != null)
+				customSoundId = noteBlockSound.toString();
 		}
 
 		for (SonicSecuritySystemBlockEntity be : sonicSecuritySystems) {
@@ -499,15 +495,8 @@ public class SCEventHandler {
 			// If so, toggle its redstone power output on
 			if (be.isRecording())
 				be.recordNote(vanillaNoteId, instrument, customSoundId);
-			else if (be.listenToNote(vanillaNoteId, instrument, customSoundId)) {
-				be.correctTuneWasPlayed = true;
-				be.powerCooldown = be.signalLength.get();
-
-				if (be.isModuleEnabled(ModuleType.REDSTONE)) {
-					level.setBlockAndUpdate(be.getBlockPos(), be.getLevel().getBlockState(be.getBlockPos()).setValue(SonicSecuritySystemBlock.POWERED, true));
-					BlockUtils.updateIndirectNeighbors(be.getLevel(), be.getBlockPos(), SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
-				}
-			}
+			else
+				be.listenToNote(vanillaNoteId, instrument, customSoundId);
 		}
 	}
 

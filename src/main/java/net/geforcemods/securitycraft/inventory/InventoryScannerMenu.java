@@ -64,7 +64,7 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
 
-		if (slot != null && slot.hasItem()) {
+		if (slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
 			slotStackCopy = slotStack.copy();
 
@@ -109,8 +109,6 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 				be.getContents().set(slotId, pickedUpStack);
 				be.setChanged();
 			}
-
-			return;
 		}
 		else
 			super.clicked(slotId, dragType, clickType, player);

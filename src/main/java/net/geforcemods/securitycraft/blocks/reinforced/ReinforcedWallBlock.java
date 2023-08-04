@@ -13,13 +13,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedWallBlock extends WallBlock implements IReinforcedBlock, EntityBlock {
 	private final Supplier<Block> vanillaBlockSupplier;
 
-	public ReinforcedWallBlock(Block.Properties properties, Block vanillaBlock) {
+	public ReinforcedWallBlock(BlockBehaviour.Properties properties, Block vanillaBlock) {
 		super(properties);
 
 		this.vanillaBlockSupplier = () -> vanillaBlock;

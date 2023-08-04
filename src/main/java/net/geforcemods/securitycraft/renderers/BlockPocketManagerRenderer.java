@@ -18,12 +18,12 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 	public void render(BlockPocketManagerBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
 		// The code below draws the outline border of a block pocket.
 
-		if (!be.showOutline || !be.isOwnedBy(Minecraft.getInstance().player))
+		if (!be.showsOutline() || !be.isOwnedBy(Minecraft.getInstance().player))
 			return;
 
 		Direction facing = be.getBlockState().getValue(BlockPocketManagerBlock.FACING);
-		int offset = facing == Direction.NORTH || facing == Direction.EAST ? -be.autoBuildOffset : be.autoBuildOffset; //keep negative values moving the offset to the left consistent
-		int size = be.size;
+		int offset = facing == Direction.NORTH || facing == Direction.EAST ? -be.getAutoBuildOffset() : be.getAutoBuildOffset(); //keep negative values moving the offset to the left consistent
+		int size = be.getSize();
 		int half = (size - 1) / 2;
 		int leftX = -half + offset;
 		int rightX = half + 1 + offset;
@@ -43,6 +43,6 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 
 	@Override
 	public boolean shouldRenderOffScreen(BlockPocketManagerBlockEntity be) {
-		return be.showOutline;
+		return be.showsOutline();
 	}
 }

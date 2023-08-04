@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -81,7 +81,7 @@ public class CameraMonitorScreen extends Screen {
 			Button button = cameraButtons[i];
 			int buttonId = i + 1;
 			int camID = buttonId + (page - 1) * 10;
-			ArrayList<GlobalPos> views = cameraMonitor.getCameraPositions(nbtTag);
+			List<GlobalPos> views = cameraMonitor.getCameraPositions(nbtTag);
 			GlobalPos view = views.get(camID - 1);
 
 			button.setMessage(button.getMessage().plainCopy().append(Component.literal("" + camID)));
@@ -102,7 +102,6 @@ public class CameraMonitorScreen extends Screen {
 			else {
 				button.active = false;
 				unbindButtons[buttonId - 1].active = false;
-				continue;
 			}
 		}
 
@@ -142,7 +141,7 @@ public class CameraMonitorScreen extends Screen {
 			return;
 		}
 
-		SecurityCraft.channel.sendToServer(new MountCamera(cameraPos));
+		SecurityCraft.CHANNEL.sendToServer(new MountCamera(cameraPos));
 		Minecraft.getInstance().player.closeContainer();
 	}
 
@@ -150,7 +149,7 @@ public class CameraMonitorScreen extends Screen {
 		int camID = buttonId + (page - 1) * 10;
 		Button cameraButton = cameraButtons[(camID - 1) % 10];
 
-		SecurityCraft.channel.sendToServer(new RemoveCameraTag(camID));
+		SecurityCraft.CHANNEL.sendToServer(new RemoveCameraTag(camID));
 		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
 		button.active = false;
 		cameraButton.active = false;
