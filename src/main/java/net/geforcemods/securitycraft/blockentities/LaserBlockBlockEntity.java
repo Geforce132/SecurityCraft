@@ -199,6 +199,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 
 				if (!level.isClientSide)
 					SecurityCraft.channel.send(PacketDistributor.DIMENSION.with(() -> level.dimension()), new UpdateLaserColors(positionsToUpdate));
+
+				level.sendBlockUpdated(modifiedPos, stateAtModifiedPos, stateAtModifiedPos, 2);
 			}
 		}
 
