@@ -109,7 +109,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				.addTag(SCTags.Blocks.REINFORCED_MANGROVE_LOGS)
 				.addTag(SCTags.Blocks.REINFORCED_OAK_LOGS)
 				.addTag(SCTags.Blocks.REINFORCED_SPRUCE_LOGS)
-				.addTag(SCTags.Blocks.REINFORCED_SPRUCE_LOGS)
 				.addTag(SCTags.Blocks.REINFORCED_WARPED_STEMS);
 		tag(SCTags.Blocks.REINFORCED_MANGROVE_LOGS).add(
 				SCContent.REINFORCED_MANGROVE_LOG.get(),
