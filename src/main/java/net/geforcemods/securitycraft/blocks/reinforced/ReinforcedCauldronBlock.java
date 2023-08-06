@@ -331,9 +331,11 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 			POWDER_SNOW.put(Items.BUCKET, (state, level, pos, player, hand, stack) -> fillBucket(state, level, pos, player, hand, stack, new ItemStack(Items.POWDER_SNOW_BUCKET), (l) -> l.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL_POWDER_SNOW));
 			addDefaultInteractions(POWDER_SNOW);
 
-			//add briefcase interactions
+			//add cyeable item interactions
 			CauldronInteraction.WATER.put(SCContent.BRIEFCASE.get(), CauldronInteraction.DYED_ITEM);
 			WATER.put(SCContent.BRIEFCASE.get(), DYED_ITEM);
+			CauldronInteraction.WATER.put(SCContent.LENS.get(), CauldronInteraction.DYED_ITEM);
+			WATER.put(SCContent.LENS.get(), DYED_ITEM);
 		}
 
 		static void addDefaultInteractions(Map<Item, CauldronInteraction> interactions) {

@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
-import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -86,11 +85,6 @@ public class OpenScreen {
 					ClientHandler.displaySonicSecuritySystemScreen(sss);
 
 				break;
-			case TROPHY_SYSTEM:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof TrophySystemBlockEntity trophySystem)
-					ClientHandler.displayTrophySystemScreen(trophySystem);
-
-				break;
 			case UNIVERSAL_KEY_CHANGER:
 				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof IPasscodeProtected passcodeProtected)
 					ClientHandler.displayUniversalKeyChangerScreen((BlockEntity) passcodeProtected);
@@ -106,7 +100,6 @@ public class OpenScreen {
 		SET_BRIEFCASE_PASSCODE,
 		SET_PASSCODE,
 		SONIC_SECURITY_SYSTEM,
-		TROPHY_SYSTEM,
 		UNIVERSAL_KEY_CHANGER;
 	}
 }

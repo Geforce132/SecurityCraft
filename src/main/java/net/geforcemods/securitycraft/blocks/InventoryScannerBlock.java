@@ -159,6 +159,8 @@ public class InventoryScannerBlock extends DisguisableBlock {
 				Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), be.getContents().get(i));
 			}
 
+			Containers.dropContents(level, pos, be.getLensContainer());
+
 			if (be.shouldProvidePower()) {
 				level.updateNeighborsAt(pos, this);
 				BlockUtils.updateIndirectNeighbors(level, pos, this);
@@ -169,6 +171,8 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			for (int i = 0; i < connectedScanner.getContents().size(); i++) {
 				connectedScanner.getContents().set(i, ItemStack.EMPTY);
 			}
+
+			connectedScanner.getLensContainer().clearContent();
 		}
 
 		super.onRemove(state, level, pos, newState, isMoving);
