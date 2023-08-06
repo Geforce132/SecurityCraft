@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import com.google.common.base.Suppliers;
+
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
@@ -143,7 +145,7 @@ public class ClientHandler {
 	private static Map<Block, Integer> blocksWithReinforcedTint = new HashMap<>();
 	private static Map<Block, Integer> blocksWithCustomTint = new HashMap<>();
 	//@formatter:off
-	private static Supplier<Block[]> disguisableBlocks = () -> new Block[] {
+	private static Supplier<Block[]> disguisableBlocks = Suppliers.memoize(() -> new Block[] {
 			SCContent.BLOCK_CHANGE_DETECTOR.get(),
 			SCContent.CAGE_TRAP.get(),
 			SCContent.INVENTORY_SCANNER.get(),
@@ -161,7 +163,7 @@ public class ClientHandler {
 			SCContent.SENTRY_DISGUISE.get(),
 			SCContent.TROPHY_SYSTEM.get(),
 			SCContent.USERNAME_LOGGER.get()
-	};
+	});
 	//@formatter:on
 	public static final ArmPose TASER_ARM_POSE = ArmPose.create("securitycraft_taser", true, (model, entity, arm) -> {
 		ModelPart leftArm = model.leftArm;

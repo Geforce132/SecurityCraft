@@ -66,7 +66,7 @@ public class BlockEntityRenderDelegate {
 				copyPose.popPose();
 			}
 			catch (Exception e) {
-				LOGGER.warn("Error when delegate-rendering {0}", ForgeRegistries.BLOCK_ENTITY_TYPES.getKey(delegateRendererInfo.delegateBlockEntity().getType()));
+				LOGGER.warn("Error when delegate-rendering {}", ForgeRegistries.BLOCK_ENTITY_TYPES.getKey(delegateRendererInfo.delegateBlockEntity().getType()));
 				e.printStackTrace();
 				removeDelegateOf(originalBlockEntity);
 			}
