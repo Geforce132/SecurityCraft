@@ -46,6 +46,7 @@ public class OpenScreen {
 				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof AlarmBlockEntity be)
 					ClientHandler.displayAlarmScreen(be);
 
+				break;
 			case CHECK_BRIEFCASE_PASSCODE:
 				ItemStack briefcaseStack = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
 
