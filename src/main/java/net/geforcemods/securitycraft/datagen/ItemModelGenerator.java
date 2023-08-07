@@ -19,7 +19,6 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
@@ -49,7 +48,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 			Block block = obj.get();
 			Item item = block.asItem();
 
-			if (item.getCreativeTabs().contains(SecurityCraft.decorationTab)) {
+			if (item.getCreativeTabs().contains(SecurityCraft.DECORATION_TAB)) {
 				if (flatReinforcedItems.containsKey(block))
 					flatReinforcedItem(block, flatReinforcedItems.get(block));
 				else if (block instanceof ReinforcedStainedGlassPaneBlock)
@@ -61,7 +60,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				else if (block instanceof IReinforcedBlock)
 					simpleReinforcedParent(block);
 			}
-			else if (item.getCreativeTabs().contains(SecurityCraft.mineTab) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
+			else if (item.getCreativeTabs().contains(SecurityCraft.MINE_TAB) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
 				blockMine(mine.getBlockDisguisedAs(), block);
 		}
 
@@ -112,10 +111,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		.element().from(0, 0, 0).to(16, 16, 16).face(Direction.UP).cullface(Direction.UP).texture("#overlay").end().end();
 		//@formatter:on
 
-		blockMine(Blocks.ANCIENT_DEBRIS, SCContent.ANCIENT_DEBRIS_MINE.get(), mcLoc(BLOCK_FOLDER + "/ancient_debris_side"), mcLoc(BLOCK_FOLDER + "/ancient_debris_side"), mcLoc(BLOCK_FOLDER + "/ancient_debris_top"));
-		blockMine(Blocks.FURNACE, SCContent.FURNACE_MINE.get(), mcLoc(BLOCK_FOLDER + "/furnace_side"), mcLoc(BLOCK_FOLDER + "/furnace_front"), mcLoc(BLOCK_FOLDER + "/furnace_top"));
-		blockMine(Blocks.SMOKER, SCContent.SMOKER_MINE.get(), mcLoc(BLOCK_FOLDER + "/smoker_side"), mcLoc(BLOCK_FOLDER + "/smoker_front"), mcLoc(BLOCK_FOLDER + "/smoker_top"));
-		blockMine(Blocks.BLAST_FURNACE, SCContent.BLAST_FURNACE_MINE.get(), mcLoc(BLOCK_FOLDER + "/blast_furnace_side"), mcLoc(BLOCK_FOLDER + "/blast_furnace_front"), mcLoc(BLOCK_FOLDER + "/blast_furnace_top"));
+		blockMine(SCContent.ANCIENT_DEBRIS_MINE.get(), mcLoc(BLOCK_FOLDER + "/ancient_debris_side"), mcLoc(BLOCK_FOLDER + "/ancient_debris_side"), mcLoc(BLOCK_FOLDER + "/ancient_debris_top"));
+		blockMine(SCContent.FURNACE_MINE.get(), mcLoc(BLOCK_FOLDER + "/furnace_side"), mcLoc(BLOCK_FOLDER + "/furnace_front"), mcLoc(BLOCK_FOLDER + "/furnace_top"));
+		blockMine(SCContent.SMOKER_MINE.get(), mcLoc(BLOCK_FOLDER + "/smoker_side"), mcLoc(BLOCK_FOLDER + "/smoker_front"), mcLoc(BLOCK_FOLDER + "/smoker_top"));
+		blockMine(SCContent.BLAST_FURNACE_MINE.get(), mcLoc(BLOCK_FOLDER + "/blast_furnace_side"), mcLoc(BLOCK_FOLDER + "/blast_furnace_front"), mcLoc(BLOCK_FOLDER + "/blast_furnace_top"));
 		simpleParent(SCContent.BLOCK_CHANGE_DETECTOR.get());
 		simpleParent(SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		simpleParent(SCContent.CRYSTAL_QUARTZ_STAIRS.get());
@@ -173,10 +172,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 	public ItemModelBuilder blockMine(Block vanillaBlock, Block block) {
 		ResourceLocation texture = mcLoc(BLOCK_FOLDER + "/" + vanillaBlock.getRegistryName().getPath());
 
-		return blockMine(vanillaBlock, block, texture, texture, texture);
+		return blockMine(block, texture, texture, texture);
 	}
 
-	public ItemModelBuilder blockMine(Block vanillaBlock, Block block, ResourceLocation sideTexture, ResourceLocation frontTexture, ResourceLocation bottomTopTexture) {
+	public ItemModelBuilder blockMine(Block block, ResourceLocation sideTexture, ResourceLocation frontTexture, ResourceLocation bottomTopTexture) {
 		//@formatter:off
 		return parent(block.getRegistryName().toString(), modLoc(ITEM_FOLDER + "/template_block_mine"))
 				.texture("down", bottomTopTexture)

@@ -26,10 +26,10 @@ public class SentryItem extends Item {
 
 	@Override
 	public InteractionResult useOn(UseOnContext ctx) {
-		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
-	}
-
-	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
+		Level level = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		Direction facing = ctx.getClickedFace();
+		Player player = ctx.getPlayer();
 		boolean replacesTargetedBlock = level.getBlockState(pos).getMaterial().isReplaceable();
 
 		if (!replacesTargetedBlock) {
@@ -48,6 +48,7 @@ public class SentryItem extends Item {
 			return InteractionResult.FAIL;
 		}
 
+		ItemStack stack = ctx.getItemInHand();
 		Sentry entity = SCContent.SENTRY_ENTITY.get().create(level);
 
 		entity.setPos(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);

@@ -15,10 +15,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class KeypadFurnaceBlock extends AbstractKeypadFurnaceBlock {
-	public KeypadFurnaceBlock(Properties properties) {
+	public KeypadFurnaceBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 	}
 

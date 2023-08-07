@@ -70,7 +70,7 @@ public class IMSScreen extends Screen {
 	private void modeButtonClicked(Button button) {
 		targetMode = IMSTargetingMode.values()[((ToggleComponentButton) button).getCurrentIndex()];
 		be.setTargetingMode(targetMode);
-		SecurityCraft.channel.sendToServer(new SyncIMSTargetingOption(be.getBlockPos(), be.getTargetingMode()));
+		SecurityCraft.CHANNEL.sendToServer(new SyncIMSTargetingOption(be.getBlockPos(), be.getTargetingMode()));
 	}
 
 	private Component updateButtonText(int index) {

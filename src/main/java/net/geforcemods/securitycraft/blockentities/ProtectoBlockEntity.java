@@ -44,15 +44,13 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 			if (!state.getValue(ProtectoBlock.ACTIVATED))
 				level.setBlockAndUpdate(pos, state.setValue(ProtectoBlock.ACTIVATED, true));
 
-			if (entities.size() != 0) {
+			if (!entities.isEmpty()) {
 				boolean shouldDeactivate = false;
 
 				for (LivingEntity entity : entities) {
 					if (!(entity instanceof Sentry) && !EntityUtils.isInvisible(entity)) {
-						if (entity instanceof Player player) {
-							if (player.isCreative() || player.isSpectator() || (isOwnedBy(player) && ignoresOwner()) || isAllowed(entity))
-								continue;
-						}
+						if (entity instanceof Player player && (player.isCreative() || player.isSpectator() || (isOwnedBy(player) && ignoresOwner()) || isAllowed(entity)))
+							continue;
 
 						if (!level.isClientSide)
 							level.addFreshEntity(LevelUtils.createLightning(level, entity.position(), false));

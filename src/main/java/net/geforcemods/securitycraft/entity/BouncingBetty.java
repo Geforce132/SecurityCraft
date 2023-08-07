@@ -13,19 +13,19 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 
 public class BouncingBetty extends Entity {
-	/** How long the fuse is */
-	public int fuse;
+	/** How many ticks until the explosion */
+	private int fuse;
 
 	public BouncingBetty(EntityType<BouncingBetty> type, Level level) {
 		super(SCContent.BOUNCING_BETTY_ENTITY.get(), level);
 	}
 
 	public BouncingBetty(Level level, double x, double y, double z) {
-		this(SCContent.BOUNCING_BETTY_ENTITY.get(), level);
+		super(SCContent.BOUNCING_BETTY_ENTITY.get(), level);
 		setPos(x, y, z);
 		float f = (float) (Math.random() * Math.PI * 2.0D);
 		setDeltaMovement(-((float) Math.sin(f)) * 0.02F, 0.20000000298023224D, -((float) Math.cos(f)) * 0.02F);
-		fuse = 80;
+		setFuse(80);
 		xo = x;
 		yo = y;
 		zo = z;
@@ -70,16 +70,24 @@ public class BouncingBetty extends Entity {
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag tag) {
-		tag.putByte("Fuse", (byte) fuse);
+		tag.putByte("Fuse", (byte) getFuse());
 	}
 
 	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
-		fuse = tag.getByte("Fuse");
+		setFuse(tag.getByte("Fuse"));
 	}
 
 	@Override
 	public Packet<?> getAddEntityPacket() {
 		return new ClientboundAddEntityPacket(this);
+	}
+
+	public void setFuse(int fuse) {
+		this.fuse = fuse;
+	}
+
+	public int getFuse() {
+		return fuse;
 	}
 }

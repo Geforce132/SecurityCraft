@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -40,20 +39,20 @@ public class SentryRemoteAccessToolItem extends Item {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (!level.isClientSide)
-			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenSRATScreen((player.getServer().getPlayerList().getViewDistance() - 1) * 16));
+			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenSRATScreen((player.getServer().getPlayerList().getViewDistance() - 1) * 16));
 
 		return InteractionResultHolder.consume(stack);
 	}
 
 	@Override
 	public InteractionResult useOn(UseOnContext ctx) {
-		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
-	}
-
-	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
+		Level level = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		Player player = ctx.getPlayer();
 		List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(pos));
 
 		if (!sentries.isEmpty()) {
+			ItemStack stack = ctx.getItemInHand();
 			Sentry sentry = sentries.get(0);
 			BlockPos sentryPos = sentry.blockPosition();
 
@@ -76,7 +75,7 @@ public class SentryRemoteAccessToolItem extends Item {
 				stack.getTag().putIntArray(("sentry" + availSlot), BlockUtils.posToIntArray(sentryPos));
 
 				if (!level.isClientSide && !stack.isEmpty())
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.bound", sentryPos), ChatFormatting.GREEN);
 			}
@@ -88,7 +87,7 @@ public class SentryRemoteAccessToolItem extends Item {
 			return InteractionResult.SUCCESS;
 		}
 		else if (!level.isClientSide)
-			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenSRATScreen((player.getServer().getPlayerList().getViewDistance() - 1) * 16));
+			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenSRATScreen((player.getServer().getPlayerList().getViewDistance() - 1) * 16));
 
 		return InteractionResult.SUCCESS;
 	}
@@ -129,13 +128,11 @@ public class SentryRemoteAccessToolItem extends Item {
 				stack.getTag().remove("sentry" + i);
 
 				if (!player.level.isClientSide && !stack.isEmpty())
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
 				return;
 			}
 		}
-
-		return;
 	}
 
 	private boolean isSentryAdded(ItemStack stack, BlockPos pos) {

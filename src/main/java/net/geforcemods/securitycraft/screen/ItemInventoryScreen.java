@@ -15,7 +15,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 public abstract class ItemInventoryScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
 	protected ResourceLocation texture;
 
-	public ItemInventoryScreen(T menu, Inventory inventory, Component title) {
+	protected ItemInventoryScreen(T menu, Inventory inventory, Component title) {
 		super(menu, inventory, title);
 	}
 

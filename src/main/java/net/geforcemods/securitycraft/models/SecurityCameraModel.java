@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.models;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -14,19 +15,19 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class SecurityCameraModel extends EntityModel<SecurityCamera> {
-	public ModelPart shape1;
-	public ModelPart shape2;
-	public ModelPart cameraRotationPoint;
-	private final ImmutableList<ModelPart> partList;
+	private final List<ModelPart> partList;
+	private ModelPart shape1;
+	private ModelPart shape2;
+	private ModelPart cameraRotationPoint;
 
 	public SecurityCameraModel(ModelPart modelPart) {
 		shape1 = modelPart.getChild("shape1");
 		shape2 = modelPart.getChild("shape2");
 		setRotateAngle(shape2, -0.5235987755982988F, 0.0F, 0.0F);
 		cameraRotationPoint = modelPart.getChild("camera_rotation_point");
-		setRotateAngle(cameraRotationPoint, 0.2617993877991494F, 0.0F, 0.0F);
-		setRotateAngle(cameraRotationPoint.getChild("camera_body"), 0.2617993877991494F, 0.0F, 0.0F);
-		partList = ImmutableList.of(cameraRotationPoint, shape1, shape2);
+		setRotateAngle(getCameraRotationPoint(), 0.2617993877991494F, 0.0F, 0.0F);
+		setRotateAngle(getCameraRotationPoint().getChild("camera_body"), 0.2617993877991494F, 0.0F, 0.0F);
+		partList = List.of(getCameraRotationPoint(), shape1, shape2);
 	}
 
 	public static LayerDefinition createLayer() {
@@ -57,4 +58,8 @@ public class SecurityCameraModel extends EntityModel<SecurityCamera> {
 
 	@Override
 	public void setupAnim(SecurityCamera entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
+
+	public ModelPart getCameraRotationPoint() {
+		return cameraRotationPoint;
+	}
 }

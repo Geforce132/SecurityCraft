@@ -37,7 +37,7 @@ public class BriefcaseMenu extends AbstractContainerMenu {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
 
-		if (slot != null && slot.hasItem()) {
+		if (slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
 			slotStackCopy = slotStack.copy();
 
@@ -47,10 +47,8 @@ public class BriefcaseMenu extends AbstractContainerMenu {
 
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if (index >= CONTAINER_SIZE) {
-				if (!moveItemStackTo(slotStack, 0, CONTAINER_SIZE, false))
-					return ItemStack.EMPTY;
-			}
+			else if (!moveItemStackTo(slotStack, 0, CONTAINER_SIZE, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.set(ItemStack.EMPTY);
@@ -68,9 +66,7 @@ public class BriefcaseMenu extends AbstractContainerMenu {
 
 	@Override
 	public void clicked(int slot, int dragType, ClickType clickType, Player player) {
-		if (slot >= 0 && getSlot(slot) != null && getSlot(slot).getItem().getItem() instanceof BriefcaseItem)
-			return;
-		else
+		if (!(slot >= 0 && getSlot(slot) != null && getSlot(slot).getItem().getItem() instanceof BriefcaseItem))
 			super.clicked(slot, dragType, clickType, player);
 	}
 

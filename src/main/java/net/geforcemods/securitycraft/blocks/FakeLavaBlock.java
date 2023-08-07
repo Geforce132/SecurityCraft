@@ -8,15 +8,15 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 
 public class FakeLavaBlock extends LiquidBlock {
 	private static final MobEffectInstance SHORT_FIRE_RESISTANCE = new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 1);
 
-	public FakeLavaBlock(Block.Properties properties, Supplier<? extends FlowingFluid> fluid) {
+	public FakeLavaBlock(BlockBehaviour.Properties properties, Supplier<? extends FlowingFluid> fluid) {
 		super(fluid, properties);
 	}
 

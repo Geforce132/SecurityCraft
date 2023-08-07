@@ -90,13 +90,11 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 					probeInfo.vertical().mcText(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner())).withStyle(ChatFormatting.GRAY));
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
-				if (be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
-					if (!inv.getInsertedModules().isEmpty()) {
-						probeInfo.mcText(EQUIPPED);
+				if (be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player)) && !inv.getInsertedModules().isEmpty()) {
+					probeInfo.mcText(EQUIPPED);
 
-						for (ModuleType module : inv.getInsertedModules()) {
-							probeInfo.mcText(new TextComponent("- ").append(new TranslatableComponent(module.getTranslationKey())).withStyle(ChatFormatting.GRAY));
-						}
+					for (ModuleType module : inv.getInsertedModules()) {
+						probeInfo.mcText(new TextComponent("- ").append(new TranslatableComponent(module.getTranslationKey())).withStyle(ChatFormatting.GRAY));
 					}
 				}
 

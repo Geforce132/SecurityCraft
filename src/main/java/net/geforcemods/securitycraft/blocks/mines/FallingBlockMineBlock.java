@@ -14,10 +14,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Fallable;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class FallingBlockMineBlock extends BaseFullMineBlock implements Fallable {
-	public FallingBlockMineBlock(Block.Properties properties, Block disguisedBlock) {
+	public FallingBlockMineBlock(BlockBehaviour.Properties properties, Block disguisedBlock) {
 		super(properties, disguisedBlock);
 	}
 
@@ -45,14 +46,12 @@ public class FallingBlockMineBlock extends BaseFullMineBlock implements Fallable
 
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
-		if (rand.nextInt(16) == 0) {
-			if (FallingBlock.isFree(level.getBlockState(pos.below()))) {
-				double particleX = pos.getX() + rand.nextFloat();
-				double particleY = pos.getY() - 0.05D;
-				double particleZ = pos.getZ() + rand.nextFloat();
+		if (rand.nextInt(16) == 0 && FallingBlock.isFree(level.getBlockState(pos.below()))) {
+			double particleX = pos.getX() + rand.nextFloat();
+			double particleY = pos.getY() - 0.05D;
+			double particleZ = pos.getZ() + rand.nextFloat();
 
-				level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state), false, particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
-			}
+			level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state), false, particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
 		}
 	}
 }

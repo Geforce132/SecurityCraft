@@ -12,10 +12,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.material.FluidState;
@@ -24,7 +24,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BaseIronTrapDoorBlock extends TrapDoorBlock implements EntityBlock {
-	public BaseIronTrapDoorBlock(Block.Properties properties) {
+	public BaseIronTrapDoorBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 	}
 
@@ -66,9 +66,9 @@ public class BaseIronTrapDoorBlock extends TrapDoorBlock implements EntityBlock 
 
 	@Override
 	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
-		super.triggerEvent(state, level, pos, id, param);
-		BlockEntity blockEntity = level.getBlockEntity(pos);
-		return blockEntity == null ? false : blockEntity.triggerEvent(id, param);
+		BlockEntity be = level.getBlockEntity(pos);
+
+		return be != null && be.triggerEvent(id, param);
 	}
 
 	@Override

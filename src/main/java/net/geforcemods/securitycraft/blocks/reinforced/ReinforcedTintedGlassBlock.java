@@ -3,10 +3,11 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ReinforcedTintedGlassBlock extends ReinforcedGlassBlock {
-	public ReinforcedTintedGlassBlock(Properties properties, Block vB) {
+	public ReinforcedTintedGlassBlock(BlockBehaviour.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 

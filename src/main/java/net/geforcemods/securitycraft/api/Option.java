@@ -1,11 +1,8 @@
 package net.geforcemods.securitycraft.api;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
@@ -25,13 +22,13 @@ public abstract class Option<T> {
 	private T minimum;
 	private T maximum;
 
-	public Option(String optionName, T value) {
+	protected Option(String optionName, T value) {
 		this.name = optionName;
 		this.value = value;
 		this.defaultValue = value;
 	}
 
-	public Option(String optionName, T value, T min, T max, T increment) {
+	protected Option(String optionName, T value, T min, T max, T increment) {
 		this.name = optionName;
 		this.value = value;
 		this.defaultValue = value;
@@ -247,7 +244,7 @@ public abstract class Option<T> {
 	}
 
 	public static class SmartModuleCooldownOption extends IntOption {
-		public SmartModuleCooldownOption(Supplier<BlockPos> pos) {
+		public SmartModuleCooldownOption() {
 			super("smartModuleCooldown", 100, 20, 400, 1, true);
 		}
 

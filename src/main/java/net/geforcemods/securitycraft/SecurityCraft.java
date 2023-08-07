@@ -67,10 +67,10 @@ import net.minecraftforge.registries.RegistryObject;
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	public static final Random RANDOM = new Random();
-	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> getVersion(), getVersion()::equals, getVersion()::equals);
-	public static CreativeModeTab technicalTab = new SCTechnicalTab();
-	public static CreativeModeTab mineTab = new SCExplosivesTab();
-	public static CreativeModeTab decorationTab = new SCDecorationTab();
+	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> getVersion(), getVersion()::equals, getVersion()::equals);
+	public static final CreativeModeTab TECHNICAL_TAB = new SCTechnicalTab();
+	public static final CreativeModeTab MINE_TAB = new SCExplosivesTab();
+	public static final CreativeModeTab DECORATION_TAB = new SCDecorationTab();
 
 	public SecurityCraft() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -56,7 +57,7 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	private static final VoxelShape SHAPE_UP = Block.box(4, 0, 4, 12, 8, 12);
 	private static final VoxelShape SHAPE_DOWN = Block.box(4, 8, 4, 12, 16, 12);
 
-	public AlarmBlock(Block.Properties properties) {
+	public AlarmBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP).setValue(LIT, false).setValue(WATERLOGGED, false));
@@ -69,7 +70,7 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.ALARM, pos));
+					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.ALARM, pos));
 			}
 
 			return InteractionResult.SUCCESS;
@@ -82,7 +83,7 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		Direction facing = state.getValue(FACING);
 
-		return facing == Direction.UP && BlockUtils.isSideSolid(level, pos.below(), Direction.UP) ? true : BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing);
+		return BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing);
 	}
 
 	@Override
@@ -98,10 +99,10 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
-	}
+		Level level = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		Direction facing = ctx.getClickedFace();
 
-	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer) {
 		return BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing).setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER) : null;
 	}
 

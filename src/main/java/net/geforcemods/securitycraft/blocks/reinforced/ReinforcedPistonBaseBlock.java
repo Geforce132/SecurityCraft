@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.piston.MovingPistonBlock;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.block.piston.PistonHeadBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -40,7 +41,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
 
 public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinforcedBlock, EntityBlock {
-	public ReinforcedPistonBaseBlock(boolean sticky, Properties properties) {
+	public ReinforcedPistonBaseBlock(boolean sticky, BlockBehaviour.Properties properties) {
 		super(sticky, properties);
 	}
 
@@ -69,11 +70,9 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 			BlockState offsetState = level.getBlockState(offsetPos);
 			int i = 1;
 
-			if (offsetState.is(SCContent.REINFORCED_MOVING_PISTON.get()) && offsetState.getValue(FACING) == direction) {
-				if (level.getBlockEntity(offsetPos) instanceof ReinforcedPistonMovingBlockEntity pistonTileEntity) {
-					if (pistonTileEntity.isExtending() && (pistonTileEntity.getProgress(0.0F) < 0.5F || level.getGameTime() == pistonTileEntity.getLastTicked() || ((ServerLevel) level).isHandlingTick()))
-						i = 2;
-				}
+			if (offsetState.is(SCContent.REINFORCED_MOVING_PISTON.get()) && offsetState.getValue(FACING) == direction && level.getBlockEntity(offsetPos) instanceof ReinforcedPistonMovingBlockEntity pistonTileEntity) {
+				if (pistonTileEntity.isExtending() && (pistonTileEntity.getProgress(0.0F) < 0.5F || level.getGameTime() == pistonTileEntity.getLastTicked() || ((ServerLevel) level).isHandlingTick()))
+					i = 2;
 			}
 
 			level.blockEvent(pos, this, i, direction.get3DDataValue());
@@ -147,13 +146,9 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 				BlockState offsetState = level.getBlockState(offsetPos);
 				boolean flag = false;
 
-				if (offsetState.is(SCContent.REINFORCED_MOVING_PISTON.get())) {
-					if (level.getBlockEntity(offsetPos) instanceof ReinforcedPistonMovingBlockEntity pistonBe) {
-						if (pistonBe.getFacing() == direction && pistonBe.isExtending()) {
-							pistonBe.finalTick();
-							flag = true;
-						}
-					}
+				if (offsetState.is(SCContent.REINFORCED_MOVING_PISTON.get()) && level.getBlockEntity(offsetPos) instanceof ReinforcedPistonMovingBlockEntity pistonBe && pistonBe.getFacing() == direction && pistonBe.isExtending()) {
+					pistonBe.finalTick();
+					flag = true;
 				}
 
 				if (!flag) {
@@ -279,12 +274,12 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 
 			if (extending) {
 				PistonType type = isSticky ? PistonType.STICKY : PistonType.DEFAULT;
-				BlockState pistonHead = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.FACING, facing).setValue(PistonHeadBlock.TYPE, type);
+				BlockState pistonHead = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(FACING, facing).setValue(PistonHeadBlock.TYPE, type);
 				BlockState movingPiston = SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(MovingPistonBlock.FACING, facing).setValue(MovingPistonBlock.TYPE, isSticky ? PistonType.STICKY : PistonType.DEFAULT);
 				OwnableBlockEntity headBe = new OwnableBlockEntity(frontPos, movingPiston);
 
-				if (pistonBe instanceof OwnableBlockEntity) //synchronize owner to the piston head
-					headBe.setOwner(((OwnableBlockEntity) pistonBe).getOwner().getUUID(), ((OwnableBlockEntity) pistonBe).getOwner().getName());
+				if (pistonBe instanceof OwnableBlockEntity ownable) //synchronize owner to the piston head
+					headBe.setOwner(ownable.getOwner().getUUID(), ownable.getOwner().getName());
 
 				stateToPosMap.remove(frontPos);
 				level.setBlock(frontPos, movingPiston, 68);

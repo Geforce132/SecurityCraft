@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.Map;
 import java.util.UUID;
 
 import net.geforcemods.securitycraft.api.ICustomizable;
@@ -55,9 +56,9 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
-	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
+	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
 	private long cooldownEnd = 0;
-	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 	private ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
 		@Override
 		protected void onOpen(Level level, BlockPos pos, BlockState state) {
@@ -92,7 +93,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		}
 	};
 
-	public AbstractKeypadFurnaceBlockEntity(BlockEntityType<?> beType, BlockPos pos, BlockState state, RecipeType<? extends AbstractCookingRecipe> recipeType) {
+	protected AbstractKeypadFurnaceBlockEntity(BlockEntityType<?> beType, BlockPos pos, BlockState state, RecipeType<? extends AbstractCookingRecipe> recipeType) {
 		super(beType, pos, state, recipeType);
 	}
 
@@ -170,7 +171,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), () -> getInsertOnlyHandler()).cast();
+			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), this::getInsertOnlyHandler).cast();
 		else
 			return super.getCapability(cap, side);
 	}
@@ -219,7 +220,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	@Override
 	public void activate(Player player) {
 		if (!level.isClientSide && getBlockState().getBlock() instanceof AbstractKeypadFurnaceBlock block)
-			block.activate(this, getBlockState(), level, worldPosition, player);
+			block.activate(this, level, worldPosition, player);
 	}
 
 	@Override

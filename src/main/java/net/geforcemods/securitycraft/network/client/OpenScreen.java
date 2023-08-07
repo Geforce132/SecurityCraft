@@ -46,6 +46,7 @@ public class OpenScreen {
 				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof AlarmBlockEntity be)
 					ClientHandler.displayAlarmScreen(be);
 
+				break;
 			case CHECK_BRIEFCASE_PASSCODE:
 				ItemStack briefcaseStack = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
 
@@ -88,6 +89,10 @@ public class OpenScreen {
 			case UNIVERSAL_KEY_CHANGER:
 				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof IPasscodeProtected passcodeProtected)
 					ClientHandler.displayUniversalKeyChangerScreen((BlockEntity) passcodeProtected);
+
+				break;
+			default:
+				throw new IllegalStateException("Unhandled data type: " + dataType.name());
 		}
 	}
 

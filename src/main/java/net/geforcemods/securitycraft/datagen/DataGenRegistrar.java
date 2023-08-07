@@ -13,10 +13,12 @@ import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class DataGenRegistrar {
+	private DataGenRegistrar() {}
+
 	@SubscribeEvent
 	public static void onGatherData(GatherDataEvent event) {
 		DataGenerator generator = event.getGenerator();
-		ExistingFileHelper existingFileHelper = new ExistingFileHelper(Collections.EMPTY_LIST, Collections.EMPTY_SET, false, null, null);
+		ExistingFileHelper existingFileHelper = new ExistingFileHelper(Collections.emptyList(), Collections.emptySet(), false, null, null);
 		BlockTagGenerator blockTagGenerator = new BlockTagGenerator(generator, existingFileHelper);
 
 		generator.addProvider(new BlockLootTableGenerator(generator));

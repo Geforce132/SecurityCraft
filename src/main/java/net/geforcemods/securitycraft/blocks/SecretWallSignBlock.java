@@ -14,9 +14,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.BlockHitResult;
@@ -26,7 +26,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.MinecraftForge;
 
 public class SecretWallSignBlock extends WallSignBlock {
-	public SecretWallSignBlock(Block.Properties properties, WoodType woodType) {
+	public SecretWallSignBlock(BlockBehaviour.Properties properties, WoodType woodType) {
 		super(properties, woodType);
 	}
 
@@ -37,8 +37,8 @@ public class SecretWallSignBlock extends WallSignBlock {
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if (placer instanceof Player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (Player) placer));
+		if (placer instanceof Player player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override

@@ -17,16 +17,14 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ProjectorMenu extends StateSelectorAccessMenu {
 	public static final int SIZE = 1;
-	public ProjectorBlockEntity be;
+	public final ProjectorBlockEntity be;
 	private ContainerLevelAccess worldPosCallable;
 	private Slot projectedBlockSlot;
 
 	public ProjectorMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
 		super(SCContent.PROJECTOR_MENU.get(), windowId);
 
-		if (level.getBlockEntity(pos) instanceof ProjectorBlockEntity be)
-			this.be = be;
-
+		be = (ProjectorBlockEntity) level.getBlockEntity(pos);
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
 
 		// A custom slot that prevents non-Block items from being inserted into the projector
@@ -58,8 +56,9 @@ public class ProjectorMenu extends StateSelectorAccessMenu {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
 
-		if (slot != null && slot.hasItem()) {
+		if (slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
+
 			slotStackCopy = slotStack.copy();
 
 			if (index < 1) {
@@ -68,10 +67,8 @@ public class ProjectorMenu extends StateSelectorAccessMenu {
 
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if (index >= 1) {
-				if (!moveItemStackTo(slotStack, 0, 1, false))
-					return ItemStack.EMPTY;
-			}
+			else if (!moveItemStackTo(slotStack, 0, 1, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.set(ItemStack.EMPTY);
@@ -94,7 +91,7 @@ public class ProjectorMenu extends StateSelectorAccessMenu {
 		broadcastChanges();
 
 		if (be.getLevel().isClientSide)
-			SecurityCraft.channel.sendToServer(new SyncProjector(be.getBlockPos(), state));
+			SecurityCraft.CHANNEL.sendToServer(new SyncProjector(be.getBlockPos(), state));
 	}
 
 	@Override

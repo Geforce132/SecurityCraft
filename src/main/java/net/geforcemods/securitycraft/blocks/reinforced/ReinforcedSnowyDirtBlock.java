@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.GrassBlock;
 import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.MinecraftForge;
@@ -31,7 +32,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinforcedBlock, BonemealableBlock, EntityBlock {
 	private Block vanillaBlock;
 
-	public ReinforcedSnowyDirtBlock(Block.Properties properties, Block vB) {
+	public ReinforcedSnowyDirtBlock(BlockBehaviour.Properties properties, Block vB) {
 		super(properties);
 		this.vanillaBlock = vB;
 	}

@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 
@@ -22,7 +23,9 @@ public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlo
 		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay))
 			return;
 
-		if (be.entityBeingTargeted == null)
+		Entity target = be.getTarget();
+
+		if (target == null)
 			return;
 
 		VertexConsumer builder = buffer.getBuffer(RenderType.lines());
@@ -41,7 +44,7 @@ public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlo
 
 		//draws a line between the trophy system and the projectile that it's targeting
 		builder.vertex(positionMatrix, 0.5F, 0.75F, 0.5F).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, (float) (be.entityBeingTargeted.getX() - pos.getX()), (float) (be.entityBeingTargeted.getY() - pos.getY()), (float) (be.entityBeingTargeted.getZ() - pos.getZ())).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, (float) (target.getX() - pos.getX()), (float) (target.getY() - pos.getY()), (float) (target.getZ() - pos.getZ())).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
 	}
 
 	@Override

@@ -17,7 +17,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class CustomizeBlockMenu extends AbstractContainerMenu {
-	public IModuleInventory moduleInv;
+	public final IModuleInventory moduleInv;
 	private ContainerLevelAccess worldPosCallable;
 	public final int maxSlots;
 
@@ -74,7 +74,7 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 		ItemStack copy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
 
-		if (slot != null && slot.hasItem()) {
+		if (slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
 			boolean isModule = slotStack.getItem() instanceof ModuleItem;
 

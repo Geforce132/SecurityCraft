@@ -93,7 +93,7 @@ public class AlarmScreen extends Screen {
 		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
 		font.draw(pose, currentlySelectedText, width / 2 - font.width(currentlySelectedText) / 2, topPos + imageHeight - 62, 4210752);
 		font.draw(pose, selectedSoundEventText, width / 2 - font.width(selectedSoundEventText) / 2, topPos + imageHeight - 49, 4210752);
-		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, mouseX, mouseY);
 	}
 
 	public void selectSound(ResourceLocation eventId) {
@@ -126,7 +126,7 @@ public class AlarmScreen extends Screen {
 		}
 
 		if (changed)
-			SecurityCraft.channel.sendToServer(new SyncAlarmSettings(be.getBlockPos(), selectedSoundEvent, pitch, soundLength));
+			SecurityCraft.CHANNEL.sendToServer(new SyncAlarmSettings(be.getBlockPos(), selectedSoundEvent, pitch, soundLength));
 	}
 
 	@Override
@@ -149,8 +149,8 @@ public class AlarmScreen extends Screen {
 	}
 
 	public class SoundScrollList extends ScrollPanel {
+		private static final int SLOT_HEIGHT = 12, TEXT_OFFSET = 11;
 		public final List<SoundEvent> allSoundEvents = new ArrayList<>(ForgeRegistries.SOUND_EVENTS.getValues());
-		private final int slotHeight = 12, textOffset = 11;
 		private final Map<SoundEvent, Component> soundEventKeys = new HashMap<>();
 		private List<SoundEvent> filteredSoundEvents;
 		private SoundInstance playingSound;
@@ -161,7 +161,7 @@ public class AlarmScreen extends Screen {
 			super(client, width, height, top, left);
 
 			updateFilteredEntries("");
-			scrollDistance = selectedSoundIndex * slotHeight;
+			scrollDistance = selectedSoundIndex * SLOT_HEIGHT;
 
 			int maxScroll = getContentHeight() - (height - border);
 
@@ -176,7 +176,7 @@ public class AlarmScreen extends Screen {
 
 		@Override
 		protected boolean clickPanel(double mouseX, double mouseY, int button) {
-			int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
+			int slotIndex = (int) (mouseY + (border / 2)) / SLOT_HEIGHT;
 
 			if (slotIndex >= 0 && slotIndex < filteredSoundEvents.size()) {
 				Minecraft mc = Minecraft.getInstance();
@@ -184,9 +184,9 @@ public class AlarmScreen extends Screen {
 
 				if (relativeMouseY < top || relativeMouseY > bottom)
 					return false;
-				else if (mouseX >= 0 && mouseX <= textOffset - 2)
+				else if (mouseX >= 0 && mouseX <= TEXT_OFFSET - 2)
 					playSound(filteredSoundEvents.get(slotIndex));
-				else if (hasSmartModule && mouseX > textOffset - 2 && mouseX <= right - 6 && slotIndex != selectedSoundIndex) {
+				else if (hasSmartModule && mouseX > TEXT_OFFSET - 2 && mouseX <= right - 6 && slotIndex != selectedSoundIndex) {
 					Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 					selectSound(slotIndex);
 				}
@@ -203,24 +203,24 @@ public class AlarmScreen extends Screen {
 
 			int baseY = top + border - (int) scrollDistance;
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
-			int slotIndex = mouseListY / slotHeight;
+			int slotIndex = mouseListY / SLOT_HEIGHT;
 
 			if (slotIndex >= 0 && slotIndex < filteredSoundEvents.size() && mouseX >= left && mouseX < right - 6 && mouseListY >= 0 && mouseY >= top && mouseY <= bottom) {
 				Component soundEventKey = getSoundEventComponent(filteredSoundEvents.get(slotIndex));
 				int length = font.width(soundEventKey);
 
-				if (length >= width - 6 - textOffset)
-					renderTooltip(pose, List.of(soundEventKey), Optional.empty(), left + textOffset - 12, baseY + (slotHeight * slotIndex + slotHeight));
+				if (length >= width - 6 - TEXT_OFFSET)
+					renderTooltip(pose, List.of(soundEventKey), Optional.empty(), left + TEXT_OFFSET - 12, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT));
 			}
 		}
 
 		@Override
 		protected void drawPanel(PoseStack pose, int entryRight, int baseY, Tesselator tesselator, int mouseX, int mouseY) {
 			Font font = Minecraft.getInstance().font;
-			int slotBuffer = slotHeight - 4;
+			int slotBuffer = SLOT_HEIGHT - 4;
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
-			int slotIndex = mouseListY / slotHeight;
-			int min = left + textOffset - 2;
+			int slotIndex = mouseListY / SLOT_HEIGHT;
+			int min = left + TEXT_OFFSET - 2;
 
 			//highlight hovered slot
 			if (hasSmartModule && slotIndex != selectedSoundIndex && mouseX >= min && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < filteredSoundEvents.size() && mouseY >= top && mouseY <= bottom)
@@ -232,9 +232,9 @@ public class AlarmScreen extends Screen {
 
 			//draw entry strings and sound icons
 			for (int i = 0; i < filteredSoundEvents.size(); i++) {
-				int yStart = baseY + (slotHeight * i);
+				int yStart = baseY + (SLOT_HEIGHT * i);
 
-				if (yStart + slotHeight < top)
+				if (yStart + SLOT_HEIGHT < top)
 					continue;
 				else if (yStart > top + height)
 					break;
@@ -242,7 +242,7 @@ public class AlarmScreen extends Screen {
 				SoundEvent soundEvent = filteredSoundEvents.get(i);
 				Component name = getSoundEventComponent(soundEvent);
 
-				font.draw(pose, name, left + textOffset, yStart, 0xC6C6C6);
+				font.draw(pose, name, left + TEXT_OFFSET, yStart, 0xC6C6C6);
 				RenderSystem._setShaderTexture(0, GUI_TEXTURE);
 				blit(pose, left, yStart - 1, getBlitOffset(), i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? 9 : 0, 246, 10, 10, 256, 256);
 			}
@@ -254,7 +254,7 @@ public class AlarmScreen extends Screen {
 
 		private void renderHighlightBox(int entryRight, Tesselator tesselator, int baseY, int slotBuffer, int slotIndex, int min) {
 			int max = entryRight - 6;
-			int slotTop = baseY + slotIndex * slotHeight;
+			int slotTop = baseY + slotIndex * SLOT_HEIGHT;
 			BufferBuilder bufferBuilder = tesselator.getBuilder();
 
 			RenderSystem.enableBlend();

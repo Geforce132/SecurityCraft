@@ -69,7 +69,7 @@ public class CheckPasscodeScreen extends Screen {
 		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 40, 20, 20, new TextComponent("0"), b -> addNumberToString(0)));
 		addRenderableWidget(new ExtendedButton(width / 2 + 17, height / 2 + 40, 20, 20, new TextComponent("✔"), b -> checkCode(keycodeTextbox.getValue())));
 
-		addRenderableWidget(keycodeTextbox = new CensoringEditBox(font, width / 2 - 37, height / 2 - 72, 77, 12, TextComponent.EMPTY) {
+		keycodeTextbox = addRenderableWidget(new CensoringEditBox(font, width / 2 - 37, height / 2 - 72, 77, 12, TextComponent.EMPTY) {
 			@Override
 			public boolean mouseClicked(double mouseX, double mouseY, int button) {
 				return active && super.mouseClicked(mouseX, mouseY, button);
@@ -81,7 +81,7 @@ public class CheckPasscodeScreen extends Screen {
 			}
 		});
 		keycodeTextbox.setMaxLength(Integer.MAX_VALUE);
-		keycodeTextbox.setFilter(s -> s.matches("[0-9]*\\**")); //allow any amount of numbers and any amount of asterisks
+		keycodeTextbox.setFilter(s -> s.matches("\\d*\\**")); //allow any amount of digits and any amount of asterisks
 
 		if (be.isOnCooldown())
 			toggleChildrenActive(false);
@@ -130,11 +130,9 @@ public class CheckPasscodeScreen extends Screen {
 			if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode)))
 				onClose();
 
-			if (!be.isOnCooldown()) {
-				if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
-					minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK, 0.15F, 1.0F);
-					checkCode(keycodeTextbox.getValue());
-				}
+			if (!be.isOnCooldown() && (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER)) {
+				minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK, 0.15F, 1.0F);
+				checkCode(keycodeTextbox.getValue());
 			}
 		}
 
@@ -195,7 +193,7 @@ public class CheckPasscodeScreen extends Screen {
 			toggleChildrenActive(false);
 
 		keycodeTextbox.setValue("");
-		SecurityCraft.channel.sendToServer(new CheckPasscode(pos.getX(), pos.getY(), pos.getZ(), code));
+		SecurityCraft.CHANNEL.sendToServer(new CheckPasscode(pos.getX(), pos.getY(), pos.getZ(), code));
 	}
 
 	public static class CensoringEditBox extends EditBox {

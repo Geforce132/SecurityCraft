@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -51,7 +52,7 @@ public class ProjectorBlock extends DisguisableBlock {
 	private static final VoxelShape CEILING_WEST = Shapes.or(Block.box(1, 6, 1, 15, 11, 15), Block.box(15, 6, 2, 16, 11, 7), Block.box(4, 11, 7, 6, 16, 9));
 	private static final VoxelShape CEILING_EAST = Shapes.or(Block.box(1, 6, 1, 15, 11, 15), Block.box(0, 6, 9, 1, 11, 14), Block.box(10, 11, 7, 12, 16, 9));
 
-	public ProjectorBlock(Block.Properties properties) {
+	public ProjectorBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HANGING, false).setValue(WATERLOGGED, false));
 	}
@@ -114,20 +115,16 @@ public class ProjectorBlock extends DisguisableBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-		if (!level.isClientSide && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be) {
-			if (be.isActivatedByRedstone()) {
-				be.setActive(level.hasNeighborSignal(pos));
-				level.sendBlockUpdated(pos, state, state, 3);
-			}
+		if (!level.isClientSide && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be && be.isActivatedByRedstone()) {
+			be.setActive(level.hasNeighborSignal(pos));
+			level.sendBlockUpdated(pos, state, state, 3);
 		}
 	}
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand) {
-		if (!level.hasNeighborSignal(pos) && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be) {
-			if (be.isActivatedByRedstone())
-				be.setActive(false);
-		}
+		if (!level.hasNeighborSignal(pos) && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be && be.isActivatedByRedstone())
+			be.setActive(false);
 	}
 
 	@Override

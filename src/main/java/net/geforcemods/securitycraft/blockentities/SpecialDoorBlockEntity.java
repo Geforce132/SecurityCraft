@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -22,7 +22,7 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 	protected IntOption signalLength = new IntOption("signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
 	protected DisabledOption disabled = new DisabledOption(false);
 
-	public SpecialDoorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+	protected SpecialDoorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 
@@ -41,7 +41,7 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 	}
 
 	@Override
-	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedBEs) {
+	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
 		if (action instanceof ILinkedAction.OptionChanged<?> optionChanged) {
 			Option<?> option = optionChanged.option();
 

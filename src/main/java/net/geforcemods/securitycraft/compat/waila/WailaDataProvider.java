@@ -57,7 +57,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegistryObject;
 
 @WailaPlugin(SecurityCraft.MODID)
-public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider {
+public final class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider {
 	public static final WailaDataProvider INSTANCE = new WailaDataProvider();
 	public static final ResourceLocation SHOW_OWNER = new ResourceLocation(SecurityCraft.MODID, "showowner");
 	public static final ResourceLocation SHOW_MODULES = new ResourceLocation(SecurityCraft.MODID, "showmodules");
@@ -186,19 +186,17 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				if (config.get(SHOW_OWNER))
 					tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())));
 
-				if (config.get(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer())) {
-					if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
-						tooltip.add(EQUIPPED);
+				if (config.get(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer()) && (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())) {
+					tooltip.add(EQUIPPED);
 
-						if (!sentry.getAllowlistModule().isEmpty())
-							tooltip.add(ALLOWLIST_MODULE);
+					if (!sentry.getAllowlistModule().isEmpty())
+						tooltip.add(ALLOWLIST_MODULE);
 
-						if (!sentry.getDisguiseModule().isEmpty())
-							tooltip.add(DISGUISE_MODULE);
+					if (!sentry.getDisguiseModule().isEmpty())
+						tooltip.add(DISGUISE_MODULE);
 
-						if (sentry.hasSpeedModule())
-							tooltip.add(SPEED_MODULE);
-					}
+					if (sentry.hasSpeedModule())
+						tooltip.add(SPEED_MODULE);
 				}
 
 				MutableComponent modeDescription = Utils.localize(mode.getModeKey());

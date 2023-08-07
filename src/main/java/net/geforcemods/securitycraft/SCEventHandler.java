@@ -31,7 +31,6 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -52,7 +51,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -106,6 +104,8 @@ public class SCEventHandler {
 	private static final Integer NOTE_DELAY = 9;
 	public static final Map<Player, MutablePair<Integer, Deque<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
 
+	private SCEventHandler() {}
+
 	@SubscribeEvent
 	public static void onServerTick(ServerTickEvent event) {
 		if (event.phase == Phase.END) {
@@ -150,7 +150,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event) {
 		if (!ConfigHandler.SERVER.disableThanksMessage.get())
-			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getPlayer()), new SendTip());
+			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getPlayer()), new SendTip());
 	}
 
 	@SubscribeEvent
@@ -220,17 +220,15 @@ public class SCEventHandler {
 		BlockState state = level.getBlockState(event.getPos());
 		Block block = state.getBlock();
 
-		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, event.getPos(), event.getPlayer())) {
-			if (!event.getEntity().isShiftKeyDown()) {
-				if (event.getHand() == InteractionHand.MAIN_HAND) {
-					TranslatableComponent blockName = Utils.localize(block.getDescriptionId());
+		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, event.getPos(), event.getPlayer()) && !event.getEntity().isShiftKeyDown()) {
+			if (event.getHand() == InteractionHand.MAIN_HAND) {
+				TranslatableComponent blockName = Utils.localize(block.getDescriptionId());
 
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
-				}
-
-				event.setCanceled(true);
-				return;
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
 			}
+
+			event.setCanceled(true);
+			return;
 		}
 
 		if (be instanceof IOwnable ownable) {
@@ -484,15 +482,8 @@ public class SCEventHandler {
 			// If so, toggle its redstone power output on
 			if (be.isRecording())
 				be.recordNote(vanillaNoteId, instrumentName);
-			else if (be.listenToNote(vanillaNoteId, instrumentName)) {
-				be.correctTuneWasPlayed = true;
-				be.powerCooldown = be.signalLength.get();
-
-				if (be.isModuleEnabled(ModuleType.REDSTONE)) {
-					level.setBlockAndUpdate(be.getBlockPos(), be.getLevel().getBlockState(be.getBlockPos()).setValue(SonicSecuritySystemBlock.POWERED, true));
-					BlockUtils.updateIndirectNeighbors(be.getLevel(), be.getBlockPos(), SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
-				}
-			}
+			else
+				be.listenToNote(vanillaNoteId, instrumentName);
 		}
 	}
 

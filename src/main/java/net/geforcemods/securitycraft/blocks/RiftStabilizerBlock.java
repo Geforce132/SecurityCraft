@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -53,7 +54,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 	private static final VoxelShape SHAPE_LOWER = Shapes.or(Block.box(0, 0, 0, 16, 12, 16), Block.box(2, 0, 2, 14, 16, 14));
 	private static final VoxelShape SHAPE_UPPER = Shapes.or(Block.box(2, 0, 2, 14, 5, 14), Block.box(4, 0, 4, 12, 8, 12));
 
-	public RiftStabilizerBlock(Properties properties) {
+	public RiftStabilizerBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HALF, DoubleBlockHalf.LOWER).setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}
@@ -71,7 +72,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.RIFT_STABILIZER, pos));
+					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.RIFT_STABILIZER, pos));
 			}
 
 			return InteractionResult.SUCCESS;

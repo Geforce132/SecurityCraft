@@ -31,7 +31,7 @@ import net.minecraftforge.network.PacketDistributor;
 public class SecurityCamera extends Entity {
 	private static final List<Player> DISMOUNTED_PLAYERS = new ArrayList<>();
 	protected final double cameraSpeed = ConfigHandler.CLIENT.cameraSpeed.get();
-	public int screenshotSoundCooldown = 0;
+	private int screenshotSoundCooldown = 0;
 	protected int redstoneCooldown = 0;
 	protected int toggleNightVisionCooldown = 0;
 	private boolean shouldProvideNightVision = false;
@@ -57,7 +57,7 @@ public class SecurityCamera extends Entity {
 		double y = pos.getY() + 0.5D;
 		double z = pos.getZ() + 0.5D;
 
-		if (cam.down)
+		if (cam.isDown())
 			y += 0.25D;
 
 		setPos(x, y, z);
@@ -94,8 +94,8 @@ public class SecurityCamera extends Entity {
 	@Override
 	public void tick() {
 		if (level.isClientSide) {
-			if (screenshotSoundCooldown > 0)
-				screenshotSoundCooldown--;
+			if (getScreenshotSoundCooldown() > 0)
+				setScreenshotSoundCooldown(getScreenshotSoundCooldown() - 1);
 
 			if (redstoneCooldown > 0)
 				redstoneCooldown--;
@@ -104,7 +104,7 @@ public class SecurityCamera extends Entity {
 				toggleNightVisionCooldown--;
 
 			if (shouldProvideNightVision)
-				SecurityCraft.channel.sendToServer(new GiveNightVision());
+				SecurityCraft.CHANNEL.sendToServer(new GiveNightVision());
 		}
 		else if (level.getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get())
 			discard();
@@ -114,7 +114,7 @@ public class SecurityCamera extends Entity {
 		BlockPos pos = blockPosition();
 
 		if (((IModuleInventory) level.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
-			SecurityCraft.channel.sendToServer(new SetCameraPowered(pos, !level.getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
+			SecurityCraft.CHANNEL.sendToServer(new SetCameraPowered(pos, !level.getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
 	}
 
 	public void toggleNightVision() {
@@ -127,7 +127,7 @@ public class SecurityCamera extends Entity {
 	}
 
 	public boolean isCameraDown() {
-		return level.getBlockEntity(blockPosition()) instanceof SecurityCameraBlockEntity cam && cam.down;
+		return level.getBlockEntity(blockPosition()) instanceof SecurityCameraBlockEntity cam && cam.isDown();
 	}
 
 	public void setRotation(float yaw, float pitch) {
@@ -160,7 +160,7 @@ public class SecurityCamera extends Entity {
 		if (!level.isClientSide) {
 			discard();
 			player.camera = player;
-			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new SetCameraView(player));
+			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new SetCameraView(player));
 			DISMOUNTED_PLAYERS.add(player);
 		}
 	}
@@ -202,5 +202,13 @@ public class SecurityCamera extends Entity {
 	@Override
 	public boolean isAlwaysTicking() {
 		return true;
+	}
+
+	public int getScreenshotSoundCooldown() {
+		return screenshotSoundCooldown;
+	}
+
+	public void setScreenshotSoundCooldown(int screenshotSoundCooldown) {
+		this.screenshotSoundCooldown = screenshotSoundCooldown;
 	}
 }

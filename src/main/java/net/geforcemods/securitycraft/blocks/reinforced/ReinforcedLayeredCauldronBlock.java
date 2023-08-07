@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -32,23 +33,21 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
 
-	public ReinforcedLayeredCauldronBlock(Properties properties, Predicate<Precipitation> fillPredicate, Map<Item, CauldronInteraction> interactions, Block vanillaBlock) {
+	public ReinforcedLayeredCauldronBlock(BlockBehaviour.Properties properties, Predicate<Precipitation> fillPredicate, Map<Item, CauldronInteraction> interactions, Block vanillaBlock) {
 		super(properties, fillPredicate, interactions);
 		this.vanillaBlock = vanillaBlock;
 	}
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
-		if (collisionContext instanceof EntityCollisionContext ctx) {
-			if (ctx.getEntity() != null) {
-				Entity entity = ctx.getEntity();
+		if (collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity() != null) {
+			Entity entity = ctx.getEntity();
 
-				if (entity instanceof Player player) {
-					if (level.getBlockEntity(pos) instanceof ReinforcedCauldronBlockEntity be && be.isAllowedToInteract(player))
-						return SHAPE;
-					else
-						return Shapes.block();
-				}
+			if (entity instanceof Player player) {
+				if (level.getBlockEntity(pos) instanceof ReinforcedCauldronBlockEntity be && be.isAllowedToInteract(player))
+					return SHAPE;
+				else
+					return Shapes.block();
 			}
 		}
 

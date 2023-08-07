@@ -71,7 +71,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	private List<BlockStatePropertyButton<?>> buttons = new ArrayList<>();
 	private int page, amountOfPages;
 	private Button previousPageButton, nextPageButton;
-	private Matrix4f dragRotation = Util.make(new Matrix4f(), matrix -> matrix.setIdentity());
+	private Matrix4f dragRotation = Util.make(new Matrix4f(), Matrix4f::setIdentity);
 	private boolean clickedInDragRegion = false;
 	private StandingOrWallType standingOrWallType = StandingOrWallType.NONE;
 
@@ -91,21 +91,21 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 	@Override
 	protected void init() {
-		if (menu.getStateStack().getItem() instanceof BlockItem blockItem) {
+		if (menu.getStateStack().getItem() instanceof BlockItem item) {
 			BlockState savedState = menu.getSavedState();
-			Block blockToCheck = blockItem.getBlock();
+			Block blockToCheck = item.getBlock();
 
 			standingOrWallType = menu.getStandingOrWallType();
 
-			if (blockItem instanceof StandingAndWallBlockItem sawbi && standingOrWallType == StandingOrWallType.WALL)
+			if (item instanceof StandingAndWallBlockItem sawbi && standingOrWallType == StandingOrWallType.WALL)
 				blockToCheck = sawbi.wallBlock;
 
 			if (blockToCheck == savedState.getBlock())
 				state = savedState;
 			else
-				state = blockItem.getBlock().defaultBlockState();
+				state = item.getBlock().defaultBlockState();
 
-			this.blockItem = blockItem;
+			this.blockItem = item;
 		}
 
 		previousPageButton = new Button(xStart + 69, yStart + 125, 20, 20, new TextComponent("<"), button -> turnPage(-1));
@@ -303,9 +303,9 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	@Override
 	public void slotChanged(AbstractContainerMenu menu, int slotIndex, ItemStack newStack) {
 		if (slotIndex == slotToCheck) {
-			if (newStack.getItem() instanceof BlockItem blockItem && (state == null || blockItem.getBlock() != state.getBlock())) {
-				state = blockItem.getBlock().defaultBlockState();
-				this.blockItem = blockItem;
+			if (newStack.getItem() instanceof BlockItem item && (state == null || item.getBlock() != state.getBlock())) {
+				state = item.getBlock().defaultBlockState();
+				this.blockItem = item;
 			}
 			else {
 				state = Blocks.AIR.defaultBlockState();

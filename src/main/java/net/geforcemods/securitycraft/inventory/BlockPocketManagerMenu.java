@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class BlockPocketManagerMenu extends AbstractContainerMenu {
-	public BlockPocketManagerBlockEntity be;
+	public final BlockPocketManagerBlockEntity be;
 	private ContainerLevelAccess worldPosCallable;
 	public final boolean storage;
 	public final boolean isOwner;
@@ -22,12 +22,10 @@ public class BlockPocketManagerMenu extends AbstractContainerMenu {
 	public BlockPocketManagerMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
 		super(SCContent.BLOCK_POCKET_MANAGER_MENU.get(), windowId);
 
-		if (level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be)
-			this.be = be;
-
+		be = (BlockPocketManagerBlockEntity) level.getBlockEntity(pos);
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
-		isOwner = be != null && be.isOwnedBy(inventory.player);
-		storage = be != null && be.isModuleEnabled(ModuleType.STORAGE) && isOwner;
+		isOwner = be.isOwnedBy(inventory.player);
+		storage = be.isModuleEnabled(ModuleType.STORAGE) && isOwner;
 
 		if (storage) {
 			for (int y = 0; y < 3; y++) {
@@ -40,12 +38,12 @@ public class BlockPocketManagerMenu extends AbstractContainerMenu {
 				addSlot(new Slot(inventory, x, 8 + x * 18, 142 + 74));
 			}
 
-			be.getStorageHandler().ifPresent(storage -> {
+			be.getStorageHandler().ifPresent(handler -> {
 				int slotId = 0;
 
 				for (int y = 0; y < 8; y++) {
 					for (int x = 0; x < 7; x++) {
-						addSlot(new SlotItemHandler(storage, slotId++, 124 + x * 18, 8 + y * 18));
+						addSlot(new SlotItemHandler(handler, slotId++, 124 + x * 18, 8 + y * 18));
 					}
 				}
 			});
@@ -57,7 +55,7 @@ public class BlockPocketManagerMenu extends AbstractContainerMenu {
 		ItemStack copy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
 
-		if (slot != null && slot.hasItem()) {
+		if (slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
 
 			copy = slotStack.copy();
@@ -66,10 +64,8 @@ public class BlockPocketManagerMenu extends AbstractContainerMenu {
 				if (!moveItemStackTo(slotStack, 0, 36, true))
 					return ItemStack.EMPTY;
 			}
-			else if (index >= 0 && index <= 35) { //main inventory and hotbar
-				if (!moveItemStackTo(slotStack, 36, slots.size(), false))
-					return ItemStack.EMPTY;
-			}
+			else if (index >= 0 && index <= 35 && !moveItemStackTo(slotStack, 36, slots.size(), false)) //main inventory and hotbar
+				return ItemStack.EMPTY;
 
 			if (slotStack.isEmpty())
 				slot.set(ItemStack.EMPTY);

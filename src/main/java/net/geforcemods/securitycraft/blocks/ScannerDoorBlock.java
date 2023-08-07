@@ -12,10 +12,11 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ScannerDoorBlock extends SpecialDoorBlock {
-	public ScannerDoorBlock(Properties properties) {
+	public ScannerDoorBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 	}
 

@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -44,15 +43,16 @@ public class MineRemoteAccessToolItem extends Item {
 
 	@Override
 	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx) {
-		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), stack, ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
-	}
+		Level level = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 
-	public InteractionResult onItemUseFirst(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
 		if (level.getBlockState(pos).getBlock() instanceof IExplosive) {
-			if (!isMineAdded(stack, pos)) {
-				int availSlot = getNextAvailableSlot(stack);
+			Player player = ctx.getPlayer();
 
-				if (availSlot == 0) {
+			if (!isMineAdded(stack, pos)) {
+				int nextSlot = getNextAvailableSlot(stack);
+
+				if (nextSlot == 0) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.noSlots"), ChatFormatting.RED);
 					return InteractionResult.FAIL;
 				}
@@ -67,10 +67,10 @@ public class MineRemoteAccessToolItem extends Item {
 				if (stack.getTag() == null)
 					stack.setTag(new CompoundTag());
 
-				stack.getTag().putIntArray(("mine" + availSlot), BlockUtils.posToIntArray(pos));
+				stack.getTag().putIntArray(("mine" + nextSlot), BlockUtils.posToIntArray(pos));
 
 				if (!level.isClientSide && !stack.isEmpty())
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
 				return InteractionResult.SUCCESS;
@@ -111,13 +111,11 @@ public class MineRemoteAccessToolItem extends Item {
 				stack.getTag().remove("mine" + i);
 
 				if (!player.level.isClientSide && !stack.isEmpty())
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
 				return;
 			}
 		}
-
-		return;
 	}
 
 	private boolean isMineAdded(ItemStack stack, BlockPos pos) {

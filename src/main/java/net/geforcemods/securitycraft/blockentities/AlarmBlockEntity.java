@@ -46,10 +46,8 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		if (level.isClientSide) {
-			if (soundPlaying && (isDisabled() || !getBlockState().getValue(AlarmBlock.LIT)))
-				stopPlayingSound();
-		}
+		if (level.isClientSide && soundPlaying && (isDisabled() || !getBlockState().getValue(AlarmBlock.LIT)))
+			stopPlayingSound();
 
 		if (!isDisabled() && --cooldown <= 0) {
 			if (!level.isClientSide && isPowered) {
@@ -59,7 +57,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 				for (ServerPlayer player : ((ServerLevel) level).getPlayers(p -> p.blockPosition().distSqr(pos) <= rangeSqr)) {
 					float volume = (float) (1.0F - ((player.blockPosition().distSqr(pos)) / rangeSqr));
 
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new PlayAlarmSound(worldPosition, soundEvent, volume, pitch));
+					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PlayAlarmSound(worldPosition, soundEvent, volume, getPitch()));
 				}
 			}
 
@@ -173,7 +171,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	}
 
 	public void playSound(Level level, double x, double y, double z, SoundEvent sound, float volume, float pitch) {
-		AlarmSoundHandler.playSound(this, level, x, y, z, sound, SoundSource.BLOCKS, volume, pitch);
+		AlarmSoundHandler.playSound(this, x, y, z, sound, SoundSource.BLOCKS, volume, pitch);
 		soundPlaying = true;
 	}
 

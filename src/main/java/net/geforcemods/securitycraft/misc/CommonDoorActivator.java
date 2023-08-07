@@ -51,8 +51,7 @@ public class CommonDoorActivator implements IDoorActivator {
 					AttachFace attachFace = state.getValue(BlockStateProperties.ATTACH_FACE);
 
 					switch (offsetAxis) {
-						case X:
-						case Z:
+						case X, Z:
 							if (attachFace != AttachFace.WALL || direction != facing)
 								return false;
 							break;

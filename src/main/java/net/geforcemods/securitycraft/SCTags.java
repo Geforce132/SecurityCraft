@@ -8,7 +8,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 public class SCTags {
+	private SCTags() {}
+
 	public static class Blocks {
+		private Blocks() {}
+
 		public static final TagKey<Block> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
 		public static final TagKey<Block> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
 		public static final TagKey<Block> REINFORCED_BUTTONS = tag("reinforced/buttons");
@@ -50,6 +54,8 @@ public class SCTags {
 	}
 
 	public static class Items {
+		private Items() {}
+
 		public static final TagKey<Item> CAN_INTERACT_WITH_DOORS = tag("can_interact_with_doors");
 		public static final TagKey<Item> MODULES = tag("modules");
 		public static final TagKey<Item> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");

@@ -18,6 +18,8 @@ public class KeyBindings {
 	public static KeyMapping cameraEmitRedstone;
 	public static KeyMapping cameraActivateNightVision;
 
+	private KeyBindings() {}
+
 	public static void init() {
 		cameraZoomIn = new KeyMapping("key.securitycraft.cameraZoomIn", GLFW.GLFW_KEY_EQUAL, "key.categories.securitycraft");
 		cameraZoomOut = new KeyMapping("key.securitycraft.cameraZoomOut", GLFW.GLFW_KEY_MINUS, "key.categories.securitycraft");

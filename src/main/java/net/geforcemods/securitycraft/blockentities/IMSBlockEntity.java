@@ -134,9 +134,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 		for (height = 1; height <= 9; height++) {
 			BlockState state = getLevel().getBlockState(getBlockPos().above(height));
 
-			if (state == null || state.isAir())
-				continue;
-			else
+			if ((state != null && !state.isAir()))
 				break;
 		}
 
@@ -201,7 +199,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 		return ignoreOwner.get();
 	}
 
-	public static enum IMSTargetingMode {
+	public enum IMSTargetingMode {
 		PLAYERS,
 		PLAYERS_AND_MOBS,
 		MOBS;

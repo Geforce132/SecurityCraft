@@ -77,6 +77,9 @@ import net.minecraftforge.registries.RegistryObject;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class RegistrationHandler {
+
+	private RegistrationHandler() {}
+
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
 		//register item blocks from annotated fields
@@ -85,13 +88,13 @@ public class RegistrationHandler {
 				if (field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).registerBlockItem()) {
 					Block block = ((RegistryObject<Block>) field.get(null)).get();
 
-					event.getRegistry().register(new BlockItem(block, new Item.Properties().tab(SecurityCraft.decorationTab).fireResistant()).setRegistryName(block.getRegistryName()));
+					event.getRegistry().register(new BlockItem(block, new Item.Properties().tab(SecurityCraft.DECORATION_TAB).fireResistant()).setRegistryName(block.getRegistryName()));
 				}
 				else if (field.isAnnotationPresent(RegisterItemBlock.class)) {
 					int tab = field.getAnnotation(RegisterItemBlock.class).value().ordinal();
 					RegistryObject<Block> block = (RegistryObject<Block>) field.get(null);
 
-					event.getRegistry().register(new BlockItem(block.get(), new Item.Properties().tab(tab == 0 ? SecurityCraft.technicalTab : (tab == 1 ? SecurityCraft.mineTab : SecurityCraft.decorationTab))).setRegistryName(block.get().getRegistryName()));
+					event.getRegistry().register(new BlockItem(block.get(), new Item.Properties().tab(tab == 0 ? SecurityCraft.TECHNICAL_TAB : (tab == 1 ? SecurityCraft.MINE_TAB : SecurityCraft.DECORATION_TAB))).setRegistryName(block.get().getRegistryName()));
 				}
 			}
 			catch (IllegalArgumentException | IllegalAccessException e) {
@@ -166,7 +169,7 @@ public class RegistrationHandler {
 	}
 
 	private static <MSG> void registerPacket(int id, Class<MSG> type, BiConsumer<MSG, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> messageHandler) {
-		SecurityCraft.channel.messageBuilder(type, id).encoder(encoder).decoder(decoder).consumer((msg, context) -> {
+		SecurityCraft.CHANNEL.messageBuilder(type, id).encoder(encoder).decoder(decoder).consumer((msg, context) -> {
 			var ctx = context.get();
 
 			ctx.enqueueWork(() -> messageHandler.accept(msg, context));

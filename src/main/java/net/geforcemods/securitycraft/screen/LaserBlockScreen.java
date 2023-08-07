@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.EnumMap;
+import java.util.Map;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -25,7 +25,7 @@ public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 	private final boolean hasSmartModule;
 	private Component smartModuleTooltip;
 	private LaserBlockBlockEntity be;
-	private EnumMap<Direction, Boolean> sideConfig;
+	private Map<Direction, Boolean> sideConfig;
 
 	public LaserBlockScreen(LaserBlockMenu menu, Inventory playerInventory, Component title) {
 		super(menu, playerInventory, title);
@@ -72,7 +72,7 @@ public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		super.render(pose, mouseX, mouseY, partialTicks);
 		renderTooltip(pose, mouseX, mouseY);
-		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, mouseX, mouseY);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 
 	public void onChangeValue(Direction dir, boolean newValue) {
 		sideConfig.put(dir, newValue);
-		SecurityCraft.channel.sendToServer(new SyncLaserSideConfig(be.getBlockPos(), sideConfig));
+		SecurityCraft.CHANNEL.sendToServer(new SyncLaserSideConfig(be.getBlockPos(), sideConfig));
 	}
 
 	@Override

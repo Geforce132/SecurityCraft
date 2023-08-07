@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
@@ -50,9 +50,9 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
+	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
 	private long cooldownEnd = 0;
-	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public KeypadChestBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), pos, state);
@@ -133,7 +133,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), () -> getInsertOnlyHandler()).cast();
+			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), this::getInsertOnlyHandler).cast();
 		else
 			return super.getCapability(cap, side);
 	}
@@ -239,9 +239,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		KeypadChestBlockEntity offsetBe = findOther();
 
 		if (offsetBe != null) {
-			if (toggled && offsetBe.isModuleEnabled(moduleItem.getModuleType()) != remove)
-				return;
-			else if (!toggled && offsetBe.hasModule(moduleItem.getModuleType()) != remove)
+			if (toggled ? offsetBe.isModuleEnabled(moduleItem.getModuleType()) != remove : offsetBe.hasModule(moduleItem.getModuleType()) != remove)
 				return;
 
 			if (remove)
@@ -253,19 +251,17 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 
 	public KeypadChestBlockEntity findOther() {
 		BlockState state = getBlockState();
-		ChestType type = state.getValue(KeypadChestBlock.TYPE);
+		ChestType type = state.getValue(ChestBlock.TYPE);
 
 		if (type != ChestType.SINGLE) {
 			BlockPos offsetPos = worldPosition.relative(ChestBlock.getConnectedDirection(state));
 			BlockState offsetState = level.getBlockState(offsetPos);
 
 			if (state.getBlock() == offsetState.getBlock()) {
-				ChestType offsetType = offsetState.getValue(KeypadChestBlock.TYPE);
+				ChestType offsetType = offsetState.getValue(ChestBlock.TYPE);
 
-				if (offsetType != ChestType.SINGLE && type != offsetType && state.getValue(KeypadChestBlock.FACING) == offsetState.getValue(KeypadChestBlock.FACING)) {
-					if (level.getBlockEntity(offsetPos) instanceof KeypadChestBlockEntity be)
-						return be;
-				}
+				if (offsetType != ChestType.SINGLE && type != offsetType && state.getValue(ChestBlock.FACING) == offsetState.getValue(ChestBlock.FACING) && level.getBlockEntity(offsetPos) instanceof KeypadChestBlockEntity be)
+					return be;
 			}
 		}
 
@@ -315,7 +311,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	}
 
 	public boolean isBlocked() {
-		for (Direction dir : Direction.Plane.HORIZONTAL.stream().collect(Collectors.toList())) {
+		for (Direction dir : Direction.Plane.HORIZONTAL) {
 			BlockPos pos = getBlockPos().relative(dir);
 
 			if (level.getBlockState(pos).getBlock() instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(level, pos))
@@ -365,7 +361,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 
 	@Override
 	public boolean shouldDropModules() {
-		return getBlockState().getValue(KeypadChestBlock.TYPE) == ChestType.SINGLE;
+		return getBlockState().getValue(ChestBlock.TYPE) == ChestType.SINGLE;
 	}
 
 	@Override

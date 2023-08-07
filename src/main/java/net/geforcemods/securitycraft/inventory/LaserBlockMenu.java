@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.inventory;
 
-import java.util.EnumMap;
+import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
@@ -17,10 +17,10 @@ import net.minecraft.world.level.Level;
 
 public class LaserBlockMenu extends AbstractContainerMenu {
 	public final LaserBlockBlockEntity be;
-	public final EnumMap<Direction, Boolean> sideConfig;
+	public final Map<Direction, Boolean> sideConfig;
 	private ContainerLevelAccess containerLevelAccess;
 
-	public LaserBlockMenu(int windowId, Level level, BlockPos pos, EnumMap<Direction, Boolean> sideConfig, Inventory inventory) {
+	public LaserBlockMenu(int windowId, Level level, BlockPos pos, Map<Direction, Boolean> sideConfig, Inventory inventory) {
 		super(SCContent.LASER_BLOCK_MENU.get(), windowId);
 
 		containerLevelAccess = ContainerLevelAccess.create(level, pos);
@@ -51,7 +51,7 @@ public class LaserBlockMenu extends AbstractContainerMenu {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
 
-		if (slot != null && slot.hasItem()) {
+		if (slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
 			slotStackCopy = slotStack.copy();
 
@@ -61,10 +61,8 @@ public class LaserBlockMenu extends AbstractContainerMenu {
 
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if (index >= 6) {
-				if (!moveItemStackTo(slotStack, 0, 6, false))
-					return ItemStack.EMPTY;
-			}
+			else if (!moveItemStackTo(slotStack, 0, 6, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.set(ItemStack.EMPTY);

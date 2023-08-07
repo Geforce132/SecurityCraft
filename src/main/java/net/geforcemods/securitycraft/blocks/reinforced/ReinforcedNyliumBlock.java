@@ -10,11 +10,12 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 
 public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements BonemealableBlock {
-	public ReinforcedNyliumBlock(Block.Properties properties, Block vB) {
+	public ReinforcedNyliumBlock(BlockBehaviour.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 

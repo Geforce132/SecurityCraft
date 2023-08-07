@@ -52,9 +52,9 @@ public abstract class TrackedEntityMixin {
 	 */
 	@ModifyVariable(method = "updatePlayer", name = "flag", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, shift = At.Shift.BEFORE, ordinal = 1))
 	public boolean securitycraft$modifyFlag(boolean original) {
-		boolean shouldBeSent = this.shouldBeSent;
+		boolean originalShouldBeSent = this.shouldBeSent;
 
 		this.shouldBeSent = false;
-		return entity instanceof SecurityCamera || original || shouldBeSent;
+		return entity instanceof SecurityCamera || original || originalShouldBeSent;
 	}
 }

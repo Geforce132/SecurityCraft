@@ -138,7 +138,7 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 	}
 
 	private boolean getCanBlockBurn(Level level, BlockPos pos) {
-		return !level.isLoaded(pos) ? false : level.getBlockState(pos).getMaterial().isFlammable();
+		return level.isLoaded(pos) && level.getBlockState(pos).getMaterial().isFlammable();
 	}
 
 	@Nullable
@@ -203,14 +203,12 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 
 	@Override
 	protected void spreadTo(LevelAccessor level, BlockPos pos, BlockState state, Direction direction, FluidState fluidState) {
-		if (direction == Direction.DOWN) {
-			if (is(FluidTags.LAVA) && fluidState.is(FluidTags.WATER)) {
-				if (state.getBlock() instanceof LiquidBlock)
-					level.setBlock(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, pos, Blocks.STONE.defaultBlockState()), 3);
+		if (direction == Direction.DOWN && is(FluidTags.LAVA) && fluidState.is(FluidTags.WATER)) {
+			if (state.getBlock() instanceof LiquidBlock)
+				level.setBlock(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, pos, Blocks.STONE.defaultBlockState()), 3);
 
-				triggerEffects(level, pos);
-				return;
-			}
+			triggerEffects(level, pos);
+			return;
 		}
 
 		super.spreadTo(level, pos, state, direction, fluidState);

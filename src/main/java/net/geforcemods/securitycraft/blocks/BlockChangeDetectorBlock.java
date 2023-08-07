@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -39,7 +40,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final VoxelShape SHAPE = Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D), Block.box(7.0D, 9.0D, 7.0D, 9.0D, 16.0D, 9.0D));
 
-	public BlockChangeDetectorBlock(Properties properties) {
+	public BlockChangeDetectorBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}
@@ -61,20 +62,16 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (!level.isClientSide && level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be) {
-			if (be.isOwnedBy(player) || be.isAllowed(player))
-				NetworkHooks.openGui((ServerPlayer) player, be, pos);
-		}
+		if (!level.isClientSide && level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)))
+			NetworkHooks.openGui((ServerPlayer) player, be, pos);
 
 		return InteractionResult.SUCCESS;
 	}
 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.getBlock() != newState.getBlock()) {
-			if (level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be)
-				Block.popResource(level, pos, be.getStackInSlot(36));
-		}
+		if (state.getBlock() != newState.getBlock() && level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be)
+			Block.popResource(level, pos, be.getStackInSlot(36));
 
 		super.onRemove(state, level, pos, newState, isMoving);
 	}

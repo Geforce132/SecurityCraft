@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -86,7 +86,7 @@ public class CameraMonitorScreen extends Screen {
 		for (int i = 0; i < 10; i++) {
 			CameraButton button = cameraButtons[i];
 			int camID = button.camId + (page - 1) * 10;
-			ArrayList<GlobalPos> views = cameraMonitor.getCameraPositions(nbtTag);
+			List<GlobalPos> views = cameraMonitor.getCameraPositions(nbtTag);
 			GlobalPos view = views.get(camID - 1);
 
 			button.setMessage(button.getMessage().plainCopy().append(new TextComponent("" + camID)));
@@ -108,7 +108,6 @@ public class CameraMonitorScreen extends Screen {
 				button.active = false;
 				unbindButtons[button.camId - 1].active = false;
 				cameraBEs[button.camId - 1] = null;
-				continue;
 			}
 		}
 
@@ -140,16 +139,14 @@ public class CameraMonitorScreen extends Screen {
 		font.draw(pose, selectCameras, startX + xSize / 2 - font.width(selectCameras) / 2, startY + 6, 4210752);
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
-			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
-				if (cameraBEs[i] != null) {
-					if (cameraBEs[i].isDisabled()) {
-						renderTooltip(pose, Utils.localize("gui.securitycraft:scManual.disabled"), mouseX, mouseY);
-						break;
-					}
-					else if (cameraBEs[i].hasCustomName()) {
-						renderTooltip(pose, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBEs[i].getCustomName()), 150), mouseX, mouseY);
-						break;
-					}
+			if (hoverCheckers[i] != null && cameraBEs[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
+				if (cameraBEs[i].isDisabled()) {
+					renderTooltip(pose, Utils.localize("gui.securitycraft:scManual.disabled"), mouseX, mouseY);
+					break;
+				}
+				else if (cameraBEs[i].hasCustomName()) {
+					renderTooltip(pose, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBEs[i].getCustomName()), 150), mouseX, mouseY);
+					break;
 				}
 			}
 		}
@@ -164,14 +161,14 @@ public class CameraMonitorScreen extends Screen {
 			return;
 		}
 
-		SecurityCraft.channel.sendToServer(new MountCamera(cameraPos));
+		SecurityCraft.CHANNEL.sendToServer(new MountCamera(cameraPos));
 		Minecraft.getInstance().player.closeContainer();
 	}
 
 	private void unbindButtonClicked(Button button) {
 		int camID = ((CameraButton) button).camId + (page - 1) * 10;
 
-		SecurityCraft.channel.sendToServer(new RemoveCameraTag(camID));
+		SecurityCraft.CHANNEL.sendToServer(new RemoveCameraTag(camID));
 		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
 		button.active = false;
 		cameraButtons[(camID - 1) % 10].active = false;

@@ -20,15 +20,13 @@ import net.minecraft.world.level.Level;
 public class KeycardReaderMenu extends AbstractContainerMenu {
 	private final SimpleContainer itemInventory = new SimpleContainer(1);
 	public final Slot keycardSlot;
-	public KeycardReaderBlockEntity be;
+	public final KeycardReaderBlockEntity be;
 	private ContainerLevelAccess worldPosCallable;
 
 	public KeycardReaderMenu(int windowId, Inventory inventory, Level level, BlockPos pos) {
 		super(SCContent.KEYCARD_READER_MENU.get(), windowId);
 
-		if (level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity be)
-			this.be = be;
-
+		this.be = (KeycardReaderBlockEntity) level.getBlockEntity(pos);
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
 
 		//main player inventory
@@ -100,7 +98,7 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = slots.get(id);
 
-		if (slot != null && slot.hasItem()) {
+		if (slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
 
 			slotStackCopy = slotStack.copy();
@@ -110,10 +108,8 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 					return ItemStack.EMPTY;
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if (id < 36) {
-				if (!moveItemStackTo(slotStack, 36, 37, false))
-					return ItemStack.EMPTY;
-			}
+			else if (!moveItemStackTo(slotStack, 36, 37, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.set(ItemStack.EMPTY);

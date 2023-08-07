@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -53,7 +54,7 @@ public class IMSBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	private static final VoxelShape SHAPE_3_MINES = Shapes.or(SHAPE_2_MINES, Block.box(11, 0, 0, 16, 5, 5));
 	private static final VoxelShape SHAPE_4_MINES = Shapes.or(SHAPE_3_MINES, Block.box(11, 0, 11, 16, 5, 16));
 
-	public IMSBlock(Block.Properties properties) {
+	public IMSBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(MINES, 4).setValue(WATERLOGGED, false));
 	}
@@ -102,24 +103,22 @@ public class IMSBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (!level.isClientSide) {
-			if (level.getBlockEntity(pos) instanceof IMSBlockEntity be) {
-				if (be.isDisabled())
-					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				else if (be.isOwnedBy(player)) {
-					ItemStack held = player.getItemInHand(hand);
-					int mines = state.getValue(MINES);
+		if (!level.isClientSide && level.getBlockEntity(pos) instanceof IMSBlockEntity be) {
+			if (be.isDisabled())
+				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else if (be.isOwnedBy(player)) {
+				ItemStack held = player.getItemInHand(hand);
+				int mines = state.getValue(MINES);
 
-					if (held.getItem() == SCContent.BOUNCING_BETTY.get().asItem() && mines < 4) {
-						if (!player.isCreative())
-							held.shrink(1);
+				if (held.getItem() == SCContent.BOUNCING_BETTY.get().asItem() && mines < 4) {
+					if (!player.isCreative())
+						held.shrink(1);
 
-						level.setBlockAndUpdate(pos, state.setValue(MINES, mines + 1));
-						be.setBombsRemaining(mines + 1);
-					}
-					else
-						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.IMS, pos));
+					level.setBlockAndUpdate(pos, state.setValue(MINES, mines + 1));
+					be.setBombsRemaining(mines + 1);
 				}
+				else
+					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.IMS, pos));
 			}
 		}
 
@@ -147,11 +146,7 @@ public class IMSBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
-	}
-
-	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer) {
-		return defaultBlockState().setValue(MINES, 4).setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER);
+		return defaultBlockState().setValue(MINES, 4).setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER);
 	}
 
 	@Override

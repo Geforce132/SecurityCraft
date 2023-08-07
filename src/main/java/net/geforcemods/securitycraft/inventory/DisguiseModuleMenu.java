@@ -36,20 +36,20 @@ public class DisguiseModuleMenu extends StateSelectorAccessMenu {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
 
-		if (slot != null && slot.hasItem()) {
+		if (slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
+			int size = inventory.getContainerSize();
+
 			slotStackCopy = slotStack.copy();
 
-			if (index < inventory.size) {
-				if (!moveItemStackTo(slotStack, inventory.size, 37, true))
+			if (index < size) {
+				if (!moveItemStackTo(slotStack, size, 37, true))
 					return ItemStack.EMPTY;
 
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if (index >= inventory.size) {
-				if (!moveItemStackTo(slotStack, 0, inventory.size, false))
-					return ItemStack.EMPTY;
-			}
+			else if (!moveItemStackTo(slotStack, 0, size, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.set(ItemStack.EMPTY);
@@ -68,9 +68,7 @@ public class DisguiseModuleMenu extends StateSelectorAccessMenu {
 
 	@Override
 	public void clicked(int slot, int dragType, ClickType clickType, Player player) {
-		if (slot >= 0 && getSlot(slot) != null && getSlot(slot).getItem().getItem() == SCContent.DISGUISE_MODULE.get())
-			return;
-		else
+		if (!(slot >= 0 && getSlot(slot) != null && getSlot(slot).getItem().getItem() == SCContent.DISGUISE_MODULE.get()))
 			super.clicked(slot, dragType, clickType, player);
 	}
 

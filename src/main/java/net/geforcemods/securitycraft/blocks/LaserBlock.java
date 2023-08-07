@@ -35,6 +35,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -45,7 +46,7 @@ import net.minecraftforge.network.NetworkHooks;
 public class LaserBlock extends DisguisableBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	public LaserBlock(Block.Properties properties) {
+	public LaserBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}
@@ -171,7 +172,11 @@ public class LaserBlock extends DisguisableBlock {
 			if (state.getBlock() != SCContent.LASER_FIELD.get())
 				return false;
 
-			int boundType = direction == Direction.UP || direction == Direction.DOWN ? 1 : (direction == Direction.NORTH || direction == Direction.SOUTH ? 2 : 3);
+			int boundType = switch (direction) {
+				case UP, DOWN -> 1;
+				case NORTH, SOUTH -> 2;
+				default -> 3;
+			};
 
 			return state.getValue(LaserFieldBlock.BOUNDTYPE) == boundType;
 		}, level, pos, Direction.values());

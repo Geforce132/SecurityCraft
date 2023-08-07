@@ -51,7 +51,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		BlockPos worldPosition = be.getBlockPos();
 
 		if (!level.isClientSide) {
-			SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
+			SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
 
 			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
 				level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
@@ -81,7 +81,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		if (!level.isClientSide) {
 			BlockState state = be.getBlockState();
 
-			SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
+			SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
 
 			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
 				level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
@@ -136,7 +136,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 
 	@Override
 	public Option<?>[] customOptions() {
-		return null;
+		return new Option[0];
 	}
 
 	@Override

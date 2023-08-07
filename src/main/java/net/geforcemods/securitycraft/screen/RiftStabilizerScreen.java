@@ -17,8 +17,8 @@ import net.minecraft.resources.ResourceLocation;
 public class RiftStabilizerScreen extends Screen {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
 	public final Component scrollListTitle, smartModuleTooltip;
-	private final int imageWidth = 176;
-	private final int imageHeight = 166;
+	private int imageWidth = 176;
+	private int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
 	private boolean hasSmartModule;
@@ -51,7 +51,7 @@ public class RiftStabilizerScreen extends Screen {
 		super.render(pose, mouseX, mouseY, partialTicks);
 		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
 		font.draw(pose, scrollListTitle, width / 2 - font.width(scrollListTitle) / 2, topPos + 31, 4210752);
-		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, mouseX, mouseY);
 	}
 
 	@Override

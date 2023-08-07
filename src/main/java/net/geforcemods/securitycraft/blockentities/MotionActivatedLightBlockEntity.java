@@ -47,10 +47,8 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 	@Override
 	public void onOptionChanged(Option<?> option) {
 		//turn off the light when it's disabled
-		if (option.getName().equals("disabled") && ((BooleanOption) option).get()) {
-			if (getBlockState().getValue(MotionActivatedLightBlock.LIT))
-				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(MotionActivatedLightBlock.LIT, false));
-		}
+		if (option.getName().equals("disabled") && ((BooleanOption) option).get() && getBlockState().getValue(MotionActivatedLightBlock.LIT))
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(MotionActivatedLightBlock.LIT, false));
 	}
 
 	@Override

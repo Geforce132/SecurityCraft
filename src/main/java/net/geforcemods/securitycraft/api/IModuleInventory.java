@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -273,7 +274,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	/**
 	 * @return A List of all ModuleType currently inserted in the TileEntity.
 	 */
-	public default ArrayList<ModuleType> getInsertedModules() {
+	public default List<ModuleType> getInsertedModules() {
 		ArrayList<ModuleType> modules = new ArrayList<>();
 
 		for (ItemStack stack : getInventory()) {
@@ -314,15 +315,13 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		//if the module is being toggled, then there should not be a check for whether the module already exists
 		if (!toggled) {
 			for (int i = 0; i < modules.size(); i++) {
-				if (!modules.get(i).isEmpty()) {
-					if (modules.get(i).getItem() == moduleItem)
-						return;
-				}
+				if (!modules.get(i).isEmpty() && modules.get(i).getItem() == moduleItem)
+					return;
 			}
 		}
 
 		//if the module is being toggled, the test should be for the stack that matches the module. if not, the test should look for the first empty slot
-		Predicate<ItemStack> predicate = toggled ? stack -> stack.getItem() == moduleItem : stack -> stack.isEmpty();
+		Predicate<ItemStack> predicate = toggled ? stack -> stack.getItem() == moduleItem : ItemStack::isEmpty;
 
 		for (int i = 0; i < modules.size(); i++) {
 			if (predicate.test(modules.get(i))) {
@@ -411,7 +410,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @param tag The tag to read the states from
 	 * @return An EnumMap of all module types with the enabled flag set as read from the tag
 	 */
-	public default EnumMap<ModuleType, Boolean> readModuleStates(CompoundTag tag) {
+	public default Map<ModuleType, Boolean> readModuleStates(CompoundTag tag) {
 		EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 		List<ModuleType> acceptedModules = Arrays.asList(acceptedModules());
 

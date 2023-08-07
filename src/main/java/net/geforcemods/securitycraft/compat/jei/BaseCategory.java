@@ -16,7 +16,7 @@ public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe> 
 	private final IDrawable background;
 	private final IDrawable icon;
 
-	public BaseCategory(IGuiHelper helper) {
+	protected BaseCategory(IGuiHelper helper) {
 		background = helper.createDrawable(new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer.png"), 25, 19, 126, 43);
 		icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()));
 	}

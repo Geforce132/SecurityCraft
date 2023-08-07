@@ -31,14 +31,12 @@ public class LimitedUseKeycardRecipe extends CustomRecipe {
 						return false;
 
 					hasNormalKeycard = true;
-					continue;
 				}
 				else { //item is SCContent.LIMITED_USE_KEYCARD.get()
 					if (hasLimitedUseKeycard)
 						return false;
 
 					hasLimitedUseKeycard = true;
-					continue;
 				}
 			}
 			else if (!stack.isEmpty())

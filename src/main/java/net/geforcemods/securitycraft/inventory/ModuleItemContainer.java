@@ -10,18 +10,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class ModuleItemContainer implements Container {
-	public final int size = 1;
 	private final ItemStack module;
-	public NonNullList<ItemStack> moduleInventory;
+	private NonNullList<ItemStack> moduleInventory;
 	private DisguiseModuleMenu menu;
 
 	public ModuleItemContainer(ItemStack moduleStack) {
 		module = moduleStack;
 
-		if (!(moduleStack.getItem() instanceof ModuleItem moduleItem))
+		if (!(moduleStack.getItem() instanceof ModuleItem))
 			return;
 
-		moduleInventory = NonNullList.withSize(size, ItemStack.EMPTY);
+		moduleInventory = NonNullList.withSize(1, ItemStack.EMPTY);
 
 		if (!module.hasTag())
 			module.setTag(new CompoundTag());
@@ -31,7 +30,7 @@ public class ModuleItemContainer implements Container {
 
 	@Override
 	public int getContainerSize() {
-		return size;
+		return 1;
 	}
 
 	@Override

@@ -48,10 +48,9 @@ public class SetPasscodeScreen extends Screen {
 
 		saveAndContinueButton.active = false;
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-
-		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 47, 77, 12, TextComponent.EMPTY));
+		keycodeTextbox = addRenderableWidget(new EditBox(font, width / 2 - 37, height / 2 - 47, 77, 12, TextComponent.EMPTY));
 		keycodeTextbox.setMaxLength(Integer.MAX_VALUE);
-		keycodeTextbox.setFilter(s -> s.matches("[0-9]*"));
+		keycodeTextbox.setFilter(s -> s.matches("\\d*"));
 		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = !text.isEmpty());
 		setInitialFocus(keycodeTextbox);
 	}
@@ -95,7 +94,7 @@ public class SetPasscodeScreen extends Screen {
 	}
 
 	private void saveAndContinueButtonClicked(Button button) {
-		SecurityCraft.channel.sendToServer(new SetPasscode(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ(), keycodeTextbox.getValue()));
+		SecurityCraft.CHANNEL.sendToServer(new SetPasscode(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ(), keycodeTextbox.getValue()));
 		Minecraft.getInstance().player.closeContainer();
 	}
 }

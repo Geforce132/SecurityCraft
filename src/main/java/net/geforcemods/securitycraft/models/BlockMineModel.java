@@ -47,12 +47,12 @@ public class BlockMineModel implements BakedModel {
 
 	@Override
 	public boolean useAmbientOcclusion() {
-		return defaultModel == null ? true : defaultModel.useAmbientOcclusion();
+		return defaultModel == null || defaultModel.useAmbientOcclusion();
 	}
 
 	@Override
 	public boolean isGui3d() {
-		return defaultModel == null ? false : defaultModel.isGui3d();
+		return defaultModel != null && defaultModel.isGui3d();
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class BlockMineModel implements BakedModel {
 
 	@Override
 	public boolean isCustomRenderer() {
-		return defaultModel == null ? false : defaultModel.isCustomRenderer();
+		return defaultModel != null && defaultModel.isCustomRenderer();
 	}
 
 	@Override

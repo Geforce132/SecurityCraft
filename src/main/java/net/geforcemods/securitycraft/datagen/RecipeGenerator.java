@@ -1352,7 +1352,7 @@ public class RecipeGenerator extends RecipeProvider {
 		ResourceLocation id = resultItem.getRegistryName();
 
 		recipe = new ShapelessRecipeBuilder.Result(id,
-				resultItem, amount, group, ingredients.stream().map(item -> Ingredient.of(item)).collect(Collectors.toList()),
+				resultItem, amount, group, ingredients.stream().map(Ingredient::of).collect(Collectors.toList()),
 				Advancement.Builder.advancement().addCriterion("has_item", criterion),
 				new ResourceLocation(id.getNamespace(), "recipes/" + resultItem.getItemCategory().getRecipeFolderName() + "/" + id.getPath()));
 		ConditionalRecipe.builder().addCondition(condition).addRecipe(recipe).build(consumer, id);

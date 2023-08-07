@@ -13,7 +13,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class IMSBombModel extends EntityModel<IMSBomb> {
-	public ModelPart bomb;
+	public final ModelPart bomb;
 
 	public IMSBombModel(ModelPart modelPart) {
 		bomb = modelPart.getChild("ims_bomb");

@@ -16,6 +16,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RedstoneTorchBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -24,7 +25,7 @@ import net.minecraft.world.phys.BlockHitResult;
 public class RedstoneOreMineBlock extends BaseFullMineBlock {
 	public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
 
-	public RedstoneOreMineBlock(Block.Properties properties, Block disguisedBlock) {
+	public RedstoneOreMineBlock(BlockBehaviour.Properties properties, Block disguisedBlock) {
 		super(properties, disguisedBlock);
 
 		registerDefaultState(defaultBlockState().setValue(LIT, false));
