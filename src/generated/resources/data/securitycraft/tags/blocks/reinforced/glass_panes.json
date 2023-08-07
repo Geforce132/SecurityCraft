@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "securitycraft:reinforced_glass_pane",
     "securitycraft:reinforced_white_stained_glass_pane",

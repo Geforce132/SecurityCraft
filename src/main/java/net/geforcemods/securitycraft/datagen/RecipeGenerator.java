@@ -229,8 +229,6 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("SGS")
 		.pattern("GRG")
 		.pattern("SGS")
-		.pattern("GRG")
-		.pattern("SGS")
 		.define('S', ItemTags.STONE_CRAFTING_MATERIALS)
 		.define('R', Tags.Items.STORAGE_BLOCKS_REDSTONE)
 		.define('G', Tags.Items.GLASS_PANES_COLORLESS)
