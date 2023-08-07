@@ -111,7 +111,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				.addTag(SCTags.Blocks.REINFORCED_JUNGLE_LOGS)
 				.addTag(SCTags.Blocks.REINFORCED_OAK_LOGS)
 				.addTag(SCTags.Blocks.REINFORCED_SPRUCE_LOGS)
-				.addTag(SCTags.Blocks.REINFORCED_SPRUCE_LOGS)
 				.addTag(SCTags.Blocks.REINFORCED_WARPED_STEMS);
 		tag(SCTags.Blocks.REINFORCED_NYLIUM).add(
 				SCContent.REINFORCED_CRIMSON_NYLIUM.get(),
