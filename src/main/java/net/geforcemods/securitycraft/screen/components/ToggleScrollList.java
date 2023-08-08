@@ -151,7 +151,6 @@ public class ToggleScrollList<T> extends ScrollPanel {
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		boolean returnValue = super.mouseClicked(mouseX, mouseY, button);
-
 		int barLeft = ObfuscationReflectionHelper.getPrivateValue(ScrollPanel.class, this, "barLeft");
 		int barWidth = ObfuscationReflectionHelper.getPrivateValue(ScrollPanel.class, this, "barWidth");
 		boolean previousScrolling = ObfuscationReflectionHelper.getPrivateValue(ScrollPanel.class, this, "scrolling");
