@@ -2,16 +2,14 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.stream.Stream;
 
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
-import net.geforcemods.securitycraft.network.client.OpenScreen;
-import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -26,7 +24,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class TrophySystemBlock extends DisguisableBlock {
 	//@formatter:off
@@ -70,7 +68,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 					if (be.isDisabled())
 						player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 					else
-						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.TROPHY_SYSTEM, pos));
+						NetworkHooks.openGui((ServerPlayerEntity) player, be, pos);
 				}
 
 				return ActionResultType.SUCCESS;
@@ -88,6 +86,20 @@ public class TrophySystemBlock extends DisguisableBlock {
 			return disguisedState.getShape(world, pos, ctx);
 		else
 			return SHAPE;
+	}
+
+	@Override
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof TrophySystemBlockEntity) {
+				InventoryHelper.dropContents(level, pos, ((TrophySystemBlockEntity) te).getLensContainer());
+				level.updateNeighbourForOutputSignal(pos, this);
+			}
+
+			super.onRemove(state, level, pos, newState, isMoving);
+		}
 	}
 
 	@Override

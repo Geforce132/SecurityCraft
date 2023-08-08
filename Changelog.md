@@ -3,11 +3,15 @@
 - New: The Sonic Security System's functionality can now be inverted (blocks are accessible by default, and locked when the correct tune is played)
 - New: The IMS can now automatically recharge itself with bouncing betties from a chest, barrel, etc. below
 - New: Simplified Chinese translation (Thanks DrIceTea!)
+- New: Lens item to be able to color laser and inventory scanner fields in any desired color, as well as a couple other things
+- New: Item tag "securitycraft:reinforced/glass_panes"
+- Change: The recipe for the laser block now uses 4 glass panes in total
 - Fix: Crash when opening the customization GUI of a block that has no options (like the Projector)
 - Fix: Blocks can be pushed into a sentry using a piston
 - Fix: The block at x=0, y=0, z=0 gets removed when placing a sentry
 - Fix: Possible loss of data of passcode blocks
 - Fix: Startup crash when Dave's Potioneering is installed
+- Fix: It's possible to scroll the Trophy System's list by clicking outside the list
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 

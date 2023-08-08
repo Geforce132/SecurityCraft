@@ -18,6 +18,7 @@ public class SCTags {
 		public static final IOptionalNamedTag<Block> REINFORCED_DARK_OAK_LOGS = tag("reinforced/dark_oak_logs");
 		public static final IOptionalNamedTag<Block> REINFORCED_DIRT = tag("reinforced/dirt");
 		public static final IOptionalNamedTag<Block> REINFORCED_END_STONES = tag("reinforced/end_stones");
+		public static final IOptionalNamedTag<Block> REINFORCED_GLASS_PANES = tag("reinforced/glass_panes");
 		public static final IOptionalNamedTag<Block> REINFORCED_ICE = tag("reinforced/ice");
 		public static final IOptionalNamedTag<Block> REINFORCED_JUNGLE_LOGS = tag("reinforced/jungle_logs");
 		public static final IOptionalNamedTag<Block> REINFORCED_LOGS = tag("reinforced/logs");
@@ -60,6 +61,7 @@ public class SCTags {
 		public static final IOptionalNamedTag<Item> REINFORCED_DARK_OAK_LOGS = tag("reinforced/dark_oak_logs");
 		public static final IOptionalNamedTag<Item> REINFORCED_DIRT = tag("reinforced/dirt");
 		public static final IOptionalNamedTag<Item> REINFORCED_END_STONES = tag("reinforced/end_stones");
+		public static final IOptionalNamedTag<Item> REINFORCED_GLASS_PANES = tag("reinforced/glass_panes");
 		public static final IOptionalNamedTag<Item> REINFORCED_ICE = tag("reinforced/ice");
 		public static final IOptionalNamedTag<Item> REINFORCED_JUNGLE_LOGS = tag("reinforced/jungle_logs");
 		public static final IOptionalNamedTag<Item> REINFORCED_LOGS = tag("reinforced/logs");

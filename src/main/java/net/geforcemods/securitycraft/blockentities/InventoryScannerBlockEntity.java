@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.inventory.ExtractOnlyItemStackHandler;
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
+import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
@@ -22,6 +23,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -36,24 +38,27 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements IInventory, INamedContainerProvider, ITickableTileEntity, ILockable {
+public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements IInventory, INamedContainerProvider, ITickableTileEntity, ILockable, IInventoryChangedListener {
+	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> EmptyHandler.INSTANCE);
 	private BooleanOption horizontal = new BooleanOption("horizontal", false);
 	private BooleanOption solidifyField = new BooleanOption("solidifyField", false);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
-	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> EmptyHandler.INSTANCE);
 	private LazyOptional<IItemHandler> storageHandler;
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
 	private int cooldown;
+	private LensContainer lens = new LensContainer(1);
 
 	public InventoryScannerBlockEntity() {
 		super(SCContent.INVENTORY_SCANNER_BLOCK_ENTITY.get());
+		lens.addListener(this);
 	}
 
 	@Override
@@ -95,6 +100,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		}
 
 		cooldown = tag.getInt("cooldown");
+		lens.fromTag(tag.getList("lens", Constants.NBT.TAG_COMPOUND));
+		lens.setChanged();
 	}
 
 	@Override
@@ -213,6 +220,24 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		}
 
 		return stackToInsert;
+	}
+
+	public LensContainer getLensContainer() {
+		return lens;
+	}
+
+	@Override
+	public void containerChanged(IInventory container) {
+		if (level == null)
+			return;
+
+		InventoryScannerBlockEntity otherScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition, getBlockState(), be -> {
+			if (be.getLevel().isClientSide)
+				ClientHandler.updateBlockColorAroundPosition(be.getBlockPos());
+		});
+
+		if (otherScanner != null)
+			otherScanner.getLensContainer().setItemExclusively(0, lens.getItem(0));
 	}
 
 	@Override

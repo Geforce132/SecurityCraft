@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -17,22 +18,38 @@ import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
+import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.LaserBlockMenu;
+import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class LaserBlockBlockEntity extends LinkableBlockEntity {
+public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamedContainerProvider, IInventoryChangedListener {
 	private DisabledOption disabled = new DisabledOption(false) {
 		@Override
 		public void toggle() {
@@ -50,15 +67,23 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 		return map;
 	});
+	private LazyOptional<IItemHandler> insertOnlyHandler, lensHandler;
+	private LensContainer lenses = new LensContainer(6);
 
 	public LaserBlockBlockEntity() {
 		super(SCContent.LASER_BLOCK_BLOCK_ENTITY.get());
+		lenses.addListener(this);
 	}
 
 	@Override
 	public CompoundNBT save(CompoundNBT tag) {
 		super.save(tag);
 		tag.put("sideConfig", saveSideConfig(sideConfig));
+
+		for (int i = 0; i < lenses.getContainerSize(); i++) {
+			tag.put("lens" + i, lenses.getItem(i).save(new CompoundNBT()));
+		}
+
 		return tag;
 	}
 
@@ -73,6 +98,12 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	public void load(BlockState state, CompoundNBT tag) {
 		super.load(state, tag);
 		sideConfig = loadSideConfig(tag.getCompound("sideConfig"));
+
+		for (int i = 0; i < lenses.getContainerSize(); i++) {
+			lenses.setItemExclusively(i, ItemStack.of(tag.getCompound("lens" + i)));
+		}
+
+		lenses.setChanged();
 	}
 
 	public static EnumMap<Direction, Boolean> loadSideConfig(CompoundNBT sideConfigTag) {
@@ -156,6 +187,41 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	}
 
 	@Override
+	public void containerChanged(IInventory container) {
+		if (level == null)
+			return;
+
+		for (Direction direction : Direction.values()) {
+			int i = 1;
+			BlockPos pos = getBlockPos();
+			BlockPos modifiedPos = pos.relative(direction, i);
+			BlockState stateAtModifiedPos = level.getBlockState(modifiedPos);
+			List<BlockPos> positionsToUpdate = new ArrayList<>();
+
+			while (i < ConfigHandler.SERVER.laserBlockRange.get() && stateAtModifiedPos.getBlock() != SCContent.LASER_BLOCK.get()) {
+				modifiedPos = pos.relative(direction, ++i);
+				stateAtModifiedPos = level.getBlockState(modifiedPos);
+				positionsToUpdate.add(modifiedPos);
+			}
+
+			TileEntity be = level.getBlockEntity(modifiedPos);
+
+			if (be instanceof LaserBlockBlockEntity) {
+				LaserBlockBlockEntity otherLaser = (LaserBlockBlockEntity) be;
+
+				otherLaser.getLensContainer().setItemExclusively(direction.getOpposite().ordinal(), lenses.getItem(direction.ordinal()));
+
+				if (!level.isClientSide)
+					SecurityCraft.channel.send(PacketDistributor.DIMENSION.with(() -> level.dimension()), new UpdateLaserColors(positionsToUpdate));
+
+				level.sendBlockUpdated(modifiedPos, stateAtModifiedPos, stateAtModifiedPos, 2);
+			}
+		}
+
+		setChanged();
+	}
+
+	@Override
 	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
 		super.handleUpdateTag(state, tag);
 		DisguisableBlockEntity.onHandleUpdateTag(this);
@@ -169,6 +235,60 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		for (Option<?> option : customOptions()) {
 			option.load(tag);
 		}
+	}
+
+	@Override
+	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return BlockUtils.getProtectedCapability(side, this, () -> getNormalHandler(), () -> getInsertOnlyHandler()).cast();
+		else
+			return super.getCapability(cap, side);
+	}
+
+	@Override
+	public void invalidateCaps() {
+		if (insertOnlyHandler != null)
+			insertOnlyHandler.invalidate();
+
+		if (lensHandler != null)
+			lensHandler.invalidate();
+
+		super.invalidateCaps();
+	}
+
+	@Override
+	public void reviveCaps() {
+		insertOnlyHandler = null;
+		lensHandler = null;
+		super.reviveCaps();
+	}
+
+	private LazyOptional<IItemHandler> getInsertOnlyHandler() {
+		if (insertOnlyHandler == null)
+			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(lenses));
+
+		return insertOnlyHandler;
+	}
+
+	private LazyOptional<IItemHandler> getNormalHandler() {
+		if (lensHandler == null)
+			lensHandler = LazyOptional.of(() -> new InvWrapper(lenses));
+
+		return lensHandler;
+	}
+
+	@Override
+	public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
+		return new LaserBlockMenu(id, level, worldPosition, sideConfig, inventory);
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return super.getDisplayName();
+	}
+
+	public LensContainer getLensContainer() {
+		return lenses;
 	}
 
 	@Override

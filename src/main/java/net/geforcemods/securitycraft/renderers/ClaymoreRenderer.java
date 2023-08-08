@@ -13,6 +13,9 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.IDyeableArmorItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
@@ -41,6 +44,17 @@ public class ClaymoreRenderer extends TileEntityRenderer<ClaymoreBlockEntity> {
 		float multiplier = 0.0625F;
 		float xzStart = 9.0F * multiplier;
 		float y = 4.5F * multiplier;
+		ItemStack lens = be.getLensContainer().getItem(0);
+		Item item = lens.getItem();
+		int r = 255, g = 255, b = 255;
+
+		if (item instanceof IDyeableArmorItem && ((IDyeableArmorItem) item).hasCustomColor(lens)) {
+			int color = ((IDyeableArmorItem) item).getColor(lens);
+
+			r = (color >> 0x10) & 0xFF;
+			g = (color >> 0x8) & 0xFF;
+			b = color & 0xFF;
+		}
 
 		RenderSystem.enableDepthTest();
 		RenderSystem.disableTexture();
@@ -49,10 +63,10 @@ public class ClaymoreRenderer extends TileEntityRenderer<ClaymoreBlockEntity> {
 		RenderSystem.lineWidth(3);
 		RenderSystem.shadeModel(GL11.GL_SMOOTH);
 		builder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-		builder.vertex(positionMatrix, xzStart, y, xzStart).color(255, 0, 0, 255).endVertex();
-		builder.vertex(positionMatrix, 11.0F * multiplier, y, 1.0F).color(255, 0, 0, 0).endVertex();
-		builder.vertex(positionMatrix, 7.0F * multiplier, y, xzStart).color(255, 0, 0, 255).endVertex();
-		builder.vertex(positionMatrix, 5.0F * multiplier, y, 1.0F).color(255, 0, 0, 0).endVertex();
+		builder.vertex(positionMatrix, xzStart, y, xzStart).color(r, g, b, 255).endVertex();
+		builder.vertex(positionMatrix, 11.0F * multiplier, y, 1.0F).color(r, g, b, 0).endVertex();
+		builder.vertex(positionMatrix, 7.0F * multiplier, y, xzStart).color(r, g, b, 255).endVertex();
+		builder.vertex(positionMatrix, 5.0F * multiplier, y, 1.0F).color(r, g, b, 0).endVertex();
 		tessellator.end();
 		RenderSystem.disableBlend();
 		RenderSystem.enableTexture();

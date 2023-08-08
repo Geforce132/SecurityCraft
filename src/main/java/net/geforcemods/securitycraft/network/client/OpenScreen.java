@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
-import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -49,6 +48,7 @@ public class OpenScreen {
 				if (te instanceof AlarmBlockEntity)
 					ClientHandler.displayAlarmScreen((AlarmBlockEntity) te);
 
+				break;
 			case CHECK_BRIEFCASE_PASSCODE:
 				ItemStack briefcaseStack = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
 
@@ -88,11 +88,6 @@ public class OpenScreen {
 					ClientHandler.displaySonicSecuritySystemScreen((SonicSecuritySystemBlockEntity) te);
 
 				break;
-			case TROPHY_SYSTEM:
-				if (te instanceof TrophySystemBlockEntity)
-					ClientHandler.displayTrophySystemScreen((TrophySystemBlockEntity) te);
-
-				break;
 			case UNIVERSAL_KEY_CHANGER:
 				if (te instanceof IPasscodeProtected)
 					ClientHandler.displayUniversalKeyChangerScreen(te);
@@ -108,7 +103,6 @@ public class OpenScreen {
 		SET_BRIEFCASE_PASSCODE,
 		SET_PASSCODE,
 		SONIC_SECURITY_SYSTEM,
-		TROPHY_SYSTEM,
 		UNIVERSAL_KEY_CHANGER;
 	}
 }

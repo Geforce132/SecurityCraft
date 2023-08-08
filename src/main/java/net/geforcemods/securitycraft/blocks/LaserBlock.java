@@ -4,11 +4,10 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
+import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.client.OpenLaserScreen;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -17,6 +16,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
@@ -36,7 +36,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class LaserBlock extends DisguisableBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -49,9 +49,7 @@ public class LaserBlock extends DisguisableBlock {
 	@Override
 	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
 		super.setPlacedBy(world, pos, state, entity, stack);
-
-		if (!world.isClientSide)
-			setLaser(world, pos, entity instanceof PlayerEntity ? (PlayerEntity) entity : null);
+		setLaser(world, pos, entity instanceof PlayerEntity ? (PlayerEntity) entity : null);
 	}
 
 	@Override
@@ -62,8 +60,12 @@ public class LaserBlock extends DisguisableBlock {
 			if (!level.isClientSide) {
 				if (!be.isEnabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				else
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenLaserScreen(pos, be.getSideConfig()));
+				else {
+					NetworkHooks.openGui((ServerPlayerEntity) player, be, buf -> {
+						buf.writeBlockPos(pos);
+						buf.writeNbt(LaserBlockBlockEntity.saveSideConfig(be.getSideConfig()));
+					});
+				}
 			}
 
 			return ActionResultType.SUCCESS;
@@ -81,7 +83,7 @@ public class LaserBlock extends DisguisableBlock {
 	public void setLaser(World world, BlockPos pos, Direction facing, PlayerEntity player) {
 		LaserBlockBlockEntity thisTe = (LaserBlockBlockEntity) world.getBlockEntity(pos);
 
-		if (!thisTe.isSideEnabled(facing))
+		if (!thisTe.isEnabled() || !thisTe.isSideEnabled(facing))
 			return;
 
 		int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
@@ -96,7 +98,7 @@ public class LaserBlock extends DisguisableBlock {
 			else if (offsetBlock == SCContent.LASER_BLOCK.get()) {
 				LaserBlockBlockEntity thatTe = (LaserBlockBlockEntity) world.getBlockEntity(offsetPos);
 
-				if (thisTe.getOwner().owns(thatTe) && thisTe.isEnabled() && thatTe.isEnabled()) {
+				if (thisTe.getOwner().owns(thatTe) && thatTe.isEnabled()) {
 					if (!thatTe.isSideEnabled(facing.getOpposite())) {
 						thisTe.setSideEnabled(facing, false, null);
 						return;
@@ -128,6 +130,8 @@ public class LaserBlock extends DisguisableBlock {
 								((IOwnable) te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
 						}
 					}
+
+					thatTe.getLensContainer().setChanged();
 				}
 
 				return;
@@ -139,6 +143,23 @@ public class LaserBlock extends DisguisableBlock {
 	public void destroy(IWorld world, BlockPos pos, BlockState state) {
 		if (!world.isClientSide())
 			destroyAdjacentLasers(world, pos);
+	}
+
+	@Override
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof LaserBlockBlockEntity) {
+				LensContainer lensContainer = ((LaserBlockBlockEntity) te).getLensContainer();
+
+				InventoryHelper.dropContents(level, pos, lensContainer);
+				lensContainer.clearContent();
+				level.updateNeighbourForOutputSignal(pos, this);
+			}
+
+			super.onRemove(state, level, pos, newState, isMoving);
+		}
 	}
 
 	public static void destroyAdjacentLasers(IWorld world, BlockPos pos) {

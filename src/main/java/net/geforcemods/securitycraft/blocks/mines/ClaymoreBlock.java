@@ -12,17 +12,22 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -31,6 +36,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ClaymoreBlock extends ExplosiveBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -46,10 +52,22 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	}
 
 	@Override
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		TileEntity be = level.getBlockEntity(pos);
+
+		if (be instanceof ClaymoreBlockEntity && ((ClaymoreBlockEntity) be).isOwnedBy(player)) {
+			if (!level.isClientSide)
+				NetworkHooks.openGui((ServerPlayerEntity) player, (ClaymoreBlockEntity) be, pos);
+
+			return ActionResultType.SUCCESS;
+		}
+
+		return ActionResultType.PASS;
+	}
+
+	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		if (world.getBlockState(pos.below()).getMaterial() != Material.AIR)
-			return;
-		else
+		if (world.getBlockState(pos.below()).getMaterial() == Material.AIR)
 			world.destroyBlock(pos, true);
 	}
 
@@ -139,8 +157,10 @@ public class ClaymoreBlock extends ExplosiveBlock {
 		if (!state.is(newState.getBlock())) {
 			TileEntity te = level.getBlockEntity(pos);
 
-			if (te instanceof IModuleInventory)
-				((IModuleInventory) te).dropAllModules();
+			if (te instanceof ClaymoreBlockEntity) {
+				((ClaymoreBlockEntity) te).dropAllModules();
+				InventoryHelper.dropContents(level, pos, ((ClaymoreBlockEntity) te).getLensContainer());
+			}
 
 			if (!newState.hasTileEntity())
 				level.removeBlockEntity(pos);

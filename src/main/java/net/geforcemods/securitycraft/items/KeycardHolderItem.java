@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,11 +13,14 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 public class KeycardHolderItem extends Item {
+	public static final ResourceLocation COUNT_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "keycard_count");
+
 	public KeycardHolderItem(Properties properties) {
 		super(properties);
 	}
