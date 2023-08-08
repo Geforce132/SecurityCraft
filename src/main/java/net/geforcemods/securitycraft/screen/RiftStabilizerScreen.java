@@ -30,7 +30,7 @@ public class RiftStabilizerScreen extends Screen {
 		this.be = be;
 		hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		hasRedstoneModule = be.isModuleEnabled(ModuleType.REDSTONE);
-		this.scrollListTitle = Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes");
+		scrollListTitle = Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes");
 		smartModuleTooltip = hasSmartModule ? Utils.localize("gui.securitycraft:rift_stabilizer.toggle") : Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired");
 	}
 

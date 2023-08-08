@@ -31,7 +31,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu
 		this.be = menu.be;
 		hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		hasRedstoneModule = be.isModuleEnabled(ModuleType.REDSTONE);
-		this.scrollListTitle = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
+		scrollListTitle = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
 		smartModuleTooltip = hasSmartModule ? Utils.localize("gui.securitycraft:trophy_system.toggle") : Utils.localize("gui.securitycraft:trophy_system.moduleRequired");
 	}
 

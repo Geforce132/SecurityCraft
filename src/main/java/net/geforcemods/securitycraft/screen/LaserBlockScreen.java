@@ -40,7 +40,6 @@ public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 		super.init();
 		titleLabelX = imageWidth / 2 - font.width(title) / 2;
 		inventoryLabelY = imageHeight - 94;
-
 		sideConfig.forEach((dir, enabled) -> {
 			CallbackCheckbox checkbox = new CallbackCheckbox(leftPos + 40, topPos + dir.get3DDataValue() * 22 + 25, 20, 20, Utils.localize("gui.securitycraft:laser." + dir.getName() + "Enabled"), enabled, newValue -> onChangeValue(dir, newValue), 0x404040) {
 				@Override
@@ -71,12 +70,6 @@ public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 		renderTooltip(guiGraphics, mouseX, mouseY);
 		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, mouseX, mouseY);
-	}
-
-	@Override
-	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-		super.renderLabels(guiGraphics, mouseX, mouseY);
-		guiGraphics.drawString(font, title, imageWidth / 2 - font.width(title) / 2, 6, 0x404040, false);
 	}
 
 	public void onChangeValue(Direction dir, boolean newValue) {
