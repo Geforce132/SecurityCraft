@@ -29,14 +29,12 @@ public class KeyPanelItem extends BlockItem {
 		ItemStack stack = ctx.getItemInHand();
 
 		for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
-			if (pc.isValidStateForConversion(state)) {
-				if (pc.convert(player, world, pos)) {
-					if (!player.isCreative())
-						stack.shrink(1);
+			if (pc.isValidStateForConversion(state) && pc.convert(player, world, pos)) {
+				if (!player.isCreative())
+					stack.shrink(1);
 
-					world.playSound(null, pos, SCSounds.LOCK.event, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					return ActionResultType.SUCCESS;
-				}
+				world.playSound(null, pos, SCSounds.LOCK.event, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				return ActionResultType.SUCCESS;
 			}
 		}
 

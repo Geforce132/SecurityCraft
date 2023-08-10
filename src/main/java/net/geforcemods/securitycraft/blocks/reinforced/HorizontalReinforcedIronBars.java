@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
@@ -27,7 +28,7 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape SHAPE = Block.box(-8.0D, 14.0D, -8.0D, 24.0D, 16.0D, 24.0D);
 
-	public HorizontalReinforcedIronBars(Block.Properties properties, Block vB) {
+	public HorizontalReinforcedIronBars(AbstractBlock.Properties properties, Block vB) {
 		super(properties, vB);
 		registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false));
 	}

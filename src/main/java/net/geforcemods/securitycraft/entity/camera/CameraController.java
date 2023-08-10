@@ -30,6 +30,8 @@ public class CameraController {
 	private static boolean wasLeftPressed;
 	private static boolean wasRightPressed;
 
+	private CameraController() {}
+
 	@SubscribeEvent
 	public static void onClientTick(ClientTickEvent event) {
 		Entity renderViewEntity = Minecraft.getInstance().cameraEntity;
@@ -69,12 +71,12 @@ public class CameraController {
 				}
 
 				if (wasLeftPressed) {
-					moveViewHorizontally(cam, cam.yRot, cam.yRot - (float) cam.cameraSpeed * cam.zoomAmount);
+					moveViewHorizontally(cam, cam.yRot - (float) cam.cameraSpeed * cam.zoomAmount);
 					options.keyLeft.setDown(true);
 				}
 
 				if (wasRightPressed) {
-					moveViewHorizontally(cam, cam.yRot, cam.yRot + (float) cam.cameraSpeed * cam.zoomAmount);
+					moveViewHorizontally(cam, cam.yRot + (float) cam.cameraSpeed * cam.zoomAmount);
 					options.keyRight.setDown(true);
 				}
 
@@ -128,7 +130,7 @@ public class CameraController {
 			cam.setRot(cam.yRot, next);
 	}
 
-	public static void moveViewHorizontally(SecurityCamera cam, float yRot, float next) {
+	public static void moveViewHorizontally(SecurityCamera cam, float next) {
 		BlockState state = cam.level.getBlockState(cam.blockPosition());
 
 		if (state.hasProperty(SecurityCameraBlock.FACING)) {

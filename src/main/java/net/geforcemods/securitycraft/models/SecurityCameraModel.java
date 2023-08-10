@@ -14,14 +14,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 @OnlyIn(Dist.CLIENT)
 public class SecurityCameraModel extends EntityModel<SecurityCamera> {
-	public ModelRenderer shape1;
-	public ModelRenderer shape2;
-	public ModelRenderer cameraRotationPoint;
-	public ModelRenderer shape3;
-	public ModelRenderer cameraBody;
-	public ModelRenderer cameraLensRight;
-	public ModelRenderer cameraLensLeft;
-	public ModelRenderer cameraLensTop;
+	public final ModelRenderer shape1;
+	public final ModelRenderer shape2;
+	public final ModelRenderer cameraRotationPoint;
+	public final ModelRenderer shape3;
+	public final ModelRenderer cameraBody;
+	public final ModelRenderer cameraLensRight;
+	public final ModelRenderer cameraLensLeft;
+	public final ModelRenderer cameraLensTop;
 
 	public SecurityCameraModel() {
 		texWidth = 64;

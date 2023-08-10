@@ -33,7 +33,7 @@ public class AssembleBlockPocket {
 		TileEntity te = ctx.get().getSender().level.getBlockEntity(pos);
 
 		if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(ctx.get().getSender())) {
-			((BlockPocketManagerBlockEntity) te).size = size;
+			((BlockPocketManagerBlockEntity) te).setSize(size);
 			((BlockPocketManagerBlockEntity) te).autoAssembleMultiblock();
 		}
 	}

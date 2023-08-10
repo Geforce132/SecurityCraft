@@ -14,14 +14,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 @OnlyIn(Dist.CLIENT)
 public class SentryModel extends EntityModel<Sentry> {
-	public ModelRenderer base;
-	public ModelRenderer body;
-	public ModelRenderer neck;
-	public ModelRenderer head;
-	public ModelRenderer hair;
-	public ModelRenderer rightEye;
-	public ModelRenderer leftEye;
-	public ModelRenderer nose;
+	public final ModelRenderer base;
+	public final ModelRenderer body;
+	public final ModelRenderer neck;
+	public final ModelRenderer head;
+	public final ModelRenderer hair;
+	public final ModelRenderer rightEye;
+	public final ModelRenderer leftEye;
+	public final ModelRenderer nose;
 
 	public SentryModel() {
 		texWidth = 64;

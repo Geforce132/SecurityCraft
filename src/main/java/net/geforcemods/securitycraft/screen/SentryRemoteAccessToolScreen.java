@@ -91,18 +91,18 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				switch (j) {
 					case MODE:
 						guiButtons[i][j] = new TogglePictureButton(btnX, btnY, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 2, 3, b -> buttonClicked(b, sentry, type));
-						guiButtons[i][j].active = false;
 						break;
 					case TARGETS:
 						guiButtons[i][j] = new TogglePictureButton(btnX, btnY, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 2, 3, b -> buttonClicked(b, sentry, type));
-						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:
 						guiButtons[i][j] = new ExtendedButton(btnX, btnY, 20, 20, new StringTextComponent("X"), b -> unbindButtonClicked(index));
-						guiButtons[i][j].active = false;
 						break;
+					default:
+						throw new IllegalArgumentException("Sentry actions can only range from 0-2 (inclusive)");
 				}
 
+				guiButtons[i][j].active = false;
 				addButton(guiButtons[i][j]);
 			}
 

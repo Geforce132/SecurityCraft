@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -65,16 +66,15 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	private static final VoxelShape SOUTH_COLLISION = Block.box(0, 0, 0, 16, 16, 14);
 	private static final VoxelShape WEST_COLLISION = Block.box(2, 0, 0, 16, 16, 16);
 
-	public AbstractKeypadFurnaceBlock(Block.Properties properties) {
+	protected AbstractKeypadFurnaceBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, false).setValue(LIT, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
 	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if (placer instanceof PlayerEntity) {
+		if (placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
-		}
 
 		if (stack.hasCustomHoverName()) {
 			TileEntity te = world.getBlockEntity(pos);
@@ -171,7 +171,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 					if (te.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-					activate(state, world, pos, player);
+					activate(world, pos, player);
 				}
 				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 					te.openPasscodeGUI(world, pos, player);
@@ -181,7 +181,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 		return ActionResultType.SUCCESS;
 	}
 
-	public void activate(BlockState state, World world, BlockPos pos, PlayerEntity player) {
+	public void activate(World world, BlockPos pos, PlayerEntity player) {
 		if (player instanceof ServerPlayerEntity) {
 			TileEntity te = world.getBlockEntity(pos);
 

@@ -126,13 +126,11 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 			toggleButtons[i].setCurrentIndex(acceptedLevels[i] ? 1 : 0); //set correct button state
 			toggleButtons[i].active = isOwner;
 
-			if (!hasSmartModule) {
-				if (acceptedLevels[i]) {
-					if (firstActiveButton == -1)
-						firstActiveButton = i;
+			if (!hasSmartModule && acceptedLevels[i]) {
+				if (firstActiveButton == -1)
+					firstActiveButton = i;
 
-					activeButtons++;
-				}
+				activeButtons++;
 			}
 		}
 
@@ -161,7 +159,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 		setUsesButton.active = false;
 		//text field for setting amount of limited uses
 		usesTextField = addButton(new TextFieldWidget(font, leftPos + 28, topPos + 107, 30, 15, StringTextComponent.EMPTY));
-		usesTextField.setFilter(s -> s.matches("[0-9]*"));
+		usesTextField.setFilter(s -> s.matches("\\d*"));
 		usesTextField.setMaxLength(3);
 		//info text when hovering over text field
 		usesHoverChecker = new TextHoverChecker(topPos + 107, topPos + 122, leftPos + 28, leftPos + 58, limitedInfo);

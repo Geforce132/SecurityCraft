@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.block.Block;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,7 +21,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive {
-	public ExplosiveBlock(Block.Properties properties) {
+	protected ExplosiveBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 

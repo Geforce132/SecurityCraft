@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -27,7 +28,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 	private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 3, 13);
 
-	public BouncingBettyBlock(Block.Properties properties) {
+	public BouncingBettyBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(DEACTIVATED, false));
 	}
@@ -39,12 +40,12 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		if (!world.getBlockState(pos.below()).isAir())
-			return;
-		else if (world.getBlockState(pos).getValue(DEACTIVATED))
-			world.destroyBlock(pos, true);
-		else
-			explode(world, pos);
+		if (world.getBlockState(pos.below()).isAir()) {
+			if (world.getBlockState(pos).getValue(DEACTIVATED))
+				world.destroyBlock(pos, true);
+			else
+				explode(world, pos);
+		}
 	}
 
 	@Override
@@ -54,9 +55,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 
 	@Override
 	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (!getShape(state, world, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
-			return;
-		else if (!EntityUtils.doesEntityOwn(entity, world, pos) && !(entity instanceof PlayerEntity && ((PlayerEntity) entity).isCreative()))
+		if (getShape(state, world, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()) && !EntityUtils.doesEntityOwn(entity, world, pos) && !(entity instanceof PlayerEntity && ((PlayerEntity) entity).isCreative()))
 			explode(world, pos);
 	}
 
@@ -101,7 +100,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 		BouncingBetty bouncingBetty = new BouncingBetty(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
 
 		world.destroyBlock(pos, false);
-		bouncingBetty.fuse = 15;
+		bouncingBetty.setFuse(15);
 		bouncingBetty.setDeltaMovement(bouncingBetty.getDeltaMovement().multiply(1, 0, 1).add(0, 0.5D, 0));
 		LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(bouncingBetty));
 		bouncingBetty.playSound(SoundEvents.TNT_PRIMED, 1.0F, 1.0F);

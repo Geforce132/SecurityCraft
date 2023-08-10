@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -34,7 +35,7 @@ import net.minecraft.world.World;
 public abstract class DisguisableBlock extends OwnableBlock implements IOverlayDisplay, IWaterLoggable {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public DisguisableBlock(Block.Properties properties) {
+	protected DisguisableBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 

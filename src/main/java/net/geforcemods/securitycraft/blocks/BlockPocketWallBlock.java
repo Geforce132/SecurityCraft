@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -27,7 +28,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 	public static final BooleanProperty SEE_THROUGH = BooleanProperty.create("see_through");
 	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
 
-	public BlockPocketWallBlock(Block.Properties properties) {
+	public BlockPocketWallBlock(AbstractBlock.Properties properties) {
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(SEE_THROUGH, true).setValue(SOLID, false));

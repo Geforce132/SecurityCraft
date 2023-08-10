@@ -17,8 +17,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class CustomizeBlockMenu extends Container {
-	public IModuleInventory moduleInv;
-	private IWorldPosCallable worldPosCallable;
+	public final IModuleInventory moduleInv;
+	private final IWorldPosCallable worldPosCallable;
 	public final int maxSlots;
 
 	public CustomizeBlockMenu(int windowId, World world, BlockPos pos, PlayerInventory inventory) {

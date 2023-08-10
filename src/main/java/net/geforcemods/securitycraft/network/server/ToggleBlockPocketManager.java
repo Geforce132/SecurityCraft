@@ -39,7 +39,7 @@ public class ToggleBlockPocketManager {
 		TileEntity te = player.level.getBlockEntity(pos);
 
 		if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
-			((BlockPocketManagerBlockEntity) te).size = size;
+			((BlockPocketManagerBlockEntity) te).setSize(size);
 
 			if (enabling)
 				((BlockPocketManagerBlockEntity) te).enableMultiblock();

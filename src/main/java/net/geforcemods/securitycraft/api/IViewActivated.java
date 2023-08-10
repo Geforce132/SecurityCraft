@@ -39,10 +39,8 @@ public interface IViewActivated {
 				Vector3d lookVec = new Vector3d(entity.getX() + (entity.getLookAngle().x * maximumDistance), (eyeHeight + entity.getY()) + (entity.getLookAngle().y * maximumDistance), entity.getZ() + (entity.getLookAngle().z * maximumDistance));
 				BlockRayTraceResult rtr = world.clip(new RayTraceContext(new Vector3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
 
-				if (rtr != null && rtr.getBlockPos().getX() == pos.getX() && rtr.getBlockPos().getY() == pos.getY() && rtr.getBlockPos().getZ() == pos.getZ()) {
-					if (onEntityViewed(entity, rtr))
-						setViewCooldown(getDefaultViewCooldown());
-				}
+				if (rtr != null && rtr.getBlockPos().getX() == pos.getX() && rtr.getBlockPos().getY() == pos.getY() && rtr.getBlockPos().getZ() == pos.getZ() && onEntityViewed(entity, rtr))
+					setViewCooldown(getDefaultViewCooldown());
 			}
 		}
 	}

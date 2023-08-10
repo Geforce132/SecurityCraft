@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -28,7 +29,7 @@ import net.minecraft.world.World;
 public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay, IBlockMine {
 	private final Block blockDisguisedAs;
 
-	public BaseFullMineBlock(Block.Properties properties, Block disguisedBlock) {
+	public BaseFullMineBlock(AbstractBlock.Properties properties, Block disguisedBlock) {
 		super(properties);
 		blockDisguisedAs = disguisedBlock;
 	}

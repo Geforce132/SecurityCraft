@@ -33,6 +33,8 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 
 public class SCCommand {
+	private SCCommand() {}
+
 	private static final Map<String, DeferredRegister<?>> REGISTRIES = Util.make(() -> {
 		Map<String, DeferredRegister<?>> map = new Object2ObjectArrayMap<>();
 
@@ -103,7 +105,7 @@ public class SCCommand {
 					.append(new StringTextComponent("] "))
 					.append(Utils.localize("messages.securitycraft:irc.connected"))
 					.append(new StringTextComponent(" "))
-					.append(ForgeHooks.newChatWithLinks(SendTip.tipsWithLink.get("discord"))), Util.NIL_UUID); //appendSibling
+					.append(ForgeHooks.newChatWithLinks(SendTip.TIPS_WITH_LINK.get("discord"))), Util.NIL_UUID); //appendSibling
 			//@formatter:on
 			return 0;
 		});
@@ -123,7 +125,7 @@ public class SCCommand {
 
 	private static ArgumentBuilder<CommandSource, ?> bug() {
 		return Commands.literal("bug").executes(ctx -> {
-			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().getPlayerOrException(), new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), SendTip.tipsWithLink.get("discord"), TextFormatting.GOLD);
+			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().getPlayerOrException(), new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), SendTip.TIPS_WITH_LINK.get("discord"), TextFormatting.GOLD);
 			return 0;
 		});
 	}

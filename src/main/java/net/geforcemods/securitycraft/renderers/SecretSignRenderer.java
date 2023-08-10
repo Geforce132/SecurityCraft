@@ -7,8 +7,9 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
-import net.geforcemods.securitycraft.blocks.SecretWallSignBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.StandingSignBlock;
+import net.minecraft.block.WallSignBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -42,12 +43,12 @@ public class SecretSignRenderer extends TileEntityRenderer<SecretSignBlockEntity
 
 		if (state.getBlock() instanceof SecretStandingSignBlock) {
 			matrix.translate(0.5D, 0.5D, 0.5D);
-			matrix.mulPose(Vector3f.YP.rotationDegrees(-(state.getValue(SecretStandingSignBlock.ROTATION) * 360 / 16.0F)));
+			matrix.mulPose(Vector3f.YP.rotationDegrees(-(state.getValue(StandingSignBlock.ROTATION) * 360 / 16.0F)));
 			model.stick.visible = true;
 		}
 		else {
 			matrix.translate(0.5D, 0.5D, 0.5D);
-			matrix.mulPose(Vector3f.YP.rotationDegrees(-state.getValue(SecretWallSignBlock.FACING).toYRot()));
+			matrix.mulPose(Vector3f.YP.rotationDegrees(-state.getValue(WallSignBlock.FACING).toYRot()));
 			matrix.translate(0.0D, -0.3125D, -0.4375D);
 			model.stick.visible = false;
 		}
@@ -69,8 +70,8 @@ public class SecretSignRenderer extends TileEntityRenderer<SecretSignBlockEntity
 			int argb = NativeImage.combine(0, b, g, r);
 
 			for (int line = 0; line < 4; ++line) {
-				IReorderingProcessor rp = te.getRenderMessage(line, (p_243502_1_) -> {
-					List<IReorderingProcessor> list = font.split(p_243502_1_, 90);
+				IReorderingProcessor rp = te.getRenderMessage(line, text -> {
+					List<IReorderingProcessor> list = font.split(text, 90);
 					return list.isEmpty() ? IReorderingProcessor.EMPTY : list.get(0);
 				});
 

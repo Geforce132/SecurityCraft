@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PaneBlock;
@@ -21,7 +22,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class ReinforcedPaneBlock extends PaneBlock implements IReinforcedBlock {
 	private final Block vanillaBlock;
 
-	public ReinforcedPaneBlock(Block.Properties properties, Block vB) {
+	public ReinforcedPaneBlock(AbstractBlock.Properties properties, Block vB) {
 		super(properties);
 
 		vanillaBlock = vB;

@@ -52,9 +52,9 @@ public abstract class EntityTrackerMixin {
 	 */
 	@ModifyVariable(method = "updatePlayer(Lnet/minecraft/entity/player/ServerPlayerEntity;)V", name = "flag", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, shift = At.Shift.BEFORE))
 	public boolean securitycraft$modifyFlag(boolean original) {
-		boolean shouldBeSent = this.shouldBeSent;
+		boolean originalShouldBeSent = shouldBeSent;
 
-		this.shouldBeSent = false;
-		return entity instanceof SecurityCamera || original || shouldBeSent;
+		shouldBeSent = false;
+		return entity instanceof SecurityCamera || original || originalShouldBeSent;
 	}
 }

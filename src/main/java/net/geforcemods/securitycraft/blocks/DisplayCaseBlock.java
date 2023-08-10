@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -53,7 +54,7 @@ public class DisplayCaseBlock extends OwnableBlock implements IWaterLoggable {
 	public static final VoxelShape WALL_S = Block.box(2.0D, 2.0D, 0.0D, 14.0D, 14.0D, 6.0D);
 	public static final VoxelShape WALL_W = Block.box(10.0D, 2.0D, 2.0D, 16.0D, 14.0D, 14.0D);
 
-	public DisplayCaseBlock(Block.Properties properties) {
+	public DisplayCaseBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(ATTACH_FACE, AttachFace.WALL).setValue(WATERLOGGED, false));
 	}

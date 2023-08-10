@@ -4,6 +4,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RedstoneTorchBlock;
@@ -17,7 +18,7 @@ import net.minecraft.world.server.ServerWorld;
 public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 	public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
 
-	public ReinforcedRedstoneLampBlock(Block.Properties properties, Block vB) {
+	public ReinforcedRedstoneLampBlock(AbstractBlock.Properties properties, Block vB) {
 		super(properties, vB);
 
 		registerDefaultState(defaultBlockState().setValue(LIT, false));

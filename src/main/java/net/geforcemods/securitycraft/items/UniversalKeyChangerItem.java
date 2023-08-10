@@ -22,7 +22,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -36,15 +35,14 @@ public class UniversalKeyChangerItem extends Item {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
-		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getItemInHand(), ctx.getHand());
-	}
-
-	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, Direction side, ItemStack stack, Hand hand) {
-		ActionResultType briefcaseResult = handleBriefcase(player, hand).getResult();
+		PlayerEntity player = ctx.getPlayer();
+		ActionResultType briefcaseResult = handleBriefcase(player, ctx.getHand()).getResult();
 
 		if (briefcaseResult != ActionResultType.PASS)
 			return briefcaseResult;
 
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 		TileEntity te = world.getBlockEntity(pos);
 
 		if (te instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) te).isOpen() && ((DisplayCaseBlockEntity) te).getDisplayedStack().isEmpty()))

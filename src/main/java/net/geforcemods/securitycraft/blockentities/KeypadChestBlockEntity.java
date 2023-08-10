@@ -129,7 +129,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), () -> getInsertOnlyHandler()).cast();
+			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), this::getInsertOnlyHandler).cast();
 		else
 			return super.getCapability(cap, side);
 	}
@@ -235,9 +235,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 		if (offsetTe != null) {
 			ModuleType moduleType = ((ModuleItem) module.getItem()).getModuleType();
 
-			if (toggled && offsetTe.isModuleEnabled(moduleType) != remove)
-				return;
-			else if (!toggled && offsetTe.hasModule(moduleType) != remove)
+			if (toggled && offsetTe.isModuleEnabled(moduleType) != remove || !toggled && offsetTe.hasModule(moduleType) != remove)
 				return;
 
 			if (remove)
@@ -249,16 +247,16 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 
 	public KeypadChestBlockEntity findOther() {
 		BlockState state = getBlockState();
-		ChestType type = state.getValue(KeypadChestBlock.TYPE);
+		ChestType type = state.getValue(ChestBlock.TYPE);
 
 		if (type != ChestType.SINGLE) {
 			BlockPos offsetPos = worldPosition.relative(ChestBlock.getConnectedDirection(state));
 			BlockState offsetState = level.getBlockState(offsetPos);
 
 			if (state.getBlock() == offsetState.getBlock()) {
-				ChestType offsetType = offsetState.getValue(KeypadChestBlock.TYPE);
+				ChestType offsetType = offsetState.getValue(ChestBlock.TYPE);
 
-				if (offsetType != ChestType.SINGLE && type != offsetType && state.getValue(KeypadChestBlock.FACING) == offsetState.getValue(KeypadChestBlock.FACING)) {
+				if (offsetType != ChestType.SINGLE && type != offsetType && state.getValue(ChestBlock.FACING) == offsetState.getValue(ChestBlock.FACING)) {
 					TileEntity offsetTe = level.getBlockEntity(offsetPos);
 
 					if (offsetTe instanceof KeypadChestBlockEntity)
@@ -366,7 +364,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 
 	@Override
 	public boolean shouldDropModules() {
-		return getBlockState().getValue(KeypadChestBlock.TYPE) == ChestType.SINGLE;
+		return getBlockState().getValue(ChestBlock.TYPE) == ChestType.SINGLE;
 	}
 
 	@Override

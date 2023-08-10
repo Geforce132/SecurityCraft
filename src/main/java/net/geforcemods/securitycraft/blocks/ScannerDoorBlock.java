@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.ScannerDoorBlockEntity;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.item.Item;
@@ -10,7 +11,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.world.IBlockReader;
 
 public class ScannerDoorBlock extends SpecialDoorBlock {
-	public ScannerDoorBlock(Properties properties) {
+	public ScannerDoorBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 

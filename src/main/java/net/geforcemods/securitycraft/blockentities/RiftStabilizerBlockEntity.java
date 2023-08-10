@@ -168,10 +168,8 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 		RiftStabilizerBlockEntity connectedBlockEntity = RiftStabilizerBlock.getConnectedBlockEntity(level, worldPosition);
 
-		if (connectedBlockEntity != null) {
-			if (toggled ? !connectedBlockEntity.isModuleEnabled(module) : !connectedBlockEntity.hasModule(module))
-				connectedBlockEntity.insertModule(stack, toggled);
-		}
+		if (connectedBlockEntity != null && toggled ? !connectedBlockEntity.isModuleEnabled(module) : !connectedBlockEntity.hasModule(module))
+			connectedBlockEntity.insertModule(stack, toggled);
 
 		if (module == ModuleType.DISGUISE) {
 			onInsertDisguiseModule(this, stack);
@@ -187,16 +185,14 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 		RiftStabilizerBlockEntity connectedBlockEntity = RiftStabilizerBlock.getConnectedBlockEntity(level, worldPosition);
 
-		if (connectedBlockEntity != null) {
-			if (toggled ? connectedBlockEntity.isModuleEnabled(module) : connectedBlockEntity.hasModule(module))
-				connectedBlockEntity.removeModule(module, toggled);
-		}
+		if (connectedBlockEntity != null && toggled ? connectedBlockEntity.isModuleEnabled(module) : connectedBlockEntity.hasModule(module))
+			connectedBlockEntity.removeModule(module, toggled);
 
 		if (module == ModuleType.DISGUISE) {
-			onRemoveDisguiseModule(this, stack);
+			onRemoveDisguiseModule(this);
 
 			if (connectedBlockEntity != null)
-				onRemoveDisguiseModule(connectedBlockEntity, stack);
+				onRemoveDisguiseModule(connectedBlockEntity);
 		}
 		else if (module == ModuleType.SMART) {
 			onRemoveSmartModule(this);
@@ -213,7 +209,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 			ClientHandler.putDisguisedBeRenderer(be, stack);
 	}
 
-	private void onRemoveDisguiseModule(TileEntity be, ItemStack stack) {
+	private void onRemoveDisguiseModule(TileEntity be) {
 		if (!be.getLevel().isClientSide)
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		else

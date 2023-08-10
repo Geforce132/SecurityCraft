@@ -5,6 +5,7 @@ import java.util.stream.Stream;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,7 +41,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 			Block.box(6.5, 0, 1, 9.5, 1.5, 4)
 			).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.block());
 	//@formatter:on
-	public TrophySystemBlock(Block.Properties properties) {
+	public TrophySystemBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false));
 	}

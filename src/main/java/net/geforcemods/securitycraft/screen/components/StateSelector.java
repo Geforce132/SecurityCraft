@@ -69,7 +69,7 @@ public class StateSelector extends Screen implements IGuiEventListener, IContain
 	private List<BlockStatePropertyButton<?>> propertyButtons = new ArrayList<>();
 	private int page, amountOfPages;
 	private Button previousPageButton, nextPageButton;
-	private Matrix4f dragRotation = Util.make(new Matrix4f(), matrix -> matrix.setIdentity());
+	private Matrix4f dragRotation = Util.make(new Matrix4f(), Matrix4f::setIdentity);
 	private boolean clickedInDragRegion = false;
 	private StandingOrWallType standingOrWallType = StandingOrWallType.NONE;
 
@@ -90,21 +90,21 @@ public class StateSelector extends Screen implements IGuiEventListener, IContain
 	@Override
 	protected void init() {
 		if (menu.getStateStack().getItem() instanceof BlockItem) {
-			BlockItem blockItem = (BlockItem) menu.getStateStack().getItem();
+			BlockItem item = (BlockItem) menu.getStateStack().getItem();
 			BlockState savedState = menu.getSavedState();
-			Block blockToCheck = blockItem.getBlock();
+			Block blockToCheck = item.getBlock();
 
 			standingOrWallType = menu.getStandingOrWallType();
 
-			if (blockItem instanceof WallOrFloorItem && standingOrWallType == StandingOrWallType.WALL)
-				blockToCheck = ((WallOrFloorItem) blockItem).wallBlock;
+			if (item instanceof WallOrFloorItem && standingOrWallType == StandingOrWallType.WALL)
+				blockToCheck = ((WallOrFloorItem) item).wallBlock;
 
 			if (blockToCheck == savedState.getBlock())
 				state = savedState;
 			else
-				state = blockItem.getBlock().defaultBlockState();
+				state = item.getBlock().defaultBlockState();
 
-			this.blockItem = blockItem;
+			blockItem = item;
 		}
 
 		previousPageButton = new ExtendedButton(xStart + 69, yStart + 125, 20, 20, new StringTextComponent("<"), button -> turnPage(-1));

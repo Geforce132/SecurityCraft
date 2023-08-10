@@ -41,7 +41,13 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
 
 public class BlockModelAndStateGenerator extends BlockStateProvider {
-	private static final Map<Direction, EnumProperty<WallHeight>> DIR_TO_WALL_HEIGHT = ImmutableMap.of(Direction.EAST, BlockStateProperties.EAST_WALL, Direction.NORTH, BlockStateProperties.NORTH_WALL, Direction.SOUTH, BlockStateProperties.SOUTH_WALL, Direction.WEST, BlockStateProperties.WEST_WALL);
+	//@formatter:off
+	private static final Map<Direction, EnumProperty<WallHeight>> DIR_TO_WALL_HEIGHT = ImmutableMap.of(
+			Direction.EAST, BlockStateProperties.EAST_WALL,
+			Direction.NORTH, BlockStateProperties.NORTH_WALL,
+			Direction.SOUTH, BlockStateProperties.SOUTH_WALL,
+			Direction.WEST, BlockStateProperties.WEST_WALL);
+	//@formatter:on
 	private final SCBlockModelProvider scModels;
 
 	public BlockModelAndStateGenerator(DataGenerator gen, ExistingFileHelper exFileHelper) {
@@ -56,7 +62,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 			Block block = obj.get();
 			Item item = block.asItem();
 
-			if (item.getCreativeTabs().contains(SecurityCraft.groupSCDecoration)) {
+			if (item.getCreativeTabs().contains(SecurityCraft.DECORATION_TAB)) {
 				if (block instanceof ReinforcedSlabBlock)
 					reinforcedSlabBlock(block);
 				else if (block instanceof ReinforcedStainedGlassBlock)
@@ -70,7 +76,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 				else if (block instanceof ReinforcedCarpetBlock)
 					reinforcedCarpetBlock(block);
 			}
-			else if (item.getCreativeTabs().contains(SecurityCraft.groupSCMine) && block instanceof BaseFullMineBlock)
+			else if (item.getCreativeTabs().contains(SecurityCraft.MINE_TAB) && block instanceof BaseFullMineBlock)
 				blockMine(((BaseFullMineBlock) block).getBlockDisguisedAs(), block);
 		}
 
@@ -170,7 +176,11 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 	public void fourWayWallHeight(MultiPartBlockStateBuilder builder, ModelFile model, WallHeight height) {
 		//@formatter:off
 		Arrays.stream(Direction.values()).filter(dir -> dir.getAxis().isHorizontal()).forEach(dir -> {
-			builder.part().modelFile(model).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true).addModel()
+			builder.part()
+			.modelFile(model)
+			.rotationY((((int) dir.toYRot()) + 180) % 360)
+			.uvLock(true)
+			.addModel()
 			.condition(DIR_TO_WALL_HEIGHT.get(dir), height);
 		});
 		//@formatter:on

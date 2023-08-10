@@ -67,11 +67,11 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	public static final Random RANDOM = new Random();
-	public static SimpleChannel channel;
-	public static ItemGroup groupSCTechnical = new SCTechnicalTab();
-	public static ItemGroup groupSCMine = new SCExplosivesTab();
-	public static ItemGroup groupSCDecoration = new SCDecorationTab();
+	public static final ItemGroup TECHNICAL_TAB = new SCTechnicalTab();
+	public static final ItemGroup MINE_TAB = new SCExplosivesTab();
+	public static final ItemGroup DECORATION_TAB = new SCDecorationTab();
 	public static final LootConditionType TILE_ENTITY_NBT_LOOT_CONDITION = LootConditionManager.register(SecurityCraft.MODID + ":tile_entity_nbt", new TileEntityNBTCondition.Serializer());
+	public static SimpleChannel channel;
 
 	public SecurityCraft() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

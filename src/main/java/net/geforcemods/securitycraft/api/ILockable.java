@@ -31,7 +31,7 @@ public interface ILockable {
 
 		for (SonicSecuritySystemBlockEntity te : sonicSecuritySystems) {
 			if (te.isActive() && te.isLinkedToBlock(thisTe.getBlockPos()))
-				return te.correctTuneWasPlayed == te.disablesBlocksWhenTuneIsPlayed();
+				return te.wasCorrectTunePlayed() == te.disablesBlocksWhenTuneIsPlayed();
 		}
 
 		return false;

@@ -78,22 +78,21 @@ public class MineRemoteAccessToolScreen extends Screen {
 				switch (j) {
 					case DEFUSE:
 						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, itemRenderer, new ItemStack(SCContent.WIRE_CUTTERS.get()), b -> buttonClicked(mine, action));
-						guiButtons[i][j].active = false;
 						break;
 					case ACTIVATE:
 						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, itemRenderer, new ItemStack(Items.FLINT_AND_STEEL), b -> buttonClicked(mine, action));
-						guiButtons[i][j].active = false;
 						break;
 					case DETONATE:
 						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, INFO_BOOK_ICONS, 54, 1, 0, 1, 18, 18, 256, 256, b -> buttonClicked(mine, action));
-						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:
 						guiButtons[i][j] = new ExtendedButton(btnX, btnY, 20, 20, new StringTextComponent("X"), b -> buttonClicked(mine, action));
-						guiButtons[i][j].active = false;
 						break;
+					default:
+						throw new IllegalArgumentException("Mine actions can only range from 0-3 (inclusive)");
 				}
 
+				guiButtons[i][j].active = false;
 				addButton(guiButtons[i][j]);
 			}
 
@@ -200,6 +199,10 @@ public class MineRemoteAccessToolScreen extends Screen {
 				for (int i = 0; i < 4; i++) {
 					guiButtons[mine][i].active = false;
 				}
+
+				break;
+			default:
+				throw new IllegalArgumentException("Mine actions can only range from 0-3 (inclusive)");
 		}
 	}
 

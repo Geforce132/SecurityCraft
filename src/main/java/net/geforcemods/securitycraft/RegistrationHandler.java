@@ -60,6 +60,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -86,6 +87,8 @@ import net.minecraftforge.registries.DataSerializerEntry;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class RegistrationHandler {
+	private RegistrationHandler() {}
+
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
 		//register item blocks from annotated fields
@@ -94,13 +97,19 @@ public class RegistrationHandler {
 				if (field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).registerBlockItem()) {
 					Block block = ((RegistryObject<Block>) field.get(null)).get();
 
-					event.getRegistry().register(new BlockItem(block, new Item.Properties().tab(SecurityCraft.groupSCDecoration).fireResistant()).setRegistryName(block.getRegistryName()));
+					event.getRegistry().register(new BlockItem(block, new Item.Properties().tab(SecurityCraft.DECORATION_TAB).fireResistant()).setRegistryName(block.getRegistryName()));
 				}
 				else if (field.isAnnotationPresent(RegisterItemBlock.class)) {
 					int tab = field.getAnnotation(RegisterItemBlock.class).value().ordinal();
 					RegistryObject<Block> block = (RegistryObject<Block>) field.get(null);
+					ItemGroup tabToUse = SecurityCraft.DECORATION_TAB;
 
-					event.getRegistry().register(new BlockItem(block.get(), new Item.Properties().tab(tab == 0 ? SecurityCraft.groupSCTechnical : (tab == 1 ? SecurityCraft.groupSCMine : SecurityCraft.groupSCDecoration))).setRegistryName(block.get().getRegistryName()));
+					if (tab == 0)
+						tabToUse = SecurityCraft.TECHNICAL_TAB;
+					else if (tab == 1)
+						tabToUse = SecurityCraft.MINE_TAB;
+
+					event.getRegistry().register(new BlockItem(block.get(), new Item.Properties().tab(tabToUse)).setRegistryName(block.get().getRegistryName()));
 				}
 			}
 			catch (IllegalArgumentException | IllegalAccessException e) {
@@ -111,7 +120,7 @@ public class RegistrationHandler {
 
 	@SubscribeEvent
 	public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
-		event.put(SCContent.eTypeSentry.get(), MobEntity.createMobAttributes().build());
+		event.put(SCContent.SENTRY_ENTITY.get(), MobEntity.createMobAttributes().build());
 	}
 
 	@SubscribeEvent

@@ -13,7 +13,7 @@ import net.minecraft.util.IWorldPosCallable;
 
 public abstract class AbstractKeypadFurnaceMenu extends AbstractFurnaceContainer {
 	private final Block furnaceBlock;
-	public AbstractKeypadFurnaceBlockEntity te;
+	public final AbstractKeypadFurnaceBlockEntity te;
 	private IWorldPosCallable worldPosCallable;
 
 	protected AbstractKeypadFurnaceMenu(ContainerType<?> menuType, IRecipeType<? extends AbstractCookingRecipe> recipeType, RecipeBookCategory recipeBookType, int windowId, PlayerInventory inventory, AbstractKeypadFurnaceBlockEntity be) {

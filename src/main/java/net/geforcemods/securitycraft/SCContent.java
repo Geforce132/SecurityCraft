@@ -194,6 +194,8 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
 import net.geforcemods.securitycraft.util.Reinforced;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -315,7 +317,7 @@ public class SCContent {
 	@HasManualPage
 	@OwnableTE
 	@RegisterItemBlock
-	public static final RegistryObject<Block> PANIC_BUTTON = BLOCKS.register("panic_button", () -> new PanicButtonBlock(false, prop().lightLevel(state -> state.getValue(PanicButtonBlock.POWERED) ? 4 : 0)));
+	public static final RegistryObject<Block> PANIC_BUTTON = BLOCKS.register("panic_button", () -> new PanicButtonBlock(false, prop().lightLevel(state -> state.getValue(AbstractButtonBlock.POWERED) ? 4 : 0)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> PORTABLE_RADAR = BLOCKS.register("portable_radar", () -> new PortableRadarBlock(prop(Material.METAL)));
@@ -671,7 +673,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_GLASS = BLOCKS.register("reinforced_glass", () -> new ReinforcedGlassBlock(glassProp(MaterialColor.NONE), Blocks.GLASS));
+	public static final RegistryObject<Block> REINFORCED_GLASS = BLOCKS.register("reinforced_glass", () -> new ReinforcedGlassBlock(glassProp(), Blocks.GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced
@@ -1127,67 +1129,67 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_WHITE_STAINED_GLASS = BLOCKS.register("reinforced_white_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.SNOW), DyeColor.WHITE, Blocks.WHITE_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_WHITE_STAINED_GLASS = BLOCKS.register("reinforced_white_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.WHITE, Blocks.WHITE_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_ORANGE_STAINED_GLASS = BLOCKS.register("reinforced_orange_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_ORANGE), DyeColor.ORANGE, Blocks.ORANGE_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_ORANGE_STAINED_GLASS = BLOCKS.register("reinforced_orange_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.ORANGE, Blocks.ORANGE_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_MAGENTA_STAINED_GLASS = BLOCKS.register("reinforced_magenta_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_MAGENTA), DyeColor.MAGENTA, Blocks.MAGENTA_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_MAGENTA_STAINED_GLASS = BLOCKS.register("reinforced_magenta_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.MAGENTA, Blocks.MAGENTA_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_LIGHT_BLUE_STAINED_GLASS = BLOCKS.register("reinforced_light_blue_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_LIGHT_BLUE), DyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_LIGHT_BLUE_STAINED_GLASS = BLOCKS.register("reinforced_light_blue_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_YELLOW_STAINED_GLASS = BLOCKS.register("reinforced_yellow_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_YELLOW), DyeColor.YELLOW, Blocks.YELLOW_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_YELLOW_STAINED_GLASS = BLOCKS.register("reinforced_yellow_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.YELLOW, Blocks.YELLOW_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_LIME_STAINED_GLASS = BLOCKS.register("reinforced_lime_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_LIGHT_GREEN), DyeColor.LIME, Blocks.LIME_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_LIME_STAINED_GLASS = BLOCKS.register("reinforced_lime_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.LIME, Blocks.LIME_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_PINK_STAINED_GLASS = BLOCKS.register("reinforced_pink_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_PINK), DyeColor.PINK, Blocks.PINK_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_PINK_STAINED_GLASS = BLOCKS.register("reinforced_pink_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.PINK, Blocks.PINK_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_GRAY_STAINED_GLASS = BLOCKS.register("reinforced_gray_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_GRAY), DyeColor.GRAY, Blocks.GRAY_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_GRAY_STAINED_GLASS = BLOCKS.register("reinforced_gray_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.GRAY, Blocks.GRAY_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_LIGHT_GRAY_STAINED_GLASS = BLOCKS.register("reinforced_light_gray_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_LIGHT_GRAY), DyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_LIGHT_GRAY_STAINED_GLASS = BLOCKS.register("reinforced_light_gray_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_CYAN_STAINED_GLASS = BLOCKS.register("reinforced_cyan_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_CYAN), DyeColor.CYAN, Blocks.CYAN_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_CYAN_STAINED_GLASS = BLOCKS.register("reinforced_cyan_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.CYAN, Blocks.CYAN_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_PURPLE_STAINED_GLASS = BLOCKS.register("reinforced_purple_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_PURPLE), DyeColor.PURPLE, Blocks.PURPLE_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_PURPLE_STAINED_GLASS = BLOCKS.register("reinforced_purple_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.PURPLE, Blocks.PURPLE_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_BLUE_STAINED_GLASS = BLOCKS.register("reinforced_blue_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_BLUE), DyeColor.BLUE, Blocks.BLUE_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_BLUE_STAINED_GLASS = BLOCKS.register("reinforced_blue_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.BLUE, Blocks.BLUE_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_BROWN_STAINED_GLASS = BLOCKS.register("reinforced_brown_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_BROWN), DyeColor.BROWN, Blocks.BROWN_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_BROWN_STAINED_GLASS = BLOCKS.register("reinforced_brown_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.BROWN, Blocks.BROWN_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_GREEN_STAINED_GLASS = BLOCKS.register("reinforced_green_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_GREEN), DyeColor.GREEN, Blocks.GREEN_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_GREEN_STAINED_GLASS = BLOCKS.register("reinforced_green_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.GREEN, Blocks.GREEN_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_RED_STAINED_GLASS = BLOCKS.register("reinforced_red_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_RED), DyeColor.RED, Blocks.RED_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_RED_STAINED_GLASS = BLOCKS.register("reinforced_red_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.RED, Blocks.RED_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_BLACK_STAINED_GLASS = BLOCKS.register("reinforced_black_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_BLACK), DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS));
+	public static final RegistryObject<Block> REINFORCED_BLACK_STAINED_GLASS = BLOCKS.register("reinforced_black_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced
@@ -1868,24 +1870,24 @@ public class SCContent {
 
 	//misc
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_SLAB = BLOCKS.register("crystal_quartz_slab", () -> new SlabBlock(Block.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_SLAB = BLOCKS.register("crystal_quartz_slab", () -> new SlabBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ = BLOCKS.register("smooth_crystal_quartz", () -> new Block(Block.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ = BLOCKS.register("smooth_crystal_quartz", () -> new Block(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("chiseled_crystal_quartz", () -> new Block(Block.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("chiseled_crystal_quartz", () -> new Block(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BLOCK = BLOCKS.register("crystal_quartz", () -> new Block(Block.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BLOCK = BLOCKS.register("crystal_quartz", () -> new Block(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BRICKS = BLOCKS.register("crystal_quartz_bricks", () -> new Block(Block.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BRICKS = BLOCKS.register("crystal_quartz_bricks", () -> new Block(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("crystal_quartz_pillar", () -> new RotatedPillarBlock(Block.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("crystal_quartz_pillar", () -> new RotatedPillarBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("crystal_quartz_stairs", () -> new StairsBlock(() -> CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), Block.Properties.copy(CRYSTAL_QUARTZ_BLOCK.get())));
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("crystal_quartz_stairs", () -> new StairsBlock(() -> CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), AbstractBlock.Properties.copy(CRYSTAL_QUARTZ_BLOCK.get())));
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("smooth_crystal_quartz_stairs", () -> new StairsBlock(() -> SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), Block.Properties.copy(SMOOTH_CRYSTAL_QUARTZ.get())));
+	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("smooth_crystal_quartz_stairs", () -> new StairsBlock(() -> SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), AbstractBlock.Properties.copy(SMOOTH_CRYSTAL_QUARTZ.get())));
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("smooth_crystal_quartz_slab", () -> new SlabBlock(Block.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("smooth_crystal_quartz_slab", () -> new SlabBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced(customTint = 0x15B3A2)
 	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_crystal_quartz_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_SLAB));
@@ -1927,112 +1929,112 @@ public class SCContent {
 
 	//items
 	@HasManualPage(hasRecipeDescription = true)
-	public static final RegistryObject<Item> ADMIN_TOOL = ITEMS.register("admin_tool", () -> new AdminToolItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1).stacksTo(1)));
-	public static final RegistryObject<Item> ANCIENT_DEBRIS_MINE_ITEM = ITEMS.register("ancient_debris_mine", () -> new BlockItem(SCContent.ANCIENT_DEBRIS_MINE.get(), itemProp(SecurityCraft.groupSCMine).fireResistant()));
+	public static final RegistryObject<Item> ADMIN_TOOL = ITEMS.register("admin_tool", () -> new AdminToolItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1).stacksTo(1)));
+	public static final RegistryObject<Item> ANCIENT_DEBRIS_MINE_ITEM = ITEMS.register("ancient_debris_mine", () -> new BlockItem(SCContent.ANCIENT_DEBRIS_MINE.get(), itemProp(SecurityCraft.MINE_TAB).fireResistant()));
 	@HasManualPage
-	public static final RegistryObject<Item> BRIEFCASE = ITEMS.register("briefcase", () -> new BriefcaseItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
+	public static final RegistryObject<Item> BRIEFCASE = ITEMS.register("briefcase", () -> new BriefcaseItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
 	@HasManualPage
-	public static final RegistryObject<Item> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
+	public static final RegistryObject<Item> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
 	@HasManualPage
-	public static final RegistryObject<Item> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1).defaultDurability(5)));
+	public static final RegistryObject<Item> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1).defaultDurability(5)));
 	@HasManualPage
-	public static final RegistryObject<Item> CRYSTAL_QUARTZ_ITEM = ITEMS.register("crystal_quartz_item", () -> new Item(itemProp(SecurityCraft.groupSCDecoration)));
-	public static final RegistryObject<Item> DISPLAY_CASE_ITEM = ITEMS.register(DISPLAY_CASE_PATH, () -> new BlockItem(SCContent.DISPLAY_CASE.get(), itemProp(SecurityCraft.groupSCDecoration).setISTER(() -> DisplayCaseItemRenderer::new))); //keep this as a method reference or else the server will crash
+	public static final RegistryObject<Item> CRYSTAL_QUARTZ_ITEM = ITEMS.register("crystal_quartz_item", () -> new Item(itemProp(SecurityCraft.DECORATION_TAB)));
+	public static final RegistryObject<Item> DISPLAY_CASE_ITEM = ITEMS.register(DISPLAY_CASE_PATH, () -> new BlockItem(SCContent.DISPLAY_CASE.get(), itemProp(SecurityCraft.DECORATION_TAB).setISTER(() -> DisplayCaseItemRenderer::new))); //keep this as a method reference or else the server will crash
 	@HasManualPage(hasRecipeDescription = true)
-	public static final RegistryObject<Item> FAKE_LAVA_BUCKET = ITEMS.register("bucket_f_lava", () -> new FakeLiquidBucketItem(SCContent.FAKE_LAVA, itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
+	public static final RegistryObject<Item> FAKE_LAVA_BUCKET = ITEMS.register("bucket_f_lava", () -> new FakeLiquidBucketItem(SCContent.FAKE_LAVA, itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
 	@HasManualPage(hasRecipeDescription = true)
-	public static final RegistryObject<Item> FAKE_WATER_BUCKET = ITEMS.register("bucket_f_water", () -> new FakeLiquidBucketItem(SCContent.FAKE_WATER, itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
+	public static final RegistryObject<Item> FAKE_WATER_BUCKET = ITEMS.register("bucket_f_water", () -> new FakeLiquidBucketItem(SCContent.FAKE_WATER, itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
 	@HasManualPage
-	public static final RegistryObject<Item> KEYCARD_HOLDER = ITEMS.register("keycard_holder", () -> new KeycardHolderItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
+	public static final RegistryObject<Item> KEYCARD_HOLDER = ITEMS.register("keycard_holder", () -> new KeycardHolderItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final RegistryObject<Item> KEYCARD_LVL_1 = ITEMS.register("keycard_lv1", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), 0));
+	public static final RegistryObject<Item> KEYCARD_LVL_1 = ITEMS.register("keycard_lv1", () -> new KeycardItem(itemProp(SecurityCraft.TECHNICAL_TAB), 0));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final RegistryObject<Item> KEYCARD_LVL_2 = ITEMS.register("keycard_lv2", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), 1));
+	public static final RegistryObject<Item> KEYCARD_LVL_2 = ITEMS.register("keycard_lv2", () -> new KeycardItem(itemProp(SecurityCraft.TECHNICAL_TAB), 1));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final RegistryObject<Item> KEYCARD_LVL_3 = ITEMS.register("keycard_lv3", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), 2));
+	public static final RegistryObject<Item> KEYCARD_LVL_3 = ITEMS.register("keycard_lv3", () -> new KeycardItem(itemProp(SecurityCraft.TECHNICAL_TAB), 2));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final RegistryObject<Item> KEYCARD_LVL_4 = ITEMS.register("keycard_lv4", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), 3));
+	public static final RegistryObject<Item> KEYCARD_LVL_4 = ITEMS.register("keycard_lv4", () -> new KeycardItem(itemProp(SecurityCraft.TECHNICAL_TAB), 3));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final RegistryObject<Item> KEYCARD_LVL_5 = ITEMS.register("keycard_lv5", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), 4));
+	public static final RegistryObject<Item> KEYCARD_LVL_5 = ITEMS.register("keycard_lv5", () -> new KeycardItem(itemProp(SecurityCraft.TECHNICAL_TAB), 4));
 	@HasManualPage
-	public static final RegistryObject<Item> KEY_PANEL = ITEMS.register("keypad_item", () -> new KeyPanelItem(itemProp(SecurityCraft.groupSCTechnical)));
-	public static final RegistryObject<Item> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new BlockItem(SCContent.KEYPAD_CHEST.get(), itemProp(SecurityCraft.groupSCTechnical).setISTER(() -> KeypadChestItemRenderer::new))); //keep this as a method reference or else the server will crash
+	public static final RegistryObject<Item> KEY_PANEL = ITEMS.register("keypad_item", () -> new KeyPanelItem(itemProp(SecurityCraft.TECHNICAL_TAB)));
+	public static final RegistryObject<Item> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new BlockItem(SCContent.KEYPAD_CHEST.get(), itemProp(SecurityCraft.TECHNICAL_TAB).setISTER(() -> KeypadChestItemRenderer::new))); //keep this as a method reference or else the server will crash
 	@HasManualPage
-	public static final RegistryObject<Item> KEYPAD_DOOR_ITEM = ITEMS.register("keypad_door_item", () -> new TallBlockItem(KEYPAD_DOOR.get(), itemProp(SecurityCraft.groupSCDecoration)));
+	public static final RegistryObject<Item> KEYPAD_DOOR_ITEM = ITEMS.register("keypad_door_item", () -> new TallBlockItem(KEYPAD_DOOR.get(), itemProp(SecurityCraft.DECORATION_TAB)));
 	@HasManualPage
-	public static final RegistryObject<Item> LENS = ITEMS.register("lens", () -> new LensItem(itemProp(SecurityCraft.groupSCTechnical)));
+	public static final RegistryObject<Item> LENS = ITEMS.register("lens", () -> new LensItem(itemProp(SecurityCraft.TECHNICAL_TAB)));
 	@HasManualPage
-	public static final RegistryObject<Item> LIMITED_USE_KEYCARD = ITEMS.register("limited_use_keycard", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), -1));
+	public static final RegistryObject<Item> LIMITED_USE_KEYCARD = ITEMS.register("limited_use_keycard", () -> new KeycardItem(itemProp(SecurityCraft.TECHNICAL_TAB), -1));
 	@HasManualPage
-	public static final RegistryObject<Item> PORTABLE_TUNE_PLAYER = ITEMS.register("portable_tune_player", () -> new PortableTunePlayerItem(itemProp(SecurityCraft.groupSCTechnical)));
+	public static final RegistryObject<Item> PORTABLE_TUNE_PLAYER = ITEMS.register("portable_tune_player", () -> new PortableTunePlayerItem(itemProp(SecurityCraft.TECHNICAL_TAB)));
 	@HasManualPage
-	public static final RegistryObject<Item> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new TallBlockItem(REINFORCED_DOOR.get(), itemProp(SecurityCraft.groupSCDecoration)));
+	public static final RegistryObject<Item> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new TallBlockItem(REINFORCED_DOOR.get(), itemProp(SecurityCraft.DECORATION_TAB)));
 	@HasManualPage
-	public static final RegistryObject<Item> REMOTE_ACCESS_MINE = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
+	public static final RegistryObject<Item> REMOTE_ACCESS_MINE = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
 	@HasManualPage
-	public static final RegistryObject<Item> REMOTE_ACCESS_SENTRY = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
+	public static final RegistryObject<Item> REMOTE_ACCESS_SENTRY = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
 	@HasManualPage
-	public static final RegistryObject<Item> RIFT_STABILIZER_ITEM = ITEMS.register("rift_stabilizer", () -> new TallBlockItem(RIFT_STABILIZER.get(), itemProp(SecurityCraft.groupSCTechnical)));
+	public static final RegistryObject<Item> RIFT_STABILIZER_ITEM = ITEMS.register("rift_stabilizer", () -> new TallBlockItem(RIFT_STABILIZER.get(), itemProp(SecurityCraft.TECHNICAL_TAB)));
 	@HasManualPage
-	public static final RegistryObject<Item> SCANNER_DOOR_ITEM = ITEMS.register("scanner_door_item", () -> new TallBlockItem(SCANNER_DOOR.get(), itemProp(SecurityCraft.groupSCDecoration)));
+	public static final RegistryObject<Item> SCANNER_DOOR_ITEM = ITEMS.register("scanner_door_item", () -> new TallBlockItem(SCANNER_DOOR.get(), itemProp(SecurityCraft.DECORATION_TAB)));
 	@HasManualPage
-	public static final RegistryObject<Item> SC_MANUAL = ITEMS.register("sc_manual", () -> new SCManualItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
+	public static final RegistryObject<Item> SC_MANUAL = ITEMS.register("sc_manual", () -> new SCManualItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_OAK_SIGN_ITEM = ITEMS.register("secret_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.groupSCDecoration).stacksTo(16), SCContent.SECRET_OAK_SIGN.get(), SCContent.SECRET_OAK_WALL_SIGN.get(), "item.securitycraft.secret_sign_item"));
+	public static final RegistryObject<Item> SECRET_OAK_SIGN_ITEM = ITEMS.register("secret_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.DECORATION_TAB).stacksTo(16), SCContent.SECRET_OAK_SIGN.get(), SCContent.SECRET_OAK_WALL_SIGN.get(), "item.securitycraft.secret_sign_item"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_SPRUCE_SIGN_ITEM = ITEMS.register("secret_spruce_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.groupSCDecoration).stacksTo(16), SCContent.SECRET_SPRUCE_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_SIGN.get(), "item.securitycraft.secret_spruce_sign_item"));
+	public static final RegistryObject<Item> SECRET_SPRUCE_SIGN_ITEM = ITEMS.register("secret_spruce_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.DECORATION_TAB).stacksTo(16), SCContent.SECRET_SPRUCE_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_SIGN.get(), "item.securitycraft.secret_spruce_sign_item"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_BIRCH_SIGN_ITEM = ITEMS.register("secret_birch_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.groupSCDecoration).stacksTo(16), SCContent.SECRET_BIRCH_SIGN.get(), SCContent.SECRET_BIRCH_WALL_SIGN.get(), "item.securitycraft.secret_birch_sign_item"));
+	public static final RegistryObject<Item> SECRET_BIRCH_SIGN_ITEM = ITEMS.register("secret_birch_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.DECORATION_TAB).stacksTo(16), SCContent.SECRET_BIRCH_SIGN.get(), SCContent.SECRET_BIRCH_WALL_SIGN.get(), "item.securitycraft.secret_birch_sign_item"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_JUNGLE_SIGN_ITEM = ITEMS.register("secret_jungle_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.groupSCDecoration).stacksTo(16), SCContent.SECRET_JUNGLE_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_SIGN.get(), "item.securitycraft.secret_jungle_sign_item"));
+	public static final RegistryObject<Item> SECRET_JUNGLE_SIGN_ITEM = ITEMS.register("secret_jungle_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.DECORATION_TAB).stacksTo(16), SCContent.SECRET_JUNGLE_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_SIGN.get(), "item.securitycraft.secret_jungle_sign_item"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_ACACIA_SIGN_ITEM = ITEMS.register("secret_acacia_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.groupSCDecoration).stacksTo(16), SCContent.SECRET_ACACIA_SIGN.get(), SCContent.SECRET_ACACIA_WALL_SIGN.get(), "item.securitycraft.secret_acacia_sign_item"));
+	public static final RegistryObject<Item> SECRET_ACACIA_SIGN_ITEM = ITEMS.register("secret_acacia_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.DECORATION_TAB).stacksTo(16), SCContent.SECRET_ACACIA_SIGN.get(), SCContent.SECRET_ACACIA_WALL_SIGN.get(), "item.securitycraft.secret_acacia_sign_item"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_DARK_OAK_SIGN_ITEM = ITEMS.register("secret_dark_oak_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.groupSCDecoration).stacksTo(16), SCContent.SECRET_DARK_OAK_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_SIGN.get(), "item.securitycraft.secret_dark_oak_sign_item"));
+	public static final RegistryObject<Item> SECRET_DARK_OAK_SIGN_ITEM = ITEMS.register("secret_dark_oak_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.DECORATION_TAB).stacksTo(16), SCContent.SECRET_DARK_OAK_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_SIGN.get(), "item.securitycraft.secret_dark_oak_sign_item"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_CRIMSON_SIGN_ITEM = ITEMS.register("secret_crimson_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.groupSCDecoration).stacksTo(16), SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get(), "item.securitycraft.secret_crimson_sign_item"));
+	public static final RegistryObject<Item> SECRET_CRIMSON_SIGN_ITEM = ITEMS.register("secret_crimson_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.DECORATION_TAB).stacksTo(16), SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get(), "item.securitycraft.secret_crimson_sign_item"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final RegistryObject<Item> SECRET_WARPED_SIGN_ITEM = ITEMS.register("secret_warped_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.groupSCDecoration).stacksTo(16), SCContent.SECRET_WARPED_SIGN.get(), SCContent.SECRET_WARPED_WALL_SIGN.get(), "item.securitycraft.secret_warped_sign_item"));
+	public static final RegistryObject<Item> SECRET_WARPED_SIGN_ITEM = ITEMS.register("secret_warped_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.DECORATION_TAB).stacksTo(16), SCContent.SECRET_WARPED_SIGN.get(), SCContent.SECRET_WARPED_WALL_SIGN.get(), "item.securitycraft.secret_warped_sign_item"));
 	@HasManualPage(designedBy = "Henzoid")
-	public static final RegistryObject<Item> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp(SecurityCraft.groupSCTechnical)));
-	public static final RegistryObject<Item> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
+	public static final RegistryObject<Item> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp(SecurityCraft.TECHNICAL_TAB)));
+	public static final RegistryObject<Item> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
 	@HasManualPage
-	public static final RegistryObject<Item> TASER = ITEMS.register("taser", () -> new TaserItem(itemProp(SecurityCraft.groupSCTechnical).defaultDurability(151), false));
+	public static final RegistryObject<Item> TASER = ITEMS.register("taser", () -> new TaserItem(itemProp(SecurityCraft.TECHNICAL_TAB).defaultDurability(151), false));
 	public static final RegistryObject<Item> TASER_POWERED = ITEMS.register("taser_powered", () -> new TaserItem(itemProp(null).defaultDurability(151), true));
 	@HasManualPage
-	public static final RegistryObject<Item> UNIVERSAL_BLOCK_MODIFIER = ITEMS.register("universal_block_modifier", () -> new UniversalBlockModifierItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
+	public static final RegistryObject<Item> UNIVERSAL_BLOCK_MODIFIER = ITEMS.register("universal_block_modifier", () -> new UniversalBlockModifierItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
 	@HasManualPage(PageGroup.BLOCK_REINFORCERS)
-	public static final RegistryObject<Item> UNIVERSAL_BLOCK_REINFORCER_LVL_1 = ITEMS.register("universal_block_reinforcer_lvl1", () -> new UniversalBlockReinforcerItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1).defaultDurability(300)));
+	public static final RegistryObject<Item> UNIVERSAL_BLOCK_REINFORCER_LVL_1 = ITEMS.register("universal_block_reinforcer_lvl1", () -> new UniversalBlockReinforcerItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1).defaultDurability(300)));
 	@HasManualPage(PageGroup.BLOCK_REINFORCERS)
-	public static final RegistryObject<Item> UNIVERSAL_BLOCK_REINFORCER_LVL_2 = ITEMS.register("universal_block_reinforcer_lvl2", () -> new UniversalBlockReinforcerItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1).defaultDurability(2700)));
+	public static final RegistryObject<Item> UNIVERSAL_BLOCK_REINFORCER_LVL_2 = ITEMS.register("universal_block_reinforcer_lvl2", () -> new UniversalBlockReinforcerItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1).defaultDurability(2700)));
 	@HasManualPage(PageGroup.BLOCK_REINFORCERS)
-	public static final RegistryObject<Item> UNIVERSAL_BLOCK_REINFORCER_LVL_3 = ITEMS.register("universal_block_reinforcer_lvl3", () -> new UniversalBlockReinforcerItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
+	public static final RegistryObject<Item> UNIVERSAL_BLOCK_REINFORCER_LVL_3 = ITEMS.register("universal_block_reinforcer_lvl3", () -> new UniversalBlockReinforcerItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
 	@HasManualPage
-	public static final RegistryObject<Item> UNIVERSAL_BLOCK_REMOVER = ITEMS.register("universal_block_remover", () -> new UniversalBlockRemoverItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1).defaultDurability(476)));
+	public static final RegistryObject<Item> UNIVERSAL_BLOCK_REMOVER = ITEMS.register("universal_block_remover", () -> new UniversalBlockRemoverItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1).defaultDurability(476)));
 	@HasManualPage
-	public static final RegistryObject<Item> UNIVERSAL_KEY_CHANGER = ITEMS.register("universal_key_changer", () -> new UniversalKeyChangerItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
+	public static final RegistryObject<Item> UNIVERSAL_KEY_CHANGER = ITEMS.register("universal_key_changer", () -> new UniversalKeyChangerItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
 	@HasManualPage
-	public static final RegistryObject<Item> UNIVERSAL_OWNER_CHANGER = ITEMS.register("universal_owner_changer", () -> new UniversalOwnerChangerItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1).defaultDurability(48)));
+	public static final RegistryObject<Item> UNIVERSAL_OWNER_CHANGER = ITEMS.register("universal_owner_changer", () -> new UniversalOwnerChangerItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1).defaultDurability(48)));
 	@HasManualPage
-	public static final RegistryObject<Item> WIRE_CUTTERS = ITEMS.register("wire_cutters", () -> new Item(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1).defaultDurability(476)));
+	public static final RegistryObject<Item> WIRE_CUTTERS = ITEMS.register("wire_cutters", () -> new Item(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1).defaultDurability(476)));
 
 	//modules
 	@HasManualPage
-	public static final RegistryObject<ModuleItem> DENYLIST_MODULE = ITEMS.register("blacklist_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1), ModuleType.DENYLIST, true, true));
+	public static final RegistryObject<ModuleItem> DENYLIST_MODULE = ITEMS.register("blacklist_module", () -> new ModuleItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1), ModuleType.DENYLIST, true, true));
 	@HasManualPage
-	public static final RegistryObject<ModuleItem> DISGUISE_MODULE = ITEMS.register("disguise_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1), ModuleType.DISGUISE, false, true));
+	public static final RegistryObject<ModuleItem> DISGUISE_MODULE = ITEMS.register("disguise_module", () -> new ModuleItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1), ModuleType.DISGUISE, false, true));
 	@HasManualPage
-	public static final RegistryObject<ModuleItem> HARMING_MODULE = ITEMS.register("harming_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1), ModuleType.HARMING, false));
+	public static final RegistryObject<ModuleItem> HARMING_MODULE = ITEMS.register("harming_module", () -> new ModuleItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1), ModuleType.HARMING, false));
 	@HasManualPage
-	public static final RegistryObject<ModuleItem> REDSTONE_MODULE = ITEMS.register("redstone_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1), ModuleType.REDSTONE, false));
+	public static final RegistryObject<ModuleItem> REDSTONE_MODULE = ITEMS.register("redstone_module", () -> new ModuleItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1), ModuleType.REDSTONE, false));
 	@HasManualPage
-	public static final RegistryObject<ModuleItem> SMART_MODULE = ITEMS.register("smart_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1), ModuleType.SMART, false));
+	public static final RegistryObject<ModuleItem> SMART_MODULE = ITEMS.register("smart_module", () -> new ModuleItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1), ModuleType.SMART, false));
 	@HasManualPage
-	public static final RegistryObject<ModuleItem> STORAGE_MODULE = ITEMS.register("storage_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1), ModuleType.STORAGE, false));
+	public static final RegistryObject<ModuleItem> STORAGE_MODULE = ITEMS.register("storage_module", () -> new ModuleItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1), ModuleType.STORAGE, false));
 	@HasManualPage
-	public static final RegistryObject<ModuleItem> ALLOWLIST_MODULE = ITEMS.register("whitelist_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1), ModuleType.ALLOWLIST, true, true));
+	public static final RegistryObject<ModuleItem> ALLOWLIST_MODULE = ITEMS.register("whitelist_module", () -> new ModuleItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1), ModuleType.ALLOWLIST, true, true));
 	@HasManualPage
-	public static final RegistryObject<ModuleItem> SPEED_MODULE = ITEMS.register("speed_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1), ModuleType.SPEED, false));
+	public static final RegistryObject<ModuleItem> SPEED_MODULE = ITEMS.register("speed_module", () -> new ModuleItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1), ModuleType.SPEED, false));
 
 	//tile entity types
 	//@formatter:off
@@ -2085,7 +2087,7 @@ public class SCContent {
 	public static final RegistryObject<TileEntityType<SecurityCameraBlockEntity>> SECURITY_CAMERA_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("security_camera", () -> TileEntityType.Builder.of(SecurityCameraBlockEntity::new, SCContent.SECURITY_CAMERA.get()).build(null));
 	public static final RegistryObject<TileEntityType<UsernameLoggerBlockEntity>> USERNAME_LOGGER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("username_logger", () -> TileEntityType.Builder.of(UsernameLoggerBlockEntity::new, SCContent.USERNAME_LOGGER.get()).build(null));
 	public static final RegistryObject<TileEntityType<RetinalScannerBlockEntity>> RETINAL_SCANNER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("retinal_scanner", () -> TileEntityType.Builder.of(RetinalScannerBlockEntity::new, SCContent.RETINAL_SCANNER.get()).build(null));
-	public static final RegistryObject<TileEntityType<KeypadChestBlockEntity>> KEYPAD_CHEST_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_chest", () -> TileEntityType.Builder.of(KeypadChestBlockEntity::new, SCContent.KEYPAD_CHEST.get()).build(null));
+	public static final RegistryObject<TileEntityType<KeypadChestBlockEntity>> KEYPAD_CHEST_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(KEYPAD_CHEST_PATH, () -> TileEntityType.Builder.of(KeypadChestBlockEntity::new, SCContent.KEYPAD_CHEST.get()).build(null));
 	public static final RegistryObject<TileEntityType<AlarmBlockEntity>> ALARM_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("alarm", () -> TileEntityType.Builder.of(AlarmBlockEntity::new, SCContent.ALARM.get()).build(null));
 	public static final RegistryObject<TileEntityType<ClaymoreBlockEntity>> CLAYMORE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("claymore", () -> TileEntityType.Builder.of(ClaymoreBlockEntity::new, SCContent.CLAYMORE.get()).build(null));
 	public static final RegistryObject<TileEntityType<KeypadFurnaceBlockEntity>> KEYPAD_FURNACE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_furnace", () -> TileEntityType.Builder.of(KeypadFurnaceBlockEntity::new, SCContent.KEYPAD_FURNACE.get()).build(null));
@@ -2156,12 +2158,12 @@ public class SCContent {
 	public static final RegistryObject<TileEntityType<BlockChangeDetectorBlockEntity>> BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("block_change_detector", () -> TileEntityType.Builder.of(BlockChangeDetectorBlockEntity::new, SCContent.BLOCK_CHANGE_DETECTOR.get()).build(null));
 	public static final RegistryObject<TileEntityType<RiftStabilizerBlockEntity>> RIFT_STABILIZER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("rift_stabilizer", () -> TileEntityType.Builder.of(RiftStabilizerBlockEntity::new, SCContent.RIFT_STABILIZER.get()).build(null));
 	public static final RegistryObject<TileEntityType<DisguisableBlockEntity>> DISGUISABLE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("disguisable", () -> TileEntityType.Builder.of(DisguisableBlockEntity::new, SCContent.SENTRY_DISGUISE.get()).build(null));
-	public static final RegistryObject<TileEntityType<DisplayCaseBlockEntity>> DISPLAY_CASE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("display_case", () -> TileEntityType.Builder.of(DisplayCaseBlockEntity::new, SCContent.DISPLAY_CASE.get()).build(null));
+	public static final RegistryObject<TileEntityType<DisplayCaseBlockEntity>> DISPLAY_CASE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(DISPLAY_CASE_PATH, () -> TileEntityType.Builder.of(DisplayCaseBlockEntity::new, SCContent.DISPLAY_CASE.get()).build(null));
 	public static final RegistryObject<TileEntityType<KeypadBarrelBlockEntity>> KEYPAD_BARREL_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_barrel", () -> TileEntityType.Builder.of(KeypadBarrelBlockEntity::new, SCContent.KEYPAD_BARREL.get()).build(null));
 	public static final RegistryObject<TileEntityType<KeypadTrapdoorBlockEntity>> KEYPAD_TRAPDOOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_trapdoor", () -> TileEntityType.Builder.of(KeypadTrapdoorBlockEntity::new, SCContent.KEYPAD_TRAPDOOR.get()).build(null));
 
 	//entity types
-	public static final RegistryObject<EntityType<BouncingBetty>> eTypeBouncingBetty = ENTITY_TYPES.register("bouncingbetty",
+	public static final RegistryObject<EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",
 			() -> EntityType.Builder.<BouncingBetty>of(BouncingBetty::new, EntityClassification.MISC)
 			.sized(0.5F, 0.2F)
 			.setTrackingRange(128)
@@ -2169,7 +2171,7 @@ public class SCContent {
 			.setShouldReceiveVelocityUpdates(true)
 			.setCustomClientFactory((spawnEntity, world) -> new BouncingBetty(world))
 			.build(SecurityCraft.MODID + ":bouncingbetty"));
-	public static final RegistryObject<EntityType<IMSBomb>> eTypeImsBomb = ENTITY_TYPES.register("imsbomb",
+	public static final RegistryObject<EntityType<IMSBomb>> IMS_BOMB_ENTITY = ENTITY_TYPES.register("imsbomb",
 			() -> EntityType.Builder.<IMSBomb>of(IMSBomb::new, EntityClassification.MISC)
 			.sized(0.25F, 0.3F)
 			.setTrackingRange(256)
@@ -2177,7 +2179,7 @@ public class SCContent {
 			.setShouldReceiveVelocityUpdates(true)
 			.setCustomClientFactory((spawnEntity, world) -> new IMSBomb(world))
 			.build(SecurityCraft.MODID + ":imsbomb"));
-	public static final RegistryObject<EntityType<SecurityCamera>> eTypeSecurityCamera = ENTITY_TYPES.register("securitycamera",
+	public static final RegistryObject<EntityType<SecurityCamera>> SECURITY_CAMERA_ENTITY = ENTITY_TYPES.register("securitycamera",
 			() -> EntityType.Builder.<SecurityCamera>of(SecurityCamera::new, EntityClassification.MISC)
 			.sized(0.0001F, 0.0001F)
 			.setTrackingRange(256)
@@ -2185,7 +2187,7 @@ public class SCContent {
 			.setShouldReceiveVelocityUpdates(true)
 			.setCustomClientFactory((spawnEntity, world) -> new SecurityCamera(world))
 			.build(SecurityCraft.MODID + ":securitycamera"));
-	public static final RegistryObject<EntityType<Sentry>> eTypeSentry = ENTITY_TYPES.register("sentry",
+	public static final RegistryObject<EntityType<Sentry>> SENTRY_ENTITY = ENTITY_TYPES.register("sentry",
 			() -> EntityType.Builder.<Sentry>of(Sentry::new, EntityClassification.MISC)
 			.sized(1.0F, 2.0F)
 			.setTrackingRange(256)
@@ -2193,7 +2195,7 @@ public class SCContent {
 			.setShouldReceiveVelocityUpdates(true)
 			.setCustomClientFactory((spawnEntity, world) -> new Sentry(world))
 			.build(SecurityCraft.MODID + ":sentry"));
-	public static final RegistryObject<EntityType<Bullet>> eTypeBullet = ENTITY_TYPES.register("bullet",
+	public static final RegistryObject<EntityType<Bullet>> BULLET_ENTITY = ENTITY_TYPES.register("bullet",
 			() -> EntityType.Builder.<Bullet>of(Bullet::new, EntityClassification.MISC)
 			.sized(0.15F, 0.1F)
 			.setTrackingRange(256)
@@ -2221,39 +2223,39 @@ public class SCContent {
 	public static final RegistryObject<ContainerType<ClaymoreMenu>> CLAYMORE_MENU = MENU_TYPES.register("claymore", () -> IForgeContainerType.create((windowId, inv, data) -> new ClaymoreMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
 	public static final RegistryObject<ContainerType<LaserBlockMenu>> LASER_BLOCK_MENU = MENU_TYPES.register("laser_block", () -> IForgeContainerType.create((windowId, inv, data) -> new LaserBlockMenu(windowId, inv.player.level, data.readBlockPos(), LaserBlockBlockEntity.loadSideConfig(data.readNbt()), inv)));
 
-	private static final Block.Properties prop() {
+	private static final AbstractBlock.Properties prop() {
 		return prop(Material.STONE);
 	}
 
-	private static final Block.Properties prop(Material mat) {
-		return Block.Properties.of(mat).strength(-1.0F, Float.MAX_VALUE);
+	private static final AbstractBlock.Properties prop(Material mat) {
+		return AbstractBlock.Properties.of(mat).strength(-1.0F, Float.MAX_VALUE);
 	}
 
-	private static final Block.Properties prop(MaterialColor color) {
+	private static final AbstractBlock.Properties prop(MaterialColor color) {
 		return prop(Material.STONE, color);
 	}
 
-	private static final Block.Properties prop(Material mat, float hardness) {
-		return Block.Properties.of(mat).strength(hardness, Float.MAX_VALUE);
+	private static final AbstractBlock.Properties prop(Material mat, float hardness) {
+		return AbstractBlock.Properties.of(mat).strength(hardness, Float.MAX_VALUE);
 	}
 
-	private static final Block.Properties prop(Material mat, MaterialColor color) {
-		return Block.Properties.of(mat, color).strength(-1.0F, Float.MAX_VALUE);
+	private static final AbstractBlock.Properties prop(Material mat, MaterialColor color) {
+		return AbstractBlock.Properties.of(mat, color).strength(-1.0F, Float.MAX_VALUE);
 	}
 
-	private static final Block.Properties logProp(MaterialColor topColor, MaterialColor sideColor) {
-		return Block.Properties.of(Material.WOOD, state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor).strength(-1.0F, Float.MAX_VALUE);
+	private static final AbstractBlock.Properties logProp(MaterialColor topColor, MaterialColor sideColor) {
+		return AbstractBlock.Properties.of(Material.WOOD, state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor).strength(-1.0F, Float.MAX_VALUE);
 	}
 
-	private static final Block.Properties propDisguisable() {
+	private static final AbstractBlock.Properties propDisguisable() {
 		return propDisguisable(Material.STONE);
 	}
 
-	private static final Block.Properties propDisguisable(Material mat) {
+	private static final AbstractBlock.Properties propDisguisable(Material mat) {
 		return prop(mat).noOcclusion().dynamicShape().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
 	}
 
-	private static final Block.Properties glassProp(MaterialColor color) {
+	private static final AbstractBlock.Properties glassProp() {
 		return prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion();
 	}
 
@@ -2272,4 +2274,6 @@ public class SCContent {
 	private static ReinforcedPressurePlateBlock stonePressurePlate(Block vanillaBlock) {
 		return new ReinforcedPressurePlateBlock(Sensitivity.MOBS, prop(vanillaBlock.defaultMaterialColor()).noCollission(), vanillaBlock);
 	}
+
+	private SCContent() {}
 }

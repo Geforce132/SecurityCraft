@@ -171,9 +171,9 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	public boolean isEntryShown(ChangeEntry entry) {
-		DetectionMode mode = getMode();
+		DetectionMode currentMode = getMode();
 
-		return (mode == DetectionMode.BOTH || mode == entry.action) && (filter.isEmpty() || ((BlockItem) filter.getItem()).getBlock() == entry.state.getBlock());
+		return (currentMode == DetectionMode.BOTH || currentMode == entry.action) && (filter.isEmpty() || ((BlockItem) filter.getItem()).getBlock() == entry.state.getBlock());
 	}
 
 	@Override
@@ -280,7 +280,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		return color;
 	}
 
-	public static enum DetectionMode {
+	public enum DetectionMode {
 		BREAK("gui.securitycraft:block_change_detector.mode.break"),
 		PLACE("gui.securitycraft:block_change_detector.mode.place"),
 		BOTH("gui.securitycraft:block_change_detector.mode.both");

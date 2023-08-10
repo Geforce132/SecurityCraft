@@ -130,7 +130,7 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 	}
 
 	private boolean getCanBlockBurn(World world, BlockPos pos) {
-		return !world.isLoaded(pos) ? false : world.getBlockState(pos).getMaterial().isFlammable();
+		return world.isLoaded(pos) && world.getBlockState(pos).getMaterial().isFlammable();
 	}
 
 	@Nullable

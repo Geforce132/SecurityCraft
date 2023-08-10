@@ -56,7 +56,7 @@ public class RemoteControlMine {
 		}
 	}
 
-	public static enum Action {
+	public enum Action {
 		ACTIVATE(IExplosive::activateMine),
 		DEFUSE(IExplosive::defuseMine),
 		DETONATE(IExplosive::explode);

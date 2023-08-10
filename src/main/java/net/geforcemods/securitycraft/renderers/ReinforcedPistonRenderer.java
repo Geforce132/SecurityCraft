@@ -5,6 +5,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonBlockEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.PistonBlock;
 import net.minecraft.block.PistonHeadBlock;
 import net.minecraft.client.Minecraft;
@@ -44,7 +45,7 @@ public class ReinforcedPistonRenderer extends TileEntityRenderer<ReinforcedPisto
 				}
 				else if (te.shouldPistonHeadBeRendered() && !te.isExtending()) {
 					PistonType pistonType = state.is(SCContent.REINFORCED_STICKY_PISTON.get()) ? PistonType.STICKY : PistonType.DEFAULT;
-					BlockState headState = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.TYPE, pistonType).setValue(PistonHeadBlock.FACING, state.getValue(PistonBlock.FACING));
+					BlockState headState = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.TYPE, pistonType).setValue(DirectionalBlock.FACING, state.getValue(DirectionalBlock.FACING));
 					BlockPos renderPos = oppositePos.relative(te.getMotionDirection());
 
 					headState = headState.setValue(PistonHeadBlock.SHORT, te.getProgress(partialTicks) >= 0.5F);
@@ -64,6 +65,9 @@ public class ReinforcedPistonRenderer extends TileEntityRenderer<ReinforcedPisto
 	}
 
 	private void renderBlocks(BlockPos pos, BlockState state, MatrixStack stack, IRenderTypeBuffer buffer, World world, boolean checkSides, int combinedOverlay) {
-		ForgeHooksClient.renderPistonMovedBlocks(pos, state, stack, buffer, world, checkSides, combinedOverlay, blockRenderer == null ? blockRenderer = Minecraft.getInstance().getBlockRenderer() : blockRenderer);
+		if (blockRenderer == null)
+			blockRenderer = Minecraft.getInstance().getBlockRenderer();
+
+		ForgeHooksClient.renderPistonMovedBlocks(pos, state, stack, buffer, world, checkSides, combinedOverlay, blockRenderer);
 	}
 }

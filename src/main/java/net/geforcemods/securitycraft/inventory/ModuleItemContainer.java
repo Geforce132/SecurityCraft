@@ -10,9 +10,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
 
 public class ModuleItemContainer implements IInventory {
-	public final int size = 1;
 	private final ItemStack module;
-	public NonNullList<ItemStack> moduleInventory;
+	private NonNullList<ItemStack> moduleInventory;
 	private DisguiseModuleMenu menu;
 
 	public ModuleItemContainer(ItemStack moduleItem) {
@@ -21,7 +20,7 @@ public class ModuleItemContainer implements IInventory {
 		if (!(moduleItem.getItem() instanceof ModuleItem))
 			return;
 
-		moduleInventory = NonNullList.withSize(size, ItemStack.EMPTY);
+		moduleInventory = NonNullList.withSize(1, ItemStack.EMPTY);
 
 		if (!module.hasTag())
 			module.setTag(new CompoundNBT());
@@ -31,7 +30,7 @@ public class ModuleItemContainer implements IInventory {
 
 	@Override
 	public int getContainerSize() {
-		return size;
+		return 1;
 	}
 
 	@Override

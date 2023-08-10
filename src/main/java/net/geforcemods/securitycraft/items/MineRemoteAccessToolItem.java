@@ -21,7 +21,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -48,11 +47,12 @@ public class MineRemoteAccessToolItem extends Item {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
-		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), stack, ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
-	}
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 
-	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
 		if (world.getBlockState(pos).getBlock() instanceof IExplosive) {
+			PlayerEntity player = ctx.getPlayer();
+
 			if (!isMineAdded(stack, pos)) {
 				int availSlot = getNextAvaliableSlot(stack);
 
@@ -101,10 +101,8 @@ public class MineRemoteAccessToolItem extends Item {
 			if (stack.getTag().getIntArray("mine" + i).length > 0) {
 				int[] coords = stack.getTag().getIntArray("mine" + i);
 
-				if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0) {
+				if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 					list.add(new StringTextComponent(TextFormatting.GRAY + "---"));
-					continue;
-				}
 				else
 					list.add(Utils.localize("tooltip.securitycraft:mine").append(new StringTextComponent(" " + i + ": ")).append(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
 			}
@@ -128,12 +126,11 @@ public class MineRemoteAccessToolItem extends Item {
 
 					if (!player.level.isClientSide)
 						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new UpdateNBTTagOnClient(stack));
+
 					return;
 				}
 			}
 		}
-
-		return;
 	}
 
 	private boolean isMineAdded(ItemStack stack, BlockPos pos) {

@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,7 +25,7 @@ import net.minecraft.world.World;
 public class UsernameLoggerBlock extends DisguisableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-	public UsernameLoggerBlock(Block.Properties properties) {
+	public UsernameLoggerBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
 	}
@@ -32,7 +33,7 @@ public class UsernameLoggerBlock extends DisguisableBlock {
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (world.isClientSide)
-			ClientHandler.displayUsernameLoggerScreen(world, pos);
+			ClientHandler.displayUsernameLoggerScreen(pos);
 
 		return ActionResultType.SUCCESS;
 	}

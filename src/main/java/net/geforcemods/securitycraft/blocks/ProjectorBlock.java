@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -55,7 +56,7 @@ public class ProjectorBlock extends DisguisableBlock {
 	private static final VoxelShape CEILING_WEST = VoxelShapes.or(Block.box(1, 6, 1, 15, 11, 15), Block.box(15, 6, 2, 16, 11, 7), Block.box(4, 11, 7, 6, 16, 9));
 	private static final VoxelShape CEILING_EAST = VoxelShapes.or(Block.box(1, 6, 1, 15, 11, 15), Block.box(0, 6, 9, 1, 11, 14), Block.box(10, 11, 7, 12, 16, 9));
 
-	public ProjectorBlock(Block.Properties properties) {
+	public ProjectorBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HANGING, false).setValue(WATERLOGGED, false));
 	}

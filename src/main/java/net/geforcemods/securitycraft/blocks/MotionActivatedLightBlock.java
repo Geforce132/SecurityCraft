@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
@@ -38,7 +39,7 @@ public class MotionActivatedLightBlock extends OwnableBlock implements IWaterLog
 	private static final VoxelShape SHAPE_SOUTH = VoxelShapes.or(Block.box(6, 3, 2, 10, 4, 3), VoxelShapes.or(Block.box(6, 6, 2, 10, 9, 3), VoxelShapes.joinUnoptimized(Block.box(7, 3, 0, 9, 8, 2), Block.box(7, 4, 1, 9, 7, 2), IBooleanFunction.ONLY_FIRST)));
 	private static final VoxelShape SHAPE_WEST = VoxelShapes.or(Block.box(13, 3, 6, 14, 4, 10), VoxelShapes.or(Block.box(13, 6, 6, 14, 9, 10), VoxelShapes.joinUnoptimized(Block.box(14, 3, 7, 16, 8, 9), Block.box(15, 4, 7, 14, 7, 9), IBooleanFunction.ONLY_FIRST)));
 
-	public MotionActivatedLightBlock(Block.Properties properties) {
+	public MotionActivatedLightBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false).setValue(WATERLOGGED, false));
 	}
@@ -68,10 +69,10 @@ public class MotionActivatedLightBlock extends OwnableBlock implements IWaterLog
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
-	}
+		Direction facing = ctx.getClickedFace();
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
 		return facing != Direction.UP && facing != Direction.DOWN && BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing).setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER) : null;
 	}
 

@@ -52,9 +52,9 @@ public class SetPasscodeScreen extends Screen {
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		saveAndContinueButton.active = false;
 
-		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, StringTextComponent.EMPTY));
+		keycodeTextbox = addButton(new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, StringTextComponent.EMPTY));
 		keycodeTextbox.setMaxLength(Integer.MAX_VALUE);
-		keycodeTextbox.setFilter(s -> s.matches("[0-9]*"));
+		keycodeTextbox.setFilter(s -> s.matches("\\d*"));
 		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = !text.isEmpty());
 		setInitialFocus(keycodeTextbox);
 	}

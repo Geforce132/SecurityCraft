@@ -8,7 +8,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
 public class SCTags {
+	private SCTags() {}
+
 	public static class Blocks {
+		private Blocks() {}
+
 		public static final IOptionalNamedTag<Block> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
 		public static final IOptionalNamedTag<Block> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
 		public static final IOptionalNamedTag<Block> REINFORCED_BUTTONS = tag("reinforced/buttons");
@@ -50,6 +54,8 @@ public class SCTags {
 	}
 
 	public static class Items {
+		private Items() {}
+
 		public static final IOptionalNamedTag<Item> CAN_INTERACT_WITH_DOORS = tag("can_interact_with_doors");
 		public static final IOptionalNamedTag<Item> MODULES = tag("modules");
 		public static final IOptionalNamedTag<Item> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");

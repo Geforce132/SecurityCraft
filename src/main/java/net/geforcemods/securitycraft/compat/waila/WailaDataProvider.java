@@ -141,19 +141,17 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			if (config.get(SHOW_OWNER))
 				body.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())));
 
-			if (config.get(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer())) {
-				if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
-					body.add(Utils.localize("waila.securitycraft:equipped"));
+			if (config.get(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer()) && (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())) {
+				body.add(Utils.localize("waila.securitycraft:equipped"));
 
-					if (!sentry.getAllowlistModule().isEmpty())
-						body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey())));
+				if (!sentry.getAllowlistModule().isEmpty())
+					body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey())));
 
-					if (!sentry.getDisguiseModule().isEmpty())
-						body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
+				if (!sentry.getDisguiseModule().isEmpty())
+					body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
 
-					if (sentry.hasSpeedModule())
-						body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey())));
-				}
+				if (sentry.hasSpeedModule())
+					body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey())));
 			}
 
 			IFormattableTextComponent modeDescription = Utils.localize(mode.getModeKey());

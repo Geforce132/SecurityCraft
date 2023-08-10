@@ -38,7 +38,7 @@ public class SecurityCameraRenderer extends TileEntityRenderer<SecurityCameraBlo
 
 	@Override
 	public void render(SecurityCameraBlockEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight, int packedOverlay) {
-		if (te.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(te.getBlockPos()))
+		if (te.isDown() || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(te.getBlockPos()))
 			return;
 
 		matrix.translate(0.5D, 1.5D, 0.5D);
@@ -61,7 +61,7 @@ public class SecurityCameraRenderer extends TileEntityRenderer<SecurityCameraBlo
 		matrix.mulPose(POSITIVE_X_180);
 
 		if (!te.isDisabled())
-			MODEL.cameraRotationPoint.yRot = (float) MathHelper.lerp(partialTicks, te.oCameraRotation, te.cameraRotation);
+			MODEL.cameraRotationPoint.yRot = (float) MathHelper.lerp(partialTicks, te.getOriginalCameraRotation(), te.getCameraRotation());
 
 		if (te.isShutDown())
 			MODEL.cameraRotationPoint.xRot = 0.9F;

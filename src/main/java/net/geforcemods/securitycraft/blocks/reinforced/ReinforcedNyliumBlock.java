@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IGrowable;
@@ -15,7 +16,7 @@ import net.minecraft.world.gen.feature.TwistingVineFeature;
 import net.minecraft.world.server.ServerWorld;
 
 public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements IGrowable {
-	public ReinforcedNyliumBlock(Block.Properties properties, Block vB) {
+	public ReinforcedNyliumBlock(AbstractBlock.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 

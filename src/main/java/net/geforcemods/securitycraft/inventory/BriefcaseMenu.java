@@ -47,10 +47,8 @@ public class BriefcaseMenu extends Container {
 
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if (index >= CONTAINER_SIZE) {
-				if (!moveItemStackTo(slotStack, 0, CONTAINER_SIZE, false))
-					return ItemStack.EMPTY;
-			}
+			else if (!moveItemStackTo(slotStack, 0, CONTAINER_SIZE, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.set(ItemStack.EMPTY);

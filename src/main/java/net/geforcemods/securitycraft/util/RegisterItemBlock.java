@@ -21,7 +21,7 @@ public @interface RegisterItemBlock {
 	 */
 	SCItemGroup value() default SCItemGroup.TECHNICAL;
 
-	public static enum SCItemGroup {
+	public enum SCItemGroup {
 		TECHNICAL,
 		EXPLOSIVES,
 		DECORATION;

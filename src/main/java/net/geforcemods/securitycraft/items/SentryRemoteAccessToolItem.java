@@ -20,7 +20,6 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -49,15 +48,15 @@ public class SentryRemoteAccessToolItem extends Item {
 
 	@Override
 	public ActionResultType useOn(ItemUseContext ctx) {
-		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
-	}
-
-	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		PlayerEntity player = ctx.getPlayer();
 		List<Sentry> sentries = world.getEntitiesOfClass(Sentry.class, new AxisAlignedBB(pos));
 
 		if (!sentries.isEmpty()) {
 			Sentry sentry = sentries.get(0);
 			BlockPos pos2 = sentry.blockPosition();
+			ItemStack stack = ctx.getItemInHand();
 
 			if (!isSentryAdded(stack, pos2)) {
 				int availSlot = getNextAvaliableSlot(stack);
@@ -105,10 +104,8 @@ public class SentryRemoteAccessToolItem extends Item {
 			if (stack.getTag().getIntArray("sentry" + i).length > 0) {
 				int[] coords = stack.getTag().getIntArray("sentry" + i);
 
-				if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0) {
+				if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 					tooltip.add(new StringTextComponent(TextFormatting.GRAY + "---"));
-					continue;
-				}
 				else {
 					BlockPos pos = new BlockPos(coords[0], coords[1], coords[2]);
 					List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AxisAlignedBB(pos));
@@ -147,8 +144,6 @@ public class SentryRemoteAccessToolItem extends Item {
 				}
 			}
 		}
-
-		return;
 	}
 
 	private boolean isSentryAdded(ItemStack stack, BlockPos pos) {

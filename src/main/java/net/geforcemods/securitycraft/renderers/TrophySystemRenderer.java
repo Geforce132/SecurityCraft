@@ -28,7 +28,7 @@ public class TrophySystemRenderer extends TileEntityRenderer<TrophySystemBlockEn
 		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(te, partialTicks, matrix, buffer, combinedLight, combinedOverlay))
 			return;
 
-		if (te.entityBeingTargeted == null)
+		if (te.getTarget() == null)
 			return;
 
 		IVertexBuilder builder = buffer.getBuffer(RenderType.lines());
@@ -48,7 +48,7 @@ public class TrophySystemRenderer extends TileEntityRenderer<TrophySystemBlockEn
 
 		//draws a line between the trophy system and the projectile that it's targeting
 		builder.vertex(positionMatrix, 0.5F, 0.75F, 0.5F).color(r, g, b, 255).endVertex();
-		builder.vertex(positionMatrix, (float) (te.entityBeingTargeted.getX() - pos.getX()), (float) (te.entityBeingTargeted.getY() - pos.getY()), (float) (te.entityBeingTargeted.getZ() - pos.getZ())).color(r, g, b, 255).endVertex();
+		builder.vertex(positionMatrix, (float) (te.getTarget().getX() - pos.getX()), (float) (te.getTarget().getY() - pos.getY()), (float) (te.getTarget().getZ() - pos.getZ())).color(r, g, b, 255).endVertex();
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.misc.SaltData;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
@@ -25,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 public abstract class SpecialDoorBlock extends DoorBlock {
-	public SpecialDoorBlock(Block.Properties properties) {
+	protected SpecialDoorBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 
@@ -111,11 +112,9 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 
 	@Override
 	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param) {
-		super.triggerEvent(state, world, pos, id, param);
+		TileEntity be = world.getBlockEntity(pos);
 
-		TileEntity tileentity = world.getBlockEntity(pos);
-
-		return tileentity == null ? false : tileentity.triggerEvent(id, param);
+		return be != null && be.triggerEvent(id, param);
 	}
 
 	@Override
@@ -132,9 +131,6 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}
-
-	@Override
-	public abstract TileEntity createTileEntity(BlockState state, IBlockReader world);
 
 	public abstract Item getDoorItem();
 }

@@ -32,7 +32,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 public class SecurityCamera extends Entity {
 	private static final List<PlayerEntity> DISMOUNTED_PLAYERS = new ArrayList<>();
 	protected final double cameraSpeed = ConfigHandler.CLIENT.cameraSpeed.get();
-	public int screenshotSoundCooldown = 0;
+	private int screenshotSoundCooldown = 0;
 	protected int redstoneCooldown = 0;
 	protected int toggleNightVisionCooldown = 0;
 	private boolean shouldProvideNightVision = false;
@@ -42,17 +42,17 @@ public class SecurityCamera extends Entity {
 	private boolean hasSentChunks = false;
 
 	public SecurityCamera(EntityType<? extends SecurityCamera> type, World world) {
-		super(SCContent.eTypeSecurityCamera.get(), world);
+		super(SCContent.SECURITY_CAMERA_ENTITY.get(), world);
 		noPhysics = true;
 		forcedLoading = true;
 	}
 
 	public SecurityCamera(World world) {
-		this(SCContent.eTypeSecurityCamera.get(), world);
+		this(SCContent.SECURITY_CAMERA_ENTITY.get(), world);
 	}
 
 	public SecurityCamera(World world, BlockPos pos) {
-		this(SCContent.eTypeSecurityCamera.get(), world);
+		this(SCContent.SECURITY_CAMERA_ENTITY.get(), world);
 
 		TileEntity te = world.getBlockEntity(pos);
 
@@ -66,11 +66,11 @@ public class SecurityCamera extends Entity {
 		double y = pos.getY() + 0.5D;
 		double z = pos.getZ() + 0.5D;
 
-		if (cam.down)
+		if (cam.isDown())
 			y += 0.25D;
 
 		setPos(x, y, z);
-		setInitialPitchYaw(cam);
+		setInitialPitchYaw();
 	}
 
 	public SecurityCamera(World world, BlockPos pos, SecurityCamera oldCamera) {
@@ -78,7 +78,7 @@ public class SecurityCamera extends Entity {
 		oldCamera.remove();
 	}
 
-	private void setInitialPitchYaw(SecurityCameraBlockEntity te) {
+	private void setInitialPitchYaw() {
 		xRot = 30F;
 
 		Direction facing = level.getBlockState(blockPosition()).getValue(SecurityCameraBlock.FACING);
@@ -103,8 +103,8 @@ public class SecurityCamera extends Entity {
 	@Override
 	public void tick() {
 		if (level.isClientSide) {
-			if (screenshotSoundCooldown > 0)
-				screenshotSoundCooldown -= 1;
+			if (getScreenshotSoundCooldown() > 0)
+				setScreenshotSoundCooldown(getScreenshotSoundCooldown() - 1);
 
 			if (redstoneCooldown > 0)
 				redstoneCooldown -= 1;
@@ -136,7 +136,7 @@ public class SecurityCamera extends Entity {
 	}
 
 	public boolean isCameraDown() {
-		return level.getBlockEntity(blockPosition()) instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) level.getBlockEntity(blockPosition())).down;
+		return level.getBlockEntity(blockPosition()) instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) level.getBlockEntity(blockPosition())).isDown();
 	}
 
 	//here to make this method accessible to CameraController
@@ -210,5 +210,13 @@ public class SecurityCamera extends Entity {
 	@Override
 	public IPacket<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
+	}
+
+	public int getScreenshotSoundCooldown() {
+		return screenshotSoundCooldown;
+	}
+
+	public void setScreenshotSoundCooldown(int screenshotSoundCooldown) {
+		this.screenshotSoundCooldown = screenshotSoundCooldown;
 	}
 }

@@ -131,9 +131,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 		for (height = 1; height <= 9; height++) {
 			BlockState state = getLevel().getBlockState(getBlockPos().above(height));
 
-			if (state == null || state.isAir(getLevel(), getBlockPos()))
-				continue;
-			else
+			if (state != null && !state.isAir(getLevel(), getBlockPos()))
 				break;
 		}
 
@@ -197,7 +195,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 		return ignoreOwner.get();
 	}
 
-	public static enum IMSTargetingMode {
+	public enum IMSTargetingMode {
 		PLAYERS,
 		PLAYERS_AND_MOBS,
 		MOBS;

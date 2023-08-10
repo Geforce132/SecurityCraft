@@ -193,7 +193,7 @@ public class ModuleItem extends Item {
 		//@formatter:off
 		return team != null && module.getOrCreateTag().getList("ListedTeams", Constants.NBT.TAG_STRING)
 				.stream()
-				.filter(tag -> tag instanceof StringNBT)
+				.filter(StringNBT.class::isInstance)
 				.map(tag -> ((StringNBT) tag).getAsString())
 				.anyMatch(team.getName()::equals);
 		//@formatter:on

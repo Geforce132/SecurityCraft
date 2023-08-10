@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -23,7 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforcedBlock {
-	public ReinforcedCauldronBlock(Properties properties) {
+	public ReinforcedCauldronBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 

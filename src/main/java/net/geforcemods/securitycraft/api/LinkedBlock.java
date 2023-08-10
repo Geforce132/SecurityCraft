@@ -4,8 +4,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class LinkedBlock {
-	public String blockName;
-	public BlockPos blockPos = null;
+	private String blockName;
+	private BlockPos blockPos;
 
 	public LinkedBlock(String name, BlockPos pos) {
 		blockName = name;

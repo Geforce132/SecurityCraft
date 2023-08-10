@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Random;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.particles.ParticleTypes;
@@ -12,7 +13,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ReinforcedCryingObsidianBlock extends BaseReinforcedBlock {
-	public ReinforcedCryingObsidianBlock(Properties properties, Block vB) {
+	public ReinforcedCryingObsidianBlock(AbstractBlock.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 

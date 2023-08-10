@@ -17,16 +17,14 @@ import net.minecraft.world.World;
 
 public class ProjectorMenu extends StateSelectorAccessMenu {
 	public static final int SIZE = 1;
-	public ProjectorBlockEntity be;
+	public final ProjectorBlockEntity be;
 	private IWorldPosCallable worldPosCallable;
 	private Slot projectedBlockSlot;
 
 	public ProjectorMenu(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
 		super(SCContent.PROJECTOR_MENU.get(), windowId);
 
-		if (world.getBlockEntity(pos) instanceof ProjectorBlockEntity)
-			be = (ProjectorBlockEntity) world.getBlockEntity(pos);
-
+		be = (ProjectorBlockEntity) world.getBlockEntity(pos);
 		worldPosCallable = IWorldPosCallable.create(world, pos);
 
 		// A custom slot that prevents non-Block items from being inserted into the projector
@@ -68,10 +66,8 @@ public class ProjectorMenu extends StateSelectorAccessMenu {
 
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if (index >= 1) {
-				if (!moveItemStackTo(slotStack, 0, 1, false))
-					return ItemStack.EMPTY;
-			}
+			else if (!moveItemStackTo(slotStack, 0, 1, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.set(ItemStack.EMPTY);

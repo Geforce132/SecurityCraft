@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -26,7 +27,7 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock {
 	protected static final VoxelShape STANDING_SHAPE = VoxelShapes.or(Block.box(5.0D, 0.0D, 5.0D, 11.0D, 7.0D, 11.0D), Block.box(6.0D, 7.0D, 6.0D, 10.0D, 9.0D, 10.0D));
 	protected static final VoxelShape HANGING_SHAPE = VoxelShapes.or(Block.box(5.0D, 1.0D, 5.0D, 11.0D, 8.0D, 11.0D), Block.box(6.0D, 8.0D, 6.0D, 10.0D, 10.0D, 10.0D));
 
-	public ReinforcedLanternBlock(Block.Properties properties, Block vB) {
+	public ReinforcedLanternBlock(AbstractBlock.Properties properties, Block vB) {
 		super(properties, vB);
 		this.registerDefaultState(this.stateDefinition.any().setValue(HANGING, false).setValue(WATERLOGGED, false));
 	}

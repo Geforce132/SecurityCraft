@@ -21,6 +21,8 @@ public class SecurityCraftAPI {
 	public static final String IMC_SENTRY_ATTACK_TARGET_MSG = "registerSentryAttackTargetCheck";
 	public static final String IMC_DOOR_ACTIVATOR_MSG = "registerDoorActivator";
 
+	private SecurityCraftAPI() {}
+
 	@SubscribeEvent
 	public static void onInterModProcess(InterModProcessEvent event) {
 		event.getIMCStream(s -> s.equals(IMC_EXTRACTION_BLOCK_MSG)).forEach(msg -> registeredExtractionBlocks.add((IExtractionBlock) msg.getMessageSupplier().get()));

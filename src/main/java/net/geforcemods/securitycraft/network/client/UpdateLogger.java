@@ -52,9 +52,9 @@ public class UpdateLogger {
 		UsernameLoggerBlockEntity te = (UsernameLoggerBlockEntity) Minecraft.getInstance().player.level.getBlockEntity(pos);
 
 		if (te != null) {
-			te.players[i] = username;
-			te.uuids[i] = uuid;
-			te.timestamps[i] = timestamp;
+			te.getPlayers()[i] = username;
+			te.getUuids()[i] = uuid;
+			te.getTimestamps()[i] = timestamp;
 		}
 	}
 }

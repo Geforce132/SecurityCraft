@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -17,7 +18,7 @@ import net.minecraft.world.IBlockReader;
 public class SentryDisguiseBlock extends DisguisableBlock {
 	public static final BooleanProperty INVISIBLE = BooleanProperty.create("invisible");
 
-	public SentryDisguiseBlock(Properties properties) {
+	public SentryDisguiseBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(INVISIBLE, true).setValue(WATERLOGGED, false));
 	}

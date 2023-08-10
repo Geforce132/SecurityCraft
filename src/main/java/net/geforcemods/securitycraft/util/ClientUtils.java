@@ -39,6 +39,8 @@ public class ClientUtils {
 	private static final ResourceLocation REDSTONE_TEXTURE = new ResourceLocation("textures/item/redstone.png");
 	private static final ResourceLocation SUGAR_TEXTURE = new ResourceLocation("textures/item/sugar.png");
 
+	private ClientUtils() {}
+
 	/**
 	 * Returns the current Minecraft in-game time, in a 12-hour AM/PM format.
 	 */
@@ -217,7 +219,7 @@ public class ClientUtils {
 			}
 		}
 
-		return 0xFF000000 | (r << 16) | (g << 8) | (b << 0);
+		return 0xFF000000 | (r << 16) | (g << 8) | b;
 	}
 
 	public static float[] RGBtoHSB(int r, int g, int b) {

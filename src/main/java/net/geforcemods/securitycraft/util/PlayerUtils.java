@@ -43,6 +43,8 @@ import net.minecraftforge.fml.common.thread.EffectiveSide;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class PlayerUtils {
+	private PlayerUtils() {}
+
 	/**
 	 * Gets the PlayerEntity instance of a player (if they're online) using their name. <p>
 	 */
@@ -175,15 +177,11 @@ public class PlayerUtils {
 	 * @return The respective item stack if it has been found, ItemStack.EMPTY if not
 	 */
 	public static ItemStack getSelectedItemStack(PlayerInventory inventory, Item item) {
-		if (!inventory.getSelected().isEmpty()) {
-			if (inventory.getSelected().getItem() == item)
-				return inventory.getSelected();
-		}
+		if (inventory.getSelected().getItem() == item)
+			return inventory.getSelected();
 
-		if (!inventory.offhand.get(0).isEmpty()) {
-			if (inventory.offhand.get(0).getItem() == item)
-				return inventory.offhand.get(0);
-		}
+		if (inventory.offhand.get(0).getItem() == item)
+			return inventory.offhand.get(0);
 
 		return ItemStack.EMPTY;
 	}

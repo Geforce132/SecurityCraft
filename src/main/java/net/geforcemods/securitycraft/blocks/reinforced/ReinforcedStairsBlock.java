@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -64,11 +65,11 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	private final Block modelBlock;
 	private final BlockState modelState;
 
-	public ReinforcedStairsBlock(Block.Properties properties, Block vB) {
+	public ReinforcedStairsBlock(AbstractBlock.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
 
-	public ReinforcedStairsBlock(Block.Properties properties, Supplier<Block> vB) {
+	public ReinforcedStairsBlock(AbstractBlock.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
 
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HALF, Half.BOTTOM).setValue(SHAPE, StairsShape.STRAIGHT).setValue(WATERLOGGED, false));
@@ -169,7 +170,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 		Direction dir = ctx.getClickedFace();
 		BlockPos pos = ctx.getClickedPos();
 		FluidState fluidState = ctx.getLevel().getFluidState(pos);
-		BlockState state = this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection()).setValue(HALF, dir != Direction.DOWN && (dir == Direction.UP || !(ctx.getClickLocation().y - pos.getY() > 0.5D)) ? Half.BOTTOM : Half.TOP).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+		BlockState state = this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection()).setValue(HALF, dir != Direction.DOWN && (dir == Direction.UP || ctx.getClickLocation().y - pos.getY() <= 0.5D) ? Half.BOTTOM : Half.TOP).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 
 		return state.setValue(SHAPE, getShapeProperty(state, ctx.getLevel(), pos));
 	}

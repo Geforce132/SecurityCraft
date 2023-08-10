@@ -20,7 +20,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -44,10 +43,8 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 
 	@Override
 	public void tick() {
-		if (level.isClientSide) {
-			if (soundPlaying && (isDisabled() || !isPowered))
-				stopPlayingSound();
-		}
+		if (level.isClientSide && soundPlaying && (isDisabled() || !isPowered))
+			stopPlayingSound();
 
 		if (!isDisabled() && --cooldown <= 0) {
 			if (!level.isClientSide && isPowered) {
@@ -170,8 +167,8 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 			stopPlayingSound();
 	}
 
-	public void playSound(World level, double x, double y, double z, SoundEvent sound, float volume, float pitch) {
-		AlarmSoundHandler.playSound(this, level, x, y, z, sound, SoundCategory.BLOCKS, volume, pitch);
+	public void playSound(double x, double y, double z, SoundEvent sound, float volume, float pitch) {
+		AlarmSoundHandler.playSound(this, x, y, z, sound, SoundCategory.BLOCKS, volume, pitch);
 		soundPlaying = true;
 	}
 

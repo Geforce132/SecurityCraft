@@ -28,7 +28,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class TaserItem extends Item {
-	public boolean powered;
+	private final boolean powered;
 
 	public TaserItem(Item.Properties properties, boolean isPowered) {
 		super(properties);
@@ -38,7 +38,7 @@ public class TaserItem extends Item {
 
 	@Override
 	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
-		if ((group == SecurityCraft.groupSCTechnical || group == ItemGroup.TAB_SEARCH) && !powered)
+		if ((group == SecurityCraft.TECHNICAL_TAB || group == ItemGroup.TAB_SEARCH) && !powered)
 			items.add(new ItemStack(this));
 	}
 
@@ -95,7 +95,7 @@ public class TaserItem extends Item {
 			Vector3d lookVec = player.getViewVector(1.0F).scale(range);
 			Vector3d endVec = startVec.add(lookVec);
 			AxisAlignedBB boundingBox = player.getBoundingBox().expandTowards(lookVec).inflate(1, 1, 1);
-			EntityRayTraceResult entityRayTraceResult = rayTraceEntities(player, startVec, endVec, boundingBox, s -> s instanceof LivingEntity, range * range);
+			EntityRayTraceResult entityRayTraceResult = rayTraceEntities(player, startVec, endVec, boundingBox, LivingEntity.class::isInstance, range * range);
 
 			world.playSound(player, player.blockPosition(), SCSounds.TASERFIRED.event, SoundCategory.PLAYERS, 1.0F, 1.0F);
 

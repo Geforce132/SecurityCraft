@@ -10,6 +10,8 @@ public class Utils {
 	public static final Style GRAY_STYLE = Style.EMPTY.withColor(TextFormatting.GRAY);
 	public static final ITextComponent INVENTORY_TEXT = Utils.localize("container.inventory");
 
+	private Utils() {}
+
 	/**
 	 * Removes the last character in the given String. <p>
 	 */

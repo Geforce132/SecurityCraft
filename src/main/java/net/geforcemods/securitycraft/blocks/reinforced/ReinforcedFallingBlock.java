@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -17,7 +18,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 public class ReinforcedFallingBlock extends BaseReinforcedBlock {
-	public ReinforcedFallingBlock(Block.Properties properties, Block vB) {
+	public ReinforcedFallingBlock(AbstractBlock.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 

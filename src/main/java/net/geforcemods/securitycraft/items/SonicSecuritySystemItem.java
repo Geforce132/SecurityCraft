@@ -28,7 +28,6 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -46,40 +45,38 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
-		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), stack, ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
-	}
+		World world = ctx.getLevel();
+		PlayerEntity player = ctx.getPlayer();
 
-	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
-		if (!world.isClientSide) {
-			// If the player is not sneaking, add/remove positions from the item when right-clicking a lockable block
-			if (!player.isShiftKeyDown()) {
-				TileEntity te = world.getBlockEntity(pos);
+		// If the player is not sneaking, add/remove positions from the item when right-clicking a lockable block
+		if (!world.isClientSide && !player.isShiftKeyDown()) {
+			BlockPos pos = ctx.getClickedPos();
+			TileEntity te = world.getBlockEntity(pos);
 
-				if (te instanceof ILockable) {
-					if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player)) {
-						Block block = te.getBlockState().getBlock();
+			if (te instanceof ILockable) {
+				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player)) {
+					Block block = te.getBlockState().getBlock();
 
-						if (!(block instanceof DisguisableBlock) || !DisguisableBlock.getDisguisedBlockState(world, pos).isPresent()) {
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) te).getOwner().getName(), pos), TextFormatting.GREEN);
-							return ActionResultType.SUCCESS;
-						}
+					if (!(block instanceof DisguisableBlock) || !DisguisableBlock.getDisguisedBlockState(world, pos).isPresent()) {
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) te).getOwner().getName(), pos), TextFormatting.GREEN);
+						return ActionResultType.SUCCESS;
 					}
-					else {
-						if (stack.getTag() == null)
-							stack.setTag(new CompoundNBT());
+				}
+				else {
+					if (stack.getTag() == null)
+						stack.setTag(new CompoundNBT());
 
-						// Remove a block from the tag if it was already linked to.
-						// If not, link to it
-						if (isAdded(stack.getTag(), pos)) {
-							removeLinkedBlock(stack.getTag(), pos);
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(world.getBlockState(pos).getBlock().getDescriptionId()), pos), TextFormatting.GREEN);
-							return ActionResultType.SUCCESS;
-						}
-						else if (addLinkedBlock(stack.getTag(), pos, player)) {
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(world.getBlockState(pos).getBlock().getDescriptionId()), pos), TextFormatting.GREEN);
-							SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new UpdateNBTTagOnClient(stack));
-							return ActionResultType.SUCCESS;
-						}
+					// Remove a block from the tag if it was already linked to.
+					// If not, link to it
+					if (isAdded(stack.getTag(), pos)) {
+						removeLinkedBlock(stack.getTag(), pos);
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(world.getBlockState(pos).getBlock().getDescriptionId()), pos), TextFormatting.GREEN);
+						return ActionResultType.SUCCESS;
+					}
+					else if (addLinkedBlock(stack.getTag(), pos, player)) {
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(world.getBlockState(pos).getBlock().getDescriptionId()), pos), TextFormatting.GREEN);
+						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new UpdateNBTTagOnClient(stack));
+						return ActionResultType.SUCCESS;
 					}
 				}
 			}
@@ -109,10 +106,8 @@ public class SonicSecuritySystemItem extends BlockItem {
 	protected boolean updateCustomBlockEntityTag(BlockPos pos, World level, PlayerEntity player, ItemStack stack, BlockState state) {
 		TileEntity be = level.getBlockEntity(pos);
 
-		if (be instanceof SonicSecuritySystemBlockEntity) {
-			if (((SonicSecuritySystemBlockEntity) be).transferPositionsFromItem(stack.getOrCreateTag()))
-				return true;
-		}
+		if (be instanceof SonicSecuritySystemBlockEntity && ((SonicSecuritySystemBlockEntity) be).transferPositionsFromItem(stack.getOrCreateTag()))
+			return true;
 
 		return super.updateCustomBlockEntityTag(pos, level, player, stack, state);
 	}
@@ -208,7 +203,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 		if (!tag.contains("LinkedBlocks"))
 			return false;
 
-		return tag.getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND).size() > 0;
+		return !tag.getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND).isEmpty();
 	}
 
 	/**

@@ -38,7 +38,7 @@ public class RecipeGenerator extends RecipeProvider {
 	@Override
 	protected final void buildShapelessRecipes(Consumer<IFinishedRecipe> consumer) {
 		//combine keycard with limited use keycard to get keycards with a configurable limited amount of uses
-		CustomRecipeBuilder.special(LimitedUseKeycardRecipe.serializer).save(consumer, "limited_use_keycards");
+		CustomRecipeBuilder.special(LimitedUseKeycardRecipe.SERIALIZER).save(consumer, "limited_use_keycards");
 
 		//@formatter:off
 		//shaped recipes
@@ -1230,7 +1230,7 @@ public class RecipeGenerator extends RecipeProvider {
 		ResourceLocation id = resultItem.getRegistryName();
 
 		recipe = new ShapelessRecipeBuilder.Result(id,
-				resultItem, amount, group, ingredients.stream().map(item -> Ingredient.of(item)).collect(Collectors.toList()),
+				resultItem, amount, group, ingredients.stream().map(Ingredient::of).collect(Collectors.toList()),
 				Advancement.Builder.advancement().addCriterion("has_item", criterion),
 				new ResourceLocation(id.getNamespace(), "recipes/" + resultItem.getItemCategory().getRecipeFolderName() + "/" + id.getPath()));
 		//@formatter:on

@@ -6,6 +6,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -31,7 +32,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinforcedBlock, IGrowable {
 	private Block vanillaBlock;
 
-	public ReinforcedSnowyDirtBlock(Block.Properties properties, Block vB) {
+	public ReinforcedSnowyDirtBlock(AbstractBlock.Properties properties, Block vB) {
 		super(properties);
 		this.vanillaBlock = vB;
 	}

@@ -16,6 +16,8 @@ public class CustomDamageSources {
 	public static final DamageSource ELECTRICITY = new DamageSource("securitycraft.electricity").bypassArmor();
 	public static final DamageSource INCORRECT_PASSCODE = new DamageSource("securitycraft.incorrectPasscode");
 
+	private CustomDamageSources() {}
+
 	public static DamageSource taser(Entity shooter) {
 		return new TaserDamageSource("securitycraft.taser", shooter);
 	}

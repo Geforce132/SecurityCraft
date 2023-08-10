@@ -58,8 +58,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 		}
 	};
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
-	private EnumMap<Direction, Boolean> sideConfig = Util.make(() -> {
-		EnumMap<Direction, Boolean> map = new EnumMap<>(Direction.class);
+	private Map<Direction, Boolean> sideConfig = Util.make(() -> {
+		Map<Direction, Boolean> map = new EnumMap<>(Direction.class);
 
 		for (Direction dir : Direction.values()) {
 			map.put(dir, true);
@@ -87,7 +87,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 		return tag;
 	}
 
-	public static CompoundNBT saveSideConfig(EnumMap<Direction, Boolean> sideConfig) {
+	public static CompoundNBT saveSideConfig(Map<Direction, Boolean> sideConfig) {
 		CompoundNBT sideConfigTag = new CompoundNBT();
 
 		sideConfig.forEach((dir, enabled) -> sideConfigTag.putBoolean(dir.getName(), enabled));
@@ -106,8 +106,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 		lenses.setChanged();
 	}
 
-	public static EnumMap<Direction, Boolean> loadSideConfig(CompoundNBT sideConfigTag) {
-		EnumMap<Direction, Boolean> sideConfig = new EnumMap<>(Direction.class);
+	public static Map<Direction, Boolean> loadSideConfig(CompoundNBT sideConfigTag) {
+		Map<Direction, Boolean> sideConfig = new EnumMap<>(Direction.class);
 
 		for (Direction dir : Direction.values()) {
 			if (sideConfigTag.contains(dir.getName(), Constants.NBT.TAG_BYTE))
@@ -120,7 +120,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 	}
 
 	@Override
-	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedTEs) {
+	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedTEs) {
 		if (action instanceof ILinkedAction.OptionChanged) {
 			Option<?> option = ((ILinkedAction.OptionChanged<?>) action).option;
 
@@ -240,7 +240,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.getProtectedCapability(side, this, () -> getNormalHandler(), () -> getInsertOnlyHandler()).cast();
+			return BlockUtils.getProtectedCapability(side, this, this::getNormalHandler, this::getInsertOnlyHandler).cast();
 		else
 			return super.getCapability(cap, side);
 	}
@@ -324,7 +324,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 		return ignoreOwner.get();
 	}
 
-	public void applyNewSideConfig(EnumMap<Direction, Boolean> sideConfig, PlayerEntity player) {
+	public void applyNewSideConfig(Map<Direction, Boolean> sideConfig, PlayerEntity player) {
 		sideConfig.forEach((direction, enabled) -> setSideEnabled(direction, enabled, player));
 	}
 
@@ -365,16 +365,14 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 			if (block instanceof LaserBlock)
 				((LaserBlock) block).setLaser(level, pos, direction, player);
 		}
-		else if (!enabled) {
+		else {
 			int boundType = direction == Direction.UP || direction == Direction.DOWN ? 1 : (direction == Direction.NORTH || direction == Direction.SOUTH ? 2 : 3);
 
-			BlockUtils.removeInSequence((directionToCheck, stateToCheck) -> {
-				return stateToCheck.getBlock() == SCContent.LASER_FIELD.get() && stateToCheck.getValue(LaserFieldBlock.BOUNDTYPE) == boundType;
-			}, level, worldPosition, direction);
+			BlockUtils.removeInSequence((directionToCheck, stateToCheck) -> stateToCheck.is(SCContent.LASER_FIELD.get()) && stateToCheck.getValue(LaserFieldBlock.BOUNDTYPE) == boundType, level, worldPosition, direction);
 		}
 	}
 
-	public EnumMap<Direction, Boolean> getSideConfig() {
+	public Map<Direction, Boolean> getSideConfig() {
 		return sideConfig;
 	}
 

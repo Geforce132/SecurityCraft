@@ -16,7 +16,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class LimitedUseKeycardRecipe extends SpecialRecipe {
 	@ObjectHolder(SecurityCraft.MODID + ":limited_use_keycard_recipe")
-	public static SpecialRecipeSerializer<LimitedUseKeycardRecipe> serializer = null;
+	public static final SpecialRecipeSerializer<LimitedUseKeycardRecipe> SERIALIZER = null;
 
 	public LimitedUseKeycardRecipe(ResourceLocation id) {
 		super(id);
@@ -37,15 +37,12 @@ public class LimitedUseKeycardRecipe extends SpecialRecipe {
 						return false;
 
 					hasNormalKeycard = true;
-					continue;
 				}
-				else //item is SCContent.LIMITED_USE_KEYCARD.get()
-				{
+				else { //item is SCContent.LIMITED_USE_KEYCARD.get()
 					if (hasLimitedUseKeycard)
 						return false;
 
 					hasLimitedUseKeycard = true;
-					continue;
 				}
 			}
 			else if (!stack.isEmpty())
@@ -87,6 +84,6 @@ public class LimitedUseKeycardRecipe extends SpecialRecipe {
 
 	@Override
 	public IRecipeSerializer<?> getSerializer() {
-		return serializer;
+		return SERIALIZER;
 	}
 }

@@ -40,16 +40,14 @@ public class DisguiseModuleMenu extends StateSelectorAccessMenu {
 			ItemStack slotStack = slot.getItem();
 			slotStackCopy = slotStack.copy();
 
-			if (index < inventory.size) {
-				if (!moveItemStackTo(slotStack, inventory.size, 37, true))
+			if (index < 1) {
+				if (!moveItemStackTo(slotStack, 1, 37, true))
 					return ItemStack.EMPTY;
 
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if (index >= inventory.size) {
-				if (!moveItemStackTo(slotStack, 0, inventory.size, false))
-					return ItemStack.EMPTY;
-			}
+			else if (!moveItemStackTo(slotStack, 0, 1, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.set(ItemStack.EMPTY);

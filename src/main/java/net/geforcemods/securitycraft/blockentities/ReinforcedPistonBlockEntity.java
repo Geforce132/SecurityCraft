@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.PistonBlock;
 import net.minecraft.block.PistonHeadBlock;
 import net.minecraft.block.material.PushReaction;
@@ -103,7 +104,7 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements ITickable
 	}
 
 	private BlockState getCollisionRelatedBlockState() {
-		return !isExtending() && shouldPistonHeadBeRendered() && pistonState.getBlock() instanceof ReinforcedPistonBlock ? SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.TYPE, pistonState.getBlock() == SCContent.REINFORCED_STICKY_PISTON.get() ? PistonType.STICKY : PistonType.DEFAULT).setValue(PistonHeadBlock.FACING, pistonState.getValue(PistonBlock.FACING)) : pistonState;
+		return !isExtending() && shouldPistonHeadBeRendered() && pistonState.getBlock() instanceof ReinforcedPistonBlock ? SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.TYPE, pistonState.getBlock() == SCContent.REINFORCED_STICKY_PISTON.get() ? PistonType.STICKY : PistonType.DEFAULT).setValue(DirectionalBlock.FACING, pistonState.getValue(DirectionalBlock.FACING)) : pistonState;
 	}
 
 	private void moveCollidedEntities(float progress) {
@@ -169,7 +170,7 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements ITickable
 						}
 					}
 
-					if (!(movement <= 0.0D)) {
+					if (movement > 0.0D) {
 						movement = Math.min(movement, d0) + 0.01D;
 						pushEntity(direction, entity, movement, direction);
 
@@ -221,15 +222,15 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements ITickable
 				return headShape.maxX - facing.minX;
 			case WEST:
 				return facing.maxX - headShape.minX;
-			case UP:
-			default:
-				return headShape.maxY - facing.minY;
 			case DOWN:
 				return facing.maxY - headShape.minY;
 			case SOUTH:
 				return headShape.maxZ - facing.minZ;
 			case NORTH:
 				return facing.maxZ - headShape.minZ;
+			case UP:
+			default:
+				return headShape.maxY - facing.minY;
 		}
 	}
 
@@ -388,7 +389,7 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements ITickable
 			BlockState state;
 
 			if (shouldPistonHeadBeRendered())
-				state = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.FACING, pistonFacing).setValue(PistonHeadBlock.SHORT, extending != 1.0F - progress < 4.0F);
+				state = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(DirectionalBlock.FACING, pistonFacing).setValue(PistonHeadBlock.SHORT, extending != 1.0F - progress < 4.0F);
 			else
 				state = pistonState;
 

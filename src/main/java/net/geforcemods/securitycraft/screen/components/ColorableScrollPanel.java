@@ -27,7 +27,7 @@ public abstract class ColorableScrollPanel extends ScrollPanel {
 		}
 	}
 
-	protected final int barWidth = 6;
+	public static final int BAR_WIDTH = 6;
 	public final int barLeft;
 	private Color backgroundTo;
 	private Color backgroundFrom;
@@ -35,18 +35,18 @@ public abstract class ColorableScrollPanel extends ScrollPanel {
 	private Color scrollbarBorder;
 	private Color scrollbar;
 
-	public ColorableScrollPanel(Minecraft client, int width, int height, int top, int left) {
+	protected ColorableScrollPanel(Minecraft client, int width, int height, int top, int left) {
 		this(client, width, height, top, left, new Color(0xC0, 0x10, 0x10, 0x10), new Color(0xD0, 0x10, 0x10, 0x10), new Color(0x00, 0x00, 0x00, 0xFF), new Color(0x80, 0x80, 0x80, 0xFF), new Color(0xC0, 0xC0, 0xC0, 0xFF));
 	}
 
-	public ColorableScrollPanel(Minecraft client, int width, int height, int top, int left, Color backgroundFrom, Color backgroundTo) {
+	protected ColorableScrollPanel(Minecraft client, int width, int height, int top, int left, Color backgroundFrom, Color backgroundTo) {
 		this(client, width, height, top, left, backgroundFrom, backgroundTo, new Color(0x00, 0x00, 0x00, 0xFF), new Color(0x80, 0x80, 0x80, 0xFF), new Color(0xC0, 0xC0, 0xC0, 0xFF));
 	}
 
-	public ColorableScrollPanel(Minecraft client, int width, int height, int top, int left, Color backgroundFrom, Color backgroundTo, Color scrollbarBackground, Color scrollbarBorder, Color scrollbar) {
+	protected ColorableScrollPanel(Minecraft client, int width, int height, int top, int left, Color backgroundFrom, Color backgroundTo, Color scrollbarBackground, Color scrollbarBorder, Color scrollbar) {
 		super(client, width, height, top, left);
 
-		barLeft = left + width - barWidth;
+		barLeft = left + width - BAR_WIDTH;
 		this.backgroundFrom = backgroundFrom;
 		this.backgroundTo = backgroundTo;
 		this.scrollbarBackground = scrollbarBackground;
@@ -79,22 +79,22 @@ public abstract class ColorableScrollPanel extends ScrollPanel {
 			//scrollbar background
 			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 			buffer.vertex(barLeft, bottom, 0.0D).color(scrollbarBackground.r, scrollbarBackground.g, scrollbarBackground.b, scrollbarBackground.a).endVertex();
-			buffer.vertex(barLeft + barWidth, bottom, 0.0D).color(scrollbarBackground.r, scrollbarBackground.g, scrollbarBackground.b, scrollbarBackground.a).endVertex();
-			buffer.vertex(barLeft + barWidth, top, 0.0D).color(scrollbarBackground.r, scrollbarBackground.g, scrollbarBackground.b, scrollbarBackground.a).endVertex();
+			buffer.vertex(barLeft + BAR_WIDTH, bottom, 0.0D).color(scrollbarBackground.r, scrollbarBackground.g, scrollbarBackground.b, scrollbarBackground.a).endVertex();
+			buffer.vertex(barLeft + BAR_WIDTH, top, 0.0D).color(scrollbarBackground.r, scrollbarBackground.g, scrollbarBackground.b, scrollbarBackground.a).endVertex();
 			buffer.vertex(barLeft, top, 0.0D).color(scrollbarBackground.r, scrollbarBackground.g, scrollbarBackground.b, scrollbarBackground.a).endVertex();
 			tess.end();
 			//scrollbar border
 			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 			buffer.vertex(barLeft, barTop + barHeight, 0.0D).color(scrollbarBorder.r, scrollbarBorder.g, scrollbarBorder.b, scrollbarBorder.a).endVertex();
-			buffer.vertex(barLeft + barWidth, barTop + barHeight, 0.0D).color(scrollbarBorder.r, scrollbarBorder.g, scrollbarBorder.b, scrollbarBorder.a).endVertex();
-			buffer.vertex(barLeft + barWidth, barTop, 0.0D).color(scrollbarBorder.r, scrollbarBorder.g, scrollbarBorder.b, scrollbarBorder.a).endVertex();
+			buffer.vertex(barLeft + BAR_WIDTH, barTop + barHeight, 0.0D).color(scrollbarBorder.r, scrollbarBorder.g, scrollbarBorder.b, scrollbarBorder.a).endVertex();
+			buffer.vertex(barLeft + BAR_WIDTH, barTop, 0.0D).color(scrollbarBorder.r, scrollbarBorder.g, scrollbarBorder.b, scrollbarBorder.a).endVertex();
 			buffer.vertex(barLeft, barTop, 0.0D).color(scrollbarBorder.r, scrollbarBorder.g, scrollbarBorder.b, scrollbarBorder.a).endVertex();
 			tess.end();
 			//scrollbar
 			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 			buffer.vertex(barLeft, barTop + barHeight - 1, 0.0D).color(scrollbar.r, scrollbar.g, scrollbar.b, scrollbar.a).endVertex();
-			buffer.vertex(barLeft + barWidth - 1, barTop + barHeight - 1, 0.0D).color(scrollbar.r, scrollbar.g, scrollbar.b, scrollbar.a).endVertex();
-			buffer.vertex(barLeft + barWidth - 1, barTop, 0.0D).color(scrollbar.r, scrollbar.g, scrollbar.b, scrollbar.a).endVertex();
+			buffer.vertex(barLeft + BAR_WIDTH - 1, barTop + barHeight - 1, 0.0D).color(scrollbar.r, scrollbar.g, scrollbar.b, scrollbar.a).endVertex();
+			buffer.vertex(barLeft + BAR_WIDTH - 1, barTop, 0.0D).color(scrollbar.r, scrollbar.g, scrollbar.b, scrollbar.a).endVertex();
 			buffer.vertex(barLeft, barTop, 0.0D).color(scrollbar.r, scrollbar.g, scrollbar.b, scrollbar.a).endVertex();
 			tess.end();
 		}

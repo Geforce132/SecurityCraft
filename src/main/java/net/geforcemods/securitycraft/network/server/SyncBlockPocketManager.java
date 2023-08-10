@@ -53,9 +53,9 @@ public class SyncBlockPocketManager {
 			BlockPocketManagerBlockEntity bpm = (BlockPocketManagerBlockEntity) te;
 			BlockState state = world.getBlockState(pos);
 
-			bpm.size = size;
-			bpm.showOutline = showOutline;
-			bpm.autoBuildOffset = autoBuildOffset;
+			bpm.setSize(size);
+			bpm.setShowOutline(showOutline);
+			bpm.setAutoBuildOffset(autoBuildOffset);
 			bpm.setColor(color);
 			bpm.setChanged();
 			world.sendBlockUpdated(pos, state, state, 2);

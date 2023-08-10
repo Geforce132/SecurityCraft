@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.minecraft.block.Block;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.StandingSignBlock;
 import net.minecraft.block.WoodType;
@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class SecretStandingSignBlock extends StandingSignBlock {
-	public SecretStandingSignBlock(Block.Properties properties, WoodType woodType) {
+	public SecretStandingSignBlock(AbstractBlock.Properties properties, WoodType woodType) {
 		super(properties, woodType);
 	}
 

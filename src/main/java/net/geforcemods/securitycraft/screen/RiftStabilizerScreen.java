@@ -18,8 +18,8 @@ import net.minecraft.util.text.ITextComponent;
 public class RiftStabilizerScreen extends Screen {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
 	public final ITextComponent scrollListTitle, smartModuleTooltip;
-	private final int imageWidth = 176;
-	private final int imageHeight = 166;
+	private int imageWidth = 176;
+	private int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
 	private boolean hasSmartModule;

@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import java.util.Arrays;
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -76,6 +77,8 @@ public class SCClientEventHandler {
 	private static final TranslationTextComponent REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 	private static final int USE_CHECKMARK = 88, USE_CROSS = 110;
 
+	private SCClientEventHandler() {}
+
 	@SubscribeEvent
 	public static void onRenderLevelStage(RenderWorldLastEvent event) {
 		Minecraft mc = Minecraft.getInstance();
@@ -113,8 +116,8 @@ public class SCClientEventHandler {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SecurityCamera camera = (SecurityCamera) Minecraft.getInstance().cameraEntity;
 
-			if (camera.screenshotSoundCooldown == 0) {
-				camera.screenshotSoundCooldown = 7;
+			if (camera.getScreenshotSoundCooldown() == 0) {
+				camera.setScreenshotSoundCooldown(7);
 				Minecraft.getInstance().level.playLocalSound(player.blockPosition(), SCSounds.CAMERASNAP.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 			}
 		}
@@ -210,19 +213,24 @@ public class SCClientEventHandler {
 								return false;
 
 							//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
-							if (!(tile instanceof IOwnable) || !((IOwnable) tile).isOwnedBy(player)) {
-								if (DisguisableBlock.getDisguisedBlockState(world, bhr.getBlockPos()).isPresent())
-									return false;
-							}
+							if ((!(tile instanceof IOwnable) || !((IOwnable) tile).isOwnedBy(player)) && DisguisableBlock.getDisguisedBlockState(world, bhr.getBlockPos()).isPresent())
+								return false;
 
 							return true;
 						}, 0, null, false, SonicSecuritySystemItem::isAdded);
 					}
 
 					if (uCoord != 0) {
+						int hotbarPositionOffset = 0;
+
+						if (hand == Hand.MAIN_HAND)
+							hotbarPositionOffset = player.inventory.selected * 20;
+						else
+							hotbarPositionOffset = mc.options.mainHand == HandSide.LEFT ? 189 : -29;
+
 						RenderSystem.enableAlphaTest();
 						Minecraft.getInstance().textureManager.bind(BEACON_GUI);
-						AbstractGui.blit(event.getMatrixStack(), Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 90 + (hand == Hand.MAIN_HAND ? player.inventory.selected * 20 : (mc.options.mainHand == HandSide.LEFT ? 189 : -29)), Minecraft.getInstance().getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
+						AbstractGui.blit(event.getMatrixStack(), mc.getWindow().getGuiScaledWidth() / 2 - 90 + hotbarPositionOffset, mc.getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
 						RenderSystem.disableAlphaTest();
 					}
 				}
@@ -234,7 +242,7 @@ public class SCClientEventHandler {
 		return getUCoord(level, player, stackInHand, isValidHitResult, tagSize, getCoords, true, null);
 	}
 
-	private static int getUCoord(World level, PlayerEntity player, ItemStack stackInHand, Predicate<BlockRayTraceResult> isValidHitResult, int tagSize, BiFunction<CompoundNBT, Integer, Integer[]> getCoords, boolean loop, BiFunction<CompoundNBT, BlockPos, Boolean> useCheckmark) {
+	private static int getUCoord(World level, PlayerEntity player, ItemStack stackInHand, Predicate<BlockRayTraceResult> isValidHitResult, int tagSize, BiFunction<CompoundNBT, Integer, Integer[]> getCoords, boolean loop, BiPredicate<CompoundNBT, BlockPos> useCheckmark) {
 		double reachDistance = Minecraft.getInstance().gameMode.getPickRange();
 		double eyeHeight = player.getEyeHeight();
 		Vector3d lookVec = new Vector3d(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
@@ -244,7 +252,7 @@ public class SCClientEventHandler {
 			if (loop)
 				return loop(tagSize, getCoords, stackInHand.getOrCreateTag(), hitResult.getBlockPos());
 			else
-				return useCheckmark.apply(stackInHand.getOrCreateTag(), hitResult.getBlockPos()) ? USE_CHECKMARK : USE_CROSS;
+				return useCheckmark.test(stackInHand.getOrCreateTag(), hitResult.getBlockPos()) ? USE_CHECKMARK : USE_CROSS;
 		}
 
 		return 0;
@@ -321,7 +329,7 @@ public class SCClientEventHandler {
 			Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(REDSTONE, 10, 0);
 	}
 
-	private static enum BCDBuffer implements IRenderTypeBuffer {
+	private enum BCDBuffer implements IRenderTypeBuffer {
 		INSTANCE;
 
 		private final RenderType overlayLines = new OverlayLines(RenderType.lines());

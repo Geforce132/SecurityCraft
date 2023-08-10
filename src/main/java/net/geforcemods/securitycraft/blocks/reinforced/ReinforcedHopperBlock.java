@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -25,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlock {
-	public ReinforcedHopperBlock(Block.Properties properties) {
+	public ReinforcedHopperBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 

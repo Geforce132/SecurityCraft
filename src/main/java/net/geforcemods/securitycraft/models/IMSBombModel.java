@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 @OnlyIn(Dist.CLIENT)
 public class IMSBombModel extends EntityModel<IMSBomb> {
-	public ModelRenderer shape1;
+	public final ModelRenderer shape1;
 
 	public IMSBombModel() {
 		texWidth = 24;

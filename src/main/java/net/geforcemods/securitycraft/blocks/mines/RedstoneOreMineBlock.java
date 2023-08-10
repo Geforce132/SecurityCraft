@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RedstoneTorchBlock;
@@ -26,7 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class RedstoneOreMineBlock extends BaseFullMineBlock {
 	public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
 
-	public RedstoneOreMineBlock(Block.Properties properties, Block disguisedBlock) {
+	public RedstoneOreMineBlock(AbstractBlock.Properties properties, Block disguisedBlock) {
 		super(properties, disguisedBlock);
 
 		registerDefaultState(defaultBlockState().setValue(LIT, false));

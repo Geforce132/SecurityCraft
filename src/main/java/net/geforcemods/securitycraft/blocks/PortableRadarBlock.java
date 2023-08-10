@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
@@ -41,7 +42,7 @@ public class PortableRadarBlock extends OwnableBlock implements IWaterLoggable {
 	private static final VoxelShape SHAPE_NORTH = Block.box(5, 5, 9, 11, 11, 16);
 	private static final VoxelShape SHAPE_SOUTH = Block.box(5, 5, 0, 11, 11, 7);
 
-	public PortableRadarBlock(Block.Properties properties) {
+	public PortableRadarBlock(AbstractBlock.Properties properties) {
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(FACING, Direction.UP).setValue(WATERLOGGED, false));

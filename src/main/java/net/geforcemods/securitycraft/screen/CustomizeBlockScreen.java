@@ -93,7 +93,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 		for (int i = 0; i < maxNumberOfModules; i++) {
 			int column = i % numberOfColumns;
 
-			addButton(descriptionButtons[i] = new ModuleButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked));
+			descriptionButtons[i] = addButton(new ModuleButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked));
 			hoverCheckers.add(new TextHoverChecker(descriptionButtons[i], getModuleTooltipText(i)));
 			descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
@@ -104,7 +104,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			ICustomizable customizableTe = (ICustomizable) te;
 			Option<?>[] options = customizableTe.customOptions();
 
-			if (options != null) {
+			if (options.length > 0) {
 				optionButtons = new Button[options.length];
 
 				for (int i = 0; i < options.length; i++) {

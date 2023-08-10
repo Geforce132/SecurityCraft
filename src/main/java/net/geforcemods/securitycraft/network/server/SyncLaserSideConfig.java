@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.EnumMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
@@ -20,7 +20,7 @@ public class SyncLaserSideConfig {
 
 	public SyncLaserSideConfig() {}
 
-	public SyncLaserSideConfig(BlockPos pos, EnumMap<Direction, Boolean> sideConfig) {
+	public SyncLaserSideConfig(BlockPos pos, Map<Direction, Boolean> sideConfig) {
 		this.pos = pos;
 		this.sideConfig = LaserBlockBlockEntity.saveSideConfig(sideConfig);
 	}

@@ -8,29 +8,24 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class BlockPocketManagerMenu extends Container {
-	public BlockPocketManagerBlockEntity te;
-	private IWorldPosCallable worldPosCallable;
+	public final BlockPocketManagerBlockEntity te;
+	private final IWorldPosCallable worldPosCallable;
 	public final boolean storage;
 	public final boolean isOwner;
 
 	public BlockPocketManagerMenu(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
 		super(SCContent.BLOCK_POCKET_MANAGER_MENU.get(), windowId);
 
-		TileEntity tile = world.getBlockEntity(pos);
-
-		if (tile instanceof BlockPocketManagerBlockEntity)
-			te = (BlockPocketManagerBlockEntity) tile;
-
+		te = (BlockPocketManagerBlockEntity) world.getBlockEntity(pos);
 		worldPosCallable = IWorldPosCallable.create(world, pos);
-		isOwner = te != null && te.isOwnedBy(inventory.player);
-		storage = te != null && te.isModuleEnabled(ModuleType.STORAGE) && isOwner;
+		isOwner = te.isOwnedBy(inventory.player);
+		storage = te.isModuleEnabled(ModuleType.STORAGE) && isOwner;
 
 		if (storage) {
 			for (int y = 0; y < 3; y++) {
@@ -43,12 +38,12 @@ public class BlockPocketManagerMenu extends Container {
 				addSlot(new Slot(inventory, x, 8 + x * 18, 142 + 74));
 			}
 
-			te.getStorageHandler().ifPresent(storage -> {
+			te.getStorageHandler().ifPresent(handler -> {
 				int slotId = 0;
 
 				for (int y = 0; y < 8; y++) {
 					for (int x = 0; x < 7; x++) {
-						addSlot(new SlotItemHandler(storage, slotId++, 124 + x * 18, 8 + y * 18));
+						addSlot(new SlotItemHandler(handler, slotId++, 124 + x * 18, 8 + y * 18));
 					}
 				}
 			});
@@ -69,10 +64,8 @@ public class BlockPocketManagerMenu extends Container {
 				if (!moveItemStackTo(slotStack, 0, 36, true))
 					return ItemStack.EMPTY;
 			}
-			else if (index >= 0 && index <= 35) { //main inventory and hotbar
-				if (!moveItemStackTo(slotStack, 36, slots.size(), false))
-					return ItemStack.EMPTY;
-			}
+			else if (!moveItemStackTo(slotStack, 36, slots.size(), false)) //main inventory and hotbar
+				return ItemStack.EMPTY;
 
 			if (slotStack.isEmpty())
 				slot.set(ItemStack.EMPTY);

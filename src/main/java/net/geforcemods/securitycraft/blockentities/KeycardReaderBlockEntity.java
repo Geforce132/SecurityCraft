@@ -91,7 +91,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	@Override
 	public void useCodebreaker(BlockState state, PlayerEntity player) {
 		if (!level.isClientSide && getBlockState().getBlock() instanceof KeycardReaderBlock)
-			((KeypadBlock) getBlockState().getBlock()).activate(getBlockState(), level, worldPosition, signalLength.get());
+			((KeypadBlock) getBlockState().getBlock()).activate(level, worldPosition, signalLength.get());
 	}
 
 	public void setAcceptedLevels(boolean[] acceptedLevels) {

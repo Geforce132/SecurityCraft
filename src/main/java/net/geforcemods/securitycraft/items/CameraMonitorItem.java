@@ -20,7 +20,6 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
@@ -42,12 +41,13 @@ public class CameraMonitorItem extends Item {
 
 	@Override
 	public ActionResultType useOn(ItemUseContext ctx) {
-		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
-	}
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		PlayerEntity player = ctx.getPlayer();
 
-	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
 		if (world.getBlockState(pos).getBlock() == SCContent.SECURITY_CAMERA.get() && !PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SecurityCameraBlockEntity te = (SecurityCameraBlockEntity) world.getBlockEntity(pos);
+			ItemStack stack = ctx.getItemInHand();
 
 			if (!te.isOwnedBy(player) && !te.isAllowed(player)) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
@@ -144,8 +144,8 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public ArrayList<GlobalPos> getCameraPositions(CompoundNBT tag) {
-		ArrayList<GlobalPos> list = new ArrayList<>();
+	public List<GlobalPos> getCameraPositions(CompoundNBT tag) {
+		List<GlobalPos> list = new ArrayList<>();
 
 		for (int i = 1; i <= 30; i++) {
 			if (tag != null && tag.contains("Camera" + i)) {

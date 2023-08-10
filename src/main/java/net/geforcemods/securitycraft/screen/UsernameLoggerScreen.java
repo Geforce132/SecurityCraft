@@ -49,7 +49,7 @@ public class UsernameLoggerScreen extends Screen {
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
 		addButton(new ExtendedButton(leftPos + 4, topPos + 4, 8, 8, new StringTextComponent("x"), b -> {
-			tileEntity.players = new String[100];
+			tileEntity.setPlayers(new String[100]);
 			SecurityCraft.channel.sendToServer(new ClearLoggerServer(tileEntity.getBlockPos()));
 		})).active = tileEntity.isOwnedBy(minecraft.player);
 		children.add(playerList = new PlayerList(minecraft, imageWidth - 24, imageHeight - 40, topPos + 20, leftPos + 12));
@@ -113,7 +113,7 @@ public class UsernameLoggerScreen extends Screen {
 
 	class PlayerList extends ScrollPanel {
 		private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
-		private final int slotHeight = 12, listLength = 100;
+		private static final int SLOTH_HEIGHT = 12, LIST_LENGTH = 100;
 
 		public PlayerList(Minecraft client, int width, int height, int top, int left) {
 			super(client, width, height, top, left);
@@ -121,7 +121,7 @@ public class UsernameLoggerScreen extends Screen {
 
 		@Override
 		protected int getContentHeight() {
-			int height = tileEntity.players.length * (font.lineHeight + 3);
+			int height = tileEntity.getPlayers().length * (font.lineHeight + 3);
 
 			if (height < bottom - top - 4)
 				height = bottom - top - 4;
@@ -135,14 +135,17 @@ public class UsernameLoggerScreen extends Screen {
 
 			if (tileEntity.isOwnedBy(minecraft.player)) {
 				int mouseListY = (int) (mouseY - top + scrollDistance - border);
-				int slotIndex = mouseListY / slotHeight;
+				int slotIndex = mouseListY / SLOTH_HEIGHT;
 
-				if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
-					if (tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty()) {
-						TranslationTextComponent localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
+				if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < LIST_LENGTH && mouseY >= top && mouseY <= bottom) {
+					String[] players = tileEntity.getPlayers();
 
-						if (tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
-							renderTooltip(matrix, new StringTextComponent(tileEntity.uuids[slotIndex]), mouseX, mouseY);
+					if (players[slotIndex] != null && !players[slotIndex].isEmpty()) {
+						TranslationTextComponent localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.getTimestamps()[slotIndex])));
+						String[] uuids = tileEntity.getUuids();
+
+						if (uuids[slotIndex] != null && !uuids[slotIndex].isEmpty())
+							renderTooltip(matrix, new StringTextComponent(uuids[slotIndex]), mouseX, mouseY);
 
 						font.draw(matrix, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, 4210752);
 					}
@@ -153,41 +156,40 @@ public class UsernameLoggerScreen extends Screen {
 		@Override
 		protected void drawPanel(MatrixStack matrix, int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY) {
 			int baseY = top + border - (int) scrollDistance;
-			int slotBuffer = slotHeight - 4;
+			int slotBuffer = SLOTH_HEIGHT - 4;
 			int mouseListY = (int) (mouseY - top + scrollDistance - border);
-			int slotIndex = mouseListY / slotHeight;
+			int slotIndex = mouseListY / SLOTH_HEIGHT;
+			String[] players = tileEntity.getPlayers();
 
 			//highlight hovered slot
-			if (mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
-				if (tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty()) {
-					int min = left;
-					int max = entryRight - 6; //6 is the width of the scrollbar
-					int slotTop = baseY + slotIndex * slotHeight;
-					BufferBuilder bufferBuilder = tess.getBuilder();
+			if (mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < LIST_LENGTH && mouseY >= top && mouseY <= bottom && players[slotIndex] != null && !players[slotIndex].isEmpty()) {
+				int min = left;
+				int max = entryRight - 6; //6 is the width of the scrollbar
+				int slotTop = baseY + slotIndex * SLOTH_HEIGHT;
+				BufferBuilder bufferBuilder = tess.getBuilder();
 
-					RenderSystem.enableBlend();
-					RenderSystem.disableTexture();
-					RenderSystem.defaultBlendFunc();
-					bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-					bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.vertex(max, slotTop + slotBuffer + 2, 0).uv(1, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.vertex(max, slotTop - 2, 0).uv(1, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.vertex(min, slotTop - 2, 0).uv(0, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.vertex(min + 1, slotTop + slotBuffer + 1, 0).uv(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					bufferBuilder.vertex(max - 1, slotTop + slotBuffer + 1, 0).uv(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					bufferBuilder.end();
-					WorldVertexBufferUploader.end(bufferBuilder);
-					RenderSystem.enableTexture();
-					RenderSystem.disableBlend();
-				}
+				RenderSystem.enableBlend();
+				RenderSystem.disableTexture();
+				RenderSystem.defaultBlendFunc();
+				bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+				bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+				bufferBuilder.vertex(max, slotTop + slotBuffer + 2, 0).uv(1, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+				bufferBuilder.vertex(max, slotTop - 2, 0).uv(1, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+				bufferBuilder.vertex(min, slotTop - 2, 0).uv(0, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+				bufferBuilder.vertex(min + 1, slotTop + slotBuffer + 1, 0).uv(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+				bufferBuilder.vertex(max - 1, slotTop + slotBuffer + 1, 0).uv(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+				bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+				bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+				bufferBuilder.end();
+				WorldVertexBufferUploader.end(bufferBuilder);
+				RenderSystem.enableTexture();
+				RenderSystem.disableBlend();
 			}
 
 			//draw entry strings
-			for (int i = 0; i < tileEntity.players.length; i++) {
-				if (tileEntity.players[i] != null && !tileEntity.players[i].equals(""))
-					font.draw(matrix, tileEntity.players[i], left + width / 2 - font.width(tileEntity.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
+			for (int i = 0; i < players.length; i++) {
+				if (players[i] != null && !players[i].equals(""))
+					font.draw(matrix, players[i], left + width / 2 - font.width(players[i]) / 2, relativeY + (SLOTH_HEIGHT * i), 0xC6C6C6);
 			}
 		}
 	}

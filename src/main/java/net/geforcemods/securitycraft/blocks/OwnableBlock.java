@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -15,7 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class OwnableBlock extends Block {
-	public OwnableBlock(Block.Properties properties) {
+	public OwnableBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 

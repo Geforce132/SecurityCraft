@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -21,13 +22,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock {
-	public ReinforcedLeverBlock(Properties properties) {
+	public ReinforcedLeverBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
-		if (isAllowedToPress(world, pos, (AllowlistOnlyBlockEntity) world.getBlockEntity(pos), player))
+		if (isAllowedToPress((AllowlistOnlyBlockEntity) world.getBlockEntity(pos), player))
 			return super.use(state, world, pos, player, hand, result);
 
 		return ActionResultType.FAIL;
@@ -64,7 +65,7 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 		}
 	}
 
-	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyBlockEntity te, PlayerEntity entity) {
+	public boolean isAllowedToPress(AllowlistOnlyBlockEntity te, PlayerEntity entity) {
 		return te.isOwnedBy(entity) || te.isAllowed(entity);
 	}
 

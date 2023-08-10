@@ -24,6 +24,8 @@ import net.minecraftforge.items.wrapper.EmptyHandler;
 public class BlockUtils {
 	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> EmptyHandler.INSTANCE);
 
+	private BlockUtils() {}
+
 	public static boolean isSideSolid(IWorldReader world, BlockPos pos, Direction side) {
 		return world.getBlockState(pos).isFaceSturdy(world, pos, side);
 	}

@@ -136,7 +136,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 
 	@Override
 	public Option<?>[] customOptions() {
-		return null;
+		return new Option[0];
 	}
 
 	@Override

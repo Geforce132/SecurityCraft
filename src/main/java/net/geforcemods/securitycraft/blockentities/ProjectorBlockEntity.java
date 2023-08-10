@@ -34,8 +34,8 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IInv
 	private int projectionHeight = 1;
 	private int projectionRange = 5;
 	private int projectionOffset = 0;
-	public boolean activatedByRedstone = false;
-	public boolean active = false;
+	private boolean activatedByRedstone = false;
+	private boolean active = false;
 	private boolean horizontal = false;
 	private ItemStack projectedBlock = ItemStack.EMPTY;
 	private BlockState projectedState = Blocks.AIR.defaultBlockState();
@@ -132,7 +132,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IInv
 	}
 
 	public boolean isActive() {
-		return activatedByRedstone ? active : true;
+		return !activatedByRedstone || active;
 	}
 
 	public void setActive(boolean isOn) {
@@ -168,7 +168,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IInv
 
 	@Override
 	public Option<?>[] customOptions() {
-		return null;
+		return new Option[0];
 	}
 
 	@Override

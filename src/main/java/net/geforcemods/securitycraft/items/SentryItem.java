@@ -25,29 +25,31 @@ public class SentryItem extends Item {
 
 	@Override
 	public ActionResultType useOn(ItemUseContext ctx) {
-		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
-	}
-
-	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 		boolean replacesTargetedBlock = world.getBlockState(pos).getMaterial().isReplaceable();
 
 		if (!replacesTargetedBlock) {
-			pos = pos.relative(facing); //if the block is not replaceable, place sentry next to targeted block
+			Direction facing = ctx.getClickedFace();
+			BlockState stateAtPlacePos;
 
-			BlockState stateAtPlacePos = world.getBlockState(pos);
+			pos = pos.relative(facing); //if the block is not replaceable, place sentry next to targeted block
+			stateAtPlacePos = world.getBlockState(pos);
 
 			if (!stateAtPlacePos.isAir() && !(stateAtPlacePos.getBlock() instanceof FlowingFluidBlock))
 				return ActionResultType.PASS;
 		}
 
 		BlockPos downPos = pos.below();
+		PlayerEntity player = ctx.getPlayer();
 
 		if (world.isEmptyBlock(downPos) || world.noCollision(new AxisAlignedBB(downPos))) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
 			return ActionResultType.FAIL;
 		}
 
-		Sentry entity = SCContent.eTypeSentry.get().create(world);
+		Sentry entity = SCContent.SENTRY_ENTITY.get().create(world);
+		ItemStack stack = ctx.getItemInHand();
 
 		entity.setPos(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
 		entity.setupSentry(player);

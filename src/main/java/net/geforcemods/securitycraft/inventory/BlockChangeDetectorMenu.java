@@ -68,10 +68,8 @@ public class BlockChangeDetectorMenu extends Container {
 
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if (index >= 1) {
-				if (!moveItemStackTo(slotStack, 0, 1, false))
-					return ItemStack.EMPTY;
-			}
+			else if (!moveItemStackTo(slotStack, 0, 1, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.set(ItemStack.EMPTY);

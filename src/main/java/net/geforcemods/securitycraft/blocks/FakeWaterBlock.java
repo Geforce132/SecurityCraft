@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.minecraft.block.Block;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.entity.Entity;
@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class FakeWaterBlock extends FlowingFluidBlock {
-	public FakeWaterBlock(Block.Properties properties, Supplier<? extends FlowingFluid> fluid) {
+	public FakeWaterBlock(AbstractBlock.Properties properties, Supplier<? extends FlowingFluid> fluid) {
 		super(fluid, properties);
 	}
 

@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class BulletModel extends EntityModel<Bullet> {
-	public ModelRenderer bullet;
+	public final ModelRenderer bullet;
 
 	public BulletModel() {
 		texWidth = 8;

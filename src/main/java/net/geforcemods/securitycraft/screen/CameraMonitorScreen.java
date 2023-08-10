@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -91,7 +91,7 @@ public class CameraMonitorScreen extends Screen {
 		for (int i = 0; i < 10; i++) {
 			CameraButton button = cameraButtons[i];
 			int camID = (button.camId + ((page - 1) * 10));
-			ArrayList<GlobalPos> views = cameraMonitor.getCameraPositions(nbtTag);
+			List<GlobalPos> views = cameraMonitor.getCameraPositions(nbtTag);
 			GlobalPos view = views.get(camID - 1);
 
 			button.setMessage(button.getMessage().plainCopy().append(new StringTextComponent("" + camID)));
@@ -116,7 +116,6 @@ public class CameraMonitorScreen extends Screen {
 				button.active = false;
 				unbindButtons[button.camId - 1].active = false;
 				cameraTEs[button.camId - 1] = null;
-				continue;
 			}
 		}
 
@@ -148,16 +147,14 @@ public class CameraMonitorScreen extends Screen {
 		font.draw(matrix, selectCameras, startX + xSize / 2 - font.width(selectCameras) / 2, startY + 6, 4210752);
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
-			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
-				if (cameraTEs[i] != null) {
-					if (cameraTEs[i].isDisabled()) {
-						renderTooltip(matrix, Utils.localize("gui.securitycraft:scManual.disabled"), mouseX, mouseY);
-						break;
-					}
-					else if (cameraTEs[i].hasCustomName()) {
-						renderTooltip(matrix, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomName()), 150), mouseX, mouseY);
-						break;
-					}
+			if (hoverCheckers[i] != null && cameraTEs[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
+				if (cameraTEs[i].isDisabled()) {
+					renderTooltip(matrix, Utils.localize("gui.securitycraft:scManual.disabled"), mouseX, mouseY);
+					break;
+				}
+				else if (cameraTEs[i].hasCustomName()) {
+					renderTooltip(matrix, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomName()), 150), mouseX, mouseY);
+					break;
 				}
 			}
 		}

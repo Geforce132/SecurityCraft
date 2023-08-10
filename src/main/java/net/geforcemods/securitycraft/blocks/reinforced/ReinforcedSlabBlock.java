@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
@@ -39,11 +40,11 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 	protected static final VoxelShape BOTTOM_SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
 	protected static final VoxelShape TOP_SHAPE = Block.box(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
-	public ReinforcedSlabBlock(Block.Properties properties, Block vB) {
+	public ReinforcedSlabBlock(AbstractBlock.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
 
-	public ReinforcedSlabBlock(Block.Properties properties, Supplier<Block> vB) {
+	public ReinforcedSlabBlock(AbstractBlock.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
 		registerDefaultState(stateDefinition.any().setValue(TYPE, SlabType.BOTTOM).setValue(WATERLOGGED, false));
 	}
@@ -94,7 +95,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 			BlockState stateToSet = defaultBlockState().setValue(TYPE, SlabType.BOTTOM).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 			Direction dir = ctx.getClickedFace();
 
-			return dir != Direction.DOWN && (dir == Direction.UP || !(ctx.getClickLocation().y - pos.getY() > 0.5D)) ? stateToSet : stateToSet.setValue(TYPE, SlabType.TOP);
+			return dir != Direction.DOWN && (dir == Direction.UP || ctx.getClickLocation().y - pos.getY() <= 0.5D) ? stateToSet : stateToSet.setValue(TYPE, SlabType.TOP);
 		}
 	}
 
@@ -127,12 +128,12 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 
 	@Override
 	public boolean placeLiquid(IWorld world, BlockPos pos, BlockState state, FluidState fluidState) {
-		return state.getValue(TYPE) != SlabType.DOUBLE ? IWaterLoggable.super.placeLiquid(world, pos, state, fluidState) : false;
+		return state.getValue(TYPE) != SlabType.DOUBLE && IWaterLoggable.super.placeLiquid(world, pos, state, fluidState);
 	}
 
 	@Override
 	public boolean canPlaceLiquid(IBlockReader world, BlockPos pos, BlockState state, Fluid fluid) {
-		return state.getValue(TYPE) != SlabType.DOUBLE ? IWaterLoggable.super.canPlaceLiquid(world, pos, state, fluid) : false;
+		return state.getValue(TYPE) != SlabType.DOUBLE && IWaterLoggable.super.canPlaceLiquid(world, pos, state, fluid);
 	}
 
 	@Override

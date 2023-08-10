@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
@@ -48,7 +49,7 @@ public class IronFenceBlock extends OwnableBlock {
 	protected final VoxelShape[] shapes;
 	private final VoxelShape[] renderShapes;
 
-	public IronFenceBlock(Block.Properties properties) {
+	public IronFenceBlock(AbstractBlock.Properties properties) {
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false));
@@ -227,9 +228,9 @@ public class IronFenceBlock extends OwnableBlock {
 
 	@Override
 	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int eventID, int eventParam) {
-		super.triggerEvent(state, world, pos, eventID, eventParam);
-		TileEntity tileentity = world.getBlockEntity(pos);
-		return tileentity == null ? false : tileentity.triggerEvent(eventID, eventParam);
+		TileEntity be = world.getBlockEntity(pos);
+
+		return be != null && be.triggerEvent(eventID, eventParam);
 	}
 
 	@Override

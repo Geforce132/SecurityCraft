@@ -57,28 +57,24 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 				if (potentialTarget.isInvulnerable())
 					continue;
 
-				if (mode.attacksPlayers()) {
-					//@formatter:off
-					if(potentialTarget instanceof PlayerEntity
-							&& !((PlayerEntity) potentialTarget).isSpectator()
-							&& !((PlayerEntity) potentialTarget).isCreative()
-							&& !((Sentry) mob).isOwnedBy(((PlayerEntity) potentialTarget))
-							&& !sentry.isTargetingAllowedPlayer(potentialTarget)) {
-						break;
-					}
-					//@formatter:on
+				//@formatter:off
+				if(mode.attacksPlayers()&& potentialTarget instanceof PlayerEntity
+						&& !((PlayerEntity) potentialTarget).isSpectator()
+						&& !((PlayerEntity) potentialTarget).isCreative()
+						&& !((Sentry) mob).isOwnedBy(((PlayerEntity) potentialTarget))
+						&& !sentry.isTargetingAllowedPlayer(potentialTarget)) {
+					break;
 				}
+				//@formatter:on
 
 				if (mode.attacksHostile() && isSupportedTarget(potentialTarget))
 					break;
 			}
 
-			if (i < list.size()) {
-				if (isCloseEnough(list.get(i))) {
-					target = list.get(i);
-					mob.setTarget(target);
-					return true;
-				}
+			if (i < list.size() && isCloseEnough(list.get(i))) {
+				target = list.get(i);
+				mob.setTarget(target);
+				return true;
 			}
 		}
 

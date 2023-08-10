@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,7 +34,7 @@ public class FrameBlock extends OwnableBlock {
 	private static final VoxelShape SHAPE_SOUTH = Block.box(2, 2, 15, 14, 14, 16);
 	private static final VoxelShape SHAPE_WEST = Block.box(0, 2, 2, 1, 14, 14);
 
-	public FrameBlock(Block.Properties properties) {
+	public FrameBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
@@ -76,11 +77,7 @@ public class FrameBlock extends OwnableBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
-	}
-
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
-		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
+		return defaultBlockState().setValue(FACING, ctx.getPlayer().getDirection().getOpposite());
 	}
 
 	@Override

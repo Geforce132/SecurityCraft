@@ -14,14 +14,14 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class BouncingBetty extends Entity {
 	/** How long the fuse is */
-	public int fuse;
+	private int fuse;
 
 	public BouncingBetty(EntityType<? extends BouncingBetty> type, World world) {
 		super(type, world);
 	}
 
 	public BouncingBetty(World world) {
-		this(SCContent.eTypeBouncingBetty.get(), world);
+		this(SCContent.BOUNCING_BETTY_ENTITY.get(), world);
 	}
 
 	public BouncingBetty(World world, double x, double y, double z) {
@@ -29,7 +29,7 @@ public class BouncingBetty extends Entity {
 		setPos(x, y, z);
 		float f = (float) (Math.random() * Math.PI * 2.0D);
 		setDeltaMovement(-((float) Math.sin(f)) * 0.02F, 0.20000000298023224D, -((float) Math.cos(f)) * 0.02F);
-		fuse = 80;
+		setFuse(80);
 		xo = x;
 		yo = y;
 		zo = z;
@@ -74,16 +74,24 @@ public class BouncingBetty extends Entity {
 
 	@Override
 	protected void addAdditionalSaveData(CompoundNBT tag) {
-		tag.putByte("Fuse", (byte) fuse);
+		tag.putByte("Fuse", (byte) getFuse());
 	}
 
 	@Override
 	protected void readAdditionalSaveData(CompoundNBT tag) {
-		fuse = tag.getByte("Fuse");
+		setFuse(tag.getByte("Fuse"));
 	}
 
 	@Override
 	public IPacket<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
+	}
+
+	public int getFuse() {
+		return fuse;
+	}
+
+	public void setFuse(int fuse) {
+		this.fuse = fuse;
 	}
 }

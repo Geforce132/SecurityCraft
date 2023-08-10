@@ -36,7 +36,7 @@ public class SentryRenderer extends EntityRenderer<Sentry> {
 		stack.scale(-1, -1, 1); //rotate model rightside up
 		Minecraft.getInstance().textureManager.bind(getTextureLocation(entity));
 		MODEL.renderBase(stack, builder, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		stack.mulPose(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.oHeadRotation, entity.headRotation)));
+		stack.mulPose(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.getOriginalHeadRotation(), entity.getHeadRotation())));
 		stack.translate(0.0F, entity.getHeadYTranslation(partialTicks), 0.0F);
 		MODEL.renderToBuffer(stack, builder, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.popPose();

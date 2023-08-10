@@ -178,19 +178,23 @@ public class ProjectorScreen extends ContainerScreen<ProjectorMenu> implements I
 		DataType dataType = DataType.INVALID;
 
 		if (slider == projectionWidthSlider) {
-			be.setProjectionWidth(data = slider.getValueInt());
+			data = slider.getValueInt();
+			be.setProjectionWidth(data);
 			dataType = DataType.WIDTH;
 		}
 		else if (slider == projectionHeightSlider) {
-			be.setProjectionHeight(data = slider.getValueInt());
+			data = slider.getValueInt();
+			be.setProjectionHeight(data);
 			dataType = DataType.HEIGHT;
 		}
 		else if (slider == projectionRangeSlider) {
-			be.setProjectionRange(data = slider.getValueInt());
+			data = slider.getValueInt();
+			be.setProjectionRange(data);
 			dataType = DataType.RANGE;
 		}
 		else if (slider == projectionOffsetSlider) {
-			be.setProjectionOffset(data = slider.getValueInt());
+			data = slider.getValueInt();
+			be.setProjectionOffset(data);
 			dataType = DataType.OFFSET;
 		}
 

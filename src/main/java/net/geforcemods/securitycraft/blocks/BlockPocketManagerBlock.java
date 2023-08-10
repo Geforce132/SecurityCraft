@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,7 +25,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class BlockPocketManagerBlock extends OwnableBlock {
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-	public BlockPocketManagerBlock(Block.Properties properties) {
+	public BlockPocketManagerBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 

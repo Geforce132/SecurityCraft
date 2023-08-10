@@ -50,18 +50,18 @@ public class KeyChangerScreen extends Screen {
 		topPos = (height - imageHeight) / 2;
 
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		addButton(confirmButton = new ExtendedButton(width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::confirmButtonClicked));
+		confirmButton = addButton(new ExtendedButton(width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::confirmButtonClicked));
 		confirmButton.active = false;
 
-		addButton(textboxNewPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 47, 110, 12, StringTextComponent.EMPTY));
+		textboxNewPasscode = addButton(new TextFieldWidget(font, width / 2 - 57, height / 2 - 47, 110, 12, StringTextComponent.EMPTY));
 		textboxNewPasscode.setMaxLength(20);
 		setInitialFocus(textboxNewPasscode);
-		textboxNewPasscode.setFilter(s -> s.matches("[0-9]*"));
+		textboxNewPasscode.setFilter(s -> s.matches("\\d*"));
 		textboxNewPasscode.setResponder(s -> updateConfirmButtonState());
 
-		addButton(textboxConfirmPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 7, 110, 12, StringTextComponent.EMPTY));
+		textboxConfirmPasscode = addButton(new TextFieldWidget(font, width / 2 - 57, height / 2 - 7, 110, 12, StringTextComponent.EMPTY));
 		textboxConfirmPasscode.setMaxLength(20);
-		textboxConfirmPasscode.setFilter(s -> s.matches("[0-9]*"));
+		textboxConfirmPasscode.setFilter(s -> s.matches("\\d*"));
 		textboxConfirmPasscode.setResponder(s -> updateConfirmButtonState());
 	}
 
@@ -100,9 +100,9 @@ public class KeyChangerScreen extends Screen {
 
 	private void updateConfirmButtonState() {
 		String newPasscode = textboxNewPasscode.getValue();
-		String confirmPasscode = textboxConfirmPasscode.getValue();
+		String passcodeConfirmation = textboxConfirmPasscode.getValue();
 
-		confirmButton.active = confirmPasscode != null && newPasscode != null && !confirmPasscode.isEmpty() && !newPasscode.isEmpty() && newPasscode.equals(confirmPasscode);
+		confirmButton.active = passcodeConfirmation != null && newPasscode != null && !passcodeConfirmation.isEmpty() && !newPasscode.isEmpty() && newPasscode.equals(passcodeConfirmation);
 	}
 
 	private void confirmButtonClicked(Button button) {

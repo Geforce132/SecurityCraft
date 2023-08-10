@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -13,7 +14,7 @@ import net.minecraft.world.IWorld;
 public class ReinforcedCarpetBlock extends BaseReinforcedBlock {
 	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
-	public ReinforcedCarpetBlock(Block.Properties properties, Block block) {
+	public ReinforcedCarpetBlock(AbstractBlock.Properties properties, Block block) {
 		super(properties, block);
 	}
 

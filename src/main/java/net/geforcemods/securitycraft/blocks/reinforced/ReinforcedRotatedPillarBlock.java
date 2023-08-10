@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.function.Supplier;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItemUseContext;
@@ -14,11 +15,11 @@ import net.minecraft.util.Rotation;
 public class ReinforcedRotatedPillarBlock extends BaseReinforcedBlock {
 	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
 
-	public ReinforcedRotatedPillarBlock(Block.Properties properties, Block vB) {
+	public ReinforcedRotatedPillarBlock(AbstractBlock.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
 
-	public ReinforcedRotatedPillarBlock(Block.Properties properties, Supplier<Block> vB) {
+	public ReinforcedRotatedPillarBlock(AbstractBlock.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
 
 		registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.Y));

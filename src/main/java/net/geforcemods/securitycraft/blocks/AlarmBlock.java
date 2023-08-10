@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
@@ -53,7 +54,7 @@ public class AlarmBlock extends OwnableBlock implements IWaterLoggable {
 	private static final VoxelShape SHAPE_UP = Block.box(4, 0, 4, 12, 8, 12);
 	private static final VoxelShape SHAPE_DOWN = Block.box(4, 8, 4, 12, 16, 12);
 
-	public AlarmBlock(Block.Properties properties) {
+	public AlarmBlock(AbstractBlock.Properties properties) {
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP).setValue(LIT, false).setValue(WATERLOGGED, false));
@@ -84,7 +85,7 @@ public class AlarmBlock extends OwnableBlock implements IWaterLoggable {
 	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
 		Direction facing = state.getValue(FACING);
 
-		return facing == Direction.UP && BlockUtils.isSideSolid(world, pos.below(), Direction.UP) ? true : BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing);
+		return facing == Direction.UP && BlockUtils.isSideSolid(world, pos.below(), Direction.UP) || BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing);
 	}
 
 	@Override
@@ -100,10 +101,10 @@ public class AlarmBlock extends OwnableBlock implements IWaterLoggable {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
-	}
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		Direction facing = ctx.getClickedFace();
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
 		return BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing).setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER) : null;
 	}
 

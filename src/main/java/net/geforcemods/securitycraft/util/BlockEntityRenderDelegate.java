@@ -62,7 +62,7 @@ public class BlockEntityRenderDelegate {
 				copyPose.popPose();
 			}
 			catch (Exception e) {
-				LOGGER.warn("Error when delegate-rendering " + delegateRendererInfo.delegateBlockEntity().getType().getRegistryName());
+				LOGGER.warn("Error when delegate-rendering {}", delegateRendererInfo.delegateBlockEntity().getType().getRegistryName());
 				e.printStackTrace();
 				removeDelegateOf(originalBlockEntity);
 			}

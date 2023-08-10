@@ -28,7 +28,6 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -46,10 +45,11 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 
 	@Override
 	public ActionResultType useOn(ItemUseContext ctx) {
-		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getHand());
-	}
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		ItemStack stack = ctx.getItemInHand();
+		PlayerEntity player = ctx.getPlayer();
 
-	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, Hand hand) {
 		if (world.getBlockState(pos).getBlock() instanceof CauldronBlock) //don't open the briefcase when a cauldron is rightclicked for removing the dye
 			return ActionResultType.SUCCESS;
 

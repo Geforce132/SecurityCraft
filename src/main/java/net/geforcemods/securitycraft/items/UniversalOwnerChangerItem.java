@@ -21,7 +21,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -35,14 +34,14 @@ public class UniversalOwnerChangerItem extends Item {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
-		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), stack, ctx.getClickedFace(), ctx.getHand());
-	}
+		PlayerEntity player = ctx.getPlayer();
 
-	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction side, Hand hand) {
 		//prioritize handling the briefcase
-		if (hand == Hand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get())
+		if (ctx.getHand() == Hand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get())
 			return handleBriefcase(player, stack).getResult();
 
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		TileEntity te = world.getBlockEntity(pos);

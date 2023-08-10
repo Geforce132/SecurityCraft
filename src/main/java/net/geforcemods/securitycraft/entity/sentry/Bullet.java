@@ -34,11 +34,11 @@ public class Bullet extends AbstractArrowEntity {
 	}
 
 	public Bullet(World world) {
-		this(SCContent.eTypeBullet.get(), world);
+		this(SCContent.BULLET_ENTITY.get(), world);
 	}
 
 	public Bullet(World world, Sentry shooter) {
-		super(SCContent.eTypeBullet.get(), shooter, world);
+		super(SCContent.BULLET_ENTITY.get(), shooter, world);
 
 		Owner owner = shooter.getOwner();
 

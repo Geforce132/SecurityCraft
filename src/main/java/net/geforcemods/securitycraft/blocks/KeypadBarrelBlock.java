@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BarrelBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -52,7 +53,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 	public static final BooleanProperty FROG = BooleanProperty.create("frog");
 
-	public KeypadBarrelBlock(Properties properties) {
+	public KeypadBarrelBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(HORIZONTAL_FACING, Direction.NORTH).setValue(OPEN, false).setValue(LID_FACING, LidFacing.UP).setValue(FROG, false).setValue(WATERLOGGED, false));
 	}
@@ -213,7 +214,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 		}
 	}
 
-	public static enum LidFacing implements IStringSerializable {
+	public enum LidFacing implements IStringSerializable {
 		UP("up"),
 		SIDEWAYS("sideways"),
 		DOWN("down");

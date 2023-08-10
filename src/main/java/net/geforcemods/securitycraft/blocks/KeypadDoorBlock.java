@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.KeypadDoorBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -17,7 +18,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class KeypadDoorBlock extends SpecialDoorBlock {
-	public KeypadDoorBlock(Properties properties) {
+	public KeypadDoorBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 

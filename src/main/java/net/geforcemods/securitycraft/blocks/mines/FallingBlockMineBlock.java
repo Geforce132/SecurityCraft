@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -21,7 +22,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FallingBlockMineBlock extends BaseFullMineBlock {
-	public FallingBlockMineBlock(Block.Properties properties, Block disguisedBlock) {
+	public FallingBlockMineBlock(AbstractBlock.Properties properties, Block disguisedBlock) {
 		super(properties, disguisedBlock);
 	}
 
@@ -38,28 +39,26 @@ public class FallingBlockMineBlock extends BaseFullMineBlock {
 
 	@Override
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (!world.isClientSide) {
-			if ((world.isEmptyBlock(pos.below()) || canFallThrough(world.getBlockState(pos.below()))) && pos.getY() >= 0) {
-				if (world.hasChunksAt(pos.offset(-32, -32, -32), pos.offset(32, 32, 32))) {
-					TileEntity te = world.getBlockEntity(pos);
+		if (!world.isClientSide && (world.isEmptyBlock(pos.below()) || canFallThrough(world.getBlockState(pos.below()))) && pos.getY() >= 0) {
+			if (world.hasChunksAt(pos.offset(-32, -32, -32), pos.offset(32, 32, 32))) {
+				TileEntity te = world.getBlockEntity(pos);
 
-					if (!world.isClientSide && te instanceof IOwnable) {
-						FallingBlockEntity entity = new FallingBlockEntity(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos));
+				if (!world.isClientSide && te instanceof IOwnable) {
+					FallingBlockEntity entity = new FallingBlockEntity(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos));
 
-						entity.blockData = te.save(new CompoundNBT());
-						world.addFreshEntity(entity);
-					}
+					entity.blockData = te.save(new CompoundNBT());
+					world.addFreshEntity(entity);
 				}
-				else {
-					BlockPos blockpos;
+			}
+			else {
+				BlockPos blockpos;
 
-					world.destroyBlock(pos, false);
+				world.destroyBlock(pos, false);
 
-					for (blockpos = pos.below(); (world.isEmptyBlock(blockpos) || canFallThrough(world.getBlockState(blockpos))) && blockpos.getY() > 0; blockpos = blockpos.below()) {}
+				for (blockpos = pos.below(); (world.isEmptyBlock(blockpos) || canFallThrough(world.getBlockState(blockpos))) && blockpos.getY() > 0; blockpos = blockpos.below()) {}
 
-					if (blockpos.getY() > 0)
-						world.setBlockAndUpdate(blockpos.above(), state); //Forge: Fix loss of state information during world gen.
-				}
+				if (blockpos.getY() > 0)
+					world.setBlockAndUpdate(blockpos.above(), state); //Forge: Fix loss of state information during world gen.
 			}
 		}
 	}
@@ -74,14 +73,12 @@ public class FallingBlockMineBlock extends BaseFullMineBlock {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
-		if (rand.nextInt(16) == 0) {
-			if (canFallThrough(world.getBlockState(pos.below()))) {
-				double particleX = pos.getX() + rand.nextFloat();
-				double particleY = pos.getY() - 0.05D;
-				double particleZ = pos.getZ() + rand.nextFloat();
+		if (rand.nextInt(16) == 0 && canFallThrough(world.getBlockState(pos.below()))) {
+			double particleX = pos.getX() + rand.nextFloat();
+			double particleY = pos.getY() - 0.05D;
+			double particleZ = pos.getZ() + rand.nextFloat();
 
-				world.addParticle(new BlockParticleData(ParticleTypes.FALLING_DUST, state), false, particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
-			}
+			world.addParticle(new BlockParticleData(ParticleTypes.FALLING_DUST, state), false, particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
 		}
 	}
 }

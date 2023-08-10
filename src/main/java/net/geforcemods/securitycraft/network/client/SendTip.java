@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.network.client;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
@@ -19,12 +20,12 @@ import net.minecraftforge.fml.VersionChecker.Status;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SendTip {
-	public static HashMap<String, String> tipsWithLink = new HashMap<>();
+	public static final Map<String, String> TIPS_WITH_LINK = new HashMap<>();
 
 	static {
-		tipsWithLink.put("patreon", "https://www.patreon.com/Geforce");
-		tipsWithLink.put("discord", "https://discord.gg/U8DvBAW");
-		tipsWithLink.put("outdated", "https://www.curseforge.com/minecraft/mc-mods/security-craft/files/all");
+		TIPS_WITH_LINK.put("patreon", "https://www.patreon.com/Geforce");
+		TIPS_WITH_LINK.put("discord", "https://discord.gg/U8DvBAW");
+		TIPS_WITH_LINK.put("outdated", "https://www.curseforge.com/minecraft/mc-mods/security-craft/files/all");
 	}
 
 	public SendTip() {}
@@ -48,8 +49,8 @@ public class SendTip {
 						Utils.localize(tipKey)));
 		//@formatter:on
 
-		if (tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-			message = message.append(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+		if (TIPS_WITH_LINK.containsKey(tipKey.split("\\.")[2]))
+			message = message.append(ForgeHooks.newChatWithLinks(TIPS_WITH_LINK.get(tipKey.split("\\.")[2])));
 
 		ClientHandler.getClientPlayer().sendMessage(message, Util.NIL_UUID);
 	}

@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -42,7 +43,7 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	private static final VoxelShape CEILING_EW_POWERED = Block.box(5, 15, 3, 11, 16, 13);
 	private static final VoxelShape CEILING_EW_UNPOWERED = Block.box(5, 14, 3, 11, 16, 13);
 
-	public PanicButtonBlock(boolean isWooden, Block.Properties properties) {
+	public PanicButtonBlock(boolean isWooden, AbstractBlock.Properties properties) {
 		super(isWooden, properties);
 	}
 
@@ -76,9 +77,9 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 
 	@Override
 	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param) {
-		super.triggerEvent(state, world, pos, id, param);
-		TileEntity tileentity = world.getBlockEntity(pos);
-		return tileentity == null ? false : tileentity.triggerEvent(id, param);
+		TileEntity be = world.getBlockEntity(pos);
+
+		return be != null && be.triggerEvent(id, param);
 	}
 
 	@Override

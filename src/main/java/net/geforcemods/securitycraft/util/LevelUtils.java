@@ -11,6 +11,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class LevelUtils {
+	private LevelUtils() {}
+
 	/**
 	 * Correctly schedules a task for execution on the main thread depending on if the provided world is client- or serverside
 	 */

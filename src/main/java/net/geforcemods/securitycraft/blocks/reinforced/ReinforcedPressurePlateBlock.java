@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PressurePlateBlock;
@@ -27,7 +28,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements IReinforcedBlock {
 	private final Block vanillaBlock;
 
-	public ReinforcedPressurePlateBlock(Sensitivity sensitivity, Block.Properties properties, Block vanillaBlock) {
+	public ReinforcedPressurePlateBlock(Sensitivity sensitivity, AbstractBlock.Properties properties, Block vanillaBlock) {
 		super(sensitivity, properties);
 
 		this.vanillaBlock = vanillaBlock;
@@ -40,10 +41,8 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		if (!world.isClientSide && redstoneStrength == 0 && entity instanceof PlayerEntity) {
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof AllowlistOnlyBlockEntity) {
-				if (isAllowedToPress(world, pos, (AllowlistOnlyBlockEntity) te, (PlayerEntity) entity))
-					checkPressed(world, pos, state, redstoneStrength);
-			}
+			if (te instanceof AllowlistOnlyBlockEntity && isAllowedToPress((AllowlistOnlyBlockEntity) te, (PlayerEntity) entity))
+				checkPressed(world, pos, state, redstoneStrength);
 		}
 	}
 
@@ -59,7 +58,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 
 			if (te instanceof AllowlistOnlyBlockEntity) {
 				for (Entity entity : list) {
-					if (entity instanceof PlayerEntity && isAllowedToPress(world, pos, (AllowlistOnlyBlockEntity) te, (PlayerEntity) entity))
+					if (entity instanceof PlayerEntity && isAllowedToPress((AllowlistOnlyBlockEntity) te, (PlayerEntity) entity))
 						return 15;
 				}
 			}
@@ -99,7 +98,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		}
 	}
 
-	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyBlockEntity te, PlayerEntity entity) {
+	public boolean isAllowedToPress(AllowlistOnlyBlockEntity te, PlayerEntity entity) {
 		return te.isOwnedBy(entity) || te.isAllowed(entity);
 	}
 

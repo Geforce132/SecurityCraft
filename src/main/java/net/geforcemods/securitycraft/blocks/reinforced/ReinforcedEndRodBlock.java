@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -16,7 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedEndRodBlock extends EndRodBlock implements IReinforcedBlock {
-	public ReinforcedEndRodBlock(Properties properties) {
+	public ReinforcedEndRodBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 

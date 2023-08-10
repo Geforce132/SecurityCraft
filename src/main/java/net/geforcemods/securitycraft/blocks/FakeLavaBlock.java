@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.entity.Entity;
@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 public class FakeLavaBlock extends FlowingFluidBlock {
 	private static final EffectInstance SHORT_FIRE_RESISTANCE = new EffectInstance(Effects.FIRE_RESISTANCE, 1);
 
-	public FakeLavaBlock(Block.Properties properties, Supplier<? extends FlowingFluid> fluid) {
+	public FakeLavaBlock(AbstractBlock.Properties properties, Supplier<? extends FlowingFluid> fluid) {
 		super(fluid, properties);
 	}
 

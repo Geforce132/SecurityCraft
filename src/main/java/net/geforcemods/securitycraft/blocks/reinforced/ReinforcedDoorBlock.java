@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.ReinforcedDoorBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -51,7 +52,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	protected static final VoxelShape WEST_AABB = Block.box(13.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 	protected static final VoxelShape EAST_AABB = Block.box(0.0D, 0.0D, 0.0D, 3.0D, 16.0D, 16.0D);
 
-	public ReinforcedDoorBlock(Block.Properties properties) {
+	public ReinforcedDoorBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, false).setValue(HINGE, DoorHingeSide.LEFT).setValue(HALF, DoubleBlockHalf.LOWER));
 	}
@@ -62,15 +63,15 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		boolean flag = !state.getValue(OPEN);
 		boolean flag1 = state.getValue(HINGE) == DoorHingeSide.RIGHT;
 		switch (direction) {
-			case EAST:
-			default:
-				return flag ? EAST_AABB : (flag1 ? NORTH_AABB : SOUTH_AABB);
 			case SOUTH:
 				return flag ? SOUTH_AABB : (flag1 ? EAST_AABB : WEST_AABB);
 			case WEST:
 				return flag ? WEST_AABB : (flag1 ? SOUTH_AABB : NORTH_AABB);
 			case NORTH:
 				return flag ? NORTH_AABB : (flag1 ? WEST_AABB : EAST_AABB);
+			case EAST:
+			default:
+				return flag ? EAST_AABB : (flag1 ? NORTH_AABB : SOUTH_AABB);
 		}
 	}
 
@@ -173,7 +174,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 				Vector3d vec3d = pContext.getClickLocation();
 				double d0 = vec3d.x - blockpos.getX();
 				double d1 = vec3d.z - blockpos.getZ();
-				return (j >= 0 || !(d1 < 0.5D)) && (j <= 0 || !(d1 > 0.5D)) && (k >= 0 || !(d0 > 0.5D)) && (k <= 0 || !(d0 < 0.5D)) ? DoorHingeSide.LEFT : DoorHingeSide.RIGHT;
+				return (j >= 0 || d1 >= 0.5D) && (j <= 0 || d1 <= 0.5D) && (k >= 0 || d0 <= 0.5D) && (k <= 0 || d0 >= 0.5D) ? DoorHingeSide.LEFT : DoorHingeSide.RIGHT;
 			}
 			else
 				return DoorHingeSide.LEFT;
@@ -233,11 +234,12 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			else if (neighborBlock != this) {
 				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, firstDoorPos) || BlockUtils.hasActiveSCBlockNextTo(level, firstDoorPos.above());
 				Direction directionToCheck = firstDoorState.getValue(FACING).getClockWise();
-				BlockPos secondDoorPos = null;
-				BlockState secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.relative(directionToCheck));
+				BlockPos secondDoorPos = firstDoorPos.relative(directionToCheck);
+				BlockState secondDoorState = level.getBlockState(secondDoorPos);
 
 				if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(HINGE) == DoorHingeSide.RIGHT && firstDoorState.getValue(HINGE) != secondDoorState.getValue(HINGE))) {
-					secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.relative(directionToCheck.getOpposite()));
+					secondDoorPos = firstDoorPos.relative(directionToCheck.getOpposite());
+					secondDoorState = level.getBlockState(secondDoorPos);
 
 					if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(HINGE) == DoorHingeSide.LEFT && firstDoorState.getValue(HINGE) != secondDoorState.getValue(HINGE)))
 						secondDoorPos = null;
@@ -299,9 +301,9 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 
 	@Override
 	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param) {
-		super.triggerEvent(state, world, pos, id, param);
-		TileEntity tileentity = world.getBlockEntity(pos);
-		return tileentity == null ? false : tileentity.triggerEvent(id, param);
+		TileEntity be = world.getBlockEntity(pos);
+
+		return be != null && be.triggerEvent(id, param);
 	}
 
 	@Override

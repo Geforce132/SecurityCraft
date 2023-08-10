@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IBeaconBeamColorProvider;
@@ -10,7 +11,7 @@ import net.minecraft.world.IWorldReader;
 public class ReinforcedStainedGlassPaneBlock extends ReinforcedPaneBlock implements IBeaconBeamColorProvider {
 	private final DyeColor color;
 
-	public ReinforcedStainedGlassPaneBlock(Block.Properties properties, DyeColor color, Block vB) {
+	public ReinforcedStainedGlassPaneBlock(AbstractBlock.Properties properties, DyeColor color, Block vB) {
 		super(properties, vB);
 		this.color = color;
 	}

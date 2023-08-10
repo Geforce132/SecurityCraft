@@ -42,7 +42,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ProtectoBlock.ACTIVATED, true));
 			}
 
-			if (entities.size() != 0) {
+			if (!entities.isEmpty()) {
 				boolean shouldDeactivate = false;
 
 				for (LivingEntity entity : entities) {

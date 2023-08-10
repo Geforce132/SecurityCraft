@@ -56,7 +56,7 @@ public class PlayAlarmSound {
 
 		if (te instanceof AlarmBlockEntity) {
 			((AlarmBlockEntity) te).setPowered(true);
-			((AlarmBlockEntity) te).playSound(level, getX(), getY(), getZ(), sound, volume, pitch);
+			((AlarmBlockEntity) te).playSound(getX(), getY(), getZ(), sound, volume, pitch);
 		}
 	}
 

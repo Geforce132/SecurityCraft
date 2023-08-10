@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -23,9 +24,9 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedButtonBlock extends AbstractButtonBlock implements IReinforcedBlock {
 	private final Block vanillaBlock;
-	public boolean isWoodenButton;
+	private final boolean isWoodenButton;
 
-	public ReinforcedButtonBlock(boolean isWooden, Block.Properties properties, Block vb) {
+	public ReinforcedButtonBlock(boolean isWooden, AbstractBlock.Properties properties, Block vb) {
 		super(isWooden, properties);
 		this.isWoodenButton = isWooden;
 		this.vanillaBlock = vb;
@@ -41,7 +42,7 @@ public class ReinforcedButtonBlock extends AbstractButtonBlock implements IReinf
 
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTrace) {
-		if (isAllowedToPress(world, pos, (AllowlistOnlyBlockEntity) world.getBlockEntity(pos), player))
+		if (isAllowedToPress((AllowlistOnlyBlockEntity) world.getBlockEntity(pos), player))
 			return super.use(state, world, pos, player, hand, rayTrace);
 
 		return ActionResultType.FAIL;
@@ -78,7 +79,7 @@ public class ReinforcedButtonBlock extends AbstractButtonBlock implements IReinf
 		}
 	}
 
-	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyBlockEntity te, PlayerEntity entity) {
+	public boolean isAllowedToPress(AllowlistOnlyBlockEntity te, PlayerEntity entity) {
 		return te.isOwnedBy(entity) || te.isAllowed(entity);
 	}
 

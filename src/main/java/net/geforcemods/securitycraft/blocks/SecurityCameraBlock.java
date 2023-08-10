@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -46,7 +47,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 	private static final VoxelShape SHAPE = VoxelShapes.create(new AxisAlignedBB(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F));
 	private static final VoxelShape SHAPE_DOWN = VoxelShapes.or(Block.box(7, 15, 5, 9, 16, 11), VoxelShapes.or(Block.box(6, 15, 6, 7, 16, 10), VoxelShapes.or(Block.box(5, 15, 7, 6, 16, 9), VoxelShapes.or(Block.box(9, 15, 6, 10, 16, 10), VoxelShapes.or(Block.box(10, 15, 7, 11, 16, 9), Block.box(7, 14, 7, 9, 15, 9))))));
 
-	public SecurityCameraBlock(Block.Properties properties) {
+	public SecurityCameraBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(BEING_VIEWED, false));
 	}
@@ -110,10 +111,9 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return ctx.getClickedFace() != Direction.UP ? getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer()) : null;
-	}
-
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
+		Direction facing = ctx.getClickedFace();
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 		BlockState state = defaultBlockState().setValue(FACING, facing);
 
 		if (!canSurvive(state, world, pos)) {

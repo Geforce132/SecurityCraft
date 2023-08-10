@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedPistonBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.ReinforcedPistonBlockStructureHelper;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -38,7 +39,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
 
 public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlock {
-	public ReinforcedPistonBlock(boolean sticky, Properties properties) {
+	public ReinforcedPistonBlock(boolean sticky, AbstractBlock.Properties properties) {
 		super(sticky, properties);
 	}
 
@@ -279,7 +280,7 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 
 			if (extending) {
 				PistonType type = isSticky ? PistonType.STICKY : PistonType.DEFAULT;
-				BlockState pistonHead = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.FACING, facing).setValue(PistonHeadBlock.TYPE, type);
+				BlockState pistonHead = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(FACING, facing).setValue(PistonHeadBlock.TYPE, type);
 				BlockState movingPiston = SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(MovingPistonBlock.FACING, facing).setValue(MovingPistonBlock.TYPE, this.isSticky ? PistonType.STICKY : PistonType.DEFAULT);
 				OwnableBlockEntity headTe = new OwnableBlockEntity();
 

@@ -14,7 +14,7 @@ import net.minecraft.util.text.ITextComponent;
 public abstract class ItemInventoryScreen<T extends Container> extends ContainerScreen<T> {
 	protected ResourceLocation texture;
 
-	public ItemInventoryScreen(T menu, PlayerInventory inventory, ITextComponent title) {
+	protected ItemInventoryScreen(T menu, PlayerInventory inventory, ITextComponent title) {
 		super(menu, inventory, title);
 	}
 

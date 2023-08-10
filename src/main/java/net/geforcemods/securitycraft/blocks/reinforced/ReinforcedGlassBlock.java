@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.FluidState;
@@ -11,7 +12,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ReinforcedGlassBlock extends BaseReinforcedBlock {
-	public ReinforcedGlassBlock(Block.Properties properties, Block vB) {
+	public ReinforcedGlassBlock(AbstractBlock.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 
@@ -33,6 +34,6 @@ public class ReinforcedGlassBlock extends BaseReinforcedBlock {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
-		return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
+		return adjacentBlockState.getBlock() == this || super.skipRendering(state, adjacentBlockState, side);
 	}
 }

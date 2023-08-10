@@ -54,10 +54,10 @@ public class SetListModuleData {
 			if (clientTag.contains("ListedTeams")) {
 				ListNBT listedTeams = new ListNBT();
 
-				for (INBT tag : clientTag.getList("ListedTeams", Constants.NBT.TAG_STRING)) {
+				for (INBT teamTag : clientTag.getList("ListedTeams", Constants.NBT.TAG_STRING)) {
 					//make sure the team the client sent is actually a team that exists
-					if (player.getScoreboard().getTeamNames().contains(tag.getAsString()))
-						listedTeams.add(tag);
+					if (player.getScoreboard().getTeamNames().contains(teamTag.getAsString()))
+						listedTeams.add(teamTag);
 				}
 
 				serverTag.put("ListedTeams", listedTeams);

@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -30,11 +31,11 @@ import net.minecraftforge.common.PlantType;
 public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock {
 	private final Supplier<Block> vanillaBlockSupplier;
 
-	public BaseReinforcedBlock(Block.Properties properties, Block vB) {
+	public BaseReinforcedBlock(AbstractBlock.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
 
-	public BaseReinforcedBlock(Block.Properties properties, Supplier<Block> vB) {
+	public BaseReinforcedBlock(AbstractBlock.Properties properties, Supplier<Block> vB) {
 		super(properties);
 
 		vanillaBlockSupplier = vB;
@@ -100,10 +101,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 	@Override
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
-		if (this.getVanillaBlock() instanceof BreakableBlock)
-			return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
-
-		return false;
+		return getVanillaBlock() instanceof BreakableBlock && (adjacentBlockState.getBlock() == this || super.skipRendering(state, adjacentBlockState, side));
 	}
 
 	@Override

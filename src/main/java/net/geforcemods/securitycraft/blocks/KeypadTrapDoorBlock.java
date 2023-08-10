@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -33,7 +34,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 
 public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
-	public KeypadTrapDoorBlock(Properties properties) {
+	public KeypadTrapDoorBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 

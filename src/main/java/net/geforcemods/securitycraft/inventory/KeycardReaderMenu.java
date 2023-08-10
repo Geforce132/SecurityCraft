@@ -13,7 +13,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -21,17 +20,13 @@ import net.minecraft.world.World;
 public class KeycardReaderMenu extends Container {
 	private final Inventory itemInventory = new Inventory(1);
 	public final Slot keycardSlot;
-	public KeycardReaderBlockEntity te;
-	private IWorldPosCallable worldPosCallable;
+	public final KeycardReaderBlockEntity te;
+	private final IWorldPosCallable worldPosCallable;
 
 	public KeycardReaderMenu(int windowId, PlayerInventory inventory, World world, BlockPos pos) {
 		super(SCContent.KEYCARD_READER_MENU.get(), windowId);
 
-		TileEntity tile = world.getBlockEntity(pos);
-
-		if (tile instanceof KeycardReaderBlockEntity)
-			te = (KeycardReaderBlockEntity) tile;
-
+		te = (KeycardReaderBlockEntity) world.getBlockEntity(pos);
 		worldPosCallable = IWorldPosCallable.create(world, pos);
 
 		//main player inventory
@@ -112,10 +107,8 @@ public class KeycardReaderMenu extends Container {
 					return ItemStack.EMPTY;
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if (id < 36) {
-				if (!moveItemStackTo(slotStack, 36, 37, false))
-					return ItemStack.EMPTY;
-			}
+			else if (!moveItemStackTo(slotStack, 36, 37, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.set(ItemStack.EMPTY);

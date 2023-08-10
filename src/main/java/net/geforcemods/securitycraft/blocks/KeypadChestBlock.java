@@ -12,7 +12,7 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.LivingEntity;
@@ -85,7 +85,7 @@ public class KeypadChestBlock extends ChestBlock {
 		}
 	};
 
-	public KeypadChestBlock(Block.Properties properties) {
+	public KeypadChestBlock(AbstractBlock.Properties properties) {
 		super(properties, () -> SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get());
 	}
 
@@ -134,7 +134,7 @@ public class KeypadChestBlock extends ChestBlock {
 		if (isPlayer) {
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) entity));
 
-			if (state.getValue(KeypadChestBlock.TYPE) != ChestType.SINGLE) {
+			if (state.getValue(ChestBlock.TYPE) != ChestType.SINGLE) {
 				KeypadChestBlockEntity thisTe = (KeypadChestBlockEntity) world.getBlockEntity(pos);
 				TileEntity otherTe = world.getBlockEntity(pos.relative(getConnectedDirection(state)));
 

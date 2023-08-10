@@ -3,11 +3,12 @@ package net.geforcemods.securitycraft.screen.components;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.base.Function;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -27,7 +28,8 @@ import net.minecraftforge.fml.client.gui.widget.Slider;
 
 public class ColorChooser extends Screen implements INestedGuiEventHandler {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/color_chooser.png");
-	public boolean disabled = true;
+	private static final int COLOR_FIELD_SIZE = 75;
+	protected boolean disabled = true;
 	private final int xStart, yStart;
 	private final List<Rectangle2d> extraAreas = new ArrayList<>();
 	private final ITextComponent rText = new StringTextComponent("R");
@@ -37,12 +39,11 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 	private boolean clickedInDragRegion = false;
 	private float h, s, b;
 	private int colorFieldTop, colorFieldBottom, colorFieldLeft, colorFieldRight;
-	private final int colorFieldSize = 75;
 	private final HoverChecker colorFieldHoverChecker;
 	private float selectionX, selectionY;
 	private final int rgbColor;
-	public FixedTextFieldWidget rBox, gBox, bBox, rgbHexBox;
-	public HueSlider hueSlider;
+	private FixedTextFieldWidget rBox, gBox, bBox, rgbHexBox;
+	private HueSlider hueSlider;
 
 	public ColorChooser(ITextComponent title, int xStart, int yStart, int rgbColor) {
 		super(title);
@@ -50,8 +51,8 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 		this.yStart = yStart;
 		colorFieldLeft = xStart + 6;
 		colorFieldTop = yStart + 6;
-		colorFieldRight = colorFieldLeft + colorFieldSize;
-		colorFieldBottom = colorFieldTop + colorFieldSize;
+		colorFieldRight = colorFieldLeft + COLOR_FIELD_SIZE;
+		colorFieldBottom = colorFieldTop + COLOR_FIELD_SIZE;
 		this.rgbColor = rgbColor;
 		colorFieldHoverChecker = new HoverChecker(colorFieldTop, colorFieldBottom, colorFieldLeft, colorFieldRight);
 	}
@@ -62,7 +63,7 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 		Function<TextFieldWidget, Consumer<String>> boxResponder = box -> string -> {
 			if (!string.isEmpty()) {
 				int number = Integer.parseInt(string);
-				Function<TextFieldWidget, Integer> parsingFunction = editBox -> {
+				ToIntFunction<TextFieldWidget> parsingFunction = editBox -> {
 					if (editBox.getValue().isEmpty())
 						return 0;
 					else
@@ -74,7 +75,7 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 				else if (number > 255)
 					box.setValue("255");
 
-				updateHSBValues(parsingFunction.apply(rBox), parsingFunction.apply(gBox), parsingFunction.apply(bBox));
+				updateHSBValues(parsingFunction.applyAsInt(rBox), parsingFunction.applyAsInt(gBox), parsingFunction.applyAsInt(bBox));
 				updateTextFields(box);
 				onColorChange();
 			}
@@ -85,36 +86,36 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 
 		updateHSBValues(red, green, blue);
 		extraAreas.add(new Rectangle2d(xStart, yStart, 144, 108));
-		addButton(hueSlider = new HueSlider(colorFieldLeft - 2, yStart + 85, 82, 20, h * 360.0D, slider -> {
+		hueSlider = addButton(new HueSlider(colorFieldLeft - 2, yStart + 85, 82, 20, h * 360.0D, slider -> {
 			h = slider.getValueInt() / 360.0F;
 			updateTextFields(null);
 			onColorChange();
 		}));
-		addButton(rBox = new FixedTextFieldWidget(font, colorFieldRight + 13, colorFieldTop, 26, 10, rText));
-		addButton(gBox = new FixedTextFieldWidget(font, colorFieldRight + 13, colorFieldTop + 15, 26, 10, gText));
-		addButton(bBox = new FixedTextFieldWidget(font, colorFieldRight + 13, colorFieldTop + 30, 26, 10, bText));
-		addButton(rgbHexBox = new FixedTextFieldWidget(font, colorFieldRight + 13, colorFieldTop + 45, 46, 10, rgbHexText));
+		rBox = addButton(new FixedTextFieldWidget(font, colorFieldRight + 13, colorFieldTop, 26, 10, rText));
+		gBox = addButton(new FixedTextFieldWidget(font, colorFieldRight + 13, colorFieldTop + 15, 26, 10, gText));
+		bBox = addButton(new FixedTextFieldWidget(font, colorFieldRight + 13, colorFieldTop + 30, 26, 10, bText));
+		rgbHexBox = addButton(new FixedTextFieldWidget(font, colorFieldRight + 13, colorFieldTop + 45, 46, 10, rgbHexText));
 		rBox.setValue("" + red);
 		gBox.setValue("" + green);
 		bBox.setValue("" + blue);
-		rgbHexBox.setValue(Integer.toHexString(rgbColor).substring(2));
+		getRgbHexBox().setValue(Integer.toHexString(rgbColor).substring(2));
 		rBox.setMaxLength(3);
 		gBox.setMaxLength(3);
 		bBox.setMaxLength(3);
-		rgbHexBox.setMaxLength(6);
+		getRgbHexBox().setMaxLength(6);
 		rBox.setFilter(boxFilter);
 		gBox.setFilter(boxFilter);
 		bBox.setFilter(boxFilter);
-		rgbHexBox.setFilter(string -> string.matches("[0-9a-fA-F]*"));
+		getRgbHexBox().setFilter(string -> string.matches("[0-9a-fA-F]*"));
 		rBox.setResponder(boxResponder.apply(rBox));
 		gBox.setResponder(boxResponder.apply(gBox));
 		bBox.setResponder(boxResponder.apply(bBox));
-		rgbHexBox.setResponder(string -> {
+		getRgbHexBox().setResponder(string -> {
 			if (!string.isEmpty()) {
 				int hexColor = Integer.parseInt(string, 16);
 
 				updateHSBValues(hexColor >> 16 & 255, hexColor >> 8 & 255, hexColor & 255);
-				updateTextFields(rgbHexBox);
+				updateTextFields(getRgbHexBox());
 				onColorChange();
 			}
 		});
@@ -145,8 +146,8 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 			validateNotEmpty(gBox);
 			validateNotEmpty(bBox);
 
-			if (rgbHexBox != null && !rgbHexBox.isFocused() && rgbHexBox.getValue().isEmpty())
-				rgbHexBox.setValue("000000");
+			if (getRgbHexBox() != null && !getRgbHexBox().isFocused() && getRgbHexBox().getValue().isEmpty())
+				getRgbHexBox().setValue("000000");
 		}
 	}
 
@@ -198,8 +199,8 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 	private void setSelection(double mouseX, double mouseY) {
 		selectionX = (int) MathHelper.clamp(mouseX, colorFieldLeft, colorFieldRight);
 		selectionY = (int) MathHelper.clamp(mouseY, colorFieldTop, colorFieldBottom);
-		s = ((selectionX - colorFieldLeft) / colorFieldSize);
-		b = 1.0F - ((selectionY - colorFieldTop) / colorFieldSize);
+		s = ((selectionX - colorFieldLeft) / COLOR_FIELD_SIZE);
+		b = 1.0F - ((selectionY - colorFieldTop) / COLOR_FIELD_SIZE);
 		updateTextFields(null);
 		onColorChange();
 	}
@@ -214,16 +215,16 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 	}
 
 	private void updateTextFields(TextFieldWidget excluded) {
-		int rgbColor = getRGBColor();
-		int red = rgbColor >> 16 & 255;
-		int green = rgbColor >> 8 & 255;
-		int blue = rgbColor & 255;
+		int currentRGBColor = getRGBColor();
+		int red = currentRGBColor >> 16 & 255;
+		int green = currentRGBColor >> 8 & 255;
+		int blue = currentRGBColor & 255;
 
 		//setting the value directly to prevent a stack overflow due to setValue calling the responder, which in turn calls this
 		trySetText(excluded, rBox, "" + red);
 		trySetText(excluded, gBox, "" + green);
 		trySetText(excluded, bBox, "" + blue);
-		trySetText(excluded, rgbHexBox, Integer.toHexString(rgbColor).substring(2));
+		trySetText(excluded, getRgbHexBox(), Integer.toHexString(currentRGBColor).substring(2));
 	}
 
 	private void trySetText(TextFieldWidget excluded, FixedTextFieldWidget editBox, String value) {
@@ -234,11 +235,11 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 	}
 
 	private void updateSelection() {
-		selectionX = s * colorFieldSize + colorFieldLeft;
-		selectionY = -b * colorFieldSize + colorFieldSize + colorFieldTop;
+		selectionX = s * COLOR_FIELD_SIZE + colorFieldLeft;
+		selectionY = -b * COLOR_FIELD_SIZE + COLOR_FIELD_SIZE + colorFieldTop;
 
-		if (hueSlider != null)
-			hueSlider.setValue(h * 360.0D);
+		if (getHueSlider() != null)
+			getHueSlider().setValue(h * 360.0D);
 	}
 
 	public void onColorChange() {}
@@ -246,6 +247,14 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 	private void validateNotEmpty(TextFieldWidget box) {
 		if (box != null && !box.isFocused() && box.getValue().isEmpty())
 			box.setValue("0");
+	}
+
+	public FixedTextFieldWidget getRgbHexBox() {
+		return rgbHexBox;
+	}
+
+	public HueSlider getHueSlider() {
+		return hueSlider;
 	}
 
 	public class HueSlider extends Slider {
@@ -281,7 +290,7 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 				rBox.setFocused(false);
 				gBox.setFocused(false);
 				bBox.setFocused(false);
-				rgbHexBox.setFocused(false);
+				getRgbHexBox().setFocused(false);
 			}
 
 			super.setFocused(focused);

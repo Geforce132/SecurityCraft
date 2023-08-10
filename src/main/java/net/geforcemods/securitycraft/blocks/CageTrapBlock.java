@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -42,7 +43,7 @@ import net.minecraft.world.World;
 public class CageTrapBlock extends DisguisableBlock {
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 
-	public CageTrapBlock(Block.Properties properties) {
+	public CageTrapBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(DEACTIVATED, false).setValue(WATERLOGGED, false));
 	}
@@ -58,9 +59,7 @@ public class CageTrapBlock extends DisguisableBlock {
 				EntitySelectionContext esc = (EntitySelectionContext) ctx;
 				Entity entity = esc.getEntity();
 
-				if (te.isDisabled())
-					return getCorrectShape(state, world, pos, ctx, te);
-				else if (entity instanceof PlayerEntity && ((te.isOwnedBy((PlayerEntity) entity) && te.ignoresOwner()) || te.isAllowed(entity)))
+				if (te.isDisabled() || entity instanceof PlayerEntity && ((te.isOwnedBy((PlayerEntity) entity) && te.ignoresOwner()) || te.isAllowed(entity)))
 					return getCorrectShape(state, world, pos, ctx, te);
 				if (entity instanceof MobEntity && !state.getValue(DEACTIVATED))
 					return te.capturesMobs() ? VoxelShapes.empty() : getCorrectShape(state, world, pos, ctx, te);
@@ -152,16 +151,14 @@ public class CageTrapBlock extends DisguisableBlock {
 				return ActionResultType.SUCCESS;
 			}
 		}
-		else if (stack.getItem() == Items.REDSTONE) {
-			if (state.getValue(DEACTIVATED)) {
-				world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
+		else if (stack.getItem() == Items.REDSTONE && state.getValue(DEACTIVATED)) {
+			world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
 
-				if (!player.isCreative())
-					stack.shrink(1);
+			if (!player.isCreative())
+				stack.shrink(1);
 
-				world.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				return ActionResultType.SUCCESS;
-			}
+			world.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			return ActionResultType.SUCCESS;
 		}
 
 		return ActionResultType.PASS;

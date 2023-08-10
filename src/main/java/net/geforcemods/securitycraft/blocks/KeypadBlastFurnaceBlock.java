@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.blockentities.KeypadBlastFurnaceBlockEntity;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
@@ -15,7 +16,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class KeypadBlastFurnaceBlock extends AbstractKeypadFurnaceBlock {
-	public KeypadBlastFurnaceBlock(Properties properties) {
+	public KeypadBlastFurnaceBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 

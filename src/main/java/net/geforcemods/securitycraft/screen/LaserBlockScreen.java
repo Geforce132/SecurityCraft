@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.EnumMap;
+import java.util.Map;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -25,7 +25,7 @@ public class LaserBlockScreen extends ContainerScreen<LaserBlockMenu> {
 	private final boolean hasSmartModule;
 	private ITextComponent smartModuleTooltip;
 	private LaserBlockBlockEntity be;
-	private EnumMap<Direction, Boolean> sideConfig;
+	private Map<Direction, Boolean> sideConfig;
 
 	public LaserBlockScreen(LaserBlockMenu menu, PlayerInventory playerInventory, ITextComponent title) {
 		super(menu, playerInventory, title);

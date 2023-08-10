@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
@@ -53,7 +54,7 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 	private static final VoxelShape SHAPE_3_MINES = VoxelShapes.or(SHAPE_2_MINES, Block.box(11, 0, 0, 16, 5, 5));
 	private static final VoxelShape SHAPE_4_MINES = VoxelShapes.or(SHAPE_3_MINES, Block.box(11, 0, 11, 16, 5, 16));
 
-	public IMSBlock(Block.Properties properties) {
+	public IMSBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(MINES, 4).setValue(WATERLOGGED, false));
 	}
@@ -81,9 +82,7 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		if (world.getBlockState(pos.below()).getMaterial() != Material.AIR)
-			return;
-		else
+		if (world.getBlockState(pos.below()).getMaterial() == Material.AIR)
 			world.destroyBlock(pos, true);
 	}
 
@@ -166,10 +165,9 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
-	}
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
 		return defaultBlockState().setValue(MINES, 4).setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER);
 	}
 

@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItemUseContext;
@@ -20,7 +21,7 @@ public class ProtectoBlock extends DisguisableBlock {
 	public static final BooleanProperty ACTIVATED = BlockStateProperties.ENABLED;
 	public static final VoxelShape SHAPE = VoxelShapes.or(Block.box(0, 0, 5, 16, 16, 11), Block.box(5, 0, 0, 11, 16, 16));
 
-	public ProtectoBlock(Block.Properties properties) {
+	public ProtectoBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(ACTIVATED, false).setValue(WATERLOGGED, false));
 	}

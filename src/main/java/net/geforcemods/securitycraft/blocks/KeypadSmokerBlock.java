@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.blockentities.KeypadSmokerBlockEntity;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
@@ -12,7 +13,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class KeypadSmokerBlock extends AbstractKeypadFurnaceBlock {
-	public KeypadSmokerBlock(Properties properties) {
+	public KeypadSmokerBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 

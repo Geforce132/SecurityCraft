@@ -16,31 +16,30 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class UpdateSliderValue {
 	private BlockPos pos;
-	private String option;
+	private String optionName;
 	private double value;
 
 	public UpdateSliderValue() {}
 
 	public UpdateSliderValue(BlockPos pos, Option<?> option, double v) {
 		this.pos = pos;
-		this.option = option.getName();
+		this.optionName = option.getName();
 		value = v;
 	}
 
 	public UpdateSliderValue(PacketBuffer buf) {
 		pos = buf.readBlockPos();
-		option = buf.readUtf();
+		optionName = buf.readUtf();
 		value = buf.readDouble();
 	}
 
 	public void encode(PacketBuffer buf) {
 		buf.writeBlockPos(pos);
-		buf.writeUtf(option);
+		buf.writeUtf(optionName);
 		buf.writeDouble(value);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		String optionName = option;
 		PlayerEntity player = ctx.get().getSender();
 		TileEntity te = player.level.getBlockEntity(pos);
 

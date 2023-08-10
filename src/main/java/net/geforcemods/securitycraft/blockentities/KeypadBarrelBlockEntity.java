@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.Map;
 import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -56,7 +57,7 @@ public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPassco
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
 	private long cooldownEnd = 0;
-	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	@Override
 	public TileEntityType<?> getType() {
@@ -145,7 +146,7 @@ public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPassco
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), () -> getInsertOnlyHandler()).cast();
+			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), this::getInsertOnlyHandler).cast();
 		else
 			return super.getCapability(cap, side);
 	}

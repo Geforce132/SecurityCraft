@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.PushReaction;
@@ -13,7 +14,7 @@ import net.minecraft.util.Rotation;
 public class ReinforcedGlazedTerracottaBlock extends BaseReinforcedBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-	public ReinforcedGlazedTerracottaBlock(Properties properties, Block vB) {
+	public ReinforcedGlazedTerracottaBlock(AbstractBlock.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 

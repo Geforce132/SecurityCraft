@@ -243,7 +243,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.getProtectedCapability(side, this, () -> getExtractionHandler(), () -> EMPTY_INVENTORY).cast(); //disallow inserting
+			return BlockUtils.getProtectedCapability(side, this, this::getExtractionHandler, () -> EMPTY_INVENTORY).cast(); //disallow inserting
 		else
 			return super.getCapability(cap, side);
 	}
@@ -322,10 +322,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-		if (connectedScanner != null) {
-			if (toggled ? !connectedScanner.isModuleEnabled(module) : !connectedScanner.hasModule(module))
-				connectedScanner.insertModule(stack, toggled);
-		}
+		if (connectedScanner != null && toggled ? !connectedScanner.isModuleEnabled(module) : !connectedScanner.hasModule(module))
+			connectedScanner.insertModule(stack, toggled);
 
 		if (module == ModuleType.DISGUISE) {
 			onInsertDisguiseModule(this, stack);
@@ -341,10 +339,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-		if (connectedScanner != null) {
-			if (toggled ? connectedScanner.isModuleEnabled(module) : connectedScanner.hasModule(module))
-				connectedScanner.removeModule(module, toggled);
-		}
+		if (connectedScanner != null && toggled ? connectedScanner.isModuleEnabled(module) : connectedScanner.hasModule(module))
+			connectedScanner.removeModule(module, toggled);
 
 		if (module == ModuleType.STORAGE) {
 			//first 10 slots (0-9) are the prohibited slots
@@ -359,10 +355,10 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			}
 		}
 		else if (module == ModuleType.DISGUISE) {
-			onRemoveDisguiseModule(this, stack);
+			onRemoveDisguiseModule(this);
 
 			if (connectedScanner != null)
-				onRemoveDisguiseModule(connectedScanner, stack);
+				onRemoveDisguiseModule(connectedScanner);
 		}
 	}
 
@@ -373,7 +369,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			ClientHandler.putDisguisedBeRenderer(be, stack);
 	}
 
-	private void onRemoveDisguiseModule(TileEntity be, ItemStack stack) {
+	private void onRemoveDisguiseModule(TileEntity be) {
 		if (!be.getLevel().isClientSide)
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		else

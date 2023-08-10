@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -28,7 +29,7 @@ import net.minecraft.world.World;
 public class FurnaceMineBlock extends BaseFullMineBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-	public FurnaceMineBlock(Block.Properties properties, Block vanillaBlock) {
+	public FurnaceMineBlock(AbstractBlock.Properties properties, Block vanillaBlock) {
 		super(properties, vanillaBlock);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
@@ -53,11 +54,7 @@ public class FurnaceMineBlock extends BaseFullMineBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
-	}
-
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
-		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
+		return defaultBlockState().setValue(FACING, ctx.getPlayer().getDirection().getOpposite());
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -49,7 +50,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 	private static final VoxelShape SHAPE_LOWER = VoxelShapes.or(Block.box(0, 0, 0, 16, 12, 16), Block.box(2, 0, 2, 14, 16, 14));
 	private static final VoxelShape SHAPE_UPPER = VoxelShapes.or(Block.box(2, 0, 2, 14, 5, 14), Block.box(4, 0, 4, 12, 8, 12));
 
-	public RiftStabilizerBlock(Properties properties) {
+	public RiftStabilizerBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HALF, DoubleBlockHalf.LOWER).setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}

@@ -17,6 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
 public class F3Spoofer {
+	private F3Spoofer() {}
+
 	public static BlockState spoofBlockState(BlockState originalState, BlockPos pos) {
 		Block originalBlock = originalState.getBlock();
 

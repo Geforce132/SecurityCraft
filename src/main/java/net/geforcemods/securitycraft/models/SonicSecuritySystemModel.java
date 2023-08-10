@@ -11,8 +11,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class SonicSecuritySystemModel extends EntityModel<Entity> {
-	public ModelRenderer radar;
-	public ModelRenderer bb_main;
+	public final ModelRenderer radar;
+	public final ModelRenderer bb_main;
 
 	public SonicSecuritySystemModel() {
 		texWidth = 32;

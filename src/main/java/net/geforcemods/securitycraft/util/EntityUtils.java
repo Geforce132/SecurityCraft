@@ -11,6 +11,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EntityUtils {
+	private EntityUtils() {}
+
 	public static boolean doesEntityOwn(Entity entity, World world, BlockPos pos) {
 		if (entity instanceof PlayerEntity)
 			return doesPlayerOwn((PlayerEntity) entity, world, pos);

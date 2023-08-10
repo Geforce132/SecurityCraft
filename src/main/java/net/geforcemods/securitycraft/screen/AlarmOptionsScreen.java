@@ -33,7 +33,6 @@ public class AlarmOptionsScreen extends Screen {
 	private int imageWidth = 226, imageHeight = 112, leftPos, topPos;
 	private Button minusMinute, minusTenSeconds, minusSecond, reset, plusSecond, plusTenSeconds, plusMinute;
 	private TextFieldWidget timeEditBox;
-	private NamedSlider pitchSlider;
 	private int soundLengthTextXPosition;
 
 	public AlarmOptionsScreen(AlarmScreen alarmScreen) {
@@ -53,6 +52,7 @@ public class AlarmOptionsScreen extends Screen {
 		int timeEditBoxWidth = 34;
 		int soundLengthTextWidthPlusBuffer = font.width(soundLengthText) + 5;
 		int combinedTextAndBoxWidth = soundLengthTextWidthPlusBuffer + timeEditBoxWidth;
+		NamedSlider pitchSlider;
 
 		addButton(new ExtendedButton(leftPos + imageWidth - 12, topPos + 4, 8, 8, new StringTextComponent("x"), b -> Minecraft.getInstance().popGuiLayer()));
 		soundLengthTextXPosition = width / 2 - combinedTextAndBoxWidth / 2;

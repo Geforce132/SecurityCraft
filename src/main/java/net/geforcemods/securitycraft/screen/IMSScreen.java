@@ -42,7 +42,7 @@ public class IMSScreen extends Screen {
 
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
-		addButton(targetButton = new ExtendedButton(width / 2 - 75, height / 2 - 38, 150, 20, StringTextComponent.EMPTY, this::targetButtonClicked));
+		targetButton = addButton(new ExtendedButton(width / 2 - 75, height / 2 - 38, 150, 20, StringTextComponent.EMPTY, this::targetButtonClicked));
 		updateButtonText();
 	}
 

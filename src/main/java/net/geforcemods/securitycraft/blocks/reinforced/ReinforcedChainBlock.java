@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.FluidState;
@@ -21,7 +22,7 @@ public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock {
 	protected static final VoxelShape Y_AXIS_SHAPE = Block.box(6.5D, 0.0D, 6.5D, 9.5D, 16.0D, 9.5D);
 	protected static final VoxelShape Z_AXIS_SHAPE = Block.box(6.5D, 6.5D, 0.0D, 9.5D, 9.5D, 16.0D);
 
-	public ReinforcedChainBlock(Block.Properties properties, Block vB) {
+	public ReinforcedChainBlock(AbstractBlock.Properties properties, Block vB) {
 		super(properties, vB);
 		this.registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false).setValue(AXIS, Direction.Axis.Y));
 	}
@@ -29,13 +30,13 @@ public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
 		switch (state.getValue(AXIS)) {
-			case X:
-			default:
-				return X_AXIS_SHAPE;
 			case Y:
 				return Y_AXIS_SHAPE;
 			case Z:
 				return Z_AXIS_SHAPE;
+			case X:
+			default:
+				return X_AXIS_SHAPE;
 		}
 	}
 

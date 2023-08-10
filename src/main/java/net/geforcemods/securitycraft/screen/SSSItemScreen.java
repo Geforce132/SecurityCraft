@@ -21,8 +21,8 @@ import net.minecraft.util.math.BlockPos;
 public class SSSItemScreen extends Screen implements ConnectionAccessor {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final ItemStack stack;
-	private final int imageWidth = 176;
-	private final int imageHeight = 166;
+	private int imageWidth = 176;
+	private int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
 	private SSSConnectionList<SSSItemScreen> connectionList;

@@ -7,6 +7,8 @@ import dev.ftb.mods.ftbteams.data.Team;
 import net.geforcemods.securitycraft.api.Owner;
 
 public class FTBTeamsCompat {
+	private FTBTeamsCompat() {}
+
 	public static boolean areOnSameTeam(Owner owner1, Owner owner2) {
 		try {
 			return FTBTeamsAPI.arePlayersInSameTeam(UUID.fromString(owner1.getUUID()), UUID.fromString(owner2.getUUID()));

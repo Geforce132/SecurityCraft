@@ -18,7 +18,6 @@ import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
@@ -80,6 +79,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.SnowyDirtBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.EditSignScreen;
@@ -146,6 +146,8 @@ public class ClientHandler {
 			SCContent.USERNAME_LOGGER.get()
 	};
 	//@formatter:on
+
+	private ClientHandler() {}
 
 	@SubscribeEvent
 	public static void onModelBake(ModelBakeEvent event) {
@@ -275,11 +277,11 @@ public class ClientHandler {
 		RenderTypeLookup.setRenderLayer(SCContent.SCANNER_DOOR.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.TRACK_MINE.get(), cutout);
 		Arrays.stream(disguisableBlocks.get()).forEach(block -> RenderTypeLookup.setRenderLayer(block, translucent));
-		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeBouncingBetty.get(), BouncingBettyRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeImsBomb.get(), IMSBombRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSecurityCamera.get(), EmptyRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSentry.get(), SentryRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeBullet.get(), BulletRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(SCContent.BOUNCING_BETTY_ENTITY.get(), BouncingBettyRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(SCContent.IMS_BOMB_ENTITY.get(), IMSBombRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(SCContent.SECURITY_CAMERA_ENTITY.get(), EmptyRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(SCContent.SENTRY_ENTITY.get(), SentryRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(SCContent.BULLET_ENTITY.get(), BulletRenderer::new);
 		//normal block entity renderers
 		ClientRegistry.bindTileEntityRenderer(SCContent.BLOCK_POCKET_MANAGER_BLOCK_ENTITY.get(), BlockPocketManagerRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.CLAYMORE_BLOCK_ENTITY.get(), ClaymoreRenderer::new);
@@ -389,7 +391,7 @@ public class ClientHandler {
 			return 0xFFFFFF;
 		}, disguisableBlocks.get());
 		event.getBlockColors().register((state, world, pos, tintIndex) -> {
-			if (tintIndex == 1 && !state.getValue(ReinforcedSnowyDirtBlock.SNOWY)) {
+			if (tintIndex == 1 && !state.getValue(SnowyDirtBlock.SNOWY)) {
 				int grassTint = world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
 
 				return mixWithReinforcedTintIfEnabled(grassTint);
@@ -428,18 +430,21 @@ public class ClientHandler {
 			BlockPos.Mutable mutablePos = new BlockPos.Mutable(pos.getX(), pos.getY(), pos.getZ());
 
 			for (int i = 0; i < ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
-				if (level.getBlockState(mutablePos).is(SCContent.INVENTORY_SCANNER.get())) {
-					TileEntity te = level.getBlockEntity(mutablePos);
+				try {
+					if (level.getBlockState(mutablePos).is(SCContent.INVENTORY_SCANNER.get())) {
+						TileEntity te = level.getBlockEntity(mutablePos);
 
-					if (te instanceof InventoryScannerBlockEntity) {
-						ItemStack stack = ((InventoryScannerBlockEntity) te).getLensContainer().getItem(0);
+						if (te instanceof InventoryScannerBlockEntity) {
+							ItemStack stack = ((InventoryScannerBlockEntity) te).getLensContainer().getItem(0);
 
-						if (stack.getItem() instanceof IDyeableArmorItem)
-							return ((IDyeableArmorItem) stack.getItem()).getColor(stack);
+							if (stack.getItem() instanceof IDyeableArmorItem)
+								return ((IDyeableArmorItem) stack.getItem()).getColor(stack);
 
-						break;
+							break;
+						}
 					}
 				}
+				catch (Exception e) {}
 
 				mutablePos.move(direction);
 			}
@@ -564,7 +569,7 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new BriefcasePasscodeScreen(title, true));
 	}
 
-	public static void displayUsernameLoggerScreen(World level, BlockPos pos) {
+	public static void displayUsernameLoggerScreen(BlockPos pos) {
 		TileEntity te = Minecraft.getInstance().level.getBlockEntity(pos);
 
 		if (te instanceof UsernameLoggerBlockEntity) {

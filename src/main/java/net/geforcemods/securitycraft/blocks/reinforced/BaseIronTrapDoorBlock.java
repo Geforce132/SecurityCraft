@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.block.Block;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TrapDoorBlock;
 import net.minecraft.entity.LivingEntity;
@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BaseIronTrapDoorBlock extends TrapDoorBlock {
-	public BaseIronTrapDoorBlock(Block.Properties properties) {
+	public BaseIronTrapDoorBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 
@@ -58,9 +58,9 @@ public class BaseIronTrapDoorBlock extends TrapDoorBlock {
 
 	@Override
 	public boolean triggerEvent(BlockState state, World level, BlockPos pos, int id, int param) {
-		super.triggerEvent(state, level, pos, id, param);
-		TileEntity blockEntity = level.getBlockEntity(pos);
-		return blockEntity == null ? false : blockEntity.triggerEvent(id, param);
+		TileEntity be = level.getBlockEntity(pos);
+
+		return be != null && be.triggerEvent(id, param);
 	}
 
 	@Override

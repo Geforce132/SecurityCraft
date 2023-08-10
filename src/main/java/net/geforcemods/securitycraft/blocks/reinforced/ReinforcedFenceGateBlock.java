@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
@@ -30,7 +31,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 
 public class ReinforcedFenceGateBlock extends FenceGateBlock {
-	public ReinforcedFenceGateBlock(Block.Properties properties) {
+	public ReinforcedFenceGateBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 
@@ -93,10 +94,10 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int par5, int par6) {
-		super.triggerEvent(state, world, pos, par5, par6);
-		TileEntity tileentity = world.getBlockEntity(pos);
-		return tileentity != null ? tileentity.triggerEvent(par5, par6) : false;
+	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param) {
+		TileEntity be = world.getBlockEntity(pos);
+
+		return be != null && be.triggerEvent(id, param);
 	}
 
 	@Override

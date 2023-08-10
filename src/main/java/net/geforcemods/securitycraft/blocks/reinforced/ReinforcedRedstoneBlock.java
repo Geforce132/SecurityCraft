@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IDoorActivator;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -14,7 +15,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class ReinforcedRedstoneBlock extends BaseReinforcedBlock {
-	public ReinforcedRedstoneBlock(Block.Properties properties, Block vB) {
+	public ReinforcedRedstoneBlock(AbstractBlock.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 

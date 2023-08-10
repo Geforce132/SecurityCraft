@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -20,7 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements IReinforcedBlock {
-	public ReinforcedPistonHeadBlock(Block.Properties properties) {
+	public ReinforcedPistonHeadBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 

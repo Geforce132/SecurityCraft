@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.Map;
 import java.util.UUID;
 
 import net.geforcemods.securitycraft.api.ICustomizable;
@@ -57,10 +58,10 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	private DisabledOption disabled = new DisabledOption(false);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
 	private long cooldownEnd = 0;
-	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 	private int openCount;
 
-	public AbstractKeypadFurnaceBlockEntity(TileEntityType<?> teType, IRecipeType<? extends AbstractCookingRecipe> recipeType) {
+	protected AbstractKeypadFurnaceBlockEntity(TileEntityType<?> teType, IRecipeType<? extends AbstractCookingRecipe> recipeType) {
 		super(teType, recipeType);
 	}
 
@@ -140,7 +141,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), () -> getInsertOnlyHandler()).cast();
+			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), this::getInsertOnlyHandler).cast();
 		else
 			return super.getCapability(cap, side);
 	}
@@ -179,7 +180,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	@Override
 	public void activate(PlayerEntity player) {
 		if (!level.isClientSide && getBlockState().getBlock() instanceof AbstractKeypadFurnaceBlock)
-			((AbstractKeypadFurnaceBlock) getBlockState().getBlock()).activate(getBlockState(), level, worldPosition, player);
+			((AbstractKeypadFurnaceBlock) getBlockState().getBlock()).activate(level, worldPosition, player);
 	}
 
 	@Override

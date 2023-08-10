@@ -101,11 +101,11 @@ public class BlockReinforcerMenu extends Container {
 			if (id >= 36) {
 				if (!moveItemStackTo(slotStack, 0, 36, true))
 					return ItemStack.EMPTY;
+
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if (id < 36)
-				if (!moveItemStackTo(slotStack, 36, fixSlot(38), false))
-					return ItemStack.EMPTY;
+			else if (!moveItemStackTo(slotStack, 36, fixSlot(38), false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.set(ItemStack.EMPTY);

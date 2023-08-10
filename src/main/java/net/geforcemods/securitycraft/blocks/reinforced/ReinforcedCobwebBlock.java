@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -15,7 +16,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class ReinforcedCobwebBlock extends BaseReinforcedBlock {
-	public ReinforcedCobwebBlock(Properties properties, Block vB) {
+	public ReinforcedCobwebBlock(AbstractBlock.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 
@@ -29,10 +30,8 @@ public class ReinforcedCobwebBlock extends BaseReinforcedBlock {
 		if (entity instanceof PlayerEntity) {
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof OwnableBlockEntity) {
-				if (((OwnableBlockEntity) te).isOwnedBy((PlayerEntity) entity))
-					return;
-			}
+			if (te instanceof OwnableBlockEntity && ((OwnableBlockEntity) te).isOwnedBy((PlayerEntity) entity))
+				return;
 		}
 
 		entity.makeStuckInBlock(state, new Vector3d(0.25D, 0.05D, 0.25D));

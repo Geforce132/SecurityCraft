@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,7 +39,7 @@ public class KeypadBlock extends DisguisableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	public KeypadBlock(Block.Properties properties) {
+	public KeypadBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}
@@ -61,7 +62,7 @@ public class KeypadBlock extends DisguisableBlock {
 					if (te.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-					activate(state, world, pos, te.getSignalLength());
+					activate(world, pos, te.getSignalLength());
 				}
 				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 					te.openPasscodeGUI(world, pos, player);
@@ -71,7 +72,7 @@ public class KeypadBlock extends DisguisableBlock {
 		return ActionResultType.SUCCESS;
 	}
 
-	public void activate(BlockState state, World world, BlockPos pos, int signalLength) {
+	public void activate(World world, BlockPos pos, int signalLength) {
 		world.setBlockAndUpdate(pos, world.getBlockState(pos).setValue(POWERED, true));
 		BlockUtils.updateIndirectNeighbors(world, pos, SCContent.KEYPAD.get());
 		world.getBlockTicks().scheduleTick(pos, this, signalLength);

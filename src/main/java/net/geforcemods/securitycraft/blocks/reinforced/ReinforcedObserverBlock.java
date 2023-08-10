@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -19,13 +20,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedObserverBlock extends ObserverBlock implements IReinforcedBlock {
-	public ReinforcedObserverBlock(Block.Properties properties) {
+	public ReinforcedObserverBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, @Nullable Direction side) {
-		return side == state.getValue(ObserverBlock.FACING);
+		return side == state.getValue(FACING);
 	}
 
 	@Override

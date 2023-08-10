@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.block.Block;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RailBlock;
 import net.minecraft.entity.Entity;
@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class TrackMineBlock extends RailBlock implements IExplosive {
-	public TrackMineBlock(Block.Properties properties) {
+	public TrackMineBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
 
@@ -37,24 +37,20 @@ public class TrackMineBlock extends RailBlock implements IExplosive {
 		if (PlayerUtils.isHoldingItem(player, SCContent.REMOTE_ACCESS_MINE, hand))
 			return ActionResultType.SUCCESS;
 
-		if (isActive(world, pos) && isDefusable() && player.getItemInHand(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
-			if (defuseMine(world, pos)) {
-				if (!player.isCreative())
-					player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+		if (isActive(world, pos) && isDefusable() && player.getItemInHand(hand).getItem() == SCContent.WIRE_CUTTERS.get() && defuseMine(world, pos)) {
+			if (!player.isCreative())
+				player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				world.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				return ActionResultType.SUCCESS;
-			}
+			world.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			return ActionResultType.SUCCESS;
 		}
 
-		if (!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand)) {
-			if (activateMine(world, pos)) {
-				if (!player.isCreative())
-					player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+		if (!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand) && activateMine(world, pos)) {
+			if (!player.isCreative())
+				player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				world.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				return ActionResultType.SUCCESS;
-			}
+			world.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			return ActionResultType.SUCCESS;
 		}
 
 		return ActionResultType.PASS;
