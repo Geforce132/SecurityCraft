@@ -134,7 +134,7 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 
 					activate(state, world, pos, te.getSignalLength());
 				}
-				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
+				else if (player.getItemInHand(hand).getItem() != SCContent.CODEBREAKER.get())
 					te.openPasscodeGUI(world, pos, player);
 			}
 		}

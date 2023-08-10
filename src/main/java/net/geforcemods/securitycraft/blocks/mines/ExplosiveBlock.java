@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.PushReaction;
@@ -32,7 +31,7 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (PlayerUtils.isHoldingItem(player, SCContent.REMOTE_ACCESS_MINE, hand))
+		if (player.getItemInHand(hand).getItem() == SCContent.REMOTE_ACCESS_MINE.get())
 			return ActionResultType.SUCCESS;
 
 		if (isActive(world, pos) && isDefusable() && player.getItemInHand(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
@@ -46,7 +45,7 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 			return ActionResultType.SUCCESS;
 		}
 
-		if (!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand)) {
+		if (!isActive(world, pos) && player.getItemInHand(hand).getItem() == Items.FLINT_AND_STEEL) {
 			if (activateMine(world, pos)) {
 				if (!player.isCreative())
 					player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
