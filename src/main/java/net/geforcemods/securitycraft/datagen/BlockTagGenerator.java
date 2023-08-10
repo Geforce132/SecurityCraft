@@ -102,15 +102,14 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_STRIPPED_JUNGLE_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_JUNGLE_WOOD.get());
 		tag(SCTags.Blocks.REINFORCED_LOGS)
-		.addTag(SCTags.Blocks.REINFORCED_ACACIA_LOGS)
-		.addTag(SCTags.Blocks.REINFORCED_BIRCH_LOGS)
-		.addTag(SCTags.Blocks.REINFORCED_CRIMSON_STEMS)
-		.addTag(SCTags.Blocks.REINFORCED_DARK_OAK_LOGS)
-		.addTag(SCTags.Blocks.REINFORCED_JUNGLE_LOGS)
-		.addTag(SCTags.Blocks.REINFORCED_OAK_LOGS)
-		.addTag(SCTags.Blocks.REINFORCED_SPRUCE_LOGS)
-		.addTag(SCTags.Blocks.REINFORCED_SPRUCE_LOGS)
-		.addTag(SCTags.Blocks.REINFORCED_WARPED_STEMS);
+				.addTag(SCTags.Blocks.REINFORCED_ACACIA_LOGS)
+				.addTag(SCTags.Blocks.REINFORCED_BIRCH_LOGS)
+				.addTag(SCTags.Blocks.REINFORCED_CRIMSON_STEMS)
+				.addTag(SCTags.Blocks.REINFORCED_DARK_OAK_LOGS)
+				.addTag(SCTags.Blocks.REINFORCED_JUNGLE_LOGS)
+				.addTag(SCTags.Blocks.REINFORCED_OAK_LOGS)
+				.addTag(SCTags.Blocks.REINFORCED_SPRUCE_LOGS)
+				.addTag(SCTags.Blocks.REINFORCED_WARPED_STEMS);
 		tag(SCTags.Blocks.REINFORCED_NYLIUM).add(
 				SCContent.REINFORCED_CRIMSON_NYLIUM.get(),
 				SCContent.REINFORCED_WARPED_NYLIUM.get());
