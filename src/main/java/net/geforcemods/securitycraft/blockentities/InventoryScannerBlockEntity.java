@@ -121,6 +121,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		tag.put("Items", list);
 		tag.putInt("cooldown", cooldown);
+		tag.put("lens", lens.createTag());
 		return tag;
 	}
 
