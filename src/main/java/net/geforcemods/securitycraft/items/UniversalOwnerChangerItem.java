@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.IBlockMine;
@@ -51,6 +52,8 @@ public class UniversalOwnerChangerItem extends Item {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), TextFormatting.RED);
 			return ActionResultType.FAIL;
 		}
+		else if (te instanceof DisplayCaseBlockEntity && ((DisplayCaseBlockEntity) te).isOpen())
+			return ActionResultType.PASS;
 
 		IOwnable ownable = (IOwnable) te;
 		Owner owner = ownable.getOwner();
