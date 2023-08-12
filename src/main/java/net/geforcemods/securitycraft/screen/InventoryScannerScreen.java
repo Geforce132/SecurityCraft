@@ -39,7 +39,7 @@ public class InventoryScannerScreen extends GuiContainer {
 		infoStringRedstone = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (hasRedstoneModule ? "yes" : "no"))).getFormattedText();
 		infoStringStorage = Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no"))).getFormattedText();
 
-		if (hasRedstoneModule)
+		if (!hasRedstoneModule)
 			redstoneModuleTooltip = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.redstoneModule.getTranslationKey() + ".name")).getFormattedText();
 
 		if (hasStorageModule)
