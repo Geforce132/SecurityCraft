@@ -357,7 +357,9 @@ public class SCManualScreen extends Screen {
 
 			for (Recipe<?> object : level.getRecipeManager().getRecipes()) {
 				if (object instanceof ShapedRecipe shapedRecipe) {
-					if (!shapedRecipe.getResultItem(registryAccess).isEmpty() && shapedRecipe.getResultItem(registryAccess).getItem() == item) {
+					ItemStack resultItem = shapedRecipe.getResultItem(registryAccess);
+
+					if (resultItem.is(item) && !(resultItem.is(SCContent.LENS.get()) && SCContent.LENS.get().hasCustomColor(resultItem))) {
 						NonNullList<Ingredient> ingredients = shapedRecipe.getIngredients();
 						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(9, Ingredient.EMPTY);
 
@@ -369,7 +371,7 @@ public class SCManualScreen extends Screen {
 						break;
 					}
 				}
-				else if (object instanceof ShapelessRecipe shapelessRecipe && !shapelessRecipe.getResultItem(registryAccess).isEmpty() && shapelessRecipe.getResultItem(registryAccess).getItem() == item) {
+				else if (object instanceof ShapelessRecipe shapelessRecipe && shapelessRecipe.getResultItem(registryAccess).is(item)) {
 					//don't show keycard reset recipes
 					if (shapelessRecipe.getId().getPath().endsWith("_reset"))
 						continue;
