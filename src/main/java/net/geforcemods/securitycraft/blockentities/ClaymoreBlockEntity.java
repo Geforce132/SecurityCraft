@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
+import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -12,17 +13,25 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickable {
 	private IntOption range = new IntOption(this::getPos, "range", 5, 1, 10, 1, true);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private int cooldown = -1;
+	private IItemHandler insertOnlyHandler, lensHandler;
+	private InventoryBasic lens = new InventoryBasic("", false, 1);
 
 	@Override
 	public void update() {
@@ -65,14 +74,46 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		tag.setInteger("cooldown", cooldown);
+		tag.setTag("lens", lens.getStackInSlot(0).writeToNBT(new NBTTagCompound()));
 		return tag;
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-
 		cooldown = tag.getInteger("cooldown");
+		lens.setInventorySlotContents(0, new ItemStack(tag.getCompoundTag("lens")));
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return (T) BlockUtils.getProtectedCapability(facing, this, () -> getNormalHandler(), () -> getInsertOnlyHandler());
+		else
+			return super.getCapability(capability, facing);
+	}
+
+	private IItemHandler getInsertOnlyHandler() {
+		if (insertOnlyHandler == null)
+			insertOnlyHandler = new InsertOnlyInvWrapper(lens);
+
+		return insertOnlyHandler;
+	}
+
+	private IItemHandler getNormalHandler() {
+		if (lensHandler == null)
+			lensHandler = new InvWrapper(lens);
+
+		return lensHandler;
+	}
+
+	public InventoryBasic getLensContainer() {
+		return lens;
 	}
 
 	@Override

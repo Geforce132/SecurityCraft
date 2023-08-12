@@ -30,6 +30,8 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
+import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
+import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGrassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
@@ -37,7 +39,7 @@ import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
-import net.geforcemods.securitycraft.items.BriefcaseItem;
+import net.geforcemods.securitycraft.items.ColorableItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.renderers.BlockEntityItemRenderer;
@@ -71,7 +73,12 @@ import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColorHelper;
@@ -267,6 +274,55 @@ public class ClientProxy implements IProxy {
 				return ConfigHandler.reinforcedBlockTintColor;
 			}, SCContent.reinforcedGrass);
 			event.getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(world, pos) : -1, SCContent.fakeWater, SCContent.bogusWaterFlowing);
+			event.getBlockColors().registerBlockColorHandler((state, level, pos, tintIndex) -> {
+				EnumFacing direction = LaserFieldBlock.getFieldDirection(state);
+				MutableBlockPos mutablePos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
+
+				for (int i = 0; i < ConfigHandler.laserBlockRange; i++) {
+					try {
+						if (level.getBlockState(mutablePos).getBlock() == SCContent.laserBlock) {
+							TileEntity te = level.getTileEntity(mutablePos);
+
+							if (te instanceof LaserBlockBlockEntity) {
+								ItemStack stack = ((LaserBlockBlockEntity) te).getLensContainer().getStackInSlot(direction.getOpposite().ordinal());
+
+								if (stack.getItem() instanceof ColorableItem)
+									return ((ColorableItem) stack.getItem()).getColor(stack);
+
+								break;
+							}
+						}
+					}
+					catch (Exception e) {}
+
+					mutablePos.move(direction);
+				}
+
+				return -1;
+			}, SCContent.laserField);
+			event.getBlockColors().registerBlockColorHandler((state, level, pos, tintIndex) -> {
+				EnumFacing direction = state.getValue(InventoryScannerFieldBlock.FACING);
+				MutableBlockPos mutablePos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
+
+				for (int i = 0; i < ConfigHandler.inventoryScannerRange; i++) {
+					if (level.getBlockState(mutablePos).getBlock() == SCContent.inventoryScanner) {
+						TileEntity te = level.getTileEntity(mutablePos);
+
+						if (te instanceof InventoryScannerBlockEntity) {
+							ItemStack stack = ((InventoryScannerBlockEntity) te).getLensContainer().getStackInSlot(0);
+
+							if (stack.getItem() instanceof ColorableItem)
+								return ((ColorableItem) stack.getItem()).getColor(stack);
+
+							break;
+						}
+					}
+
+					mutablePos.move(direction);
+				}
+
+				return -1;
+			}, SCContent.inventoryScannerField);
 		}
 	}
 
@@ -283,7 +339,7 @@ public class ClientProxy implements IProxy {
 
 				return ConfigHandler.reinforcedBlockTintColor;
 			}, SCContent.reinforcedGrass);
-			event.getItemColors().registerItemColorHandler((stack, tintIndex) -> tintIndex == 0 ? ((BriefcaseItem) stack.getItem()).getColor(stack) : -1, SCContent.briefcase);
+			event.getItemColors().registerItemColorHandler((stack, tintIndex) -> tintIndex == 0 ? ((ColorableItem) stack.getItem()).getColor(stack) : -1, SCContent.briefcase, SCContent.lens);
 			toTint = null;
 		}
 	}
@@ -312,6 +368,11 @@ public class ClientProxy implements IProxy {
 	@Override
 	public World getClientLevel() {
 		return Minecraft.getMinecraft().world;
+	}
+
+	@Override
+	public void updateBlockColorAroundPosition(BlockPos pos) {
+		Minecraft.getMinecraft().renderGlobal.notifyBlockUpdate(Minecraft.getMinecraft().world, pos, null, null, 0);
 	}
 
 	public static boolean isPlayerMountedOnCamera() {

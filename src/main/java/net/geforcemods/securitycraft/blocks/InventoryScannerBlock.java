@@ -208,6 +208,8 @@ public class InventoryScannerBlock extends DisguisableBlock {
 				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), te.getContents().get(i));
 			}
 
+			InventoryHelper.dropInventoryItems(world, pos, te.getLensContainer());
+
 			if (te.shouldProvidePower()) {
 				world.notifyNeighborsOfStateChange(pos, this, false);
 				BlockUtils.updateIndirectNeighbors(world, pos, this);
@@ -218,6 +220,8 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			for (int i = 0; i < connectedScanner.getContents().size(); i++) {
 				connectedScanner.getContents().set(i, ItemStack.EMPTY);
 			}
+
+			connectedScanner.getLensContainer().clear();
 		}
 
 		super.breakBlock(world, pos, state);

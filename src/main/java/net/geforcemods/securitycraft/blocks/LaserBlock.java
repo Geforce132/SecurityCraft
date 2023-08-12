@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.client.OpenLaserScreen;
+import net.geforcemods.securitycraft.screen.ScreenHandler;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -19,7 +19,8 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -59,7 +60,7 @@ public class LaserBlock extends DisguisableBlock {
 				if (!be.isEnabled())
 					player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					SecurityCraft.network.sendTo(new OpenLaserScreen(pos, be.getSideConfig()), (EntityPlayerMP) player);
+					player.openGui(SecurityCraft.instance, ScreenHandler.LASER_BLOCK, world, pos.getX(), pos.getY(), pos.getZ());
 			}
 
 			return true;
@@ -71,9 +72,7 @@ public class LaserBlock extends DisguisableBlock {
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
 		super.onBlockPlacedBy(world, pos, state, entity, stack);
-
-		if (!world.isRemote)
-			setLaser(world, pos, entity instanceof EntityPlayer ? (EntityPlayer) entity : null);
+		setLaser(world, pos, entity instanceof EntityPlayer ? (EntityPlayer) entity : null);
 	}
 
 	public void setLaser(World level, BlockPos pos, EntityPlayer player) {
@@ -85,7 +84,7 @@ public class LaserBlock extends DisguisableBlock {
 	public void setLaser(World world, BlockPos pos, EnumFacing facing, EntityPlayer player) {
 		LaserBlockBlockEntity thisTe = (LaserBlockBlockEntity) world.getTileEntity(pos);
 
-		if (!thisTe.isSideEnabled(facing))
+		if (!thisTe.isEnabled() || !thisTe.isSideEnabled(facing))
 			return;
 
 		int boundType = facing == EnumFacing.UP || facing == EnumFacing.DOWN ? 1 : (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH ? 2 : 3);
@@ -100,7 +99,7 @@ public class LaserBlock extends DisguisableBlock {
 			else if (offsetBlock == SCContent.laserBlock) {
 				LaserBlockBlockEntity thatTe = (LaserBlockBlockEntity) world.getTileEntity(offsetPos);
 
-				if (thisTe.getOwner().owns(thatTe) && thisTe.isEnabled() && thatTe.isEnabled()) {
+				if (thisTe.getOwner().owns(thatTe) && thatTe.isEnabled()) {
 					if (!thatTe.isSideEnabled(facing.getOpposite())) {
 						thisTe.setSideEnabled(facing, false, null);
 						return;
@@ -132,6 +131,8 @@ public class LaserBlock extends DisguisableBlock {
 								((IOwnable) te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
 						}
 					}
+
+					thatTe.getLensContainer().markDirty();
 				}
 
 				return;
@@ -143,6 +144,21 @@ public class LaserBlock extends DisguisableBlock {
 	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state) {
 		if (!world.isRemote)
 			destroyAdjacentLasers(world, pos);
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof LaserBlockBlockEntity) {
+			InventoryBasic lensContainer = ((LaserBlockBlockEntity) te).getLensContainer();
+
+			InventoryHelper.dropInventoryItems(world, pos, lensContainer);
+			lensContainer.clear();
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.laserBlock);
+		}
+
+		super.breakBlock(world, pos, state);
 	}
 
 	public static void destroyAdjacentLasers(World world, BlockPos pos) {

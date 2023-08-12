@@ -19,23 +19,32 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
+import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
+import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class LaserBlockBlockEntity extends LinkableBlockEntity {
+public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInventoryChangedListener {
 	private DisabledOption disabled = new DisabledOption(false) {
 		@Override
 		public void toggle() {
@@ -46,21 +55,27 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	};
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private EnumMap<EnumFacing, Boolean> sideConfig;
+	private IItemHandler insertOnlyHandler, lensHandler;
+	private LensContainer lenses = new LensContainer("", false, 6);
 
-	{
-		EnumMap<EnumFacing, Boolean> map = new EnumMap<>(EnumFacing.class);
+	public LaserBlockBlockEntity() {
+		lenses.addInventoryChangeListener(this);
+		sideConfig = new EnumMap<>(EnumFacing.class);
 
 		for (EnumFacing dir : EnumFacing.values()) {
-			map.put(dir, true);
+			sideConfig.put(dir, true);
 		}
-
-		sideConfig = map;
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		tag.setTag("sideConfig", saveSideConfig(sideConfig));
+
+		for (int i = 0; i < lenses.getSizeInventory(); i++) {
+			tag.setTag("lens" + i, lenses.getStackInSlot(i).writeToNBT(new NBTTagCompound()));
+		}
+
 		return tag;
 	}
 
@@ -75,6 +90,12 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		sideConfig = loadSideConfig(tag.getCompoundTag("sideConfig"));
+
+		for (int i = 0; i < lenses.getSizeInventory(); i++) {
+			lenses.setItemExclusively(i, new ItemStack(tag.getCompoundTag("lens" + i)));
+		}
+
+		lenses.markDirty();
 	}
 
 	public static EnumMap<EnumFacing, Boolean> loadSideConfig(NBTTagCompound sideConfigTag) {
@@ -190,6 +211,72 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			world.setBlockState(pos, state.withProperty(LaserBlock.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.laserBlock);
 		}
+	}
+
+	@Override
+	public void onInventoryChanged(IInventory container) {
+		if (world == null)
+			return;
+
+		for (EnumFacing direction : EnumFacing.values()) {
+			int i = 1;
+			BlockPos pos = getPos();
+			BlockPos modifiedPos = pos.offset(direction, i);
+			IBlockState stateAtModifiedPos = world.getBlockState(modifiedPos);
+			List<BlockPos> positionsToUpdate = new ArrayList<>();
+
+			while (i < ConfigHandler.laserBlockRange && stateAtModifiedPos.getBlock() != SCContent.laserBlock) {
+				modifiedPos = pos.offset(direction, ++i);
+				stateAtModifiedPos = world.getBlockState(modifiedPos);
+				positionsToUpdate.add(modifiedPos);
+			}
+
+			TileEntity be = world.getTileEntity(modifiedPos);
+
+			if (be instanceof LaserBlockBlockEntity) {
+				LaserBlockBlockEntity otherLaser = (LaserBlockBlockEntity) be;
+
+				otherLaser.getLensContainer().setItemExclusively(direction.getOpposite().ordinal(), lenses.getStackInSlot(direction.ordinal()));
+
+				if (!world.isRemote)
+					SecurityCraft.network.sendToDimension(new UpdateLaserColors(positionsToUpdate), world.provider.getDimension());
+
+				world.notifyBlockUpdate(modifiedPos, stateAtModifiedPos, stateAtModifiedPos, 2);
+			}
+		}
+
+		markDirty();
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return (T) BlockUtils.getProtectedCapability(facing, this, () -> getNormalHandler(), () -> getInsertOnlyHandler());
+		else
+			return super.getCapability(capability, facing);
+	}
+
+	private IItemHandler getInsertOnlyHandler() {
+		if (insertOnlyHandler == null)
+			insertOnlyHandler = new InsertOnlyInvWrapper(lenses);
+
+		return insertOnlyHandler;
+	}
+
+	private IItemHandler getNormalHandler() {
+		if (lensHandler == null)
+			lensHandler = new InvWrapper(lenses);
+
+		return lensHandler;
+	}
+
+	public LensContainer getLensContainer() {
+		return lenses;
 	}
 
 	@Override

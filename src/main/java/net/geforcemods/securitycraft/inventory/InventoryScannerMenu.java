@@ -34,6 +34,13 @@ public class InventoryScannerMenu extends Container {
 			}
 		}
 
+		addSlotToContainer(new LensSlot(te.getLensContainer(), 0, 159, 89) {
+			@Override
+			public boolean canTakeStack(EntityPlayer player) {
+				return te.isOwnedBy(player);
+			}
+		});
+
 		//inventory
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {

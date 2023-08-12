@@ -1,8 +1,10 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -10,6 +12,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -88,6 +92,20 @@ public class TrophySystemBlock extends DisguisableBlock {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return new AxisAlignedBB(0.065D, 0, 0.065D, 0.935D, 0.96D, 0.935D);
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof TrophySystemBlockEntity) {
+			InventoryBasic lensContainer = ((TrophySystemBlockEntity) te).getLensContainer();
+
+			InventoryHelper.dropInventoryItems(world, pos, lensContainer);
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.trophySystem);
+		}
+
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override

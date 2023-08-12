@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.blocks.KeypadTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.mines.MineBlock;
+import net.geforcemods.securitycraft.items.LensItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.Tinted;
@@ -421,6 +422,7 @@ public class SCContent {
 	public static Item universalOwnerChanger;
 	public static Item wireCutters;
 	public static Item keycardHolder;
+	public static LensItem lens;
 
 	//Modules
 	public static ModuleItem denylistModule;

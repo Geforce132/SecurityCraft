@@ -1,0 +1,14 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "securitycraft:items/lens"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "securitycraft:colored": 1.0
+            },
+            "model": "securitycraft:item/colored_lens"
+        }
+    ]
+}

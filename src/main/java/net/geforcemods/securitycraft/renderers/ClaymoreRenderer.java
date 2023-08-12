@@ -4,12 +4,15 @@ import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
+import net.geforcemods.securitycraft.items.ColorableItem;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
 public class ClaymoreRenderer extends TileEntitySpecialRenderer<ClaymoreBlockEntity> {
@@ -33,6 +36,17 @@ public class ClaymoreRenderer extends TileEntitySpecialRenderer<ClaymoreBlockEnt
 		float multiplier = 0.0625F;
 		float xzStart = 9.0F * multiplier;
 		float yOffset = 4.5F * multiplier;
+		ItemStack lens = be.getLensContainer().getStackInSlot(0);
+		Item item = lens.getItem();
+		int r = 255, g = 255, b = 255;
+
+		if (item instanceof ColorableItem && ((ColorableItem) item).hasColor(lens)) {
+			int color = ((ColorableItem) item).getColor(lens);
+
+			r = (color >> 0x10) & 0xFF;
+			g = (color >> 0x8) & 0xFF;
+			b = color & 0xFF;
+		}
 
 		GlStateManager.enableDepth();
 		GlStateManager.disableTexture2D();
@@ -42,10 +56,10 @@ public class ClaymoreRenderer extends TileEntitySpecialRenderer<ClaymoreBlockEnt
 		GlStateManager.glLineWidth(3);
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		builder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-		builder.pos(xzStart, yOffset, xzStart).color(255, 0, 0, 255).endVertex();
-		builder.pos(11.0F * multiplier, yOffset, 1.0F).color(255, 0, 0, 0).endVertex();
-		builder.pos(7.0F * multiplier, yOffset, xzStart).color(255, 0, 0, 255).endVertex();
-		builder.pos(5.0F * multiplier, yOffset, 1.0F).color(255, 0, 0, 0).endVertex();
+		builder.pos(xzStart, yOffset, xzStart).color(r, g, b, 255).endVertex();
+		builder.pos(11.0F * multiplier, yOffset, 1.0F).color(r, g, b, 0).endVertex();
+		builder.pos(7.0F * multiplier, yOffset, xzStart).color(r, g, b, 255).endVertex();
+		builder.pos(5.0F * multiplier, yOffset, 1.0F).color(r, g, b, 0).endVertex();
 		tessellator.draw();
 		GlStateManager.disableBlend();
 		GlStateManager.enableTexture2D();

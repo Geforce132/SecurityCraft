@@ -383,8 +383,10 @@ public class SCManualScreen extends GuiScreen {
 
 				if (object instanceof ShapedRecipes) {
 					ShapedRecipes recipe = (ShapedRecipes) object;
+					ItemStack resultStack = recipe.getRecipeOutput();
+					Item resultItem = resultStack.getItem();
 
-					if (!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()) {
+					if (resultItem == item && !(resultItem == SCContent.lens && SCContent.lens.hasColor(resultStack))) {
 						NonNullList<Ingredient> ingredients = recipe.getIngredients();
 						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(9, Ingredient.EMPTY);
 
@@ -399,7 +401,7 @@ public class SCManualScreen extends GuiScreen {
 				else if (object instanceof ShapelessRecipes) {
 					ShapelessRecipes recipe = (ShapelessRecipes) object;
 
-					if (!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()) {
+					if (recipe.getRecipeOutput().getItem() == page.getItem()) {
 						//don't show keycard reset recipes
 						if (recipe.getRegistryName().getPath().endsWith("_reset"))
 							continue;

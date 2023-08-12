@@ -17,9 +17,11 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
+import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
@@ -33,16 +35,22 @@ import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickable, ILockable, IToggleableEntries<EntityEntry> {
 	/* The range (in blocks) that the trophy system will search for projectiles in */
@@ -59,6 +67,8 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	public int cooldown = getCooldownTime();
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
+	private IItemHandler insertOnlyHandler, lensHandler;
+	private InventoryBasic lens = new InventoryBasic("", false, 1);
 
 	public TrophySystemBlockEntity() {
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
@@ -144,6 +154,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		}
 
 		tag.setTag("projectiles", projectilesNBT);
+		tag.setTag("lens", lens.getStackInSlot(0).writeToNBT(new NBTTagCompound()));
 		return tag;
 	}
 
@@ -160,6 +171,39 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 				i++;
 			}
 		}
+
+		lens.setInventorySlotContents(0, new ItemStack(tag.getCompoundTag("lens")));
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return (T) BlockUtils.getProtectedCapability(facing, this, () -> getNormalHandler(), () -> getInsertOnlyHandler());
+		else
+			return super.getCapability(capability, facing);
+	}
+
+	private IItemHandler getInsertOnlyHandler() {
+		if (insertOnlyHandler == null)
+			insertOnlyHandler = new InsertOnlyInvWrapper(lens);
+
+		return insertOnlyHandler;
+	}
+
+	private IItemHandler getNormalHandler() {
+		if (lensHandler == null)
+			lensHandler = new InvWrapper(lens);
+
+		return lensHandler;
+	}
+
+	public InventoryBasic getLensContainer() {
+		return lens;
 	}
 
 	public void setTarget(Entity target) {

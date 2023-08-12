@@ -1,11 +1,11 @@
 package net.geforcemods.securitycraft.inventory;
 
-import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class InsertOnlyInvWrapper extends InvWrapper {
-	public InsertOnlyInvWrapper(ISidedInventory inv) {
+	public InsertOnlyInvWrapper(IInventory inv) {
 		super(inv);
 	}
 

@@ -75,17 +75,17 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWalls;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.items.SCManualItem;
-import net.geforcemods.securitycraft.misc.DyeBriefcaseRecipe;
+import net.geforcemods.securitycraft.misc.DyeItemRecipe;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
-import net.geforcemods.securitycraft.network.client.OpenLaserScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
+import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
@@ -408,6 +408,7 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.keypadDoorItem);
 		registerItem(event, SCContent.portableTunePlayer);
 		registerItem(event, SCContent.keycardHolder);
+		registerItem(event, SCContent.lens);
 
 		SecurityCraft.proxy.registerVariants();
 		pageTypeBlocks.forEach((pageType, list) -> {
@@ -556,7 +557,7 @@ public class RegistrationHandler {
 		network.registerMessage(SetListModuleData.Handler.class, SetListModuleData.class, 47, Side.SERVER);
 		network.registerMessage(SetStateOnDisguiseModule.Handler.class, SetStateOnDisguiseModule.class, 48, Side.SERVER);
 		network.registerMessage(SyncRiftStabilizer.Handler.class, SyncRiftStabilizer.class, 49, Side.SERVER);
-		network.registerMessage(OpenLaserScreen.Handler.class, OpenLaserScreen.class, 50, Side.CLIENT);
+		network.registerMessage(UpdateLaserColors.Handler.class, UpdateLaserColors.class, 50, Side.CLIENT);
 		network.registerMessage(SyncLaserSideConfig.Handler.class, SyncLaserSideConfig.class, 51, Side.SERVER);
 		network.registerMessage(PlayAlarmSound.Handler.class, PlayAlarmSound.class, 52, Side.CLIENT);
 		network.registerMessage(SyncAlarmSettings.Handler.class, SyncAlarmSettings.class, 53, Side.SERVER);
@@ -600,7 +601,7 @@ public class RegistrationHandler {
 
 	@SubscribeEvent
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
-		event.getRegistry().register(new DyeBriefcaseRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "dye_briefcase")));
+		event.getRegistry().register(new DyeItemRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "dye_briefcase")));
 		event.getRegistry().register(new LimitedUseKeycardRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard_conversion")));
 		registerFakeLiquidRecipes(new ItemStack(Items.WATER_BUCKET), PotionTypes.HARMING, PotionTypes.STRONG_HARMING, new ItemStack(SCContent.fWaterBucket));
 		registerFakeLiquidRecipes(new ItemStack(Items.LAVA_BUCKET), PotionTypes.HEALING, PotionTypes.STRONG_HEALING, new ItemStack(SCContent.fLavaBucket));
@@ -932,6 +933,7 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.sonicSecuritySystemItem, 0, "sonic_security_system");
 		registerInventoryModel(SCContent.portableTunePlayer, 0, "portable_tune_player");
 		registerInventoryModel(SCContent.keycardHolder, 0, "keycard_holder");
+		registerInventoryModel(SCContent.lens, 0, "lens");
 
 		//mines
 		registerInventoryModel(SCContent.mine, 0, "mine");

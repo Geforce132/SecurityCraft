@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.screen.ScreenHandler;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -14,6 +16,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -46,6 +49,20 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	}
 
 	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		TileEntity be = world.getTileEntity(pos);
+
+		if (be instanceof ClaymoreBlockEntity && ((ClaymoreBlockEntity) be).isOwnedBy(player)) {
+			if (!world.isRemote)
+				player.openGui(SecurityCraft.instance, ScreenHandler.CLAYMORE, world, pos.getX(), pos.getY(), pos.getZ());
+
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if (placer instanceof EntityPlayer)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
@@ -73,9 +90,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
-			return;
-		else
+		if (world.getBlockState(pos.down()).getMaterial() == Material.AIR)
 			world.destroyBlock(pos, true);
 	}
 
@@ -96,8 +111,10 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof IModuleInventory)
-			((IModuleInventory) te).dropAllModules();
+		if (te instanceof ClaymoreBlockEntity) {
+			((ClaymoreBlockEntity) te).dropAllModules();
+			InventoryHelper.dropInventoryItems(world, pos, ((ClaymoreBlockEntity) te).getLensContainer());
+		}
 
 		super.breakBlock(world, pos, state);
 	}

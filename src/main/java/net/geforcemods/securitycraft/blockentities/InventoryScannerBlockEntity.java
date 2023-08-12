@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
@@ -13,6 +14,7 @@ import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.inventory.ExtractOnlyItemStackHandler;
+import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -20,6 +22,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,7 +37,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements IInventory, ITickable, ILockable {
+public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements IInventory, ITickable, ILockable, IInventoryChangedListener {
 	private BooleanOption horizontal = new BooleanOption("horizontal", false);
 	private BooleanOption solidifyField = new BooleanOption("solidifyField", false);
 	private DisabledOption disabled = new DisabledOption(false);
@@ -43,6 +46,11 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
 	private int cooldown;
+	private LensContainer lens = new LensContainer("", false, 1);
+
+	public InventoryScannerBlockEntity() {
+		lens.addInventoryChangeListener(this);
+	}
 
 	@Override
 	public void update() {
@@ -83,6 +91,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		}
 
 		cooldown = tag.getInteger("cooldown");
+		lens.setInventorySlotContents(0, new ItemStack(tag.getCompoundTag("lens")));
 	}
 
 	@Override
@@ -102,6 +111,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		tag.setTag("Items", list);
 		tag.setInteger("cooldown", cooldown);
+		tag.setTag("lens", lens.getStackInSlot(0).writeToNBT(new NBTTagCompound()));
+		lens.markDirty();
 		return tag;
 	}
 
@@ -196,6 +207,24 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		}
 
 		return stackToInsert;
+	}
+
+	public LensContainer getLensContainer() {
+		return lens;
+	}
+
+	@Override
+	public void onInventoryChanged(IInventory container) {
+		if (world == null)
+			return;
+
+		InventoryScannerBlockEntity otherScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos, world.getBlockState(pos), be -> {
+			if (be.getWorld().isRemote)
+				SecurityCraft.proxy.updateBlockColorAroundPosition(be.getPos());
+		});
+
+		if (otherScanner != null)
+			otherScanner.getLensContainer().setItemExclusively(0, lens.getStackInSlot(0));
 	}
 
 	@Override

@@ -118,6 +118,7 @@ import net.geforcemods.securitycraft.items.FakeLiquidBucketItem;
 import net.geforcemods.securitycraft.items.KeyPanelItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
+import net.geforcemods.securitycraft.items.LensItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.PortableTunePlayerItem;
@@ -369,5 +370,6 @@ public class SetupHandler {
 		SCContent.sonicSecuritySystemItem = new SonicSecuritySystemItem().setTranslationKey("securitycraft:sonic_security_system").setCreativeTab(SecurityCraft.tabSCTechnical);
 		SCContent.portableTunePlayer = new PortableTunePlayerItem().setRegistryName("portable_tune_player").setTranslationKey("securitycraft:portable_tune_player").setCreativeTab(SecurityCraft.tabSCTechnical);
 		SCContent.keycardHolder = new KeycardHolderItem().setRegistryName("keycard_holder").setTranslationKey("securitycraft:keycard_holder").setCreativeTab(SecurityCraft.tabSCTechnical);
+		SCContent.lens = (LensItem) new LensItem().setRegistryName("lens").setTranslationKey("securitycraft:lens").setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 }

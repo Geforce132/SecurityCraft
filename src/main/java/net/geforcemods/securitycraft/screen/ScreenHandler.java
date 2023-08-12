@@ -5,10 +5,12 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
+import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
@@ -18,6 +20,7 @@ import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
+import net.geforcemods.securitycraft.inventory.ClaymoreMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
@@ -26,8 +29,10 @@ import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
+import net.geforcemods.securitycraft.inventory.LaserBlockMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
+import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -67,6 +72,8 @@ public class ScreenHandler implements IGuiHandler {
 	public static final int RIFT_STABILIZER = 110;
 	public static final int ALARM = 111;
 	public static final int KEYCARD_HOLDER = 112;
+	public static final int LASER_BLOCK = 113;
+	public static final int CLAYMORE = 114;
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -147,6 +154,10 @@ public class ScreenHandler implements IGuiHandler {
 				if (!PlayerUtils.isHoldingItem(player, SCContent.keycardHolder, null))
 					return null;
 				return new KeycardHolderMenu(player.inventory, ItemContainer.keycardHolder(PlayerUtils.getSelectedItemStack(player, SCContent.keycardHolder)));
+			case LASER_BLOCK:
+				return new LaserBlockMenu((LaserBlockBlockEntity) te, player.inventory);
+			case CLAYMORE:
+				return new ClaymoreMenu((ClaymoreBlockEntity) te, player.inventory);
 			default:
 				return null;
 		}
@@ -209,7 +220,7 @@ public class ScreenHandler implements IGuiHandler {
 					return null;
 				return new KeyChangerScreen(player.inventory, te);
 			case TROPHY_SYSTEM_GUI_ID:
-				return new ToggleListScreen<>((TrophySystemBlockEntity) te, te.getDisplayName(), Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles"), Utils.localize("gui.securitycraft:trophy_system.moduleRequired"), Utils.localize("gui.securitycraft:trophy_system.toggle"));
+				return new TrophySystemScreen(new TrophySystemMenu((TrophySystemBlockEntity) te, player.inventory));
 			case CUSTOMIZE_BLOCK:
 				return new CustomizeBlockScreen(player.inventory, (IModuleInventory) te);
 			case DISGUISE_MODULE:
@@ -245,7 +256,7 @@ public class ScreenHandler implements IGuiHandler {
 					return null;
 				return new SSSItemScreen(PlayerUtils.getSelectedItemStack(player, SCContent.sonicSecuritySystemItem));
 			case RIFT_STABILIZER:
-				return new ToggleListScreen<>((RiftStabilizerBlockEntity) te, te.getDisplayName(), Utils.localize("gui.securitycraft:rift_stabilizer.teleportationTypes"), Utils.localize("gui.securitycraft:rift_stabilizer.moduleRequired"), Utils.localize("gui.securitycraft:rift_stabilizer.toggle"));
+				return new RiftStabilizerScreen((RiftStabilizerBlockEntity) te);
 			case ALARM:
 				return new AlarmScreen((AlarmBlockEntity) te, ((AlarmBlockEntity) te).getSound().getRegistryName());
 			case KEYCARD_HOLDER:
@@ -253,6 +264,11 @@ public class ScreenHandler implements IGuiHandler {
 
 				if (!keycardHolder.isEmpty())
 					return new ItemInventoryScreen.KeycardHolder(new KeycardHolderMenu(player.inventory, ItemContainer.keycardHolder(keycardHolder)), player.inventory, keycardHolder.getDisplayName());
+				return null;
+			case LASER_BLOCK:
+				return new LaserBlockScreen(new LaserBlockMenu((LaserBlockBlockEntity) te, player.inventory));
+			case CLAYMORE:
+				return new ClaymoreScreen(new ClaymoreMenu((ClaymoreBlockEntity) te, player.inventory));
 			default:
 				return null;
 		}
