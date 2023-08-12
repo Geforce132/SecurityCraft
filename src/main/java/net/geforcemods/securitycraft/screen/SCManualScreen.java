@@ -374,8 +374,10 @@ public class SCManualScreen extends Screen {
 			for (IRecipe<?> object : Minecraft.getInstance().level.getRecipeManager().getRecipes()) {
 				if (object instanceof ShapedRecipe) {
 					ShapedRecipe shapedRecipe = (ShapedRecipe) object;
+					ItemStack resultStack = shapedRecipe.getResultItem();
+					Item resultItem = resultStack.getItem();
 
-					if (!shapedRecipe.getResultItem().isEmpty() && shapedRecipe.getResultItem().getItem() == page.getItem()) {
+					if (resultItem == item && !(resultItem == SCContent.LENS.get() && SCContent.LENS.get().hasCustomColor(resultStack))) {
 						NonNullList<Ingredient> ingredients = shapedRecipe.getIngredients();
 						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(9, Ingredient.EMPTY);
 
@@ -390,7 +392,7 @@ public class SCManualScreen extends Screen {
 				else if (object instanceof ShapelessRecipe) {
 					ShapelessRecipe shapelessRecipe = (ShapelessRecipe) object;
 
-					if (!shapelessRecipe.getResultItem().isEmpty() && shapelessRecipe.getResultItem().getItem() == page.getItem()) {
+					if (shapelessRecipe.getResultItem().getItem() == page.getItem()) {
 						//don't show keycard reset recipes
 						if (shapelessRecipe.getId().getPath().endsWith("_reset"))
 							continue;

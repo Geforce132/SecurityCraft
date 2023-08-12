@@ -1962,7 +1962,7 @@ public class SCContent {
 	@HasManualPage
 	public static final RegistryObject<Item> KEYPAD_DOOR_ITEM = ITEMS.register("keypad_door_item", () -> new TallBlockItem(KEYPAD_DOOR.get(), itemProp(SecurityCraft.DECORATION_TAB)));
 	@HasManualPage
-	public static final RegistryObject<Item> LENS = ITEMS.register("lens", () -> new LensItem(itemProp(SecurityCraft.TECHNICAL_TAB)));
+	public static final RegistryObject<LensItem> LENS = ITEMS.register("lens", () -> new LensItem(itemProp(SecurityCraft.TECHNICAL_TAB)));
 	@HasManualPage
 	public static final RegistryObject<Item> LIMITED_USE_KEYCARD = ITEMS.register("limited_use_keycard", () -> new KeycardItem(itemProp(SecurityCraft.TECHNICAL_TAB), -1));
 	@HasManualPage
