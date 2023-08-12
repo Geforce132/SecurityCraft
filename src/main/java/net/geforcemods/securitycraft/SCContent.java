@@ -2422,7 +2422,7 @@ public class SCContent {
 	@HasManualPage
 	public static final RegistryObject<Item> KEYPAD_DOOR_ITEM = ITEMS.register("keypad_door_item", () -> new DoubleHighBlockItem(KEYPAD_DOOR.get(), itemProp()));
 	@HasManualPage
-	public static final RegistryObject<Item> LENS = ITEMS.register("lens", () -> new LensItem(itemProp()));
+	public static final RegistryObject<LensItem> LENS = ITEMS.register("lens", () -> new LensItem(itemProp()));
 	@HasManualPage
 	public static final RegistryObject<Item> LIMITED_USE_KEYCARD = ITEMS.register("limited_use_keycard", () -> new KeycardItem(itemProp(), -1));
 	@HasManualPage
