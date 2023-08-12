@@ -9,6 +9,7 @@
 - Fix: Blocks can be pushed into a sentry using a piston
 - Fix: Possible loss of data of passcode blocks
 - Fix: It's possible to scroll the Trophy System's list by clicking outside the list
+- Fix: The Universal Owner Changer cannot be put into a display case
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
