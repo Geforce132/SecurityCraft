@@ -116,7 +116,7 @@ public class ScreenHandler implements IGuiHandler {
 					return null;
 				return new GenericMenu(player.inventory, te);
 			case TROPHY_SYSTEM_GUI_ID:
-				return new GenericMenu(player.inventory, te);
+				return new TrophySystemMenu((TrophySystemBlockEntity) te, player.inventory);
 			case CUSTOMIZE_BLOCK:
 				return new CustomizeBlockMenu(player.inventory, (IModuleInventory) te);
 			case DISGUISE_MODULE:
