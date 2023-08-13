@@ -267,19 +267,23 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-		if (PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer())) {
+		EntityPlayer player = event.getEntityPlayer();
+
+		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			event.setCanceled(true);
 			return;
 		}
 
 		World world = event.getWorld();
+		BlockPos pos = event.getPos();
 		TileEntity te = world.getTileEntity(event.getPos());
 		IBlockState state = world.getBlockState(event.getPos());
 		Block block = state.getBlock();
+		EnumHand hand = event.getHand();
 
-		if (te instanceof ILockable && ((ILockable) te).isLocked() && ((ILockable) te).disableInteractionWhenLocked(world, event.getPos(), event.getEntityPlayer()) && !event.getEntityPlayer().isSneaking()) {
-			if (event.getHand() == EnumHand.MAIN_HAND)
-				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(block), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(block)), TextFormatting.DARK_RED, false);
+		if (te instanceof ILockable && ((ILockable) te).isLocked() && ((ILockable) te).disableInteractionWhenLocked(world, pos, player) && !player.isSneaking()) {
+			if (hand == EnumHand.MAIN_HAND)
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(block), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(block)), TextFormatting.DARK_RED, false);
 
 			event.setCanceled(true);
 			return;
@@ -290,12 +294,12 @@ public class SCEventHandler {
 			Owner owner = ownable.getOwner();
 
 			if (!owner.isValidated()) {
-				if (ownable.isOwnedBy(event.getEntityPlayer())) {
+				if (ownable.isOwnedBy(player)) {
 					owner.setValidated(true);
-					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(block.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:ownable.validate"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(block.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:ownable.validate"), TextFormatting.GREEN);
 				}
 				else
-					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(block.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:ownable.ownerNotValidated"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(block.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:ownable.ownerNotValidated"), TextFormatting.RED);
 
 				event.setCanceled(true);
 				event.setCancellationResult(EnumActionResult.SUCCESS);
@@ -306,16 +310,18 @@ public class SCEventHandler {
 		if (event.getItemStack().getItem() == Items.REDSTONE && te instanceof IEMPAffected && ((IEMPAffected) te).isShutDown()) {
 			((IEMPAffected) te).reactivate();
 
-			if (!event.getEntityPlayer().isCreative())
+			if (!player.isCreative())
 				event.getItemStack().shrink(1);
 
-			event.getEntityPlayer().swingArm(event.getHand());
+			player.swingArm(hand);
 			event.setCanceled(true);
 			event.setCancellationResult(EnumActionResult.SUCCESS);
 			return;
 		}
 
-		if (PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.keyPanel, event.getHand())) {
+		Item heldItem = player.getHeldItem(hand).getItem();
+
+		if (heldItem == SCContent.keyPanel) {
 			for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
 				if (pc.isValidStateForConversion(state)) {
 					event.setUseBlock(Result.DENY);
@@ -326,45 +332,45 @@ public class SCEventHandler {
 			return;
 		}
 
-		if (PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.codebreaker, event.getHand()) && handleCodebreaking(event)) {
+		if (heldItem == SCContent.codebreaker && handleCodebreaking(event)) {
 			event.setCanceled(true);
 			event.setCancellationResult(EnumActionResult.SUCCESS);
 			return;
 		}
 
-		if (PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.universalBlockModifier, event.getHand())) {
+		if (heldItem == SCContent.universalBlockModifier) {
 			if (te instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) te).isOpen() && ((DisplayCaseBlockEntity) te).getDisplayedStack().isEmpty()))
 				return;
 			else if (te instanceof IModuleInventory) {
 				event.setCanceled(true);
 				event.setCancellationResult(EnumActionResult.SUCCESS);
 
-				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(event.getEntityPlayer())) {
-					if (!(te.getBlockType() instanceof DisguisableBlock) || (((ItemBlock) ((DisguisableBlock) te.getBlockType()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof DisguisableBlock))
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize("item.securitycraft:universalBlockModifier.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())), TextFormatting.RED);
+				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player)) {
+					if (!(te.getBlockType() instanceof DisguisableBlock) || (((ItemBlock) ((DisguisableBlock) te.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalBlockModifier.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())), TextFormatting.RED);
 
 					return;
 				}
 
-				event.getEntityPlayer().openGui(SecurityCraft.instance, ScreenHandler.CUSTOMIZE_BLOCK, world, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
+				player.openGui(SecurityCraft.instance, ScreenHandler.CUSTOMIZE_BLOCK, world, pos.getX(), pos.getY(), pos.getZ());
 				return;
 			}
 		}
 
-		if (block instanceof DisplayCaseBlock && event.getEntity().isSneaking() && event.getEntityPlayer().getHeldItemMainhand().isEmpty() && !event.getEntityPlayer().getHeldItemOffhand().isEmpty()) {
+		if (block instanceof DisplayCaseBlock && event.getEntity().isSneaking() && player.getHeldItemMainhand().isEmpty() && !player.getHeldItemOffhand().isEmpty()) {
 			event.setUseBlock(Result.ALLOW);
 			event.setUseItem(Result.DENY);
 			return;
 		}
 
 		//all the sentry functionality for when the sentry is diguised
-		List<Sentry> sentries = world.getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(event.getPos()));
+		List<Sentry> sentries = world.getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(pos));
 
 		if (!sentries.isEmpty()) {
 			Sentry sentry = sentries.get(0);
 
-			if (event.getPos().equals(sentry.getPosition())) {
-				event.setCanceled(sentry.processInteract(event.getEntityPlayer(), event.getHand())); //cancel if an action was taken
+			if (pos.equals(sentry.getPosition())) {
+				event.setCanceled(sentry.processInteract(player, hand)); //cancel if an action was taken
 				event.setCancellationResult(EnumActionResult.SUCCESS);
 			}
 		}

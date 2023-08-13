@@ -4,13 +4,13 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -24,10 +24,12 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine, hand) || PlayerUtils.isHoldingItem(player, SCContent.universalOwnerChanger, hand))
+		Item heldItem = player.getHeldItem(hand).getItem();
+
+		if (heldItem == SCContent.remoteAccessMine || heldItem == SCContent.universalOwnerChanger)
 			return false;
 
-		if (isActive(world, pos) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters, hand)) {
+		if (isActive(world, pos) && isDefusable() && heldItem == SCContent.wireCutters) {
 			if (defuseMine(world, pos)) {
 				if (!player.isCreative())
 					player.getHeldItem(hand).damageItem(1, player);
@@ -38,7 +40,7 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 			return true;
 		}
 
-		if (!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand)) {
+		if (!isActive(world, pos) && heldItem == Items.FLINT_AND_STEEL) {
 			if (activateMine(world, pos)) {
 				if (!player.isCreative())
 					player.getHeldItem(hand).damageItem(1, player);

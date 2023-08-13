@@ -195,7 +195,7 @@ public class DisplayCaseBlock extends OwnableBlock {
 
 							activate(be);
 						}
-						else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
+						else if (player.getHeldItem(hand).getItem() != SCContent.codebreaker)
 							be.openPasscodeGUI(world, pos, player);
 					}
 				}

@@ -43,7 +43,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 					activate(state, world, pos, te.getSignalLength());
 					return true;
 				}
-				else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
+				else if (player.getHeldItem(hand).getItem() != SCContent.codebreaker)
 					te.openPasscodeGUI(world, pos, player);
 			}
 		}

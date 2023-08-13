@@ -99,20 +99,20 @@ public class ScreenHandler implements IGuiHandler {
 			case IMS_GUI_ID:
 				return new GenericMenu(te);
 			case CAMERA_MONITOR_GUI_ID:
-				if (!PlayerUtils.isHoldingItem(player, SCContent.cameraMonitor, null))
+				if (PlayerUtils.getSelectedItemStack(player, SCContent.cameraMonitor).isEmpty())
 					return null;
 				return new GenericMenu(te);
 			case BRIEFCASE_CODE_SETUP_GUI_ID:
 			case BRIEFCASE_INSERT_CODE_GUI_ID:
-				if (!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
+				if (PlayerUtils.getSelectedItemStack(player, SCContent.briefcase).isEmpty())
 					return null;
 				return new GenericMenu(te);
 			case BRIEFCASE_GUI_ID:
-				if (!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
+				if (PlayerUtils.getSelectedItemStack(player, SCContent.briefcase).isEmpty())
 					return null;
 				return new BriefcaseMenu(player.inventory, ItemContainer.briefcase(PlayerUtils.getSelectedItemStack(player, SCContent.briefcase)));
 			case KEY_CHANGER_GUI_ID:
-				if (te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger, null))
+				if (te == null || PlayerUtils.getSelectedItemStack(player, SCContent.universalKeyChanger).isEmpty())
 					return null;
 				return new GenericMenu(te);
 			case TROPHY_SYSTEM_GUI_ID:
@@ -151,7 +151,7 @@ public class ScreenHandler implements IGuiHandler {
 			case ALARM:
 				return new GenericMenu(te);
 			case KEYCARD_HOLDER:
-				if (!PlayerUtils.isHoldingItem(player, SCContent.keycardHolder, null))
+				if (PlayerUtils.getSelectedItemStack(player, SCContent.keycardHolder).isEmpty())
 					return null;
 				return new KeycardHolderMenu(player.inventory, ItemContainer.keycardHolder(PlayerUtils.getSelectedItemStack(player, SCContent.keycardHolder)));
 			case LASER_BLOCK:
@@ -171,12 +171,12 @@ public class ScreenHandler implements IGuiHandler {
 			case KEYCARD_READER_ID:
 				return new KeycardReaderScreen(player.inventory, (KeycardReaderBlockEntity) te);
 			case MRAT_MENU_ID:
-				if (PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine, null))
+				if (!PlayerUtils.getSelectedItemStack(player, SCContent.remoteAccessMine).isEmpty())
 					return new MineRemoteAccessToolScreen(PlayerUtils.getSelectedItemStack(player, SCContent.remoteAccessMine));
 				else
 					return null;
 			case SRAT_MENU_ID:
-				if (PlayerUtils.isHoldingItem(player, SCContent.remoteAccessSentry, null))
+				if (!PlayerUtils.getSelectedItemStack(player, SCContent.remoteAccessSentry).isEmpty())
 					return new SentryRemoteAccessToolScreen(PlayerUtils.getSelectedItemStack(player, SCContent.remoteAccessSentry), x);
 				else
 					return null;
@@ -193,7 +193,7 @@ public class ScreenHandler implements IGuiHandler {
 			case IMS_GUI_ID:
 				return new IMSScreen((IMSBlockEntity) te);
 			case CAMERA_MONITOR_GUI_ID:
-				if (!PlayerUtils.isHoldingItem(player, SCContent.cameraMonitor, null))
+				if (PlayerUtils.getSelectedItemStack(player, SCContent.cameraMonitor).isEmpty())
 					return null;
 				return new CameraMonitorScreen(player.inventory, (CameraMonitorItem) PlayerUtils.getSelectedItemStack(player.inventory, SCContent.cameraMonitor).getItem(), PlayerUtils.getSelectedItemStack(player.inventory, SCContent.cameraMonitor).getTagCompound());
 			case BRIEFCASE_CODE_SETUP_GUI_ID:
@@ -216,7 +216,7 @@ public class ScreenHandler implements IGuiHandler {
 				else
 					return null;
 			case KEY_CHANGER_GUI_ID:
-				if (te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger, null))
+				if (te == null || PlayerUtils.getSelectedItemStack(player, SCContent.universalKeyChanger).isEmpty())
 					return null;
 				return new KeyChangerScreen(te);
 			case TROPHY_SYSTEM_GUI_ID:
@@ -232,7 +232,7 @@ public class ScreenHandler implements IGuiHandler {
 				boolean isLvl1 = player.getHeldItemMainhand().getItem() == SCContent.universalBlockReinforcerLvL1;
 				return new BlockReinforcerScreen(new BlockReinforcerMenu(player, player.inventory, isLvl1), isLvl1);
 			case MODULES:
-				if (PlayerUtils.isHoldingItem(player, SCContent.allowlistModule, null) || PlayerUtils.isHoldingItem(player, SCContent.denylistModule, null))
+				if (!PlayerUtils.getSelectedItemStack(player, SCContent.allowlistModule).isEmpty() || !PlayerUtils.getSelectedItemStack(player, SCContent.denylistModule).isEmpty())
 					return new EditModuleScreen(player.getHeldItemMainhand(), te);
 				return null;
 			case BLOCK_POCKET_MANAGER:
@@ -252,7 +252,7 @@ public class ScreenHandler implements IGuiHandler {
 					return new BlockChangeDetectorScreen(player.inventory, (BlockChangeDetectorBlockEntity) te);
 				return null;
 			case SSS_ITEM:
-				if (!PlayerUtils.isHoldingItem(player, SCContent.sonicSecuritySystemItem, null))
+				if (PlayerUtils.getSelectedItemStack(player, SCContent.sonicSecuritySystemItem).isEmpty())
 					return null;
 				return new SSSItemScreen(PlayerUtils.getSelectedItemStack(player, SCContent.sonicSecuritySystemItem));
 			case RIFT_STABILIZER:

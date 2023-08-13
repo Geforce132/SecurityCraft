@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.IBlockWithNoDrops;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -20,6 +19,7 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -55,20 +55,23 @@ public class TrackMineBlock extends BlockRail implements IExplosive, ITileEntity
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine, hand))
+		ItemStack heldStack = player.getHeldItem(hand);
+		Item heldItem = heldStack.getItem();
+
+		if (heldItem == SCContent.remoteAccessMine)
 			return false;
 
-		if (isActive(world, pos) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters, hand) && defuseMine(world, pos)) {
+		if (isActive(world, pos) && isDefusable() && heldItem == SCContent.wireCutters && defuseMine(world, pos)) {
 			if (!player.isCreative())
-				player.getHeldItem(hand).damageItem(1, player);
+				heldStack.damageItem(1, player);
 
 			world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			return true;
 		}
 
-		if (!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand) && activateMine(world, pos)) {
+		if (!isActive(world, pos) && heldItem == Items.FLINT_AND_STEEL && activateMine(world, pos)) {
 			if (!player.isCreative())
-				player.getHeldItem(hand).damageItem(1, player);
+				heldStack.damageItem(1, player);
 
 			world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			return true;

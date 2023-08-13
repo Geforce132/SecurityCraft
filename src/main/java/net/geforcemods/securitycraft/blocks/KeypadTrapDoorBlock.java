@@ -53,7 +53,7 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 
 					activate(state, world, pos, be.getSignalLength());
 				}
-				else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
+				else if (player.getHeldItem(hand).getItem() != SCContent.codebreaker)
 					be.openPasscodeGUI(world, pos, player);
 			}
 		}

@@ -26,7 +26,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
@@ -118,28 +117,6 @@ public class PlayerUtils {
 				.appendSibling(new TextComponentString(": "))
 				.appendSibling(ForgeHooks.newChatWithLinks(link)));
 		//@formatter:on
-	}
-
-	/**
-	 * Returns true if the player is holding the given item.
-	 *
-	 * @param player The player that is checked for the item
-	 * @param item The item that is checked
-	 * @param hand The hand in which the item should be; if hand is null, both hands are checked
-	 * @return true if the item was found in the mainhand or offhand, or if no item was found and item was null
-	 */
-	public static boolean isHoldingItem(EntityPlayer player, Item item, EnumHand hand) {
-		if (hand != EnumHand.OFF_HAND && !player.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
-			if (player.getHeldItem(EnumHand.MAIN_HAND).getItem() == item)
-				return true;
-		}
-
-		if (hand != EnumHand.MAIN_HAND && !player.getHeldItem(EnumHand.OFF_HAND).isEmpty()) {
-			if (player.getHeldItem(EnumHand.OFF_HAND).getItem() == item)
-				return true;
-		}
-
-		return item == null;
 	}
 
 	/**

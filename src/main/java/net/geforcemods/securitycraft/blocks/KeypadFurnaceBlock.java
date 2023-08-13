@@ -124,7 +124,7 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 
 					activate(state, world, pos, player);
 				}
-				else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
+				else if (player.getHeldItem(hand).getItem() != SCContent.codebreaker)
 					te.openPasscodeGUI(world, pos, player);
 			}
 		}

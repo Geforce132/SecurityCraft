@@ -130,7 +130,7 @@ public class KeypadChestBlock extends OwnableBlock {
 
 					activate(world, pos, player);
 				}
-				else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
+				else if (player.getHeldItem(hand).getItem() != SCContent.codebreaker)
 					te.openPasscodeGUI(world, pos, player);
 			}
 		}
