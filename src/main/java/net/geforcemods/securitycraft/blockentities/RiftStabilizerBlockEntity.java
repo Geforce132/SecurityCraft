@@ -168,7 +168,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 		RiftStabilizerBlockEntity connectedBlockEntity = RiftStabilizerBlock.getConnectedBlockEntity(level, worldPosition);
 
-		if (connectedBlockEntity != null && toggled ? !connectedBlockEntity.isModuleEnabled(module) : !connectedBlockEntity.hasModule(module))
+		if (connectedBlockEntity != null && (toggled ? !connectedBlockEntity.isModuleEnabled(module) : !connectedBlockEntity.hasModule(module)))
 			connectedBlockEntity.insertModule(stack, toggled);
 
 		if (module == ModuleType.DISGUISE) {
@@ -185,7 +185,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 		RiftStabilizerBlockEntity connectedBlockEntity = RiftStabilizerBlock.getConnectedBlockEntity(level, worldPosition);
 
-		if (connectedBlockEntity != null && toggled ? connectedBlockEntity.isModuleEnabled(module) : connectedBlockEntity.hasModule(module))
+		if (connectedBlockEntity != null && (toggled ? connectedBlockEntity.isModuleEnabled(module) : connectedBlockEntity.hasModule(module)))
 			connectedBlockEntity.removeModule(module, toggled);
 
 		if (module == ModuleType.DISGUISE) {
