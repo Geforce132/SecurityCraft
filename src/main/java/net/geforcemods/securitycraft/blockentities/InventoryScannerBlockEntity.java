@@ -331,7 +331,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-		if (connectedScanner != null && toggled ? !connectedScanner.isModuleEnabled(module) : !connectedScanner.hasModule(module))
+		if (connectedScanner != null && (toggled ? !connectedScanner.isModuleEnabled(module) : !connectedScanner.hasModule(module)))
 			connectedScanner.insertModule(stack, toggled);
 
 		if (module == ModuleType.DISGUISE) {
@@ -348,7 +348,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-		if (connectedScanner != null && toggled ? connectedScanner.isModuleEnabled(module) : connectedScanner.hasModule(module))
+		if (connectedScanner != null && (toggled ? connectedScanner.isModuleEnabled(module) : connectedScanner.hasModule(module)))
 			connectedScanner.removeModule(module, toggled);
 
 		if (module == ModuleType.STORAGE) {
