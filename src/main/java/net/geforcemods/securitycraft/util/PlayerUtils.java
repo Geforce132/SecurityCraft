@@ -126,24 +126,15 @@ public class PlayerUtils {
 	}
 
 	/**
-	 * Returns the ItemStack of the given item the player is currently holding (both hands are checked).
+	 * Returns the ItemStack of the given item the player if they are currently holding it (both hands are checked).
 	 *
-	 * @param player The player holding the item
+	 * @param player The player to check
 	 * @param item The item type that should be searched for
-	 * @return The item stack if it has been found, ItemStack.EMPTY if not
+	 * @return The ItemStack whose item matches the given item, {@link ItemStack#EMPTY} if the player is not holding the item
 	 */
-	public static ItemStack getSelectedItemStack(Player player, Item item) {
-		return getSelectedItemStack(player.getInventory(), item);
-	}
+	public static ItemStack getItemStackFromAnyHand(Player player, Item item) {
+		Inventory inventory = player.getInventory();
 
-	/**
-	 * Returns the ItemStack of the given item the player is currently holding (both hands are checked).
-	 *
-	 * @param inventory The inventory that contains the item
-	 * @param item The item type that should be searched for
-	 * @return The respective item stack if it has been found, ItemStack.EMPTY if not
-	 */
-	public static ItemStack getSelectedItemStack(Inventory inventory, Item item) {
 		if (inventory.getSelected().is(item))
 			return inventory.getSelected();
 
