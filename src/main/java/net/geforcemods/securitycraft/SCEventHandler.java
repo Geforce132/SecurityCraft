@@ -33,7 +33,6 @@ import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -116,15 +115,17 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID)
 public class SCEventHandler {
-	public static HashMap<String, String> tipsWithLink = new HashMap<>();
-	private static final Integer NOTE_DELAY = 9;
+	public static final Map<String, String> TIPS_WITH_LINK = new HashMap<>();
 	public static final Map<EntityPlayer, MutablePair<Integer, Deque<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
+	private static final Integer NOTE_DELAY = 9;
 
 	static {
-		tipsWithLink.put("patreon", "https://www.patreon.com/Geforce");
-		tipsWithLink.put("discord", "https://discord.gg/U8DvBAW");
-		tipsWithLink.put("outdated", "https://www.curseforge.com/minecraft/mc-mods/security-craft/files/all");
+		TIPS_WITH_LINK.put("patreon", "https://www.patreon.com/Geforce");
+		TIPS_WITH_LINK.put("discord", "https://discord.gg/U8DvBAW");
+		TIPS_WITH_LINK.put("outdated", "https://www.curseforge.com/minecraft/mc-mods/security-craft/files/all");
 	}
+
+	private SCEventHandler() {}
 
 	@SubscribeEvent
 	public static void onServerTick(ServerTickEvent event) {
@@ -180,8 +181,8 @@ public class SCEventHandler {
 					.appendSibling(Utils.localize(tipKey));
 			//@formatter:on
 
-			if (tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-				message.appendSibling(new TextComponentString(" ")).appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+			if (TIPS_WITH_LINK.containsKey(tipKey.split("\\.")[2]))
+				message.appendSibling(new TextComponentString(" ")).appendSibling(ForgeHooks.newChatWithLinks(TIPS_WITH_LINK.get(tipKey.split("\\.")[2])));
 
 			event.player.sendMessage(message);
 		}
@@ -254,15 +255,13 @@ public class SCEventHandler {
 		ItemStack stack = event.getItemStack();
 		Item item = stack.getItem();
 
-		if (!stack.isEmpty() && item != SCContent.adminTool && item != SCContent.codebreaker && item != SCContent.universalBlockRemover && item != SCContent.universalBlockModifier && item != SCContent.universalKeyChanger && item != SCContent.universalOwnerChanger && !(item instanceof ModuleItem)) {
-			if (!(item instanceof ItemBlock)) {
-				Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
+		if (!stack.isEmpty() && !(item instanceof ItemBlock) && item != SCContent.adminTool && item != SCContent.codebreaker && item != SCContent.universalBlockRemover && item != SCContent.universalBlockModifier && item != SCContent.universalKeyChanger && item != SCContent.universalOwnerChanger && !(item instanceof ModuleItem)) {
+			Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
 
-				if (block == SCContent.keypadDoor)
-					event.setUseItem(Result.DENY);
-				else if (block == SCContent.reinforcedDoor || block == SCContent.reinforcedIronTrapdoor || block == SCContent.scannerDoor)
-					event.setCanceled(true);
-			}
+			if (block == SCContent.keypadDoor)
+				event.setUseItem(Result.DENY);
+			else if (block == SCContent.reinforcedDoor || block == SCContent.reinforcedIronTrapdoor || block == SCContent.scannerDoor)
+				event.setCanceled(true);
 		}
 	}
 
@@ -278,14 +277,12 @@ public class SCEventHandler {
 		IBlockState state = world.getBlockState(event.getPos());
 		Block block = state.getBlock();
 
-		if (te instanceof ILockable && ((ILockable) te).isLocked() && ((ILockable) te).disableInteractionWhenLocked(world, event.getPos(), event.getEntityPlayer())) {
-			if (!event.getEntityPlayer().isSneaking()) {
-				if (event.getHand() == EnumHand.MAIN_HAND)
-					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(block), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(block)), TextFormatting.DARK_RED, false);
+		if (te instanceof ILockable && ((ILockable) te).isLocked() && ((ILockable) te).disableInteractionWhenLocked(world, event.getPos(), event.getEntityPlayer()) && !event.getEntityPlayer().isSneaking()) {
+			if (event.getHand() == EnumHand.MAIN_HAND)
+				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(block), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(block)), TextFormatting.DARK_RED, false);
 
-				event.setCanceled(true);
-				return;
-			}
+			event.setCanceled(true);
+			return;
 		}
 
 		if (te instanceof IOwnable) {
@@ -674,15 +671,8 @@ public class SCEventHandler {
 			}
 			// If the SSS is active, check to see if the note being played matches the saved combination.
 			// If so, toggle its redstone power output on
-			else if (te.listenToNote(vanillaNoteId, instrumentName)) {
-				te.correctTuneWasPlayed = true;
-				te.powerCooldown = te.signalLength.get();
-
-				if (te.isModuleEnabled(ModuleType.REDSTONE)) {
-					world.setBlockState(te.getPos(), te.getWorld().getBlockState(te.getPos()).withProperty(SonicSecuritySystemBlock.POWERED, true));
-					BlockUtils.updateIndirectNeighbors(world, te.getPos(), SCContent.sonicSecuritySystem, EnumFacing.DOWN);
-				}
-			}
+			else
+				te.listenToNote(vanillaNoteId, instrumentName);
 		}
 	}
 

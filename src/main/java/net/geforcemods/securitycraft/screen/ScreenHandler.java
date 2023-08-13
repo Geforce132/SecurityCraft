@@ -83,30 +83,30 @@ public class ScreenHandler implements IGuiHandler {
 			case KEYCARD_READER_ID:
 				return new KeycardReaderMenu(player.inventory, (KeycardReaderBlockEntity) te);
 			case MRAT_MENU_ID:
-				return new GenericMenu(player.inventory, te);
+				return new GenericMenu(te);
 			case SRAT_MENU_ID:
-				return new GenericMenu(player.inventory, te);
+				return new GenericMenu(te);
 			case INVENTORY_SCANNER_GUI_ID:
 				return new InventoryScannerMenu(player.inventory, (InventoryScannerBlockEntity) te);
 			case USERNAME_LOGGER_GUI_ID:
-				return new GenericMenu(player.inventory, te);
+				return new GenericMenu(te);
 			case KEYPAD_FURNACE_GUI_ID:
 				return new KeypadFurnaceMenu(player.inventory, (KeypadFurnaceBlockEntity) te);
 			case SETUP_PASSCODE_ID:
-				return new GenericMenu(player.inventory, te);
+				return new GenericMenu(te);
 			case INSERT_PASSCODE_ID:
-				return new GenericMenu(player.inventory, te);
+				return new GenericMenu(te);
 			case IMS_GUI_ID:
-				return new GenericMenu(player.inventory, te);
+				return new GenericMenu(te);
 			case CAMERA_MONITOR_GUI_ID:
 				if (!PlayerUtils.isHoldingItem(player, SCContent.cameraMonitor, null))
 					return null;
-				return new GenericMenu(player.inventory, te);
+				return new GenericMenu(te);
 			case BRIEFCASE_CODE_SETUP_GUI_ID:
 			case BRIEFCASE_INSERT_CODE_GUI_ID:
 				if (!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
 					return null;
-				return new GenericMenu(player.inventory, te);
+				return new GenericMenu(te);
 			case BRIEFCASE_GUI_ID:
 				if (!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
 					return null;
@@ -114,7 +114,7 @@ public class ScreenHandler implements IGuiHandler {
 			case KEY_CHANGER_GUI_ID:
 				if (te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger, null))
 					return null;
-				return new GenericMenu(player.inventory, te);
+				return new GenericMenu(te);
 			case TROPHY_SYSTEM_GUI_ID:
 				return new TrophySystemMenu((TrophySystemBlockEntity) te, player.inventory);
 			case CUSTOMIZE_BLOCK:
@@ -127,7 +127,7 @@ public class ScreenHandler implements IGuiHandler {
 			case BLOCK_REINFORCER:
 				return new BlockReinforcerMenu(player, player.inventory, player.getHeldItemMainhand().getItem() == SCContent.universalBlockReinforcerLvL1);
 			case MODULES:
-				return new GenericMenu(player.inventory, te);
+				return new GenericMenu(te);
 			case BLOCK_POCKET_MANAGER:
 				if (te instanceof BlockPocketManagerBlockEntity)
 					return new BlockPocketManagerMenu(player.inventory, (BlockPocketManagerBlockEntity) te);
@@ -138,18 +138,18 @@ public class ScreenHandler implements IGuiHandler {
 				return null;
 			case SONIC_SECURITY_SYSTEM:
 				if (te instanceof SonicSecuritySystemBlockEntity)
-					return new GenericMenu(player.inventory, te);
+					return new GenericMenu(te);
 				return null;
 			case BLOCK_CHANGE_DETECTOR:
 				if (te instanceof BlockChangeDetectorBlockEntity)
 					return new BlockChangeDetectorMenu(player.inventory, (BlockChangeDetectorBlockEntity) te);
 				return null;
 			case SSS_ITEM:
-				return new GenericMenu(player.inventory, te);
+				return new GenericMenu(te);
 			case RIFT_STABILIZER:
-				return new GenericMenu(player.inventory, te);
+				return new GenericMenu(te);
 			case ALARM:
-				return new GenericMenu(player.inventory, te);
+				return new GenericMenu(te);
 			case KEYCARD_HOLDER:
 				if (!PlayerUtils.isHoldingItem(player, SCContent.keycardHolder, null))
 					return null;
@@ -172,26 +172,26 @@ public class ScreenHandler implements IGuiHandler {
 				return new KeycardReaderScreen(player.inventory, (KeycardReaderBlockEntity) te);
 			case MRAT_MENU_ID:
 				if (PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine, null))
-					return new MineRemoteAccessToolScreen(player.inventory, PlayerUtils.getSelectedItemStack(player, SCContent.remoteAccessMine));
+					return new MineRemoteAccessToolScreen(PlayerUtils.getSelectedItemStack(player, SCContent.remoteAccessMine));
 				else
 					return null;
 			case SRAT_MENU_ID:
 				if (PlayerUtils.isHoldingItem(player, SCContent.remoteAccessSentry, null))
-					return new SentryRemoteAccessToolScreen(player.inventory, PlayerUtils.getSelectedItemStack(player, SCContent.remoteAccessSentry), x);
+					return new SentryRemoteAccessToolScreen(PlayerUtils.getSelectedItemStack(player, SCContent.remoteAccessSentry), x);
 				else
 					return null;
 			case INVENTORY_SCANNER_GUI_ID:
 				return new InventoryScannerScreen(player.inventory, (InventoryScannerBlockEntity) te, player);
 			case USERNAME_LOGGER_GUI_ID:
-				return new UsernameLoggerScreen(player.inventory, (UsernameLoggerBlockEntity) te);
+				return new UsernameLoggerScreen((UsernameLoggerBlockEntity) te);
 			case KEYPAD_FURNACE_GUI_ID:
 				return new KeypadFurnaceScreen(player.inventory, (KeypadFurnaceBlockEntity) te);
 			case SETUP_PASSCODE_ID:
-				return new SetPasscodeScreen(player.inventory, te);
+				return new SetPasscodeScreen(te);
 			case INSERT_PASSCODE_ID:
-				return new CheckPasscodeScreen(player.inventory, te);
+				return new CheckPasscodeScreen(te);
 			case IMS_GUI_ID:
-				return new IMSScreen(player.inventory, (IMSBlockEntity) te);
+				return new IMSScreen((IMSBlockEntity) te);
 			case CAMERA_MONITOR_GUI_ID:
 				if (!PlayerUtils.isHoldingItem(player, SCContent.cameraMonitor, null))
 					return null;
@@ -200,13 +200,13 @@ public class ScreenHandler implements IGuiHandler {
 				ItemStack briefcase0 = PlayerUtils.getSelectedItemStack(player, SCContent.briefcase);
 
 				if (!briefcase0.isEmpty())
-					return new BriefcasePasscodeScreen(player.inventory, true, briefcase0.getDisplayName() + " " + Utils.localize("gui.securitycraft:passcode.setup").getFormattedText());
+					return new BriefcasePasscodeScreen(true, briefcase0.getDisplayName() + " " + Utils.localize("gui.securitycraft:passcode.setup").getFormattedText());
 				return null;
 			case BRIEFCASE_INSERT_CODE_GUI_ID:
 				ItemStack briefcase1 = PlayerUtils.getSelectedItemStack(player, SCContent.briefcase);
 
 				if (!briefcase1.isEmpty())
-					return new BriefcasePasscodeScreen(player.inventory, false, briefcase1.getDisplayName());
+					return new BriefcasePasscodeScreen(false, briefcase1.getDisplayName());
 				return null;
 			case BRIEFCASE_GUI_ID:
 				ItemStack briefcase2 = PlayerUtils.getSelectedItemStack(player, SCContent.briefcase);
@@ -218,7 +218,7 @@ public class ScreenHandler implements IGuiHandler {
 			case KEY_CHANGER_GUI_ID:
 				if (te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger, null))
 					return null;
-				return new KeyChangerScreen(player.inventory, te);
+				return new KeyChangerScreen(te);
 			case TROPHY_SYSTEM_GUI_ID:
 				return new TrophySystemScreen(new TrophySystemMenu((TrophySystemBlockEntity) te, player.inventory));
 			case CUSTOMIZE_BLOCK:
@@ -233,7 +233,7 @@ public class ScreenHandler implements IGuiHandler {
 				return new BlockReinforcerScreen(new BlockReinforcerMenu(player, player.inventory, isLvl1), isLvl1);
 			case MODULES:
 				if (PlayerUtils.isHoldingItem(player, SCContent.allowlistModule, null) || PlayerUtils.isHoldingItem(player, SCContent.denylistModule, null))
-					return new EditModuleScreen(player.inventory, player.getHeldItemMainhand(), te);
+					return new EditModuleScreen(player.getHeldItemMainhand(), te);
 				return null;
 			case BLOCK_POCKET_MANAGER:
 				if (te instanceof BlockPocketManagerBlockEntity)
@@ -245,7 +245,7 @@ public class ScreenHandler implements IGuiHandler {
 				return null;
 			case SONIC_SECURITY_SYSTEM:
 				if (te instanceof SonicSecuritySystemBlockEntity)
-					return new SonicSecuritySystemScreen(player.inventory, (SonicSecuritySystemBlockEntity) te);
+					return new SonicSecuritySystemScreen((SonicSecuritySystemBlockEntity) te);
 				return null;
 			case BLOCK_CHANGE_DETECTOR:
 				if (te instanceof BlockChangeDetectorBlockEntity)

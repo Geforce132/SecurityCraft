@@ -95,7 +95,7 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 
 		previousPageButton = new ClickButton(0, xStart + 69, yStart + 125, 20, 20, "<", button -> turnPage(-1));
 		nextPageButton = new ClickButton(1, xStart + 126, yStart + 125, 20, 20, ">", button -> turnPage(1));
-		updateButtons(true, false);
+		updateButtons(true);
 		extraAreas.add(new Rectangle(xStart, 0, 193, new ScaledResolution(mc).getScaledHeight()));
 	}
 
@@ -142,7 +142,7 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 		fontRenderer.drawString(page + "/" + amountOfPages, xStart + 100, yStart + 130, 0x404040);
 	}
 
-	public void updateButtons(boolean updateInfo, boolean slotChanged) {
+	public void updateButtons(boolean updateInfo) {
 		if (updateInfo) {
 			properties = new ArrayList<>(state.getPropertyKeys());
 			amountOfPages = (int) Math.ceil(properties.size() / (float) PAGE_LENGTH);
@@ -199,7 +199,7 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 		else if (page < 1)
 			page = amountOfPages;
 
-		updateButtons(false, false);
+		updateButtons(false);
 	}
 
 	private void updateBlockEntityInfo(boolean reset) {
@@ -273,7 +273,7 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 			else
 				state = Blocks.AIR.getDefaultState();
 
-			updateButtons(true, true);
+			updateButtons(true);
 
 			if (menu != null)
 				menu.onStateChange(state);
@@ -385,8 +385,8 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 		}
 
 		@Override
-		public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default) {
-			return pos == BlockPos.ORIGIN ? state.isSideSolid(this, pos, side) : _default;
+		public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean defaultValue) {
+			return pos == BlockPos.ORIGIN ? state.isSideSolid(this, pos, side) : defaultValue;
 		}
 	}
 }

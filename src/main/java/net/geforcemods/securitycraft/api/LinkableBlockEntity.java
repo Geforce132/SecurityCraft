@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
 public abstract class LinkableBlockEntity extends CustomizableBlockEntity implements ITickable {
-	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
+	private List<LinkedBlock> linkedBlocks = new ArrayList<>();
 	private NBTTagList nbtTagStorage = null;
 
 	@Override
@@ -40,7 +41,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
-		if (hasWorld() && linkedBlocks.size() > 0) {
+		if (hasWorld() && !linkedBlocks.isEmpty()) {
 			NBTTagList tagList = new NBTTagList();
 
 			LevelUtils.addScheduledTask(world, () -> {
@@ -49,12 +50,12 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 					NBTTagCompound toAppend = new NBTTagCompound();
 
 					if (block != null) {
-						if (world.isBlockLoaded(block.blockPos) && !block.validate(world)) {
+						if (world.isBlockLoaded(block.getPos()) && !block.validate(world)) {
 							linkedBlocks.remove(i);
 							continue;
 						}
 
-						toAppend.setString("blockName", block.blockName);
+						toAppend.setString("blockName", block.getBlockName());
 						toAppend.setInteger("blockX", block.getX());
 						toAppend.setInteger("blockY", block.getY());
 						toAppend.setInteger("blockZ", block.getZ());
@@ -91,7 +92,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	@Override
 	public void invalidate() {
 		for (LinkedBlock block : linkedBlocks) {
-			if (world.isBlockLoaded(block.blockPos))
+			if (world.isBlockLoaded(block.getPos()))
 				LinkableBlockEntity.unlink(block.asTileEntity(world), this);
 		}
 	}
@@ -162,7 +163,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * @param excludedTEs TileEntityLinkables that shouldn't have onLinkedBlockAction() called on them, prevents infinite loops.
 	 *            Always add your tile entity to the list whenever using this method
 	 */
-	public void createLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedTEs) {
+	public void createLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedTEs) {
 		for (LinkedBlock block : linkedBlocks) {
 			LinkableBlockEntity linkedTe = block.asTileEntity(world);
 
@@ -184,5 +185,5 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 *            tile entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link multiple
 	 *            blocks (i.e: like Laser Blocks)
 	 */
-	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedTEs) {}
+	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedTEs) {}
 }

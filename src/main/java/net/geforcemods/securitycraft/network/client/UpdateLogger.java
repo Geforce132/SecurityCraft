@@ -57,13 +57,12 @@ public class UpdateLogger implements IMessage {
 		public IMessage onMessage(UpdateLogger message, MessageContext context) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				BlockPos pos = new BlockPos(message.x, message.y, message.z);
-				int i = message.i;
 				UsernameLoggerBlockEntity te = (UsernameLoggerBlockEntity) Minecraft.getMinecraft().player.world.getTileEntity(pos);
 
 				if (te != null) {
-					te.players[i] = message.username;
-					te.uuids[i] = message.uuid;
-					te.timestamps[i] = message.timestamp;
+					te.getPlayers()[message.i] = message.username;
+					te.getUuids()[message.i] = message.uuid;
+					te.getTimestamps()[message.i] = message.timestamp;
 				}
 			});
 

@@ -153,23 +153,21 @@ public class DisguisableBlock extends OwnableBlock implements IOverlayDisplay {
 			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR) {
 				// If this block has a disguise module added with a transparent block inserted.
 				if (!disguisedState.isOpaqueCube() || !disguisedState.isFullCube())
-					return checkForSideTransparency(world, world.getBlockState(pos.offset(side)), pos.offset(side), side);
+					return checkForSideTransparency(world, world.getBlockState(pos.offset(side)), pos.offset(side));
 			}
 			else {
 				Block blockToDisguiseAs = ((ModuleItem) disguiseModule.getItem()).getBlockAddon(disguiseModule.getTagCompound());
 
-				if (blockToDisguiseAs != null) {
-					// If this block has a disguise module added with a transparent block inserted.
-					if (!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube())
-						return checkForSideTransparency(world, world.getBlockState(pos.offset(side)), pos.offset(side), side);
-				}
+				// If this block has a disguise module added with a transparent block inserted.
+				if (blockToDisguiseAs != null && (!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube()))
+					return checkForSideTransparency(world, world.getBlockState(pos.offset(side)), pos.offset(side));
 			}
 		}
 
 		return true;
 	}
 
-	public boolean checkForSideTransparency(IBlockAccess world, IBlockState neighborState, BlockPos neighborPos, EnumFacing side) {
+	public boolean checkForSideTransparency(IBlockAccess world, IBlockState neighborState, BlockPos neighborPos) {
 		Block neighborBlock = neighborState.getBlock();
 
 		if (neighborBlock.isAir(neighborState, world, neighborPos))

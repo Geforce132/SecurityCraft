@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.geforcemods.securitycraft.screen.RiftStabilizerScreen;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.SoundEvents;
@@ -109,6 +109,6 @@ public class ToggleScrollList<T> extends GuiScrollingList {
 
 		mc.fontRenderer.drawString(name, left + listWidth / 2 - mc.fontRenderer.getStringWidth(name) / 2, slotTop, 0xC6C6C6);
 		mc.getTextureManager().bindTexture(BEACON_GUI);
-		RiftStabilizerScreen.drawScaledCustomSizeModalRect(left, slotTop - 3, te.getFilter(type) ? 88 : 110, 219, 21, 22, 14, 14, 256, 256);
+		Gui.drawScaledCustomSizeModalRect(left, slotTop - 3, te.getFilter(type) ? 88 : 110, 219, 21, 22, 14, 14, 256, 256);
 	}
 }

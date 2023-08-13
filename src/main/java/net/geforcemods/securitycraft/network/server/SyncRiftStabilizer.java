@@ -44,17 +44,15 @@ public class SyncRiftStabilizer implements IMessage {
 			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				if (message.teleportationType != null) {
 					World world = ctx.getServerHandler().player.world;
-					BlockPos pos = message.pos;
-					boolean allowed = message.allowed;
 
-					if (world.getTileEntity(pos) instanceof RiftStabilizerBlockEntity) {
-						RiftStabilizerBlockEntity te = ((RiftStabilizerBlockEntity) world.getTileEntity(pos));
+					if (world.getTileEntity(message.pos) instanceof RiftStabilizerBlockEntity) {
+						RiftStabilizerBlockEntity te = ((RiftStabilizerBlockEntity) world.getTileEntity(message.pos));
 
 						if (te.isOwnedBy(ctx.getServerHandler().player)) {
-							IBlockState state = world.getBlockState(pos);
+							IBlockState state = world.getBlockState(message.pos);
 
-							te.setFilter(message.teleportationType, allowed);
-							world.notifyBlockUpdate(pos, state, state, 2);
+							te.setFilter(message.teleportationType, message.allowed);
+							world.notifyBlockUpdate(message.pos, state, state, 2);
 						}
 					}
 				}

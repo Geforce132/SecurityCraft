@@ -41,10 +41,8 @@ public class KeycardHolderMenu extends Container {
 
 				slot.onSlotChange(slotStack, slotStackCopy);
 			}
-			else if (index >= CONTAINER_SIZE) {
-				if (!mergeItemStack(slotStack, 0, CONTAINER_SIZE, false))
-					return ItemStack.EMPTY;
-			}
+			else if (!mergeItemStack(slotStack, 0, CONTAINER_SIZE, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.putStack(ItemStack.EMPTY);

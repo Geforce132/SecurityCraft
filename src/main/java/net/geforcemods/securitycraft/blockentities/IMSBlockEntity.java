@@ -199,7 +199,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 		return ignoreOwner.get();
 	}
 
-	public static enum EnumIMSTargetingMode {
+	public enum EnumIMSTargetingMode {
 		PLAYERS,
 		PLAYERS_AND_MOBS,
 		MOBS;

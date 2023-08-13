@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive {
-	public ExplosiveBlock(Material material) {
+	protected ExplosiveBlock(Material material) {
 		super(material);
 	}
 

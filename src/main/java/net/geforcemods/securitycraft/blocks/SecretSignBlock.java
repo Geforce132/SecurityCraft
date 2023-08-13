@@ -122,15 +122,16 @@ public class SecretSignBlock extends OwnableBlock {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (world.isRemote)
-			return true;
-		else {
+		if (!world.isRemote) {
 			if (player.getHeldItem(hand).getItem() == SCContent.adminTool)
 				return SCContent.adminTool.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ) == EnumActionResult.SUCCESS;
 
 			TileEntity te = world.getTileEntity(pos);
-			return te instanceof SecretSignBlockEntity && ((SecretSignBlockEntity) te).isPlayerAllowedToSeeText(player) ? ((SecretSignBlockEntity) te).executeCommand(player) : false;
+
+			return te instanceof SecretSignBlockEntity && ((SecretSignBlockEntity) te).isPlayerAllowedToSeeText(player) && ((SecretSignBlockEntity) te).executeCommand(player);
 		}
+		else
+			return true;
 	}
 
 	@Override

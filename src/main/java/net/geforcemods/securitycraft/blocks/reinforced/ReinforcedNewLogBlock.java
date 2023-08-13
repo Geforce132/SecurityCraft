@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockLog.EnumAxis;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.properties.PropertyEnum;
@@ -25,17 +26,12 @@ public class ReinforcedNewLogBlock extends ReinforcedLogBlock implements IReinfo
 	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
 		EnumType type = state.getValue(VARIANT);
 
-		switch (state.getValue(LOG_AXIS)) {
-			default:
-				switch (type) {
-					default:
-						return MapColor.STONE;
-					case DARK_OAK:
-						return EnumType.DARK_OAK.getMapColor();
-				}
-			case Y:
-				return type.getMapColor();
-		}
+		if (state.getValue(LOG_AXIS) == EnumAxis.Y)
+			return type.getMapColor();
+		else if (type == EnumType.DARK_OAK)
+			return EnumType.DARK_OAK.getMapColor();
+		else
+			return MapColor.STONE;
 	}
 
 	@Override
@@ -113,5 +109,7 @@ public class ReinforcedNewLogBlock extends ReinforcedLogBlock implements IReinfo
 			}
 			catch (NoSuchFieldError e) {}
 		}
+
+		private SwitchEnumAxis() {}
 	}
 }

@@ -26,8 +26,10 @@ public interface ICustomizable {
 	 * @param tag The tag to read the options from
 	 */
 	public default void readOptions(NBTTagCompound tag) {
-		if (customOptions() != null) {
-			for (Option<?> option : customOptions()) {
+		Option<?>[] options = customOptions();
+
+		if (options.length > 0) {
+			for (Option<?> option : options) {
 				option.load(tag);
 			}
 		}
@@ -40,8 +42,10 @@ public interface ICustomizable {
 	 * @return The modified CompoundNBT
 	 */
 	public default NBTTagCompound writeOptions(NBTTagCompound tag) {
-		if (customOptions() != null) {
-			for (Option<?> option : customOptions()) {
+		Option<?>[] options = customOptions();
+
+		if (options.length > 0) {
+			for (Option<?> option : options) {
 				option.save(tag);
 			}
 		}

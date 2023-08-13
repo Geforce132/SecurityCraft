@@ -52,21 +52,20 @@ public class SyncBlockPocketManager implements IMessage {
 		@Override
 		public IMessage onMessage(SyncBlockPocketManager message, MessageContext ctx) {
 			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
-				BlockPos pos = message.pos;
 				EntityPlayer player = ctx.getServerHandler().player;
 				World world = player.world;
-				TileEntity te = world.getTileEntity(pos);
+				TileEntity te = world.getTileEntity(message.pos);
 
-				if (world.isBlockLoaded(pos) && te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
+				if (world.isBlockLoaded(message.pos) && te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
 					BlockPocketManagerBlockEntity bpm = (BlockPocketManagerBlockEntity) te;
-					IBlockState state = world.getBlockState(pos);
+					IBlockState state = world.getBlockState(message.pos);
 
-					bpm.size = message.size;
-					bpm.showOutline = message.showOutline;
-					bpm.autoBuildOffset = message.autoBuildOffset;
+					bpm.setSize(message.size);
+					bpm.setShowOutline(message.showOutline);
+					bpm.setAutoBuildOffset(message.autoBuildOffset);
 					bpm.setColor(message.color);
 					bpm.markDirty();
-					world.notifyBlockUpdate(pos, state, state, 2);
+					world.notifyBlockUpdate(message.pos, state, state, 2);
 				}
 			});
 

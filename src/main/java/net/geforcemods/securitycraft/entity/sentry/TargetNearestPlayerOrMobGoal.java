@@ -68,12 +68,10 @@ public class TargetNearestPlayerOrMobGoal extends EntityAINearestAttackableTarge
 					break;
 			}
 
-			if (i < list.size()) {
-				if (isCloseEnough(list.get(i))) {
-					targetEntity = list.get(i);
-					taskOwner.setAttackTarget(targetEntity);
-					return true;
-				}
+			if (i < list.size() && isCloseEnough(list.get(i))) {
+				targetEntity = list.get(i);
+				taskOwner.setAttackTarget(targetEntity);
+				return true;
 			}
 		}
 

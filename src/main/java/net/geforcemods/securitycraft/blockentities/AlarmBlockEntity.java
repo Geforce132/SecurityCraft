@@ -21,13 +21,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickable {
 	public static final int MAXIMUM_ALARM_SOUND_LENGTH = 3600; //one hour
-	public IntOption range = new IntOption(this::getPos, "range", 17, 0, ConfigHandler.maxAlarmRange, 1, true);
+	private IntOption range = new IntOption(this::getPos, "range", 17, 0, ConfigHandler.maxAlarmRange, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private BooleanOption resetCooldown = new BooleanOption("resetCooldown", true);
 	private int cooldown = 0;
@@ -53,10 +52,8 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 			return;
 		}
 
-		if (world.isRemote) {
-			if (soundPlaying && (isDisabled() || !isPowered))
-				stopPlayingSound();
-		}
+		if (world.isRemote && soundPlaying && (isDisabled() || !isPowered))
+			stopPlayingSound();
 
 		if (!isDisabled() && --cooldown <= 0) {
 			if (!world.isRemote && isPowered) {
@@ -182,8 +179,8 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 			stopPlayingSound();
 	}
 
-	public void playSound(World level, double x, double y, double z, SoundEvent sound, float volume, float pitch) {
-		AlarmSoundHandler.playSound(this, level, x, y, z, sound, SoundCategory.BLOCKS, volume, pitch);
+	public void playSound(double x, double y, double z, SoundEvent sound, float volume, float pitch) {
+		AlarmSoundHandler.playSound(this, x, y, z, sound, SoundCategory.BLOCKS, volume, pitch);
 		soundPlaying = true;
 	}
 

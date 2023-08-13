@@ -7,12 +7,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ItemRestrictedSlot extends Slot {
-	private final IInventory inventory;
 	private final Predicate<ItemStack> stackAllowed;
 
 	public ItemRestrictedSlot(IInventory inventory, int index, int xPos, int yPos, Predicate<ItemStack> stackAllowed) {
 		super(inventory, index, xPos, yPos);
-		this.inventory = inventory;
 		this.stackAllowed = stackAllowed;
 	}
 

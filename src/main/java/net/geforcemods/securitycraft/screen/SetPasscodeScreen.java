@@ -14,7 +14,6 @@ import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -31,8 +30,8 @@ public class SetPasscodeScreen extends GuiContainer implements GuiPageButtonList
 	private GuiTextField keycodeTextbox;
 	private GuiButton saveAndContinueButton;
 
-	public SetPasscodeScreen(InventoryPlayer inventoryPlayer, TileEntity tileEntity) {
-		super(new GenericMenu(inventoryPlayer, tileEntity));
+	public SetPasscodeScreen(TileEntity tileEntity) {
+		super(new GenericMenu(tileEntity));
 		this.tileEntity = tileEntity;
 		title = tileEntity.getDisplayName().getFormattedText();
 	}
@@ -41,7 +40,7 @@ public class SetPasscodeScreen extends GuiContainer implements GuiPageButtonList
 	public void initGui() {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:passcode.save").getFormattedText()));
+		saveAndContinueButton = addButton(new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:passcode.save").getFormattedText()));
 		saveAndContinueButton.enabled = false;
 
 		keycodeTextbox = new GuiTextField(1, fontRenderer, width / 2 - 37, height / 2 - 47, 77, 12);

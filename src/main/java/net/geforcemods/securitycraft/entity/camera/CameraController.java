@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.entity.camera;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -28,6 +29,8 @@ public class CameraController {
 	private static boolean wasLeftPressed;
 	private static boolean wasRightPressed;
 
+	private CameraController() {}
+
 	@SubscribeEvent
 	public static void onClientTick(ClientTickEvent event) {
 		Entity renderViewEntity = Minecraft.getMinecraft().getRenderViewEntity();
@@ -48,12 +51,12 @@ public class CameraController {
 				}
 
 				if (wasLeftPressed) {
-					moveViewHorizontally(cam, cam.rotationYaw, cam.rotationYaw - cam.cameraSpeed * cam.zoomAmount);
+					moveViewHorizontally(cam, cam.rotationYaw - ConfigHandler.cameraSpeed * cam.zoomAmount);
 					KeyBinding.setKeyBindState(options.keyBindLeft.getKeyCode(), true);
 				}
 
 				if (wasRightPressed) {
-					moveViewHorizontally(cam, cam.rotationYaw, cam.rotationYaw + cam.cameraSpeed * cam.zoomAmount);
+					moveViewHorizontally(cam, cam.rotationYaw + ConfigHandler.cameraSpeed * cam.zoomAmount);
 					KeyBinding.setKeyBindState(options.keyBindRight.getKeyCode(), true);
 				}
 
@@ -108,7 +111,7 @@ public class CameraController {
 	}
 
 	public static void moveViewUp(SecurityCamera cam) {
-		float next = cam.rotationPitch - cam.cameraSpeed * cam.zoomAmount;
+		float next = cam.rotationPitch - ConfigHandler.cameraSpeed * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
 			if (next > 40F)
@@ -119,7 +122,7 @@ public class CameraController {
 	}
 
 	public static void moveViewDown(SecurityCamera cam) {
-		float next = cam.rotationPitch + cam.cameraSpeed * cam.zoomAmount;
+		float next = cam.rotationPitch + ConfigHandler.cameraSpeed * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
 			if (next < 90F)
@@ -129,7 +132,7 @@ public class CameraController {
 			cam.setRotation(cam.rotationYaw, next);
 	}
 
-	public static void moveViewHorizontally(SecurityCamera cam, float yRot, float next) {
+	public static void moveViewHorizontally(SecurityCamera cam, float next) {
 		IBlockState state = cam.world.getBlockState(new BlockPos(cam.posX, cam.posY, cam.posZ));
 
 		if (state.getProperties().containsKey(SecurityCameraBlock.FACING)) {

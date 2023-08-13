@@ -90,15 +90,11 @@ public class MineRemoteAccessToolItem extends Item {
 			if (stack.getTagCompound().getIntArray("mine" + i).length > 0) {
 				int[] coords = stack.getTagCompound().getIntArray("mine" + i);
 
-				if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0) {
-					list.add("---");
-					continue;
-				}
-				else
+				if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0))
 					list.add(Utils.localize("tooltip.securitycraft:mine").getFormattedText() + " " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]);
 			}
-			else
-				list.add("---");
+
+			list.add("---");
 		}
 	}
 
@@ -122,8 +118,6 @@ public class MineRemoteAccessToolItem extends Item {
 				}
 			}
 		}
-
-		return;
 	}
 
 	private boolean isMineAdded(ItemStack stack, BlockPos pos) {

@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.Map;
 import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -51,7 +52,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
 	private long cooldownEnd = 0;
-	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
@@ -112,7 +113,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return (T) BlockUtils.getProtectedCapability(facing, this, () -> super.getCapability(capability, facing), () -> getInsertOnlyHandler());
+			return (T) BlockUtils.getProtectedCapability(facing, this, () -> super.getCapability(capability, facing), this::getInsertOnlyHandler);
 		else
 			return super.getCapability(capability, facing);
 	}
@@ -220,9 +221,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 		if (offsetTe != null) {
 			ModuleType moduleType = ((ModuleItem) module.getItem()).getModuleType();
 
-			if (toggled && offsetTe.isModuleEnabled(moduleType) != remove)
-				return;
-			else if (!toggled && offsetTe.hasModule(moduleType) != remove)
+			if ((toggled && offsetTe.isModuleEnabled(moduleType) != remove) || (!toggled && offsetTe.hasModule(moduleType) != remove))
 				return;
 
 			if (remove)

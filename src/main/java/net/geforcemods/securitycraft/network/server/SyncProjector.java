@@ -59,14 +59,13 @@ public class SyncProjector implements IMessage {
 		@Override
 		public IMessage onMessage(SyncProjector message, MessageContext ctx) {
 			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
-				BlockPos pos = message.pos;
 				EntityPlayer player = ctx.getServerHandler().player;
 				World world = player.world;
-				TileEntity te = world.getTileEntity(pos);
+				TileEntity te = world.getTileEntity(message.pos);
 
-				if (world.isBlockLoaded(pos) && te instanceof ProjectorBlockEntity && ((ProjectorBlockEntity) te).isOwnedBy(player)) {
+				if (world.isBlockLoaded(message.pos) && te instanceof ProjectorBlockEntity && ((ProjectorBlockEntity) te).isOwnedBy(player)) {
 					ProjectorBlockEntity projector = (ProjectorBlockEntity) te;
-					IBlockState state = world.getBlockState(pos);
+					IBlockState state = world.getBlockState(message.pos);
 
 					switch (message.dataType) {
 						case WIDTH:
@@ -91,7 +90,7 @@ public class SyncProjector implements IMessage {
 							break;
 					}
 
-					world.notifyBlockUpdate(pos, state, state, 2);
+					world.notifyBlockUpdate(message.pos, state, state, 2);
 				}
 			});
 

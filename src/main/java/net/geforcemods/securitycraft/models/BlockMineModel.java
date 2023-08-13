@@ -41,17 +41,17 @@ public class BlockMineModel implements IBakedModel {
 
 	@Override
 	public boolean isAmbientOcclusion() {
-		return defaultModel == null ? true : defaultModel.isAmbientOcclusion();
+		return defaultModel == null || defaultModel.isAmbientOcclusion();
 	}
 
 	@Override
 	public boolean isGui3d() {
-		return defaultModel == null ? false : defaultModel.isGui3d();
+		return defaultModel != null && defaultModel.isGui3d();
 	}
 
 	@Override
 	public boolean isBuiltInRenderer() {
-		return defaultModel == null ? false : defaultModel.isBuiltInRenderer();
+		return defaultModel != null && defaultModel.isBuiltInRenderer();
 	}
 
 	@Override

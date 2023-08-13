@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
-import net.geforcemods.securitycraft.blocks.SpecialDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.block.BlockDoor;
@@ -143,7 +142,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	public void setCustomName(String customName) {
 		super.setCustomName(customName);
 
-		if (world.getBlockState(pos).getValue(SpecialDoorBlock.HALF) == EnumDoorHalf.LOWER)
+		if (world.getBlockState(pos).getValue(BlockDoor.HALF) == EnumDoorHalf.LOWER)
 			((INameSetter) world.getTileEntity(pos.up())).setCustomName(customName);
 	}
 

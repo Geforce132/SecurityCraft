@@ -24,7 +24,7 @@ public class HoverChecker {
 
 	public boolean checkHover(int mouseX, int mouseY) {
 		if (button != null) {
-			if (!button.visible || (button instanceof Slider && ((Slider) button).dragging))
+			if (!button.visible || (button instanceof Slider && ((Slider) button).isDragging()))
 				return false;
 			else
 				return mouseX >= button.x && mouseX <= button.x + button.width && mouseY >= button.y && mouseY <= button.y + button.height;

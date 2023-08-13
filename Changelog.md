@@ -13,6 +13,7 @@
 - Fix: Placing, breaking, and interacting with blocks next to a Sentry is not possible
 - Fix: Possible loss of data of passcode blocks
 - Fix: The inventory scanner's redstone module tooltip shows up at the wrong time
+- Fix: Reinforced Nether Wart Block has the wrong sound
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 

@@ -37,7 +37,7 @@ public class ClearLoggerServer implements IMessage {
 				TileEntity te = player.world.getTileEntity(message.pos);
 
 				if (te instanceof UsernameLoggerBlockEntity && ((UsernameLoggerBlockEntity) te).isOwnedBy(player)) {
-					((UsernameLoggerBlockEntity) te).players = new String[100];
+					((UsernameLoggerBlockEntity) te).setPlayers(new String[100]);
 					((UsernameLoggerBlockEntity) te).sync();
 				}
 			});

@@ -144,7 +144,7 @@ public class PortableRadarBlock extends OwnableBlock {
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		boolean powered = meta % 2 == 1;
-		EnumFacing facing = EnumFacing.UP;
+		EnumFacing facing;
 
 		if (powered)
 			meta--;
@@ -165,6 +165,8 @@ public class PortableRadarBlock extends OwnableBlock {
 			case 10:
 				facing = EnumFacing.EAST;
 				break;
+			default:
+				facing = EnumFacing.UP;
 		}
 
 		return getDefaultState().withProperty(POWERED, powered).withProperty(FACING, facing);

@@ -119,10 +119,10 @@ public class ReinforcedFenceGateBlock extends BlockFenceGate implements ITileEnt
 	}
 
 	@Override
-	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int par5, int par6) {
-		super.eventReceived(state, world, pos, par5, par6);
-		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
+	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
+		TileEntity te = world.getTileEntity(pos);
+
+		return te != null && te.receiveClientEvent(id, param);
 	}
 
 	@Override

@@ -95,11 +95,7 @@ public class SentryRemoteAccessToolItem extends Item {
 			if (stack.getTagCompound().getIntArray("sentry" + i).length > 0) {
 				int[] coords = stack.getTagCompound().getIntArray("sentry" + i);
 
-				if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0) {
-					list.add("---");
-					continue;
-				}
-				else {
+				if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 					BlockPos pos = new BlockPos(coords[0], coords[1], coords[2]);
 					List<Sentry> sentries = Minecraft.getMinecraft().player.world.getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(pos));
 					String nameToShow;
@@ -112,8 +108,8 @@ public class SentryRemoteAccessToolItem extends Item {
 					list.add(nameToShow + ": " + Utils.getFormattedCoordinates(pos).setStyle(GRAY_STYLE).getFormattedText());
 				}
 			}
-			else
-				list.add("---");
+
+			list.add("---");
 		}
 	}
 
@@ -137,8 +133,6 @@ public class SentryRemoteAccessToolItem extends Item {
 				}
 			}
 		}
-
-		return;
 	}
 
 	private boolean isSentryAdded(ItemStack stack, BlockPos pos) {

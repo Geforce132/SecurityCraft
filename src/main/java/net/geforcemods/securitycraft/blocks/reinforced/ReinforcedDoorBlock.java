@@ -107,7 +107,8 @@ public class ReinforcedDoorBlock extends BlockDoor implements ITileEntityProvide
 				IBlockState secondDoorState = level.getBlockState(secondDoorPos).getActualState(access, secondDoorPos);
 
 				if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(HINGE) == EnumHingePosition.RIGHT && firstDoorState.getValue(HINGE) != secondDoorState.getValue(HINGE))) {
-					secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.offset(directionToCheck.getOpposite())).getActualState(access, secondDoorPos);
+					secondDoorPos = firstDoorPos.offset(directionToCheck.getOpposite());
+					secondDoorState = level.getBlockState(secondDoorPos).getActualState(access, secondDoorPos);
 
 					if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(HINGE) == EnumHingePosition.LEFT && firstDoorState.getValue(HINGE) != secondDoorState.getValue(HINGE)))
 						secondDoorPos = null;
@@ -156,9 +157,9 @@ public class ReinforcedDoorBlock extends BlockDoor implements ITileEntityProvide
 
 	@Override
 	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
-		super.eventReceived(state, world, pos, id, param);
-		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
+		TileEntity te = world.getTileEntity(pos);
+
+		return te != null && te.receiveClientEvent(id, param);
 	}
 
 	@Override

@@ -129,8 +129,8 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public ArrayList<CameraView> getCameraPositions(NBTTagCompound tag) {
-		ArrayList<CameraView> list = new ArrayList<>();
+	public List<CameraView> getCameraPositions(NBTTagCompound tag) {
+		List<CameraView> list = new ArrayList<>();
 
 		for (int i = 1; i <= 30; i++) {
 			if (tag != null && tag.hasKey("Camera" + i)) {

@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.screen.components;
 
-import java.io.IOException;
-
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -30,43 +28,43 @@ public abstract class ColorableScrollPanel {
 		}
 	}
 
+	public static final int SCROLL_BAR_WIDTH = 6;
+	public static final int BORDER = 4;
 	private final Minecraft client;
 	public final int listWidth;
 	public final int listHeight;
-	public int top;
-	public int bottom;
-	public int right;
-	public int left;
+	protected int top;
+	protected int bottom;
+	protected int right;
+	protected int left;
 	protected final int slotHeight;
-	public final int scrollBarWidth = 6;
-	public int scrollBarRight;
-	public int scrollBarLeft;
+	protected int scrollBarRight;
+	protected int scrollBarLeft;
 	protected final int viewHeight;
-	protected final int border = 4;
 	protected int mouseX;
 	protected int mouseY;
 	private float initialMouseClickY = -2.0F;
 	private float scrollFactor;
-	public float scrollDistance;
+	protected float scrollDistance;
 	protected int selectedIndex = -1;
 	private int headerHeight;
 	protected boolean captureMouse = true;
-	public boolean isHovering;
+	private boolean isHovering;
 	private Color backgroundTo;
 	private Color backgroundFrom;
 	private Color scrollbarBackground;
 	private Color scrollbarBorder;
 	private Color scrollbar;
 
-	public ColorableScrollPanel(Minecraft client, int width, int height, int top, int left) {
+	protected ColorableScrollPanel(Minecraft client, int width, int height, int top, int left) {
 		this(client, width, height, top, top + height, left, 12, new Color(0xC0, 0x10, 0x10, 0x10), new Color(0xD0, 0x10, 0x10, 0x10), new Color(0x00, 0x00, 0x00, 0xFF), new Color(0x80, 0x80, 0x80, 0xFF), new Color(0xC0, 0xC0, 0xC0, 0xFF));
 	}
 
-	public ColorableScrollPanel(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, Color backgroundFrom, Color backgroundTo) {
+	protected ColorableScrollPanel(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, Color backgroundFrom, Color backgroundTo) {
 		this(client, width, height, top, bottom, left, entryHeight, backgroundFrom, backgroundTo, new Color(0x00, 0x00, 0x00, 0xFF), new Color(0x80, 0x80, 0x80, 0xFF), new Color(0xC0, 0xC0, 0xC0, 0xFF));
 	}
 
-	public ColorableScrollPanel(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, Color backgroundFrom, Color backgroundTo, Color scrollbarBackground, Color scrollbarBorder, Color scrollbar) {
+	protected ColorableScrollPanel(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, Color backgroundFrom, Color backgroundTo, Color scrollbarBackground, Color scrollbarBorder, Color scrollbar) {
 		this.client = client;
 		listWidth = width;
 		listHeight = height;
@@ -81,7 +79,7 @@ public abstract class ColorableScrollPanel {
 		this.scrollbarBorder = scrollbarBorder;
 		this.scrollbar = scrollbar;
 		scrollBarRight = left + listWidth;
-		scrollBarLeft = scrollBarRight - scrollBarWidth;
+		scrollBarLeft = scrollBarRight - SCROLL_BAR_WIDTH;
 		viewHeight = bottom - top;
 	}
 
@@ -89,7 +87,7 @@ public abstract class ColorableScrollPanel {
 
 	public abstract void drawPanel(int entryRight, int relativeY, Tessellator tesselator, int mouseX, int mouseY);
 
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+	public void drawScreen(int mouseX, int mouseY) {
 		this.mouseX = mouseX;
 		this.mouseY = mouseY;
 		isHovering = mouseX >= left && mouseX <= left + listWidth && mouseY >= top && mouseY <= bottom;
@@ -99,17 +97,17 @@ public abstract class ColorableScrollPanel {
 		ScaledResolution res = new ScaledResolution(client);
 		double scaleW = client.displayWidth / res.getScaledWidth_double();
 		double scaleH = client.displayHeight / res.getScaledHeight_double();
-		int extraHeight = (getContentHeight() + border) - viewHeight;
+		int extraHeight = (getContentHeight() + BORDER) - viewHeight;
 
 		applyScrollLimits();
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		GL11.glScissor((int) (left * scaleW), (int) (client.displayHeight - (bottom * scaleH)), (int) (listWidth * scaleW), (int) (viewHeight * scaleH));
 		GuiUtils.drawGradientRect(0, left, top, right, bottom, backgroundFrom.combinedRGBA(), backgroundTo.combinedRGBA()); //list background
-		drawPanel(right, top + border - (int) scrollDistance, tess, mouseX, mouseY);
+		drawPanel(right, top + BORDER - (int) scrollDistance, tess, mouseX, mouseY);
 		GlStateManager.disableDepth();
 
 		if (extraHeight > 0) {
-			int height = getBarHeight(viewHeight, border);
+			int height = getBarHeight(viewHeight, BORDER);
 			int barTop = (int) scrollDistance * (viewHeight - height) / extraHeight + top;
 
 			if (barTop < top)
@@ -151,19 +149,19 @@ public abstract class ColorableScrollPanel {
 	}
 
 	public void applyScrollLimits() {
-		int listHeight = getContentHeight() - (bottom - top - 4);
+		int maxScrollDistance = getContentHeight() - (bottom - top - 4);
 
-		if (listHeight < 0)
-			listHeight /= 2;
+		if (maxScrollDistance < 0)
+			maxScrollDistance /= 2;
 
 		if (scrollDistance < 0.0F)
 			scrollDistance = 0.0F;
-		else if (scrollDistance > listHeight)
-			scrollDistance = listHeight;
+		else if (scrollDistance > maxScrollDistance)
+			scrollDistance = maxScrollDistance;
 	}
 
-	public void handleMouseInput(int mouseX, int mouseY) throws IOException {
-		if (isHovering) {
+	public void handleMouseInput(int mouseX, int mouseY) {
+		if (isHovering()) {
 			int scroll = Mouse.getEventDWheel();
 
 			if (scroll != 0)
@@ -172,24 +170,24 @@ public abstract class ColorableScrollPanel {
 
 		if (Mouse.isButtonDown(0)) {
 			if (initialMouseClickY == -1.0F) {
-				if (isHovering) {
+				if (isHovering()) {
 					int entryLeft = left;
 					int entryRight = left + listWidth - 7;
-					int mouseListY = mouseY - top - headerHeight + (int) scrollDistance - border;
+					int mouseListY = mouseY - top - headerHeight + (int) scrollDistance - BORDER;
 					int slotIndex = mouseListY / slotHeight;
 
 					if (mouseX >= entryLeft && mouseX <= entryRight && slotIndex >= 0 && mouseListY >= 0 && slotIndex < getSize())
 						elementClicked(mouseX, mouseY, slotIndex);
 
 					if (mouseX >= scrollBarLeft && mouseX <= scrollBarRight) {
-						int scrollHeight = getContentHeight() - viewHeight - border;
+						int scrollHeight = getContentHeight() - viewHeight - BORDER;
 
 						scrollFactor = -1.0F;
 
 						if (scrollHeight < 1)
 							scrollHeight = 1;
 
-						scrollFactor /= (float) (viewHeight - getBarHeight(viewHeight, border)) / (float) scrollHeight;
+						scrollFactor /= (float) (viewHeight - getBarHeight(viewHeight, BORDER)) / (float) scrollHeight;
 					}
 					else
 						scrollFactor = 1.0F;
@@ -222,5 +220,9 @@ public abstract class ColorableScrollPanel {
 			barHeight = viewHeight - border * 2;
 
 		return barHeight;
+	}
+
+	public boolean isHovering() {
+		return isHovering;
 	}
 }

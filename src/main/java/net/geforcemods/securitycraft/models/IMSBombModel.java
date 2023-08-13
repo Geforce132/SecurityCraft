@@ -8,7 +8,7 @@ import net.minecraft.entity.Entity;
  * IMSBomb - Geforce Created using Tabula 4.1.1
  */
 public class IMSBombModel extends ModelBase {
-	public ModelRenderer shape1;
+	public final ModelRenderer shape1;
 
 	public IMSBombModel() {
 		textureWidth = 24;

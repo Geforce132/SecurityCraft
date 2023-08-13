@@ -14,6 +14,6 @@ public class AllowlistOnlyBlockEntity extends CustomizableBlockEntity {
 
 	@Override
 	public Option<?>[] customOptions() {
-		return null;
+		return new Option[0];
 	}
 }

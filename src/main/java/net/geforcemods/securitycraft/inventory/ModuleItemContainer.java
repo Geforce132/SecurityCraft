@@ -12,9 +12,8 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
 
 public class ModuleItemContainer implements IInventory {
-	public final int size = 1;
 	private final ItemStack module;
-	public NonNullList<ItemStack> moduleInventory;
+	private NonNullList<ItemStack> moduleInventory;
 	private DisguiseModuleMenu container;
 
 	public ModuleItemContainer(ItemStack moduleItem) {
@@ -23,7 +22,7 @@ public class ModuleItemContainer implements IInventory {
 		if (!(moduleItem.getItem() instanceof ModuleItem))
 			return;
 
-		moduleInventory = NonNullList.withSize(size, ItemStack.EMPTY);
+		moduleInventory = NonNullList.withSize(1, ItemStack.EMPTY);
 
 		if (!module.hasTagCompound())
 			module.setTagCompound(new NBTTagCompound());
@@ -33,7 +32,7 @@ public class ModuleItemContainer implements IInventory {
 
 	@Override
 	public int getSizeInventory() {
-		return size;
+		return 1;
 	}
 
 	@Override

@@ -121,15 +121,11 @@ public class FakeLiquidBucketItem extends ItemBucket {
 
 	@Override
 	public boolean tryPlaceContainedLiquid(EntityPlayer player, World world, BlockPos pos) {
-		if (containedBlock == Blocks.AIR)
-			return false;
-		else {
+		if (containedBlock != Blocks.AIR) {
 			Material material = world.getBlockState(pos).getMaterial();
 			boolean flag = !material.isSolid();
 
-			if (!world.isAirBlock(pos) && !flag)
-				return false;
-			else {
+			if (world.isAirBlock(pos) || flag) {
 				if (world.provider.doesWaterVaporize() && containedBlock == SCContent.bogusWaterFlowing) {
 					int x = pos.getX();
 					int y = pos.getY();
@@ -151,5 +147,7 @@ public class FakeLiquidBucketItem extends ItemBucket {
 				return true;
 			}
 		}
+
+		return false;
 	}
 }

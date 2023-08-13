@@ -20,11 +20,9 @@ public class ItemBlockReinforcedSand extends ItemBlock {
 	public String getTranslationKey(ItemStack stack) {
 		String name = getTranslationKey();
 
-		switch (stack.getItemDamage()) {
-			case 1:
-				return name.replace("Sand", "RedSand");
-			default:
-				return name;
-		}
+		if (stack.getItemDamage() == 1)
+			return name.replace("Sand", "RedSand");
+		else
+			return name;
 	}
 }

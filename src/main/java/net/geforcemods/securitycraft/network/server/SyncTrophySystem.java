@@ -18,28 +18,28 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class SyncTrophySystem implements IMessage {
 	private BlockPos pos;
-	private String projectileType;
+	private String projectileTypeLocation;
 	private boolean allowed;
 
 	public SyncTrophySystem() {}
 
 	public SyncTrophySystem(BlockPos pos, EntityEntry projectileType, boolean allowed) {
 		this.pos = pos;
-		this.projectileType = projectileType.getRegistryName().toString();
+		this.projectileTypeLocation = projectileType.getRegistryName().toString();
 		this.allowed = allowed;
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
 		buf.writeLong(pos.toLong());
-		ByteBufUtils.writeUTF8String(buf, projectileType);
+		ByteBufUtils.writeUTF8String(buf, projectileTypeLocation);
 		buf.writeBoolean(allowed);
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		pos = BlockPos.fromLong(buf.readLong());
-		projectileType = ByteBufUtils.readUTF8String(buf);
+		projectileTypeLocation = ByteBufUtils.readUTF8String(buf);
 		allowed = buf.readBoolean();
 	}
 
@@ -47,20 +47,18 @@ public class SyncTrophySystem implements IMessage {
 		@Override
 		public IMessage onMessage(SyncTrophySystem message, MessageContext ctx) {
 			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
-				EntityEntry projectileType = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(message.projectileType));
+				EntityEntry projectileType = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(message.projectileTypeLocation));
 
 				if (projectileType != null) {
 					EntityPlayerMP player = ctx.getServerHandler().player;
 					World world = player.world;
-					BlockPos pos = message.pos;
-					boolean allowed = message.allowed;
-					TileEntity te = world.getTileEntity(pos);
+					TileEntity te = world.getTileEntity(message.pos);
 
 					if (te instanceof TrophySystemBlockEntity && ((TrophySystemBlockEntity) te).isOwnedBy(player)) {
-						IBlockState state = world.getBlockState(pos);
+						IBlockState state = world.getBlockState(message.pos);
 
-						((TrophySystemBlockEntity) te).setFilter(projectileType, allowed);
-						world.notifyBlockUpdate(pos, state, state, 2);
+						((TrophySystemBlockEntity) te).setFilter(projectileType, message.allowed);
+						world.notifyBlockUpdate(message.pos, state, state, 2);
 					}
 				}
 			});

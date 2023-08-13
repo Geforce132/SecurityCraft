@@ -51,7 +51,7 @@ public class ModuleItem extends Item {
 		this.guiToOpen = guiToOpen;
 
 		setMaxStackSize(1);
-		setCreativeTab(SecurityCraft.tabSCTechnical);
+		setCreativeTab(SecurityCraft.TECHNICAL_TAB);
 	}
 
 	@Override
@@ -181,7 +181,7 @@ public class ModuleItem extends Item {
 
 		//@formatter:off
 		return team != null && StreamSupport.stream(module.getTagCompound().getTagList("ListedTeams", Constants.NBT.TAG_STRING).spliterator(), false)
-				.filter(tag -> tag instanceof NBTTagString)
+				.filter(NBTTagString.class::isInstance)
 				.map(tag -> ((NBTTagString) tag).getString())
 				.anyMatch(team.getName()::equals);
 		//@formatter:on

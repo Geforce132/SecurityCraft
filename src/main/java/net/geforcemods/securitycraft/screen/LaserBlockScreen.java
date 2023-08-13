@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.EnumMap;
+import java.util.Map;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
@@ -23,7 +23,7 @@ public class LaserBlockScreen extends GuiContainer {
 	private final boolean hasSmartModule;
 	private String smartModuleTooltip, title;
 	private LaserBlockBlockEntity be;
-	private EnumMap<EnumFacing, Boolean> sideConfig;
+	private Map<EnumFacing, Boolean> sideConfig;
 
 	public LaserBlockScreen(LaserBlockMenu menu) {
 		super(menu);

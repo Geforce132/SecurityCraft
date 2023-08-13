@@ -64,9 +64,7 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 	private ChangeEntryList changeEntryList;
 	private StringHoverChecker[] hoverCheckers = new StringHoverChecker[5];
 	private StringHoverChecker smartModuleHoverChecker;
-	private ModeButton modeButton;
 	private CallbackCheckbox showAllCheckbox;
-	private CallbackCheckbox highlightInWorldCheckbox;
 	private ColorChooser colorChooser;
 	private final EnumDetectionMode previousMode;
 	private final boolean wasShowingHighlights;
@@ -99,14 +97,16 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 		boolean isOwner = be.isOwnedBy(mc.player);
 		int settingsX = guiLeft + 173;
 		GuiButton colorChooserButton;
+		ModeButton modeButton;
+		CallbackCheckbox highlightInWorldCheckbox;
 
-		addButton(modeButton = new ModeButton(1, settingsX, guiTop + 19, 20, 20, previousMode.ordinal(), EnumDetectionMode.values().length, b -> {
+		modeButton = addButton(new ModeButton(1, settingsX, guiTop + 19, 20, 20, previousMode.ordinal(), EnumDetectionMode.values().length, b -> {
 			be.setMode(EnumDetectionMode.values()[((ModeButton) b).getCurrentIndex()]);
 			changeEntryList.updateFilteredEntries();
 			be.updateFilteredEntries();
 		}));
-		addButton(showAllCheckbox = new CallbackCheckbox(2, settingsX, guiTop + 65, 20, 20, "", false, isSelected -> changeEntryList.updateFilteredEntries(), 0x404040));
-		addButton(highlightInWorldCheckbox = new CallbackCheckbox(3, settingsX, guiTop + 90, 20, 20, "", be.isShowingHighlights(), isSelected -> be.showHighlights(isSelected), 0x404040));
+		showAllCheckbox = addButton(new CallbackCheckbox(2, settingsX, guiTop + 65, 20, 20, "", false, isSelected -> changeEntryList.updateFilteredEntries(), 0x404040));
+		highlightInWorldCheckbox = addButton(new CallbackCheckbox(3, settingsX, guiTop + 90, 20, 20, "", be.isShowingHighlights(), isSelected -> be.showHighlights(isSelected), 0x404040));
 		colorChooser = new ColorChooser(settingsX, guiTop + 135, previousColor, SCContent.blockChangeDetector) {
 			@Override
 			public void onColorChange() {
@@ -114,7 +114,7 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 			}
 		};
 		colorChooser.setWorldAndResolution(mc, width, height);
-		addButton(colorChooserButton = new ColorChooserButton(4, settingsX, guiTop + 115, 20, 20, colorChooser));
+		colorChooserButton = addButton(new ColorChooserButton(4, settingsX, guiTop + 115, 20, 20, colorChooser));
 
 		hoverCheckers[0] = new StringHoverChecker(clearButton, Utils.localize("gui.securitycraft:editModule.clear").getFormattedText());
 		hoverCheckers[1] = new StringHoverChecker(modeButton, Arrays.stream(EnumDetectionMode.values()).map(e -> Utils.localize(e.getDescriptionId()).getFormattedText()).collect(Collectors.toList()));
@@ -190,7 +190,7 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
 		if (changeEntryList != null)
-			changeEntryList.drawScreen(mouseX, mouseY, partialTicks);
+			changeEntryList.drawScreen(mouseX, mouseY);
 
 		if (colorChooser != null)
 			colorChooser.drawScreen(mouseX, mouseY, partialTicks);
@@ -201,7 +201,7 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 		Slot hoveredSlot = getSlotUnderMouse();
 
 		//code copied from super implementation to prevent pressing the inventory key from closing the screen when the rgb hex text field is focused
-		if (keyCode == Keyboard.KEY_ESCAPE || (!colorChooser.rgbHexBox.isFocused() && mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode)))
+		if (keyCode == Keyboard.KEY_ESCAPE || (!colorChooser.getRgbHexBox().isFocused() && mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode)))
 			mc.player.closeScreen();
 
 		checkHotbarKeys(keyCode);
@@ -316,7 +316,7 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 		}
 
 		@Override
-		public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		public void drawScreen(int mouseX, int mouseY) {
 			int height = 0;
 
 			for (int i = 0; i < filteredEntries.size(); i++) {
@@ -328,7 +328,7 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 			}
 
 			applyScrollLimits();
-			super.drawScreen(mouseX, mouseY, partialTicks);
+			super.drawScreen(mouseX, mouseY);
 		}
 
 		@Override
@@ -420,7 +420,7 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 				}
 			}
 
-			return !(mouseY < top || mouseY > bottom || mouseX < right - scrollBarWidth || mouseX > right);
+			return !(mouseY < top || mouseY > bottom || mouseX < right - SCROLL_BAR_WIDTH || mouseX > right);
 		}
 
 		@Override

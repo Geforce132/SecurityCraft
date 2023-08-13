@@ -52,7 +52,6 @@ public class SetPasscode implements IMessage {
 		public IMessage onMessage(SetPasscode message, MessageContext ctx) {
 			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				BlockPos pos = new BlockPos(message.x, message.y, message.z);
-				String passcode = message.passcode;
 				EntityPlayer player = ctx.getServerHandler().player;
 				World world = player.world;
 				TileEntity tile = world.getTileEntity(pos);
@@ -60,12 +59,12 @@ public class SetPasscode implements IMessage {
 				if (tile instanceof IPasscodeProtected && (!(tile instanceof IOwnable) || ((IOwnable) tile).isOwnedBy(player))) {
 					IPasscodeProtected be = ((IPasscodeProtected) tile);
 
-					be.hashAndSetPasscode(passcode);
+					be.hashAndSetPasscode(message.passcode);
 
 					if (be instanceof KeypadChestBlockEntity)
-						checkAndUpdateAdjacentChest(((KeypadChestBlockEntity) be), world, pos, passcode, be.getSalt());
-                    else if (be instanceof KeypadDoorBlockEntity)
-				        checkAndUpdateAdjacentDoor(((KeypadDoorBlockEntity) be), world, pos, passcode, be.getSalt());
+						checkAndUpdateAdjacentChest(((KeypadChestBlockEntity) be), world, pos, message.passcode, be.getSalt());
+					else if (be instanceof KeypadDoorBlockEntity)
+						checkAndUpdateAdjacentDoor(((KeypadDoorBlockEntity) be), world, message.passcode, be.getSalt());
 				}
 			});
 
@@ -86,17 +85,17 @@ public class SetPasscode implements IMessage {
 				}
 			}
 		}
-	}
 
-	private static void checkAndUpdateAdjacentDoor(KeypadDoorBlockEntity be, World level, BlockPos pos, String codeToSet, byte[] salt) {
-		be.runForOtherHalf(otherBe -> {
-			BlockPos otherPos = otherBe.getPos();
-			IBlockState state = level.getBlockState(otherPos);
+		private void checkAndUpdateAdjacentDoor(KeypadDoorBlockEntity be, World level, String codeToSet, byte[] salt) {
+			be.runForOtherHalf(otherBe -> {
+				BlockPos otherPos = otherBe.getPos();
+				IBlockState state = level.getBlockState(otherPos);
 
-			if (be.getOwner().owns(otherBe)) {
-				otherBe.hashAndSetPasscode(codeToSet, salt);
-				level.notifyBlockUpdate(otherPos, state, state, 2);
-			}
-		});
+				if (be.getOwner().owns(otherBe)) {
+					otherBe.hashAndSetPasscode(codeToSet, salt);
+					level.notifyBlockUpdate(otherPos, state, state, 2);
+				}
+			});
+		}
 	}
 }

@@ -110,9 +110,9 @@ public class IronFenceBlock extends BlockFence implements ITileEntityProvider {
 
 	@Override
 	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int eventID, int eventParam) {
-		super.eventReceived(state, world, pos, eventID, eventParam);
-		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
+		TileEntity te = world.getTileEntity(pos);
+
+		return te != null && te.receiveClientEvent(eventID, eventParam);
 	}
 
 	@Override

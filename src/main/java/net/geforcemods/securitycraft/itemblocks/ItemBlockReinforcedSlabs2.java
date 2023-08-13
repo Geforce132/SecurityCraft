@@ -101,9 +101,9 @@ public class ItemBlockReinforcedSlabs2 extends ItemBlock {
 
 	private IBlockState getDoubleSlabBlock(Comparable<?> comparable) {
 		if (comparable == ReinforcedRedSandstoneAndPurpurSlabsBlock.EnumType.RED_SANDSTONE)
-			return makeState_Stone(ReinforcedRedSandstoneAndPurpurSlabsBlock.VARIANT, comparable);
+			return makeStateStone(ReinforcedRedSandstoneAndPurpurSlabsBlock.VARIANT, comparable);
 		else if (comparable == ReinforcedRedSandstoneAndPurpurSlabsBlock.EnumType.PURPUR)
-			return makeState_Stone(ReinforcedRedSandstoneAndPurpurSlabsBlock.VARIANT, comparable);
+			return makeStateStone(ReinforcedRedSandstoneAndPurpurSlabsBlock.VARIANT, comparable);
 		else
 			return null;
 	}
@@ -124,8 +124,8 @@ public class ItemBlockReinforcedSlabs2 extends ItemBlock {
 		}
 
 		pos = pos.offset(side);
-		IBlockState updatedState = world.getBlockState(pos);
-		return updatedState.getBlock() == singleSlab && type == updatedState.getValue(variantProperty) ? true : super.canPlaceBlockOnSide(world, originalPos, side, player, stack);
+		state = world.getBlockState(pos);
+		return state.getBlock() == singleSlab && type == state.getValue(variantProperty) || super.canPlaceBlockOnSide(world, originalPos, side, player, stack);
 	}
 
 	private boolean tryPlace(ItemStack stack, World world, EntityPlayer player, BlockPos pos, Object variantInStack) {
@@ -160,7 +160,7 @@ public class ItemBlockReinforcedSlabs2 extends ItemBlock {
 		return doubleSlab.getDefaultState().withProperty(property, (T) comparable);
 	}
 
-	protected <T extends Comparable<T>> IBlockState makeState_Stone(IProperty<T> property, Comparable<?> comparable) {
+	protected <T extends Comparable<T>> IBlockState makeStateStone(IProperty<T> property, Comparable<?> comparable) {
 		return SCContent.reinforcedDoubleStoneSlabs2.getDefaultState().withProperty(property, (T) comparable);
 	}
 }

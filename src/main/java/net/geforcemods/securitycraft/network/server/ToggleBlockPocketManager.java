@@ -50,7 +50,7 @@ public class ToggleBlockPocketManager implements IMessage {
 				TileEntity te = world.getTileEntity(message.pos);
 
 				if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
-					((BlockPocketManagerBlockEntity) te).size = message.size;
+					((BlockPocketManagerBlockEntity) te).setSize(message.size);
 
 					if (message.enabling)
 						((BlockPocketManagerBlockEntity) te).enableMultiblock();

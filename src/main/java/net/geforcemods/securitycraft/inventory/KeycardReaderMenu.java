@@ -18,7 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class KeycardReaderMenu extends Container {
 	private final InventoryBasic itemInventory = new InventoryBasic("", false, 1);
 	public final Slot keycardSlot;
-	public KeycardReaderBlockEntity te;
+	private KeycardReaderBlockEntity te;
 
 	public KeycardReaderMenu(InventoryPlayer inventory, KeycardReaderBlockEntity tile) {
 		te = tile;
@@ -109,9 +109,8 @@ public class KeycardReaderMenu extends Container {
 					return ItemStack.EMPTY;
 				slot.onSlotChange(slotStack, slotStackCopy);
 			}
-			else if (id < 36)
-				if (!mergeItemStack(slotStack, 36, 37, false))
-					return ItemStack.EMPTY;
+			else if (!mergeItemStack(slotStack, 36, 37, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.putStack(ItemStack.EMPTY);

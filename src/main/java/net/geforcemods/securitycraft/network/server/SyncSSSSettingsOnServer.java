@@ -49,9 +49,8 @@ public class SyncSSSSettingsOnServer implements IMessage {
 		@Override
 		public IMessage onMessage(SyncSSSSettingsOnServer message, MessageContext ctx) {
 			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
-				BlockPos pos = message.pos;
 				World world = ctx.getServerHandler().player.world;
-				TileEntity te = world.getTileEntity(pos);
+				TileEntity te = world.getTileEntity(message.pos);
 
 				if (te instanceof SonicSecuritySystemBlockEntity && ((SonicSecuritySystemBlockEntity) te).isOwnedBy(ctx.getServerHandler().player)) {
 					SonicSecuritySystemBlockEntity sss = (SonicSecuritySystemBlockEntity) te;

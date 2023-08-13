@@ -84,7 +84,7 @@ public class ReinforcedLapisAndCoalBlock extends OwnableBlock implements IOverla
 		return 2;
 	}
 
-	public static enum EnumType implements IStringSerializable {
+	public enum EnumType implements IStringSerializable {
 		LAPIS(0, "lapis", MapColor.LAPIS),
 		COAL(1, "coal", MapColor.BLACK);
 

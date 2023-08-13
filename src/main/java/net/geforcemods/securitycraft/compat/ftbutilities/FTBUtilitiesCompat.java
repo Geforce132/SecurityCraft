@@ -9,6 +9,8 @@ import com.feed_the_beast.ftblib.lib.data.Universe;
 import net.geforcemods.securitycraft.api.Owner;
 
 public class FTBUtilitiesCompat {
+	private FTBUtilitiesCompat() {}
+
 	public static boolean areOnSameTeam(Owner owner1, Owner owner2) {
 		try {
 			return FTBLibAPI.arePlayersInSameTeam(UUID.fromString(owner1.getUUID()), UUID.fromString(owner2.getUUID()));

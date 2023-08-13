@@ -31,9 +31,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class GuiUtils {
-	public static ResourceLocation cameraDashboard = new ResourceLocation("securitycraft:textures/gui/camera/camera_dashboard.png");
-	public static ResourceLocation potionIcons = new ResourceLocation("minecraft:textures/gui/container/inventory.png");
-	private static RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
+	public static final ResourceLocation CAMERA_DASHBOARD = new ResourceLocation("securitycraft:textures/gui/camera/camera_dashboard.png");
+	public static final ResourceLocation POTION_ICONS = new ResourceLocation("minecraft:textures/gui/container/inventory.png");
 	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	//@formatter:off
 	private static final ResourceLocation[] MODULE_TEXTURES = {
@@ -49,6 +48,8 @@ public class GuiUtils {
 	//@formatter:on
 	private static final ResourceLocation REDSTONE_TEXTURE = new ResourceLocation("textures/items/redstone_dust.png");
 	private static final ResourceLocation SUGAR_TEXTURE = new ResourceLocation("textures/items/sugar.png");
+
+	private GuiUtils() {}
 
 	public static void drawCameraOverlay(Minecraft mc, Gui gui, ScaledResolution resolution, EntityPlayer player, World world, BlockPos pos) {
 		if (mc.gameSettings.showDebugInfo)
@@ -82,7 +83,7 @@ public class GuiUtils {
 		font.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.toggleRedstone").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.toggleRedstone").getFormattedText()) - 8, resolution.getScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
 		font.drawStringWithShadow(Utils.localize("gui.securitycraft:camera.toggleRedstoneNote").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(Utils.localize("gui.securitycraft:camera.toggleRedstoneNote").getFormattedText()) - 8, resolution.getScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
 
-		mc.getTextureManager().bindTexture(cameraDashboard);
+		mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.drawTexturedModalRect(5, 0, 0, 0, 90, 20);
 		gui.drawTexturedModalRect(resolution.getScaledWidth() - 70, 5, 190, 0, 65, 30);
@@ -90,9 +91,9 @@ public class GuiUtils {
 		if (player.getActivePotionEffect(Potion.getPotionFromResourceLocation("night_vision")) == null)
 			gui.drawTexturedModalRect(28, 4, 90, 12, 16, 11);
 		else {
-			mc.getTextureManager().bindTexture(potionIcons);
+			mc.getTextureManager().bindTexture(POTION_ICONS);
 			gui.drawTexturedModalRect(25, 2, 70, 218, 19, 16);
-			mc.getTextureManager().bindTexture(cameraDashboard);
+			mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
 		}
 
 		if (state.getWeakPower(world, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
@@ -106,14 +107,16 @@ public class GuiUtils {
 	}
 
 	public static void drawItemStackToGui(ItemStack stack, int x, int y, boolean fixLighting) {
+		Minecraft mc = Minecraft.getMinecraft();
+		RenderItem renderItem = mc.getRenderItem();
+
 		if (fixLighting)
 			GlStateManager.enableLighting();
 
 		RenderHelper.enableGUIStandardItemLighting();
 		GlStateManager.enableRescaleNormal();
-		itemRender.renderItemAndEffectIntoGUI(stack, x, y);
-		itemRender.renderItemOverlays(Minecraft.getMinecraft().fontRenderer, stack, x, y);
-
+		renderItem.renderItemAndEffectIntoGUI(stack, x, y);
+		renderItem.renderItemOverlays(mc.fontRenderer, stack, x, y);
 		GlStateManager.disableLighting();
 		GlStateManager.disableRescaleNormal();
 	}

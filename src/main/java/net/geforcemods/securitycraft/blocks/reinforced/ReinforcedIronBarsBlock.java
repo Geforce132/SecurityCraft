@@ -56,9 +56,9 @@ public class ReinforcedIronBarsBlock extends BlockPane implements ITileEntityPro
 
 	@Override
 	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
-		super.eventReceived(state, world, pos, id, param);
-		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity != null ? tileentity.receiveClientEvent(id, param) : false;
+		TileEntity te = world.getTileEntity(pos);
+
+		return te != null && te.receiveClientEvent(id, param);
 	}
 
 	@Override

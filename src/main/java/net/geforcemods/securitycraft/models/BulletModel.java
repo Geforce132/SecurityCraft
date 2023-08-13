@@ -5,7 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public class BulletModel extends ModelBase {
-	public ModelRenderer bullet;
+	public final ModelRenderer bullet;
 
 	public BulletModel() {
 		textureWidth = 8;

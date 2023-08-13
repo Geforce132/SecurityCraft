@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.Map;
 
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -22,7 +23,7 @@ public class SecretSignBlockEntity extends TileEntitySign implements IOwnable, I
 	private Owner owner = new Owner();
 	private BooleanOption isSecret = new BooleanOption("isSecret", true);
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
-	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {

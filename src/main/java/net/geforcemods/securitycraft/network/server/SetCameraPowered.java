@@ -41,16 +41,15 @@ public class SetCameraPowered implements IMessage {
 		@Override
 		public IMessage onMessage(SetCameraPowered message, MessageContext context) {
 			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
-				BlockPos pos = message.pos;
 				EntityPlayer player = context.getServerHandler().player;
 				World world = player.world;
-				TileEntity te = world.getTileEntity(pos);
+				TileEntity te = world.getTileEntity(message.pos);
 
 				if ((te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player)) || (te instanceof IModuleInventory && ((IModuleInventory) te).isAllowed(player))) {
-					IBlockState state = world.getBlockState(pos);
+					IBlockState state = world.getBlockState(message.pos);
 
-					world.setBlockState(pos, state.withProperty(SecurityCameraBlock.POWERED, message.powered));
-					world.notifyNeighborsOfStateChange(pos.offset(state.getValue(SecurityCameraBlock.FACING), -1), state.getBlock(), false);
+					world.setBlockState(message.pos, state.withProperty(SecurityCameraBlock.POWERED, message.powered));
+					world.notifyNeighborsOfStateChange(message.pos.offset(state.getValue(SecurityCameraBlock.FACING), -1), state.getBlock(), false);
 				}
 			});
 			return null;

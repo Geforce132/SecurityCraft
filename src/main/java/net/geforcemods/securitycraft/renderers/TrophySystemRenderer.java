@@ -23,7 +23,7 @@ public class TrophySystemRenderer extends TileEntitySpecialRenderer<TrophySystem
 		if (BlockEntityRenderDelegate.DISGUISED_BLOCK.tryRenderDelegate(te, x, y, z, partialTicks, destroyStage, alpha))
 			return;
 
-		if (te.entityBeingTargeted == null)
+		if (te.getTarget() == null)
 			return;
 
 		Vec3d blockpos = new Vec3d(x + 0.5D, y + 0.75D, z + 0.5D);
@@ -49,7 +49,7 @@ public class TrophySystemRenderer extends TileEntitySpecialRenderer<TrophySystem
 		BufferBuilder bb = Tessellator.getInstance().getBuffer();
 		bb.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
 		bb.pos(0, 0, 0).color(r, g, b, 255).endVertex();
-		bb.pos(te.entityBeingTargeted.posX - te.getPos().getX() - 0.5D, te.entityBeingTargeted.posY - te.getPos().getY() - 0.75D, te.entityBeingTargeted.posZ - te.getPos().getZ() - 0.5D).color(r, g, b, 255).endVertex();
+		bb.pos(te.getTarget().posX - te.getPos().getX() - 0.5D, te.getTarget().posY - te.getPos().getY() - 0.75D, te.getTarget().posZ - te.getPos().getZ() - 0.5D).color(r, g, b, 255).endVertex();
 		Tessellator.getInstance().draw();
 
 		GlStateManager.enableLighting();

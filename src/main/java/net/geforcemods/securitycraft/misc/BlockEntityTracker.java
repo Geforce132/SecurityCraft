@@ -107,8 +107,8 @@ public class BlockEntityTracker<TE extends TileEntity> {
 	 * @param pos The position to check
 	 */
 	public boolean canReach(TE te, Vec3d pos) {
-		AxisAlignedBB range = new AxisAlignedBB(te.getPos()).grow(this.range.apply(te));
+		AxisAlignedBB possibleRange = new AxisAlignedBB(te.getPos()).grow(range.apply(te));
 
-		return range.minX <= pos.x && range.minY <= pos.y && range.minZ <= pos.z && range.maxX >= pos.x && range.maxY >= pos.y && range.maxZ >= pos.z;
+		return possibleRange.minX <= pos.x && possibleRange.minY <= pos.y && possibleRange.minZ <= pos.z && possibleRange.maxX >= pos.x && possibleRange.maxY >= pos.y && possibleRange.maxZ >= pos.z;
 	}
 }

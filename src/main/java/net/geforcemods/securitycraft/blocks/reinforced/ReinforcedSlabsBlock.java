@@ -144,7 +144,7 @@ public class ReinforcedSlabsBlock extends BlockSlab implements ITileEntityProvid
 		return new ItemStack(SCContent.reinforcedStoneSlabs, 1, damageDropped(state));
 	}
 
-	public static enum EnumType implements IStringSerializable {
+	public enum EnumType implements IStringSerializable {
 		STONE(0, "stone", "stone", MapColor.STONE),
 		COBBLESTONE(1, "cobblestone", "cobble", MapColor.STONE),
 		SANDSTONE(2, "sandstone", "sandstone", MapColor.SAND),

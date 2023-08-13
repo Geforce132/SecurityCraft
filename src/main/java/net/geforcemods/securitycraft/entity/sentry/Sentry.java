@@ -74,11 +74,11 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 	private float headYTranslation = 0.9F;
 	private float oHeadYTranslation = 0.9F;
 	private boolean shutDown = false;
-	public boolean animateUpwards = true;
-	public boolean animate = false;
+	private boolean animateUpwards = true;
+	private boolean animate = false;
 	private long previousTargetId = Long.MIN_VALUE;
-	public float headRotation;
-	public float oHeadRotation;
+	private float headRotation;
+	private float oHeadRotation;
 	/**
 	 * @deprecated Only used for upgrading old sentries
 	 */
@@ -146,30 +146,30 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 			}
 		}
 		else {
-			oHeadRotation = headRotation;
+			oHeadRotation = getHeadRotation();
 			headRotation = dataManager.get(HEAD_ROTATION);
 			oHeadYTranslation = headYTranslation;
 
-			if (!shutDown && !animate && headYTranslation > 0.0F && getMode().isAggressive()) {
-				animateUpwards = true;
-				animate = true;
+			if (!shutDown && !shouldAnimate() && headYTranslation > 0.0F && getMode().isAggressive()) {
+				setAnimateUpwards(true);
+				setAnimate(true);
 			}
 
-			if (animate) { //no else if because animate can be changed in the above if statement
-				if (animateUpwards && headYTranslation > UPWARDS_ANIMATION_LIMIT) {
+			if (shouldAnimate()) { //no else if because animate can be changed in the above if statement
+				if (animatesUpwards() && headYTranslation > UPWARDS_ANIMATION_LIMIT) {
 					headYTranslation -= ANIMATION_STEP_SIZE;
 
 					if (headYTranslation <= UPWARDS_ANIMATION_LIMIT) {
-						animateUpwards = false;
-						animate = false;
+						setAnimateUpwards(false);
+						setAnimate(false);
 					}
 				}
-				else if (!animateUpwards && headYTranslation < DOWNWARDS_ANIMATION_LIMIT) {
+				else if (!animatesUpwards() && headYTranslation < DOWNWARDS_ANIMATION_LIMIT) {
 					headYTranslation += ANIMATION_STEP_SIZE;
 
 					if (headYTranslation >= DOWNWARDS_ANIMATION_LIMIT) {
-						animateUpwards = true;
-						animate = false;
+						setAnimateUpwards(true);
+						setAnimate(false);
 					}
 				}
 			}
@@ -267,10 +267,8 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 			player.swingArm(EnumHand.MAIN_HAND);
 			return true;
 		}
-		else if (!isOwnedBy(player) && hand == EnumHand.MAIN_HAND && player.isCreative()) {
-			if (player.isSneaking() || player.getHeldItemMainhand().getItem() == SCContent.universalBlockRemover)
-				remove();
-		}
+		else if (!isOwnedBy(player) && hand == EnumHand.MAIN_HAND && player.isCreative() && (player.isSneaking() || player.getHeldItemMainhand().getItem() == SCContent.universalBlockRemover))
+			remove();
 
 		return super.processInteract(player, hand);
 	}
@@ -335,9 +333,9 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		}
 
 		if (!getMode().isAggressive() && (target == null && previousTargetId != Long.MIN_VALUE || (target != null && previousTargetId != target.getEntityId()))) {
-			animateUpwards = getMode().isCamouflage() && target != null;
-			animate = true;
-			SecurityCraft.network.sendToAllTracking(new InitSentryAnimation(getPosition(), animate, animateUpwards, isShutDown()), this);
+			setAnimateUpwards(getMode().isCamouflage() && target != null);
+			setAnimate(true);
+			SecurityCraft.network.sendToAllTracking(new InitSentryAnimation(getPosition(), shouldAnimate(), animatesUpwards(), isShutDown()), this);
 		}
 
 		previousTargetId = target == null ? Long.MIN_VALUE : target.getEntityId();
@@ -446,7 +444,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 	public void readEntityFromNBT(NBTTagCompound tag) {
 		NBTTagCompound teTag = tag.getCompoundTag("TileEntityData");
 		Owner owner = Owner.fromCompound(teTag);
-		float headRotation = tag.getFloat("HeadRotation");
+		float savedHeadRotation = tag.getFloat("HeadRotation");
 
 		dataManager.set(OWNER, owner);
 
@@ -458,9 +456,9 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		dataManager.set(ALLOWLIST, tag.getCompoundTag("InstalledWhitelist"));
 		dataManager.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
 		dataManager.set(MODE, tag.getInteger("SentryMode"));
-		dataManager.set(HEAD_ROTATION, headRotation);
-		oHeadRotation = headRotation;
-		this.headRotation = headRotation;
+		dataManager.set(HEAD_ROTATION, savedHeadRotation);
+		oHeadRotation = savedHeadRotation;
+		headRotation = savedHeadRotation;
 		shutDown = tag.getBoolean("ShutDown");
 		super.readEntityFromNBT(tag);
 	}
@@ -711,6 +709,30 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		return notRandom;
 	}
 
+	public boolean animatesUpwards() {
+		return animateUpwards;
+	}
+
+	public void setAnimateUpwards(boolean animateUpwards) {
+		this.animateUpwards = animateUpwards;
+	}
+
+	public boolean shouldAnimate() {
+		return animate;
+	}
+
+	public void setAnimate(boolean animate) {
+		this.animate = animate;
+	}
+
+	public float getOriginalHeadRotation() {
+		return oHeadRotation;
+	}
+
+	public float getHeadRotation() {
+		return headRotation;
+	}
+
 	private static Random notRandom = new NotRandom();
 
 	private static class NotRandom extends Random {
@@ -720,7 +742,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		}
 	}
 
-	public static enum EnumSentryMode {
+	public enum EnumSentryMode {
 		CAMOUFLAGE_HP(1, 0, 1),
 		CAMOUFLAGE_H(1, 1, 3),
 		CAMOUFLAGE_P(1, 2, 5),

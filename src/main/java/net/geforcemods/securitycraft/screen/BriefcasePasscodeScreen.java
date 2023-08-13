@@ -11,7 +11,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -25,13 +24,12 @@ public class BriefcasePasscodeScreen extends GuiContainer {
 	private GuiButton[] keycodeTopButtons = new GuiButton[4];
 	private GuiButton[] keycodeBottomButtons = new GuiButton[4];
 	private GuiTextField[] keycodeTextboxes = new GuiTextField[4];
-	private GuiButton continueButton;
 	private int[] digits = {
 			0, 0, 0, 0
 	};
 
-	public BriefcasePasscodeScreen(InventoryPlayer inventoryPlayer, boolean isSetup, String title) {
-		super(new GenericMenu(inventoryPlayer, null));
+	public BriefcasePasscodeScreen(boolean isSetup, String title) {
+		super(new GenericMenu(null));
 		this.isSetup = isSetup;
 		this.title = title;
 	}
@@ -50,8 +48,7 @@ public class BriefcasePasscodeScreen extends GuiContainer {
 			buttonList.add(keycodeBottomButtons[i]);
 		}
 
-		continueButton = new GuiButton(8, (width / 2 + 42), height / 2 - 26, 20, 20, RIGHT_ARROW);
-		buttonList.add(continueButton);
+		buttonList.add(new GuiButton(8, (width / 2 + 42), height / 2 - 26, 20, 20, RIGHT_ARROW));
 
 		for (int i = 0; i < keycodeTextboxes.length; i++) {
 			keycodeTextboxes[i] = new GuiTextField(9 + i, fontRenderer, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12);

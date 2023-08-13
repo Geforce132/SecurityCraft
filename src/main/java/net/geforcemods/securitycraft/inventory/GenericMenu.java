@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 
@@ -11,7 +10,7 @@ public class GenericMenu extends Container {
 
 	public GenericMenu() {}
 
-	public GenericMenu(InventoryPlayer inventory, TileEntity te) {
+	public GenericMenu(TileEntity te) {
 		this.te = te;
 	}
 

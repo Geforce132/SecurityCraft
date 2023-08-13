@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft;
 
+import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.blocks.KeypadTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.mines.MineBlock;
 import net.geforcemods.securitycraft.items.LensItem;
@@ -13,7 +14,11 @@ import net.minecraft.item.Item;
 public class SCContent {
 	//Blocks
 	public static Block alarm;
-	@Deprecated //use alarm and its lit property
+	/**
+	 * @deprecated Use {@link alarm} and its LIT property
+	 * @see {@link AlarmBlock}
+	 */
+	@Deprecated
 	public static Block alarmLit;
 	public static Block blockChangeDetector;
 	@Tinted(customTint = 0x15b3a2)
@@ -433,4 +438,6 @@ public class SCContent {
 	public static ModuleItem storageModule;
 	public static ModuleItem allowlistModule;
 	public static ModuleItem speedModule;
+
+	private SCContent() {}
 }

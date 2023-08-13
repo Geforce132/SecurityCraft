@@ -16,6 +16,8 @@ public class KeyBindings {
 	public static KeyBinding cameraEmitRedstone;
 	public static KeyBinding cameraActivateNightVision;
 
+	private KeyBindings() {}
+
 	public static void init() {
 		cameraZoomIn = new KeyBinding("key.securitycraft.cameraZoomIn", Keyboard.KEY_EQUALS, "key.categories.securitycraft");
 		cameraZoomOut = new KeyBinding("key.securitycraft.cameraZoomOut", Keyboard.KEY_MINUS, "key.categories.securitycraft");

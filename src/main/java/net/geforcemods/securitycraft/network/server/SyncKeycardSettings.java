@@ -54,9 +54,8 @@ public class SyncKeycardSettings implements IMessage {
 		@Override
 		public IMessage onMessage(SyncKeycardSettings message, MessageContext context) {
 			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
-				BlockPos pos = message.pos;
 				EntityPlayer player = context.getServerHandler().player;
-				TileEntity tile = player.world.getTileEntity(pos);
+				TileEntity tile = player.world.getTileEntity(message.pos);
 
 				if (tile instanceof KeycardReaderBlockEntity) {
 					KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;

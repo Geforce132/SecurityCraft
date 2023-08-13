@@ -52,10 +52,8 @@ public class ProjectorMenu extends StateSelectorAccessMenu {
 				if (!mergeItemStack(slotStack, 1, 36, true))
 					return ItemStack.EMPTY;
 			}
-			else if (index >= 1) {
-				if (!mergeItemStack(slotStack, 0, 1, false))
-					return ItemStack.EMPTY;
-			}
+			else if (!mergeItemStack(slotStack, 0, 1, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.putStack(ItemStack.EMPTY);

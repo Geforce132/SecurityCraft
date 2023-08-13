@@ -48,9 +48,9 @@ public class CheckBriefcasePasscode implements IMessage {
 					String tagCode = tag.getString("passcode");
 
 					if (tagCode.length() == 4) //If an old plaintext passcode is encountered, generate and check with the hashed variant
-						BriefcaseItem.hashAndSetPasscode(tag, PasscodeUtils.hashPasscodeWithoutSalt(tagCode), p -> BriefcaseItem.checkPasscode(player, briefcase, message.passcode, PasscodeUtils.bytesToString(p), tag));
+						BriefcaseItem.hashAndSetPasscode(tag, PasscodeUtils.hashPasscodeWithoutSalt(tagCode), p -> BriefcaseItem.checkPasscode(player, message.passcode, PasscodeUtils.bytesToString(p), tag));
 					else
-						BriefcaseItem.checkPasscode(player, briefcase, message.passcode, tagCode, tag);
+						BriefcaseItem.checkPasscode(player, message.passcode, tagCode, tag);
 				}
 			});
 

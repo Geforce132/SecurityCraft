@@ -40,7 +40,7 @@ public class ReinforcedObserverBlock extends BlockObserver implements IReinforce
 
 	@Override
 	public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return side == state.getValue(BlockObserver.FACING);
+		return side == state.getValue(FACING);
 	}
 
 	@Override

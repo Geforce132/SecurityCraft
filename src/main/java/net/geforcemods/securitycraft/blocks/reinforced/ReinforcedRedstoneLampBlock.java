@@ -48,10 +48,8 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		if (!world.isRemote) {
-			if (state.getValue(LIT) && !world.isBlockPowered(pos))
-				world.setBlockState(pos, getDefaultState().withProperty(LIT, false), 2);
-		}
+		if (!world.isRemote && state.getValue(LIT) && !world.isBlockPowered(pos))
+			world.setBlockState(pos, getDefaultState().withProperty(LIT, false), 2);
 	}
 
 	@Override

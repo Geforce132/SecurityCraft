@@ -40,19 +40,18 @@ public class MountCamera implements IMessage {
 		@Override
 		public IMessage onMessage(MountCamera message, MessageContext context) {
 			LevelUtils.addScheduledTask(context.getServerHandler().player.world, (() -> {
-				BlockPos pos = message.pos;
 				EntityPlayerMP player = context.getServerHandler().player;
 				World world = player.world;
-				IBlockState state = world.getBlockState(pos);
+				IBlockState state = world.getBlockState(message.pos);
 
-				if (world.isBlockLoaded(pos) && state.getBlock() == SCContent.securityCamera) {
-					TileEntity te = world.getTileEntity(pos);
+				if (world.isBlockLoaded(message.pos) && state.getBlock() == SCContent.securityCamera) {
+					TileEntity te = world.getTileEntity(message.pos);
 
 					if (te instanceof SecurityCameraBlockEntity) {
 						SecurityCameraBlockEntity cam = (SecurityCameraBlockEntity) te;
 
 						if (cam.isOwnedBy(player) || cam.isAllowed(player))
-							((SecurityCameraBlock) state.getBlock()).mountCamera(world, pos.getX(), pos.getY(), pos.getZ(), player);
+							((SecurityCameraBlock) state.getBlock()).mountCamera(world, message.pos.getX(), message.pos.getY(), message.pos.getZ(), player);
 						else
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.cameraMonitor.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:notOwned", cam.getOwner().getName()), TextFormatting.RED);
 					}
@@ -60,7 +59,7 @@ public class MountCamera implements IMessage {
 					return;
 				}
 
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.cameraMonitor.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", pos), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.cameraMonitor.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", message.pos), TextFormatting.RED);
 			}));
 
 			return null;

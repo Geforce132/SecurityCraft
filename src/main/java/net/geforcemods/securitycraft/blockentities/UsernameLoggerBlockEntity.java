@@ -20,9 +20,9 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	private IntOption searchRadius = new IntOption(this::getPos, "searchRadius", 3, 1, 20, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
-	public String[] players = new String[100];
-	public String[] uuids = new String[100];
-	public long[] timestamps = new long[100];
+	private String[] players = new String[100];
+	private String[] uuids = new String[100];
+	private long[] timestamps = new long[100];
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
 	@Override
@@ -50,11 +50,11 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 			if (isAllowed(player))
 				return;
 
-			for (int i = 0; i < players.length; i++) {
-				if (players[i] == null || players[i].equals("")) {
-					players[i] = player.getName();
-					uuids[i] = player.getGameProfile().getId().toString();
-					timestamps[i] = timestamp;
+			for (int i = 0; i < getPlayers().length; i++) {
+				if (getPlayers()[i] == null || getPlayers()[i].equals("")) {
+					getPlayers()[i] = player.getName();
+					getUuids()[i] = player.getGameProfile().getId().toString();
+					getTimestamps()[i] = timestamp;
 					break;
 				}
 			}
@@ -62,8 +62,8 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	private boolean wasPlayerRecentlyAdded(String username, long timestamp) {
-		for (int i = 0; i < players.length; i++) {
-			if (players[i] != null && players[i].equals(username) && (timestamps[i] + 1000L) > timestamp) //was within the last second that the same player was last added
+		for (int i = 0; i < getPlayers().length; i++) {
+			if (getPlayers()[i] != null && getPlayers()[i].equals(username) && (getTimestamps()[i] + 1000L) > timestamp) //was within the last second that the same player was last added
 				return true;
 		}
 
@@ -74,10 +74,10 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
-		for (int i = 0; i < players.length; i++) {
-			tag.setString("player" + i, players[i] == null ? "" : players[i]);
-			tag.setString("uuid" + i, uuids[i] == null ? "" : uuids[i]);
-			tag.setLong("timestamp" + i, timestamps[i]);
+		for (int i = 0; i < getPlayers().length; i++) {
+			tag.setString("player" + i, getPlayers()[i] == null ? "" : getPlayers()[i]);
+			tag.setString("uuid" + i, getUuids()[i] == null ? "" : getUuids()[i]);
+			tag.setLong("timestamp" + i, getTimestamps()[i]);
 		}
 
 		return tag;
@@ -87,17 +87,17 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 
-		for (int i = 0; i < players.length; i++) {
-			players[i] = tag.getString("player" + i);
-			uuids[i] = tag.getString("uuid" + i);
-			timestamps[i] = tag.getLong("timestamp" + i);
+		for (int i = 0; i < getPlayers().length; i++) {
+			getPlayers()[i] = tag.getString("player" + i);
+			getUuids()[i] = tag.getString("uuid" + i);
+			getTimestamps()[i] = tag.getLong("timestamp" + i);
 		}
 	}
 
 	public void syncLoggedPlayersToClient() {
-		for (int i = 0; i < players.length; i++) {
-			if (players[i] != null)
-				SecurityCraft.network.sendToAllTracking(new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 0));
+		for (int i = 0; i < getPlayers().length; i++) {
+			if (getPlayers()[i] != null)
+				SecurityCraft.network.sendToAllTracking(new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, getPlayers()[i], getUuids()[i], getTimestamps()[i]), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 0));
 		}
 	}
 
@@ -121,5 +121,29 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
+	}
+
+	public String[] getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(String[] players) {
+		this.players = players;
+	}
+
+	public String[] getUuids() {
+		return uuids;
+	}
+
+	public void setUuids(String[] uuids) {
+		this.uuids = uuids;
+	}
+
+	public long[] getTimestamps() {
+		return timestamps;
+	}
+
+	public void setTimestamps(long[] timestamps) {
+		this.timestamps = timestamps;
 	}
 }

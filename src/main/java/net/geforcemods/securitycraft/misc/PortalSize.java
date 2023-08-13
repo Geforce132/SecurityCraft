@@ -76,31 +76,29 @@ public class PortalSize {
 	}
 
 	protected int calculatePortalHeight() {
-		{
-			label56:
-			for (height = 0; height < 21; ++height) {
-				for (int i = 0; i < width; ++i) {
-					BlockPos pos = bottomLeft.offset(rightDir, i).up(height);
-					Block block = world.getBlockState(pos).getBlock();
+		outerLoop:
+		for (height = 0; height < 21; ++height) {
+			for (int i = 0; i < width; ++i) {
+				BlockPos pos = bottomLeft.offset(rightDir, i).up(height);
+				Block block = world.getBlockState(pos).getBlock();
 
-					if (!isEmptyBlock(block))
-						break label56;
+				if (!isEmptyBlock(block))
+					break outerLoop;
 
-					if (block == Blocks.PORTAL)
-						++portalBlockCount;
+				if (block == Blocks.PORTAL)
+					++portalBlockCount;
 
-					if (i == 0) {
-						block = world.getBlockState(pos.offset(leftDir)).getBlock();
+				if (i == 0) {
+					block = world.getBlockState(pos.offset(leftDir)).getBlock();
 
-						if (block != SCContent.reinforcedObsidian)
-							break label56;
-					}
-					else if (i == width - 1) {
-						block = world.getBlockState(pos.offset(rightDir)).getBlock();
+					if (block != SCContent.reinforcedObsidian)
+						break outerLoop;
+				}
+				else if (i == width - 1) {
+					block = world.getBlockState(pos.offset(rightDir)).getBlock();
 
-						if (block != SCContent.reinforcedObsidian)
-							break label56;
-					}
+					if (block != SCContent.reinforcedObsidian)
+						break outerLoop;
 				}
 			}
 		}

@@ -13,6 +13,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 public class ProjectECompat {
+	private ProjectECompat() {}
+
 	public static void registerConversions() {
 		IConversionProxy reinforcedBlocksConversionProxy = ProjectEAPI.getConversionProxy();
 		IEMCProxy passcodeProtectedEMCProxy = ProjectEAPI.getEMCProxy();

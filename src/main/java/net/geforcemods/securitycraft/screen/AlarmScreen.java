@@ -51,7 +51,7 @@ public class AlarmScreen extends GuiScreen {
 	private final ResourceLocation previousSelectedSoundEvent;
 	private ResourceLocation selectedSoundEvent;
 	private String selectedSoundEventText;
-	protected final int imageWidth = 256, imageHeight = 246;
+	protected int imageWidth = 256, imageHeight = 246;
 	protected int leftPos, topPos;
 	protected SoundScrollList soundList;
 	protected HintEditBox searchBar;
@@ -96,7 +96,7 @@ public class AlarmScreen extends GuiScreen {
 			@Override
 			public void setEntryValue(int id, boolean value) {}
 		});
-		addButton(optionsButton = new ClickButton(id++, leftPos + imageWidth / 2 - 170 / 2, topPos + 215, 170, 20, Utils.localize("menu.options").getFormattedText(), b -> mc.displayGuiScreen(new AlarmOptionsScreen(this))));
+		optionsButton = addButton(new ClickButton(id++, leftPos + imageWidth / 2 - 170 / 2, topPos + 215, 170, 20, Utils.localize("menu.options").getFormattedText(), b -> mc.displayGuiScreen(new AlarmOptionsScreen(this))));
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class AlarmScreen extends GuiScreen {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 		if (soundList != null)
-			soundList.drawScreen(mouseX, mouseY, partialTicks);
+			soundList.drawScreen(mouseX, mouseY);
 
 		searchBar.drawTextBox();
 		fontRenderer.drawString(title, width / 2 - fontRenderer.getStringWidth(title) / 2, topPos + 6, 4210752);
@@ -192,8 +192,8 @@ public class AlarmScreen extends GuiScreen {
 	}
 
 	public class SoundScrollList extends ColorableScrollPanel {
+		private static final int TEXT_OFFSET = 11;
 		public final List<SoundEvent> allSoundEvents = new ArrayList<>(ForgeRegistries.SOUND_EVENTS.getValues());
-		private final int textOffset = 11;
 		private final Map<SoundEvent, String> soundEventKeys = new HashMap<>();
 		private List<SoundEvent> filteredSoundEvents;
 		private ISound playingSound;
@@ -206,7 +206,7 @@ public class AlarmScreen extends GuiScreen {
 			updateFilteredEntries("");
 			scrollDistance = selectedSoundIndex * slotHeight;
 
-			int maxScroll = getContentHeight() - (height - border);
+			int maxScroll = getContentHeight() - (height - BORDER);
 
 			if (scrollDistance > maxScroll)
 				scrollDistance = maxScroll;
@@ -222,9 +222,9 @@ public class AlarmScreen extends GuiScreen {
 			if (slotIndex >= 0 && slotIndex < filteredSoundEvents.size()) {
 				mouseX -= left;
 
-				if (mouseX >= 0 && mouseX <= textOffset - 3)
+				if (mouseX >= 0 && mouseX <= TEXT_OFFSET - 3)
 					playSound(filteredSoundEvents.get(slotIndex));
-				else if (hasSmartModule && mouseX > textOffset - 3 && mouseX <= right - 6 && slotIndex != selectedSoundIndex) {
+				else if (hasSmartModule && mouseX > TEXT_OFFSET - 3 && mouseX <= right - 6 && slotIndex != selectedSoundIndex) {
 					mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 					selectSound(slotIndex);
 				}
@@ -232,19 +232,19 @@ public class AlarmScreen extends GuiScreen {
 		}
 
 		@Override
-		public void drawScreen(int mouseX, int mouseY, float partialTick) {
-			super.drawScreen(mouseX, mouseY, partialTick);
+		public void drawScreen(int mouseX, int mouseY) {
+			super.drawScreen(mouseX, mouseY);
 
-			int baseY = top + border - (int) scrollDistance;
-			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
+			int baseY = top + BORDER - (int) scrollDistance;
+			int mouseListY = (int) (mouseY - top + scrollDistance - (BORDER / 2));
 			int slotIndex = mouseListY / slotHeight;
 
 			if (slotIndex >= 0 && slotIndex < filteredSoundEvents.size() && mouseX >= left && mouseX < right - 6 && mouseListY >= 0 && mouseY >= top && mouseY <= bottom) {
 				String soundEventKey = getSoundEventString(filteredSoundEvents.get(slotIndex));
 				int length = fontRenderer.getStringWidth(soundEventKey);
 
-				if (length >= width - 6 - textOffset) {
-					net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Collections.singletonList(soundEventKey), left + textOffset - 12, baseY + (slotHeight * slotIndex + slotHeight), width, height, -1, fontRenderer);
+				if (length >= width - 6 - TEXT_OFFSET) {
+					net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Collections.singletonList(soundEventKey), left + TEXT_OFFSET - 12, baseY + (slotHeight * slotIndex + slotHeight), width, height, -1, fontRenderer);
 					RenderHelper.disableStandardItemLighting(); //fixes the screen title rendering darker if a tooltip is displayed
 				}
 			}
@@ -253,9 +253,9 @@ public class AlarmScreen extends GuiScreen {
 		@Override
 		public void drawPanel(int entryRight, int baseY, Tessellator tesselator, int mouseX, int mouseY) {
 			int slotBuffer = slotHeight - 4;
-			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
+			int mouseListY = (int) (mouseY - top + scrollDistance - (BORDER / 2));
 			int slotIndex = mouseListY / slotHeight;
-			int min = left + textOffset - 2;
+			int min = left + TEXT_OFFSET - 2;
 
 			//highlight hovered slot
 			if (hasSmartModule && slotIndex != selectedSoundIndex && mouseX >= min && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < filteredSoundEvents.size() && mouseY >= top && mouseY <= bottom)
@@ -277,7 +277,7 @@ public class AlarmScreen extends GuiScreen {
 				SoundEvent soundEvent = filteredSoundEvents.get(i);
 				String name = getSoundEventString(soundEvent);
 
-				fontRenderer.drawString(name, left + textOffset, yStart, 0xC6C6C6);
+				fontRenderer.drawString(name, left + TEXT_OFFSET, yStart, 0xC6C6C6);
 				mc.getTextureManager().bindTexture(GUI_TEXTURE);
 				drawModalRectWithCustomSizedTexture(left, yStart - 1, i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? 9 : 0, 246, 10, 10, 256, 256);
 			}
@@ -356,6 +356,15 @@ public class AlarmScreen extends GuiScreen {
 		@Override
 		public int getSize() {
 			return filteredSoundEvents.size();
+		}
+
+		public void updateSize(int leftDifference, int topDifference) {
+			left += leftDifference;
+			top += topDifference;
+			right = left + listWidth;
+			bottom = top + listHeight;
+			scrollBarRight = left + listWidth;
+			scrollBarLeft = scrollBarRight - SCROLL_BAR_WIDTH;
 		}
 	}
 

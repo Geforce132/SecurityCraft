@@ -105,7 +105,7 @@ public class ReinforcedMetalsBlock extends OwnableBlock implements IOverlayDispl
 		return 5;
 	}
 
-	public static enum EnumType implements IStringSerializable {
+	public enum EnumType implements IStringSerializable {
 		GOLD(0, "gold", MapColor.GOLD),
 		IRON(1, "iron", MapColor.IRON),
 		DIAMOND(2, "diamond", MapColor.DIAMOND),

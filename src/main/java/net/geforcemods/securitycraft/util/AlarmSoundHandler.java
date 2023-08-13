@@ -9,7 +9,6 @@ import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 
@@ -18,7 +17,7 @@ public final class AlarmSoundHandler {
 
 	private AlarmSoundHandler() {}
 
-	public static void playSound(AlarmBlockEntity be, World level, double x, double y, double z, SoundEvent sound, SoundCategory source, float volume, float pitch) {
+	public static void playSound(AlarmBlockEntity be, double x, double y, double z, SoundEvent sound, SoundCategory source, float volume, float pitch) {
 		Minecraft mc = Minecraft.getMinecraft();
 		PlaySoundAtEntityEvent event = ForgeEventFactory.onPlaySoundAtEntity(mc.player, sound, source, volume, pitch);
 

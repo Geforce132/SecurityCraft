@@ -170,17 +170,16 @@ public class CageTrapBlock extends DisguisableBlock {
 				return true;
 			}
 		}
-		else if (stack.getItem() == Items.REDSTONE) {
-			if (state.getValue(DEACTIVATED)) {
-				world.setBlockState(pos, state.withProperty(DEACTIVATED, false));
+		else if (stack.getItem() == Items.REDSTONE && state.getValue(DEACTIVATED)) {
+			world.setBlockState(pos, state.withProperty(DEACTIVATED, false));
 
-				if (!player.isCreative())
-					stack.shrink(1);
+			if (!player.isCreative())
+				stack.shrink(1);
 
-				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				return true;
-			}
+			world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			return true;
 		}
+
 		return false;
 	}
 

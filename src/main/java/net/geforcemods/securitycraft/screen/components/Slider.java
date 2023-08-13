@@ -22,43 +22,25 @@ import net.minecraftforge.fml.client.config.GuiButtonExt;
  */
 public class Slider extends GuiButtonExt {
 	/** The value of this slider control. */
-	public double sliderValue;
+	private double sliderValue;
 	/** Is this slider control being dragged. */
-	public boolean dragging = false;
-	public boolean showDecimal = true;
-	public double minValue = 0.0D;
-	public double maxValue = 5.0D;
-	public int precision = 1;
+	private boolean dragging = false;
+	private double minValue = 0.0D;
+	private double maxValue = 5.0D;
 	@Nullable
-	public ISlider parent = null;
-	public boolean drawString = true;
+	private ISlider parent = null;
+	private boolean drawString = true;
 	private Block block;
-	public String prefix;
+	private String prefix;
 
-	public Slider(String initialString, Block block, int id, int xPos, int yPos, int width, int height, String prefix, int minVal, int maxVal, int currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par) {
-		this(initialString, block, id, xPos, yPos, width, height, prefix, (double) minVal, (double) maxVal, (double) currentVal, showDec, drawStr, par);
-	}
-
-	public Slider(String initialString, Block block, int id, int xPos, int yPos, int width, int height, String prefix, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par) {
+	public Slider(String initialString, Block block, int id, int xPos, int yPos, int width, int height, String prefix, double minVal, double maxVal, double currentVal, boolean drawStr, @Nullable ISlider par) {
 		super(id, xPos, yPos, width, height, prefix);
-		minValue = minVal;
-		maxValue = maxVal;
+		setMinValue(minVal);
+		setMaxValue(maxVal);
 		parent = par;
-		showDecimal = showDec;
 		this.block = block;
-		String val;
-		sliderValue = (currentVal - minVal) / (maxVal - minVal);
+		setSliderValue((currentVal - minVal) / (maxVal - minVal));
 		this.prefix = prefix;
-
-		if (showDecimal) {
-			val = Double.toString(getValue());
-			precision = Math.min(val.substring(val.indexOf('.') + 1).length(), 4);
-		}
-		else {
-			val = Integer.toString(getValueInt());
-			precision = 0;
-		}
-
 		displayString = initialString;
 		drawString = drawStr;
 
@@ -74,23 +56,23 @@ public class Slider extends GuiButtonExt {
 	@Override
 	protected void mouseDragged(Minecraft mc, int mouseX, int mouseY) {
 		if (visible) {
-			if (dragging) {
-				sliderValue = (mouseX - (x + 4)) / (double) (width - 8);
+			if (isDragging()) {
+				setSliderValue((mouseX - (x + 4)) / (double) (width - 8));
 				updateSlider();
 			}
 
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-			drawTexturedModalRect(x + (int) (sliderValue * (width - 8)), y, 0, 66, 4, 20);
-			drawTexturedModalRect(x + (int) (sliderValue * (width - 8)) + 4, y, 196, 66, 4, 20);
+			drawTexturedModalRect(x + (int) (getSliderValue() * (width - 8)), y, 0, 66, 4, 20);
+			drawTexturedModalRect(x + (int) (getSliderValue() * (width - 8)) + 4, y, 196, 66, 4, 20);
 		}
 	}
 
 	@Override
 	public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
 		if (super.mousePressed(mc, mouseX, mouseY)) {
-			sliderValue = (double) (mouseX - (x + 4)) / (double) (width - 8);
+			setSliderValue((double) (mouseX - (x + 4)) / (double) (width - 8));
 			updateSlider();
-			dragging = true;
+			setDragging(true);
 			return true;
 		}
 		else
@@ -98,31 +80,11 @@ public class Slider extends GuiButtonExt {
 	}
 
 	public void updateSlider() {
-		if (sliderValue < 0.0F)
-			sliderValue = 0.0F;
+		if (getSliderValue() < 0.0F)
+			setSliderValue(0.0F);
 
-		if (sliderValue > 1.0F)
-			sliderValue = 1.0F;
-
-		String val;
-
-		if (showDecimal) {
-			val = Double.toString(getValue());
-
-			if (val.substring(val.indexOf('.') + 1).length() > precision) {
-				val = val.substring(0, val.indexOf('.') + precision + 1);
-
-				if (val.endsWith("."))
-					val = val.substring(0, val.indexOf('.') + precision);
-			}
-			else {
-				while (val.substring(val.indexOf('.') + 1).length() < precision) {
-					val = val + "0";
-				}
-			}
-		}
-		else
-			val = Integer.toString(getValueInt());
+		if (getSliderValue() > 1.0F)
+			setSliderValue(1.0F);
 
 		if (parent != null)
 			parent.onChangeSliderValue(this, block, id);
@@ -130,7 +92,7 @@ public class Slider extends GuiButtonExt {
 
 	@Override
 	public void mouseReleased(int mouseX, int mouseY) {
-		dragging = false;
+		setDragging(false);
 
 		if (parent != null)
 			parent.onMouseRelease(id);
@@ -141,11 +103,39 @@ public class Slider extends GuiButtonExt {
 	}
 
 	public double getValue() {
-		return sliderValue * (maxValue - minValue) + minValue;
+		return getSliderValue() * (maxValue - minValue) + minValue;
 	}
 
 	public void setValue(double newValue) {
-		sliderValue = (newValue - minValue) / (maxValue - minValue);
+		setSliderValue((newValue - minValue) / (maxValue - minValue));
+	}
+
+	public boolean isDragging() {
+		return dragging;
+	}
+
+	public void setDragging(boolean dragging) {
+		this.dragging = dragging;
+	}
+
+	public double getSliderValue() {
+		return sliderValue;
+	}
+
+	public void setSliderValue(double sliderValue) {
+		this.sliderValue = sliderValue;
+	}
+
+	public void setMaxValue(double maxValue) {
+		this.maxValue = maxValue;
+	}
+
+	public void setMinValue(double minValue) {
+		this.minValue = minValue;
+	}
+
+	public String getPrefix() {
+		return prefix;
 	}
 
 	public static interface ISlider {

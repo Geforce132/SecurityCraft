@@ -46,21 +46,18 @@ public class UpdateSliderValue implements IMessage {
 		@Override
 		public IMessage onMessage(UpdateSliderValue message, MessageContext context) {
 			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
-				BlockPos pos = message.pos;
-				int id = message.id;
-				double value = message.value;
 				EntityPlayer player = context.getServerHandler().player;
-				TileEntity te = player.world.getTileEntity(pos);
+				TileEntity te = player.world.getTileEntity(message.pos);
 
 				if (te instanceof ICustomizable && !(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player)) {
-					Option<?> o = ((ICustomizable) te).customOptions()[id];
+					Option<?> o = ((ICustomizable) te).customOptions()[message.id];
 
 					if (o instanceof DoubleOption)
-						((DoubleOption) o).setValue(value);
+						((DoubleOption) o).setValue(message.value);
 					else if (o instanceof IntOption)
-						((IntOption) o).setValue((int) value);
+						((IntOption) o).setValue((int) message.value);
 
-					((ICustomizable) te).onOptionChanged(((ICustomizable) te).customOptions()[id]);
+					((ICustomizable) te).onOptionChanged(((ICustomizable) te).customOptions()[message.id]);
 
 					if (te instanceof CustomizableBlockEntity)
 						((CustomizableBlockEntity) te).sync();

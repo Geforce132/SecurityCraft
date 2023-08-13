@@ -78,7 +78,7 @@ public class PlayAlarmSound implements IMessage {
 
 				if (te instanceof AlarmBlockEntity) {
 					((AlarmBlockEntity) te).setPowered(true);
-					((AlarmBlockEntity) te).playSound(level, message.getX(), message.getY(), message.getZ(), message.sound, message.volume, message.pitch);
+					((AlarmBlockEntity) te).playSound(message.getX(), message.getY(), message.getZ(), message.sound, message.volume, message.pitch);
 				}
 			});
 

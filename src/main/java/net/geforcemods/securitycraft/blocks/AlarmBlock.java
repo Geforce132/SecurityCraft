@@ -76,7 +76,7 @@ public class AlarmBlock extends OwnableBlock {
 
 	@Override
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
-		return side == EnumFacing.UP && world.isSideSolid(pos.down(), EnumFacing.UP) ? true : world.isSideSolid(pos.offset(side.getOpposite()), side);
+		return side == EnumFacing.UP && world.isSideSolid(pos.down(), EnumFacing.UP) || world.isSideSolid(pos.offset(side.getOpposite()), side);
 	}
 
 	@Override
@@ -174,9 +174,9 @@ public class AlarmBlock extends OwnableBlock {
 				return new AxisAlignedBB(0.5F - threePx - px, 0F, 0.5F - threePx - px, 0.5F + threePx + px, 0.5F, 0.5F + threePx + px);
 			case 6: //down
 				return new AxisAlignedBB(0.5F - threePx - px, 0.5F, 0.5F - threePx - px, 0.5F + threePx + px, 1.0F, 0.5F + threePx + px);
+			default:
+				return state.getBoundingBox(source, pos);
 		}
-
-		return state.getBoundingBox(source, pos);
 	}
 
 	private void updateState(World world, BlockPos pos, IBlockState state) {
@@ -256,12 +256,12 @@ public class AlarmBlock extends OwnableBlock {
 			case 4:
 				meta = 4;
 				break;
+			case 6:
+				meta = 0;
+				break;
 			case 5:
 			default:
 				meta = 5;
-				break;
-			case 6:
-				meta = 0;
 		}
 
 		if (state.getValue(LIT))
@@ -339,5 +339,7 @@ public class AlarmBlock extends OwnableBlock {
 			}
 			catch (NoSuchFieldError e) {}
 		}
+
+		private SwitchEnumFacing() {}
 	}
 }

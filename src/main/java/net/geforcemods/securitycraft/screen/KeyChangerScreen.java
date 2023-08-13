@@ -14,7 +14,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -32,16 +31,16 @@ public class KeyChangerScreen extends GuiContainer {
 	private GuiButton confirmButton;
 	private TileEntity tileEntity;
 
-	public KeyChangerScreen(InventoryPlayer inventoryPlayer, TileEntity tile_entity) {
-		super(new GenericMenu(inventoryPlayer, null));
-		tileEntity = tile_entity;
+	public KeyChangerScreen(TileEntity tileEntity) {
+		super(new GenericMenu(null));
+		this.tileEntity = tileEntity;
 	}
 
 	@Override
 	public void initGui() {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(confirmButton = new GuiButton(0, width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm").getFormattedText()));
+		confirmButton = addButton(new GuiButton(0, width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm").getFormattedText()));
 		confirmButton.enabled = false;
 
 		textboxNewPasscode = new GuiTextField(0, fontRenderer, width / 2 - 57, height / 2 - 47, 110, 12);

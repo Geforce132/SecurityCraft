@@ -131,7 +131,7 @@ public class ReinforcedWallBlock extends BaseReinforcedBlock {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return side == EnumFacing.DOWN ? super.shouldSideBeRendered(state, world, pos, side) : true;
+		return side != EnumFacing.DOWN || super.shouldSideBeRendered(state, world, pos, side);
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class ReinforcedWallBlock extends BaseReinforcedBlock {
 		return block.canBeConnectedTo(world, other, facing.getOpposite()) || canConnectTo(world, other, facing.getOpposite());
 	}
 
-	public static enum EnumType implements IStringSerializable {
+	public enum EnumType implements IStringSerializable {
 		NORMAL(0, "reinforced_cobblestone", "normal"),
 		MOSSY(1, "reinforced_mossy_cobblestone", "mossy");
 

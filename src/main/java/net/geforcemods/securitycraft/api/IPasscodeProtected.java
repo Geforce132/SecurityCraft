@@ -38,10 +38,8 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @param player The player who the GUI should be opened to.
 	 */
 	public default void openPasscodeGUI(World world, BlockPos pos, EntityPlayer player) {
-		if (!world.isRemote) {
-			if (getPasscode() != null)
-				player.openGui(SecurityCraft.instance, ScreenHandler.INSERT_PASSCODE_ID, world, pos.getX(), pos.getY(), pos.getZ());
-		}
+		if (!world.isRemote && getPasscode() != null)
+			player.openGui(SecurityCraft.instance, ScreenHandler.INSERT_PASSCODE_ID, world, pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	/**
@@ -118,9 +116,8 @@ public interface IPasscodeProtected extends ICodebreakable {
 	}
 
 	/**
-	 * Sets a new passcode. Note that this should not hash the passcode. Prefer calling {@link #hashAndSetPasscode}
-	 * instead, if you are calling this without a salted and hashed passcode. The passcode should always be set alongside
-	 * the salt.
+	 * Sets a new passcode. Note that this should not hash the passcode. Prefer calling {@link #hashAndSetPasscode} instead, if
+	 * you are calling this without a salted and hashed passcode. The passcode should always be set alongside the salt.
 	 *
 	 * @param passcode The new passcode to be saved
 	 */
@@ -175,8 +172,8 @@ public interface IPasscodeProtected extends ICodebreakable {
 	public UUID getSaltKey();
 
 	/**
-	 * Sets the block entity's salt key, which is used for retrieving the salt from the external salt list. The salt
-	 * key should always be set alongside the passcode.
+	 * Sets the block entity's salt key, which is used for retrieving the salt from the external salt list. The salt key should
+	 * always be set alongside the passcode.
 	 *
 	 * @param saltKey The new key associated with the salt
 	 */
@@ -214,10 +211,8 @@ public interface IPasscodeProtected extends ICodebreakable {
 			if (moduleInv.isModuleEnabled(ModuleType.SMART))
 				startCooldown();
 
-			if (moduleInv.isModuleEnabled(ModuleType.HARMING)) {
-				if (player.attackEntityFrom(CustomDamageSources.INCORRECT_PASSCODE, ConfigHandler.incorrectPasscodeDamage))
-					player.closeScreen();
-			}
+			if (moduleInv.isModuleEnabled(ModuleType.HARMING) && player.attackEntityFrom(CustomDamageSources.INCORRECT_PASSCODE, ConfigHandler.incorrectPasscodeDamage))
+				player.closeScreen();
 		}
 	}
 }

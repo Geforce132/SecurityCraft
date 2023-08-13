@@ -21,35 +21,35 @@ import net.minecraft.util.ITickable;
 import net.minecraft.world.WorldServer;
 
 public class SecurityCameraBlockEntity extends CustomizableBlockEntity implements IEMPAffectedBE, ITickable {
-	private final double CAMERA_SPEED = 0.0180D;
-	public double cameraRotation = 0.0D;
-	public double oCameraRotation = 0.0D;
-	public boolean addToRotation = true;
-	public boolean down = false;
+	private static final double CAMERA_SPEED = 0.0180D;
+	private double cameraRotation = 0.0D;
+	private double oCameraRotation = 0.0D;
+	private boolean addToRotation = true;
+	private boolean down = false;
 	private boolean shutDown = false;
 	private DoubleOption rotationSpeedOption = new DoubleOption(this::getPos, "rotationSpeed", CAMERA_SPEED, 0.01D, 0.025D, 0.001D, true);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
-	private DoubleOption customRotationOption = new DoubleOption(this::getPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
+	private DoubleOption customRotationOption = new DoubleOption(this::getPos, "customRotation", getCameraRotation(), 1.55D, -1.55D, rotationSpeedOption.get(), true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private int playersViewing = 0;
 
 	@Override
 	public void update() {
 		if (!shutDown) {
-			oCameraRotation = cameraRotation;
+			oCameraRotation = getCameraRotation();
 
 			if (!shouldRotateOption.get()) {
 				cameraRotation = customRotationOption.get();
 				return;
 			}
 
-			if (addToRotation && cameraRotation <= 1.55F)
-				cameraRotation += rotationSpeedOption.get();
+			if (addToRotation && getCameraRotation() <= 1.55F)
+				cameraRotation = getCameraRotation() + rotationSpeedOption.get();
 			else
 				addToRotation = false;
 
-			if (!addToRotation && cameraRotation >= -1.55F)
-				cameraRotation -= rotationSpeedOption.get();
+			if (!addToRotation && getCameraRotation() >= -1.55F)
+				cameraRotation = getCameraRotation() - rotationSpeedOption.get();
 			else
 				addToRotation = true;
 		}
@@ -133,10 +133,8 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals("disabled"))
-
-			if (((BooleanOption) option).get())
-				makeEveryoneStopViewingTheCamera();
+		if (option.getName().equals("disabled") && ((BooleanOption) option).get())
+			makeEveryoneStopViewingTheCamera();
 	}
 
 	private void makeEveryoneStopViewingTheCamera() {
@@ -170,5 +168,17 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 	public boolean isDisabled() {
 		return disabled.get();
+	}
+
+	public double getOriginalCameraRotation() {
+		return oCameraRotation;
+	}
+
+	public double getCameraRotation() {
+		return cameraRotation;
+	}
+
+	public boolean isDown() {
+		return down;
 	}
 }

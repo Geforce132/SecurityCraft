@@ -43,10 +43,8 @@ public class TrophySystemMenu extends Container {
 
 				slot.onSlotChange(slotStack, slotStackCopy);
 			}
-			else if (index >= 1) {
-				if (!mergeItemStack(slotStack, 0, 1, false))
-					return ItemStack.EMPTY;
-			}
+			else if (!mergeItemStack(slotStack, 0, 1, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.putStack(ItemStack.EMPTY);

@@ -97,10 +97,8 @@ public class BlockReinforcerMenu extends Container {
 					return ItemStack.EMPTY;
 				slot.onSlotChange(slotStack, slotStackCopy);
 			}
-			else if (id < 36) {
-				if (!mergeItemStack(slotStack, 36, fixSlot(38), false))
-					return ItemStack.EMPTY;
-			}
+			else if (!mergeItemStack(slotStack, 36, fixSlot(38), false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.putStack(ItemStack.EMPTY);
@@ -219,7 +217,7 @@ public class BlockReinforcerMenu extends Container {
 				else {
 					NonNullList<ItemStack> subBlocks = NonNullList.create();
 
-					reinforcedBlock.getSubBlocks(SecurityCraft.tabSCDecoration, subBlocks);
+					reinforcedBlock.getSubBlocks(SecurityCraft.DECORATION_TAB, subBlocks);
 					return subBlocks.stream().anyMatch(subBlock -> stack.getMetadata() == subBlock.getMetadata() && stack.getItem() == subBlock.getItem());
 				}
 			});

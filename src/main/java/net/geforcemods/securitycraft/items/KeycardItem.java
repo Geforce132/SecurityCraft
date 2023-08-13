@@ -25,7 +25,7 @@ public class KeycardItem extends Item {
 
 	public KeycardItem(int level) {
 		this.level = level;
-		setCreativeTab(SecurityCraft.tabSCTechnical);
+		setCreativeTab(SecurityCraft.TECHNICAL_TAB);
 	}
 
 	/**

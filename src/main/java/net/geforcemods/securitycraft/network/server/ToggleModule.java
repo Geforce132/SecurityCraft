@@ -45,29 +45,27 @@ public class ToggleModule implements IMessage {
 		@Override
 		public IMessage onMessage(ToggleModule message, MessageContext ctx) {
 			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
-				BlockPos pos = message.pos;
 				EntityPlayer player = ctx.getServerHandler().player;
-				TileEntity be = player.world.getTileEntity(pos);
+				TileEntity be = player.world.getTileEntity(message.pos);
 
 				if (be instanceof IModuleInventory && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player))) {
 					IModuleInventory moduleInv = (IModuleInventory) be;
-					ModuleType moduleType = message.moduleType;
 
-					if (moduleInv.isModuleEnabled(moduleType)) {
-						moduleInv.removeModule(moduleType, true);
+					if (moduleInv.isModuleEnabled(message.moduleType)) {
+						moduleInv.removeModule(message.moduleType, true);
 
 						if (be instanceof LinkableBlockEntity) {
 							LinkableBlockEntity linkable = (LinkableBlockEntity) be;
 
-							linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(moduleType, true), linkable);
+							linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(message.moduleType, true), linkable);
 						}
 					}
 					else {
-						moduleInv.insertModule(moduleInv.getModule(moduleType), true);
+						moduleInv.insertModule(moduleInv.getModule(message.moduleType), true);
 
 						if (be instanceof LinkableBlockEntity) {
 							LinkableBlockEntity linkable = (LinkableBlockEntity) be;
-							ItemStack stack = moduleInv.getModule(moduleType);
+							ItemStack stack = moduleInv.getModule(message.moduleType);
 
 							linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), true), linkable);
 						}

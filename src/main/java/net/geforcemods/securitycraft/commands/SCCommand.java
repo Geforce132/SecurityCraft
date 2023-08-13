@@ -58,7 +58,7 @@ public class SCCommand extends CommandBase implements ICommand {
 			throw new WrongUsageException(Utils.localize("messages.securitycraft:command.sc.usage").getFormattedText());
 		else if (args.length == 1) {
 			if (args[0].equals("connect"))
-				sender.sendMessage(new TextComponentString("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + Utils.localize("messages.securitycraft:irc.connected").getFormattedText() + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))));
+				sender.sendMessage(new TextComponentString("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + Utils.localize("messages.securitycraft:irc.connected").getFormattedText() + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.TIPS_WITH_LINK.get("discord"))));
 			else if (args[0].equals("help")) {
 				//@formatter:off
 				sender.sendMessage(new TextComponentTranslation("messages.securitycraft:sc_help",

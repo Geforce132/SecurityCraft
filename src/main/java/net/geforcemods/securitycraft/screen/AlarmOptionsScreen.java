@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
-import net.geforcemods.securitycraft.screen.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.Slider;
 import net.geforcemods.securitycraft.screen.components.Slider.ISlider;
@@ -60,25 +59,23 @@ public class AlarmOptionsScreen extends GuiScreen implements ISlider {
 		soundLengthTextXPosition = width / 2 - combinedTextAndBoxWidth / 2;
 		timeEditBox = new SoundLengthEditBox(id++, fontRenderer, soundLengthTextXPosition + soundLengthTextWidthPlusBuffer, buttonY - 15, timeEditBoxWidth, 12);
 		timeEditBox.setValidator(string -> string.matches("[0-9:]*"));
-		buttonList.add(minusMinute = new ClickButton(id++, buttonsX, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.minus_one_minute").getFormattedText(), b -> changeSoundLength(-60)));
-		buttonList.add(minusTenSeconds = new ClickButton(id++, buttonsX + 34, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.minus_ten_seconds").getFormattedText(), b -> changeSoundLength(-10)));
-		buttonList.add(minusSecond = new ClickButton(id++, buttonsX + 68, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.minus_one_second").getFormattedText(), b -> changeSoundLength(-1)));
-		buttonList.add(reset = new PictureButton(id++, buttonsX + 102, buttonY, 12, buttonHeight, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSoundLength(0)) {
+		minusMinute = addButton(new ClickButton(id++, buttonsX, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.minus_one_minute").getFormattedText(), b -> changeSoundLength(-60)));
+		minusTenSeconds = addButton(new ClickButton(id++, buttonsX + 34, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.minus_ten_seconds").getFormattedText(), b -> changeSoundLength(-10)));
+		minusSecond = addButton(new ClickButton(id++, buttonsX + 68, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.minus_one_second").getFormattedText(), b -> changeSoundLength(-1)));
+		reset = addButton(new PictureButton(id++, buttonsX + 102, buttonY, 12, buttonHeight, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSoundLength(0)) {
 			@Override
 			public ResourceLocation getTextureLocation() {
 				return enabled ? RESET_TEXTURE : RESET_INACTIVE_TEXTURE;
 			}
 		});
-		buttonList.add(plusSecond = new ClickButton(id++, buttonsX + 116, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.plus_one_second").getFormattedText(), b -> changeSoundLength(1)));
-		buttonList.add(plusTenSeconds = new ClickButton(id++, buttonsX + 150, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.plus_ten_seconds").getFormattedText(), b -> changeSoundLength(10)));
-		buttonList.add(plusMinute = new ClickButton(id++, buttonsX + 184, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.plus_one_minute").getFormattedText(), b -> changeSoundLength(60)));
+		plusSecond = addButton(new ClickButton(id++, buttonsX + 116, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.plus_one_second").getFormattedText(), b -> changeSoundLength(1)));
+		plusTenSeconds = addButton(new ClickButton(id++, buttonsX + 150, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.plus_ten_seconds").getFormattedText(), b -> changeSoundLength(10)));
+		plusMinute = addButton(new ClickButton(id++, buttonsX + 184, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.plus_one_minute").getFormattedText(), b -> changeSoundLength(60)));
 		setSoundLength(alarmScreen.soundLength);
-		pitchSlider = addButton(new Slider(Utils.localize("gui.securitycraft:alarm.pitch", "" + alarmScreen.pitch).getFormattedText(), SCContent.alarm, id++, leftPos + imageWidth / 2 - 50, buttonY + 25, 100, 20, Utils.localize("gui.securitycraft:alarm.pitch", "").getFormattedText(), 0.5D, 2.0D, alarmScreen.pitch, true, true, this));
-		pitchSlider.precision = 2;
+		pitchSlider = addButton(new Slider(Utils.localize("gui.securitycraft:alarm.pitch", "" + alarmScreen.pitch).getFormattedText(), SCContent.alarm, id++, leftPos + imageWidth / 2 - 50, buttonY + 25, 100, 20, Utils.localize("gui.securitycraft:alarm.pitch", "").getFormattedText(), 0.5D, 2.0D, alarmScreen.pitch, true, this));
 	}
 
 	private void updateAlarmScreenSizes() {
-		ColorableScrollPanel soundList = alarmScreen.soundList;
 		int oldLeftPos = alarmScreen.leftPos, leftDifference;
 		int oldTopPos = alarmScreen.topPos, topDifference;
 
@@ -88,12 +85,7 @@ public class AlarmOptionsScreen extends GuiScreen implements ISlider {
 		alarmScreen.topPos = (alarmScreen.height - alarmScreen.imageHeight) / 2;
 		leftDifference = alarmScreen.leftPos - oldLeftPos;
 		topDifference = alarmScreen.topPos - oldTopPos;
-		soundList.left += leftDifference;
-		soundList.top += topDifference;
-		soundList.right = soundList.left + soundList.listWidth;
-		soundList.bottom = soundList.top + soundList.listHeight;
-		soundList.scrollBarRight = soundList.left + soundList.listWidth;
-		soundList.scrollBarLeft = soundList.scrollBarRight - soundList.scrollBarWidth;
+		alarmScreen.soundList.updateSize(leftDifference, topDifference);
 		alarmScreen.searchBar.x += leftDifference;
 		alarmScreen.searchBar.y += topDifference;
 		alarmScreen.optionsButton.x += leftDifference;
@@ -171,7 +163,7 @@ public class AlarmOptionsScreen extends GuiScreen implements ISlider {
 		double mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
 
 		if (timeEditBox.isHovered(mouseX, mouseY))
-			timeEditBox.mouseScrolled(mouseX, mouseY, Mouse.getEventDWheel());
+			timeEditBox.mouseScrolled(Mouse.getEventDWheel());
 	}
 
 	@Override
@@ -193,7 +185,7 @@ public class AlarmOptionsScreen extends GuiScreen implements ISlider {
 			super(id, font, x, y, width, height);
 		}
 
-		public void mouseScrolled(double mouseX, double mouseY, double delta) {
+		public void mouseScrolled(double delta) {
 			setSoundLength((int) Math.signum(delta));
 		}
 
@@ -260,7 +252,7 @@ public class AlarmOptionsScreen extends GuiScreen implements ISlider {
 
 	@Override
 	public void onChangeSliderValue(Slider slider, Block block, int id) {
-		slider.displayString = slider.prefix + getTruncatedSliderValue(slider);
+		slider.displayString = slider.getPrefix() + getTruncatedSliderValue(slider);
 	}
 
 	@Override

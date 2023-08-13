@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BouncingBetty extends Entity {
 	/** How long the fuse is */
-	public int fuse;
+	private int fuse;
 
 	public BouncingBetty(World world) {
 		super(world);
@@ -26,7 +26,7 @@ public class BouncingBetty extends Entity {
 		motionX = -((float) Math.sin(f)) * 0.02F;
 		motionY = 0.20000000298023224D;
 		motionZ = -((float) Math.cos(f)) * 0.02F;
-		fuse = 80;
+		setFuse(80);
 		prevPosX = x;
 		prevPosY = y;
 		prevPosZ = z;
@@ -76,16 +76,24 @@ public class BouncingBetty extends Entity {
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound tag) {
-		tag.setByte("Fuse", (byte) fuse);
+		tag.setByte("Fuse", (byte) getFuse());
 	}
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound tag) {
-		fuse = tag.getByte("Fuse");
+		setFuse(tag.getByte("Fuse"));
 	}
 
 	@SideOnly(Side.CLIENT)
 	public float getShadowSize() {
 		return 0.0F;
+	}
+
+	public int getFuse() {
+		return fuse;
+	}
+
+	public void setFuse(int fuse) {
+		this.fuse = fuse;
 	}
 }

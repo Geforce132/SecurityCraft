@@ -30,7 +30,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityProvider {
-	public SpecialDoorBlock(Material material) {
+	protected SpecialDoorBlock(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
 	}
@@ -153,11 +153,9 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 
 	@Override
 	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
-		super.eventReceived(state, world, pos, id, param);
+		TileEntity te = world.getTileEntity(pos);
 
-		TileEntity tileentity = world.getTileEntity(pos);
-
-		return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
+		return te != null && te.receiveClientEvent(id, param);
 	}
 
 	@Override
@@ -175,9 +173,6 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 	public EnumPushReaction getPushReaction(IBlockState state) {
 		return EnumPushReaction.BLOCK;
 	}
-
-	@Override
-	public abstract TileEntity createNewTileEntity(World world, int meta);
 
 	public abstract Item getDoorItem();
 }

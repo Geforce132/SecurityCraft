@@ -17,7 +17,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -31,8 +30,8 @@ public class MineRemoteAccessToolScreen extends GuiContainer {
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
 	private List<StringHoverChecker> hoverCheckers = new ArrayList<>();
 
-	public MineRemoteAccessToolScreen(InventoryPlayer inventory, ItemStack item) {
-		super(new GenericMenu(inventory, null));
+	public MineRemoteAccessToolScreen(ItemStack item) {
+		super(new GenericMenu(null));
 
 		mrat = item;
 		xSize = 256;
@@ -75,6 +74,8 @@ public class MineRemoteAccessToolScreen extends GuiContainer {
 						buttons[i][j] = new GuiButton(id++, btnX, btnY, 20, 20, "X");
 						buttons[i][j].enabled = false;
 						break;
+					default:
+						throw new IllegalArgumentException("Mine actions can only range from 0-3 (inclusive)");
 				}
 
 				buttonList.add(buttons[i][j]);
@@ -191,6 +192,10 @@ public class MineRemoteAccessToolScreen extends GuiContainer {
 				for (int i = 0; i < 4; i++) {
 					buttons[mine][i].enabled = false;
 				}
+
+				break;
+			default:
+				throw new IllegalArgumentException("Mine actions can only range from 0-3 (inclusive)");
 		}
 	}
 

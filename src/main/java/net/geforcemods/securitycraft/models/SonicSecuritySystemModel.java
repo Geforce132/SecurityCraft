@@ -8,8 +8,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class SonicSecuritySystemModel extends ModelBase {
-	public ModelRenderer radar;
-	public ModelRenderer bb_main;
+	public final ModelRenderer radar;
+	public final ModelRenderer bb_main;
 
 	public SonicSecuritySystemModel() {
 		textureWidth = 32;

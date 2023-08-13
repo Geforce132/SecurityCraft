@@ -62,18 +62,14 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
 
 				for (int i = 0; i < 10; i++) {
-					if (!connectedScanner.getStackInSlotCopy(i).isEmpty()) {
-						if (checkInventory((EntityPlayer) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
-							addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, world, pos));
-					}
+					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && checkInventory((EntityPlayer) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
+						addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, world, pos));
 				}
 			}
 			else if (entity instanceof EntityItem) {
 				for (int i = 0; i < 10; i++) {
-					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((EntityItem) entity).getItem().isEmpty()) {
-						if (checkEntityItem((EntityItem) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
-							addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, world, pos));
-					}
+					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((EntityItem) entity).getItem().isEmpty() && checkEntityItem((EntityItem) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
+						addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, world, pos));
 				}
 			}
 		}
@@ -193,24 +189,22 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 	}
 
 	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
-		if (item != null) {
-			if (!item.isEmpty() && item.getTagCompound() != null && Block.getBlockFromItem(item.getItem()) instanceof BlockShulkerBox) {
-				NBTTagList list = item.getTagCompound().getCompoundTag("BlockEntityTag").getTagList("Items", NBT.TAG_COMPOUND);
+		if (item != null && !item.isEmpty() && item.getTagCompound() != null && Block.getBlockFromItem(item.getItem()) instanceof BlockShulkerBox) {
+			NBTTagList list = item.getTagCompound().getCompoundTag("BlockEntityTag").getTagList("Items", NBT.TAG_COMPOUND);
 
-				for (int i = 0; i < list.tagCount(); i++) {
-					ItemStack itemInChest = new ItemStack(list.getCompoundTagAt(i));
+			for (int i = 0; i < list.tagCount(); i++) {
+				ItemStack itemInChest = new ItemStack(list.getCompoundTagAt(i));
 
-					if (areItemsEqual(itemInChest, stackToCheck, hasSmartModule)) {
-						if (hasStorageModule) {
-							te.addItemToStorage(itemInChest);
-							list.removeTag(i);
-						}
-
-						if (hasRedstoneModule)
-							updateInventoryScannerPower(te);
-
-						return true;
+				if (areItemsEqual(itemInChest, stackToCheck, hasSmartModule)) {
+					if (hasStorageModule) {
+						te.addItemToStorage(itemInChest);
+						list.removeTag(i);
 					}
+
+					if (hasRedstoneModule)
+						updateInventoryScannerPower(te);
+
+					return true;
 				}
 			}
 		}
@@ -305,10 +299,8 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		IBlockState offsetState = world.getBlockState(pos.offset(side));
 		Block block = offsetState.getBlock();
 
-		if (side == EnumFacing.UP || side == EnumFacing.DOWN) {
-			if (block == this)
-				return false;
-		}
+		if ((side == EnumFacing.UP || side == EnumFacing.DOWN) && block == this)
+			return false;
 
 		return super.shouldSideBeRendered(state, world, pos, side);
 	}

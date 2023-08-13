@@ -33,12 +33,12 @@ public class BlockPocketManagerMenu extends Container {
 				addSlotToContainer(new Slot(inventory, x, 8 + x * 18, 142 + 74));
 			}
 
-			IItemHandler storage = te.getStorageHandler();
+			IItemHandler handler = te.getStorageHandler();
 			int slotId = 0;
 
 			for (int y = 0; y < 8; y++) {
 				for (int x = 0; x < 7; x++) {
-					addSlotToContainer(new SlotItemHandler(storage, slotId++, 124 + x * 18, 8 + y * 18));
+					addSlotToContainer(new SlotItemHandler(handler, slotId++, 124 + x * 18, 8 + y * 18));
 				}
 			}
 		}
@@ -58,10 +58,8 @@ public class BlockPocketManagerMenu extends Container {
 				if (!mergeItemStack(slotStack, 0, 36, true))
 					return ItemStack.EMPTY;
 			}
-			else if (index >= 0 && index <= 35) { //main inventory and hotbar
-				if (!mergeItemStack(slotStack, 36, inventorySlots.size(), false))
-					return ItemStack.EMPTY;
-			}
+			else if (!mergeItemStack(slotStack, 36, inventorySlots.size(), false)) //main inventory and hotbar
+				return ItemStack.EMPTY;
 
 			if (slotStack.isEmpty())
 				slot.putStack(ItemStack.EMPTY);

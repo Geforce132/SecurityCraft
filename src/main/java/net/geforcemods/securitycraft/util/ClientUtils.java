@@ -14,6 +14,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class ClientUtils {
+	private ClientUtils() {}
+
 	/**
 	 * Returns the current Minecraft in-game time, in a 12-hour AM/PM format.
 	 */
@@ -160,7 +162,7 @@ public class ClientUtils {
 			}
 		}
 
-		return 0xFF000000 | (r << 16) | (g << 8) | (b << 0);
+		return 0xFF000000 | (r << 16) | (g << 8) | b;
 	}
 
 	public static float[] RGBtoHSB(int r, int g, int b) {

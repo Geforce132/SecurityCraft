@@ -112,18 +112,18 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
 		BlockPos originalPos = pos;
 		IProperty<?> variantProperty = singleSlab.getVariantProperty();
 		Object value = singleSlab.getTypeForItem(stack);
-		IBlockState iblockstate = world.getBlockState(pos);
+		IBlockState state = world.getBlockState(pos);
 
-		if (iblockstate.getBlock() == singleSlab) {
-			boolean isTop = iblockstate.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.TOP;
+		if (state.getBlock() == singleSlab) {
+			boolean isTop = state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.TOP;
 
-			if ((side == EnumFacing.UP && !isTop || side == EnumFacing.DOWN && isTop) && value == iblockstate.getValue(variantProperty))
+			if ((side == EnumFacing.UP && !isTop || side == EnumFacing.DOWN && isTop) && value == state.getValue(variantProperty))
 				return true;
 		}
 
 		pos = pos.offset(side);
-		IBlockState updatedState = world.getBlockState(pos);
-		return updatedState.getBlock() == singleSlab && value == updatedState.getValue(variantProperty) ? true : super.canPlaceBlockOnSide(world, originalPos, side, player, stack);
+		state = world.getBlockState(pos);
+		return state.getBlock() == singleSlab && value == state.getValue(variantProperty) || super.canPlaceBlockOnSide(world, originalPos, side, player, stack);
 	}
 
 	private boolean tryPlace(ItemStack stack, World world, EntityPlayer player, BlockPos pos, Object variantInStack) {

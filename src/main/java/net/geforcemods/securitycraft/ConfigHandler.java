@@ -210,18 +210,17 @@ public class ConfigHandler {
 			"minecraft:nausea|400|5",
 			"minecraft:slowness|400|5"
 	};
-
+	//@formatter:on
 	@Ignore
 	public static final List<Supplier<PotionEffect>> TASER_EFFECTS = new ArrayList<>();
-
 	@Ignore
 	public static final List<Supplier<PotionEffect>> POWERED_TASER_EFFECTS = new ArrayList<>();
 
-	//@formatter:on
+	private ConfigHandler() {}
 
 	@SubscribeEvent
 	public static void onConfigChanged(OnConfigChangedEvent event) {
-		if (event.getModID() == SecurityCraft.MODID)
+		if (SecurityCraft.MODID.equals(event.getModID()))
 			loadEffects();
 	}
 

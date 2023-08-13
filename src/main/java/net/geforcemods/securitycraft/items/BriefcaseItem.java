@@ -81,7 +81,7 @@ public class BriefcaseItem extends ColorableItem {
 		});
 	}
 
-	public static void checkPasscode(EntityPlayerMP player, ItemStack briefcase, String incomingCode, String briefcaseCode, NBTTagCompound tag) {
+	public static void checkPasscode(EntityPlayerMP player, String incomingCode, String briefcaseCode, NBTTagCompound tag) {
 		UUID saltKey = tag.hasUniqueId("saltKey") ? tag.getUniqueId("saltKey") : null;
 		byte[] salt = SaltData.getSalt(saltKey);
 

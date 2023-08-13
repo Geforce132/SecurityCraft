@@ -45,7 +45,7 @@ public class AssembleBlockPocket implements IMessage {
 				EntityPlayer player = ctx.getServerHandler().player;
 
 				if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
-					((BlockPocketManagerBlockEntity) te).size = message.size;
+					((BlockPocketManagerBlockEntity) te).setSize(message.size);
 					((BlockPocketManagerBlockEntity) te).autoAssembleMultiblock();
 				}
 			});

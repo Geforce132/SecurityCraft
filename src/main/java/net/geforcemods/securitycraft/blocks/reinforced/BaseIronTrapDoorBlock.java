@@ -86,9 +86,9 @@ public class BaseIronTrapDoorBlock extends BlockTrapDoor implements ITileEntityP
 
 	@Override
 	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
-		super.eventReceived(state, world, pos, id, param);
-		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
+		TileEntity te = world.getTileEntity(pos);
+
+		return te != null && te.receiveClientEvent(id, param);
 	}
 
 	@Override

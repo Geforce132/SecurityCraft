@@ -13,8 +13,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class SetSentryMode implements IMessage {
-	public BlockPos pos;
-	public int mode;
+	private BlockPos pos;
+	private int mode;
 
 	public SetSentryMode() {}
 

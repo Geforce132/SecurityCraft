@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class RemoteControlMine implements IMessage {
 	private int x, y, z;
-	private String state;
+	private String stateString;
 
 	public RemoteControlMine() {}
 
@@ -24,7 +24,7 @@ public class RemoteControlMine implements IMessage {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.state = state;
+		this.stateString = state;
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class RemoteControlMine implements IMessage {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
-		state = ByteBufUtils.readUTF8String(buf);
+		stateString = ByteBufUtils.readUTF8String(buf);
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class RemoteControlMine implements IMessage {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
-		ByteBufUtils.writeUTF8String(buf, state);
+		ByteBufUtils.writeUTF8String(buf, stateString);
 	}
 
 	public static class Handler implements IMessageHandler<RemoteControlMine, IMessage> {
@@ -57,11 +57,11 @@ public class RemoteControlMine implements IMessage {
 					TileEntity te = world.getTileEntity(pos);
 
 					if (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player)) {
-						if (message.state.equalsIgnoreCase("activate"))
+						if (message.stateString.equalsIgnoreCase("activate"))
 							explosive.activateMine(world, pos);
-						else if (message.state.equalsIgnoreCase("defuse"))
+						else if (message.stateString.equalsIgnoreCase("defuse"))
 							explosive.defuseMine(world, pos);
-						else if (message.state.equalsIgnoreCase("detonate"))
+						else if (message.stateString.equalsIgnoreCase("detonate"))
 							explosive.explode(world, pos);
 					}
 				}

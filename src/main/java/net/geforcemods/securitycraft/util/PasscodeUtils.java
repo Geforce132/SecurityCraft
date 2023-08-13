@@ -18,6 +18,8 @@ public class PasscodeUtils {
 	private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 	private static HashingThread hashingThread;
 
+	private PasscodeUtils() {}
+
 	public static void startHashingThread(IThreadListener executor) {
 		if (hashingThread == null) {
 			hashingThread = new HashingThread(executor);

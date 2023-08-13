@@ -22,7 +22,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -54,8 +53,8 @@ public class SonicSecuritySystemScreen extends GuiContainer implements Connectio
 	private boolean isOwner;
 	private String title;
 
-	public SonicSecuritySystemScreen(InventoryPlayer inv, SonicSecuritySystemBlockEntity te) {
-		super(new GenericMenu(inv, te));
+	public SonicSecuritySystemScreen(SonicSecuritySystemBlockEntity te) {
+		super(new GenericMenu(te));
 		this.te = te;
 		title = te.getDisplayName().getFormattedText();
 		isOwner = te.isOwnedBy(Minecraft.getMinecraft().player);
@@ -183,7 +182,7 @@ public class SonicSecuritySystemScreen extends GuiContainer implements Connectio
 		GlStateManager.disableLighting();
 
 		if (connectionList != null)
-			connectionList.drawScreen(mouseX, mouseY, partialTicks);
+			connectionList.drawScreen(mouseX, mouseY);
 
 		if (invertButtonHoverChecker.checkHover(mouseX, mouseY))
 			GuiUtils.drawHoveringText(invertButtonHoverChecker.getLines(), mouseX, mouseY, width, height, -1, fontRenderer);

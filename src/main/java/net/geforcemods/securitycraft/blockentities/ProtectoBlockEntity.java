@@ -39,7 +39,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 			if (!state.getValue(ProtectoBlock.ACTIVATED))
 				world.setBlockState(pos, state.withProperty(ProtectoBlock.ACTIVATED, true));
 
-			if (entities.size() != 0) {
+			if (!entities.isEmpty()) {
 				boolean shouldDeactivate = false;
 
 				for (EntityLivingBase entity : entities) {

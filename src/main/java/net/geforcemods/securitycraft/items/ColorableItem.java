@@ -44,7 +44,7 @@ public class ColorableItem extends Item {
 
 	public boolean hasColor(ItemStack stack) {
 		NBTTagCompound tag = stack.getTagCompound();
-		return tag != null && tag.hasKey("display", 10) ? tag.getCompoundTag("display").hasKey("color", 3) : false;
+		return tag != null && tag.hasKey("display", 10) && tag.getCompoundTag("display").hasKey("color", 3);
 	}
 
 	public int getColor(ItemStack stack) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -45,11 +46,11 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	/** Whether the ping sound should be emitted or not */
 	private boolean emitsPings = true;
 	private int pingCooldown = PING_DELAY;
-	public IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	/** Used to control the number of ticks that Sonic Security Systems emit redstone power for */
-	public int powerCooldown = 0;
-	public float radarRotationDegrees = 0;
-	public float oRadarRotationDegrees = 0;
+	private int powerCooldown = 0;
+	private float radarRotationDegrees = 0;
+	private float oRadarRotationDegrees = 0;
 	/** A list containing all of the blocks that this SSS is linked to */
 	private Set<BlockPos> linkedBlocks = new HashSet<>();
 	/** Whether or not this Sonic Security System is on or off */
@@ -57,7 +58,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	/** Whether or not this Sonic Security System is currently recording a new note combination */
 	private boolean isRecording = false;
 	private ArrayList<NoteWrapper> recordedNotes = new ArrayList<>();
-	public boolean correctTuneWasPlayed = false;
+	private boolean wasCorrectTunePlayed = false;
 	/** Whether or not this Sonic Security System is currently listening to notes */
 	private boolean isListening = false;
 	private int listeningTimer = LISTEN_DELAY;
@@ -82,11 +83,11 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 			if (!isActive())
 				return;
 
-			if (correctTuneWasPlayed) {
+			if (wasCorrectTunePlayed()) {
 				if (powerCooldown > 0)
 					powerCooldown--;
 				else {
-					correctTuneWasPlayed = false;
+					wasCorrectTunePlayed = false;
 					world.setBlockState(pos, world.getBlockState(pos).withProperty(SonicSecuritySystemBlock.POWERED, false));
 					BlockUtils.updateIndirectNeighbors(world, pos, SCContent.sonicSecuritySystem, EnumFacing.DOWN);
 				}
@@ -135,13 +136,13 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 			}
 		}
 		else {
-			oRadarRotationDegrees = radarRotationDegrees;
+			oRadarRotationDegrees = getRadarRotationDegrees();
 
 			if (isActive() || isRecording()) {
 				// Turn the radar dish slightly
-				radarRotationDegrees += 0.15;
+				radarRotationDegrees = getRadarRotationDegrees() + 0.15F;
 
-				if (radarRotationDegrees >= 360)
+				if (getRadarRotationDegrees() >= 360)
 					radarRotationDegrees = 0;
 			}
 		}
@@ -171,7 +172,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 		// If there are blocks to save but the tag doesn't have a CompoundNBT
 		// to store them in, create one (shouldn't be needed)
-		if (linkedBlocks.size() > 0 && !tag.hasKey("LinkedBlocks"))
+		if (!linkedBlocks.isEmpty() && !tag.hasKey("LinkedBlocks"))
 			tag.setTag("LinkedBlocks", new NBTTagList());
 
 		Iterator<BlockPos> iterator = linkedBlocks.iterator();
@@ -192,7 +193,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		tag.setBoolean("isRecording", isRecording);
 		tag.setBoolean("isListening", isListening);
 		tag.setInteger("listenPos", listenPos);
-		tag.setBoolean("correctTuneWasPlayed", correctTuneWasPlayed);
+		tag.setBoolean("correctTuneWasPlayed", wasCorrectTunePlayed());
 		tag.setInteger("powerCooldown", powerCooldown);
 		tag.setBoolean("shutDown", shutDown);
 		tag.setBoolean("disableBlocksWhenTuneIsPlayed", disableBlocksWhenTuneIsPlayed);
@@ -227,7 +228,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		isRecording = tag.getBoolean("isRecording");
 		isListening = tag.getBoolean("isListening");
 		listenPos = tag.getInteger("listenPos");
-		correctTuneWasPlayed = tag.getBoolean("correctTuneWasPlayed");
+		wasCorrectTunePlayed = tag.getBoolean("correctTuneWasPlayed");
 		powerCooldown = tag.getInteger("powerCooldown");
 		shutDown = tag.getBoolean("shutDown");
 		disableBlocksWhenTuneIsPlayed = tag.getBoolean("disableBlocksWhenTuneIsPlayed");
@@ -440,10 +441,10 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 * @param noteID the ID of the note that was played
 	 * @param instrumentName the name of the instrument that played the note
 	 */
-	public boolean listenToNote(int noteID, String instrumentName) {
+	public void listenToNote(int noteID, String instrumentName) {
 		// No notes
 		if (getNumberOfNotes() == 0 || listenPos >= getNumberOfNotes())
-			return false;
+			return;
 
 		if (!isListening) {
 			isListening = true;
@@ -452,18 +453,26 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 		if (recordedNotes.get(listenPos++).isSameNote(noteID, instrumentName)) {
 			resetListeningTimer();
+
 			// true if the entire tune was correctly played, false if it was only partly played but more notes are needed
-			return listenPos >= recordedNotes.size();
+			if (listenPos >= recordedNotes.size()) {
+				wasCorrectTunePlayed = true;
+				powerCooldown = signalLength.get();
+
+				if (isModuleEnabled(ModuleType.REDSTONE)) {
+					world.setBlockState(getPos(), getWorld().getBlockState(getPos()).withProperty(SonicSecuritySystemBlock.POWERED, true));
+					BlockUtils.updateIndirectNeighbors(world, getPos(), SCContent.sonicSecuritySystem, EnumFacing.DOWN);
+				}
+			}
 		}
 
 		// An incorrect note was played
-		return false;
 	}
 
 	/**
 	 * @return The notes that this Sonic Security System has recorded
 	 */
-	public ArrayList<NoteWrapper> getRecordedNotes() {
+	public List<NoteWrapper> getRecordedNotes() {
 		return recordedNotes;
 	}
 
@@ -541,5 +550,17 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		return new Option[] {
 				signalLength
 		};
+	}
+
+	public boolean wasCorrectTunePlayed() {
+		return wasCorrectTunePlayed;
+	}
+
+	public float getOriginalRadarRotationDegrees() {
+		return oRadarRotationDegrees;
+	}
+
+	public float getRadarRotationDegrees() {
+		return radarRotationDegrees;
 	}
 }

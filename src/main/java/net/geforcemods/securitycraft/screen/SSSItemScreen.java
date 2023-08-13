@@ -22,8 +22,8 @@ public class SSSItemScreen extends GuiScreen implements ConnectionAccessor {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final String title;
 	private final ItemStack stack;
-	private final int imageWidth = 176;
-	private final int imageHeight = 166;
+	private int imageWidth = 176;
+	private int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
 	private SSSConnectionList<SSSItemScreen> connectionList;
@@ -59,7 +59,7 @@ public class SSSItemScreen extends GuiScreen implements ConnectionAccessor {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 		if (connectionList != null)
-			connectionList.drawScreen(mouseX, mouseY, partialTicks);
+			connectionList.drawScreen(mouseX, mouseY);
 
 		fontRenderer.drawString(title, leftPos + imageWidth / 2 - textWidth / 2, topPos + 6, 4210752);
 	}

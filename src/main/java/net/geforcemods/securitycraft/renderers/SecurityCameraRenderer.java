@@ -23,7 +23,7 @@ public class SecurityCameraRenderer extends TileEntitySpecialRenderer<SecurityCa
 	@Override
 	public void render(SecurityCameraBlockEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		//calling down() on the render view entity's position because the camera entity sits at y+0.5 by default and getPosition increases y by 0.5 again
-		if (te.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().getRenderViewEntity().getPosition().down().equals(te.getPos()))
+		if (te.isDown() || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().getRenderViewEntity().getPosition().down().equals(te.getPos()))
 			return;
 
 		float rotation = -10000F;
@@ -62,7 +62,7 @@ public class SecurityCameraRenderer extends TileEntitySpecialRenderer<SecurityCa
 		GlStateManager.rotate(180F, rotation, 0.0F, 1.0F);
 
 		if (!te.isDisabled())
-			MODEL.cameraRotationPoint.rotateAngleY = (float) ClientUtils.lerp(partialTicks, te.oCameraRotation, te.cameraRotation);
+			MODEL.cameraRotationPoint.rotateAngleY = (float) ClientUtils.lerp(partialTicks, te.getOriginalCameraRotation(), te.getCameraRotation());
 
 		if (te.isShutDown())
 			MODEL.cameraRotationPoint.rotateAngleX = 0.9F;

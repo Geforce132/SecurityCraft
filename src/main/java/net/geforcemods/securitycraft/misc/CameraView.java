@@ -10,30 +10,16 @@ import net.minecraft.util.math.BlockPos;
  * @author Geforce
  */
 public class CameraView {
-	public int x = 0;
-	public int y = 0;
-	public int z = 0;
-	public int dimension = 0;
+	private final BlockPos pos;
+	private final int dimension;
 
 	public CameraView(int x, int y, int z, int dim) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		dimension = dim;
+		this(new BlockPos(x, y, z), dim);
 	}
 
 	public CameraView(BlockPos pos, int dim) {
-		x = pos.getX();
-		y = pos.getY();
-		z = pos.getZ();
+		this.pos = pos;
 		dimension = dim;
-	}
-
-	/**
-	 * @return The position of this view in BlockPos form.
-	 */
-	public BlockPos getLocation() {
-		return new BlockPos(x, y, z);
 	}
 
 	/**
@@ -48,13 +34,21 @@ public class CameraView {
 		int zPos = Integer.parseInt(coordinates[2]);
 		int dim = (coordinates.length == 4 ? Integer.parseInt(coordinates[3]) : 0);
 
-		return (x == xPos && y == yPos && z == zPos && dimension == dim);
+		return (pos.getX() == xPos && pos.getY() == yPos && pos.getZ() == zPos && getDimension() == dim);
 	}
 
 	/**
 	 * @return A formatted string of this view's location. Format: "*X* *Y* *Z* *dimension ID*"
 	 */
 	public String toNBTString() {
-		return x + " " + y + " " + z + " " + dimension;
+		return pos.getX() + " " + pos.getY() + " " + pos.getZ() + " " + getDimension();
+	}
+
+	public BlockPos getPos() {
+		return pos;
+	}
+
+	public int getDimension() {
+		return dimension;
 	}
 }

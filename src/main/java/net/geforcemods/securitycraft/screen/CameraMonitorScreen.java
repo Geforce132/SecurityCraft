@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
@@ -27,8 +28,6 @@ public class CameraMonitorScreen extends GuiContainer {
 	private InventoryPlayer playerInventory;
 	private CameraMonitorItem cameraMonitor;
 	private NBTTagCompound nbtTag;
-	private GuiButton prevPageButton;
-	private GuiButton nextPageButton;
 	private GuiButton[] cameraButtons = new GuiButton[10];
 	private GuiButton[] unbindButtons = new GuiButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
@@ -37,7 +36,7 @@ public class CameraMonitorScreen extends GuiContainer {
 	private int page = 1;
 
 	public CameraMonitorScreen(InventoryPlayer inventory, CameraMonitorItem item, NBTTagCompound itemNBTTag) {
-		super(new GenericMenu(inventory, null));
+		super(new GenericMenu(null));
 		playerInventory = inventory;
 		cameraMonitor = item;
 		nbtTag = itemNBTTag;
@@ -52,8 +51,9 @@ public class CameraMonitorScreen extends GuiContainer {
 	public void initGui() {
 		super.initGui();
 
-		prevPageButton = new GuiButton(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<");
-		nextPageButton = new GuiButton(0, width / 2 + 52, height / 2 + 40, 20, 20, ">");
+		GuiButton prevPageButton = new GuiButton(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<");
+		GuiButton nextPageButton = new GuiButton(0, width / 2 + 52, height / 2 + 40, 20, 20, ">");
+
 		buttonList.add(prevPageButton);
 		buttonList.add(nextPageButton);
 
@@ -82,20 +82,20 @@ public class CameraMonitorScreen extends GuiContainer {
 		for (int i = 0; i < 10; i++) {
 			GuiButton button = cameraButtons[i];
 			int camID = (button.id + ((page - 1) * 10));
-			ArrayList<CameraView> views = cameraMonitor.getCameraPositions(nbtTag);
+			List<CameraView> views = cameraMonitor.getCameraPositions(nbtTag);
 			CameraView view = views.get(camID - 1);
 
 			button.displayString += camID;
 			buttonList.add(button);
 
 			if (view != null) {
-				if (view.dimension != Minecraft.getMinecraft().player.dimension) {
+				if (view.getDimension() != Minecraft.getMinecraft().player.dimension) {
 					hoverCheckers[button.id - 1] = new HoverChecker(button);
-					cameraViewDim[button.id - 1] = view.dimension;
+					cameraViewDim[button.id - 1] = view.getDimension();
 				}
 
 				World world = Minecraft.getMinecraft().world;
-				TileEntity te = world.getTileEntity(view.getLocation());
+				TileEntity te = world.getTileEntity(view.getPos());
 
 				cameraTEs[button.id - 1] = te instanceof SecurityCameraBlockEntity ? (SecurityCameraBlockEntity) te : null;
 				hoverCheckers[button.id - 1] = new HoverChecker(button);
@@ -107,13 +107,10 @@ public class CameraMonitorScreen extends GuiContainer {
 				button.enabled = false;
 				unbindButtons[button.id - 1].enabled = false;
 				cameraTEs[button.id - 1] = null;
-				continue;
 			}
 		}
 
-		for (int i = 0; i < 10; i++) {
-			buttonList.add(unbindButtons[i]);
-		}
+		Collections.addAll(buttonList, unbindButtons);
 
 		if (page == 1)
 			prevPageButton.enabled = false;
@@ -131,13 +128,11 @@ public class CameraMonitorScreen extends GuiContainer {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
-			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
-				if (cameraTEs[i] != null) {
-					if (cameraTEs[i].isDisabled())
-						drawHoveringText(Utils.localize("gui.securitycraft:scManual.disabled").getFormattedText(), mouseX, mouseY);
-					else if (cameraTEs[i].hasCustomName())
-						drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName").getFormattedText().replace("#", cameraTEs[i].getName()), 150), mouseX, mouseY, mc.fontRenderer);
-				}
+			if (cameraTEs[i] != null && hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
+				if (cameraTEs[i].isDisabled())
+					drawHoveringText(Utils.localize("gui.securitycraft:scManual.disabled").getFormattedText(), mouseX, mouseY);
+				else if (cameraTEs[i].hasCustomName())
+					drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName").getFormattedText().replace("#", cameraTEs[i].getName()), 150), mouseX, mouseY, mc.fontRenderer);
 			}
 		}
 	}
@@ -150,7 +145,7 @@ public class CameraMonitorScreen extends GuiContainer {
 			mc.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1));
 		else if (button.id < 11) {
 			int camID = button.id + ((page - 1) * 10);
-			BlockPos cameraPos = cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).getLocation();
+			BlockPos cameraPos = cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).getPos();
 			TileEntity te = mc.world.getTileEntity(cameraPos);
 
 			if (te instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) te).isDisabled()) {

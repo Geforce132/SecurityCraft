@@ -93,7 +93,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return (T) BlockUtils.getProtectedCapability(facing, this, () -> getNormalHandler(), () -> getInsertOnlyHandler());
+			return (T) BlockUtils.getProtectedCapability(facing, this, this::getNormalHandler, this::getInsertOnlyHandler);
 		else
 			return super.getCapability(capability, facing);
 	}

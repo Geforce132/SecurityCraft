@@ -99,8 +99,7 @@ public class ItemBlockReinforcedCrystalQuartzSlab extends ItemBlock {
 		}
 
 		pos = pos.offset(side);
-		IBlockState updatedState = world.getBlockState(pos);
-		return updatedState.getBlock() == singleSlab ? true : super.canPlaceBlockOnSide(world, originalPos, side, player, stack);
+		return world.getBlockState(pos).getBlock() == singleSlab || super.canPlaceBlockOnSide(world, originalPos, side, player, stack);
 	}
 
 	private boolean tryPlace(ItemStack stack, World world, EntityPlayer player, BlockPos pos) {

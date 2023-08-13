@@ -23,6 +23,8 @@ public class SecurityCraftAPI {
 	public static final String IMC_DOOR_ACTIVATOR_MSG = "registerDoorActivator";
 	private static Logger logger = LogManager.getLogger(SecurityCraftAPI.class);
 
+	private SecurityCraftAPI() {}
+
 	public static void onIMC(IMCEvent event) {
 		for (IMCMessage msg : event.getMessages()) {
 			if (msg.key.equals(IMC_EXTRACTION_BLOCK_MSG)) {

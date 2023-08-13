@@ -166,36 +166,32 @@ public class ReinforcedPistonBlock extends BlockPistonBase implements IReinforce
 	public static boolean canPush(IBlockState state, World world, BlockPos pistonPos, BlockPos pos, EnumFacing facing, boolean destroyBlocks, EnumFacing direction) {
 		Block block = state.getBlock();
 
-		if (block == Blocks.OBSIDIAN || block == SCContent.reinforcedObsidian)
+		if (block == Blocks.OBSIDIAN || block == SCContent.reinforcedObsidian || !world.getWorldBorder().contains(pos))
 			return false;
-		else if (!world.getWorldBorder().contains(pos))
-			return false;
-		else if (pos.getY() >= 0 && (facing != EnumFacing.DOWN || pos.getY() != 0)) {
-			if (pos.getY() <= world.getHeight() - 1 && (facing != EnumFacing.UP || pos.getY() != world.getHeight() - 1)) {
-				if (block != Blocks.PISTON && block != Blocks.STICKY_PISTON && block != SCContent.reinforcedPiston && block != SCContent.reinforcedStickyPiston) {
-					if (state.getBlock() instanceof IReinforcedBlock) {
-						if (!isSameOwner(pos, pistonPos, world))
-							return false;
-					}
-					else if (state.getBlockHardness(world, pos) == -1.0F)
+		else if (pos.getY() >= 0 && (facing != EnumFacing.DOWN || pos.getY() != 0) && pos.getY() <= world.getHeight() - 1 && (facing != EnumFacing.UP || pos.getY() != world.getHeight() - 1)) {
+			if (block != Blocks.PISTON && block != Blocks.STICKY_PISTON && block != SCContent.reinforcedPiston && block != SCContent.reinforcedStickyPiston) {
+				if (state.getBlock() instanceof IReinforcedBlock) {
+					if (!isSameOwner(pos, pistonPos, world))
 						return false;
-
-					switch (state.getPushReaction()) {
-						case BLOCK:
-							return false;
-						case DESTROY:
-							return destroyBlocks;
-						case PUSH_ONLY:
-							return facing == direction;
-						default:
-							break;
-					}
 				}
-				else if (state.getValue(EXTENDED))
+				else if (state.getBlockHardness(world, pos) == -1.0F)
 					return false;
 
-				return !block.hasTileEntity(state) || state.getBlock() instanceof IReinforcedBlock;
+				switch (state.getPushReaction()) {
+					case BLOCK:
+						return false;
+					case DESTROY:
+						return destroyBlocks;
+					case PUSH_ONLY:
+						return facing == direction;
+					default:
+						break;
+				}
 			}
+			else if (state.getValue(EXTENDED))
+				return false;
+
+			return !block.hasTileEntity(state) || state.getBlock() instanceof IReinforcedBlock;
 		}
 
 		return false;
@@ -266,7 +262,7 @@ public class ReinforcedPistonBlock extends BlockPistonBase implements IReinforce
 
 			if (extending) {
 				EnumPistonType type = isSticky ? EnumPistonType.STICKY : EnumPistonType.DEFAULT;
-				IBlockState pistonHead = SCContent.reinforcedPistonHead.getDefaultState().withProperty(BlockPistonExtension.FACING, facing).withProperty(BlockPistonExtension.TYPE, type);
+				IBlockState pistonHead = SCContent.reinforcedPistonHead.getDefaultState().withProperty(FACING, facing).withProperty(BlockPistonExtension.TYPE, type);
 				IBlockState pistonExtension = SCContent.reinforcedMovingPiston.getDefaultState().withProperty(BlockPistonMoving.FACING, facing).withProperty(BlockPistonMoving.TYPE, isSticky ? BlockPistonExtension.EnumPistonType.STICKY : BlockPistonExtension.EnumPistonType.DEFAULT);
 				OwnableBlockEntity headTe = new OwnableBlockEntity();
 

@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.inventory;
 
-import java.util.EnumMap;
+import java.util.Map;
 
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class LaserBlockMenu extends Container {
 	public final LaserBlockBlockEntity be;
-	public final EnumMap<EnumFacing, Boolean> sideConfig;
+	public final Map<EnumFacing, Boolean> sideConfig;
 
 	public LaserBlockMenu(LaserBlockBlockEntity te, InventoryPlayer inventory) {
 		be = te;
@@ -54,10 +54,8 @@ public class LaserBlockMenu extends Container {
 
 				slot.onSlotChange(slotStack, slotStackCopy);
 			}
-			else if (index >= 6) {
-				if (!mergeItemStack(slotStack, 0, 6, false))
-					return ItemStack.EMPTY;
-			}
+			else if (!mergeItemStack(slotStack, 0, 6, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.putStack(ItemStack.EMPTY);

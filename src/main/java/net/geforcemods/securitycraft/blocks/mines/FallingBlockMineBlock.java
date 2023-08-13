@@ -16,8 +16,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class FallingBlockMineBlock extends BaseFullMineBlock {
-	public static boolean fallInstantly;
-
 	public FallingBlockMineBlock(Material material, Block disguisedBlock, MapColor color) {
 		super(material, disguisedBlock, 0, color);
 	}
@@ -34,22 +32,20 @@ public class FallingBlockMineBlock extends BaseFullMineBlock {
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		if (!world.isRemote) {
-			if ((world.isAirBlock(pos.down()) || canFallThrough(world.getBlockState(pos.down()))) && pos.getY() >= 0) {
-				if (!fallInstantly && world.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
-					if (!world.isRemote && world.getTileEntity(pos) instanceof IOwnable)
-						world.spawnEntity(new FallingOwnableBlock(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos), ((IOwnable) world.getTileEntity(pos)).getOwner()));
-				}
-				else {
-					BlockPos blockpos;
+		if (!world.isRemote && (world.isAirBlock(pos.down()) || canFallThrough(world.getBlockState(pos.down()))) && pos.getY() >= 0) {
+			if (world.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
+				if (!world.isRemote && world.getTileEntity(pos) instanceof IOwnable)
+					world.spawnEntity(new FallingOwnableBlock(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos), ((IOwnable) world.getTileEntity(pos)).getOwner()));
+			}
+			else {
+				BlockPos blockpos;
 
-					world.setBlockToAir(pos);
+				world.setBlockToAir(pos);
 
-					for (blockpos = pos.down(); (world.isAirBlock(blockpos) || canFallThrough(world.getBlockState(blockpos))) && blockpos.getY() > 0; blockpos = blockpos.down()) {}
+				for (blockpos = pos.down(); (world.isAirBlock(blockpos) || canFallThrough(world.getBlockState(blockpos))) && blockpos.getY() > 0; blockpos = blockpos.down()) {}
 
-					if (blockpos.getY() > 0)
-						world.setBlockState(blockpos.up(), state); //Forge: Fix loss of state information during world gen.
-				}
+				if (blockpos.getY() > 0)
+					world.setBlockState(blockpos.up(), state); //Forge: Fix loss of state information during world gen.
 			}
 		}
 	}
@@ -69,14 +65,12 @@ public class FallingBlockMineBlock extends BaseFullMineBlock {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		if (rand.nextInt(16) == 0) {
-			if (canFallThrough(world.getBlockState(pos.down()))) {
-				double particleX = pos.getX() + rand.nextFloat();
-				double particleY = pos.getY() - 0.05D;
-				double particleZ = pos.getZ() + rand.nextFloat();
+		if (rand.nextInt(16) == 0 && canFallThrough(world.getBlockState(pos.down()))) {
+			double particleX = pos.getX() + rand.nextFloat();
+			double particleY = pos.getY() - 0.05D;
+			double particleZ = pos.getZ() + rand.nextFloat();
 
-				world.spawnParticle(EnumParticleTypes.FALLING_DUST, particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D, Block.getStateId(state));
-			}
+			world.spawnParticle(EnumParticleTypes.FALLING_DUST, particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D, Block.getStateId(state));
 		}
 	}
 }

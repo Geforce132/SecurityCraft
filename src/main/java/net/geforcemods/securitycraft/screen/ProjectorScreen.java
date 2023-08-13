@@ -42,7 +42,6 @@ public class ProjectorScreen extends GuiContainer implements ISlider, IHasExtraA
 	private Slider projectionHeightSlider;
 	private Slider projectionRangeSlider;
 	private Slider projectionOffsetSlider;
-	private TogglePictureButton toggleButton;
 	private StateSelector stateSelector;
 	private int sliderWidth = 120;
 
@@ -62,25 +61,26 @@ public class ProjectorScreen extends GuiContainer implements ISlider, IHasExtraA
 		int id = 0;
 		int left = guiLeft + ((xSize - sliderWidth) / 2);
 
-		projectionWidthSlider = addButton(new Slider(Utils.localize("gui.securitycraft:projector.width", te.getProjectionWidth()).getFormattedText(), block, id, left, guiTop + 57, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.width", "").getFormattedText(), ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, te.getProjectionWidth(), false, true, this));
+		projectionWidthSlider = addButton(new Slider(Utils.localize("gui.securitycraft:projector.width", te.getProjectionWidth()).getFormattedText(), block, id, left, guiTop + 57, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.width", "").getFormattedText(), ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, te.getProjectionWidth(), true, this));
 		hoverCheckers[id++] = new StringHoverChecker(projectionWidthSlider, Utils.localize("gui.securitycraft:projector.width.description").getFormattedText());
 
-		projectionHeightSlider = addButton(new Slider(Utils.localize("gui.securitycraft:projector.height", te.getProjectionHeight()).getFormattedText(), block, id, left, guiTop + 78, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.height", "").getFormattedText(), ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, te.getProjectionHeight(), false, true, this));
+		projectionHeightSlider = addButton(new Slider(Utils.localize("gui.securitycraft:projector.height", te.getProjectionHeight()).getFormattedText(), block, id, left, guiTop + 78, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.height", "").getFormattedText(), ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, te.getProjectionHeight(), true, this));
 		hoverCheckers[id++] = new StringHoverChecker(projectionHeightSlider, Utils.localize("gui.securitycraft:projector.height.description").getFormattedText());
 
-		projectionRangeSlider = addButton(new Slider(Utils.localize("gui.securitycraft:projector.range", te.getProjectionRange()).getFormattedText(), block, id, left, guiTop + 99, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.range", "").getFormattedText(), ProjectorBlockEntity.MIN_RANGE, ProjectorBlockEntity.MAX_RANGE, te.getProjectionRange(), false, true, this));
+		projectionRangeSlider = addButton(new Slider(Utils.localize("gui.securitycraft:projector.range", te.getProjectionRange()).getFormattedText(), block, id, left, guiTop + 99, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.range", "").getFormattedText(), ProjectorBlockEntity.MIN_RANGE, ProjectorBlockEntity.MAX_RANGE, te.getProjectionRange(), true, this));
 		hoverCheckers[id++] = new StringHoverChecker(projectionRangeSlider, Utils.localize("gui.securitycraft:projector.range.description").getFormattedText());
 
-		projectionOffsetSlider = addButton(new Slider(Utils.localize("gui.securitycraft:projector.offset", te.getProjectionOffset()).getFormattedText(), block, id, left, guiTop + 120, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.offset", "").getFormattedText(), ProjectorBlockEntity.MIN_OFFSET, ProjectorBlockEntity.MAX_OFFSET, te.getProjectionOffset(), false, true, this));
+		projectionOffsetSlider = addButton(new Slider(Utils.localize("gui.securitycraft:projector.offset", te.getProjectionOffset()).getFormattedText(), block, id, left, guiTop + 120, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.offset", "").getFormattedText(), ProjectorBlockEntity.MIN_OFFSET, ProjectorBlockEntity.MAX_OFFSET, te.getProjectionOffset(), true, this));
 		hoverCheckers[id++] = new StringHoverChecker(projectionOffsetSlider, Utils.localize("gui.securitycraft:projector.offset.description").getFormattedText());
 
 		//@formatter:off
-		toggleButton = addButton(new TogglePictureButton(id, left + sliderWidth - 20, guiTop + 36, 20, 20, TEXTURE, new int[] {176, 192}, new int[] {0, 0}, 2, 2, b -> {
+		TogglePictureButton toggleButton = addButton(new TogglePictureButton(id, left + sliderWidth - 20, guiTop + 36, 20, 20, TEXTURE, new int[] {176, 192}, new int[] {0, 0}, 2, 2, b -> {
 			//@formatter:on
 			te.setHorizontal(!te.isHorizontal());
 			projectionRangeSlider.updateSlider();
 			SecurityCraft.network.sendToServer(new SyncProjector(te.getPos(), te.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
 		}));
+
 		toggleButton.setCurrentIndex(te.isHorizontal() ? 1 : 0);
 		hoverCheckers[id++] = new StringHoverChecker(toggleButton, Arrays.asList(Utils.localize("gui.securitycraft:projector.vertical").getFormattedText(), Utils.localize("gui.securitycraft:projector.horizontal").getFormattedText()));
 		projectionRangeSlider.updateSlider();
@@ -168,19 +168,23 @@ public class ProjectorScreen extends GuiContainer implements ISlider, IHasExtraA
 		DataType dataType = DataType.INVALID;
 
 		if (id == projectionWidthSlider.id) {
-			te.setProjectionWidth(data = projectionWidthSlider.getValueInt());
+			data = projectionWidthSlider.getValueInt();
+			te.setProjectionWidth(data);
 			dataType = DataType.WIDTH;
 		}
 		else if (id == projectionHeightSlider.id) {
-			te.setProjectionHeight(data = projectionHeightSlider.getValueInt());
+			data = projectionHeightSlider.getValueInt();
+			te.setProjectionHeight(data);
 			dataType = DataType.HEIGHT;
 		}
 		else if (id == projectionRangeSlider.id) {
-			te.setProjectionRange(data = projectionRangeSlider.getValueInt());
+			data = projectionRangeSlider.getValueInt();
+			te.setProjectionRange(data);
 			dataType = DataType.RANGE;
 		}
 		else if (id == projectionOffsetSlider.id) {
-			te.setProjectionOffset(data = projectionOffsetSlider.getValueInt());
+			data = projectionOffsetSlider.getValueInt();
+			te.setProjectionOffset(data);
 			dataType = DataType.OFFSET;
 		}
 
@@ -190,8 +194,8 @@ public class ProjectorScreen extends GuiContainer implements ISlider, IHasExtraA
 	@Override
 	public void onChangeSliderValue(Slider slider, Block block, int id) {
 		if (te.isHorizontal() && slider.id == projectionRangeSlider.id)
-			slider.displayString = slider.prefix + (slider.getValueInt() - 16);
+			slider.displayString = slider.getPrefix() + (slider.getValueInt() - 16);
 		else
-			slider.displayString = slider.prefix + slider.getValueInt();
+			slider.displayString = slider.getPrefix() + slider.getValueInt();
 	}
 }

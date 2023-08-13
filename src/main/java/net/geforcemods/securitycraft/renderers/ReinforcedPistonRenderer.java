@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.renderers;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonBlockEntity;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.BlockPistonExtension;
 import net.minecraft.block.BlockPistonExtension.EnumPistonType;
@@ -57,7 +58,7 @@ public class ReinforcedPistonRenderer extends TileEntitySpecialRenderer<Reinforc
 			}
 			else if (te.shouldPistonHeadBeRendered() && !te.isExtending()) {
 				EnumPistonType pistonType = movedBlock == SCContent.reinforcedStickyPiston ? EnumPistonType.STICKY : EnumPistonType.DEFAULT;
-				IBlockState pistonHeadState = SCContent.reinforcedPistonHead.getDefaultState().withProperty(BlockPistonExtension.TYPE, pistonType).withProperty(BlockPistonExtension.FACING, movedState.getValue(BlockPistonBase.FACING));
+				IBlockState pistonHeadState = SCContent.reinforcedPistonHead.getDefaultState().withProperty(BlockPistonExtension.TYPE, pistonType).withProperty(BlockDirectional.FACING, movedState.getValue(BlockDirectional.FACING));
 
 				pistonHeadState = pistonHeadState.withProperty(BlockPistonExtension.SHORT, te.getProgress(partialTicks) >= 0.5F);
 				renderStateModel(pos, pistonHeadState, bufferBuilder, world, true);

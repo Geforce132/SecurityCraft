@@ -31,13 +31,13 @@ public abstract class Option<T> {
 	private T minimum;
 	private T maximum;
 
-	public Option(String optionName, T value) {
+	protected Option(String optionName, T value) {
 		this.name = optionName;
 		this.value = value;
 		this.defaultValue = value;
 	}
 
-	public Option(String optionName, T value, T min, T max, T increment) {
+	protected Option(String optionName, T value, T min, T max, T increment) {
 		this.name = optionName;
 		this.value = value;
 		this.defaultValue = value;

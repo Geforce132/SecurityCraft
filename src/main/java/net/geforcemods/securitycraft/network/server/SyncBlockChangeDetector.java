@@ -51,20 +51,19 @@ public class SyncBlockChangeDetector implements IMessage {
 			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
 				World level = player.world;
-				BlockPos pos = message.pos;
-				TileEntity tile = level.getTileEntity(pos);
+				TileEntity tile = level.getTileEntity(message.pos);
 
 				if (tile instanceof BlockChangeDetectorBlockEntity) {
 					BlockChangeDetectorBlockEntity te = (BlockChangeDetectorBlockEntity) tile;
 
 					if (te.isOwnedBy(player)) {
-						IBlockState state = level.getBlockState(pos);
+						IBlockState state = level.getBlockState(message.pos);
 
 						te.setMode(message.mode);
 						te.showHighlights(message.showHighlights);
 						te.setColor(message.color);
 						te.markDirty();
-						level.notifyBlockUpdate(pos, state, state, 2);
+						level.notifyBlockUpdate(message.pos, state, state, 2);
 					}
 				}
 			});

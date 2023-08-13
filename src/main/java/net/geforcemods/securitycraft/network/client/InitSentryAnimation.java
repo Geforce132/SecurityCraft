@@ -13,8 +13,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class InitSentryAnimation implements IMessage {
-	public BlockPos pos;
-	public boolean animate, animateUpwards, isShutDown;
+	private BlockPos pos;
+	private boolean animate, animateUpwards, isShutDown;
 
 	public InitSentryAnimation() {}
 
@@ -50,8 +50,8 @@ public class InitSentryAnimation implements IMessage {
 				Sentry sentry = (Sentry) sentries.get(0);
 
 				sentry.setShutDown(message.isShutDown);
-				sentry.animateUpwards = message.animateUpwards;
-				sentry.animate = message.animate;
+				sentry.setAnimateUpwards(message.animateUpwards);
+				sentry.setAnimate(message.animate);
 			}
 
 			return null;

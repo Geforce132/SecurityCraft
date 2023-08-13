@@ -42,19 +42,15 @@ public class ToggleOption implements IMessage {
 
 	public static class Handler implements IMessageHandler<ToggleOption, IMessage> {
 		@Override
-		public IMessage onMessage(ToggleOption packet, MessageContext message) {
-			LevelUtils.addScheduledTask(message.getServerHandler().player.world, () -> {
-				int x = packet.x;
-				int y = packet.y;
-				int z = packet.z;
-				BlockPos pos = new BlockPos(x, y, z);
-				int id = packet.id;
-				EntityPlayer player = message.getServerHandler().player;
+		public IMessage onMessage(ToggleOption message, MessageContext ctx) {
+			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+				BlockPos pos = new BlockPos(message.x, message.y, message.z);
+				EntityPlayer player = ctx.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);
 
 				if (te instanceof ICustomizable && !(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player)) {
-					((ICustomizable) te).customOptions()[id].toggle();
-					((ICustomizable) te).onOptionChanged(((ICustomizable) te).customOptions()[id]);
+					((ICustomizable) te).customOptions()[message.id].toggle();
+					((ICustomizable) te).onOptionChanged(((ICustomizable) te).customOptions()[message.id]);
 					((CustomizableBlockEntity) te).sync();
 				}
 			});

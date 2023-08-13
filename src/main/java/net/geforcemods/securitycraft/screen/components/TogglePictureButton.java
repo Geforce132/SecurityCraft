@@ -29,7 +29,7 @@ public class TogglePictureButton extends ClickButton implements IToggleableButto
 		super(id, xPos, yPos, width, height, "", onClick);
 
 		if (textureX.length != toggleCount || textureY.length != toggleCount)
-			throw new RuntimeException("GuiTogglePictureButton was set up incorrectly. Array lengths must match toggleCount!");
+			throw new IllegalArgumentException("TogglePictureButton was set up incorrectly. Array lengths must match toggleCount!");
 
 		this.toggleCount = toggleCount;
 		textureLocation = texture;

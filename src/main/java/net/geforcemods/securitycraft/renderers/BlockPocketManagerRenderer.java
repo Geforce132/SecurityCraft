@@ -16,12 +16,12 @@ public class BlockPocketManagerRenderer extends TileEntitySpecialRenderer<BlockP
 	public void render(BlockPocketManagerBlockEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		// The code below draws the outline border of a block pocket.
 
-		if (!te.showOutline || !te.isOwnedBy(Minecraft.getMinecraft().player))
+		if (!te.showsOutline() || !te.isOwnedBy(Minecraft.getMinecraft().player))
 			return;
 
 		EnumFacing facing = te.getWorld().getBlockState(te.getPos()).getValue(BlockPocketManagerBlock.FACING);
-		int offset = facing == EnumFacing.NORTH || facing == EnumFacing.EAST ? -te.autoBuildOffset : te.autoBuildOffset; //keep negative values moving the offset to the left consistent
-		int size = te.size;
+		int offset = facing == EnumFacing.NORTH || facing == EnumFacing.EAST ? -te.getAutoBuildOffset() : te.getAutoBuildOffset(); //keep negative values moving the offset to the left consistent
+		int size = te.getSize();
 		int half = (size - 1) / 2;
 		int leftX = -half + offset;
 		int rightX = half + 1 + offset;
@@ -43,6 +43,6 @@ public class BlockPocketManagerRenderer extends TileEntitySpecialRenderer<BlockP
 
 	@Override
 	public boolean isGlobalRenderer(BlockPocketManagerBlockEntity te) {
-		return te.showOutline;
+		return te.showsOutline();
 	}
 }

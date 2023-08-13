@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.entity.camera;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IEMPAffected;
@@ -26,8 +25,7 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
 public class SecurityCamera extends Entity implements IEMPAffected {
-	protected final float cameraSpeed = ConfigHandler.cameraSpeed;
-	public int screenshotSoundCooldown = 0;
+	private int screenshotSoundCooldown = 0;
 	protected int redstoneCooldown = 0;
 	protected int toggleNightVisionCooldown = 0;
 	protected boolean shouldProvideNightVision = false;
@@ -63,11 +61,11 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 		y += 0.5D;
 		z += 0.5D;
 
-		if (cam.down)
+		if (cam.isDown())
 			y += 0.25D;
 
 		setPosition(x, y, z);
-		setInitialPitchYaw(cam);
+		setInitialPitchYaw();
 	}
 
 	public SecurityCamera(World world, double x, double y, double z, SecurityCamera oldCamera) {
@@ -75,7 +73,7 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 		oldCamera.setDead();
 	}
 
-	private void setInitialPitchYaw(SecurityCameraBlockEntity te) {
+	private void setInitialPitchYaw() {
 		rotationPitch = 30F;
 
 		EnumFacing facing = world.getBlockState(new BlockPos(posX, posY, posZ)).getValue(SecurityCameraBlock.FACING);
@@ -100,8 +98,8 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 	@Override
 	public void onUpdate() {
 		if (world.isRemote) {
-			if (screenshotSoundCooldown > 0)
-				screenshotSoundCooldown -= 1;
+			if (getScreenshotSoundCooldown() > 0)
+				setScreenshotSoundCooldown(getScreenshotSoundCooldown() - 1);
 
 			if (redstoneCooldown > 0)
 				redstoneCooldown -= 1;
@@ -135,7 +133,7 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 	public boolean isCameraDown() {
 		BlockPos pos = new BlockPos(posX, posY, posZ);
 
-		return world.getTileEntity(pos) instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) world.getTileEntity(pos)).down;
+		return world.getTileEntity(pos) instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) world.getTileEntity(pos)).isDown();
 	}
 
 	//here to make this method accessible to CameraController
@@ -228,4 +226,12 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound tag) {}
+
+	public int getScreenshotSoundCooldown() {
+		return screenshotSoundCooldown;
+	}
+
+	public void setScreenshotSoundCooldown(int screenshotSoundCooldown) {
+		this.screenshotSoundCooldown = screenshotSoundCooldown;
+	}
 }

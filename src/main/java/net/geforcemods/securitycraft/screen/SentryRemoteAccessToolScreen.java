@@ -20,7 +20,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -38,8 +37,8 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 	private static final int SENTRY_TRACKING_RANGE = 256; // as defined when registering EntitySentry
 	private int viewDistance;
 
-	public SentryRemoteAccessToolScreen(InventoryPlayer inventory, ItemStack item, int viewDistance) {
-		super(new GenericMenu(inventory, null));
+	public SentryRemoteAccessToolScreen(ItemStack item, int viewDistance) {
+		super(new GenericMenu(null));
 
 		srat = item;
 		xSize = 440;
@@ -81,18 +80,18 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 				switch (j) {
 					case MODE:
 						guiButtons[i][j] = new TogglePictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 2, 3, this::actionPerformedSingle);
-						guiButtons[i][j].enabled = false;
 						break;
 					case TARGETS:
 						guiButtons[i][j] = new TogglePictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 2, 3, this::actionPerformedSingle);
-						guiButtons[i][j].enabled = false;
 						break;
 					case UNBIND:
 						guiButtons[i][j] = new ClickButton(id++, btnX, btnY, 20, 20, "X", this::clickUnbind);
-						guiButtons[i][j].enabled = false;
 						break;
+					default:
+						throw new IllegalArgumentException("Sentry actions can only range from 0-2 (inclusive)");
 				}
 
+				guiButtons[i][j].enabled = false;
 				buttonList.add(guiButtons[i][j]);
 			}
 

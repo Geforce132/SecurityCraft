@@ -6,6 +6,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 
 public class Utils {
+	private Utils() {}
+
 	/**
 	 * Removes the last character in the given String. <p>
 	 */

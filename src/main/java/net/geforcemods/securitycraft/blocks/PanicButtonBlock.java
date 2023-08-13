@@ -87,9 +87,9 @@ public class PanicButtonBlock extends BlockButton implements ITileEntityProvider
 
 	@Override
 	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
-		super.eventReceived(state, world, pos, id, param);
-		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
+		TileEntity te = world.getTileEntity(pos);
+
+		return te != null && te.receiveClientEvent(id, param);
 	}
 
 	@Override
@@ -111,9 +111,9 @@ public class PanicButtonBlock extends BlockButton implements ITileEntityProvider
 				return new AxisAlignedBB(0.175F, 0.0F, 0.300F, 0.825F, 0.0F + height, 0.700F);
 			case 6:
 				return new AxisAlignedBB(0.175F, 1.0F - height, 0.300F, 0.8225F, 1.0F, 0.700F);
+			default:
+				return super.getBoundingBox(state, source, pos);
 		}
-
-		return super.getBoundingBox(state, source, pos);
 	}
 
 	@Override
@@ -155,6 +155,8 @@ public class PanicButtonBlock extends BlockButton implements ITileEntityProvider
 			}
 			catch (NoSuchFieldError e) {}
 		}
+
+		private SwitchEnumFacing() {}
 	}
 
 	@Override

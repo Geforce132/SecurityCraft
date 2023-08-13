@@ -43,11 +43,11 @@ public class RetinalScannerRenderer extends TileEntitySpecialRenderer<RetinalSca
 			EnumFacing direction = state.getValue(RetinalScannerBlock.FACING);
 
 			if (!te.isModuleEnabled(ModuleType.DISGUISE))
-				render((float) x, (float) y, (float) z, direction, te.getPlayerProfile(), destroyStage);
+				render((float) x, (float) y, (float) z, direction, te.getPlayerProfile());
 		}
 	}
 
-	public void render(float x, float y, float z, @Nullable EnumFacing facing, @Nullable GameProfile playerProfile, int destroyStage) {
+	public void render(float x, float y, float z, @Nullable EnumFacing facing, @Nullable GameProfile playerProfile) {
 		if (facing != null) {
 			Minecraft.getMinecraft().getTextureManager().bindTexture(this.getSkinTexture(playerProfile));
 			GlStateManager.pushMatrix();

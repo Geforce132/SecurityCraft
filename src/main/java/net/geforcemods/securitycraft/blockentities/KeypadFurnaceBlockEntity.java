@@ -51,11 +51,11 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 	private static final int[] slotsSides = {
 			1
 	};
-	public NonNullList<ItemStack> furnaceItemStacks = NonNullList.<ItemStack>withSize(3, ItemStack.EMPTY);
-	public int furnaceBurnTime;
-	public int currentItemBurnTime;
-	public int cookTime;
-	public int totalCookTime;
+	private NonNullList<ItemStack> furnaceItemStacks = NonNullList.<ItemStack>withSize(3, ItemStack.EMPTY);
+	private int furnaceBurnTime;
+	private int currentItemBurnTime;
+	private int cookTime;
+	private int totalCookTime;
 	private String furnaceCustomName;
 	private byte[] passcode;
 	private UUID saltKey;
@@ -347,7 +347,7 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 
 	@Override
 	public boolean isUsableByPlayer(EntityPlayer player) {
-		return world.getTileEntity(pos) != this ? false : player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
+		return world.getTileEntity(pos) == this && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -423,6 +423,9 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 				break;
 			case 3:
 				totalCookTime = value;
+				break;
+			default:
+				throw new IllegalArgumentException(String.format("Unknown field id passed to KeypadFurnaceBlock#setField %s", id));
 		}
 	}
 
@@ -451,7 +454,7 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return (T) BlockUtils.getProtectedCapability(facing, this, () -> super.getCapability(capability, facing), () -> getInsertOnlyHandler());
+			return (T) BlockUtils.getProtectedCapability(facing, this, () -> super.getCapability(capability, facing), this::getInsertOnlyHandler);
 		else
 			return super.getCapability(capability, facing);
 	}

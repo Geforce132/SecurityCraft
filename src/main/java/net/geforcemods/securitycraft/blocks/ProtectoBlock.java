@@ -38,7 +38,7 @@ public class ProtectoBlock extends DisguisableBlock {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(ACTIVATED, meta == 1 ? true : false);
+		return getDefaultState().withProperty(ACTIVATED, meta == 1);
 	}
 
 	@Override

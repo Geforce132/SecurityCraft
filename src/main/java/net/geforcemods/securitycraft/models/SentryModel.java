@@ -12,14 +12,14 @@ import net.minecraft.entity.Entity;
  * Sentry - bl4ckscor3 Created using Tabula 7.0.0
  */
 public class SentryModel extends ModelBase {
-	public ModelRenderer base;
-	public ModelRenderer body;
-	public ModelRenderer neck;
-	public ModelRenderer head;
-	public ModelRenderer hair;
-	public ModelRenderer rightEye;
-	public ModelRenderer leftEye;
-	public ModelRenderer nose;
+	public final ModelRenderer base;
+	public final ModelRenderer body;
+	public final ModelRenderer neck;
+	public final ModelRenderer head;
+	public final ModelRenderer hair;
+	public final ModelRenderer rightEye;
+	public final ModelRenderer leftEye;
+	public final ModelRenderer nose;
 
 	public SentryModel() {
 		textureWidth = 64;
@@ -59,7 +59,7 @@ public class SentryModel extends ModelBase {
 			float partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
 			Sentry sentry = (Sentry) entity;
 
-			GlStateManager.rotate(ClientUtils.lerp(partialTicks, sentry.oHeadRotation, sentry.headRotation), 0.0F, 1.0F, 0.0F);
+			GlStateManager.rotate(ClientUtils.lerp(partialTicks, sentry.getOriginalHeadRotation(), sentry.getHeadRotation()), 0.0F, 1.0F, 0.0F);
 			GlStateManager.translate(0.0F, sentry.getHeadYTranslation(partialTicks), 0.0F);
 		}
 

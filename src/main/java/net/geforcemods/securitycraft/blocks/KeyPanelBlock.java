@@ -36,7 +36,7 @@ public abstract class KeyPanelBlock extends OwnableBlock {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
-	public KeyPanelBlock(Material material) {
+	protected KeyPanelBlock(Material material) {
 		super(material);
 
 		setSoundType(SoundType.METAL);

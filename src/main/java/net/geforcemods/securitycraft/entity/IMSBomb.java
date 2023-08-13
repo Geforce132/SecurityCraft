@@ -39,10 +39,8 @@ public class IMSBomb extends EntityFireball {
 
 	@Override
 	public void onUpdate() {
-		if (!launching) {
+		if (!launching)
 			super.onUpdate();
-			return;
-		}
 		else {
 			if (ticksFlying == 0)
 				motionY = isFast ? 0.66F : 0.33F;

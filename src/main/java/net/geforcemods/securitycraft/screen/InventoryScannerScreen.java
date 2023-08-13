@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class InventoryScannerScreen extends GuiContainer {
 	private static final ResourceLocation regularInventory = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_gui.png");
 	private static final ResourceLocation ENHANCED_INVENTORY = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_enhanced_gui.png");
-	public InventoryScannerBlockEntity tileEntity;
+	public final InventoryScannerBlockEntity tileEntity;
 	private EntityPlayer playerObj;
 	private boolean owns = false;
 	private boolean hasRedstoneModule = false, hasStorageModule = false;

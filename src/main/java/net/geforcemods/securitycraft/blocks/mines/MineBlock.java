@@ -43,12 +43,12 @@ public class MineBlock extends ExplosiveBlock {
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
-			return;
-		else if (world.getBlockState(pos).getValue(DEACTIVATED))
-			world.destroyBlock(pos, true);
-		else
-			explode(world, pos);
+		if (world.getBlockState(pos.down()).getMaterial() == Material.AIR) {
+			if (world.getBlockState(pos).getValue(DEACTIVATED))
+				world.destroyBlock(pos, true);
+			else
+				explode(world, pos);
+		}
 	}
 
 	@Override
@@ -79,13 +79,10 @@ public class MineBlock extends ExplosiveBlock {
 
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-		if (world.isRemote)
+		if (world.isRemote || entity instanceof EntityItem || !state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()))
 			return;
-		else if (entity instanceof EntityItem)
-			return;
-		else if (!state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()))
-			return;
-		else if (!EntityUtils.doesEntityOwn(entity, world, pos) && !(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative()))
+
+		if (!EntityUtils.doesEntityOwn(entity, world, pos) && !(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative()))
 			explode(world, pos);
 	}
 
@@ -136,7 +133,7 @@ public class MineBlock extends ExplosiveBlock {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(DEACTIVATED, meta == 1 ? true : false);
+		return getDefaultState().withProperty(DEACTIVATED, meta == 1);
 	}
 
 	@Override

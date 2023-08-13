@@ -62,15 +62,15 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	public static final Random RANDOM = new Random();
+	public static final CreativeTabs TECHNICAL_TAB = new SCTechnicalTab();
+	public static final CreativeTabs MINE_TAB = new SCExplosivesTab();
+	public static final CreativeTabs DECORATION_TAB = new SCDecorationTab();
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
 	public static IProxy proxy;
 	@Instance(MODID)
 	public static SecurityCraft instance = new SecurityCraft();
 	public static SimpleNetworkWrapper network;
 	private ScreenHandler guiHandler = new ScreenHandler();
-	public static CreativeTabs tabSCTechnical = new SCTechnicalTab();
-	public static CreativeTabs tabSCMine = new SCExplosivesTab();
-	public static CreativeTabs tabSCDecoration = new SCDecorationTab();
 
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {

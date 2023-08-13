@@ -22,7 +22,6 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.GuiScrollingList;
 
@@ -32,8 +31,8 @@ public class UsernameLoggerScreen extends GuiContainer {
 	private UsernameLoggerBlockEntity tileEntity;
 	private PlayerList playerList;
 
-	public UsernameLoggerScreen(InventoryPlayer inventory, UsernameLoggerBlockEntity te) {
-		super(new GenericMenu(inventory, te));
+	public UsernameLoggerScreen(UsernameLoggerBlockEntity te) {
+		super(new GenericMenu(te));
 		tileEntity = te;
 	}
 
@@ -48,7 +47,7 @@ public class UsernameLoggerScreen extends GuiContainer {
 	@Override
 	protected void actionPerformed(GuiButton button) {
 		if (button.id == 0) {
-			tileEntity.players = new String[100];
+			tileEntity.setPlayers(new String[100]);
 			SecurityCraft.network.sendToServer(new ClearLoggerServer(tileEntity.getPos()));
 		}
 	}
@@ -66,15 +65,17 @@ public class UsernameLoggerScreen extends GuiContainer {
 
 		//draw extra info
 		if (slotIndex != -1) {
-			if (tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty()) {
-				if (tileEntity.isOwnedBy(mc.player)) {
-					localized = Utils.localize("gui.securitycraft:logger.date", DATE_FORMAT.format(new Date(tileEntity.timestamps[slotIndex]))).getFormattedText();
+			String[] players = tileEntity.getPlayers();
 
-					if (tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
-						drawHoveringText(tileEntity.uuids[slotIndex], mouseX - guiLeft, mouseY - guiTop);
+			if (players[slotIndex] != null && !players[slotIndex].isEmpty() && tileEntity.isOwnedBy(mc.player)) {
+				String[] uuids = tileEntity.getUuids();
 
-					fontRenderer.drawString(localized, xSize / 2 - fontRenderer.getStringWidth(localized) / 2, ySize - 15, 4210752);
-				}
+				localized = Utils.localize("gui.securitycraft:logger.date", DATE_FORMAT.format(new Date(tileEntity.getTimestamps()[slotIndex]))).getFormattedText();
+
+				if (uuids[slotIndex] != null && !uuids[slotIndex].isEmpty())
+					drawHoveringText(uuids[slotIndex], mouseX - guiLeft, mouseY - guiTop);
+
+				fontRenderer.drawString(localized, xSize / 2 - fontRenderer.getStringWidth(localized) / 2, ySize - 15, 4210752);
 			}
 		}
 	}
@@ -113,13 +114,13 @@ public class UsernameLoggerScreen extends GuiContainer {
 
 		@Override
 		protected int getSize() {
-			return tileEntity.players.length;
+			return tileEntity.getPlayers().length;
 		}
 
 		@Override
 		protected void elementClicked(int index, boolean doubleClick) {
 			if (tileEntity.isOwnedBy(mc.player)) {
-				String uuid = tileEntity.uuids[index];
+				String uuid = tileEntity.getUuids()[index];
 
 				//copy UUID to clipboard
 				if (uuid != null)
@@ -139,7 +140,9 @@ public class UsernameLoggerScreen extends GuiContainer {
 		protected void drawSlot(int slotIndex, int entryRight, int slotTop, int slotBuffer, Tessellator tess) {
 			//highlighted hovered slot
 			if (mouseX >= left && mouseX <= entryRight && slotIndex >= 0 && slotIndex < getSize() && mouseY >= slotTop - 1 && mouseY <= slotTop + slotBuffer + 2) {
-				if (tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty()) {
+				String[] players = tileEntity.getPlayers();
+
+				if (players[slotIndex] != null && !players[slotIndex].isEmpty()) {
 					int min = left;
 					int max = entryRight + 1;
 					BufferBuilder bufferBuilder = tess.getBuffer();
@@ -174,8 +177,10 @@ public class UsernameLoggerScreen extends GuiContainer {
 				}
 			}
 
-			if (slotIndex >= 0 && slotIndex < tileEntity.players.length && tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].equals(""))
-				fontRenderer.drawString(tileEntity.players[slotIndex], width / 2 - fontRenderer.getStringWidth(tileEntity.players[slotIndex]) / 2, slotTop, 0xC6C6C6);
+			String[] players = tileEntity.getPlayers();
+
+			if (slotIndex >= 0 && slotIndex < players.length && players[slotIndex] != null && !players[slotIndex].equals(""))
+				fontRenderer.drawString(players[slotIndex], width / 2 - fontRenderer.getStringWidth(players[slotIndex]) / 2, slotTop, 0xC6C6C6);
 		}
 	}
 }

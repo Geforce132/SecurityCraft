@@ -168,10 +168,8 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 		RiftStabilizerBlockEntity connectedTileEntity = RiftStabilizerBlock.getConnectedTileEntity(world, pos);
 
-		if (connectedTileEntity != null) {
-			if (toggled ? !connectedTileEntity.isModuleEnabled(module) : !connectedTileEntity.hasModule(module))
-				connectedTileEntity.insertModule(stack, toggled);
-		}
+		if (connectedTileEntity != null && (toggled ? !connectedTileEntity.isModuleEnabled(module) : !connectedTileEntity.hasModule(module)))
+			connectedTileEntity.insertModule(stack, toggled);
 
 		if (module == ModuleType.DISGUISE) {
 			BlockEntityRenderDelegate.putDisguisedTeRenderer(this, stack);
@@ -187,10 +185,8 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 		RiftStabilizerBlockEntity connectedTileEntity = RiftStabilizerBlock.getConnectedTileEntity(world, pos);
 
-		if (connectedTileEntity != null) {
-			if (toggled ? connectedTileEntity.isModuleEnabled(module) : connectedTileEntity.hasModule(module))
-				connectedTileEntity.removeModule(module, toggled);
-		}
+		if (connectedTileEntity != null && (toggled ? connectedTileEntity.isModuleEnabled(module) : connectedTileEntity.hasModule(module)))
+			connectedTileEntity.removeModule(module, toggled);
 
 		if (module == ModuleType.DISGUISE) {
 			BlockEntityRenderDelegate.DISGUISED_BLOCK.removeDelegateOf(this);

@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -107,21 +108,22 @@ public class FakeWaterBlock extends BlockDynamicLiquid {
 		else
 			placeStaticBlock(world, pos, state);
 
-		IBlockState stateBelow = world.getBlockState(pos.down());
+		BlockPos downPos = pos.down();
+		IBlockState stateBelow = world.getBlockState(downPos);
 
-		if (canFlowInto(world, pos.down(), stateBelow)) {
-			if (material == Material.LAVA && world.getBlockState(pos.down()).getBlock().getMaterial(world.getBlockState(pos.down())) == Material.WATER) {
-				world.setBlockState(pos.down(), Blocks.STONE.getDefaultState());
-				triggerMixEffects(world, pos.down());
+		if (canFlowInto(world, downPos, stateBelow)) {
+			if (material == Material.LAVA && world.getBlockState(downPos).getBlock().getMaterial(world.getBlockState(downPos)) == Material.WATER) {
+				world.setBlockState(downPos, ForgeEventFactory.fireFluidPlaceBlockEvent(world, downPos, pos, Blocks.STONE.getDefaultState()));
+				triggerMixEffects(world, downPos);
 				return;
 			}
 
 			if (level >= 8)
-				tryFlowInto(world, pos.down(), stateBelow, level);
+				tryFlowInto(world, downPos, stateBelow, level);
 			else
-				tryFlowInto(world, pos.down(), stateBelow, level + 8);
+				tryFlowInto(world, downPos, stateBelow, level + 8);
 		}
-		else if (level >= 0 && (level == 0 || isBlocked(world, pos.down()))) {
+		else if (level >= 0 && (level == 0 || isBlocked(stateBelow))) {
 			Set<?> flowDirections = getPossibleFlowDirections(world, pos);
 			levelAbove = level + levelToAdd;
 
@@ -163,8 +165,10 @@ public class FakeWaterBlock extends BlockDynamicLiquid {
 				BlockPos offsetPos = pos.offset(facing);
 				IBlockState offsetState = world.getBlockState(offsetPos);
 
-				if (!isBlocked(world, offsetPos) && (offsetState.getBlock().getMaterial(offsetState) != material || offsetState.getValue(LEVEL) > 0)) {
-					if (!isBlocked(world, offsetPos.down()))
+				if (!isBlocked(offsetState) && (offsetState.getMaterial() != material || offsetState.getValue(LEVEL) > 0)) {
+					BlockPos downPos = offsetPos.down();
+
+					if (!isBlocked(world.getBlockState(downPos)))
 						return distance;
 
 					if (distance < 4) {
@@ -190,10 +194,11 @@ public class FakeWaterBlock extends BlockDynamicLiquid {
 			BlockPos offsetPos = pos.offset(facing);
 			IBlockState offsetState = world.getBlockState(offsetPos);
 
-			if (!isBlocked(world, offsetPos) && (offsetState.getBlock().getMaterial(offsetState) != material || offsetState.getValue(LEVEL) > 0)) {
+			if (!isBlocked(offsetState) && (offsetState.getMaterial() != material || offsetState.getValue(LEVEL) > 0)) {
 				int oppositeCost;
+				BlockPos downPos = offsetPos.down();
 
-				if (isBlocked(world, offsetPos.down()))
+				if (isBlocked(world.getBlockState(downPos)))
 					oppositeCost = calculateFlowCost(world, offsetPos, 1, facing.getOpposite());
 				else
 					oppositeCost = 0;
@@ -211,9 +216,14 @@ public class FakeWaterBlock extends BlockDynamicLiquid {
 		return facings;
 	}
 
-	private boolean isBlocked(World world, BlockPos pos) {
-		Block block = world.getBlockState(pos).getBlock();
-		return !(block instanceof BlockDoor) && block != Blocks.STANDING_SIGN && block != Blocks.LADDER && block != Blocks.REEDS ? (block.getMaterial(world.getBlockState(pos)) == Material.PORTAL ? true : block.getMaterial(world.getBlockState(pos)).blocksMovement()) : true;
+	private boolean isBlocked(IBlockState state) {
+		Block block = state.getBlock();
+		Material mat = state.getMaterial();
+
+		if (!(block instanceof BlockDoor) && block != Blocks.STANDING_SIGN && block != Blocks.LADDER && block != Blocks.REEDS && mat != Material.PORTAL && mat != Material.STRUCTURE_VOID)
+			return mat.blocksMovement();
+
+		return true;
 	}
 
 	@Override
@@ -235,7 +245,8 @@ public class FakeWaterBlock extends BlockDynamicLiquid {
 
 	private boolean canFlowInto(World world, BlockPos pos, IBlockState state) {
 		Material material = state.getBlock().getMaterial(state);
-		return material != this.material && material != Material.LAVA && !isBlocked(world, pos);
+
+		return material != this.material && material != Material.LAVA && !isBlocked(state);
 	}
 
 	@Override

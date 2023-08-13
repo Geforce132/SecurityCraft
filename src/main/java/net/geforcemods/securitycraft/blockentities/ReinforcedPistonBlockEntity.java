@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.BlockPistonExtension;
 import net.minecraft.block.material.EnumPushReaction;
@@ -33,8 +34,8 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements IOwnable,
 	private boolean extending;
 	private boolean shouldHeadBeRendered;
 	private static final ThreadLocal<EnumFacing> MOVING_ENTITY = ThreadLocal.withInitial(() -> null);
-	public float progress;
-	public float lastProgress;
+	private float progress;
+	private float lastProgress;
 	private Owner owner = new Owner();
 
 	public ReinforcedPistonBlockEntity() {}
@@ -109,7 +110,7 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements IOwnable,
 	}
 
 	private IBlockState getCollisionRelatedBlockState() {
-		return !isExtending() && shouldPistonHeadBeRendered() ? SCContent.reinforcedPistonHead.getDefaultState().withProperty(BlockPistonExtension.TYPE, pistonState.getBlock() == SCContent.reinforcedStickyPiston ? BlockPistonExtension.EnumPistonType.STICKY : BlockPistonExtension.EnumPistonType.DEFAULT).withProperty(BlockPistonExtension.FACING, pistonState.getValue(BlockPistonBase.FACING)) : pistonState;
+		return !isExtending() && shouldPistonHeadBeRendered() ? SCContent.reinforcedPistonHead.getDefaultState().withProperty(BlockPistonExtension.TYPE, pistonState.getBlock() == SCContent.reinforcedStickyPiston ? BlockPistonExtension.EnumPistonType.STICKY : BlockPistonExtension.EnumPistonType.DEFAULT).withProperty(BlockDirectional.FACING, pistonState.getValue(BlockDirectional.FACING)) : pistonState;
 	}
 
 	private void moveCollidedEntities(float progress) {
@@ -196,17 +197,18 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements IOwnable,
 		switch (facing.getAxis()) {
 			case X:
 				return getDeltaX(boundingBox, facing, entityBoundingBox);
+			case Z:
+				return getDeltaZ(boundingBox, facing, entityBoundingBox);
 			case Y:
 			default:
 				return getDeltaY(boundingBox, facing, entityBoundingBox);
-			case Z:
-				return getDeltaZ(boundingBox, facing, entityBoundingBox);
 		}
 	}
 
 	private AxisAlignedBB moveByPositionAndProgress(AxisAlignedBB boundingBox) {
-		double progress = getExtendedProgress(this.progress);
-		return boundingBox.offset(pos.getX() + progress * pistonFacing.getXOffset(), pos.getY() + progress * pistonFacing.getYOffset(), pos.getZ() + progress * pistonFacing.getZOffset());
+		double extendedProgress = getExtendedProgress(progress);
+
+		return boundingBox.offset(pos.getX() + extendedProgress * pistonFacing.getXOffset(), pos.getY() + extendedProgress * pistonFacing.getYOffset(), pos.getZ() + extendedProgress * pistonFacing.getZOffset());
 	}
 
 	private AxisAlignedBB getMovementArea(AxisAlignedBB boundingBox, EnumFacing facing, double progress) {
@@ -221,13 +223,13 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements IOwnable,
 				return new AxisAlignedBB(boundingBox.maxX + d1, boundingBox.minY, boundingBox.minZ, boundingBox.maxX + d2, boundingBox.maxY, boundingBox.maxZ);
 			case DOWN:
 				return new AxisAlignedBB(boundingBox.minX, boundingBox.minY + d1, boundingBox.minZ, boundingBox.maxX, boundingBox.minY + d2, boundingBox.maxZ);
-			case UP:
-			default:
-				return new AxisAlignedBB(boundingBox.minX, boundingBox.maxY + d1, boundingBox.minZ, boundingBox.maxX, boundingBox.maxY + d2, boundingBox.maxZ);
 			case NORTH:
 				return new AxisAlignedBB(boundingBox.minX, boundingBox.minY, boundingBox.minZ + d1, boundingBox.maxX, boundingBox.maxY, boundingBox.minZ + d2);
 			case SOUTH:
 				return new AxisAlignedBB(boundingBox.minX, boundingBox.minY, boundingBox.maxZ + d1, boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ + d2);
+			case UP:
+			default:
+				return new AxisAlignedBB(boundingBox.minX, boundingBox.maxY + d1, boundingBox.minZ, boundingBox.maxX, boundingBox.maxY + d2, boundingBox.maxZ);
 		}
 	}
 
@@ -369,14 +371,14 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements IOwnable,
 			IBlockState state;
 
 			if (shouldPistonHeadBeRendered())
-				state = SCContent.reinforcedPistonHead.getDefaultState().withProperty(BlockPistonExtension.FACING, pistonFacing).withProperty(BlockPistonExtension.SHORT, extending != 1.0F - progress < 0.25F);
+				state = SCContent.reinforcedPistonHead.getDefaultState().withProperty(BlockDirectional.FACING, pistonFacing).withProperty(BlockPistonExtension.SHORT, extending != 1.0F - progress < 0.25F);
 			else
 				state = pistonState;
 
-			float progress = getExtendedProgress(this.progress);
-			double d0 = pistonFacing.getXOffset() * progress;
-			double d1 = pistonFacing.getYOffset() * progress;
-			double d2 = pistonFacing.getZOffset() * progress;
+			float extendedProgress = getExtendedProgress(progress);
+			double d0 = pistonFacing.getXOffset() * extendedProgress;
+			double d1 = pistonFacing.getYOffset() * extendedProgress;
+			double d2 = pistonFacing.getZOffset() * extendedProgress;
 
 			state.addCollisionBoxToList(world, pos, entityBoundingBox.offset(-d0, -d1, -d2), collidingBoxes, entity, true);
 

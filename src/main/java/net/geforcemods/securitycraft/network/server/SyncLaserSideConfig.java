@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.EnumMap;
+import java.util.Map;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
@@ -25,7 +25,7 @@ public class SyncLaserSideConfig implements IMessage {
 
 	public SyncLaserSideConfig() {}
 
-	public SyncLaserSideConfig(BlockPos pos, EnumMap<EnumFacing, Boolean> sideConfig) {
+	public SyncLaserSideConfig(BlockPos pos, Map<EnumFacing, Boolean> sideConfig) {
 		this.pos = pos;
 		this.sideConfig = LaserBlockBlockEntity.saveSideConfig(sideConfig);
 	}
@@ -49,17 +49,16 @@ public class SyncLaserSideConfig implements IMessage {
 			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
 				World world = player.world;
-				BlockPos pos = message.pos;
-				TileEntity te = world.getTileEntity(pos);
+				TileEntity te = world.getTileEntity(message.pos);
 
 				if (te instanceof LaserBlockBlockEntity) {
 					LaserBlockBlockEntity laser = (LaserBlockBlockEntity) te;
 
 					if (laser.isOwnedBy(player)) {
-						IBlockState state = world.getBlockState(pos);
+						IBlockState state = world.getBlockState(message.pos);
 
 						laser.applyNewSideConfig(LaserBlockBlockEntity.loadSideConfig(message.sideConfig), player);
-						world.notifyBlockUpdate(pos, state, state, 2);
+						world.notifyBlockUpdate(message.pos, state, state, 2);
 					}
 				}
 			});

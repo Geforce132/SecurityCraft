@@ -64,10 +64,10 @@ public class SetListModuleData implements IMessage {
 					if (clientTag.hasKey("ListedTeams")) {
 						NBTTagList listedTeams = new NBTTagList();
 
-						for (NBTBase tag : clientTag.getTagList("ListedTeams", Constants.NBT.TAG_STRING)) {
+						for (NBTBase teamTag : clientTag.getTagList("ListedTeams", Constants.NBT.TAG_STRING)) {
 							//make sure the team the client sent is actually a team that exists
-							if (player.world.getScoreboard().getTeamNames().contains(tag.toString().replace("\"", "")))
-								listedTeams.appendTag(tag);
+							if (player.world.getScoreboard().getTeamNames().contains(teamTag.toString().replace("\"", "")))
+								listedTeams.appendTag(teamTag);
 						}
 
 						serverTag.setTag("ListedTeams", listedTeams);

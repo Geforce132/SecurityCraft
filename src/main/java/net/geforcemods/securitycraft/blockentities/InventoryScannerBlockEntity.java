@@ -235,7 +235,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return (T) BlockUtils.getProtectedCapability(facing, this, () -> getExtractionHandler(), () -> EmptyHandler.INSTANCE); //disallow inserting
+			return (T) BlockUtils.getProtectedCapability(facing, this, this::getExtractionHandler, () -> EmptyHandler.INSTANCE); //disallow inserting
 		else
 			return super.getCapability(capability, facing);
 	}
@@ -300,10 +300,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
-		if (connectedScanner != null) {
-			if (toggled ? !connectedScanner.isModuleEnabled(module) : !connectedScanner.hasModule(module))
-				connectedScanner.insertModule(stack, toggled);
-		}
+		if (connectedScanner != null && (toggled ? !connectedScanner.isModuleEnabled(module) : !connectedScanner.hasModule(module)))
+			connectedScanner.insertModule(stack, toggled);
 
 		if (world.isRemote && module == ModuleType.DISGUISE) {
 			BlockEntityRenderDelegate.putDisguisedTeRenderer(this, stack);
@@ -319,10 +317,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
-		if (connectedScanner != null) {
-			if (toggled ? connectedScanner.isModuleEnabled(module) : connectedScanner.hasModule(module))
-				connectedScanner.removeModule(module, toggled);
-		}
+		if (connectedScanner != null && (toggled ? connectedScanner.isModuleEnabled(module) : connectedScanner.hasModule(module)))
+			connectedScanner.removeModule(module, toggled);
 
 		if (module == ModuleType.STORAGE) {
 			//first 10 slots (0-9) are the prohibited slots

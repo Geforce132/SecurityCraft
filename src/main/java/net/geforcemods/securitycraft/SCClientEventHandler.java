@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import java.util.Arrays;
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.api.IExplosive;
@@ -55,6 +56,8 @@ public class SCClientEventHandler {
 	public static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final int USE_CHECKMARK = 88, USE_CROSS = 110;
 
+	private SCClientEventHandler() {}
+
 	@SubscribeEvent
 	public static void onRenderLevelStage(RenderWorldLastEvent event) {
 		Minecraft mc = Minecraft.getMinecraft();
@@ -95,8 +98,8 @@ public class SCClientEventHandler {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SecurityCamera camera = (SecurityCamera) Minecraft.getMinecraft().getRenderViewEntity();
 
-			if (camera.screenshotSoundCooldown == 0) {
-				camera.screenshotSoundCooldown = 7;
+			if (camera.getScreenshotSoundCooldown() == 0) {
+				camera.setScreenshotSoundCooldown(7);
 				Minecraft.getMinecraft().world.playSound(player.getPosition(), SCSounds.CAMERASNAP.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 			}
 		}
@@ -219,7 +222,7 @@ public class SCClientEventHandler {
 		return getUCoord(level, player, stackInHand, isValidHitResult, tagSize, getCoords, true, null);
 	}
 
-	private static int getUCoord(World level, EntityPlayer player, ItemStack stackInHand, Predicate<RayTraceResult> isValidHitResult, int tagSize, BiFunction<NBTTagCompound, Integer, Integer[]> getCoords, boolean loop, BiFunction<NBTTagCompound, BlockPos, Boolean> useCheckmark) {
+	private static int getUCoord(World level, EntityPlayer player, ItemStack stackInHand, Predicate<RayTraceResult> isValidHitResult, int tagSize, BiFunction<NBTTagCompound, Integer, Integer[]> getCoords, boolean loop, BiPredicate<NBTTagCompound, BlockPos> useCheckmark) {
 		double reachDistance = Minecraft.getMinecraft().playerController.getBlockReachDistance();
 		double eyeHeight = player.getEyeHeight();
 		Vec3d lookVec = new Vec3d(player.posX + player.getLookVec().x * reachDistance, eyeHeight + player.posY + player.getLookVec().y * reachDistance, player.posZ + player.getLookVec().z * reachDistance);
@@ -232,7 +235,7 @@ public class SCClientEventHandler {
 			if (loop)
 				return loop(tagSize, getCoords, stackInHand.getTagCompound(), hitResult.getBlockPos());
 			else
-				return useCheckmark.apply(stackInHand.getTagCompound(), hitResult.getBlockPos()) ? USE_CHECKMARK : USE_CROSS;
+				return useCheckmark.test(stackInHand.getTagCompound(), hitResult.getBlockPos()) ? USE_CHECKMARK : USE_CROSS;
 		}
 
 		return 0;

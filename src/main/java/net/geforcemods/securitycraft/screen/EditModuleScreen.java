@@ -33,7 +33,6 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -54,13 +53,13 @@ public class EditModuleScreen extends GuiContainer implements GuiResponder {
 	private final List<ScorePlayerTeam> availableTeams;
 	private final Map<ScorePlayerTeam, Boolean> teamsListedStatus = new HashMap<>();
 	private GuiTextField inputField;
-	private GuiButton addPlayerButton, editTeamsButton, removePlayerButton, copyButton, pasteButton, clearButton;
+	private GuiButton addPlayerButton, removePlayerButton, copyButton, pasteButton, clearButton;
 	private CallbackCheckbox affectEveryPlayerCheckbox;
 	private PlayerList playerList;
 	private TeamList teamList;
 
-	public EditModuleScreen(InventoryPlayer inventory, ItemStack item, TileEntity te) {
-		super(new GenericMenu(inventory, te));
+	public EditModuleScreen(ItemStack item, TileEntity te) {
+		super(new GenericMenu(te));
 
 		availableTeams = new ArrayList<>(Minecraft.getMinecraft().player.getWorldScoreboard().getTeams());
 		module = item;
@@ -76,16 +75,17 @@ public class EditModuleScreen extends GuiContainer implements GuiResponder {
 		int controlsWidth = 107;
 		String checkboxText = Utils.localize("gui.securitycraft:editModule.affectEveryone").getFormattedText();
 		int length = fontRenderer.getStringWidth(checkboxText) + 24; //24 = checkbox width + 4 pixels of buffer
+		GuiButton editTeamsButton;
 
 		Keyboard.enableRepeatEvents(true);
 		inputField = new GuiTextField(5, fontRenderer, controlsStartX, height / 2 - 88, controlsWidth, 15);
-		buttonList.add(addPlayerButton = new GuiButton(0, controlsStartX, height / 2 - 68, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.add_player").getFormattedText()));
-		buttonList.add(removePlayerButton = new GuiButton(1, controlsStartX, height / 2 - 43, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.remove_player").getFormattedText()));
-		buttonList.add(editTeamsButton = new ToggleComponentButton(2, controlsStartX, height / 2 - 18, controlsWidth, 20, i -> Utils.localize("gui.securitycraft:editModule.edit_teams").getFormattedText(), 0, 2, b -> {}));
-		buttonList.add(copyButton = new GuiButton(3, controlsStartX, height / 2 + 7, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.copy").getFormattedText()));
-		buttonList.add(pasteButton = new GuiButton(4, controlsStartX, height / 2 + 32, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.paste").getFormattedText()));
-		buttonList.add(clearButton = new GuiButton(5, controlsStartX, height / 2 + 57, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.clear").getFormattedText()));
-		buttonList.add(affectEveryPlayerCheckbox = new CallbackCheckbox(6, guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.hasTagCompound() && module.getTagCompound().getBoolean("affectEveryone"), newState -> {
+		addPlayerButton = addButton(new GuiButton(0, controlsStartX, height / 2 - 68, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.add_player").getFormattedText()));
+		removePlayerButton = addButton(new GuiButton(1, controlsStartX, height / 2 - 43, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.remove_player").getFormattedText()));
+		editTeamsButton = addButton(new ToggleComponentButton(2, controlsStartX, height / 2 - 18, controlsWidth, 20, i -> Utils.localize("gui.securitycraft:editModule.edit_teams").getFormattedText(), 0, 2, b -> {}));
+		copyButton = addButton(new GuiButton(3, controlsStartX, height / 2 + 7, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.copy").getFormattedText()));
+		pasteButton = addButton(new GuiButton(4, controlsStartX, height / 2 + 32, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.paste").getFormattedText()));
+		clearButton = addButton(new GuiButton(5, controlsStartX, height / 2 + 57, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.clear").getFormattedText()));
+		affectEveryPlayerCheckbox = addButton(new CallbackCheckbox(6, guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.hasTagCompound() && module.getTagCompound().getBoolean("affectEveryone"), newState -> {
 			if (!module.hasTagCompound())
 				module.setTagCompound(new NBTTagCompound());
 
@@ -124,7 +124,7 @@ public class EditModuleScreen extends GuiContainer implements GuiResponder {
 			playerList.drawScreen(mouseX, mouseY, partialTicks);
 
 		if (teamList != null)
-			teamList.drawScreen(mouseX, mouseY, partialTicks);
+			teamList.drawScreen(mouseX, mouseY);
 	}
 
 	@Override
@@ -159,8 +159,8 @@ public class EditModuleScreen extends GuiContainer implements GuiResponder {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 		inputField.mouseClicked(mouseX, mouseY, mouseButton);
 
-		if (teamList != null && teamList.mouseClicked(mouseX, mouseY, mouseButton))
-			return;
+		if (teamList != null)
+			teamList.mouseClicked(mouseX, mouseY);
 	}
 
 	@Override
@@ -273,7 +273,7 @@ public class EditModuleScreen extends GuiContainer implements GuiResponder {
 			NBTTagCompound tag = module.getTagCompound();
 			//@formatter:off
 			List<String> teamNames = StreamSupport.stream(tag.getTagList("ListedTeams", Constants.NBT.TAG_STRING).spliterator(), false)
-					.filter(e -> e instanceof NBTTagString)
+					.filter(NBTTagString.class::isInstance)
 					.map(e -> ((NBTTagString) e).getString())
 					.collect(Collectors.toList());
 			//@formatter:on
@@ -290,21 +290,6 @@ public class EditModuleScreen extends GuiContainer implements GuiResponder {
 		}
 
 		return 0;
-	}
-
-	private void toggleTeam(ScorePlayerTeam teamToAdd) {
-		NBTTagList listedTeams = new NBTTagList();
-
-		if (!module.hasTagCompound())
-			module.setTagCompound(new NBTTagCompound());
-
-		teamsListedStatus.put(teamToAdd, !teamsListedStatus.get(teamToAdd));
-		teamsListedStatus.forEach((team, listed) -> {
-			if (listed)
-				listedTeams.appendTag(new NBTTagString(team.getName()));
-		});
-		module.getTagCompound().setTag("ListedTeams", listedTeams);
-		updateButtonStates();
 	}
 
 	private void defragmentTag(NBTTagCompound tag) {
@@ -422,8 +407,7 @@ public class EditModuleScreen extends GuiContainer implements GuiResponder {
 	class TeamList extends ColorableScrollPanel {
 		private final int listLength;
 		private final FontRenderer font;
-		private int selectedIndex = -1;
-		public boolean active = true;
+		private boolean active = true;
 
 		public TeamList(Minecraft client, int width, int height, int top, int left) {
 			super(client, width, height, top, left);
@@ -447,9 +431,9 @@ public class EditModuleScreen extends GuiContainer implements GuiResponder {
 			return height;
 		}
 
-		public boolean mouseClicked(int mouseX, int mouseY, int button) {
+		public boolean mouseClicked(int mouseX, int mouseY) {
 			if (active) {
-				int mouseListY = (int) (mouseY - top + scrollDistance - border);
+				int mouseListY = (int) (mouseY - top + scrollDistance - BORDER);
 				int slotIndex = mouseListY / slotHeight;
 
 				if (slotIndex >= 0 && slotIndex < listLength && mouseY >= 0 && mouseX < scrollBarLeft) {
@@ -463,18 +447,18 @@ public class EditModuleScreen extends GuiContainer implements GuiResponder {
 		}
 
 		@Override
-		public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		public void drawScreen(int mouseX, int mouseY) {
 			if (active) {
-				super.drawScreen(mouseX, mouseY, partialTicks);
+				super.drawScreen(mouseX, mouseY);
 
 				//draw tooltip for long team names
-				int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
+				int mouseListY = (int) (mouseY - top + scrollDistance - (BORDER / 2));
 				int slotIndex = mouseListY / slotHeight;
 
 				if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
 					String name = availableTeams.get(slotIndex).getDisplayName();
 					int length = font.getStringWidth(name);
-					int baseY = top + border - (int) scrollDistance;
+					int baseY = top + BORDER - (int) scrollDistance;
 
 					if (length >= width - 6) //6 = barWidth
 						drawHoveringText(name, left + 3, baseY + (slotHeight * slotIndex + slotHeight));
@@ -484,8 +468,8 @@ public class EditModuleScreen extends GuiContainer implements GuiResponder {
 
 		@Override
 		public void drawPanel(int entryRight, int relativeY, Tessellator tessellator, int mouseX, int mouseY) {
-			int baseY = top + border - (int) scrollDistance;
-			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
+			int baseY = top + BORDER - (int) scrollDistance;
+			int mouseListY = (int) (mouseY - top + scrollDistance - (BORDER / 2));
 			int slotIndex = mouseListY / slotHeight;
 
 			//highlight hovered slot
@@ -501,6 +485,21 @@ public class EditModuleScreen extends GuiContainer implements GuiResponder {
 				mc.getTextureManager().bindTexture(BEACON_GUI);
 				drawScaledCustomSizeModalRect(left, yStart - 3, teamsListedStatus.get(team) ? 88 : 110, 219, 21, 22, 14, 14, 256, 256);
 			}
+		}
+
+		private void toggleTeam(ScorePlayerTeam teamToAdd) {
+			NBTTagList listedTeams = new NBTTagList();
+
+			if (!module.hasTagCompound())
+				module.setTagCompound(new NBTTagCompound());
+
+			teamsListedStatus.put(teamToAdd, !teamsListedStatus.get(teamToAdd));
+			teamsListedStatus.forEach((team, listed) -> {
+				if (listed)
+					listedTeams.appendTag(new NBTTagString(team.getName()));
+			});
+			module.getTagCompound().setTag("ListedTeams", listedTeams);
+			updateButtonStates();
 		}
 	}
 

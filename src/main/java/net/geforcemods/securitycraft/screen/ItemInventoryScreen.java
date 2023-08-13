@@ -13,7 +13,7 @@ public abstract class ItemInventoryScreen<T extends Container> extends GuiContai
 	protected ResourceLocation texture;
 	private final String title, inventoryName;
 
-	public ItemInventoryScreen(T menu, InventoryPlayer inventory, String title) {
+	protected ItemInventoryScreen(T menu, InventoryPlayer inventory, String title) {
 		super(menu);
 		this.title = title;
 		inventoryName = inventory.getDisplayName().getUnformattedText();

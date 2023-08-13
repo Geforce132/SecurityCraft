@@ -8,14 +8,14 @@ import net.minecraft.entity.Entity;
  * SecurityCamera - Geforce Created using Tabula 4.1.1
  */
 public class SecurityCameraModel extends ModelBase {
-	public ModelRenderer shape1;
-	public ModelRenderer shape2;
-	public ModelRenderer cameraRotationPoint;
-	public ModelRenderer shape3;
-	public ModelRenderer cameraBody;
-	public ModelRenderer cameraLensRight;
-	public ModelRenderer cameraLensLeft;
-	public ModelRenderer cameraLensTop;
+	public final ModelRenderer shape1;
+	public final ModelRenderer shape2;
+	public final ModelRenderer cameraRotationPoint;
+	public final ModelRenderer shape3;
+	public final ModelRenderer cameraBody;
+	public final ModelRenderer cameraLensRight;
+	public final ModelRenderer cameraLensLeft;
+	public final ModelRenderer cameraLensTop;
 
 	public SecurityCameraModel() {
 		textureWidth = 64;

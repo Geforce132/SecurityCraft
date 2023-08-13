@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 public class AdminToolItem extends Item {
 	public AdminToolItem() {
 		if (ConfigHandler.allowAdminTool) {
-			setCreativeTab(SecurityCraft.tabSCTechnical);
+			setCreativeTab(SecurityCraft.TECHNICAL_TAB);
 		}
 	}
 

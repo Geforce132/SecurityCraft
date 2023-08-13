@@ -19,7 +19,7 @@ public class IngredientDisplay {
 		this.y = y;
 	}
 
-	public void render(int mouseX, int mouseY, float partialTick) {
+	public void render(float partialTick) {
 		if (stacks == null || stacks.length == 0)
 			return;
 

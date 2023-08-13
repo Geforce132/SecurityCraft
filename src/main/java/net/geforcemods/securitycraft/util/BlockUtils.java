@@ -18,6 +18,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class BlockUtils {
+	private BlockUtils() {}
+
 	public static void updateAndNotify(World world, BlockPos pos, Block block, int delay, boolean shouldUpdate) {
 		if (shouldUpdate)
 			world.scheduleUpdate(pos, block, delay);

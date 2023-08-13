@@ -120,19 +120,17 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 			if (config.getConfig(SHOW_OWNER))
 				body.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())).getFormattedText());
 
-			if (config.getConfig(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer())) {
-				if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
-					body.add(Utils.localize("waila.securitycraft:equipped").getFormattedText());
+			if (config.getConfig(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer()) && (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())) {
+				body.add(Utils.localize("waila.securitycraft:equipped").getFormattedText());
 
-					if (!sentry.getAllowlistModule().isEmpty())
-						body.add("- " + Utils.localize(ModuleType.ALLOWLIST.getTranslationKey()).getFormattedText());
+				if (!sentry.getAllowlistModule().isEmpty())
+					body.add("- " + Utils.localize(ModuleType.ALLOWLIST.getTranslationKey()).getFormattedText());
 
-					if (!sentry.getDisguiseModule().isEmpty())
-						body.add("- " + Utils.localize(ModuleType.DISGUISE.getTranslationKey()).getFormattedText());
+				if (!sentry.getDisguiseModule().isEmpty())
+					body.add("- " + Utils.localize(ModuleType.DISGUISE.getTranslationKey()).getFormattedText());
 
-					if (sentry.hasSpeedModule())
-						body.add("- " + Utils.localize(ModuleType.SPEED.getTranslationKey()).getFormattedText());
-				}
+				if (sentry.hasSpeedModule())
+					body.add("- " + Utils.localize(ModuleType.SPEED.getTranslationKey()).getFormattedText());
 			}
 
 			String modeDescription = Utils.localize(mode.getModeKey()).getFormattedText();

@@ -17,7 +17,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Deprecated //use BlockAlarm and its lit property
+/**
+ * @deprecated Use {@link AlarmBlock} and its LIT property
+ */
+@Deprecated
 public class OldLitAlarmBlock extends OwnableBlock {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
@@ -35,7 +38,7 @@ public class OldLitAlarmBlock extends OwnableBlock {
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random p_149650_2_, int p_149650_3_) {
+	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 		return Item.getItemFromBlock(SCContent.alarm);
 	}
 
@@ -84,12 +87,12 @@ public class OldLitAlarmBlock extends OwnableBlock {
 			case 4:
 				meta = 4;
 				break;
+			case 6:
+				meta = 0;
+				break;
 			case 5:
 			default:
 				meta = 5;
-				break;
-			case 6:
-				meta = 0;
 		}
 
 		return meta;
@@ -139,5 +142,7 @@ public class OldLitAlarmBlock extends OwnableBlock {
 			}
 			catch (NoSuchFieldError e) {}
 		}
+
+		private SwitchEnumFacing() {}
 	}
 }

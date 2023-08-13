@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -39,7 +39,7 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 	}
 
 	@Override
-	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedTEs) {
+	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedTEs) {
 		if (action instanceof ILinkedAction.OptionChanged) {
 			Option<?> option = ((ILinkedAction.OptionChanged<?>) action).option;
 

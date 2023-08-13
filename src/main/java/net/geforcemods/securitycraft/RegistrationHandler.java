@@ -166,6 +166,8 @@ public class RegistrationHandler {
 	private static Map<Block, String> blocksDesignedBy = new HashMap<>();
 	private static Map<Block, Boolean> blockConfigValues = new HashMap<>();
 
+	private RegistrationHandler() {}
+
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		registerBlock(event, SCContent.laserBlock);

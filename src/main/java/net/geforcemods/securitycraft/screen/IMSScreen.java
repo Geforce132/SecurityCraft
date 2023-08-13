@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
 public class IMSScreen extends GuiContainer {
@@ -19,8 +18,8 @@ public class IMSScreen extends GuiContainer {
 	private GuiButton targetButton;
 	private EnumIMSTargetingMode targetMode;
 
-	public IMSScreen(InventoryPlayer inventory, IMSBlockEntity te) {
-		super(new GenericMenu(inventory, te));
+	public IMSScreen(IMSBlockEntity te) {
+		super(new GenericMenu(te));
 		tileEntity = te;
 		targetMode = tileEntity.getTargetingMode();
 		title = te.getDisplayName().getFormattedText();
@@ -30,7 +29,7 @@ public class IMSScreen extends GuiContainer {
 	public void initGui() {
 		super.initGui();
 
-		buttonList.add(targetButton = new GuiButton(0, width / 2 - 75, height / 2 - 38, 150, 20, ""));
+		targetButton = addButton(new GuiButton(0, width / 2 - 75, height / 2 - 38, 150, 20, ""));
 		updateButtonText();
 	}
 

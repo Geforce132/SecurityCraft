@@ -87,7 +87,6 @@ public class SCManualScreen extends GuiScreen {
 	private boolean explosive, ownable, passcodeProtected, viewActivated, customizable, lockable, moduleInventory;
 	private IngredientDisplay pageIcon;
 	private String pageTitle, designedBy;
-	private PageGroup pageType = PageGroup.SINGLE_ITEM;
 
 	@Override
 	public void initGui() {
@@ -95,11 +94,11 @@ public class SCManualScreen extends GuiScreen {
 
 		startX = (width - 256) / 2;
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(new SCManualScreen.ChangePageButton(1, startX + 210, startY + 188, true)); //next page
-		buttonList.add(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 188, false)); //previous page
-		buttonList.add(new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true)); //next subpage
-		buttonList.add(new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false)); //previous subpage
-		buttonList.add(patreonLinkButton = new HyperlinkButton(5, startX + 225, 143, 16, 16, ""));
+		addButton(new SCManualScreen.ChangePageButton(1, startX + 210, startY + 188, true)); //next page
+		addButton(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 188, false)); //previous page
+		addButton(new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true)); //next subpage
+		addButton(new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false)); //previous subpage
+		patreonLinkButton = addButton(new HyperlinkButton(5, startX + 225, 143, 16, 16, ""));
 		patronList = new PatronList(mc, 115, 90, 50, startX + 125);
 
 		for (int i = 0; i < 3; i++) {
@@ -149,11 +148,11 @@ public class SCManualScreen extends GuiScreen {
 			fontRenderer.drawString(pageNumberText, startX + 240 - fontRenderer.getStringWidth(pageNumberText), 182, 0x8E8270);
 			fontRenderer.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 			Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-			pageIcon.render(mouseX, mouseY, partialTicks);
+			pageIcon.render(partialTicks);
 
 			for (IngredientDisplay display : displays) {
 				if (display != null)
-					display.render(mouseX, mouseY, partialTicks);
+					display.render(partialTicks);
 			}
 
 			mc.getTextureManager().bindTexture(BOOK_ICONS);
@@ -213,7 +212,7 @@ public class SCManualScreen extends GuiScreen {
 
 			//the patreon link button may overlap with a name tooltip from the list, so draw the list after the buttons
 			if (patronList != null)
-				patronList.drawScreen(mouseX, mouseY, partialTicks);
+				patronList.drawScreen(mouseX, mouseY);
 
 			fontRenderer.drawString(pageNumberText, startX + 240 - fontRenderer.getStringWidth(pageNumberText), 182, 0x8E8270);
 			fontRenderer.drawString(ourPatrons, width / 2 - fontRenderer.getStringWidth(ourPatrons) / 2 + 30, 40, 0);
@@ -273,7 +272,7 @@ public class SCManualScreen extends GuiScreen {
 			return;
 		}
 
-		if (currentPage == -1 && patronList != null && patronList.isHovering && !patronList.patrons.isEmpty()) {
+		if (currentPage == -1 && patronList != null && patronList.isHovering() && !patronList.patrons.isEmpty()) {
 			int mouseX = Mouse.getEventX() * width / mc.displayWidth;
 			int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
 
@@ -366,15 +365,15 @@ public class SCManualScreen extends GuiScreen {
 		}
 
 		SCManualPage page = SCManualItem.PAGES.get(currentPage);
-		String designedBy = page.getDesignedBy();
+		String designerName = page.getDesignedBy();
 		Item item = page.getItem();
+		PageGroup pageType = page.getPageType();
 
-		if (designedBy != null && !designedBy.isEmpty())
-			this.designedBy = Utils.localize("gui.securitycraft:scManual.designedBy", designedBy).getFormattedText();
+		if (designerName != null && !designerName.isEmpty())
+			designedBy = Utils.localize("gui.securitycraft:scManual.designedBy", designerName).getFormattedText();
 		else
-			this.designedBy = null;
+			designedBy = null;
 
-		pageType = page.getPageType();
 		recipe = null;
 
 		if (pageType == PageGroup.SINGLE_ITEM) {
@@ -382,16 +381,16 @@ public class SCManualScreen extends GuiScreen {
 				IRecipe object = CraftingManager.REGISTRY.getObjectById(o);
 
 				if (object instanceof ShapedRecipes) {
-					ShapedRecipes recipe = (ShapedRecipes) object;
-					ItemStack resultStack = recipe.getRecipeOutput();
+					ShapedRecipes shapedRecipe = (ShapedRecipes) object;
+					ItemStack resultStack = shapedRecipe.getRecipeOutput();
 					Item resultItem = resultStack.getItem();
 
 					if (resultItem == item && !(resultItem == SCContent.lens && SCContent.lens.hasColor(resultStack))) {
-						NonNullList<Ingredient> ingredients = recipe.getIngredients();
+						NonNullList<Ingredient> ingredients = shapedRecipe.getIngredients();
 						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(9, Ingredient.EMPTY);
 
 						for (int i = 0; i < ingredients.size(); i++) {
-							recipeItems.set(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()), ingredients.get(i));
+							recipeItems.set(getCraftMatrixPosition(i, shapedRecipe.getWidth(), shapedRecipe.getHeight()), ingredients.get(i));
 						}
 
 						this.recipe = recipeItems;
@@ -399,17 +398,17 @@ public class SCManualScreen extends GuiScreen {
 					}
 				}
 				else if (object instanceof ShapelessRecipes) {
-					ShapelessRecipes recipe = (ShapelessRecipes) object;
+					ShapelessRecipes shapelessRecipe = (ShapelessRecipes) object;
 
-					if (recipe.getRecipeOutput().getItem() == page.getItem()) {
+					if (shapelessRecipe.getRecipeOutput().getItem() == page.getItem()) {
 						//don't show keycard reset recipes
-						if (recipe.getRegistryName().getPath().endsWith("_reset"))
+						if (shapelessRecipe.getRegistryName().getPath().endsWith("_reset"))
 							continue;
 
-						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.recipeItems.size(), Ingredient.EMPTY);
+						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(shapelessRecipe.recipeItems.size(), Ingredient.EMPTY);
 
 						for (int i = 0; i < recipeItems.size(); i++) {
-							recipeItems.set(i, recipe.recipeItems.get(i));
+							recipeItems.set(i, shapelessRecipe.recipeItems.get(i));
 						}
 
 						this.recipe = recipeItems;
@@ -436,10 +435,10 @@ public class SCManualScreen extends GuiScreen {
 				IRecipe object = CraftingManager.REGISTRY.getObjectById(o);
 
 				if (object instanceof ShapedRecipes) {
-					ShapedRecipes recipe = (ShapedRecipes) object;
+					ShapedRecipes shapedRecipe = (ShapedRecipes) object;
 
-					if (!recipe.getRecipeOutput().isEmpty() && pageItems.contains(recipe.getRecipeOutput().getItem())) {
-						NonNullList<Ingredient> ingredients = recipe.getIngredients();
+					if (!shapedRecipe.getRecipeOutput().isEmpty() && pageItems.contains(shapedRecipe.getRecipeOutput().getItem())) {
+						NonNullList<Ingredient> ingredients = shapedRecipe.getIngredients();
 
 						for (int i = 0; i < ingredients.size(); i++) {
 							ItemStack[] items = ingredients.get(i).getMatchingStacks();
@@ -447,24 +446,24 @@ public class SCManualScreen extends GuiScreen {
 							if (items.length == 0)
 								continue;
 
-							int indexToAddAt = pageItems.indexOf(recipe.getRecipeOutput().getItem());
+							int indexToAddAt = pageItems.indexOf(shapedRecipe.getRecipeOutput().getItem());
 
 							//first item needs to suffice since multiple recipes are being cycled through
-							recipeStacks.get(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()))[indexToAddAt] = items[0];
+							recipeStacks.get(getCraftMatrixPosition(i, shapedRecipe.getWidth(), shapedRecipe.getHeight()))[indexToAddAt] = items[0];
 						}
 
 						stacksLeft--;
 					}
 				}
 				else if (object instanceof ShapelessRecipes) {
-					ShapelessRecipes recipe = (ShapelessRecipes) object;
+					ShapelessRecipes shapelessRecipe = (ShapelessRecipes) object;
 
-					if (!recipe.getRecipeOutput().isEmpty() && pageItems.contains(recipe.getRecipeOutput().getItem())) {
+					if (!shapelessRecipe.getRecipeOutput().isEmpty() && pageItems.contains(shapelessRecipe.getRecipeOutput().getItem())) {
 						//don't show keycard reset recipes
-						if (recipe.getRegistryName().getPath().endsWith("_reset"))
+						if (shapelessRecipe.getRegistryName().getPath().endsWith("_reset"))
 							continue;
 
-						NonNullList<Ingredient> ingredients = recipe.getIngredients();
+						NonNullList<Ingredient> ingredients = shapelessRecipe.getIngredients();
 
 						for (int i = 0; i < ingredients.size(); i++) {
 							ItemStack[] items = ingredients.get(i).getMatchingStacks();
@@ -472,7 +471,7 @@ public class SCManualScreen extends GuiScreen {
 							if (items.length == 0)
 								continue;
 
-							int indexToAddAt = pageItems.indexOf(recipe.getRecipeOutput().getItem());
+							int indexToAddAt = pageItems.indexOf(shapelessRecipe.getRecipeOutput().getItem());
 
 							//first item needs to suffice since multiple recipes are being cycled through
 							recipeStacks.get(i)[indexToAddAt] = items[0];
@@ -535,15 +534,16 @@ public class SCManualScreen extends GuiScreen {
 
 				if (te instanceof ICustomizable) {
 					ICustomizable scte = (ICustomizable) te;
+					Option<?>[] options = scte.customOptions();
 
-					if (scte.customOptions() != null && scte.customOptions().length > 0) {
+					if (options.length > 0) {
 						List<String> display = new ArrayList<>();
 
 						customizable = true;
 						display.add(Utils.localize("gui.securitycraft:scManual.options").getFormattedText());
 						display.add("---");
 
-						for (Option<?> option : scte.customOptions()) {
+						for (Option<?> option : options) {
 							display.add(new TextComponentTranslation("gui.securitycraft:scManual.option_text", Utils.localize(option.getDescriptionKey(block)), option.getDefaultInfo()).getFormattedText());
 							display.add("");
 						}
@@ -581,7 +581,7 @@ public class SCManualScreen extends GuiScreen {
 			}
 		}
 
-		if (recipe != null && recipe.size() > 0) {
+		if (recipe != null && !recipe.isEmpty()) {
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
 					int index = (i * 3) + j;
@@ -630,18 +630,15 @@ public class SCManualScreen extends GuiScreen {
 	}
 
 	class PatronList extends ColorableScrollPanel {
-		private final int slotHeight = 12;
 		private final ExecutorService executor = Executors.newSingleThreadExecutor();
 		private Future<List<String>> patronRequestFuture;
 		private List<String> patrons = new ArrayList<>();
 		private boolean patronsAvailable = false;
 		private boolean error = false;
 		private boolean patronsRequested;
-		private final int barWidth = 6;
 		private final List<String> fetchErrorLines;
 		private final List<String> noPatronsLines;
 		private final String loadingText = Utils.localize("gui.securitycraft:scManual.patreon.loading").getFormattedText();
-		private final int border = 4;
 
 		public PatronList(Minecraft client, int width, int height, int top, int left) {
 			super(client, width, height, top, top + height, left, 12, new Color(0xC0, 0xBF, 0xBB, 0xB2), new Color(0xD0, 0xBF, 0xBB, 0xB2), new Color(0x8E, 0x82, 0x70, 0xFF), new Color(0x80, 0x70, 0x55, 0xFF), new Color(0xD1, 0xBF, 0xA1, 0xFF));
@@ -666,20 +663,20 @@ public class SCManualScreen extends GuiScreen {
 		}
 
 		@Override
-		public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		public void drawScreen(int mouseX, int mouseY) {
 			if (patronsAvailable) {
-				super.drawScreen(mouseX, mouseY, partialTicks);
+				super.drawScreen(mouseX, mouseY);
 
 				//draw tooltip for long patron names
-				int mouseListY = (int) (mouseY - top + scrollDistance - border);
+				int mouseListY = (int) (mouseY - top + scrollDistance - BORDER);
 				int slotIndex = mouseListY / slotHeight;
-				int baseY = top + border - (int) scrollDistance;
+				int baseY = top + BORDER - (int) scrollDistance;
 
 				if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < patrons.size() && mouseY >= top && mouseY <= bottom) {
 					String patron = patrons.get(slotIndex);
 					int length = fontRenderer.getStringWidth(patron);
 
-					if (length >= listWidth - barWidth) {
+					if (length >= listWidth - SCROLL_BAR_WIDTH) {
 						drawHoveringText(patron, left - 10, baseY + (slotHeight * slotIndex + slotHeight));
 						GlStateManager.disableLighting();
 					}

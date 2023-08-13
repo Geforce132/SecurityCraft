@@ -58,8 +58,9 @@ public class FakeLavaBlock extends BlockDynamicLiquid {
 
 		if (level > 0) {
 			int currentMinLevel = -100;
-			adjacentSourceBlocks = 0;
 			EnumFacing facing;
+
+			adjacentSourceBlocks = 0;
 
 			for (Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator(); iterator.hasNext(); currentMinLevel = checkAdjacentBlock(world, pos.offset(facing), currentMinLevel)) {
 				facing = (EnumFacing) iterator.next();
@@ -107,22 +108,24 @@ public class FakeLavaBlock extends BlockDynamicLiquid {
 		else
 			placeStaticBlock(world, pos, state);
 
-		IBlockState stateBelow = world.getBlockState(pos.down());
+		BlockPos downPos = pos.down();
+		IBlockState stateBelow = world.getBlockState(downPos);
 
-		if (canFlowInto(world, pos.down(), stateBelow)) {
-			if (material == Material.LAVA && world.getBlockState(pos.down()).getMaterial() == Material.WATER) {
-				world.setBlockState(pos.down(), ForgeEventFactory.fireFluidPlaceBlockEvent(world, pos.down(), pos, Blocks.STONE.getDefaultState()));
-				triggerMixEffects(world, pos.down());
+		if (canFlowInto(world, downPos, stateBelow)) {
+			if (material == Material.LAVA && world.getBlockState(downPos).getMaterial() == Material.WATER) {
+				world.setBlockState(downPos, ForgeEventFactory.fireFluidPlaceBlockEvent(world, downPos, pos, Blocks.STONE.getDefaultState()));
+				triggerMixEffects(world, downPos);
 				return;
 			}
 
 			if (level >= 8)
-				tryFlowInto(world, pos.down(), stateBelow, level);
+				tryFlowInto(world, downPos, stateBelow, level);
 			else
-				tryFlowInto(world, pos.down(), stateBelow, level + 8);
+				tryFlowInto(world, downPos, stateBelow, level + 8);
 		}
-		else if (level >= 0 && (level == 0 || isBlocked(world, pos.down()))) {
+		else if (level >= 0 && (level == 0 || isBlocked(stateBelow))) {
 			Set<?> flowDirections = getPossibleFlowDirections(world, pos);
+
 			levelAbove = level + levelToAdd;
 
 			if (level >= 8)
@@ -135,6 +138,7 @@ public class FakeLavaBlock extends BlockDynamicLiquid {
 
 			while (flowDirectionsIterator.hasNext()) {
 				EnumFacing facing = (EnumFacing) flowDirectionsIterator.next();
+
 				tryFlowInto(world, pos.offset(facing), world.getBlockState(pos.offset(facing)), levelAbove);
 			}
 		}
@@ -163,8 +167,10 @@ public class FakeLavaBlock extends BlockDynamicLiquid {
 				BlockPos offsetPos = pos.offset(facing);
 				IBlockState offsetState = world.getBlockState(offsetPos);
 
-				if (!isBlocked(world, offsetPos) && (offsetState.getMaterial() != material || offsetState.getValue(LEVEL) > 0)) {
-					if (!isBlocked(world, offsetPos.down()))
+				if (!isBlocked(offsetState) && (offsetState.getMaterial() != material || offsetState.getValue(LEVEL) > 0)) {
+					BlockPos downPos = offsetPos.down();
+
+					if (!isBlocked(world.getBlockState(downPos)))
 						return distance;
 
 					if (distance < 4) {
@@ -190,10 +196,11 @@ public class FakeLavaBlock extends BlockDynamicLiquid {
 			BlockPos offsetPos = pos.offset(facing);
 			IBlockState offsetState = world.getBlockState(offsetPos);
 
-			if (!isBlocked(world, offsetPos) && (offsetState.getMaterial() != material || offsetState.getValue(LEVEL) > 0)) {
+			if (!isBlocked(offsetState) && (offsetState.getMaterial() != material || offsetState.getValue(LEVEL) > 0)) {
 				int oppositeCost;
+				BlockPos downPos = offsetPos.down();
 
-				if (isBlocked(world, offsetPos.down()))
+				if (isBlocked(world.getBlockState(downPos)))
 					oppositeCost = calculateFlowCost(world, offsetPos, 1, facing.getOpposite());
 				else
 					oppositeCost = 0;
@@ -211,9 +218,14 @@ public class FakeLavaBlock extends BlockDynamicLiquid {
 		return facings;
 	}
 
-	private boolean isBlocked(World world, BlockPos pos) {
-		Block block = world.getBlockState(pos).getBlock();
-		return !(block instanceof BlockDoor) && block != Blocks.STANDING_SIGN && block != Blocks.LADDER && block != Blocks.REEDS ? (world.getBlockState(pos).getMaterial() == Material.PORTAL ? true : world.getBlockState(pos).getMaterial().blocksMovement()) : true;
+	private boolean isBlocked(IBlockState state) {
+		Block block = state.getBlock();
+		Material mat = state.getMaterial();
+
+		if (!(block instanceof BlockDoor) && block != Blocks.STANDING_SIGN && block != Blocks.LADDER && block != Blocks.REEDS && mat != Material.PORTAL && mat != Material.STRUCTURE_VOID)
+			return mat.blocksMovement();
+
+		return true;
 	}
 
 	@Override
@@ -235,7 +247,8 @@ public class FakeLavaBlock extends BlockDynamicLiquid {
 
 	private boolean canFlowInto(World world, BlockPos pos, IBlockState state) {
 		Material material = state.getMaterial();
-		return material != this.material && material != Material.LAVA && !isBlocked(world, pos);
+
+		return material != this.material && material != Material.LAVA && !isBlocked(state);
 	}
 
 	@Override

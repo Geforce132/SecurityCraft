@@ -60,7 +60,6 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 	private final List<Rectangle> extraAreas = new ArrayList<>();
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
-	private GuiButton[] optionButtons;
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private final Block block;
 	private final String title;
@@ -103,17 +102,17 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 			ICustomizable customizableTe = (ICustomizable) te;
 			Option<?>[] options = customizableTe.customOptions();
 
-			if (options != null) {
-				optionButtons = new GuiButton[options.length];
+			if (options.length > 0) {
+				GuiButton[] optionButtons = new GuiButton[options.length];
 
 				for (int i = 0; i < options.length; i++) {
 					Option<?> option = options[i];
 
 					if (option instanceof ISlider && option.isSlider()) {
 						if (option instanceof DoubleOption)
-							optionButtons[i] = new Slider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, true, (ISlider) option);
+							optionButtons[i] = new Slider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, (ISlider) option);
 						else if (option instanceof IntOption)
-							optionButtons[i] = new Slider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, true, (ISlider) option);
+							optionButtons[i] = new Slider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, (ISlider) option);
 					}
 					else {
 						optionButtons[i] = new GuiButton(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option));

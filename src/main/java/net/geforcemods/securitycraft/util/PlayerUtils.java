@@ -38,6 +38,8 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class PlayerUtils {
+	private PlayerUtils() {}
+
 	/**
 	 * Gets the EntityPlayer instance of a player (if they're online) using their name. <p> Args: playerName.
 	 */
@@ -157,15 +159,11 @@ public class PlayerUtils {
 	 * @param item The item type that should be searched for
 	 */
 	public static ItemStack getSelectedItemStack(InventoryPlayer inventory, Item item) {
-		if (!inventory.getCurrentItem().isEmpty()) {
-			if (inventory.getCurrentItem().getItem() == item)
-				return inventory.getCurrentItem();
-		}
+		if (inventory.getCurrentItem().getItem() == item)
+			return inventory.getCurrentItem();
 
-		if (!inventory.offHandInventory.get(0).isEmpty()) {
-			if (inventory.offHandInventory.get(0).getItem() == item)
-				return inventory.offHandInventory.get(0);
-		}
+		if (inventory.offHandInventory.get(0).getItem() == item)
+			return inventory.offHandInventory.get(0);
 
 		return ItemStack.EMPTY;
 	}

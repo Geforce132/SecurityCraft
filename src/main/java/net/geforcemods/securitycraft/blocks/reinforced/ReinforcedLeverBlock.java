@@ -48,12 +48,12 @@ public class ReinforcedLeverBlock extends BlockLever implements IReinforcedBlock
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (isAllowedToPress(world, pos, (AllowlistOnlyBlockEntity) world.getTileEntity(pos), player))
+		if (isAllowedToPress((AllowlistOnlyBlockEntity) world.getTileEntity(pos), player))
 			return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
 		return false;
 	}
 
-	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyBlockEntity te, EntityPlayer entity) {
+	public boolean isAllowedToPress(AllowlistOnlyBlockEntity te, EntityPlayer entity) {
 		return te.isOwnedBy(entity) || te.isAllowed(entity);
 	}
 

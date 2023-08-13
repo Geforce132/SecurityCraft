@@ -26,7 +26,6 @@ import net.minecraft.world.World;
 
 public class SSSConnectionList<T extends GuiScreen & ConnectionAccessor> extends ColorableScrollPanel {
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
-	private final int slotHeight = 12;
 	private final T parent;
 	private final List<ConnectionInfo> connectionInfo = new ArrayList<>();
 	private final FontRenderer font;
@@ -76,13 +75,13 @@ public class SSSConnectionList<T extends GuiScreen & ConnectionAccessor> extends
 	@Override
 	public void drawPanel(int entryRight, int relativeY, Tessellator tesselator, int mouseX, int mouseY) {
 		int slotBuffer = slotHeight - 4;
-		int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
+		int mouseListY = (int) (mouseY - top + scrollDistance - (BORDER / 2));
 		int slotIndex = mouseListY / slotHeight;
 
 		//highlight hovered slot
 		if (mouseX >= left && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < connectionInfo.size() && mouseY >= top && mouseY <= bottom) {
 			int min = left;
-			int max = entryRight - scrollBarWidth;
+			int max = entryRight - SCROLL_BAR_WIDTH;
 			int slotTop = relativeY + slotIndex * slotHeight;
 			BufferBuilder bufferBuilder = tesselator.getBuffer();
 
@@ -115,19 +114,19 @@ public class SSSConnectionList<T extends GuiScreen & ConnectionAccessor> extends
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		super.drawScreen(mouseX, mouseY, partialTicks);
+	public void drawScreen(int mouseX, int mouseY) {
+		super.drawScreen(mouseX, mouseY);
 
 		//draw tooltip for long block names
-		int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
+		int mouseListY = (int) (mouseY - top + scrollDistance - (BORDER / 2));
 		int slotIndex = mouseListY / slotHeight;
 
 		if (slotIndex >= 0 && slotIndex < connectionInfo.size() && mouseListY >= 0 && mouseX >= left && mouseX < right - 6 && mouseY >= top && mouseY <= bottom) {
 			String blockName = connectionInfo.get(slotIndex).blockName;
 			int length = font.getStringWidth(blockName);
-			int baseY = top + border - (int) scrollDistance;
+			int baseY = top + BORDER - (int) scrollDistance;
 
-			if (length + 13 >= listWidth - scrollBarWidth) {
+			if (length + 13 >= listWidth - SCROLL_BAR_WIDTH) {
 				parent.drawHoveringText(blockName, left + 1, baseY + (slotHeight * slotIndex + slotHeight));
 				GlStateManager.disableLighting();
 			}

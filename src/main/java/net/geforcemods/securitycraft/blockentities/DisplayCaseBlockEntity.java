@@ -134,10 +134,8 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	@Override
 	public void startCooldown() {
 		if (!isOnCooldown()) {
-			IBlockState state = world.getBlockState(pos);
-
 			cooldownEnd = System.currentTimeMillis() + smartModuleCooldown.get() * 50;
-			world.notifyBlockUpdate(pos, state, state, 3);
+			world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
 			markDirty();
 		}
 	}
@@ -206,10 +204,8 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	@Override
 	public void sync() {
 		if (world != null && !world.isRemote) {
-			IBlockState state = world.getBlockState(pos);
-
 			markDirty();
-			world.notifyBlockUpdate(pos, state, state, 2);
+			world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
 		}
 	}
 

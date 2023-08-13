@@ -54,7 +54,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 		}
 	};
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
-	private EnumMap<EnumFacing, Boolean> sideConfig;
+	private Map<EnumFacing, Boolean> sideConfig;
 	private IItemHandler insertOnlyHandler, lensHandler;
 	private LensContainer lenses = new LensContainer("", false, 6);
 
@@ -79,7 +79,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 		return tag;
 	}
 
-	public static NBTTagCompound saveSideConfig(EnumMap<EnumFacing, Boolean> sideConfig) {
+	public static NBTTagCompound saveSideConfig(Map<EnumFacing, Boolean> sideConfig) {
 		NBTTagCompound sideConfigTag = new NBTTagCompound();
 
 		sideConfig.forEach((dir, enabled) -> sideConfigTag.setBoolean(dir.getName(), enabled));
@@ -98,8 +98,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 		lenses.markDirty();
 	}
 
-	public static EnumMap<EnumFacing, Boolean> loadSideConfig(NBTTagCompound sideConfigTag) {
-		EnumMap<EnumFacing, Boolean> sideConfig = new EnumMap<>(EnumFacing.class);
+	public static Map<EnumFacing, Boolean> loadSideConfig(NBTTagCompound sideConfigTag) {
+		Map<EnumFacing, Boolean> sideConfig = new EnumMap<>(EnumFacing.class);
 
 		for (EnumFacing dir : EnumFacing.values()) {
 			if (sideConfigTag.hasKey(dir.getName(), Constants.NBT.TAG_BYTE))
@@ -112,7 +112,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 	}
 
 	@Override
-	protected void onLinkedBlockAction(ILinkedAction action, ArrayList<LinkableBlockEntity> excludedTEs) {
+	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedTEs) {
 		if (action instanceof ILinkedAction.OptionChanged) {
 			Option<?> option = ((ILinkedAction.OptionChanged<?>) action).option;
 
@@ -256,7 +256,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return (T) BlockUtils.getProtectedCapability(facing, this, () -> getNormalHandler(), () -> getInsertOnlyHandler());
+			return (T) BlockUtils.getProtectedCapability(facing, this, this::getNormalHandler, this::getInsertOnlyHandler);
 		else
 			return super.getCapability(capability, facing);
 	}
@@ -327,7 +327,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 		return ignoreOwner.get();
 	}
 
-	public void applyNewSideConfig(EnumMap<EnumFacing, Boolean> sideConfig, EntityPlayer player) {
+	public void applyNewSideConfig(Map<EnumFacing, Boolean> sideConfig, EntityPlayer player) {
 		sideConfig.forEach((direction, enabled) -> setSideEnabled(direction, enabled, player));
 	}
 
@@ -369,16 +369,14 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 			if (block instanceof LaserBlock)
 				((LaserBlock) block).setLaser(world, pos, direction, player);
 		}
-		else if (!enabled) {
+		else {
 			int boundType = direction == EnumFacing.UP || direction == EnumFacing.DOWN ? 1 : (direction == EnumFacing.NORTH || direction == EnumFacing.SOUTH ? 2 : 3);
 
-			BlockUtils.removeInSequence((directionToCheck, stateToCheck) -> {
-				return stateToCheck.getBlock() == SCContent.laserField && stateToCheck.getValue(LaserFieldBlock.BOUNDTYPE) == boundType;
-			}, world, pos, direction);
+			BlockUtils.removeInSequence((directionToCheck, stateToCheck) -> stateToCheck.getBlock() == SCContent.laserField && stateToCheck.getValue(LaserFieldBlock.BOUNDTYPE) == boundType, world, pos, direction);
 		}
 	}
 
-	public EnumMap<EnumFacing, Boolean> getSideConfig() {
+	public Map<EnumFacing, Boolean> getSideConfig() {
 		return sideConfig;
 	}
 

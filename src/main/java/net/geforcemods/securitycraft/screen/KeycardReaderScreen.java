@@ -125,13 +125,11 @@ public class KeycardReaderScreen extends GuiContainer {
 			toggleButtons[i].setCurrentIndex(acceptedLevels[i] ? 1 : 0); //set correct button state
 			toggleButtons[i].enabled = isOwner;
 
-			if (!hasSmartModule) {
-				if (acceptedLevels[i]) {
-					if (firstActiveButton == -1)
-						firstActiveButton = i;
+			if (!hasSmartModule && acceptedLevels[i]) {
+				if (firstActiveButton == -1)
+					firstActiveButton = i;
 
-					activeButtons++;
-				}
+				activeButtons++;
 			}
 		}
 
@@ -174,7 +172,7 @@ public class KeycardReaderScreen extends GuiContainer {
 		usesTextField.setTextColor(-1);
 		usesTextField.setDisabledTextColour(-1);
 		usesTextField.setEnableBackgroundDrawing(true);
-		usesTextField.setValidator(s -> s.matches("[0-9]*"));
+		usesTextField.setValidator(s -> s.matches("\\d*"));
 		usesTextField.setMaxStringLength(3);
 		//info text when hovering over text field
 		usesHoverChecker = new StringHoverChecker(guiTop + 107, guiTop + 122, guiLeft + 28, guiLeft + 58, limitedInfo);

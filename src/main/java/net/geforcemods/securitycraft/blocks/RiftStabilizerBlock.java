@@ -112,10 +112,8 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 				shouldDrop = true;
 			}
 
-			if (shouldDrop) {
-				if (!world.isRemote)
-					dropBlockAsItem(world, pos, state, 0);
-			}
+			if (shouldDrop && !world.isRemote)
+				dropBlockAsItem(world, pos, state, 0);
 		}
 	}
 

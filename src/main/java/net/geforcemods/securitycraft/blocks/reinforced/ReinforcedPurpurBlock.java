@@ -134,7 +134,7 @@ public class ReinforcedPurpurBlock extends OwnableBlock implements IOverlayDispl
 		return 2;
 	}
 
-	public static enum EnumType implements IStringSerializable {
+	public enum EnumType implements IStringSerializable {
 		DEFAULT(0, "default", "default"),
 		LINES_Y(1, "lines_y", "lines"),
 		LINES_X(2, "lines_x", "lines"),

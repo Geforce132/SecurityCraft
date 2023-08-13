@@ -157,7 +157,7 @@ public class ReinforcedRedSandstoneAndPurpurSlabsBlock extends BlockSlab impleme
 		return 2;
 	}
 
-	public static enum EnumType implements IStringSerializable {
+	public enum EnumType implements IStringSerializable {
 		RED_SANDSTONE(0, "red_sandstone", BlockSand.EnumType.RED_SAND.getMapColor()),
 		PURPUR(1, "purpur", MapColor.MAGENTA);
 

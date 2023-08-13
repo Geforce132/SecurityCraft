@@ -14,6 +14,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.Loader;
 
 public class VersionUpdateChecker {
+	private VersionUpdateChecker() {}
+
 	public static NBTTagCompound getNBTTagCompound() {
 		NBTTagCompound tag = new NBTTagCompound();
 		Gson gson = new GsonBuilder().create();
