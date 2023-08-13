@@ -117,7 +117,7 @@ public class SCEventHandler {
 				int ticksRemaining = pair.getLeft();
 
 				if (ticksRemaining == 0) {
-					if (PlayerUtils.getSelectedItemStack(player, SCContent.PORTABLE_TUNE_PLAYER.get()).isEmpty()) {
+					if (PlayerUtils.getItemStackFromAnyHand(player, SCContent.PORTABLE_TUNE_PLAYER.get()).isEmpty()) {
 						pair.setLeft(-1);
 						return;
 					}
