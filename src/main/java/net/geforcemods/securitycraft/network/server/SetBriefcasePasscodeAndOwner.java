@@ -31,7 +31,7 @@ public class SetBriefcasePasscodeAndOwner {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
-		ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get());
+		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get());
 
 		if (!stack.isEmpty()) {
 			CompoundTag tag = stack.getOrCreateTag();

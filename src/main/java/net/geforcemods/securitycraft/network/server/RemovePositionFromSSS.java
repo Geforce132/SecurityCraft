@@ -30,7 +30,7 @@ public class RemovePositionFromSSS {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
-		ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
+		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
 
 		if (!stack.isEmpty())
 			SonicSecuritySystemItem.removeLinkedBlock(stack.getOrCreateTag(), pos);

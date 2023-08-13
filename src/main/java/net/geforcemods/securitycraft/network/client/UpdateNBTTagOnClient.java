@@ -26,7 +26,7 @@ public class UpdateNBTTagOnClient {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		ItemStack stackToUpdate = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), stack.getItem());
+		ItemStack stackToUpdate = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), stack.getItem());
 
 		if (!stackToUpdate.isEmpty())
 			stackToUpdate.setTag(stack.getTag());
