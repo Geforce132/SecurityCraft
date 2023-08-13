@@ -38,7 +38,7 @@ public class SetStateOnDisguiseModule implements IMessage {
 		public IMessage onMessage(SetStateOnDisguiseModule message, MessageContext context) {
 			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
-				ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.disguiseModule);
+				ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.disguiseModule);
 
 				if (!stack.isEmpty()) {
 					if (!stack.hasTagCompound())

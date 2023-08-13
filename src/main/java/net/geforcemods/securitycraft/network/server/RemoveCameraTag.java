@@ -33,7 +33,7 @@ public class RemoveCameraTag implements IMessage {
 		@Override
 		public IMessage onMessage(RemoveCameraTag message, MessageContext context) {
 			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
-				ItemStack monitor = PlayerUtils.getSelectedItemStack(context.getServerHandler().player, SCContent.cameraMonitor);
+				ItemStack monitor = PlayerUtils.getItemStackFromAnyHand(context.getServerHandler().player, SCContent.cameraMonitor);
 
 				if (!monitor.isEmpty())
 					monitor.getTagCompound().removeTag(CameraMonitorItem.getTagNameFromPosition(monitor.getTagCompound(), ((CameraMonitorItem) monitor.getItem()).getCameraPositions(monitor.getTagCompound()).get(message.camID - 1)));

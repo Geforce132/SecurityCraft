@@ -29,7 +29,7 @@ public class DisguiseModuleScreen extends GuiContainer implements IHasExtraAreas
 	private StateSelector stateSelector;
 
 	public DisguiseModuleScreen(InventoryPlayer inventory) {
-		super(new DisguiseModuleMenu(inventory, new ModuleItemContainer(PlayerUtils.getSelectedItemStack(inventory, SCContent.disguiseModule))));
+		super(new DisguiseModuleMenu(inventory, new ModuleItemContainer(PlayerUtils.getItemStackFromAnyHand(inventory.player, SCContent.disguiseModule))));
 	}
 
 	@Override

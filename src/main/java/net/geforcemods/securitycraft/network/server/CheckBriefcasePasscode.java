@@ -38,7 +38,7 @@ public class CheckBriefcasePasscode implements IMessage {
 		public IMessage onMessage(CheckBriefcasePasscode message, MessageContext ctx) {
 			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayerMP player = ctx.getServerHandler().player;
-				ItemStack briefcase = PlayerUtils.getSelectedItemStack(player, SCContent.briefcase);
+				ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase);
 
 				if (!briefcase.isEmpty()) {
 					if (!briefcase.hasTagCompound())

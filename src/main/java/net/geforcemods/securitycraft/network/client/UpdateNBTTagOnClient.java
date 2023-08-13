@@ -36,7 +36,7 @@ public class UpdateNBTTagOnClient implements IMessage {
 		@Override
 		@SideOnly(Side.CLIENT)
 		public IMessage onMessage(UpdateNBTTagOnClient message, MessageContext ctx) {
-			ItemStack stackToUpdate = PlayerUtils.getSelectedItemStack(Minecraft.getMinecraft().player.inventory, message.stack.getItem());
+			ItemStack stackToUpdate = PlayerUtils.getItemStackFromAnyHand(Minecraft.getMinecraft().player, message.stack.getItem());
 
 			if (!stackToUpdate.isEmpty())
 				stackToUpdate.setTagCompound(message.stack.getTagCompound());

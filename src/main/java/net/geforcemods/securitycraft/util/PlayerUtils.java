@@ -17,7 +17,6 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -120,27 +119,18 @@ public class PlayerUtils {
 	}
 
 	/**
-	 * Returns the ItemStack of the given item the player is currently holding (both hands are checked).
+	 * Returns the ItemStack of the given item the player if they are currently holding it (both hands are checked).
 	 *
-	 * @param player The player holding the item
+	 * @param player The player to check
 	 * @param item The item type that should be searched for
+	 * @return The ItemStack whose item matches the given item, {@link ItemStack#EMPTY} if the player is not holding the item
 	 */
-	public static ItemStack getSelectedItemStack(EntityPlayer player, Item item) {
-		return getSelectedItemStack(player.inventory, item);
-	}
+	public static ItemStack getItemStackFromAnyHand(EntityPlayer player, Item item) {
+		if (player.inventory.getCurrentItem().getItem() == item)
+			return player.inventory.getCurrentItem();
 
-	/**
-	 * Returns the ItemStack of the given item the player is currently holding (both hands are checked).
-	 *
-	 * @param inventory The inventory that contains the item
-	 * @param item The item type that should be searched for
-	 */
-	public static ItemStack getSelectedItemStack(InventoryPlayer inventory, Item item) {
-		if (inventory.getCurrentItem().getItem() == item)
-			return inventory.getCurrentItem();
-
-		if (inventory.offHandInventory.get(0).getItem() == item)
-			return inventory.offHandInventory.get(0);
+		if (player.inventory.offHandInventory.get(0).getItem() == item)
+			return player.inventory.offHandInventory.get(0);
 
 		return ItemStack.EMPTY;
 	}

@@ -37,7 +37,7 @@ public class RemovePositionFromSSS implements IMessage {
 		public IMessage onMessage(RemovePositionFromSSS message, MessageContext context) {
 			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
-				ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.sonicSecuritySystemItem);
+				ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.sonicSecuritySystemItem);
 
 				if (!stack.isEmpty()) {
 					if (!stack.hasTagCompound())

@@ -38,7 +38,7 @@ public class SetBriefcasePasscodeAndOwner implements IMessage {
 		public IMessage onMessage(SetBriefcasePasscodeAndOwner message, MessageContext context) {
 			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
-				ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.briefcase);
+				ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase);
 
 				if (!stack.isEmpty()) {
 					if (!stack.hasTagCompound())

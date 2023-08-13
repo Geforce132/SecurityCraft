@@ -90,7 +90,7 @@ public class BriefcasePasscodeScreen extends GuiContainer {
 	@Override
 	protected void actionPerformed(GuiButton button) {
 		if (button.id == 8) {
-			ItemStack briefcase = PlayerUtils.getSelectedItemStack(mc.player, SCContent.briefcase);
+			ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(mc.player, SCContent.briefcase);
 
 			if (!briefcase.isEmpty()) {
 				String passcode = digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3];

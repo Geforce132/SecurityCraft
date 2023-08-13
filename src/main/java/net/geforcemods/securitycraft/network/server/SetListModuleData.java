@@ -40,10 +40,10 @@ public class SetListModuleData implements IMessage {
 		public IMessage onMessage(SetListModuleData message, MessageContext ctx) {
 			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
-				ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.allowlistModule);
+				ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.allowlistModule);
 
 				if (stack.isEmpty())
-					stack = PlayerUtils.getSelectedItemStack(player, SCContent.denylistModule);
+					stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.denylistModule);
 
 				if (!stack.isEmpty()) {
 					if (!stack.hasTagCompound())
