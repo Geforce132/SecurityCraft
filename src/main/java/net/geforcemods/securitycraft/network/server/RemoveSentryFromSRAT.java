@@ -29,7 +29,7 @@ public class RemoveSentryFromSRAT {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
-		ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.REMOTE_ACCESS_SENTRY.get());
+		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.REMOTE_ACCESS_SENTRY.get());
 
 		if (!stack.isEmpty()) {
 			CompoundTag tag = stack.getOrCreateTag();

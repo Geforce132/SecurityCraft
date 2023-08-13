@@ -27,7 +27,7 @@ public class RemoveCameraTag {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		ItemStack monitor = PlayerUtils.getSelectedItemStack(ctx.get().getSender().getInventory(), SCContent.CAMERA_MONITOR.get());
+		ItemStack monitor = PlayerUtils.getItemStackFromAnyHand(ctx.get().getSender(), SCContent.CAMERA_MONITOR.get());
 
 		if (!monitor.isEmpty())
 			monitor.getTag().remove(CameraMonitorItem.getTagNameFromPosition(monitor.getTag(), ((CameraMonitorItem) monitor.getItem()).getCameraPositions(monitor.getTag()).get(camID - 1)));

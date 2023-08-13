@@ -32,10 +32,10 @@ public class SetListModuleData {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
-		ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.ALLOWLIST_MODULE.get());
+		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.ALLOWLIST_MODULE.get());
 
 		if (stack.isEmpty())
-			stack = PlayerUtils.getSelectedItemStack(player, SCContent.DENYLIST_MODULE.get());
+			stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.DENYLIST_MODULE.get());
 
 		if (!stack.isEmpty()) {
 			CompoundTag clientTag = tag;
