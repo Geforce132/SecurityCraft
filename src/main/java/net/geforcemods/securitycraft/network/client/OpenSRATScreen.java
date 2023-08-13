@@ -26,6 +26,6 @@ public class OpenSRATScreen {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		ClientHandler.displaySRATScreen(PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.REMOTE_ACCESS_SENTRY.get()), viewDistance);
+		ClientHandler.displaySRATScreen(PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.REMOTE_ACCESS_SENTRY.get()), viewDistance);
 	}
 }

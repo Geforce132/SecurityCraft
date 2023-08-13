@@ -37,7 +37,7 @@ public class SetStateOnDisguiseModule {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		PlayerEntity player = ctx.get().getSender();
-		ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.DISGUISE_MODULE.get());
+		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.DISGUISE_MODULE.get());
 
 		if (!stack.isEmpty()) {
 			CompoundNBT tag = stack.getOrCreateTag();

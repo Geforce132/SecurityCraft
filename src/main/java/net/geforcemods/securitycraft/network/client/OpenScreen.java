@@ -50,7 +50,7 @@ public class OpenScreen {
 
 				break;
 			case CHECK_BRIEFCASE_PASSCODE:
-				ItemStack briefcaseStack = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
+				ItemStack briefcaseStack = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
 
 				if (!briefcaseStack.isEmpty())
 					ClientHandler.displayBriefcasePasscodeScreen(briefcaseStack.getHoverName());
@@ -72,7 +72,7 @@ public class OpenScreen {
 
 				break;
 			case SET_BRIEFCASE_PASSCODE:
-				ItemStack briefcase = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
+				ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
 
 				if (!briefcase.isEmpty())
 					ClientHandler.displayBriefcaseSetupScreen(briefcase.getHoverName().plainCopy().append(new StringTextComponent(" ")).append(Utils.localize("gui.securitycraft:passcode.setup")));

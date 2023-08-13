@@ -115,7 +115,7 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 				NetworkHooks.openGui(player, new INamedContainerProvider() {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-						return new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));
+						return new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get())));
 					}
 
 					@Override

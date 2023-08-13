@@ -16,7 +16,6 @@ import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
@@ -128,29 +127,18 @@ public class PlayerUtils {
 	}
 
 	/**
-	 * Returns the ItemStack of the given item the player is currently holding (both hands are checked).
+	 * Returns the ItemStack of the given item the player if they are currently holding it (both hands are checked).
 	 *
-	 * @param player The player holding the item
+	 * @param player The player to check
 	 * @param item The item type that should be searched for
-	 * @return The item stack if it has been found, ItemStack.EMPTY if not
+	 * @return The ItemStack whose item matches the given item, {@link ItemStack#EMPTY} if the player is not holding the item
 	 */
-	public static ItemStack getSelectedItemStack(PlayerEntity player, Item item) {
-		return getSelectedItemStack(player.inventory, item);
-	}
+	public static ItemStack getItemStackFromAnyHand(PlayerEntity player, Item item) {
+		if (player.inventory.getSelected().getItem() == item)
+			return player.inventory.getSelected();
 
-	/**
-	 * Returns the ItemStack of the given item the player is currently holding (both hands are checked).
-	 *
-	 * @param inventory The inventory that contains the item
-	 * @param item The item type that should be searched for
-	 * @return The respective item stack if it has been found, ItemStack.EMPTY if not
-	 */
-	public static ItemStack getSelectedItemStack(PlayerInventory inventory, Item item) {
-		if (inventory.getSelected().getItem() == item)
-			return inventory.getSelected();
-
-		if (inventory.offhand.get(0).getItem() == item)
-			return inventory.offhand.get(0);
+		if (player.inventory.offhand.get(0).getItem() == item)
+			return player.inventory.offhand.get(0);
 
 		return ItemStack.EMPTY;
 	}

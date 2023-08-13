@@ -31,7 +31,7 @@ public class CheckBriefcasePasscode {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		ServerPlayerEntity player = ctx.get().getSender();
-		ItemStack briefcase = PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get());
+		ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get());
 
 		if (!briefcase.isEmpty()) {
 			CompoundNBT tag = briefcase.getOrCreateTag();
