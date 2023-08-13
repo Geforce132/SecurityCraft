@@ -43,8 +43,8 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	public BaseReinforcedBlock(Material mat, int a, SoundType sound, MapColor color, Block... vB) {
-		this(mat, a, vB);
-		blockMapColor = color;
+		this(mat, a, color, vB);
+		setSoundType(sound);
 	}
 
 	@Override
