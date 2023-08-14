@@ -10,6 +10,7 @@
 - Fix: Possible loss of data of passcode blocks
 - Fix: It's possible to scroll the Trophy System's list by clicking outside the list
 - Fix: The Universal Owner Changer cannot be put into a display case
+- Fix: The Trophy System's "Ignore Owner" option does not work
 
 --------------------------Changelog for v1.9.7-beta2 of SecurityCraft--------------------------
 
