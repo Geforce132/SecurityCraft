@@ -101,17 +101,20 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 			if (target != null) {
 				Entity shooter = getShooter(target);
+				boolean shouldTarget = true;
 
-				if (shooter == null)
-					setTarget(target);
-				else {
+				if (shooter != null) {
 					UUID uuid = shooter instanceof Sentry ? UUID.fromString(((Sentry) shooter).getOwner().getUUID()) : shooter.getUniqueID();
 					String name = shooter instanceof Sentry ? ((Sentry) shooter).getOwner().getName() : shooter.getName();
 
-					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-					if (!((ConfigHandler.enableTeamOwnership && PlayerUtils.areOnSameTeam(new Owner(shooter), getOwner())) || (ignoresOwner() && (uuid != null && uuid.toString().equals(getOwner().getUUID()))) || isAllowed(name)))
-						setTarget(target);
+					if (uuid != null && uuid.toString().equals(getOwner().getUUID()))
+						shouldTarget = !ignoresOwner();
+					else if (isAllowed(name) || (ConfigHandler.enableTeamOwnership && PlayerUtils.areOnSameTeam(new Owner(shooter), getOwner())))
+						shouldTarget = false;
 				}
+
+				if (shouldTarget)
+					setTarget(target);
 			}
 		}
 

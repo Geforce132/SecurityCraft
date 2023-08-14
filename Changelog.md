@@ -14,6 +14,7 @@
 - Fix: Possible loss of data of passcode blocks
 - Fix: The inventory scanner's redstone module tooltip shows up at the wrong time
 - Fix: Reinforced Nether Wart Block has the wrong sound
+- Fix: The Trophy System's "Ignore Owner" option does not work
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
