@@ -11,6 +11,7 @@
 - Fix: It's possible to scroll the Trophy System's list by clicking outside the list
 - Fix: The Universal Owner Changer cannot be put into a display case
 - Fix: The Trophy System's "Ignore Owner" option does not work
+- Fix: Blocks that have a custom name lose the name when getting broken
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 

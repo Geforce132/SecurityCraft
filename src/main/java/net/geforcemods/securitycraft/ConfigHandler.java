@@ -20,6 +20,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
@@ -259,5 +260,19 @@ public class ConfigHandler {
 		}
 
 		return true;
+	}
+
+	public static <T> T getOrDefault(ConfigValue<T> value) {
+		try {
+			return value.get();
+		}
+		catch (Exception e) {
+			if (!FMLLoader.getLaunchHandler().isData()) {
+				LOGGER.warn("Error when getting config value with getOrDefault! Please report this.");
+				e.printStackTrace();
+			}
+
+			return value.getDefault();
+		}
 	}
 }
