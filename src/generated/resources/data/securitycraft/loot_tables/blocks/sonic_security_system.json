@@ -17,6 +17,10 @@
                 }
               ],
               "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
             }
           ],
           "name": "securitycraft:sonic_security_system"

@@ -12,12 +12,15 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.misc.BlockEntityNBTCondition;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Nameable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.SlabType;
@@ -27,6 +30,8 @@ import net.minecraft.world.level.storage.loot.LootTable.Builder;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay;
+import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
+import net.minecraft.world.level.storage.loot.functions.CopyNameFunction.NameSource;
 import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -47,13 +52,25 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 			if (block instanceof ReinforcedSlabBlock)
 				putSlabLootTable(obj);
 			else if (block instanceof IExplosive)
-				putMineLootTable(obj);
-			else if (block.asItem() != Items.AIR)
 				putStandardBlockLootTable(obj);
+			else if (block.asItem() != Items.AIR) {
+				if (block instanceof EntityBlock entityBlock && entityBlock.newBlockEntity(BlockPos.ZERO, block.defaultBlockState()) instanceof Nameable) {
+					//@formatter:off
+					lootTables.put(obj, LootTable.lootTable()
+							.withPool(LootPool.lootPool()
+									.setRolls(ConstantValue.exactly(1))
+									.add(LootItem.lootTableItem(obj.get())
+											.apply(CopyNameFunction.copyName(NameSource.BLOCK_ENTITY)))
+									.when(ExplosionCondition.survivesExplosion())));
+					//@formatter:on
+				}
+				else
+					putStandardBlockLootTable(obj);
+			}
 		}
 
 		lootTables.remove(SCContent.REINFORCED_PISTON_HEAD);
-		putMineLootTable(SCContent.ANCIENT_DEBRIS_MINE);
+		putStandardBlockLootTable(SCContent.ANCIENT_DEBRIS_MINE);
 		putSlabLootTable(SCContent.CRYSTAL_QUARTZ_SLAB);
 		putSlabLootTable(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB);
 
@@ -76,8 +93,8 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 						.add(imsLootEntryBuilder)));
 		putStandardBlockLootTable(SCContent.KEY_PANEL_BLOCK, SCContent.KEY_PANEL.get());
 		putStandardBlockLootTable(SCContent.KEYPAD_CHEST);
-		putDoorLootTable(SCContent.KEYPAD_DOOR, SCContent.KEYPAD_DOOR_ITEM);
-		putDoorLootTable(SCContent.REINFORCED_DOOR, SCContent.REINFORCED_DOOR_ITEM);
+		putTwoHighBlockLootTable(SCContent.KEYPAD_DOOR, SCContent.KEYPAD_DOOR_ITEM);
+		putTwoHighBlockLootTable(SCContent.REINFORCED_DOOR, SCContent.REINFORCED_DOOR_ITEM);
 		lootTables.put(SCContent.REINFORCED_IRON_BARS,
 				LootTable.lootTable()
 				.withPool(LootPool.lootPool()
@@ -85,11 +102,11 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 						.add(LootItem.lootTableItem(SCContent.REINFORCED_IRON_BARS.get())
 								.when(BlockEntityNBTCondition.builder().equals("canDrop", true)))
 						.when(ExplosionCondition.survivesExplosion())));
-		lootTables.put(SCContent.REINFORCED_LAVA_CAULDRON, createStandardBlockLootTable(SCContent.REINFORCED_CAULDRON));
-		lootTables.put(SCContent.REINFORCED_POWDER_SNOW_CAULDRON, createStandardBlockLootTable(SCContent.REINFORCED_CAULDRON));
-		lootTables.put(SCContent.REINFORCED_WATER_CAULDRON, createStandardBlockLootTable(SCContent.REINFORCED_CAULDRON));
-		putDoorLootTable(SCContent.RIFT_STABILIZER, SCContent.RIFT_STABILIZER_ITEM);
-		putDoorLootTable(SCContent.SCANNER_DOOR, SCContent.SCANNER_DOOR_ITEM);
+		putStandardBlockLootTable(SCContent.REINFORCED_LAVA_CAULDRON, SCContent.REINFORCED_CAULDRON.get());
+		putStandardBlockLootTable(SCContent.REINFORCED_POWDER_SNOW_CAULDRON, SCContent.REINFORCED_CAULDRON.get());
+		putStandardBlockLootTable(SCContent.REINFORCED_WATER_CAULDRON, SCContent.REINFORCED_CAULDRON.get());
+		putTwoHighBlockLootTable(SCContent.RIFT_STABILIZER, SCContent.RIFT_STABILIZER_ITEM);
+		putTwoHighBlockLootTable(SCContent.SCANNER_DOOR, SCContent.SCANNER_DOOR_ITEM);
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_BAMBOO_SIGN);
@@ -118,7 +135,8 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 						.setRolls(ConstantValue.exactly(1))
 						.add(LootItem.lootTableItem(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get())
 								.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
-										.copy("LinkedBlocks", "LinkedBlocks")))));
+										.copy("LinkedBlocks", "LinkedBlocks"))
+								.apply(CopyNameFunction.copyName(NameSource.BLOCK_ENTITY)))));
 		//@formatter:on
 
 		lootTables.forEach((block, lootTable) -> consumer.accept(block.get().getLootTable(), lootTable.setParamSet(LootContextParamSets.BLOCK)));
@@ -138,7 +156,7 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 		//@formatter:on
 	}
 
-	protected final void putDoorLootTable(Supplier<Block> door, Supplier<Item> doorItem) {
+	protected final void putTwoHighBlockLootTable(Supplier<Block> door, Supplier<Item> doorItem) {
 		//@formatter:off
 		lootTables.put(door, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
@@ -157,16 +175,6 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 
 	protected final void putStandardBlockLootTable(Supplier<Block> block, ItemLike drop) {
 		lootTables.put(block, createStandardBlockLootTable(drop));
-	}
-
-	protected final void putMineLootTable(Supplier<Block> mine) {
-		//@formatter:off
-		lootTables.put(mine, LootTable.lootTable()
-				.withPool(LootPool.lootPool()
-						.setRolls(ConstantValue.exactly(1))
-						.add(LootItem.lootTableItem(mine.get()))
-						.when(ExplosionCondition.survivesExplosion())));
-		//@formatter:on
 	}
 
 	protected final void putSlabLootTable(Supplier<Block> slab) {
