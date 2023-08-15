@@ -17,7 +17,12 @@ public class BriefcaseMenu extends AbstractContainerMenu {
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
-				addSlot(new ItemRestrictedSlot(briefcaseInventory, j + (i * 4), 53 + (j * 18), 17 + (i * 18), stack -> stack.getItem() != SCContent.BRIEFCASE.get()));
+				addSlot(new Slot(briefcaseInventory, j + (i * 4), 53 + (j * 18), 17 + (i * 18)) {
+					@Override
+					public boolean mayPlace(ItemStack stack) {
+						return stack.getItem() != SCContent.BRIEFCASE.get();
+					}
+				});
 			}
 		}
 
