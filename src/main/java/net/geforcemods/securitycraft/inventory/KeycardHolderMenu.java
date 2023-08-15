@@ -12,7 +12,12 @@ public class KeycardHolderMenu extends Container {
 
 	public KeycardHolderMenu(InventoryPlayer playerInventory, ItemContainer keycardHolderInv) {
 		for (int i = 0; i < CONTAINER_SIZE; i++) {
-			addSlotToContainer(new ItemRestrictedSlot(keycardHolderInv, i, 44 + (i * 18), 20, stack -> stack.getItem() instanceof KeycardItem));
+			addSlotToContainer(new Slot(keycardHolderInv, i, 44 + (i * 18), 20) {
+				@Override
+				public boolean isItemValid(ItemStack stack) {
+					return stack.getItem() instanceof KeycardItem;
+				}
+			});
 		}
 
 		for (int i = 0; i < 3; i++) {

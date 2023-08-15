@@ -15,7 +15,12 @@ public class BriefcaseMenu extends Container {
 	public BriefcaseMenu(InventoryPlayer playerInventory, ItemContainer briefcaseInventory) {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
-				addSlotToContainer(new ItemRestrictedSlot(briefcaseInventory, j + (i * 4), 53 + (j * 18), 17 + (i * 18), stack -> stack.getItem() != SCContent.briefcase));
+				addSlotToContainer(new Slot(briefcaseInventory, j + (i * 4), 53 + (j * 18), 17 + (i * 18)) {
+					@Override
+					public boolean isItemValid(ItemStack stack) {
+						return stack.getItem() != SCContent.briefcase;
+					}
+				});
 			}
 		}
 
