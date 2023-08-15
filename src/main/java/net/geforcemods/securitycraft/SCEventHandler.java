@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
@@ -97,6 +98,7 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.event.world.NoteBlockEvent;
@@ -246,6 +248,14 @@ public class SCEventHandler {
 		world.setBlockToAir(pos);
 		event.setFilledBucket(result);
 		event.setResult(Result.ALLOW);
+	}
+
+	@SubscribeEvent
+	public static void onHarvestDrops(HarvestDropsEvent event) {
+		TileEntity te = event.getWorld().getTileEntity(event.getPos());
+
+		if (te instanceof INameSetter && ((INameSetter) te).hasCustomName())
+			event.getDrops().get(0).setStackDisplayName(((INameSetter) te).getName());
 	}
 
 	//disallow rightclicking doors, fixes wrenches from other mods being able to switch their state
