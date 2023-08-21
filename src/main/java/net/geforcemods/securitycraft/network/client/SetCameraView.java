@@ -35,24 +35,16 @@ public class SetCameraView {
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Minecraft mc = Minecraft.getInstance();
 		Entity entity = mc.level.getEntity(id);
-		boolean isCamera = entity instanceof SecurityCamera;
+		boolean isMountingCamera = entity instanceof SecurityCamera;
 
-		if (isCamera || entity instanceof Player) {
+		if (isMountingCamera || entity instanceof Player) {
 			mc.setCameraEntity(entity);
 
-			if (isCamera) {
+			if (isMountingCamera) {
 				CameraController.previousCameraType = mc.options.getCameraType();
 				mc.options.setCameraType(CameraType.FIRST_PERSON);
 				mc.gui.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);
 				CameraController.setRenderPosition(entity);
-			}
-			else if (CameraController.previousCameraType != null)
-				mc.options.setCameraType(CameraController.previousCameraType);
-
-			mc.levelRenderer.allChanged();
-
-			if (isCamera) {
-				CameraController.resetOverlaysAfterDismount = true;
 				CameraController.saveOverlayStates();
 				OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, false);
 				OverlayRegistry.enableOverlay(ForgeIngameGui.JUMP_BAR_ELEMENT, false);
@@ -60,6 +52,14 @@ public class SetCameraView {
 				OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, true);
 				OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, false);
 			}
+			else {
+				if (CameraController.previousCameraType != null)
+					mc.options.setCameraType(CameraController.previousCameraType);
+
+				CameraController.resetOverlaysAfterDismount = true;
+			}
+
+			mc.levelRenderer.allChanged();
 		}
 	}
 }
