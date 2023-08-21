@@ -12,6 +12,7 @@
 - Fix: The Universal Owner Changer cannot be put into a display case
 - Fix: The Trophy System's "Ignore Owner" option does not work
 - Fix: Blocks that have a custom name lose the name when getting broken
+- Potential Fix: When dismounting a camera, some UI elements don't reappear
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
