@@ -5,15 +5,16 @@
 - New: Simplified Chinese translation (Thanks DrIceTea!)
 - New: Lens item to be able to color laser and inventory scanner fields in any desired color, as well as a couple other things
 - New: Item tag "securitycraft:reinforced/glass_panes"
-- Change: The recipe for the laser block now uses 4 glass panes in total
-- Fix: Blocks can be pushed into a sentry using a piston
-- Fix: The block at x=0, y=0, z=0 gets removed when placing a sentry
+- Change: The recipe for the Laser Block now uses 4 glass panes in total
+- Fix: Blocks can be pushed into a Sentry using a piston
+- Fix: The block at x=0, y=0, z=0 gets removed when placing a Sentry
 - Fix: Possible loss of data of passcode blocks
 - Fix: Startup crash when Dave's Potioneering is installed
 - Fix: It's possible to scroll the Trophy System's list by clicking outside the list
 - Fix: The Universal Owner Changer cannot be put into a display case
 - Fix: The Trophy System's "Ignore Owner" option does not work
 - Fix: Blocks that have a custom name lose the name when getting broken
+- Fix: Toggling an entry in the Rift Stabilizer leads to the world closing/a disconnect
 - Potential Fix: When dismounting a camera, some UI elements don't reappear
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
