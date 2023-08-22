@@ -25,6 +25,13 @@ public class OpenScreen {
 
 	public OpenScreen() {}
 
+	public OpenScreen(DataType dataType) {
+		this.dataType = dataType;
+
+		if (dataType.needsPosition)
+			throw new IllegalArgumentException(String.format("The DataType %s needs a position, but none was supplied.", dataType.name()));
+	}
+
 	public OpenScreen(DataType dataType, BlockPos pos) {
 		this.dataType = dataType;
 		this.pos = pos;
@@ -32,12 +39,16 @@ public class OpenScreen {
 
 	public OpenScreen(PacketBuffer buf) {
 		dataType = buf.readEnum(DataType.class);
-		pos = buf.readBlockPos();
+
+		if (dataType.needsPosition)
+			pos = buf.readBlockPos();
 	}
 
 	public void encode(PacketBuffer buf) {
 		buf.writeEnum(dataType);
-		buf.writeBlockPos(pos);
+
+		if (dataType.needsPosition)
+			buf.writeBlockPos(pos);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
@@ -101,15 +112,21 @@ public class OpenScreen {
 	}
 
 	public enum DataType {
-		ALARM,
-		CHECK_BRIEFCASE_PASSCODE,
-		CHECK_PASSCODE,
-		IMS,
-		RIFT_STABILIZER,
-		SENTRY_REMOTE_ACCESS_TOOL,
-		SET_BRIEFCASE_PASSCODE,
-		SET_PASSCODE,
-		SONIC_SECURITY_SYSTEM,
-		UNIVERSAL_KEY_CHANGER;
+		ALARM(true),
+		CHECK_BRIEFCASE_PASSCODE(false),
+		CHECK_PASSCODE(true),
+		IMS(true),
+		RIFT_STABILIZER(true),
+		SENTRY_REMOTE_ACCESS_TOOL(false),
+		SET_BRIEFCASE_PASSCODE(false),
+		SET_PASSCODE(true),
+		SONIC_SECURITY_SYSTEM(true),
+		UNIVERSAL_KEY_CHANGER(true);
+
+		public final boolean needsPosition;
+
+		DataType(boolean needsPosition) {
+			this.needsPosition = needsPosition;
+		}
 	}
 }
