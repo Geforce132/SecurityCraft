@@ -128,8 +128,10 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 
 	public void setSoundLength(int soundLength) {
 		this.soundLength = MathHelper.clamp(soundLength, 1, MAXIMUM_ALARM_SOUND_LENGTH);
-		stopPlayingSound();
 		setCooldown(0);
+
+		if (world.isRemote)
+			stopPlayingSound();
 	}
 
 	public void setCooldown(int cooldown) {
