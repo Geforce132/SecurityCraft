@@ -65,7 +65,6 @@ public class ToggleScrollList<T> extends ScrollPanel {
 		return height;
 	}
 
-	//TODO: Remove this fix when updating to NeoForge
 	@Override
 	protected boolean clickPanel(double mouseX, double mouseY, int button) {
 		if (hasSmartModule) {
@@ -145,6 +144,7 @@ public class ToggleScrollList<T> extends ScrollPanel {
 		}
 	}
 
+	//TODO: Remove this fix when updating to NeoForge
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		boolean returnValue = super.mouseClicked(mouseX, mouseY, button);
