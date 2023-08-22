@@ -304,13 +304,13 @@ public class SCContent {
 	public static final RegistryObject<Block> BLOCK_POCKET_WALL = BLOCKS.register("block_pocket_wall", () -> new BlockPocketWallBlock(prop(MapColor.COLOR_CYAN).noCollission().isRedstoneConductor((s, w, p) -> false).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation)));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> BOUNCING_BETTY = BLOCKS.register("bouncing_betty", () -> new BouncingBettyBlock(prop(MapColor.METAL, 1.0F).pushReaction(PushReaction.NORMAL)));
+	public static final RegistryObject<Block> BOUNCING_BETTY = BLOCKS.register("bouncing_betty", () -> new BouncingBettyBlock(prop(MapColor.METAL, 1.0F).forceSolidOn().pushReaction(PushReaction.NORMAL)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> CAGE_TRAP = BLOCKS.register("cage_trap", () -> new CageTrapBlock(propDisguisable(MapColor.METAL).sound(SoundType.METAL).noCollission()));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> CLAYMORE = BLOCKS.register("claymore", () -> new ClaymoreBlock(prop(MapColor.METAL).pushReaction(PushReaction.NORMAL)));
+	public static final RegistryObject<Block> CLAYMORE = BLOCKS.register("claymore", () -> new ClaymoreBlock(prop(MapColor.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL)));
 	@HasManualPage(PageGroup.DISPLAY_CASES)
 	public static final RegistryObject<Block> DISPLAY_CASE = BLOCKS.register(DISPLAY_CASE_PATH, () -> new DisplayCaseBlock(prop(MapColor.METAL).sound(SoundType.METAL), false));
 	@HasManualPage
@@ -419,7 +419,7 @@ public class SCContent {
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(prop(MapColor.METAL, 1.0F).pushReaction(PushReaction.NORMAL)));
+	public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(prop(MapColor.METAL, 1.0F).forceSolidOn().pushReaction(PushReaction.NORMAL)));
 	public static final RegistryObject<? extends LiquidBlock> FAKE_WATER_BLOCK = BLOCKS.register("fake_water_block", () -> new FakeWaterBlock(prop(MapColor.WATER).noCollission(), FAKE_WATER));
 	public static final RegistryObject<? extends LiquidBlock> FAKE_LAVA_BLOCK = BLOCKS.register("fake_lava_block", () -> new FakeLavaBlock(prop(MapColor.FIRE).noCollission().randomTicks().lightLevel(state -> 15), FAKE_LAVA));
 
@@ -1788,7 +1788,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COBWEB = BLOCKS.register("reinforced_cobweb", () -> new ReinforcedCobwebBlock(prop(MapColor.WOOL).noCollission(), Blocks.COBWEB));
+	public static final RegistryObject<Block> REINFORCED_COBWEB = BLOCKS.register("reinforced_cobweb", () -> new ReinforcedCobwebBlock(prop(MapColor.WOOL).forceSolidOn().noCollission(), Blocks.COBWEB));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced

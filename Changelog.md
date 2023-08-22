@@ -14,6 +14,7 @@
 - Fix: Blocks that have a custom name lose the name when getting broken
 - Fix: Toggling an entry in the Rift Stabilizer leads to the world closing/a disconnect
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
+- Fix: The Bouncing Betty, Claymore, Mine, and Reinforced Cobweb can all be washed away by water
 - Potential Fix: When dismounting a camera, some UI elements don't reappear
 
 --------------------------Changelog for v1.9.7-beta2 of SecurityCraft--------------------------
