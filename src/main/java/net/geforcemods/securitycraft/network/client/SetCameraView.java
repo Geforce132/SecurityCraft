@@ -38,9 +38,8 @@ public class SetCameraView implements IMessage {
 				Minecraft mc = Minecraft.getMinecraft();
 				Entity entity = mc.world.getEntityByID(message.id);
 				boolean isCamera = entity instanceof SecurityCamera;
-				boolean isPlayer = entity instanceof EntityPlayer;
 
-				if (isCamera || isPlayer) {
+				if (isCamera || entity instanceof EntityPlayer) {
 					mc.setRenderViewEntity(entity);
 
 					if (isCamera) {
@@ -48,7 +47,7 @@ public class SetCameraView implements IMessage {
 						mc.gameSettings.thirdPersonView = 0;
 						mc.ingameGUI.setOverlayMessage(Utils.localize("mount.onboard", mc.gameSettings.keyBindSneak.getDisplayName()), false);
 					}
-					else if (isPlayer) {
+					else {
 						if (CameraController.previousCameraType >= 0 && CameraController.previousCameraType < 3)
 							mc.gameSettings.thirdPersonView = CameraController.previousCameraType;
 

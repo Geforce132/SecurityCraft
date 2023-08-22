@@ -87,12 +87,8 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 			RiftStabilizerBlockEntity connectedTileEntity = RiftStabilizerBlock.getConnectedTileEntity(world, pos);
 
-			if (connectedTileEntity != null) {
+			if (connectedTileEntity != null)
 				connectedTileEntity.teleportationFilter.put(teleportationType, allowed);
-
-				if (world.isRemote)
-					SecurityCraft.network.sendToServer(new SyncRiftStabilizer(connectedTileEntity.pos, teleportationType, allowed));
-			}
 		}
 	}
 

@@ -4,7 +4,7 @@
 - New: The IMS can now automatically recharge itself with bouncing betties from a chest, barrel, etc. below
 - New: Simplified Chinese translation (Thanks DrIceTea!)
 - New: Lens item to be able to color laser and inventory scanner fields in any desired color, as well as a couple other things
-- Change: The recipe for the laser block now uses 4 glass panes in total
+- Change: The recipe for the Laser Block now uses 4 glass panes in total
 - Fix: The exclamation mark in the Keycard Reader screen is dark
 - Fix: Reinforced Doors placed next to each other don't open properly after the chunk they're in is reloaded
 - Fix: Startup crash with some versions of SpongeForge
