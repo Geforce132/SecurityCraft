@@ -40,7 +40,7 @@ public class SentryRemoteAccessToolItem extends Item {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (!level.isClientSide)
-			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, BlockPos.ZERO));
+			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL));
 
 		return InteractionResultHolder.consume(stack);
 	}
@@ -88,7 +88,7 @@ public class SentryRemoteAccessToolItem extends Item {
 			return InteractionResult.SUCCESS;
 		}
 		else if (!level.isClientSide)
-			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, pos));
+			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL));
 
 		return InteractionResult.SUCCESS;
 	}
