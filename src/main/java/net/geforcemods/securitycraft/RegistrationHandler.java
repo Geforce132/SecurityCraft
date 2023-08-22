@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
-import net.geforcemods.securitycraft.network.client.OpenSRATScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
@@ -121,7 +120,6 @@ public class RegistrationHandler {
 		//client
 		registerPacket(id++, InitSentryAnimation.class, InitSentryAnimation::encode, InitSentryAnimation::new, InitSentryAnimation::handle);
 		registerPacket(id++, OpenScreen.class, OpenScreen::encode, OpenScreen::new, OpenScreen::handle);
-		registerPacket(id++, OpenSRATScreen.class, OpenSRATScreen::encode, OpenSRATScreen::new, OpenSRATScreen::handle);
 		registerPacket(id++, PlayAlarmSound.class, PlayAlarmSound::encode, PlayAlarmSound::new, PlayAlarmSound::handle);
 		registerPacket(id++, RefreshDisguisableModel.class, RefreshDisguisableModel::encode, RefreshDisguisableModel::new, RefreshDisguisableModel::handle);
 		registerPacket(id++, SendTip.class, SendTip::encode, SendTip::new, SendTip::handle);

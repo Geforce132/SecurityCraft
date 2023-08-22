@@ -15,6 +15,7 @@
 - Fix: The Trophy System's "Ignore Owner" option does not work
 - Fix: Blocks that have a custom name lose the name when getting broken
 - Fix: Toggling an entry in the Rift Stabilizer leads to the world closing/a disconnect
+- Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
 - Potential Fix: When dismounting a camera, some UI elements don't reappear
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------

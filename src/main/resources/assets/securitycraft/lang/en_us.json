@@ -703,7 +703,7 @@
 	"gui.securitycraft:srat.modifyAll": "Modify all bound sentries",
 	"gui.securitycraft:srat.name": "Remote access tool for sentries",
 	"gui.securitycraft:srat.notBound": "Not bound!",
-	"gui.securitycraft:srat.outOfRange": "Sentry out of range",
+	"gui.securitycraft:srat.outOfRange": "Sentry out of range or removed",
 	"gui.securitycraft:srat.sentryLocations": "Sentry at #location",
 	"gui.securitycraft:srat.targets1": "Hostile mobs and players",
 	"gui.securitycraft:srat.targets2": "Hostile mobs only",

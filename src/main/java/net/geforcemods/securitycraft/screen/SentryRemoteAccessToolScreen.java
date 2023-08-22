@@ -25,8 +25,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
@@ -39,18 +39,15 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private Button[] guiButtonsGlobal = new Button[3];
 	private static final int MODE = 0, TARGETS = 1, UNBIND = 2;
 	private int xSize = 440, ySize = 215;
-	private static final int SENTRY_TRACKING_RANGE = 256; // as defined when registering SentryEntity
-	private int viewDistance;
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
 	private final TranslatableComponent notBound = Utils.localize("gui.securitycraft:srat.notBound");
 	private final Component[] lines = new Component[12];
 	private final int[] lengths = new int[12];
 
-	public SentryRemoteAccessToolScreen(ItemStack item, int viewDistance) {
+	public SentryRemoteAccessToolScreen(ItemStack item) {
 		super(item.getHoverName());
 
 		srat = item;
-		this.viewDistance = viewDistance;
 	}
 
 	@Override
@@ -110,12 +107,13 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 			if (coords.length == 3) {
 				BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
+				Level level = Minecraft.getInstance().player.level;
 
 				lines[i] = Utils.getFormattedCoordinates(sentryPos);
 				guiButtons[i][UNBIND].active = true;
 
-				if (Minecraft.getInstance().player.level.isLoaded(sentryPos) && isSentryVisibleToPlayer(sentryPos)) {
-					List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(sentryPos));
+				if (level.isLoaded(sentryPos)) {
+					List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(sentryPos));
 
 					if (!sentries.isEmpty()) {
 						Sentry sentry = sentries.get(0);
@@ -142,15 +140,9 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:srat.unbind")));
 						foundSentry = true;
 					}
-					else {
-						removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
-
-						for (int j = 0; j < 3; j++) {
-							guiButtons[i][j].active = false;
-						}
-					}
 				}
-				else {
+
+				if (!foundSentry) {
 					for (int j = 0; j < 2; j++) {
 						hoverCheckers.add(new TextHoverChecker(guiButtons[i][j], Utils.localize("gui.securitycraft:srat.outOfRange")));
 					}
@@ -327,15 +319,6 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		}
 	}
 
-	// Based on ChunkManager$EntityTrackerEntry#updateTrackingState
-	private boolean isSentryVisibleToPlayer(BlockPos sentryPos) {
-		Player player = Minecraft.getInstance().player;
-		double xDistance = player.getX() - sentryPos.getX();
-		double zDistance = player.getZ() - sentryPos.getZ();
-		int trackingRange = Math.min(SENTRY_TRACKING_RANGE, viewDistance) - 1;
-
-		return xDistance >= -trackingRange && xDistance <= trackingRange && zDistance >= -trackingRange && zDistance <= trackingRange;
-	}
 	@Override
 	public boolean isPauseScreen() {
 		return false;
