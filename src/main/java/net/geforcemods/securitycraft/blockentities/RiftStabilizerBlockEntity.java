@@ -94,9 +94,6 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 			if (connectedBlockEntity != null) {
 				connectedBlockEntity.teleportationFilter.put(teleportationType, allowed);
 				connectedBlockEntity.setChanged();
-
-				if (level.isClientSide)
-					SecurityCraft.channel.sendToServer(new SyncRiftStabilizer(connectedBlockEntity.worldPosition, teleportationType, allowed));
 			}
 		}
 	}
