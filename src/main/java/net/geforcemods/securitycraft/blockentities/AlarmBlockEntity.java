@@ -118,8 +118,10 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 
 	public void setSoundLength(int soundLength) {
 		this.soundLength = Mth.clamp(soundLength, 1, MAXIMUM_ALARM_SOUND_LENGTH);
-		stopPlayingSound();
 		setCooldown(0);
+
+		if (level.isClientSide)
+			stopPlayingSound();
 	}
 
 	public void setCooldown(int cooldown) {
