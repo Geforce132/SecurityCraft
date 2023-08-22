@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SetSentryMode {
@@ -33,10 +34,13 @@ public class SetSentryMode {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		PlayerEntity player = ctx.get().getSender();
+		World level = player.level;
 
-		List<Sentry> sentries = player.level.<Sentry>getEntitiesOfClass(Sentry.class, new AxisAlignedBB(pos));
+		if (level.isLoaded(pos)) {
+			List<Sentry> sentries = level.<Sentry>getEntitiesOfClass(Sentry.class, new AxisAlignedBB(pos));
 
-		if (!sentries.isEmpty() && sentries.get(0).isOwnedBy(player))
-			sentries.get(0).toggleMode(player, mode, false);
+			if (!sentries.isEmpty() && sentries.get(0).isOwnedBy(player))
+				sentries.get(0).toggleMode(player, mode, false);
+		}
 	}
 }

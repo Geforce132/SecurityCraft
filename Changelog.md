@@ -15,7 +15,7 @@
 - Fix: The Universal Owner Changer cannot be put into a display case
 - Fix: The Trophy System's "Ignore Owner" option does not work
 - Fix: Blocks that have a custom name lose the name when getting broken
-- Fix: Toggling an entry in the Rift Stabilizer leads to the world closing/a disconnect
+- Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
