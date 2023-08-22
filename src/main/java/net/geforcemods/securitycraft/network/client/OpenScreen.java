@@ -69,6 +69,12 @@ public class OpenScreen {
 					ClientHandler.displayRiftStabilizerScreen(riftStabilizer);
 
 				break;
+			case SENTRY_REMOTE_ACCESS_TOOL:
+				ItemStack srat = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.REMOTE_ACCESS_SENTRY.get());
+
+				if (!srat.isEmpty())
+					ClientHandler.displaySRATScreen(srat);
+				break;
 			case SET_BRIEFCASE_PASSCODE:
 				ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
 
@@ -102,6 +108,7 @@ public class OpenScreen {
 		CHECK_PASSCODE,
 		IMS,
 		RIFT_STABILIZER,
+		SENTRY_REMOTE_ACCESS_TOOL,
 		SET_BRIEFCASE_PASSCODE,
 		SET_PASSCODE,
 		SONIC_SECURITY_SYSTEM,

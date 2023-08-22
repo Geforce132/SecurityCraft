@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -33,9 +34,13 @@ public class SetSentryMode {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
-		List<Sentry> sentries = player.level().<Sentry>getEntitiesOfClass(Sentry.class, new AABB(pos));
+		Level level = player.level();
 
-		if (!sentries.isEmpty() && sentries.get(0).isOwnedBy(player))
-			sentries.get(0).toggleMode(player, mode, false);
+		if (level.isLoaded(pos)) {
+			List<Sentry> sentries = level.<Sentry>getEntitiesOfClass(Sentry.class, new AABB(pos));
+
+			if (!sentries.isEmpty() && sentries.get(0).isOwnedBy(player))
+				sentries.get(0).toggleMode(player, mode, false);
+		}
 	}
 }
