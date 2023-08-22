@@ -524,8 +524,8 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new MineRemoteAccessToolScreen(stack));
 	}
 
-	public static void displaySRATScreen(ItemStack stack, int viewDistance) {
-		Minecraft.getInstance().setScreen(new SentryRemoteAccessToolScreen(stack, viewDistance));
+	public static void displaySRATScreen(ItemStack stack) {
+		Minecraft.getInstance().setScreen(new SentryRemoteAccessToolScreen(stack));
 	}
 
 	public static void displayEditModuleScreen(ItemStack stack) {
