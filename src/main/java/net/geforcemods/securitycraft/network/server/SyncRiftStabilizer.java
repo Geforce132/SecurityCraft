@@ -30,6 +30,7 @@ public class SyncRiftStabilizer {
 	}
 
 	public void encode(FriendlyByteBuf buf) {
+		buf.writeBlockPos(pos);
 		buf.writeEnum(teleportationType);
 		buf.writeBoolean(allowed);
 	}
