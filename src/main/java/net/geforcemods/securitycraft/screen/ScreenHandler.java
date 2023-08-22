@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
+import java.util.function.BiFunction;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
@@ -44,233 +46,181 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
+//@formatter:off
 public class ScreenHandler implements IGuiHandler {
-	public static final int KEYCARD_READER_ID = 1;
-	public static final int MRAT_MENU_ID = 2;
-	public static final int SRAT_MENU_ID = 3;
-	public static final int INVENTORY_SCANNER_GUI_ID = 6;
-	public static final int USERNAME_LOGGER_GUI_ID = 7;
-	public static final int KEYPAD_FURNACE_GUI_ID = 8;
-	public static final int SETUP_PASSCODE_ID = 9;
-	public static final int INSERT_PASSCODE_ID = 10;
-	public static final int IMS_GUI_ID = 11;
-	public static final int CAMERA_MONITOR_GUI_ID = 12;
-	public static final int BRIEFCASE_CODE_SETUP_GUI_ID = 13;
-	public static final int BRIEFCASE_INSERT_CODE_GUI_ID = 14;
-	public static final int BRIEFCASE_GUI_ID = 15;
-	public static final int KEY_CHANGER_GUI_ID = 16;
-	public static final int TROPHY_SYSTEM_GUI_ID = 17;
-	public static final int CUSTOMIZE_BLOCK = 100;
-	public static final int DISGUISE_MODULE = 102;
-	public static final int BLOCK_REINFORCER = 103;
-	public static final int MODULES = 104;
-	public static final int BLOCK_POCKET_MANAGER = 105;
-	public static final int PROJECTOR = 106;
-	public static final int SONIC_SECURITY_SYSTEM = 107;
-	public static final int BLOCK_CHANGE_DETECTOR = 108;
-	public static final int SSS_ITEM = 109;
-	public static final int RIFT_STABILIZER = 110;
-	public static final int ALARM = 111;
-	public static final int KEYCARD_HOLDER = 112;
-	public static final int LASER_BLOCK = 113;
-	public static final int CLAYMORE = 114;
+	public enum Screens {
+		KEYCARD_READER(
+			(player, te) -> new KeycardReaderMenu(player.inventory, (KeycardReaderBlockEntity) te),
+			(player, te) -> new KeycardReaderScreen(player.inventory, (KeycardReaderBlockEntity) te)),
+		MRAT(
+			(player, te) -> new GenericMenu(te),
+			(player, te) -> {
+				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.remoteAccessMine);
 
-	@Override
-	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+				return heldStack.isEmpty() ? null : new MineRemoteAccessToolScreen(heldStack);
+			}),
+		SRAT(
+			(player, te) -> new GenericMenu(te),
+			(player, te) -> {
+				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.remoteAccessSentry);
 
-		switch (id) {
-			case KEYCARD_READER_ID:
-				return new KeycardReaderMenu(player.inventory, (KeycardReaderBlockEntity) te);
-			case MRAT_MENU_ID:
-				return new GenericMenu(te);
-			case SRAT_MENU_ID:
-				return new GenericMenu(te);
-			case INVENTORY_SCANNER_GUI_ID:
-				return new InventoryScannerMenu(player.inventory, (InventoryScannerBlockEntity) te);
-			case USERNAME_LOGGER_GUI_ID:
-				return new GenericMenu(te);
-			case KEYPAD_FURNACE_GUI_ID:
-				return new KeypadFurnaceMenu(player.inventory, (KeypadFurnaceBlockEntity) te);
-			case SETUP_PASSCODE_ID:
-				return new GenericMenu(te);
-			case INSERT_PASSCODE_ID:
-				return new GenericMenu(te);
-			case IMS_GUI_ID:
-				return new GenericMenu(te);
-			case CAMERA_MONITOR_GUI_ID:
-				if (PlayerUtils.getItemStackFromAnyHand(player, SCContent.cameraMonitor).isEmpty())
-					return null;
-				return new GenericMenu(te);
-			case BRIEFCASE_CODE_SETUP_GUI_ID:
-			case BRIEFCASE_INSERT_CODE_GUI_ID:
-				if (PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase).isEmpty())
-					return null;
-				return new GenericMenu(te);
-			case BRIEFCASE_GUI_ID:
-				if (PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase).isEmpty())
-					return null;
-				return new BriefcaseMenu(player.inventory, ItemContainer.briefcase(PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase)));
-			case KEY_CHANGER_GUI_ID:
-				if (te == null || PlayerUtils.getItemStackFromAnyHand(player, SCContent.universalKeyChanger).isEmpty())
-					return null;
-				return new GenericMenu(te);
-			case TROPHY_SYSTEM_GUI_ID:
-				return new TrophySystemMenu((TrophySystemBlockEntity) te, player.inventory);
-			case CUSTOMIZE_BLOCK:
-				return new CustomizeBlockMenu(player.inventory, (IModuleInventory) te);
-			case DISGUISE_MODULE:
+				return heldStack.isEmpty() ? null : new SentryRemoteAccessToolScreen(PlayerUtils.getItemStackFromAnyHand(player, SCContent.remoteAccessSentry));
+			}),
+		INVENTORY_SCANNER(
+			(player, te) -> new InventoryScannerMenu(player.inventory, (InventoryScannerBlockEntity) te),
+			(player, te) -> new InventoryScannerScreen(player.inventory, (InventoryScannerBlockEntity) te, player)),
+		USERNAME_LOGGER(
+			(player, te) -> new GenericMenu(te),
+			(player, te) -> new UsernameLoggerScreen((UsernameLoggerBlockEntity) te)),
+		KEYPAD_FURNACE(
+			(player, te) -> new KeypadFurnaceMenu(player.inventory, (KeypadFurnaceBlockEntity) te),
+			(player, te) -> new KeypadFurnaceScreen(player.inventory, (KeypadFurnaceBlockEntity) te)),
+		SETUP_PASSCODE(
+			(player, te) -> new GenericMenu(te),
+			(player, te) -> new SetPasscodeScreen(te)),
+		INSERT_PASSCODE(
+			(player, te) -> new GenericMenu(te),
+			(player, te) -> new CheckPasscodeScreen(te)),
+		IMS(
+			(player, te) -> new GenericMenu(te),
+			(player, te) -> new IMSScreen((IMSBlockEntity) te)),
+		CAMERA_MONITOR(
+			(player, te) -> PlayerUtils.getItemStackFromAnyHand(player, SCContent.cameraMonitor).isEmpty() ? null : new GenericMenu(te),
+			(player, te) -> {
+				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.cameraMonitor);
+
+				return heldStack.isEmpty() ? null : new CameraMonitorScreen(player.inventory, (CameraMonitorItem) heldStack.getItem(), heldStack.getTagCompound());
+			}),
+		BRIEFCASE_CODE_SETUP(
+			(player, te) -> PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase).isEmpty() ? null : new GenericMenu(te),
+			(player, te) -> {
+				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase);
+
+				return heldStack.isEmpty() ? null : new BriefcasePasscodeScreen(true, heldStack.getDisplayName() + " " + Utils.localize("gui.securitycraft:passcode.setup").getFormattedText());
+			}),
+		BRIEFCASE_INSERT_CODE(
+			(player, te) -> PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase).isEmpty() ? null : new GenericMenu(te),
+			(player, te) -> {
+				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase);
+
+				return heldStack.isEmpty() ? null : new BriefcasePasscodeScreen(false, heldStack.getDisplayName());
+			}),
+		BRIEFCASE_INVENTORY(
+			(player, te) -> {
+				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase);
+
+				return heldStack.isEmpty() ? null : new BriefcaseMenu(player.inventory, ItemContainer.briefcase(heldStack));
+			},
+			(player, te) -> {
+				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase);
+
+				return heldStack.isEmpty() ? null : new ItemInventoryScreen.Briefcase(new BriefcaseMenu(player.inventory, ItemContainer.briefcase(heldStack)), player.inventory, heldStack.getDisplayName());
+			}),
+		KEY_CHANGER(
+			(player, te) -> te == null || PlayerUtils.getItemStackFromAnyHand(player, SCContent.universalKeyChanger).isEmpty() ? null : new GenericMenu(te),
+			(player, te) -> te == null || PlayerUtils.getItemStackFromAnyHand(player, SCContent.universalKeyChanger).isEmpty() ? null : new KeyChangerScreen(te)),
+		TROPHY_SYSTEM(
+			(player, te) -> new TrophySystemMenu((TrophySystemBlockEntity) te, player.inventory),
+			(player, te) -> new TrophySystemScreen(new TrophySystemMenu((TrophySystemBlockEntity) te, player.inventory))),
+		CUSTOMIZE_BLOCK(
+			(player, te) -> new CustomizeBlockMenu(player.inventory, (IModuleInventory) te),
+			(player, te) -> new CustomizeBlockScreen(player.inventory, (IModuleInventory) te)),
+		DISGUISE_MODULE(
+			(player, te) -> {
 				ItemStack module = player.inventory.getCurrentItem().getItem() instanceof ModuleItem ? player.inventory.getCurrentItem() : player.inventory.offHandInventory.get(0);
-				if (!((ModuleItem) module.getItem()).canBeCustomized())
+
+				if (!(module.getItem() instanceof ModuleItem) || !((ModuleItem) module.getItem()).canBeCustomized())
 					return null;
+
 				return new DisguiseModuleMenu(player.inventory, new ModuleItemContainer(module));
-			case BLOCK_REINFORCER:
-				return new BlockReinforcerMenu(player, player.inventory, player.getHeldItemMainhand().getItem() == SCContent.universalBlockReinforcerLvL1);
-			case MODULES:
-				return new GenericMenu(te);
-			case BLOCK_POCKET_MANAGER:
-				if (te instanceof BlockPocketManagerBlockEntity)
-					return new BlockPocketManagerMenu(player.inventory, (BlockPocketManagerBlockEntity) te);
-				return null;
-			case PROJECTOR:
-				if (te instanceof ProjectorBlockEntity)
-					return new ProjectorMenu(player.inventory, (ProjectorBlockEntity) te);
-				return null;
-			case SONIC_SECURITY_SYSTEM:
-				if (te instanceof SonicSecuritySystemBlockEntity)
-					return new GenericMenu(te);
-				return null;
-			case BLOCK_CHANGE_DETECTOR:
-				if (te instanceof BlockChangeDetectorBlockEntity)
-					return new BlockChangeDetectorMenu(player.inventory, (BlockChangeDetectorBlockEntity) te);
-				return null;
-			case SSS_ITEM:
-				return new GenericMenu(te);
-			case RIFT_STABILIZER:
-				return new GenericMenu(te);
-			case ALARM:
-				return new GenericMenu(te);
-			case KEYCARD_HOLDER:
-				if (PlayerUtils.getItemStackFromAnyHand(player, SCContent.keycardHolder).isEmpty())
+			},
+			(player, te) -> {
+				ItemStack module = player.inventory.getCurrentItem().getItem() instanceof ModuleItem ? player.inventory.getCurrentItem() : player.inventory.offHandInventory.get(0);
+
+				if (!(module.getItem() instanceof ModuleItem) || !((ModuleItem) module.getItem()).canBeCustomized())
 					return null;
-				return new KeycardHolderMenu(player.inventory, ItemContainer.keycardHolder(PlayerUtils.getItemStackFromAnyHand(player, SCContent.keycardHolder)));
-			case LASER_BLOCK:
-				return new LaserBlockMenu((LaserBlockBlockEntity) te, player.inventory);
-			case CLAYMORE:
-				return new ClaymoreMenu((ClaymoreBlockEntity) te, player.inventory);
-			default:
+
+				return new DisguiseModuleScreen(player.inventory);
+			}),
+		BLOCK_REINFORCER(
+			(player, te) -> new BlockReinforcerMenu(player, player.inventory, player.getHeldItemMainhand().getItem() == SCContent.universalBlockReinforcerLvL1),
+			(player, te) -> {
+				boolean isLvl1 = player.getHeldItemMainhand().getItem() == SCContent.universalBlockReinforcerLvL1;
+
+				return new BlockReinforcerScreen(new BlockReinforcerMenu(player, player.inventory, isLvl1), isLvl1);
+			}),
+		MODULES(
+			(player, te) -> new GenericMenu(te),
+			(player, te) -> {
+				if (!PlayerUtils.getItemStackFromAnyHand(player, SCContent.allowlistModule).isEmpty() || !PlayerUtils.getItemStackFromAnyHand(player, SCContent.denylistModule).isEmpty())
+					return new EditModuleScreen(player.getHeldItemMainhand(), te);
+
 				return null;
+			}),
+		BLOCK_POCKET_MANAGER(
+			(player, te) -> te instanceof BlockPocketManagerBlockEntity ? new BlockPocketManagerMenu(player.inventory, (BlockPocketManagerBlockEntity) te) : null,
+			(player, te) -> te instanceof BlockPocketManagerBlockEntity ? new BlockPocketManagerScreen(player.inventory, (BlockPocketManagerBlockEntity) te) : null),
+		PROJECTOR(
+			(player, te) -> te instanceof ProjectorBlockEntity ? new ProjectorMenu(player.inventory, (ProjectorBlockEntity) te) : null,
+			(player, te) -> te instanceof ProjectorBlockEntity ? new ProjectorScreen(player.inventory, (ProjectorBlockEntity) te) : null),
+		SONIC_SECURITY_SYSTEM(
+			(player, te) -> te instanceof SonicSecuritySystemBlockEntity ? new GenericMenu(te) : null,
+			(player, te) -> te instanceof SonicSecuritySystemBlockEntity ? new SonicSecuritySystemScreen((SonicSecuritySystemBlockEntity) te) : null),
+		BLOCK_CHANGE_DETECTOR(
+			(player, te) -> te instanceof BlockChangeDetectorBlockEntity ? new BlockChangeDetectorMenu(player.inventory, (BlockChangeDetectorBlockEntity) te) : null,
+			(player, te) -> te instanceof BlockChangeDetectorBlockEntity ? new BlockChangeDetectorScreen(player.inventory, (BlockChangeDetectorBlockEntity) te) : null),
+		SSS_ITEM(
+			(player, te) -> new GenericMenu(te),
+			(player, te) -> {
+				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.sonicSecuritySystemItem);
+
+				return heldStack.isEmpty() ? null : new SSSItemScreen(heldStack);
+			}),
+		RIFT_STABILIZER(
+			(player, te) -> new GenericMenu(te),
+			(player, te) -> new RiftStabilizerScreen((RiftStabilizerBlockEntity) te)),
+		ALARM(
+			(player, te) -> new GenericMenu(te),
+			(player, te) -> new AlarmScreen((AlarmBlockEntity) te, ((AlarmBlockEntity) te).getSound().getRegistryName())),
+		KEYCARD_HOLDER(
+			(player, te) -> {
+				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.keycardHolder);
+
+				return heldStack.isEmpty() ? null : new KeycardHolderMenu(player.inventory, ItemContainer.keycardHolder(heldStack));
+			},
+			(player, te) -> {
+				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.keycardHolder);
+
+				return heldStack.isEmpty() ? null : new ItemInventoryScreen.KeycardHolder(new KeycardHolderMenu(player.inventory, ItemContainer.keycardHolder(heldStack)), player.inventory, heldStack.getDisplayName());
+			}),
+		LASER_BLOCK(
+			(player, te) -> new LaserBlockMenu((LaserBlockBlockEntity) te, player.inventory),
+			(player, te) -> new LaserBlockScreen(new LaserBlockMenu((LaserBlockBlockEntity) te, player.inventory))),
+		CLAYMORE(
+			(player, te) -> new ClaymoreMenu((ClaymoreBlockEntity) te, player.inventory),
+			(player, te) -> new ClaymoreScreen(new ClaymoreMenu((ClaymoreBlockEntity) te, player.inventory)));
+
+		private final BiFunction<EntityPlayer, TileEntity, Object> server, client;
+
+		Screens(BiFunction<EntityPlayer, TileEntity, Object> server, BiFunction<EntityPlayer, TileEntity, Object> client) {
+			this.server = server;
+			this.client = client;
 		}
 	}
 
 	@Override
+	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+		if (id >= 0 && id < Screens.values().length)
+			return Screens.values()[id].server.apply(player, world.getTileEntity(new BlockPos(x, y, z)));
+		else
+			return null;
+	}
+
+	@Override
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-
-		switch (id) {
-			case KEYCARD_READER_ID:
-				return new KeycardReaderScreen(player.inventory, (KeycardReaderBlockEntity) te);
-			case MRAT_MENU_ID:
-				if (!PlayerUtils.getItemStackFromAnyHand(player, SCContent.remoteAccessMine).isEmpty())
-					return new MineRemoteAccessToolScreen(PlayerUtils.getItemStackFromAnyHand(player, SCContent.remoteAccessMine));
-				else
-					return null;
-			case SRAT_MENU_ID:
-				if (!PlayerUtils.getItemStackFromAnyHand(player, SCContent.remoteAccessSentry).isEmpty())
-					return new SentryRemoteAccessToolScreen(PlayerUtils.getItemStackFromAnyHand(player, SCContent.remoteAccessSentry));
-				else
-					return null;
-			case INVENTORY_SCANNER_GUI_ID:
-				return new InventoryScannerScreen(player.inventory, (InventoryScannerBlockEntity) te, player);
-			case USERNAME_LOGGER_GUI_ID:
-				return new UsernameLoggerScreen((UsernameLoggerBlockEntity) te);
-			case KEYPAD_FURNACE_GUI_ID:
-				return new KeypadFurnaceScreen(player.inventory, (KeypadFurnaceBlockEntity) te);
-			case SETUP_PASSCODE_ID:
-				return new SetPasscodeScreen(te);
-			case INSERT_PASSCODE_ID:
-				return new CheckPasscodeScreen(te);
-			case IMS_GUI_ID:
-				return new IMSScreen((IMSBlockEntity) te);
-			case CAMERA_MONITOR_GUI_ID:
-				if (PlayerUtils.getItemStackFromAnyHand(player, SCContent.cameraMonitor).isEmpty())
-					return null;
-				return new CameraMonitorScreen(player.inventory, (CameraMonitorItem) PlayerUtils.getItemStackFromAnyHand(player, SCContent.cameraMonitor).getItem(), PlayerUtils.getItemStackFromAnyHand(player, SCContent.cameraMonitor).getTagCompound());
-			case BRIEFCASE_CODE_SETUP_GUI_ID:
-				ItemStack briefcase0 = PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase);
-
-				if (!briefcase0.isEmpty())
-					return new BriefcasePasscodeScreen(true, briefcase0.getDisplayName() + " " + Utils.localize("gui.securitycraft:passcode.setup").getFormattedText());
-				return null;
-			case BRIEFCASE_INSERT_CODE_GUI_ID:
-				ItemStack briefcase1 = PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase);
-
-				if (!briefcase1.isEmpty())
-					return new BriefcasePasscodeScreen(false, briefcase1.getDisplayName());
-				return null;
-			case BRIEFCASE_GUI_ID:
-				ItemStack briefcase2 = PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase);
-
-				if (!briefcase2.isEmpty())
-					return new ItemInventoryScreen.Briefcase(new BriefcaseMenu(player.inventory, ItemContainer.briefcase(briefcase2)), player.inventory, briefcase2.getDisplayName());
-				else
-					return null;
-			case KEY_CHANGER_GUI_ID:
-				if (te == null || PlayerUtils.getItemStackFromAnyHand(player, SCContent.universalKeyChanger).isEmpty())
-					return null;
-				return new KeyChangerScreen(te);
-			case TROPHY_SYSTEM_GUI_ID:
-				return new TrophySystemScreen(new TrophySystemMenu((TrophySystemBlockEntity) te, player.inventory));
-			case CUSTOMIZE_BLOCK:
-				return new CustomizeBlockScreen(player.inventory, (IModuleInventory) te);
-			case DISGUISE_MODULE:
-				ItemStack module = player.inventory.getCurrentItem().getItem() instanceof ModuleItem ? player.inventory.getCurrentItem() : player.inventory.offHandInventory.get(0);
-				if (!((ModuleItem) module.getItem()).canBeCustomized())
-					return null;
-				return new DisguiseModuleScreen(player.inventory);
-			case BLOCK_REINFORCER:
-				boolean isLvl1 = player.getHeldItemMainhand().getItem() == SCContent.universalBlockReinforcerLvL1;
-				return new BlockReinforcerScreen(new BlockReinforcerMenu(player, player.inventory, isLvl1), isLvl1);
-			case MODULES:
-				if (!PlayerUtils.getItemStackFromAnyHand(player, SCContent.allowlistModule).isEmpty() || !PlayerUtils.getItemStackFromAnyHand(player, SCContent.denylistModule).isEmpty())
-					return new EditModuleScreen(player.getHeldItemMainhand(), te);
-				return null;
-			case BLOCK_POCKET_MANAGER:
-				if (te instanceof BlockPocketManagerBlockEntity)
-					return new BlockPocketManagerScreen(player.inventory, (BlockPocketManagerBlockEntity) te);
-				return null;
-			case PROJECTOR:
-				if (te instanceof ProjectorBlockEntity)
-					return new ProjectorScreen(player.inventory, (ProjectorBlockEntity) te);
-				return null;
-			case SONIC_SECURITY_SYSTEM:
-				if (te instanceof SonicSecuritySystemBlockEntity)
-					return new SonicSecuritySystemScreen((SonicSecuritySystemBlockEntity) te);
-				return null;
-			case BLOCK_CHANGE_DETECTOR:
-				if (te instanceof BlockChangeDetectorBlockEntity)
-					return new BlockChangeDetectorScreen(player.inventory, (BlockChangeDetectorBlockEntity) te);
-				return null;
-			case SSS_ITEM:
-				if (PlayerUtils.getItemStackFromAnyHand(player, SCContent.sonicSecuritySystemItem).isEmpty())
-					return null;
-				return new SSSItemScreen(PlayerUtils.getItemStackFromAnyHand(player, SCContent.sonicSecuritySystemItem));
-			case RIFT_STABILIZER:
-				return new RiftStabilizerScreen((RiftStabilizerBlockEntity) te);
-			case ALARM:
-				return new AlarmScreen((AlarmBlockEntity) te, ((AlarmBlockEntity) te).getSound().getRegistryName());
-			case KEYCARD_HOLDER:
-				ItemStack keycardHolder = PlayerUtils.getItemStackFromAnyHand(player, SCContent.keycardHolder);
-
-				if (!keycardHolder.isEmpty())
-					return new ItemInventoryScreen.KeycardHolder(new KeycardHolderMenu(player.inventory, ItemContainer.keycardHolder(keycardHolder)), player.inventory, keycardHolder.getDisplayName());
-				return null;
-			case LASER_BLOCK:
-				return new LaserBlockScreen(new LaserBlockMenu((LaserBlockBlockEntity) te, player.inventory));
-			case CLAYMORE:
-				return new ClaymoreScreen(new ClaymoreMenu((ClaymoreBlockEntity) te, player.inventory));
-			default:
-				return null;
-		}
+		if (id >= 0 && id < Screens.values().length)
+			return Screens.values()[id].client.apply(player, world.getTileEntity(new BlockPos(x, y, z)));
+		else
+			return null;
 	}
 }

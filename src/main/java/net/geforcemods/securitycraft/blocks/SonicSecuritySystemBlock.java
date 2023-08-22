@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -90,7 +90,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock {
 			SonicSecuritySystemBlockEntity te = (SonicSecuritySystemBlockEntity) world.getTileEntity(pos);
 
 			if (!world.isRemote && (te.isOwnedBy(player) || te.isAllowed(player)))
-				player.openGui(SecurityCraft.instance, ScreenHandler.SONIC_SECURITY_SYSTEM, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(SecurityCraft.instance, Screens.SONIC_SECURITY_SYSTEM.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 
 			return true;
 		}

@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -49,7 +49,7 @@ public class AlarmBlock extends OwnableBlock {
 					if (te.isDisabled())
 						player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 					else
-						player.openGui(SecurityCraft.instance, ScreenHandler.ALARM, world, pos.getX(), pos.getY(), pos.getZ());
+						player.openGui(SecurityCraft.instance, Screens.ALARM.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 				}
 
 				return true;

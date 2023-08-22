@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -33,7 +33,7 @@ public class MineRemoteAccessToolItem extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (!world.isRemote) {
-			player.openGui(SecurityCraft.instance, ScreenHandler.MRAT_MENU_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+			player.openGui(SecurityCraft.instance, Screens.MRAT.ordinal(), world, (int) player.posX, (int) player.posY, (int) player.posZ);
 		}
 
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
@@ -55,7 +55,7 @@ public class MineRemoteAccessToolItem extends Item {
 				TileEntity te = world.getTileEntity(pos);
 
 				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player)) {
-					player.openGui(SecurityCraft.instance, ScreenHandler.MRAT_MENU_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+					player.openGui(SecurityCraft.instance, Screens.MRAT.ordinal(), world, (int) player.posX, (int) player.posY, (int) player.posZ);
 					return EnumActionResult.SUCCESS;
 				}
 

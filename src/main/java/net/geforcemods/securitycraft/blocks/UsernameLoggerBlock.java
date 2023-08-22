@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -46,7 +46,7 @@ public class UsernameLoggerBlock extends DisguisableBlock {
 				if (te.isDisabled())
 					player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					player.openGui(SecurityCraft.instance, ScreenHandler.USERNAME_LOGGER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+					player.openGui(SecurityCraft.instance, Screens.USERNAME_LOGGER.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 
 				return true;
 			}

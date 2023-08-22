@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -96,7 +96,7 @@ public class SonicSecuritySystemItem extends ItemBlock {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		BlockPos playerPos = player.getPosition();
 
-		player.openGui(SecurityCraft.instance, ScreenHandler.SSS_ITEM, world, playerPos.getX(), playerPos.getY(), playerPos.getZ());
+		player.openGui(SecurityCraft.instance, Screens.SSS_ITEM.ordinal(), world, playerPos.getX(), playerPos.getY(), playerPos.getZ());
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 

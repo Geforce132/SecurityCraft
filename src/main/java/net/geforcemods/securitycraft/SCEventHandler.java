@@ -47,7 +47,7 @@ import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SCWorldListener;
 import net.geforcemods.securitycraft.misc.SaltData;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -362,7 +362,7 @@ public class SCEventHandler {
 					return;
 				}
 
-				player.openGui(SecurityCraft.instance, ScreenHandler.CUSTOMIZE_BLOCK, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(SecurityCraft.instance, Screens.CUSTOMIZE_BLOCK.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 				return;
 			}
 		}

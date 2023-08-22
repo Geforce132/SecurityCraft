@@ -5,7 +5,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -88,7 +88,7 @@ public class ProjectorBlock extends DisguisableBlock {
 		boolean isOwner = ((ProjectorBlockEntity) te).isOwnedBy(player);
 
 		if (!world.isRemote && isOwner)
-			player.openGui(SecurityCraft.instance, ScreenHandler.PROJECTOR, world, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(SecurityCraft.instance, Screens.PROJECTOR.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 
 		return isOwner;
 	}

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -79,7 +79,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 					if (te.isDisabled())
 						player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 					else
-						player.openGui(SecurityCraft.instance, ScreenHandler.TROPHY_SYSTEM_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+						player.openGui(SecurityCraft.instance, Screens.TROPHY_SYSTEM.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 				}
 
 				return true;

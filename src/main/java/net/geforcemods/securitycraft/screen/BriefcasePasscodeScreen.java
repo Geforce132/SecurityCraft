@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
 import net.geforcemods.securitycraft.network.server.CheckBriefcasePasscode;
 import net.geforcemods.securitycraft.network.server.SetBriefcasePasscodeAndOwner;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -97,7 +98,7 @@ public class BriefcasePasscodeScreen extends GuiContainer {
 
 				if (isSetup) {
 					SecurityCraft.network.sendToServer(new SetBriefcasePasscodeAndOwner(passcode));
-					mc.player.openGui(SecurityCraft.instance, ScreenHandler.BRIEFCASE_INSERT_CODE_GUI_ID, Minecraft.getMinecraft().world, (int) Minecraft.getMinecraft().player.posX, (int) Minecraft.getMinecraft().player.posY, (int) Minecraft.getMinecraft().player.posZ);
+					mc.player.openGui(SecurityCraft.instance, Screens.BRIEFCASE_INSERT_CODE.ordinal(), Minecraft.getMinecraft().world, (int) Minecraft.getMinecraft().player.posX, (int) Minecraft.getMinecraft().player.posY, (int) Minecraft.getMinecraft().player.posZ);
 				}
 				else
 					SecurityCraft.network.sendToServer(new CheckBriefcasePasscode(passcode));

@@ -9,7 +9,7 @@ import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
 import net.geforcemods.securitycraft.misc.SaltData;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.SoundType;
@@ -137,7 +137,7 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 			world.setBlockState(pos, state.withProperty(OPEN, true));
 
 		world.playEvent(null, Constants.WorldEvents.IRON_DOOR_OPEN_SOUND, pos, 0);
-		player.openGui(SecurityCraft.instance, ScreenHandler.KEYPAD_FURNACE_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+		player.openGui(SecurityCraft.instance, Screens.KEYPAD_FURNACE.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	@Override

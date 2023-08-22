@@ -5,7 +5,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -36,7 +36,7 @@ public class SentryRemoteAccessToolItem extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (!world.isRemote)
-			player.openGui(SecurityCraft.instance, ScreenHandler.SRAT_MENU_ID, world, player.getServer().getPlayerList().getEntityViewDistance(), (int) player.posY, (int) player.posZ);
+			player.openGui(SecurityCraft.instance, Screens.SRAT.ordinal(), world, player.getServer().getPlayerList().getEntityViewDistance(), (int) player.posY, (int) player.posZ);
 
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}

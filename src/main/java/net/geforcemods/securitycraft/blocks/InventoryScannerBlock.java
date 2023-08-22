@@ -16,7 +16,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -95,7 +95,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 				if (te.isDisabled())
 					player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					player.openGui(SecurityCraft.instance, ScreenHandler.INVENTORY_SCANNER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+					player.openGui(SecurityCraft.instance, Screens.INVENTORY_SCANNER.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 			}
 		}
 		else

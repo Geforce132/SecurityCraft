@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -60,7 +60,7 @@ public class LaserBlock extends DisguisableBlock {
 				if (!be.isEnabled())
 					player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					player.openGui(SecurityCraft.instance, ScreenHandler.LASER_BLOCK, world, pos.getX(), pos.getY(), pos.getZ());
+					player.openGui(SecurityCraft.instance, Screens.LASER_BLOCK.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 			}
 
 			return true;

@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.misc.SaltData;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -39,7 +39,7 @@ public class UniversalKeyChangerItem extends Item {
 			return EnumActionResult.PASS;
 		else if (te instanceof IPasscodeProtected) {
 			if (((IOwnable) te).isOwnedBy(player)) {
-				player.openGui(SecurityCraft.instance, ScreenHandler.KEY_CHANGER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(SecurityCraft.instance, Screens.KEY_CHANGER.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 				return EnumActionResult.SUCCESS;
 			}
 			else if (!(te.getBlockType() instanceof DisguisableBlock) || (((ItemBlock) ((DisguisableBlock) te.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock)) {

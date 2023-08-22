@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.material.Material;
@@ -65,7 +65,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 		BlockChangeDetectorBlockEntity te = (BlockChangeDetectorBlockEntity) tile;
 
 		if (te.isOwnedBy(player) || te.isAllowed(player)) {
-			player.openGui(SecurityCraft.instance, ScreenHandler.BLOCK_CHANGE_DETECTOR, world, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(SecurityCraft.instance, Screens.BLOCK_CHANGE_DETECTOR.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}
 

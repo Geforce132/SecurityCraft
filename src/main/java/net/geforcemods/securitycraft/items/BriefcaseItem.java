@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.SaltData;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
@@ -46,7 +46,7 @@ public class BriefcaseItem extends ColorableItem {
 			if (!stack.hasTagCompound())
 				stack.setTagCompound(new NBTTagCompound());
 
-			player.openGui(SecurityCraft.instance, stack.getTagCompound().hasKey("passcode") ? ScreenHandler.BRIEFCASE_INSERT_CODE_GUI_ID : ScreenHandler.BRIEFCASE_CODE_SETUP_GUI_ID, level, (int) player.posX, (int) player.posY, (int) player.posZ);
+			player.openGui(SecurityCraft.instance, stack.getTagCompound().hasKey("passcode") ? Screens.BRIEFCASE_INSERT_CODE.ordinal() : Screens.BRIEFCASE_CODE_SETUP.ordinal(), level, (int) player.posX, (int) player.posY, (int) player.posZ);
 		}
 	}
 
@@ -97,7 +97,7 @@ public class BriefcaseItem extends ColorableItem {
 					tag.setString("ownerUUID", player.getUniqueID().toString());
 				}
 
-				player.openGui(SecurityCraft.instance, ScreenHandler.BRIEFCASE_GUI_ID, player.world, (int) player.posX, (int) player.posY, (int) player.posZ);
+				player.openGui(SecurityCraft.instance, Screens.BRIEFCASE_INVENTORY.ordinal(), player.world, (int) player.posX, (int) player.posY, (int) player.posZ);
 			}
 		});
 	}

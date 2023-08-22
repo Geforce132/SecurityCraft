@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.enchantment.Enchantment;
@@ -38,7 +38,7 @@ public class CodebreakerItem extends Item {
 				codebreaker.damageItem(1, player);
 
 				if (!world.isRemote && (player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance))
-					player.openGui(SecurityCraft.instance, ScreenHandler.BRIEFCASE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+					player.openGui(SecurityCraft.instance, Screens.BRIEFCASE_INVENTORY.ordinal(), world, (int) player.posX, (int) player.posY, (int) player.posZ);
 				else
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:codebreaker.name"), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
 			}

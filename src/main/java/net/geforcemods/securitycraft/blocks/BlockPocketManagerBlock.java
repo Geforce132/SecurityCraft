@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -42,7 +42,7 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 			TileEntity te = world.getTileEntity(pos);
 
 			if (te instanceof BlockPocketManagerBlockEntity && !((BlockPocketManagerBlockEntity) te).isPlacingBlocks())
-				player.openGui(SecurityCraft.instance, ScreenHandler.BLOCK_POCKET_MANAGER, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(SecurityCraft.instance, Screens.BLOCK_POCKET_MANAGER.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 		}
 
 		return true;

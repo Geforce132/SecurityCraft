@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,7 +26,7 @@ public class UniversalBlockReinforcerItem extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if (!world.isRemote)
-			player.openGui(SecurityCraft.MODID, ScreenHandler.BLOCK_REINFORCER, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+			player.openGui(SecurityCraft.MODID, Screens.BLOCK_REINFORCER.ordinal(), world, (int) player.posX, (int) player.posY, (int) player.posZ);
 
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}

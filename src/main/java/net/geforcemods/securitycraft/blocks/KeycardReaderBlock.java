@@ -9,7 +9,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.items.KeycardItem;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -95,7 +95,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 				if (!isKeycardHolder && (!(item instanceof KeycardItem) || !stack.hasTagCompound() || !stack.getTagCompound().getBoolean("linked")) && !isCodebreaker) {
 					//only allow the owner and whitelisted players to open the gui
 					if (te.isOwnedBy(player) || te.isAllowed(player))
-						player.openGui(SecurityCraft.instance, ScreenHandler.KEYCARD_READER_ID, world, pos.getX(), pos.getY(), pos.getZ());
+						player.openGui(SecurityCraft.instance, Screens.KEYCARD_READER.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 				}
 				else if (item != SCContent.limitedUseKeycard) { //limited use keycards are only crafting components now
 					if (isCodebreaker) {

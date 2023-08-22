@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
@@ -78,7 +78,7 @@ public class CameraMonitorItem extends Item {
 			return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 		}
 
-		player.openGui(SecurityCraft.instance, ScreenHandler.CAMERA_MONITOR_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+		player.openGui(SecurityCraft.instance, Screens.CAMERA_MONITOR.ordinal(), world, (int) player.posX, (int) player.posY, (int) player.posZ);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 

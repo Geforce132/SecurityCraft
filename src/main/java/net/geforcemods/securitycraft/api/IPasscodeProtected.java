@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.screen.SetPasscodeScreen;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -39,7 +39,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 */
 	public default void openPasscodeGUI(World world, BlockPos pos, EntityPlayer player) {
 		if (!world.isRemote && getPasscode() != null)
-			player.openGui(SecurityCraft.instance, ScreenHandler.INSERT_PASSCODE_ID, world, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(SecurityCraft.instance, Screens.INSERT_PASSCODE.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	/**
@@ -57,7 +57,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 				return true;
 
 			if (ownable.isOwnedBy(player))
-				player.openGui(SecurityCraft.instance, ScreenHandler.SETUP_PASSCODE_ID, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(SecurityCraft.instance, Screens.SETUP_PASSCODE.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 			else
 				PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.notSetUp"), TextFormatting.DARK_RED);
 		}

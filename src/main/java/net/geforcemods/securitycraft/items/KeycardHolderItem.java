@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,7 +25,7 @@ public class KeycardHolderItem extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (!level.isRemote)
-			player.openGui(SecurityCraft.instance, ScreenHandler.KEYCARD_HOLDER, level, (int) player.posX, (int) player.posY, (int) player.posZ);
+			player.openGui(SecurityCraft.instance, Screens.KEYCARD_HOLDER.ordinal(), level, (int) player.posX, (int) player.posY, (int) player.posZ);
 
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}

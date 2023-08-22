@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -54,7 +54,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 		if (be instanceof ClaymoreBlockEntity && ((ClaymoreBlockEntity) be).isOwnedBy(player)) {
 			if (!world.isRemote)
-				player.openGui(SecurityCraft.instance, ScreenHandler.CLAYMORE, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(SecurityCraft.instance, Screens.CLAYMORE.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 
 			return true;
 		}

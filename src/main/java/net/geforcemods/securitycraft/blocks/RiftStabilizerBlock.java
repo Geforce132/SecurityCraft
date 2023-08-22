@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.screen.ScreenHandler;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -81,7 +81,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 					if (riftStabilizer.isDisabled())
 						player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 					else
-						player.openGui(SecurityCraft.instance, ScreenHandler.RIFT_STABILIZER, world, pos.getX(), pos.getY(), pos.getZ());
+						player.openGui(SecurityCraft.instance, Screens.RIFT_STABILIZER.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 				}
 
 				return true;
