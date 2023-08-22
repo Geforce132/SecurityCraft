@@ -17,6 +17,7 @@
 - Fix: The Trophy System's "Ignore Owner" option does not work
 - Fix: Blocks that have a custom name lose the name when getting broken
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
+- Fix: Opening a Username Logger with a block in one's hand places the block for a split second
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 

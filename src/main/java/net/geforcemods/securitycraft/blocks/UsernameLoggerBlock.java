@@ -37,19 +37,19 @@ public class UsernameLoggerBlock extends DisguisableBlock {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (!world.isRemote) {
-			TileEntity tile = world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
-			if (tile instanceof UsernameLoggerBlockEntity) {
-				UsernameLoggerBlockEntity te = (UsernameLoggerBlockEntity) tile;
+		if (tile instanceof UsernameLoggerBlockEntity) {
+			UsernameLoggerBlockEntity te = (UsernameLoggerBlockEntity) tile;
 
+			if (!world.isRemote) {
 				if (te.isDisabled())
 					player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
 					player.openGui(SecurityCraft.instance, Screens.USERNAME_LOGGER.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
-
-				return true;
 			}
+
+			return true;
 		}
 
 		return false;
