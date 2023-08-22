@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -40,10 +41,14 @@ public class SetSentryMode implements IMessage {
 		public IMessage onMessage(SetSentryMode message, MessageContext context) {
 			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
-				List<Sentry> sentries = player.world.<Sentry>getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(message.pos));
+				World level = player.world;
 
-				if (!sentries.isEmpty() && sentries.get(0).isOwnedBy(player))
-					sentries.get(0).toggleMode(player, message.mode, false);
+				if (level.isBlockLoaded(message.pos)) {
+					List<Sentry> sentries = level.<Sentry>getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(message.pos));
+
+					if (!sentries.isEmpty() && sentries.get(0).isOwnedBy(player))
+						sentries.get(0).toggleMode(player, message.mode, false);
+				}
 			});
 
 			return null;

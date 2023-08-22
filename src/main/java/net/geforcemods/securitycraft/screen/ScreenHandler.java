@@ -177,7 +177,7 @@ public class ScreenHandler implements IGuiHandler {
 					return null;
 			case SRAT_MENU_ID:
 				if (!PlayerUtils.getItemStackFromAnyHand(player, SCContent.remoteAccessSentry).isEmpty())
-					return new SentryRemoteAccessToolScreen(PlayerUtils.getItemStackFromAnyHand(player, SCContent.remoteAccessSentry), x);
+					return new SentryRemoteAccessToolScreen(PlayerUtils.getItemStackFromAnyHand(player, SCContent.remoteAccessSentry));
 				else
 					return null;
 			case INVENTORY_SCANNER_GUI_ID:
