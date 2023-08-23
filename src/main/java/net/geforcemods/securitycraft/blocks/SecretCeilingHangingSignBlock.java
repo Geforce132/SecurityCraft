@@ -14,13 +14,14 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
 public class SecretCeilingHangingSignBlock extends CeilingHangingSignBlock {
-	public SecretCeilingHangingSignBlock(Properties properties, WoodType woodType) {
+	public SecretCeilingHangingSignBlock(BlockBehaviour.Properties properties, WoodType woodType) {
 		super(properties, woodType);
 	}
 

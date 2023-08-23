@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.phys.AABB;
@@ -26,7 +27,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
 
-	public ReinforcedPressurePlateBlock(Sensitivity sensitivity, Block.Properties properties, Block vanillaBlock, BlockSetType blockSetType) {
+	public ReinforcedPressurePlateBlock(Sensitivity sensitivity, BlockBehaviour.Properties properties, Block vanillaBlock, BlockSetType blockSetType) {
 		super(sensitivity, properties, blockSetType);
 		this.vanillaBlock = vanillaBlock;
 		DoorActivator.addActivator(this);
@@ -36,12 +37,8 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		int redstoneStrength = getSignalForState(state);
 
-		if (!level.isClientSide && redstoneStrength == 0 && entity instanceof Player player) {
-			if (level.getBlockEntity(pos) instanceof AllowlistOnlyBlockEntity be) {
-				if (isAllowedToPress(level, pos, be, player))
-					checkPressed(player, level, pos, state, redstoneStrength);
-			}
-		}
+		if (!level.isClientSide && redstoneStrength == 0 && entity instanceof Player player && level.getBlockEntity(pos) instanceof AllowlistOnlyBlockEntity be && isAllowedToPress(be, player))
+			checkPressed(player, level, pos, state, redstoneStrength);
 	}
 
 	@Override
@@ -49,12 +46,10 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		AABB aabb = TOUCH_AABB.move(pos);
 		List<? extends Entity> list = level.getEntities(null, aabb);
 
-		if (!list.isEmpty()) {
-			if (level.getBlockEntity(pos) instanceof AllowlistOnlyBlockEntity be) {
-				for (Entity entity : list) {
-					if (entity instanceof Player player && isAllowedToPress(level, pos, be, player))
-						return 15;
-				}
+		if (!list.isEmpty() && level.getBlockEntity(pos) instanceof AllowlistOnlyBlockEntity be) {
+			for (Entity entity : list) {
+				if (entity instanceof Player player && isAllowedToPress(be, player))
+					return 15;
 			}
 		}
 
@@ -86,14 +81,14 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		}
 	}
 
-	public boolean isAllowedToPress(Level level, BlockPos pos, AllowlistOnlyBlockEntity be, Player entity) {
+	public boolean isAllowedToPress(AllowlistOnlyBlockEntity be, Player entity) {
 		return be.isOwnedBy(entity) || be.isAllowed(entity);
 	}
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if (placer instanceof Player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (Player) placer));
+		if (placer instanceof Player player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override

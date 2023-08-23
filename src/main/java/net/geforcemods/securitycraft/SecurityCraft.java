@@ -65,7 +65,7 @@ public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	public static final GameRules.Key<GameRules.BooleanValue> RULE_FAKE_WATER_SOURCE_CONVERSION = GameRules.register("fakeWaterSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true));
 	public static final GameRules.Key<GameRules.BooleanValue> RULE_FAKE_LAVA_SOURCE_CONVERSION = GameRules.register("fakeLavaSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(false));
-	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> getVersion(), getVersion()::equals, getVersion()::equals);
+	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> getVersion(), getVersion()::equals, getVersion()::equals);
 	public static final Random RANDOM = new Random();
 
 	public SecurityCraft() {

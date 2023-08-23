@@ -15,7 +15,12 @@ public class KeycardHolderMenu extends AbstractContainerMenu {
 		super(SCContent.KEYCARD_HOLDER_MENU.get(), id);
 
 		for (int i = 0; i < CONTAINER_SIZE; i++) {
-			addSlot(new ItemRestrictedSlot(keycardHolderInv, i, 44 + (i * 18), 20, stack -> stack.getItem() instanceof KeycardItem));
+			addSlot(new Slot(keycardHolderInv, i, 44 + (i * 18), 20) {
+				@Override
+				public boolean mayPlace(ItemStack stack) {
+					return stack.getItem() instanceof KeycardItem;
+				}
+			});
 		}
 
 		for (int i = 0; i < 3; i++) {
@@ -34,7 +39,7 @@ public class KeycardHolderMenu extends AbstractContainerMenu {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
 
-		if (slot != null && slot.hasItem()) {
+		if (slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
 			slotStackCopy = slotStack.copy();
 
@@ -44,10 +49,8 @@ public class KeycardHolderMenu extends AbstractContainerMenu {
 
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if (index >= CONTAINER_SIZE) {
-				if (!moveItemStackTo(slotStack, 0, CONTAINER_SIZE, false))
-					return ItemStack.EMPTY;
-			}
+			else if (!moveItemStackTo(slotStack, 0, CONTAINER_SIZE, false))
+				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
 				slot.set(ItemStack.EMPTY);

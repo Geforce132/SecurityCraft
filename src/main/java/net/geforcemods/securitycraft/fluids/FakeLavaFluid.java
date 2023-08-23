@@ -119,7 +119,7 @@ public abstract class FakeLavaFluid extends ForgeFlowingFluid {
 	}
 
 	private boolean isFlammable(LevelReader level, BlockPos pos, Direction face) {
-		return pos.getY() >= level.getMinBuildHeight() && pos.getY() < level.getMaxBuildHeight() && !level.hasChunkAt(pos) ? false : level.getBlockState(pos).isFlammable(level, pos, face);
+		return !(pos.getY() >= level.getMinBuildHeight() && pos.getY() < level.getMaxBuildHeight() && !level.hasChunkAt(pos)) || level.getBlockState(pos).isFlammable(level, pos, face);
 	}
 
 	@Nullable
@@ -189,14 +189,12 @@ public abstract class FakeLavaFluid extends ForgeFlowingFluid {
 
 	@Override
 	protected void spreadTo(LevelAccessor level, BlockPos pos, BlockState state, Direction direction, FluidState fluidState) {
-		if (direction == Direction.DOWN) {
-			if (is(FluidTags.LAVA) && fluidState.is(FluidTags.WATER)) {
-				if (state.getBlock() instanceof LiquidBlock)
-					level.setBlock(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, pos, Blocks.STONE.defaultBlockState()), 3);
+		if (direction == Direction.DOWN && is(FluidTags.LAVA) && fluidState.is(FluidTags.WATER)) {
+			if (state.getBlock() instanceof LiquidBlock)
+				level.setBlock(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, pos, Blocks.STONE.defaultBlockState()), 3);
 
-				triggerEffects(level, pos);
-				return;
-			}
+			triggerEffects(level, pos);
+			return;
 		}
 
 		super.spreadTo(level, pos, state, direction, fluidState);

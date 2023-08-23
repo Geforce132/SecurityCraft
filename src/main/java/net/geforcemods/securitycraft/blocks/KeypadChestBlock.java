@@ -34,7 +34,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.Mirror;
@@ -43,6 +42,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.phys.BlockHitResult;
@@ -87,7 +87,7 @@ public class KeypadChestBlock extends ChestBlock {
 		}
 	};
 
-	public KeypadChestBlock(Block.Properties properties) {
+	public KeypadChestBlock(BlockBehaviour.Properties properties) {
 		super(properties, SCContent.KEYPAD_CHEST_BLOCK_ENTITY);
 	}
 
@@ -107,7 +107,7 @@ public class KeypadChestBlock extends ChestBlock {
 
 					activate(state, level, pos, player);
 				}
-				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
+				else if (!player.getItemInHand(hand).is(SCContent.CODEBREAKER.get()))
 					be.openPasscodeGUI(level, pos, player);
 			}
 		}
@@ -134,7 +134,7 @@ public class KeypadChestBlock extends ChestBlock {
 		if (entity instanceof Player player) {
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 
-			if (state.getValue(KeypadChestBlock.TYPE) != ChestType.SINGLE) {
+			if (state.getValue(TYPE) != ChestType.SINGLE) {
 				KeypadChestBlockEntity thisBe = (KeypadChestBlockEntity) level.getBlockEntity(pos);
 				BlockEntity otherBe = level.getBlockEntity(pos.relative(getConnectedDirection(state)));
 

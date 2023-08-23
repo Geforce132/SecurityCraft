@@ -16,31 +16,30 @@ import net.minecraftforge.network.NetworkEvent;
 
 public class UpdateSliderValue {
 	private BlockPos pos;
-	private String option;
+	private String optionName;
 	private double value;
 
 	public UpdateSliderValue() {}
 
 	public UpdateSliderValue(BlockPos pos, Option<?> option, double v) {
 		this.pos = pos;
-		this.option = option.getName();
+		this.optionName = option.getName();
 		value = v;
 	}
 
 	public UpdateSliderValue(FriendlyByteBuf buf) {
 		pos = buf.readBlockPos();
-		option = buf.readUtf();
+		optionName = buf.readUtf();
 		value = buf.readDouble();
 	}
 
 	public void encode(FriendlyByteBuf buf) {
 		buf.writeBlockPos(pos);
-		buf.writeUtf(option);
+		buf.writeUtf(optionName);
 		buf.writeDouble(value);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		String optionName = option;
 		Player player = ctx.get().getSender();
 		BlockEntity be = player.level().getBlockEntity(pos);
 

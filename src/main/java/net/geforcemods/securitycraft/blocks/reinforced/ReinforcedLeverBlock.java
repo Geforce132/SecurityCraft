@@ -15,18 +15,19 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock, EntityBlock {
-	public ReinforcedLeverBlock(Properties properties) {
+	public ReinforcedLeverBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if (isAllowedToPress(level, pos, (AllowlistOnlyBlockEntity) level.getBlockEntity(pos), player))
+		if (isAllowedToPress((AllowlistOnlyBlockEntity) level.getBlockEntity(pos), player))
 			return super.use(state, level, pos, player, hand, result);
 		return InteractionResult.FAIL;
 	}
@@ -56,7 +57,7 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 		}
 	}
 
-	public boolean isAllowedToPress(Level level, BlockPos pos, AllowlistOnlyBlockEntity be, Player entity) {
+	public boolean isAllowedToPress(AllowlistOnlyBlockEntity be, Player entity) {
 		return be.isOwnedBy(entity) || be.isAllowed(entity);
 	}
 

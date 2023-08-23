@@ -49,6 +49,8 @@ public class SCCommand {
 		return map;
 	});
 
+	private SCCommand() {}
+
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 		//@formatter:off
 		dispatcher.register(LiteralArgumentBuilder.<CommandSourceStack>literal("sc")
@@ -101,7 +103,7 @@ public class SCCommand {
 					.append(Component.literal("] "))
 					.append(Utils.localize("messages.securitycraft:irc.connected"))
 					.append(Component.literal(" "))
-					.append(ForgeHooks.newChatWithLinks(SendTip.tipsWithLink.get("discord"))));
+					.append(ForgeHooks.newChatWithLinks(SendTip.TIPS_WITH_LINK.get("discord"))));
 			//@formatter:on
 			return 0;
 		});
@@ -121,7 +123,7 @@ public class SCCommand {
 
 	private static ArgumentBuilder<CommandSourceStack, ?> bug() {
 		return Commands.literal("bug").executes(ctx -> {
-			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().getPlayerOrException(), Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), SendTip.tipsWithLink.get("discord"), ChatFormatting.GOLD);
+			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().getPlayerOrException(), Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), SendTip.TIPS_WITH_LINK.get("discord"), ChatFormatting.GOLD);
 			return 0;
 		});
 	}

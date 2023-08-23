@@ -17,6 +17,8 @@ public class Utils {
 	public static final Style GRAY_STYLE = Style.EMPTY.withColor(ChatFormatting.GRAY);
 	public static final Component INVENTORY_TEXT = Utils.localize("container.inventory");
 
+	private Utils() {}
+
 	/**
 	 * Removes the last character in the given String. <p>
 	 */

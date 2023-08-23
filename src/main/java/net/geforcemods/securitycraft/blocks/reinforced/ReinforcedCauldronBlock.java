@@ -37,6 +37,7 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluid;
@@ -49,22 +50,20 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IReinforcedBlock, EntityBlock {
-	public ReinforcedCauldronBlock(Properties properties, Map<Item, CauldronInteraction> interactions) {
+	public ReinforcedCauldronBlock(BlockBehaviour.Properties properties, Map<Item, CauldronInteraction> interactions) {
 		super(properties, interactions);
 	}
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
-		if (collisionContext instanceof EntityCollisionContext ctx) {
-			if (ctx.getEntity() != null) {
-				Entity entity = ctx.getEntity();
+		if (collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity() != null) {
+			Entity entity = ctx.getEntity();
 
-				if (entity instanceof Player player) {
-					if (level.getBlockEntity(pos) instanceof ReinforcedCauldronBlockEntity be && be.isAllowedToInteract(player))
-						return SHAPE;
-					else
-						return Shapes.block();
-				}
+			if (entity instanceof Player player) {
+				if (level.getBlockEntity(pos) instanceof ReinforcedCauldronBlockEntity be && be.isAllowedToInteract(player))
+					return SHAPE;
+				else
+					return Shapes.block();
 			}
 		}
 
@@ -258,7 +257,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 				}
 			});
 			addDefaultInteractions(WATER);
-			WATER.put(Items.BUCKET, (state, level, pos, player, hand, stack) -> fillBucket(state, level, pos, player, hand, stack, new ItemStack(Items.WATER_BUCKET), (s) -> s.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL));
+			WATER.put(Items.BUCKET, (state, level, pos, player, hand, stack) -> fillBucket(state, level, pos, player, hand, stack, new ItemStack(Items.WATER_BUCKET), s -> s.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL));
 			WATER.put(Items.GLASS_BOTTLE, (state, level, pos, player, hand, stack) -> {
 				if (!level.isClientSide) {
 					Item item = stack.getItem();
@@ -328,12 +327,14 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 			WATER.put(Items.YELLOW_SHULKER_BOX, SHULKER_BOX);
 			LAVA.put(Items.BUCKET, (state, level, pos, player, hand, stack) -> fillBucket(state, level, pos, player, hand, stack, new ItemStack(Items.LAVA_BUCKET), s -> true, SoundEvents.BUCKET_FILL_LAVA));
 			addDefaultInteractions(LAVA);
-			POWDER_SNOW.put(Items.BUCKET, (state, level, pos, player, hand, stack) -> fillBucket(state, level, pos, player, hand, stack, new ItemStack(Items.POWDER_SNOW_BUCKET), (l) -> l.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL_POWDER_SNOW));
+			POWDER_SNOW.put(Items.BUCKET, (state, level, pos, player, hand, stack) -> fillBucket(state, level, pos, player, hand, stack, new ItemStack(Items.POWDER_SNOW_BUCKET), l -> l.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL_POWDER_SNOW));
 			addDefaultInteractions(POWDER_SNOW);
 
-			//add briefcase interactions
+			//add cyeable item interactions
 			CauldronInteraction.WATER.put(SCContent.BRIEFCASE.get(), CauldronInteraction.DYED_ITEM);
 			WATER.put(SCContent.BRIEFCASE.get(), DYED_ITEM);
+			CauldronInteraction.WATER.put(SCContent.LENS.get(), CauldronInteraction.DYED_ITEM);
+			WATER.put(SCContent.LENS.get(), DYED_ITEM);
 		}
 
 		static void addDefaultInteractions(Map<Item, CauldronInteraction> interactions) {

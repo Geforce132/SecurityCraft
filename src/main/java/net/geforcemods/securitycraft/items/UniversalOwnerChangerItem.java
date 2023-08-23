@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.IBlockMine;
@@ -12,7 +13,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -35,14 +35,15 @@ public class UniversalOwnerChangerItem extends Item {
 
 	@Override
 	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx) {
-		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), stack, ctx.getClickedFace(), ctx.getHand());
-	}
+		InteractionHand hand = ctx.getHand();
+		Player player = ctx.getPlayer();
 
-	public InteractionResult onItemUseFirst(Player player, Level level, BlockPos pos, ItemStack stack, Direction side, InteractionHand hand) {
 		//prioritize handling the briefcase
 		if (hand == InteractionHand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get())
 			return handleBriefcase(player, stack).getResult();
 
+		Level level = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 		BlockState state = level.getBlockState(pos);
 		Block block = state.getBlock();
 		BlockEntity be = level.getBlockEntity(pos);
@@ -52,6 +53,8 @@ public class UniversalOwnerChangerItem extends Item {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), ChatFormatting.RED);
 			return InteractionResult.FAIL;
 		}
+		else if (be instanceof DisplayCaseBlockEntity displayCase && displayCase.isOpen())
+			return InteractionResult.PASS;
 
 		Owner owner = ownable.getOwner();
 		boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");

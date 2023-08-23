@@ -3,11 +3,11 @@ package net.geforcemods.securitycraft.screen.components;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
 
 import org.apache.commons.lang3.StringUtils;
-
-import com.google.common.base.Function;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -26,7 +26,8 @@ import net.minecraftforge.client.gui.widget.ForgeSlider;
 
 public class ColorChooser extends Screen implements GuiEventListener, NarratableEntry {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/color_chooser.png");
-	public boolean disabled = true;
+	private static final int COLOR_FIELD_SIZE = 75;
+	protected boolean disabled = true;
 	private final int xStart, yStart;
 	private final List<Rect2i> extraAreas = new ArrayList<>();
 	private final Component rText = Component.literal("R");
@@ -36,11 +37,10 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	private boolean clickedInDragRegion = false;
 	private float h, s, b;
 	private int colorFieldTop, colorFieldBottom, colorFieldLeft, colorFieldRight;
-	private final int colorFieldSize = 75;
 	private final HoverChecker colorFieldHoverChecker;
 	private float selectionX, selectionY;
 	private final int rgbColor;
-	public ColorEditBox rBox, gBox, bBox, rgbHexBox;
+	private ColorEditBox rBox, gBox, bBox, rgbHexBox;
 	private HueSlider hueSlider;
 
 	public ColorChooser(Component title, int xStart, int yStart, int rgbColor) {
@@ -49,8 +49,8 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		this.yStart = yStart;
 		colorFieldLeft = xStart + 6;
 		colorFieldTop = yStart + 6;
-		colorFieldRight = colorFieldLeft + colorFieldSize;
-		colorFieldBottom = colorFieldTop + colorFieldSize;
+		colorFieldRight = colorFieldLeft + COLOR_FIELD_SIZE;
+		colorFieldBottom = colorFieldTop + COLOR_FIELD_SIZE;
 		this.rgbColor = rgbColor;
 		colorFieldHoverChecker = new HoverChecker(colorFieldTop, colorFieldBottom, colorFieldLeft, colorFieldRight);
 	}
@@ -61,7 +61,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		Function<EditBox, Consumer<String>> boxResponder = box -> string -> {
 			if (!string.isEmpty()) {
 				int number = Integer.parseInt(string);
-				Function<EditBox, Integer> parsingFunction = editBox -> {
+				ToIntFunction<EditBox> parsingFunction = editBox -> {
 					if (editBox.getValue().isEmpty())
 						return 0;
 					else
@@ -73,7 +73,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 				else if (number > 255)
 					box.setValue("255");
 
-				updateHSBValues(parsingFunction.apply(rBox), parsingFunction.apply(gBox), parsingFunction.apply(bBox));
+				updateHSBValues(parsingFunction.applyAsInt(rBox), parsingFunction.applyAsInt(gBox), parsingFunction.applyAsInt(bBox));
 				updateTextFields(box);
 				onColorChange();
 			}
@@ -84,7 +84,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 
 		updateHSBValues(red, green, blue);
 		extraAreas.add(new Rect2i(xStart, yStart, 144, 108));
-		addRenderableWidget(hueSlider = new HueSlider(colorFieldLeft - 2, yStart + 85, 82, 20, h * 360.0D) {
+		hueSlider = addRenderableWidget(new HueSlider(colorFieldLeft - 2, yStart + 85, 82, 20, h * 360.0D) {
 			@Override
 			protected void applyValue() {
 				h = getValueInt() / 360.0F;
@@ -92,31 +92,31 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 				onColorChange();
 			}
 		});
-		addRenderableWidget(rBox = new ColorEditBox(font, colorFieldRight + 13, colorFieldTop, 26, 10, rText));
-		addRenderableWidget(gBox = new ColorEditBox(font, colorFieldRight + 13, colorFieldTop + 15, 26, 10, gText));
-		addRenderableWidget(bBox = new ColorEditBox(font, colorFieldRight + 13, colorFieldTop + 30, 26, 10, bText));
-		addRenderableWidget(rgbHexBox = new ColorEditBox(font, colorFieldRight + 13, colorFieldTop + 45, 46, 10, rgbHexText));
+		rBox = addRenderableWidget(new ColorEditBox(font, colorFieldRight + 13, colorFieldTop, 26, 10, rText));
+		gBox = addRenderableWidget(new ColorEditBox(font, colorFieldRight + 13, colorFieldTop + 15, 26, 10, gText));
+		bBox = addRenderableWidget(new ColorEditBox(font, colorFieldRight + 13, colorFieldTop + 30, 26, 10, bText));
+		rgbHexBox = addRenderableWidget(new ColorEditBox(font, colorFieldRight + 13, colorFieldTop + 45, 46, 10, rgbHexText));
 		rBox.setValue("" + red);
 		gBox.setValue("" + green);
 		bBox.setValue("" + blue);
-		rgbHexBox.setValue(Integer.toHexString(rgbColor).substring(2));
+		getRgbHexBox().setValue(Integer.toHexString(rgbColor).substring(2));
 		rBox.setMaxLength(3);
 		gBox.setMaxLength(3);
 		bBox.setMaxLength(3);
-		rgbHexBox.setMaxLength(6);
+		getRgbHexBox().setMaxLength(6);
 		rBox.setFilter(boxFilter);
 		gBox.setFilter(boxFilter);
 		bBox.setFilter(boxFilter);
-		rgbHexBox.setFilter(string -> string.matches("[0-9a-fA-F]*"));
+		getRgbHexBox().setFilter(string -> string.matches("[0-9a-fA-F]*"));
 		rBox.setResponder(boxResponder.apply(rBox));
 		gBox.setResponder(boxResponder.apply(gBox));
 		bBox.setResponder(boxResponder.apply(bBox));
-		rgbHexBox.setResponder(string -> {
+		getRgbHexBox().setResponder(string -> {
 			if (!string.isEmpty()) {
 				int hexColor = Integer.parseInt(string, 16);
 
 				updateHSBValues(hexColor >> 16 & 255, hexColor >> 8 & 255, hexColor & 255);
-				updateTextFields(rgbHexBox);
+				updateTextFields(getRgbHexBox());
 				onColorChange();
 			}
 		});
@@ -145,8 +145,8 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 			validateNotEmpty(gBox);
 			validateNotEmpty(bBox);
 
-			if (rgbHexBox != null && !rgbHexBox.isFocused() && rgbHexBox.getValue().isEmpty())
-				rgbHexBox.setValue("000000");
+			if (getRgbHexBox() != null && !getRgbHexBox().isFocused() && getRgbHexBox().getValue().isEmpty())
+				getRgbHexBox().setValue("000000");
 		}
 	}
 
@@ -206,8 +206,8 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	private void setSelection(double mouseX, double mouseY) {
 		selectionX = (int) Mth.clamp(mouseX, colorFieldLeft, colorFieldRight);
 		selectionY = (int) Mth.clamp(mouseY, colorFieldTop, colorFieldBottom);
-		s = ((selectionX - colorFieldLeft) / colorFieldSize);
-		b = 1.0F - ((selectionY - colorFieldTop) / colorFieldSize);
+		s = ((selectionX - colorFieldLeft) / COLOR_FIELD_SIZE);
+		b = 1.0F - ((selectionY - colorFieldTop) / COLOR_FIELD_SIZE);
 		updateTextFields(null);
 		onColorChange();
 	}
@@ -222,16 +222,16 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	}
 
 	private void updateTextFields(EditBox excluded) {
-		int rgbColor = getRGBColor();
-		int red = rgbColor >> 16 & 255;
-		int green = rgbColor >> 8 & 255;
-		int blue = rgbColor & 255;
+		int currentRGBColor = getRGBColor();
+		int red = currentRGBColor >> 16 & 255;
+		int green = currentRGBColor >> 8 & 255;
+		int blue = currentRGBColor & 255;
 
 		//setting the value directly to prevent a stack overflow due to setValue calling the responder, which in turn calls this
 		trySetText(excluded, rBox, "" + red);
 		trySetText(excluded, gBox, "" + green);
 		trySetText(excluded, bBox, "" + blue);
-		trySetText(excluded, rgbHexBox, Integer.toHexString(rgbColor).substring(2));
+		trySetText(excluded, getRgbHexBox(), Integer.toHexString(currentRGBColor).substring(2));
 	}
 
 	private void trySetText(EditBox excluded, ColorEditBox editBox, String value) {
@@ -242,8 +242,8 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	}
 
 	private void updateSelection() {
-		selectionX = s * colorFieldSize + colorFieldLeft;
-		selectionY = -b * colorFieldSize + colorFieldSize + colorFieldTop;
+		selectionX = s * COLOR_FIELD_SIZE + colorFieldLeft;
+		selectionY = -b * COLOR_FIELD_SIZE + COLOR_FIELD_SIZE + colorFieldTop;
 
 		if (hueSlider != null)
 			hueSlider.setValue(h * 360.0D);
@@ -254,6 +254,10 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	private void validateNotEmpty(EditBox box) {
 		if (box != null && !box.isFocused() && box.getValue().isEmpty())
 			box.setValue("0");
+	}
+
+	public ColorEditBox getRgbHexBox() {
+		return rgbHexBox;
 	}
 
 	class HueSlider extends ForgeSlider {

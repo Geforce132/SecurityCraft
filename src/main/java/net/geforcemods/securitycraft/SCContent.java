@@ -164,6 +164,7 @@ import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
+import net.geforcemods.securitycraft.inventory.ClaymoreMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
@@ -173,8 +174,10 @@ import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.inventory.KeypadBlastFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.KeypadSmokerMenu;
+import net.geforcemods.securitycraft.inventory.LaserBlockMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
+import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.items.AdminToolItem;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
@@ -185,6 +188,7 @@ import net.geforcemods.securitycraft.items.KeyPanelItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.items.KeypadChestItem;
+import net.geforcemods.securitycraft.items.LensItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.PortableTunePlayerItem;
@@ -228,6 +232,7 @@ import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.PressurePlateBlock.Sensitivity;
@@ -238,6 +243,7 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
@@ -298,13 +304,13 @@ public class SCContent {
 	public static final RegistryObject<Block> BLOCK_POCKET_WALL = BLOCKS.register("block_pocket_wall", () -> new BlockPocketWallBlock(prop(MapColor.COLOR_CYAN).noCollission().isRedstoneConductor((s, w, p) -> false).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation)));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> BOUNCING_BETTY = BLOCKS.register("bouncing_betty", () -> new BouncingBettyBlock(prop(MapColor.METAL, 1.0F).pushReaction(PushReaction.NORMAL)));
+	public static final RegistryObject<Block> BOUNCING_BETTY = BLOCKS.register("bouncing_betty", () -> new BouncingBettyBlock(prop(MapColor.METAL, 1.0F).forceSolidOn().pushReaction(PushReaction.NORMAL)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> CAGE_TRAP = BLOCKS.register("cage_trap", () -> new CageTrapBlock(propDisguisable(MapColor.METAL).sound(SoundType.METAL).noCollission()));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> CLAYMORE = BLOCKS.register("claymore", () -> new ClaymoreBlock(prop(MapColor.METAL).pushReaction(PushReaction.NORMAL)));
+	public static final RegistryObject<Block> CLAYMORE = BLOCKS.register("claymore", () -> new ClaymoreBlock(prop(MapColor.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL)));
 	@HasManualPage(PageGroup.DISPLAY_CASES)
 	public static final RegistryObject<Block> DISPLAY_CASE = BLOCKS.register(DISPLAY_CASE_PATH, () -> new DisplayCaseBlock(prop(MapColor.METAL).sound(SoundType.METAL), false));
 	@HasManualPage
@@ -358,7 +364,7 @@ public class SCContent {
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final RegistryObject<Block> PANIC_BUTTON = BLOCKS.register("panic_button", () -> new PanicButtonBlock(prop().lightLevel(state -> state.getValue(PanicButtonBlock.POWERED) ? 4 : 0), BlockSetType.STONE, -1, false));
+	public static final RegistryObject<Block> PANIC_BUTTON = BLOCKS.register("panic_button", () -> new PanicButtonBlock(prop().lightLevel(state -> state.getValue(ButtonBlock.POWERED) ? 4 : 0), BlockSetType.STONE, -1, false));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> PORTABLE_RADAR = BLOCKS.register("portable_radar", () -> new PortableRadarBlock(prop(MapColor.METAL)));
@@ -413,7 +419,7 @@ public class SCContent {
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(prop(MapColor.METAL, 1.0F).pushReaction(PushReaction.NORMAL)));
+	public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(prop(MapColor.METAL, 1.0F).forceSolidOn().pushReaction(PushReaction.NORMAL)));
 	public static final RegistryObject<? extends LiquidBlock> FAKE_WATER_BLOCK = BLOCKS.register("fake_water_block", () -> new FakeWaterBlock(prop(MapColor.WATER).noCollission(), FAKE_WATER));
 	public static final RegistryObject<? extends LiquidBlock> FAKE_LAVA_BLOCK = BLOCKS.register("fake_lava_block", () -> new FakeLavaBlock(prop(MapColor.FIRE).noCollission().randomTicks().lightLevel(state -> 15), FAKE_LAVA));
 
@@ -1782,7 +1788,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COBWEB = BLOCKS.register("reinforced_cobweb", () -> new ReinforcedCobwebBlock(prop(MapColor.WOOL).noCollission(), Blocks.COBWEB));
+	public static final RegistryObject<Block> REINFORCED_COBWEB = BLOCKS.register("reinforced_cobweb", () -> new ReinforcedCobwebBlock(prop(MapColor.WOOL).forceSolidOn().noCollission(), Blocks.COBWEB));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2325,24 +2331,24 @@ public class SCContent {
 
 	//misc
 	@RegisterItemBlock
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_SLAB = BLOCKS.register("crystal_quartz_slab", () -> new SlabBlock(Block.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_SLAB = BLOCKS.register("crystal_quartz_slab", () -> new SlabBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@RegisterItemBlock
-	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ = BLOCKS.register("smooth_crystal_quartz", () -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ = BLOCKS.register("smooth_crystal_quartz", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@RegisterItemBlock
-	public static final RegistryObject<Block> CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("chiseled_crystal_quartz", () -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("chiseled_crystal_quartz", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BLOCK = BLOCKS.register("crystal_quartz", () -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BLOCK = BLOCKS.register("crystal_quartz", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
 	@RegisterItemBlock
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BRICKS = BLOCKS.register("crystal_quartz_bricks", () -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BRICKS = BLOCKS.register("crystal_quartz_bricks", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
 	@RegisterItemBlock
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("crystal_quartz_pillar", () -> new RotatedPillarBlock(Block.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("crystal_quartz_pillar", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
 	@RegisterItemBlock
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("crystal_quartz_stairs", () -> new StairBlock(() -> CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), Block.Properties.copy(CRYSTAL_QUARTZ_BLOCK.get())));
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("crystal_quartz_stairs", () -> new StairBlock(() -> CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.copy(CRYSTAL_QUARTZ_BLOCK.get())));
 	@RegisterItemBlock
-	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("smooth_crystal_quartz_stairs", () -> new StairBlock(() -> SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), Block.Properties.copy(SMOOTH_CRYSTAL_QUARTZ.get())));
+	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("smooth_crystal_quartz_stairs", () -> new StairBlock(() -> SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), BlockBehaviour.Properties.copy(SMOOTH_CRYSTAL_QUARTZ.get())));
 	@RegisterItemBlock
-	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("smooth_crystal_quartz_slab", () -> new SlabBlock(Block.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("smooth_crystal_quartz_slab", () -> new SlabBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
 	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_crystal_quartz_slab", () -> new ReinforcedSlabBlock(prop(MapColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_SLAB));
@@ -2417,6 +2423,8 @@ public class SCContent {
 	public static final RegistryObject<Item> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestItem(SCContent.KEYPAD_CHEST.get(), itemProp()));
 	@HasManualPage
 	public static final RegistryObject<Item> KEYPAD_DOOR_ITEM = ITEMS.register("keypad_door_item", () -> new DoubleHighBlockItem(KEYPAD_DOOR.get(), itemProp()));
+	@HasManualPage
+	public static final RegistryObject<LensItem> LENS = ITEMS.register("lens", () -> new LensItem(itemProp()));
 	@HasManualPage
 	public static final RegistryObject<Item> LIMITED_USE_KEYCARD = ITEMS.register("limited_use_keycard", () -> new KeycardItem(itemProp(), -1));
 	@HasManualPage
@@ -2579,7 +2587,7 @@ public class SCContent {
 	public static final RegistryObject<BlockEntityType<SecurityCameraBlockEntity>> SECURITY_CAMERA_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("security_camera", () -> BlockEntityType.Builder.of(SecurityCameraBlockEntity::new, SCContent.SECURITY_CAMERA.get()).build(null));
 	public static final RegistryObject<BlockEntityType<UsernameLoggerBlockEntity>> USERNAME_LOGGER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("username_logger", () -> BlockEntityType.Builder.of(UsernameLoggerBlockEntity::new, SCContent.USERNAME_LOGGER.get()).build(null));
 	public static final RegistryObject<BlockEntityType<RetinalScannerBlockEntity>> RETINAL_SCANNER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("retinal_scanner", () -> BlockEntityType.Builder.of(RetinalScannerBlockEntity::new, SCContent.RETINAL_SCANNER.get()).build(null));
-	public static final RegistryObject<BlockEntityType<? extends ChestBlockEntity>> KEYPAD_CHEST_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_chest", () -> BlockEntityType.Builder.of(KeypadChestBlockEntity::new, SCContent.KEYPAD_CHEST.get()).build(null));
+	public static final RegistryObject<BlockEntityType<? extends ChestBlockEntity>> KEYPAD_CHEST_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(KEYPAD_CHEST_PATH, () -> BlockEntityType.Builder.of(KeypadChestBlockEntity::new, SCContent.KEYPAD_CHEST.get()).build(null));
 	public static final RegistryObject<BlockEntityType<AlarmBlockEntity>> ALARM_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("alarm", () -> BlockEntityType.Builder.of(AlarmBlockEntity::new, SCContent.ALARM.get()).build(null));
 	public static final RegistryObject<BlockEntityType<ClaymoreBlockEntity>> CLAYMORE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("claymore", () -> BlockEntityType.Builder.of(ClaymoreBlockEntity::new, SCContent.CLAYMORE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<KeypadFurnaceBlockEntity>> KEYPAD_FURNACE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_furnace", () -> BlockEntityType.Builder.of(KeypadFurnaceBlockEntity::new, SCContent.KEYPAD_FURNACE.get()).build(null));
@@ -2689,8 +2697,8 @@ public class SCContent {
 	public static final RegistryObject<BlockEntityType<BlockChangeDetectorBlockEntity>> BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("block_change_detector", () -> BlockEntityType.Builder.of(BlockChangeDetectorBlockEntity::new, SCContent.BLOCK_CHANGE_DETECTOR.get()).build(null));
 	public static final RegistryObject<BlockEntityType<RiftStabilizerBlockEntity>> RIFT_STABILIZER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("rift_stabilizer", () -> BlockEntityType.Builder.of(RiftStabilizerBlockEntity::new, SCContent.RIFT_STABILIZER.get()).build(null));
 	public static final RegistryObject<BlockEntityType<DisguisableBlockEntity>> DISGUISABLE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("disguisable", () -> BlockEntityType.Builder.of(DisguisableBlockEntity::new, SCContent.SENTRY_DISGUISE.get()).build(null));
-	public static final RegistryObject<BlockEntityType<DisplayCaseBlockEntity>> DISPLAY_CASE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("display_case", () -> BlockEntityType.Builder.of(DisplayCaseBlockEntity::new, SCContent.DISPLAY_CASE.get()).build(null));
-	public static final RegistryObject<BlockEntityType<GlowDisplayCaseBlockEntity>> GLOW_DISPLAY_CASE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("glow_display_case", () -> BlockEntityType.Builder.of(GlowDisplayCaseBlockEntity::new, SCContent.GLOW_DISPLAY_CASE.get()).build(null));
+	public static final RegistryObject<BlockEntityType<DisplayCaseBlockEntity>> DISPLAY_CASE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(DISPLAY_CASE_PATH, () -> BlockEntityType.Builder.of(DisplayCaseBlockEntity::new, SCContent.DISPLAY_CASE.get()).build(null));
+	public static final RegistryObject<BlockEntityType<GlowDisplayCaseBlockEntity>> GLOW_DISPLAY_CASE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(GLOW_DISPLAY_CASE_PATH, () -> BlockEntityType.Builder.of(GlowDisplayCaseBlockEntity::new, SCContent.GLOW_DISPLAY_CASE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<KeypadBarrelBlockEntity>> KEYPAD_BARREL_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_barrel", () -> BlockEntityType.Builder.of(KeypadBarrelBlockEntity::new, SCContent.KEYPAD_BARREL.get()).build(null));
 	public static final RegistryObject<BlockEntityType<BrushableMineBlockEntity>> BRUSHABLE_MINE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("brushable_mine", () -> BlockEntityType.Builder.of(BrushableMineBlockEntity::new, SCContent.SUSPICIOUS_SAND_MINE.get(), SCContent.SUSPICIOUS_GRAVEL_MINE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<ReinforcedChiseledBookshelfBlockEntity>> REINFORCED_CHISELED_BOOKSHELF_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_chiseled_bookshelf", () -> BlockEntityType.Builder.of(ReinforcedChiseledBookshelfBlockEntity::new, SCContent.REINFORCED_CHISELED_BOOKSHELF.get()).build(null));
@@ -2736,9 +2744,9 @@ public class SCContent {
 
 	//container types
 	public static final RegistryObject<MenuType<BlockReinforcerMenu>> BLOCK_REINFORCER_MENU = MENU_TYPES.register("block_reinforcer", () -> IForgeMenuType.create((windowId, inv, data) -> new BlockReinforcerMenu(windowId, inv, data.readBoolean())));
-	public static final RegistryObject<MenuType<BriefcaseMenu>> BRIEFCASE_INVENTORY_MENU = MENU_TYPES.register("briefcase_inventory", () -> IForgeMenuType.create((windowId, inv, data) -> new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(PlayerUtils.getSelectedItemStack(inv, SCContent.BRIEFCASE.get())))));
+	public static final RegistryObject<MenuType<BriefcaseMenu>> BRIEFCASE_INVENTORY_MENU = MENU_TYPES.register("briefcase_inventory", () -> IForgeMenuType.create((windowId, inv, data) -> new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(PlayerUtils.getItemStackFromAnyHand(inv.player, SCContent.BRIEFCASE.get())))));
 	public static final RegistryObject<MenuType<CustomizeBlockMenu>> CUSTOMIZE_BLOCK_MENU = MENU_TYPES.register("customize_block", () -> IForgeMenuType.create((windowId, inv, data) -> new CustomizeBlockMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
-	public static final RegistryObject<MenuType<DisguiseModuleMenu>> DISGUISE_MODULE_MENU = MENU_TYPES.register("disguise_module", () -> IForgeMenuType.create((windowId, inv, data) -> new DisguiseModuleMenu(windowId, inv, new ModuleItemContainer(PlayerUtils.getSelectedItemStack(inv, SCContent.DISGUISE_MODULE.get())))));
+	public static final RegistryObject<MenuType<DisguiseModuleMenu>> DISGUISE_MODULE_MENU = MENU_TYPES.register("disguise_module", () -> IForgeMenuType.create((windowId, inv, data) -> new DisguiseModuleMenu(windowId, inv, new ModuleItemContainer(PlayerUtils.getItemStackFromAnyHand(inv.player, SCContent.DISGUISE_MODULE.get())))));
 	public static final RegistryObject<MenuType<InventoryScannerMenu>> INVENTORY_SCANNER_MENU = MENU_TYPES.register("inventory_scanner", () -> IForgeMenuType.create((windowId, inv, data) -> new InventoryScannerMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 	public static final RegistryObject<MenuType<KeypadFurnaceMenu>> KEYPAD_FURNACE_MENU = MENU_TYPES.register("keypad_furnace", () -> IForgeMenuType.create((windowId, inv, data) -> new KeypadFurnaceMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 	public static final RegistryObject<MenuType<KeypadSmokerMenu>> KEYPAD_SMOKER_MENU = MENU_TYPES.register("keypad_smoker", () -> IForgeMenuType.create((windowId, inv, data) -> new KeypadSmokerMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
@@ -2747,48 +2755,51 @@ public class SCContent {
 	public static final RegistryObject<MenuType<KeycardReaderMenu>> KEYCARD_READER_MENU = MENU_TYPES.register("keycard_setup", () -> IForgeMenuType.create((windowId, inv, data) -> new KeycardReaderMenu(windowId, inv, inv.player.level(), data.readBlockPos())));
 	public static final RegistryObject<MenuType<BlockPocketManagerMenu>> BLOCK_POCKET_MANAGER_MENU = MENU_TYPES.register("block_pocket_manager", () -> IForgeMenuType.create((windowId, inv, data) -> new BlockPocketManagerMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 	public static final RegistryObject<MenuType<BlockChangeDetectorMenu>> BLOCK_CHANGE_DETECTOR_MENU = MENU_TYPES.register("block_change_detector", () -> IForgeMenuType.create((windowId, inv, data) -> new BlockChangeDetectorMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
-	public static final RegistryObject<MenuType<KeycardHolderMenu>> KEYCARD_HOLDER_MENU = MENU_TYPES.register("keycard_holder", () -> IForgeMenuType.create((windowId, inv, data) -> new KeycardHolderMenu(windowId, inv, ItemContainer.keycardHolder(PlayerUtils.getSelectedItemStack(inv, SCContent.KEYCARD_HOLDER.get())))));
+	public static final RegistryObject<MenuType<KeycardHolderMenu>> KEYCARD_HOLDER_MENU = MENU_TYPES.register("keycard_holder", () -> IForgeMenuType.create((windowId, inv, data) -> new KeycardHolderMenu(windowId, inv, ItemContainer.keycardHolder(PlayerUtils.getItemStackFromAnyHand(inv.player, SCContent.KEYCARD_HOLDER.get())))));
+	public static final RegistryObject<MenuType<TrophySystemMenu>> TROPHY_SYSTEM_MENU = MENU_TYPES.register("trophy_system", () -> IForgeMenuType.create((windowId, inv, data) -> new TrophySystemMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
+	public static final RegistryObject<MenuType<ClaymoreMenu>> CLAYMORE_MENU = MENU_TYPES.register("claymore", () -> IForgeMenuType.create((windowId, inv, data) -> new ClaymoreMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
+	public static final RegistryObject<MenuType<LaserBlockMenu>> LASER_BLOCK_MENU = MENU_TYPES.register("laser_block", () -> IForgeMenuType.create((windowId, inv, data) -> new LaserBlockMenu(windowId, inv.player.level(), data.readBlockPos(), LaserBlockBlockEntity.loadSideConfig(data.readNbt()), inv)));
 
-	private static final Block.Properties prop() {
+	private static final BlockBehaviour.Properties prop() {
 		return prop(MapColor.STONE);
 	}
 
 	@SuppressWarnings("unused")
-	private static final Block.Properties prop(FeatureFlag... requiredFeatures) {
+	private static final BlockBehaviour.Properties prop(FeatureFlag... requiredFeatures) {
 		return prop().requiredFeatures(requiredFeatures);
 	}
 
-	private static final Block.Properties prop(MapColor color, float hardness) {
-		return Block.Properties.of().mapColor(color).strength(hardness, Float.MAX_VALUE);
+	private static final BlockBehaviour.Properties prop(MapColor color, float hardness) {
+		return BlockBehaviour.Properties.of().mapColor(color).strength(hardness, Float.MAX_VALUE);
 	}
 
-	private static final Block.Properties prop(MapColor color) {
-		return Block.Properties.of().mapColor(color).strength(-1.0F, Float.MAX_VALUE);
+	private static final BlockBehaviour.Properties prop(MapColor color) {
+		return BlockBehaviour.Properties.of().mapColor(color).strength(-1.0F, Float.MAX_VALUE);
 	}
 
 	@SuppressWarnings("unused")
-	private static final Block.Properties prop(MapColor color, FeatureFlag... requiredFeatures) {
+	private static final BlockBehaviour.Properties prop(MapColor color, FeatureFlag... requiredFeatures) {
 		return prop(color).requiredFeatures(requiredFeatures);
 	}
 
-	private static final Block.Properties logProp(MapColor topColor, MapColor sideColor) {
-		return Block.Properties.of().mapColor(state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor).strength(-1.0F, Float.MAX_VALUE);
+	private static final BlockBehaviour.Properties logProp(MapColor topColor, MapColor sideColor) {
+		return BlockBehaviour.Properties.of().mapColor(state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor).strength(-1.0F, Float.MAX_VALUE);
 	}
 
-	private static final Block.Properties propDisguisable() {
+	private static final BlockBehaviour.Properties propDisguisable() {
 		return propDisguisable(MapColor.STONE);
 	}
 
-	private static final Block.Properties propDisguisable(MapColor color) {
+	private static final BlockBehaviour.Properties propDisguisable(MapColor color) {
 		return prop(color).noOcclusion().dynamicShape().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
 	}
 
-	private static final Block.Properties glassProp(MapColor color) {
+	private static final BlockBehaviour.Properties glassProp(MapColor color) {
 		return prop().mapColor(color).sound(SoundType.GLASS).noOcclusion().isValidSpawn(SCContent::never).isRedstoneConductor(SCContent::never).isSuffocating(SCContent::never).isViewBlocking(SCContent::never);
 	}
 
-	private static Block.Properties mineProp(Block block) {
-		return Block.Properties.copy(block).explosionResistance(Float.MAX_VALUE).pushReaction(PushReaction.NORMAL);
+	private static BlockBehaviour.Properties mineProp(Block block) {
+		return BlockBehaviour.Properties.copy(block).explosionResistance(Float.MAX_VALUE).pushReaction(PushReaction.NORMAL);
 	}
 
 	private static final Item.Properties itemProp() {
@@ -2844,4 +2855,6 @@ public class SCContent {
 	private static ReinforcedPressurePlateBlock stonePressurePlate(Block vanillaBlock, BlockSetType blockSetType) {
 		return new ReinforcedPressurePlateBlock(Sensitivity.MOBS, prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
 	}
+
+	private SCContent() {}
 }

@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.Map;
 import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -82,9 +83,9 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
+	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
 	private long cooldownEnd = 0;
-	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public KeypadBarrelBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.KEYPAD_BARREL_BLOCK_ENTITY.get(), pos, state);
@@ -179,7 +180,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == ForgeCapabilities.ITEM_HANDLER)
-			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), () -> getInsertOnlyHandler()).cast();
+			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), this::getInsertOnlyHandler).cast();
 		else
 			return super.getCapability(cap, side);
 	}
@@ -252,10 +253,8 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	@Override
 	public void dropAllModules() {
 		for (ItemStack module : getInventory()) {
-			if (!(module.getItem() instanceof ModuleItem item))
-				continue;
-
-			Block.popResource(level, worldPosition, module);
+			if (module.getItem() instanceof ModuleItem)
+				Block.popResource(level, worldPosition, module);
 		}
 
 		getInventory().clear();

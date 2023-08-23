@@ -3,9 +3,7 @@ package net.geforcemods.securitycraft.datagen;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-
-import com.google.common.collect.ImmutableMap;
+import java.util.function.UnaryOperator;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCCreativeModeTabs;
@@ -50,7 +48,13 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
 public class BlockModelAndStateGenerator extends BlockStateProvider {
-	private static final Map<Direction, EnumProperty<WallSide>> DIR_TO_WALL_HEIGHT = ImmutableMap.of(Direction.EAST, BlockStateProperties.EAST_WALL, Direction.NORTH, BlockStateProperties.NORTH_WALL, Direction.SOUTH, BlockStateProperties.SOUTH_WALL, Direction.WEST, BlockStateProperties.WEST_WALL);
+	//@formatter:off
+	private static final Map<Direction, EnumProperty<WallSide>> DIR_TO_WALL_HEIGHT = Map.of(
+			Direction.EAST, BlockStateProperties.EAST_WALL,
+			Direction.NORTH, BlockStateProperties.NORTH_WALL,
+			Direction.SOUTH, BlockStateProperties.SOUTH_WALL,
+			Direction.WEST, BlockStateProperties.WEST_WALL);
+	//@formatter:on
 	private final SCBlockModelProvider scModels;
 
 	public BlockModelAndStateGenerator(PackOutput output, ExistingFileHelper exFileHelper) {
@@ -198,7 +202,11 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 	public void fourWayWallHeight(MultiPartBlockStateBuilder builder, ModelFile model, WallSide height) {
 		//@formatter:off
 		Arrays.stream(Direction.values()).filter(dir -> dir.getAxis().isHorizontal()).forEach(dir -> {
-			builder.part().modelFile(model).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true).addModel()
+			builder.part()
+			.modelFile(model)
+			.rotationY((((int) dir.toYRot()) + 180) % 360)
+			.uvLock(true)
+			.addModel()
 			.condition(DIR_TO_WALL_HEIGHT.get(dir), height);
 		});
 		//@formatter:on
@@ -217,17 +225,17 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		});
 	}
 
-	public void reinforcedPaneBlock(IronBarsBlock block, Function<BlockModelBuilder, BlockModelBuilder> renderTypeApplier) {
+	public void reinforcedPaneBlock(IronBarsBlock block, UnaryOperator<BlockModelBuilder> renderTypeApplier) {
 		String name = name(block);
 
 		paneBlock(block, modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", "")), modLoc(ModelProvider.BLOCK_FOLDER + "/" + name + "_top"), renderTypeApplier);
 	}
 
-	public void paneBlock(IronBarsBlock block, ResourceLocation pane, ResourceLocation edge, Function<BlockModelBuilder, BlockModelBuilder> renderTypeApplier) {
-		paneBlockInternal(block, name(block).toString(), pane, edge, renderTypeApplier);
+	public void paneBlock(IronBarsBlock block, ResourceLocation pane, ResourceLocation edge, UnaryOperator<BlockModelBuilder> renderTypeApplier) {
+		paneBlockInternal(block, name(block), pane, edge, renderTypeApplier);
 	}
 
-	private void paneBlockInternal(IronBarsBlock block, String baseName, ResourceLocation pane, ResourceLocation edge, Function<BlockModelBuilder, BlockModelBuilder> renderTypeApplier) {
+	private void paneBlockInternal(IronBarsBlock block, String baseName, ResourceLocation pane, ResourceLocation edge, UnaryOperator<BlockModelBuilder> renderTypeApplier) {
 		ModelFile post = renderTypeApplier.apply(models().panePost(baseName + "_post", pane, edge));
 		ModelFile side = renderTypeApplier.apply(models().paneSide(baseName + "_side", pane, edge));
 		ModelFile sideAlt = renderTypeApplier.apply(models().paneSideAlt(baseName + "_side_alt", pane, edge));
@@ -312,7 +320,11 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 
 			//@formatter:off
 			return ConfiguredModel.builder()
-					.modelFile(shape == StairsShape.STRAIGHT ? stairs : shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? stairsInner : stairsOuter)
+					.modelFile(switch(shape) {
+						case STRAIGHT -> stairs;
+						case INNER_LEFT, INNER_RIGHT -> stairsInner;
+						default -> stairsOuter;
+					})
 					.rotationX(half == Half.BOTTOM ? 0 : 180)
 					.rotationY(yRot)
 					.uvLock(yRot != 0 || half == Half.TOP)

@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.inventory.ExtractOnlyItemStackHandler;
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
+import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
@@ -23,8 +24,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerListener;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -41,19 +44,21 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ITickingBlockEntity, ILockable {
+public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ITickingBlockEntity, ILockable, ContainerListener {
+	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> EmptyHandler.INSTANCE);
 	private BooleanOption horizontal = new BooleanOption("horizontal", false);
 	private BooleanOption solidifyField = new BooleanOption("solidifyField", false);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
-	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> EmptyHandler.INSTANCE);
 	private LazyOptional<IItemHandler> storageHandler;
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
 	private int cooldown;
+	private LensContainer lens = new LensContainer(1);
 
 	public InventoryScannerBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.INVENTORY_SCANNER_BLOCK_ENTITY.get(), pos, state);
+		lens.addListener(this);
 	}
 
 	@Override
@@ -98,6 +103,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		}
 
 		cooldown = tag.getInt("cooldown");
+		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
+		lens.setChanged();
 	}
 
 	@Override
@@ -117,6 +124,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		tag.put("Items", list);
 		tag.putInt("cooldown", cooldown);
+		tag.put("lens", lens.createTag());
 	}
 
 	@Override
@@ -220,10 +228,28 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		return stackToInsert;
 	}
 
+	public LensContainer getLensContainer() {
+		return lens;
+	}
+
+	@Override
+	public void containerChanged(Container container) {
+		if (level == null)
+			return;
+
+		InventoryScannerBlockEntity otherScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition, getBlockState(), be -> {
+			if (be.getLevel().isClientSide)
+				ClientHandler.updateBlockColorAroundPosition(be.getBlockPos());
+		});
+
+		if (otherScanner != null)
+			otherScanner.getLensContainer().setItemExclusively(0, lens.getItem(0));
+	}
+
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == ForgeCapabilities.ITEM_HANDLER)
-			return BlockUtils.getProtectedCapability(side, this, () -> getExtractionHandler(), () -> EMPTY_INVENTORY).cast(); //disallow inserting
+			return BlockUtils.getProtectedCapability(side, this, this::getExtractionHandler, () -> EMPTY_INVENTORY).cast(); //disallow inserting
 		else
 			return super.getCapability(cap, side);
 	}
@@ -305,10 +331,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-		if (connectedScanner != null) {
-			if (toggled ? !connectedScanner.isModuleEnabled(module) : !connectedScanner.hasModule(module))
-				connectedScanner.insertModule(stack, toggled);
-		}
+		if (connectedScanner != null && (toggled ? !connectedScanner.isModuleEnabled(module) : !connectedScanner.hasModule(module)))
+			connectedScanner.insertModule(stack, toggled);
 
 		if (module == ModuleType.DISGUISE) {
 			onInsertDisguiseModule(this, stack);
@@ -324,10 +348,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-		if (connectedScanner != null) {
-			if (toggled ? connectedScanner.isModuleEnabled(module) : connectedScanner.hasModule(module))
-				connectedScanner.removeModule(module, toggled);
-		}
+		if (connectedScanner != null && (toggled ? connectedScanner.isModuleEnabled(module) : connectedScanner.hasModule(module)))
+			connectedScanner.removeModule(module, toggled);
 
 		if (module == ModuleType.STORAGE) {
 			//first 10 slots (0-9) are the prohibited slots
@@ -342,10 +364,10 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			}
 		}
 		else if (module == ModuleType.DISGUISE) {
-			onRemoveDisguiseModule(this, stack);
+			onRemoveDisguiseModule(this);
 
 			if (connectedScanner != null)
-				onRemoveDisguiseModule(connectedScanner, stack);
+				onRemoveDisguiseModule(connectedScanner);
 		}
 	}
 
@@ -356,7 +378,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			ClientHandler.putDisguisedBeRenderer(be, stack);
 	}
 
-	private void onRemoveDisguiseModule(BlockEntity be, ItemStack stack) {
+	private void onRemoveDisguiseModule(BlockEntity be) {
 		if (!be.getLevel().isClientSide)
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		else

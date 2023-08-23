@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
@@ -37,7 +38,7 @@ public class SecretHangingSignBlockEntity extends HangingSignBlockEntity impleme
 		}
 	};
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
-	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public SecretHangingSignBlockEntity(BlockPos pos, BlockState state) {
 		super(pos, state);

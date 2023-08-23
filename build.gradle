@@ -1,15 +1,15 @@
 plugins {
-    id 'eclipse'
-    id 'idea'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'org.spongepowered.mixin' version '0.7.+'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+	id 'eclipse'
+	id 'idea'
+	id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+	id 'org.spongepowered.mixin' version '0.7.+'
+	id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-version = '1.9.7-beta1'
+version = '1.9.7-beta2'
 group = 'net.geforcemods.securitycraft'
 
 base {
@@ -36,7 +36,7 @@ sourceSets.main.resources {
 }
 
 minecraft {
-	mappings channel: 'parchment', version: '2023.07.02-1.20.1'
+	mappings channel: 'parchment', version: '2023.08.06-1.20.1'
 	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 	copyIdeResources = true
 
@@ -89,7 +89,7 @@ repositories {
 }
 
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.20.1-47.0.43'
+	minecraft 'net.minecraftforge:forge:1.20.1-47.1.3'
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 	
 	implementation fg.deobf("curse.maven:architectury-api-419699:4581905") //ftb teams dependency

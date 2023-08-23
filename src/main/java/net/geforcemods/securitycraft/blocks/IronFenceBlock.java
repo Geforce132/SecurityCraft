@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -48,7 +49,7 @@ public class IronFenceBlock extends OwnableBlock {
 	protected final VoxelShape[] shapes;
 	private final VoxelShape[] renderShapes;
 
-	public IronFenceBlock(Block.Properties properties) {
+	public IronFenceBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false));
@@ -217,13 +218,6 @@ public class IronFenceBlock extends OwnableBlock {
 		}
 
 		entity.hurt(CustomDamageSources.electricity(level.registryAccess()), 6.0F); //3 hearts per attack
-	}
-
-	@Override
-	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int eventID, int eventParam) {
-		super.triggerEvent(state, level, pos, eventID, eventParam);
-		BlockEntity blockEntity = level.getBlockEntity(pos);
-		return blockEntity == null ? false : blockEntity.triggerEvent(eventID, eventParam);
 	}
 
 	@Override

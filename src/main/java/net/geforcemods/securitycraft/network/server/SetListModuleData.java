@@ -32,10 +32,10 @@ public class SetListModuleData {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
-		ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.ALLOWLIST_MODULE.get());
+		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.ALLOWLIST_MODULE.get());
 
 		if (stack.isEmpty())
-			stack = PlayerUtils.getSelectedItemStack(player, SCContent.DENYLIST_MODULE.get());
+			stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.DENYLIST_MODULE.get());
 
 		if (!stack.isEmpty()) {
 			CompoundTag clientTag = tag;
@@ -53,10 +53,10 @@ public class SetListModuleData {
 			if (clientTag.contains("ListedTeams")) {
 				ListTag listedTeams = new ListTag();
 
-				for (Tag tag : clientTag.getList("ListedTeams", Tag.TAG_STRING)) {
+				for (Tag teamTag : clientTag.getList("ListedTeams", Tag.TAG_STRING)) {
 					//make sure the team the client sent is actually a team that exists
-					if (player.getScoreboard().getTeamNames().contains(tag.getAsString()))
-						listedTeams.add(tag);
+					if (player.getScoreboard().getTeamNames().contains(teamTag.getAsString()))
+						listedTeams.add(teamTag);
 				}
 
 				serverTag.put("ListedTeams", listedTeams);

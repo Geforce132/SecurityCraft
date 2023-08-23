@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -19,43 +18,41 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
 public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock {
-	public TrackMineBlock(Block.Properties properties) {
+	public TrackMineBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (PlayerUtils.isHoldingItem(player, SCContent.REMOTE_ACCESS_MINE, hand))
+		ItemStack heldItem = player.getItemInHand(hand);
+
+		if (heldItem.is(SCContent.REMOTE_ACCESS_MINE.get()))
 			return InteractionResult.SUCCESS;
 
-		if (isActive(level, pos) && isDefusable() && player.getItemInHand(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
-			if (defuseMine(level, pos)) {
-				if (!player.isCreative())
-					player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+		if (isActive(level, pos) && isDefusable() && player.getItemInHand(hand).getItem() == SCContent.WIRE_CUTTERS.get() && defuseMine(level, pos)) {
+			if (!player.isCreative())
+				player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
-				return InteractionResult.SUCCESS;
-			}
+			level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
+			return InteractionResult.SUCCESS;
 		}
 
-		if (!isActive(level, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand)) {
-			if (activateMine(level, pos)) {
-				if (!player.isCreative())
-					player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+		if (!isActive(level, pos) && heldItem.is(Items.FLINT_AND_STEEL) && activateMine(level, pos)) {
+			if (!player.isCreative())
+				player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				level.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
-				return InteractionResult.SUCCESS;
-			}
+			level.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
+			return InteractionResult.SUCCESS;
 		}
 
 		return InteractionResult.PASS;

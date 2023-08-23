@@ -13,7 +13,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class BulletModel extends EntityModel<Bullet> {
-	public ModelPart bullet;
+	public final ModelPart bullet;
 
 	public BulletModel(ModelPart modelPart) {
 		bullet = modelPart.getChild("bullet");

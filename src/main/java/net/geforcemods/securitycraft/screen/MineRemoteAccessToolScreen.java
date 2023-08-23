@@ -25,9 +25,9 @@ import net.minecraft.world.level.block.Block;
 public class MineRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
 	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png"); //for the explosion icon
+	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
 	private ItemStack mrat;
 	private Button[][] guiButtons = new Button[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
-	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
 	private int xSize = 256, ySize = 184;
 	private final Component notBound = Utils.localize("gui.securitycraft:mrat.notBound");
 	private final Component[] lines = new Component[6];
@@ -66,22 +66,21 @@ public class MineRemoteAccessToolScreen extends Screen {
 				switch (j) {
 					case DEFUSE:
 						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, new ItemStack(SCContent.WIRE_CUTTERS.get()), b -> buttonClicked(mine, action));
-						guiButtons[i][j].active = false;
 						break;
 					case ACTIVATE:
 						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, new ItemStack(Items.FLINT_AND_STEEL), b -> buttonClicked(mine, action));
-						guiButtons[i][j].active = false;
 						break;
 					case DETONATE:
 						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, INFO_BOOK_ICONS, 54, 1, 0, 1, 18, 18, 256, 256, b -> buttonClicked(mine, action));
-						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:
 						guiButtons[i][j] = new Button(btnX, btnY, 20, 20, Component.literal("X"), b -> buttonClicked(mine, action), Button.DEFAULT_NARRATION);
-						guiButtons[i][j].active = false;
 						break;
+					default:
+						throw new IllegalArgumentException("Mine actions can only range from 0-3 (inclusive)");
 				}
 
+				guiButtons[i][j].active = false;
 				addRenderableWidget(guiButtons[i][j]);
 			}
 
@@ -151,20 +150,20 @@ public class MineRemoteAccessToolScreen extends Screen {
 			switch (action) {
 				case DEFUSE:
 					((IExplosive) Minecraft.getInstance().player.level().getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getInstance().player.level(), new BlockPos(coords[0], coords[1], coords[2]));
-					SecurityCraft.channel.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], Action.DEFUSE));
+					SecurityCraft.CHANNEL.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], Action.DEFUSE));
 					guiButtons[mine][DEFUSE].active = false;
 					guiButtons[mine][ACTIVATE].active = true;
 					guiButtons[mine][DETONATE].active = false;
 					break;
 				case ACTIVATE:
 					((IExplosive) Minecraft.getInstance().player.level().getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getInstance().player.level(), new BlockPos(coords[0], coords[1], coords[2]));
-					SecurityCraft.channel.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], Action.ACTIVATE));
+					SecurityCraft.CHANNEL.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], Action.ACTIVATE));
 					guiButtons[mine][DEFUSE].active = true;
 					guiButtons[mine][ACTIVATE].active = false;
 					guiButtons[mine][DETONATE].active = true;
 					break;
 				case DETONATE:
-					SecurityCraft.channel.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], Action.DETONATE));
+					SecurityCraft.CHANNEL.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], Action.DETONATE));
 					removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
 
 					for (int i = 0; i < 4; i++) {
@@ -178,6 +177,10 @@ public class MineRemoteAccessToolScreen extends Screen {
 					for (int i = 0; i < 4; i++) {
 						guiButtons[mine][i].active = false;
 					}
+
+					break;
+				default:
+					throw new IllegalArgumentException("Mine actions can only range from 0-3 (inclusive)");
 			}
 		}
 	}
@@ -207,7 +210,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 			if (coords.length == 3 && coords[0] == x && coords[1] == y && coords[2] == z) {
 				stack.getTag().remove("mine" + i);
-				SecurityCraft.channel.sendToServer(new RemoveMineFromMRAT(i));
+				SecurityCraft.CHANNEL.sendToServer(new RemoveMineFromMRAT(i));
 				return;
 			}
 		}

@@ -16,13 +16,14 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class KeypadDoorBlock extends SpecialDoorBlock {
-	public KeypadDoorBlock(Properties properties, BlockSetType blockSetType) {
+	public KeypadDoorBlock(BlockBehaviour.Properties properties, BlockSetType blockSetType) {
 		super(properties, blockSetType);
 	}
 
@@ -44,7 +45,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 
 					activate(state, level, pos, player, be.getSignalLength());
 				}
-				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
+				else if (!player.getItemInHand(hand).is(SCContent.CODEBREAKER.get()))
 					be.openPasscodeGUI(level, pos, player);
 			}
 		}

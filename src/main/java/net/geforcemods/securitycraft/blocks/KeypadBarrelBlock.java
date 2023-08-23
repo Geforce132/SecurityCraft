@@ -35,6 +35,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BarrelBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -51,7 +52,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 	public static final BooleanProperty FROG = BooleanProperty.create("frog");
 
-	public KeypadBarrelBlock(Properties properties) {
+	public KeypadBarrelBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(HORIZONTAL_FACING, Direction.NORTH).setValue(OPEN, false).setValue(LID_FACING, LidFacing.UP).setValue(FROG, false).setValue(WATERLOGGED, false));
 	}
@@ -91,7 +92,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 
 					activate(state, level, pos, player);
 				}
-				else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
+				else if (!player.getItemInHand(hand).is(SCContent.CODEBREAKER.get()))
 					be.openPasscodeGUI(level, pos, player);
 			}
 		}
@@ -196,7 +197,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 		}
 	}
 
-	public static enum LidFacing implements StringRepresentable {
+	public enum LidFacing implements StringRepresentable {
 		UP("up"),
 		SIDEWAYS("sideways"),
 		DOWN("down");

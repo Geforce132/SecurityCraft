@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -33,7 +34,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	public RetinalScannerBlock(Block.Properties properties) {
+	public RetinalScannerBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}

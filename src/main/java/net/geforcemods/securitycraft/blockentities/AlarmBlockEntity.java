@@ -31,7 +31,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	public static final int MAXIMUM_ALARM_SOUND_LENGTH = 3600; //one hour
-	private IntOption range = new IntOption("range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
+	private IntOption range = new IntOption("range", 17, 0, ConfigHandler.getOrDefault(ConfigHandler.SERVER.maxAlarmRange), 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private BooleanOption resetCooldown = new BooleanOption("resetCooldown", true);
 	private int cooldown = 0;
@@ -47,10 +47,8 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		if (level.isClientSide) {
-			if (soundPlaying && (isDisabled() || !getBlockState().getValue(AlarmBlock.LIT)))
-				stopPlayingSound();
-		}
+		if (level.isClientSide && soundPlaying && (isDisabled() || !getBlockState().getValue(AlarmBlock.LIT)))
+			stopPlayingSound();
 
 		if (!isDisabled() && --cooldown <= 0) {
 			if (!level.isClientSide && isPowered) {
@@ -60,7 +58,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 				for (ServerPlayer player : ((ServerLevel) level).getPlayers(p -> p.blockPosition().distSqr(pos) <= rangeSqr)) {
 					float volume = (float) (1.0F - ((player.blockPosition().distSqr(pos)) / rangeSqr));
 
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new PlayAlarmSound(worldPosition, soundEventHolder, volume, getPitch(), player.getCommandSenderWorld().random.nextLong()));
+					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PlayAlarmSound(worldPosition, soundEventHolder, volume, getPitch(), player.getCommandSenderWorld().random.nextLong()));
 				}
 			}
 
@@ -121,8 +119,10 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 
 	public void setSoundLength(int soundLength) {
 		this.soundLength = Mth.clamp(soundLength, 1, MAXIMUM_ALARM_SOUND_LENGTH);
-		stopPlayingSound();
 		setCooldown(0);
+
+		if (level.isClientSide)
+			stopPlayingSound();
 	}
 
 	public void setCooldown(int cooldown) {

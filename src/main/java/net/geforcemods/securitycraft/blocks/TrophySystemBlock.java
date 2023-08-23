@@ -3,16 +3,14 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
-import net.geforcemods.securitycraft.network.client.OpenScreen;
-import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -23,6 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.phys.BlockHitResult;
@@ -30,7 +29,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.NetworkHooks;
 
 public class TrophySystemBlock extends DisguisableBlock {
 	//@formatter:off
@@ -46,7 +45,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 			Block.box(6.5, 0, 1, 9.5, 1.5, 4)
 			).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).orElse(Shapes.block());
 	//@formatter:on
-	public TrophySystemBlock(Block.Properties properties) {
+	public TrophySystemBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false));
 	}
@@ -69,7 +68,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.TROPHY_SYSTEM, pos));
+					NetworkHooks.openScreen((ServerPlayer) player, be, pos);
 			}
 
 			return InteractionResult.SUCCESS;
@@ -86,6 +85,18 @@ public class TrophySystemBlock extends DisguisableBlock {
 			return disguisedState.getShape(level, pos, ctx);
 		else
 			return SHAPE;
+	}
+
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			if (level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be) {
+				Containers.dropContents(level, pos, be.getLensContainer());
+				level.updateNeighbourForOutputSignal(pos, this);
+			}
+
+			super.onRemove(state, level, pos, newState, isMoving);
+		}
 	}
 
 	@Override

@@ -81,17 +81,17 @@ public class BriefcasePasscodeScreen extends Screen {
 	}
 
 	private void continueButtonClicked(Button button) {
-		ItemStack briefcase = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
+		ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
 
 		if (!briefcase.isEmpty()) {
 			String passcode = digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3];
 
 			if (isSetup) {
-				SecurityCraft.channel.sendToServer(new SetBriefcasePasscodeAndOwner(passcode));
+				SecurityCraft.CHANNEL.sendToServer(new SetBriefcasePasscodeAndOwner(passcode));
 				ClientHandler.displayBriefcasePasscodeScreen(briefcase.getHoverName());
 			}
 			else
-				SecurityCraft.channel.sendToServer(new CheckBriefcasePasscode(passcode));
+				SecurityCraft.CHANNEL.sendToServer(new CheckBriefcasePasscode(passcode));
 		}
 	}
 

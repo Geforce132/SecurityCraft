@@ -31,7 +31,6 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -52,7 +51,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -109,6 +107,8 @@ public class SCEventHandler {
 	private static final Integer NOTE_DELAY = 9;
 	public static final Map<Player, MutablePair<Integer, Deque<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
 
+	private SCEventHandler() {}
+
 	@SubscribeEvent
 	public static void onServerTick(ServerTickEvent event) {
 		if (event.phase == Phase.END) {
@@ -116,7 +116,7 @@ public class SCEventHandler {
 				int ticksRemaining = pair.getLeft();
 
 				if (ticksRemaining == 0) {
-					if (PlayerUtils.getSelectedItemStack(player, SCContent.PORTABLE_TUNE_PLAYER.get()).isEmpty()) {
+					if (PlayerUtils.getItemStackFromAnyHand(player, SCContent.PORTABLE_TUNE_PLAYER.get()).isEmpty()) {
 						pair.setLeft(-1);
 						return;
 					}
@@ -155,7 +155,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event) {
 		if (!ConfigHandler.SERVER.disableThanksMessage.get())
-			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()), new SendTip());
+			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()), new SendTip());
 	}
 
 	@SubscribeEvent
@@ -175,7 +175,7 @@ public class SCEventHandler {
 		PasscodeUtils.startHashingThread(event.getServer());
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLevelLoad(LevelEvent.Load event) {
 		if (event.getLevel() instanceof ServerLevel level && level.dimension() == Level.OVERWORLD)
 			SaltData.refreshLevel(level);
@@ -215,7 +215,9 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-		if (PlayerUtils.isPlayerMountedOnCamera(event.getEntity())) {
+		Player player = event.getEntity();
+
+		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			event.setCanceled(true);
 			return;
 		}
@@ -225,29 +227,27 @@ public class SCEventHandler {
 		BlockState state = level.getBlockState(event.getPos());
 		Block block = state.getBlock();
 
-		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, event.getPos(), event.getEntity())) {
-			if (!event.getEntity().isShiftKeyDown()) {
-				if (event.getHand() == InteractionHand.MAIN_HAND) {
-					MutableComponent blockName = Utils.localize(block.getDescriptionId());
+		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, event.getPos(), player) && !player.isShiftKeyDown()) {
+			if (event.getHand() == InteractionHand.MAIN_HAND) {
+				MutableComponent blockName = Utils.localize(block.getDescriptionId());
 
-					PlayerUtils.sendMessageToPlayer(event.getEntity(), blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
-				}
-
-				event.setCanceled(true);
-				return;
+				PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
 			}
+
+			event.setCanceled(true);
+			return;
 		}
 
 		if (be instanceof IOwnable ownable) {
 			Owner owner = ownable.getOwner();
 
 			if (!owner.isValidated()) {
-				if (ownable.isOwnedBy(event.getEntity())) {
+				if (ownable.isOwnedBy(player)) {
 					owner.setValidated(true);
-					PlayerUtils.sendMessageToPlayer(event.getEntity(), Utils.localize(block.getDescriptionId()), Component.translatable("messages.securitycraft:ownable.validate"), ChatFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(block.getDescriptionId()), Component.translatable("messages.securitycraft:ownable.validate"), ChatFormatting.GREEN);
 				}
 				else
-					PlayerUtils.sendMessageToPlayer(event.getEntity(), Utils.localize(block.getDescriptionId()), Component.translatable("messages.securitycraft:ownable.ownerNotValidated"), ChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(block.getDescriptionId()), Component.translatable("messages.securitycraft:ownable.ownerNotValidated"), ChatFormatting.RED);
 
 				event.setCanceled(true);
 				event.setCancellationResult(InteractionResult.SUCCESS);
@@ -256,19 +256,21 @@ public class SCEventHandler {
 		}
 
 		if (!level.isClientSide) {
-			if (event.getItemStack().getItem() == Items.REDSTONE && be instanceof IEMPAffected empAffected && empAffected.isShutDown()) {
+			if (event.getItemStack().is(Items.REDSTONE) && be instanceof IEMPAffected empAffected && empAffected.isShutDown()) {
 				empAffected.reactivate();
 
-				if (!event.getEntity().isCreative())
+				if (!player.isCreative())
 					event.getItemStack().shrink(1);
 
-				event.getEntity().swing(event.getHand());
+				player.swing(event.getHand());
 				event.setCanceled(true);
 				event.setCancellationResult(InteractionResult.SUCCESS);
 				return;
 			}
 
-			if (PlayerUtils.isHoldingItem(event.getEntity(), SCContent.KEY_PANEL, event.getHand())) {
+			ItemStack heldItem = player.getItemInHand(event.getHand());
+
+			if (heldItem.is(SCContent.KEY_PANEL.get())) {
 				for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
 					if (pc.isValidStateForConversion(state)) {
 						event.setUseBlock(Result.DENY);
@@ -279,13 +281,13 @@ public class SCEventHandler {
 				return;
 			}
 
-			if (PlayerUtils.isHoldingItem(event.getEntity(), SCContent.CODEBREAKER, event.getHand()) && handleCodebreaking(event)) {
+			if (heldItem.is(SCContent.CODEBREAKER.get()) && handleCodebreaking(event)) {
 				event.setCanceled(true);
 				return;
 			}
 		}
 
-		if (block instanceof DisplayCaseBlock && event.getEntity().isShiftKeyDown() && event.getEntity().getMainHandItem().isEmpty() && !event.getEntity().getOffhandItem().isEmpty()) {
+		if (block instanceof DisplayCaseBlock && player.isShiftKeyDown() && player.getMainHandItem().isEmpty() && !player.getOffhandItem().isEmpty()) {
 			event.setUseBlock(Result.ALLOW);
 			event.setUseItem(Result.DENY);
 			return;
@@ -296,7 +298,7 @@ public class SCEventHandler {
 		List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(event.getPos()));
 
 		if (!sentries.isEmpty())
-			event.setCanceled(sentries.get(0).mobInteract(event.getEntity(), event.getHand()) == InteractionResult.SUCCESS); //cancel if an action was taken
+			event.setCanceled(sentries.get(0).mobInteract(player, event.getHand()) == InteractionResult.SUCCESS); //cancel if an action was taken
 	}
 
 	@SubscribeEvent
@@ -480,13 +482,11 @@ public class SCEventHandler {
 		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = BlockEntityTracker.SONIC_SECURITY_SYSTEM.getBlockEntitiesInRange(level, pos);
 
 		// If no custom sound id is given, check if a custom sound was played, and if so, store its id
-		if (customSoundId.isEmpty() && instrument.hasCustomSound()) {
-			if (level.getBlockEntity(pos.above()) instanceof SkullBlockEntity be) {
-				ResourceLocation noteBlockSound = be.getNoteBlockSound();
+		if (customSoundId.isEmpty() && instrument.hasCustomSound() && level.getBlockEntity(pos.above()) instanceof SkullBlockEntity be) {
+			ResourceLocation noteBlockSound = be.getNoteBlockSound();
 
-				if (noteBlockSound != null)
-					customSoundId = noteBlockSound.toString();
-			}
+			if (noteBlockSound != null)
+				customSoundId = noteBlockSound.toString();
 		}
 
 		for (SonicSecuritySystemBlockEntity be : sonicSecuritySystems) {
@@ -499,15 +499,8 @@ public class SCEventHandler {
 			// If so, toggle its redstone power output on
 			if (be.isRecording())
 				be.recordNote(vanillaNoteId, instrument, customSoundId);
-			else if (be.listenToNote(vanillaNoteId, instrument, customSoundId)) {
-				be.correctTuneWasPlayed = true;
-				be.powerCooldown = be.signalLength.get();
-
-				if (be.isModuleEnabled(ModuleType.REDSTONE)) {
-					level.setBlockAndUpdate(be.getBlockPos(), be.getLevel().getBlockState(be.getBlockPos()).setValue(SonicSecuritySystemBlock.POWERED, true));
-					BlockUtils.updateIndirectNeighbors(be.getLevel(), be.getBlockPos(), SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
-				}
-			}
+			else
+				be.listenToNote(vanillaNoteId, instrument, customSoundId);
 		}
 	}
 

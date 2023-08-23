@@ -37,7 +37,7 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 
 	@Override
 	public void render(SecurityCameraBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-		if (be.down || (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(be.getBlockPos())))
+		if (be.isDown() || (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(be.getBlockPos())))
 			return;
 
 		pose.translate(0.5D, 1.5D, 0.5D);
@@ -60,12 +60,12 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 		pose.mulPose(POSITIVE_X_180);
 
 		if (!be.isDisabled())
-			model.cameraRotationPoint.yRot = (float) Mth.lerp(partialTicks, be.oCameraRotation, be.cameraRotation);
+			model.getCameraRotationPoint().yRot = (float) Mth.lerp(partialTicks, be.getOriginalCameraRotation(), be.getCameraRotation());
 
 		if (be.isShutDown())
-			model.cameraRotationPoint.xRot = 0.9F;
+			model.getCameraRotationPoint().xRot = 0.9F;
 		else
-			model.cameraRotationPoint.xRot = 0.2617993877991494F;
+			model.getCameraRotationPoint().xRot = 0.2617993877991494F;
 
 		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(be.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}

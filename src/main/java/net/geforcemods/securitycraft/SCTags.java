@@ -8,7 +8,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 public class SCTags {
+	private SCTags() {}
+
 	public static class Blocks {
+		private Blocks() {}
+
 		public static final TagKey<Block> ALL_SECRET_SIGNS = tag("all_secret_signs");
 		public static final TagKey<Block> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
 		public static final TagKey<Block> REINFORCED_BAMBOO_BLOCKS = tag("reinforced/bamboo_blocks");
@@ -20,6 +24,7 @@ public class SCTags {
 		public static final TagKey<Block> REINFORCED_DARK_OAK_LOGS = tag("reinforced/dark_oak_logs");
 		public static final TagKey<Block> REINFORCED_DIRT = tag("reinforced/dirt");
 		public static final TagKey<Block> REINFORCED_END_STONES = tag("reinforced/end_stones");
+		public static final TagKey<Block> REINFORCED_GLASS_PANES = tag("reinforced/glass_panes");
 		public static final TagKey<Block> REINFORCED_ICE = tag("reinforced/ice");
 		public static final TagKey<Block> REINFORCED_JUNGLE_LOGS = tag("reinforced/jungle_logs");
 		public static final TagKey<Block> REINFORCED_LOGS = tag("reinforced/logs");
@@ -57,6 +62,8 @@ public class SCTags {
 	}
 
 	public static class Items {
+		private Items() {}
+
 		public static final TagKey<Item> CAN_INTERACT_WITH_DOORS = tag("can_interact_with_doors");
 		public static final TagKey<Item> MODULES = tag("modules");
 		public static final TagKey<Item> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
@@ -69,6 +76,7 @@ public class SCTags {
 		public static final TagKey<Item> REINFORCED_DARK_OAK_LOGS = tag("reinforced/dark_oak_logs");
 		public static final TagKey<Item> REINFORCED_DIRT = tag("reinforced/dirt");
 		public static final TagKey<Item> REINFORCED_END_STONES = tag("reinforced/end_stones");
+		public static final TagKey<Item> REINFORCED_GLASS_PANES = tag("reinforced/glass_panes");
 		public static final TagKey<Item> REINFORCED_ICE = tag("reinforced/ice");
 		public static final TagKey<Item> REINFORCED_JUNGLE_LOGS = tag("reinforced/jungle_logs");
 		public static final TagKey<Item> REINFORCED_LOGS = tag("reinforced/logs");

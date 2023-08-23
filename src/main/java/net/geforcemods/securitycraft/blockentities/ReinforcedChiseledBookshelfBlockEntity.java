@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -20,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ReinforcedChiseledBookshelfBlockEntity extends ChiseledBookShelfBlockEntity implements IOwnable, IModuleInventory {
 	private NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private Owner owner = new Owner();
-	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public ReinforcedChiseledBookshelfBlockEntity(BlockPos pos, BlockState state) {
 		super(pos, state);

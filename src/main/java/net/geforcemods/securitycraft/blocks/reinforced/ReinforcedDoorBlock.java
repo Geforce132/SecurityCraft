@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -52,7 +53,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	protected static final VoxelShape WEST_AABB = Block.box(13.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 	protected static final VoxelShape EAST_AABB = Block.box(0.0D, 0.0D, 0.0D, 3.0D, 16.0D, 16.0D);
 
-	public ReinforcedDoorBlock(Block.Properties properties) {
+	public ReinforcedDoorBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, false).setValue(HINGE, DoorHingeSide.LEFT).setValue(HALF, DoubleBlockHalf.LOWER));
 	}
@@ -65,10 +66,10 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 
 		return switch (facing) {
 			case EAST -> isNotOpen ? EAST_AABB : (isHingeRight ? NORTH_AABB : SOUTH_AABB);
-			default -> isNotOpen ? EAST_AABB : (isHingeRight ? NORTH_AABB : SOUTH_AABB);
 			case SOUTH -> isNotOpen ? SOUTH_AABB : (isHingeRight ? EAST_AABB : WEST_AABB);
 			case WEST -> isNotOpen ? WEST_AABB : (isHingeRight ? SOUTH_AABB : NORTH_AABB);
 			case NORTH -> isNotOpen ? NORTH_AABB : (isHingeRight ? WEST_AABB : EAST_AABB);
+			default -> isNotOpen ? EAST_AABB : (isHingeRight ? NORTH_AABB : SOUTH_AABB);
 		};
 	}
 
@@ -161,12 +162,13 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 
 		if ((!isCCWLower || isCWLower) && i <= 0) {
 			if ((!isCWLower || isCCWLower) && i >= 0) {
-				int j = horizontalDirection.getStepX();
-				int k = horizontalDirection.getStepZ();
-				Vec3 vec3d = ctx.getClickLocation();
-				double d0 = vec3d.x - clickedPos.getX();
-				double d1 = vec3d.z - clickedPos.getZ();
-				return (j >= 0 || !(d1 < 0.5D)) && (j <= 0 || !(d1 > 0.5D)) && (k >= 0 || !(d0 > 0.5D)) && (k <= 0 || !(d0 < 0.5D)) ? DoorHingeSide.LEFT : DoorHingeSide.RIGHT;
+				int stepX = horizontalDirection.getStepX();
+				int stepY = horizontalDirection.getStepZ();
+				Vec3 clickLocation = ctx.getClickLocation();
+				double clickedX = clickLocation.x - clickedPos.getX();
+				double clickedY = clickLocation.z - clickedPos.getZ();
+
+				return (stepX >= 0 || clickedY >= 0.5D) && (stepX <= 0 || clickedY <= 0.5D) && (stepY >= 0 || clickedX <= 0.5D) && (stepY <= 0 || clickedX >= 0.5D) ? DoorHingeSide.LEFT : DoorHingeSide.RIGHT;
 			}
 			else
 				return DoorHingeSide.LEFT;
@@ -187,8 +189,8 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		Block neighborBlock = level.getBlockState(neighbor).getBlock();
 		Owner previousOwner = null;
 
-		if (level.getBlockEntity(firstDoorPos) instanceof OwnableBlockEntity)
-			previousOwner = ((OwnableBlockEntity) level.getBlockEntity(firstDoorPos)).getOwner();
+		if (level.getBlockEntity(firstDoorPos) instanceof OwnableBlockEntity ownable)
+			previousOwner = ownable.getOwner();
 
 		if (firstDoorState.getValue(HALF) == DoubleBlockHalf.UPPER) {
 			BlockPos blockBelow = firstDoorPos.below();
@@ -226,11 +228,12 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			else if (neighborBlock != this) {
 				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, firstDoorPos) || BlockUtils.hasActiveSCBlockNextTo(level, firstDoorPos.above());
 				Direction directionToCheck = firstDoorState.getValue(FACING).getClockWise();
-				BlockPos secondDoorPos = null;
-				BlockState secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.relative(directionToCheck));
+				BlockPos secondDoorPos = firstDoorPos.relative(directionToCheck);
+				BlockState secondDoorState = level.getBlockState(secondDoorPos);
 
 				if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(HINGE) == DoorHingeSide.RIGHT && firstDoorState.getValue(HINGE) != secondDoorState.getValue(HINGE))) {
-					secondDoorState = level.getBlockState(secondDoorPos = firstDoorPos.relative(directionToCheck.getOpposite()));
+					secondDoorPos = firstDoorPos.relative(directionToCheck.getOpposite());
+					secondDoorState = level.getBlockState(secondDoorPos);
 
 					if (!(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(HINGE) == DoorHingeSide.LEFT && firstDoorState.getValue(HINGE) != secondDoorState.getValue(HINGE)))
 						secondDoorPos = null;
@@ -283,13 +286,6 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	@Override
 	public long getSeed(BlockState state, BlockPos pos) {
 		return Mth.getSeed(pos.getX(), pos.below(state.getValue(HALF) == DoubleBlockHalf.LOWER ? 0 : 1).getY(), pos.getZ());
-	}
-
-	@Override
-	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
-		super.triggerEvent(state, level, pos, id, param);
-		BlockEntity blockEntity = level.getBlockEntity(pos);
-		return blockEntity == null ? false : blockEntity.triggerEvent(id, param);
 	}
 
 	@Override

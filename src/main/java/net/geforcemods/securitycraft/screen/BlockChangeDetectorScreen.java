@@ -50,9 +50,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	private BlockChangeDetectorBlockEntity be;
 	private ChangeEntryList changeEntryList;
 	private TextHoverChecker smartModuleHoverChecker;
-	private ModeButton modeButton;
 	private Checkbox showAllCheckbox;
-	private Checkbox highlightInWorldCheckbox;
 	private ColorChooser colorChooser;
 	private final DetectionMode previousMode;
 	private final boolean wasShowingHighlights;
@@ -79,41 +77,42 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			changeEntryList.filteredEntries.clear();
 			be.getEntries().clear();
 			be.setChanged();
-			SecurityCraft.channel.sendToServer(new ClearChangeDetectorServer(be.getBlockPos()));
+			SecurityCraft.CHANNEL.sendToServer(new ClearChangeDetectorServer(be.getBlockPos()));
 		}));
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
 		boolean isOwner = be.isOwnedBy(minecraft.player);
 		int settingsX = leftPos + 173;
-		Button colorChooserButton;
+		Button modeButton, colorChooserButton;
+		Checkbox highlightInWorldCheckbox;
 
-		addRenderableWidget(modeButton = new ModeButton(settingsX, topPos + 19, 20, 20, be.getMode().ordinal(), DetectionMode.values().length, b -> {
+		modeButton = addRenderableWidget(new ModeButton(settingsX, topPos + 19, 20, 20, be.getMode().ordinal(), DetectionMode.values().length, b -> {
 			be.setMode(DetectionMode.values()[((ModeButton) b).getCurrentIndex()]);
 			b.setTooltip(Tooltip.create(Utils.localize(be.getMode().getDescriptionId())));
 			changeEntryList.updateFilteredEntries();
 			be.updateFilteredEntries();
 		}));
-		addRenderableWidget(showAllCheckbox = new Checkbox(settingsX, topPos + 65, 20, 20, Component.empty(), false, false) {
+		showAllCheckbox = addRenderableWidget(new Checkbox(settingsX, topPos + 65, 20, 20, Component.empty(), false, false) {
 			@Override
 			public void onPress() {
 				super.onPress();
 				changeEntryList.updateFilteredEntries();
 			}
 		});
-		addRenderableWidget(highlightInWorldCheckbox = new Checkbox(settingsX, topPos + 90, 20, 20, Component.empty(), be.isShowingHighlights(), false) {
+		highlightInWorldCheckbox = addRenderableWidget(new Checkbox(settingsX, topPos + 90, 20, 20, Component.empty(), be.isShowingHighlights(), false) {
 			@Override
 			public void onPress() {
 				super.onPress();
 				be.showHighlights(selected());
 			}
 		});
-		addRenderableWidget(colorChooser = new ColorChooser(Component.empty(), settingsX, topPos + 135, previousColor) {
+		colorChooser = addRenderableWidget(new ColorChooser(Component.empty(), settingsX, topPos + 135, previousColor) {
 			@Override
 			public void onColorChange() {
 				be.setColor(getRGBColor());
 			}
 		});
 		colorChooser.init(minecraft, width, height);
-		addRenderableWidget(colorChooserButton = new ColorChooserButton(settingsX, topPos + 115, 20, 20, colorChooser));
+		colorChooserButton = addRenderableWidget(new ColorChooserButton(settingsX, topPos + 115, 20, 20, colorChooser));
 
 		clearButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:editModule.clear")));
 		modeButton.setTooltip(Tooltip.create(Utils.localize(be.getMode().getDescriptionId())));
@@ -121,13 +120,13 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		highlightInWorldCheckbox.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:block_change_detector.highlight_in_world_checkbox")));
 		colorChooserButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:choose_outline_color_tooltip")));
 		smartModuleHoverChecker = isOwner ? new TextHoverChecker(topPos + 44, topPos + 60, settingsX + 1, leftPos + 191, Utils.localize("gui.securitycraft:block_change_detector.smart_module_hint")) : null;
-		addRenderableWidget(changeEntryList = new ChangeEntryList(minecraft, 160, 150, topPos + 20, leftPos + 8));
+		changeEntryList = addRenderableWidget(new ChangeEntryList(minecraft, 160, 150, topPos + 20, leftPos + 8));
 		clearButton.active = modeButton.active = colorChooserButton.active = isOwner;
 
 		for (ChangeEntry entry : be.getEntries()) {
 			String stateString;
 
-			if (entry.state().getProperties().size() > 0)
+			if (!entry.state().getProperties().isEmpty())
 				stateString = "[" + entry.state().toString().split("\\[")[1].replace(",", ", ");
 			else
 				stateString = "";
@@ -219,7 +218,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		if (colorChooser != null) {
 			colorChooser.keyPressed(keyCode, scanCode, modifiers);
 
-			if (!colorChooser.rgbHexBox.isFocused())
+			if (!colorChooser.getRgbHexBox().isFocused())
 				return super.keyPressed(keyCode, scanCode, modifiers);
 		}
 
@@ -243,7 +242,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		int currentColor = be.getColor();
 
 		if (previousMode != currentMode || wasShowingHighlights != isShowingHighlights || previousColor != currentColor)
-			SecurityCraft.channel.sendToServer(new SyncBlockChangeDetector(be.getBlockPos(), currentMode, isShowingHighlights, currentColor));
+			SecurityCraft.CHANNEL.sendToServer(new SyncBlockChangeDetector(be.getBlockPos(), currentMode, isShowingHighlights, currentColor));
 
 		be.updateFilteredEntries();
 	}
@@ -268,7 +267,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	}
 
 	class ChangeEntryList extends ScrollPanel {
-		private final int slotHeight = 12;
+		private static final int SLOT_HEIGHT = 12;
 		private List<ContentSavingCollapsileTextList> allEntries = new ArrayList<>();
 		private List<ContentSavingCollapsileTextList> filteredEntries = new ArrayList<>();
 		private ContentSavingCollapsileTextList currentlyOpen = null;
@@ -316,9 +315,9 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 		public void addEntry(ContentSavingCollapsileTextList entry) {
 			entry.setWidth(154);
-			entry.setHeight(slotHeight);
+			entry.setHeight(SLOT_HEIGHT);
 			entry.setX(left);
-			entry.setY(top + slotHeight * allEntries.size());
+			entry.setY(top + SLOT_HEIGHT * allEntries.size());
 			allEntries.add(entry);
 		}
 
@@ -381,7 +380,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			contentHeight = height;
 
 			if (currentlyOpen != null)
-				scrollDistance = slotHeight * filteredEntries.indexOf(currentlyOpen);
+				scrollDistance = SLOT_HEIGHT * filteredEntries.indexOf(currentlyOpen);
 
 			applyScrollLimits();
 		}

@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.block.piston.PistonHeadBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -44,7 +45,7 @@ public class ReinforcedPistonHeadRenderer implements BlockEntityRenderer<Reinfor
 				}
 				else if (be.isSourcePiston() && !be.isExtending()) {
 					PistonType pistonType = state.is(SCContent.REINFORCED_STICKY_PISTON.get()) ? PistonType.STICKY : PistonType.DEFAULT;
-					BlockState headState = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.TYPE, pistonType).setValue(PistonHeadBlock.FACING, state.getValue(PistonBaseBlock.FACING));
+					BlockState headState = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.TYPE, pistonType).setValue(DirectionalBlock.FACING, state.getValue(DirectionalBlock.FACING));
 					BlockPos renderPos = oppositePos.relative(be.getMovementDirection());
 
 					headState = headState.setValue(PistonHeadBlock.SHORT, be.getProgress(partialTicks) >= 0.5F);
@@ -64,7 +65,10 @@ public class ReinforcedPistonHeadRenderer implements BlockEntityRenderer<Reinfor
 	}
 
 	private void renderBlocks(BlockPos pos, BlockState state, PoseStack poseStack, MultiBufferSource buffer, Level level, boolean checkSides, int combinedOverlay) {
-		ForgeHooksClient.renderPistonMovedBlocks(pos, state, poseStack, buffer, level, checkSides, combinedOverlay, blockRenderer == null ? blockRenderer = Minecraft.getInstance().getBlockRenderer() : blockRenderer);
+		if (blockRenderer == null)
+			blockRenderer = Minecraft.getInstance().getBlockRenderer();
+
+		ForgeHooksClient.renderPistonMovedBlocks(pos, state, poseStack, buffer, level, checkSides, combinedOverlay, blockRenderer);
 	}
 
 	@Override

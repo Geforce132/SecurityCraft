@@ -31,7 +31,7 @@ public class TogglePictureButton extends Button implements IToggleableButton {
 		super(xPos, yPos, width, height, Component.empty(), onPress, DEFAULT_NARRATION);
 
 		if (textureX.length != toggleCount || textureY.length != toggleCount)
-			throw new RuntimeException("TogglePictureButton was set up incorrectly. Array lengths must match toggleCount!");
+			throw new IllegalArgumentException("TogglePictureButton was set up incorrectly. Array lengths must match toggleCount!");
 
 		textureLocation = texture;
 		u = textureX;

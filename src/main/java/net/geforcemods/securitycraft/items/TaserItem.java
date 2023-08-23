@@ -33,7 +33,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class TaserItem extends Item {
-	public boolean powered;
+	private boolean powered;
 
 	public TaserItem(Item.Properties properties, boolean isPowered) {
 		super(properties);
@@ -94,7 +94,7 @@ public class TaserItem extends Item {
 			Vec3 lookVec = player.getViewVector(1.0F).scale(range);
 			Vec3 endVec = startVec.add(lookVec);
 			AABB boundingBox = player.getBoundingBox().expandTowards(lookVec).inflate(1, 1, 1);
-			EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(player, startVec, endVec, boundingBox, s -> s instanceof LivingEntity, range * range);
+			EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(player, startVec, endVec, boundingBox, LivingEntity.class::isInstance, range * range);
 
 			level.playSound(player, player.blockPosition(), SCSounds.TASERFIRED.event, SoundSource.PLAYERS, 1.0F, 1.0F);
 			level.gameEvent(player, GameEvent.PROJECTILE_SHOOT, player.blockPosition());

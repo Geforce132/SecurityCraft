@@ -7,12 +7,13 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BeaconBeamBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements BeaconBeamBlock {
 	private final DyeColor color;
 
-	public ReinforcedStainedGlassBlock(Block.Properties properties, DyeColor color, Block vB) {
+	public ReinforcedStainedGlassBlock(BlockBehaviour.Properties properties, DyeColor color, Block vB) {
 		super(properties, vB);
 		this.color = color;
 	}
@@ -39,6 +40,6 @@ public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements
 
 	@Override
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
-		return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
+		return adjacentBlockState.getBlock() == this || super.skipRendering(state, adjacentBlockState, side);
 	}
 }

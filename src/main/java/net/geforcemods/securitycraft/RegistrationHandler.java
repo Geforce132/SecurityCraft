@@ -8,14 +8,13 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
-import net.geforcemods.securitycraft.network.client.OpenLaserScreen;
-import net.geforcemods.securitycraft.network.client.OpenSRATScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
+import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
@@ -83,6 +82,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class RegistrationHandler {
+	private RegistrationHandler() {}
+
 	@SubscribeEvent
 	public static void onRegister(RegisterEvent event) {
 		event.register(Keys.ITEMS, helper -> {
@@ -136,13 +137,12 @@ public class RegistrationHandler {
 		//client
 		registerPacket(id++, InitSentryAnimation.class, InitSentryAnimation::encode, InitSentryAnimation::new, InitSentryAnimation::handle);
 		registerPacket(id++, OpenScreen.class, OpenScreen::encode, OpenScreen::new, OpenScreen::handle);
-		registerPacket(id++, OpenLaserScreen.class, OpenLaserScreen::encode, OpenLaserScreen::new, OpenLaserScreen::handle);
-		registerPacket(id++, OpenSRATScreen.class, OpenSRATScreen::encode, OpenSRATScreen::new, OpenSRATScreen::handle);
 		registerPacket(id++, PlayAlarmSound.class, PlayAlarmSound::encode, PlayAlarmSound::new, PlayAlarmSound::handle);
 		registerPacket(id++, RefreshDisguisableModel.class, RefreshDisguisableModel::encode, RefreshDisguisableModel::new, RefreshDisguisableModel::handle);
 		registerPacket(id++, SendTip.class, SendTip::encode, SendTip::new, SendTip::handle);
 		registerPacket(id++, SetCameraView.class, SetCameraView::encode, SetCameraView::new, SetCameraView::handle);
 		registerPacket(id++, SetTrophySystemTarget.class, SetTrophySystemTarget::encode, SetTrophySystemTarget::new, SetTrophySystemTarget::handle);
+		registerPacket(id++, UpdateLaserColors.class, UpdateLaserColors::encode, UpdateLaserColors::new, UpdateLaserColors::handle);
 		registerPacket(id++, UpdateLogger.class, UpdateLogger::encode, UpdateLogger::new, UpdateLogger::handle);
 		registerPacket(id++, UpdateNBTTagOnClient.class, UpdateNBTTagOnClient::encode, UpdateNBTTagOnClient::new, UpdateNBTTagOnClient::handle);
 		//server
@@ -184,7 +184,7 @@ public class RegistrationHandler {
 	}
 
 	private static <MSG> void registerPacket(int id, Class<MSG> type, BiConsumer<MSG, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> messageHandler) {
-		SecurityCraft.channel.messageBuilder(type, id).encoder(encoder).decoder(decoder).consumerMainThread(messageHandler).add();
+		SecurityCraft.CHANNEL.messageBuilder(type, id).encoder(encoder).decoder(decoder).consumerMainThread(messageHandler).add();
 	}
 
 	@SubscribeEvent

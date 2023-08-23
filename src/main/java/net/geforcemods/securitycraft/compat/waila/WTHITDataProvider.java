@@ -39,7 +39,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fml.ModList;
 
-public class WTHITDataProvider extends WailaCompatConstants implements IWailaPlugin, IBlockComponentProvider, IEntityComponentProvider, IEventListener {
+public final class WTHITDataProvider extends WailaCompatConstants implements IWailaPlugin, IBlockComponentProvider, IEntityComponentProvider, IEventListener {
 	public static final WTHITDataProvider INSTANCE = new WTHITDataProvider();
 
 	@Override
@@ -87,24 +87,24 @@ public class WTHITDataProvider extends WailaCompatConstants implements IWailaPlu
 			}
 		}
 
-		if (block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition()))
+		if (block instanceof IOverlayDisplay overlayDisplay && !overlayDisplay.shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition()))
 			return;
 
 		BlockEntity be = data.getBlockEntity();
 
 		//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
-		if (config.getBoolean(SHOW_OWNER) && be instanceof IOwnable && Utils.getRegistryName(block).getNamespace().equals(SecurityCraft.MODID))
-			tooltip.addLine(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) be).getOwner())));
+		if (config.getBoolean(SHOW_OWNER) && be instanceof IOwnable ownable && Utils.getRegistryName(block).getNamespace().equals(SecurityCraft.MODID))
+			tooltip.addLine(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner())));
 
 		if (disguised)
 			return;
 
 		//if the te is ownable, show modules only when it's owned, otherwise always show
-		if (config.getBoolean(SHOW_MODULES) && be instanceof IModuleInventory && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(data.getPlayer()))) {
-			if (!((IModuleInventory) be).getInsertedModules().isEmpty())
+		if (config.getBoolean(SHOW_MODULES) && be instanceof IModuleInventory moduleInv && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(data.getPlayer()))) {
+			if (!moduleInv.getInsertedModules().isEmpty())
 				tooltip.addLine(Utils.localize("waila.securitycraft:equipped"));
 
-			for (ModuleType module : ((IModuleInventory) be).getInsertedModules()) {
+			for (ModuleType module : moduleInv.getInsertedModules()) {
 				tooltip.addLine(Component.literal("- ").append(Component.translatable(module.getTranslationKey())));
 			}
 		}
@@ -135,19 +135,17 @@ public class WTHITDataProvider extends WailaCompatConstants implements IWailaPlu
 			if (config.getBoolean(SHOW_OWNER))
 				tooltip.addLine(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())));
 
-			if (config.getBoolean(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer())) {
-				if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
-					tooltip.addLine(EQUIPPED);
+			if (config.getBoolean(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer()) && (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())) {
+				tooltip.addLine(EQUIPPED);
 
-					if (!sentry.getAllowlistModule().isEmpty())
-						tooltip.addLine(ALLOWLIST_MODULE);
+				if (!sentry.getAllowlistModule().isEmpty())
+					tooltip.addLine(ALLOWLIST_MODULE);
 
-					if (!sentry.getDisguiseModule().isEmpty())
-						tooltip.addLine(DISGUISE_MODULE);
+				if (!sentry.getDisguiseModule().isEmpty())
+					tooltip.addLine(DISGUISE_MODULE);
 
-					if (sentry.hasSpeedModule())
-						tooltip.addLine(SPEED_MODULE);
-				}
+				if (sentry.hasSpeedModule())
+					tooltip.addLine(SPEED_MODULE);
 			}
 
 			MutableComponent modeDescription = Utils.localize(mode.getModeKey());

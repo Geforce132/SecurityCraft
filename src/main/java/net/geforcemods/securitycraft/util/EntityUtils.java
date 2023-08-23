@@ -10,6 +10,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class EntityUtils {
+	private EntityUtils() {}
+
 	public static boolean doesEntityOwn(Entity entity, Level level, BlockPos pos) {
 		if (entity instanceof Player player)
 			return doesPlayerOwn(player, level, pos);

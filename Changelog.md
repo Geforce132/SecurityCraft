@@ -3,7 +3,24 @@
 - New: The Sonic Security System's functionality can now be inverted (blocks are accessible by default, and locked when the correct tune is played)
 - New: The IMS can now automatically recharge itself with bouncing betties from a chest, barrel, etc. below
 - New: Simplified Chinese translation (Thanks DrIceTea!)
+- New: Lens item to be able to color laser and inventory scanner fields in any desired color, as well as a couple other things
+- New: Item tag "securitycraft:reinforced/glass_panes"
+- Change: The recipe for the Laser Block now uses 4 glass panes in total
+- Fix: Blocks can be pushed into a Sentry using a piston
+- Fix: Possible loss of data of passcode blocks
+- Fix: It's possible to scroll the Trophy System's list by clicking outside the list
+- Fix: The Universal Owner Changer cannot be put into a display case
+- Fix: The Trophy System's "Ignore Owner" option does not work
+- Fix: Blocks that have a custom name lose the name when getting broken
+- Fix: Toggling an entry in the Rift Stabilizer leads to the world closing/a disconnect
+- Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
+- Fix: The Bouncing Betty, Claymore, Mine, and Reinforced Cobweb can all be washed away by water
+- Potential Fix: When dismounting a camera, some UI elements don't reappear
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
+
+--------------------------Changelog for v1.9.7-beta2 of SecurityCraft--------------------------
+
+- Fix: Client crash on a server when having FTB Teams installed and looking at a block
 
 --------------------------Changelog for v1.9.7-beta1 of SecurityCraft--------------------------
 

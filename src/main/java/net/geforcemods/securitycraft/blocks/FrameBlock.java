@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -33,7 +34,7 @@ public class FrameBlock extends OwnableBlock {
 	private static final VoxelShape SHAPE_SOUTH = Shapes.joinUnoptimized(Shapes.block(), Block.box(2, 2, 15, 14, 14, 16), BooleanOp.ONLY_FIRST);
 	private static final VoxelShape SHAPE_WEST = Shapes.joinUnoptimized(Shapes.block(), Block.box(0, 2, 2, 1, 14, 14), BooleanOp.ONLY_FIRST);
 
-	public FrameBlock(Block.Properties properties) {
+	public FrameBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
@@ -63,11 +64,7 @@ public class FrameBlock extends OwnableBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
-	}
-
-	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer) {
-		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
+		return defaultBlockState().setValue(FACING, ctx.getPlayer().getDirection().getOpposite());
 	}
 
 	@Override

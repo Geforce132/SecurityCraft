@@ -60,15 +60,13 @@ public class BrushItemMixin {
 	 */
 	@Inject(method = "onUseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;isClientSide()Z"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
 	private void securitycraft$checkForSuspiciousMine(Level level, LivingEntity entity, ItemStack stack, int tick, CallbackInfo ci, Player player, HitResult hitResult, BlockHitResult blockHitResult, int i, boolean flag, BlockPos pos, BlockState brushedState) {
-		if (!level.isClientSide() && brushedState.is(SCTags.Blocks.SUSPICIOUS_MINES)) {
-			if (level.getBlockEntity(pos) instanceof BrushableMineBlockEntity be) {
-				boolean brushFinished = be.brush(level.getGameTime(), player, blockHitResult.getDirection());
+		if (!level.isClientSide() && brushedState.is(SCTags.Blocks.SUSPICIOUS_MINES) && level.getBlockEntity(pos) instanceof BrushableMineBlockEntity be) {
+			boolean brushFinished = be.brush(level.getGameTime(), player, blockHitResult.getDirection());
 
-				if (brushFinished)
-					stack.hurtAndBreak(1, player, livingEntity -> livingEntity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+			if (brushFinished)
+				stack.hurtAndBreak(1, player, livingEntity -> livingEntity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 
-				ci.cancel();
-			}
+			ci.cancel();
 		}
 	}
 }

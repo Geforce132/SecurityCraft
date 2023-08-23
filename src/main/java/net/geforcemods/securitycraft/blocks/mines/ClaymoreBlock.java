@@ -11,6 +11,10 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -23,6 +27,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -30,10 +35,12 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 
 public class ClaymoreBlock extends ExplosiveBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -43,9 +50,21 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	private static final VoxelShape SOUTH = Stream.of(Block.box(4, 0, 7, 12, 6, 8), Block.box(5, 0, 8, 11, 6, 9), Block.box(6, 6, 7, 10, 7, 8)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 	private static final VoxelShape WEST = Stream.of(Block.box(8, 0, 4, 9, 6, 12), Block.box(7, 0, 5, 8, 6, 11), Block.box(8, 6, 6, 9, 7, 10)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 
-	public ClaymoreBlock(Block.Properties properties) {
+	public ClaymoreBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(DEACTIVATED, false));
+	}
+
+	@Override
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (level.getBlockEntity(pos) instanceof ClaymoreBlockEntity be && be.isOwnedBy(player)) {
+			if (!level.isClientSide)
+				NetworkHooks.openScreen((ServerPlayer) player, be, pos);
+
+			return InteractionResult.SUCCESS;
+		}
+
+		return InteractionResult.PASS;
 	}
 
 	@Override
@@ -83,11 +102,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
-	}
-
-	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer) {
-		return defaultBlockState().setValue(FACING, placer.getDirection()).setValue(DEACTIVATED, false);
+		return defaultBlockState().setValue(FACING, ctx.getPlayer().getDirection()).setValue(DEACTIVATED, false);
 	}
 
 	@Override
@@ -136,8 +151,10 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
-			if (level.getBlockEntity(pos) instanceof IModuleInventory inv)
-				inv.dropAllModules();
+			if (level.getBlockEntity(pos) instanceof ClaymoreBlockEntity be) {
+				be.dropAllModules();
+				Containers.dropContents(level, pos, be.getLensContainer());
+			}
 
 			if (!newState.hasBlockEntity())
 				level.removeBlockEntity(pos);

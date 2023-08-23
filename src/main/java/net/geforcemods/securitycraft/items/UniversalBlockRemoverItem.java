@@ -60,8 +60,9 @@ public class UniversalBlockRemoverItem extends Item {
 
 			if (be instanceof IModuleInventory inv)
 				inv.dropAllModules();
+
 			if (block == SCContent.LASER_BLOCK.get()) {
-				LinkableBlockEntity laser = (LinkableBlockEntity) level.getBlockEntity(pos);
+				LinkableBlockEntity laser = (LinkableBlockEntity) be;
 
 				for (ItemStack module : laser.getInventory()) {
 					if (!module.isEmpty())
@@ -74,7 +75,7 @@ public class UniversalBlockRemoverItem extends Item {
 					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(ctx.getHand()));
 				}
 			}
-			else if (block == SCContent.CAGE_TRAP.get() && level.getBlockState(pos).getValue(CageTrapBlock.DEACTIVATED)) {
+			else if (block == SCContent.CAGE_TRAP.get() && state.getValue(CageTrapBlock.DEACTIVATED)) {
 				BlockPos originalPos = pos;
 				BlockPos middlePos = originalPos.above(4);
 

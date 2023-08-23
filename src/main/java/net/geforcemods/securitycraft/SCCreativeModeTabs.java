@@ -17,6 +17,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -90,6 +93,16 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.REINFORCED_OBSERVER.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_CAULDRON.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_HOPPER.get()));
+				output.accept(new ItemStack(SCContent.LENS.get()));
+
+				int colorAmount = SecurityCraft.RANDOM.nextInt(1, 4);
+				List<DyeItem> list = new ArrayList<>();
+
+				for (int i = 0; i < colorAmount; i++) {
+					list.add(DyeItem.byColor(DyeColor.byId(SecurityCraft.RANDOM.nextInt(16))));
+				}
+
+				output.accept(DyeableLeatherItem.dyeArmor(new ItemStack(SCContent.LENS.get()), list));
 				output.accept(new ItemStack(SCContent.ALLOWLIST_MODULE.get()));
 				output.accept(new ItemStack(SCContent.DENYLIST_MODULE.get()));
 				output.accept(new ItemStack(SCContent.DISGUISE_MODULE.get()));
@@ -257,4 +270,6 @@ public class SCCreativeModeTabs {
 	private static List<Item> getCreativeTabItems(ResourceKey<CreativeModeTab> tabKey) {
 		return BuiltInRegistries.CREATIVE_MODE_TAB.get(tabKey).getDisplayItems().stream().map(ItemStack::getItem).toList();
 	}
+
+	private SCCreativeModeTabs() {}
 }

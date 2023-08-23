@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -29,7 +30,7 @@ import net.minecraft.world.phys.BlockHitResult;
 public class UsernameLoggerBlock extends DisguisableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-	public UsernameLoggerBlock(Block.Properties properties) {
+	public UsernameLoggerBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
 	}
@@ -37,7 +38,7 @@ public class UsernameLoggerBlock extends DisguisableBlock {
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (level.isClientSide)
-			ClientHandler.displayUsernameLoggerScreen(level, pos);
+			ClientHandler.displayUsernameLoggerScreen(pos);
 
 		return InteractionResult.SUCCESS;
 	}
