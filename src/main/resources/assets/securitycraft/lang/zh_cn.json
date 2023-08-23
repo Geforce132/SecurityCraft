@@ -704,7 +704,7 @@
 	"gui.securitycraft:srat.modifyAll": "修改所有绑定的战斗哨石",
 	"gui.securitycraft:srat.name": "战斗哨石远程访问工具",
 	"gui.securitycraft:srat.notBound": "未绑定！",
-	"gui.securitycraft:srat.outOfRange": "战斗哨石超出范围",
+	"gui.securitycraft:srat.outOfRange": "战斗哨石超出范围或已移除",
 	"gui.securitycraft:srat.sentryLocations": "战斗哨石位于#location",
 	"gui.securitycraft:srat.targets1": "敌对生物和玩家",
 	"gui.securitycraft:srat.targets2": "仅敌对生物",
