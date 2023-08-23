@@ -16,6 +16,7 @@
 - Fix: The Trophy System's "Ignore Owner" option does not work
 - Fix: Blocks that have a custom name lose the name when getting broken
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
+- Misc.: The laser field model has been changed - resource packs may need to be updated
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
