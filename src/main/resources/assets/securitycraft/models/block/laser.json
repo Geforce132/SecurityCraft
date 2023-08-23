@@ -1,0 +1,28 @@
+{
+	"parent": "block/block",
+    "ambientocclusion": false,
+    "textures": {
+        "particle": "securitycraft:blocks/laser",
+        "laser": "securitycraft:blocks/laser"
+    },
+    "elements": [
+        {
+            "from": [6.75,6.75,0],
+            "to": [9.25,9.25,16],
+            "faces": {
+                "east": {
+                    "uv": [0, 6.75, 16, 9.25], "texture": "#laser", "tintindex": 0
+                },
+                "west": {
+                    "uv": [0, 6.75, 16, 9.25], "texture": "#laser", "tintindex": 0
+                },
+                "up": {
+                    "uv": [0, 6.75, 16, 9.25], "rotation": 90, "texture": "#laser", "tintindex": 0
+                },
+                "down": {
+                    "uv": [0, 6.75, 16, 9.25], "rotation": 270, "texture": "#laser", "tintindex": 0
+                }
+            }
+        }
+    ]
+}

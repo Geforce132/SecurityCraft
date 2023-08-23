@@ -18,6 +18,7 @@
 - Fix: Blocks that have a custom name lose the name when getting broken
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
 - Fix: Opening a Username Logger with a block in one's hand places the block for a split second
+- Misc.: The laser field model has been changed - resource packs may need to be updated
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
