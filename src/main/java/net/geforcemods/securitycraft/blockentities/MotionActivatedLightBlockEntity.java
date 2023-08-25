@@ -35,7 +35,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 		if (isDisabled() || cooldown-- > 0)
 			return;
 
-		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && !e.canBeSeenByAnyone() && !(e instanceof Sentry || e instanceof ArmorStand));
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && e.canBeSeenByAnyone() && !(e instanceof Sentry || e instanceof ArmorStand));
 		boolean shouldBeOn = !entities.isEmpty();
 
 		if (state.getValue(MotionActivatedLightBlock.LIT) != shouldBeOn)

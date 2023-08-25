@@ -31,7 +31,7 @@ public interface IViewActivated {
 		}
 
 		double maximumDistance = getMaximumDistance();
-		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(maximumDistance), e -> !e.canBeSeenByAnyone() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof Player));
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(maximumDistance), e -> e.canBeSeenByAnyone() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof Player));
 
 		for (LivingEntity entity : entities) {
 			double eyeHeight = entity.getEyeHeight();
