@@ -36,7 +36,7 @@ public class BrushItemMixin {
 	@Inject(method = "calculateHitResult", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$makeSuspiciousMinesBrushablePartTwo(LivingEntity entity, CallbackInfoReturnable<HitResult> cir) {
 		Vec3 eyePosition = entity.getEyePosition();
-		Predicate<Entity> entitySelector = e -> !e.isSpectator() && e.isPickable();
+		Predicate<Entity> entitySelector = e -> (e instanceof LivingEntity livingEntity ? livingEntity.canBeSeenByAnyone() : !e.isSpectator()) && e.isPickable();
 		Vec3 viewVector = entity.getViewVector(0.0F).scale(5.0D);
 		Level level = entity.level();
 		Vec3 direction = eyePosition.add(viewVector);
