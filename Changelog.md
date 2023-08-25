@@ -6,6 +6,7 @@
 - New: Lens item to be able to color laser and inventory scanner fields in any desired color, as well as a couple other things
 - New: Item tag "securitycraft:reinforced/glass_panes"
 - Change: The recipe for the Laser Block now uses 4 glass panes in total
+- Change: You can no longer break the code of passcode blocks/briefcases that you own
 - Fix: Blocks can be pushed into a Sentry using a piston
 - Fix: Possible loss of data of passcode blocks
 - Fix: It's possible to scroll the Trophy System's list by clicking outside the list
