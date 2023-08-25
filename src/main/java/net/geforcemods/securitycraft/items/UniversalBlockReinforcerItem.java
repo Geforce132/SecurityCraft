@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
+import java.util.Map;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
@@ -17,6 +19,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -30,8 +35,11 @@ public class UniversalBlockReinforcerItem extends Item {
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-		if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-			NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
+		ItemStack heldItem = player.getItemInHand(hand);
+
+		if (!level.isClientSide) {
+			maybeRemoveMending(heldItem);
+			NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
 				@Override
 				public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 					return new BlockReinforcerMenu(windowId, inv, UniversalBlockReinforcerItem.this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
@@ -44,7 +52,7 @@ public class UniversalBlockReinforcerItem extends Item {
 			}, data -> data.writeBoolean(this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()));
 		}
 
-		return InteractionResultHolder.consume(player.getItemInHand(hand));
+		return InteractionResultHolder.consume(heldItem);
 	}
 
 	public static boolean convertBlock(BlockState vanillaState, Level level, ItemStack stack, BlockPos pos, Player player) { //gets rid of the stuttering experienced with onBlockStartBreak
@@ -80,5 +88,19 @@ public class UniversalBlockReinforcerItem extends Item {
 		}
 
 		return true;
+	}
+
+	public static void maybeRemoveMending(ItemStack stack) {
+		Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
+
+		if (enchantments.containsKey(Enchantments.MENDING)) {
+			enchantments.remove(Enchantments.MENDING);
+			EnchantmentHelper.setEnchantments(enchantments, stack);
+		}
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return !EnchantmentHelper.getEnchantments(book).containsKey(Enchantments.MENDING);
 	}
 }
