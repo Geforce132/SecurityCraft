@@ -32,34 +32,40 @@ public class CodebreakerItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack codebreaker = player.getItemInHand(hand);
 
-		if (hand == InteractionHand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get()) {
-			double chance = ConfigHandler.SERVER.codebreakerChance.get();
+		if (hand == InteractionHand.MAIN_HAND) {
+			ItemStack briefcase = player.getOffhandItem();
 
-			if (chance < 0.0D)
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.BRIEFCASE.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
-			else {
-				codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+			if (briefcase.is(SCContent.BRIEFCASE.get())) {
+				if (BriefcaseItem.isOwnedBy(briefcase, player))
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.owned"), ChatFormatting.RED);
+				else {
+					double chance = ConfigHandler.SERVER.codebreakerChance.get();
 
-				if (!level.isClientSide && (player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance)) {
-					ItemStack briefcase = player.getOffhandItem();
+					if (chance < 0.0D)
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
+					else {
+						codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-					NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
-						@Override
-						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-							return new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(briefcase));
+						if (!level.isClientSide && (player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance)) {
+							NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
+								@Override
+								public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
+									return new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(briefcase));
+								}
+
+								@Override
+								public Component getDisplayName() {
+									return briefcase.getHoverName();
+								}
+							}, player.blockPosition());
 						}
-
-						@Override
-						public Component getDisplayName() {
-							return briefcase.getHoverName();
-						}
-					}, player.blockPosition());
+						else
+							PlayerUtils.sendMessageToPlayer(player, Component.translatable(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
+					}
 				}
-				else
-					PlayerUtils.sendMessageToPlayer(player, Component.translatable(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
-			}
 
-			return InteractionResultHolder.success(codebreaker);
+				return InteractionResultHolder.success(codebreaker);
+			}
 		}
 
 		return InteractionResultHolder.pass(codebreaker);
