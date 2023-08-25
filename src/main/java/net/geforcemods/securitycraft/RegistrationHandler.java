@@ -41,6 +41,7 @@ import net.geforcemods.securitycraft.network.server.SetStateOnDisguiseModule;
 import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
 import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
+import net.geforcemods.securitycraft.network.server.SyncBlockReinforcer;
 import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.network.server.SyncLaserSideConfig;
@@ -169,6 +170,7 @@ public class RegistrationHandler {
 		registerPacket(id++, SetSentryMode.class, SetSentryMode::encode, SetSentryMode::new, SetSentryMode::handle);
 		registerPacket(id++, SetStateOnDisguiseModule.class, SetStateOnDisguiseModule::encode, SetStateOnDisguiseModule::new, SetStateOnDisguiseModule::handle);
 		registerPacket(id++, SyncBlockChangeDetector.class, SyncBlockChangeDetector::encode, SyncBlockChangeDetector::new, SyncBlockChangeDetector::handle);
+		registerPacket(id++, SyncBlockReinforcer.class, SyncBlockReinforcer::encode, SyncBlockReinforcer::new, SyncBlockReinforcer::handle);
 		registerPacket(id++, SyncBlockPocketManager.class, SyncBlockPocketManager::encode, SyncBlockPocketManager::new, SyncBlockPocketManager::handle);
 		registerPacket(id++, SyncIMSTargetingOption.class, SyncIMSTargetingOption::encode, SyncIMSTargetingOption::new, SyncIMSTargetingOption::handle);
 		registerPacket(id++, SyncKeycardSettings.class, SyncKeycardSettings::encode, SyncKeycardSettings::new, SyncKeycardSettings::handle);

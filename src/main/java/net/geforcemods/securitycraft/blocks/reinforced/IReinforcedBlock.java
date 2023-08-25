@@ -3,6 +3,8 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -16,12 +18,26 @@ public interface IReinforcedBlock {
 	@SuppressWarnings({
 			"rawtypes", "unchecked"
 	})
-	public default BlockState getConvertedState(BlockState vanillaState) {
+	public default BlockState convertToReinforced(Level level, BlockPos pos, BlockState vanillaState) {
 		BlockState defaultBlockState = ((Block) this).defaultBlockState();
 
 		for (Property property : vanillaState.getProperties()) {
 			if (defaultBlockState.hasProperty(property))
 				defaultBlockState = defaultBlockState.setValue(property, vanillaState.getValue(property));
+		}
+
+		return defaultBlockState;
+	}
+
+	@SuppressWarnings({
+			"rawtypes", "unchecked"
+	})
+	public default BlockState convertToVanilla(Level level, BlockPos pos, BlockState reinforcedState) {
+		BlockState defaultBlockState = getVanillaBlock().defaultBlockState();
+
+		for (Property property : reinforcedState.getProperties()) {
+			if (defaultBlockState.hasProperty(property))
+				defaultBlockState = defaultBlockState.setValue(property, reinforcedState.getValue(property));
 		}
 
 		return defaultBlockState;
