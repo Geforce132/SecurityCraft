@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

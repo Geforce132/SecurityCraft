@@ -6,8 +6,8 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
