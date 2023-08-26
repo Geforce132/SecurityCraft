@@ -68,8 +68,14 @@ public class UniversalBlockReinforcerItem extends Item {
 									convertedState = securityCraftBlock.getStateFromMeta(i);
 							}
 						}
-						else
-							convertedState = reinforcedBlock.getVanillaBlocks().get(securityCraftBlock.getMetaFromState(state)).getDefaultState();
+						else {
+							int meta = 0;
+
+							if (reinforcedBlock.getAmount() > 1)
+								meta = securityCraftBlock.getMetaFromState(state);
+
+							convertedState = reinforcedBlock.getVanillaBlocks().get(meta).getDefaultState();
+						}
 					}
 					else {
 						if (isReinforcing)
