@@ -112,6 +112,7 @@ import net.geforcemods.securitycraft.network.server.SetStateOnDisguiseModule;
 import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
 import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
+import net.geforcemods.securitycraft.network.server.SyncBlockReinforcer;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.network.server.SyncLaserSideConfig;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
@@ -563,6 +564,7 @@ public class RegistrationHandler {
 		network.registerMessage(SyncLaserSideConfig.Handler.class, SyncLaserSideConfig.class, 51, Side.SERVER);
 		network.registerMessage(PlayAlarmSound.Handler.class, PlayAlarmSound.class, 52, Side.CLIENT);
 		network.registerMessage(SyncAlarmSettings.Handler.class, SyncAlarmSettings.class, 53, Side.SERVER);
+		network.registerMessage(SyncBlockReinforcer.Handler.class, SyncBlockReinforcer.class, 54, Side.SERVER);
 	}
 
 	@SubscribeEvent

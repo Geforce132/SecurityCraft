@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.Map;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
@@ -42,14 +43,15 @@ public class UniversalBlockReinforcerItem extends Item {
 
 	public static boolean convertBlock(ItemStack stack, BlockPos pos, EntityPlayer player) {
 		if (!player.capabilities.isCreativeMode) {
+			boolean isReinforcing = isReinforcing(stack);
 			World world = player.getEntityWorld();
 			IBlockState state = world.getBlockState(pos);
-			Block block = world.getBlockState(pos).getBlock();
+			Block blockToConvert = state.getBlock();
 
-			for (Block rb : IReinforcedBlock.BLOCKS) {
-				IReinforcedBlock reinforcedBlock = (IReinforcedBlock) rb;
+			for (Block securityCraftBlock : IReinforcedBlock.BLOCKS) {
+				IReinforcedBlock reinforcedBlock = (IReinforcedBlock) securityCraftBlock;
 
-				if (reinforcedBlock.getVanillaBlocks().contains(block)) {
+				if (isReinforcing && reinforcedBlock.getVanillaBlocks().contains(blockToConvert) || !isReinforcing && securityCraftBlock == blockToConvert) {
 					IBlockState convertedState = null;
 					TileEntity te = world.getTileEntity(pos);
 					NBTTagCompound tag = null;
@@ -58,17 +60,30 @@ public class UniversalBlockReinforcerItem extends Item {
 						tag = te.writeToNBT(new NBTTagCompound());
 
 					if (reinforcedBlock.getVanillaBlocks().size() == reinforcedBlock.getAmount()) {
-						for (int i = 0; i < reinforcedBlock.getAmount(); i++) {
-							if (block.equals(reinforcedBlock.getVanillaBlocks().get(i)))
-								convertedState = rb.getStateFromMeta(i);
-						}
-					}
-					else
-						convertedState = rb.getStateFromMeta(block.getMetaFromState(block.getActualState(state, world, pos)));
+						if (isReinforcing) {
+							for (int i = 0; i < reinforcedBlock.getAmount(); i++) {
+								Block vanillaBlock = reinforcedBlock.getVanillaBlocks().get(i);
 
-					if (convertedState != null) { //shouldn't happen, but just to be safe
+								if (blockToConvert.equals(vanillaBlock))
+									convertedState = securityCraftBlock.getStateFromMeta(i);
+							}
+						}
+						else
+							convertedState = reinforcedBlock.getVanillaBlocks().get(securityCraftBlock.getMetaFromState(state)).getDefaultState();
+					}
+					else {
+						if (isReinforcing)
+							convertedState = securityCraftBlock.getStateFromMeta(blockToConvert.getMetaFromState(blockToConvert.getActualState(state, world, pos)));
+						else
+							convertedState = reinforcedBlock.getVanillaBlocks().get(0).getStateFromMeta(blockToConvert.getMetaFromState(blockToConvert.getActualState(state, world, pos)));
+					}
+
+					if (convertedState != null) {
 						if (te instanceof IInventory)
 							((IInventory) te).clear();
+
+						if (!isReinforcing && te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player))
+							return false;
 
 						world.setBlockState(pos, convertedState);
 						te = world.getTileEntity(pos);
@@ -77,7 +92,8 @@ public class UniversalBlockReinforcerItem extends Item {
 							if (tag != null)
 								te.readFromNBT(tag);
 
-							((IOwnable) te).setOwner(player.getGameProfile().getId().toString(), player.getName());
+							if (isReinforcing)
+								((IOwnable) te).setOwner(player.getGameProfile().getId().toString(), player.getName());
 						}
 
 						stack.damageItem(1, player);
@@ -89,6 +105,16 @@ public class UniversalBlockReinforcerItem extends Item {
 		}
 
 		return false;
+	}
+
+	public static boolean isReinforcing(ItemStack stack) {
+		if (stack.getItem() == SCContent.universalBlockReinforcerLvL1)
+			return true;
+
+		if (!stack.hasTagCompound())
+			stack.setTagCompound(new NBTTagCompound());
+
+		return !stack.getTagCompound().getBoolean("is_unreinforcing");
 	}
 
 	public static void maybeRemoveMending(ItemStack stack) {

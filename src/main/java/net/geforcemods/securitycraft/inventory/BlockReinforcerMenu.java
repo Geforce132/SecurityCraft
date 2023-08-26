@@ -22,7 +22,7 @@ public class BlockReinforcerMenu extends Container {
 	private InventoryBasic itemInventory = new InventoryBasic("BlockReinforcer", true, 2);
 	public final SlotBlockReinforcer reinforcingSlot;
 	public final SlotBlockReinforcer unreinforcingSlot;
-	public final boolean isLvl1;
+	public final boolean isLvl1, isReinforcing;
 
 	public BlockReinforcerMenu(EntityPlayer player, InventoryPlayer inventory, boolean isLvl1) {
 		blockReinforcer = player.getHeldItemMainhand().getItem() instanceof UniversalBlockReinforcerItem ? player.getHeldItemMainhand() : player.getHeldItemOffhand();
@@ -30,16 +30,17 @@ public class BlockReinforcerMenu extends Container {
 		//main player inventory
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(inventory, 9 + j + i * 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(inventory, 9 + j + i * 9, 8 + j * 18, 104 + i * 18));
 			}
 		}
 
 		//player hotbar
 		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 162));
 		}
 
 		this.isLvl1 = isLvl1;
+		this.isReinforcing = UniversalBlockReinforcerItem.isReinforcing(blockReinforcer);
 		addSlotToContainer(reinforcingSlot = new SlotBlockReinforcer(itemInventory, 0, 26, 20, true));
 
 		if (!isLvl1)
