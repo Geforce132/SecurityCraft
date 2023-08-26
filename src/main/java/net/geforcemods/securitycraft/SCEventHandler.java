@@ -397,8 +397,10 @@ public class SCEventHandler {
 		ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
 		Item held = stack.getItem();
 
-		if (held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3)
+		if (held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3) {
+			UniversalBlockReinforcerItem.maybeRemoveMending(stack);
 			UniversalBlockReinforcerItem.convertBlock(stack, event.getPos(), event.getEntityPlayer());
+		}
 	}
 
 	@SubscribeEvent
