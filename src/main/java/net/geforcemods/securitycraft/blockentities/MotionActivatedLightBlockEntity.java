@@ -29,7 +29,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 
 	@Override
 	public void tick() {
-		if (isDisabled() || cooldown-- > 0)
+		if (level.isClientSide || isDisabled() || cooldown-- > 0)
 			return;
 
 		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(worldPosition).inflate(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && !e.isSpectator() && !(e instanceof Sentry || e instanceof ArmorStandEntity));
