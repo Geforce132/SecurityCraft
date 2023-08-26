@@ -6,6 +6,7 @@
 - New: Lens item to be able to color laser and inventory scanner fields in any desired color, as well as a couple other things
 - New: Item tag "securitycraft:reinforced/glass_panes"
 - Change: The recipe for the Laser Block now uses 4 glass panes in total
+- Change: You can no longer break the code of passcode blocks/briefcases that you own
 - Fix: Crash when opening the customization GUI of a block that has no options (like the Projector)
 - Fix: Blocks can be pushed into a Sentry using a piston
 - Fix: The block at x=0, y=0, z=0 gets removed when placing a Sentry
