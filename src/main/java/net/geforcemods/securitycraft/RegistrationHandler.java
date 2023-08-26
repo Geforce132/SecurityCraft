@@ -268,6 +268,7 @@ public class RegistrationHandler {
 							new ItemStack(SCContent.REINFORCED_STICKY_PISTON.get()),
 							new ItemStack(SCContent.REINFORCED_OBSERVER.get()),
 							new ItemStack(SCContent.REINFORCED_CAULDRON.get()),
+							new ItemStack(SCContent.REINFORCED_LADDER.get()),
 							new ItemStack(SCContent.REINFORCED_HOPPER.get())));
 					output.accept(new ItemStack(SCContent.LENS.get()));
 

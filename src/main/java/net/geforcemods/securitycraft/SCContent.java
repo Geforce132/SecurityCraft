@@ -127,6 +127,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlazedTerracott
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronBarsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLadderBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLanternBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLavaCauldronBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLayeredCauldronBlock;
@@ -1798,6 +1799,10 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
 	public static final RegistryObject<Block> REINFORCED_IRON_BARS = BLOCKS.register("reinforced_iron_bars", () -> new ReinforcedIronBarsBlock(prop(Material.METAL, MaterialColor.NONE).sound(SoundType.METAL), Blocks.IRON_BARS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_LADDER = BLOCKS.register("reinforced_ladder", () -> new ReinforcedLadderBlock(prop(Material.DECORATION).sound(SoundType.LADDER).noOcclusion()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced

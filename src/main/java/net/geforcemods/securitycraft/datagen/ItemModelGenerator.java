@@ -47,6 +47,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		flatReinforcedItems.put(SCContent.REINFORCED_COBWEB.get(), "block/cobweb");
 		flatReinforcedItems.put(SCContent.REINFORCED_HOPPER.get(), "item/hopper");
 		flatReinforcedItems.put(SCContent.REINFORCED_IRON_BARS.get(), "securitycraft:block/reinforced_iron_bars");
+		flatReinforcedItems.put(SCContent.REINFORCED_LADDER.get(), "block/ladder");
 		flatReinforcedItems.put(SCContent.REINFORCED_LANTERN.get(), "item/lantern");
 		flatReinforcedItems.put(SCContent.REINFORCED_LEVER.get(), "block/lever");
 		flatReinforcedItems.put(SCContent.REINFORCED_SOUL_LANTERN.get(), "item/soul_lantern");
