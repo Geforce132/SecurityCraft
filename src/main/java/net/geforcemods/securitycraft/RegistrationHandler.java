@@ -328,6 +328,7 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.riftStabilizer);
 		registerBlock(event, SCContent.displayCase);
 		registerBlock(event, SCContent.keypadTrapdoor);
+		registerBlock(event, SCContent.reinforcedLadder);
 
 		//block mines
 		registerBlockMine(event, SCContent.stoneMine);
@@ -892,6 +893,7 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.riftStabilizer, 0, "rift_stabilizer");
 		registerInventoryModel(SCContent.displayCase, 0, "display_case");
 		registerInventoryModel(SCContent.keypadTrapdoor, 0, "keypad_trapdoor");
+		registerInventoryModel(SCContent.reinforcedLadder, 0, "reinforced_ladder");
 
 		//items
 		registerInventoryModel(SCContent.codebreaker, 0, "codebreaker");

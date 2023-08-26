@@ -79,6 +79,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIceBaseBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIceBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronBarsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLadderBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLapisAndCoalBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMetalsBlock;
@@ -301,6 +302,7 @@ public class SetupHandler {
 		SCContent.riftStabilizer = new RiftStabilizerBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("rift_stabilizer").setTranslationKey("securitycraft:rift_stabilizer");
 		SCContent.displayCase = new DisplayCaseBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("display_case").setTranslationKey("securitycraft:display_case");
 		SCContent.keypadTrapdoor = (KeypadTrapDoorBlock) new KeypadTrapDoorBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("keypad_trapdoor").setTranslationKey("securitycraft:keypad_trapdoor");
+		SCContent.reinforcedLadder = new ReinforcedLadderBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_ladder").setTranslationKey("securitycraft:reinforced_ladder");
 	}
 
 	public static void setupMines() {

@@ -212,6 +212,9 @@ public class SCContent {
 	public static Block reinforcedIronTrapdoor;
 	@Reinforced
 	@Tinted
+	public static Block reinforcedLadder;
+	@Reinforced
+	@Tinted
 	public static Block reinforcedLever;
 	@Reinforced
 	@Tinted
