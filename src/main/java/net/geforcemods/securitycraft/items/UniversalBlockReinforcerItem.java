@@ -1,11 +1,16 @@
 package net.geforcemods.securitycraft.items;
 
+import java.util.Map;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -31,7 +36,10 @@ public class UniversalBlockReinforcerItem extends Item {
 
 	@Override
 	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-		if (!world.isClientSide && player instanceof ServerPlayerEntity) {
+		ItemStack heldItem = player.getItemInHand(hand);
+
+		if (!world.isClientSide) {
+			maybeRemoveMending(heldItem);
 			NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 				@Override
 				public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
@@ -45,7 +53,7 @@ public class UniversalBlockReinforcerItem extends Item {
 			}, data -> data.writeBoolean(this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()));
 		}
 
-		return ActionResult.consume(player.getItemInHand(hand));
+		return ActionResult.consume(heldItem);
 	}
 
 	public static boolean convertBlock(BlockState vanillaState, World world, ItemStack stack, BlockPos pos, PlayerEntity player) {
@@ -81,5 +89,19 @@ public class UniversalBlockReinforcerItem extends Item {
 		}
 
 		return true;
+	}
+
+	public static void maybeRemoveMending(ItemStack stack) {
+		Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
+
+		if (enchantments.containsKey(Enchantments.MENDING)) {
+			enchantments.remove(Enchantments.MENDING);
+			EnchantmentHelper.setEnchantments(enchantments, stack);
+		}
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return !EnchantmentHelper.getEnchantments(book).containsKey(Enchantments.MENDING);
 	}
 }
