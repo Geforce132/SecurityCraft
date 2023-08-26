@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Arrays;
 import java.util.List;
 
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;

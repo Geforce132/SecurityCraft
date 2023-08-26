@@ -6,6 +6,7 @@ import java.util.function.Function;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IDoorActivator;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.minecraft.block.Block;

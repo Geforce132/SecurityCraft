@@ -8,7 +8,7 @@ import moze_intel.projecte.api.ProjectEAPI;
 import moze_intel.projecte.api.proxy.IConversionProxy;
 import moze_intel.projecte.api.proxy.IEMCProxy;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 

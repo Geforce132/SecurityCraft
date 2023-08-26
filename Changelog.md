@@ -8,6 +8,8 @@
 - Change: The recipe for the Laser Block now uses 4 glass panes in total
 - Change: You can no longer break the code of passcode blocks/briefcases that you own
 - Change: Universal Block Reinforcers can no longer be enchanted with Mending. Old reinforcers lose their Mending enchantment when used. This is to make it more enticing to upgrade to a level 3 reinforcer. In the future, this idea will be expanded upon.
+- API: IReinforcedBlock has been moved to the API package
+- API: New methods IReinforcedBlock#convertToReinforced and IReinforcedBlock#convertToVanilla
 - Fix: The exclamation mark in the Keycard Reader screen is dark
 - Fix: Reinforced Doors placed next to each other don't open properly after the chunk they're in is reloaded
 - Fix: Startup crash with some versions of SpongeForge

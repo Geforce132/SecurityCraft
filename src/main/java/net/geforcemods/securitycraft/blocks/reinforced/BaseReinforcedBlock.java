@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;

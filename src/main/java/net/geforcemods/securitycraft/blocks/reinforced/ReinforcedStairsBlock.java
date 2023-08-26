@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Arrays;
 import java.util.List;
 
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.OwnableStairsBlock;
 import net.minecraft.block.Block;
 
