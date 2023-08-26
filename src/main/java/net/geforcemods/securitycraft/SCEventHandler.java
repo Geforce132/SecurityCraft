@@ -399,10 +399,11 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onBreakSpeed(BreakSpeed event) {
 		if (event.getEntity() != null) {
-			Item held = event.getEntity().getMainHandItem().getItem();
+			ItemStack heldStack = event.getEntity().getMainHandItem();
+			Item held = heldStack.getItem();
 
 			if (held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()) {
-				Block block = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(event.getState().getBlock());
+				Block block = (UniversalBlockReinforcerItem.isReinforcing(heldStack) ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).get(event.getState().getBlock());
 
 				if (block != null)
 					event.setNewSpeed(10000.0F);
