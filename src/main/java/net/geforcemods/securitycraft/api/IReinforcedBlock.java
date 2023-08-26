@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.blocks.reinforced;
+package net.geforcemods.securitycraft.api;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
