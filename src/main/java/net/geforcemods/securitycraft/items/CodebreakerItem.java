@@ -29,21 +29,29 @@ public class CodebreakerItem extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack codebreaker = player.getHeldItem(hand);
 
-		if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase) {
-			double chance = ConfigHandler.codebreakerChance;
+		if (hand == EnumHand.MAIN_HAND) {
+			ItemStack briefcase = player.getHeldItemOffhand();
 
-			if (chance < 0.0D)
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.briefcase.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-			else {
-				codebreaker.damageItem(1, player);
+			if (briefcase.getItem() == SCContent.briefcase) {
+				if (BriefcaseItem.isOwnedBy(briefcase, player))
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.codebreaker), Utils.localize("messages.securitycraft:codebreaker.owned"), TextFormatting.RED);
+				else {
+					double chance = ConfigHandler.codebreakerChance;
 
-				if (!world.isRemote && (player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance))
-					player.openGui(SecurityCraft.instance, Screens.BRIEFCASE_INVENTORY.ordinal(), world, (int) player.posX, (int) player.posY, (int) player.posZ);
-				else
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:codebreaker.name"), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+					if (chance < 0.0D)
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.briefcase), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+					else {
+						codebreaker.damageItem(1, player);
+
+						if (!world.isRemote && (player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance))
+							player.openGui(SecurityCraft.instance, Screens.BRIEFCASE_INVENTORY.ordinal(), world, (int) player.posX, (int) player.posY, (int) player.posZ);
+						else
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.codebreaker), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+					}
+				}
+
+				return ActionResult.newResult(EnumActionResult.SUCCESS, codebreaker);
 			}
-
-			return ActionResult.newResult(EnumActionResult.SUCCESS, codebreaker);
 		}
 
 		return ActionResult.newResult(EnumActionResult.PASS, codebreaker);

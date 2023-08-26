@@ -5,6 +5,7 @@
 - New: Simplified Chinese translation (Thanks DrIceTea!)
 - New: Lens item to be able to color laser and inventory scanner fields in any desired color, as well as a couple other things
 - Change: The recipe for the Laser Block now uses 4 glass panes in total
+- Change: You can no longer break the code of passcode blocks/briefcases that you own
 - Fix: The exclamation mark in the Keycard Reader screen is dark
 - Fix: Reinforced Doors placed next to each other don't open properly after the chunk they're in is reloaded
 - Fix: Startup crash with some versions of SpongeForge

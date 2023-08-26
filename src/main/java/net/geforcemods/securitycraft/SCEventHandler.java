@@ -717,8 +717,14 @@ public class SCEventHandler {
 				if (!codebreakable.shouldAttemptCodebreak(state, player))
 					return true;
 
-				if (stackInHand.getItem() == SCContent.codebreaker)
+				if (stackInHand.getItem() == SCContent.codebreaker) {
+					if (codebreakable instanceof IOwnable && ((IOwnable) codebreakable).isOwnedBy(player)) {
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.codebreaker), Utils.localize("messages.securitycraft:codebreaker.owned"), TextFormatting.RED);
+						return false;
+					}
+
 					stackInHand.damageItem(1, player);
+				}
 
 				if (player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance)
 					codebreakable.useCodebreaker(state, player);
