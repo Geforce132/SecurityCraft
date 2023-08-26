@@ -514,8 +514,14 @@ public class SCEventHandler {
 				if (!codebreakable.shouldAttemptCodebreak(state, player))
 					return true;
 
-				if (stackInHand.is(SCContent.CODEBREAKER.get()))
+				if (stackInHand.is(SCContent.CODEBREAKER.get())) {
+					if (codebreakable instanceof IOwnable ownable && ownable.isOwnedBy(player)) {
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.owned"), ChatFormatting.RED);
+						return false;
+					}
+
 					stackInHand.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
+				}
 
 				if (player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance)
 					codebreakable.useCodebreaker(state, player);
