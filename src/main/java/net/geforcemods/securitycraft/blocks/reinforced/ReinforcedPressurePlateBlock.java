@@ -119,8 +119,13 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
+	public BlockState convertToReinforced(World level, BlockPos pos, BlockState vanillaState) {
 		return defaultBlockState();
+	}
+
+	@Override
+	public BlockState convertToVanilla(World level, BlockPos pos, BlockState reinforcedState) {
+		return getVanillaBlock().defaultBlockState();
 	}
 
 	@Override

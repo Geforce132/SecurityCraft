@@ -56,15 +56,24 @@ public class UniversalBlockReinforcerItem extends Item {
 		return ActionResult.consume(heldItem);
 	}
 
-	public static boolean convertBlock(BlockState vanillaState, World world, ItemStack stack, BlockPos pos, PlayerEntity player) {
+	public static boolean convertBlock(BlockState state, World world, ItemStack stack, BlockPos pos, PlayerEntity player) {
 		if (!player.isCreative()) {
-			Block block = vanillaState.getBlock();
-			Block rb = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(block);
+			boolean isReinforcing = isReinforcing(stack);
+			Block block = state.getBlock();
+			Block convertedBlock = (isReinforcing ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).get(block);
+			BlockState convertedState = null;
 
-			if (rb != null) {
-				BlockState convertedState = ((IReinforcedBlock) rb).getConvertedState(vanillaState);
+			if (isReinforcing && convertedBlock instanceof IReinforcedBlock)
+				convertedState = ((IReinforcedBlock) convertedBlock).convertToReinforced(world, pos, state);
+			else if (!isReinforcing && block instanceof IReinforcedBlock)
+				convertedState = ((IReinforcedBlock) block).convertToVanilla(world, pos, state);
+
+			if (convertedState != null) {
 				TileEntity te = world.getBlockEntity(pos);
 				CompoundNBT tag = null;
+
+				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player))
+					return false;
 
 				if (te != null) {
 					tag = te.save(new CompoundNBT());
@@ -80,7 +89,8 @@ public class UniversalBlockReinforcerItem extends Item {
 					if (tag != null)
 						te.load(convertedState, tag);
 
-					((IOwnable) te).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+					if (isReinforcing)
+						((IOwnable) te).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 				}
 
 				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
@@ -89,6 +99,10 @@ public class UniversalBlockReinforcerItem extends Item {
 		}
 
 		return true;
+	}
+
+	public static boolean isReinforcing(ItemStack stack) {
+		return stack.getItem() == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || !stack.getOrCreateTag().getBoolean("is_unreinforcing");
 	}
 
 	public static void maybeRemoveMending(ItemStack stack) {
