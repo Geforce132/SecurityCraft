@@ -26,7 +26,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 
 	@Override
 	public void update() {
-		if (isDisabled() || cooldown-- > 0)
+		if (world.isRemote || isDisabled() || cooldown-- > 0)
 			return;
 
 		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && (!(e instanceof EntityPlayer) || !((EntityPlayer) e).isSpectator()) && !(e instanceof Sentry || e instanceof EntityArmorStand));
