@@ -620,6 +620,8 @@
 	"gui.securitycraft:blockPocketManager.youNeed": "You need:",
 	"gui.securitycraft:blockReinforcer.output": "Output:",
 	"gui.securitycraft:blockReinforcer.title": "Universal Block Reinforcer",
+	"gui.securitycraft:blockReinforcer.unreinforceCheckbox.checked": "Unreinforces blocks when they are attacked in the world",
+	"gui.securitycraft:blockReinforcer.unreinforceCheckbox.not_checked": "Reinforces blocks when they are attacked in the world",
 	"gui.securitycraft:block_change_detector.highlight_in_world_checkbox": "Highlight listed blocks in the world",
 	"gui.securitycraft:block_change_detector.mode.both": "Break & Place",
 	"gui.securitycraft:block_change_detector.mode.break": "Break",

@@ -5,6 +5,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
+import net.geforcemods.securitycraft.network.server.SyncBlockReinforcer;
+import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.NonNullList;
@@ -14,16 +16,32 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
 public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforcerMenu> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer.png");
-	private static final ResourceLocation TEXTURE_LVL1 = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer_lvl1.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer.png");
+	private static final ResourceLocation TEXTURE_LVL1 = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer_lvl1.png");
 	private final Component ubr = Utils.localize("gui.securitycraft:blockReinforcer.title");
 	private final Component output = Utils.localize("gui.securitycraft:blockReinforcer.output");
-	private final boolean isLvl1;
+	private CallbackCheckbox unreinforceCheckbox;
 
 	public BlockReinforcerScreen(BlockReinforcerMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
+		imageHeight = 186;
+	}
 
-		this.isLvl1 = menu.isLvl1;
+	@Override
+	protected void init() {
+		super.init();
+		unreinforceCheckbox = addRenderableWidget(new CallbackCheckbox(leftPos + 24, topPos + 69, 20, 20, Component.empty(), !menu.isReinforcing, this::updateTooltip, 0));
+		updateTooltip(unreinforceCheckbox.selected());
+
+		if (menu.isLvl1)
+			unreinforceCheckbox.visible = false;
+	}
+
+	private void updateTooltip(boolean isSelected) {
+		if (isSelected)
+			unreinforceCheckbox.setTooltip(Tooltip.create(Component.translatable("gui.securitycraft:blockReinforcer.unreinforceCheckbox.checked")));
+		else
+			unreinforceCheckbox.setTooltip(Tooltip.create(Component.translatable("gui.securitycraft:blockReinforcer.unreinforceCheckbox.not_checked")));
 	}
 
 	@Override
@@ -48,7 +66,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 				renderTooltip(pose, menu.reinforcingSlot.getOutput(), mouseX - leftPos, mouseY - topPos);
 		}
 
-		if (!isLvl1 && !inv.get(37).isEmpty()) {
+		if (!menu.isLvl1 && !inv.get(37).isEmpty()) {
 			font.draw(pose, output, 50, 50, 4210752);
 			minecraft.getItemRenderer().renderAndDecorateItem(pose, menu.unreinforcingSlot.getOutput(), 116, 46);
 			minecraft.getItemRenderer().renderGuiItemDecorations(pose, minecraft.font, menu.unreinforcingSlot.getOutput(), 116, 46, null);
@@ -61,7 +79,13 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	@Override
 	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, isLvl1 ? TEXTURE_LVL1 : TEXTURE);
+		RenderSystem._setShaderTexture(0, menu.isLvl1 ? TEXTURE_LVL1 : TEXTURE);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+	}
+
+	@Override
+	public void onClose() {
+		super.onClose();
+		SecurityCraft.CHANNEL.sendToServer(new SyncBlockReinforcer(!unreinforceCheckbox.selected()));
 	}
 }
