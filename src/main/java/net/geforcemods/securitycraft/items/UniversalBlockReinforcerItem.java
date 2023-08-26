@@ -71,6 +71,9 @@ public class UniversalBlockReinforcerItem extends Item {
 				BlockEntity be = level.getBlockEntity(pos);
 				CompoundTag tag = null;
 
+				if (be instanceof IOwnable ownable && !ownable.isOwnedBy(player))
+					return false;
+
 				if (be != null) {
 					tag = be.saveWithoutMetadata();
 
