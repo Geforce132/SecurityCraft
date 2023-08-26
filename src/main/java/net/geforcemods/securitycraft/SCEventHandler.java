@@ -86,7 +86,6 @@ import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -394,21 +393,6 @@ public class SCEventHandler {
 	public static void onLivingSetAttackTarget(LivingChangeTargetEvent event) {
 		if (event.getNewTarget() instanceof Sentry)
 			event.setCanceled(true);
-	}
-
-	@SubscribeEvent
-	public static void onBreakSpeed(BreakSpeed event) {
-		if (event.getEntity() != null) {
-			ItemStack heldStack = event.getEntity().getMainHandItem();
-			Item held = heldStack.getItem();
-
-			if (held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()) {
-				Block block = (UniversalBlockReinforcerItem.isReinforcing(heldStack) ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).get(event.getState().getBlock());
-
-				if (block != null)
-					event.setNewSpeed(10000.0F);
-			}
-		}
 	}
 
 	@SubscribeEvent
