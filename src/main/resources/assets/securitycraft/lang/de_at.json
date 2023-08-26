@@ -554,6 +554,8 @@
 	"gui.securitycraft:blockPocketManager.youNeed": "Du benötigst:",
 	"gui.securitycraft:blockReinforcer.output": "Ausgabe:",
 	"gui.securitycraft:blockReinforcer.title": "Universeller Blockverstärker",
+	"gui.securitycraft:blockReinforcer.unreinforceCheckbox.checked": "Verstärkt Blöcke beim Attackieren in der Welt",
+	"gui.securitycraft:blockReinforcer.unreinforceCheckbox.not_checked": "Entfernt die Verstärkung von Blöcken beim Attackieren in der Welt",
 	"gui.securitycraft:block_change_detector.highlight_in_world_checkbox": "Angezeigte Blöcke in der Welt markieren",
 	"gui.securitycraft:block_change_detector.mode.both": "Zerbrechen & Platzieren",
 	"gui.securitycraft:block_change_detector.mode.break": "Zerbrechen",

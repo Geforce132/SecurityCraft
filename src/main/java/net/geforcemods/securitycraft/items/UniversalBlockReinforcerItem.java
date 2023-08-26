@@ -56,13 +56,19 @@ public class UniversalBlockReinforcerItem extends Item {
 		return InteractionResultHolder.consume(heldItem);
 	}
 
-	public static boolean convertBlock(BlockState vanillaState, Level level, ItemStack stack, BlockPos pos, Player player) { //gets rid of the stuttering experienced with onBlockStartBreak
+	public static boolean convertBlock(BlockState state, Level level, ItemStack stack, BlockPos pos, Player player) { //gets rid of the stuttering experienced with onBlockStartBreak
 		if (!player.isCreative()) {
-			Block block = vanillaState.getBlock();
-			Block rb = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(block);
+			boolean isReinforcing = isReinforcing(stack);
+			Block block = state.getBlock();
+			Block convertedBlock = (isReinforcing ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).get(block);
+			BlockState convertedState = null;
 
-			if (rb != null) {
-				BlockState convertedState = ((IReinforcedBlock) rb).getConvertedState(vanillaState);
+			if (isReinforcing && convertedBlock instanceof IReinforcedBlock rb)
+				convertedState = rb.convertToReinforced(level, pos, state);
+			else if (!isReinforcing && block instanceof IReinforcedBlock rb)
+				convertedState = rb.convertToVanilla(level, pos, state);
+
+			if (convertedState != null) {
 				BlockEntity be = level.getBlockEntity(pos);
 				CompoundTag tag = null;
 
@@ -80,7 +86,8 @@ public class UniversalBlockReinforcerItem extends Item {
 					if (tag != null)
 						be.load(tag);
 
-					((IOwnable) be).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+					if (isReinforcing)
+						((IOwnable) be).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 				}
 
 				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
@@ -89,6 +96,10 @@ public class UniversalBlockReinforcerItem extends Item {
 		}
 
 		return true;
+	}
+
+	public static boolean isReinforcing(ItemStack stack) {
+		return stack.is(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()) || !stack.getOrCreateTag().getBoolean("is_unreinforcing");
 	}
 
 	public static void maybeRemoveMending(ItemStack stack) {

@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 // copy from vanilla's Checkbox to be able to change the text color and remove the shadow
-public class CallbackCheckbox extends AbstractButton {
+public class CallbackCheckbox extends AbstractButton implements IToggleableButton {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/checkbox.png");
 	private boolean selected;
 	private final Consumer<Boolean> onChange;
@@ -69,5 +69,15 @@ public class CallbackCheckbox extends AbstractButton {
 
 	public boolean selected() {
 		return selected;
+	}
+
+	@Override
+	public int getCurrentIndex() {
+		return selected() ? 1 : 0;
+	}
+
+	@Override
+	public void setCurrentIndex(int newIndex) {
+		setSelected(newIndex == 1);
 	}
 }

@@ -30,7 +30,14 @@ public class ReinforcedIronTrapDoorBlock extends BaseIronTrapDoorBlock implement
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState().setValue(FACING, vanillaState.getValue(FACING)).setValue(OPEN, false).setValue(HALF, vanillaState.getValue(HALF)).setValue(POWERED, false).setValue(WATERLOGGED, vanillaState.getValue(WATERLOGGED));
+	public BlockState convertToReinforced(Level level, BlockPos pos, BlockState vanillaState) {
+		return defaultBlockState().setValue(FACING, vanillaState.getValue(FACING)).setValue(OPEN, BlockUtils.hasActiveSCBlockNextTo(level, pos)).setValue(HALF, vanillaState.getValue(HALF)).setValue(POWERED, false).setValue(WATERLOGGED, vanillaState.getValue(WATERLOGGED));
+	}
+
+	@Override
+	public BlockState convertToVanilla(Level level, BlockPos pos, BlockState reinforcedState) {
+		boolean isPowered = level.hasNeighborSignal(pos);
+
+		return defaultBlockState().setValue(FACING, reinforcedState.getValue(FACING)).setValue(OPEN, isPowered).setValue(HALF, reinforcedState.getValue(HALF)).setValue(POWERED, isPowered).setValue(WATERLOGGED, reinforcedState.getValue(WATERLOGGED));
 	}
 }

@@ -19,24 +19,25 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 	private final SimpleContainer itemInventory = new SimpleContainer(2);
 	public final SlotBlockReinforcer reinforcingSlot;
 	public final SlotBlockReinforcer unreinforcingSlot;
-	public final boolean isLvl1;
+	public final boolean isLvl1, isReinforcing;
 
 	public BlockReinforcerMenu(int windowId, Inventory inventory, boolean isLvl1) {
 		super(SCContent.BLOCK_REINFORCER_MENU.get(), windowId);
 
 		blockReinforcer = inventory.getSelected().getItem() instanceof UniversalBlockReinforcerItem ? inventory.getSelected() : inventory.offhand.get(0);
 		this.isLvl1 = isLvl1;
+		this.isReinforcing = UniversalBlockReinforcerItem.isReinforcing(blockReinforcer);
 
 		//main player inventory
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
-				addSlot(new Slot(inventory, 9 + j + i * 9, 8 + j * 18, 84 + i * 18));
+				addSlot(new Slot(inventory, 9 + j + i * 9, 8 + j * 18, 104 + i * 18));
 			}
 		}
 
 		//player hotbar
 		for (int i = 0; i < 9; i++) {
-			addSlot(new Slot(inventory, i, 8 + i * 18, 142));
+			addSlot(new Slot(inventory, i, 8 + i * 18, 162));
 		}
 
 		addSlot(reinforcingSlot = new SlotBlockReinforcer(itemInventory, 0, 26, 20, true));
