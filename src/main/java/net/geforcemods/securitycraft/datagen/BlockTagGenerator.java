@@ -259,6 +259,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_NETHERITE_BLOCK.get());
 		tag(BlockTags.CARPETS).addTag(SCTags.Blocks.REINFORCED_CARPETS);
 		tag(BlockTags.BUTTONS).addTag(SCTags.Blocks.REINFORCED_BUTTONS);
+		tag(BlockTags.CLIMBABLE).add(SCContent.REINFORCED_LADDER.get());
 		tag(BlockTags.DOORS).add(SCContent.KEYPAD_DOOR.get(), SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
 		tag(BlockTags.FENCES).add(SCContent.IRON_FENCE.get());
 		tag(BlockTags.GUARDED_BY_PIGLINS).add(
