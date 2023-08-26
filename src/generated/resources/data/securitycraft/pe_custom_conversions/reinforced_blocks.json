@@ -1839,6 +1839,12 @@
         ]
       },
       {
+        "output": "securitycraft:reinforced_ladder",
+        "ingredients": [
+          "minecraft:ladder"
+        ]
+      },
+      {
         "output": "securitycraft:reinforced_chain",
         "ingredients": [
           "minecraft:chain"
