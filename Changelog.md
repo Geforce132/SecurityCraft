@@ -8,6 +8,7 @@
 - New: Vanishmod support
 - Change: The recipe for the Laser Block now uses 4 glass panes in total
 - Change: You can no longer break the code of passcode blocks/briefcases that you own
+- Change: Universal Block Reinforcers can no longer be enchanted with Mending. Old reinforcers lose their Mending enchantment when used. This is to make it more enticing to upgrade to a level 3 reinforcer. In the future, this idea will be expanded upon.
 - Fix: Blocks can be pushed into a Sentry using a piston
 - Fix: The block at x=0, y=0, z=0 gets removed when placing a Sentry
 - Fix: Possible loss of data of passcode blocks
