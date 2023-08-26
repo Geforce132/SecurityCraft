@@ -8,8 +8,8 @@ import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;

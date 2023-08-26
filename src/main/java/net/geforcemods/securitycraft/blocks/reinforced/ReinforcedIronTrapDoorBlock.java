@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;

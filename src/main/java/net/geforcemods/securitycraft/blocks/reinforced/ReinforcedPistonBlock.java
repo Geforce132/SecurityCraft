@@ -9,6 +9,7 @@ import com.google.common.collect.Maps;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;

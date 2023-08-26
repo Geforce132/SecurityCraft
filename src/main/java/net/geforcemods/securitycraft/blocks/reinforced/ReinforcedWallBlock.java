@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.AbstractBlock;

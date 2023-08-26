@@ -12,7 +12,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.screen.BlockChangeDetectorScreen;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;

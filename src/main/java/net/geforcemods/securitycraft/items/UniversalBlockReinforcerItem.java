@@ -4,7 +4,7 @@ import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

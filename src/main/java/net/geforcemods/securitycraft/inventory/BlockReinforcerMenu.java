@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
