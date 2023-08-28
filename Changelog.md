@@ -22,6 +22,7 @@
 - Fix: Toggling an entry in the Rift Stabilizer leads to the world closing/a disconnect
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
 - Potential Fix: When dismounting a camera, some UI elements don't reappear
+- Misc.: Several improvements to the French translation (Thanks Kobrha!)
 - Misc.: The laser field model has been changed - resource packs may need to be updated
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
