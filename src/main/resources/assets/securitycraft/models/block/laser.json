@@ -12,7 +12,7 @@
             "to": [9.25,9.25,16],
             "faces": {
                 "east": {
-                    "uv": [0, 6.75, 16, 9.25], "texture": "#laser", "tintindex": 0
+                    "uv": [16, 6.75, 0, 9.25], "texture": "#laser", "tintindex": 0
                 },
                 "west": {
                     "uv": [0, 6.75, 16, 9.25], "texture": "#laser", "tintindex": 0
