@@ -73,8 +73,8 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.ALARM.get()));
 				output.accept(new ItemStack(SCContent.PANIC_BUTTON.get()));
 				output.accept(new ItemStack(SCContent.SENTRY.get()));
-				output.accept(new ItemStack(SCContent.REMOTE_ACCESS_SENTRY.get()));
-				output.accept(new ItemStack(SCContent.REMOTE_ACCESS_MINE.get()));
+				output.accept(new ItemStack(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get()));
+				output.accept(new ItemStack(SCContent.MINE_REMOTE_ACCESS_TOOL.get()));
 				output.accept(new ItemStack(SCContent.CAGE_TRAP.get()));
 				output.accept(new ItemStack(SCContent.WIRE_CUTTERS.get()));
 				output.accept(new ItemStack(SCContent.IRON_FENCE.get()));
@@ -146,7 +146,7 @@ public class SCCreativeModeTabs {
 
 					return Integer.compare(vanillaOrderedItems.indexOf(blockMineA.getBlockDisguisedAs().asItem()), vanillaOrderedItems.indexOf(blockMineB.getBlockDisguisedAs().asItem()));
 				});
-				output.accept(SCContent.REMOTE_ACCESS_MINE.get());
+				output.accept(SCContent.MINE_REMOTE_ACCESS_TOOL.get());
 				output.accept(SCContent.WIRE_CUTTERS.get());
 				output.accept(Items.FLINT_AND_STEEL);
 				output.accept(SCContent.MINE.get());
