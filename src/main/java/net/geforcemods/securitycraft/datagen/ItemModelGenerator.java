@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.ClientHandler.LinkingState;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCCreativeModeTabs;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -17,6 +19,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChiseledBookshe
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBaseBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
+import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.Direction;
@@ -28,7 +31,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
-import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -80,10 +82,15 @@ public class ItemModelGenerator extends ItemModelProvider {
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2,
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3,
 				SCContent.UNIVERSAL_KEY_CHANGER);
+		List<RegistryObject<Item>> linkingStateItems = List.of(
+				SCContent.CAMERA_MONITOR,
+				SCContent.MINE_REMOTE_ACCESS_TOOL,
+				SCContent.SENTRY_REMOTE_ACCESS_TOOL);
 
 		singleTextureItems.removeAll(List.of(
 				SCContent.ANCIENT_DEBRIS_MINE_ITEM,
 				SCContent.BRIEFCASE,
+				SCContent.CODEBREAKER,
 				SCContent.DISPLAY_CASE,
 				SCContent.GLOW_DISPLAY_CASE,
 				SCContent.KEYCARD_HOLDER,
@@ -98,6 +105,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				SCContent.UNIVERSAL_OWNER_CHANGER,
 				SCContent.WIRE_CUTTERS));
 		singleTextureItems.removeAll(handheldItems);
+		singleTextureItems.removeAll(linkingStateItems);
 		//@formatter:on
 
 		for (RegistryObject<Item> obj : singleTextureItems) {
@@ -120,6 +128,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		.element().from(0, 0, 0).to(16, 16, 16).face(Direction.UP).cullface(Direction.UP).texture("#overlay").end().end();
 		//@formatter:on
 
+		linkingStateItems.forEach(this::linkingStateItem);
+		codebreaker();
 		blockMine(SCContent.ANCIENT_DEBRIS_MINE.get(), mcLoc(BLOCK_FOLDER + "/ancient_debris_side"), mcLoc(BLOCK_FOLDER + "/ancient_debris_side"), mcLoc(BLOCK_FOLDER + "/ancient_debris_top"));
 		blockMine(SCContent.FURNACE_MINE.get(), mcLoc(BLOCK_FOLDER + "/furnace_side"), mcLoc(BLOCK_FOLDER + "/furnace_front"), mcLoc(BLOCK_FOLDER + "/furnace_top"));
 		blockMine(SCContent.SMOKER_MINE.get(), mcLoc(BLOCK_FOLDER + "/smoker_side"), mcLoc(BLOCK_FOLDER + "/smoker_front"), mcLoc(BLOCK_FOLDER + "/smoker_top"));
@@ -154,9 +164,55 @@ public class ItemModelGenerator extends ItemModelProvider {
 		reinforcedWallInventory(SCContent.REINFORCED_DEEPSLATE_TILE_WALL.get(), "deepslate_tiles");
 	}
 
-	public ItemModelBuilder simpleItem(Item item, String parent) {
-		String path = Utils.getRegistryName(item).getPath();
+	public void linkingStateItem(RegistryObject<Item> item) {
+		String hasLinkedPath = item.getId().getPath();
+		String defaultPath = hasLinkedPath + "_idle";
+		String notLinkedPath = hasLinkedPath + "_not_linked";
+		String linkedPath = hasLinkedPath + "_linked";
+		ResourceLocation hasLinkedLocation = modLoc(ITEM_FOLDER + "/" + hasLinkedPath);
+		ResourceLocation defaultLocation = modLoc(ITEM_FOLDER + "/" + defaultPath);
+		ResourceLocation notLinkedLocation = modLoc(ITEM_FOLDER + "/" + notLinkedPath);
+		ResourceLocation linkedLocation = modLoc(ITEM_FOLDER + "/" + linkedPath);
 
+		//@formatter:off
+		simpleItem(defaultPath, "item/generated");
+		simpleItem(notLinkedPath, "item/generated");
+		simpleItem(linkedPath, "item/generated");
+		simpleItem(hasLinkedPath, "item/generated")
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.EMPTY.propertyValue).model(new UncheckedModelFile(defaultLocation)).end()
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.UNKNOWN.propertyValue).model(new UncheckedModelFile(hasLinkedLocation)).end()
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.NOT_LINKED.propertyValue).model(new UncheckedModelFile(notLinkedLocation)).end()
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.LINKED.propertyValue).model(new UncheckedModelFile(linkedLocation)).end();
+		//@formatter:on
+	}
+
+	public void codebreaker() {
+		String defaultPath = SCContent.CODEBREAKER.getId().getPath();
+		String decodingPath = defaultPath + "_decoding";
+		String failurePath = defaultPath + "_failure";
+		String successPath = defaultPath + "_success";
+		ResourceLocation defaultLocation = modLoc(ITEM_FOLDER + "/" + defaultPath);
+		ResourceLocation decodingLocation = modLoc(ITEM_FOLDER + "/" + decodingPath);
+		ResourceLocation failureLocation = modLoc(ITEM_FOLDER + "/" + failurePath);
+		ResourceLocation successLocation = modLoc(ITEM_FOLDER + "/" + successPath);
+
+		//@formatter:off
+		simpleItem(decodingPath, "item/generated");
+		simpleItem(failurePath, "item/generated");
+		simpleItem(successPath, "item/generated");
+		simpleItem(defaultPath, "item/generated")
+			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.0F).model(new UncheckedModelFile(defaultLocation)).end()
+			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.25F).model(new UncheckedModelFile(decodingLocation)).end()
+			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.5F).model(new UncheckedModelFile(failureLocation)).end()
+			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.75F).model(new UncheckedModelFile(successLocation)).end();
+		//@formatter:on
+	}
+
+	public ItemModelBuilder simpleItem(Item item, String parent) {
+		return simpleItem(Utils.getRegistryName(item).getPath(), parent);
+	}
+
+	public ItemModelBuilder simpleItem(String path, String parent) {
 		return singleTexture(path, mcLoc(parent), "layer0", modLoc(ITEM_FOLDER + "/" + path));
 	}
 
@@ -171,7 +227,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	public ItemModelBuilder reinforcedPane(Block block) {
 		String name = name(block);
 
-		return getBuilder(name).parent(new UncheckedModelFile("item/generated")).texture("layer0", modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", "")));
+		return getBuilder(name).parent(new UncheckedModelFile("item/generated")).texture("layer0", modLoc(BLOCK_FOLDER + "/" + name.replace("_pane", "")));
 	}
 
 	public ItemModelBuilder reinforcedWallInventory(Block block, Block vanillaBlock) {

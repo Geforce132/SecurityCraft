@@ -99,7 +99,19 @@ public class MineRemoteAccessToolItem extends Item {
 		}
 	}
 
-	private void removeTagFromItemAndUpdate(ItemStack stack, BlockPos pos, Player player) {
+	public static boolean hasMineAdded(CompoundTag tag) {
+		if (tag == null)
+			return false;
+
+		for (int i = 1; i <= 6; i++) {
+			if (tag.contains("mine" + i))
+				return true;
+		}
+
+		return false;
+	}
+
+	public static void removeTagFromItemAndUpdate(ItemStack stack, BlockPos pos, Player player) {
 		if (stack.getTag() == null)
 			return;
 
@@ -117,7 +129,7 @@ public class MineRemoteAccessToolItem extends Item {
 		}
 	}
 
-	private boolean isMineAdded(ItemStack stack, BlockPos pos) {
+	public static boolean isMineAdded(ItemStack stack, BlockPos pos) {
 		if (stack.getTag() == null)
 			return false;
 
@@ -131,7 +143,7 @@ public class MineRemoteAccessToolItem extends Item {
 		return false;
 	}
 
-	private int getNextAvailableSlot(ItemStack stack) {
+	public static int getNextAvailableSlot(ItemStack stack) {
 		if (stack.getTag() == null)
 			return 1;
 
