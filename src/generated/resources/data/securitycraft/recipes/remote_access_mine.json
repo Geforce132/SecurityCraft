@@ -8,17 +8,17 @@
     "G": {
       "tag": "forge:ingots/gold"
     },
-    "S": {
-      "tag": "forge:rods/wooden"
+    "I": {
+      "tag": "forge:ingots/iron"
     },
     "T": {
       "item": "minecraft:redstone_torch"
     }
   },
   "pattern": [
-    " T ",
-    " DG",
-    "S  "
+    "T  ",
+    "GDG",
+    "III"
   ],
   "result": {
     "item": "securitycraft:remote_access_mine"
