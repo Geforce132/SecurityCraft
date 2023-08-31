@@ -29,6 +29,7 @@
 - Potential Fix: When dismounting a camera, some UI elements don't reappear
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
 - Misc.: The laser field model has been changed - resource packs may need to be updated
+- Misc.: More texture updates
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
