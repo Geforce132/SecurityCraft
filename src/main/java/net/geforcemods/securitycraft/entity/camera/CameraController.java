@@ -114,7 +114,6 @@ public class CameraController {
 		else if (resetOverlaysAfterDismount) {
 			resetOverlaysAfterDismount = false;
 			OverlayToggleHandler.disable(ClientHandler.cameraOverlay);
-			OverlayToggleHandler.enable(ClientHandler.hotbarBindOverlay);
 			OverlayToggleHandler.enable(VanillaGuiOverlay.JUMP_BAR);
 			OverlayToggleHandler.enable(VanillaGuiOverlay.EXPERIENCE_BAR);
 			OverlayToggleHandler.enable(VanillaGuiOverlay.POTION_ICONS);

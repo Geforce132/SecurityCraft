@@ -6,15 +6,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
-import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -26,7 +22,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
@@ -180,45 +175,6 @@ public class SCClientEventHandler {
 		}
 		else
 			guiGraphics.renderItem(REDSTONE, 10, 0);
-	}
-
-	public static void hotbarBindOverlay(ForgeGui gui, GuiGraphics guiGraphics, float partialTicks, int width, int height) {
-		Minecraft mc = Minecraft.getInstance();
-		LocalPlayer player = mc.player;
-		Level level = player.getCommandSenderWorld();
-
-		for (InteractionHand hand : InteractionHand.values()) {
-			int uCoord = 0;
-			ItemStack stack = player.getItemInHand(hand);
-
-			if (stack.getItem() == SCContent.SONIC_SECURITY_SYSTEM_ITEM.get()) {
-				uCoord = ClientHandler.getLinkingState(level, player, stack, bhr -> {
-					if (!(level.getBlockEntity(bhr.getBlockPos()) instanceof ILockable lockable))
-						return false;
-
-					//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
-					if (!(lockable instanceof IOwnable ownable) || !ownable.isOwnedBy(player)) {
-						if (DisguisableBlock.getDisguisedBlockState(level, bhr.getBlockPos()).isPresent())
-							return false;
-					}
-
-					return true;
-				}, 0, null, false, SonicSecuritySystemItem::isAdded).uCoord;
-			}
-
-			if (uCoord != 0) {
-				int hotbarPositionOffset = switch (hand) {
-					case MAIN_HAND -> player.getInventory().selected * 20;
-					case OFF_HAND -> switch (mc.options.mainHand().get()) {
-						case LEFT -> 189;
-						case RIGHT -> -29;
-					};
-				};
-
-				RenderSystem.disableDepthTest();
-				guiGraphics.blit(BEACON_GUI, mc.getWindow().getGuiScaledWidth() / 2 - 90 + hotbarPositionOffset, mc.getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
-			}
-		}
 	}
 
 	private enum BCDBuffer implements MultiBufferSource {

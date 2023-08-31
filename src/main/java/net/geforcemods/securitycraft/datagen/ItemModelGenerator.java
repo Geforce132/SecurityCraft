@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.ClientHandler.LinkingState;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCCreativeModeTabs;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -85,7 +84,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		List<RegistryObject<Item>> linkingStateItems = List.of(
 				SCContent.CAMERA_MONITOR,
 				SCContent.MINE_REMOTE_ACCESS_TOOL,
-				SCContent.SENTRY_REMOTE_ACCESS_TOOL);
+				SCContent.SENTRY_REMOTE_ACCESS_TOOL,
+				SCContent.SONIC_SECURITY_SYSTEM_ITEM);
 
 		singleTextureItems.removeAll(List.of(
 				SCContent.ANCIENT_DEBRIS_MINE_ITEM,
@@ -175,10 +175,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		simpleItem(notLinkedPath, "item/generated");
 		simpleItem(linkedPath, "item/generated");
 		simpleItem(hasLinkedPath, "item/generated")
-			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.EMPTY.propertyValue).model(new UncheckedModelFile(modItem(defaultPath))).end()
-			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.UNKNOWN.propertyValue).model(new UncheckedModelFile(modItem(hasLinkedPath))).end()
-			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.NOT_LINKED.propertyValue).model(new UncheckedModelFile(modItem(notLinkedPath))).end()
-			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.LINKED.propertyValue).model(new UncheckedModelFile(modItem(linkedPath))).end();
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, ClientHandler.EMPTY_STATE).model(new UncheckedModelFile(modItem(defaultPath))).end()
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, ClientHandler.UNKNOWN_STATE).model(new UncheckedModelFile(modItem(hasLinkedPath))).end()
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, ClientHandler.NOT_LINKED_STATE).model(new UncheckedModelFile(modItem(notLinkedPath))).end()
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, ClientHandler.LINKED_STATE).model(new UncheckedModelFile(modItem(linkedPath))).end();
 		//@formatter:on
 	}
 

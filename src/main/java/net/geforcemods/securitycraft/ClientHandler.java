@@ -14,6 +14,8 @@ import com.google.common.base.Suppliers;
 
 import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.ILockable;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
@@ -36,6 +38,7 @@ import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.LensItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
+import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.BulletModel;
@@ -146,6 +149,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientHandler {
+	public static final float EMPTY_STATE = 0.0F, UNKNOWN_STATE = 0.25F, NOT_LINKED_STATE = 0.5F, LINKED_STATE = 0.75F;
 	public static final ModelLayerLocation BULLET_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "bullet"), "main");
 	public static final ModelLayerLocation IMS_BOMB_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "ims_bomb"), "main");
 	public static final ModelLayerLocation DISPLAY_CASE_LOCATION = new ModelLayerLocation(new ResourceLocation("securitycraft", "display_case"), "main");
@@ -156,7 +160,6 @@ public class ClientHandler {
 	public static final BlockEntityRenderDelegate DISGUISED_BLOCK_RENDER_DELEGATE = new BlockEntityRenderDelegate();
 	public static final BlockEntityRenderDelegate PROJECTOR_RENDER_DELEGATE = new BlockEntityRenderDelegate();
 	public static IGuiOverlay cameraOverlay;
-	public static IGuiOverlay hotbarBindOverlay;
 	private static Map<Block, Integer> blocksWithReinforcedTint = new HashMap<>();
 	private static Map<Block, Integer> blocksWithCustomTint = new HashMap<>();
 	//@formatter:off
@@ -284,9 +287,9 @@ public class ClientHandler {
 			ItemProperties.register(SCContent.LENS.get(), LensItem.COLOR_PROPERTY, (stack, level, entity, id) -> ((DyeableLeatherItem) stack.getItem()).hasCustomColor(stack) ? 1.0F : 0.0F);
 			ItemProperties.register(SCContent.CAMERA_MONITOR.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
 				if (!(entity instanceof Player player))
-					return LinkingState.EMPTY.propertyValue;
+					return EMPTY_STATE;
 
-				LinkingState linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, 30, (tag, i) -> {
+				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, 30, (tag, i) -> {
 					if (!tag.contains("Camera" + i))
 						return null;
 
@@ -296,19 +299,19 @@ public class ClientHandler {
 				});
 
 				if (!CameraMonitorItem.hasCameraAdded(stack.getTag())) {
-					if (linkingState == LinkingState.NOT_LINKED)
-						return LinkingState.NOT_LINKED.propertyValue;
+					if (linkingState == NOT_LINKED_STATE)
+						return NOT_LINKED_STATE;
 					else
-						return LinkingState.EMPTY.propertyValue;
+						return EMPTY_STATE;
 				}
 				else
-					return linkingState.propertyValue;
+					return linkingState;
 			});
 			ItemProperties.register(SCContent.MINE_REMOTE_ACCESS_TOOL.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
 				if (!(entity instanceof Player player))
-					return LinkingState.EMPTY.propertyValue;
+					return EMPTY_STATE;
 
-				LinkingState linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive, 30, (tag, i) -> {
+				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive, 30, (tag, i) -> {
 					if (tag.getIntArray("mine" + i).length > 0)
 						return Arrays.stream(tag.getIntArray("mine" + i)).boxed().toArray(Integer[]::new);
 					else
@@ -316,32 +319,58 @@ public class ClientHandler {
 				});
 
 				if (!MineRemoteAccessToolItem.hasMineAdded(stack.getTag())) {
-					if (linkingState == LinkingState.NOT_LINKED)
-						return LinkingState.NOT_LINKED.propertyValue;
+					if (linkingState == NOT_LINKED_STATE)
+						return NOT_LINKED_STATE;
 					else
-						return LinkingState.EMPTY.propertyValue;
+						return EMPTY_STATE;
 				}
 				else
-					return linkingState.propertyValue;
+					return linkingState;
 			});
 			ItemProperties.register(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
 				if (!(entity instanceof Player))
-					return LinkingState.EMPTY.propertyValue;
+					return EMPTY_STATE;
 
 				if (Minecraft.getInstance().crosshairPickEntity instanceof Sentry sentry) {
-					LinkingState linkingState = loop(12, (tag, i) -> Arrays.stream(tag.getIntArray("sentry" + i)).boxed().toArray(Integer[]::new), stack.getOrCreateTag(), sentry.blockPosition());
+					float linkingState = loop(12, (tag, i) -> Arrays.stream(tag.getIntArray("sentry" + i)).boxed().toArray(Integer[]::new), stack.getOrCreateTag(), sentry.blockPosition());
 
 					if (!SentryRemoteAccessToolItem.hasSentryAdded(stack.getTag())) {
-						if (linkingState == LinkingState.NOT_LINKED)
-							return LinkingState.NOT_LINKED.propertyValue;
+						if (linkingState == NOT_LINKED_STATE)
+							return NOT_LINKED_STATE;
 						else
-							return LinkingState.EMPTY.propertyValue;
+							return EMPTY_STATE;
 					}
 					else
-						return linkingState.propertyValue;
+						return linkingState;
 				}
 				else
-					return (SentryRemoteAccessToolItem.hasSentryAdded(stack.getTag()) ? LinkingState.UNKNOWN : LinkingState.EMPTY).propertyValue;
+					return (SentryRemoteAccessToolItem.hasSentryAdded(stack.getTag()) ? UNKNOWN_STATE : EMPTY_STATE);
+			});
+			ItemProperties.register(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
+				if (!(entity instanceof Player player))
+					return EMPTY_STATE;
+
+				float linkingState = getLinkingState(level, player, stack, bhr -> {
+					if (!(level.getBlockEntity(bhr.getBlockPos()) instanceof ILockable lockable))
+						return false;
+
+					//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
+					if (!(lockable instanceof IOwnable ownable) || !ownable.isOwnedBy(player)) {
+						if (DisguisableBlock.getDisguisedBlockState(level, bhr.getBlockPos()).isPresent())
+							return false;
+					}
+
+					return true;
+				}, 0, null, false, SonicSecuritySystemItem::isAdded);
+
+				if (!SonicSecuritySystemItem.hasLinkedBlock(stack.getTag())) {
+					if (linkingState == NOT_LINKED_STATE)
+						return NOT_LINKED_STATE;
+					else
+						return EMPTY_STATE;
+				}
+				else
+					return linkingState;
 			});
 			ItemProperties.register(SCContent.CODEBREAKER.get(), CodebreakerItem.STATE_PROPERTY, (stack, level, entity, id) -> {
 				CompoundTag tag = stack.getTag();
@@ -352,12 +381,12 @@ public class ClientHandler {
 				if (!(entity instanceof Player player))
 					return 0.0F;
 
-				LinkingState state = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof ICodebreakable, 0, null, false, (_tag, pos) -> true);
+				float state = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof ICodebreakable, 0, null, false, (_tag, pos) -> true);
 
-				return switch (state) {
-					case EMPTY, UNKNOWN -> 0.0F;
-					case LINKED, NOT_LINKED -> 0.25F;
-				};
+				if (state == LINKED_STATE || state == NOT_LINKED_STATE)
+					return 0.25F;
+				else
+					return 0.0F;
 			});
 		});
 	}
@@ -366,8 +395,6 @@ public class ClientHandler {
 	public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
 		cameraOverlay = SCClientEventHandler::cameraOverlay;
 		event.registerAboveAll("camera_overlay", cameraOverlay);
-		hotbarBindOverlay = SCClientEventHandler::hotbarBindOverlay;
-		event.registerAboveAll("hotbar_bind_overlay", hotbarBindOverlay);
 		OverlayToggleHandler.disable(cameraOverlay);
 	}
 
@@ -716,11 +743,11 @@ public class ClientHandler {
 		Minecraft.getInstance().levelRenderer.blockChanged(Minecraft.getInstance().level, pos, null, null, 0);
 	}
 
-	private static LinkingState getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords) {
+	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords) {
 		return getLinkingState(level, player, stackInHand, isValidHitResult, tagSize, getCoords, true, null);
 	}
 
-	protected static LinkingState getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords, boolean loop, BiPredicate<CompoundTag, BlockPos> useCheckmark) {
+	protected static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords, boolean loop, BiPredicate<CompoundTag, BlockPos> useCheckmark) {
 		double reachDistance = player.getBlockReach();
 		double eyeHeight = player.getEyeHeight();
 		Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
@@ -730,35 +757,20 @@ public class ClientHandler {
 			if (loop)
 				return loop(tagSize, getCoords, stackInHand.getOrCreateTag(), hitResult.getBlockPos());
 			else
-				return useCheckmark.test(stackInHand.getOrCreateTag(), hitResult.getBlockPos()) ? LinkingState.LINKED : LinkingState.NOT_LINKED;
+				return useCheckmark.test(stackInHand.getOrCreateTag(), hitResult.getBlockPos()) ? LINKED_STATE : NOT_LINKED_STATE;
 		}
 
-		return LinkingState.UNKNOWN;
+		return UNKNOWN_STATE;
 	}
 
-	private static LinkingState loop(int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords, CompoundTag tag, BlockPos pos) {
+	private static float loop(int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords, CompoundTag tag, BlockPos pos) {
 		for (int i = 1; i <= tagSize; i++) {
 			Integer[] coords = getCoords.apply(tag, i);
 
 			if (coords != null && coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
-				return LinkingState.LINKED;
+				return LINKED_STATE;
 		}
 
-		return LinkingState.NOT_LINKED;
-	}
-
-	public enum LinkingState {
-		EMPTY(0, 0.0F),
-		UNKNOWN(0, 0.25F),
-		NOT_LINKED(110, 0.5F),
-		LINKED(88, 0.75F);
-
-		public final int uCoord;
-		public final float propertyValue;
-
-		private LinkingState(int uCoord, float propertyValue) {
-			this.uCoord = uCoord;
-			this.propertyValue = propertyValue;
-		}
+		return NOT_LINKED_STATE;
 	}
 }
