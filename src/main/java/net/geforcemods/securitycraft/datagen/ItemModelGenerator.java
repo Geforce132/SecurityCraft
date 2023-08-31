@@ -120,7 +120,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		//gui block mine model
 		getBuilder("template_block_mine")
 		.parent(new UncheckedModelFile(BLOCK_FOLDER + "/block"))
-		.texture("overlay", modLoc(ITEM_FOLDER + "/block_mine_overlay"))
+		.texture("overlay", modItem("block_mine_overlay"))
 		.texture("particle", "#north")
 		//normal block
 		.element().from(0, 0, 0).to(16, 16, 16).allFaces((dir, builder) -> builder.cullface(dir).texture("#" + dir.getName()).end()).end()
@@ -130,10 +130,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 		linkingStateItems.forEach(this::linkingStateItem);
 		codebreaker();
-		blockMine(SCContent.ANCIENT_DEBRIS_MINE.get(), mcLoc(BLOCK_FOLDER + "/ancient_debris_side"), mcLoc(BLOCK_FOLDER + "/ancient_debris_side"), mcLoc(BLOCK_FOLDER + "/ancient_debris_top"));
-		blockMine(SCContent.FURNACE_MINE.get(), mcLoc(BLOCK_FOLDER + "/furnace_side"), mcLoc(BLOCK_FOLDER + "/furnace_front"), mcLoc(BLOCK_FOLDER + "/furnace_top"));
-		blockMine(SCContent.SMOKER_MINE.get(), mcLoc(BLOCK_FOLDER + "/smoker_side"), mcLoc(BLOCK_FOLDER + "/smoker_front"), mcLoc(BLOCK_FOLDER + "/smoker_top"));
-		blockMine(SCContent.BLAST_FURNACE_MINE.get(), mcLoc(BLOCK_FOLDER + "/blast_furnace_side"), mcLoc(BLOCK_FOLDER + "/blast_furnace_front"), mcLoc(BLOCK_FOLDER + "/blast_furnace_top"));
+		blockMine(SCContent.ANCIENT_DEBRIS_MINE.get(), mcBlock("ancient_debris_side"), mcBlock("ancient_debris_side"), mcBlock("ancient_debris_top"));
+		blockMine(SCContent.FURNACE_MINE.get(), mcBlock("furnace_side"), mcBlock("furnace_front"), mcBlock("furnace_top"));
+		blockMine(SCContent.SMOKER_MINE.get(), mcBlock("smoker_side"), mcBlock("smoker_front"), mcBlock("smoker_top"));
+		blockMine(SCContent.BLAST_FURNACE_MINE.get(), mcBlock("blast_furnace_side"), mcBlock("blast_furnace_front"), mcBlock("blast_furnace_top"));
 		simpleParent(SCContent.BLOCK_CHANGE_DETECTOR.get());
 		simpleParent(SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		simpleParent(SCContent.CRYSTAL_QUARTZ_STAIRS.get());
@@ -169,20 +169,16 @@ public class ItemModelGenerator extends ItemModelProvider {
 		String defaultPath = hasLinkedPath + "_idle";
 		String notLinkedPath = hasLinkedPath + "_not_linked";
 		String linkedPath = hasLinkedPath + "_linked";
-		ResourceLocation hasLinkedLocation = modLoc(ITEM_FOLDER + "/" + hasLinkedPath);
-		ResourceLocation defaultLocation = modLoc(ITEM_FOLDER + "/" + defaultPath);
-		ResourceLocation notLinkedLocation = modLoc(ITEM_FOLDER + "/" + notLinkedPath);
-		ResourceLocation linkedLocation = modLoc(ITEM_FOLDER + "/" + linkedPath);
 
 		//@formatter:off
 		simpleItem(defaultPath, "item/generated");
 		simpleItem(notLinkedPath, "item/generated");
 		simpleItem(linkedPath, "item/generated");
 		simpleItem(hasLinkedPath, "item/generated")
-			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.EMPTY.propertyValue).model(new UncheckedModelFile(defaultLocation)).end()
-			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.UNKNOWN.propertyValue).model(new UncheckedModelFile(hasLinkedLocation)).end()
-			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.NOT_LINKED.propertyValue).model(new UncheckedModelFile(notLinkedLocation)).end()
-			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.LINKED.propertyValue).model(new UncheckedModelFile(linkedLocation)).end();
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.EMPTY.propertyValue).model(new UncheckedModelFile(modItem(defaultPath))).end()
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.UNKNOWN.propertyValue).model(new UncheckedModelFile(modItem(hasLinkedPath))).end()
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.NOT_LINKED.propertyValue).model(new UncheckedModelFile(modItem(notLinkedPath))).end()
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, LinkingState.LINKED.propertyValue).model(new UncheckedModelFile(modItem(linkedPath))).end();
 		//@formatter:on
 	}
 
@@ -191,20 +187,16 @@ public class ItemModelGenerator extends ItemModelProvider {
 		String decodingPath = defaultPath + "_decoding";
 		String failurePath = defaultPath + "_failure";
 		String successPath = defaultPath + "_success";
-		ResourceLocation defaultLocation = modLoc(ITEM_FOLDER + "/" + defaultPath);
-		ResourceLocation decodingLocation = modLoc(ITEM_FOLDER + "/" + decodingPath);
-		ResourceLocation failureLocation = modLoc(ITEM_FOLDER + "/" + failurePath);
-		ResourceLocation successLocation = modLoc(ITEM_FOLDER + "/" + successPath);
 
 		//@formatter:off
 		simpleItem(decodingPath, "item/generated");
 		simpleItem(failurePath, "item/generated");
 		simpleItem(successPath, "item/generated");
 		simpleItem(defaultPath, "item/generated")
-			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.0F).model(new UncheckedModelFile(defaultLocation)).end()
-			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.25F).model(new UncheckedModelFile(decodingLocation)).end()
-			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.5F).model(new UncheckedModelFile(failureLocation)).end()
-			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.75F).model(new UncheckedModelFile(successLocation)).end();
+			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.0F).model(new UncheckedModelFile(modItem(defaultPath))).end()
+			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.25F).model(new UncheckedModelFile(modItem(decodingPath))).end()
+			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.5F).model(new UncheckedModelFile(modItem(failurePath))).end()
+			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.75F).model(new UncheckedModelFile(modItem(successPath))).end();
 		//@formatter:on
 	}
 
@@ -213,7 +205,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder simpleItem(String path, String parent) {
-		return singleTexture(path, mcLoc(parent), "layer0", modLoc(ITEM_FOLDER + "/" + path));
+		return singleTexture(path, mcLoc(parent), "layer0", modItem(path));
 	}
 
 	public ItemModelBuilder flatReinforcedItem(Block block, String texturePath) {
@@ -227,7 +219,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	public ItemModelBuilder reinforcedPane(Block block) {
 		String name = name(block);
 
-		return getBuilder(name).parent(new UncheckedModelFile("item/generated")).texture("layer0", modLoc(BLOCK_FOLDER + "/" + name.replace("_pane", "")));
+		return getBuilder(name).parent(new UncheckedModelFile("item/generated")).texture("layer0", modBlock(name.replace("_pane", "")));
 	}
 
 	public ItemModelBuilder reinforcedWallInventory(Block block, Block vanillaBlock) {
@@ -235,13 +227,13 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder reinforcedWallInventory(Block block, String textureName) {
-		return uncheckedSingleTexture(Utils.getRegistryName(block).toString(), modLoc(BLOCK_FOLDER + "/reinforced_wall_inventory"), "wall", new ResourceLocation("block/" + textureName));
+		return uncheckedSingleTexture(Utils.getRegistryName(block).toString(), modBlock("reinforced_wall_inventory"), "wall", new ResourceLocation("block/" + textureName));
 	}
 
 	public ItemModelBuilder reinforcedBlockInventory(Block block) {
 		String path = name(block);
 
-		return parent(path, modLoc(BLOCK_FOLDER + "/" + path + "_inventory"));
+		return parent(path, modBlock(path + "_inventory"));
 	}
 
 	public ItemModelBuilder uncheckedSingleTexture(String name, ResourceLocation parent, String textureKey, ResourceLocation texture) {
@@ -249,14 +241,14 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder blockMine(Block vanillaBlock, Block block) {
-		ResourceLocation texture = mcLoc(BLOCK_FOLDER + "/" + Utils.getRegistryName(vanillaBlock).getPath());
+		ResourceLocation texture = mcBlock(Utils.getRegistryName(vanillaBlock).getPath());
 
 		return blockMine(block, texture, texture, texture);
 	}
 
 	public ItemModelBuilder blockMine(Block block, ResourceLocation sideTexture, ResourceLocation frontTexture, ResourceLocation bottomTopTexture) {
 		//@formatter:off
-		return parent(Utils.getRegistryName(block).toString(), modLoc(ITEM_FOLDER + "/template_block_mine"))
+		return parent(Utils.getRegistryName(block).toString(), modItem("template_block_mine"))
 				.texture("down", bottomTopTexture)
 				.texture("up", bottomTopTexture)
 				.texture("north", frontTexture)
@@ -269,7 +261,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	public ItemModelBuilder simpleReinforcedParent(Block block) {
 		String name = name(block);
 
-		return parent(name, modLoc(BLOCK_FOLDER + "/" + name.replace("crystal_", "")));
+		return parent(name, modBlock(name.replace("crystal_", "")));
 	}
 
 	public ItemModelBuilder simpleParent(Block block) {
@@ -277,11 +269,23 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder simpleParent(Block block, String parent) {
-		return parent(name(block), modLoc(BLOCK_FOLDER + "/" + parent));
+		return parent(name(block), modBlock(parent));
 	}
 
 	public ItemModelBuilder parent(String name, ResourceLocation parent) {
 		return getBuilder(name).parent(new UncheckedModelFile(parent));
+	}
+
+	public ResourceLocation mcBlock(String path) {
+		return mcLoc(BLOCK_FOLDER + "/" + path);
+	}
+
+	public ResourceLocation modBlock(String path) {
+		return modLoc(BLOCK_FOLDER + "/" + path);
+	}
+
+	public ResourceLocation modItem(String path) {
+		return modLoc(ITEM_FOLDER + "/" + path);
 	}
 
 	@Override
