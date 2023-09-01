@@ -209,7 +209,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 	private int[] getMineCoordinates(int mine) {
 		mine++; //mines are stored starting by mine1 up to mine6
 
-		if (mrat.getItem() == SCContent.REMOTE_ACCESS_MINE.get() && mrat.hasTag()) {
+		if (mrat.getItem() == SCContent.MINE_REMOTE_ACCESS_TOOL.get() && mrat.hasTag()) {
 			int[] coords = mrat.getTag().getIntArray("mine" + mine);
 
 			if (coords.length == 3)

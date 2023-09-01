@@ -44,7 +44,7 @@ public class FurnaceMineBlock extends BaseFullMineBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (player.getItemInHand(hand).getItem() != SCContent.REMOTE_ACCESS_MINE.get() && !EntityUtils.doesPlayerOwn(player, level, pos)) {
+		if (player.getItemInHand(hand).getItem() != SCContent.MINE_REMOTE_ACCESS_TOOL.get() && !EntityUtils.doesPlayerOwn(player, level, pos)) {
 			explode(level, pos);
 			return InteractionResult.SUCCESS;
 		}
