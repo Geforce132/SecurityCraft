@@ -249,8 +249,8 @@ public class RegistrationHandler {
 							new ItemStack(SCContent.ALARM.get()),
 							new ItemStack(SCContent.PANIC_BUTTON.get()),
 							new ItemStack(SCContent.SENTRY.get()),
-							new ItemStack(SCContent.REMOTE_ACCESS_SENTRY.get()),
-							new ItemStack(SCContent.REMOTE_ACCESS_MINE.get()),
+							new ItemStack(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get()),
+							new ItemStack(SCContent.MINE_REMOTE_ACCESS_TOOL.get()),
 							new ItemStack(SCContent.CAGE_TRAP.get()),
 							new ItemStack(SCContent.WIRE_CUTTERS.get()),
 							new ItemStack(SCContent.IRON_FENCE.get()),
@@ -321,7 +321,7 @@ public class RegistrationHandler {
 
 						return Integer.compare(vanillaOrderedItems.indexOf(blockMineA.getBlockDisguisedAs().asItem()), vanillaOrderedItems.indexOf(blockMineB.getBlockDisguisedAs().asItem()));
 					});
-					output.accept(SCContent.REMOTE_ACCESS_MINE.get());
+					output.accept(SCContent.MINE_REMOTE_ACCESS_TOOL.get());
 					output.accept(SCContent.WIRE_CUTTERS.get());
 					output.accept(Items.FLINT_AND_STEEL);
 					output.accept(SCContent.MINE.get());

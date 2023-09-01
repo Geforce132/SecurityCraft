@@ -299,7 +299,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private int[] getSentryCoordinates(int sentry) {
 		sentry++; // sentries are stored starting by sentry1 up to sentry12
 
-		if (srat.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get() && srat.hasTag()) {
+		if (srat.getItem() == SCContent.SENTRY_REMOTE_ACCESS_TOOL.get() && srat.hasTag()) {
 			int[] coords = srat.getTag().getIntArray("sentry" + sentry);
 
 			if (coords.length == 3)

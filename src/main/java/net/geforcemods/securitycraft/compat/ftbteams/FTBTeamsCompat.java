@@ -15,7 +15,7 @@ public class FTBTeamsCompat {
 		}
 		catch (IllegalArgumentException e) {
 			return false;
-		}
+//		}
 	}
 
 	public static TeamRepresentation getTeamRepresentation(Owner owner) {
