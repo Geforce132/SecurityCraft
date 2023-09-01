@@ -359,7 +359,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get());
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get());
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_POLISHED_BLACKSTONE.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get());
-		ShapedRecipeBuilder.shaped(SCContent.REMOTE_ACCESS_MINE.get())
+		ShapedRecipeBuilder.shaped(SCContent.MINE_REMOTE_ACCESS_TOOL.get())
 		.pattern(" T ")
 		.pattern(" DG")
 		.pattern("S  ")
@@ -369,7 +369,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('S', Tags.Items.RODS_WOODEN)
 		.unlockedBy("has_mine", has(SCContent.MINE.get()))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.REMOTE_ACCESS_SENTRY.get())
+		ShapedRecipeBuilder.shaped(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get())
 		.pattern("ITI")
 		.pattern("IDI")
 		.pattern("ISI")

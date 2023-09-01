@@ -190,7 +190,7 @@ public class SCClientEventHandler {
 							return Arrays.stream(camera.substring(0, camera.lastIndexOf(' ')).split(" ")).map(Integer::parseInt).toArray(Integer[]::new);
 						});
 					}
-					else if (stack.getItem() == SCContent.REMOTE_ACCESS_MINE.get()) {
+					else if (stack.getItem() == SCContent.MINE_REMOTE_ACCESS_TOOL.get()) {
 						uCoord = getUCoord(world, player, stack, bhr -> world.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive, 30, (tag, i) -> {
 							if (tag.getIntArray("mine" + i).length > 0)
 								return Arrays.stream(tag.getIntArray("mine" + i)).boxed().toArray(Integer[]::new);
@@ -198,7 +198,7 @@ public class SCClientEventHandler {
 								return null;
 						});
 					}
-					else if (stack.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get()) {
+					else if (stack.getItem() == SCContent.SENTRY_REMOTE_ACCESS_TOOL.get()) {
 						if (Minecraft.getInstance().crosshairPickEntity instanceof Sentry) {
 							Sentry sentry = (Sentry) Minecraft.getInstance().crosshairPickEntity;
 

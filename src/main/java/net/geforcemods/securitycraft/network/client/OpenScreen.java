@@ -83,7 +83,7 @@ public class OpenScreen {
 
 				break;
 			case SENTRY_REMOTE_ACCESS_TOOL:
-				ItemStack srat = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.REMOTE_ACCESS_SENTRY.get());
+				ItemStack srat = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.SENTRY_REMOTE_ACCESS_TOOL.get());
 
 				if (!srat.isEmpty())
 					ClientHandler.displaySRATScreen(srat);

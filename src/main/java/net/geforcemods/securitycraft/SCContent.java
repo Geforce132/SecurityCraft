@@ -1975,9 +1975,9 @@ public class SCContent {
 	@HasManualPage
 	public static final RegistryObject<Item> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new TallBlockItem(REINFORCED_DOOR.get(), itemProp(SecurityCraft.DECORATION_TAB)));
 	@HasManualPage
-	public static final RegistryObject<Item> REMOTE_ACCESS_MINE = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
+	public static final RegistryObject<Item> MINE_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
 	@HasManualPage
-	public static final RegistryObject<Item> REMOTE_ACCESS_SENTRY = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
+	public static final RegistryObject<Item> SENTRY_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(SecurityCraft.TECHNICAL_TAB).stacksTo(1)));
 	@HasManualPage
 	public static final RegistryObject<Item> RIFT_STABILIZER_ITEM = ITEMS.register("rift_stabilizer", () -> new TallBlockItem(RIFT_STABILIZER.get(), itemProp(SecurityCraft.TECHNICAL_TAB)));
 	@HasManualPage

@@ -29,7 +29,7 @@ public class RemoveMineFromMRAT {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		PlayerEntity player = ctx.get().getSender();
-		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.REMOTE_ACCESS_MINE.get());
+		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.MINE_REMOTE_ACCESS_TOOL.get());
 
 		if (!stack.isEmpty()) {
 			CompoundNBT tag = stack.getOrCreateTag();
