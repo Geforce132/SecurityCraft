@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
+import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -82,10 +83,17 @@ public class KeycardReaderBlock extends DisguisableBlock {
 						if (chance < 0.0D)
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYCARD_READER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
 						else {
-							if (!player.isCreative())
-								stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+							if (CodebreakerItem.wasRecentlyUsed(stack))
+								return InteractionResult.PASS;
 
-							if (player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance)
+							boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
+							CompoundTag tag = stack.getOrCreateTag();
+
+							stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+							tag.putLong(CodebreakerItem.LAST_USED_TIME, System.currentTimeMillis());
+							tag.putBoolean(CodebreakerItem.WAS_SUCCESSFUL, isSuccessful);
+
+							if (isSuccessful)
 								activate(level, pos, be.getSignalLength());
 							else
 								PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
