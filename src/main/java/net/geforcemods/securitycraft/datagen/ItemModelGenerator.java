@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
-import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -104,7 +103,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		//gui block mine model
 		getBuilder("template_block_mine")
 		.parent(new UncheckedModelFile(BLOCK_FOLDER + "/block"))
-		.texture("overlay", modLoc(ITEM_FOLDER + "/block_mine_overlay"))
+		.texture("overlay", modItem("block_mine_overlay"))
 		.texture("particle", "#north")
 		//normal block
 		.element().from(0, 0, 0).to(16, 16, 16).allFaces((dir, builder) -> builder.cullface(dir).texture("#" + dir.getName()).end()).end()
@@ -137,9 +136,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder simpleItem(Item item, String parent) {
-		String path = item.getRegistryName().getPath();
+		return simpleItem(item.getRegistryName().getPath(), parent);
+	}
 
-		return singleTexture(path, mcLoc(parent), "layer0", modLoc(ITEM_FOLDER + "/" + path));
+	public ItemModelBuilder simpleItem(String path, String parent) {
+		return singleTexture(path, mcLoc(parent), "layer0", modItem(path));
 	}
 
 	public ItemModelBuilder flatReinforcedItem(Block block, String texturePath) {
@@ -149,7 +150,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	public ItemModelBuilder reinforcedPane(Block block) {
 		String name = name(block);
 
-		return getBuilder(name).parent(new UncheckedModelFile("item/generated")).texture("layer0", modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", "")));
+		return getBuilder(name).parent(new UncheckedModelFile("item/generated")).texture("layer0", modBlock(name.replace("_pane", "")));
 	}
 
 	public ItemModelBuilder reinforcedWallInventory(Block block, Block vanillaBlock) {
@@ -157,13 +158,13 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder reinforcedWallInventory(Block block, String textureName) {
-		return uncheckedSingleTexture(block.getRegistryName().toString(), modLoc(BLOCK_FOLDER + "/reinforced_wall_inventory"), "wall", new ResourceLocation("block/" + textureName));
+		return uncheckedSingleTexture(block.getRegistryName().toString(), modBlock("reinforced_wall_inventory"), "wall", new ResourceLocation("block/" + textureName));
 	}
 
 	public ItemModelBuilder reinforcedBlockInventory(Block block) {
 		String path = name(block);
 
-		return parent(path, modLoc(BLOCK_FOLDER + "/" + path + "_inventory"));
+		return parent(path, modBlock(path + "_inventory"));
 	}
 
 	public ItemModelBuilder uncheckedSingleTexture(String name, ResourceLocation parent, String textureKey, ResourceLocation texture) {
@@ -171,14 +172,14 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder blockMine(Block vanillaBlock, Block block) {
-		ResourceLocation texture = mcLoc(BLOCK_FOLDER + "/" + vanillaBlock.getRegistryName().getPath());
+		ResourceLocation texture = mcBlock(vanillaBlock.getRegistryName().getPath());
 
 		return blockMine(block, texture, texture, texture);
 	}
 
 	public ItemModelBuilder blockMine(Block block, ResourceLocation sideTexture, ResourceLocation frontTexture, ResourceLocation bottomTopTexture) {
 		//@formatter:off
-		return parent(block.getRegistryName().toString(), modLoc(ITEM_FOLDER + "/template_block_mine"))
+		return parent(block.getRegistryName().toString(), modItem("template_block_mine"))
 				.texture("down", bottomTopTexture)
 				.texture("up", bottomTopTexture)
 				.texture("north", frontTexture)
@@ -191,7 +192,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	public ItemModelBuilder simpleReinforcedParent(Block block) {
 		String name = name(block);
 
-		return parent(name, modLoc(BLOCK_FOLDER + "/" + name.replace("crystal_", "")));
+		return parent(name, modBlock(name.replace("crystal_", "")));
 	}
 
 	public ItemModelBuilder simpleParent(Block block) {
@@ -199,11 +200,23 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder simpleParent(Block block, String parent) {
-		return parent(name(block), modLoc(BLOCK_FOLDER + "/" + parent));
+		return parent(name(block), modBlock(parent));
 	}
 
 	public ItemModelBuilder parent(String name, ResourceLocation parent) {
 		return getBuilder(name).parent(new UncheckedModelFile(parent));
+	}
+
+	public ResourceLocation mcBlock(String path) {
+		return mcLoc(BLOCK_FOLDER + "/" + path);
+	}
+
+	public ResourceLocation modBlock(String path) {
+		return modLoc(BLOCK_FOLDER + "/" + path);
+	}
+
+	public ResourceLocation modItem(String path) {
+		return modLoc(ITEM_FOLDER + "/" + path);
 	}
 
 	@Override
