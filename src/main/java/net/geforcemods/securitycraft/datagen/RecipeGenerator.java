@@ -366,13 +366,13 @@ public class RecipeGenerator extends RecipeProvider {
 		.unlockedBy("has_amethyst_shard", has(Items.AMETHYST_SHARD))
 		.save(consumer);
 		ShapedRecipeBuilder.shaped(SCContent.MINE_REMOTE_ACCESS_TOOL.get())
-		.pattern(" T ")
-		.pattern(" DG")
-		.pattern("S  ")
+		.pattern("T  ")
+		.pattern("GDG")
+		.pattern("III")
 		.define('T', Items.REDSTONE_TORCH)
 		.define('D', Tags.Items.GEMS_DIAMOND)
 		.define('G', Tags.Items.INGOTS_GOLD)
-		.define('S', Tags.Items.RODS_WOODEN)
+		.define('I', Tags.Items.INGOTS_IRON)
 		.unlockedBy("has_mine", has(SCContent.MINE.get()))
 		.save(consumer);
 		ShapedRecipeBuilder.shaped(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get())
