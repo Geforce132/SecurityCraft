@@ -115,7 +115,7 @@ public class CameraMonitorItem extends Item {
 		return "";
 	}
 
-	public boolean hasCameraAdded(CompoundTag tag) {
+	public static boolean hasCameraAdded(CompoundTag tag) {
 		if (tag == null)
 			return false;
 
@@ -127,7 +127,7 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public boolean isCameraAdded(CompoundTag tag, GlobalPos view) {
+	public static boolean isCameraAdded(CompoundTag tag, GlobalPos view) {
 		for (int i = 1; i <= 30; i++) {
 			if (tag.contains("Camera" + i)) {
 				String[] coords = tag.getString("Camera" + i).split(" ");
@@ -140,7 +140,7 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public List<GlobalPos> getCameraPositions(CompoundTag tag) {
+	public static List<GlobalPos> getCameraPositions(CompoundTag tag) {
 		ArrayList<GlobalPos> list = new ArrayList<>();
 
 		for (int i = 1; i <= 30; i++) {
@@ -157,13 +157,13 @@ public class CameraMonitorItem extends Item {
 		return list;
 	}
 
-	public int getNumberOfCamerasBound(CompoundTag tag) {
+	public static int getNumberOfCamerasBound(CompoundTag tag) {
 		if (tag == null)
 			return 0;
 
 		int amount = 0;
 
-		for (int i = 1; i <= 31; i++) {
+		for (int i = 1; i <= 30; i++) {
 			if (tag.contains("Camera" + i))
 				amount++;
 		}

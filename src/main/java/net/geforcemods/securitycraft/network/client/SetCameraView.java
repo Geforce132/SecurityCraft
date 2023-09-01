@@ -50,7 +50,6 @@ public class SetCameraView {
 				OverlayRegistry.enableOverlay(ForgeIngameGui.JUMP_BAR_ELEMENT, false);
 				OverlayRegistry.enableOverlay(ForgeIngameGui.POTION_ICONS_ELEMENT, false);
 				OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, true);
-				OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, false);
 			}
 			else {
 				if (CameraController.previousCameraType != null)

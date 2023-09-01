@@ -86,7 +86,7 @@ public class CameraMonitorScreen extends Screen {
 		for (int i = 0; i < 10; i++) {
 			CameraButton button = cameraButtons[i];
 			int camID = button.camId + (page - 1) * 10;
-			List<GlobalPos> views = cameraMonitor.getCameraPositions(nbtTag);
+			List<GlobalPos> views = CameraMonitorItem.getCameraPositions(nbtTag);
 			GlobalPos view = views.get(camID - 1);
 
 			button.setMessage(button.getMessage().plainCopy().append(new TextComponent("" + camID)));
@@ -118,10 +118,10 @@ public class CameraMonitorScreen extends Screen {
 		if (page == 1)
 			prevPageButton.active = false;
 
-		if (page == 3 || cameraMonitor.getCameraPositions(nbtTag).size() < (page * 10) + 1)
+		if (page == 3 || CameraMonitorItem.getCameraPositions(nbtTag).size() < (page * 10) + 1)
 			nextPageButton.active = false;
 
-		for (int i = cameraMonitor.getCameraPositions(nbtTag).size() + 1; i <= (page * 10); i++) {
+		for (int i = CameraMonitorItem.getCameraPositions(nbtTag).size() + 1; i <= (page * 10); i++) {
 			cameraButtons[(i - 1) - ((page - 1) * 10)].active = false;
 		}
 	}
@@ -154,7 +154,7 @@ public class CameraMonitorScreen extends Screen {
 
 	private void cameraButtonClicked(Button button) {
 		int camID = ((CameraButton) button).camId + (page - 1) * 10;
-		BlockPos cameraPos = cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).pos();
+		BlockPos cameraPos = CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1).pos();
 
 		if (minecraft.level.getBlockEntity(cameraPos) instanceof SecurityCameraBlockEntity camera && camera.isDisabled()) {
 			button.active = false;
@@ -169,7 +169,7 @@ public class CameraMonitorScreen extends Screen {
 		int camID = ((CameraButton) button).camId + (page - 1) * 10;
 
 		SecurityCraft.CHANNEL.sendToServer(new RemoveCameraTag(camID));
-		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
+		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1)));
 		button.active = false;
 		cameraButtons[(camID - 1) % 10].active = false;
 	}

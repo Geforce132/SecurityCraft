@@ -111,7 +111,6 @@ public class CameraController {
 		else if (resetOverlaysAfterDismount) {
 			resetOverlaysAfterDismount = false;
 			OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, false);
-			OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, true);
 			CameraController.restoreOverlayStates();
 		}
 	}

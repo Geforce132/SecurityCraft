@@ -136,7 +136,19 @@ public class SentryRemoteAccessToolItem extends Item {
 		}
 	}
 
-	private boolean isSentryAdded(ItemStack stack, BlockPos pos) {
+	public static boolean hasSentryAdded(CompoundTag tag) {
+		if (tag == null)
+			return false;
+
+		for (int i = 1; i <= 12; i++) {
+			if (tag.contains("sentry" + i))
+				return true;
+		}
+
+		return false;
+	}
+
+	public static boolean isSentryAdded(ItemStack stack, BlockPos pos) {
 		if (stack.getTag() == null)
 			return false;
 
@@ -150,7 +162,7 @@ public class SentryRemoteAccessToolItem extends Item {
 		return false;
 	}
 
-	private int getNextAvailableSlot(ItemStack stack) {
+	public static int getNextAvailableSlot(ItemStack stack) {
 		if (stack.getTag() == null)
 			return 1;
 
