@@ -49,7 +49,6 @@ public class SetCameraView {
 				OverlayToggleHandler.disable(VanillaGuiOverlay.JUMP_BAR);
 				OverlayToggleHandler.disable(VanillaGuiOverlay.POTION_ICONS);
 				OverlayToggleHandler.enable(ClientHandler.cameraOverlay);
-				OverlayToggleHandler.disable(ClientHandler.hotbarBindOverlay);
 			}
 			else {
 				if (CameraController.previousCameraType != null)

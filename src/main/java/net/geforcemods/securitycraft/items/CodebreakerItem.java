@@ -8,7 +8,9 @@ import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -24,6 +26,9 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 
 public class CodebreakerItem extends Item {
+	public static final ResourceLocation STATE_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "codebreaker_state");
+	public static final String WORKING = "working", LAST_USED_TIME = "last_used_time", WAS_SUCCESSFUL = "was_successful";
+
 	public CodebreakerItem(Item.Properties properties) {
 		super(properties);
 	}
@@ -46,21 +51,32 @@ public class CodebreakerItem extends Item {
 					else {
 						codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-						if (!level.isClientSide && (player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance)) {
-							NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
-								@Override
-								public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-									return new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(briefcase));
-								}
+						if (!level.isClientSide) {
+							if (wasRecentlyUsed(codebreaker))
+								return InteractionResultHolder.pass(codebreaker);
 
-								@Override
-								public Component getDisplayName() {
-									return briefcase.getHoverName();
-								}
-							}, player.blockPosition());
+							boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
+							CompoundTag tag = codebreaker.getOrCreateTag();
+
+							tag.putLong(LAST_USED_TIME, System.currentTimeMillis());
+							tag.putBoolean(WAS_SUCCESSFUL, isSuccessful);
+
+							if (isSuccessful) {
+								NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
+									@Override
+									public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
+										return new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(briefcase));
+									}
+
+									@Override
+									public Component getDisplayName() {
+										return briefcase.getHoverName();
+									}
+								}, player.blockPosition());
+							}
+							else
+								PlayerUtils.sendMessageToPlayer(player, Component.translatable(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
 						}
-						else
-							PlayerUtils.sendMessageToPlayer(player, Component.translatable(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
 					}
 				}
 
@@ -69,6 +85,12 @@ public class CodebreakerItem extends Item {
 		}
 
 		return InteractionResultHolder.pass(codebreaker);
+	}
+
+	public static boolean wasRecentlyUsed(ItemStack stack) {
+		long lastUsedTime = stack.getOrCreateTag().getLong(CodebreakerItem.LAST_USED_TIME);
+
+		return lastUsedTime != 0 && System.currentTimeMillis() - lastUsedTime < 3000L;
 	}
 
 	@Override

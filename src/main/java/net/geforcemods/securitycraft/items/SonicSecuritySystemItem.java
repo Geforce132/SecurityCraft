@@ -196,7 +196,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 	 * @return true if the tag contains at least one position, false otherwise
 	 */
 	public static boolean hasLinkedBlock(CompoundTag tag) {
-		if (!tag.contains("LinkedBlocks"))
+		if (tag == null || !tag.contains("LinkedBlocks"))
 			return false;
 
 		return !tag.getList("LinkedBlocks", Tag.TAG_COMPOUND).isEmpty();
