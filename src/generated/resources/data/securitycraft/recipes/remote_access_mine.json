@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " T ",
-    " DG",
-    "S  "
+    "T  ",
+    "GDG",
+    "III"
   ],
   "key": {
     "T": {
@@ -15,8 +15,8 @@
     "G": {
       "tag": "forge:ingots/gold"
     },
-    "S": {
-      "tag": "forge:rods/wooden"
+    "I": {
+      "tag": "forge:ingots/iron"
     }
   },
   "result": {
