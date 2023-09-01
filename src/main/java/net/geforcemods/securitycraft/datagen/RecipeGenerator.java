@@ -376,7 +376,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', SCContent.REINFORCED_GLASS.get())
 		.unlockedBy("has_amethyst_shard", has(Items.AMETHYST_SHARD))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.REMOTE_ACCESS_MINE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.MINE_REMOTE_ACCESS_TOOL.get())
 		.pattern(" T ")
 		.pattern(" DG")
 		.pattern("S  ")
@@ -386,7 +386,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('S', Tags.Items.RODS_WOODEN)
 		.unlockedBy("has_mine", has(SCContent.MINE.get()))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.REMOTE_ACCESS_SENTRY.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.SENTRY_REMOTE_ACCESS_TOOL.get())
 		.pattern("ITI")
 		.pattern("IDI")
 		.pattern("ISI")

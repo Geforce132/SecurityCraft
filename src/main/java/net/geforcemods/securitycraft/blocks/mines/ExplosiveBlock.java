@@ -34,7 +34,7 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		ItemStack heldItem = player.getItemInHand(hand);
 
-		if (heldItem.is(SCContent.REMOTE_ACCESS_MINE.get()))
+		if (heldItem.is(SCContent.MINE_REMOTE_ACCESS_TOOL.get()))
 			return InteractionResult.SUCCESS;
 
 		if (isActive(level, pos) && isDefusable() && player.getItemInHand(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
