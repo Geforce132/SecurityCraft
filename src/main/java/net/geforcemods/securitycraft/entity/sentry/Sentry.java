@@ -100,12 +100,12 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 		this(SCContent.SENTRY_ENTITY.get(), world);
 	}
 
-	public void setupSentry(PlayerEntity player) {
+	public void setUpSentry(PlayerEntity player) {
 		entityData.set(OWNER, new Owner(player.getName().getString(), PlayerEntity.createPlayerUUID(player.getGameProfile()).toString()));
 		entityData.set(ALLOWLIST, new CompoundNBT());
 		entityData.set(HAS_SPEED_MODULE, false);
 		entityData.set(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
-		entityData.set(HEAD_ROTATION, 0.0F);
+		entityData.set(HEAD_ROTATION, (float) (MathHelper.atan2(player.getX() - getX(), -(player.getZ() - getZ())) * (180D / Math.PI)));
 		getSentryDisguiseBlockEntity(); //here to set the disguise block and its owner
 	}
 
