@@ -70,7 +70,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.PacketDistributor;
 
-public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffected, IOwnable { //needs to be a creature so it can target a player, ai is also only given to living entities
+public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffected, IOwnable { //needs to be a pathfinder mob so it can target a player, ai is also only given to living entities
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(Sentry.class, Owner.getSerializer());
 	private static final EntityDataAccessor<CompoundTag> ALLOWLIST = SynchedEntityData.<CompoundTag>defineId(Sentry.class, EntityDataSerializers.COMPOUND_TAG);
 	private static final EntityDataAccessor<Boolean> HAS_SPEED_MODULE = SynchedEntityData.<Boolean>defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
@@ -93,12 +93,12 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		super(SCContent.SENTRY_ENTITY.get(), level);
 	}
 
-	public void setupSentry(Player player) {
+	public void setUpSentry(Player player) {
 		entityData.set(OWNER, new Owner(player.getName().getString(), UUIDUtil.getOrCreatePlayerUUID(player.getGameProfile()).toString()));
 		entityData.set(ALLOWLIST, new CompoundTag());
 		entityData.set(HAS_SPEED_MODULE, false);
 		entityData.set(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
-		entityData.set(HEAD_ROTATION, 0.0F);
+		entityData.set(HEAD_ROTATION, (float) (Mth.atan2(player.getX() - getX(), -(player.getZ() - getZ())) * (180D / Math.PI)));
 		getSentryDisguiseBlockEntity(); //here to set the disguise block and its owner
 	}
 
