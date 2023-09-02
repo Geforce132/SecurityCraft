@@ -12,6 +12,7 @@
 - Change: The item textures for the Camera Monitor, Codebreaker, Mine Remote Access Tool, and Sentry Remote Access Tool have been modified to be more immersive and intuitive
 - Change: The recipe for the Mine Remote Access Tool has been modified to match its new texture
 - Change: The Codebreaker can now not be used for three seconds after its last usage
+- Change: The Sentry will now face the player when it is placed down. The head will still be within the body by default, though
 - API: IReinforcedBlock has been moved to the API package
 - API: New methods IReinforcedBlock#convertToReinforced and IReinforcedBlock#convertToVanilla
 - Fix: The exclamation mark in the Keycard Reader screen is dark

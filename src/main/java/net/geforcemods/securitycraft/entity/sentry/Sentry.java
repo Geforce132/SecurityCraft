@@ -93,6 +93,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 
 	public Sentry(World world, double x, double y, double z, EntityPlayer owner) {
 		this(world, x, y, z, new Owner(owner.getName(), EntityPlayer.getUUID(owner.getGameProfile()).toString()));
+		dataManager.set(HEAD_ROTATION, (float) (MathHelper.atan2(owner.posX - posX, -(owner.posZ - posZ)) * (180D / Math.PI)));
 	}
 
 	public Sentry(World world, double x, double y, double z, Owner owner) {
