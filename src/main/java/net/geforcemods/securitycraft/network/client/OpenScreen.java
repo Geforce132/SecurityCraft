@@ -42,6 +42,8 @@ public class OpenScreen {
 
 		if (dataType.needsPosition)
 			pos = buf.readBlockPos();
+		else
+			pos = BlockPos.ZERO;
 	}
 
 	public void encode(PacketBuffer buf) {
