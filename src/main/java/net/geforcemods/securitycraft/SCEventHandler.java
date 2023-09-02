@@ -37,6 +37,7 @@ import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
+import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -68,6 +69,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
@@ -706,32 +708,40 @@ public class SCEventHandler {
 
 			double chance = ConfigHandler.codebreakerChance;
 
-			if (chance < 0.0D) {
-				Block block = world.getBlockState(pos).getBlock();
-
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(block), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-			}
+			if (chance < 0.0D)
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(world.getBlockState(pos).getBlock()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 			else {
 				ICodebreakable codebreakable = (ICodebreakable) tileEntity;
-				ItemStack stackInHand = player.getHeldItem(event.getHand());
+				ItemStack codebreaker = player.getHeldItem(event.getHand());
 				IBlockState state = world.getBlockState(pos);
 
 				if (!codebreakable.shouldAttemptCodebreak(state, player))
 					return true;
 
-				if (stackInHand.getItem() == SCContent.codebreaker) {
+				if (codebreaker.getItem() == SCContent.codebreaker) {
 					if (codebreakable instanceof IOwnable && ((IOwnable) codebreakable).isOwnedBy(player)) {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.codebreaker), Utils.localize("messages.securitycraft:codebreaker.owned"), TextFormatting.RED);
 						return false;
 					}
 
-					stackInHand.damageItem(1, player);
-				}
+					if (!codebreaker.hasTagCompound())
+						codebreaker.setTagCompound(new NBTTagCompound());
 
-				if (player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance)
-					codebreakable.useCodebreaker(state, player);
-				else
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.codebreaker), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+					if (CodebreakerItem.wasRecentlyUsed(codebreaker))
+						return false;
+
+					boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
+					NBTTagCompound tag = codebreaker.getTagCompound();
+
+					codebreaker.damageItem(1, player);
+					tag.setLong(CodebreakerItem.LAST_USED_TIME, System.currentTimeMillis());
+					tag.setBoolean(CodebreakerItem.WAS_SUCCESSFUL, isSuccessful);
+
+					if (isSuccessful)
+						codebreakable.useCodebreaker(state, player);
+					else
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.codebreaker), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+				}
 			}
 
 			return true;

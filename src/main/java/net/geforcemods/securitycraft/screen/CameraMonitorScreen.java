@@ -82,7 +82,7 @@ public class CameraMonitorScreen extends GuiContainer {
 		for (int i = 0; i < 10; i++) {
 			GuiButton button = cameraButtons[i];
 			int camID = (button.id + ((page - 1) * 10));
-			List<CameraView> views = cameraMonitor.getCameraPositions(nbtTag);
+			List<CameraView> views = CameraMonitorItem.getCameraPositions(nbtTag);
 			CameraView view = views.get(camID - 1);
 
 			button.displayString += camID;
@@ -115,10 +115,10 @@ public class CameraMonitorScreen extends GuiContainer {
 		if (page == 1)
 			prevPageButton.enabled = false;
 
-		if (page == 3 || cameraMonitor.getCameraPositions(nbtTag).size() < (page * 10) + 1)
+		if (page == 3 || CameraMonitorItem.getCameraPositions(nbtTag).size() < (page * 10) + 1)
 			nextPageButton.enabled = false;
 
-		for (int i = cameraMonitor.getCameraPositions(nbtTag).size() + 1; i <= (page * 10); i++) {
+		for (int i = CameraMonitorItem.getCameraPositions(nbtTag).size() + 1; i <= (page * 10); i++) {
 			cameraButtons[(i - 1) - ((page - 1) * 10)].enabled = false;
 		}
 	}
@@ -145,7 +145,7 @@ public class CameraMonitorScreen extends GuiContainer {
 			mc.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1));
 		else if (button.id < 11) {
 			int camID = button.id + ((page - 1) * 10);
-			BlockPos cameraPos = cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).getPos();
+			BlockPos cameraPos = CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1).getPos();
 			TileEntity te = mc.world.getTileEntity(cameraPos);
 
 			if (te instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) te).isDisabled()) {
@@ -160,7 +160,7 @@ public class CameraMonitorScreen extends GuiContainer {
 			int camID = (button.id - 10) + ((page - 1) * 10);
 
 			SecurityCraft.network.sendToServer(new RemoveCameraTag(camID));
-			nbtTag.removeTag(CameraMonitorItem.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
+			nbtTag.removeTag(CameraMonitorItem.getTagNameFromPosition(nbtTag, CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1)));
 			button.enabled = false;
 			cameraButtons[(camID - 1) % 10].enabled = false;
 		}

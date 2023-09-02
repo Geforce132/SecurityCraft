@@ -5,6 +5,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.misc.LinkingStateItemPropertyHandler;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -28,6 +29,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MineRemoteAccessToolItem extends Item {
+	public MineRemoteAccessToolItem() {
+		addPropertyOverride(LinkingStateItemPropertyHandler.LINKING_STATE_PROPERTY, LinkingStateItemPropertyHandler::mineRemoteAccessTool);
+	}
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
@@ -98,7 +103,21 @@ public class MineRemoteAccessToolItem extends Item {
 		}
 	}
 
-	private void removeTagFromItemAndUpdate(ItemStack stack, BlockPos pos, EntityPlayer player) {
+	public static boolean hasMineAdded(NBTTagCompound tag) {
+		if (tag == null)
+			return false;
+
+		for (int i = 1; i <= 6; i++) {
+			int[] coords = tag.getIntArray("mine" + i);
+
+			if (tag.getIntArray("mine" + i).length > 0 && (coords[0] != 0 || coords[1] != 0 || coords[2] != 0))
+				return true;
+		}
+
+		return false;
+	}
+
+	public static void removeTagFromItemAndUpdate(ItemStack stack, BlockPos pos, EntityPlayer player) {
 		if (stack.getTagCompound() == null)
 			return;
 
@@ -120,27 +139,26 @@ public class MineRemoteAccessToolItem extends Item {
 		}
 	}
 
-	private boolean isMineAdded(ItemStack stack, BlockPos pos) {
+	public static boolean isMineAdded(ItemStack stack, BlockPos pos) {
 		if (stack.getTagCompound() == null)
 			return false;
 
 		for (int i = 1; i <= 6; i++) {
-			if (stack.getTagCompound().getIntArray("mine" + i).length > 0) {
-				int[] coords = stack.getTagCompound().getIntArray("mine" + i);
+			int[] coords = stack.getTagCompound().getIntArray("mine" + i);
 
-				if (coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
-					return true;
-			}
+			if (stack.getTagCompound().getIntArray("mine" + i).length > 0 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
+				return true;
 		}
 
 		return false;
 	}
 
-	private int getNextAvailableSlot(ItemStack stack) {
+	public static int getNextAvailableSlot(ItemStack stack) {
+		if (stack.getTagCompound() == null)
+			return 1;
+
 		for (int i = 1; i <= 6; i++) {
-			if (stack.getTagCompound() == null)
-				return 1;
-			else if (stack.getTagCompound().getIntArray("mine" + i).length == 0 || (stack.getTagCompound().getIntArray("mine" + i)[0] == 0 && stack.getTagCompound().getIntArray("mine" + i)[1] == 0 && stack.getTagCompound().getIntArray("mine" + i)[2] == 0))
+			if (stack.getTagCompound().getIntArray("mine" + i).length == 0 || (stack.getTagCompound().getIntArray("mine" + i)[0] == 0 && stack.getTagCompound().getIntArray("mine" + i)[1] == 0 && stack.getTagCompound().getIntArray("mine" + i)[2] == 0))
 				return i;
 		}
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
+import net.geforcemods.securitycraft.misc.LinkingStateItemPropertyHandler;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -30,6 +31,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SentryRemoteAccessToolItem extends Item {
 	private static final Style GRAY_STYLE = new Style().setColor(TextFormatting.GRAY);
+
+	public SentryRemoteAccessToolItem() {
+		addPropertyOverride(LinkingStateItemPropertyHandler.LINKING_STATE_PROPERTY, LinkingStateItemPropertyHandler::sentryRemoteAccessTool);
+	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
@@ -135,27 +140,39 @@ public class SentryRemoteAccessToolItem extends Item {
 		}
 	}
 
-	private boolean isSentryAdded(ItemStack stack, BlockPos pos) {
-		if (stack.getTagCompound() == null)
+	public static boolean hasSentryAdded(NBTTagCompound tag) {
+		if (tag == null)
 			return false;
 
 		for (int i = 1; i <= 12; i++) {
-			if (stack.getTagCompound().getIntArray("sentry" + i).length > 0) {
-				int[] coords = stack.getTagCompound().getIntArray("sentry" + i);
+			int[] coords = tag.getIntArray("sentry" + i);
 
-				if (coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
-					return true;
-			}
+			if (tag.getIntArray("sentry" + i).length > 0 && (coords[0] != 0 || coords[1] != 0 || coords[2] != 0))
+				return true;
 		}
 
 		return false;
 	}
 
-	private int getNextAvailableSlot(ItemStack stack) {
-		for (int i = 1; i <= 12; i++) {
-			if (stack.getTagCompound() == null)
-				return 1;
+	public static boolean isSentryAdded(ItemStack stack, BlockPos pos) {
+		if (stack.getTagCompound() == null)
+			return false;
 
+		for (int i = 1; i <= 12; i++) {
+			int[] coords = stack.getTagCompound().getIntArray("sentry" + i);
+
+			if (stack.getTagCompound().getIntArray("sentry" + i).length > 0 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
+				return true;
+		}
+
+		return false;
+	}
+
+	public static int getNextAvailableSlot(ItemStack stack) {
+		if (stack.getTagCompound() == null)
+			return 1;
+
+		for (int i = 1; i <= 12; i++) {
 			int[] pos = stack.getTagCompound().getIntArray("sentry" + i);
 
 			if (pos.length == 0 || (pos[0] == 0 && pos[1] == 0 && pos[2] == 0))

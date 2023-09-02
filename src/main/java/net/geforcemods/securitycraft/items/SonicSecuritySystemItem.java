@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.misc.LinkingStateItemPropertyHandler;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -38,6 +39,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class SonicSecuritySystemItem extends ItemBlock {
 	public SonicSecuritySystemItem() {
 		super(SCContent.sonicSecuritySystem);
+		addPropertyOverride(LinkingStateItemPropertyHandler.LINKING_STATE_PROPERTY, LinkingStateItemPropertyHandler::sonicSecuritySystem);
 	}
 
 	@Override
@@ -188,7 +190,7 @@ public class SonicSecuritySystemItem extends ItemBlock {
 	 * @return true if the tag contains at least one position, false otherwise
 	 */
 	public static boolean hasLinkedBlock(NBTTagCompound tag) {
-		if (!tag.hasKey("LinkedBlocks"))
+		if (tag == null || !tag.hasKey("LinkedBlocks"))
 			return false;
 
 		return tag.getTagList("LinkedBlocks", Constants.NBT.TAG_COMPOUND).tagCount() > 0;

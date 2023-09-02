@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.misc.CameraView;
+import net.geforcemods.securitycraft.misc.LinkingStateItemPropertyHandler;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -28,6 +29,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CameraMonitorItem extends Item {
+	public CameraMonitorItem() {
+		addPropertyOverride(LinkingStateItemPropertyHandler.LINKING_STATE_PROPERTY, LinkingStateItemPropertyHandler::cameraMonitor);
+	}
+
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
@@ -104,7 +109,7 @@ public class CameraMonitorItem extends Item {
 		return "";
 	}
 
-	public boolean hasCameraAdded(NBTTagCompound tag) {
+	public static boolean hasCameraAdded(NBTTagCompound tag) {
 		if (tag == null)
 			return false;
 
@@ -116,7 +121,7 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public boolean isCameraAdded(NBTTagCompound tag, CameraView view) {
+	public static boolean isCameraAdded(NBTTagCompound tag, CameraView view) {
 		for (int i = 1; i <= 30; i++) {
 			if (tag.hasKey("Camera" + i)) {
 				String[] coords = tag.getString("Camera" + i).split(" ");
@@ -129,7 +134,7 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public List<CameraView> getCameraPositions(NBTTagCompound tag) {
+	public static List<CameraView> getCameraPositions(NBTTagCompound tag) {
 		List<CameraView> list = new ArrayList<>();
 
 		for (int i = 1; i <= 30; i++) {
@@ -145,7 +150,7 @@ public class CameraMonitorItem extends Item {
 		return list;
 	}
 
-	public int getNumberOfCamerasBound(NBTTagCompound tag) {
+	public static int getNumberOfCamerasBound(NBTTagCompound tag) {
 		if (tag == null)
 			return 0;
 

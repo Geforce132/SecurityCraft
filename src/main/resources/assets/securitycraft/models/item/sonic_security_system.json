@@ -1,6 +1,32 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "securitycraft:items/sonic_security_system"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "securitycraft:items/sonic_security_system"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "securitycraft:linking_state": 0.0
+      },
+      "model": "securitycraft:item/sonic_security_system_idle"
+    },
+    {
+      "predicate": {
+        "securitycraft:linking_state": 0.25
+      },
+      "model": "securitycraft:item/sonic_security_system"
+    },
+    {
+      "predicate": {
+        "securitycraft:linking_state": 0.5
+      },
+      "model": "securitycraft:item/sonic_security_system_not_linked"
+    },
+    {
+      "predicate": {
+        "securitycraft:linking_state": 0.75
+      },
+      "model": "securitycraft:item/sonic_security_system_linked"
     }
+  ]
 }
