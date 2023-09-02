@@ -672,6 +672,8 @@
 	"gui.securitycraft:projector.height": "Höhe: %s",
 	"gui.securitycraft:projector.height.description": "Die Höhe der Projektion.",
 	"gui.securitycraft:projector.horizontal": "Horizontale Projektion",
+	"gui.securitycraft:projector.isOverridingBlocks.no": "Dieser Projektor projiziert nur Blöcke in die Welt, wenn an der Position der Projektion kein Block existiert.",
+	"gui.securitycraft:projector.isOverridingBlocks.yes": "Dieser Projektor projiziert Blöcke ohne Rücksichtname von den Blöcken die in der Welt existieren. Achtung: Dies kann zu flackerndem Z-Fighting führen!",
 	"gui.securitycraft:projector.offset": "Verschiebung: %s",
 	"gui.securitycraft:projector.offset.description": "Die horizontale Verschiebung der Projektion.",
 	"gui.securitycraft:projector.range": "Entfernung: %s",

@@ -45,7 +45,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 					else
 						pos = translateProjection(be.getBlockPos(), pose, be.getBlockState().getValue(ProjectorBlock.FACING), x, be.getProjectionRange() - 16, y + 1, be.getProjectionOffset());
 
-					if (pos != null && be.getLevel().isEmptyBlock(pos)) {
+					if (pos != null && (be.isOverridingBlocks() || be.getLevel().isEmptyBlock(pos))) {
 						BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
 						BakedModel model = dispatcher.getBlockModel(state);
 
