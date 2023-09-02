@@ -40,6 +40,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 	private boolean activatedByRedstone = false;
 	private boolean active = false;
 	private boolean horizontal = false;
+	private boolean overridingBlocks = false;
 	private ItemStack projectedBlock = ItemStack.EMPTY;
 	private BlockState projectedState = Blocks.AIR.defaultBlockState();
 
@@ -62,6 +63,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 		tag.putInt("offset", projectionOffset);
 		tag.putBoolean("active", active);
 		tag.putBoolean("horizontal", horizontal);
+		tag.putBoolean("overriding_blocks", overridingBlocks);
 		tag.put("storedItem", projectedBlock.save(new CompoundTag()));
 		tag.put("SavedState", NbtUtils.writeBlockState(projectedState));
 	}
@@ -77,6 +79,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 		activatedByRedstone = isModuleEnabled(ModuleType.REDSTONE);
 		active = tag.getBoolean("active");
 		horizontal = tag.getBoolean("horizontal");
+		overridingBlocks = tag.getBoolean("overriding_blocks");
 		projectedBlock = ItemStack.of(tag.getCompound("storedItem"));
 
 		if (!tag.contains("SavedState"))
@@ -137,6 +140,14 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 	public void setHorizontal(boolean horizontal) {
 		this.horizontal = horizontal;
 		setChanged();
+	}
+
+	public boolean isOverridingBlocks() {
+		return overridingBlocks;
+	}
+
+	public void setOverridingBlocks(boolean overridingBlocks) {
+		this.overridingBlocks = overridingBlocks;
 	}
 
 	public boolean isActive() {

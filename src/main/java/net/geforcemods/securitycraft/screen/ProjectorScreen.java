@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
 import net.geforcemods.securitycraft.network.server.SyncProjector.DataType;
+import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.screen.components.CallbackSlider;
 import net.geforcemods.securitycraft.screen.components.StateSelector;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
@@ -30,7 +31,8 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 	private CallbackSlider projectionHeightSlider;
 	private CallbackSlider projectionRangeSlider;
 	private CallbackSlider projectionOffsetSlider;
-	private TogglePictureButton toggleButton;
+	private TogglePictureButton horizontalToggleButton;
+	private CallbackCheckbox overrideCheckbox;
 	private StateSelector stateSelector;
 	private int sliderWidth = 120;
 
@@ -63,20 +65,27 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 		projectionOffsetSlider.setFGColor(14737632);
 		projectionOffsetSlider.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:projector.offset.description")));
 		//@formatter:off
-		toggleButton = addRenderableWidget(new TogglePictureButton(left + sliderWidth - 20, topPos + 36, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, 2, button -> {
+		horizontalToggleButton = addRenderableWidget(new TogglePictureButton(left + sliderWidth - 20, topPos + 36, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, 2, button -> {
 			//@formatter:on
 			boolean horizontal = !be.isHorizontal();
 
 			be.setHorizontal(horizontal);
-			updateToggleButtonTooltip();
+			updateHorizontalToggleButtonTooltip();
 			projectionRangeSlider.setMinValue(projectionRangeSlider.getMinValue() - (horizontal ? 16 : -16));
 			projectionRangeSlider.setMaxValue(projectionRangeSlider.getMaxValue() - (horizontal ? 16 : -16));
 			projectionRangeSlider.setValue(projectionRangeSlider.getValue() - (horizontal ? 16 : -16));
 			applySliderValue(projectionRangeSlider);
 			SecurityCraft.CHANNEL.sendToServer(new SyncProjector(be.getBlockPos(), be.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
 		}));
-		toggleButton.setCurrentIndex(be.isHorizontal() ? 1 : 0);
-		updateToggleButtonTooltip();
+		horizontalToggleButton.setCurrentIndex(be.isHorizontal() ? 1 : 0);
+		updateHorizontalToggleButtonTooltip();
+
+		overrideCheckbox = addRenderableWidget(new CallbackCheckbox(left, topPos + 36, 20, 20, Component.empty(), be.isOverridingBlocks(), newValue -> {
+			be.setOverridingBlocks(newValue);
+			SecurityCraft.CHANNEL.sendToServer(new SyncProjector(be.getBlockPos(), be.isOverridingBlocks() ? 1 : 0, DataType.OVERRIDING_BLOCKS));
+			updateOverrideCheckboxTooltip();
+		}, 0));
+		updateOverrideCheckboxTooltip();
 
 		slotHoverChecker = new TextHoverChecker(topPos + 22, topPos + 39, leftPos + 78, leftPos + 95, SLOT_TOOLTIP);
 
@@ -84,8 +93,12 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 		stateSelector.init(minecraft, width, height);
 	}
 
-	private void updateToggleButtonTooltip() {
-		toggleButton.setTooltip(Tooltip.create(be.isHorizontal() ? Utils.localize("gui.securitycraft:projector.horizontal") : Utils.localize("gui.securitycraft:projector.vertical")));
+	private void updateHorizontalToggleButtonTooltip() {
+		horizontalToggleButton.setTooltip(Tooltip.create(be.isHorizontal() ? Utils.localize("gui.securitycraft:projector.horizontal") : Utils.localize("gui.securitycraft:projector.vertical")));
+	}
+
+	private void updateOverrideCheckboxTooltip() {
+		overrideCheckbox.setTooltip(Tooltip.create(be.isOverridingBlocks() ? Utils.localize("gui.securitycraft:projector.isOverridingBlocks.yes") : Utils.localize("gui.securitycraft:projector.isOverridingBlocks.no")));
 	}
 
 	@Override
