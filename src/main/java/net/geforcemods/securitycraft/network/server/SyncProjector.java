@@ -35,7 +35,7 @@ public class SyncProjector {
 		pos = buf.readBlockPos();
 		dataType = buf.readEnum(DataType.class);
 
-		if (dataType == DataType.HORIZONTAL)
+		if (dataType.isBoolean)
 			data = buf.readBoolean() ? 1 : 0;
 		else
 			data = buf.readVarInt();
@@ -45,7 +45,7 @@ public class SyncProjector {
 		buf.writeBlockPos(pos);
 		buf.writeEnum(dataType);
 
-		if (dataType == DataType.HORIZONTAL)
+		if (dataType.isBoolean)
 			buf.writeBoolean(data == 1);
 		else
 			buf.writeVarInt(data);
@@ -76,6 +76,9 @@ public class SyncProjector {
 				case HORIZONTAL:
 					projector.setHorizontal(data == 1);
 					break;
+				case OVERRIDING_BLOCKS:
+					projector.setOverridingBlocks(data == 1);
+					break;
 				case BLOCK_STATE:
 					projector.setProjectedState(Block.stateById(data));
 					break;
@@ -92,8 +95,19 @@ public class SyncProjector {
 		HEIGHT,
 		RANGE,
 		OFFSET,
-		HORIZONTAL,
+		HORIZONTAL(true),
+		OVERRIDING_BLOCKS(true),
 		BLOCK_STATE,
 		INVALID;
+
+		public final boolean isBoolean;
+
+		DataType() {
+			this(false);
+		}
+
+		DataType(boolean isBoolean) {
+			this.isBoolean = isBoolean;
+		}
 	}
 }

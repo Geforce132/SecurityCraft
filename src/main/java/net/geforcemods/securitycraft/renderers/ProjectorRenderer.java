@@ -47,7 +47,7 @@ public class ProjectorRenderer extends TileEntityRenderer<ProjectorBlockEntity> 
 					else
 						pos = translateProjection(te.getBlockPos(), stack, te.getBlockState().getValue(ProjectorBlock.FACING), x, te.getProjectionRange() - 16, y + 1, te.getProjectionOffset());
 
-					if (pos != null && te.getLevel().isEmptyBlock(pos)) {
+					if (pos != null && (te.isOverridingBlocks() || te.getLevel().isEmptyBlock(pos))) {
 						for (RenderType renderType : RenderType.chunkBufferLayers()) {
 							if (RenderTypeLookup.canRenderInLayer(state, renderType))
 								Minecraft.getInstance().getBlockRenderer().renderBatched(state, pos, te.getLevel(), stack, buffer.getBuffer(renderType), true, te.level.random);

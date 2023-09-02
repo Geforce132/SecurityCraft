@@ -80,7 +80,7 @@ public class OpenScreen {
 
 				break;
 			case RIFT_STABILIZER:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity)
+				if (te instanceof RiftStabilizerBlockEntity)
 					ClientHandler.displayRiftStabilizerScreen(((RiftStabilizerBlockEntity) te));
 
 				break;
