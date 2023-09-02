@@ -10,6 +10,8 @@
 - Change: The recipe for the Laser Block now uses 4 glass panes in total
 - Change: You can no longer break the code of passcode blocks/briefcases that you own
 - Change: Universal Block Reinforcers can no longer be enchanted with Mending. Old reinforcers lose their Mending enchantment when used. This is to make it more enticing to upgrade to a level 3 reinforcer. In the future, this idea will be expanded upon.
+- Change: The item textures for the Camera Monitor, Codebreaker, Mine Remote Access Tool, and Sentry Remote Access Tool have been changed to be more immersive and intuitive
+- Change: The Codebreaker can now not be used for three seconds after its last usage
 - API: IReinforcedBlock has been moved to the API package
 - API: New methods IReinforcedBlock#convertToReinforced and IReinforcedBlock#convertToVanilla
 - Fix: Crash when opening the customization GUI of a block that has no options (like the Projector)

@@ -147,27 +147,39 @@ public class SentryRemoteAccessToolItem extends Item {
 		}
 	}
 
-	private boolean isSentryAdded(ItemStack stack, BlockPos pos) {
-		if (stack.getTag() == null)
+	public static boolean hasSentryAdded(CompoundNBT tag) {
+		if (tag == null)
 			return false;
 
 		for (int i = 1; i <= 12; i++) {
-			if (stack.getTag().getIntArray("sentry" + i).length > 0) {
-				int[] coords = stack.getTag().getIntArray("sentry" + i);
+			int[] coords = tag.getIntArray("sentry" + i);
 
-				if (coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
-					return true;
-			}
+			if (tag.getIntArray("sentry" + i).length > 0 && (coords[0] != 0 || coords[1] != 0 || coords[2] != 0))
+				return true;
 		}
 
 		return false;
 	}
 
-	private int getNextAvaliableSlot(ItemStack stack) {
-		for (int i = 1; i <= 12; i++) {
-			if (stack.getTag() == null)
-				return 1;
+	public static boolean isSentryAdded(ItemStack stack, BlockPos pos) {
+		if (stack.getTag() == null)
+			return false;
 
+		for (int i = 1; i <= 12; i++) {
+			int[] coords = stack.getTag().getIntArray("sentry" + i);
+
+			if (stack.getTag().getIntArray("sentry" + i).length > 0 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
+				return true;
+		}
+
+		return false;
+	}
+
+	public static int getNextAvaliableSlot(ItemStack stack) {
+		if (stack.getTag() == null)
+			return 1;
+
+		for (int i = 1; i <= 12; i++) {
 			int[] pos = stack.getTag().getIntArray("sentry" + i);
 
 			if (pos.length == 0 || (pos[0] == 0 && pos[1] == 0 && pos[2] == 0))

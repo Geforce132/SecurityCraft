@@ -1,25 +1,14 @@
 package net.geforcemods.securitycraft;
 
-import java.util.Arrays;
-import java.util.function.BiFunction;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
-import net.geforcemods.securitycraft.api.IExplosive;
-import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
-import net.geforcemods.securitycraft.entity.sentry.Sentry;
-import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.items.TaserItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -32,7 +21,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -41,7 +29,6 @@ import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
@@ -49,11 +36,6 @@ import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceContext.BlockMode;
-import net.minecraft.util.math.RayTraceContext.FluidMode;
-import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -75,7 +57,6 @@ public class SCClientEventHandler {
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
 	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final TranslationTextComponent REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
-	private static final int USE_CHECKMARK = 88, USE_CROSS = 110;
 
 	private SCClientEventHandler() {}
 
@@ -168,105 +149,8 @@ public class SCClientEventHandler {
 
 	@SubscribeEvent
 	public static void renderGameOverlay(RenderGameOverlayEvent.Post event) {
-		if (event.getType() == ElementType.ALL) {
-			if (ClientHandler.isPlayerMountedOnCamera())
-				drawCameraOverlay(event.getMatrixStack(), Minecraft.getInstance(), Minecraft.getInstance().gui, Minecraft.getInstance().getWindow(), Minecraft.getInstance().player, Minecraft.getInstance().level, Minecraft.getInstance().cameraEntity.blockPosition());
-			else {
-				Minecraft mc = Minecraft.getInstance();
-				ClientPlayerEntity player = mc.player;
-				World world = player.getCommandSenderWorld();
-
-				for (Hand hand : Hand.values()) {
-					int uCoord = 0;
-					ItemStack stack = player.getItemInHand(hand);
-
-					if (stack.getItem() == SCContent.CAMERA_MONITOR.get()) {
-						uCoord = getUCoord(world, player, stack, bhr -> world.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, 30, (tag, i) -> {
-							if (!tag.contains("Camera" + i))
-								return null;
-
-							String camera = tag.getString("Camera" + i);
-
-							return Arrays.stream(camera.substring(0, camera.lastIndexOf(' ')).split(" ")).map(Integer::parseInt).toArray(Integer[]::new);
-						});
-					}
-					else if (stack.getItem() == SCContent.MINE_REMOTE_ACCESS_TOOL.get()) {
-						uCoord = getUCoord(world, player, stack, bhr -> world.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive, 30, (tag, i) -> {
-							if (tag.getIntArray("mine" + i).length > 0)
-								return Arrays.stream(tag.getIntArray("mine" + i)).boxed().toArray(Integer[]::new);
-							else
-								return null;
-						});
-					}
-					else if (stack.getItem() == SCContent.SENTRY_REMOTE_ACCESS_TOOL.get()) {
-						if (Minecraft.getInstance().crosshairPickEntity instanceof Sentry) {
-							Sentry sentry = (Sentry) Minecraft.getInstance().crosshairPickEntity;
-
-							uCoord = loop(12, (tag, i) -> Arrays.stream(tag.getIntArray("sentry" + i)).boxed().toArray(Integer[]::new), stack.getOrCreateTag(), sentry.blockPosition());
-						}
-					}
-					else if (stack.getItem() == SCContent.SONIC_SECURITY_SYSTEM_ITEM.get()) {
-						uCoord = getUCoord(world, player, stack, bhr -> {
-							TileEntity tile = world.getBlockEntity(bhr.getBlockPos());
-
-							if (!(tile instanceof ILockable))
-								return false;
-
-							//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
-							if ((!(tile instanceof IOwnable) || !((IOwnable) tile).isOwnedBy(player)) && DisguisableBlock.getDisguisedBlockState(world, bhr.getBlockPos()).isPresent())
-								return false;
-
-							return true;
-						}, 0, null, false, SonicSecuritySystemItem::isAdded);
-					}
-
-					if (uCoord != 0) {
-						int hotbarPositionOffset = 0;
-
-						if (hand == Hand.MAIN_HAND)
-							hotbarPositionOffset = player.inventory.selected * 20;
-						else
-							hotbarPositionOffset = mc.options.mainHand == HandSide.LEFT ? 189 : -29;
-
-						RenderSystem.enableAlphaTest();
-						Minecraft.getInstance().textureManager.bind(BEACON_GUI);
-						AbstractGui.blit(event.getMatrixStack(), mc.getWindow().getGuiScaledWidth() / 2 - 90 + hotbarPositionOffset, mc.getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
-						RenderSystem.disableAlphaTest();
-					}
-				}
-			}
-		}
-	}
-
-	private static int getUCoord(World level, PlayerEntity player, ItemStack stackInHand, Predicate<BlockRayTraceResult> isValidHitResult, int tagSize, BiFunction<CompoundNBT, Integer, Integer[]> getCoords) {
-		return getUCoord(level, player, stackInHand, isValidHitResult, tagSize, getCoords, true, null);
-	}
-
-	private static int getUCoord(World level, PlayerEntity player, ItemStack stackInHand, Predicate<BlockRayTraceResult> isValidHitResult, int tagSize, BiFunction<CompoundNBT, Integer, Integer[]> getCoords, boolean loop, BiPredicate<CompoundNBT, BlockPos> useCheckmark) {
-		double reachDistance = Minecraft.getInstance().gameMode.getPickRange();
-		double eyeHeight = player.getEyeHeight();
-		Vector3d lookVec = new Vector3d(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
-		BlockRayTraceResult hitResult = level.clip(new RayTraceContext(new Vector3d(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
-
-		if (hitResult != null && hitResult.getType() == Type.BLOCK && isValidHitResult.test(hitResult)) {
-			if (loop)
-				return loop(tagSize, getCoords, stackInHand.getOrCreateTag(), hitResult.getBlockPos());
-			else
-				return useCheckmark.test(stackInHand.getOrCreateTag(), hitResult.getBlockPos()) ? USE_CHECKMARK : USE_CROSS;
-		}
-
-		return 0;
-	}
-
-	private static int loop(int tagSize, BiFunction<CompoundNBT, Integer, Integer[]> getCoords, CompoundNBT tag, BlockPos pos) {
-		for (int i = 1; i <= tagSize; i++) {
-			Integer[] coords = getCoords.apply(tag, i);
-
-			if (coords != null && coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
-				return USE_CHECKMARK;
-		}
-
-		return USE_CROSS;
+		if (event.getType() == ElementType.ALL && ClientHandler.isPlayerMountedOnCamera())
+			drawCameraOverlay(event.getMatrixStack(), Minecraft.getInstance(), Minecraft.getInstance().gui, Minecraft.getInstance().getWindow(), Minecraft.getInstance().player, Minecraft.getInstance().level, Minecraft.getInstance().cameraEntity.blockPosition());
 	}
 
 	private static void drawCameraOverlay(MatrixStack matrix, Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World world, BlockPos pos) {

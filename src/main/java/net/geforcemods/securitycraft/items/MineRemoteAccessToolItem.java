@@ -111,7 +111,21 @@ public class MineRemoteAccessToolItem extends Item {
 		}
 	}
 
-	private void removeTagFromItemAndUpdate(ItemStack stack, BlockPos pos, PlayerEntity player) {
+	public static boolean hasMineAdded(CompoundNBT tag) {
+		if (tag == null)
+			return false;
+
+		for (int i = 1; i <= 6; i++) {
+			int[] coords = tag.getIntArray("mine" + i);
+
+			if (tag.getIntArray("mine" + i).length > 0 && (coords[0] != 0 || coords[1] != 0 || coords[2] != 0))
+				return true;
+		}
+
+		return false;
+	}
+
+	public static void removeTagFromItemAndUpdate(ItemStack stack, BlockPos pos, PlayerEntity player) {
 		if (stack.getTag() == null)
 			return;
 
@@ -133,27 +147,26 @@ public class MineRemoteAccessToolItem extends Item {
 		}
 	}
 
-	private boolean isMineAdded(ItemStack stack, BlockPos pos) {
+	public static boolean isMineAdded(ItemStack stack, BlockPos pos) {
 		if (stack.getTag() == null)
 			return false;
 
 		for (int i = 1; i <= 6; i++) {
-			if (stack.getTag().getIntArray("mine" + i).length > 0) {
-				int[] coords = stack.getTag().getIntArray("mine" + i);
+			int[] coords = stack.getTag().getIntArray("mine" + i);
 
-				if (coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
-					return true;
-			}
+			if (stack.getTag().getIntArray("mine" + i).length > 0 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
+				return true;
 		}
 
 		return false;
 	}
 
-	private int getNextAvaliableSlot(ItemStack stack) {
+	public static int getNextAvaliableSlot(ItemStack stack) {
+		if (stack.getTag() == null)
+			return 1;
+
 		for (int i = 1; i <= 6; i++) {
-			if (stack.getTag() == null)
-				return 1;
-			else if (stack.getTag().getIntArray("mine" + i).length == 0 || (stack.getTag().getIntArray("mine" + i)[0] == 0 && stack.getTag().getIntArray("mine" + i)[1] == 0 && stack.getTag().getIntArray("mine" + i)[2] == 0))
+			if (stack.getTag().getIntArray("mine" + i).length == 0 || (stack.getTag().getIntArray("mine" + i)[0] == 0 && stack.getTag().getIntArray("mine" + i)[1] == 0 && stack.getTag().getIntArray("mine" + i)[2] == 0))
 				return i;
 		}
 

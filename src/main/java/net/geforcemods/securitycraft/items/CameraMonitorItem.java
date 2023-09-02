@@ -119,7 +119,7 @@ public class CameraMonitorItem extends Item {
 		return "";
 	}
 
-	public boolean hasCameraAdded(CompoundNBT tag) {
+	public static boolean hasCameraAdded(CompoundNBT tag) {
 		if (tag == null)
 			return false;
 
@@ -131,7 +131,7 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public boolean isCameraAdded(CompoundNBT tag, GlobalPos view) {
+	public static boolean isCameraAdded(CompoundNBT tag, GlobalPos view) {
 		for (int i = 1; i <= 30; i++) {
 			if (tag.contains("Camera" + i)) {
 				String[] coords = tag.getString("Camera" + i).split(" ");
@@ -144,7 +144,7 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public List<GlobalPos> getCameraPositions(CompoundNBT tag) {
+	public static List<GlobalPos> getCameraPositions(CompoundNBT tag) {
 		List<GlobalPos> list = new ArrayList<>();
 
 		for (int i = 1; i <= 30; i++) {
@@ -160,13 +160,13 @@ public class CameraMonitorItem extends Item {
 		return list;
 	}
 
-	public int getNumberOfCamerasBound(CompoundNBT tag) {
+	public static int getNumberOfCamerasBound(CompoundNBT tag) {
 		if (tag == null)
 			return 0;
 
 		int amount = 0;
 
-		for (int i = 1; i <= 31; i++) {
+		for (int i = 1; i <= 30; i++) {
 			if (tag.contains("Camera" + i))
 				amount++;
 		}
