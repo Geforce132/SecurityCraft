@@ -26,7 +26,7 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		Item heldItem = player.getHeldItem(hand).getItem();
 
-		if (heldItem == SCContent.remoteAccessMine || heldItem == SCContent.universalOwnerChanger)
+		if (heldItem == SCContent.mineRemoteAccessTool || heldItem == SCContent.universalOwnerChanger)
 			return false;
 
 		if (isActive(world, pos) && isDefusable() && heldItem == SCContent.wireCutters) {

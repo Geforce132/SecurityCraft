@@ -58,7 +58,7 @@ public class TrackMineBlock extends BlockRail implements IExplosive, ITileEntity
 		ItemStack heldStack = player.getHeldItem(hand);
 		Item heldItem = heldStack.getItem();
 
-		if (heldItem == SCContent.remoteAccessMine)
+		if (heldItem == SCContent.mineRemoteAccessTool)
 			return false;
 
 		if (isActive(world, pos) && isDefusable() && heldItem == SCContent.wireCutters && defuseMine(world, pos)) {

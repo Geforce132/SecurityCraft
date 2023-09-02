@@ -35,7 +35,7 @@ public class RemoveMineFromMRAT implements IMessage {
 		public IMessage onMessage(RemoveMineFromMRAT message, MessageContext context) {
 			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
-				ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.remoteAccessMine);
+				ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.mineRemoteAccessTool);
 
 				if (!stack.isEmpty()) {
 					if (!stack.hasTagCompound())

@@ -380,8 +380,8 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.keycardLvl4, PageGroup.KEYCARDS, ConfigHandler.ableToCraftKeycard4);
 		registerItem(event, SCContent.keycardLvl5, PageGroup.KEYCARDS, ConfigHandler.ableToCraftKeycard5);
 		registerItem(event, SCContent.limitedUseKeycard, PageGroup.SINGLE_ITEM, ConfigHandler.ableToCraftLUKeycard);
-		registerItem(event, SCContent.remoteAccessMine);
-		registerItem(event, SCContent.remoteAccessSentry);
+		registerItem(event, SCContent.mineRemoteAccessTool);
+		registerItem(event, SCContent.sentryRemoteAccessTool);
 		registerItem(event, SCContent.fWaterBucket);
 		registerItem(event, SCContent.fLavaBucket);
 		registerItem(event, SCContent.universalBlockModifier);
@@ -897,8 +897,8 @@ public class RegistrationHandler {
 
 		//items
 		registerInventoryModel(SCContent.codebreaker, 0, "codebreaker");
-		registerInventoryModel(SCContent.remoteAccessMine, 0, "remote_access_mine");
-		registerInventoryModel(SCContent.remoteAccessSentry, 0, "remote_access_sentry");
+		registerInventoryModel(SCContent.mineRemoteAccessTool, 0, "remote_access_mine");
+		registerInventoryModel(SCContent.sentryRemoteAccessTool, 0, "remote_access_sentry");
 		registerInventoryModel(SCContent.reinforcedDoorItem, 0, "door_indestructible_iron_item");
 		registerInventoryModel(SCContent.fWaterBucket, 0, "bucket_f_water");
 		registerInventoryModel(SCContent.fLavaBucket, 0, "bucket_f_lava");

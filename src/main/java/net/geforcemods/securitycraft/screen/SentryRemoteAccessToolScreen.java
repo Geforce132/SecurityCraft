@@ -283,7 +283,7 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 	private int[] getSentryCoordinates(int sentry) {
 		sentry++; // sentries are stored starting by sentry1 up to sentry12
 
-		if (srat.getItem() != null && srat.getItem() == SCContent.remoteAccessSentry && srat.getTagCompound() != null && srat.getTagCompound().getIntArray("sentry" + sentry) != null && srat.getTagCompound().getIntArray("sentry" + sentry).length > 0)
+		if (srat.getItem() != null && srat.getItem() == SCContent.sentryRemoteAccessTool && srat.getTagCompound() != null && srat.getTagCompound().getIntArray("sentry" + sentry) != null && srat.getTagCompound().getIntArray("sentry" + sentry).length > 0)
 			return srat.getTagCompound().getIntArray("sentry" + sentry);
 
 		return new int[] {

@@ -205,7 +205,7 @@ public class MineRemoteAccessToolScreen extends GuiContainer {
 	private int[] getMineCoordinates(int mine) {
 		mine++; //mines are stored starting by mine1 up to mine6
 
-		if (mrat.getItem() != null && mrat.getItem() == SCContent.remoteAccessMine && mrat.getTagCompound() != null && mrat.getTagCompound().getIntArray("mine" + mine) != null && mrat.getTagCompound().getIntArray("mine" + mine).length > 0)
+		if (mrat.getItem() != null && mrat.getItem() == SCContent.mineRemoteAccessTool && mrat.getTagCompound() != null && mrat.getTagCompound().getIntArray("mine" + mine) != null && mrat.getTagCompound().getIntArray("mine" + mine).length > 0)
 			return mrat.getTagCompound().getIntArray("mine" + mine);
 
 		return new int[] {

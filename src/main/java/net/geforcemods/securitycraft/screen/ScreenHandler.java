@@ -55,16 +55,16 @@ public class ScreenHandler implements IGuiHandler {
 		MRAT(
 			(player, te) -> new GenericMenu(te),
 			(player, te) -> {
-				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.remoteAccessMine);
+				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.mineRemoteAccessTool);
 
 				return heldStack.isEmpty() ? null : new MineRemoteAccessToolScreen(heldStack);
 			}),
 		SRAT(
 			(player, te) -> new GenericMenu(te),
 			(player, te) -> {
-				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.remoteAccessSentry);
+				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.sentryRemoteAccessTool);
 
-				return heldStack.isEmpty() ? null : new SentryRemoteAccessToolScreen(PlayerUtils.getItemStackFromAnyHand(player, SCContent.remoteAccessSentry));
+				return heldStack.isEmpty() ? null : new SentryRemoteAccessToolScreen(PlayerUtils.getItemStackFromAnyHand(player, SCContent.sentryRemoteAccessTool));
 			}),
 		INVENTORY_SCANNER(
 			(player, te) -> new InventoryScannerMenu(player.inventory, (InventoryScannerBlockEntity) te),

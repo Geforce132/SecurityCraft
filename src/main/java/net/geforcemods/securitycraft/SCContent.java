@@ -412,8 +412,8 @@ public class SCContent {
 	public static Item limitedUseKeycard;
 	public static Item portableTunePlayer;
 	public static Item reinforcedDoorItem;
-	public static Item remoteAccessMine;
-	public static Item remoteAccessSentry;
+	public static Item mineRemoteAccessTool;
+	public static Item sentryRemoteAccessTool;
 	public static Item scannerDoorItem;
 	public static Item scManual;
 	public static Item secretSignItem;

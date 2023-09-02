@@ -47,7 +47,7 @@ public class FurnaceMineBlock extends BaseFullMineBlock {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (player.getHeldItem(hand).getItem() != SCContent.remoteAccessMine && !EntityUtils.doesPlayerOwn(player, world, pos)) {
+		if (player.getHeldItem(hand).getItem() != SCContent.mineRemoteAccessTool && !EntityUtils.doesPlayerOwn(player, world, pos)) {
 			explode(world, pos);
 			return true;
 		}

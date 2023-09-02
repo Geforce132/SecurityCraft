@@ -340,8 +340,8 @@ public class SetupHandler {
 		SCContent.limitedUseKeycard = new KeycardItem(-1).setRegistryName("limited_use_keycard").setTranslationKey("securitycraft:limitedUseKeycard");
 		SCContent.reinforcedDoorItem = new ReinforcedDoorItem(SCContent.reinforcedDoor).setRegistryName("door_indestructible_iron_item").setTranslationKey("securitycraft:doorIndestructibleIronItem").setCreativeTab(SecurityCraft.DECORATION_TAB);
 		SCContent.universalBlockRemover = new UniversalBlockRemoverItem().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("universal_block_remover").setTranslationKey("securitycraft:universalBlockRemover");
-		SCContent.remoteAccessMine = new MineRemoteAccessToolItem().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("remote_access_mine").setTranslationKey("securitycraft:remoteAccessMine");
-		SCContent.remoteAccessSentry = new SentryRemoteAccessToolItem().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("remote_access_sentry").setTranslationKey("securitycraft:remoteAccessSentry");
+		SCContent.mineRemoteAccessTool = new MineRemoteAccessToolItem().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("remote_access_mine").setTranslationKey("securitycraft:remoteAccessMine");
+		SCContent.sentryRemoteAccessTool = new SentryRemoteAccessToolItem().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("remote_access_sentry").setTranslationKey("securitycraft:remoteAccessSentry");
 		SCContent.fWaterBucket = new FakeLiquidBucketItem(SCContent.bogusWaterFlowing).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("bucket_f_water").setTranslationKey("securitycraft:bucketFWater");
 		SCContent.fLavaBucket = new FakeLiquidBucketItem(SCContent.bogusLavaFlowing).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("bucket_f_lava").setTranslationKey("securitycraft:bucketFLava");
 		SCContent.universalBlockModifier = new Item().setMaxStackSize(1).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("universal_block_modifier").setTranslationKey("securitycraft:universalBlockModifier");
