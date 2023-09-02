@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
 import net.geforcemods.securitycraft.network.server.SyncProjector.DataType;
+import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.screen.components.CallbackSlider;
 import net.geforcemods.securitycraft.screen.components.StateSelector;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
@@ -29,7 +30,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/projector.png");
 	private static final TranslatableComponent SLOT_TOOLTIP = Utils.localize("gui.securitycraft:projector.block");
 	private ProjectorBlockEntity be;
-	private TextHoverChecker[] hoverCheckers = new TextHoverChecker[5];
+	private TextHoverChecker[] hoverCheckers = new TextHoverChecker[6];
 	private TextHoverChecker slotHoverChecker;
 	private CallbackSlider projectionWidthSlider;
 	private CallbackSlider projectionHeightSlider;
@@ -52,6 +53,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 		int id = 0;
 		int left = leftPos + ((imageWidth - sliderWidth) / 2);
 		TogglePictureButton toggleButton;
+		CallbackCheckbox overrideCheckbox;
 
 		projectionWidthSlider = addRenderableWidget(new CallbackSlider(left, topPos + 57, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.width", ""), TextComponent.EMPTY, ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionWidth(), true, this::applySliderValue));
 		projectionWidthSlider.setFGColor(14737632);
@@ -82,6 +84,12 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 		}));
 		toggleButton.setCurrentIndex(be.isHorizontal() ? 1 : 0);
 		hoverCheckers[id++] = new TextHoverChecker(toggleButton, Arrays.asList(Utils.localize("gui.securitycraft:projector.vertical"), Utils.localize("gui.securitycraft:projector.horizontal")));
+
+		overrideCheckbox = addRenderableWidget(new CallbackCheckbox(left, topPos + 36, 20, 20, TextComponent.EMPTY, be.isOverridingBlocks(), newValue -> {
+			be.setOverridingBlocks(newValue);
+			SecurityCraft.CHANNEL.sendToServer(new SyncProjector(be.getBlockPos(), be.isOverridingBlocks() ? 1 : 0, DataType.OVERRIDING_BLOCKS));
+		}, 0));
+		hoverCheckers[id++] = new TextHoverChecker(overrideCheckbox, Arrays.asList(Utils.localize("gui.securitycraft:projector.isOverridingBlocks.yes"), Utils.localize("gui.securitycraft:projector.isOverridingBlocks.no")));
 
 		slotHoverChecker = new TextHoverChecker(topPos + 22, topPos + 39, leftPos + 78, leftPos + 95, SLOT_TOOLTIP);
 
