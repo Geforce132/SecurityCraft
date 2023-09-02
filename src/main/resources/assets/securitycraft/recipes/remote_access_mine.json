@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " T ",
-    " DG",
-    "S  "
+    "T  ",
+    "GDG",
+    "III"
   ],
   "key": {
     "T": {
@@ -17,9 +17,9 @@
       "type": "forge:ore_dict",
       "ore": "ingotGold"
     },
-    "S": {
+    "I": {
       "type": "forge:ore_dict",
-      "ore": "stickWood"
+      "ore": "ingotIron"
     }
   },
   "result": {
