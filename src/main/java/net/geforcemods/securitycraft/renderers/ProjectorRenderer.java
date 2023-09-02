@@ -49,7 +49,7 @@ public class ProjectorRenderer extends TileEntitySpecialRenderer<ProjectorBlockE
 					else
 						pos = translateProjection(te.getPos(), facing, fakeX, te.getProjectionRange() - 16, fakeY + 1, te.getProjectionOffset());
 
-					if (pos != null && te.getWorld().isAirBlock(pos)) {
+					if (pos != null && (te.isOverridingBlocks() || te.getWorld().isAirBlock(pos))) {
 						GlStateManager.disableCull();
 						GlStateManager.scale(0.9999D, 0.9999D, 0.9999D); //counteract z-fighting between fake blocks
 

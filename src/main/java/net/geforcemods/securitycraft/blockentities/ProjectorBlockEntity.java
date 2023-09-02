@@ -30,6 +30,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IInv
 	private boolean activatedByRedstone = false;
 	private boolean active = false;
 	private boolean horizontal = false;
+	private boolean overridingBlocks = false;
 	private ItemStack projectedBlock = ItemStack.EMPTY;
 	private IBlockState projectedState = Blocks.AIR.getDefaultState();
 
@@ -48,6 +49,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IInv
 		tag.setInteger("offset", projectionOffset);
 		tag.setBoolean("active", active);
 		tag.setBoolean("horizontal", horizontal);
+		tag.setBoolean("overriding_blocks", overridingBlocks);
 		tag.setTag("storedItem", projectedBlock.writeToNBT(new NBTTagCompound()));
 		tag.setTag("SavedState", NBTUtil.writeBlockState(new NBTTagCompound(), projectedState));
 		return tag;
@@ -64,6 +66,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IInv
 		activatedByRedstone = isModuleEnabled(ModuleType.REDSTONE);
 		active = tag.getBoolean("active");
 		horizontal = tag.getBoolean("horizontal");
+		overridingBlocks = tag.getBoolean("overriding_blocks");
 		projectedBlock = new ItemStack(tag.getCompoundTag("storedItem"));
 
 		if (!tag.hasKey("SavedState"))
@@ -124,6 +127,14 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IInv
 	public void setHorizontal(boolean horizontal) {
 		this.horizontal = horizontal;
 		markDirty();
+	}
+
+	public boolean isOverridingBlocks() {
+		return overridingBlocks;
+	}
+
+	public void setOverridingBlocks(boolean overridingBlocks) {
+		this.overridingBlocks = overridingBlocks;
 	}
 
 	public boolean isActive() {

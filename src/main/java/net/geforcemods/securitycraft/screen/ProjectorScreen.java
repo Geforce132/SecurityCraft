@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
 import net.geforcemods.securitycraft.network.server.SyncProjector.DataType;
+import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.screen.components.Slider;
 import net.geforcemods.securitycraft.screen.components.Slider.ISlider;
@@ -36,7 +37,7 @@ public class ProjectorScreen extends GuiContainer implements ISlider, IHasExtraA
 	private ProjectorBlockEntity te;
 	private Block block;
 	private String title;
-	private StringHoverChecker[] hoverCheckers = new StringHoverChecker[5];
+	private StringHoverChecker[] hoverCheckers = new StringHoverChecker[6];
 	private StringHoverChecker slotHoverChecker;
 	private Slider projectionWidthSlider;
 	private Slider projectionHeightSlider;
@@ -84,6 +85,12 @@ public class ProjectorScreen extends GuiContainer implements ISlider, IHasExtraA
 		toggleButton.setCurrentIndex(te.isHorizontal() ? 1 : 0);
 		hoverCheckers[id++] = new StringHoverChecker(toggleButton, Arrays.asList(Utils.localize("gui.securitycraft:projector.vertical").getFormattedText(), Utils.localize("gui.securitycraft:projector.horizontal").getFormattedText()));
 		projectionRangeSlider.updateSlider();
+
+		CallbackCheckbox overrideCheckbox = addButton(new CallbackCheckbox(id, left + sliderWidth - 41, guiTop + 36, 20, 20, "", te.isOverridingBlocks(), newValue -> {
+			te.setOverridingBlocks(newValue);
+			SecurityCraft.network.sendToServer(new SyncProjector(te.getPos(), te.isOverridingBlocks() ? 1 : 0, DataType.OVERRIDING_BLOCKS));
+		}, 0));
+		hoverCheckers[id++] = new StringHoverChecker(overrideCheckbox, Arrays.asList(Utils.localize("gui.securitycraft:projector.isOverridingBlocks.yes").getFormattedText(), Utils.localize("gui.securitycraft:projector.isOverridingBlocks.no").getFormattedText()));
 
 		slotHoverChecker = new StringHoverChecker(guiTop + 22, guiTop + 39, guiLeft + 78, guiLeft + 95, SLOT_TOOLTIP);
 

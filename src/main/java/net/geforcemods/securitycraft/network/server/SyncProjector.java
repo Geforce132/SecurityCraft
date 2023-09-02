@@ -38,7 +38,7 @@ public class SyncProjector implements IMessage {
 		pos = BlockPos.fromLong(buf.readLong());
 		dataType = DataType.values()[ByteBufUtils.readVarInt(buf, 5)];
 
-		if (dataType == DataType.HORIZONTAL)
+		if (dataType.isBoolean)
 			data = buf.readBoolean() ? 1 : 0;
 		else
 			data = ByteBufUtils.readVarInt(buf, 5);
@@ -49,7 +49,7 @@ public class SyncProjector implements IMessage {
 		buf.writeLong(pos.toLong());
 		ByteBufUtils.writeVarInt(buf, dataType.ordinal(), 5);
 
-		if (dataType == DataType.HORIZONTAL)
+		if (dataType.isBoolean)
 			buf.writeBoolean(data == 1);
 		else
 			ByteBufUtils.writeVarInt(buf, data, 5);
@@ -83,6 +83,9 @@ public class SyncProjector implements IMessage {
 						case HORIZONTAL:
 							projector.setHorizontal(message.data == 1);
 							break;
+						case OVERRIDING_BLOCKS:
+							projector.setOverridingBlocks(message.data == 1);
+							break;
 						case BLOCK_STATE:
 							projector.setProjectedState(Block.getStateById(message.data));
 							break;
@@ -103,8 +106,19 @@ public class SyncProjector implements IMessage {
 		HEIGHT,
 		RANGE,
 		OFFSET,
-		HORIZONTAL,
+		HORIZONTAL(true),
+		OVERRIDING_BLOCKS(true),
 		BLOCK_STATE,
 		INVALID;
+
+		public final boolean isBoolean;
+
+		DataType() {
+			this(false);
+		}
+
+		DataType(boolean isBoolean) {
+			this.isBoolean = isBoolean;
+		}
 	}
 }
