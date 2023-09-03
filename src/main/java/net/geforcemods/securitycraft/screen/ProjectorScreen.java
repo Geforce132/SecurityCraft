@@ -85,7 +85,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 		toggleButton.setCurrentIndex(be.isHorizontal() ? 1 : 0);
 		hoverCheckers[id++] = new TextHoverChecker(toggleButton, Arrays.asList(Utils.localize("gui.securitycraft:projector.vertical"), Utils.localize("gui.securitycraft:projector.horizontal")));
 
-		overrideCheckbox = addRenderableWidget(new CallbackCheckbox(left, topPos + 36, 20, 20, TextComponent.EMPTY, be.isOverridingBlocks(), newValue -> {
+		overrideCheckbox = addRenderableWidget(new CallbackCheckbox(left + sliderWidth - 41, topPos + 36, 20, 20, TextComponent.EMPTY, be.isOverridingBlocks(), newValue -> {
 			be.setOverridingBlocks(newValue);
 			SecurityCraft.CHANNEL.sendToServer(new SyncProjector(be.getBlockPos(), be.isOverridingBlocks() ? 1 : 0, DataType.OVERRIDING_BLOCKS));
 		}, 0));
