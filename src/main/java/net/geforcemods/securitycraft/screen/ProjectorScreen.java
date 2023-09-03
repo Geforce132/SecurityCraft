@@ -80,7 +80,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 		horizontalToggleButton.setCurrentIndex(be.isHorizontal() ? 1 : 0);
 		updateHorizontalToggleButtonTooltip();
 
-		overrideCheckbox = addRenderableWidget(new CallbackCheckbox(left, topPos + 36, 20, 20, Component.empty(), be.isOverridingBlocks(), newValue -> {
+		overrideCheckbox = addRenderableWidget(new CallbackCheckbox(left + sliderWidth - 41, topPos + 36, 20, 20, Component.empty(), be.isOverridingBlocks(), newValue -> {
 			be.setOverridingBlocks(newValue);
 			SecurityCraft.CHANNEL.sendToServer(new SyncProjector(be.getBlockPos(), be.isOverridingBlocks() ? 1 : 0, DataType.OVERRIDING_BLOCKS));
 			updateOverrideCheckboxTooltip();
