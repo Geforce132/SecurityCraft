@@ -21,7 +21,7 @@ public class ProjectorMenu extends StateSelectorAccessMenu {
 		this.te = te;
 
 		// A custom slot that prevents non-Block items from being inserted into the projector
-		projectedBlockSlot = addSlotToContainer(new Slot(new BlockEntityInventoryWrapper<>(te, this), 36, 79, 23) {
+		projectedBlockSlot = addSlotToContainer(new Slot(new BlockEntityInventoryWrapper<>(te, this), 36, 80, 23) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
 				return stack.getItem() instanceof ItemBlock;

@@ -37,15 +37,15 @@ public class CustomizeBlockMenu extends Container {
 			slotId = 100;
 
 		if (moduleInv.getMaxNumberOfModules() == 1)
-			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId, 79, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId, 80, 20));
 		else if (moduleInv.getMaxNumberOfModules() == 2) {
 			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 70, 20));
 			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 88, 20));
 		}
 		else if (moduleInv.getMaxNumberOfModules() == 3) {
-			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 61, 20));
-			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 79, 20));
-			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 97, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 62, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 80, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 98, 20));
 		}
 		else if (moduleInv.getMaxNumberOfModules() == 4) {
 			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 52, 20));
