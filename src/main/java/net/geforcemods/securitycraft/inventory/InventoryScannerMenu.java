@@ -13,19 +13,17 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class InventoryScannerMenu extends Container {
-	private final int numRows;
 	public final InventoryScannerBlockEntity te;
 
 	public InventoryScannerMenu(InventoryPlayer inventory, InventoryScannerBlockEntity te) {
-		numRows = te.getSizeInventory() / 9;
 		this.te = te;
 
-		//prohibited items
+		//prohibited items 0-9
 		for (int i = 0; i < 10; i++) {
 			addSlotToContainer(new OwnerRestrictedSlot(te, te, i, (6 + (i * 18)), 16, true));
 		}
 
-		//inventory scanner storage
+		//inventory scanner storage 10-36
 		if (te.isOwnedBy(inventory.player) && te.isModuleEnabled(ModuleType.STORAGE)) {
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 3; j++) {
@@ -34,6 +32,7 @@ public class InventoryScannerMenu extends Container {
 			}
 		}
 
+		//37
 		addSlotToContainer(new LensSlot(te.getLensContainer(), 0, 159, 89) {
 			@Override
 			public boolean canTakeStack(EntityPlayer player) {
@@ -41,14 +40,14 @@ public class InventoryScannerMenu extends Container {
 			}
 		});
 
-		//inventory
+		//inventory 38-64
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
 				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 15 + j * 18, 115 + i * 18));
 			}
 		}
 
-		//hotbar
+		//hotbar 65-73
 		for (int i = 0; i < 9; i++) {
 			addSlotToContainer(new Slot(inventory, i, 15 + i * 18, 173));
 		}
@@ -56,27 +55,42 @@ public class InventoryScannerMenu extends Container {
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-		ItemStack slotStackCopy = ItemStack.EMPTY;
+		ItemStack toReturn = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(index);
 
-		if (slot != null && slot.getHasStack()) {
+		if (slot.getHasStack()) {
 			ItemStack slotStack = slot.getStack();
-			slotStackCopy = slotStack.copy();
+			toReturn = slotStack.copy();
 
-			if (index < numRows * 9) {
-				if (!mergeItemStack(slotStack, numRows * 9, inventorySlots.size(), true))
+			//inventory scanner storage
+			if (index >= 10 && index <= 36) {
+				//try to move it to the player's inventory, or lens slot
+				if (!mergeItemStack(slotStack, 38, inventorySlots.size(), true) && !mergeItemStack(slotStack, 37, 38, true))
 					return ItemStack.EMPTY;
 			}
-			else if (!mergeItemStack(slotStack, 0, numRows * 9, false))
+			//lens slot
+			else if (index == 37) {
+				//try to move it to the player's inventory
+				if (!mergeItemStack(slotStack, 38, inventorySlots.size(), true))
+					return ItemStack.EMPTY;
+			}
+			//player's main inventory (minus hotbar)
+			else if (index <= 64) {
+				//try to move it to the hotbar
+				if (!mergeItemStack(slotStack, 65, inventorySlots.size(), true))
+					return ItemStack.EMPTY;
+			}
+			//hotbar; try to move it to the main inventory
+			else if (index < inventorySlots.size() && !mergeItemStack(slotStack, 38, 64, true))
 				return ItemStack.EMPTY;
 
-			if (slotStack.getCount() == 0)
+			if (slotStack.isEmpty())
 				slot.putStack(ItemStack.EMPTY);
 			else
 				slot.onSlotChanged();
 		}
 
-		return slotStackCopy;
+		return toReturn;
 	}
 
 	@Override
