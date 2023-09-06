@@ -1,4 +1,4 @@
-name: General Issue
+name: General Issue (not for suggestions)
 description: Report a bug or problem with SecurityCraft
 body:
   - type: markdown
@@ -49,7 +49,7 @@ body:
         - v1.9.7
         - v1.9.7-beta2
         - v1.9.7-beta1
-        - Older (you will need to join Discord.)
+        - Older (update the mod and try again with the new version before continuing.)
     validations:
       required: true
   - type: textarea
