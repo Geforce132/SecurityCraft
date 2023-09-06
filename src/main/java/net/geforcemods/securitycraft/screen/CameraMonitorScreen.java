@@ -107,8 +107,6 @@ public class CameraMonitorScreen extends Screen {
 			}
 		}
 
-		for (int i = 0; i < 10; i++) {}
-
 		if (page == 1)
 			prevPageButton.active = false;
 
