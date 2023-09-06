@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
+import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -52,7 +53,7 @@ public class SCClientEventHandler {
 	public static final ResourceLocation CAMERA_DASHBOARD = new ResourceLocation("securitycraft:textures/gui/camera/camera_dashboard.png");
 	public static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
-	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
+	public static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final Component REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 
 	private SCClientEventHandler() {}
@@ -163,18 +164,17 @@ public class SCClientEventHandler {
 
 		if (!mc.player.hasEffect(MobEffects.NIGHT_VISION))
 			guiGraphics.blit(CAMERA_DASHBOARD, 28, 4, 90, 12, 16, 11);
-		else {
+		else
 			guiGraphics.blit(NIGHT_VISION, 27, -1, 0, 0, 18, 18, 18, 18);
-		}
 
 		if (state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 			if (!hasRedstoneModule)
-				guiGraphics.blit(CAMERA_DASHBOARD, 12, 2, 104, 0, 12, 12);
+				CameraRedstoneModuleState.NOT_INSTALLED.render(guiGraphics, 12, 2);
 			else
-				guiGraphics.blit(CAMERA_DASHBOARD, 12, 3, 90, 0, 12, 11);
+				CameraRedstoneModuleState.DEACTIVATED.render(guiGraphics, 12, 2);
 		}
 		else
-			guiGraphics.renderItem(REDSTONE, 10, 0);
+			CameraRedstoneModuleState.ACTIVATED.render(guiGraphics, 12, 2);
 	}
 
 	private enum BCDBuffer implements MultiBufferSource {
