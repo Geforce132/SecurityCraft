@@ -71,8 +71,8 @@ public class CameraMonitorScreen extends Screen {
 			int camID = buttonId + (page - 1) * 10;
 			int x = leftPos + 18 + (i % 5) * 30;
 			int y = topPos + 30 + (i / 5) * 55;
-			CameraButton cameraButton = addRenderableWidget(new CameraButton(camID, x, y, 20, 20, Component.empty(), this::cameraButtonClicked));
-			CameraButton unbindButton = addRenderableWidget(new CameraButton(camID, x + 19, y - 8, 8, 8, xText, button -> unbindButtonClicked(button, buttonId)));
+			CameraButton cameraButton = addRenderableWidget(new CameraButton(buttonId, x, y, 20, 20, Component.empty(), this::cameraButtonClicked));
+			CameraButton unbindButton = addRenderableWidget(new CameraButton(buttonId, x + 19, y - 8, 8, 8, xText, button -> unbindButtonClicked(button, buttonId)));
 			GlobalPos view = views.get(camID - 1);
 
 			cameraButtons[i] = cameraButton;
