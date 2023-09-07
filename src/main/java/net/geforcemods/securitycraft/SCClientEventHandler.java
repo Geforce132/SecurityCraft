@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.TaserItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
+import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -54,7 +55,7 @@ public class SCClientEventHandler {
 	public static final ResourceLocation CAMERA_DASHBOARD = new ResourceLocation("securitycraft:textures/gui/camera/camera_dashboard.png");
 	public static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
-	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
+	public static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final Component REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 
 	private SCClientEventHandler() {}
@@ -178,17 +179,16 @@ public class SCClientEventHandler {
 		else {
 			RenderSystem._setShaderTexture(0, NIGHT_VISION);
 			GuiComponent.blit(pose, 27, -1, 0, 0, 18, 18, 18, 18);
-			RenderSystem._setShaderTexture(0, CAMERA_DASHBOARD);
 		}
 
 		if (state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 			if (!hasRedstoneModule)
-				gui.blit(pose, 12, 2, 104, 0, 12, 12);
+				CameraRedstoneModuleState.NOT_INSTALLED.render(gui, pose, 12, 2);
 			else
-				gui.blit(pose, 12, 3, 90, 0, 12, 11);
+				CameraRedstoneModuleState.DEACTIVATED.render(gui, pose, 12, 2);
 		}
 		else
-			Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(REDSTONE, 10, 0);
+			CameraRedstoneModuleState.ACTIVATED.render(gui, pose, 12, 2);
 	}
 
 	private enum BCDBuffer implements MultiBufferSource {

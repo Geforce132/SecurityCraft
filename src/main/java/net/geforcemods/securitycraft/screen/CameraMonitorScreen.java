@@ -9,7 +9,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
+import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
@@ -25,6 +28,8 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class CameraMonitorScreen extends Screen {
@@ -38,7 +43,8 @@ public class CameraMonitorScreen extends Screen {
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private SecurityCameraBlockEntity[] cameraBEs = new SecurityCameraBlockEntity[10];
 	private ResourceLocation[] cameraViewDim = new ResourceLocation[10];
-	private int xSize = 176, ySize = 166;
+	private CameraRedstoneModuleState[] redstoneModuleStates = new CameraRedstoneModuleState[10];
+	private int xSize = 176, ySize = 166, leftPos, topPos;
 	private int page = 1;
 
 	public CameraMonitorScreen(Inventory inventory, CameraMonitorItem item, CompoundTag itemNBTTag) {
@@ -56,63 +62,58 @@ public class CameraMonitorScreen extends Screen {
 	@Override
 	public void init() {
 		super.init();
+		leftPos = (width - xSize) / 2;
+		topPos = (height - ySize) / 2;
 
-		Button prevPageButton = addRenderableWidget(new ExtendedButton(width / 2 - 68, height / 2 + 40, 20, 20, new TextComponent("<"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1))));
-		Button nextPageButton = addRenderableWidget(new ExtendedButton(width / 2 + 52, height / 2 + 40, 20, 20, new TextComponent(">"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1))));
-		TextComponent x = new TextComponent("x");
-
-		cameraButtons[0] = new CameraButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[1] = new CameraButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[2] = new CameraButton(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[3] = new CameraButton(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[4] = new CameraButton(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[5] = new CameraButton(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[6] = new CameraButton(7, width / 2 - 38, height / 2 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[7] = new CameraButton(8, width / 2 - 8, height / 2 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[8] = new CameraButton(9, width / 2 + 22, height / 2 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[9] = new CameraButton(10, width / 2 - 38, height / 2 + 40, 80, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-
-		unbindButtons[0] = new CameraButton(1, width / 2 - 19, height / 2 - 68 + 10, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[1] = new CameraButton(2, width / 2 + 11, height / 2 - 68 + 10, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[2] = new CameraButton(3, width / 2 + 41, height / 2 - 68 + 10, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[3] = new CameraButton(4, width / 2 - 19, height / 2 - 38 + 10, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[4] = new CameraButton(5, width / 2 + 11, height / 2 - 38 + 10, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[5] = new CameraButton(6, width / 2 + 41, height / 2 - 38 + 10, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[6] = new CameraButton(7, width / 2 - 19, height / 2 + 2, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[7] = new CameraButton(8, width / 2 + 11, height / 2 + 2, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[8] = new CameraButton(9, width / 2 + 41, height / 2 + 2, 8, 8, x, this::unbindButtonClicked);
-		unbindButtons[9] = new CameraButton(10, width / 2 + 41, height / 2 + 32, 8, 8, x, this::unbindButtonClicked);
+		Button prevPageButton = addRenderableWidget(new ExtendedButton(width / 2 - 25, height / 2 + 57, 20, 20, new TextComponent("<"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1))));
+		Button nextPageButton = addRenderableWidget(new ExtendedButton(width / 2 + 5, height / 2 + 57, 20, 20, new TextComponent(">"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1))));
+		List<GlobalPos> views = CameraMonitorItem.getCameraPositions(nbtTag);
+		Level level = Minecraft.getInstance().level;
+		TextComponent xText = new TextComponent("x");
 
 		for (int i = 0; i < 10; i++) {
-			CameraButton button = cameraButtons[i];
-			int camID = button.camId + (page - 1) * 10;
-			List<GlobalPos> views = CameraMonitorItem.getCameraPositions(nbtTag);
+			int buttonId = i + 1;
+			int camID = buttonId + (page - 1) * 10;
+			int x = leftPos + 18 + (i % 5) * 30;
+			int y = topPos + 30 + (i / 5) * 55;
+			CameraButton cameraButton = addRenderableWidget(new CameraButton(buttonId, x, y, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked));
+			CameraButton unbindButton = addRenderableWidget(new CameraButton(buttonId, x + 19, y - 8, 8, 8, xText, this::unbindButtonClicked));
 			GlobalPos view = views.get(camID - 1);
 
-			button.setMessage(button.getMessage().plainCopy().append(new TextComponent("" + camID)));
-			addRenderableWidget(button);
+			cameraButtons[i] = cameraButton;
+			unbindButtons[i] = unbindButton;
+			cameraButton.setMessage(cameraButton.getMessage().plainCopy().append(new TextComponent("" + camID)));
 
 			if (view != null) {
-				if (!view.dimension().equals(Minecraft.getInstance().player.level.dimension())) {
-					hoverCheckers[button.camId - 1] = new HoverChecker(button);
-					cameraViewDim[button.camId - 1] = view.dimension().location();
+				if (!view.dimension().equals(level.dimension())) {
+					hoverCheckers[i] = new HoverChecker(cameraButton);
+					cameraViewDim[i] = view.dimension().location();
 				}
 
-				cameraBEs[button.camId - 1] = Minecraft.getInstance().level.getBlockEntity(view.pos()) instanceof SecurityCameraBlockEntity camera ? camera : null;
-				hoverCheckers[button.camId - 1] = new HoverChecker(button);
+				cameraBEs[i] = level.getBlockEntity(view.pos()) instanceof SecurityCameraBlockEntity camera ? camera : null;
+				hoverCheckers[i] = new HoverChecker(cameraButton);
 
-				if (cameraBEs[button.camId - 1] != null && cameraBEs[button.camId - 1].isDisabled())
-					button.active = false;
+				if (cameraBEs[i] != null) {
+					BlockState state = level.getBlockState(view.pos());
+
+					if (cameraBEs[i].isDisabled())
+						cameraButton.active = false;
+
+					if (state.getSignal(level, view.pos(), state.getValue(SecurityCameraBlock.FACING)) == 0) {
+						if (!cameraBEs[i].hasModule(ModuleType.REDSTONE))
+							redstoneModuleStates[i] = CameraRedstoneModuleState.NOT_INSTALLED;
+						else
+							redstoneModuleStates[i] = CameraRedstoneModuleState.DEACTIVATED;
+					}
+					else
+						redstoneModuleStates[i] = CameraRedstoneModuleState.ACTIVATED;
+				}
 			}
 			else {
-				button.active = false;
-				unbindButtons[button.camId - 1].active = false;
-				cameraBEs[button.camId - 1] = null;
+				cameraButton.active = false;
+				unbindButton.active = false;
+				cameraBEs[i] = null;
 			}
-		}
-
-		for (int i = 0; i < 10; i++) {
-			addRenderableWidget(unbindButtons[i]);
 		}
 
 		if (page == 1)
@@ -128,15 +129,21 @@ public class CameraMonitorScreen extends Screen {
 
 	@Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, startX, startY, 0, 0, xSize, ySize);
+		blit(pose, leftPos, topPos, 0, 0, xSize, ySize);
 		super.render(pose, mouseX, mouseY, partialTicks);
-		font.draw(pose, selectCameras, startX + xSize / 2 - font.width(selectCameras) / 2, startY + 6, 4210752);
+
+		for (int i = 0; i < 10; i++) {
+			Button button = cameraButtons[i];
+			CameraRedstoneModuleState redstoneModuleState = redstoneModuleStates[i];
+
+			if (redstoneModuleState != null)
+				redstoneModuleState.render(this, pose, button.x + 4, button.y + 25);
+		}
+
+		font.draw(pose, selectCameras, leftPos + xSize / 2 - font.width(selectCameras) / 2, topPos + 6, 4210752);
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
 			if (hoverCheckers[i] != null && cameraBEs[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {

@@ -9,6 +9,7 @@
 - New: Universal Block Reinforcers LvL2 and LvL3 can now unreinforce blocks in the world by toggling the checkbox in their UI
 - New: Reinforced Ladder
 - New: The Projector can now project blocks regardless of which blocks exist in the world
+- New: The status of a Redstone Module in a Security Camera can now be seen in the Camera Monitor screen
 - Change: The recipe for the Laser Block now uses 4 glass panes in total
 - Change: You can no longer break the code of passcode blocks/briefcases that you own
 - Change: Universal Block Reinforcers can no longer be enchanted with Mending. Old reinforcers lose their Mending enchantment when used. This is to make it more enticing to upgrade to a level 3 reinforcer. In the future, this idea will be expanded upon.
@@ -30,8 +31,8 @@
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
 - Potential Fix: When dismounting a camera, some UI elements don't reappear
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
-- Misc.: The laser field model has been changed - resource packs may need to be updated
-- Misc.: More texture updates
+- Misc.: The laser field model has been changed internally
+- Misc.: More texture updates - resource packs may need to be updated
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
