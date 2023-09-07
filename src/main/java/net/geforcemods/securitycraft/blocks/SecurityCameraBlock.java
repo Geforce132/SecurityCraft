@@ -112,20 +112,25 @@ public class SecurityCameraBlock extends OwnableBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		Direction facing = ctx.getClickedFace();
-		World world = ctx.getLevel();
-		BlockPos pos = ctx.getClickedPos();
-		BlockState state = defaultBlockState().setValue(FACING, facing);
 
-		if (!canSurvive(state, world, pos)) {
-			for (Direction newFacing : Plane.HORIZONTAL) {
-				state = state.setValue(FACING, newFacing);
+		if (facing != Direction.UP) {
+			World world = ctx.getLevel();
+			BlockPos pos = ctx.getClickedPos();
+			BlockState state = defaultBlockState().setValue(FACING, facing);
 
-				if (canSurvive(state, world, pos))
-					break;
+			if (!canSurvive(state, world, pos)) {
+				for (Direction newFacing : Plane.HORIZONTAL) {
+					state = state.setValue(FACING, newFacing);
+
+					if (canSurvive(state, world, pos))
+						break;
+				}
 			}
-		}
 
-		return state;
+			return state;
+		}
+		else
+			return null;
 	}
 
 	public void mountCamera(World world, BlockPos pos, PlayerEntity player) {
