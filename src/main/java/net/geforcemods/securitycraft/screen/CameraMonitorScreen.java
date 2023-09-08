@@ -1,17 +1,20 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.Collections;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
+import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.CameraView;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -33,6 +36,7 @@ public class CameraMonitorScreen extends GuiContainer {
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private SecurityCameraBlockEntity[] cameraTEs = new SecurityCameraBlockEntity[10];
 	private int[] cameraViewDim = new int[10];
+	private CameraRedstoneModuleState[] redstoneModuleStates = new CameraRedstoneModuleState[10];
 	private int page = 1;
 
 	public CameraMonitorScreen(InventoryPlayer inventory, CameraMonitorItem item, NBTTagCompound itemNBTTag) {
@@ -51,66 +55,59 @@ public class CameraMonitorScreen extends GuiContainer {
 	public void initGui() {
 		super.initGui();
 
-		GuiButton prevPageButton = new GuiButton(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<");
-		GuiButton nextPageButton = new GuiButton(0, width / 2 + 52, height / 2 + 40, 20, 20, ">");
+		GuiButton prevPageButton = new GuiButton(-1, width / 2 - 25, height / 2 + 57, 20, 20, "<");
+		GuiButton nextPageButton = new GuiButton(0, width / 2 + 5, height / 2 + 57, 20, 20, ">");
+		List<CameraView> views = CameraMonitorItem.getCameraPositions(nbtTag);
+		World world = Minecraft.getMinecraft().world;
 
 		buttonList.add(prevPageButton);
 		buttonList.add(nextPageButton);
 
-		cameraButtons[0] = new GuiButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "#");
-		cameraButtons[1] = new GuiButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "#");
-		cameraButtons[2] = new GuiButton(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "#");
-		cameraButtons[3] = new GuiButton(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "#");
-		cameraButtons[4] = new GuiButton(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "#");
-		cameraButtons[5] = new GuiButton(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "#");
-		cameraButtons[6] = new GuiButton(7, width / 2 - 38, height / 2 + 10, 20, 20, "#");
-		cameraButtons[7] = new GuiButton(8, width / 2 - 8, height / 2 + 10, 20, 20, "#");
-		cameraButtons[8] = new GuiButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "#");
-		cameraButtons[9] = new GuiButton(10, width / 2 - 38, height / 2 + 40, 80, 20, "#");
-
-		unbindButtons[0] = new GuiButton(11, width / 2 - 19, height / 2 - 68 + 10, 8, 8, "x");
-		unbindButtons[1] = new GuiButton(12, width / 2 + 11, height / 2 - 68 + 10, 8, 8, "x");
-		unbindButtons[2] = new GuiButton(13, width / 2 + 41, height / 2 - 68 + 10, 8, 8, "x");
-		unbindButtons[3] = new GuiButton(14, width / 2 - 19, height / 2 - 38 + 10, 8, 8, "x");
-		unbindButtons[4] = new GuiButton(15, width / 2 + 11, height / 2 - 38 + 10, 8, 8, "x");
-		unbindButtons[5] = new GuiButton(16, width / 2 + 41, height / 2 - 38 + 10, 8, 8, "x");
-		unbindButtons[6] = new GuiButton(17, width / 2 - 19, height / 2 + 2, 8, 8, "x");
-		unbindButtons[7] = new GuiButton(18, width / 2 + 11, height / 2 + 2, 8, 8, "x");
-		unbindButtons[8] = new GuiButton(19, width / 2 + 41, height / 2 + 2, 8, 8, "x");
-		unbindButtons[9] = new GuiButton(20, width / 2 + 41, height / 2 + 32, 8, 8, "x");
-
 		for (int i = 0; i < 10; i++) {
-			GuiButton button = cameraButtons[i];
-			int camID = (button.id + ((page - 1) * 10));
-			List<CameraView> views = CameraMonitorItem.getCameraPositions(nbtTag);
+			int buttonId = i + 1;
+			int x = guiLeft + 18 + (i % 5) * 30;
+			int y = guiTop + 30 + (i / 5) * 55;
+			int camID = (buttonId + ((page - 1) * 10));
+			GuiButton cameraButton = new GuiButton(buttonId, x, y, 20, 20, "#" + camID);
+			GuiButton unbindButton = new GuiButton(buttonId + 10, x + 19, y - 8, 8, 8, "x");
 			CameraView view = views.get(camID - 1);
 
-			button.displayString += camID;
-			buttonList.add(button);
+			cameraButtons[i] = cameraButton;
+			unbindButtons[i] = unbindButton;
+			buttonList.add(cameraButton);
+			buttonList.add(unbindButton);
 
 			if (view != null) {
-				if (view.getDimension() != Minecraft.getMinecraft().player.dimension) {
-					hoverCheckers[button.id - 1] = new HoverChecker(button);
-					cameraViewDim[button.id - 1] = view.getDimension();
-				}
+				if (view.getDimension() != Minecraft.getMinecraft().player.dimension)
+					cameraViewDim[i] = view.getDimension();
 
-				World world = Minecraft.getMinecraft().world;
 				TileEntity te = world.getTileEntity(view.getPos());
 
-				cameraTEs[button.id - 1] = te instanceof SecurityCameraBlockEntity ? (SecurityCameraBlockEntity) te : null;
-				hoverCheckers[button.id - 1] = new HoverChecker(button);
+				cameraTEs[i] = te instanceof SecurityCameraBlockEntity ? (SecurityCameraBlockEntity) te : null;
+				hoverCheckers[i] = new HoverChecker(cameraButton);
 
-				if (cameraTEs[button.id - 1] != null && cameraTEs[button.id - 1].isDisabled())
-					button.enabled = false;
+				if (cameraTEs[i] != null) {
+					IBlockState state = world.getBlockState(view.getPos());
+
+					if (cameraTEs[i].isDisabled())
+						cameraButton.enabled = false;
+
+					if (state.getWeakPower(world, view.getPos(), state.getValue(SecurityCameraBlock.FACING)) == 0) {
+						if (!cameraTEs[i].hasModule(ModuleType.REDSTONE))
+							redstoneModuleStates[i] = CameraRedstoneModuleState.NOT_INSTALLED;
+						else
+							redstoneModuleStates[i] = CameraRedstoneModuleState.DEACTIVATED;
+					}
+					else
+						redstoneModuleStates[i] = CameraRedstoneModuleState.ACTIVATED;
+				}
 			}
 			else {
-				button.enabled = false;
-				unbindButtons[button.id - 1].enabled = false;
-				cameraTEs[button.id - 1] = null;
+				cameraButton.enabled = false;
+				unbindButton.enabled = false;
+				cameraTEs[i] = null;
 			}
 		}
-
-		Collections.addAll(buttonList, unbindButtons);
 
 		if (page == 1)
 			prevPageButton.enabled = false;
@@ -158,11 +155,13 @@ public class CameraMonitorScreen extends GuiContainer {
 		}
 		else {
 			int camID = (button.id - 10) + ((page - 1) * 10);
+			int i = (camID - 1) % 10;
 
 			SecurityCraft.network.sendToServer(new RemoveCameraTag(camID));
 			nbtTag.removeTag(CameraMonitorItem.getTagNameFromPosition(nbtTag, CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1)));
 			button.enabled = false;
-			cameraButtons[(camID - 1) % 10].enabled = false;
+			cameraButtons[i].enabled = false;
+			redstoneModuleStates[i] = null;
 		}
 	}
 
@@ -173,13 +172,18 @@ public class CameraMonitorScreen extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
-		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+
+		for (int i = 0; i < 10; i++) {
+			GuiButton button = cameraButtons[i];
+			CameraRedstoneModuleState redstoneModuleState = redstoneModuleStates[i];
+
+			if (redstoneModuleState != null)
+				redstoneModuleState.render(this, button.x + 4, button.y + 25);
+		}
 	}
 
 	@Override

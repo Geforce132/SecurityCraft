@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.state.IBlockState;
@@ -33,7 +34,7 @@ import net.minecraft.world.World;
 public class GuiUtils {
 	public static final ResourceLocation CAMERA_DASHBOARD = new ResourceLocation("securitycraft:textures/gui/camera/camera_dashboard.png");
 	public static final ResourceLocation POTION_ICONS = new ResourceLocation("minecraft:textures/gui/container/inventory.png");
-	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
+	public static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	//@formatter:off
 	private static final ResourceLocation[] MODULE_TEXTURES = {
 			new ResourceLocation(SecurityCraft.MODID, "textures/items/module_background.png"),
@@ -93,17 +94,16 @@ public class GuiUtils {
 		else {
 			mc.getTextureManager().bindTexture(POTION_ICONS);
 			gui.drawTexturedModalRect(25, 2, 70, 218, 19, 16);
-			mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
 		}
 
 		if (state.getWeakPower(world, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 			if (!hasRedstoneModule)
-				gui.drawTexturedModalRect(12, 2, 104, 0, 12, 12);
+				CameraRedstoneModuleState.NOT_INSTALLED.render(gui, 12, 2);
 			else
-				gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);
+				CameraRedstoneModuleState.DEACTIVATED.render(gui, 12, 2);
 		}
 		else
-			drawItemStackToGui(REDSTONE, 10, 0, false);
+			CameraRedstoneModuleState.ACTIVATED.render(gui, 12, 2);
 	}
 
 	public static void drawItemStackToGui(ItemStack stack, int x, int y, boolean fixLighting) {
