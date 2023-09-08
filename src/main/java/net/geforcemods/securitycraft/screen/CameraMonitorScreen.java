@@ -89,10 +89,8 @@ public class CameraMonitorScreen extends Screen {
 			cameraButton.setMessage(cameraButton.getMessage().plainCopy().append(new StringTextComponent("" + camID)));
 
 			if (view != null) {
-				if (!view.dimension().equals(level.dimension())) {
-					hoverCheckers[i] = new HoverChecker(cameraButton);
+				if (!view.dimension().equals(level.dimension()))
 					cameraViewDim[i] = view.dimension().location();
-				}
 
 				TileEntity te = level.getBlockEntity(view.pos());
 
@@ -181,11 +179,13 @@ public class CameraMonitorScreen extends Screen {
 
 	private void unbindButtonClicked(Button button) {
 		int camID = ((CameraButton) button).camId + (page - 1) * 10;
+		int i = (camID - 1) % 10;
 
 		SecurityCraft.channel.sendToServer(new RemoveCameraTag(camID));
 		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1)));
 		button.active = false;
-		cameraButtons[(camID - 1) % 10].active = false;
+		cameraButtons[i].active = false;
+		redstoneModuleStates[i] = null;
 	}
 
 	@Override
