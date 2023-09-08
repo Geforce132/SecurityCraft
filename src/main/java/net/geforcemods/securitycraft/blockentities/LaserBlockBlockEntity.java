@@ -370,7 +370,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 				((LaserBlock) block).setLaser(world, pos, direction, player);
 		}
 		else {
-			int boundType = direction == EnumFacing.UP || direction == EnumFacing.DOWN ? 1 : (direction == EnumFacing.NORTH || direction == EnumFacing.SOUTH ? 2 : 3);
+			int boundType = LaserFieldBlock.getBoundType(direction);
 
 			BlockUtils.removeInSequence((directionToCheck, stateToCheck) -> stateToCheck.getBlock() == SCContent.laserField && stateToCheck.getValue(LaserFieldBlock.BOUNDTYPE) == boundType, world, pos, direction);
 		}
