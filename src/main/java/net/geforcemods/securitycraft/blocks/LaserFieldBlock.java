@@ -124,6 +124,22 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, IW
 		return null;
 	}
 
+	public static int getBoundType(Direction direction) {
+		switch (direction) {
+			case UP:
+			case DOWN:
+				return 1;
+			case NORTH:
+			case SOUTH:
+				return 2;
+			case EAST:
+			case WEST:
+				return 3;
+			default:
+				return 1;
+		}
+	}
+
 	@Override
 	public void destroy(IWorld world, BlockPos pos, BlockState state) {
 		if (!world.isClientSide()) {

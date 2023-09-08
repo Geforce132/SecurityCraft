@@ -366,7 +366,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 				((LaserBlock) block).setLaser(level, pos, direction, player);
 		}
 		else {
-			int boundType = direction == Direction.UP || direction == Direction.DOWN ? 1 : (direction == Direction.NORTH || direction == Direction.SOUTH ? 2 : 3);
+			int boundType = LaserFieldBlock.getBoundType(direction);
 
 			BlockUtils.removeInSequence((directionToCheck, stateToCheck) -> stateToCheck.is(SCContent.LASER_FIELD.get()) && stateToCheck.getValue(LaserFieldBlock.BOUNDTYPE) == boundType, level, worldPosition, direction);
 		}

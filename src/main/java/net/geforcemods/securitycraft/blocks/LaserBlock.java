@@ -87,7 +87,7 @@ public class LaserBlock extends DisguisableBlock {
 		if (!thisTe.isEnabled() || !thisTe.isSideEnabled(facing))
 			return;
 
-		int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
+		int boundType = LaserFieldBlock.getBoundType(facing);
 
 		for (int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++) {
 			BlockPos offsetPos = pos.relative(facing, i);
@@ -168,9 +168,7 @@ public class LaserBlock extends DisguisableBlock {
 			if (state.getBlock() != SCContent.LASER_FIELD.get())
 				return false;
 
-			int boundType = direction == Direction.UP || direction == Direction.DOWN ? 1 : (direction == Direction.NORTH || direction == Direction.SOUTH ? 2 : 3);
-
-			return state.getValue(LaserFieldBlock.BOUNDTYPE) == boundType;
+			return state.getValue(LaserFieldBlock.BOUNDTYPE) == LaserFieldBlock.getBoundType(direction);
 		}, world, pos, Direction.values());
 	}
 
