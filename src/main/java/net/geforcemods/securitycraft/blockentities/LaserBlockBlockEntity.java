@@ -344,11 +344,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		if (enabled && getBlockState().getBlock() instanceof LaserBlock block)
 			block.setLaser(level, pos, direction, player);
 		else if (!enabled) {
-			int boundType = switch (direction) {
-				case UP, DOWN -> 1;
-				case NORTH, SOUTH -> 2;
-				case EAST, WEST -> 3;
-			};
+			int boundType = LaserFieldBlock.getBoundType(direction);
 
 			BlockUtils.removeInSequence((directionToCheck, stateToCheck) -> stateToCheck.is(SCContent.LASER_FIELD.get()) && stateToCheck.getValue(LaserFieldBlock.BOUNDTYPE) == boundType, level, worldPosition, direction);
 		}
