@@ -174,11 +174,13 @@ public class CameraMonitorScreen extends Screen {
 
 	private void unbindButtonClicked(Button button) {
 		int camID = ((CameraButton) button).camId + (page - 1) * 10;
+		int i = (camID - 1) % 10;
 
 		SecurityCraft.CHANNEL.sendToServer(new RemoveCameraTag(camID));
 		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1)));
 		button.active = false;
-		cameraButtons[(camID - 1) % 10].active = false;
+		cameraButtons[i].active = false;
+		redstoneModuleStates[i] = null;
 	}
 
 	@Override
