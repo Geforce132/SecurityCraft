@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -37,7 +38,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 	 * The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS =
 	 * hostile mobs.
 	 **/
-	private IMSTargetingMode targetingMode = IMSTargetingMode.PLAYERS_AND_MOBS;
+	private TargetingMode targetingMode = TargetingMode.PLAYERS_AND_MOBS;
 	private boolean updateBombCount = false;
 	private int attackTime = getAttackInterval();
 
@@ -86,14 +87,14 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 			AABB area = new AABB(pos).inflate(range.get());
 			LivingEntity target = null;
 
-			if (targetingMode == IMSTargetingMode.MOBS || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS) {
+			if (targetingMode.allowsMobs()) {
 				List<Monster> mobs = level.getEntitiesOfClass(Monster.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if (!mobs.isEmpty())
 					target = mobs.get(0);
 			}
 
-			if (target == null && (targetingMode == IMSTargetingMode.PLAYERS || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS)) {
+			if (target == null && (targetingMode.allowsPlayers())) {
 				List<Player> players = level.getEntitiesOfClass(Player.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if (!players.isEmpty())
@@ -155,7 +156,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 		super.load(tag);
 
 		bombsRemaining = tag.getInt("bombsRemaining");
-		targetingMode = IMSTargetingMode.values()[tag.getInt("targetingOption")];
+		targetingMode = TargetingMode.values()[tag.getInt("targetingOption")];
 		updateBombCount = tag.getBoolean("updateBombCount");
 	}
 
@@ -164,11 +165,11 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 		setChanged();
 	}
 
-	public IMSTargetingMode getTargetingMode() {
+	public TargetingMode getTargetingMode() {
 		return targetingMode;
 	}
 
-	public void setTargetingMode(IMSTargetingMode targetingOption) {
+	public void setTargetingMode(TargetingMode targetingOption) {
 		this.targetingMode = targetingOption;
 		setChanged();
 	}
@@ -197,11 +198,5 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
-	}
-
-	public enum IMSTargetingMode {
-		PLAYERS,
-		PLAYERS_AND_MOBS,
-		MOBS;
 	}
 }

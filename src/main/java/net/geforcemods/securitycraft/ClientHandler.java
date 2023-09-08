@@ -166,6 +166,7 @@ public class ClientHandler {
 	private static Supplier<Block[]> disguisableBlocks = Suppliers.memoize(() -> new Block[] {
 			SCContent.BLOCK_CHANGE_DETECTOR.get(),
 			SCContent.CAGE_TRAP.get(),
+			SCContent.FLOOR_TRAP.get(),
 			SCContent.INVENTORY_SCANNER.get(),
 			SCContent.KEYCARD_READER.get(),
 			SCContent.KEYPAD.get(),
@@ -423,6 +424,7 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.CAGE_TRAP_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.DISGUISABLE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.FLOOR_TRAP_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.INVENTORY_SCANNER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYCARD_READER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);

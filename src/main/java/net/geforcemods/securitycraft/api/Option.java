@@ -197,7 +197,7 @@ public abstract class Option<T> {
 		private boolean isSlider;
 
 		public IntOption(String optionName, Integer value, Integer min, Integer max, Integer increment) {
-			super(optionName, value, min, max, increment);
+			this(optionName, value, min, max, increment, false);
 		}
 
 		public IntOption(String optionName, Integer value, Integer min, Integer max, Integer increment, boolean isSlider) {
@@ -350,6 +350,48 @@ public abstract class Option<T> {
 		@Override
 		public String toString() {
 			return Float.toString(value).length() > 5 ? Float.toString(value).substring(0, 5) : Float.toString(value);
+		}
+	}
+
+	public static class EnumOption<T extends Enum<T>> extends Option<T> {
+		private final Class<T> enumClass;
+
+		protected EnumOption(String optionName, T value, Class<T> enumClass) {
+			super(optionName, value);
+			this.enumClass = enumClass;
+		}
+
+		@Override
+		public void toggle() {
+			T[] enumConstants = enumClass.getEnumConstants();
+			int next = (value.ordinal() + 1) % enumConstants.length;
+
+			value = enumConstants[next];
+		}
+
+		@Override
+		public void load(CompoundTag tag) {
+			T[] enumConstants = enumClass.getEnumConstants();
+			int ordinal = tag.getInt(getName());
+
+			if (ordinal >= 0 && ordinal < enumConstants.length)
+				value = enumConstants[ordinal];
+			else
+				value = getDefaultValue();
+		}
+
+		@Override
+		public void save(CompoundTag tag) {
+			tag.putInt(getName(), value.ordinal());
+		}
+
+		public Component getValueName() {
+			return Component.literal(value.name());
+		}
+
+		@Override
+		public Component getDefaultInfo() {
+			return Component.translatable("securitycraft.option.default", getValueName()).withStyle(ChatFormatting.GRAY);
 		}
 	}
 }

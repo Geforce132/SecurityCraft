@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
-import net.geforcemods.securitycraft.blockentities.IMSBlockEntity.IMSTargetingMode;
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
 import net.geforcemods.securitycraft.util.Utils;
@@ -22,7 +22,7 @@ public class IMSScreen extends Screen {
 	private int leftPos;
 	private int topPos;
 	private IMSBlockEntity be;
-	private IMSTargetingMode targetMode;
+	private TargetingMode targetMode;
 
 	public IMSScreen(IMSBlockEntity be) {
 		super(be.getName());
@@ -36,7 +36,7 @@ public class IMSScreen extends Screen {
 
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
-		addRenderableWidget(new ToggleComponentButton(width / 2 - 75, height / 2 - 38, 150, 20, this::updateButtonText, targetMode.ordinal(), 3, this::modeButtonClicked));
+		addRenderableWidget(new ToggleComponentButton(width / 2 - 75, height / 2 - 38, 150, 20, index -> TargetingMode.values()[index].translate(), targetMode.ordinal(), 3, this::modeButtonClicked));
 	}
 
 	@Override
@@ -64,12 +64,8 @@ public class IMSScreen extends Screen {
 	}
 
 	private void modeButtonClicked(Button button) {
-		targetMode = IMSTargetingMode.values()[((ToggleComponentButton) button).getCurrentIndex()];
+		targetMode = TargetingMode.values()[((ToggleComponentButton) button).getCurrentIndex()];
 		be.setTargetingMode(targetMode);
 		SecurityCraft.CHANNEL.sendToServer(new SyncIMSTargetingOption(be.getBlockPos(), be.getTargetingMode()));
-	}
-
-	private Component updateButtonText(int index) {
-		return Utils.localize("gui.securitycraft:srat.targets" + ((index + 2) % 3 + 1));
 	}
 }
