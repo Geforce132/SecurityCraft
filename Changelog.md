@@ -4,7 +4,7 @@
 - New: The IMS can now automatically recharge itself with bouncing betties from a chest, barrel, etc. below
 - New: Simplified Chinese translation (Thanks DrIceTea!)
 - New: Lens item to be able to color laser and inventory scanner fields in any desired color, as well as a couple other things
-- New: Item tag "securitycraft:reinforced/glass_panes"
+- New: Item tags "securitycraft:reinforced/glass_panes", "securitycraft:reinforced/pressure_plates", "securitycraft:reinforced/stone_pressure_plates"
 - New: Vanishmod support
 - New: Universal Block Reinforcers LvL2 and LvL3 can now unreinforce blocks in the world by toggling the checkbox in their UI
 - New: Reinforced Ladder
