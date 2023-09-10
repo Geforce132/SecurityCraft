@@ -421,8 +421,8 @@ public class SCContent {
 	@OwnableBE
 	@RegisterItemBlock
 	public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(prop(MapColor.METAL, 1.0F).forceSolidOn().pushReaction(PushReaction.NORMAL)));
-	public static final RegistryObject<? extends LiquidBlock> FAKE_WATER_BLOCK = BLOCKS.register("fake_water_block", () -> new FakeWaterBlock(prop(MapColor.WATER).noCollission(), FAKE_WATER));
-	public static final RegistryObject<? extends LiquidBlock> FAKE_LAVA_BLOCK = BLOCKS.register("fake_lava_block", () -> new FakeLavaBlock(prop(MapColor.FIRE).noCollission().randomTicks().lightLevel(state -> 15), FAKE_LAVA));
+	public static final RegistryObject<? extends LiquidBlock> FAKE_WATER_BLOCK = BLOCKS.register("fake_water_block", () -> new FakeWaterBlock(prop(MapColor.WATER).replaceable().noLootTable().liquid().sound(SoundType.EMPTY).pushReaction(PushReaction.DESTROY).noCollission(), FAKE_WATER));
+	public static final RegistryObject<? extends LiquidBlock> FAKE_LAVA_BLOCK = BLOCKS.register("fake_lava_block", () -> new FakeLavaBlock(prop(MapColor.FIRE).replaceable().noLootTable().liquid().sound(SoundType.EMPTY).pushReaction(PushReaction.DESTROY).noCollission().randomTicks().lightLevel(state -> 15), FAKE_LAVA));
 
 	//block mines
 	@HasManualPage(PageGroup.BLOCK_MINES)
