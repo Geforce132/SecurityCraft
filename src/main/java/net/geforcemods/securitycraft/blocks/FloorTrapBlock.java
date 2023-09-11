@@ -2,12 +2,14 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.FloorTrapBlockEntity;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -20,6 +22,16 @@ public class FloorTrapBlock extends SometimesVisibleBlock {
 	public FloorTrapBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(INVISIBLE, false).setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+		if (pos.getY() == neighborPos.getY() && level.getBlockEntity(pos) instanceof FloorTrapBlockEntity trap1 && trap1.isModuleEnabled(ModuleType.SMART) && level.getBlockEntity(neighborPos) instanceof FloorTrapBlockEntity trap2 && trap1.getOwner().owns(trap2) && level.getBlockState(neighborPos).getValue(INVISIBLE)) {
+			if (trap1.shouldDisappearInstantlyInChains())
+				trap1.scheduleDisappear(0, true);
+			else
+				trap1.scheduleDisappear(true);
+		}
 	}
 
 	@Override
