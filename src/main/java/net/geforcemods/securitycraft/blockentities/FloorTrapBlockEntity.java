@@ -11,10 +11,8 @@ import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -46,7 +44,6 @@ public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITic
 			if (ticksUntilDisappearing-- <= 0) {
 				level.setBlockAndUpdate(pos, getBlockState().setValue(SometimesVisibleBlock.INVISIBLE, true));
 				level.playSound(null, pos, SoundEvents.ENDER_DRAGON_FLAP, SoundSource.BLOCKS, 1.0F, 2.0F);
-				((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 5, 0.0D, 0.0D, 0.0D, 0.0D);
 				shouldDisappear = false;
 				shouldReappear = true;
 				ticksUntilReappearing = reappearDelay.get();
