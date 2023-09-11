@@ -100,7 +100,7 @@ public class CameraMonitorScreen extends Screen {
 						cameraButton.active = false;
 
 					if (state.getSignal(level, view.pos(), state.getValue(SecurityCameraBlock.FACING)) == 0) {
-						if (!cameraBEs[i].hasModule(ModuleType.REDSTONE))
+						if (!cameraBEs[i].isModuleEnabled(ModuleType.REDSTONE))
 							redstoneModuleStates[i] = CameraRedstoneModuleState.NOT_INSTALLED;
 						else
 							redstoneModuleStates[i] = CameraRedstoneModuleState.DEACTIVATED;
