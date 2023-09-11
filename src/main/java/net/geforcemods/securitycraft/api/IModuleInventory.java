@@ -362,7 +362,9 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	/**
 	 * @param module The type to check if it is present in this inventory
 	 * @return true if the given module type is present in this inventory, false otherwise
+	 * @deprecated Prefer using {@link #isModuleEnabled(ModuleType)}
 	 */
+	@Deprecated
 	public default boolean hasModule(ModuleType module) {
 		NonNullList<ItemStack> modules = getInventory();
 
