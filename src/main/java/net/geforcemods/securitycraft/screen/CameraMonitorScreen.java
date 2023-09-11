@@ -93,7 +93,7 @@ public class CameraMonitorScreen extends GuiContainer {
 						cameraButton.enabled = false;
 
 					if (state.getWeakPower(world, view.getPos(), state.getValue(SecurityCameraBlock.FACING)) == 0) {
-						if (!cameraTEs[i].hasModule(ModuleType.REDSTONE))
+						if (!cameraTEs[i].isModuleEnabled(ModuleType.REDSTONE))
 							redstoneModuleStates[i] = CameraRedstoneModuleState.NOT_INSTALLED;
 						else
 							redstoneModuleStates[i] = CameraRedstoneModuleState.DEACTIVATED;
