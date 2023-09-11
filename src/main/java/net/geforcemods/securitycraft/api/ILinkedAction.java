@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.properties.Property;
  *
  * @author Geforce, bl4ckscor3
  */
-@SuppressWarnings("rawtypes")
 public sealed interface ILinkedAction permits OptionChanged, ModuleInserted, ModuleRemoved, OwnerChanged, StateChanged {
 	/**
 	 * Used when an {@link Option} in a block entity is changed
