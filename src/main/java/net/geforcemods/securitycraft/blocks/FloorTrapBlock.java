@@ -4,6 +4,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.FloorTrapBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -17,6 +19,21 @@ public class FloorTrapBlock extends SometimesVisibleBlock {
 	public FloorTrapBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(INVISIBLE, false).setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	public boolean skipRendering(BlockState state, BlockState adjacentState, Direction side) {
+		return (adjacentState.is(this) && !adjacentState.getValue(INVISIBLE)) || super.skipRendering(state, adjacentState, side);
+	}
+
+	@Override
+	public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
+		return 1.0F;
+	}
+
+	@Override
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+		return true;
 	}
 
 	@Override
