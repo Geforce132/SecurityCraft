@@ -92,7 +92,7 @@ public class CameraMonitorScreen extends Screen {
 						cameraButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBe.getCustomName())));
 
 					if (state.getSignal(level, view.pos(), state.getValue(SecurityCameraBlock.FACING)) == 0) {
-						if (!cameraBe.hasModule(ModuleType.REDSTONE))
+						if (!cameraBe.isModuleEnabled(ModuleType.REDSTONE))
 							redstoneModuleStates[i] = CameraRedstoneModuleState.NOT_INSTALLED;
 						else
 							redstoneModuleStates[i] = CameraRedstoneModuleState.DEACTIVATED;
