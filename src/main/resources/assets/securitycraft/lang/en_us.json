@@ -1184,7 +1184,7 @@
 	"option.securitycraft.floor_trap.disappearDelay": "Disappear Delay: %s",
 	"option.securitycraft.floor_trap.disappearDelay.description": "How many ticks it takes until the block disappears (20 ticks = 1 second)",
 	"option.securitycraft.floor_trap.disappearInstantlyInChains": "Disappear Instantly: %s",
-	"option.securitycraft.floor_trap.disappearInstantlyInChains.description": "Should this trap disappear instantly, if it has a smart module and a trap next to it disappears?",
+	"option.securitycraft.floor_trap.disappearInstantlyInChains.description": "Should this trap disappear instantly if it has a smart module and a trap next to it disappears?",
 	"option.securitycraft.floor_trap.reappearDelay": "Reappear Delay: %s",
 	"option.securitycraft.floor_trap.reappearDelay.description": "How many ticks it takes until the block reappears (20 ticks = 1 second)",
 	"option.securitycraft.floor_trap.targetingMode": "Targeting Mode: %s",

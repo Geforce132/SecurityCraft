@@ -1172,7 +1172,7 @@
 	"option.securitycraft.floor_trap.disappearDelay": "Zeit zum Verschwinden: %s",
 	"option.securitycraft.floor_trap.disappearDelay.description": "Wie viele Ticks dauert es, bis die Falle verschwindet? (20 Ticks = 1 Sekunde)",
 	"option.securitycraft.floor_trap.disappearInstantlyInChains": "Sofort verscheinden: %s",
-	"option.securitycraft.floor_trap.disappearInstantlyInChains.description": "Soll diese Bodenfall sofort verschwinden, wenn ein schlaues Modul installiert ist, und eine Bodenfalle neben ihr verschwindet?",
+	"option.securitycraft.floor_trap.disappearInstantlyInChains.description": "Soll diese Bodenfalle sofort verschwinden, wenn ein schlaues Modul installiert ist und eine Bodenfalle neben ihr verschwindet?",
 	"option.securitycraft.floor_trap.reappearDelay": "Zeit zum Wieder-Auftauchen: %s",
 	"option.securitycraft.floor_trap.reappearDelay.description": "Wie viele Ticks dauert es, bis die Falle wieder auftaucht? (20 Ticks = 1 Sekunde)",
 	"option.securitycraft.floor_trap.targetingMode": "Zielmodus: %s",
