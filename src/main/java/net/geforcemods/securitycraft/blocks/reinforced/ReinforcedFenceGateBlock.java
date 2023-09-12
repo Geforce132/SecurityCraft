@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IronFenceBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -87,6 +88,8 @@ public class ReinforcedFenceGateBlock extends BlockFenceGate implements ITileEnt
 			if (te.isOwnedBy(player))
 				return;
 		}
+		else if (((OwnableBlockEntity) world.getTileEntity(pos)).allowsOwnableEntity(entity))
+			return;
 		else if (entity instanceof EntityCreeper) {
 			EntityCreeper creeper = (EntityCreeper) entity;
 			EntityLightningBolt lightning = new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), true);

@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IronFenceBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -90,6 +91,8 @@ public class IronFenceBlock extends BlockFence implements ITileEntityProvider {
 			if (te.isOwnedBy((EntityPlayer) entity))
 				return;
 		}
+		else if (((OwnableBlockEntity) world.getTileEntity(pos)).allowsOwnableEntity(entity))
+			return;
 		else if (entity instanceof EntityCreeper) {
 			EntityCreeper creeper = (EntityCreeper) entity;
 			EntityLightningBolt lightning = new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), true);

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -82,7 +83,7 @@ public class MineBlock extends ExplosiveBlock {
 		if (world.isRemote || entity instanceof EntityItem || !state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()))
 			return;
 
-		if (!EntityUtils.doesEntityOwn(entity, world, pos) && !(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative()))
+		if (!EntityUtils.doesEntityOwn(entity, world, pos) && !(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative()) && !((IOwnable) world.getTileEntity(pos)).allowsOwnableEntity(entity))
 			explode(world, pos);
 	}
 

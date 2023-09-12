@@ -55,19 +55,29 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState) {
 		if (entity instanceof EntityItem)
 			addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
-		else if (entity instanceof EntityPlayer) {
+		else {
 			TileEntity te = world.getTileEntity(pos);
 
 			if (te instanceof OwnableBlockEntity) {
 				OwnableBlockEntity ownableTe = (OwnableBlockEntity) te;
-				EntityPlayer player = (EntityPlayer) entity;
 
-				if (ownableTe.isOwnedBy(player) || player.isCreative())
+				if (ownableTe.allowsOwnableEntity(entity)) {
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
+					return;
+				}
+
+				if (entity instanceof EntityPlayer) {
+					EntityPlayer player = (EntityPlayer) entity;
+
+					if (ownableTe.isOwnedBy(player) || player.isCreative()) {
+						addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
+						return;
+					}
+				}
 			}
-		}
-		else
+
 			addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
+		}
 	}
 
 	@Override

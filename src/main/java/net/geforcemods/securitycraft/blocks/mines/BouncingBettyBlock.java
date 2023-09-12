@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -62,7 +63,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-		if (state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()) && !EntityUtils.doesEntityOwn(entity, world, pos) && !(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative()))
+		if (state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()) && !EntityUtils.doesEntityOwn(entity, world, pos) && !(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative()) && !((IOwnable) world.getTileEntity(pos)).allowsOwnableEntity(entity))
 			explode(world, pos);
 	}
 

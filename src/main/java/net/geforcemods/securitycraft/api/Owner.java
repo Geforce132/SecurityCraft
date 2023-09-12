@@ -37,8 +37,10 @@ public class Owner {
 	}
 
 	public Owner(EntityPlayer player) {
-		ownerName = player.getName();
-		ownerUUID = player.getGameProfile().getId().toString();
+		if (player != null) {
+			ownerName = player.getName();
+			ownerUUID = player.getGameProfile().getId().toString();
+		}
 	}
 
 	public Owner(String playerName, String playerUUID) {

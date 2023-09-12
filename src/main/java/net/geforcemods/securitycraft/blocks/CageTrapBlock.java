@@ -73,7 +73,7 @@ public class CageTrapBlock extends DisguisableBlock {
 				return;
 			}
 
-			if (entity instanceof EntityPlayer && ((cageTrap.isOwnedBy((EntityPlayer) entity) && cageTrap.ignoresOwner()) || cageTrap.isAllowed(entity)))
+			if (entity instanceof EntityPlayer && ((cageTrap.isOwnedBy((EntityPlayer) entity) && cageTrap.ignoresOwner()) || cageTrap.isAllowed(entity)) || cageTrap.allowsOwnableEntity(entity))
 				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, cageTrap);
 
 			if (entity instanceof EntityLiving && !state.getValue(DEACTIVATED)) {
@@ -122,7 +122,7 @@ public class CageTrapBlock extends DisguisableBlock {
 				if (!state.getBoundingBox(world, pos).offset(pos).intersects(entity.getEntityBoundingBox()))
 					return;
 
-				if ((isPlayer && cageTrap.isOwnedBy((EntityPlayer) entity)) && cageTrap.ignoresOwner())
+				if ((isPlayer && cageTrap.isOwnedBy((EntityPlayer) entity)) && cageTrap.ignoresOwner() || cageTrap.allowsOwnableEntity(entity))
 					return;
 
 				BlockPos topMiddle = pos.up(4);
