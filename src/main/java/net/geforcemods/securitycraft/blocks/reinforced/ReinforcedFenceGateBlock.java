@@ -61,6 +61,8 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 			if (((OwnableBlockEntity) world.getBlockEntity(pos)).isOwnedBy(player))
 				return;
 		}
+		else if (((OwnableBlockEntity) world.getBlockEntity(pos)).allowsOwnableEntity(entity))
+			return;
 		else if (!world.isClientSide && entity instanceof CreeperEntity) {
 			CreeperEntity creeper = (CreeperEntity) entity;
 			LightningBoltEntity lightning = LevelUtils.createLightning(world, Vector3d.atBottomCenterOf(pos), true);

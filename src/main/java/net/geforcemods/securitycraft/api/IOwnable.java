@@ -1,10 +1,15 @@
 package net.geforcemods.securitycraft.api;
 
+import java.util.UUID;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -103,5 +108,23 @@ public interface IOwnable {
 			return true;
 
 		return otherName != null && selfUUID.equals("ownerUUID") && otherName.equals(self.getName());
+	}
+
+	/**
+	 * Checks whether this and ownable entity's owner owns this block entity
+	 *
+	 * @param entity The entity to check
+	 * @return true if the entity's owner owns this block entity, false otherwise
+	 */
+	public default boolean allowsOwnableEntity(Entity entity) {
+		Owner beOwner = getOwner();
+		UUID animalOwnerUUID = null;
+
+		if (entity instanceof AbstractHorseEntity)
+			animalOwnerUUID = ((AbstractHorseEntity) entity).getOwnerUUID();
+		else if (entity instanceof TameableEntity)
+			animalOwnerUUID = ((TameableEntity) entity).getOwnerUUID();
+
+		return animalOwnerUUID != null && (animalOwnerUUID.toString().equals(beOwner.getUUID()) || PlayerUtils.areOnSameTeam(beOwner, new Owner(entity.level.getPlayerByUUID(animalOwnerUUID))));
 	}
 }

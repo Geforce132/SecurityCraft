@@ -88,6 +88,9 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, IW
 							return;
 
 						if (!(entity instanceof PlayerEntity && laser.isOwnedBy((PlayerEntity) entity) && laser.ignoresOwner())) {
+							if (laser.allowsOwnableEntity(entity))
+								return;
+
 							if (laser.isModuleEnabled(ModuleType.REDSTONE) && !offsetState.getValue(LaserBlock.POWERED)) {
 								world.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
 								BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.LASER_BLOCK.get());

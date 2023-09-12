@@ -41,12 +41,17 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 			if (entity instanceof ItemEntity)
 				return VoxelShapes.block();
-			else if (entity instanceof PlayerEntity) {
-				PlayerEntity player = (PlayerEntity) entity;
-				TileEntity te = world.getBlockEntity(pos);
 
-				if (te instanceof OwnableBlockEntity) {
-					OwnableBlockEntity ownableTe = (OwnableBlockEntity) te;
+			TileEntity te = world.getBlockEntity(pos);
+
+			if (te instanceof OwnableBlockEntity) {
+				OwnableBlockEntity ownableTe = (OwnableBlockEntity) te;
+
+				if (ownableTe.allowsOwnableEntity(entity))
+					return VoxelShapes.block();
+
+				if (entity instanceof PlayerEntity) {
+					PlayerEntity player = (PlayerEntity) entity;
 
 					if (ownableTe.isOwnedBy(player) || player.isCreative())
 						return VoxelShapes.block();

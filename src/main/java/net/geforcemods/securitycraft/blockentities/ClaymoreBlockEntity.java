@@ -72,7 +72,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 			else if (dir == Direction.WEST)
 				area = area.contract(range.get(), -0, -0);
 
-			level.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !(e instanceof PlayerEntity && ((PlayerEntity) e).isCreative()) && !e.isSpectator() && !(EntityUtils.doesEntityOwn(e, level, worldPosition) && ignoresOwner())).stream().findFirst().ifPresent(entity -> {
+			level.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !(e instanceof PlayerEntity && ((PlayerEntity) e).isCreative()) && !allowsOwnableEntity(e) && !e.isSpectator() && !(EntityUtils.doesEntityOwn(e, level, worldPosition) && ignoresOwner())).stream().findFirst().ifPresent(entity -> {
 				cooldown = 20;
 				getLevel().playSound(null, new BlockPos(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			});
