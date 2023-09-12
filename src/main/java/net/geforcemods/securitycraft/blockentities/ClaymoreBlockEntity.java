@@ -23,6 +23,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -70,7 +71,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 			default -> new AABB(pos);
 		};
 
-		level.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !(e instanceof Player player && player.isCreative()) && e.canBeSeenByAnyone() && !(EntityUtils.doesEntityOwn(e, level, pos) && ignoresOwner())).stream().findFirst().ifPresent(entity -> {
+		level.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !(e instanceof Player player && player.isCreative()) && !(e instanceof OwnableEntity ownableEntity && allowsOwnableEntity(ownableEntity)) && e.canBeSeenByAnyone() && !(EntityUtils.doesEntityOwn(e, level, pos) && ignoresOwner())).stream().findFirst().ifPresent(entity -> {
 			cooldown = 20;
 			level.playSound(null, BlockPos.containing(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
 		});
