@@ -10,7 +10,7 @@
 - New: Reinforced Ladder
 - New: The Projector can now project blocks regardless of which blocks exist in the world
 - New: The status of a Redstone Module in a Security Camera can now be seen in the Camera Monitor screen
-- New: Animals are now ignored by several blocks like the protecto or electrified iron fence if the animal and block are owned by the same player
+- New: Animals are now ignored by several blocks like the protecto or mines if the animal and block are owned by the same player
 - Change: The recipe for the Laser Block now uses 4 glass panes in total
 - Change: You can no longer break the code of passcode blocks/briefcases that you own
 - Change: Universal Block Reinforcers can no longer be enchanted with Mending. Old reinforcers lose their Mending enchantment when used. This is to make it more enticing to upgrade to a level 3 reinforcer. In the future, this idea will be expanded upon.

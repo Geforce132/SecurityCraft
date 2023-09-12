@@ -19,6 +19,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -122,7 +123,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 
 	public boolean canAttackEntity(LivingEntity entity) {
 		return entity != null && (!(entity instanceof Player player) || !(isOwnedBy(player) && ignoresOwner()) && !player.isCreative() && !player.isSpectator()) //Player checks
-				&& !(isAllowed(entity)); //checks for all entities
+				&& !isAllowed(entity) && !(entity instanceof OwnableEntity ownableEntity && allowsOwnableEntity(ownableEntity)); //checks for all entities
 	}
 
 	/**
