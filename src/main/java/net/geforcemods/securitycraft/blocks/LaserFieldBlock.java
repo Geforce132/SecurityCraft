@@ -14,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -83,6 +84,9 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, Si
 						return;
 
 					if (!(entity instanceof Player player && laser.isOwnedBy(player) && laser.ignoresOwner())) {
+						if (entity instanceof OwnableEntity ownableEntity && laser.allowsOwnableEntity(ownableEntity))
+							return;
+
 						if (laser.isModuleEnabled(ModuleType.REDSTONE) && !offsetState.getValue(LaserBlock.POWERED)) {
 							level.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
 							BlockUtils.updateIndirectNeighbors(level, offsetPos, SCContent.LASER_BLOCK.get());

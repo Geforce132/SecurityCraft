@@ -21,6 +21,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -57,7 +58,7 @@ public class CageTrapBlock extends DisguisableBlock {
 
 				if (be.isDisabled())
 					return getCorrectShape(state, level, pos, ctx, be);
-				else if (entity instanceof Player player && ((be.isOwnedBy(player) && be.ignoresOwner()) || be.isAllowed(player)))
+				else if (entity instanceof Player player && ((be.isOwnedBy(player) && be.ignoresOwner()) || be.isAllowed(player)) || entity instanceof OwnableEntity ownableEntity && be.allowsOwnableEntity(ownableEntity))
 					return getCorrectShape(state, level, pos, collisionContext, be);
 				if (entity instanceof Mob && !state.getValue(DEACTIVATED))
 					return be.capturesMobs() ? Shapes.empty() : getCorrectShape(state, level, pos, collisionContext, be);
@@ -96,7 +97,7 @@ public class CageTrapBlock extends DisguisableBlock {
 				if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
 					return;
 
-				if ((isPlayer && cageTrap.isOwnedBy((Player) entity)) && cageTrap.ignoresOwner())
+				if ((isPlayer && cageTrap.isOwnedBy((Player) entity)) && cageTrap.ignoresOwner() || entity instanceof OwnableEntity ownableEntity && cageTrap.allowsOwnableEntity(ownableEntity))
 					return;
 
 				if (state.getValue(DEACTIVATED))

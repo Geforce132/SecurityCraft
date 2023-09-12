@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -94,5 +95,17 @@ public interface IOwnable {
 			return true;
 
 		return otherName != null && selfUUID.equals("ownerUUID") && otherName.equals(self.getName());
+	}
+
+	/**
+	 * Checks whether this and ownable entity's owner owns this block entity
+	 *
+	 * @param entity The entity to check
+	 * @return true if the entity's owner owns this block entity, false otherwise
+	 */
+	public default boolean allowsOwnableEntity(OwnableEntity entity) {
+		Owner beOwner = getOwner();
+
+		return entity.getOwnerUUID() != null && (entity.getOwnerUUID().toString().equals(beOwner.getUUID()) || PlayerUtils.areOnSameTeam(beOwner, new Owner(entity.getOwner())));
 	}
 }
