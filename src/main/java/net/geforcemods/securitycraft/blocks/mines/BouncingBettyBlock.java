@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -10,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -56,7 +58,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()) && !EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof Player player && player.isCreative()))
+		if (getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()) && !EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof Player player && player.isCreative()) && !(entity instanceof OwnableEntity ownableEntity && ((IOwnable) level.getBlockEntity(pos)).allowsOwnableEntity(ownableEntity)))
 			explode(level, pos);
 	}
 

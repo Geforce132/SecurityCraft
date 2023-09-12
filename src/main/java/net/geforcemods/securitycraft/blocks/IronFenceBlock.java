@@ -15,6 +15,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
@@ -207,6 +208,10 @@ public class IronFenceBlock extends OwnableBlock {
 			return;
 		else if (entity instanceof Player player) { //owner check
 			if (((OwnableBlockEntity) level.getBlockEntity(pos)).isOwnedBy(player))
+				return;
+		}
+		else if (entity instanceof OwnableEntity ownableEntity) {
+			if (((OwnableBlockEntity) level.getBlockEntity(pos)).allowsOwnableEntity(ownableEntity))
 				return;
 		}
 		else if (!level.isClientSide && entity instanceof Creeper creeper) {

@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -40,7 +41,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 		if (collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity() != null) {
 			Entity entity = ctx.getEntity();
 
-			if ((entity instanceof ItemEntity) || entity instanceof Player player && level.getBlockEntity(pos) instanceof IOwnable ownableTe && (ownableTe.isOwnedBy(player) || player.isCreative()))
+			if ((entity instanceof ItemEntity) || level.getBlockEntity(pos) instanceof IOwnable ownableTe && ((entity instanceof Player player && (ownableTe.isOwnedBy(player) || player.isCreative())) || (entity instanceof OwnableEntity ownableEntity && ownableTe.allowsOwnableEntity(ownableEntity))))
 				return Shapes.block();
 
 			return Shapes.empty();

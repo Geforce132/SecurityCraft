@@ -2,12 +2,14 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -72,7 +74,7 @@ public class MineBlock extends ExplosiveBlock {
 		if (level.isClientSide || entity instanceof ItemEntity || !getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
 			return;
 
-		if (!EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof Player player && player.isCreative()))
+		if (!EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof Player player && player.isCreative()) && !(entity instanceof OwnableEntity ownableEntity && ((IOwnable) level.getBlockEntity(pos)).allowsOwnableEntity(ownableEntity)))
 			explode(level, pos);
 	}
 

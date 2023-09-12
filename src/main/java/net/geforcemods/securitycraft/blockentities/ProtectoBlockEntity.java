@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -49,7 +50,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 
 				for (LivingEntity entity : entities) {
 					if (!(entity instanceof Sentry) && !EntityUtils.isInvisible(entity)) {
-						if (entity instanceof Player player && (player.isCreative() || player.isSpectator() || (isOwnedBy(player) && ignoresOwner()) || isAllowed(entity)))
+						if (entity instanceof Player player && (player.isCreative() || player.isSpectator() || (isOwnedBy(player) && ignoresOwner()) || isAllowed(entity)) || entity instanceof OwnableEntity ownableEntity && allowsOwnableEntity(ownableEntity))
 							continue;
 
 						if (!level.isClientSide)
