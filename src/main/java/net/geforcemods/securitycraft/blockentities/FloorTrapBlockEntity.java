@@ -57,7 +57,7 @@ public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITic
 			.anyMatch(entity -> mode.allowsPlayers() && entity instanceof Player || mode.allowsMobs());
 		//@formatter:on
 
-		if (shouldReappear && !shouldDisappear && ticksUntilReappearing-- <= 0)
+		if (shouldReappear && ticksUntilReappearing-- <= 0 && !shouldDisappear)
 			reappear();
 
 		scheduleDisappear(false);
