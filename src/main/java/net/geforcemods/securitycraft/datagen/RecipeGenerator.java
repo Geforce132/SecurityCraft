@@ -152,6 +152,16 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', SCContent.REINFORCED_GLASS_PANE.get())
 		.unlockedBy("has_item_frame", has(Items.ITEM_FRAME))
 		.save(consumer);
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, SCContent.FLOOR_TRAP.get(), 2)
+		.pattern("ILI")
+		.pattern("R R")
+		.pattern("IPI")
+		.define('I', Tags.Items.INGOTS_IRON)
+		.define('L', SCTags.Items.REINFORCED_STONE_PRESSURE_PLATES)
+		.define('R', Tags.Items.DUSTS_REDSTONE)
+		.define('P', SCContent.REINFORCED_PISTON.get())
+		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+		.save(consumer);
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, SCContent.GLOW_DISPLAY_CASE.get())
 		.pattern("III")
 		.pattern("IFG")

@@ -251,6 +251,7 @@ public class RegistrationHandler {
 							new ItemStack(SCContent.SENTRY.get()),
 							new ItemStack(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get()),
 							new ItemStack(SCContent.MINE_REMOTE_ACCESS_TOOL.get()),
+							new ItemStack(SCContent.FLOOR_TRAP.get()),
 							new ItemStack(SCContent.CAGE_TRAP.get()),
 							new ItemStack(SCContent.WIRE_CUTTERS.get()),
 							new ItemStack(SCContent.IRON_FENCE.get()),
