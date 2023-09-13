@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.EnumOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -242,6 +243,8 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private Component getValueText(Option<?> option) {
 		if (option instanceof BooleanOption booleanOption)
 			return Component.translatable(booleanOption.get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no");
+		else if (option instanceof EnumOption<?> enumOption)
+			return enumOption.getValueName();
 		else
 			return Component.literal(option.toString());
 	}

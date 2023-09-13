@@ -75,6 +75,7 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.SENTRY.get()));
 				output.accept(new ItemStack(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get()));
 				output.accept(new ItemStack(SCContent.MINE_REMOTE_ACCESS_TOOL.get()));
+				output.accept(new ItemStack(SCContent.FLOOR_TRAP.get()));
 				output.accept(new ItemStack(SCContent.CAGE_TRAP.get()));
 				output.accept(new ItemStack(SCContent.WIRE_CUTTERS.get()));
 				output.accept(new ItemStack(SCContent.IRON_FENCE.get()));
