@@ -5,9 +5,8 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.PushReaction;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -15,17 +14,12 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 
-public class SentryDisguiseBlock extends DisguisableBlock {
+public class SometimesVisibleBlock extends DisguisableBlock {
 	public static final BooleanProperty INVISIBLE = BooleanProperty.create("invisible");
 
-	public SentryDisguiseBlock(AbstractBlock.Properties properties) {
+	public SometimesVisibleBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(INVISIBLE, true).setValue(WATERLOGGED, false));
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.BLOCK;
 	}
 
 	@Override
@@ -45,7 +39,11 @@ public class SentryDisguiseBlock extends DisguisableBlock {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
-		return state.getValue(INVISIBLE) ? VoxelShapes.block() : super.getCollisionShape(state, level, pos, ctx);
+		return state.getValue(INVISIBLE) ? getCollisionShapeWhenInvisible() : super.getCollisionShape(state, level, pos, ctx);
+	}
+
+	public VoxelShape getCollisionShapeWhenInvisible() {
+		return VoxelShapes.block();
 	}
 
 	@Override
@@ -59,7 +57,7 @@ public class SentryDisguiseBlock extends DisguisableBlock {
 	}
 
 	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(INVISIBLE, WATERLOGGED);
 	}
 }

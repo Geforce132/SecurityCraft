@@ -85,6 +85,7 @@ public class SecurityCraft {
 		SCContent.FLUIDS.register(modEventBus);
 		SCContent.ITEMS.register(modEventBus);
 		SCContent.MENU_TYPES.register(modEventBus);
+		SCContent.PARTICLE_TYPES.register(modEventBus);
 	}
 
 	@SubscribeEvent

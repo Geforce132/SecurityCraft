@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -35,7 +36,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 	 * The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS =
 	 * hostile mobs.
 	 **/
-	private IMSTargetingMode targetingMode = IMSTargetingMode.PLAYERS_AND_MOBS;
+	private TargetingMode targetingMode = TargetingMode.PLAYERS_AND_MOBS;
 	private boolean updateBombCount = false;
 	private int attackTime = getAttackInterval();
 
@@ -84,15 +85,15 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 			AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(range.get());
 			LivingEntity target = null;
 
-			if (targetingMode == IMSTargetingMode.MOBS || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS) {
-				List<MonsterEntity> mobs = level.<MonsterEntity>getEntitiesOfClass(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
+			if (targetingMode.allowsMobs()) {
+				List<MonsterEntity> mobs = level.getEntitiesOfClass(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if (!mobs.isEmpty())
 					target = mobs.get(0);
 			}
 
-			if (target == null && (targetingMode == IMSTargetingMode.PLAYERS || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS)) {
-				List<PlayerEntity> players = level.<PlayerEntity>getEntitiesOfClass(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
+			if (target == null && (targetingMode.allowsPlayers())) {
+				List<PlayerEntity> players = level.getEntitiesOfClass(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if (!players.isEmpty())
 					target = players.get(0);
@@ -153,7 +154,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 		super.load(state, tag);
 
 		bombsRemaining = tag.getInt("bombsRemaining");
-		targetingMode = IMSTargetingMode.values()[tag.getInt("targetingOption")];
+		targetingMode = TargetingMode.values()[tag.getInt("targetingOption")];
 		updateBombCount = tag.getBoolean("updateBombCount");
 	}
 
@@ -161,11 +162,11 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 		this.bombsRemaining = bombsRemaining;
 	}
 
-	public IMSTargetingMode getTargetingMode() {
+	public TargetingMode getTargetingMode() {
 		return targetingMode;
 	}
 
-	public void setTargetingMode(IMSTargetingMode targetingOption) {
+	public void setTargetingMode(TargetingMode targetingOption) {
 		this.targetingMode = targetingOption;
 	}
 
@@ -193,11 +194,5 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
-	}
-
-	public enum IMSTargetingMode {
-		PLAYERS,
-		PLAYERS_AND_MOBS,
-		MOBS;
 	}
 }

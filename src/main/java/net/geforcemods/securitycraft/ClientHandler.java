@@ -35,6 +35,7 @@ import net.geforcemods.securitycraft.items.LensItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
+import net.geforcemods.securitycraft.misc.FloorTrapCloudParticle;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
@@ -127,6 +128,7 @@ import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelDataManager;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -148,6 +150,7 @@ public class ClientHandler {
 	private static Supplier<Block[]> disguisableBlocks = () -> new Block[] {
 			SCContent.BLOCK_CHANGE_DETECTOR.get(),
 			SCContent.CAGE_TRAP.get(),
+			SCContent.FLOOR_TRAP.get(),
 			SCContent.INVENTORY_SCANNER.get(),
 			SCContent.KEYCARD_READER.get(),
 			SCContent.KEYPAD.get(),
@@ -244,6 +247,7 @@ public class ClientHandler {
 		RenderTypeLookup.setRenderLayer(SCContent.BLOCK_POCKET_MANAGER.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(SCContent.BLOCK_POCKET_WALL.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.FAKE_WATER.get(), translucent);
+		RenderTypeLookup.setRenderLayer(SCContent.FLOOR_TRAP.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(SCContent.INVENTORY_SCANNER_FIELD.get(), translucent);
@@ -458,6 +462,11 @@ public class ClientHandler {
 				return 0.0F;
 		});
 		KeyBindings.init();
+	}
+
+	@SubscribeEvent
+	public static void registerParticleProviders(ParticleFactoryRegisterEvent event) {
+		Minecraft.getInstance().particleEngine.register(SCContent.FLOOR_TRAP_CLOUD.get(), FloorTrapCloudParticle.Provider::new);
 	}
 
 	private static void initTint() {

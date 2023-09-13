@@ -5,7 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
-import net.geforcemods.securitycraft.blockentities.IMSBlockEntity.IMSTargetingMode;
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.Screen;
@@ -28,7 +28,7 @@ public class IMSScreen extends Screen {
 	private int topPos;
 	private IMSBlockEntity tileEntity;
 	private Button targetButton;
-	private IMSTargetingMode targetMode;
+	private TargetingMode targetMode;
 
 	public IMSScreen(IMSBlockEntity te) {
 		super(te.getName());
@@ -73,7 +73,7 @@ public class IMSScreen extends Screen {
 	}
 
 	protected void targetButtonClicked(Button button) {
-		targetMode = IMSTargetingMode.values()[(targetMode.ordinal() + 1) % IMSTargetingMode.values().length]; //next enum value
+		targetMode = TargetingMode.values()[(targetMode.ordinal() + 1) % TargetingMode.values().length]; //next enum value
 		tileEntity.setTargetingMode(targetMode);
 		SecurityCraft.channel.sendToServer(new SyncIMSTargetingOption(tileEntity.getBlockPos(), tileEntity.getTargetingMode()));
 		updateButtonText();

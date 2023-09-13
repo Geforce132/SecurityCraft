@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
-import net.geforcemods.securitycraft.blocks.SentryDisguiseBlock;
+import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
@@ -140,7 +140,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 					//put the old module, if it exists, into the new disguise block
 					if (!oldModule.isEmpty() && oldModule.getItem() instanceof ModuleItem && ((ModuleItem) oldModule.getItem()).getBlockAddon(oldModule.getOrCreateTag()) != null) {
 						be.insertModule(oldModule, false);
-						level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, false));
+						level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SometimesVisibleBlock.INVISIBLE, false));
 					}
 
 					oldModule = ItemStack.EMPTY;
@@ -244,7 +244,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 					Block.popResource(level, pos, new ItemStack(SCContent.SPEED_MODULE.get()));
 
 				getSentryDisguiseBlockEntity().ifPresent(be -> be.removeModule(ModuleType.DISGUISE, false));
-				level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, true));
+				level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SometimesVisibleBlock.INVISIBLE, true));
 				entityData.set(ALLOWLIST, new CompoundNBT());
 				entityData.set(HAS_SPEED_MODULE, false);
 			}
@@ -475,7 +475,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 				//remove a possibly existing old disguise module
 				be.removeModule(ModuleType.DISGUISE, false);
 				be.insertModule(module, false);
-				level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, false));
+				level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SometimesVisibleBlock.INVISIBLE, false));
 			});
 		}
 	}
