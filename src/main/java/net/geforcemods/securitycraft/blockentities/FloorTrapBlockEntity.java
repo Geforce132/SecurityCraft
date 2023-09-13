@@ -17,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -52,7 +53,7 @@ public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITic
 		TargetingMode mode = targetingMode.get();
 
 		//@formatter:off
-		shouldDisappear = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos.above()).setMaxY(pos.getY() + 1.1666D), e -> e.canBeSeenByAnyone() && !isAllowed(e) && !(EntityUtils.doesEntityOwn(e, level, pos) && ignoresOwner()))
+		shouldDisappear = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos.above()).setMaxY(pos.getY() + 1.1666D), e -> e.canBeSeenByAnyone() && !(e instanceof OwnableEntity ownableEntity && allowsOwnableEntity(ownableEntity)) && !isAllowed(e) && !(EntityUtils.doesEntityOwn(e, level, pos) && ignoresOwner()))
 			.stream()
 			.anyMatch(entity -> mode.allowsPlayers() && entity instanceof Player || mode.allowsMobs());
 		//@formatter:on
