@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
-import net.geforcemods.securitycraft.blockentities.IMSBlockEntity.IMSTargetingMode;
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -11,18 +11,18 @@ import net.minecraftforge.network.NetworkEvent;
 
 public class SyncIMSTargetingOption {
 	private BlockPos pos;
-	private IMSTargetingMode targetingMode;
+	private TargetingMode targetingMode;
 
 	public SyncIMSTargetingOption() {}
 
-	public SyncIMSTargetingOption(BlockPos pos, IMSTargetingMode targetingMode) {
+	public SyncIMSTargetingOption(BlockPos pos, TargetingMode targetingMode) {
 		this.pos = pos;
 		this.targetingMode = targetingMode;
 	}
 
 	public SyncIMSTargetingOption(FriendlyByteBuf buf) {
 		pos = buf.readBlockPos();
-		targetingMode = buf.readEnum(IMSTargetingMode.class);
+		targetingMode = buf.readEnum(TargetingMode.class);
 	}
 
 	public void encode(FriendlyByteBuf buf) {

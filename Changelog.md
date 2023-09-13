@@ -4,13 +4,14 @@
 - New: The IMS can now automatically recharge itself with bouncing betties from a chest, barrel, etc. below
 - New: Simplified Chinese translation (Thanks DrIceTea!)
 - New: Lens item to be able to color laser and inventory scanner fields in any desired color, as well as a couple other things
-- New: Item tag "securitycraft:reinforced/glass_panes"
+- New: Item tags "securitycraft:reinforced/glass_panes", "securitycraft:reinforced/pressure_plates", "securitycraft:reinforced/stone_pressure_plates"
 - New: Vanishmod support
 - New: Universal Block Reinforcers LvL2 and LvL3 can now unreinforce blocks in the world by toggling the checkbox in their UI
 - New: Reinforced Ladder
 - New: The Projector can now project blocks regardless of which blocks exist in the world
 - New: The status of a Redstone Module in a Security Camera can now be seen in the Camera Monitor screen
 - New: Animals are now ignored by several blocks like the protecto or mines if the animal and block are owned by the same player
+- New: Floor Trap
 - Change: The recipe for the Laser Block now uses 4 glass panes in total
 - Change: You can no longer break the code of passcode blocks/briefcases that you own
 - Change: Universal Block Reinforcers can no longer be enchanted with Mending. Old reinforcers lose their Mending enchantment when used. This is to make it more enticing to upgrade to a level 3 reinforcer. In the future, this idea will be expanded upon.
@@ -21,6 +22,7 @@
 - API: IReinforcedBlock has been moved to the API package
 - API: New methods IReinforcedBlock#convertToReinforced and IReinforcedBlock#convertToVanilla
 - API: New method IOwnable#allowsOwnableEntity to check whether an ownable entity's owner owns the block entity
+- API: Added an EnumOption subclass of Option
 - Fix: Blocks can be pushed into a Sentry using a piston
 - Fix: The block at x=0, y=0, z=0 gets removed when placing a Sentry
 - Fix: Possible loss of data of passcode blocks

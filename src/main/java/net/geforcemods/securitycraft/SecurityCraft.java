@@ -86,6 +86,7 @@ public class SecurityCraft {
 		SCContent.ITEMS.register(modEventBus);
 		SCContent.LOOT_ITEM_CONDITION_TYPES.register(modEventBus);
 		SCContent.MENU_TYPES.register(modEventBus);
+		SCContent.PARTICLE_TYPES.register(modEventBus);
 		SCContent.RECIPE_SERIALIZERS.register(modEventBus);
 	}
 

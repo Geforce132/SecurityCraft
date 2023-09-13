@@ -11,22 +11,16 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class SentryDisguiseBlock extends DisguisableBlock {
+public class SometimesVisibleBlock extends DisguisableBlock {
 	public static final BooleanProperty INVISIBLE = BooleanProperty.create("invisible");
 
-	public SentryDisguiseBlock(BlockBehaviour.Properties properties) {
+	public SometimesVisibleBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(INVISIBLE, true).setValue(WATERLOGGED, false));
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.BLOCK;
 	}
 
 	@Override
@@ -46,7 +40,11 @@ public class SentryDisguiseBlock extends DisguisableBlock {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-		return state.getValue(INVISIBLE) ? Shapes.block() : super.getCollisionShape(state, level, pos, ctx);
+		return state.getValue(INVISIBLE) ? getCollisionShapeWhenInvisible() : super.getCollisionShape(state, level, pos, ctx);
+	}
+
+	public VoxelShape getCollisionShapeWhenInvisible() {
+		return Shapes.block();
 	}
 
 	@Override
