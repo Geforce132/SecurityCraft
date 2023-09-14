@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.blocks.FakeLavaBlock;
 import net.geforcemods.securitycraft.blocks.FakeWaterBaseBlock;
 import net.geforcemods.securitycraft.blocks.FakeWaterBlock;
 import net.geforcemods.securitycraft.blocks.FloorCeilingKeyPanelBlock;
+import net.geforcemods.securitycraft.blocks.FloorTrapBlock;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
@@ -39,7 +40,7 @@ import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
 import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretWallSignBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.blocks.SentryDisguiseBlock;
+import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.TrophySystemBlock;
 import net.geforcemods.securitycraft.blocks.UsernameLoggerBlock;
@@ -281,7 +282,7 @@ public class SetupHandler {
 		SCContent.keyPanelWallBlock = new WallKeyPanelBlock(Material.IRON).setBlockUnbreakable().setRegistryName("wall_key_panel").setTranslationKey("securitycraft:key_panel");
 		SCContent.sonicSecuritySystem = new SonicSecuritySystemBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("sonic_security_system").setTranslationKey("securitycraft:sonic_security_system");
 		SCContent.blockChangeDetector = new BlockChangeDetectorBlock(Material.ROCK).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("block_change_detector").setTranslationKey("securitycraft:block_change_detector");
-		SCContent.sentryDisguise = new SentryDisguiseBlock(Material.ROCK).setBlockUnbreakable().setHardness(-1.0F).setRegistryName("sentry_disguise");
+		SCContent.sentryDisguise = new SometimesVisibleBlock(Material.ROCK).setBlockUnbreakable().setHardness(-1.0F).setRegistryName("sentry_disguise");
 		SCContent.reinforcedEndRod = new ReinforcedEndRodBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_end_rod").setTranslationKey("securitycraft:reinforced_end_rod");
 		SCContent.reinforcedWhiteGlazedTerracotta = new ReinforcedGlazedTerracottaBlock(EnumDyeColor.WHITE, Blocks.WHITE_GLAZED_TERRACOTTA).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_white_glazed_terracotta").setTranslationKey("securitycraft:reinforced_white_glazed_terracotta");
 		SCContent.reinforcedOrangeGlazedTerracotta = new ReinforcedGlazedTerracottaBlock(EnumDyeColor.ORANGE, Blocks.ORANGE_GLAZED_TERRACOTTA).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_orange_glazed_terracotta").setTranslationKey("securitycraft:reinforced_orange_glazed_terracotta");
@@ -303,6 +304,7 @@ public class SetupHandler {
 		SCContent.displayCase = new DisplayCaseBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("display_case").setTranslationKey("securitycraft:display_case");
 		SCContent.keypadTrapdoor = (KeypadTrapDoorBlock) new KeypadTrapDoorBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("keypad_trapdoor").setTranslationKey("securitycraft:keypad_trapdoor");
 		SCContent.reinforcedLadder = new ReinforcedLadderBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_ladder").setTranslationKey("securitycraft:reinforced_ladder");
+		SCContent.floorTrap = new FloorTrapBlock(Material.IRON).setBlockUnbreakable().setHardness(-1.0F).setRegistryName("floor_trap").setTranslationKey("securitycraft:floor_trap");
 	}
 
 	public static void setupMines() {

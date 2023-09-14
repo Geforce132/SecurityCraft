@@ -9,6 +9,7 @@
 - New: The Projector can now project blocks regardless of which blocks exist in the world
 - New: The status of a Redstone Module in a Security Camera can now be seen in the Camera Monitor screen
 - New: Animals are now ignored by several blocks like the protecto or mines if the animal and block are owned by the same player
+- New: Floor Trap
 - Change: The recipe for the Laser Block now uses 4 glass panes in total
 - Change: You can no longer break the code of passcode blocks/briefcases that you own
 - Change: Universal Block Reinforcers can no longer be enchanted with Mending. Old reinforcers lose their Mending enchantment when used. This is to make it more enticing to upgrade to a level 3 reinforcer. In the future, this idea will be expanded upon.
@@ -19,6 +20,7 @@
 - API: IReinforcedBlock has been moved to the API package
 - API: New methods IReinforcedBlock#convertToReinforced and IReinforcedBlock#convertToVanilla
 - API: New method IOwnable#allowsOwnableEntity to check whether an ownable entity's owner owns the block entity
+- API: Added an EnumOption subclass of Option
 - Fix: The exclamation mark in the Keycard Reader screen is dark
 - Fix: Reinforced Doors placed next to each other don't open properly after the chunk they're in is reloaded
 - Fix: Startup crash with some versions of SpongeForge

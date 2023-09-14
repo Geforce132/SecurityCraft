@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.screen;
 
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
-import net.geforcemods.securitycraft.blockentities.IMSBlockEntity.EnumIMSTargetingMode;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiButton;
@@ -16,7 +16,7 @@ public class IMSScreen extends GuiContainer {
 	private final String target = Utils.localize("gui.securitycraft:ims.target").getFormattedText();
 	private IMSBlockEntity tileEntity;
 	private GuiButton targetButton;
-	private EnumIMSTargetingMode targetMode;
+	private TargetingMode targetMode;
 
 	public IMSScreen(IMSBlockEntity te) {
 		super(new GenericMenu(te));
@@ -52,7 +52,7 @@ public class IMSScreen extends GuiContainer {
 	@Override
 	protected void actionPerformed(GuiButton button) {
 		if (button.id == 0) {
-			targetMode = EnumIMSTargetingMode.values()[(targetMode.ordinal() + 1) % EnumIMSTargetingMode.values().length]; //next enum value
+			targetMode = TargetingMode.values()[(targetMode.ordinal() + 1) % TargetingMode.values().length]; //next enum value
 			tileEntity.setTargetingMode(targetMode);
 			ClientUtils.syncTileEntity(tileEntity);
 			updateButtonText();

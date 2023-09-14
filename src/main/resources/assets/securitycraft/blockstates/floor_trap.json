@@ -1,0 +1,6 @@
+{
+  "variants": {
+        "invisible=true": { "model": "securitycraft:floor_trap" },
+        "invisible=false": { "model": "securitycraft:floor_trap" }
+  }
+}

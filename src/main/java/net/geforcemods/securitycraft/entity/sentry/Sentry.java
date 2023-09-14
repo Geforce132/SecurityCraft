@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
-import net.geforcemods.securitycraft.blocks.SentryDisguiseBlock;
+import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
@@ -139,7 +139,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 					//put the old module, if it exists, into the new disguise block
 					if (!oldModule.isEmpty() && oldModule.getItem() instanceof ModuleItem && ((ModuleItem) oldModule.getItem()).getBlockAddon(oldModule.getTagCompound()) != null) {
 						be.insertModule(oldModule, false);
-						world.setBlockState(getPosition(), world.getBlockState(getPosition()).withProperty(SentryDisguiseBlock.INVISIBLE, false));
+						world.setBlockState(getPosition(), world.getBlockState(getPosition()).withProperty(SometimesVisibleBlock.INVISIBLE, false));
 					}
 
 					oldModule = ItemStack.EMPTY;
@@ -250,7 +250,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 					Block.spawnAsEntity(world, pos, new ItemStack(SCContent.speedModule));
 
 				getSentryDisguiseBlockEntity().ifPresent(be -> be.removeModule(ModuleType.DISGUISE, false));
-				world.setBlockState(getPosition(), world.getBlockState(getPosition()).withProperty(SentryDisguiseBlock.INVISIBLE, true));
+				world.setBlockState(getPosition(), world.getBlockState(getPosition()).withProperty(SometimesVisibleBlock.INVISIBLE, true));
 				dataManager.set(ALLOWLIST, new NBTTagCompound());
 				dataManager.set(HAS_SPEED_MODULE, false);
 			}
@@ -488,7 +488,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 				//remove a possibly existing old disguise module
 				be.removeModule(ModuleType.DISGUISE, false);
 				be.insertModule(module, false);
-				world.setBlockState(getPosition(), world.getBlockState(getPosition()).withProperty(SentryDisguiseBlock.INVISIBLE, false));
+				world.setBlockState(getPosition(), world.getBlockState(getPosition()).withProperty(SometimesVisibleBlock.INVISIBLE, false));
 			});
 		}
 	}

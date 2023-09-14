@@ -65,12 +65,14 @@ import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -84,6 +86,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -128,6 +131,11 @@ public class ClientProxy implements IProxy {
 		ModelResourceLocation mineMrl = new ModelResourceLocation(mineRl, "inventory");
 
 		event.getModelRegistry().putObject(mineMrl, new BlockMineModel(event.getModelRegistry().getObject(new ModelResourceLocation(realBlockRl, "inventory")), event.getModelRegistry().getObject(mineMrl)));
+	}
+
+	@SubscribeEvent
+	public static void onTextureStitch(TextureStitchEvent.Pre event) {
+		event.getMap().registerSprite(new ResourceLocation(SecurityCraft.MODID, "particle/floor_trap_cloud"));
 	}
 
 	@Override
@@ -358,6 +366,30 @@ public class ClientProxy implements IProxy {
 		blue *= (float) (tint2 & 0xFF) / 0xFF;
 
 		return ((red << 8) + green << 8) + blue;
+	}
+
+	@Override
+	public void addEffect(IParticleFactory factory, World level, double x, double y, double z) {
+		Minecraft mc = Minecraft.getMinecraft();
+		Entity entity = mc.getRenderViewEntity();
+		World world = mc.world;
+
+		if (entity != null && mc.effectRenderer != null) {
+			int particleSetting = mc.gameSettings.particleSetting;
+
+			if (particleSetting == 1 && world.rand.nextInt(3) == 0)
+				particleSetting = 2;
+
+			if (particleSetting > 1)
+				return;
+
+			double xDistance = entity.posX - x;
+			double yDistance = entity.posY - y;
+			double zDistance = entity.posZ - z;
+
+			if (xDistance * xDistance + yDistance * yDistance + zDistance * zDistance <= 1024.0D)
+				mc.effectRenderer.addEffect(factory.createParticle(0, world, x, y, z, 0.0D, 0.0D, 0.0D, 0));
+		}
 	}
 
 	@Override

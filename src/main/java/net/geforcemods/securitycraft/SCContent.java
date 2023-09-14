@@ -45,6 +45,7 @@ public class SCContent {
 	public static Block endStoneMine;
 	public static BlockStaticLiquid fakeLava;
 	public static BlockStaticLiquid fakeWater;
+	public static Block floorTrap;
 	public static Block frame;
 	public static Block furnaceMine;
 	public static Block goldOreMine;

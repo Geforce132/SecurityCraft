@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
@@ -394,6 +395,48 @@ public abstract class Option<T> {
 		@Override
 		public String toString() {
 			return Float.toString(value).length() > 5 ? Float.toString(value).substring(0, 5) : Float.toString(value);
+		}
+	}
+
+	public static class EnumOption<T extends Enum<T>> extends Option<T> {
+		private final Class<T> enumClass;
+
+		protected EnumOption(String optionName, T value, Class<T> enumClass) {
+			super(optionName, value);
+			this.enumClass = enumClass;
+		}
+
+		@Override
+		public void toggle() {
+			T[] enumConstants = enumClass.getEnumConstants();
+			int next = (value.ordinal() + 1) % enumConstants.length;
+
+			value = enumConstants[next];
+		}
+
+		@Override
+		public void load(NBTTagCompound tag) {
+			T[] enumConstants = enumClass.getEnumConstants();
+			int ordinal = tag.getInteger(getName());
+
+			if (ordinal >= 0 && ordinal < enumConstants.length)
+				value = enumConstants[ordinal];
+			else
+				value = getDefaultValue();
+		}
+
+		@Override
+		public void save(NBTTagCompound tag) {
+			tag.setInteger(getName(), value.ordinal());
+		}
+
+		public ITextComponent getValueName() {
+			return new TextComponentString(value.name());
+		}
+
+		@Override
+		public ITextComponent getDefaultInfo() {
+			return Utils.localize("securitycraft.option.default", getValueName()).setStyle(new Style().setColor(TextFormatting.GRAY));
 		}
 	}
 }

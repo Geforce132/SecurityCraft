@@ -15,11 +15,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class SentryDisguiseBlock extends DisguisableBlock {
+public class SometimesVisibleBlock extends DisguisableBlock {
 	public static final PropertyBool INVISIBLE = PropertyBool.create("invisible");
 	public static final AxisAlignedBB EMPTY_AABB = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 
-	public SentryDisguiseBlock(Material material) {
+	public SometimesVisibleBlock(Material material) {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(INVISIBLE, true));
 	}
@@ -36,7 +36,7 @@ public class SentryDisguiseBlock extends DisguisableBlock {
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return state.getValue(INVISIBLE) ? FULL_BLOCK_AABB : super.getCollisionBoundingBox(state, world, pos);
+		return state.getValue(INVISIBLE) ? getCollisionShapeWhenInvisible() : super.getCollisionBoundingBox(state, world, pos);
 	}
 
 	@Override
@@ -47,9 +47,13 @@ public class SentryDisguiseBlock extends DisguisableBlock {
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState) {
 		if (state.getValue(INVISIBLE))
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, getCollisionShapeWhenInvisible());
 		else
 			super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, isActualState);
+	}
+
+	public AxisAlignedBB getCollisionShapeWhenInvisible() {
+		return FULL_BLOCK_AABB;
 	}
 
 	@Override

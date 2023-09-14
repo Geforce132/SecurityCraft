@@ -20,6 +20,7 @@ import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
+import net.geforcemods.securitycraft.blockentities.FloorTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IronFenceBlockEntity;
@@ -329,6 +330,7 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.displayCase);
 		registerBlock(event, SCContent.keypadTrapdoor);
 		registerBlock(event, SCContent.reinforcedLadder);
+		registerBlock(event, SCContent.floorTrap);
 
 		//block mines
 		registerBlockMine(event, SCContent.stoneMine);
@@ -488,6 +490,7 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(DisguisableBlockEntity.class, new ResourceLocation("securitycraft:disguisable"));
 		GameRegistry.registerTileEntity(DisplayCaseBlockEntity.class, new ResourceLocation("securitycraft:display_case"));
 		GameRegistry.registerTileEntity(KeypadTrapdoorBlockEntity.class, new ResourceLocation("securitycraft:keypad_trapdoor"));
+		GameRegistry.registerTileEntity(FloorTrapBlockEntity.class, new ResourceLocation("securitycraft:floor_trap"));
 	}
 
 	@SubscribeEvent
@@ -894,6 +897,7 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.displayCase, 0, "display_case");
 		registerInventoryModel(SCContent.keypadTrapdoor, 0, "keypad_trapdoor");
 		registerInventoryModel(SCContent.reinforcedLadder, 0, "reinforced_ladder");
+		registerInventoryModel(SCContent.floorTrap, 0, "floor_trap");
 
 		//items
 		registerInventoryModel(SCContent.codebreaker, 0, "codebreaker");

@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ILI",
+    "R R",
+    "IPI"
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "L": {
+      "item": "securitycraft:reinforced_stone_pressure_plate"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    },
+    "P": {
+      "item": "securitycraft:reinforced_piston"
+    }
+  },
+  "result": {
+    "item": "securitycraft:floor_trap",
+    "count": 2
+  }
+}
