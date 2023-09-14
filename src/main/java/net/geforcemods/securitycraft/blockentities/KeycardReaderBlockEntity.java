@@ -8,9 +8,9 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
-import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -20,19 +20,31 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements MenuProvider, ILockable, ICodebreakable {
 	private boolean[] acceptedLevels = {
 			true, false, false, false, false
 	};
 	private int signature = 0;
-	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private IntOption signalLength = new SignalLengthOption(60);
-	private DisabledOption disabled = new DisabledOption(false);
+	protected BooleanOption sendMessage = new BooleanOption("sendMessage", true) {
+		@Override
+		public String getKey(Block block) {
+			return "option.keycard_reader." + getName();
+		}
+	};
+	protected IntOption signalLength = new SignalLengthOption(60);
+	protected DisabledOption disabled = new DisabledOption(false);
 
 	public KeycardReaderBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.KEYCARD_READER_BLOCK_ENTITY.get(), pos, state);
+		this(SCContent.KEYCARD_READER_BLOCK_ENTITY.get(), pos, state);
+	}
+
+	public KeycardReaderBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+		super(type, pos, state);
 	}
 
 	@Override
@@ -85,13 +97,21 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 			return false;
 		}
 
-		return !state.getValue(KeycardReaderBlock.POWERED);
+		return !state.getValue(BlockStateProperties.POWERED);
 	}
 
 	@Override
 	public void useCodebreaker(BlockState state, Player player) {
-		if (!level.isClientSide && getBlockState().getBlock() instanceof KeycardReaderBlock block)
-			block.activate(level, worldPosition, signalLength.get());
+		if (!level.isClientSide)
+			activate();
+	}
+
+	public void activate() {
+		Block block = getBlockState().getBlock();
+
+		level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, true));
+		BlockUtils.updateIndirectNeighbors(level, worldPosition, block);
+		level.scheduleTick(worldPosition, block, getSignalLength());
 	}
 
 	public void setAcceptedLevels(boolean[] acceptedLevels) {
