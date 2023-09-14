@@ -21,6 +21,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -51,7 +52,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	private static MinecraftSessionService sessionService;
 	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new SignalLengthOption(this::getBlockPos, 60);
 	private DoubleOption maximumDistance = new DoubleOption(this::getBlockPos, "maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D, true) {
 		@Override
 		public String getKey(Block block) {

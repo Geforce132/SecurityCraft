@@ -277,6 +277,17 @@ public abstract class Option<T> {
 		}
 	}
 
+	public static class SignalLengthOption extends IntOption {
+		public SignalLengthOption(Supplier<BlockPos> pos, int defaultLength) {
+			super(pos, "signalLength", defaultLength, 0, 400, 5, true); //20 seconds max
+		}
+
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.signalLength";
+		}
+	}
+
 	/**
 	 * A subclass of {@link Option} set up to handle doubles.
 	 */
