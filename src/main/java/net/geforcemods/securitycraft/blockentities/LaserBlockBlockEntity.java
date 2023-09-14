@@ -15,6 +15,8 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
@@ -56,6 +58,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		}
 	};
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
+	private IntOption signalLength = new SignalLengthOption(50);
 	private Map<Direction, Boolean> sideConfig = Util.make(() -> {
 		EnumMap<Direction, Boolean> map = new EnumMap<>(Direction.class);
 
@@ -142,7 +145,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			if (stateChanged.property() == LaserBlock.POWERED && !state.getValue(LaserBlock.POWERED)) {
 				level.setBlockAndUpdate(worldPosition, state.setValue(LaserBlock.POWERED, true));
 				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
-				level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), 50);
+				level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength.get());
 			}
 		}
 
@@ -293,7 +296,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				disabled, ignoreOwner
+				disabled, ignoreOwner, signalLength
 		};
 	}
 
@@ -308,6 +311,10 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
+	}
+
+	public int getSignalLength() {
+		return signalLength.get();
 	}
 
 	public void applyNewSideConfig(Map<Direction, Boolean> sideConfig, Player player) {

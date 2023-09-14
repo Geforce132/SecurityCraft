@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -27,7 +28,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	};
 	private int signature = 0;
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private IntOption signalLength = new IntOption("signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new SignalLengthOption(60);
 	private DisabledOption disabled = new DisabledOption(false);
 
 	public KeycardReaderBlockEntity(BlockPos pos, BlockState state) {
