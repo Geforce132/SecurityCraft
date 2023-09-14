@@ -304,7 +304,7 @@ public class SetupHandler {
 		SCContent.displayCase = new DisplayCaseBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("display_case").setTranslationKey("securitycraft:display_case");
 		SCContent.keypadTrapdoor = (KeypadTrapDoorBlock) new KeypadTrapDoorBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("keypad_trapdoor").setTranslationKey("securitycraft:keypad_trapdoor");
 		SCContent.reinforcedLadder = new ReinforcedLadderBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_ladder").setTranslationKey("securitycraft:reinforced_ladder");
-		SCContent.floorTrap = new FloorTrapBlock(Material.IRON).setBlockUnbreakable().setHardness(-1.0F).setRegistryName("floor_trap").setTranslationKey("securitycraft:floor_trap");
+		SCContent.floorTrap = new FloorTrapBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setHardness(-1.0F).setRegistryName("floor_trap").setTranslationKey("securitycraft:floor_trap");
 	}
 
 	public static void setupMines() {
