@@ -561,6 +561,8 @@ option.generic.disabled.description=Ce bloc devrait-il être désactivé, de fa�
 option.generic.disabled=Désactivé : #
 option.generic.ignoreOwner.description=Ce bloc devrait-il ignorer son propriétaire, ce qui signifie que toutes les fonctionnalités qu'il possède ne fonctionneront pas pour le propriétaire ?
 option.generic.ignoreOwner=Ignorer propriétaire : #
+option.generic.signalLength.description=Combien de temps le signal de redstone doit-il durer en cas de succès ? (En ticks, 20 ticks = 1 seconde)
+option.generic.signalLength=Largeur du signal : #
 option.generic.smartModuleCooldown.description=Pendant combien de temps les joueurs ne peuvent-ils pas saisir un code d'accès après la saisie d'un code incorrect ? (En ticks, 20 ticks = 1 seconde ; requiert un module intelligent)
 option.generic.smartModuleCooldown=Attente : #
 option.generic.viewActivated.maximumDistance.description=A partir de combien de blocs au maximum est-il possible d'activer ce bloc ?
@@ -589,18 +591,12 @@ option.securitycraft:key_panel.isAlwaysActive.description=Le panneau à touches 
 option.securitycraft:key_panel.isAlwaysActive=Est toujours actif : #
 option.securitycraft:key_panel.sendMessage.description=Ce panneau à touches envoie-t-il un message lors de son activation (en utilisant un module de liste d'autorisation/de refus) ?
 option.securitycraft:key_panel.sendMessage=Message : #
-option.securitycraft:key_panel.signalLength.description=Combien de temps le signal de redstone doit-il durer en cas de succès ? (En ticks, 20 ticks = 1 seconde)
-option.securitycraft:key_panel.signalLength=Largeur du signal : #
 option.securitycraft:keycardReader.sendMessage.description=Cette carte d'accès envoie-t-elle un message lors de son activation (en utilisant un module de liste d'autorisation/de refus) ?
 option.securitycraft:keycardReader.sendMessage=Message : #
-option.securitycraft:keycardReader.signalLength.description=Combien de temps le signal de redstone doit-il durer en cas de succès ? (En ticks, 20 ticks = 1 seconde)
-option.securitycraft:keycardReader.signalLength=Largeur du signal : #
 option.securitycraft:keypad.isAlwaysActive.description=Le clavier à code doit-il rester actif et déverrouillé ?
 option.securitycraft:keypad.isAlwaysActive=Est toujours actif : #
 option.securitycraft:keypad.sendMessage.description=Ce clavier à code envoie-t-il un message lors de son activation (en utilisant un module de liste d'autorisation/de refus) ?
 option.securitycraft:keypad.sendMessage=Message : #
-option.securitycraft:keypad.signalLength.description=Combien de temps le signal de redstone doit-il durer en cas de succès ? (En ticks, 20 ticks = 1 seconde)
-option.securitycraft:keypad.signalLength=Largeur du signal : #
 option.securitycraft:keypadChest.sendMessage.description=Ce coffre protégé par un code d'accès envoie-t-il un message lors de son activation (en utilisant un module de liste d'autorisation/de refus) ?
 option.securitycraft:keypadChest.sendMessage=Message : #
 option.securitycraft:keypadFurnace.sendMessage.description=Ce fourneau protégé par un code d'accès envoie-t-il un message lors de son activation (en utilisant un module de liste d'autorisation/de refus) ?
@@ -627,8 +623,6 @@ option.securitycraft:retinalScanner.activatedByEntities.description=Ce scanner r
 option.securitycraft:retinalScanner.activatedByEntities=PNJ-Activée: #
 option.securitycraft:retinalScanner.sendMessage.description=Ce scanner rétinien envoie-t-il un message à son activation ?
 option.securitycraft:retinalScanner.sendMessage=Message : #
-option.securitycraft:retinalScanner.signalLength.description=Combien de temps le signal de redstone doit-il durer en cas de succès ? (En ticks, 20 ticks = 1 seconde)
-option.securitycraft:retinalScanner.signalLength=Largeur du signal : #
 option.securitycraft:rift_stabilizer.range.description=A quelle distance le stabilisateur de faille devrait-il pouvoir empêcher les tentatives de téléportation ?
 option.securitycraft:rift_stabilizer.range=Rayon de recherche : #
 option.securitycraft:rift_stabilizer.signalLength.description=Combien de temps le signal de redstone doit-il durer en cas de succès ? (En ticks, 20 ticks = 1 seconde)

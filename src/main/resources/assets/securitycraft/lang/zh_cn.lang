@@ -587,6 +587,8 @@ option.generic.disabled.description=是否禁用此方块，使其不再工作�
 option.generic.disabled=禁用：#
 option.generic.ignoreOwner.description=此方块是否忽略所属权？这意味着它的所有功能都不止对所属玩家生效。
 option.generic.ignoreOwner=忽略所属权：#
+option.generic.signalLength.description=成功激活后的红石信号应该持续多久？（以游戏刻为单位，20 游戏刻 = 1 秒）
+option.generic.signalLength=信号时长：#
 option.generic.smartModuleCooldown.description=输入错误密码后，玩家无法输入密码的时间？（以游戏刻为单位，20 游戏刻 = 1 秒；需要智能模块）
 option.generic.smartModuleCooldown=冷却时间：#
 option.generic.viewActivated.maximumDistance.description=最远可以在多少格外激活此方块？
@@ -615,18 +617,12 @@ option.securitycraft:key_panel.isAlwaysActive.description=该密码盘面板是�
 option.securitycraft:key_panel.isAlwaysActive=始终激活：#
 option.securitycraft:key_panel.sendMessage.description=该密码盘面板在激活时是否发送消息（当使用白名单/黑名单模块时）？
 option.securitycraft:key_panel.sendMessage=消息：#
-option.securitycraft:key_panel.signalLength.description=成功激活后的红石信号应该持续多久？（以游戏刻为单位，20 游戏刻 = 1 秒）
-option.securitycraft:key_panel.signalLength=信号时长：#
 option.securitycraft:keycardReader.sendMessage.description=该安全卡读取器在激活时是否发送消息（当使用白名单/黑名单模块时）？
 option.securitycraft:keycardReader.sendMessage=消息：#
-option.securitycraft:keycardReader.signalLength.description=成功激活后的红石信号应该持续多久？（以游戏刻为单位，20 游戏刻 = 1 秒）
-option.securitycraft:keycardReader.signalLength=信号时长：#
 option.securitycraft:keypad.isAlwaysActive.description=该密码盘是否保持激活并解锁的状态？
 option.securitycraft:keypad.isAlwaysActive=始终激活：#
 option.securitycraft:keypad.sendMessage.description=该密码盘在激活时是否发送消息（当使用白名单/黑名单模块时）？
 option.securitycraft:keypad.sendMessage=消息：#
-option.securitycraft:keypad.signalLength.description=成功激活后的红石信号应该持续多久？（以游戏刻为单位，20 游戏刻 = 1 秒）
-option.securitycraft:keypad.signalLength=信号时长：#
 option.securitycraft:keypadChest.sendMessage.description=该密码保护箱子在激活时是否发送消息（当使用白名单/黑名单模块时）？
 option.securitycraft:keypadChest.sendMessage=消息：#
 option.securitycraft:keypadFurnace.sendMessage.description=该密码保护熔炉在激活时是否发送消息（当使用白名单/黑名单模块时）？
@@ -653,8 +649,6 @@ option.securitycraft:retinalScanner.activatedByEntities.description=这个扫描
 option.securitycraft:retinalScanner.activatedByEntities=非玩家激活：#
 option.securitycraft:retinalScanner.sendMessage.description=该扫描仪在激活时是否发送消息？
 option.securitycraft:retinalScanner.sendMessage=消息：#
-option.securitycraft:retinalScanner.signalLength.description=成功激活后的红石信号应该持续多久？（以游戏刻为单位，20 游戏刻 = 1 秒）
-option.securitycraft:retinalScanner.signalLength=信号时长：#
 option.securitycraft:rift_stabilizer.range.description=裂缝稳定器阻止传送请求的范围有多远？
 option.securitycraft:rift_stabilizer.range=检测范围：#
 option.securitycraft:rift_stabilizer.signalLength.description=成功激活后的红石信号应该持续多久？（以游戏刻为单位，20 游戏刻 = 1 秒）

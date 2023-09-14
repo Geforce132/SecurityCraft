@@ -11,6 +11,8 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.inventory.ExtractOnlyItemStackHandler;
@@ -42,6 +44,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	private BooleanOption solidifyField = new BooleanOption("solidifyField", false);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
+	private IntOption signalLength = new SignalLengthOption(this::getPos, 60);
 	private IItemHandler storageHandler;
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
@@ -278,12 +281,9 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		return isModuleEnabled(ModuleType.REDSTONE) && isProvidingPower;
 	}
 
-	public void setShouldProvidePower(boolean isProvidingPower) {
-		this.isProvidingPower = isProvidingPower;
-	}
-
-	public void setCooldown(int cooldown) {
-		this.cooldown = cooldown;
+	public void activate() {
+		this.isProvidingPower = true;
+		this.cooldown = signalLength.get();
 	}
 
 	public NonNullList<ItemStack> getContents() {
@@ -458,7 +458,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				horizontal, solidifyField, disabled, ignoreOwner
+				horizontal, solidifyField, disabled, ignoreOwner, signalLength
 		};
 	}
 

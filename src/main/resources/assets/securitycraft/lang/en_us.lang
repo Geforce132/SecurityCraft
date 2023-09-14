@@ -595,6 +595,8 @@ option.generic.disabled.description=Should this block be disabled, making it no 
 option.generic.disabled=Disabled: #
 option.generic.ignoreOwner.description=Should this block ignore its owner, meaning any functionality it has will not work for the owner?
 option.generic.ignoreOwner=Ignore Owner: #
+option.generic.signalLength.description=How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)
+option.generic.signalLength=Signal length: #
 option.generic.smartModuleCooldown.description=How long can players not enter a passcode after an incorrect code has been entered? (In Ticks, 20 ticks = 1 second; requires Smart Module)
 option.generic.smartModuleCooldown=Cooldown: #
 option.generic.viewActivated.maximumDistance.description=From at most how many blocks away is it possible to activate this block?
@@ -631,18 +633,12 @@ option.securitycraft:key_panel.isAlwaysActive.description=Should the key panel r
 option.securitycraft:key_panel.isAlwaysActive=Is always active: #
 option.securitycraft:key_panel.sendMessage.description=Does this key panel send a message upon activation (when using allowlist/denylist modules)?
 option.securitycraft:key_panel.sendMessage=Message: #
-option.securitycraft:key_panel.signalLength.description=How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)
-option.securitycraft:key_panel.signalLength=Signal length: #
 option.securitycraft:keycardReader.sendMessage.description=Does this keycard reader send a message upon activation (when using allowlist/denylist modules)?
 option.securitycraft:keycardReader.sendMessage=Message: #
-option.securitycraft:keycardReader.signalLength.description=How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)
-option.securitycraft:keycardReader.signalLength=Signal length: #
 option.securitycraft:keypad.isAlwaysActive.description=Should the keypad remain active and unlocked?
 option.securitycraft:keypad.isAlwaysActive=Is always active: #
 option.securitycraft:keypad.sendMessage.description=Does this keypad send a message upon activation (when using allowlist/denylist modules)?
 option.securitycraft:keypad.sendMessage=Message: #
-option.securitycraft:keypad.signalLength.description=How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)
-option.securitycraft:keypad.signalLength=Signal length: #
 option.securitycraft:keypadChest.sendMessage.description=Does this chest send a message upon activation (when using allowlist/denylist modules)?
 option.securitycraft:keypadChest.sendMessage=Message: #
 option.securitycraft:keypadFurnace.sendMessage.description=Does this furnace send a message upon activation (when using allowlist/denylist modules)?
@@ -669,8 +665,6 @@ option.securitycraft:retinalScanner.activatedByEntities.description=Can this sca
 option.securitycraft:retinalScanner.activatedByEntities=NPC-activated: #
 option.securitycraft:retinalScanner.sendMessage.description=Does this scanner send a message upon activation?
 option.securitycraft:retinalScanner.sendMessage=Message: #
-option.securitycraft:retinalScanner.signalLength.description=How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)
-option.securitycraft:retinalScanner.signalLength=Signal length: #
 option.securitycraft:rift_stabilizer.range.description=How far away should the Rift Stabilizer be able to prevent teleportation attempts?
 option.securitycraft:rift_stabilizer.range=Detection radius: #
 option.securitycraft:rift_stabilizer.signalLength.description=How long should the redstone signal after detecting a teleportation attempt be? (In ticks, 20 ticks = 1 second)

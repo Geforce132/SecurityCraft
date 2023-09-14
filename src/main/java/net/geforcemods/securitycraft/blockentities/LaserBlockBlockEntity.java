@@ -15,6 +15,8 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
@@ -54,6 +56,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 		}
 	};
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
+	private IntOption signalLength = new SignalLengthOption(this::getPos, 50);
 	private Map<EnumFacing, Boolean> sideConfig;
 	private IItemHandler insertOnlyHandler, lensHandler;
 	private LensContainer lenses = new LensContainer("", false, 6);
@@ -148,7 +151,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 			if (((ILinkedAction.StateChanged<?>) action).property == LaserBlock.POWERED && !state.getValue(LaserBlock.POWERED)) {
 				world.setBlockState(pos, state.withProperty(LaserBlock.POWERED, true));
 				BlockUtils.updateIndirectNeighbors(world, pos, SCContent.laserBlock);
-				world.scheduleUpdate(pos, SCContent.laserBlock, 50);
+				world.scheduleUpdate(pos, SCContent.laserBlock, signalLength.get());
 			}
 		}
 
@@ -315,7 +318,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				disabled, ignoreOwner
+				disabled, ignoreOwner, signalLength
 		};
 	}
 
@@ -325,6 +328,10 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
+	}
+
+	public int getSignalLength() {
+		return signalLength.get();
 	}
 
 	public void applyNewSideConfig(Map<EnumFacing, Boolean> sideConfig, EntityPlayer player) {

@@ -537,6 +537,8 @@ option.generic.disabled.description=Questo blocco dovrebbe essere disabilitato, 
 option.generic.disabled=Disabilitato: #
 option.generic.ignoreOwner.description=Questo blocco dovrebbe ignorare il suo proprietario, incluse le funzionalità correlate?
 option.generic.ignoreOwner=Ignora proprietario: #
+option.generic.signalLength.description=Quanto dovrebbe durare un segnale di redstone dall'attivazione? (In tick, 20 tick = 1 secondo)
+option.generic.signalLength=Lunghezza segnale: #
 option.generic.smartModuleCooldown.description=Per quanto i giocatori non possono inserire un codice dopo averne inserito uno errato? (In tick, 20 tick = 1 secondo; richiede modulo intelligente)
 option.generic.smartModuleCooldown=Ricarica: #
 option.securitycraft:alarm.range.description=Da quanti blocchi di distanza si può udire il suono dell'allarme?
@@ -561,18 +563,12 @@ option.securitycraft:key_panel.isAlwaysActive.description=Il tastierino dovrebbe
 option.securitycraft:key_panel.isAlwaysActive=Sempre attivo: #
 option.securitycraft:key_panel.sendMessage.description=Vuoi che questo pannello mandi un messaggio all'attivazione (usando moduli lista consentiti/negati)?
 option.securitycraft:key_panel.sendMessage=Messaggio: #
-option.securitycraft:key_panel.signalLength.description=Quanto dovrebbe durare un segnale di redstone dall'attivazione? (In tick, 20 tick = 1 secondo)
-option.securitycraft:key_panel.signalLength=Lunghezza segnale: #
 option.securitycraft:keycardReader.sendMessage.description=Questo lettore di tessere magnetiche manda un messaggio all'attivazione (usando moduli lista consentiti/negati)?
 option.securitycraft:keycardReader.sendMessage=Messaggio: #
-option.securitycraft:keycardReader.signalLength.description=Quanto dovrebbe durare un segnale di redstone dall'attivazione? (In tick, 20 tick = 1 secondo)
-option.securitycraft:keycardReader.signalLength=Lunghezza segnale: #
 option.securitycraft:keypad.isAlwaysActive.description=La tastiera deve rimanere attiva e sbloccata?
 option.securitycraft:keypad.isAlwaysActive=Sempre attivo: #
 option.securitycraft:keypad.sendMessage.description=Questa tastiera manda un messaggio all'attivazione (usando moduli lista consentiti/negati)?
 option.securitycraft:keypad.sendMessage=Messaggio: #
-option.securitycraft:keypad.signalLength.description=Quanto dovrebbe durare un segnale di redstone dall'attivazione? (In tick, 20 tick = 1 secondo)
-option.securitycraft:keypad.signalLength=Lunghezza segnale: #
 option.securitycraft:keypadChest.sendMessage.description=Questo baule manda un messaggio all'attivazione (usando moduli lista consentiti/negati)?
 option.securitycraft:keypadChest.sendMessage=Messaggio: #
 option.securitycraft:keypadFurnace.sendMessage.description=Questa fornace manda un messaggio all'attivazione (usando moduli lista consentiti/negati)?
@@ -597,8 +593,6 @@ option.securitycraft:retinalScanner.activatedByEntities.description=Questo scann
 option.securitycraft:retinalScanner.activatedByEntities=Attivato da NPC: #
 option.securitycraft:retinalScanner.sendMessage.description=Questo scanner manda un messaggio quando attivato?
 option.securitycraft:retinalScanner.sendMessage=Messaggio: #
-option.securitycraft:retinalScanner.signalLength.description=Quanto dovrebbe durare un segnale di redstone dall'attivazione? (In tick, 20 tick = 1 secondo)
-option.securitycraft:retinalScanner.signalLength=Lunghezza segnale: #
 option.securitycraft:rift_stabilizer.range.description=Quanto dovrebbe rilevare in lontananza lo stabilizzatore del terreno?
 option.securitycraft:rift_stabilizer.range=Raggio rilevamento: #
 option.securitycraft:rift_stabilizer.signalLength.description=Quanto dovrebbe durare il segnale redstone emesso dopo un tentativo di teletrasporto? (In tick, 20 tick = 1 secondo)

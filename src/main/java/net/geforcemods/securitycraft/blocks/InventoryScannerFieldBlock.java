@@ -227,8 +227,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 	}
 
 	private static void updateInvScanner(InventoryScannerBlockEntity te) {
-		te.setShouldProvidePower(true);
-		te.setCooldown(60);
+		te.activate();
 		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), SCContent.inventoryScanner, 1, true);
 		BlockUtils.updateIndirectNeighbors(te.getWorld(), te.getPos(), SCContent.inventoryScanner);
 	}
