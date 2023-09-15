@@ -45,7 +45,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	protected BooleanOption sendMessage = new BooleanOption("sendMessage", true) {
 		@Override
 		public String getKey(Block block) {
-			return "option.keycard_reader." + getName();
+			return "option.securitycraft.keycard_reader." + getName();
 		}
 	};
 	protected IntOption signalLength = new SignalLengthOption(60);
