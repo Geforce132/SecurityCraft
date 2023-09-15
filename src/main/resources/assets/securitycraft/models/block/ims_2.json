@@ -24,7 +24,8 @@
                 },
                 "down": {
                     "uv": [5,0,7.5,2.5],
-                    "texture": "#ims"
+                    "texture": "#ims",
+                    "cullface": "down"
                 },
                 "west": {
                     "uv": [7.5,2.5,10,5],
@@ -54,7 +55,8 @@
                 },
                 "down": {
                     "uv": [5,0,7.5,2.5],
-                    "texture": "#ims"
+                    "texture": "#ims",
+                    "cullface": "down"
                 },
                 "west": {
                     "uv": [7.5,2.5,10,5],
@@ -84,7 +86,8 @@
                 },
                 "down": {
                     "uv": [7,7.5,11,10.5],
-                    "texture": "#ims"
+                    "texture": "#ims",
+                    "cullface": "down"
                 },
                 "west": {
                     "uv": [7,10.5,10,14],
