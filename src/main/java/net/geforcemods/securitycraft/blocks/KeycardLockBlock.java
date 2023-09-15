@@ -1,6 +1,10 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.blockentities.KeycardLockBlockEntity;
+import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,8 +22,15 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		return KeycardReaderBlock.use(state, level, pos, player, hand, be -> {
-			//TODO: set up lock block
+		return KeycardReaderBlock.<KeycardLockBlockEntity>use(state, level, pos, player, hand, (stack, be) -> {
+			if (be.isOwnedBy(player)) {
+				if (stack.getItem() instanceof UniversalKeyChangerItem) {
+					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+					be.reset();
+				}
+				else
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.not_set_up"), ChatFormatting.RED);
+			}
 		});
 	}
 
