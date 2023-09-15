@@ -29,6 +29,13 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 	}
 
 	@Override
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST
+		};
+	}
+
+	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
 				sendMessage, signalLength, disabled, exactLevel
