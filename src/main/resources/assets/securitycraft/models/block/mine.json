@@ -15,7 +15,8 @@
                     "texture": "#mine"
                 },
                 "down": {
-                    "texture": "#mine"
+                    "texture": "#mine",
+                    "cullface": "down"
                 },
                 "west": {
                     "texture": "#mine"

@@ -71,7 +71,8 @@
 						12,
 						12
 					],
-					"texture": "#0"
+					"texture": "#0",
+					"cullface": "down"
 				}
 			},
 			"type": "cube"

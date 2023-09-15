@@ -34,8 +34,7 @@
 - Fix: Blocks that have a custom name lose the name when getting broken
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
-- Misc.: The laser field model has been changed internally
-- Misc.: More texture updates - resource packs may need to be updated
+- Misc.: More texture and model updates - resource packs may need to be updated
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
