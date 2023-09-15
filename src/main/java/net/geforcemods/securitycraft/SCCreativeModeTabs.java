@@ -48,6 +48,7 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.DISPLAY_CASE.get()));
 				output.accept(new ItemStack(SCContent.GLOW_DISPLAY_CASE.get()));
 				output.accept(new ItemStack(SCContent.KEYCARD_READER.get()));
+				output.accept(new ItemStack(SCContent.KEYCARD_LOCK.get()));
 				output.accept(new ItemStack(SCContent.KEYCARD_LVL_1.get()));
 				output.accept(new ItemStack(SCContent.KEYCARD_LVL_2.get()));
 				output.accept(new ItemStack(SCContent.KEYCARD_LVL_3.get()));
