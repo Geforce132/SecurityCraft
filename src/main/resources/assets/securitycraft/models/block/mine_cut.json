@@ -14,9 +14,6 @@
                 "up": {
                     "texture": "#mine"
                 },
-                "down": {
-                    "texture": "#mine"
-                },
                 "west": {
                     "texture": "#mine"
                 },

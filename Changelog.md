@@ -36,8 +36,7 @@
 - Fix: Blocks cannot be placed into fake water and fake lava
 - Potential Fix: When dismounting a camera, some UI elements don't reappear
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
-- Misc.: The laser field model has been changed internally
-- Misc.: More texture updates - resource packs may need to be updated
+- Misc.: More texture and model updates - resource packs may need to be updated
 
 --------------------------Changelog for v1.9.7-beta2 of SecurityCraft--------------------------
 
