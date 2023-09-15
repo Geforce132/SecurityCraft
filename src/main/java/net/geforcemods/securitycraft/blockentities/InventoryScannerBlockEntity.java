@@ -179,6 +179,15 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		return inventoryContents.get(index);
 	}
 
+	public ItemStack[] getAllProhibitedStackInSlotCopy() {
+		ItemStack[] stacks = [];
+		for(int i = 0; i < 10; i++) {
+			if (!inventoryContents.get(i).isEmpty())
+				stacks.push(inventoryContents.get(i));
+		}
+		return stacks;
+	}
+
 	@Override
 	public void setItem(int index, ItemStack stack) {
 		inventoryContents.set(index, stack);
