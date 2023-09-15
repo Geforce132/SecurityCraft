@@ -22,7 +22,8 @@
                     "texture": "#bouncingBetty"
                 },
                 "down": {
-                    "texture": "#bouncingBetty"
+                    "texture": "#bouncingBetty",
+                    "cullface": "down"
                 },
                 "west": {
                     "texture": "#bouncingBetty"
