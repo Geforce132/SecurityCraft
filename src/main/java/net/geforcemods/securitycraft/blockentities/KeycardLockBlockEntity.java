@@ -34,11 +34,11 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 				String keySuffix;
 
 				if (exactLevel.get()) {
-					levels[item.getLevel() - 1] = true;
+					levels[item.getLevel()] = true;
 					keySuffix = "exact";
 				}
 				else {
-					for (int i = item.getLevel() - 1; i < 5; i++) {
+					for (int i = item.getLevel(); i < 5; i++) {
 						levels[i] = true;
 					}
 
@@ -47,7 +47,8 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 
 				setUp = true;
 				setAcceptedLevels(levels);
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.setup_successful." + keySuffix), ChatFormatting.RED);
+				setSignature(stack.getOrCreateTag().getInt("signature"));
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.setup_successful." + keySuffix, item.getLevel() + 1), ChatFormatting.GREEN);
 				return InteractionResult.SUCCESS;
 			}
 			else {
