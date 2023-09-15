@@ -23,13 +23,14 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		return KeycardReaderBlock.<KeycardLockBlockEntity>use(state, level, pos, player, hand, (stack, be) -> {
-			if (be.isOwnedBy(player)) {
-				if (stack.getItem() instanceof UniversalKeyChangerItem) {
-					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
-					be.reset();
-				}
-				else
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.not_set_up"), ChatFormatting.RED);
+			if (!be.isSetUp()) {
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.not_set_up"), ChatFormatting.RED);
+				return;
+			}
+
+			if (be.isOwnedBy(player) && stack.getItem() instanceof UniversalKeyChangerItem) {
+				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+				be.reset();
 			}
 		});
 	}

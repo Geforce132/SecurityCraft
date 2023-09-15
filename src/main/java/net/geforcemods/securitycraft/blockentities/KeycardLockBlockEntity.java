@@ -26,7 +26,7 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 
 	@Override
 	public InteractionResult onRightClickWithActionItem(ItemStack stack, InteractionHand hand, Player player, boolean isCodebreaker, boolean isKeycardHolder) {
-		if (!setUp && isOwnedBy(player)) {
+		if (!isSetUp() && isOwnedBy(player)) {
 			if (stack.getItem() instanceof KeycardItem item) {
 				boolean[] levels = {
 						false, false, false, false, false
@@ -57,6 +57,10 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 		}
 
 		return super.onRightClickWithActionItem(stack, hand, player, isCodebreaker, isKeycardHolder);
+	}
+
+	public boolean isSetUp() {
+		return setUp;
 	}
 
 	public void reset() {
