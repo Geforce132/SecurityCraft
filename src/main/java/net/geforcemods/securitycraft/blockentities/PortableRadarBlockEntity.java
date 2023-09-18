@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.Collection;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -15,6 +16,7 @@ import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -45,17 +47,18 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 		if (!level.isClientSide && !disabled.get() && ticksUntilNextSearch-- <= 0) {
 			ticksUntilNextSearch = getSearchDelay();
 
-			ServerPlayerEntity owner = level.getServer().getPlayerList().getPlayerByName(getOwner().getName());
 			AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(getSearchRadius(), getSearchRadius(), getSearchRadius());
-			List<PlayerEntity> entities = level.getEntitiesOfClass(PlayerEntity.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && !e.isSpectator() && !EntityUtils.isInvisible(e));
+			List<PlayerEntity> closebyPlayers = level.getEntitiesOfClass(PlayerEntity.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && !e.isSpectator() && !EntityUtils.isInvisible(e));
 
 			if (isModuleEnabled(ModuleType.REDSTONE))
-				PortableRadarBlock.togglePowerOutput(level, worldPosition, !entities.isEmpty());
+				PortableRadarBlock.togglePowerOutput(level, worldPosition, !closebyPlayers.isEmpty());
 
-			if (owner != null) {
-				for (PlayerEntity e : entities) {
-					if (shouldSendMessage(e)) {
-						IFormattableTextComponent attackedName = e.getName().plainCopy().withStyle(TextFormatting.ITALIC);
+			if (!closebyPlayers.isEmpty()) {
+				Collection<ServerPlayerEntity> onlineTeamPlayers = TeamUtils.getOnlinePlayersInTeam(level.getServer(), getOwner());
+
+				for (PlayerEntity closebyPlayer : closebyPlayers) {
+					if (shouldSendMessage(closebyPlayer)) {
+						IFormattableTextComponent attackedName = closebyPlayer.getName().plainCopy().withStyle(TextFormatting.ITALIC);
 						IFormattableTextComponent text;
 
 						if (hasCustomName())
@@ -63,7 +66,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 						else
 							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(worldPosition));
 
-						PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, TextFormatting.BLUE);
+						onlineTeamPlayers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, TextFormatting.BLUE));
 						setSentMessage();
 					}
 				}

@@ -24,7 +24,7 @@ import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
-import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.TeamUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -108,7 +108,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 				if (shooter != null) {
 					if (shooter.getUUID() != null && shooter.getUUID().toString().equals(getOwner().getUUID()))
 						shouldTarget = !ignoresOwner();
-					else if (isAllowed(shooter.getName().toString()) || (ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(new Owner(shooter), getOwner())))
+					else if (isAllowed(shooter.getName().toString()) || (ConfigHandler.SERVER.enableTeamOwnership.get() && TeamUtils.areOnSameTeam(new Owner(shooter), getOwner())))
 						shouldTarget = false;
 				}
 

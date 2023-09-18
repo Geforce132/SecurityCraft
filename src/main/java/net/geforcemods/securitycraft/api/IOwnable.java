@@ -5,6 +5,7 @@ import java.util.UUID;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -97,7 +98,7 @@ public interface IOwnable {
 	public default boolean isOwnedBy(Owner otherOwner) {
 		Owner self = getOwner();
 
-		if (ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(self, otherOwner))
+		if (ConfigHandler.SERVER.enableTeamOwnership.get() && TeamUtils.areOnSameTeam(self, otherOwner))
 			return true;
 
 		String selfUUID = self.getUUID();
@@ -125,6 +126,6 @@ public interface IOwnable {
 		else if (entity instanceof TameableEntity)
 			animalOwnerUUID = ((TameableEntity) entity).getOwnerUUID();
 
-		return animalOwnerUUID != null && (animalOwnerUUID.toString().equals(beOwner.getUUID()) || PlayerUtils.areOnSameTeam(beOwner, new Owner(entity.level.getPlayerByUUID(animalOwnerUUID))));
+		return animalOwnerUUID != null && (animalOwnerUUID.toString().equals(beOwner.getUUID()) || TeamUtils.areOnSameTeam(beOwner, new Owner(entity.level.getPlayerByUUID(animalOwnerUUID))));
 	}
 }

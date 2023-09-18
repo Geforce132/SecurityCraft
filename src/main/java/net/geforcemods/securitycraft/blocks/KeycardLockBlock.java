@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.blockentities.KeycardLockBlockEntity;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -55,7 +56,7 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 					CompoundNBT tag = stack.getTag();
 					Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
 
-					if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !PlayerUtils.areOnSameTeam(be.getOwner(), keycardOwner)) || !be.getOwner().getUUID().equals(keycardOwner.getUUID()))
+					if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !TeamUtils.areOnSameTeam(be.getOwner(), keycardOwner)) || !be.getOwner().getUUID().equals(keycardOwner.getUUID()))
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.different_owner"), TextFormatting.RED);
 				}
 
