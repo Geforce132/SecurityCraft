@@ -12,6 +12,7 @@
 - New: Animals are now ignored by several blocks like the protecto or mines if the animal and block are owned by the same player
 - New: Floor Trap
 - New: The redstone signal length of the Inventory Scanner and Laser Block can now be changed
+- New: Keycard Lock. A miniature Keycard Reader that can only read cards, and not link them
 - Change: The recipe for the Laser Block now uses 4 glass panes in total
 - Change: You can no longer break the code of passcode blocks/briefcases that you own
 - Change: Universal Block Reinforcers can no longer be enchanted with Mending. Old reinforcers lose their Mending enchantment when used. This is to make it more enticing to upgrade to a level 3 reinforcer. In the future, this idea will be expanded upon.
@@ -19,6 +20,8 @@
 - Change: The recipe for the Mine Remote Access Tool has been modified to match its new texture
 - Change: The Codebreaker can now not be used for three seconds after its last usage
 - Change: The Sentry will now face the player when it is placed down. The head will still be within the body by default, though
+- Change: The Keycard Reader now has indicator lights
+- Change: The recipe for the Keycard Reader has been slightly adjusted
 - API: IReinforcedBlock has been moved to the API package
 - API: New methods IReinforcedBlock#convertToReinforced and IReinforcedBlock#convertToVanilla
 - API: New method IOwnable#allowsOwnableEntity to check whether an ownable entity's owner owns the block entity

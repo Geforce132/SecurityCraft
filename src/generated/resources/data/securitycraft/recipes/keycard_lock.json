@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "SSS",
-    "RH_",
-    "SSS"
+    "SS",
+    "R_",
+    "SS"
   ],
   "key": {
     "S": {
       "tag": "securitycraft:reinforced/stone_crafting_materials"
     },
-    "H": {
-      "item": "securitycraft:reinforced_hopper"
+    "R": {
+      "tag": "forge:dusts/redstone"
     },
     "_": [
       {
@@ -19,12 +19,9 @@
       {
         "item": "securitycraft:reinforced_blackstone_slab"
       }
-    ],
-    "R": {
-      "tag": "forge:dusts/redstone"
-    }
+    ]
   },
   "result": {
-    "item": "securitycraft:keycard_reader"
+    "item": "securitycraft:keycard_lock"
   }
 }

@@ -18,10 +18,8 @@ import net.minecraft.world.World;
 public class CommonDoorActivator implements IDoorActivator {
 	//@formatter:off
 	private List<Block> blocks = Arrays.asList(
+			SCContent.KEYCARD_LOCK.get(),
 			SCContent.LASER_BLOCK.get(),
-			SCContent.RETINAL_SCANNER.get(),
-			SCContent.KEYPAD.get(),
-			SCContent.KEYCARD_READER.get(),
 			SCContent.PORTABLE_RADAR.get(),
 			SCContent.REINFORCED_STONE_BUTTON.get(),
 			SCContent.REINFORCED_OAK_BUTTON.get(),
@@ -35,7 +33,7 @@ public class CommonDoorActivator implements IDoorActivator {
 			SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get(),
 			SCContent.REINFORCED_LEVER.get(),
 			SCContent.REINFORCED_OBSERVER.get(),
-			SCContent.KEY_PANEL_BLOCK.get(),
+			SCContent.RETINAL_SCANNER.get(),
 			SCContent.SECURITY_CAMERA.get(),
 			SCContent.SONIC_SECURITY_SYSTEM.get());
 	//@formatter:on

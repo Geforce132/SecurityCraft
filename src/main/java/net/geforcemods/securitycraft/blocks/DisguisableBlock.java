@@ -161,7 +161,8 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		if (tile instanceof IModuleInventory) {
 			IModuleInventory te = (IModuleInventory) tile;
 
-			return getDisguisedBlockStateFromStack(te.isModuleEnabled(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY);
+			if (te.isModuleEnabled(ModuleType.DISGUISE))
+				return getDisguisedBlockStateFromStack(te.getModule(ModuleType.DISGUISE));
 		}
 
 		return Optional.empty();

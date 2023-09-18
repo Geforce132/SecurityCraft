@@ -1,36 +1,16 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.Random;
-
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeyPanelBlockEntity;
-import net.geforcemods.securitycraft.misc.SaltData;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.IWaterLoggable;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.state.properties.AttachFace;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -38,16 +18,9 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 
-public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
-	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-	public static final EnumProperty<AttachFace> FACE = BlockStateProperties.ATTACH_FACE;
-	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+public class KeyPanelBlock extends AbstractPanelBlock {
 	public static final VoxelShape FLOOR_NS = Block.box(2.0D, 0.0D, 1.0D, 14.0D, 1.0D, 15.0D);
 	public static final VoxelShape FLOOR_EW = Block.box(1.0D, 0.0D, 2.0D, 15.0D, 1.0D, 14.0D);
 	public static final VoxelShape CEILING_NS = Block.box(2.0D, 15.0D, 1.0D, 14.0D, 16.0D, 15.0D);
@@ -59,7 +32,6 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 
 	public KeyPanelBlock(AbstractBlock.Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(FACE, AttachFace.WALL).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -143,138 +115,7 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-		BlockUtils.updateIndirectNeighbors(world, pos, this, getConnectedDirection(state).getOpposite());
-	}
-
-	@Override
-	public boolean isSignalSource(BlockState state) {
-		return true;
-	}
-
-	@Override
-	public int getSignal(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return state.getValue(POWERED) ? 15 : 0;
-	}
-
-	@Override
-	public int getDirectSignal(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return state.getValue(POWERED) && getConnectedDirection(state) == side ? 15 : 0;
-	}
-
-	@Override
-	public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
-		return canAttach(level, pos, getConnectedDirection(state).getOpposite());
-	}
-
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		World world = ctx.getLevel();
-		BlockPos pos = ctx.getClickedPos();
-
-		for (Direction direction : ctx.getNearestLookingDirections()) {
-			BlockState state;
-
-			if (direction.getAxis() == Direction.Axis.Y)
-				state = defaultBlockState().setValue(FACE, direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR).setValue(FACING, ctx.getHorizontalDirection());
-			else
-				state = defaultBlockState().setValue(FACE, AttachFace.WALL).setValue(FACING, direction.getOpposite());
-
-			if (state.canSurvive(world, pos))
-				return state.setValue(POWERED, false).setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER);
-		}
-
-		return null;
-	}
-
-	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos pos, BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED))
-			world.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
-
-		return getConnectedDirection(state).getOpposite() == facing && !state.canSurvive(world, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, world, pos, facingPos);
-	}
-
-	@Override
-	public void playerWillDestroy(World level, BlockPos pos, BlockState state, PlayerEntity player) {
-		//prevents dropping twice the amount of modules when breaking the block in creative mode
-		if (player.isCreative()) {
-			TileEntity te = level.getBlockEntity(pos);
-
-			if (te instanceof IModuleInventory)
-				((IModuleInventory) te).getInventory().clear();
-		}
-
-		super.playerWillDestroy(level, pos, state, player);
-	}
-
-	@Override
-	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock())) {
-			TileEntity te = level.getBlockEntity(pos);
-
-			if (te instanceof IModuleInventory)
-				((IModuleInventory) te).dropAllModules();
-
-			if (state.getValue(POWERED)) {
-				level.updateNeighborsAt(pos, this);
-				level.updateNeighborsAt(pos.relative(state.getValue(FACING).getOpposite()), this);
-			}
-
-			if (te instanceof IPasscodeProtected)
-				SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
-
-			if (!newState.hasTileEntity())
-				level.removeBlockEntity(pos);
-		}
-	}
-
-	@Override
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-	}
-
-	@Override
-	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
-	}
-
-	@Override
-	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.getRotation(state.getValue(FACING)));
-	}
-
-	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING, POWERED, FACE, WATERLOGGED);
-	}
-
-	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new KeyPanelBlockEntity();
-	}
-
-	public void activate(BlockState state, World world, BlockPos pos, int signalLength) {
-		world.setBlockAndUpdate(pos, state.setValue(POWERED, true));
-		BlockUtils.updateIndirectNeighbors(world, pos, this, getConnectedDirection(state).getOpposite());
-		world.getBlockTicks().scheduleTick(pos, this, signalLength);
-	}
-
-	protected static Direction getConnectedDirection(BlockState state) {
-		switch (state.getValue(FACE)) {
-			case CEILING:
-				return Direction.DOWN;
-			case FLOOR:
-				return Direction.UP;
-			default:
-				return state.getValue(FACING);
-		}
-	}
-
-	public static boolean canAttach(IWorldReader world, BlockPos pos, Direction direction) {
-		BlockPos relativePos = pos.relative(direction);
-
-		return world.getBlockState(relativePos).isFaceSturdy(world, relativePos, direction.getOpposite());
 	}
 }

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "securitycraft:keycard_lock"
+    ]
+  },
+  "criteria": {
+    "has_reader": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "securitycraft:keycard_reader"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "securitycraft:keycard_lock"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_reader",
+      "has_the_recipe"
+    ]
+  ]
+}
