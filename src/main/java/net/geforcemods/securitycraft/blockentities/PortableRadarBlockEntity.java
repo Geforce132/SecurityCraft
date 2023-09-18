@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.Collection;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -16,6 +17,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -47,17 +49,18 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 		if (!disabled.get() && ticksUntilNextSearch-- <= 0) {
 			ticksUntilNextSearch = getSearchDelay();
 
-			ServerPlayer owner = level.getServer().getPlayerList().getPlayerByName(getOwner().getName());
 			AABB area = new AABB(pos).inflate(getSearchRadius());
-			List<Player> entities = level.getEntitiesOfClass(Player.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && e.canBeSeenByAnyone() && !EntityUtils.isInvisible(e));
+			List<Player> closebyPlayers = level.getEntitiesOfClass(Player.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && e.canBeSeenByAnyone() && !EntityUtils.isInvisible(e));
 
 			if (isModuleEnabled(ModuleType.REDSTONE))
-				PortableRadarBlock.togglePowerOutput(level, pos, !entities.isEmpty());
+				PortableRadarBlock.togglePowerOutput(level, pos, !closebyPlayers.isEmpty());
 
-			if (owner != null) {
-				for (Player e : entities) {
-					if (shouldSendMessage(e)) {
-						MutableComponent attackedName = e.getName().plainCopy().withStyle(ChatFormatting.ITALIC);
+			if (!closebyPlayers.isEmpty()) {
+				Collection<ServerPlayer> onlineTeamPlayers = TeamUtils.getOnlinePlayersInTeam(level.getServer(), getOwner());
+
+				for (Player closebyPlayer : closebyPlayers) {
+					if (shouldSendMessage(closebyPlayer)) {
+						MutableComponent attackedName = closebyPlayer.getName().plainCopy().withStyle(ChatFormatting.ITALIC);
 						MutableComponent text;
 
 						if (hasCustomName())
@@ -65,7 +68,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 						else
 							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(pos));
 
-						PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, ChatFormatting.BLUE);
+						onlineTeamPlayers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, ChatFormatting.BLUE));
 						setSentMessage();
 					}
 				}
