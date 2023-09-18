@@ -1,16 +1,12 @@
 package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
+import java.util.function.BiConsumer;
 
 import com.mojang.math.Vector3f;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
-import net.geforcemods.securitycraft.inventory.ItemContainer;
-import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -19,13 +15,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -56,14 +51,22 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		return use(state, level, pos, player, hand, (stack, be) -> {
+			//only allow the owner and players on the allowlist to open the gui
+			if (be.isOwnedBy(player) || be.isAllowed(player))
+				NetworkHooks.openGui((ServerPlayer) player, (MenuProvider) be, pos);
+		});
+	}
+
+	public static <BE extends KeycardReaderBlockEntity> InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BiConsumer<ItemStack, BE> noKeycardRightclick) {
 		if (!level.isClientSide) {
-			KeycardReaderBlockEntity be = (KeycardReaderBlockEntity) level.getBlockEntity(pos);
+			BE be = (BE) level.getBlockEntity(pos);
 
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			else if (be.isDenied(player)) {
 				if (be.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, new TranslatableComponent(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, new TranslatableComponent(state.getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 			}
 			else {
 				ItemStack stack = player.getItemInHand(hand);
@@ -72,109 +75,14 @@ public class KeycardReaderBlock extends DisguisableBlock {
 				boolean isKeycardHolder = item == SCContent.KEYCARD_HOLDER.get();
 
 				//either no keycard, or an unlinked keycard, or an admin tool
-				if (!isKeycardHolder && (!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker) {
-					//only allow the owner and players on the allowlist to open the gui
-					if (be.isOwnedBy(player) || be.isAllowed(player))
-						NetworkHooks.openGui((ServerPlayer) player, be, pos);
-				}
-				else if (item != SCContent.LIMITED_USE_KEYCARD.get()) { //limited use keycards are only crafting components now
-					if (isCodebreaker) {
-						double chance = ConfigHandler.SERVER.codebreakerChance.get();
-
-						if (chance < 0.0D)
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYCARD_READER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
-						else {
-							if (CodebreakerItem.wasRecentlyUsed(stack))
-								return InteractionResult.PASS;
-
-							boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
-							CompoundTag tag = stack.getOrCreateTag();
-
-							stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
-							tag.putLong(CodebreakerItem.LAST_USED_TIME, System.currentTimeMillis());
-							tag.putBoolean(CodebreakerItem.WAS_SUCCESSFUL, isSuccessful);
-
-							if (isSuccessful)
-								activate(level, pos, be.getSignalLength());
-							else
-								PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
-						}
-					}
-					else {
-						if (isKeycardHolder) {
-							ItemContainer holderInventory = ItemContainer.keycardHolder(stack);
-							MutableComponent feedback = null;
-
-							for (int i = 0; i < holderInventory.getContainerSize(); i++) {
-								ItemStack keycardStack = holderInventory.getItem(i);
-
-								if (keycardStack.getItem() instanceof KeycardItem && keycardStack.hasTag()) {
-									feedback = insertCard(level, pos, be, keycardStack, player);
-
-									if (feedback == null)
-										return InteractionResult.SUCCESS;
-								}
-							}
-
-							if (feedback == null)
-								PlayerUtils.sendMessageToPlayer(player, new TranslatableComponent(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_holder.no_keycards"), ChatFormatting.RED);
-							else
-								PlayerUtils.sendMessageToPlayer(player, new TranslatableComponent(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_holder.fail"), ChatFormatting.RED);
-						}
-						else {
-							MutableComponent feedback = insertCard(level, pos, be, stack, player);
-
-							if (feedback != null)
-								PlayerUtils.sendMessageToPlayer(player, new TranslatableComponent(getDescriptionId()), feedback, ChatFormatting.RED);
-						}
-					}
-				}
+				if (!isKeycardHolder && (!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker)
+					noKeycardRightclick.accept(stack, be);
+				else if (item != SCContent.LIMITED_USE_KEYCARD.get()) //limited use keycards are only crafting components now
+					return be.onRightClickWithActionItem(stack, hand, player, isCodebreaker, isKeycardHolder);
 			}
 		}
 
 		return InteractionResult.SUCCESS;
-	}
-
-	public MutableComponent insertCard(Level level, BlockPos pos, KeycardReaderBlockEntity te, ItemStack stack, Player player) {
-		CompoundTag tag = stack.getTag();
-		Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
-
-		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
-		if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !PlayerUtils.areOnSameTeam(te.getOwner(), keycardOwner)) || !te.getOwner().getUUID().equals(keycardOwner.getUUID()))
-			return new TranslatableComponent("messages.securitycraft:keycardReader.differentOwner");
-
-		//the keycard's signature does not match this keycard reader's
-		if (te.getSignature() != tag.getInt("signature"))
-			return new TranslatableComponent("messages.securitycraft:keycardReader.wrongSignature");
-
-		int keycardLevel = ((KeycardItem) stack.getItem()).getLevel();
-
-		//the keycard's level
-		if (!te.getAcceptedLevels()[keycardLevel]) //both are 0 indexed, so it's ok
-			return new TranslatableComponent("messages.securitycraft:keycardReader.wrongLevel", keycardLevel + 1); //level is 0-indexed, so it has to be increased by one to match with the item name
-
-		boolean powered = level.getBlockState(pos).getValue(POWERED);
-
-		if (tag.getBoolean("limited")) {
-			int uses = tag.getInt("uses");
-
-			if (uses <= 0)
-				return new TranslatableComponent("messages.securitycraft:keycardReader.noUses");
-
-			if (!player.isCreative() && !powered)
-				tag.putInt("uses", --uses);
-		}
-
-		if (!powered)
-			activate(level, pos, te.getSignalLength());
-
-		return null;
-	}
-
-	public void activate(Level level, BlockPos pos, int signalLength) {
-		level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(POWERED, true));
-		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYCARD_READER.get());
-		level.scheduleTick(pos, SCContent.KEYCARD_READER.get(), signalLength);
 	}
 
 	@Override
