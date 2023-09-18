@@ -22,6 +22,7 @@
 - Change: The Codebreaker can now not be used for three seconds after its last usage
 - Change: The Sentry will now face the player when it is placed down. The head will still be within the body by default, though
 - Change: The Keycard Reader now has indicator lights
+- Change: The recipe for the Keycard Reader has been slightly adjusted
 - API: IReinforcedBlock has been moved to the API package
 - API: New methods IReinforcedBlock#convertToReinforced and IReinforcedBlock#convertToVanilla
 - API: New method IOwnable#allowsOwnableEntity to check whether an ownable entity's owner owns the block entity
