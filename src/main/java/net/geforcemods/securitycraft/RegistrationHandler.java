@@ -223,6 +223,7 @@ public class RegistrationHandler {
 							new ItemStack(SCContent.KEYPAD_BLAST_FURNACE.get()),
 							new ItemStack(SCContent.DISPLAY_CASE.get()),
 							new ItemStack(SCContent.GLOW_DISPLAY_CASE.get()),
+							new ItemStack(SCContent.KEYCARD_LOCK.get()),
 							new ItemStack(SCContent.KEYCARD_READER.get()),
 							new ItemStack(SCContent.KEYCARD_LVL_1.get()),
 							new ItemStack(SCContent.KEYCARD_LVL_2.get()),
