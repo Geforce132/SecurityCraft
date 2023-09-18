@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.api;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -84,7 +85,7 @@ public interface IOwnable {
 	public default boolean isOwnedBy(Owner otherOwner) {
 		Owner self = getOwner();
 
-		if (ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(self, otherOwner))
+		if (ConfigHandler.SERVER.enableTeamOwnership.get() && TeamUtils.areOnSameTeam(self, otherOwner))
 			return true;
 
 		String selfUUID = self.getUUID();
@@ -106,6 +107,6 @@ public interface IOwnable {
 	public default boolean allowsOwnableEntity(OwnableEntity entity) {
 		Owner beOwner = getOwner();
 
-		return entity.getOwnerUUID() != null && (entity.getOwnerUUID().toString().equals(beOwner.getUUID()) || PlayerUtils.areOnSameTeam(beOwner, new Owner(entity.getOwner())));
+		return entity.getOwnerUUID() != null && (entity.getOwnerUUID().toString().equals(beOwner.getUUID()) || TeamUtils.areOnSameTeam(beOwner, new Owner(entity.getOwner())));
 	}
 }

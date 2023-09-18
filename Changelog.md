@@ -23,6 +23,7 @@
 - Change: The Sentry will now face the player when it is placed down. The head will still be within the body by default, though
 - Change: The Keycard Reader now has indicator lights
 - Change: The recipe for the Keycard Reader has been slightly adjusted
+- Change: The Portable Radar now sends proximity messages to everyone on the same team instead of just the radar's owner
 - API: IReinforcedBlock has been moved to the API package
 - API: New methods IReinforcedBlock#convertToReinforced and IReinforcedBlock#convertToVanilla
 - API: New method IOwnable#allowsOwnableEntity to check whether an ownable entity's owner owns the block entity
@@ -37,6 +38,7 @@
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
 - Fix: The randomize button is not disabled when someone on the allowlist looks into a Keycard Reader
 - Potential Fix: When dismounting a camera, some UI elements don't reappear
+- Removed: FTB Teams integration, as the mod has not been updated to 1.19.4. It will get added back if an update of the mod releases.
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
 - Misc.: More texture and model updates - resource packs may need to be updated
 
