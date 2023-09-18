@@ -2,9 +2,6 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "H": {
-      "item": "securitycraft:reinforced_hopper"
-    },
     "R": {
       "tag": "forge:dusts/redstone"
     },
@@ -24,12 +21,12 @@
     ]
   },
   "pattern": [
-    "SSS",
-    "RH_",
-    "SSS"
+    "SS",
+    "R_",
+    "SS"
   ],
   "result": {
-    "item": "securitycraft:keycard_reader"
+    "item": "securitycraft:keycard_lock"
   },
   "show_notification": true
 }
