@@ -1,6 +1,8 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
@@ -8,31 +10,48 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
-import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
+import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
+import net.geforcemods.securitycraft.items.CodebreakerItem;
+import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements MenuProvider, ILockable, ICodebreakable {
 	private boolean[] acceptedLevels = {
 			true, false, false, false, false
 	};
 	private int signature = 0;
-	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private IntOption signalLength = new SignalLengthOption(60);
-	private DisabledOption disabled = new DisabledOption(false);
+	protected BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	protected IntOption signalLength = new SignalLengthOption(60);
+	protected DisabledOption disabled = new DisabledOption(false);
 
 	public KeycardReaderBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.KEYCARD_READER_BLOCK_ENTITY.get(), pos, state);
+		this(SCContent.KEYCARD_READER_BLOCK_ENTITY.get(), pos, state);
+	}
+
+	public KeycardReaderBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+		super(type, pos, state);
 	}
 
 	@Override
@@ -85,13 +104,112 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 			return false;
 		}
 
-		return !state.getValue(KeycardReaderBlock.POWERED);
+		return !state.getValue(BlockStateProperties.POWERED);
 	}
 
 	@Override
 	public void useCodebreaker(BlockState state, Player player) {
-		if (!level.isClientSide && getBlockState().getBlock() instanceof KeycardReaderBlock block)
-			block.activate(level, worldPosition, signalLength.get());
+		if (!level.isClientSide)
+			activate();
+	}
+
+	public InteractionResult onRightClickWithActionItem(ItemStack stack, InteractionHand hand, Player player, boolean isCodebreaker, boolean isKeycardHolder) {
+		if (isCodebreaker) {
+			double chance = ConfigHandler.SERVER.codebreakerChance.get();
+
+			if (chance < 0.0D)
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
+			else {
+				if (isOwnedBy(player) || CodebreakerItem.wasRecentlyUsed(stack))
+					return InteractionResult.PASS;
+
+				boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
+				CompoundTag tag = stack.getOrCreateTag();
+
+				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+				tag.putLong(CodebreakerItem.LAST_USED_TIME, System.currentTimeMillis());
+				tag.putBoolean(CodebreakerItem.WAS_SUCCESSFUL, isSuccessful);
+
+				if (isSuccessful)
+					activate();
+				else
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
+			}
+		}
+		else {
+			if (isKeycardHolder) {
+				ItemContainer holderInventory = ItemContainer.keycardHolder(stack);
+				MutableComponent feedback = null;
+
+				for (int i = 0; i < holderInventory.getContainerSize(); i++) {
+					ItemStack keycardStack = holderInventory.getItem(i);
+
+					if (keycardStack.getItem() instanceof KeycardItem && keycardStack.hasTag()) {
+						feedback = insertCard(keycardStack, player);
+
+						if (feedback == null)
+							return InteractionResult.SUCCESS;
+					}
+				}
+
+				if (feedback == null)
+					PlayerUtils.sendMessageToPlayer(player, Component.translatable(getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:keycard_holder.no_keycards"), ChatFormatting.RED);
+				else
+					PlayerUtils.sendMessageToPlayer(player, Component.translatable(getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:keycard_holder.fail"), ChatFormatting.RED);
+			}
+			else {
+				MutableComponent feedback = insertCard(stack, player);
+
+				if (feedback != null)
+					PlayerUtils.sendMessageToPlayer(player, Component.translatable(getBlockState().getBlock().getDescriptionId()), feedback, ChatFormatting.RED);
+			}
+		}
+
+		return InteractionResult.SUCCESS;
+	}
+
+	public MutableComponent insertCard(ItemStack stack, Player player) {
+		CompoundTag tag = stack.getTag();
+		Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
+
+		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
+		if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !PlayerUtils.areOnSameTeam(getOwner(), keycardOwner)) || !getOwner().getUUID().equals(keycardOwner.getUUID()))
+			return Component.translatable("messages.securitycraft:keycardReader.differentOwner");
+
+		//the keycard's signature does not match this keycard reader's
+		if (getSignature() != tag.getInt("signature"))
+			return Component.translatable("messages.securitycraft:keycardReader.wrongSignature");
+
+		int keycardLevel = ((KeycardItem) stack.getItem()).getLevel();
+
+		//the keycard's level
+		if (!getAcceptedLevels()[keycardLevel]) //both are 0 indexed, so it's ok
+			return Component.translatable("messages.securitycraft:keycardReader.wrongLevel", keycardLevel + 1); //level is 0-indexed, so it has to be increased by one to match with the item name
+
+		boolean powered = level.getBlockState(worldPosition).getValue(BlockStateProperties.POWERED);
+
+		if (tag.getBoolean("limited")) {
+			int uses = tag.getInt("uses");
+
+			if (uses <= 0)
+				return Component.translatable("messages.securitycraft:keycardReader.noUses");
+
+			if (!player.isCreative() && !powered)
+				tag.putInt("uses", --uses);
+		}
+
+		if (!powered)
+			activate();
+
+		return null;
+	}
+
+	public void activate() {
+		Block block = getBlockState().getBlock();
+
+		level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, true));
+		BlockUtils.updateIndirectNeighbors(level, worldPosition, block);
+		level.scheduleTick(worldPosition, block, getSignalLength());
 	}
 
 	public void setAcceptedLevels(boolean[] acceptedLevels) {

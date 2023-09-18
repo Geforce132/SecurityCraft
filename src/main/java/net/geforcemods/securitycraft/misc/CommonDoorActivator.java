@@ -18,14 +18,15 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 public class CommonDoorActivator implements IDoorActivator {
 	//@formatter:off
 	private static final List<Block> BLOCKS = new ArrayList<>(List.of(
-			SCContent.LASER_BLOCK.get(),
-			SCContent.RETINAL_SCANNER.get(),
-			SCContent.KEYPAD.get(),
+			SCContent.KEYCARD_LOCK.get(),
 			SCContent.KEYCARD_READER.get(),
+			SCContent.KEYPAD.get(),
+			SCContent.KEY_PANEL_BLOCK.get(),
+			SCContent.LASER_BLOCK.get(),
 			SCContent.PORTABLE_RADAR.get(),
 			SCContent.REINFORCED_LEVER.get(),
 			SCContent.REINFORCED_OBSERVER.get(),
-			SCContent.KEY_PANEL_BLOCK.get(),
+			SCContent.RETINAL_SCANNER.get(),
 			SCContent.SECURITY_CAMERA.get(),
 			SCContent.SONIC_SECURITY_SYSTEM.get()));
 	//@formatter:on
