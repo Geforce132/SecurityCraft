@@ -8,7 +8,7 @@
 - New: Vanishmod support
 - New: Universal Block Reinforcers LvL2 and LvL3 can now unreinforce blocks in the world by toggling the checkbox in their UI
 - New: Reinforced Ladder
-- New: The Projector can now project blocks regardless of which blocks exist in the world
+- New: The Projector can now optionally project blocks regardless of which blocks exist in the world
 - New: The status of a Redstone Module in a Security Camera can now be seen in the Camera Monitor screen
 - New: Animals are now ignored by several blocks like the protecto or mines if the animal and block are owned by the same player
 - New: Floor Trap
@@ -32,6 +32,7 @@
 - Fix: Blocks that have a custom name lose the name when getting broken
 - Fix: Toggling an entry in the Rift Stabilizer leads to the world closing/a disconnect
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
+- Fix: The randomize button is not disabled when someone on the allowlist looks into a Keycard Reader
 - Potential Fix: When dismounting a camera, some UI elements don't reappear
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
 - Misc.: More texture and model updates - resource packs may need to be updated
