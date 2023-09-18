@@ -966,6 +966,7 @@
 	"messages.securitycraft:keycard_lock.not_set_up": "Dieses Schlüsselkartenschloss ist noch nicht eingerichtet. Rechtsklicke es mit einer verbundenen Schlüsselkarte.",
 	"messages.securitycraft:keycard_lock.setup_successful.above": "Dieses Schlüsselkartenschloss akzeptiert nun Schlüsselkarten des Levels %s und darüber.",
 	"messages.securitycraft:keycard_lock.setup_successful.exact": "Dieses Schlüsselkartenschloss akzeptiert nun Level %s Schlüsselkarten.",
+	"messages.securitycraft:keycard_lock.unlinked_keycard": "Diese Schlüsselkarte ist noch nicht mit einem Schlüsselkarten-Leser verbunden.",
 	"messages.securitycraft:laser.sync_failed": "Synchronisation mit dem Laserblock bei %s ist fehlgeschlagen, weil \"%s\" nicht übereinstimmt. Entferne das Modul aus einem der beiden Blöcke und versuche es erneut.",
 	"messages.securitycraft:module.added": "# zu dem Modul in deiner Hand hinzugefügt.",
 	"messages.securitycraft:module.alreadyContained": "Das Modul, das du hältst, hat schon den Spieler # auf seiner Liste.",

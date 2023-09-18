@@ -977,6 +977,7 @@
 	"messages.securitycraft:keycard_lock.not_set_up": "This Keycard Lock is not set up yet. Right-click it with a linked keycard.",
 	"messages.securitycraft:keycard_lock.setup_successful.above": "This Keycard Lock is now set to accept level %s keycards and above.",
 	"messages.securitycraft:keycard_lock.setup_successful.exact": "This Keycard Lock is now set to accept level %s keycards.",
+	"messages.securitycraft:keycard_lock.unlinked_keycard": "This keycard has not been linked with a Keycard Reader yet.",
 	"messages.securitycraft:laser.sync_failed": "Synchronization with the Laser Block at %s failed, because \"%s\" does not match. Remove the module from either block and try again.",
 	"messages.securitycraft:module.added": "Added # to the held module.",
 	"messages.securitycraft:module.alreadyContained": "The module you are holding already contains the player #.",

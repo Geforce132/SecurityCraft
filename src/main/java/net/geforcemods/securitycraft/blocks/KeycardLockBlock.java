@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.blockentities.KeycardLockBlockEntity;
+import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -39,6 +40,11 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 		return KeycardReaderBlock.<KeycardLockBlockEntity>use(state, level, pos, player, hand, (stack, be) -> {
 			if (!be.isSetUp()) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.not_set_up"), ChatFormatting.RED);
+				return;
+			}
+
+			if (stack.getItem() instanceof KeycardItem && (!stack.hasTag() || !stack.getTag().getBoolean("linked"))) {
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.unlinked_keycard"), ChatFormatting.RED);
 				return;
 			}
 
