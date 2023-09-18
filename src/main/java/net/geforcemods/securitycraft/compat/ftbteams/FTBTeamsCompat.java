@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.compat.ftbteams;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -10,6 +12,8 @@ import dev.ftb.mods.ftbteams.api.client.ClientTeamManager;
 import dev.ftb.mods.ftbteams.api.client.KnownClientPlayer;
 import dev.ftb.mods.ftbteams.api.property.TeamProperties;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.util.TeamUtils.TeamRepresentation;
+import net.minecraft.server.level.ServerPlayer;
 
 public class FTBTeamsCompat {
 	private FTBTeamsCompat() {}
@@ -42,7 +46,7 @@ public class FTBTeamsCompat {
 			Team team = null;
 
 			if (api.isManagerLoaded()) {
-				Optional<Team> optional = FTBTeamsAPI.api().getManager().getTeamForPlayerID(UUID.fromString(owner.getUUID()));
+				Optional<Team> optional = api.getManager().getTeamForPlayerID(UUID.fromString(owner.getUUID()));
 
 				if (optional.isPresent())
 					team = optional.get();
@@ -65,5 +69,21 @@ public class FTBTeamsCompat {
 		catch (IllegalArgumentException e) {}
 
 		return null;
+	}
+
+	public static Collection<ServerPlayer> getOnlinePlayersInTeam(Owner owner) {
+		try {
+			API api = FTBTeamsAPI.api();
+
+			if (api.isManagerLoaded()) {
+				Optional<Team> optional = api.getManager().getTeamForPlayerID(UUID.fromString(owner.getUUID()));
+
+				if (optional.isPresent())
+					return optional.get().getOnlineMembers();
+			}
+		}
+		catch (IllegalArgumentException e) {}
+
+		return new ArrayList<>();
 	}
 }
