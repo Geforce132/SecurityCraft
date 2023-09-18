@@ -62,9 +62,14 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 				return;
 			}
 
-			if (be.isOwnedBy(player) && stack.getItem() instanceof UniversalKeyChangerItem) {
-				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
-				be.reset();
+			if (stack.getItem() instanceof UniversalKeyChangerItem) {
+				if (be.isOwnedBy(player)) {
+					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+					be.reset();
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.reset"), ChatFormatting.RED);
+				}
+				else
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", be.getOwner().getName()), ChatFormatting.RED);
 			}
 		});
 	}

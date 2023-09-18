@@ -966,6 +966,7 @@
 	"messages.securitycraft:keycard_holder.no_keycards": "Dieser Schlüsselkartenhalter hat keine verbundenen Schlüsselkarten.",
 	"messages.securitycraft:keycard_lock.different_owner": "Diese Schlüsselkarte gehört einem anderen Besitzer als dem des Schlüsselkartenschlosses.",
 	"messages.securitycraft:keycard_lock.not_set_up": "Dieses Schlüsselkartenschloss ist noch nicht eingerichtet. Rechtsklicke es mit einer verbundenen Schlüsselkarte.",
+	"messages.securitycraft:keycard_lock.reset": "Das Schlüsselkartenschloss wurde zurückgesetzt. Rechtsklicke es mit einer verlinkten Schlüsselkarte, um es erneut einzurichten.",
 	"messages.securitycraft:keycard_lock.setup_successful.above": "Dieses Schlüsselkartenschloss akzeptiert nun Schlüsselkarten des Levels %s und darüber.",
 	"messages.securitycraft:keycard_lock.setup_successful.exact": "Dieses Schlüsselkartenschloss akzeptiert nun Level %s Schlüsselkarten.",
 	"messages.securitycraft:keycard_lock.unlinked_keycard": "Diese Schlüsselkarte ist noch nicht mit einem Schlüsselkartenleser verbunden.",
