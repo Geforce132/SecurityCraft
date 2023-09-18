@@ -69,6 +69,7 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 		setAcceptedLevels(new boolean[] {
 				false, false, false, false, false
 		});
+		setSignature(0);
 	}
 
 	@Override
