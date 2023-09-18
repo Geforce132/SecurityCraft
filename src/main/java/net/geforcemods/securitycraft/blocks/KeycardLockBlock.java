@@ -66,7 +66,7 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 				if (be.isOwnedBy(player)) {
 					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 					be.reset();
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.reset"), ChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.reset"), ChatFormatting.GREEN);
 				}
 				else
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", be.getOwner().getName()), ChatFormatting.RED);
