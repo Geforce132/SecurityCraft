@@ -1,12 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "redstone",
+  "pattern": [
+    "SS",
+    "R_",
+    "SS"
+  ],
   "key": {
-    "R": {
-      "tag": "forge:dusts/redstone"
-    },
     "S": {
       "tag": "securitycraft:reinforced/stone_crafting_materials"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
     },
     "_": [
       {
@@ -20,13 +24,7 @@
       }
     ]
   },
-  "pattern": [
-    "SS",
-    "R_",
-    "SS"
-  ],
   "result": {
     "item": "securitycraft:keycard_lock"
-  },
-  "show_notification": true
+  }
 }
