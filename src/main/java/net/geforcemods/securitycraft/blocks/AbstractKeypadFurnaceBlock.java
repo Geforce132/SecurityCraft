@@ -115,7 +115,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!(newState.getBlock() instanceof AbstractKeypadFurnaceBlock)) {
+		if (!state.is(newState.getBlock())) {
 			if (level.getBlockEntity(pos) instanceof Container container) {
 				Containers.dropContents(level, pos, container);
 				level.updateNeighbourForOutputSignal(pos, this);
@@ -123,9 +123,9 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 
 			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
 				SaltData.removeSalt(be.getSaltKey());
-
-			super.onRemove(state, level, pos, newState, isMoving);
 		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

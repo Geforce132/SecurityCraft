@@ -117,10 +117,9 @@ public abstract class AbstractPanelBlock extends OwnableBlock implements SimpleW
 
 			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
 				SaltData.removeSalt(be.getSaltKey());
-
-			if (!newState.hasBlockEntity())
-				level.removeBlockEntity(pos);
 		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
