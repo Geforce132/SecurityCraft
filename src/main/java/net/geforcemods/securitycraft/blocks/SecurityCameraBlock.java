@@ -76,18 +76,14 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock())) {
-			if (level.getBlockEntity(pos) instanceof IModuleInventory inv)
-				inv.dropAllModules();
-
-			if (!newState.hasBlockEntity())
-				level.removeBlockEntity(pos);
-		}
+		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof IModuleInventory inv)
+			inv.dropAllModules();
 
 		level.updateNeighborsAt(pos.north(), state.getBlock());
 		level.updateNeighborsAt(pos.south(), state.getBlock());
 		level.updateNeighborsAt(pos.east(), state.getBlock());
 		level.updateNeighborsAt(pos.west(), state.getBlock());
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

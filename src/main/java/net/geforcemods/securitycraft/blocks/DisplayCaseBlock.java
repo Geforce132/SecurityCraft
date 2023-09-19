@@ -177,15 +177,15 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!(newState.getBlock() instanceof DisplayCaseBlock)) {
+		if (!state.is(newState.getBlock())) {
 			if (level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be)
 				Block.popResource(level, pos, be.getDisplayedStack());
 
 			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
 				SaltData.removeSalt(be.getSaltKey());
-
-			super.onRemove(state, level, pos, newState, isMoving);
 		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

@@ -87,12 +87,10 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock())) {
-			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
-				SaltData.removeSalt(be.getSaltKey());
+		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+			SaltData.removeSalt(be.getSaltKey());
 
-			super.onRemove(state, level, pos, newState, isMoving);
-		}
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

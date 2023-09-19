@@ -76,10 +76,9 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 				level.updateNeighborsAt(pos, this);
 				level.updateNeighborsAt(pos.below(), this);
 			}
-
-			if (!newState.hasBlockEntity())
-				level.removeBlockEntity(pos);
 		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	public boolean isAllowedToPress(AllowlistOnlyBlockEntity be, Player entity) {
