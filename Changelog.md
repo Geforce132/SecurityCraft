@@ -38,7 +38,7 @@
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
 - Fix: The randomize button is not disabled when someone on the allowlist looks into a Keycard Reader
 - Potential Fix: When dismounting a camera, some UI elements don't reappear
-- Removed: FTB Teams integration, as the mod has not been updated to 1.19.4. It will get added back if an update of the mod releases.
+- Removed: FTB Teams integration, as the mod has not been updated to 1.19.3/.4. It will get added back if an update of the mod releases.
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
 - Misc.: More texture and model updates - resource packs may need to be updated
 
