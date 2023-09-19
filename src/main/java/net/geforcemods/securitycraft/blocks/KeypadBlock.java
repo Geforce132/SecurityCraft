@@ -94,9 +94,9 @@ public class KeypadBlock extends DisguisableBlock {
 
 			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
 				SaltData.removeSalt(be.getSaltKey());
-
-			super.onRemove(state, level, pos, newState, isMoving);
 		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

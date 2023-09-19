@@ -150,17 +150,15 @@ public class LaserBlock extends DisguisableBlock {
 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock())) {
-			if (level.getBlockEntity(pos) instanceof LaserBlockBlockEntity be) {
-				LensContainer lensContainer = be.getLensContainer();
+		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof LaserBlockBlockEntity be) {
+			LensContainer lensContainer = be.getLensContainer();
 
-				Containers.dropContents(level, pos, lensContainer);
-				lensContainer.clearContent();
-				level.updateNeighbourForOutputSignal(pos, this);
-			}
-
-			super.onRemove(state, level, pos, newState, isMoving);
+			Containers.dropContents(level, pos, lensContainer);
+			lensContainer.clearContent();
+			level.updateNeighbourForOutputSignal(pos, this);
 		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	public static void destroyAdjacentLasers(LevelAccessor level, BlockPos pos) {

@@ -39,6 +39,8 @@
 - Fix: Toggling an entry in the Rift Stabilizer leads to the world closing/a disconnect
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
 - Fix: The randomize button is not disabled when someone on the allowlist looks into a Keycard Reader
+- Fix: Dupe exploits
+- Fix: Lingering block entities
 - Potential Fix: When dismounting a camera, some UI elements don't reappear
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
 - Misc.: More texture and model updates - resource packs may need to be updated

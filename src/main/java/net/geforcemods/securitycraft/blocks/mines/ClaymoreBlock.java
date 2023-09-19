@@ -150,15 +150,12 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock())) {
-			if (level.getBlockEntity(pos) instanceof ClaymoreBlockEntity be) {
-				be.dropAllModules();
-				Containers.dropContents(level, pos, be.getLensContainer());
-			}
-
-			if (!newState.hasBlockEntity())
-				level.removeBlockEntity(pos);
+		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof ClaymoreBlockEntity be) {
+			be.dropAllModules();
+			Containers.dropContents(level, pos, be.getLensContainer());
 		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
