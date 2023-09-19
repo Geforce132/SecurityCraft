@@ -37,6 +37,8 @@
 - Fix: Toggling an entry in the Rift Stabilizer leads to the world closing/a disconnect
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
 - Fix: The randomize button is not disabled when someone on the allowlist looks into a Keycard Reader
+- Fix: Dupe exploits
+- Fix: Lingering block entities
 - Potential Fix: When dismounting a camera, some UI elements don't reappear
 - Removed: FTB Teams integration, as the mod has not been updated to 1.19.3/.4. It will get added back if an update of the mod releases.
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)

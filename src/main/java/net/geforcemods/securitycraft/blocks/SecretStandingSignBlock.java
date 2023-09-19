@@ -42,13 +42,10 @@ public class SecretStandingSignBlock extends StandingSignBlock {
 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock())) {
-			if (level.getBlockEntity(pos) instanceof IModuleInventory inv)
-				inv.dropAllModules();
+		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof IModuleInventory inv)
+			inv.dropAllModules();
 
-			if (!newState.hasBlockEntity())
-				level.removeBlockEntity(pos);
-		}
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
