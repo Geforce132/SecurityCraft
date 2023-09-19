@@ -15,6 +15,8 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class TeamUtils {
+	private TeamUtils() {}
+
 	/**
 	 * Checks if two given players are on the same scoreboard/FTB Teams team
 	 *

@@ -30,10 +30,10 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 	public static final VoxelShape FLOOR_EW = Block.box(3.0D, 0.0D, 4.0D, 13.0D, 3.0D, 12.0D);
 	public static final VoxelShape CEILING_NS = Block.box(4.0D, 13.0D, 3.0D, 12.0D, 16.0D, 13.0D);
 	public static final VoxelShape CEILING_EW = Block.box(3.0D, 13.0D, 4.0D, 13.0D, 16.0D, 12.0D);
-	public static final VoxelShape WALL_N = Block.box(2.0D, 1.0D, 15.0D, 14.0D, 15.0D, 16.0D);
-	public static final VoxelShape WALL_E = Block.box(0.0D, 1.0D, 2.0D, 1.0D, 15.0D, 14.0D);
-	public static final VoxelShape WALL_S = Block.box(2.0D, 1.0D, 0.0D, 14.0D, 15.0D, 1.0D);
-	public static final VoxelShape WALL_W = Block.box(15.0D, 1.0D, 2.0D, 16.0D, 15.0D, 14.0D);
+	public static final VoxelShape WALL_N = Block.box(4.0D, 3.0D, 13.0D, 12.0D, 13.0D, 16.0D);
+	public static final VoxelShape WALL_E = Block.box(0.0D, 3.0D, 4.0D, 3.0D, 13.0D, 12.0D);
+	public static final VoxelShape WALL_S = Block.box(4.0D, 3.0D, 0.0D, 12.0D, 13.0D, 3.0D);
+	public static final VoxelShape WALL_W = Block.box(13.0D, 3.0D, 4.0D, 16.0D, 13.0D, 12.0D);
 
 	public KeycardLockBlock(BlockBehaviour.Properties properties) {
 		super(properties);
@@ -89,10 +89,10 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 				default -> Shapes.empty();
 			};
 			case WALL -> switch (state.getValue(FACING)) {
-				case NORTH -> Block.box(4.0D, 3.0D, 13.0D, 12.0D, 13.0D, 16.0D);
-				case EAST -> Block.box(0.0D, 3.0D, 4.0D, 3.0D, 13.0D, 12.0D);
-				case SOUTH -> Block.box(4.0D, 3.0D, 0.0D, 12.0D, 13.0D, 3.0D);
-				case WEST -> Block.box(13.0D, 3.0D, 4.0D, 16.0D, 13.0D, 12.0D);
+				case NORTH -> WALL_N;
+				case EAST -> WALL_E;
+				case SOUTH -> WALL_S;
+				case WEST -> WALL_W;
 				default -> Shapes.empty();
 			};
 		};
