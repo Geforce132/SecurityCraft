@@ -36,6 +36,7 @@ public class KeycardReaderScreen extends GuiContainer {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_reader.png");
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation RANDOM_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/random.png");
+	private static final ResourceLocation RANDOM_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/random_inactive.png");
 	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
 	private static final ResourceLocation RESET_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset_inactive.png");
 	private static final ResourceLocation RETURN_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/return.png");
@@ -99,6 +100,7 @@ public class KeycardReaderScreen extends GuiContainer {
 		int activeButtons = 0;
 		int firstActiveButton = -1;
 		int id = 0;
+		GuiButton randomizeButton;
 
 		//keycard level buttons
 		for (int i = 0; i < 5; i++) {
@@ -145,7 +147,13 @@ public class KeycardReaderScreen extends GuiContainer {
 		plusOne = addButton(new ClickButton(id++, guiLeft + 96, buttonY, 12, buttonHeight, "+", b -> changeSignature(signature + 1)));
 		plusTwo = addButton(new ClickButton(id++, guiLeft + 110, buttonY, 18, buttonHeight, "++", b -> changeSignature(signature + 10)));
 		plusThree = addButton(new ClickButton(id++, guiLeft + 130, buttonY, 24, buttonHeight, "+++", b -> changeSignature(signature + 100)));
-		GuiButton randomizeButton = addButton(new PictureButton(id++, guiLeft + 156, buttonY, 12, buttonHeight, RANDOM_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(mc.world.rand.nextInt(MAX_SIGNATURE))));
+		randomizeButton = addButton(new PictureButton(id++, guiLeft + 156, buttonY, 12, buttonHeight, RANDOM_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(mc.world.rand.nextInt(MAX_SIGNATURE))) {
+			@Override
+			public ResourceLocation getTextureLocation() {
+				return enabled ? RANDOM_TEXTURE : RANDOM_INACTIVE_TEXTURE;
+			}
+		});
+		randomizeButton.enabled = isOwner;
 		//set correct signature
 		changeSignature(signature);
 		//link button

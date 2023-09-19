@@ -6,7 +6,7 @@
 - New: Lens item to be able to color laser and inventory scanner fields in any desired color, as well as a couple other things
 - New: Universal Block Reinforcers LvL2 and LvL3 can now unreinforce blocks in the world by toggling the checkbox in their UI
 - New: Reinforced Ladder
-- New: The Projector can now project blocks regardless of which blocks exist in the world
+- New: The Projector can now optionally project blocks regardless of which blocks exist in the world
 - New: The status of a Redstone Module in a Security Camera can now be seen in the Camera Monitor screen
 - New: Animals are now ignored by several blocks like the protecto or mines if the animal and block are owned by the same player
 - New: Floor Trap
@@ -38,6 +38,7 @@
 - Fix: Blocks that have a custom name lose the name when getting broken
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
 - Fix: Opening a Username Logger with a block in one's hand places the block for a split second
+- Fix: The randomize button is not disabled when someone on the allowlist looks into a Keycard Reader
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
 - Misc.: The laser field model has been changed internally
 - Misc.: More texture updates - resource packs may need to be updated
