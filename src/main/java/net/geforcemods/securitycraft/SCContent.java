@@ -55,6 +55,8 @@ public class SCContent {
 	public static Block inventoryScannerField;
 	public static Block ironFence;
 	public static Block ironOreMine;
+	public static Block keycardLockFloorCeilingBlock;
+	public static Block keycardLockWallBlock;
 	public static Block keycardReader;
 	public static Block keyPanelFloorCeilingBlock;
 	public static Block keyPanelWallBlock;
@@ -432,6 +434,7 @@ public class SCContent {
 	public static Item wireCutters;
 	public static Item keycardHolder;
 	public static LensItem lens;
+	public static Item keycardLock;
 
 	//Modules
 	public static ModuleItem denylistModule;

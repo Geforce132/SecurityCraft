@@ -13,12 +13,16 @@ import net.geforcemods.securitycraft.blocks.FakeLavaBaseBlock;
 import net.geforcemods.securitycraft.blocks.FakeLavaBlock;
 import net.geforcemods.securitycraft.blocks.FakeWaterBaseBlock;
 import net.geforcemods.securitycraft.blocks.FakeWaterBlock;
-import net.geforcemods.securitycraft.blocks.FloorCeilingKeyPanelBlock;
 import net.geforcemods.securitycraft.blocks.FloorTrapBlock;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.IronFenceBlock;
+import net.geforcemods.securitycraft.blocks.KeyPanelFloorCeilingBlock;
+import net.geforcemods.securitycraft.blocks.KeyPanelItem;
+import net.geforcemods.securitycraft.blocks.KeyPanelWallBlock;
+import net.geforcemods.securitycraft.blocks.KeycardLockFloorCeilingBlock;
+import net.geforcemods.securitycraft.blocks.KeycardLockWallBlock;
 import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
@@ -44,7 +48,6 @@ import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.TrophySystemBlock;
 import net.geforcemods.securitycraft.blocks.UsernameLoggerBlock;
-import net.geforcemods.securitycraft.blocks.WallKeyPanelBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.BouncingBettyBlock;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
@@ -113,11 +116,11 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWoodSlabsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWoolBlock;
 import net.geforcemods.securitycraft.items.AdminToolItem;
+import net.geforcemods.securitycraft.items.BasePanelItem;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.FakeLiquidBucketItem;
-import net.geforcemods.securitycraft.items.KeyPanelItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.items.LensItem;
@@ -278,8 +281,8 @@ public class SetupHandler {
 		SCContent.projector = new ProjectorBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("projector").setTranslationKey("securitycraft:projector");
 		SCContent.keypadDoor = new KeypadDoorBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("keypad_door").setTranslationKey("securitycraft:keypad_door");
 		SCContent.reinforcedCauldron = new ReinforcedCauldronBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_cauldron").setTranslationKey("securitycraft:reinforced_cauldron");
-		SCContent.keyPanelFloorCeilingBlock = new FloorCeilingKeyPanelBlock(Material.IRON).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setBlockUnbreakable().setRegistryName("floor_ceiling_key_panel").setTranslationKey("securitycraft:key_panel");
-		SCContent.keyPanelWallBlock = new WallKeyPanelBlock(Material.IRON).setBlockUnbreakable().setRegistryName("wall_key_panel").setTranslationKey("securitycraft:key_panel");
+		SCContent.keyPanelFloorCeilingBlock = new KeyPanelFloorCeilingBlock(Material.IRON).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setBlockUnbreakable().setRegistryName("floor_ceiling_key_panel").setTranslationKey("securitycraft:key_panel");
+		SCContent.keyPanelWallBlock = new KeyPanelWallBlock(Material.IRON).setBlockUnbreakable().setRegistryName("wall_key_panel").setTranslationKey("securitycraft:key_panel");
 		SCContent.sonicSecuritySystem = new SonicSecuritySystemBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("sonic_security_system").setTranslationKey("securitycraft:sonic_security_system");
 		SCContent.blockChangeDetector = new BlockChangeDetectorBlock(Material.ROCK).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("block_change_detector").setTranslationKey("securitycraft:block_change_detector");
 		SCContent.sentryDisguise = new SometimesVisibleBlock(Material.ROCK).setBlockUnbreakable().setHardness(-1.0F).setRegistryName("sentry_disguise");
@@ -305,6 +308,8 @@ public class SetupHandler {
 		SCContent.keypadTrapdoor = (KeypadTrapDoorBlock) new KeypadTrapDoorBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("keypad_trapdoor").setTranslationKey("securitycraft:keypad_trapdoor");
 		SCContent.reinforcedLadder = new ReinforcedLadderBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_ladder").setTranslationKey("securitycraft:reinforced_ladder");
 		SCContent.floorTrap = new FloorTrapBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setHardness(-1.0F).setRegistryName("floor_trap").setTranslationKey("securitycraft:floor_trap");
+		SCContent.keycardLockFloorCeilingBlock = new KeycardLockFloorCeilingBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setBlockUnbreakable().setRegistryName("floor_ceiling_keycard_lock").setTranslationKey("securitycraft:keycard_lock");
+		SCContent.keycardLockWallBlock = new KeycardLockWallBlock(Material.ROCK).setBlockUnbreakable().setRegistryName("wall_keycard_lock").setTranslationKey("securitycraft:keycard_lock");
 	}
 
 	public static void setupMines() {
@@ -377,5 +382,6 @@ public class SetupHandler {
 		SCContent.portableTunePlayer = new PortableTunePlayerItem().setRegistryName("portable_tune_player").setTranslationKey("securitycraft:portable_tune_player").setCreativeTab(SecurityCraft.TECHNICAL_TAB);
 		SCContent.keycardHolder = new KeycardHolderItem().setRegistryName("keycard_holder").setTranslationKey("securitycraft:keycard_holder").setCreativeTab(SecurityCraft.TECHNICAL_TAB);
 		SCContent.lens = (LensItem) new LensItem().setRegistryName("lens").setTranslationKey("securitycraft:lens").setCreativeTab(SecurityCraft.TECHNICAL_TAB);
+		SCContent.keycardLock = new BasePanelItem(SCContent.keycardLockFloorCeilingBlock, SCContent.keycardLockWallBlock).setRegistryName("keycard_lock");
 	}
 }

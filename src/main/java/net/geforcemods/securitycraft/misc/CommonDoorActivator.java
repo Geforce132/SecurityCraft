@@ -20,17 +20,19 @@ public class CommonDoorActivator implements Function<Object, IDoorActivator>, ID
 	private final PropertyBool poweredProperty = PropertyBool.create("powered");
 	//@formatter:off
 	private List<Block> blocks = Arrays.asList(
-			SCContent.laserBlock,
-			SCContent.retinalScanner,
-			SCContent.keypad,
-			SCContent.keycardReader,
-			SCContent.portableRadar,
-			SCContent.reinforcedStoneButton,
-			SCContent.reinforcedWoodenButton,
-			SCContent.reinforcedLever,
-			SCContent.reinforcedObserver,
 			SCContent.keyPanelFloorCeilingBlock,
 			SCContent.keyPanelWallBlock,
+			SCContent.keycardLockFloorCeilingBlock,
+			SCContent.keycardLockWallBlock,
+			SCContent.keycardReader,
+			SCContent.keypad,
+			SCContent.laserBlock,
+			SCContent.portableRadar,
+			SCContent.reinforcedLever,
+			SCContent.reinforcedObserver,
+			SCContent.reinforcedStoneButton,
+			SCContent.reinforcedWoodenButton,
+			SCContent.retinalScanner,
 			SCContent.securityCamera,
 			SCContent.sonicSecuritySystem);
 	//@formatter:on

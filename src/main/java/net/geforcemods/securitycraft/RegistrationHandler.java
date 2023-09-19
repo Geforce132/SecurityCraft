@@ -25,6 +25,7 @@ import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IronFenceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeyPanelBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeycardLockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
@@ -331,6 +332,8 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.keypadTrapdoor);
 		registerBlock(event, SCContent.reinforcedLadder);
 		registerBlock(event, SCContent.floorTrap);
+		event.getRegistry().register(SCContent.keycardLockFloorCeilingBlock);
+		event.getRegistry().register(SCContent.keycardLockWallBlock);
 
 		//block mines
 		registerBlockMine(event, SCContent.stoneMine);
@@ -415,6 +418,7 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.portableTunePlayer);
 		registerItem(event, SCContent.keycardHolder);
 		registerItem(event, SCContent.lens);
+		registerItem(event, SCContent.keycardLock);
 
 		SecurityCraft.proxy.registerVariants();
 		pageTypeBlocks.forEach((pageType, list) -> {
@@ -491,6 +495,7 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(DisplayCaseBlockEntity.class, new ResourceLocation("securitycraft:display_case"));
 		GameRegistry.registerTileEntity(KeypadTrapdoorBlockEntity.class, new ResourceLocation("securitycraft:keypad_trapdoor"));
 		GameRegistry.registerTileEntity(FloorTrapBlockEntity.class, new ResourceLocation("securitycraft:floor_trap"));
+		GameRegistry.registerTileEntity(KeycardLockBlockEntity.class, new ResourceLocation("securitycraft:keycard_lock"));
 	}
 
 	@SubscribeEvent
@@ -944,6 +949,7 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.portableTunePlayer, 0, "portable_tune_player");
 		registerInventoryModel(SCContent.keycardHolder, 0, "keycard_holder");
 		registerInventoryModel(SCContent.lens, 0, "lens");
+		registerInventoryModel(SCContent.keycardLock, 0, "keycard_lock");
 
 		//mines
 		registerInventoryModel(SCContent.mine, 0, "mine");

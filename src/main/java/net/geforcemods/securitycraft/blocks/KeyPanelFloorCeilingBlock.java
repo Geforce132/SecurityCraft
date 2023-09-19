@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class FloorCeilingKeyPanelBlock extends KeyPanelBlock {
+public class KeyPanelFloorCeilingBlock extends KeyPanelBlock {
 	public static final PropertyBool FLOOR = PropertyBool.create("floor");
 	public static final AxisAlignedBB FLOOR_NS;
 	public static final AxisAlignedBB FLOOR_EW;
@@ -28,7 +28,7 @@ public class FloorCeilingKeyPanelBlock extends KeyPanelBlock {
 		CEILING_EW = new AxisAlignedBB(1 * px, 15 * px, 2 * px, 15 * px, 16 * px, 14 * px);
 	}
 
-	public FloorCeilingKeyPanelBlock(Material material) {
+	public KeyPanelFloorCeilingBlock(Material material) {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false).withProperty(FLOOR, true));
 	}

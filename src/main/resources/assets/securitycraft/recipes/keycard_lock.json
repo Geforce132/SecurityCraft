@@ -1,20 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "SSS",
-    "RH_",
-    "SSS"
+    "SS",
+    "R_",
+    "SS"
   ],
   "key": {
     "S": {
-      "item": "securitycraft:reinforced_cobblestone"
+      "item": "securitycraft:reinforced_´cobblestone"
     },
     "R": {
       "type": "forge:ore_dict",
       "ore": "dustRedstone"
-    },
-    "H": {
-      "item": "minecraft:hopper"
     },
     "_": {
       "item": "securitycraft:reinforced_stone_slabs",
@@ -22,7 +19,6 @@
     }
   },
   "result": {
-    "item": "securitycraft:keycard_reader",
-    "count": 1
+    "item": "securitycraft:keycard_lock"
   }
 }

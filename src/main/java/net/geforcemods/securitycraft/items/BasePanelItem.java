@@ -1,10 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IPasscodeConvertible;
-import net.geforcemods.securitycraft.api.SecurityCraftAPI;
-import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,25 +16,19 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class KeyPanelItem extends ItemBlock {
-	public KeyPanelItem() {
-		super(SCContent.keyPanelFloorCeilingBlock);
+public class BasePanelItem extends ItemBlock {
+	private final Block floorCeilingBlock, wallBlock;
+
+	public BasePanelItem(Block floorCeilingBlock, Block wallBlock) {
+		super(floorCeilingBlock);
+		this.floorCeilingBlock = floorCeilingBlock;
+		this.wallBlock = wallBlock;
 	}
 
 	@Override
 	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 		IBlockState state = world.getBlockState(pos);
-
-		for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
-			if (pc.isValidStateForConversion(state) && pc.convert(player, world, pos)) {
-				if (!player.capabilities.isCreativeMode)
-					stack.shrink(1);
-
-				world.playSound(player, pos, SCSounds.LOCK.event, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				return EnumActionResult.SUCCESS;
-			}
-		}
 
 		//respect replaceable blocks when trying placing the key panel
 		if (state.getBlock().isReplaceable(world, pos)) {
@@ -52,9 +43,9 @@ public class KeyPanelItem extends ItemBlock {
 
 			if (player.canPlayerEdit(placeAt, facing, stack) && stateAtPlacePosition.getBlock().isReplaceable(world, placeAt)) {
 				if (facing.getAxis() == Axis.Y)
-					stateToPlace = SCContent.keyPanelFloorCeilingBlock.getStateForPlacement(world, placeAt, facing, hitX, hitY, hitZ, 0, player, hand);
+					stateToPlace = floorCeilingBlock.getStateForPlacement(world, placeAt, facing, hitX, hitY, hitZ, 0, player, hand);
 				else
-					stateToPlace = SCContent.keyPanelWallBlock.getStateForPlacement(world, placeAt, facing, hitX, hitY, hitZ, 0, player, hand);
+					stateToPlace = wallBlock.getStateForPlacement(world, placeAt, facing, hitX, hitY, hitZ, 0, player, hand);
 
 				if (stateToPlace != null) {
 					SoundType soundType = stateToPlace.getBlock().getSoundType(stateToPlace, world, placeAt, player);

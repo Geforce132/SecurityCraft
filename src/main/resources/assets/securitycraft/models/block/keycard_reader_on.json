@@ -2,7 +2,7 @@
     "parent": "block/orientable",
     "textures": {
         "top": "blocks/furnace_top",
-        "front": "securitycraft:blocks/keycard_reader_front",
+        "front": "securitycraft:blocks/keycard_reader_front_on",
         "side": "blocks/furnace_side"
     }
 }

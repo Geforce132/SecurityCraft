@@ -1,0 +1,42 @@
+{
+  "variants": {
+    "facing=east,powered=false": {
+      "model": "securitycraft:keycard_lock_off",
+      "y": 270,
+      "x": 270
+    },
+    "facing=east,powered=true": {
+      "model": "securitycraft:keycard_lock_on",
+      "y": 270,
+      "x": 270
+    },
+    "facing=north,powered=false": {
+      "model": "securitycraft:keycard_lock_off",
+      "x": 270,
+      "y": 180
+    },
+    "facing=north,powered=true": {
+      "model": "securitycraft:keycard_lock_on",
+      "x": 270,
+      "y": 180
+    },
+    "facing=south,powered=false": {
+      "model": "securitycraft:keycard_lock_off",
+      "x": 270
+    },
+    "facing=south,powered=true": {
+      "model": "securitycraft:keycard_lock_on",
+      "x": 270
+    },
+    "facing=west,powered=false": {
+      "model": "securitycraft:keycard_lock_off",
+      "y": 90,
+      "x": 270
+    },
+    "facing=west,powered=true": {
+      "model": "securitycraft:keycard_lock_on",
+      "y": 90,
+      "x": 270
+    }
+  }
+}

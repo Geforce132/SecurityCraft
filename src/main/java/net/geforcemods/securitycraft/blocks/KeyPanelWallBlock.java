@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class WallKeyPanelBlock extends KeyPanelBlock {
+public class KeyPanelWallBlock extends KeyPanelBlock {
 	public static final AxisAlignedBB WALL_N;
 	public static final AxisAlignedBB WALL_E;
 	public static final AxisAlignedBB WALL_S;
@@ -26,7 +26,7 @@ public class WallKeyPanelBlock extends KeyPanelBlock {
 		WALL_W = new AxisAlignedBB(15 * px, 1 * px, 2 * px, 16 * px, 15 * px, 14 * px);
 	}
 
-	public WallKeyPanelBlock(Material material) {
+	public KeyPanelWallBlock(Material material) {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false));
 	}
