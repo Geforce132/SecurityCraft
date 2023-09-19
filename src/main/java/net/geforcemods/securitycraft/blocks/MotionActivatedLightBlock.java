@@ -115,10 +115,9 @@ public class MotionActivatedLightBlock extends OwnableBlock implements IWaterLog
 
 			if (te instanceof IModuleInventory)
 				((IModuleInventory) te).dropAllModules();
-
-			if (!newState.hasTileEntity())
-				level.removeBlockEntity(pos);
 		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

@@ -67,9 +67,9 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 
 				world.updateNeighbourForOutputSignal(pos, this);
 			}
-
-			world.removeBlockEntity(pos);
 		}
+
+		super.onRemove(state, world, pos, newState, isMoving);
 	}
 
 	@Override

@@ -104,10 +104,9 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 
 			if (te instanceof IPasscodeProtected)
 				SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
-
-			if (!newState.hasTileEntity())
-				level.removeBlockEntity(pos);
 		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

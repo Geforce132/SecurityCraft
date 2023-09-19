@@ -60,10 +60,9 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 				level.updateNeighborsAt(pos, this);
 				level.updateNeighborsAt(pos.relative(getConnectedDirection(state).getOpposite()), this);
 			}
-
-			if (!newState.hasTileEntity())
-				level.removeBlockEntity(pos);
 		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	public boolean isAllowedToPress(AllowlistOnlyBlockEntity te, PlayerEntity entity) {

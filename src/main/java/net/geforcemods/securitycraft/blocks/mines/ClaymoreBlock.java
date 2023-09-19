@@ -158,10 +158,9 @@ public class ClaymoreBlock extends ExplosiveBlock {
 				((ClaymoreBlockEntity) te).dropAllModules();
 				InventoryHelper.dropContents(level, pos, ((ClaymoreBlockEntity) te).getLensContainer());
 			}
-
-			if (!newState.hasTileEntity())
-				level.removeBlockEntity(pos);
 		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

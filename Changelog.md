@@ -38,6 +38,8 @@
 - Fix: Blocks that have a custom name lose the name when getting broken
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
 - Fix: The randomize button is not disabled when someone on the allowlist looks into a Keycard Reader
+- Fix: Dupe exploits
+- Fix: Lingering block entities
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
 - Misc.: More texture and model updates - resource packs may need to be updated
 

@@ -158,9 +158,9 @@ public class LaserBlock extends DisguisableBlock {
 				lensContainer.clearContent();
 				level.updateNeighbourForOutputSignal(pos, this);
 			}
-
-			super.onRemove(state, level, pos, newState, isMoving);
 		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	public static void destroyAdjacentLasers(IWorld world, BlockPos pos) {

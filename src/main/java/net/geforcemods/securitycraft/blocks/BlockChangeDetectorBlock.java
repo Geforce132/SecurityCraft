@@ -74,10 +74,12 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 
 	@Override
 	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
-		TileEntity tile = level.getBlockEntity(pos);
+		if (!state.is(newState.getBlock())) {
+			TileEntity tile = level.getBlockEntity(pos);
 
-		if (tile instanceof BlockChangeDetectorBlockEntity)
-			Block.popResource(level, pos, ((BlockChangeDetectorBlockEntity) tile).getStackInSlot(36));
+			if (tile instanceof BlockChangeDetectorBlockEntity)
+				Block.popResource(level, pos, ((BlockChangeDetectorBlockEntity) tile).getStackInSlot(36));
+		}
 
 		super.onRemove(state, level, pos, newState, isMoving);
 	}

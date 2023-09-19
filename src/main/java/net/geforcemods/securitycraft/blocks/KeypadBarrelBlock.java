@@ -130,9 +130,9 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 
 			if (te instanceof IPasscodeProtected)
 				SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
-
-			super.onRemove(state, level, pos, newState, isMoving);
 		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

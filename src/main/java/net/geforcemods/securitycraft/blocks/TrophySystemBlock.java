@@ -98,9 +98,9 @@ public class TrophySystemBlock extends DisguisableBlock {
 				InventoryHelper.dropContents(level, pos, ((TrophySystemBlockEntity) te).getLensContainer());
 				level.updateNeighbourForOutputSignal(pos, this);
 			}
-
-			super.onRemove(state, level, pos, newState, isMoving);
 		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

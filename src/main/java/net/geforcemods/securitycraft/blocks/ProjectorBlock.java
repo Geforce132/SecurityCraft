@@ -119,13 +119,11 @@ public class ProjectorBlock extends DisguisableBlock {
 
 	@Override
 	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-		TileEntity te = world.getBlockEntity(pos);
+		if (!state.is(newState.getBlock())) {
+			TileEntity te = world.getBlockEntity(pos);
 
-		if (te instanceof ProjectorBlockEntity) {
-			// Drop the block being projected
-			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorBlockEntity) te).getStackInSlot(36));
-
-			LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(item));
+			if (te instanceof ProjectorBlockEntity)
+				LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorBlockEntity) te).getStackInSlot(36))));
 		}
 
 		super.onRemove(state, world, pos, newState, isMoving);
