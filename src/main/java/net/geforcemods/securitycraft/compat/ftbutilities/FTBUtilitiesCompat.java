@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.compat.ftbutilities;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 import com.feed_the_beast.ftblib.lib.data.FTBLibAPI;
@@ -7,6 +9,8 @@ import com.feed_the_beast.ftblib.lib.data.ForgeTeam;
 import com.feed_the_beast.ftblib.lib.data.Universe;
 
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.util.TeamUtils.TeamRepresentation;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 public class FTBUtilitiesCompat {
 	private FTBUtilitiesCompat() {}
@@ -32,5 +36,17 @@ public class FTBUtilitiesCompat {
 		}
 
 		return null;
+	}
+
+	public static Collection<EntityPlayerMP> getOnlinePlayersInTeam(Owner owner) {
+		try {
+			ForgeTeam team = Universe.get().getPlayer(UUID.fromString(owner.getUUID())).team;
+
+			if (team != null)
+				return team.getOnlineMembers();
+		}
+		catch (IllegalArgumentException e) {}
+
+		return new ArrayList<>();
 	}
 }

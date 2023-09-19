@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -160,7 +161,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
 
 		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
-		if ((ConfigHandler.enableTeamOwnership && !PlayerUtils.areOnSameTeam(getOwner(), keycardOwner)) || !getOwner().getUUID().equals(keycardOwner.getUUID()))
+		if ((ConfigHandler.enableTeamOwnership && !TeamUtils.areOnSameTeam(getOwner(), keycardOwner)) || !getOwner().getUUID().equals(keycardOwner.getUUID()))
 			return new TextComponentTranslation("messages.securitycraft:keycardReader.differentOwner");
 
 		//the keycard's signature does not match this keycard reader's

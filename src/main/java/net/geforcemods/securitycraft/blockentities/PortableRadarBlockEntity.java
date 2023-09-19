@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.Collection;
 import java.util.List;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
@@ -14,6 +16,7 @@ import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -21,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 public class PortableRadarBlockEntity extends CustomizableBlockEntity implements ITickable {
@@ -38,18 +42,27 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 		if (!world.isRemote && !disabled.get() && ticksUntilNextSearch-- <= 0) {
 			ticksUntilNextSearch = getSearchDelay();
 
-			EntityPlayerMP owner = world.getMinecraftServer().getPlayerList().getPlayerByUsername(getOwner().getName());
 			AxisAlignedBB area = new AxisAlignedBB(pos).grow(getSearchRadius(), getSearchRadius(), getSearchRadius());
-			List<EntityPlayer> entities = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && !e.isSpectator() && !EntityUtils.isInvisible(e));
+			List<EntityPlayer> closebyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && !e.isSpectator() && !EntityUtils.isInvisible(e));
 
 			if (isModuleEnabled(ModuleType.REDSTONE)) {
-				PortableRadarBlock.togglePowerOutput(world, pos, !entities.isEmpty());
+				PortableRadarBlock.togglePowerOutput(world, pos, !closebyPlayers.isEmpty());
 			}
 
-			if (owner != null) {
-				for (EntityPlayer e : entities) {
-					if (shouldSendMessage(e)) {
-						PlayerUtils.sendMessageToPlayer(owner, Utils.localize("tile.securitycraft:portableRadar.name"), hasCustomName() ? (Utils.localize("messages.securitycraft:portableRadar.withName", TextFormatting.ITALIC + e.getName() + TextFormatting.RESET, TextFormatting.ITALIC + getName() + TextFormatting.RESET)) : (Utils.localize("messages.securitycraft:portableRadar.withoutName", TextFormatting.ITALIC + e.getName() + TextFormatting.RESET, pos)), TextFormatting.BLUE);
+			if (!closebyPlayers.isEmpty()) {
+				Collection<EntityPlayerMP> onlineTeamPlayers = TeamUtils.getOnlinePlayersInTeam(world.getMinecraftServer(), getOwner());
+
+				for (EntityPlayer closebyPlayer : closebyPlayers) {
+					if (shouldSendMessage(closebyPlayer)) {
+						String attackedName = TextFormatting.ITALIC + closebyPlayer.getName() + TextFormatting.RESET;
+						ITextComponent text;
+
+						if (hasCustomName())
+							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, TextFormatting.ITALIC + getName() + TextFormatting.RESET);
+						else
+							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, pos);
+
+						onlineTeamPlayers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.portableRadar), text, TextFormatting.BLUE));
 						setSentMessage();
 					}
 				}

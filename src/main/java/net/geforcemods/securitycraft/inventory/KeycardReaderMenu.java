@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.TeamUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -51,7 +51,7 @@ public class KeycardReaderMenu extends Container {
 				String keycardOwnerUUID = keycardOwner.getUUID();
 
 				//only allow keycards that have been linked to a keycard reader with the same owner as this keycard reader
-				return keycardOwnerUUID.isEmpty() || ((ConfigHandler.enableTeamOwnership && PlayerUtils.areOnSameTeam(te.getOwner(), keycardOwner)) || keycardOwnerUUID.equals(te.getOwner().getUUID()));
+				return keycardOwnerUUID.isEmpty() || ((ConfigHandler.enableTeamOwnership && TeamUtils.areOnSameTeam(te.getOwner(), keycardOwner)) || keycardOwnerUUID.equals(te.getOwner().getUUID()));
 			}
 		});
 	}

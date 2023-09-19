@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.TeamUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -94,7 +94,7 @@ public class Owner {
 			String uuidToCheck = ownableOwner.getUUID();
 			String nameToCheck = ownableOwner.getName();
 
-			if (ConfigHandler.enableTeamOwnership && PlayerUtils.areOnSameTeam(this, ownableOwner))
+			if (ConfigHandler.enableTeamOwnership && TeamUtils.areOnSameTeam(this, ownableOwner))
 				continue;
 
 			// Check the player's UUID first.

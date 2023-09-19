@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -76,7 +77,7 @@ public abstract class KeycardLockBlock extends OwnableBlock {
 					NBTTagCompound tag = stack.getTagCompound();
 					Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
 
-					if ((ConfigHandler.enableTeamOwnership && !PlayerUtils.areOnSameTeam(be.getOwner(), keycardOwner)) || !be.getOwner().getUUID().equals(keycardOwner.getUUID()))
+					if ((ConfigHandler.enableTeamOwnership && !TeamUtils.areOnSameTeam(be.getOwner(), keycardOwner)) || !be.getOwner().getUUID().equals(keycardOwner.getUUID()))
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(KeycardLockBlock.this), Utils.localize("messages.securitycraft:keycard_lock.different_owner"), TextFormatting.RED);
 				}
 
