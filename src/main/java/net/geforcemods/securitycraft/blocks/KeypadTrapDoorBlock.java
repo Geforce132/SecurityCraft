@@ -3,22 +3,18 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadTrapdoorBlockEntity;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseIronTrapDoorBlock;
-import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.Half;
 import net.minecraft.tileentity.TileEntity;
@@ -31,7 +27,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.MinecraftForge;
 
 public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 	public KeypadTrapDoorBlock(AbstractBlock.Properties properties) {
@@ -80,12 +75,6 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 		}
 	}
 
-	//here for making it accessible without AT
-	@Override
-	public void playSound(PlayerEntity player, World level, BlockPos pos, boolean isOpened) {
-		super.playSound(player, level, pos, isOpened);
-	}
-
 	@Override
 	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
@@ -96,19 +85,6 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 		}
 
 		super.onRemove(state, level, pos, newState, isMoving);
-	}
-
-	@Override
-	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
-
-		if (stack.hasCustomHoverName()) {
-			TileEntity be = level.getBlockEntity(pos);
-
-			if (be instanceof INameSetter)
-				((INameSetter) be).setCustomName(stack.getHoverName());
-		}
 	}
 
 	@Override

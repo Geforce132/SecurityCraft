@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -14,8 +15,11 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.Half;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,6 +33,13 @@ public class BaseIronTrapDoorBlock extends TrapDoorBlock {
 	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
+
+		if (stack.hasCustomHoverName()) {
+			TileEntity be = level.getBlockEntity(pos);
+
+			if (be instanceof INameSetter)
+				((INameSetter) be).setCustomName(stack.getHoverName());
+		}
 	}
 
 	@Override
@@ -46,6 +57,17 @@ public class BaseIronTrapDoorBlock extends TrapDoorBlock {
 			state = state.setValue(OPEN, true).setValue(POWERED, true);
 
 		return state.setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+	}
+
+	@Override
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		return ActionResultType.FAIL;
+	}
+
+	//here for making it accessible without AT
+	@Override
+	public void playSound(PlayerEntity player, World level, BlockPos pos, boolean isOpened) {
+		super.playSound(player, level, pos, isOpened);
 	}
 
 	@Override
