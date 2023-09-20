@@ -34,6 +34,8 @@
 - Fix: Blocks that have a custom name lose the name when getting broken
 - Fix: Toggling an entry in the Rift Stabilizer leads to the world closing/a disconnect
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
+- Fix: The Inventory Scanner has a delay when collecting prohibited items from inventories (Thanks Tenebrosful!)
+- Fix: The Inventory Scanner can void items
 - Potential Fix: When dismounting a camera, some UI elements don't reappear
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
 - Misc.: The laser field model has been changed internally

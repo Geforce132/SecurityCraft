@@ -147,7 +147,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 							ItemStack remainder = be.addItemToStorage(inventory.get(i));
 
 							if (!remainder.isEmpty())
-								Block.popResource(be.getLevel(), be.getBlockPos(), remainder);
+								Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());
 
 							inventory.set(i, ItemStack.EMPTY);
 						}
@@ -179,7 +179,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 				ItemStack remainder = be.addItemToStorage(entity.getItem());
 
 				if (!remainder.isEmpty())
-					Block.popResource(be.getLevel(), be.getBlockPos(), remainder);
+					Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());
 
 				entity.discard();
 			}
@@ -205,7 +205,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 						ItemStack remainder = be.addItemToStorage(itemInChest);
 
 						if (!remainder.isEmpty())
-							Block.popResource(be.getLevel(), be.getBlockPos(), remainder);
+							Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());
 
 						list.remove(i);
 					}
