@@ -68,10 +68,10 @@ public class ScannerTrapdoorBlockEntity extends CustomizableBlockEntity implemen
 					return true;
 				}
 
-				if (sendMessage.get())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.scannerTrapdoor), Utils.localize("messages.securitycraft:retinalScanner.hello", viewingPlayer.getName()), TextFormatting.GREEN);
-
 				boolean shouldBeOpen = !state.getValue(BlockTrapDoor.OPEN);
+
+				if (shouldBeOpen && sendMessage.get())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.scannerTrapdoor), Utils.localize("messages.securitycraft:retinalScanner.hello", viewingPlayer.getName()), TextFormatting.GREEN);
 
 				world.setBlockState(pos, state.withProperty(BlockTrapDoor.OPEN, shouldBeOpen));
 				BlockUtils.updateIndirectNeighbors(world, pos, SCContent.scannerTrapdoor);
