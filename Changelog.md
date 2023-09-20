@@ -14,6 +14,7 @@
 - New: Floor Trap
 - New: The redstone signal length of the Inventory Scanner and Laser Block can now be changed
 - New: Keycard Lock. A miniature Keycard Reader that can only read cards, and not link them
+- New: Scanner Trapdoor
 - Change: The recipe for the Laser Block now uses 4 glass panes in total
 - Change: You can no longer break the code of passcode blocks/briefcases that you own
 - Change: Universal Block Reinforcers can no longer be enchanted with Mending. Old reinforcers lose their Mending enchantment when used. This is to make it more enticing to upgrade to a level 3 reinforcer. In the future, this idea will be expanded upon.
@@ -39,6 +40,7 @@
 - Fix: The randomize button is not disabled when someone on the allowlist looks into a Keycard Reader
 - Fix: Dupe exploits
 - Fix: Lingering block entities
+- Fix: The Keypad Trapdoor is not in the minecraft:trapdoors item tag
 - Potential Fix: When dismounting a camera, some UI elements don't reappear
 - Removed: FTB Teams integration, as the mod has not been updated to 1.19.3/.4. It will get added back if an update of the mod releases.
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)

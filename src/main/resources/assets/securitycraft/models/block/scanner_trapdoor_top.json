@@ -1,0 +1,7 @@
+{
+    "parent": "block/template_trapdoor_top",
+    "render_type": "minecraft:cutout",
+    "textures": {
+        "texture": "securitycraft:block/scanner_trapdoor"
+    }
+}
