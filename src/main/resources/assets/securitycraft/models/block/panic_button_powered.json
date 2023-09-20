@@ -1,31 +1,29 @@
 {
+	"credit": "Made with Blockbench",
 	"parent": "block/block",
-    "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
 	"ambientocclusion": false,
-    "textures": {
-        "particle": "securitycraft:block/panic_button_powered",
-        "0": "securitycraft:block/panic_button_powered"
-    },
-    "display": {
-         "ground": {
-            "rotation": [ 0, 0, 0 ],
-            "translation": [ 0, 3, 0],
-            "scale":[ 0.5, 0.5, 0.5 ]
-        }
-    },
-    "elements": [
-        {
-            "name": "Element",
-            "from": [ 3.0, 0.0, 5.0 ], 
-            "to": [ 13.0, 1.0, 11.0 ], 
-            "faces": {
-                "north": { "texture": "#0", "uv": [ 5.0, 5.0, 11.0, 6.0 ] },
-                "east": { "texture": "#0", "uv": [ 5.0, 5.0, 11.0, 6.0 ] },
-                "south": { "texture": "#0", "uv": [ 5.0, 5.0, 11.0, 6.0 ] },
-                "west": { "texture": "#0", "uv": [ 5.0, 5.0, 11.0, 6.0 ] },
-                "up": { "texture": "#0", "uv": [ 3.0, 11.0, 13.0, 5.0 ] },
-                "down": { "texture": "#0", "uv": [ 5.0, 5.0, 11.0, 9.0 ], "cullface": "down" }
-            }
-        }
-    ]
+	"textures": {
+		"0": "securitycraft:block/panic_button_powered",
+		"particle": "securitycraft:block/panic_button_powered"
+	},
+	"elements": [
+		{
+			"from": [3, 0, 5],
+			"to": [13, 1, 11],
+			"faces": {
+				"north": {"uv": [10, 8, 0, 7], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [6, 10, 0, 9], "rotation": 180, "texture": "#0"},
+				"south": {"uv": [10, 7, 0, 6], "rotation": 180, "texture": "#0"},
+				"west": {"uv": [6, 9, 0, 8], "rotation": 180, "texture": "#0"},
+				"up": {"uv": [10, 6, 0, 0], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [0, 0, 10, 6], "texture": "#0", "cullface": "down"}
+			}
+		}
+	],
+	"display": {
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.5, 0.5, 0.5]
+		}
+	}
 }

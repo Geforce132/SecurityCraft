@@ -8,11 +8,13 @@
 - New: Vanishmod support
 - New: Universal Block Reinforcers LvL2 and LvL3 can now unreinforce blocks in the world by toggling the checkbox in their UI
 - New: Reinforced Ladder
-- New: The Projector can now project blocks regardless of which blocks exist in the world
+- New: The Projector can now optionally project blocks regardless of which blocks exist in the world
 - New: The status of a Redstone Module in a Security Camera can now be seen in the Camera Monitor screen
 - New: Animals are now ignored by several blocks like the protecto or mines if the animal and block are owned by the same player
 - New: Floor Trap
 - New: The redstone signal length of the Inventory Scanner and Laser Block can now be changed
+- New: Keycard Lock. A miniature Keycard Reader that can only read cards, and not link them
+- New: Scanner Trapdoor
 - Change: The recipe for the Laser Block now uses 4 glass panes in total
 - Change: You can no longer break the code of passcode blocks/briefcases that you own
 - Change: Universal Block Reinforcers can no longer be enchanted with Mending. Old reinforcers lose their Mending enchantment when used. This is to make it more enticing to upgrade to a level 3 reinforcer. In the future, this idea will be expanded upon.
@@ -20,6 +22,9 @@
 - Change: The recipe for the Mine Remote Access Tool has been modified to match its new texture
 - Change: The Codebreaker can now not be used for three seconds after its last usage
 - Change: The Sentry will now face the player when it is placed down. The head will still be within the body by default, though
+- Change: The Keycard Reader now has indicator lights
+- Change: The recipe for the Keycard Reader has been slightly adjusted
+- Change: The Portable Radar now sends proximity messages to everyone on the same team instead of just the radar's owner
 - API: IReinforcedBlock has been moved to the API package
 - API: New methods IReinforcedBlock#convertToReinforced and IReinforcedBlock#convertToVanilla
 - API: New method IOwnable#allowsOwnableEntity to check whether an ownable entity's owner owns the block entity
@@ -34,12 +39,15 @@
 - Fix: Blocks that have a custom name lose the name when getting broken
 - Fix: Toggling an entry in the Rift Stabilizer leads to the world closing/a disconnect
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
+- Fix: The randomize button is not disabled when someone on the allowlist looks into a Keycard Reader
+- Fix: Dupe exploits
+- Fix: Lingering block entities
+- Fix: The Keypad Trapdoor is not in the minecraft:trapdoors item tag
 - Fix: The Inventory Scanner has a delay when collecting prohibited items from inventories (Thanks Tenebrosful!)
 - Fix: The Inventory Scanner can void items
 - Potential Fix: When dismounting a camera, some UI elements don't reappear
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
-- Misc.: The laser field model has been changed internally
-- Misc.: More texture updates - resource packs may need to be updated
+- Misc.: More texture and model updates - resource packs may need to be updated
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 

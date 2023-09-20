@@ -210,12 +210,23 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('L', Tags.Items.LEATHER)
 		.unlockedBy("has_stone", has(SCContent.KEYCARD_READER.get()))
 		.save(consumer);
+		ShapedRecipeBuilder.shaped(SCContent.KEYCARD_LOCK.get())
+		.pattern("SS")
+		.pattern("R_")
+		.pattern("SS")
+		.define('S', SCTags.Items.REINFORCED_STONE_CRAFTING_MATERIALS)
+		.define('R', Tags.Items.DUSTS_REDSTONE)
+		.define('_', Ingredient.of(SCContent.REINFORCED_COBBLESTONE_SLAB.get(), SCContent.REINFORCED_BLACKSTONE_SLAB.get(), SCContent.REINFORCED_COBBLED_DEEPSLATE_SLAB.get()))
+		.unlockedBy("has_reader", has(SCContent.KEYCARD_READER.get()))
+		.save(consumer);
 		ShapedRecipeBuilder.shaped(SCContent.KEYCARD_READER.get())
 		.pattern("SSS")
-		.pattern("SHS")
+		.pattern("RH_")
 		.pattern("SSS")
 		.define('S', SCTags.Items.REINFORCED_STONE_CRAFTING_MATERIALS)
-		.define('H', Items.HOPPER)
+		.define('H', SCContent.REINFORCED_HOPPER.get())
+		.define('_', Ingredient.of(SCContent.REINFORCED_COBBLESTONE_SLAB.get(), SCContent.REINFORCED_BLACKSTONE_SLAB.get(), SCContent.REINFORCED_COBBLED_DEEPSLATE_SLAB.get()))
+		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_stone", has(SCTags.Items.REINFORCED_STONE_CRAFTING_MATERIALS))
 		.save(consumer);
 		ShapedRecipeBuilder.shaped(SCContent.FRAME.get())
@@ -591,6 +602,11 @@ public class RecipeGenerator extends RecipeProvider {
 		.requires(SCContent.REINFORCED_DOOR_ITEM.get())
 		.requires(SCContent.RETINAL_SCANNER.get())
 		.unlockedBy("has_reinforced_door", has(SCContent.REINFORCED_DOOR_ITEM.get()))
+		.save(consumer);
+		ShapelessRecipeBuilder.shapeless(SCContent.SCANNER_TRAPDOOR.get())
+		.requires(SCContent.REINFORCED_IRON_TRAPDOOR.get())
+		.requires(SCContent.RETINAL_SCANNER.get())
+		.unlockedBy("has_reinforced_trapdoor", has(SCContent.REINFORCED_IRON_TRAPDOOR.get()))
 		.save(consumer);
 		ShapelessRecipeBuilder.shapeless(SCContent.UNIVERSAL_OWNER_CHANGER.get())
 		.requires(SCContent.UNIVERSAL_BLOCK_MODIFIER.get())

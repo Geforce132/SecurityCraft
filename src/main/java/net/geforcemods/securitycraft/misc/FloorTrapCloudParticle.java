@@ -15,7 +15,6 @@ public class FloorTrapCloudParticle extends TextureSheetParticle {
 		setSize(0.01F, 0.01F);
 		pickSprite(spriteSet);
 		quadSize *= random.nextFloat() * 0.6F + 0.4F;
-		lifetime = (int) (16.0D / (Math.random() * 0.8D + 0.2D));
 		hasPhysics = false;
 		xd = xSpeed;
 		yd = ySpeed;

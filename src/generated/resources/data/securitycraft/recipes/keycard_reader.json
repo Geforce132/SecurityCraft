@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "SSS",
-    "SHS",
+    "RH_",
     "SSS"
   ],
   "key": {
@@ -10,7 +10,21 @@
       "tag": "securitycraft:reinforced/stone_crafting_materials"
     },
     "H": {
-      "item": "minecraft:hopper"
+      "item": "securitycraft:reinforced_hopper"
+    },
+    "_": [
+      {
+        "item": "securitycraft:reinforced_cobblestone_slab"
+      },
+      {
+        "item": "securitycraft:reinforced_blackstone_slab"
+      },
+      {
+        "item": "securitycraft:reinforced_cobbled_deepslate_slab"
+      }
+    ],
+    "R": {
+      "tag": "forge:dusts/redstone"
     }
   },
   "result": {

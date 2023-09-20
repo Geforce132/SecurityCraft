@@ -67,10 +67,9 @@ public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlo
 				level.updateNeighborsAt(pos, this);
 				level.updateNeighborsAt(pos.relative(getConnectedDirection(state).getOpposite()), this);
 			}
-
-			if (!newState.hasBlockEntity())
-				level.removeBlockEntity(pos);
 		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	public boolean isAllowedToPress(AllowlistOnlyBlockEntity be, Player entity) {

@@ -1,0 +1,29 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"ambientocclusion": false,
+	"textures": {
+		"0": "securitycraft:block/panic_button",
+		"particle": "securitycraft:block/panic_button"
+	},
+	"elements": [
+		{
+			"from": [3, 0, 5],
+			"to": [13, 2, 11],
+			"faces": {
+				"north": {"uv": [10, 10, 0, 8], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [6, 14, 0, 12], "rotation": 180, "texture": "#0"},
+				"south": {"uv": [10, 8, 0, 6], "rotation": 180, "texture": "#0"},
+				"west": {"uv": [6, 12, 0, 10], "rotation": 180, "texture": "#0"},
+				"up": {"uv": [10, 6, 0, 0], "texture": "#0"},
+				"down": {"uv": [0, 0, 10, 6], "texture": "#0", "cullface": "down"}
+			}
+		}
+	],
+	"display": {
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.5, 0.5, 0.5]
+		}
+	}
+}
