@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -32,6 +33,9 @@ public class BaseIronTrapDoorBlock extends TrapDoorBlock implements EntityBlock 
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
+
+		if (stack.hasCustomHoverName() && level.getBlockEntity(pos) instanceof INameSetter nameable)
+			nameable.setCustomName(stack.getHoverName());
 	}
 
 	@Override
@@ -54,6 +58,12 @@ public class BaseIronTrapDoorBlock extends TrapDoorBlock implements EntityBlock 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		return InteractionResult.FAIL;
+	}
+
+	//here for making it accessible without AT
+	@Override
+	public void playSound(Player player, Level level, BlockPos pos, boolean isOpened) {
+		super.playSound(player, level, pos, isOpened);
 	}
 
 	@Override
