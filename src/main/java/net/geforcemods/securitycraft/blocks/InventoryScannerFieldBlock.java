@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
@@ -65,10 +67,10 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 				if (connectedScanner.isAllowed(entity))
 					return Shapes.empty();
 
-				for (int i = 0; i < 10; i++) {
-					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && checkInventory(player, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
-						return getShape(state, level, pos, ctx);
-				}
+				List<ItemStack> prohibitedItems = connectedScanner.getAllProhibitedItems();
+
+				if (!prohibitedItems.isEmpty() && checkInventory(player, connectedScanner, prohibitedItems, false))
+					return getShape(state, level, pos, ctx);
 			}
 			else if (entity instanceof ItemEntity item) {
 				for (int i = 0; i < 10; i++) {
@@ -108,10 +110,10 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 			if (connectedScanner.isAllowed(entity))
 				return;
 
-			for (int i = 0; i < 10; i++) {
-				if (!connectedScanner.getStackInSlotCopy(i).isEmpty())
-					checkInventory(player, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
-			}
+			List<ItemStack> prohibitedItems = connectedScanner.getAllProhibitedItems();
+
+			if (!prohibitedItems.isEmpty())
+				checkInventory(player, connectedScanner, prohibitedItems, true);
 		}
 		else if (entity instanceof ItemEntity item) {
 			for (int i = 0; i < 10; i++) {
@@ -121,7 +123,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		}
 	}
 
-	public static boolean checkInventory(Player player, InventoryScannerBlockEntity be, ItemStack stack, boolean allowInteraction) {
+	public static boolean checkInventory(Player player, InventoryScannerBlockEntity be, List<ItemStack> prohibitedItems, boolean allowInteraction) {
 		boolean hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && be.isModuleEnabled(ModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && be.isModuleEnabled(ModuleType.REDSTONE);
@@ -129,32 +131,39 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || (be.isOwnedBy(player) && be.ignoresOwner()))
 			return false;
 
-		return loopInventory(player.getInventory().items, stack, be, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.getInventory().armor, stack, be, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.getInventory().offhand, stack, be, hasSmartModule, hasStorageModule, hasRedstoneModule);
+		return loopInventory(player.getInventory().items, prohibitedItems, be, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.getInventory().armor, prohibitedItems, be, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.getInventory().offhand, prohibitedItems, be, hasSmartModule, hasStorageModule, hasRedstoneModule);
 	}
 
-	private static boolean loopInventory(NonNullList<ItemStack> inventory, ItemStack stack, InventoryScannerBlockEntity be, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
-		for (int i = 1; i <= inventory.size(); i++) {
-			ItemStack itemStackChecking = inventory.get(i - 1);
+	private static boolean loopInventory(NonNullList<ItemStack> inventory, List<ItemStack> prohibitedItems, InventoryScannerBlockEntity be, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
+		boolean itemFound = false;
 
-			if (!itemStackChecking.isEmpty()) {
-				if (areItemsEqual(itemStackChecking, stack, hasSmartModule)) {
-					if (hasStorageModule) {
-						be.addItemToStorage(inventory.get(i - 1));
-						inventory.set(i - 1, ItemStack.EMPTY);
+		for (int i = 0; i < inventory.size(); i++) {
+			ItemStack stackToCheck = inventory.get(i);
+
+			if (!stackToCheck.isEmpty()) {
+				for (ItemStack prohibitedItem : prohibitedItems) {
+					if (areItemsEqual(stackToCheck, prohibitedItem, hasSmartModule)) {
+						if (hasStorageModule) {
+							ItemStack remainder = be.addItemToStorage(inventory.get(i));
+
+							if (!remainder.isEmpty())
+								Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());
+
+							inventory.set(i, ItemStack.EMPTY);
+						}
+
+						if (hasRedstoneModule)
+							updateInventoryScannerPower(be);
+
+						itemFound = true;
 					}
-
-					if (hasRedstoneModule)
-						updateInventoryScannerPower(be);
-
-					return true;
+					else if (checkForShulkerBox(stackToCheck, prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule))
+						itemFound = true;
 				}
-
-				if (checkForShulkerBox(itemStackChecking, stack, be, hasSmartModule, hasStorageModule, hasRedstoneModule))
-					return true;
 			}
 		}
 
-		return false;
+		return itemFound;
 	}
 
 	public static boolean checkItemEntity(ItemEntity entity, InventoryScannerBlockEntity be, ItemStack stack, boolean allowInteraction) {
@@ -167,7 +176,11 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 
 		if (areItemsEqual(entity.getItem(), stack, hasSmartModule)) {
 			if (hasStorageModule) {
-				be.addItemToStorage(entity.getItem());
+				ItemStack remainder = be.addItemToStorage(entity.getItem());
+
+				if (!remainder.isEmpty())
+					Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());
+
 				entity.discard();
 			}
 
@@ -189,7 +202,11 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 
 				if (areItemsEqual(itemInChest, stackToCheck, hasSmartModule)) {
 					if (hasStorageModule) {
-						be.addItemToStorage(itemInChest);
+						ItemStack remainder = be.addItemToStorage(itemInChest);
+
+						if (!remainder.isEmpty())
+							Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());
+
 						list.remove(i);
 					}
 
