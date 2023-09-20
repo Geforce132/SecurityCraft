@@ -202,7 +202,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		setChanged();
 	}
 
-	public void addItemToStorage(ItemStack stack) {
+	public ItemStack addItemToStorage(ItemStack stack) {
 		ItemStack remainder = stack;
 
 		for (int i = 10; i < getContents().size(); i++) {
@@ -211,6 +211,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			if (remainder.isEmpty())
 				break;
 		}
+
+		return remainder;
 	}
 
 	public ItemStack insertItem(int slot, ItemStack stackToInsert) {

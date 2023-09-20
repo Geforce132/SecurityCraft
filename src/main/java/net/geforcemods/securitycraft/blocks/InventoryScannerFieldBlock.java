@@ -144,7 +144,11 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 				for (ItemStack prohibitedItem : prohibitedItems) {
 					if (areItemsEqual(stackToCheck, prohibitedItem, hasSmartModule)) {
 						if (hasStorageModule) {
-							be.addItemToStorage(inventory.get(i)); // Warning, if inventory is full, the item will be voided
+							ItemStack remainder = be.addItemToStorage(inventory.get(i));
+
+							if (!remainder.isEmpty())
+								Block.popResource(be.getLevel(), be.getBlockPos(), remainder);
+
 							inventory.set(i, ItemStack.EMPTY);
 						}
 
@@ -172,7 +176,11 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 
 		if (areItemsEqual(entity.getItem(), stack, hasSmartModule)) {
 			if (hasStorageModule) {
-				be.addItemToStorage(entity.getItem());
+				ItemStack remainder = be.addItemToStorage(entity.getItem());
+
+				if (!remainder.isEmpty())
+					Block.popResource(be.getLevel(), be.getBlockPos(), remainder);
+
 				entity.discard();
 			}
 
@@ -194,7 +202,11 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 
 				if (areItemsEqual(itemInChest, stackToCheck, hasSmartModule)) {
 					if (hasStorageModule) {
-						be.addItemToStorage(itemInChest);
+						ItemStack remainder = be.addItemToStorage(itemInChest);
+
+						if (!remainder.isEmpty())
+							Block.popResource(be.getLevel(), be.getBlockPos(), remainder);
+
 						list.remove(i);
 					}
 
