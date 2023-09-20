@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
@@ -65,9 +67,9 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 				if (connectedScanner.isAllowed(entity))
 					return Shapes.empty();
 
-				ItemStack[] stacks = connectedScanner.getAllProhibitedStackInSlotCopy();
+				List<ItemStack> prohibitedItems = connectedScanner.getAllProhibitedItems();
 
-				if (stacks.length != 0 && checkInventory(player, connectedScanner, stacks, false))
+				if (!prohibitedItems.isEmpty() && checkInventory(player, connectedScanner, prohibitedItems, false))
 					return getShape(state, level, pos, ctx);
 			}
 			else if (entity instanceof ItemEntity item) {
@@ -108,12 +110,10 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 			if (connectedScanner.isAllowed(entity))
 				return;
 
-			ItemStack[] stacks = connectedScanner.getAllProhibitedStackInSlotCopy();
+			List<ItemStack> prohibitedItems = connectedScanner.getAllProhibitedItems();
 
-			if (stacks.length == 0)
-				return;
-
-			checkInventory(player, connectedScanner, stacks, true);
+			if (!prohibitedItems.isEmpty())
+				checkInventory(player, connectedScanner, prohibitedItems, true);
 		}
 		else if (entity instanceof ItemEntity item) {
 			for (int i = 0; i < 10; i++) {
@@ -123,7 +123,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		}
 	}
 
-	public static boolean checkInventory(Player player, InventoryScannerBlockEntity be, ItemStack[] stacks, boolean allowInteraction) {
+	public static boolean checkInventory(Player player, InventoryScannerBlockEntity be, List<ItemStack> prohibitedItems, boolean allowInteraction) {
 		boolean hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && be.isModuleEnabled(ModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && be.isModuleEnabled(ModuleType.REDSTONE);
@@ -131,18 +131,18 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || (be.isOwnedBy(player) && be.ignoresOwner()))
 			return false;
 
-		return loopInventory(player.getInventory().items, stacks, be, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.getInventory().armor, stacks, be, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.getInventory().offhand, stacks, be, hasSmartModule, hasStorageModule, hasRedstoneModule);
+		return loopInventory(player.getInventory().items, prohibitedItems, be, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.getInventory().armor, prohibitedItems, be, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.getInventory().offhand, prohibitedItems, be, hasSmartModule, hasStorageModule, hasRedstoneModule);
 	}
 
-	private static boolean loopInventory(NonNullList<ItemStack> inventory, ItemStack[] stacks, InventoryScannerBlockEntity be, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
+	private static boolean loopInventory(NonNullList<ItemStack> inventory, List<ItemStack> prohibitedItems, InventoryScannerBlockEntity be, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
 		boolean itemFound = false;
-		
-		for (int i = 0; i < inventory.size(); i++) {
-			ItemStack itemStackChecking = inventory.get(i);
 
-			if (!itemStackChecking.isEmpty()) {
-				for(ItemStack stack : stacks)
-					if (areItemsEqual(itemStackChecking, stack, hasSmartModule)) {
+		for (int i = 0; i < inventory.size(); i++) {
+			ItemStack stackToCheck = inventory.get(i);
+
+			if (!stackToCheck.isEmpty()) {
+				for (ItemStack prohibitedItem : prohibitedItems) {
+					if (areItemsEqual(stackToCheck, prohibitedItem, hasSmartModule)) {
 						if (hasStorageModule) {
 							be.addItemToStorage(inventory.get(i)); // Warning, if inventory is full, the item will be voided
 							inventory.set(i, ItemStack.EMPTY);
@@ -152,11 +152,10 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 							updateInventoryScannerPower(be);
 
 						itemFound = true;
-					} else {
-						if(checkForShulkerBox(itemStackChecking, stack, be, hasSmartModule, hasStorageModule, hasRedstoneModule)) {
-							itemFound = true;
-						}
 					}
+					else if (checkForShulkerBox(stackToCheck, prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule))
+						itemFound = true;
+				}
 			}
 		}
 

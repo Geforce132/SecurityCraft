@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -180,13 +181,15 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		return inventoryContents.get(index);
 	}
 
-	public ItemStack[] getAllProhibitedStackInSlotCopy() {
-		ArrayList<ItemStack> stacks = new ArrayList<>();
+	public List<ItemStack> getAllProhibitedItems() {
+		List<ItemStack> stacks = new ArrayList<>();
+
 		for (int i = 0; i < 10; i++) {
 			if (!inventoryContents.get(i).isEmpty())
 				stacks.add(inventoryContents.get(i));
 		}
-		return stacks.toArray(new ItemStack[0]);
+
+		return stacks;
 	}
 
 	@Override
