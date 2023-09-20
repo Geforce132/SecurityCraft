@@ -58,18 +58,24 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 
 		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
 			if (entity instanceof EntityPlayer && !EntityUtils.isInvisible((EntityPlayer) entity)) {
-				if (connectedScanner.isAllowed(entity))
+				if (connectedScanner.isAllowed(entity)) {
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
+					return;
+				}
 
-				for (int i = 0; i < 10; i++) {
-					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && checkInventory((EntityPlayer) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
-						addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, world, pos));
+				List<ItemStack> prohibitedItems = connectedScanner.getAllProhibitedItems();
+
+				if (!prohibitedItems.isEmpty() && checkInventory((EntityPlayer) entity, connectedScanner, prohibitedItems, false)) {
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, world, pos));
+					return;
 				}
 			}
 			else if (entity instanceof EntityItem) {
-				for (int i = 0; i < 10; i++) {
-					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((EntityItem) entity).getItem().isEmpty() && checkEntityItem((EntityItem) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
-						addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, world, pos));
+				List<ItemStack> prohibitedItems = connectedScanner.getAllProhibitedItems();
+
+				if (!prohibitedItems.isEmpty() && checkEntityItem((EntityItem) entity, connectedScanner, prohibitedItems, false)) {
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, world, pos));
+					return;
 				}
 			}
 		}
@@ -117,20 +123,20 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 			if (connectedScanner.isAllowed(entity))
 				return;
 
-			for (int i = 0; i < 10; i++) {
-				if (!connectedScanner.getStackInSlotCopy(i).isEmpty())
-					checkInventory((EntityPlayer) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
-			}
+			List<ItemStack> prohibitedItems = connectedScanner.getAllProhibitedItems();
+
+			if (!prohibitedItems.isEmpty())
+				checkInventory((EntityPlayer) entity, connectedScanner, prohibitedItems, true);
 		}
 		else if (entity instanceof EntityItem) {
-			for (int i = 0; i < 10; i++) {
-				if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((EntityItem) entity).getItem().isEmpty())
-					checkEntityItem((EntityItem) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
-			}
+			List<ItemStack> prohibitedItems = connectedScanner.getAllProhibitedItems();
+
+			if (!prohibitedItems.isEmpty())
+				checkEntityItem((EntityItem) entity, connectedScanner, prohibitedItems, true);
 		}
 	}
 
-	public static boolean checkInventory(EntityPlayer player, InventoryScannerBlockEntity te, ItemStack stack, boolean allowInteraction) {
+	public static boolean checkInventory(EntityPlayer player, InventoryScannerBlockEntity te, List<ItemStack> prohibitedItems, boolean allowInteraction) {
 		boolean hasSmartModule = te.isModuleEnabled(ModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && te.isModuleEnabled(ModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && te.isModuleEnabled(ModuleType.REDSTONE);
@@ -138,54 +144,72 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || (te.isOwnedBy(player) && te.ignoresOwner()))
 			return false;
 
-		return loopInventory(player.inventory.mainInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.offHandInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
+		return loopInventory(player.inventory.mainInventory, prohibitedItems, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.armorInventory, prohibitedItems, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.offHandInventory, prohibitedItems, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
 	}
 
-	private static boolean loopInventory(NonNullList<ItemStack> inventory, ItemStack stack, InventoryScannerBlockEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
-		for (int i = 1; i <= inventory.size(); i++) {
-			ItemStack itemStackChecking = inventory.get(i - 1);
+	private static boolean loopInventory(NonNullList<ItemStack> inventory, List<ItemStack> prohibitedItems, InventoryScannerBlockEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
+		boolean itemFound = false;
 
-			if (!itemStackChecking.isEmpty()) {
-				if (areItemsEqual(itemStackChecking, stack, hasSmartModule)) {
-					if (hasStorageModule) {
-						te.addItemToStorage(inventory.get(i - 1));
-						inventory.set(i - 1, ItemStack.EMPTY);
+		for (int i = 0; i < inventory.size(); i++) {
+			ItemStack stackToCheck = inventory.get(i);
+
+			if (!stackToCheck.isEmpty()) {
+				for (ItemStack prohibitedItem : prohibitedItems) {
+					if (areItemsEqual(stackToCheck, prohibitedItem, hasSmartModule)) {
+						if (hasStorageModule) {
+							ItemStack remainder = te.addItemToStorage(inventory.get(i));
+
+							if (!remainder.isEmpty())
+								Block.spawnAsEntity(te.getWorld(), te.getPos(), remainder.copy());
+
+							inventory.set(i, ItemStack.EMPTY);
+						}
+
+						if (hasRedstoneModule)
+							updateInventoryScannerPower(te);
+
+						itemFound = true;
 					}
-
-					if (hasRedstoneModule)
-						updateInventoryScannerPower(te);
-
-					return true;
+					else if (checkForShulkerBox(stackToCheck, prohibitedItem, te, hasSmartModule, hasStorageModule, hasRedstoneModule))
+						itemFound = true;
 				}
-
-				if (checkForShulkerBox(itemStackChecking, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule))
-					return true;
 			}
 		}
-		return false;
+
+		return itemFound;
 	}
 
-	public static boolean checkEntityItem(EntityItem entity, InventoryScannerBlockEntity te, ItemStack stack, boolean allowInteraction) {
+	public static boolean checkEntityItem(EntityItem entity, InventoryScannerBlockEntity te, List<ItemStack> prohibitedItems, boolean allowInteraction) {
 		boolean hasSmartModule = te.isModuleEnabled(ModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && te.isModuleEnabled(ModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && te.isModuleEnabled(ModuleType.REDSTONE);
 
-		if (!hasRedstoneModule && !hasStorageModule && allowInteraction)
+		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction))
 			return false;
 
-		if (areItemsEqual(entity.getItem(), stack, hasSmartModule)) {
-			if (hasStorageModule) {
-				te.addItemToStorage(entity.getItem());
-				entity.setDead();
+		boolean itemFound = false;
+
+		for (ItemStack prohibitedItem : prohibitedItems) {
+			if (areItemsEqual(entity.getItem(), prohibitedItem, hasSmartModule)) {
+				if (hasStorageModule) {
+					ItemStack remainder = te.addItemToStorage(entity.getItem());
+
+					if (!remainder.isEmpty())
+						Block.spawnAsEntity(te.getWorld(), te.getPos(), remainder.copy());
+
+					entity.setDead();
+				}
+
+				if (hasRedstoneModule)
+					updateInventoryScannerPower(te);
+
+				itemFound = true;
 			}
-
-			if (hasRedstoneModule)
-				updateInventoryScannerPower(te);
-
-			return true;
+			else if (checkForShulkerBox(entity.getItem(), prohibitedItem, te, hasSmartModule, hasStorageModule, hasRedstoneModule))
+				itemFound = true;
 		}
 
-		return checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
+		return itemFound;
 	}
 
 	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {

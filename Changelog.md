@@ -42,6 +42,8 @@
 - Fix: Opening a Username Logger with a block in one's hand places the block for a split second
 - Fix: The randomize button is not disabled when someone on the allowlist looks into a Keycard Reader
 - Fix: The Keypad Trapdoor is not in the correct creative tab
+- Fix: The Inventory Scanner has a delay when checking and collecting prohibited items from inventories (Thanks Tenebrosful!)
+- Fix: The Inventory Scanner can void items
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
 - Misc.: The laser field model has been changed internally
 - Misc.: More texture updates - resource packs may need to be updated
