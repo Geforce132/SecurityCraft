@@ -73,10 +73,10 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 					return getShape(state, level, pos, ctx);
 			}
 			else if (entity instanceof ItemEntity item) {
-				for (int i = 0; i < 10; i++) {
-					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !item.getItem().isEmpty() && checkItemEntity(item, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
-						return getShape(state, level, pos, ctx);
-				}
+				List<ItemStack> prohibitedItems = connectedScanner.getAllProhibitedItems();
+
+				if (!prohibitedItems.isEmpty() && checkItemEntity(item, connectedScanner, prohibitedItems, false))
+					return getShape(state, level, pos, ctx);
 			}
 		}
 
@@ -116,10 +116,10 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 				checkInventory(player, connectedScanner, prohibitedItems, true);
 		}
 		else if (entity instanceof ItemEntity item) {
-			for (int i = 0; i < 10; i++) {
-				if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !item.getItem().isEmpty())
-					checkItemEntity(item, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
-			}
+			List<ItemStack> prohibitedItems = connectedScanner.getAllProhibitedItems();
+
+			if (!prohibitedItems.isEmpty())
+				checkItemEntity(item, connectedScanner, prohibitedItems, true);
 		}
 	}
 
@@ -166,7 +166,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		return itemFound;
 	}
 
-	public static boolean checkItemEntity(ItemEntity entity, InventoryScannerBlockEntity be, ItemStack stack, boolean allowInteraction) {
+	public static boolean checkItemEntity(ItemEntity entity, InventoryScannerBlockEntity be, List<ItemStack> prohibitedItems, boolean allowInteraction) {
 		boolean hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && be.isModuleEnabled(ModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && be.isModuleEnabled(ModuleType.REDSTONE);
@@ -174,23 +174,29 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction))
 			return false;
 
-		if (areItemsEqual(entity.getItem(), stack, hasSmartModule)) {
-			if (hasStorageModule) {
-				ItemStack remainder = be.addItemToStorage(entity.getItem());
+		boolean itemFound = false;
 
-				if (!remainder.isEmpty())
-					Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());
+		for (ItemStack prohibitedItem : prohibitedItems) {
+			if (areItemsEqual(entity.getItem(), prohibitedItem, hasSmartModule)) {
+				if (hasStorageModule) {
+					ItemStack remainder = be.addItemToStorage(entity.getItem());
 
-				entity.discard();
+					if (!remainder.isEmpty())
+						Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());
+
+					entity.discard();
+				}
+
+				if (hasRedstoneModule)
+					updateInventoryScannerPower(be);
+
+				itemFound = true;
 			}
-
-			if (hasRedstoneModule)
-				updateInventoryScannerPower(be);
-
-			return true;
+			else if (checkForShulkerBox(entity.getItem(), prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule))
+				itemFound = true;
 		}
 
-		return checkForShulkerBox(entity.getItem(), stack, be, hasSmartModule, hasStorageModule, hasRedstoneModule);
+		return itemFound;
 	}
 
 	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity be, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
