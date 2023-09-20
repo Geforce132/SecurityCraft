@@ -1,10 +1,8 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.Random;
 import java.util.function.Function;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
@@ -17,9 +15,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -68,20 +64,6 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
-		if (state.getValue(OPEN)) {
-			world.setBlockState(pos, state.withProperty(OPEN, false));
-			playSound(null, world, pos, false);
-		}
-	}
-
-	//here for making it accessible without AT
-	@Override
-	public void playSound(EntityPlayer player, World level, BlockPos pos, boolean isOpened) {
-		super.playSound(player, level, pos, isOpened);
-	}
-
-	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity be = world.getTileEntity(pos);
 
@@ -89,18 +71,6 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 			SaltData.removeSalt(((IPasscodeProtected) be).getSaltKey());
 
 		super.breakBlock(world, pos, state);
-	}
-
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		super.onBlockPlacedBy(world, pos, state, placer, stack);
-
-		if (!world.isRemote && stack.hasDisplayName()) {
-			TileEntity te = world.getTileEntity(pos);
-
-			if (te instanceof INameSetter)
-				((INameSetter) te).setCustomName(stack.getDisplayName());
-		}
 	}
 
 	@Override

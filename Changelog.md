@@ -12,6 +12,7 @@
 - New: Floor Trap
 - New: The redstone signal length of the Inventory Scanner and Laser Block can now be changed
 - New: Keycard Lock. A miniature Keycard Reader that can only read cards, and not link them
+- New: Scanner Trapdoor
 - Change: The recipe for the Laser Block now uses 4 glass panes in total
 - Change: You can no longer break the code of passcode blocks/briefcases that you own
 - Change: Universal Block Reinforcers can no longer be enchanted with Mending. Old reinforcers lose their Mending enchantment when used. This is to make it more enticing to upgrade to a level 3 reinforcer. In the future, this idea will be expanded upon.
@@ -40,6 +41,7 @@
 - Fix: Sentries can get unbound when opening the Sentry Remote Access Tool sometimes
 - Fix: Opening a Username Logger with a block in one's hand places the block for a split second
 - Fix: The randomize button is not disabled when someone on the allowlist looks into a Keycard Reader
+- Fix: The Keypad Trapdoor is not in the correct creative tab
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
 - Misc.: The laser field model has been changed internally
 - Misc.: More texture updates - resource packs may need to be updated

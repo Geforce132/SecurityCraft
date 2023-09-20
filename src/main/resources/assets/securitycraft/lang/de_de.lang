@@ -305,6 +305,7 @@ help.securitycraft:retinalScanner.info=Der Augenscanner gibt ein 15 Block langes
 help.securitycraft:rift_stabilizer.info=Der Riss-Stabilisierer erkennt und verhindert Teleportationsversuche von Spielern in dessen Nähe (standardmäßig 5 Blöcke, kann mit dem universellen Blockmodifizierer verändert werden). Teleportationsversuche werden verhindert, falls sich die Ursprungs- oder Zielposition des Teleports im Radius des Blocks befindet. Rechtsklicke den Block, um die Liste aller erkennbaren Teleportationsarten einzusehen.
 help.securitycraft:scManual.info=Die SecurityCraft Anleitung zeigt Informationen über alle Blöcke und Items, die SecurityCraft hinzufügt. Für noch mehr Information kannst Du das GitHub-Wiki konsultieren: https://github.com/Geforce132/SecurityCraft/wiki
 help.securitycraft:scannerDoor.info=Die Scannertür verhält sich wie der Augenscanner. Sie öffnet sich von selbst, wenn man den oberen Teil anschaut.
+help.securitycraft:scanner_trapdoor.info=Die Scannerfalltür verhält sich wie der Augenscanner. Sie öffnet sich von selbst, wenn sie anschaut.
 help.securitycraft:secretSignItem.info=Das Geheime Schild funktioniert wie das Vanilla-Schild, mit dem Unterschied, dass nur der Besitzer und zugelassene Spieler den Text lesen und mit dem Schild interagieren können. Stelle sicher, dass keiner den Block, an dem das Schild ist, zerstören kann!
 help.securitycraft:securityCamera.info=Die Überwachungskamera erlaubt dir, eine Region zu überwachen, in der du nicht bist. Platziere die Kamera und rechtsklicke sie mit einem Kameramonitor (Item), um sie mit dem Monitor zu verbinden.
 help.securitycraft:sentry.info=Das Geschütz attackiert Eindringlinge mit einer unlimitierten Anzahl von Geschützkugeln, oder mit anderen Projektilen, die verbraucht werden, wenn sie in einen Behälter unter dem Geschütz gelegt werden. Es hat drei Modi und drei Zieloptionen, die mit einem Rechtsklick auf das Geschütz gewechselt werden können. Die drei Modi sind "Untätig" (es wird niemals angreifen), "Tarnen" (es wird nur aktiviert, sobald ein Ziel in Reichweite ist) und "Aggressiv" (es wird immer aktiv sein). Die beiden letztgenannten Modi sind mit den Zieloptionen "Nur Monster", "Monster und Spieler", und "Nur Spieler" verfügbar. Ein Tarnmodul sorgt dafür, dass sich das Geschütz mit dem im Modul hinzugefügten Block tarnt, ein Schnelligkeits-Modul erhöht die Angriffsgeschwindigkeit des Geschützes, und ein Zulassungslisten-Modul verhindert, dass es auf zugelassene Spieler schießt. Die Module können mit einem Rechtsklick auf das Geschütz eingefügt oder ausgewechselt werden, und mithilfe eines Universellen Blockmodifizierers entfernt werden. Um das Geschütz zu entfernen, schleich-rechtsklicke es.
@@ -579,6 +580,7 @@ module.securitycraft:rift_stabilizer.redstoneModule.description=Ein Redstone-Mod
 module.securitycraft:rift_stabilizer.smartModule.description=Ein schlaues Modul in einem Riss-Stabilisierer lässt dich einstellen, welche Teleportationsarten der Riss-Stabilisierer erkennen kann.
 module.securitycraft:rift_stabilizer.whitelistModule.description=Ein Zulassungslisten-Modul in einem Riss-Stabilisierer erlaubt es zugelassenen Spielern, sich in die/aus der Nähe des Blockes zu teleportieren.
 module.securitycraft:scannerDoor.whitelistModule.description=Ein Zulassungslisten-Modul in einer Scannertür erlaubt zugelassenen Spielern, die Scannertür zu nutzen, wenn sie nicht der Besitzer sind.
+module.securitycraft:scanner_trapdoor.whitelistModule.description=Ein Zulassungslisten-Modul in einer Scannerfalltür erlaubt zugelassenen Spielern, die Scannerfalltür zu nutzen, wenn sie nicht der Besitzer sind.
 module.securitycraft:secret_sign.whitelistModule.description=Ein Zulassungslisten-Modul in einem Geheimen Schild erlaubt es zugelassenen Spielern, dessen Text zu sehen und mit dem Schild zu interagieren.
 module.securitycraft:securityCamera.redstoneModule.description=Ein Redstone-Modul in einer Kamera lässt diese ein Redstonesignal abgeben, wenn angeschaltet.
 module.securitycraft:securityCamera.whitelistModule.description=Ein Zulassungslisten-Modul erlaubt zugelassenen Spielern die Kamera anzuschauen.
@@ -598,7 +600,7 @@ option.generic.signalLength.description=Wie lange soll das Redstonesignal bei er
 option.generic.signalLength=Signallänge: #
 option.generic.smartModuleCooldown.description=Wie lange können Spieler keinen Code mehr eingeben, nachdem ein falscher Code eingegeben wurde? (In Ticks, 20 Ticks = 1 Sekunde; benötigt ein schlaues Modul)
 option.generic.smartModuleCooldown=Abklingzeit: #
-option.generic.viewActivated.maximumDistance.description="Von wie vielen Blöcken weit weg ist es maximal möglich, diesen Block zu aktivieren?
+option.generic.viewActivated.maximumDistance.description=Von wie vielen Blöcken weit weg ist es maximal möglich, diesen Block zu aktivieren?
 option.generic.viewActivated.maximumDistance=Maximale Distanz: #
 option.securitycraft:alarm.range.description=Wie viele Blöcke weit kann der Alarm-Sound gehört werden?
 option.securitycraft:alarm.range=Reichweite: #
@@ -620,7 +622,7 @@ option.securitycraft:floor_trap.disappearInstantlyInChains.description=Soll dies
 option.securitycraft:floor_trap.disappearInstantlyInChains=Sofort verschwinden: #
 option.securitycraft:floor_trap.reappearDelay.description=Wie viele Ticks dauert es, bis die Falle wieder auftaucht? (20 Ticks = 1 Sekunde)
 option.securitycraft:floor_trap.reappearDelay=Zeit zum Wieder-Auftauchen: #
-option.securitycraft:floor_trap.targetingMode.description": "Welche Entitäten können diese Falle auslösen?",
+option.securitycraft:floor_trap.targetingMode.description=Welche Entitäten können diese Falle auslösen?
 option.securitycraft:floor_trap.targetingMode=Zielmodus: #
 option.securitycraft:ims.range.description=Von wie vielen Blöcken aus kann das I.M.S. mögliche Ziele aufstöbern?
 option.securitycraft:ims.range=Reichweite: #
@@ -676,6 +678,10 @@ option.securitycraft:scannerDoor.sendMessage.description=Sendet diese Scannertü
 option.securitycraft:scannerDoor.sendMessage=Nachricht: #
 option.securitycraft:scannerDoor.signalLength.description=Wie lange soll die Tür offen bleiben? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, damit sich die Tür nicht schließt)
 option.securitycraft:scannerDoor.signalLength=Dauer zum Schließen: #
+option.securitycraft:scanner_trapdoor.sendMessage.description=Sendet diese Scannerfalltür eine Nachricht, wenn sie aktiviert wird?
+option.securitycraft:scanner_trapdoor.sendMessage=Nachricht: #
+option.securitycraft:scanner_trapdoor.signalLength.description=Wie lange soll die Falltür offen bleiben? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, damit sich die Falltür nicht schließt)
+option.securitycraft:scanner_trapdoor.signalLength=Dauer zum Schließen: #
 option.securitycraft:secret_sign.isSecret.description=Soll der Text des geheimen Schildes nur für den Besitzer und zugelassene Spieler sichtbar sein?
 option.securitycraft:secret_sign.isSecret=Geheim: #
 option.securitycraft:securityCamera.customRotation.description=Benutzerdefinierter, fester Rotationswinkel
@@ -1010,6 +1016,7 @@ tile.securitycraft:retinalScanner.name=Augenscanner
 tile.securitycraft:rift_stabilizer.name=Riss-Stabilisierer
 tile.securitycraft:sandMine.name=Sandmine
 tile.securitycraft:scannerDoor.name=Scannertür
+tile.securitycraft:scanner_trapdoor.name=Scannerfalltür
 tile.securitycraft:secret_sign.name=Geheimes Schild
 tile.securitycraft:securityCamera.name=Überwachungskamera
 tile.securitycraft:sonic_security_system.name=Schallsicherheitssystem

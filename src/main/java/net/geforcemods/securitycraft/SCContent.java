@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.blocks.KeypadTrapDoorBlock;
+import net.geforcemods.securitycraft.blocks.ScannerTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.mines.MineBlock;
 import net.geforcemods.securitycraft.items.LensItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -385,6 +386,7 @@ public class SCContent {
 	public static Block riftStabilizer;
 	public static Block sandMine;
 	public static Block scannerDoor;
+	public static ScannerTrapDoorBlock scannerTrapdoor;
 	public static Block secretSignStanding;
 	public static Block secretSignWall;
 	public static Block securityCamera;

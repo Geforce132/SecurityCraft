@@ -41,6 +41,7 @@ import net.geforcemods.securitycraft.blocks.ProtectoBlock;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
+import net.geforcemods.securitycraft.blocks.ScannerTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretWallSignBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
@@ -305,11 +306,12 @@ public class SetupHandler {
 		SCContent.reinforcedBlackGlazedTerracotta = new ReinforcedGlazedTerracottaBlock(EnumDyeColor.BLACK, Blocks.BLACK_GLAZED_TERRACOTTA).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_black_glazed_terracotta").setTranslationKey("securitycraft:reinforced_black_glazed_terracotta");
 		SCContent.riftStabilizer = new RiftStabilizerBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("rift_stabilizer").setTranslationKey("securitycraft:rift_stabilizer");
 		SCContent.displayCase = new DisplayCaseBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("display_case").setTranslationKey("securitycraft:display_case");
-		SCContent.keypadTrapdoor = (KeypadTrapDoorBlock) new KeypadTrapDoorBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("keypad_trapdoor").setTranslationKey("securitycraft:keypad_trapdoor");
+		SCContent.keypadTrapdoor = (KeypadTrapDoorBlock) new KeypadTrapDoorBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("keypad_trapdoor").setTranslationKey("securitycraft:keypad_trapdoor");
 		SCContent.reinforcedLadder = new ReinforcedLadderBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_ladder").setTranslationKey("securitycraft:reinforced_ladder");
 		SCContent.floorTrap = new FloorTrapBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setHardness(-1.0F).setRegistryName("floor_trap").setTranslationKey("securitycraft:floor_trap");
 		SCContent.keycardLockFloorCeilingBlock = new KeycardLockFloorCeilingBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setBlockUnbreakable().setRegistryName("floor_ceiling_keycard_lock").setTranslationKey("securitycraft:keycard_lock");
 		SCContent.keycardLockWallBlock = new KeycardLockWallBlock(Material.ROCK).setBlockUnbreakable().setRegistryName("wall_keycard_lock").setTranslationKey("securitycraft:keycard_lock");
+		SCContent.scannerTrapdoor = (ScannerTrapDoorBlock) new ScannerTrapDoorBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("scanner_trapdoor").setTranslationKey("securitycraft:scanner_trapdoor");
 	}
 
 	public static void setupMines() {

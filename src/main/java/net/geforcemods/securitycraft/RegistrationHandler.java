@@ -45,6 +45,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedPistonBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ScannerDoorBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ScannerTrapdoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
@@ -334,6 +335,7 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.floorTrap);
 		event.getRegistry().register(SCContent.keycardLockFloorCeilingBlock);
 		event.getRegistry().register(SCContent.keycardLockWallBlock);
+		registerBlock(event, SCContent.scannerTrapdoor);
 
 		//block mines
 		registerBlockMine(event, SCContent.stoneMine);
@@ -496,6 +498,7 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(KeypadTrapdoorBlockEntity.class, new ResourceLocation("securitycraft:keypad_trapdoor"));
 		GameRegistry.registerTileEntity(FloorTrapBlockEntity.class, new ResourceLocation("securitycraft:floor_trap"));
 		GameRegistry.registerTileEntity(KeycardLockBlockEntity.class, new ResourceLocation("securitycraft:keycard_lock"));
+		GameRegistry.registerTileEntity(ScannerTrapdoorBlockEntity.class, new ResourceLocation("securitycraft:scanner_trapdoor"));
 	}
 
 	@SubscribeEvent
@@ -903,6 +906,7 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.keypadTrapdoor, 0, "keypad_trapdoor");
 		registerInventoryModel(SCContent.reinforcedLadder, 0, "reinforced_ladder");
 		registerInventoryModel(SCContent.floorTrap, 0, "floor_trap");
+		registerInventoryModel(SCContent.scannerTrapdoor, 0, "scanner_trapdoor");
 
 		//items
 		registerInventoryModel(SCContent.codebreaker, 0, "codebreaker");

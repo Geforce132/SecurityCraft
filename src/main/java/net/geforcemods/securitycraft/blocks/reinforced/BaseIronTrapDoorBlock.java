@@ -1,5 +1,8 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Random;
+
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -38,9 +41,30 @@ public class BaseIronTrapDoorBlock extends BlockTrapDoor implements ITileEntityP
 	}
 
 	@Override
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
+		if (state.getValue(OPEN)) {
+			world.setBlockState(pos, state.withProperty(OPEN, false));
+			playSound(null, world, pos, false);
+		}
+	}
+
+	//here for making it accessible without AT
+	@Override
+	public void playSound(EntityPlayer player, World level, BlockPos pos, boolean isOpened) {
+		super.playSound(player, level, pos, isOpened);
+	}
+
+	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if (placer instanceof EntityPlayer)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
+
+		if (!world.isRemote && stack.hasDisplayName()) {
+			TileEntity te = world.getTileEntity(pos);
+
+			if (te instanceof INameSetter)
+				((INameSetter) te).setCustomName(stack.getDisplayName());
+		}
 	}
 
 	@Override
