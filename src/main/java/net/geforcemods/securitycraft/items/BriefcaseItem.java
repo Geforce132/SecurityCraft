@@ -11,8 +11,10 @@ import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
@@ -48,6 +50,11 @@ public class BriefcaseItem extends ColorableItem {
 
 			player.openGui(SecurityCraft.instance, stack.getTagCompound().hasKey("passcode") ? Screens.BRIEFCASE_INSERT_CODE.ordinal() : Screens.BRIEFCASE_CODE_SETUP.ordinal(), level, (int) player.posX, (int) player.posY, (int) player.posZ);
 		}
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return enchantment == Enchantments.VANISHING_CURSE;
 	}
 
 	@Override
