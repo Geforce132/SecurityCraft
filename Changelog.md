@@ -14,6 +14,7 @@
 - New: The redstone signal length of the Inventory Scanner and Laser Block can now be changed
 - New: Keycard Lock. A miniature Keycard Reader that can only read cards, and not link them
 - New: Scanner Trapdoor
+- New: The Briefcase can now be enchanted with Curse of Vanishing
 - Change: The recipe for the Laser Block now uses 4 glass panes in total
 - Change: You can no longer break the code of passcode blocks/briefcases that you own
 - Change: Universal Block Reinforcers can no longer be enchanted with Mending. Old reinforcers lose their Mending enchantment when used. This is to make it more enticing to upgrade to a level 3 reinforcer. In the future, this idea will be expanded upon.

@@ -16,6 +16,8 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.CauldronBlock;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -63,6 +65,11 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 
 		handle(stack, world, player);
 		return ActionResult.consume(stack);
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return enchantment == Enchantments.VANISHING_CURSE;
 	}
 
 	private void handle(ItemStack stack, World level, PlayerEntity player) {
