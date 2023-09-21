@@ -684,7 +684,7 @@
 	"gui.securitycraft:projector.height": "Height: %s",
 	"gui.securitycraft:projector.height.description": "The height of the projection.",
 	"gui.securitycraft:projector.horizontal": "Horizontal projection",
-	"gui.securitycraft:projector.isOverridingBlocks.no": "This projector will only project blocks if there is no phyiscal block at the position of the projection.",
+	"gui.securitycraft:projector.isOverridingBlocks.no": "This projector will only project blocks if there is no physical block at the position of the projection.",
 	"gui.securitycraft:projector.isOverridingBlocks.yes": "This projector will project blocks disregarding any physical blocks in the world. Warning: This may lead to flashy z-fighting!",
 	"gui.securitycraft:projector.offset": "Offset: %s",
 	"gui.securitycraft:projector.offset.description": "The horizontal offset of the projection.",

@@ -30,6 +30,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
@@ -51,6 +53,11 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 
 		handle(stack, level, player);
 		return InteractionResultHolder.consume(stack);
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return enchantment == Enchantments.VANISHING_CURSE;
 	}
 
 	private void handle(ItemStack stack, Level level, Player player) {
