@@ -36,7 +36,7 @@ sourceSets.main.resources {
 }
 
 minecraft {
-	mappings channel: 'parchment', version: '2023.08.06-1.20.1'
+	mappings channel: 'parchment', version: '2023.09.03-1.20.1'
 	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 	copyIdeResources = true
 
