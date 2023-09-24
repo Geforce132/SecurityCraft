@@ -203,6 +203,6 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 	}
 
 	private void updateInvertButtonTooltip() {
-		invertButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft.sonic_security_system.invert.tooltip_" + (be.disablesBlocksWhenTuneIsPlayed() ? "inverted" : "default"))));
+		invertButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:sonic_security_system.invert.tooltip_" + (be.disablesBlocksWhenTuneIsPlayed() ? "inverted" : "default"))));
 	}
 }
