@@ -73,7 +73,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	public CustomizeBlockScreen(CustomizeBlockMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 		moduleInv = container.moduleInv;
-		block = menu.moduleInv.getTileEntity().getBlockState().getBlock();
+		block = menu.moduleInv.getBlockEntity().getBlockState().getBlock();
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
 		container.addSlotListener(this);
 
@@ -99,7 +99,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
 
-		TileEntity te = moduleInv.getTileEntity();
+		TileEntity te = moduleInv.getBlockEntity();
 
 		if (te instanceof ICustomizable) {
 			ICustomizable customizableTe = (ICustomizable) te;
@@ -223,7 +223,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			moduleInv.insertModule(moduleInv.getModule(moduleType), true);
 		}
 
-		SecurityCraft.channel.sendToServer(new ToggleModule(moduleInv.getTileEntity().getBlockPos(), moduleType));
+		SecurityCraft.channel.sendToServer(new ToggleModule(moduleInv.getBlockEntity().getBlockPos(), moduleType));
 	}
 
 	protected void optionButtonClicked(Button button) {
@@ -231,13 +231,13 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			if (button != optionButtons[i])
 				continue;
 
-			Option<?> tempOption = ((ICustomizable) moduleInv.getTileEntity()).customOptions()[i]; //safe cast, as this method is only called when it can be casted
+			Option<?> tempOption = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[i]; //safe cast, as this method is only called when it can be casted
 
 			tempOption.toggle();
 			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 			button.setMessage(getOptionButtonTitle(tempOption));
 			updateOptionTooltip(i);
-			SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getTileEntity().getBlockPos().getX(), moduleInv.getTileEntity().getBlockPos().getY(), moduleInv.getTileEntity().getBlockPos().getZ(), i));
+			SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getBlockEntity().getBlockPos().getX(), moduleInv.getBlockEntity().getBlockPos().getY(), moduleInv.getBlockEntity().getBlockPos().getZ(), i));
 			return;
 		}
 	}
@@ -253,7 +253,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	}
 
 	private TranslationTextComponent getOptionDescription(int optionId) {
-		Option<?> option = ((ICustomizable) moduleInv.getTileEntity()).customOptions()[optionId];
+		Option<?> option = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[optionId];
 
 		return Utils.localize("gui.securitycraft:customize.tooltip", new TranslationTextComponent(option.getDescriptionKey(block)), new TranslationTextComponent("gui.securitycraft:customize.currentSetting", getValueText(option)));
 	}

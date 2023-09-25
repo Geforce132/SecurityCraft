@@ -207,10 +207,10 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 				positionsToUpdate.add(modifiedPos);
 			}
 
-			TileEntity be = level.getBlockEntity(modifiedPos);
+			TileEntity te = level.getBlockEntity(modifiedPos);
 
-			if (be instanceof LaserBlockBlockEntity) {
-				LaserBlockBlockEntity otherLaser = (LaserBlockBlockEntity) be;
+			if (te instanceof LaserBlockBlockEntity) {
+				LaserBlockBlockEntity otherLaser = (LaserBlockBlockEntity) te;
 
 				otherLaser.getLensContainer().setItemExclusively(direction.getOpposite().ordinal(), lenses.getItem(direction.ordinal()));
 

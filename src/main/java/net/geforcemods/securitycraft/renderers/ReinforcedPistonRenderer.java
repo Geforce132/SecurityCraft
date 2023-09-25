@@ -31,7 +31,7 @@ public class ReinforcedPistonRenderer extends TileEntityRenderer<ReinforcedPisto
 		World world = te.getLevel();
 
 		if (world != null) {
-			BlockPos oppositePos = te.getBlockPos().relative(te.getMotionDirection().getOpposite());
+			BlockPos oppositePos = te.getBlockPos().relative(te.getMovementDirection().getOpposite());
 			BlockState state = te.getPistonState();
 
 			if (!state.isAir()) {
@@ -43,10 +43,10 @@ public class ReinforcedPistonRenderer extends TileEntityRenderer<ReinforcedPisto
 					state = state.setValue(PistonHeadBlock.SHORT, te.getProgress(partialTicks) <= 0.5F);
 					renderBlocks(oppositePos, state, matrix, buffer, world, false, combinedOverlay);
 				}
-				else if (te.shouldPistonHeadBeRendered() && !te.isExtending()) {
+				else if (te.isSourcePiston() && !te.isExtending()) {
 					PistonType pistonType = state.is(SCContent.REINFORCED_STICKY_PISTON.get()) ? PistonType.STICKY : PistonType.DEFAULT;
 					BlockState headState = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.TYPE, pistonType).setValue(DirectionalBlock.FACING, state.getValue(DirectionalBlock.FACING));
-					BlockPos renderPos = oppositePos.relative(te.getMotionDirection());
+					BlockPos renderPos = oppositePos.relative(te.getMovementDirection());
 
 					headState = headState.setValue(PistonHeadBlock.SHORT, te.getProgress(partialTicks) >= 0.5F);
 					renderBlocks(oppositePos, headState, matrix, buffer, world, false, combinedOverlay);

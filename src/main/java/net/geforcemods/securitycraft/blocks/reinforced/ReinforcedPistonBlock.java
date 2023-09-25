@@ -138,7 +138,7 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 			TileEntity pistonTE = world.getBlockEntity(pos.relative(direction));
 
 			if (pistonTE instanceof ReinforcedPistonBlockEntity)
-				((ReinforcedPistonBlockEntity) pistonTE).clearPistonTileEntity();
+				((ReinforcedPistonBlockEntity) pistonTE).finalTick();
 
 			TileEntity te = world.getBlockEntity(pos);
 			BlockState movingPiston = SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(MovingPistonBlock.FACING, direction).setValue(MovingPistonBlock.TYPE, this.isSticky ? PistonType.STICKY : PistonType.DEFAULT);
@@ -160,7 +160,7 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 						ReinforcedPistonBlockEntity pistonTe = (ReinforcedPistonBlockEntity) offsetTe;
 
 						if (pistonTe.getFacing() == direction && pistonTe.isExtending()) {
-							pistonTe.clearPistonTileEntity();
+							pistonTe.finalTick();
 							flag = true;
 						}
 					}

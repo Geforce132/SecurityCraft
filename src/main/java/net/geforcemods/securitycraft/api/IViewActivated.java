@@ -21,23 +21,23 @@ public interface IViewActivated {
 	/**
 	 * Performs checks to determine whether an entity is looking at the tile entity
 	 *
-	 * @param world The level of the tile entity
+	 * @param level The level of the tile entity
 	 * @param pos The position of the tile entity
 	 */
-	default void checkView(World world, BlockPos pos) {
-		if (!world.isClientSide) {
+	default void checkView(World level, BlockPos pos) {
+		if (!level.isClientSide) {
 			if (getViewCooldown() > 0) {
 				setViewCooldown(getViewCooldown() - 1);
 				return;
 			}
 
 			double maximumDistance = getMaximumDistance();
-			List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(pos).inflate(maximumDistance), e -> !e.isSpectator() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof PlayerEntity));
+			List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(pos).inflate(maximumDistance), e -> !e.isSpectator() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof PlayerEntity));
 
 			for (LivingEntity entity : entities) {
 				double eyeHeight = entity.getEyeHeight();
 				Vector3d lookVec = new Vector3d(entity.getX() + (entity.getLookAngle().x * maximumDistance), (eyeHeight + entity.getY()) + (entity.getLookAngle().y * maximumDistance), entity.getZ() + (entity.getLookAngle().z * maximumDistance));
-				BlockRayTraceResult rtr = world.clip(new RayTraceContext(new Vector3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
+				BlockRayTraceResult rtr = level.clip(new RayTraceContext(new Vector3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
 
 				if (rtr != null && rtr.getBlockPos().getX() == pos.getX() && rtr.getBlockPos().getY() == pos.getY() && rtr.getBlockPos().getZ() == pos.getZ() && onEntityViewed(entity, rtr))
 					setViewCooldown(getDefaultViewCooldown());

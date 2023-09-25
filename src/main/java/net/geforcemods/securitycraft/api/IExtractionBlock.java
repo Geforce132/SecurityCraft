@@ -21,13 +21,13 @@ public interface IExtractionBlock {
 	/**
 	 * The protected block uses this to check if this block can extract items
 	 *
-	 * @param te The tile entity of the protected block
-	 * @param world The world that the protected block is in
+	 * @param be The tile entity of the protected block
+	 * @param level The world that the protected block is in
 	 * @param pos The position of the block that is trying to extract items
 	 * @param state The state of the block that is trying to extract items
 	 * @return true if extraction is possible, false otherwise
 	 */
-	public boolean canExtract(IOwnable te, World world, BlockPos pos, BlockState state);
+	public boolean canExtract(IOwnable be, World level, BlockPos pos, BlockState state);
 
 	/**
 	 * @return The block that is trying to extract from a passcode-protected chest/furnace

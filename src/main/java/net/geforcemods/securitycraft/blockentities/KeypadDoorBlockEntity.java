@@ -148,17 +148,17 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	}
 
 	public void runForOtherHalf(Consumer<KeypadDoorBlockEntity> action) {
-		TileEntity te = null;
+		TileEntity be = null;
 
 		if (level == null) //Happens when loading the BE, in that case running the same code for the other half is unnecessary
 			return;
 
 		if (getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
-			te = level.getBlockEntity(worldPosition.above());
+			be = level.getBlockEntity(worldPosition.above());
 		else if (getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER)
-			te = level.getBlockEntity(worldPosition.below());
+			be = level.getBlockEntity(worldPosition.below());
 
-		if (te instanceof KeypadDoorBlockEntity)
-			action.accept((KeypadDoorBlockEntity) te);
+		if (be instanceof KeypadDoorBlockEntity)
+			action.accept((KeypadDoorBlockEntity) be);
 	}
 }

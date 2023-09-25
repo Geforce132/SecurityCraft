@@ -230,18 +230,18 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 		if (module.isEmpty() || !(module.getItem() instanceof ModuleItem))
 			return;
 
-		KeypadChestBlockEntity offsetTe = findOther();
+		KeypadChestBlockEntity offsetBe = findOther();
 
-		if (offsetTe != null) {
+		if (offsetBe != null) {
 			ModuleType moduleType = ((ModuleItem) module.getItem()).getModuleType();
 
-			if (toggled && offsetTe.isModuleEnabled(moduleType) != remove || !toggled && offsetTe.hasModule(moduleType) != remove)
+			if (toggled && offsetBe.isModuleEnabled(moduleType) != remove || !toggled && offsetBe.hasModule(moduleType) != remove)
 				return;
 
 			if (remove)
-				offsetTe.removeModule(moduleType, toggled);
+				offsetBe.removeModule(moduleType, toggled);
 			else
-				offsetTe.insertModule(module, toggled);
+				offsetBe.insertModule(module, toggled);
 		}
 	}
 

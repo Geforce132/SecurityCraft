@@ -60,12 +60,12 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			TileEntity tile = world.getBlockEntity(pos);
 
 			if (!world.isClientSide && tile instanceof InventoryScannerBlockEntity) {
-				InventoryScannerBlockEntity te = (InventoryScannerBlockEntity) tile;
+				InventoryScannerBlockEntity be = (InventoryScannerBlockEntity) tile;
 
-				if (te.isDisabled())
+				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
+					NetworkHooks.openGui((ServerPlayerEntity) player, be, pos);
 			}
 
 			return ActionResultType.SUCCESS;

@@ -49,7 +49,7 @@ public class RefreshDisguisableModel {
 			else
 				te.removeModule(ModuleType.DISGUISE, toggled);
 
-			ClientHandler.refreshModelData(te.getTileEntity());
+			ClientHandler.refreshModelData(te.getBlockEntity());
 		}
 	}
 }

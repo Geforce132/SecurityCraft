@@ -61,8 +61,8 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 	private int openCount;
 
-	protected AbstractKeypadFurnaceBlockEntity(TileEntityType<?> teType, IRecipeType<? extends AbstractCookingRecipe> recipeType) {
-		super(teType, recipeType);
+	protected AbstractKeypadFurnaceBlockEntity(TileEntityType<?> beType, IRecipeType<? extends AbstractCookingRecipe> recipeType) {
+		super(beType, recipeType);
 	}
 
 	@Override

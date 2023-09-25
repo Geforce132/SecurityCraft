@@ -33,9 +33,9 @@ public interface IPasscodeConvertible {
 	 * Converts the original block to the passcode-protected one
 	 *
 	 * @param player The player who initiated the conversion
-	 * @param world The world in which the conversion takes place
+	 * @param level The world in which the conversion takes place
 	 * @param pos The position the conversaion takes place at
 	 * @return true if the conversion was successful, false otherwise
 	 */
-	public boolean convert(PlayerEntity player, World world, BlockPos pos);
+	public boolean convert(PlayerEntity player, World level, BlockPos pos);
 }

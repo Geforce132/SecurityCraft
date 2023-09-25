@@ -137,6 +137,7 @@ public class SecurityCraft {
 				if (field.isAnnotationPresent(Reinforced.class)) {
 					Block block = ((RegistryObject<Block>) field.get(null)).get();
 					IReinforcedBlock rb = (IReinforcedBlock) block;
+
 					IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.put(rb.getVanillaBlock(), block);
 					IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.put(block, rb.getVanillaBlock());
 				}

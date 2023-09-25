@@ -23,15 +23,15 @@ import net.minecraft.world.World;
  */
 public interface IDoorActivator {
 	/**
-	 * @param world The world in which the check takes place
+	 * @param level The world in which the check takes place
 	 * @param pos The position of the block that could power the doors
 	 * @param state The state of the block that could power the doors
-	 * @param te The tile entity of the block that could power the doors, if it has one. null if there is no tile entity present
+	 * @param be The tile entity of the block that could power the doors, if it has one. null if there is no tile entity present
 	 * @param direction The direction the block that could power the doors is in, relative to the doors
 	 * @param distance The amount of blocks that the block that could power the doors is away from the door
 	 * @return true if the door should get powered, false otherwise
 	 */
-	public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te, Direction direction, int distance);
+	public boolean isPowering(World level, BlockPos pos, BlockState state, TileEntity be, Direction direction, int distance);
 
 	/**
 	 * @return The block(s) that this IDoorActivator defines as being able to activate the doors

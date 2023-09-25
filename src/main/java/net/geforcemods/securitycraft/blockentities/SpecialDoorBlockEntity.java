@@ -28,17 +28,17 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 	}
 
 	@Override
-	public void onOwnerChanged(BlockState state, World world, BlockPos pos, PlayerEntity player) {
-		TileEntity te;
+	public void onOwnerChanged(BlockState state, World level, BlockPos pos, PlayerEntity player) {
+		TileEntity be;
 
 		pos = state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? pos.below() : pos.above();
-		te = world.getBlockEntity(pos);
+		be = level.getBlockEntity(pos);
 
-		if (te instanceof SpecialDoorBlockEntity && isLinkedWith(this, (SpecialDoorBlockEntity) te)) {
-			((SpecialDoorBlockEntity) te).setOwner(getOwner().getUUID(), getOwner().getName());
+		if (be instanceof SpecialDoorBlockEntity && isLinkedWith(this, (SpecialDoorBlockEntity) be)) {
+			((SpecialDoorBlockEntity) be).setOwner(getOwner().getUUID(), getOwner().getName());
 
-			if (!world.isClientSide)
-				world.getServer().getPlayerList().broadcastAll(te.getUpdatePacket());
+			if (!level.isClientSide)
+				level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
 		}
 	}
 

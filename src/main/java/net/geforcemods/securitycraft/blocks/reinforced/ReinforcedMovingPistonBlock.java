@@ -37,7 +37,7 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 			TileEntity te = world.getBlockEntity(pos);
 
 			if (te instanceof ReinforcedPistonBlockEntity)
-				((ReinforcedPistonBlockEntity) te).clearPistonTileEntity();
+				((ReinforcedPistonBlockEntity) te).finalTick();
 		}
 	}
 
