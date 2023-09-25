@@ -23,10 +23,10 @@ public class FakeLiquidBucketItem extends BucketItem {
 			public ItemStack execute(IBlockSource source, ItemStack stack) {
 				BucketItem bucket = (BucketItem) stack.getItem();
 				BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
-				World world = source.getLevel();
+				World level = source.getLevel();
 
-				if (bucket.emptyBucket(null, world, pos, null)) {
-					bucket.checkExtraContent(world, stack, pos);
+				if (bucket.emptyBucket(null, level, pos, null)) {
+					bucket.checkExtraContent(level, stack, pos);
 					return new ItemStack(Items.BUCKET);
 				}
 				else

@@ -402,7 +402,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onOwnership(OwnershipEvent event) {
-		TileEntity te = event.getWorld().getBlockEntity(event.getPos());
+		TileEntity te = event.getLevel().getBlockEntity(event.getPos());
 
 		if (te instanceof IOwnable) {
 			String name = event.getPlayer().getName().getString();

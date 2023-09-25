@@ -43,7 +43,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 * Initializes the camera storage
 	 */
 	@Inject(method = "<init>", at = @At(value = "TAIL"))
-	public void securitycraft$onInit(ClientWorld world, int viewDistance, CallbackInfo ci) {
+	public void securitycraft$onInit(ClientWorld level, int viewDistance, CallbackInfo ci) {
 		CameraController.setCameraStorage(newStorage(Math.max(2, viewDistance) + 3));
 	}
 

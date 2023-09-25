@@ -9,8 +9,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class KeypadBlastFurnaceMenu extends AbstractKeypadFurnaceMenu {
-	public KeypadBlastFurnaceMenu(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
-		this(windowId, inventory, (AbstractKeypadFurnaceBlockEntity) world.getBlockEntity(pos));
+	public KeypadBlastFurnaceMenu(int windowId, World level, BlockPos pos, PlayerInventory inventory) {
+		this(windowId, inventory, (AbstractKeypadFurnaceBlockEntity) level.getBlockEntity(pos));
 	}
 
 	public KeypadBlastFurnaceMenu(int windowId, PlayerInventory inventory, AbstractKeypadFurnaceBlockEntity be) {

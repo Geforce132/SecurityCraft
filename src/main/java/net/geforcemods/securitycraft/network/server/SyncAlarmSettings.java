@@ -39,10 +39,10 @@ public class SyncAlarmSettings {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		TileEntity tile = ctx.get().getSender().level.getBlockEntity(pos);
+		TileEntity te = ctx.get().getSender().level.getBlockEntity(pos);
 
-		if (tile instanceof AlarmBlockEntity) {
-			AlarmBlockEntity be = (AlarmBlockEntity) tile;
+		if (te instanceof AlarmBlockEntity) {
+			AlarmBlockEntity be = (AlarmBlockEntity) te;
 
 			if (be.isOwnedBy(ctx.get().getSender())) {
 				if (!soundEvent.equals(be.getSound().location))

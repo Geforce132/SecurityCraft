@@ -49,16 +49,16 @@ public class SyncKeycardSettings {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		PlayerEntity player = ctx.get().getSender();
-		TileEntity tile = player.level.getBlockEntity(pos);
+		TileEntity te = player.level.getBlockEntity(pos);
 
-		if (tile instanceof KeycardReaderBlockEntity) {
-			KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;
-			boolean isOwner = te.isOwnedBy(player);
+		if (te instanceof KeycardReaderBlockEntity) {
+			KeycardReaderBlockEntity be = (KeycardReaderBlockEntity) te;
+			boolean isOwner = be.isOwnedBy(player);
 
-			if (isOwner || te.isAllowed(player)) {
+			if (isOwner || be.isAllowed(player)) {
 				if (isOwner) {
-					te.setAcceptedLevels(acceptedLevels);
-					te.setSignature(signature);
+					be.setAcceptedLevels(acceptedLevels);
+					be.setSignature(signature);
 				}
 
 				if (link) {

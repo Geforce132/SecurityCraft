@@ -13,15 +13,15 @@ import net.minecraft.world.World;
 public class EntityUtils {
 	private EntityUtils() {}
 
-	public static boolean doesEntityOwn(Entity entity, World world, BlockPos pos) {
+	public static boolean doesEntityOwn(Entity entity, World level, BlockPos pos) {
 		if (entity instanceof PlayerEntity)
-			return doesPlayerOwn((PlayerEntity) entity, world, pos);
+			return doesPlayerOwn((PlayerEntity) entity, level, pos);
 		else
 			return false;
 	}
 
-	public static boolean doesPlayerOwn(PlayerEntity player, World world, BlockPos pos) {
-		TileEntity te = world.getBlockEntity(pos);
+	public static boolean doesPlayerOwn(PlayerEntity player, World level, BlockPos pos) {
+		TileEntity te = level.getBlockEntity(pos);
 
 		return te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player);
 	}

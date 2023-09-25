@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class KeypadBlastFurnaceScreen extends AbstractFurnaceScreen<KeypadBlastFurnaceMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/container/blast_furnace.png");
 
-	public KeypadBlastFurnaceScreen(KeypadBlastFurnaceMenu container, PlayerInventory inv, ITextComponent name) {
-		super(container, new BlastFurnaceRecipeGui(), inv, container.te.hasCustomName() ? container.te.getCustomName() : name, TEXTURE);
+	public KeypadBlastFurnaceScreen(KeypadBlastFurnaceMenu menu, PlayerInventory inv, ITextComponent title) {
+		super(menu, new BlastFurnaceRecipeGui(), inv, menu.be.hasCustomName() ? menu.be.getCustomName() : title, TEXTURE);
 	}
 }

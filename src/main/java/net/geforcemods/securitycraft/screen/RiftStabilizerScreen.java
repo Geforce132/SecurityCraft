@@ -47,19 +47,19 @@ public class RiftStabilizerScreen extends Screen {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(matrix);
+	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(GUI_TEXTURE);
-		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		super.render(matrix, mouseX, mouseY, partialTicks);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(pose, mouseX, mouseY, partialTicks);
 
 		if (toggleList != null)
-			toggleList.render(matrix, mouseX, mouseY, partialTicks);
+			toggleList.render(pose, mouseX, mouseY, partialTicks);
 
-		font.draw(matrix, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
-		font.draw(matrix, scrollListTitle, width / 2 - font.width(scrollListTitle) / 2, topPos + 31, 4210752);
-		ClientUtils.renderModuleInfo(matrix, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
+		font.draw(pose, scrollListTitle, width / 2 - font.width(scrollListTitle) / 2, topPos + 31, 4210752);
+		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override

@@ -31,11 +31,11 @@ public class ClearLoggerServer {
 		TileEntity te = player.level.getBlockEntity(pos);
 
 		if (te instanceof UsernameLoggerBlockEntity) {
-			UsernameLoggerBlockEntity logger = (UsernameLoggerBlockEntity) te;
+			UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) te;
 
-			if (logger.isOwnedBy(player)) {
-				logger.setPlayers(new String[100]);
-				logger.getLevel().sendBlockUpdated(logger.getBlockPos(), logger.getBlockState(), logger.getBlockState(), 2);
+			if (be.isOwnedBy(player)) {
+				be.setPlayers(new String[100]);
+				be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 2);
 			}
 		}
 	}

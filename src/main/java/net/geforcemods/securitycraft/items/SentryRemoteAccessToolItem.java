@@ -38,10 +38,10 @@ public class SentryRemoteAccessToolItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (!world.isClientSide)
+		if (!level.isClientSide)
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL));
 
 		return ActionResult.consume(stack);
@@ -49,17 +49,17 @@ public class SentryRemoteAccessToolItem extends Item {
 
 	@Override
 	public ActionResultType useOn(ItemUseContext ctx) {
-		World world = ctx.getLevel();
+		World level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 		PlayerEntity player = ctx.getPlayer();
-		List<Sentry> sentries = world.getEntitiesOfClass(Sentry.class, new AxisAlignedBB(pos));
+		List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AxisAlignedBB(pos));
 
 		if (!sentries.isEmpty()) {
 			Sentry sentry = sentries.get(0);
-			BlockPos pos2 = sentry.blockPosition();
+			BlockPos sentryPos = sentry.blockPosition();
 			ItemStack stack = ctx.getItemInHand();
 
-			if (!isSentryAdded(stack, pos2)) {
+			if (!isSentryAdded(stack, sentryPos)) {
 				int availSlot = getNextAvaliableSlot(stack);
 
 				if (availSlot == 0) {
@@ -75,21 +75,21 @@ public class SentryRemoteAccessToolItem extends Item {
 				if (stack.getTag() == null)
 					stack.setTag(new CompoundNBT());
 
-				stack.getTag().putIntArray(("sentry" + availSlot), BlockUtils.posToIntArray(pos2));
+				stack.getTag().putIntArray(("sentry" + availSlot), BlockUtils.posToIntArray(sentryPos));
 
-				if (!world.isClientSide)
+				if (!level.isClientSide)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new UpdateNBTTagOnClient(stack));
 
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.bound", pos2), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.bound", sentryPos), TextFormatting.GREEN);
 			}
 			else {
-				removeTagFromItemAndUpdate(stack, pos2, player);
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.unbound", pos2), TextFormatting.RED);
+				removeTagFromItemAndUpdate(stack, sentryPos, player);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.unbound", sentryPos), TextFormatting.RED);
 			}
 
 			return ActionResultType.SUCCESS;
 		}
-		else if (!world.isClientSide)
+		else if (!level.isClientSide)
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL));
 
 		return ActionResultType.SUCCESS;
@@ -97,7 +97,7 @@ public class SentryRemoteAccessToolItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, World level, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		if (stack.getTag() == null)
 			return;
 

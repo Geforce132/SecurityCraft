@@ -62,11 +62,11 @@ public class ProjectorScreen extends ContainerScreen<ProjectorMenu> implements I
 		TogglePictureButton toggleButton;
 		CallbackCheckbox overrideCheckbox;
 
-		projectionWidthSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.width", be.getProjectionWidth()), block, left, topPos + 57, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.width", ""), "", ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionWidth(), false, true, null, this::sliderReleased));
+		projectionWidthSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.width", be.getProjectionWidth()), block, left, topPos + 57, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.width", ""), "", ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionWidth(), false, true, null, this::applySliderValue));
 		projectionWidthSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionWidthSlider, Utils.localize("gui.securitycraft:projector.width.description"));
 
-		projectionHeightSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.height", be.getProjectionHeight()), block, left, topPos + 78, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.height", ""), "", ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionHeight(), false, true, null, this::sliderReleased));
+		projectionHeightSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.height", be.getProjectionHeight()), block, left, topPos + 78, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.height", ""), "", ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionHeight(), false, true, null, this::applySliderValue));
 		projectionHeightSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionHeightSlider, Utils.localize("gui.securitycraft:projector.height.description"));
 
@@ -74,16 +74,16 @@ public class ProjectorScreen extends ContainerScreen<ProjectorMenu> implements I
 			//show a different number so it makes sense within the world
 			if (be.isHorizontal())
 				slider.setMessage(new StringTextComponent("").append(slider.dispString).append(Integer.toString((int) Math.round(slider.sliderValue * (slider.maxValue - slider.minValue) + slider.minValue) - 16)));
-		}, this::sliderReleased));
+		}, this::applySliderValue));
 		projectionRangeSlider.setFGColor(0xE0E0E0);
 		hoverCheckers[id++] = new TextHoverChecker(projectionRangeSlider, Utils.localize("gui.securitycraft:projector.range.description"));
 
-		projectionOffsetSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.offset", be.getProjectionOffset()), block, left, topPos + 120, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), "", ProjectorBlockEntity.MIN_OFFSET, ProjectorBlockEntity.MAX_OFFSET, be.getProjectionOffset(), false, true, null, this::sliderReleased));
+		projectionOffsetSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.offset", be.getProjectionOffset()), block, left, topPos + 120, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), "", ProjectorBlockEntity.MIN_OFFSET, ProjectorBlockEntity.MAX_OFFSET, be.getProjectionOffset(), false, true, null, this::applySliderValue));
 		projectionOffsetSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionOffsetSlider, Utils.localize("gui.securitycraft:projector.offset.description"));
 
 		//@formatter:off
-		toggleButton = addButton(new TogglePictureButton(left + sliderWidth - 20, topPos + 36, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, 2, b -> {
+		toggleButton = addButton(new TogglePictureButton(left + sliderWidth - 20, topPos + 36, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, 2, slider -> {
 			//@formatter:on
 			be.setHorizontal(!be.isHorizontal());
 			projectionRangeSlider.updateSlider();
@@ -106,36 +106,36 @@ public class ProjectorScreen extends ContainerScreen<ProjectorMenu> implements I
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrix, mouseX, mouseY, partialTicks);
+	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
+		super.render(pose, mouseX, mouseY, partialTicks);
 
-		renderTooltip(matrix, mouseX, mouseY);
+		renderTooltip(pose, mouseX, mouseY);
 
 		for (TextHoverChecker thc : hoverCheckers) {
 			if (thc.checkHover(mouseX, mouseY)) {
-				renderTooltip(matrix, thc.getName(), mouseX, mouseY);
+				renderTooltip(pose, thc.getName(), mouseX, mouseY);
 				break;
 			}
 		}
 
 		if (slotHoverChecker.checkHover(mouseX, mouseY) && menu.be.isEmpty())
-			renderTooltip(matrix, slotHoverChecker.getName(), mouseX, mouseY);
+			renderTooltip(pose, slotHoverChecker.getName(), mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, title, imageWidth / 2 - font.width(title) / 2, 6, 0x404040);
+	protected void renderLabels(MatrixStack pose, int mouseX, int mouseY) {
+		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, 6, 0x404040);
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(matrix);
+	protected void renderBg(MatrixStack pose, float partialTicks, int mouseX, int mouseY) {
+		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
-		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 
 		if (stateSelector != null)
-			stateSelector.render(matrix, mouseX, mouseY, partialTicks);
+			stateSelector.render(pose, mouseX, mouseY, partialTicks);
 	}
 
 	@Override
@@ -181,7 +181,7 @@ public class ProjectorScreen extends ContainerScreen<ProjectorMenu> implements I
 		}
 	}
 
-	public void sliderReleased(NamedSlider slider) {
+	public void applySliderValue(NamedSlider slider) {
 		int data = 0;
 		DataType dataType = DataType.INVALID;
 

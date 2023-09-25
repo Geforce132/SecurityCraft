@@ -52,19 +52,19 @@ public class SentryModel extends EntityModel<Sentry> {
 		hair.addBox(0.0F, 0.0F, 0.0F, 6, 1, 6);
 	}
 
-	public void renderBase(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		base.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
+	public void renderBase(MatrixStack pose, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		base.render(pose, builder, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	@Override
-	public void renderToBuffer(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		head.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
-		neck.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
-		rightEye.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
-		body.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
-		nose.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
-		leftEye.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
-		hair.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
+	public void renderToBuffer(MatrixStack pose, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		head.render(pose, builder, packedLight, packedOverlay, red, green, blue, alpha);
+		neck.render(pose, builder, packedLight, packedOverlay, red, green, blue, alpha);
+		rightEye.render(pose, builder, packedLight, packedOverlay, red, green, blue, alpha);
+		body.render(pose, builder, packedLight, packedOverlay, red, green, blue, alpha);
+		nose.render(pose, builder, packedLight, packedOverlay, red, green, blue, alpha);
+		leftEye.render(pose, builder, packedLight, packedOverlay, red, green, blue, alpha);
+		hair.render(pose, builder, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	@Override

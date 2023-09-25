@@ -16,19 +16,19 @@ public class LevelUtils {
 	/**
 	 * Correctly schedules a task for execution on the main thread depending on if the provided world is client- or serverside
 	 */
-	public static void addScheduledTask(IWorld w, Runnable r) {
-		if (w.isClientSide())
-			Minecraft.getInstance().execute(r);
+	public static void addScheduledTask(IWorld level, Runnable runnable) {
+		if (level.isClientSide())
+			Minecraft.getInstance().execute(runnable);
 		else
-			ServerLifecycleHooks.getCurrentServer().execute(r);
+			ServerLifecycleHooks.getCurrentServer().execute(runnable);
 	}
 
-	public static void spawnLightning(World world, Vector3d pos, boolean effectOnly) {
-		world.addFreshEntity(createLightning(world, pos, effectOnly));
+	public static void spawnLightning(World level, Vector3d pos, boolean effectOnly) {
+		level.addFreshEntity(createLightning(level, pos, effectOnly));
 	}
 
-	public static LightningBoltEntity createLightning(World world, Vector3d pos, boolean effectOnly) {
-		LightningBoltEntity lightning = EntityType.LIGHTNING_BOLT.create(world);
+	public static LightningBoltEntity createLightning(World level, Vector3d pos, boolean effectOnly) {
+		LightningBoltEntity lightning = EntityType.LIGHTNING_BOLT.create(level);
 
 		lightning.moveTo(pos);
 		lightning.setVisualOnly(effectOnly);

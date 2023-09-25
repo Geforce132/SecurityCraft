@@ -48,7 +48,7 @@ public class TaserItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (!stack.isDamaged()) {
@@ -95,12 +95,12 @@ public class TaserItem extends Item {
 			Vector3d lookVec = player.getViewVector(1.0F).scale(range);
 			Vector3d endVec = startVec.add(lookVec);
 			AxisAlignedBB boundingBox = player.getBoundingBox().expandTowards(lookVec).inflate(1, 1, 1);
-			EntityRayTraceResult entityRayTraceResult = rayTraceEntities(player, startVec, endVec, boundingBox, LivingEntity.class::isInstance, range * range);
+			EntityRayTraceResult hitResult = rayTraceEntities(player, startVec, endVec, boundingBox, LivingEntity.class::isInstance, range * range);
 
-			world.playSound(player, player.blockPosition(), SCSounds.TASERFIRED.event, SoundCategory.PLAYERS, 1.0F, 1.0F);
+			level.playSound(player, player.blockPosition(), SCSounds.TASERFIRED.event, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
-			if (entityRayTraceResult != null) {
-				LivingEntity entity = (LivingEntity) entityRayTraceResult.getEntity();
+			if (hitResult != null) {
+				LivingEntity entity = (LivingEntity) hitResult.getEntity();
 				double damage = powered ? ConfigHandler.SERVER.poweredTaserDamage.get() : ConfigHandler.SERVER.taserDamage.get();
 
 				if ((damage == 0.0D || entity.hurt(CustomDamageSources.taser(player), (float) damage)) && !entity.isBlocking()) {

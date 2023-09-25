@@ -36,14 +36,14 @@ public class SetCameraPowered {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		PlayerEntity player = ctx.get().getSender();
-		World world = player.level;
-		TileEntity te = world.getBlockEntity(pos);
+		World level = player.level;
+		TileEntity be = level.getBlockEntity(pos);
 
-		if ((te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player)) || (te instanceof IModuleInventory && ((IModuleInventory) te).isAllowed(player))) {
-			BlockState state = world.getBlockState(pos);
+		if ((be instanceof IOwnable && ((IOwnable) be).isOwnedBy(player)) || (be instanceof IModuleInventory && ((IModuleInventory) be).isAllowed(player))) {
+			BlockState state = level.getBlockState(pos);
 
-			world.setBlockAndUpdate(pos, state.setValue(SecurityCameraBlock.POWERED, powered));
-			world.updateNeighborsAt(pos.relative(state.getValue(SecurityCameraBlock.FACING), -1), state.getBlock());
+			level.setBlockAndUpdate(pos, state.setValue(SecurityCameraBlock.POWERED, powered));
+			level.updateNeighborsAt(pos.relative(state.getValue(SecurityCameraBlock.FACING), -1), state.getBlock());
 		}
 	}
 }

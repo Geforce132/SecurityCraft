@@ -34,16 +34,16 @@ public class PortableTunePlayerItem extends Item {
 
 	@Override
 	public ActionResultType useOn(ItemUseContext ctx) {
-		World world = ctx.getLevel();
+		World level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 
-		if (world.getBlockState(pos).getBlock() == SCContent.SONIC_SECURITY_SYSTEM.get()) {
-			SonicSecuritySystemBlockEntity te = (SonicSecuritySystemBlockEntity) world.getBlockEntity(pos);
+		if (level.getBlockState(pos).getBlock() == SCContent.SONIC_SECURITY_SYSTEM.get()) {
+			SonicSecuritySystemBlockEntity be = (SonicSecuritySystemBlockEntity) level.getBlockEntity(pos);
 			PlayerEntity player = ctx.getPlayer();
 
-			if (te.isOwnedBy(player) || te.isAllowed(player)) {
-				if (te.getNumberOfNotes() > 0) {
-					te.saveNotes(ctx.getItemInHand().getOrCreateTag());
+			if (be.isOwnedBy(player) || be.isAllowed(player)) {
+				if (be.getNumberOfNotes() > 0) {
+					be.saveNotes(ctx.getItemInHand().getOrCreateTag());
 					player.displayClientMessage(Utils.localize("messages.securitycraft:portable_tune_player.tune_saved"), true);
 				}
 				else
@@ -57,10 +57,10 @@ public class PortableTunePlayerItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (!world.isClientSide) {
+		if (!level.isClientSide) {
 			CompoundNBT tag = stack.getOrCreateTag();
 			boolean isTunePlaying = SCEventHandler.PLAYING_TUNES.containsKey(player);
 
@@ -82,7 +82,7 @@ public class PortableTunePlayerItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, World level, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		if (!stack.hasTag())
 			return;
 

@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -55,7 +55,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 	private final ITextComponent levelMismatchInfo = Utils.localize("gui.securitycraft:keycard_reader.level_mismatch");
 	private final ITextComponent limitedInfo = Utils.localize("tooltip.securitycraft:keycard.limited_info");
 	private ITextComponent smartModuleTooltip;
-	private final KeycardReaderBlockEntity te;
+	private final KeycardReaderBlockEntity be;
 	private final boolean hasSmartModule;
 	private final boolean isOwner;
 	private boolean isExactLevel = true;
@@ -74,15 +74,15 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 	//fixes link and set uses buttons being on for a split second when opening the container
 	private boolean firstTick = true;
 
-	public KeycardReaderScreen(KeycardReaderMenu container, PlayerInventory inv, ITextComponent title) {
-		super(container, inv, title);
+	public KeycardReaderScreen(KeycardReaderMenu menu, PlayerInventory inv, ITextComponent title) {
+		super(menu, inv, title);
 
-		te = container.te;
-		previousSignature = MathHelper.clamp(te.getSignature(), 0, MAX_SIGNATURE);
+		be = menu.be;
+		previousSignature = MathHelper.clamp(be.getSignature(), 0, MAX_SIGNATURE);
 		signature = previousSignature;
-		acceptedLevels = te.getAcceptedLevels();
-		hasSmartModule = te.isModuleEnabled(ModuleType.SMART);
-		isOwner = te.isOwnedBy(inv.player);
+		acceptedLevels = be.getAcceptedLevels();
+		hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
+		isOwner = be.isOwnedBy(inv.player);
 		imageHeight = 249;
 
 		if (hasSmartModule)
@@ -150,14 +150,14 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 		linkButton = addButton(new ExtendedButton(leftPos + 8, topPos + 126, 70, 20, linkText, b -> {
 			previousSignature = signature;
 			changeSignature(signature);
-			SecurityCraft.channel.sendToServer(new SyncKeycardSettings(te.getBlockPos(), acceptedLevels, signature, true));
+			SecurityCraft.channel.sendToServer(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, true));
 
 			if (menu.keycardSlot.getItem().getHoverName().getString().equalsIgnoreCase("Zelda"))
 				minecraft.getSoundManager().play(SimpleSound.forUI(SCSounds.GET_ITEM.event, 1.0F, 1.25F));
 		}));
 		linkButton.active = false;
 		//button for saving the amount of limited uses onto the keycard
-		setUsesButton = addButton(new ActiveBasedTextureButton(leftPos + 62, topPos + 106, 16, 17, RETURN_TEXTURE, RETURN_INACTIVE_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.channel.sendToServer(new SetKeycardUses(te.getBlockPos(), Integer.parseInt(usesTextField.getValue())))));
+		setUsesButton = addButton(new ActiveBasedTextureButton(leftPos + 62, topPos + 106, 16, 17, RETURN_TEXTURE, RETURN_INACTIVE_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.channel.sendToServer(new SetKeycardUses(be.getBlockPos(), Integer.parseInt(usesTextField.getValue())))));
 		setUsesButton.active = false;
 		//text field for setting amount of limited uses
 		usesTextField = addButton(new TextFieldWidget(font, leftPos + 28, topPos + 107, 30, 15, StringTextComponent.EMPTY));
@@ -208,17 +208,17 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
-		font.draw(matrix, signatureText, imageWidth / 2 - font.width(signatureText) / 2, 23, 4210752);
-		font.draw(matrix, keycardLevelsText, 170 - font.width(keycardLevelsText), 56, 4210752);
+	protected void renderLabels(MatrixStack pose, int mouseX, int mouseY) {
+		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
+		font.draw(pose, signatureText, imageWidth / 2 - font.width(signatureText) / 2, 23, 4210752);
+		font.draw(pose, keycardLevelsText, 170 - font.width(keycardLevelsText), 56, 4210752);
 
 		//numbers infront of keycard levels buttons
 		for (int i = 1; i <= 5; i++) {
-			font.draw(matrix, "" + i, 91, 55 + 17 * i, 4210752);
+			font.draw(pose, "" + i, 91, 55 + 17 * i, 4210752);
 		}
 
-		font.draw(matrix, Utils.INVENTORY_TEXT, 8, imageHeight - 93, 4210752);
+		font.draw(pose, Utils.INVENTORY_TEXT, 8, imageHeight - 93, 4210752);
 	}
 
 	@Override
@@ -255,8 +255,8 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrix, mouseX, mouseY, partialTicks);
+	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
+		super.render(pose, mouseX, mouseY, partialTicks);
 
 		ItemStack stack = menu.keycardSlot.getItem();
 
@@ -266,28 +266,28 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 			int top = topPos + 60;
 
 			minecraft.getTextureManager().bind(WORLD_SELECTION_ICONS);
-			blit(matrix, left, top, 22, 22, 70, 37, 22, 22, 256, 256);
+			blit(pose, left, top, 22, 22, 70, 37, 22, 22, 256, 256);
 
 			if (mouseX >= left - 7 && mouseX < left + 13 && mouseY >= top && mouseY <= top + 22)
-				GuiUtils.drawHoveringText(matrix, Arrays.asList(levelMismatchInfo), mouseX, mouseY, width, height, -1, font);
+				GuiUtils.drawHoveringText(pose, Collections.singletonList(levelMismatchInfo), mouseX, mouseY, width, height, -1, font);
 		}
 
 		if (!usesTextField.active && !stack.isEmpty() && usesHoverChecker.checkHover(mouseX, mouseY))
-			GuiUtils.drawHoveringText(matrix, usesHoverChecker.getLines(), mouseX, mouseY, width, height, -1, font);
+			GuiUtils.drawHoveringText(pose, usesHoverChecker.getLines(), mouseX, mouseY, width, height, -1, font);
 
 		if (randomizeHoverChecker.checkHover(mouseX, mouseY))
-			renderComponentTooltip(matrix, randomizeHoverChecker.getLines(), mouseX, mouseY);
+			renderComponentTooltip(pose, randomizeHoverChecker.getLines(), mouseX, mouseY);
 
-		renderTooltip(matrix, mouseX, mouseY);
-		ClientUtils.renderModuleInfo(matrix, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+		renderTooltip(pose, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(matrix);
+	protected void renderBg(MatrixStack pose, float partialTicks, int mouseX, int mouseY) {
+		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
-		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
@@ -304,9 +304,9 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 
 		if (isOwner) {
 			//write new data to client te and send that data to the server, which verifies and updates it on its side
-			te.setAcceptedLevels(acceptedLevels);
-			te.setSignature(signature);
-			SecurityCraft.channel.sendToServer(new SyncKeycardSettings(te.getBlockPos(), acceptedLevels, signature, false));
+			be.setAcceptedLevels(acceptedLevels);
+			be.setSignature(signature);
+			SecurityCraft.channel.sendToServer(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, false));
 		}
 	}
 

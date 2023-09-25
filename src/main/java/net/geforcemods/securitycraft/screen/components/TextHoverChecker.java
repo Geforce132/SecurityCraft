@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen.components;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.gui.widget.Widget;
@@ -12,7 +12,7 @@ public class TextHoverChecker extends HoverChecker {
 	private final IToggleableButton button;
 
 	public TextHoverChecker(int top, int bottom, int left, int right, ITextComponent line) {
-		this(top, bottom, left, right, Arrays.asList(line));
+		this(top, bottom, left, right, Collections.singletonList(line));
 	}
 
 	public TextHoverChecker(int top, int bottom, int left, int right, List<ITextComponent> lines) {
@@ -21,14 +21,14 @@ public class TextHoverChecker extends HoverChecker {
 		button = null;
 	}
 
-	public TextHoverChecker(Widget button, ITextComponent line) {
-		this(button, Arrays.asList(line));
+	public TextHoverChecker(Widget widget, ITextComponent line) {
+		this(widget, Collections.singletonList(line));
 	}
 
-	public TextHoverChecker(Widget button, List<ITextComponent> lines) {
-		super(button);
+	public TextHoverChecker(Widget widget, List<ITextComponent> lines) {
+		super(widget);
 		this.lines = lines;
-		this.button = button instanceof IToggleableButton ? (IToggleableButton) button : null;
+		this.button = widget instanceof IToggleableButton ? (IToggleableButton) widget : null;
 	}
 
 	public ITextComponent getName() {

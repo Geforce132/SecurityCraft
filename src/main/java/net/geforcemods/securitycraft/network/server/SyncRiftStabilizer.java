@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.minecraft.block.BlockState;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
@@ -38,9 +39,10 @@ public class SyncRiftStabilizer {
 	public void handle(Supplier<Context> ctx) {
 		if (teleportationType != null) {
 			World level = ctx.get().getSender().level;
+			TileEntity te = level.getBlockEntity(pos);
 
-			if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity) {
-				RiftStabilizerBlockEntity be = ((RiftStabilizerBlockEntity) level.getBlockEntity(pos));
+			if (te instanceof RiftStabilizerBlockEntity) {
+				RiftStabilizerBlockEntity be = (RiftStabilizerBlockEntity) te;
 
 				if (be.isOwnedBy(ctx.get().getSender())) {
 					BlockState state = level.getBlockState(pos);

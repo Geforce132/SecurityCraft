@@ -20,13 +20,13 @@ import net.minecraft.world.World;
 public class KeycardReaderMenu extends Container {
 	private final Inventory itemInventory = new Inventory(1);
 	public final Slot keycardSlot;
-	public final KeycardReaderBlockEntity te;
+	public final KeycardReaderBlockEntity be;
 	private final IWorldPosCallable worldPosCallable;
 
 	public KeycardReaderMenu(int windowId, PlayerInventory inventory, World world, BlockPos pos) {
 		super(SCContent.KEYCARD_READER_MENU.get(), windowId);
 
-		te = (KeycardReaderBlockEntity) world.getBlockEntity(pos);
+		be = (KeycardReaderBlockEntity) world.getBlockEntity(pos);
 		worldPosCallable = IWorldPosCallable.create(world, pos);
 
 		//main player inventory
@@ -57,7 +57,7 @@ public class KeycardReaderMenu extends Container {
 				String keycardOwnerUUID = keycardOwner.getUUID();
 
 				//only allow keycards that have been linked to a keycard reader with the same owner as this keycard reader
-				return keycardOwnerUUID.isEmpty() || ((ConfigHandler.SERVER.enableTeamOwnership.get() && TeamUtils.areOnSameTeam(te.getOwner(), keycardOwner)) || keycardOwnerUUID.equals(te.getOwner().getUUID()));
+				return keycardOwnerUUID.isEmpty() || ((ConfigHandler.SERVER.enableTeamOwnership.get() && TeamUtils.areOnSameTeam(be.getOwner(), keycardOwner)) || keycardOwnerUUID.equals(be.getOwner().getUUID()));
 			}
 		});
 	}
@@ -69,9 +69,9 @@ public class KeycardReaderMenu extends Container {
 			CompoundNBT tag = keycard.getOrCreateTag();
 
 			tag.putBoolean("linked", true);
-			tag.putInt("signature", te.getSignature());
-			tag.putString("ownerName", te.getOwner().getName());
-			tag.putString("ownerUUID", te.getOwner().getUUID());
+			tag.putInt("signature", be.getSignature());
+			tag.putString("ownerName", be.getOwner().getName());
+			tag.putString("ownerUUID", be.getOwner().getUUID());
 		}
 	}
 
@@ -89,7 +89,7 @@ public class KeycardReaderMenu extends Container {
 	@Override
 	public void removed(PlayerEntity player) {
 		super.removed(player);
-		clearContainer(player, te.getLevel(), itemInventory);
+		clearContainer(player, be.getLevel(), itemInventory);
 	}
 
 	@Override

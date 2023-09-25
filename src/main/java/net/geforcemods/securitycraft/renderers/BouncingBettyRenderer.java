@@ -24,9 +24,9 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty> {
 	}
 
 	@Override
-	public void render(BouncingBetty entity, float entityYaw, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight) {
-		matrix.pushPose();
-		matrix.translate(0.0D, 0.5D, 0.0D);
+	public void render(BouncingBetty entity, float entityYaw, float partialTicks, MatrixStack pose, IRenderTypeBuffer buffer, int packedLight) {
+		pose.pushPose();
+		pose.translate(0.0D, 0.5D, 0.0D);
 
 		if (entity.getFuse() - partialTicks + 1.0F < 10.0F) {
 			float alpha = 1.0F - (entity.getFuse() - partialTicks + 1.0F) / 10.0F;
@@ -34,15 +34,15 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty> {
 			alpha *= alpha;
 			alpha *= alpha;
 			float scale = 1.0F + alpha * 0.3F;
-			matrix.scale(scale, scale, scale);
+			pose.scale(scale, scale, scale);
 		}
 
-		matrix.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
-		matrix.translate(-0.5D, -0.5D, 0.5D);
-		matrix.mulPose(Vector3f.YP.rotationDegrees(90.0F));
-		Minecraft.getInstance().getBlockRenderer().renderSingleBlock(SCContent.BOUNCING_BETTY.get().defaultBlockState(), matrix, buffer, packedLight, OverlayTexture.NO_OVERLAY);
-		matrix.popPose();
-		super.render(entity, entityYaw, partialTicks, matrix, buffer, packedLight);
+		pose.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
+		pose.translate(-0.5D, -0.5D, 0.5D);
+		pose.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+		Minecraft.getInstance().getBlockRenderer().renderSingleBlock(SCContent.BOUNCING_BETTY.get().defaultBlockState(), pose, buffer, packedLight, OverlayTexture.NO_OVERLAY);
+		pose.popPose();
+		super.render(entity, entityYaw, partialTicks, pose, buffer, packedLight);
 	}
 
 	@Override

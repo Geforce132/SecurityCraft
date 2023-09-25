@@ -91,18 +91,18 @@ public class ModuleItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (canBeCustomized()) {
 			if (module == ModuleType.ALLOWLIST || module == ModuleType.DENYLIST) {
-				if (world.isClientSide)
+				if (level.isClientSide)
 					ClientHandler.displayEditModuleScreen(stack);
 
 				return ActionResult.consume(stack);
 			}
 			else if (module == ModuleType.DISGUISE) {
-				if (!world.isClientSide) {
+				if (!level.isClientSide) {
 					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 						@Override
 						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
@@ -125,7 +125,7 @@ public class ModuleItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, World level, List<ITextComponent> list, ITooltipFlag flag) {
 		if (containsCustomData || canBeCustomized())
 			list.add(MODIFIABLE);
 		else

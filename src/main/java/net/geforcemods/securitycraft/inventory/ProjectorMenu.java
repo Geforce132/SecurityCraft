@@ -21,11 +21,11 @@ public class ProjectorMenu extends StateSelectorAccessMenu {
 	private IWorldPosCallable worldPosCallable;
 	private Slot projectedBlockSlot;
 
-	public ProjectorMenu(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
+	public ProjectorMenu(int windowId, World level, BlockPos pos, PlayerInventory inventory) {
 		super(SCContent.PROJECTOR_MENU.get(), windowId);
 
-		be = (ProjectorBlockEntity) world.getBlockEntity(pos);
-		worldPosCallable = IWorldPosCallable.create(world, pos);
+		be = (ProjectorBlockEntity) level.getBlockEntity(pos);
+		worldPosCallable = IWorldPosCallable.create(level, pos);
 
 		// A custom slot that prevents non-Block items from being inserted into the projector
 		projectedBlockSlot = addSlot(new Slot(new BlockEntityInventoryWrapper<>(be, this), 36, 80, 23) {

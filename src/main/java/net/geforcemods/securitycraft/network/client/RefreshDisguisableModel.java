@@ -41,15 +41,15 @@ public class RefreshDisguisableModel {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		IModuleInventory te = (IModuleInventory) Minecraft.getInstance().level.getBlockEntity(pos);
+		IModuleInventory be = (IModuleInventory) Minecraft.getInstance().level.getBlockEntity(pos);
 
-		if (te != null) {
+		if (be != null) {
 			if (insert)
-				te.insertModule(stack, toggled);
+				be.insertModule(stack, toggled);
 			else
-				te.removeModule(ModuleType.DISGUISE, toggled);
+				be.removeModule(ModuleType.DISGUISE, toggled);
 
-			ClientHandler.refreshModelData(te.getBlockEntity());
+			ClientHandler.refreshModelData(be.getBlockEntity());
 		}
 	}
 }

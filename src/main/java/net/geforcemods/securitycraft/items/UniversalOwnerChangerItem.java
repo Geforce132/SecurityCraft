@@ -41,26 +41,26 @@ public class UniversalOwnerChangerItem extends Item {
 		if (ctx.getHand() == Hand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get())
 			return handleBriefcase(player, stack).getResult();
 
-		World world = ctx.getLevel();
+		World level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
-		BlockState state = world.getBlockState(pos);
+		BlockState state = level.getBlockState(pos);
 		Block block = state.getBlock();
-		TileEntity te = world.getBlockEntity(pos);
+		TileEntity be = level.getBlockEntity(pos);
 		String newOwner = stack.getHoverName().getString();
 
-		if (!(te instanceof IOwnable)) {
+		if (!(be instanceof IOwnable)) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), TextFormatting.RED);
 			return ActionResultType.FAIL;
 		}
-		else if (te instanceof DisplayCaseBlockEntity && ((DisplayCaseBlockEntity) te).isOpen())
+		else if (be instanceof DisplayCaseBlockEntity && ((DisplayCaseBlockEntity) be).isOpen())
 			return ActionResultType.PASS;
 
-		IOwnable ownable = (IOwnable) te;
+		IOwnable ownable = (IOwnable) be;
 		Owner owner = ownable.getOwner();
 		boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
 
 		if (!ownable.isOwnedBy(player) && !isDefault) {
-			if (!(block instanceof IBlockMine) && (!(te.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem) ((DisguisableBlock) te.getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))) {
+			if (!(block instanceof IBlockMine) && (!(be.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem) ((DisguisableBlock) be.getBlockState().getBlock()).getDisguisedStack(level, pos).getItem()).getBlock() instanceof DisguisableBlock))) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
 				return ActionResultType.FAIL;
 			}
@@ -82,21 +82,21 @@ public class UniversalOwnerChangerItem extends Item {
 			}
 		}
 
-		if (te instanceof IOwnable) {
-			((IOwnable) te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
-			((IOwnable) te).onOwnerChanged(state, world, pos, player);
+		if (be instanceof IOwnable) {
+			((IOwnable) be).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
+			((IOwnable) be).onOwnerChanged(state, level, pos, player);
 		}
 
-		if (!world.isClientSide)
-			world.getServer().getPlayerList().broadcastAll(te.getUpdatePacket());
+		if (!level.isClientSide)
+			level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
 
 		//disable this in a development environment
-		if (FMLEnvironment.production && te instanceof IModuleInventory) {
-			for (ModuleType moduleType : ((IModuleInventory) te).getInsertedModules()) {
-				ItemStack moduleStack = ((IModuleInventory) te).getModule(moduleType);
+		if (FMLEnvironment.production && be instanceof IModuleInventory) {
+			for (ModuleType moduleType : ((IModuleInventory) be).getInsertedModules()) {
+				ItemStack moduleStack = ((IModuleInventory) be).getModule(moduleType);
 
-				((IModuleInventory) te).removeModule(moduleType, false);
-				Block.popResource(world, pos, moduleStack);
+				((IModuleInventory) be).removeModule(moduleType, false);
+				Block.popResource(level, pos, moduleStack);
 			}
 		}
 
@@ -105,7 +105,7 @@ public class UniversalOwnerChangerItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
 		ItemStack ownerChanger = player.getItemInHand(hand);
 
 		if (!ownerChanger.hasCustomHoverName()) {

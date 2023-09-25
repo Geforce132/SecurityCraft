@@ -60,77 +60,77 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void animateTick(World world, BlockPos pos, FluidState state, Random random) {
-		BlockPos blockpos = pos.above();
+	public void animateTick(World level, BlockPos pos, FluidState state, Random random) {
+		BlockPos posAbove = pos.above();
 
-		if (world.getBlockState(blockpos).isAir() && !world.getBlockState(blockpos).isSolidRender(world, blockpos)) {
+		if (level.getBlockState(posAbove).isAir() && !level.getBlockState(posAbove).isSolidRender(level, posAbove)) {
 			if (random.nextInt(100) == 0) {
 				double x = pos.getX() + random.nextFloat();
 				double y = pos.getY() + 1;
 				double z = pos.getZ() + random.nextFloat();
 
-				world.addParticle(ParticleTypes.LAVA, x, y, z, 0.0D, 0.0D, 0.0D);
-				world.playLocalSound(x, y, z, SoundEvents.LAVA_POP, SoundCategory.BLOCKS, 0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F, false);
+				level.addParticle(ParticleTypes.LAVA, x, y, z, 0.0D, 0.0D, 0.0D);
+				level.playLocalSound(x, y, z, SoundEvents.LAVA_POP, SoundCategory.BLOCKS, 0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F, false);
 			}
 
 			if (random.nextInt(200) == 0)
-				world.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.LAVA_AMBIENT, SoundCategory.BLOCKS, 0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F, false);
+				level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.LAVA_AMBIENT, SoundCategory.BLOCKS, 0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F, false);
 		}
 	}
 
 	@Override
-	public void randomTick(World world, BlockPos pos, FluidState state, Random random) {
-		if (world.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
+	public void randomTick(World level, BlockPos pos, FluidState state, Random random) {
+		if (level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
 			int i = random.nextInt(3);
 
 			if (i > 0) {
-				BlockPos blockpos = pos;
+				BlockPos posToUpdate = pos;
 
 				for (int j = 0; j < i; ++j) {
-					blockpos = blockpos.offset(random.nextInt(3) - 1, 1, random.nextInt(3) - 1);
+					posToUpdate = posToUpdate.offset(random.nextInt(3) - 1, 1, random.nextInt(3) - 1);
 
-					if (!world.isLoaded(blockpos))
+					if (!level.isLoaded(posToUpdate))
 						return;
 
-					BlockState blockState = world.getBlockState(blockpos);
+					BlockState stateToUpdate = level.getBlockState(posToUpdate);
 
-					if (blockState.isAir()) {
-						if (isSurroundingBlockFlammable(world, blockpos)) {
-							world.setBlockAndUpdate(blockpos, ForgeEventFactory.fireFluidPlaceBlockEvent(world, blockpos, pos, Blocks.FIRE.defaultBlockState()));
+					if (stateToUpdate.isAir()) {
+						if (isSurroundingBlockFlammable(level, posToUpdate)) {
+							level.setBlockAndUpdate(posToUpdate, ForgeEventFactory.fireFluidPlaceBlockEvent(level, posToUpdate, pos, Blocks.FIRE.defaultBlockState()));
 							return;
 						}
 					}
-					else if (blockState.getMaterial().blocksMotion())
+					else if (stateToUpdate.getMaterial().blocksMotion())
 						return;
 				}
 			}
 			else {
 				for (int k = 0; k < 3; ++k) {
-					BlockPos blockpos1 = pos.offset(random.nextInt(3) - 1, 0, random.nextInt(3) - 1);
+					BlockPos posToUpdate = pos.offset(random.nextInt(3) - 1, 0, random.nextInt(3) - 1);
 
-					if (!world.isLoaded(blockpos1))
+					if (!level.isLoaded(posToUpdate))
 						return;
 
-					BlockPos posAbove = blockpos1.above();
+					BlockPos posAbove = posToUpdate.above();
 
-					if (world.isEmptyBlock(posAbove) && this.getCanBlockBurn(world, blockpos1))
-						world.setBlockAndUpdate(posAbove, ForgeEventFactory.fireFluidPlaceBlockEvent(world, posAbove, pos, Blocks.FIRE.defaultBlockState()));
+					if (level.isEmptyBlock(posAbove) && this.getCanBlockBurn(level, posToUpdate))
+						level.setBlockAndUpdate(posAbove, ForgeEventFactory.fireFluidPlaceBlockEvent(level, posAbove, pos, Blocks.FIRE.defaultBlockState()));
 				}
 			}
 		}
 	}
 
-	private boolean isSurroundingBlockFlammable(World world, BlockPos pos) {
-		for (Direction Direction : Direction.values()) {
-			if (this.getCanBlockBurn(world, pos.relative(Direction)))
+	private boolean isSurroundingBlockFlammable(World level, BlockPos pos) {
+		for (Direction direction : Direction.values()) {
+			if (this.getCanBlockBurn(level, pos.relative(direction)))
 				return true;
 		}
 
 		return false;
 	}
 
-	private boolean getCanBlockBurn(World world, BlockPos pos) {
-		return world.isLoaded(pos) && world.getBlockState(pos).getMaterial().isFlammable();
+	private boolean getCanBlockBurn(World level, BlockPos pos) {
+		return level.isLoaded(pos) && level.getBlockState(pos).getMaterial().isFlammable();
 	}
 
 	@Nullable
@@ -141,13 +141,13 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 	}
 
 	@Override
-	protected void beforeDestroyingBlock(IWorld world, BlockPos pos, BlockState state) {
-		triggerEffects(world, pos);
+	protected void beforeDestroyingBlock(IWorld level, BlockPos pos, BlockState state) {
+		triggerEffects(level, pos);
 	}
 
 	@Override
-	public int getSlopeFindDistance(IWorldReader world) {
-		return world.dimensionType().ultraWarm() ? 4 : 2;
+	public int getSlopeFindDistance(IWorldReader level) {
+		return level.dimensionType().ultraWarm() ? 4 : 2;
 	}
 
 	@Override
@@ -161,32 +161,32 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 	}
 
 	@Override
-	public int getDropOff(IWorldReader world) {
-		return world.dimensionType().ultraWarm() ? 1 : 2;
+	public int getDropOff(IWorldReader level) {
+		return level.dimensionType().ultraWarm() ? 1 : 2;
 	}
 
 	@Override
-	public boolean canBeReplacedWith(FluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction dir) {
-		return fluidState.getHeight(world, pos) >= 0.44444445F && fluid.is(FluidTags.WATER);
+	public boolean canBeReplacedWith(FluidState fluidState, IBlockReader level, BlockPos pos, Fluid fluid, Direction dir) {
+		return fluidState.getHeight(level, pos) >= 0.44444445F && fluid.is(FluidTags.WATER);
 	}
 
 	@Override
-	public int getTickDelay(IWorldReader world) {
-		return world.dimensionType().ultraWarm() ? 10 : 30;
+	public int getTickDelay(IWorldReader level) {
+		return level.dimensionType().ultraWarm() ? 10 : 30;
 	}
 
 	@Override
-	public int getSpreadDelay(World world, BlockPos pos, FluidState fluidState1, FluidState fluidState2) {
-		int i = getTickDelay(world);
+	public int getSpreadDelay(World level, BlockPos pos, FluidState fluidState1, FluidState fluidState2) {
+		int i = getTickDelay(level);
 
-		if (!fluidState1.isEmpty() && !fluidState2.isEmpty() && !fluidState1.getValue(FALLING) && !fluidState2.getValue(FALLING) && fluidState2.getHeight(world, pos) > fluidState1.getHeight(world, pos) && world.getRandom().nextInt(4) != 0)
+		if (!fluidState1.isEmpty() && !fluidState2.isEmpty() && !fluidState1.getValue(FALLING) && !fluidState2.getValue(FALLING) && fluidState2.getHeight(level, pos) > fluidState1.getHeight(level, pos) && level.getRandom().nextInt(4) != 0)
 			i *= 4;
 
 		return i;
 	}
 
-	protected void triggerEffects(IWorld world, BlockPos pos) {
-		world.levelEvent(1501, pos, 0);
+	protected void triggerEffects(IWorld level, BlockPos pos) {
+		level.levelEvent(1501, pos, 0);
 	}
 
 	@Override
@@ -195,20 +195,20 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 	}
 
 	@Override
-	protected void spreadTo(IWorld world, BlockPos pos, BlockState blockState, Direction direction, FluidState fluidState) {
+	protected void spreadTo(IWorld level, BlockPos pos, BlockState state, Direction direction, FluidState fluidState) {
 		if (direction == Direction.DOWN) {
-			FluidState ifluidstate = world.getFluidState(pos);
+			FluidState ifluidstate = level.getFluidState(pos);
 
 			if (is(FluidTags.LAVA) && ifluidstate.is(FluidTags.WATER)) {
-				if (blockState.getBlock() instanceof FlowingFluidBlock)
-					world.setBlock(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(world, pos, pos, Blocks.STONE.defaultBlockState()), 3);
+				if (state.getBlock() instanceof FlowingFluidBlock)
+					level.setBlock(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, pos, Blocks.STONE.defaultBlockState()), 3);
 
-				triggerEffects(world, pos);
+				triggerEffects(level, pos);
 				return;
 			}
 		}
 
-		super.spreadTo(world, pos, blockState, direction, fluidState);
+		super.spreadTo(level, pos, state, direction, fluidState);
 	}
 
 	@Override

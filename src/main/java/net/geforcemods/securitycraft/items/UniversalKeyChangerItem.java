@@ -36,26 +36,27 @@ public class UniversalKeyChangerItem extends Item {
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
 		PlayerEntity player = ctx.getPlayer();
-		ActionResultType briefcaseResult = handleBriefcase(player, ctx.getHand()).getResult();
+		Hand hand = ctx.getHand();
+		ActionResultType briefcaseResult = handleBriefcase(player, hand).getResult();
 
 		if (briefcaseResult != ActionResultType.PASS)
 			return briefcaseResult;
 
-		World world = ctx.getLevel();
+		World level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
-		TileEntity te = world.getBlockEntity(pos);
+		TileEntity be = level.getBlockEntity(pos);
 
-		if (te instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) te).isOpen() && ((DisplayCaseBlockEntity) te).getDisplayedStack().isEmpty()))
+		if (be instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) be).isOpen() && ((DisplayCaseBlockEntity) be).getDisplayedStack().isEmpty()))
 			return ActionResultType.PASS;
-		else if (te instanceof IPasscodeProtected) {
-			if (((IOwnable) te).isOwnedBy(player)) {
-				if (!world.isClientSide)
+		else if (be instanceof IPasscodeProtected) {
+			if (((IOwnable) be).isOwnedBy(player)) {
+				if (!level.isClientSide)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.UNIVERSAL_KEY_CHANGER, pos));
 
 				return ActionResultType.SUCCESS;
 			}
-			else if (!(te.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem) ((DisguisableBlock) te.getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock)) {
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())), TextFormatting.RED);
+			else if (!(be.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem) ((DisguisableBlock) be.getBlockState().getBlock()).getDisguisedStack(level, pos).getItem()).getBlock() instanceof DisguisableBlock)) {
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) be).getOwner())), TextFormatting.RED);
 				return ActionResultType.FAIL;
 			}
 		}
@@ -64,7 +65,7 @@ public class UniversalKeyChangerItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
 		return handleBriefcase(player, hand);
 	}
 

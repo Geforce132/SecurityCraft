@@ -18,18 +18,18 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class IMSBombRenderer extends EntityRenderer<IMSBomb> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/entity/ims_bomb.png");
 	/** instance of ModelIMSBomb for rendering */
-	protected static final IMSBombModel modelBomb = new IMSBombModel();
+	protected static final IMSBombModel model = new IMSBombModel();
 
 	public IMSBombRenderer(EntityRendererManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void render(IMSBomb imsBomb, float pEntityYaw, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int pPackedLight) {
-		matrix.translate(-0.1D, 0, 0.1D);
-		matrix.scale(1.4F, 1.4F, 1.4F);
+	public void render(IMSBomb imsBomb, float entityYaw, float partialTicks, MatrixStack pose, IRenderTypeBuffer buffer, int packedLight) {
+		pose.translate(-0.1D, 0, 0.1D);
+		pose.scale(1.4F, 1.4F, 1.4F);
 		Minecraft.getInstance().textureManager.bind(getTextureLocation(imsBomb));
-		modelBomb.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(imsBomb))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(imsBomb))), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override

@@ -33,8 +33,8 @@ public class DisguiseModuleScreen extends ContainerScreen<DisguiseModuleMenu> im
 	private final TranslationTextComponent disguiseModuleName = Utils.localize(SCContent.DISGUISE_MODULE.get().getDescriptionId());
 	private StateSelector stateSelector;
 
-	public DisguiseModuleScreen(DisguiseModuleMenu container, PlayerInventory inv, ITextComponent name) {
-		super(container, inv, name);
+	public DisguiseModuleScreen(DisguiseModuleMenu menu, PlayerInventory inv, ITextComponent title) {
+		super(menu, inv, title);
 	}
 
 	@Override
@@ -47,25 +47,25 @@ public class DisguiseModuleScreen extends ContainerScreen<DisguiseModuleMenu> im
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrix, mouseX, mouseY, partialTicks);
-		renderTooltip(matrix, mouseX, mouseY);
+	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
+		super.render(pose, mouseX, mouseY, partialTicks);
+		renderTooltip(pose, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, disguiseModuleName, imageWidth / 2 - font.width(disguiseModuleName) / 2, 6, 0x404040);
+	protected void renderLabels(MatrixStack pose, int mouseX, int mouseY) {
+		font.draw(pose, disguiseModuleName, imageWidth / 2 - font.width(disguiseModuleName) / 2, 6, 0x404040);
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(matrix);
+	protected void renderBg(MatrixStack pose, float partialTicks, int mouseX, int mouseY) {
+		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
-		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 
 		if (stateSelector != null)
-			stateSelector.render(matrix, mouseX, mouseY, partialTicks);
+			stateSelector.render(pose, mouseX, mouseY, partialTicks);
 	}
 
 	@Override

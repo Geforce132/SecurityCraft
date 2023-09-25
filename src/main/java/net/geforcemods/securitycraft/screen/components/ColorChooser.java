@@ -238,8 +238,8 @@ public class ColorChooser extends Screen implements INestedGuiEventHandler {
 		selectionX = s * COLOR_FIELD_SIZE + colorFieldLeft;
 		selectionY = -b * COLOR_FIELD_SIZE + COLOR_FIELD_SIZE + colorFieldTop;
 
-		if (getHueSlider() != null)
-			getHueSlider().setValue(h * 360.0D);
+		if (hueSlider != null)
+			hueSlider.setValue(h * 360.0D);
 	}
 
 	public void onColorChange() {}

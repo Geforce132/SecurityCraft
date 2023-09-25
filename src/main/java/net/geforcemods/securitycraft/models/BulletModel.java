@@ -22,8 +22,8 @@ public class BulletModel extends EntityModel<Bullet> {
 	}
 
 	@Override
-	public void renderToBuffer(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		bullet.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
+	public void renderToBuffer(MatrixStack pose, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		bullet.render(pose, builder, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	@Override

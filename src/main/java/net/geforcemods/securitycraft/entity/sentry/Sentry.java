@@ -92,12 +92,12 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 	@Deprecated
 	private ItemStack oldModule = ItemStack.EMPTY;
 
-	public Sentry(EntityType<? extends Sentry> type, World world) {
-		super(type, world);
+	public Sentry(EntityType<? extends Sentry> type, World level) {
+		super(type, level);
 	}
 
-	public Sentry(World world) {
-		this(SCContent.SENTRY_ENTITY.get(), world);
+	public Sentry(World level) {
+		this(SCContent.SENTRY_ENTITY.get(), level);
 	}
 
 	public void setUpSentry(PlayerEntity player) {
@@ -354,16 +354,16 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 		if (isShutDown())
 			return;
 
-		TileEntity te = level.getBlockEntity(blockPosition().below());
+		TileEntity blockEntity = level.getBlockEntity(blockPosition().below());
 		ProjectileEntity throwableEntity = null;
 		SoundEvent shootSound = SoundEvents.ARROW_SHOOT;
 		ProjectileDispenseBehavior pdb = null;
 		LazyOptional<IItemHandler> optional = LazyOptional.empty();
 
-		if (te instanceof ISentryBulletContainer)
-			optional = ((ISentryBulletContainer) te).getHandlerForSentry(this);
-		else if (te != null)
-			optional = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
+		if (blockEntity instanceof ISentryBulletContainer)
+			optional = ((ISentryBulletContainer) blockEntity).getHandlerForSentry(this);
+		else if (blockEntity != null)
+			optional = blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
 
 		if (optional.isPresent()) {
 			IItemHandler handler = optional.orElse(null); //this is safe, because the presence was checked beforehand
@@ -638,7 +638,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 	//end: disallow sentry to take damage
 
 	@Override
-	public boolean checkSpawnRules(IWorld world, SpawnReason reason) {
+	public boolean checkSpawnRules(IWorld level, SpawnReason reason) {
 		return false;
 	}
 

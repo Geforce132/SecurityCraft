@@ -70,12 +70,12 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	private final int maxNumberOfModules;
 	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
 
-	public CustomizeBlockScreen(CustomizeBlockMenu container, PlayerInventory inv, ITextComponent name) {
-		super(container, inv, name);
-		moduleInv = container.moduleInv;
+	public CustomizeBlockScreen(CustomizeBlockMenu menu, PlayerInventory inv, ITextComponent title) {
+		super(menu, inv, title);
+		moduleInv = menu.moduleInv;
 		block = menu.moduleInv.getBlockEntity().getBlockState().getBlock();
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
-		container.addSlotListener(this);
+		menu.addSlotListener(this);
 
 		for (ModuleType type : ModuleType.values()) {
 			if (moduleInv.hasModule(type))
@@ -145,15 +145,15 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	public boolean mouseReleased(double mouseX, double mouseY, int button) {
 		for (Button b : optionButtons) {
 			if (b instanceof Slider && ((Slider) b).dragging)
-				((Slider) b).mouseReleased(mouseX, mouseY, button);
+				b.mouseReleased(mouseX, mouseY, button);
 		}
 
 		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrix, mouseX, mouseY, partialTicks);
+	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
+		super.render(pose, mouseX, mouseY, partialTicks);
 
 		minecraft.textureManager.bind(BEACON_GUI);
 
@@ -164,32 +164,32 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 				ModuleType type = ((ModuleItem) slot.getItem().getItem()).getModuleType();
 
 				if (indicators.containsKey(type))
-					blit(matrix, leftPos + slot.x - 2, topPos + slot.y + 16, 20, 20, indicators.get(type) ? 88 : 110, 219, 21, 22, 256, 256);
+					blit(pose, leftPos + slot.x - 2, topPos + slot.y + 16, 20, 20, indicators.get(type) ? 88 : 110, 219, 21, 22, 256, 256);
 			}
 		}
 
-		renderTooltip(matrix, mouseX, mouseY);
+		renderTooltip(pose, mouseX, mouseY);
 
 		for (TextHoverChecker hoverChecker : hoverCheckers) {
 			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY)) {
-				renderTooltip(matrix, minecraft.font.split(hoverChecker.getName(), 150), mouseX, mouseY);
+				renderTooltip(pose, minecraft.font.split(hoverChecker.getName(), 150), mouseX, mouseY);
 				break;
 			}
 		}
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
-		font.draw(matrix, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
+	protected void renderLabels(MatrixStack pose, int mouseX, int mouseY) {
+		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
+		font.draw(pose, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(matrix);
+	protected void renderBg(MatrixStack pose, float partialTicks, int mouseX, int mouseY) {
+		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURES[maxNumberOfModules]);
-		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override

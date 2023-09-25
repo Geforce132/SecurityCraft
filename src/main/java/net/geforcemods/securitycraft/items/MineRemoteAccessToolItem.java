@@ -37,8 +37,8 @@ public class MineRemoteAccessToolItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-		if (world.isClientSide) {
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
+		if (level.isClientSide) {
 			ClientHandler.displayMRATScreen(player.getItemInHand(hand));
 		}
 
@@ -47,10 +47,10 @@ public class MineRemoteAccessToolItem extends Item {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
-		World world = ctx.getLevel();
+		World level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 
-		if (world.getBlockState(pos).getBlock() instanceof IExplosive) {
+		if (level.getBlockState(pos).getBlock() instanceof IExplosive) {
 			PlayerEntity player = ctx.getPlayer();
 
 			if (!isMineAdded(stack, pos)) {
@@ -61,10 +61,10 @@ public class MineRemoteAccessToolItem extends Item {
 					return ActionResultType.FAIL;
 				}
 
-				TileEntity te = world.getBlockEntity(pos);
+				TileEntity te = level.getBlockEntity(pos);
 
 				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player)) {
-					if (world.isClientSide)
+					if (level.isClientSide)
 						ClientHandler.displayMRATScreen(stack);
 
 					return ActionResultType.SUCCESS;
@@ -75,7 +75,7 @@ public class MineRemoteAccessToolItem extends Item {
 
 				stack.getTag().putIntArray(("mine" + availSlot), BlockUtils.posToIntArray(pos));
 
-				if (!world.isClientSide)
+				if (!level.isClientSide)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new UpdateNBTTagOnClient(stack));
 
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
@@ -93,7 +93,7 @@ public class MineRemoteAccessToolItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, World level, List<ITextComponent> list, ITooltipFlag flag) {
 		if (stack.getTag() == null)
 			return;
 

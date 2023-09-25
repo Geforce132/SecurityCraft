@@ -35,11 +35,11 @@ public class KeyChangerScreen extends Screen {
 	private TextFieldWidget textboxNewPasscode;
 	private TextFieldWidget textboxConfirmPasscode;
 	private Button confirmButton;
-	private TileEntity tileEntity;
+	private TileEntity be;
 
-	public KeyChangerScreen(TileEntity te) {
+	public KeyChangerScreen(TileEntity be) {
 		super(new TranslationTextComponent(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()));
-		tileEntity = te;
+		this.be = be;
 	}
 
 	@Override
@@ -72,15 +72,15 @@ public class KeyChangerScreen extends Screen {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(matrix);
+	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
-		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.draw(matrix, ukcName, width / 2 - font.width(ukcName) / 2, topPos + 6, 4210752);
-		font.draw(matrix, enterPasscode, width / 2 - font.width(enterPasscode) / 2, topPos + 25, 4210752);
-		font.draw(matrix, confirmPasscode, width / 2 - font.width(confirmPasscode) / 2, topPos + 65, 4210752);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(pose, mouseX, mouseY, partialTicks);
+		font.draw(pose, ukcName, width / 2 - font.width(ukcName) / 2, topPos + 6, 4210752);
+		font.draw(pose, enterPasscode, width / 2 - font.width(enterPasscode) / 2, topPos + 25, 4210752);
+		font.draw(pose, confirmPasscode, width / 2 - font.width(confirmPasscode) / 2, topPos + 65, 4210752);
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class KeyChangerScreen extends Screen {
 	}
 
 	private void confirmButtonClicked(Button button) {
-		SecurityCraft.channel.sendToServer(new SetPasscode(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ(), textboxNewPasscode.getValue()));
+		SecurityCraft.channel.sendToServer(new SetPasscode(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ(), textboxNewPasscode.getValue()));
 		Minecraft.getInstance().player.closeContainer();
 		PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN, true);
 	}

@@ -134,21 +134,21 @@ public class EditModuleScreen extends Screen {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(matrix);
+	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		blit(matrix, startX, startY, 0, 0, xSize, ySize);
-		super.render(matrix, mouseX, mouseY, partialTicks);
+		blit(pose, startX, startY, 0, 0, xSize, ySize);
+		super.render(pose, mouseX, mouseY, partialTicks);
 		font.drawWordWrap(editModule, startX + xSize / 2 - font.width(editModule) / 2, startY + 6, width, 4210752);
 
 		if (playerList != null)
-			playerList.render(matrix, mouseX, mouseY, partialTicks);
+			playerList.render(pose, mouseX, mouseY, partialTicks);
 
 		if (teamList != null)
-			teamList.render(matrix, mouseX, mouseY, partialTicks);
+			teamList.render(pose, mouseX, mouseY, partialTicks);
 	}
 
 	@Override
@@ -298,7 +298,7 @@ public class EditModuleScreen extends Screen {
 			List<String> teamNames = tag.getList("ListedTeams", Constants.NBT.TAG_STRING)
 					.stream()
 					.filter(StringNBT.class::isInstance)
-					.map(e -> ((StringNBT) e).getAsString())
+					.map(e -> e.getAsString())
 					.collect(Collectors.toList());
 			//@formatter:on
 
@@ -366,7 +366,7 @@ public class EditModuleScreen extends Screen {
 		}
 
 		@Override
-		protected void drawPanel(MatrixStack matrix, int entryRight, int relativeY, Tessellator tessellator, int mouseX, int mouseY) {
+		protected void drawPanel(MatrixStack pose, int entryRight, int relativeY, Tessellator tessellator, int mouseX, int mouseY) {
 			if (module.hasTag()) {
 				CompoundNBT tag = module.getTag();
 				int baseY = top + border - (int) scrollDistance;
@@ -388,7 +388,7 @@ public class EditModuleScreen extends Screen {
 						String name = tag.getString("Player" + (i + 1));
 
 						if (!name.isEmpty())
-							font.draw(matrix, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (SLOTH_HEIGHT * i), 0xC6C6C6);
+							font.draw(pose, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (SLOTH_HEIGHT * i), 0xC6C6C6);
 					}
 				}
 			}

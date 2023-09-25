@@ -20,15 +20,15 @@ public class BlockPocketManagerRenderer extends TileEntityRenderer<BlockPocketMa
 	}
 
 	@Override
-	public void render(BlockPocketManagerBlockEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+	public void render(BlockPocketManagerBlockEntity be, float partialTicks, MatrixStack pose, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		// The code below draws the outline border of a block pocket.
 
-		if (!te.showsOutline() || !te.isOwnedBy(Minecraft.getInstance().player))
+		if (!be.showsOutline() || !be.isOwnedBy(Minecraft.getInstance().player))
 			return;
 
-		Direction facing = te.getBlockState().getValue(BlockPocketManagerBlock.FACING);
-		int offset = facing == Direction.NORTH || facing == Direction.EAST ? -te.getAutoBuildOffset() : te.getAutoBuildOffset(); //keep negative values moving the offset to the left consistent
-		int size = te.getSize();
+		Direction facing = be.getBlockState().getValue(BlockPocketManagerBlock.FACING);
+		int offset = facing == Direction.NORTH || facing == Direction.EAST ? -be.getAutoBuildOffset() : be.getAutoBuildOffset(); //keep negative values moving the offset to the left consistent
+		int size = be.getSize();
 		int half = (size - 1) / 2;
 		int leftX = -half + offset;
 		int rightX = half + 1 + offset;
@@ -43,7 +43,7 @@ public class BlockPocketManagerRenderer extends TileEntityRenderer<BlockPocketMa
 			backZ = half + 1 + offset;
 		}
 
-		ClientUtils.renderBoxInLevel(buffer, matrix.last().pose(), leftX, rightX, frontZ, backZ, size, te.getColor());
+		ClientUtils.renderBoxInLevel(buffer, pose.last().pose(), leftX, rightX, frontZ, backZ, size, be.getColor());
 	}
 
 	@Override

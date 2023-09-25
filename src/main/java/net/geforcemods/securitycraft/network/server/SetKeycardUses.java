@@ -34,12 +34,12 @@ public class SetKeycardUses {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		PlayerEntity player = ctx.get().getSender();
-		TileEntity tile = player.level.getBlockEntity(pos);
+		TileEntity te = player.level.getBlockEntity(pos);
 
-		if (tile instanceof KeycardReaderBlockEntity) {
-			KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;
+		if (te instanceof KeycardReaderBlockEntity) {
+			KeycardReaderBlockEntity be = (KeycardReaderBlockEntity) te;
 
-			if (te.isOwnedBy(player) || te.isAllowed(player)) {
+			if (be.isOwnedBy(player) || be.isAllowed(player)) {
 				Container container = player.containerMenu;
 
 				if (container instanceof KeycardReaderMenu)

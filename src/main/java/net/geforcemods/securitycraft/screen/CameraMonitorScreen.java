@@ -45,7 +45,7 @@ public class CameraMonitorScreen extends Screen {
 	private CameraButton[] cameraButtons = new CameraButton[10];
 	private CameraButton[] unbindButtons = new CameraButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
-	private SecurityCameraBlockEntity[] cameraTEs = new SecurityCameraBlockEntity[10];
+	private SecurityCameraBlockEntity[] cameraBEs = new SecurityCameraBlockEntity[10];
 	private ResourceLocation[] cameraViewDim = new ResourceLocation[10];
 	private CameraRedstoneModuleState[] redstoneModuleStates = new CameraRedstoneModuleState[10];
 	private int xSize = 176, ySize = 166, leftPos, topPos;
@@ -94,17 +94,17 @@ public class CameraMonitorScreen extends Screen {
 
 				TileEntity te = level.getBlockEntity(view.pos());
 
-				cameraTEs[i] = te instanceof SecurityCameraBlockEntity ? (SecurityCameraBlockEntity) te : null;
+				cameraBEs[i] = te instanceof SecurityCameraBlockEntity ? (SecurityCameraBlockEntity) te : null;
 				hoverCheckers[i] = new HoverChecker(cameraButton);
 
-				if (cameraTEs[i] != null) {
+				if (cameraBEs[i] != null) {
 					BlockState state = level.getBlockState(view.pos());
 
-					if (cameraTEs[i].isDisabled())
+					if (cameraBEs[i].isDisabled())
 						cameraButton.active = false;
 
 					if (state.getSignal(level, view.pos(), state.getValue(SecurityCameraBlock.FACING)) == 0) {
-						if (!cameraTEs[i].isModuleEnabled(ModuleType.REDSTONE))
+						if (!cameraBEs[i].isModuleEnabled(ModuleType.REDSTONE))
 							redstoneModuleStates[i] = CameraRedstoneModuleState.NOT_INSTALLED;
 						else
 							redstoneModuleStates[i] = CameraRedstoneModuleState.DEACTIVATED;
@@ -116,7 +116,7 @@ public class CameraMonitorScreen extends Screen {
 			else {
 				cameraButton.active = false;
 				unbindButton.active = false;
-				cameraTEs[i] = null;
+				cameraBEs[i] = null;
 			}
 		}
 
@@ -132,31 +132,31 @@ public class CameraMonitorScreen extends Screen {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(matrix);
+	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
-		blit(matrix, leftPos, topPos, 0, 0, xSize, ySize);
-		super.render(matrix, mouseX, mouseY, partialTicks);
+		blit(pose, leftPos, topPos, 0, 0, xSize, ySize);
+		super.render(pose, mouseX, mouseY, partialTicks);
 
 		for (int i = 0; i < 10; i++) {
 			Button button = cameraButtons[i];
 			CameraRedstoneModuleState redstoneModuleState = redstoneModuleStates[i];
 
 			if (redstoneModuleState != null)
-				redstoneModuleState.render(this, matrix, button.x + 4, button.y + 25);
+				redstoneModuleState.render(this, pose, button.x + 4, button.y + 25);
 		}
 
-		font.draw(matrix, selectCameras, leftPos + xSize / 2 - font.width(selectCameras) / 2, topPos + 6, 4210752);
+		font.draw(pose, selectCameras, leftPos + xSize / 2 - font.width(selectCameras) / 2, topPos + 6, 4210752);
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
-			if (hoverCheckers[i] != null && cameraTEs[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
-				if (cameraTEs[i].isDisabled()) {
-					renderTooltip(matrix, Utils.localize("gui.securitycraft:scManual.disabled"), mouseX, mouseY);
+			if (hoverCheckers[i] != null && cameraBEs[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
+				if (cameraBEs[i].isDisabled()) {
+					renderTooltip(pose, Utils.localize("gui.securitycraft:scManual.disabled"), mouseX, mouseY);
 					break;
 				}
-				else if (cameraTEs[i].hasCustomName()) {
-					renderTooltip(matrix, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomName()), 150), mouseX, mouseY);
+				else if (cameraBEs[i].hasCustomName()) {
+					renderTooltip(pose, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBEs[i].getCustomName()), 150), mouseX, mouseY);
 					break;
 				}
 			}

@@ -46,19 +46,19 @@ public class SyncBlockPocketManager {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		PlayerEntity player = ctx.get().getSender();
-		World world = player.level;
-		TileEntity te = world.getBlockEntity(pos);
+		World level = player.level;
+		TileEntity te = level.getBlockEntity(pos);
 
-		if (world.isLoaded(pos) && te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
+		if (level.isLoaded(pos) && te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
 			BlockPocketManagerBlockEntity bpm = (BlockPocketManagerBlockEntity) te;
-			BlockState state = world.getBlockState(pos);
+			BlockState state = level.getBlockState(pos);
 
 			bpm.setSize(size);
 			bpm.setShowOutline(showOutline);
 			bpm.setAutoBuildOffset(autoBuildOffset);
 			bpm.setColor(color);
 			bpm.setChanged();
-			world.sendBlockUpdated(pos, state, state, 2);
+			level.sendBlockUpdated(pos, state, state, 2);
 		}
 	}
 }

@@ -33,53 +33,53 @@ public class SecretSignRenderer extends TileEntityRenderer<SecretSignBlockEntity
 	}
 
 	@Override
-	public void render(SecretSignBlockEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
-		BlockState state = te.getBlockState();
+	public void render(SecretSignBlockEntity be, float partialTicks, MatrixStack pose, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+		BlockState state = be.getBlockState();
 		RenderMaterial material = SignTileEntityRenderer.getMaterial(state.getBlock());
 		FontRenderer font = renderer.getFont();
 		IVertexBuilder builder;
 
-		matrix.pushPose();
+		pose.pushPose();
 
 		if (state.getBlock() instanceof SecretStandingSignBlock) {
-			matrix.translate(0.5D, 0.5D, 0.5D);
-			matrix.mulPose(Vector3f.YP.rotationDegrees(-(state.getValue(StandingSignBlock.ROTATION) * 360 / 16.0F)));
+			pose.translate(0.5D, 0.5D, 0.5D);
+			pose.mulPose(Vector3f.YP.rotationDegrees(-(state.getValue(StandingSignBlock.ROTATION) * 360 / 16.0F)));
 			model.stick.visible = true;
 		}
 		else {
-			matrix.translate(0.5D, 0.5D, 0.5D);
-			matrix.mulPose(Vector3f.YP.rotationDegrees(-state.getValue(WallSignBlock.FACING).toYRot()));
-			matrix.translate(0.0D, -0.3125D, -0.4375D);
+			pose.translate(0.5D, 0.5D, 0.5D);
+			pose.mulPose(Vector3f.YP.rotationDegrees(-state.getValue(WallSignBlock.FACING).toYRot()));
+			pose.translate(0.0D, -0.3125D, -0.4375D);
 			model.stick.visible = false;
 		}
 
-		matrix.pushPose();
-		matrix.scale(0.6666667F, -0.6666667F, -0.6666667F);
+		pose.pushPose();
+		pose.scale(0.6666667F, -0.6666667F, -0.6666667F);
 		builder = material.buffer(buffer, model::renderType);
-		model.sign.render(matrix, builder, combinedLight, combinedOverlay);
-		model.stick.render(matrix, builder, combinedLight, combinedOverlay);
-		matrix.popPose();
-		matrix.translate(0.0D, 0.33333334F, 0.046666667F);
-		matrix.scale(0.010416667F, -0.010416667F, 0.010416667F);
+		model.sign.render(pose, builder, combinedLight, combinedOverlay);
+		model.stick.render(pose, builder, combinedLight, combinedOverlay);
+		pose.popPose();
+		pose.translate(0.0D, 0.33333334F, 0.046666667F);
+		pose.scale(0.010416667F, -0.010416667F, 0.010416667F);
 
-		if (te.isPlayerAllowedToSeeText(Minecraft.getInstance().player)) {
-			int textColor = te.getColor().getTextColor();
+		if (be.isPlayerAllowedToSeeText(Minecraft.getInstance().player)) {
+			int textColor = be.getColor().getTextColor();
 			int r = (int) (NativeImage.getR(textColor) * 0.4D);
 			int g = (int) (NativeImage.getG(textColor) * 0.4D);
 			int b = (int) (NativeImage.getB(textColor) * 0.4D);
 			int argb = NativeImage.combine(0, b, g, r);
 
 			for (int line = 0; line < 4; ++line) {
-				IReorderingProcessor rp = te.getRenderMessage(line, text -> {
+				IReorderingProcessor rp = be.getRenderMessage(line, text -> {
 					List<IReorderingProcessor> list = font.split(text, 90);
 					return list.isEmpty() ? IReorderingProcessor.EMPTY : list.get(0);
 				});
 
 				if (rp != null)
-					font.drawInBatch(rp, -font.width(rp) / 2, line * 10 - 20, argb, false, matrix.last().pose(), buffer, false, 0, combinedLight);
+					font.drawInBatch(rp, -font.width(rp) / 2, line * 10 - 20, argb, false, pose.last().pose(), buffer, false, 0, combinedLight);
 			}
 		}
 
-		matrix.popPose();
+		pose.popPose();
 	}
 }

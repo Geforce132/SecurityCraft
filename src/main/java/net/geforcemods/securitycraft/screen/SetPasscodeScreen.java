@@ -28,14 +28,14 @@ public class SetPasscodeScreen extends Screen {
 	private int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
-	private TileEntity tileEntity;
+	private TileEntity be;
 	private TranslationTextComponent setup;
 	private IFormattableTextComponent combined;
 	private TextFieldWidget keycodeTextbox;
 
-	public SetPasscodeScreen(TileEntity te, ITextComponent title) {
+	public SetPasscodeScreen(TileEntity be, ITextComponent title) {
 		super(title);
-		tileEntity = te;
+		this.be = be;
 		setup = Utils.localize("gui.securitycraft:passcode.setup");
 		combined = title.plainCopy().append(new StringTextComponent(" ")).append(setup);
 	}
@@ -66,19 +66,19 @@ public class SetPasscodeScreen extends Screen {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(matrix);
+	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
-		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		super.render(matrix, mouseX, mouseY, partialTicks);
-		drawString(matrix, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(pose, mouseX, mouseY, partialTicks);
+		drawString(pose, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 
 		if (font.width(combined) < imageWidth - 10)
-			font.draw(matrix, combined, width / 2 - font.width(combined) / 2, topPos + 6, 4210752);
+			font.draw(pose, combined, width / 2 - font.width(combined) / 2, topPos + 6, 4210752);
 		else {
-			font.draw(matrix, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
-			font.draw(matrix, setup, width / 2 - font.width(setup) / 2, topPos + 16, 4210752);
+			font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
+			font.draw(pose, setup, width / 2 - font.width(setup) / 2, topPos + 16, 4210752);
 		}
 	}
 
@@ -98,7 +98,7 @@ public class SetPasscodeScreen extends Screen {
 	}
 
 	private void saveAndContinueButtonClicked(Button button) {
-		SecurityCraft.channel.sendToServer(new SetPasscode(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ(), keycodeTextbox.getValue()));
+		SecurityCraft.channel.sendToServer(new SetPasscode(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ(), keycodeTextbox.getValue()));
 		Minecraft.getInstance().player.closeContainer();
 	}
 }

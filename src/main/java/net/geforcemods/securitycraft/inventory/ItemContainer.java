@@ -88,6 +88,7 @@ public class ItemContainer implements IInventory {
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
 		ItemStack stack = getItem(index);
+
 		setItem(index, ItemStack.EMPTY);
 		return stack;
 	}
