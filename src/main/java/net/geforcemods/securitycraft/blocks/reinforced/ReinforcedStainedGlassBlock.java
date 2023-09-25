@@ -21,12 +21,12 @@ public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements
 	}
 
 	@Override
-	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
+	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader level, BlockPos pos, BlockPos beaconPos) {
 		return color.getTextureDiffuseColors();
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+	public boolean propagatesSkylightDown(BlockState state, IBlockReader level, BlockPos pos) {
 		return true;
 	}
 
@@ -36,7 +36,7 @@ public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements
 	}
 
 	@Override
-	public float getShadeBrightness(BlockState state, IBlockReader world, BlockPos pos) {
+	public float getShadeBrightness(BlockState state, IBlockReader level, BlockPos pos) {
 		return 1.0F;
 	}
 

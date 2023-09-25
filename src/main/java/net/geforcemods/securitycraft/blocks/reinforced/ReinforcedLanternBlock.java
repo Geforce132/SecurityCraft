@@ -34,14 +34,14 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+		FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
 
 		for (Direction direction : context.getNearestLookingDirections()) {
 			if (direction.getAxis() == Direction.Axis.Y) {
-				BlockState blockstate = this.defaultBlockState().setValue(HANGING, direction == Direction.UP);
+				BlockState state = this.defaultBlockState().setValue(HANGING, direction == Direction.UP);
 
-				if (blockstate.canSurvive(context.getLevel(), context.getClickedPos()))
-					return blockstate.setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
+				if (state.canSurvive(context.getLevel(), context.getClickedPos()))
+					return state.setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 			}
 		}
 
@@ -49,7 +49,7 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext context) {
 		return state.getValue(HANGING) ? HANGING_SHAPE : STANDING_SHAPE;
 	}
 
@@ -59,9 +59,9 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
+	public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
 		Direction direction = getBlockConnected(state).getOpposite();
-		return Block.canSupportCenter(world, pos.relative(direction), direction.getOpposite());
+		return Block.canSupportCenter(level, pos.relative(direction), direction.getOpposite());
 	}
 
 	protected static Direction getBlockConnected(BlockState state) {
@@ -69,11 +69,11 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
 		if (state.getValue(WATERLOGGED))
-			world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
-		return getBlockConnected(state).getOpposite() == facing && !state.canSurvive(world, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+		return getBlockConnected(state).getOpposite() == facing && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
+	public boolean isPathfindable(BlockState state, IBlockReader level, BlockPos pos, PathType type) {
 		return false;
 	}
 

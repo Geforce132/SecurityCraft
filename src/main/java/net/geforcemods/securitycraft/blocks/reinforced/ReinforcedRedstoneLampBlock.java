@@ -31,23 +31,23 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-		if (!world.isClientSide) {
+	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+		if (!level.isClientSide) {
 			boolean isLit = state.getValue(LIT);
 
-			if (isLit != world.hasNeighborSignal(pos)) {
+			if (isLit != level.hasNeighborSignal(pos)) {
 				if (isLit)
-					world.getBlockTicks().scheduleTick(pos, this, 4);
+					level.getBlockTicks().scheduleTick(pos, this, 4);
 				else
-					world.setBlock(pos, state.cycle(LIT), 2);
+					level.setBlock(pos, state.cycle(LIT), 2);
 			}
 		}
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
-		if (state.getValue(LIT) && !world.hasNeighborSignal(pos))
-			world.setBlock(pos, state.cycle(LIT), 2);
+	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random rand) {
+		if (state.getValue(LIT) && !level.hasNeighborSignal(pos))
+			level.setBlock(pos, state.cycle(LIT), 2);
 	}
 
 	@Override

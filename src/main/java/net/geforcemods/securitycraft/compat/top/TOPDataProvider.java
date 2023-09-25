@@ -45,13 +45,13 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 	@Nullable
 	@Override
 	public Void apply(ITheOneProbe theOneProbe) {
-		theOneProbe.registerBlockDisplayOverride((mode, probeInfo, player, world, blockState, data) -> {
+		theOneProbe.registerBlockDisplayOverride((mode, probeInfo, player, level, state, data) -> {
 			ItemStack disguisedAs = ItemStack.EMPTY;
 
-			if (blockState.getBlock() instanceof DisguisableBlock)
-				disguisedAs = ((DisguisableBlock) blockState.getBlock()).getDisguisedStack(world, data.getPos());
-			else if (blockState.getBlock() instanceof IOverlayDisplay) {
-				ItemStack displayStack = ((IOverlayDisplay) blockState.getBlock()).getDisplayStack(world, blockState, data.getPos());
+			if (state.getBlock() instanceof DisguisableBlock)
+				disguisedAs = ((DisguisableBlock) state.getBlock()).getDisguisedStack(level, data.getPos());
+			else if (state.getBlock() instanceof IOverlayDisplay) {
+				ItemStack displayStack = ((IOverlayDisplay) state.getBlock()).getDisplayStack(level, state, data.getPos());
 
 				if (displayStack != null)
 					disguisedAs = displayStack;
@@ -77,28 +77,28 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 			}
 
 			@Override
-			public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data) {
-				Block block = blockState.getBlock();
+			public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World level, BlockState state, IProbeHitData data) {
+				Block block = state.getBlock();
 
-				if (block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(world, blockState, data.getPos()))
+				if (block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(level, state, data.getPos()))
 					return;
 
-				TileEntity te = world.getBlockEntity(data.getPos());
+				TileEntity be = level.getBlockEntity(data.getPos());
 
-				if (te instanceof IOwnable)
-					probeInfo.vertical().mcText(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())).withStyle(TextFormatting.GRAY));
+				if (be instanceof IOwnable)
+					probeInfo.vertical().mcText(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) be).getOwner())).withStyle(TextFormatting.GRAY));
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
-				if (te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player)) && !((IModuleInventory) te).getInsertedModules().isEmpty()) {
+				if (be instanceof IModuleInventory && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player)) && !((IModuleInventory) be).getInsertedModules().isEmpty()) {
 					probeInfo.mcText(EQUIPPED);
 
-					for (ModuleType module : ((IModuleInventory) te).getInsertedModules()) {
+					for (ModuleType module : ((IModuleInventory) be).getInsertedModules()) {
 						probeInfo.mcText(new StringTextComponent("- ").append(new TranslationTextComponent(module.getTranslationKey())).withStyle(TextFormatting.GRAY));
 					}
 				}
 
-				if (te instanceof INameable && ((INameable) te).hasCustomName()) {
-					ITextComponent text = ((INameable) te).getCustomName();
+				if (be instanceof INameable && ((INameable) be).hasCustomName()) {
+					ITextComponent text = ((INameable) be).getCustomName();
 
 					probeInfo.mcText(Utils.localize("waila.securitycraft:customName", text == null ? StringTextComponent.EMPTY : text).withStyle(TextFormatting.GRAY));
 				}
@@ -111,7 +111,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 			}
 
 			@Override
-			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, PlayerEntity player, World world, Entity entity, IProbeHitEntityData data) {
+			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, PlayerEntity player, World level, Entity entity, IProbeHitEntityData data) {
 				if (entity instanceof Sentry) {
 					Sentry sentry = (Sentry) entity;
 					SentryMode mode = sentry.getMode();

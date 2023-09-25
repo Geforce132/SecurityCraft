@@ -62,11 +62,11 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
-			return disguisedState.getShape(world, pos, ctx);
+			return disguisedState.getShape(level, pos, ctx);
 		else if (!disguisedState.getValue(HANGING)) {
 			switch (disguisedState.getValue(FACING)) {
 				case NORTH:
@@ -98,15 +98,15 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		TileEntity te = world.getBlockEntity(pos);
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		TileEntity te = level.getBlockEntity(pos);
 
 		if (!(te instanceof ProjectorBlockEntity))
 			return ActionResultType.FAIL;
 
 		boolean isOwner = ((IOwnable) te).isOwnedBy(player);
 
-		if (!world.isClientSide && isOwner)
+		if (!level.isClientSide && isOwner)
 			NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
 
 		return isOwner ? ActionResultType.SUCCESS : ActionResultType.FAIL;
@@ -118,43 +118,43 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof ProjectorBlockEntity)
-				LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorBlockEntity) te).getStackInSlot(36))));
+				LevelUtils.addScheduledTask(level, () -> level.addFreshEntity(new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorBlockEntity) te).getStackInSlot(36))));
 		}
 
-		super.onRemove(state, world, pos, newState, isMoving);
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-		if (!world.isClientSide) {
-			TileEntity tile = world.getBlockEntity(pos);
+	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+		if (!level.isClientSide) {
+			TileEntity te = level.getBlockEntity(pos);
 
-			if (tile instanceof ProjectorBlockEntity) {
-				ProjectorBlockEntity te = (ProjectorBlockEntity) tile;
+			if (te instanceof ProjectorBlockEntity) {
+				ProjectorBlockEntity be = (ProjectorBlockEntity) te;
 
-				if (te.isActivatedByRedstone()) {
-					te.setActive(world.hasNeighborSignal(pos));
-					world.sendBlockUpdated(pos, state, state, 3);
+				if (be.isActivatedByRedstone()) {
+					be.setActive(level.hasNeighborSignal(pos));
+					level.sendBlockUpdated(pos, state, state, 3);
 				}
 			}
 		}
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
-		if (!world.hasNeighborSignal(pos)) {
-			TileEntity tile = world.getBlockEntity(pos);
+	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random rand) {
+		if (!level.hasNeighborSignal(pos)) {
+			TileEntity te = level.getBlockEntity(pos);
 
-			if (tile instanceof ProjectorBlockEntity) {
-				ProjectorBlockEntity te = (ProjectorBlockEntity) tile;
+			if (te instanceof ProjectorBlockEntity) {
+				ProjectorBlockEntity be = (ProjectorBlockEntity) te;
 
-				if (te.isActivatedByRedstone())
-					te.setActive(false);
+				if (be.isActivatedByRedstone())
+					be.setActive(false);
 			}
 		}
 	}
@@ -170,7 +170,7 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new ProjectorBlockEntity();
 	}
 
@@ -186,7 +186,7 @@ public class ProjectorBlock extends DisguisableBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, IBlockReader level, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		tooltip.add(TOOLTIP);
 	}
 }

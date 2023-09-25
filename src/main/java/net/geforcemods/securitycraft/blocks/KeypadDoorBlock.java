@@ -23,44 +23,44 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (!world.isClientSide) {
-			KeypadDoorBlockEntity te = (KeypadDoorBlockEntity) world.getBlockEntity(pos);
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (!level.isClientSide) {
+			KeypadDoorBlockEntity be = (KeypadDoorBlockEntity) level.getBlockEntity(pos);
 
-			if (te.isDisabled())
+			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (te.verifyPasscodeSet(world, pos, te, player)) {
-				if (te.isDenied(player)) {
-					if (te.sendsMessages())
+			else if (be.verifyPasscodeSet(level, pos, be, player)) {
+				if (be.isDenied(player)) {
+					if (be.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 				}
-				else if (te.isAllowed(player)) {
-					if (te.sendsMessages())
+				else if (be.isAllowed(player)) {
+					if (be.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-					activate(state, world, pos, te.getSignalLength());
+					activate(state, level, pos, be.getSignalLength());
 				}
 				else if (player.getItemInHand(hand).getItem() != SCContent.CODEBREAKER.get())
-					te.openPasscodeGUI(world, pos, player);
+					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 
 		return ActionResultType.SUCCESS;
 	}
 
-	public void activate(BlockState state, World world, BlockPos pos, int signalLength) {
+	public void activate(BlockState state, World level, BlockPos pos, int signalLength) {
 		boolean open = !state.getValue(OPEN);
 
-		world.levelEvent(null, open ? 1005 : 1011, pos, 0);
-		world.setBlockAndUpdate(pos, state.setValue(OPEN, open));
-		world.updateNeighborsAt(pos, SCContent.KEYPAD_DOOR.get());
+		level.levelEvent(null, open ? 1005 : 1011, pos, 0);
+		level.setBlockAndUpdate(pos, state.setValue(OPEN, open));
+		level.updateNeighborsAt(pos, SCContent.KEYPAD_DOOR.get());
 
 		if (open && signalLength > 0)
-			world.getBlockTicks().scheduleTick(pos, SCContent.KEYPAD_DOOR.get(), signalLength);
+			level.getBlockTicks().scheduleTick(pos, SCContent.KEYPAD_DOOR.get(), signalLength);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new KeypadDoorBlockEntity();
 	}
 

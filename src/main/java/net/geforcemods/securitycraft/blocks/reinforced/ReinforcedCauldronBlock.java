@@ -30,12 +30,12 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		Entity entity = ctx.getEntity();
 
 		if (entity instanceof PlayerEntity) {
 			PlayerEntity player = ((PlayerEntity) entity);
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof ReinforcedCauldronBlockEntity && ((ReinforcedCauldronBlockEntity) te).isAllowedToInteract(player))
 				return SHAPE;
@@ -47,11 +47,11 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		TileEntity te = world.getBlockEntity(pos);
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		TileEntity te = level.getBlockEntity(pos);
 
 		if (te instanceof ReinforcedCauldronBlockEntity && ((ReinforcedCauldronBlockEntity) te).isAllowedToInteract(player))
-			return super.use(state, world, pos, player, hand, hit);
+			return super.use(state, level, pos, player, hand, hit);
 
 		return ActionResultType.PASS;
 	}
@@ -62,9 +62,9 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new ReinforcedCauldronBlockEntity();
 	}
 }

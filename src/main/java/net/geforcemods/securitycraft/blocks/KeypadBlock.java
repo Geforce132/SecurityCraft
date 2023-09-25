@@ -45,60 +45,60 @@ public class KeypadBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (state.getValue(POWERED))
 			return ActionResultType.PASS;
-		else if (!world.isClientSide) {
-			KeypadBlockEntity te = (KeypadBlockEntity) world.getBlockEntity(pos);
+		else if (!level.isClientSide) {
+			KeypadBlockEntity be = (KeypadBlockEntity) level.getBlockEntity(pos);
 
-			if (te.isDisabled())
+			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (te.verifyPasscodeSet(world, pos, te, player)) {
-				if (te.isDenied(player)) {
-					if (te.sendsMessages())
+			else if (be.verifyPasscodeSet(level, pos, be, player)) {
+				if (be.isDenied(player)) {
+					if (be.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 				}
-				else if (te.isAllowed(player)) {
-					if (te.sendsMessages())
+				else if (be.isAllowed(player)) {
+					if (be.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-					activate(world, pos, te.getSignalLength());
+					activate(level, pos, be.getSignalLength());
 				}
 				else if (player.getItemInHand(hand).getItem() != SCContent.CODEBREAKER.get())
-					te.openPasscodeGUI(world, pos, player);
+					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 
 		return ActionResultType.SUCCESS;
 	}
 
-	public void activate(World world, BlockPos pos, int signalLength) {
-		world.setBlockAndUpdate(pos, world.getBlockState(pos).setValue(POWERED, true));
-		BlockUtils.updateIndirectNeighbors(world, pos, SCContent.KEYPAD.get());
-		world.getBlockTicks().scheduleTick(pos, this, signalLength);
+	public void activate(World level, BlockPos pos, int signalLength) {
+		level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(POWERED, true));
+		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYPAD.get());
+		level.getBlockTicks().scheduleTick(pos, this, signalLength);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-		BlockUtils.updateIndirectNeighbors(world, pos, SCContent.KEYPAD.get());
+	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random random) {
+		level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYPAD.get());
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
-			TileEntity be = world.getBlockEntity(pos);
+			TileEntity be = level.getBlockEntity(pos);
 
 			if (state.getValue(POWERED)) {
-				world.updateNeighborsAt(pos, this);
-				BlockUtils.updateIndirectNeighbors(world, pos, this);
+				level.updateNeighborsAt(pos, this);
+				BlockUtils.updateIndirectNeighbors(level, pos, this);
 			}
 
 			if (be instanceof IPasscodeProtected)
 				SaltData.removeSalt(((IPasscodeProtected) be).getSaltKey());
 		}
 
-		super.onRemove(state, world, pos, newState, isMoving);
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
@@ -107,21 +107,21 @@ public class KeypadBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public boolean shouldCheckWeakPower(BlockState state, IWorldReader world, BlockPos pos, Direction side) {
+	public boolean shouldCheckWeakPower(BlockState state, IWorldReader level, BlockPos pos, Direction side) {
 		return false;
 	}
 
 	@Override
-	public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		if (blockState.getValue(POWERED))
+	public int getSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
+		if (state.getValue(POWERED))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public int getDirectSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		if (blockState.getValue(POWERED))
+	public int getDirectSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
+		if (state.getValue(POWERED))
 			return 15;
 		else
 			return 0;
@@ -133,7 +133,7 @@ public class KeypadBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(IBlockReader level, BlockPos pos, BlockState state) {
 		return ItemStack.EMPTY;
 	}
 
@@ -143,7 +143,7 @@ public class KeypadBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new KeypadBlockEntity();
 	}
 
@@ -164,9 +164,9 @@ public class KeypadBlock extends DisguisableBlock {
 		}
 
 		@Override
-		public boolean convert(PlayerEntity player, World world, BlockPos pos) {
-			world.setBlockAndUpdate(pos, SCContent.KEYPAD.get().defaultBlockState().setValue(KeypadBlock.FACING, world.getBlockState(pos).getValue(FrameBlock.FACING)).setValue(KeypadBlock.POWERED, false));
-			((IOwnable) world.getBlockEntity(pos)).setOwner(player.getUUID().toString(), player.getName().getString());
+		public boolean convert(PlayerEntity player, World level, BlockPos pos) {
+			level.setBlockAndUpdate(pos, SCContent.KEYPAD.get().defaultBlockState().setValue(KeypadBlock.FACING, level.getBlockState(pos).getValue(FrameBlock.FACING)).setValue(KeypadBlock.POWERED, false));
+			((IOwnable) level.getBlockEntity(pos)).setOwner(player.getUUID().toString(), player.getName().getString());
 			return true;
 		}
 	}

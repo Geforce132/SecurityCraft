@@ -67,35 +67,35 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		if (world.getBlockState(pos.below()).getMaterial() == Material.AIR)
-			world.destroyBlock(pos, true);
+	public void neighborChanged(BlockState state, World level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
+		if (level.getBlockState(pos.below()).getMaterial() == Material.AIR)
+			level.destroyBlock(pos, true);
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
-		return BlockUtils.isSideSolid(world, pos.below(), Direction.UP);
+	public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
+		return BlockUtils.isSideSolid(level, pos.below(), Direction.UP);
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
-		if (!player.isCreative() && !world.isClientSide && !world.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
-			world.destroyBlock(pos, false);
+	public boolean removedByPlayer(BlockState state, World level, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
+		if (!player.isCreative() && !level.isClientSide && !level.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
+			level.destroyBlock(pos, false);
 
-			if (!EntityUtils.doesPlayerOwn(player, world, pos))
-				explode(world, pos);
+			if (!EntityUtils.doesPlayerOwn(player, level, pos))
+				explode(level, pos);
 		}
 
-		return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+		return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
 	}
 
 	@Override
-	public void wasExploded(World world, BlockPos pos, Explosion explosion) {
-		if (!world.isClientSide && world.getBlockState(pos).hasProperty(ClaymoreBlock.DEACTIVATED) && !world.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
+	public void wasExploded(World worldlevel, BlockPos pos, Explosion explosion) {
+		if (!worldlevel.isClientSide && worldlevel.getBlockState(pos).hasProperty(ClaymoreBlock.DEACTIVATED) && !worldlevel.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
 			if (pos.equals(new BlockPos(explosion.getPosition())))
 				return;
 
-			explode(world, pos);
+			explode(worldlevel, pos);
 		}
 	}
 
@@ -105,11 +105,11 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public boolean activateMine(World world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
+	public boolean activateMine(World level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
 
 		if (state.getValue(DEACTIVATED)) {
-			world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
+			level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
 			return true;
 		}
 
@@ -117,11 +117,11 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public boolean defuseMine(World world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
+	public boolean defuseMine(World level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
 
 		if (!state.getValue(DEACTIVATED)) {
-			world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
+			level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
 			return true;
 		}
 
@@ -129,10 +129,10 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos) {
-		if (!world.isClientSide) {
-			world.destroyBlock(pos, false);
-			world.explode((Entity) null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.5F : 3.5F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+	public void explode(World level, BlockPos pos) {
+		if (!level.isClientSide) {
+			level.destroyBlock(pos, false);
+			level.explode((Entity) null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.5F : 3.5F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 		}
 	}
 
@@ -164,7 +164,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, IBlockReader sourclevele, BlockPos pos, ISelectionContext ctx) {
 		switch (state.getValue(FACING)) {
 			case NORTH:
 				return NORTH;
@@ -195,7 +195,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new ClaymoreBlockEntity();
 	}
 

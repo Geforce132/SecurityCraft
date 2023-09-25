@@ -35,17 +35,17 @@ public class FurnaceMineBlock extends BaseFullMineBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		return VoxelShapes.block();
 	}
 
 	@Override
-	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {}
+	public void entityInside(BlockState state, World level, BlockPos pos, Entity entity) {}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (player.getItemInHand(hand).getItem() != SCContent.MINE_REMOTE_ACCESS_TOOL.get() && !EntityUtils.doesPlayerOwn(player, world, pos)) {
-			explode(world, pos);
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (player.getItemInHand(hand).getItem() != SCContent.MINE_REMOTE_ACCESS_TOOL.get() && !EntityUtils.doesPlayerOwn(player, level, pos)) {
+			explode(level, pos);
 			return ActionResultType.SUCCESS;
 		}
 		else
@@ -78,7 +78,7 @@ public class FurnaceMineBlock extends BaseFullMineBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new OwnableBlockEntity();
 	}
 }

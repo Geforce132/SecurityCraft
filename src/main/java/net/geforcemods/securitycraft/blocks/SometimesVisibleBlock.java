@@ -52,7 +52,7 @@ public class SometimesVisibleBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new DisguisableBlockEntity();
 	}
 

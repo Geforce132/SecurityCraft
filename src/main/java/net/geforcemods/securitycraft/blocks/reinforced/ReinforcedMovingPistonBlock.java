@@ -32,9 +32,9 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof ReinforcedPistonBlockEntity)
 				((ReinforcedPistonBlockEntity) te).finalTick();
@@ -42,28 +42,28 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 	}
 
 	@Override
-	public void destroy(IWorld world, BlockPos pos, BlockState state) {
+	public void destroy(IWorld level, BlockPos pos, BlockState state) {
 		BlockPos oppositePos = pos.relative(state.getValue(FACING).getOpposite());
-		BlockState oppositeState = world.getBlockState(oppositePos);
+		BlockState oppositeState = level.getBlockState(oppositePos);
 
 		if (oppositeState.getBlock() instanceof ReinforcedPistonBlock && oppositeState.getValue(PistonBlock.EXTENDED))
-			world.removeBlock(oppositePos, false);
+			level.removeBlock(oppositePos, false);
 	}
 
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-		ReinforcedPistonBlockEntity reinforcedPistonTileEntity = this.getTileEntity(builder.getLevel(), new BlockPos(builder.getParameter(LootParameters.ORIGIN)));
+		ReinforcedPistonBlockEntity reinforcedPistonTileEntity = getTileEntity(builder.getLevel(), new BlockPos(builder.getParameter(LootParameters.ORIGIN)));
 		return reinforcedPistonTileEntity == null ? Collections.emptyList() : reinforcedPistonTileEntity.getPistonState().getDrops(builder);
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		ReinforcedPistonBlockEntity reinforcedPistonTileEntity = this.getTileEntity(worldIn, pos);
-		return reinforcedPistonTileEntity != null ? reinforcedPistonTileEntity.getCollisionShape(worldIn, pos) : VoxelShapes.empty();
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext context) {
+		ReinforcedPistonBlockEntity reinforcedPistonTileEntity = getTileEntity(level, pos);
+		return reinforcedPistonTileEntity != null ? reinforcedPistonTileEntity.getCollisionShape(level, pos) : VoxelShapes.empty();
 	}
 
-	private ReinforcedPistonBlockEntity getTileEntity(IBlockReader world, BlockPos pos) {
-		TileEntity tileentity = world.getBlockEntity(pos);
-		return tileentity instanceof ReinforcedPistonBlockEntity ? (ReinforcedPistonBlockEntity) tileentity : null;
+	private ReinforcedPistonBlockEntity getTileEntity(IBlockReader level, BlockPos pos) {
+		TileEntity te = level.getBlockEntity(pos);
+		return te instanceof ReinforcedPistonBlockEntity ? (ReinforcedPistonBlockEntity) te : null;
 	}
 }

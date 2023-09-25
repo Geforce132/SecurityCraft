@@ -21,14 +21,14 @@ public class ReinforcedCobwebBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		return VoxelShapes.empty();
 	}
 
 	@Override
-	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
+	public void entityInside(BlockState state, World level, BlockPos pos, Entity entity) {
 		if (entity instanceof PlayerEntity) {
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof OwnableBlockEntity && ((OwnableBlockEntity) te).isOwnedBy((PlayerEntity) entity))
 				return;

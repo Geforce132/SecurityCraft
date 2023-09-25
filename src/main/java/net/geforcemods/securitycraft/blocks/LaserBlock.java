@@ -48,9 +48,9 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
-		super.setPlacedBy(world, pos, state, entity, stack);
-		setLaser(world, pos, entity instanceof PlayerEntity ? (PlayerEntity) entity : null);
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
+		super.setPlacedBy(level, pos, state, entity, stack);
+		setLaser(level, pos, entity instanceof PlayerEntity ? (PlayerEntity) entity : null);
 	}
 
 	@Override
@@ -81,37 +81,37 @@ public class LaserBlock extends DisguisableBlock {
 		}
 	}
 
-	public void setLaser(World world, BlockPos pos, Direction facing, PlayerEntity player) {
-		LaserBlockBlockEntity thisTe = (LaserBlockBlockEntity) world.getBlockEntity(pos);
+	public void setLaser(World level, BlockPos pos, Direction facing, PlayerEntity player) {
+		LaserBlockBlockEntity thisBe = (LaserBlockBlockEntity) level.getBlockEntity(pos);
 
-		if (!thisTe.isEnabled() || !thisTe.isSideEnabled(facing))
+		if (!thisBe.isEnabled() || !thisBe.isSideEnabled(facing))
 			return;
 
 		int boundType = LaserFieldBlock.getBoundType(facing);
 
 		for (int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++) {
 			BlockPos offsetPos = pos.relative(facing, i);
-			BlockState offsetState = world.getBlockState(offsetPos);
+			BlockState offsetState = level.getBlockState(offsetPos);
 			Block offsetBlock = offsetState.getBlock();
 
-			if (!offsetState.isAir(world, offsetPos) && !offsetState.getMaterial().isReplaceable() && offsetBlock != SCContent.LASER_BLOCK.get())
+			if (!offsetState.isAir(level, offsetPos) && !offsetState.getMaterial().isReplaceable() && offsetBlock != SCContent.LASER_BLOCK.get())
 				return;
 			else if (offsetBlock == SCContent.LASER_BLOCK.get()) {
-				LaserBlockBlockEntity thatTe = (LaserBlockBlockEntity) world.getBlockEntity(offsetPos);
+				LaserBlockBlockEntity thatBe = (LaserBlockBlockEntity) level.getBlockEntity(offsetPos);
 
-				if (thisTe.getOwner().owns(thatTe) && thatTe.isEnabled()) {
-					if (!thatTe.isSideEnabled(facing.getOpposite())) {
-						thisTe.setSideEnabled(facing, false, null);
+				if (thisBe.getOwner().owns(thatBe) && thatBe.isEnabled()) {
+					if (!thatBe.isSideEnabled(facing.getOpposite())) {
+						thisBe.setSideEnabled(facing, false, null);
 						return;
 					}
 
-					ModuleType failedType = thisTe.synchronizeWith(thatTe);
+					ModuleType failedType = thisBe.synchronizeWith(thatBe);
 
 					if (failedType != null) {
 						if (player != null) {
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:laser.sync_failed", Utils.getFormattedCoordinates(thatTe.getBlockPos()), Utils.localize(failedType.getTranslationKey())), TextFormatting.RED);
-							thisTe.setSideEnabled(facing, false, null);
-							thatTe.setSideEnabled(facing.getOpposite(), false, null);
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:laser.sync_failed", Utils.getFormattedCoordinates(thatBe.getBlockPos()), Utils.localize(failedType.getTranslationKey())), TextFormatting.RED);
+							thisBe.setSideEnabled(facing, false, null);
+							thatBe.setSideEnabled(facing.getOpposite(), false, null);
 							player.closeContainer();
 						}
 
@@ -120,19 +120,19 @@ public class LaserBlock extends DisguisableBlock {
 
 					for (int j = 1; j < i; j++) {
 						offsetPos = pos.relative(facing, j);
-						offsetState = world.getBlockState(offsetPos);
+						offsetState = level.getBlockState(offsetPos);
 
-						if (offsetState.isAir(world, offsetPos) || offsetState.getMaterial().isReplaceable()) {
-							world.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().getPotentiallyWaterloggedState(boundType, world, offsetPos));
+						if (offsetState.isAir(level, offsetPos) || offsetState.getMaterial().isReplaceable()) {
+							level.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().getPotentiallyWaterloggedState(boundType, level, offsetPos));
 
-							TileEntity te = world.getBlockEntity(offsetPos);
+							TileEntity te = level.getBlockEntity(offsetPos);
 
 							if (te instanceof IOwnable)
-								((IOwnable) te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
+								((IOwnable) te).setOwner(thisBe.getOwner().getUUID(), thisBe.getOwner().getName());
 						}
 					}
 
-					thatTe.getLensContainer().setChanged();
+					thatBe.getLensContainer().setChanged();
 				}
 
 				return;
@@ -141,9 +141,9 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void destroy(IWorld world, BlockPos pos, BlockState state) {
-		if (!world.isClientSide())
-			destroyAdjacentLasers(world, pos);
+	public void destroy(IWorld level, BlockPos pos, BlockState state) {
+		if (!level.isClientSide())
+			destroyAdjacentLasers(level, pos);
 	}
 
 	@Override
@@ -163,18 +163,18 @@ public class LaserBlock extends DisguisableBlock {
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
-	public static void destroyAdjacentLasers(IWorld world, BlockPos pos) {
+	public static void destroyAdjacentLasers(IWorld level, BlockPos pos) {
 		BlockUtils.removeInSequence((direction, state) -> {
 			if (state.getBlock() != SCContent.LASER_FIELD.get())
 				return false;
 
 			return state.getValue(LaserFieldBlock.BOUNDTYPE) == LaserFieldBlock.getBoundType(direction);
-		}, world, pos, Direction.values());
+		}, level, pos, Direction.values());
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		setLaser(world, pos, null);
+	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+		setLaser(level, pos, null);
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public boolean shouldCheckWeakPower(BlockState state, IWorldReader world, BlockPos pos, Direction side) {
+	public boolean shouldCheckWeakPower(BlockState state, IWorldReader level, BlockPos pos, Direction side) {
 		return false;
 	}
 
@@ -205,31 +205,31 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (!world.isClientSide && state.getValue(POWERED)) {
-			world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.LASER_BLOCK.get());
+	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random random) {
+		if (!level.isClientSide && state.getValue(POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.LASER_BLOCK.get());
 		}
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, World level, BlockPos pos, Random rand) {
 		if (state.getValue(POWERED)) {
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double z = pos.getZ() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double magicNumber1 = 0.2199999988079071D;
 			double magicNumber2 = 0.27000001072883606D;
-			float f1 = 0.6F + 0.4F;
-			float f2 = Math.max(0.0F, 0.7F - 0.5F);
-			float f3 = Math.max(0.0F, 0.6F - 0.7F);
+			float r = 0.6F + 0.4F;
+			float g = Math.max(0.0F, 0.7F - 0.5F);
+			float b = Math.max(0.0F, 0.6F - 0.7F);
 
-			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new RedstoneParticleData(r, g, b, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new RedstoneParticleData(r, g, b, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new RedstoneParticleData(r, g, b, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new RedstoneParticleData(r, g, b, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new RedstoneParticleData(r, g, b, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -239,7 +239,7 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new LaserBlockBlockEntity();
 	}
 }

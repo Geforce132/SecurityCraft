@@ -35,7 +35,35 @@ public class KeyPanelBlock extends AbstractPanelBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (state.getValue(POWERED))
+			return ActionResultType.PASS;
+		else if (!level.isClientSide) {
+			KeyPanelBlockEntity be = (KeyPanelBlockEntity) level.getBlockEntity(pos);
+
+			if (be.isDisabled())
+				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else if (be.verifyPasscodeSet(level, pos, be, player)) {
+				if (be.isDenied(player)) {
+					if (be.sendsMessages())
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+				}
+				else if (be.isAllowed(player)) {
+					if (be.sendsMessages())
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+
+					activate(state, level, pos, be.getSignalLength());
+				}
+				else if (player.getItemInHand(hand).getItem() != SCContent.CODEBREAKER.get())
+					be.openPasscodeGUI(level, pos, player);
+			}
+		}
+
+		return ActionResultType.SUCCESS;
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		switch (state.getValue(FACE)) {
 			case FLOOR:
 				switch (state.getValue(FACING)) {
@@ -82,40 +110,12 @@ public class KeyPanelBlock extends AbstractPanelBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		return VoxelShapes.empty();
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (state.getValue(POWERED))
-			return ActionResultType.PASS;
-		else if (!world.isClientSide) {
-			KeyPanelBlockEntity te = (KeyPanelBlockEntity) world.getBlockEntity(pos);
-
-			if (te.isDisabled())
-				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (te.verifyPasscodeSet(world, pos, te, player)) {
-				if (te.isDenied(player)) {
-					if (te.sendsMessages())
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-				}
-				else if (te.isAllowed(player)) {
-					if (te.sendsMessages())
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
-
-					activate(state, world, pos, te.getSignalLength());
-				}
-				else if (player.getItemInHand(hand).getItem() != SCContent.CODEBREAKER.get())
-					te.openPasscodeGUI(world, pos, player);
-			}
-		}
-
-		return ActionResultType.SUCCESS;
-	}
-
-	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new KeyPanelBlockEntity();
 	}
 }

@@ -21,8 +21,8 @@ public class VanillaToSecurityCraftCategory extends BaseCategory {
 	}
 
 	@Override
-	public void draw(ReinforcerRecipe recipe, MatrixStack matrix, double mouseX, double mouseY) {
-		Minecraft.getInstance().font.draw(matrix, OUTPUT_TEXT, 24, 5, 4210752);
+	public void draw(ReinforcerRecipe recipe, MatrixStack pose, double mouseX, double mouseY) {
+		Minecraft.getInstance().font.draw(pose, OUTPUT_TEXT, 24, 5, 4210752);
 	}
 
 	@Override

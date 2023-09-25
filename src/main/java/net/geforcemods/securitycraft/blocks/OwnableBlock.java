@@ -21,13 +21,13 @@ public class OwnableBlock extends Block {
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity) {
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
 		}
 
 		if (stack.hasCustomHoverName()) {
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof INameSetter)
 				((INameSetter) te).setCustomName(stack.getHoverName());
@@ -40,7 +40,7 @@ public class OwnableBlock extends Block {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new OwnableBlockEntity();
 	}
 }

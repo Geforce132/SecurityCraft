@@ -23,48 +23,48 @@ public class ReinforcedFallingBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public void onPlace(BlockState state, World world, BlockPos pos, BlockState oldState, boolean flag) {
-		world.getBlockTicks().scheduleTick(pos, this, 2);
+	public void onPlace(BlockState state, World level, BlockPos pos, BlockState oldState, boolean flag) {
+		level.getBlockTicks().scheduleTick(pos, this, 2);
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-		world.getBlockTicks().scheduleTick(currentPos, this, 2);
-		return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
+		level.getBlockTicks().scheduleTick(currentPos, this, 2);
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (!world.isClientSide)
-			checkFallable(world, pos);
+	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random random) {
+		if (!level.isClientSide)
+			checkFallable(level, pos);
 	}
 
-	private void checkFallable(World world, BlockPos pos) {
-		if (canFallThrough(world.getBlockState(pos.below())) && pos.getY() >= 0) {
-			if (world.hasChunksAt(pos.offset(-32, -32, -32), pos.offset(32, 32, 32))) {
-				TileEntity te = world.getBlockEntity(pos);
+	private void checkFallable(World level, BlockPos pos) {
+		if (canFallThrough(level.getBlockState(pos.below())) && pos.getY() >= 0) {
+			if (level.hasChunksAt(pos.offset(-32, -32, -32), pos.offset(32, 32, 32))) {
+				TileEntity be = level.getBlockEntity(pos);
 
-				if (!world.isClientSide && te instanceof IOwnable) {
-					FallingBlockEntity entity = new FallingBlockEntity(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos));
+				if (!level.isClientSide && be instanceof IOwnable) {
+					FallingBlockEntity entity = new FallingBlockEntity(level, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, level.getBlockState(pos));
 
-					entity.blockData = te.save(new CompoundNBT());
-					world.addFreshEntity(entity);
+					entity.blockData = be.save(new CompoundNBT());
+					level.addFreshEntity(entity);
 				}
 			}
 			else {
 				BlockState state = defaultBlockState();
 
-				if (world.getBlockState(pos).getBlock() == this) {
-					state = world.getBlockState(pos);
-					world.destroyBlock(pos, false);
+				if (level.getBlockState(pos).getBlock() == this) {
+					state = level.getBlockState(pos);
+					level.destroyBlock(pos, false);
 				}
 
 				BlockPos blockpos;
 
-				for (blockpos = pos.below(); canFallThrough(world.getBlockState(blockpos)) && blockpos.getY() > 0; blockpos = blockpos.below()) {}
+				for (blockpos = pos.below(); canFallThrough(level.getBlockState(blockpos)) && blockpos.getY() > 0; blockpos = blockpos.below()) {}
 
 				if (blockpos.getY() > 0)
-					world.setBlockAndUpdate(blockpos.above(), state); //Forge: Fix loss of state information during world gen.
+					level.setBlockAndUpdate(blockpos.above(), state); //Forge: Fix loss of state information during world gen.
 			}
 		}
 	}

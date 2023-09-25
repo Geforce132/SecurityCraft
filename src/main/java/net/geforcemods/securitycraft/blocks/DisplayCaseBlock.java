@@ -228,7 +228,7 @@ public class DisplayCaseBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new DisplayCaseBlockEntity();
 	}
 

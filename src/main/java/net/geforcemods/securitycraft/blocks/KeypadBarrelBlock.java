@@ -113,9 +113,9 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 
 	@Override
 	public INamedContainerProvider getMenuProvider(BlockState state, World level, BlockPos pos) {
-		TileEntity te = level.getBlockEntity(pos);
+		TileEntity be = level.getBlockEntity(pos);
 
-		return te instanceof INamedContainerProvider ? (INamedContainerProvider) te : null;
+		return be instanceof INamedContainerProvider ? (INamedContainerProvider) be : null;
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new KeypadBarrelBlockEntity();
 	}
 

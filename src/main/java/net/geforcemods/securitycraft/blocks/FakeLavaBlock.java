@@ -21,8 +21,8 @@ public class FakeLavaBlock extends FlowingFluidBlock {
 	}
 
 	@Override
-	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
-		super.entityInside(state, world, pos, entity);
+	public void entityInside(BlockState state, World level, BlockPos pos, Entity entity) {
+		super.entityInside(state, level, pos, entity);
 
 		if (entity instanceof LivingEntity) {
 			LivingEntity lEntity = (LivingEntity) entity;
@@ -30,7 +30,7 @@ public class FakeLavaBlock extends FlowingFluidBlock {
 			lEntity.clearFire();
 			lEntity.setSharedFlag(0, false);
 
-			if (!world.isClientSide) {
+			if (!level.isClientSide) {
 				lEntity.addEffect(SHORT_FIRE_RESISTANCE);
 
 				if (!lEntity.hasEffect(Effects.REGENERATION))

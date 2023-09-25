@@ -46,7 +46,7 @@ public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new ScannerTrapdoorBlockEntity();
 	}
 }

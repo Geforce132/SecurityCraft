@@ -105,7 +105,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext context) {
 		return (state.getValue(HALF) == Half.TOP ? SLAB_TOP_SHAPES : SLAB_BOTTOM_SHAPES)[SHAPE_BY_STATE[getShapeIndex(state)]];
 	}
 
@@ -115,54 +115,54 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-		modelBlock.animateTick(stateIn, worldIn, pos, rand);
+	public void animateTick(BlockState state, World level, BlockPos pos, Random rand) {
+		modelBlock.animateTick(state, level, pos, rand);
 	}
 
 	@Override
-	public void attack(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
-		modelState.attack(worldIn, pos, player);
+	public void attack(BlockState state, World level, BlockPos pos, PlayerEntity player) {
+		modelState.attack(level, pos, player);
 	}
 
 	@Override
-	public void destroy(IWorld worldIn, BlockPos pos, BlockState state) {
-		modelBlock.destroy(worldIn, pos, state);
+	public void destroy(IWorld level, BlockPos pos, BlockState state) {
+		modelBlock.destroy(level, pos, state);
 	}
 
 	@Override
-	public void onPlace(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving) {
+	public void onPlace(BlockState state, World level, BlockPos pos, BlockState oldState, boolean isMoving) {
 		if (state.getBlock() != oldState.getBlock()) {
-			modelState.neighborChanged(world, pos, Blocks.AIR, pos, false);
-			modelBlock.onPlace(modelState, world, pos, oldState, false);
+			modelState.neighborChanged(level, pos, Blocks.AIR, pos, false);
+			modelBlock.onPlace(modelState, level, pos, oldState, false);
 		}
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock())
-			modelState.onRemove(world, pos, newState, isMoving);
+			modelState.onRemove(level, pos, newState, isMoving);
 
-		super.onRemove(state, world, pos, newState, isMoving);
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
-	public void stepOn(World worldIn, BlockPos pos, Entity entity) {
-		modelBlock.stepOn(worldIn, pos, entity);
+	public void stepOn(World level, BlockPos pos, Entity entity) {
+		modelBlock.stepOn(level, pos, entity);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		modelState.tick(world, pos, random);
+	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random random) {
+		modelState.tick(level, pos, random);
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		return modelState.use(world, player, hand, hit);
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		return modelState.use(level, player, hand, hit);
 	}
 
 	@Override
-	public void wasExploded(World world, BlockPos pos, Explosion explosion) {
-		modelBlock.wasExploded(world, pos, explosion);
+	public void wasExploded(World level, BlockPos pos, Explosion explosion) {
+		modelBlock.wasExploded(level, pos, explosion);
 	}
 
 	@Override
@@ -170,27 +170,27 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 		Direction dir = ctx.getClickedFace();
 		BlockPos pos = ctx.getClickedPos();
 		FluidState fluidState = ctx.getLevel().getFluidState(pos);
-		BlockState state = this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection()).setValue(HALF, dir != Direction.DOWN && (dir == Direction.UP || ctx.getClickLocation().y - pos.getY() <= 0.5D) ? Half.BOTTOM : Half.TOP).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+		BlockState state = defaultBlockState().setValue(FACING, ctx.getHorizontalDirection()).setValue(HALF, dir != Direction.DOWN && (dir == Direction.UP || ctx.getClickLocation().y - pos.getY() <= 0.5D) ? Half.BOTTOM : Half.TOP).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 
 		return state.setValue(SHAPE, getShapeProperty(state, ctx.getLevel(), pos));
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
 		if (state.getValue(WATERLOGGED))
-			world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
-		return facing.getAxis().isHorizontal() ? state.setValue(SHAPE, getShapeProperty(state, world, currentPos)) : super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+		return facing.getAxis().isHorizontal() ? state.setValue(SHAPE, getShapeProperty(state, level, currentPos)) : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
-	private static StairsShape getShapeProperty(BlockState state, IBlockReader world, BlockPos pos) {
+	private static StairsShape getShapeProperty(BlockState state, IBlockReader level, BlockPos pos) {
 		Direction dir = state.getValue(FACING);
-		BlockState offsetState = world.getBlockState(pos.relative(dir));
+		BlockState offsetState = level.getBlockState(pos.relative(dir));
 
 		if (isBlockStairs(offsetState) && state.getValue(HALF) == offsetState.getValue(HALF)) {
 			Direction offsetDir = offsetState.getValue(FACING);
 
-			if (offsetDir.getAxis() != state.getValue(FACING).getAxis() && isDifferentStairs(state, world, pos, offsetDir.getOpposite())) {
+			if (offsetDir.getAxis() != state.getValue(FACING).getAxis() && isDifferentStairs(state, level, pos, offsetDir.getOpposite())) {
 				if (offsetDir == dir.getCounterClockWise())
 					return StairsShape.OUTER_LEFT;
 				else
@@ -198,12 +198,12 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 			}
 		}
 
-		BlockState offsetOppositeState = world.getBlockState(pos.relative(dir.getOpposite()));
+		BlockState offsetOppositeState = level.getBlockState(pos.relative(dir.getOpposite()));
 
 		if (isBlockStairs(offsetOppositeState) && state.getValue(HALF) == offsetOppositeState.getValue(HALF)) {
 			Direction offsetOppositeDir = offsetOppositeState.getValue(FACING);
 
-			if (offsetOppositeDir.getAxis() != state.getValue(FACING).getAxis() && isDifferentStairs(state, world, pos, offsetOppositeDir)) {
+			if (offsetOppositeDir.getAxis() != state.getValue(FACING).getAxis() && isDifferentStairs(state, level, pos, offsetOppositeDir)) {
 				if (offsetOppositeDir == dir.getCounterClockWise())
 					return StairsShape.INNER_LEFT;
 				else
@@ -214,8 +214,8 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 		return StairsShape.STRAIGHT;
 	}
 
-	private static boolean isDifferentStairs(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
-		BlockState offsetState = world.getBlockState(pos.relative(face));
+	private static boolean isDifferentStairs(BlockState state, IBlockReader level, BlockPos pos, Direction face) {
+		BlockState offsetState = level.getBlockState(pos.relative(face));
 
 		return !isBlockStairs(offsetState) || offsetState.getValue(FACING) != state.getValue(FACING) || offsetState.getValue(HALF) != state.getValue(HALF);
 	}
@@ -285,7 +285,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
+	public boolean isPathfindable(BlockState state, IBlockReader level, BlockPos pos, PathType type) {
 		return false;
 	}
 }

@@ -45,7 +45,7 @@ public class MotionActivatedLightBlock extends OwnableBlock implements IWaterLog
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		switch (state.getValue(FACING)) {
 			case NORTH:
 				return SHAPE_NORTH;
@@ -61,19 +61,19 @@ public class MotionActivatedLightBlock extends OwnableBlock implements IWaterLog
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
+	public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
 		Direction side = state.getValue(FACING);
 
-		return side != Direction.UP && side != Direction.DOWN && BlockUtils.isSideSolid(world, pos.relative(side.getOpposite()), side);
+		return side != Direction.UP && side != Direction.DOWN && BlockUtils.isSideSolid(level, pos.relative(side.getOpposite()), side);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		Direction facing = ctx.getClickedFace();
-		World world = ctx.getLevel();
+		World level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
+		Direction facing = ctx.getClickedFace();
 
-		return facing != Direction.UP && facing != Direction.DOWN && BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing).setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER) : null;
+		return facing != Direction.UP && facing != Direction.DOWN && BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing).setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER) : null;
 	}
 
 	@Override
@@ -90,9 +90,9 @@ public class MotionActivatedLightBlock extends OwnableBlock implements IWaterLog
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if (!canSurvive(state, world, pos))
-			world.destroyBlock(pos, true);
+	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+		if (!canSurvive(state, level, pos))
+			level.destroyBlock(pos, true);
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public class MotionActivatedLightBlock extends OwnableBlock implements IWaterLog
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new MotionActivatedLightBlockEntity();
 	}
 

@@ -36,26 +36,26 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	}
 
 	@Override
-	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
+	public void entityInside(BlockState state, World level, BlockPos pos, Entity entity) {
 		int redstoneStrength = getSignalForState(state);
 
-		if (!world.isClientSide && redstoneStrength == 0 && entity instanceof PlayerEntity) {
-			TileEntity te = world.getBlockEntity(pos);
+		if (!level.isClientSide && redstoneStrength == 0 && entity instanceof PlayerEntity) {
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof AllowlistOnlyBlockEntity && isAllowedToPress((AllowlistOnlyBlockEntity) te, (PlayerEntity) entity))
-				checkPressed(world, pos, state, redstoneStrength);
+				checkPressed(level, pos, state, redstoneStrength);
 		}
 	}
 
 	@Override
-	protected int getSignalStrength(World world, BlockPos pos) {
+	protected int getSignalStrength(World level, BlockPos pos) {
 		AxisAlignedBB aabb = TOUCH_AABB.move(pos);
 		List<? extends Entity> list;
 
-		list = world.getEntities(null, aabb);
+		list = level.getEntities(null, aabb);
 
 		if (!list.isEmpty()) {
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof AllowlistOnlyBlockEntity) {
 				for (Entity entity : list) {
@@ -98,14 +98,14 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
-	public boolean isAllowedToPress(AllowlistOnlyBlockEntity te, PlayerEntity entity) {
-		return te.isOwnedBy(entity) || te.isAllowed(entity);
+	public boolean isAllowedToPress(AllowlistOnlyBlockEntity be, PlayerEntity entity) {
+		return be.isOwnedBy(entity) || be.isAllowed(entity);
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new AllowlistOnlyBlockEntity();
 	}
 
@@ -154,7 +154,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		//@formatter:on
 
 		@Override
-		public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te, Direction direction, int distance) {
+		public boolean isPowering(World level, BlockPos pos, BlockState state, TileEntity be, Direction direction, int distance) {
 			return state.getValue(POWERED) && (distance < 2 || direction == Direction.UP);
 		}
 

@@ -60,12 +60,12 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos) {
-		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getDestroyProgress(state, player, world, pos);
+	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
+		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getDestroyProgress(state, player, level, pos);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		switch (state.getValue(MINES)) {
 			case 4:
 				return SHAPE_4_MINES;
@@ -81,9 +81,9 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		if (world.getBlockState(pos.below()).getMaterial() == Material.AIR)
-			world.destroyBlock(pos, true);
+	public void neighborChanged(BlockState state, World level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
+		if (level.getBlockState(pos.below()).getMaterial() == Material.AIR)
+			level.destroyBlock(pos, true);
 	}
 
 	@Override
@@ -112,9 +112,9 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (!world.isClientSide) {
-			TileEntity te = world.getBlockEntity(pos);
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (!level.isClientSide) {
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof IMSBlockEntity) {
 				IMSBlockEntity be = (IMSBlockEntity) te;
@@ -129,7 +129,7 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 						if (!player.isCreative())
 							held.shrink(1);
 
-						world.setBlockAndUpdate(pos, state.setValue(MINES, mines + 1));
+						level.setBlockAndUpdate(pos, state.setValue(MINES, mines + 1));
 						be.setBombsRemaining(mines + 1);
 					}
 					else
@@ -143,7 +143,7 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
+	public void animateTick(BlockState state, World level, BlockPos pos, Random random) {
 		if (state.getValue(MINES) == 0) {
 			double x = pos.getX() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.4F + (random.nextFloat() - 0.5F) * 0.2D;
@@ -151,23 +151,19 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 			double magicNumber1 = 0.2199999988079071D;
 			double magicNumber2 = 0.27000001072883606D;
 
-			world.addParticle(ParticleTypes.SMOKE, false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(ParticleTypes.SMOKE, false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(ParticleTypes.SMOKE, false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(ParticleTypes.SMOKE, false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(ParticleTypes.SMOKE, false, x, y, z, 0.0D, 0.0D, 0.0D);
-
-			world.addParticle(ParticleTypes.FLAME, false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(ParticleTypes.FLAME, false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.SMOKE, false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.SMOKE, false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.SMOKE, false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.SMOKE, false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.SMOKE, false, x, y, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.FLAME, false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.FLAME, false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		World world = ctx.getLevel();
-		BlockPos pos = ctx.getClickedPos();
-
-		return defaultBlockState().setValue(MINES, 4).setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER);
+		return defaultBlockState().setValue(MINES, 4).setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER);
 	}
 
 	@Override
@@ -189,7 +185,7 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new IMSBlockEntity();
 	}
 

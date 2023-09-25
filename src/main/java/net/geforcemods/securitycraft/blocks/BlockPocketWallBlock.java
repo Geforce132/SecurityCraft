@@ -34,17 +34,17 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 		registerDefaultState(stateDefinition.any().setValue(SEE_THROUGH, true).setValue(SOLID, false));
 	}
 
-	public static boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos) {
+	public static boolean causesSuffocation(BlockState state, IBlockReader level, BlockPos pos) {
 		return state.getValue(SOLID);
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		if (!state.getValue(SOLID) && ctx instanceof EntitySelectionContext) {
 			Entity entity = ((EntitySelectionContext) ctx).getEntity();
 
 			if (entity instanceof PlayerEntity) {
-				TileEntity te1 = world.getBlockEntity(pos);
+				TileEntity te1 = level.getBlockEntity(pos);
 
 				if (te1 instanceof BlockPocketBlockEntity) {
 					BlockPocketBlockEntity te = (BlockPocketBlockEntity) te1;
@@ -66,7 +66,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 	}
 
 	@Override
-	public boolean canCreatureSpawn(BlockState state, IBlockReader world, BlockPos pos, PlacementType type, EntityType<?> entityType) {
+	public boolean canCreatureSpawn(BlockState state, IBlockReader level, BlockPos pos, PlacementType type, EntityType<?> entityType) {
 		return false;
 	}
 
@@ -87,7 +87,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new BlockPocketBlockEntity();
 	}
 }

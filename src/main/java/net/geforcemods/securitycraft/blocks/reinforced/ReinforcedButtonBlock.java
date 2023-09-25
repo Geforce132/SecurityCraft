@@ -42,9 +42,9 @@ public class ReinforcedButtonBlock extends AbstractButtonBlock implements IReinf
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTrace) {
-		if (isAllowedToPress((AllowlistOnlyBlockEntity) world.getBlockEntity(pos), player))
-			return super.use(state, world, pos, player, hand, rayTrace);
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTrace) {
+		if (isAllowedToPress((AllowlistOnlyBlockEntity) level.getBlockEntity(pos), player))
+			return super.use(state, level, pos, player, hand, rayTrace);
 
 		return ActionResultType.FAIL;
 	}
@@ -79,8 +79,8 @@ public class ReinforcedButtonBlock extends AbstractButtonBlock implements IReinf
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
-	public boolean isAllowedToPress(AllowlistOnlyBlockEntity te, PlayerEntity entity) {
-		return te.isOwnedBy(entity) || te.isAllowed(entity);
+	public boolean isAllowedToPress(AllowlistOnlyBlockEntity be, PlayerEntity entity) {
+		return be.isOwnedBy(entity) || be.isAllowed(entity);
 	}
 
 	@Override
@@ -89,9 +89,9 @@ public class ReinforcedButtonBlock extends AbstractButtonBlock implements IReinf
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class ReinforcedButtonBlock extends AbstractButtonBlock implements IReinf
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new AllowlistOnlyBlockEntity();
 	}
 }

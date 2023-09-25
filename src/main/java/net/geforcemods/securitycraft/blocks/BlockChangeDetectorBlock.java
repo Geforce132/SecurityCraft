@@ -59,10 +59,10 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 	@Override
 	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (!level.isClientSide) {
-			TileEntity tile = level.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
-			if (tile instanceof BlockChangeDetectorBlockEntity) {
-				BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) tile;
+			if (te instanceof BlockChangeDetectorBlockEntity) {
+				BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) te;
 
 				if (be.isOwnedBy(player) || be.isAllowed(player))
 					NetworkHooks.openGui((ServerPlayerEntity) player, be, pos);
@@ -75,10 +75,10 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 	@Override
 	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
-			TileEntity tile = level.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
-			if (tile instanceof BlockChangeDetectorBlockEntity)
-				Block.popResource(level, pos, ((BlockChangeDetectorBlockEntity) tile).getStackInSlot(36));
+			if (te instanceof BlockChangeDetectorBlockEntity)
+				Block.popResource(level, pos, ((BlockChangeDetectorBlockEntity) te).getStackInSlot(36));
 		}
 
 		super.onRemove(state, level, pos, newState, isMoving);
@@ -116,7 +116,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new BlockChangeDetectorBlockEntity();
 	}
 

@@ -59,20 +59,20 @@ public class IronFenceBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getOcclusionShape(BlockState state, IBlockReader world, BlockPos pos) {
+	public VoxelShape getOcclusionShape(BlockState state, IBlockReader level, BlockPos pos) {
 		return renderShapes[getIndex(state)];
 	}
 
-	protected VoxelShape[] makeShapes(float pNodeWidth, float pExtensionWidth, float pNodeHeight, float pExtensionBottom, float pExtensionHeight) {
-		float f = 8.0F - pNodeWidth;
-		float f1 = 8.0F + pNodeWidth;
-		float f2 = 8.0F - pExtensionWidth;
-		float f3 = 8.0F + pExtensionWidth;
-		VoxelShape voxelshape = Block.box(f, 0.0D, f, f1, pNodeHeight, f1);
-		VoxelShape voxelshape1 = Block.box(f2, pExtensionBottom, 0.0D, f3, pExtensionHeight, f3);
-		VoxelShape voxelshape2 = Block.box(f2, pExtensionBottom, f2, f3, pExtensionHeight, 16.0D);
-		VoxelShape voxelshape3 = Block.box(0.0D, pExtensionBottom, f2, f3, pExtensionHeight, f3);
-		VoxelShape voxelshape4 = Block.box(f2, pExtensionBottom, f2, 16.0D, pExtensionHeight, f3);
+	protected VoxelShape[] makeShapes(float nodeWidth, float extensionWidth, float nodeHeight, float extensionBottom, float extensionHeight) {
+		float f = 8.0F - nodeWidth;
+		float f1 = 8.0F + nodeWidth;
+		float f2 = 8.0F - extensionWidth;
+		float f3 = 8.0F + extensionWidth;
+		VoxelShape voxelshape = Block.box(f, 0.0D, f, f1, nodeHeight, f1);
+		VoxelShape voxelshape1 = Block.box(f2, extensionBottom, 0.0D, f3, extensionHeight, f3);
+		VoxelShape voxelshape2 = Block.box(f2, extensionBottom, f2, f3, extensionHeight, 16.0D);
+		VoxelShape voxelshape3 = Block.box(0.0D, extensionBottom, f2, f3, extensionHeight, f3);
+		VoxelShape voxelshape4 = Block.box(f2, extensionBottom, f2, 16.0D, extensionHeight, f3);
 		VoxelShape voxelshape5 = VoxelShapes.or(voxelshape1, voxelshape4);
 		VoxelShape voxelshape6 = VoxelShapes.or(voxelshape2, voxelshape3);
 		//@formatter:off
@@ -104,21 +104,21 @@ public class IronFenceBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		return shapes[getIndex(state)];
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		return collisionShapes[getIndex(state)];
 	}
 
-	public boolean connectsTo(BlockState state, boolean isSideSolid, Direction direction) {
+	public boolean connectsTo(BlockState state, boolean isFaceSturdy, Direction direction) {
 		Block block = state.getBlock();
 		boolean isFence = state.is(BlockTags.FENCES) && !state.is(BlockTags.WOODEN_FENCES);
 		boolean isFenceGate = block instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, direction);
 
-		return !isExceptionForConnection(block) && isSideSolid || isFence || isFenceGate;
+		return !isExceptionForConnection(block) && isFaceSturdy || isFence || isFenceGate;
 	}
 
 	private static int getMask(Direction facing) {
@@ -144,7 +144,7 @@ public class IronFenceBlock extends OwnableBlock {
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
+	public boolean isPathfindable(BlockState state, IBlockReader level, BlockPos pos, PathType type) {
 		return false;
 	}
 
@@ -176,17 +176,17 @@ public class IronFenceBlock extends OwnableBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		IBlockReader iblockreader = ctx.getLevel();
-		BlockPos blockpos = ctx.getClickedPos();
-		BlockPos blockpos1 = blockpos.north();
-		BlockPos blockpos2 = blockpos.east();
-		BlockPos blockpos3 = blockpos.south();
-		BlockPos blockpos4 = blockpos.west();
-		BlockState blockstate = iblockreader.getBlockState(blockpos1);
-		BlockState blockstate1 = iblockreader.getBlockState(blockpos2);
-		BlockState blockstate2 = iblockreader.getBlockState(blockpos3);
-		BlockState blockstate3 = iblockreader.getBlockState(blockpos4);
-		return super.getStateForPlacement(ctx).setValue(NORTH, connectsTo(blockstate, blockstate.isFaceSturdy(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH)).setValue(EAST, connectsTo(blockstate1, blockstate1.isFaceSturdy(iblockreader, blockpos2, Direction.WEST), Direction.WEST)).setValue(SOUTH, connectsTo(blockstate2, blockstate2.isFaceSturdy(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH)).setValue(WEST, connectsTo(blockstate3, blockstate3.isFaceSturdy(iblockreader, blockpos4, Direction.EAST), Direction.EAST));
+		IBlockReader level = ctx.getLevel();
+		BlockPos clickedPos = ctx.getClickedPos();
+		BlockPos northPos = clickedPos.north();
+		BlockPos eastPos = clickedPos.east();
+		BlockPos southPos = clickedPos.south();
+		BlockPos westPos = clickedPos.west();
+		BlockState northState = level.getBlockState(northPos);
+		BlockState eastState = level.getBlockState(eastPos);
+		BlockState southState = level.getBlockState(southPos);
+		BlockState westState = level.getBlockState(westPos);
+		return super.getStateForPlacement(ctx).setValue(NORTH, connectsTo(northState, northState.isFaceSturdy(level, northPos, Direction.SOUTH), Direction.SOUTH)).setValue(EAST, connectsTo(eastState, eastState.isFaceSturdy(level, eastPos, Direction.WEST), Direction.WEST)).setValue(SOUTH, connectsTo(southState, southState.isFaceSturdy(level, southPos, Direction.NORTH), Direction.NORTH)).setValue(WEST, connectsTo(westState, westState.isFaceSturdy(level, westPos, Direction.EAST), Direction.EAST));
 	}
 
 	@Override
@@ -195,32 +195,32 @@ public class IronFenceBlock extends OwnableBlock {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-		return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? state.setValue(FACING_TO_PROPERTY_MAP.get(facing), connectsTo(facingState, facingState.isFaceSturdy(world, facingPos, facing.getOpposite()), facing.getOpposite())) : super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
+		return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? state.setValue(FACING_TO_PROPERTY_MAP.get(facing), connectsTo(facingState, facingState.isFaceSturdy(level, facingPos, facing.getOpposite()), facing.getOpposite())) : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		return ActionResultType.FAIL;
 	}
 
 	@Override
-	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (!getShape(state, world, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
+	public void entityInside(BlockState state, World level, BlockPos pos, Entity entity) {
+		if (!getShape(state, level, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
 			return;
 		else if (entity instanceof ItemEntity) //so dropped items don't get destroyed
 			return;
 		else if (entity instanceof PlayerEntity) { //owner check
-			if (((OwnableBlockEntity) world.getBlockEntity(pos)).isOwnedBy((PlayerEntity) entity))
+			if (((OwnableBlockEntity) level.getBlockEntity(pos)).isOwnedBy((PlayerEntity) entity))
 				return;
 		}
-		else if (((OwnableBlockEntity) world.getBlockEntity(pos)).allowsOwnableEntity(entity))
+		else if (((OwnableBlockEntity) level.getBlockEntity(pos)).allowsOwnableEntity(entity))
 			return;
-		else if (!world.isClientSide && entity instanceof CreeperEntity) {
+		else if (!level.isClientSide && entity instanceof CreeperEntity) {
 			CreeperEntity creeper = (CreeperEntity) entity;
-			LightningBoltEntity lightning = LevelUtils.createLightning(world, Vector3d.atBottomCenterOf(pos), true);
+			LightningBoltEntity lightning = LevelUtils.createLightning(level, Vector3d.atBottomCenterOf(pos), true);
 
-			creeper.thunderHit((ServerWorld) world, lightning);
+			creeper.thunderHit((ServerWorld) level, lightning);
 			creeper.clearFire();
 			return;
 		}
@@ -229,14 +229,14 @@ public class IronFenceBlock extends OwnableBlock {
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int eventID, int eventParam) {
-		TileEntity be = world.getBlockEntity(pos);
+	public boolean triggerEvent(BlockState state, World level, BlockPos pos, int eventID, int eventParam) {
+		TileEntity be = level.getBlockEntity(pos);
 
 		return be != null && be.triggerEvent(eventID, eventParam);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new OwnableBlockEntity(SCContent.ABSTRACT_BLOCK_ENTITY.get());
 	}
 }

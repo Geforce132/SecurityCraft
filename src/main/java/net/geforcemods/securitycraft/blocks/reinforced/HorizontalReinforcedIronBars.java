@@ -39,7 +39,7 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		return SHAPE;
 	}
 
@@ -60,20 +60,20 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
 		if (state.getValue(WATERLOGGED))
-			world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
-		return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
+	public boolean isPathfindable(BlockState state, IBlockReader level, BlockPos pos, PathType type) {
 		return false;
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader level, BlockPos pos, PlayerEntity player) {
 		return new ItemStack(SCContent.REINFORCED_IRON_BARS.get());
 	}
 }

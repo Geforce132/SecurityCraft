@@ -63,14 +63,14 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 
 	@Override
 	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		TileEntity be = level.getBlockEntity(pos);
+		TileEntity te = level.getBlockEntity(pos);
 
-		if (be instanceof RiftStabilizerBlockEntity) {
-			RiftStabilizerBlockEntity riftStabilizer = ((RiftStabilizerBlockEntity) be);
+		if (te instanceof RiftStabilizerBlockEntity) {
+			RiftStabilizerBlockEntity be = ((RiftStabilizerBlockEntity) te);
 
-			if (riftStabilizer.isOwnedBy(player)) {
+			if (be.isOwnedBy(player)) {
 				if (!level.isClientSide) {
-					if (riftStabilizer.isDisabled())
+					if (be.isDisabled())
 						player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 					else
 						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.RIFT_STABILIZER, pos));
@@ -169,12 +169,12 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 
 	@Override
 	public int getAnalogOutputSignal(BlockState state, World level, BlockPos pos) {
-		TileEntity be = level.getBlockEntity(pos);
+		TileEntity te = level.getBlockEntity(pos);
 
-		if (state.getValue(HALF) == DoubleBlockHalf.LOWER && be instanceof RiftStabilizerBlockEntity) {
-			RiftStabilizerBlockEntity riftStabilizer = ((RiftStabilizerBlockEntity) be);
+		if (state.getValue(HALF) == DoubleBlockHalf.LOWER && te instanceof RiftStabilizerBlockEntity) {
+			RiftStabilizerBlockEntity be = ((RiftStabilizerBlockEntity) te);
 
-			return riftStabilizer.isModuleEnabled(ModuleType.REDSTONE) && riftStabilizer.getLastTeleportationType() != null ? riftStabilizer.getComparatorOutputFunction().applyAsInt(riftStabilizer.getLastTeleportationType()) : 0;
+			return be.isModuleEnabled(ModuleType.REDSTONE) && be.getLastTeleportationType() != null ? be.getComparatorOutputFunction().applyAsInt(be.getLastTeleportationType()) : 0;
 		}
 
 		return 0;

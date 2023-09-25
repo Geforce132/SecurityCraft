@@ -18,13 +18,13 @@ public class KeypadSmokerBlock extends AbstractKeypadFurnaceBlock {
 	}
 
 	@Override
-	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
-		if (rand.nextDouble() < 0.1D && state.getValue(LIT) && getDisguisedStateOrDefault(state, world, pos).getBlock() == this)
-			world.playLocalSound(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, SoundEvents.SMOKER_SMOKE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+	public void animateTick(BlockState state, World level, BlockPos pos, Random rand) {
+		if (rand.nextDouble() < 0.1D && state.getValue(LIT) && getDisguisedStateOrDefault(state, level, pos).getBlock() == this)
+			level.playLocalSound(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, SoundEvents.SMOKER_SMOKE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new KeypadSmokerBlockEntity();
 	}
 }

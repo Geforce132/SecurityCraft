@@ -34,7 +34,7 @@ public class ReinforcedEndRodBlock extends EndRodBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new OwnableBlockEntity();
 	}
 

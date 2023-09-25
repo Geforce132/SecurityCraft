@@ -55,12 +55,12 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (isFacingAnotherScanner(world, pos) && player instanceof ServerPlayerEntity) {
-			TileEntity tile = world.getBlockEntity(pos);
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (isFacingAnotherScanner(level, pos) && player instanceof ServerPlayerEntity) {
+			TileEntity te = level.getBlockEntity(pos);
 
-			if (!world.isClientSide && tile instanceof InventoryScannerBlockEntity) {
-				InventoryScannerBlockEntity be = (InventoryScannerBlockEntity) tile;
+			if (!level.isClientSide && te instanceof InventoryScannerBlockEntity) {
+				InventoryScannerBlockEntity be = (InventoryScannerBlockEntity) te;
 
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
@@ -77,33 +77,33 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
-		super.setPlacedBy(world, pos, state, entity, stack);
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
+		super.setPlacedBy(level, pos, state, entity, stack);
 
-		if (world.isClientSide)
+		if (level.isClientSide)
 			return;
 
-		checkAndPlaceAppropriately(world, pos, false);
+		checkAndPlaceAppropriately(level, pos, false);
 	}
 
-	public static void checkAndPlaceAppropriately(World world, BlockPos pos, boolean force) {
-		if (world.isClientSide)
+	public static void checkAndPlaceAppropriately(World level, BlockPos pos, boolean force) {
+		if (level.isClientSide)
 			return;
 
-		InventoryScannerBlockEntity connectedScanner = getConnectedInventoryScanner(world, pos);
-		InventoryScannerBlockEntity thisTe = (InventoryScannerBlockEntity) world.getBlockEntity(pos);
+		InventoryScannerBlockEntity thisBe = (InventoryScannerBlockEntity) level.getBlockEntity(pos);
+		InventoryScannerBlockEntity connectedScanner = getConnectedInventoryScanner(level, pos);
 
-		if (connectedScanner == null || !connectedScanner.getOwner().owns(thisTe))
+		if (connectedScanner == null || !connectedScanner.getOwner().owns(thisBe))
 			return;
 
 		if (!force) {
 			if (connectedScanner.isDisabled()) {
-				thisTe.setDisabled(true);
+				thisBe.setDisabled(true);
 				return;
 			}
 		}
 		else {
-			thisTe.setDisabled(false);
+			thisBe.setDisabled(false);
 			connectedScanner.setDisabled(false);
 		}
 
@@ -112,31 +112,31 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		if (connectedScanner.getBlockState().getValue(HORIZONTAL))
 			horizontal = true;
 
-		thisTe.setHorizontal(horizontal);
-
-		Direction facing = world.getBlockState(pos).getValue(FACING);
+		Direction facing = level.getBlockState(pos).getValue(FACING);
 		int loopBoundary = facing == Direction.WEST || facing == Direction.EAST ? Math.abs(pos.getX() - connectedScanner.getBlockPos().getX()) : (facing == Direction.NORTH || facing == Direction.SOUTH ? Math.abs(pos.getZ() - connectedScanner.getBlockPos().getZ()) : 0);
 
+		thisBe.setHorizontal(horizontal);
+
 		for (int i = 1; i < loopBoundary; i++) {
-			if (world.getBlockState(pos.relative(facing, i)).getBlock() == SCContent.INVENTORY_SCANNER_FIELD.get())
+			if (level.getBlockState(pos.relative(facing, i)).getBlock() == SCContent.INVENTORY_SCANNER_FIELD.get())
 				return;
 		}
 
-		Option<?>[] customOptions = thisTe.customOptions();
+		Option<?>[] customOptions = thisBe.customOptions();
 
 		for (int i = 1; i < loopBoundary; i++) {
 			BlockPos offsetPos = pos.relative(facing, i);
 
-			world.setBlockAndUpdate(offsetPos, SCContent.INVENTORY_SCANNER_FIELD.get().defaultBlockState().setValue(FACING, facing).setValue(HORIZONTAL, horizontal).setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER));
+			level.setBlockAndUpdate(offsetPos, SCContent.INVENTORY_SCANNER_FIELD.get().defaultBlockState().setValue(FACING, facing).setValue(HORIZONTAL, horizontal).setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER));
 
-			TileEntity te = world.getBlockEntity(offsetPos);
+			TileEntity te = level.getBlockEntity(offsetPos);
 
 			if (te instanceof IOwnable)
-				((IOwnable) te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
+				((IOwnable) te).setOwner(thisBe.getOwner().getUUID(), thisBe.getOwner().getName());
 		}
 
 		for (ModuleType type : connectedScanner.getInsertedModules()) {
-			thisTe.insertModule(connectedScanner.getModule(type), false);
+			thisBe.insertModule(connectedScanner.getModule(type), false);
 		}
 
 		((BooleanOption) customOptions[0]).setValue(connectedScanner.isHorizontal());
@@ -145,12 +145,12 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (world.isClientSide || state.getBlock() == newState.getBlock())
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (level.isClientSide || state.getBlock() == newState.getBlock())
 			return;
 
-		InventoryScannerBlockEntity connectedScanner = getConnectedInventoryScanner(world, pos, state, null);
-		TileEntity tile = world.getBlockEntity(pos);
+		InventoryScannerBlockEntity connectedScanner = getConnectedInventoryScanner(level, pos, state, null);
+		TileEntity te = level.getBlockEntity(pos);
 
 		BlockUtils.removeInSequence((direction, stateToCheck) -> {
 			if (stateToCheck.getBlock() != SCContent.INVENTORY_SCANNER_FIELD.get())
@@ -159,21 +159,21 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			Direction stateToCheckFacing = stateToCheck.getValue(FACING);
 
 			return stateToCheckFacing == direction || stateToCheckFacing == direction.getOpposite();
-		}, world, pos, state.getValue(FACING));
+		}, level, pos, state.getValue(FACING));
 
-		if (tile instanceof InventoryScannerBlockEntity) {
-			InventoryScannerBlockEntity te = (InventoryScannerBlockEntity) tile;
+		if (te instanceof InventoryScannerBlockEntity) {
+			InventoryScannerBlockEntity be = (InventoryScannerBlockEntity) te;
 
 			//first 10 slots (0-9) are the prohibited slots
-			for (int i = 10; i < te.getContainerSize(); i++) {
-				InventoryHelper.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), te.getContents().get(i));
+			for (int i = 10; i < be.getContainerSize(); i++) {
+				InventoryHelper.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), be.getContents().get(i));
 			}
 
-			InventoryHelper.dropContents(world, pos, te.getLensContainer());
+			InventoryHelper.dropContents(level, pos, be.getLensContainer());
 
-			if (te.shouldProvidePower()) {
-				world.updateNeighborsAt(pos, this);
-				BlockUtils.updateIndirectNeighbors(world, pos, this);
+			if (be.shouldProvidePower()) {
+				level.updateNeighborsAt(pos, this);
+				BlockUtils.updateIndirectNeighbors(level, pos, this);
 			}
 		}
 
@@ -185,28 +185,28 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			connectedScanner.getLensContainer().clearContent();
 		}
 
-		super.onRemove(state, world, pos, newState, isMoving);
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
-	private boolean isFacingAnotherScanner(World world, BlockPos pos) {
-		return getConnectedInventoryScanner(world, pos) != null;
+	private boolean isFacingAnotherScanner(World level, BlockPos pos) {
+		return getConnectedInventoryScanner(level, pos) != null;
 	}
 
-	public static InventoryScannerBlockEntity getConnectedInventoryScanner(World world, BlockPos pos) {
-		return getConnectedInventoryScanner(world, pos, world.getBlockState(pos), null);
+	public static InventoryScannerBlockEntity getConnectedInventoryScanner(World level, BlockPos pos) {
+		return getConnectedInventoryScanner(level, pos, level.getBlockState(pos), null);
 	}
 
-	public static InventoryScannerBlockEntity getConnectedInventoryScanner(World world, BlockPos pos, BlockState stateAtPos, Consumer<OwnableBlockEntity> fieldModifier) {
+	public static InventoryScannerBlockEntity getConnectedInventoryScanner(World level, BlockPos pos, BlockState stateAtPos, Consumer<OwnableBlockEntity> fieldModifier) {
 		Direction facing = stateAtPos.getValue(FACING);
 		List<BlockPos> fields = new ArrayList<>();
 
 		for (int i = 0; i <= ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
 			BlockPos offsetPos = pos.relative(facing, i);
-			BlockState state = world.getBlockState(offsetPos);
+			BlockState state = level.getBlockState(offsetPos);
 			Block block = state.getBlock();
 			boolean isField = block == SCContent.INVENTORY_SCANNER_FIELD.get();
 
-			if (!isField && !state.isAir(world, offsetPos) && !state.getMaterial().isReplaceable() && block != SCContent.INVENTORY_SCANNER.get())
+			if (!isField && !state.isAir(level, offsetPos) && !state.getMaterial().isReplaceable() && block != SCContent.INVENTORY_SCANNER.get())
 				return null;
 
 			if (isField)
@@ -214,9 +214,9 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 			if (block == SCContent.INVENTORY_SCANNER.get() && state.getValue(FACING) == facing.getOpposite()) {
 				if (fieldModifier != null)
-					fields.stream().map(world::getBlockEntity).forEach(be -> fieldModifier.accept((OwnableBlockEntity) be));
+					fields.stream().map(level::getBlockEntity).forEach(be -> fieldModifier.accept((OwnableBlockEntity) be));
 
-				return (InventoryScannerBlockEntity) world.getBlockEntity(offsetPos);
+				return (InventoryScannerBlockEntity) level.getBlockEntity(offsetPos);
 			}
 		}
 
@@ -224,8 +224,8 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void onNeighborChange(BlockState state, IWorldReader world, BlockPos pos, BlockPos neighbor) {
-		checkAndPlaceAppropriately((World) world, pos, false);
+	public void onNeighborChange(BlockState state, IWorldReader level, BlockPos pos, BlockPos neighbor) {
+		checkAndPlaceAppropriately((World) level, pos, false);
 	}
 
 	@Override
@@ -234,13 +234,13 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public boolean shouldCheckWeakPower(BlockState state, IWorldReader world, BlockPos pos, Direction side) {
+	public boolean shouldCheckWeakPower(BlockState state, IWorldReader level, BlockPos pos, Direction side) {
 		return false;
 	}
 
 	@Override
-	public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		TileEntity te = blockAccess.getBlockEntity(pos);
+	public int getSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
+		TileEntity te = level.getBlockEntity(pos);
 
 		if (!(te instanceof InventoryScannerBlockEntity))
 			return 0;
@@ -249,8 +249,8 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public int getDirectSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		return getSignal(blockState, blockAccess, pos, side);
+	public int getDirectSignal(BlockState state, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		return getSignal(state, blockAccess, pos, side);
 	}
 
 	@Override
@@ -264,7 +264,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new InventoryScannerBlockEntity();
 	}
 
@@ -282,8 +282,8 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		private List<Block> blocks = Arrays.asList(SCContent.INVENTORY_SCANNER.get());
 
 		@Override
-		public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te, Direction direction, int distance) {
-			return ((InventoryScannerBlockEntity) te).isModuleEnabled(ModuleType.REDSTONE) && ((InventoryScannerBlockEntity) te).shouldProvidePower();
+		public boolean isPowering(World level, BlockPos pos, BlockState state, TileEntity be, Direction direction, int distance) {
+			return ((InventoryScannerBlockEntity) be).isModuleEnabled(ModuleType.REDSTONE) && ((InventoryScannerBlockEntity) be).shouldProvidePower();
 		}
 
 		@Override

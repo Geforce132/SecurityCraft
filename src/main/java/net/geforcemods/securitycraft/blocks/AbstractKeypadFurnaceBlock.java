@@ -72,12 +72,12 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
 
 		if (stack.hasCustomHoverName()) {
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof LockableTileEntity)
 				((LockableTileEntity) te).setCustomName(stack.getHoverName());
@@ -85,11 +85,11 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
-			return disguisedState.getShape(world, pos, ctx);
+			return disguisedState.getShape(level, pos, ctx);
 
 		switch (disguisedState.getValue(FACING)) {
 			case NORTH:
@@ -139,51 +139,51 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof IInventory) {
-				InventoryHelper.dropContents(world, pos, (IInventory) te);
-				world.updateNeighbourForOutputSignal(pos, this);
+				InventoryHelper.dropContents(level, pos, (IInventory) te);
+				level.updateNeighbourForOutputSignal(pos, this);
 			}
 
 			if (te instanceof IPasscodeProtected)
 				SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
 		}
 
-		super.onRemove(state, world, pos, newState, isMoving);
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (!world.isClientSide) {
-			AbstractKeypadFurnaceBlockEntity te = (AbstractKeypadFurnaceBlockEntity) world.getBlockEntity(pos);
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (!level.isClientSide) {
+			AbstractKeypadFurnaceBlockEntity be = (AbstractKeypadFurnaceBlockEntity) level.getBlockEntity(pos);
 
-			if (te.isDisabled())
+			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (te.verifyPasscodeSet(world, pos, te, player)) {
-				if (te.isDenied(player)) {
-					if (te.sendsMessages())
+			else if (be.verifyPasscodeSet(level, pos, be, player)) {
+				if (be.isDenied(player)) {
+					if (be.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 				}
-				else if (te.isAllowed(player)) {
-					if (te.sendsMessages())
+				else if (be.isAllowed(player)) {
+					if (be.sendsMessages())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-					activate(world, pos, player);
+					activate(level, pos, player);
 				}
 				else if (player.getItemInHand(hand).getItem() != SCContent.CODEBREAKER.get())
-					te.openPasscodeGUI(world, pos, player);
+					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 
 		return ActionResultType.SUCCESS;
 	}
 
-	public void activate(World world, BlockPos pos, PlayerEntity player) {
+	public void activate(World level, BlockPos pos, PlayerEntity player) {
 		if (player instanceof ServerPlayerEntity) {
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof INamedContainerProvider)
 				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);

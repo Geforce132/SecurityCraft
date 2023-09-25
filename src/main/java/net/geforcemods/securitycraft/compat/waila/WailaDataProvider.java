@@ -102,21 +102,21 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		if (block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition()))
 			return;
 
-		TileEntity te = data.getTileEntity();
+		TileEntity be = data.getTileEntity();
 
 		//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
-		if (config.get(SHOW_OWNER) && te instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
-			body.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())));
+		if (config.get(SHOW_OWNER) && be instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
+			body.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) be).getOwner())));
 
 		if (disguised)
 			return;
 
 		//if the te is ownable, show modules only when it's owned, otherwise always show
-		if (config.get(SHOW_MODULES) && te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(data.getPlayer()))) {
-			if (!((IModuleInventory) te).getInsertedModules().isEmpty())
+		if (config.get(SHOW_MODULES) && be instanceof IModuleInventory && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(data.getPlayer()))) {
+			if (!((IModuleInventory) be).getInsertedModules().isEmpty())
 				body.add(Utils.localize("waila.securitycraft:equipped"));
 
-			for (ModuleType module : ((IModuleInventory) te).getInsertedModules()) {
+			for (ModuleType module : ((IModuleInventory) be).getInsertedModules()) {
 				body.add(new StringTextComponent("- ").append(new TranslationTextComponent(module.getTranslationKey())));
 			}
 		}

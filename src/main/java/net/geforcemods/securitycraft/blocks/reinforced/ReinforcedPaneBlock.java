@@ -34,17 +34,17 @@ public class ReinforcedPaneBlock extends PaneBlock implements IReinforcedBlock {
 		return getStateForPlacement(context.getLevel(), context.getClickedPos());
 	}
 
-	public BlockState getStateForPlacement(IBlockReader world, BlockPos pos) {
-		FluidState fluidState = world.getFluidState(pos);
+	public BlockState getStateForPlacement(IBlockReader level, BlockPos pos) {
+		FluidState fluidState = level.getFluidState(pos);
 		BlockPos northPos = pos.north();
 		BlockPos southPos = pos.south();
 		BlockPos westPos = pos.west();
 		BlockPos eastPos = pos.east();
-		BlockState northState = world.getBlockState(northPos);
-		BlockState southState = world.getBlockState(southPos);
-		BlockState westState = world.getBlockState(westPos);
-		BlockState eastState = world.getBlockState(eastPos);
-		return defaultBlockState().setValue(NORTH, attachsTo(northState, northState.isFaceSturdy(world, northPos, Direction.SOUTH))).setValue(SOUTH, attachsTo(southState, southState.isFaceSturdy(world, southPos, Direction.NORTH))).setValue(WEST, attachsTo(westState, westState.isFaceSturdy(world, westPos, Direction.EAST))).setValue(EAST, attachsTo(eastState, eastState.isFaceSturdy(world, eastPos, Direction.WEST))).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+		BlockState northState = level.getBlockState(northPos);
+		BlockState southState = level.getBlockState(southPos);
+		BlockState westState = level.getBlockState(westPos);
+		BlockState eastState = level.getBlockState(eastPos);
+		return defaultBlockState().setValue(NORTH, attachsTo(northState, northState.isFaceSturdy(level, northPos, Direction.SOUTH))).setValue(SOUTH, attachsTo(southState, southState.isFaceSturdy(level, southPos, Direction.NORTH))).setValue(WEST, attachsTo(westState, westState.isFaceSturdy(level, westPos, Direction.EAST))).setValue(EAST, attachsTo(eastState, eastState.isFaceSturdy(level, eastPos, Direction.WEST))).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 	}
 
 	@Override
@@ -53,9 +53,9 @@ public class ReinforcedPaneBlock extends PaneBlock implements IReinforcedBlock {
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class ReinforcedPaneBlock extends PaneBlock implements IReinforcedBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new OwnableBlockEntity();
 	}
 }

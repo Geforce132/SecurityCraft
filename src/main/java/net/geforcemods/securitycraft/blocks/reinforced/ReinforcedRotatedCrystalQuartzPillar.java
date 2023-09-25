@@ -16,7 +16,7 @@ public class ReinforcedRotatedCrystalQuartzPillar extends ReinforcedRotatedPilla
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new BlockPocketBlockEntity();
 	}
 }

@@ -25,39 +25,39 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 	}
 
 	@Override
-	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos) {
-		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getDestroyProgress(state, player, world, pos);
+	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
+		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getDestroyProgress(state, player, level, pos);
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (player.getItemInHand(hand).getItem() == SCContent.MINE_REMOTE_ACCESS_TOOL.get())
 			return ActionResultType.SUCCESS;
 
-		if (isActive(world, pos) && isDefusable() && player.getItemInHand(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
-			if (defuseMine(world, pos)) {
+		if (isActive(level, pos) && isDefusable() && player.getItemInHand(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
+			if (defuseMine(level, pos)) {
 				if (!player.isCreative())
 					player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				world.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 
 			return ActionResultType.SUCCESS;
 		}
 
-		if (!isActive(world, pos) && player.getItemInHand(hand).getItem() == Items.FLINT_AND_STEEL) {
-			if (activateMine(world, pos)) {
+		if (!isActive(level, pos) && player.getItemInHand(hand).getItem() == Items.FLINT_AND_STEEL) {
+			if (activateMine(level, pos)) {
 				if (!player.isCreative())
 					player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				world.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				level.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 
 			return ActionResultType.SUCCESS;
 		}
 
-		if (explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos)) {
-			explode(world, pos);
+		if (explodesWhenInteractedWith() && isActive(level, pos) && !EntityUtils.doesPlayerOwn(player, level, pos)) {
+			explode(level, pos);
 			return ActionResultType.SUCCESS;
 		}
 

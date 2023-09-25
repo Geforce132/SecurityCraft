@@ -29,10 +29,10 @@ import net.minecraft.world.World;
 
 public class FrameBlock extends OwnableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	private static final VoxelShape SHAPE_NORTH = Block.box(2, 2, 0, 14, 14, 1);
-	private static final VoxelShape SHAPE_EAST = Block.box(15, 2, 2, 16, 14, 14);
-	private static final VoxelShape SHAPE_SOUTH = Block.box(2, 2, 15, 14, 14, 16);
-	private static final VoxelShape SHAPE_WEST = Block.box(0, 2, 2, 1, 14, 14);
+	private static final VoxelShape SHAPE_NORTH = VoxelShapes.joinUnoptimized(VoxelShapes.block(), Block.box(2, 2, 0, 14, 14, 1), IBooleanFunction.ONLY_FIRST);
+	private static final VoxelShape SHAPE_EAST = VoxelShapes.joinUnoptimized(VoxelShapes.block(), Block.box(15, 2, 2, 16, 14, 14), IBooleanFunction.ONLY_FIRST);
+	private static final VoxelShape SHAPE_SOUTH = VoxelShapes.joinUnoptimized(VoxelShapes.block(), Block.box(2, 2, 15, 14, 14, 16), IBooleanFunction.ONLY_FIRST);
+	private static final VoxelShape SHAPE_WEST = VoxelShapes.joinUnoptimized(VoxelShapes.block(), Block.box(0, 2, 2, 1, 14, 14), IBooleanFunction.ONLY_FIRST);
 
 	public FrameBlock(AbstractBlock.Properties properties) {
 		super(properties);
@@ -40,31 +40,23 @@ public class FrameBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
-		VoxelShape shape = null;
-
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		switch (state.getValue(FACING)) {
 			case NORTH:
-				shape = SHAPE_NORTH;
-				break;
+				return SHAPE_NORTH;
 			case EAST:
-				shape = SHAPE_EAST;
-				break;
+				return SHAPE_EAST;
 			case SOUTH:
-				shape = SHAPE_SOUTH;
-				break;
+				return SHAPE_SOUTH;
 			case WEST:
-				shape = SHAPE_WEST;
-				break;
+				return SHAPE_WEST;
 			default:
-				shape = VoxelShapes.empty();
+				return VoxelShapes.empty();
 		}
-
-		return VoxelShapes.joinUnoptimized(VoxelShapes.block(), shape, IBooleanFunction.ONLY_FIRST); //subtract
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (stack.getItem() == SCContent.CAMERA_MONITOR.get()) {

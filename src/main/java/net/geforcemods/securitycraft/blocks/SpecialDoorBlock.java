@@ -35,33 +35,33 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		super.setPlacedBy(world, pos, state, placer, stack);
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		super.setPlacedBy(level, pos, state, placer, stack);
 
-		TileEntity lowerTe = world.getBlockEntity(pos);
-		TileEntity upperTe = world.getBlockEntity(pos.above());
+		TileEntity lowerBe = level.getBlockEntity(pos);
+		TileEntity upperBe = level.getBlockEntity(pos.above());
 
-		if (lowerTe instanceof IOwnable && upperTe instanceof IOwnable) {
+		if (lowerBe instanceof IOwnable && upperBe instanceof IOwnable) {
 			if (placer instanceof PlayerEntity) {
 				PlayerEntity player = (PlayerEntity) placer;
 
-				((IOwnable) lowerTe).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
-				((IOwnable) upperTe).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+				((IOwnable) lowerBe).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+				((IOwnable) upperBe).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 			}
 
-			if (lowerTe instanceof LinkableBlockEntity && upperTe instanceof LinkableBlockEntity)
-				LinkableBlockEntity.link((LinkableBlockEntity) lowerTe, (LinkableBlockEntity) upperTe);
+			if (lowerBe instanceof LinkableBlockEntity && upperBe instanceof LinkableBlockEntity)
+				LinkableBlockEntity.link((LinkableBlockEntity) lowerBe, (LinkableBlockEntity) upperBe);
 
-			if (lowerTe instanceof INameSetter && upperTe instanceof INameSetter) {
-				((INameSetter) lowerTe).setCustomName(stack.getHoverName());
-				((INameSetter) upperTe).setCustomName(stack.getHoverName());
+			if (lowerBe instanceof INameSetter && upperBe instanceof INameSetter) {
+				((INameSetter) lowerBe).setCustomName(stack.getHoverName());
+				((INameSetter) upperBe).setCustomName(stack.getHoverName());
 			}
 		}
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
-		BlockState upperState = world.getBlockState(pos);
+	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random rand) {
+		BlockState upperState = level.getBlockState(pos);
 
 		if (!upperState.getValue(DoorBlock.OPEN))
 			return;
@@ -71,14 +71,14 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 		if (upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER) {
 			lowerState = upperState;
 			pos = pos.above();
-			upperState = world.getBlockState(pos);
+			upperState = level.getBlockState(pos);
 		}
 		else
-			lowerState = world.getBlockState(pos.below());
+			lowerState = level.getBlockState(pos.below());
 
-		world.setBlock(pos, upperState.setValue(DoorBlock.OPEN, false), 3);
-		world.setBlock(pos.below(), lowerState.setValue(DoorBlock.OPEN, false), 3);
-		world.levelEvent(null, 1011, pos, 0);
+		level.setBlock(pos, upperState.setValue(DoorBlock.OPEN, false), 3);
+		level.setBlock(pos.below(), lowerState.setValue(DoorBlock.OPEN, false), 3);
+		level.levelEvent(null, 1011, pos, 0);
 	}
 
 	@Override
@@ -110,14 +110,14 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param) {
-		TileEntity be = world.getBlockEntity(pos);
+	public boolean triggerEvent(BlockState state, World level, BlockPos pos, int id, int param) {
+		TileEntity be = level.getBlockEntity(pos);
 
 		return be != null && be.triggerEvent(id, param);
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader level, BlockPos pos, PlayerEntity player) {
 		return new ItemStack(getDoorItem());
 	}
 
