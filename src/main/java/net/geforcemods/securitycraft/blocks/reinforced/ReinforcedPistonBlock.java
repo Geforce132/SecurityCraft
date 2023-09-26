@@ -228,13 +228,13 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 		if (!extending && level.getBlockState(frontPos).is(SCContent.REINFORCED_PISTON_HEAD.get()))
 			level.setBlock(frontPos, Blocks.AIR.defaultBlockState(), 20);
 
-		ReinforcedPistonBlockStructureHelper structureHelper = new ReinforcedPistonBlockStructureHelper(level, pos, facing, extending);
+		ReinforcedPistonBlockStructureHelper structureResolver = new ReinforcedPistonBlockStructureHelper(level, pos, facing, extending);
 
-		if (!structureHelper.canMove())
+		if (!structureResolver.canMove())
 			return false;
 		else {
 			Map<BlockPos, BlockState> stateToPosMap = Maps.newHashMap();
-			List<BlockPos> blocksToMove = structureHelper.getBlocksToMove();
+			List<BlockPos> blocksToMove = structureResolver.getBlocksToMove();
 			List<BlockState> statesToMove = Lists.newArrayList();
 
 			for (int i = 0; i < blocksToMove.size(); ++i) {
@@ -245,7 +245,7 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 				stateToPosMap.put(posToMove, stateToMove);
 			}
 
-			List<BlockPos> blocksToDestroy = structureHelper.getBlocksToDestroy();
+			List<BlockPos> blocksToDestroy = structureResolver.getBlocksToDestroy();
 			BlockState[] updatedBlocks = new BlockState[blocksToMove.size() + blocksToDestroy.size()];
 			Direction direction = extending ? facing : facing.getOpposite();
 			int j = 0;
@@ -253,9 +253,9 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 			for (int k = blocksToDestroy.size() - 1; k >= 0; --k) {
 				BlockPos posToDestroy = blocksToDestroy.get(k);
 				BlockState stateToDestroy = level.getBlockState(posToDestroy);
-				TileEntity teToDestroy = stateToDestroy.hasTileEntity() ? level.getBlockEntity(posToDestroy) : null;
+				TileEntity beToDestroy = stateToDestroy.hasTileEntity() ? level.getBlockEntity(posToDestroy) : null;
 
-				dropResources(stateToDestroy, level, posToDestroy, teToDestroy);
+				dropResources(stateToDestroy, level, posToDestroy, beToDestroy);
 				level.setBlock(posToDestroy, Blocks.AIR.defaultBlockState(), 18);
 				updatedBlocks[j++] = stateToDestroy;
 			}
@@ -346,11 +346,11 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 	}
 
 	private static boolean isSameOwner(BlockPos blockPos, BlockPos pistonPos, World level) {
-		TileEntity te = level.getBlockEntity(pistonPos);
-		IOwnable blockTe = (IOwnable) level.getBlockEntity(blockPos);
+		TileEntity pistonBe = level.getBlockEntity(pistonPos);
+		IOwnable blockBe = (IOwnable) level.getBlockEntity(blockPos);
 
-		if (te instanceof IOwnable)
-			return blockTe.getOwner().owns(((IOwnable) te));
+		if (pistonBe instanceof IOwnable)
+			return blockBe.getOwner().owns(((IOwnable) pistonBe));
 
 		return false;
 	}

@@ -129,14 +129,6 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		return ignoreOwner.get();
 	}
 
-	public String[] getUuids() {
-		return uuids;
-	}
-
-	public void setUuids(String[] uuids) {
-		this.uuids = uuids;
-	}
-
 	public String[] getPlayers() {
 		return players;
 	}
@@ -145,11 +137,11 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		this.players = players;
 	}
 
-	public long[] getTimestamps() {
-		return timestamps;
+	public String[] getUuids() {
+		return uuids;
 	}
 
-	public void setTimestamps(long[] timestamps) {
-		this.timestamps = timestamps;
+	public long[] getTimestamps() {
+		return timestamps;
 	}
 }

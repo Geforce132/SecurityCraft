@@ -21,8 +21,8 @@ public class SecurityCraftToVanillaCategory extends BaseCategory {
 	}
 
 	@Override
-	public void draw(ReinforcerRecipe recipe, MatrixStack matrix, double mouseX, double mouseY) {
-		Minecraft.getInstance().font.draw(matrix, OUTPUT_TEXT, 24, 30, 4210752);
+	public void draw(ReinforcerRecipe recipe, MatrixStack pose, double mouseX, double mouseY) {
+		Minecraft.getInstance().font.draw(pose, OUTPUT_TEXT, 24, 30, 4210752);
 	}
 
 	@Override
@@ -37,8 +37,8 @@ public class SecurityCraftToVanillaCategory extends BaseCategory {
 
 	@Override
 	public void setIngredients(ReinforcerRecipe recipe, IIngredients ingredients) {
-		ingredients.setInput(VanillaTypes.ITEM, new ItemStack(recipe.getSecurityCraftBlock()));
-		ingredients.setOutput(VanillaTypes.ITEM, new ItemStack(recipe.getVanillaBlock()));
+		ingredients.setInput(VanillaTypes.ITEM, new ItemStack(recipe.securityCraftBlock()));
+		ingredients.setOutput(VanillaTypes.ITEM, new ItemStack(recipe.vanillaBlock()));
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class SecurityCraftToVanillaCategory extends BaseCategory {
 
 		group.init(0, true, 0, 25);
 		group.init(1, false, 90, 25);
-		group.set(0, new ItemStack(recipe.getSecurityCraftBlock()));
-		group.set(1, new ItemStack(recipe.getVanillaBlock()));
+		group.set(0, new ItemStack(recipe.securityCraftBlock()));
+		group.set(1, new ItemStack(recipe.vanillaBlock()));
 	}
 }

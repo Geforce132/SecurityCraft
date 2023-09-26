@@ -90,12 +90,12 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public void wasExploded(World worldlevel, BlockPos pos, Explosion explosion) {
-		if (!worldlevel.isClientSide && worldlevel.getBlockState(pos).hasProperty(ClaymoreBlock.DEACTIVATED) && !worldlevel.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
+	public void wasExploded(World level, BlockPos pos, Explosion explosion) {
+		if (!level.isClientSide && level.getBlockState(pos).hasProperty(ClaymoreBlock.DEACTIVATED) && !level.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
 			if (pos.equals(new BlockPos(explosion.getPosition())))
 				return;
 
-			explode(worldlevel, pos);
+			explode(level, pos);
 		}
 	}
 
@@ -164,7 +164,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader sourclevele, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		switch (state.getValue(FACING)) {
 			case NORTH:
 				return NORTH;
@@ -185,8 +185,8 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public boolean isActive(World world, BlockPos pos) {
-		return !world.getBlockState(pos).getValue(DEACTIVATED);
+	public boolean isActive(World level, BlockPos pos) {
+		return !level.getBlockState(pos).getValue(DEACTIVATED);
 	}
 
 	@Override

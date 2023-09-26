@@ -77,9 +77,9 @@ public class RedstoneOreMineBlock extends BaseFullMineBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, World level, BlockPos pos, Random rand) {
 		if (state.getValue(LIT))
-			spawnParticles(world, pos);
+			spawnParticles(level, pos);
 	}
 
 	private static void spawnParticles(World level, BlockPos pos) {

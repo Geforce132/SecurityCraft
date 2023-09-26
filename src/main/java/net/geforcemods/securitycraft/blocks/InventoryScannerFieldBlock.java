@@ -55,7 +55,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader blockGetter, BlockPos pos, ISelectionContext ctx) {
 		if (ctx.getEntity() == null)
 			return VoxelShapes.empty();
 
@@ -249,7 +249,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 	}
 
 	/**
-	 * See {@link ItemStack#areItemStacksEqual(ItemStack, ItemStack)} but without size restriction
+	 * See {@link ItemStack#matches(ItemStack, ItemStack)} but without size restriction
 	 */
 	public static boolean areItemStacksEqual(ItemStack stack1, ItemStack stack2) {
 		ItemStack s1 = stack1.copy();

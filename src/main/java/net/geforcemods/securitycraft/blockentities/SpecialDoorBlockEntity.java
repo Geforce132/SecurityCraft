@@ -40,6 +40,8 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 			if (!level.isClientSide)
 				level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
 		}
+
+		super.onOwnerChanged(state, level, pos, player);
 	}
 
 	@Override

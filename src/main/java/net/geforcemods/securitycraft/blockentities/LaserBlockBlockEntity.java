@@ -123,7 +123,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 	}
 
 	@Override
-	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedTEs) {
+	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
 		if (action instanceof ILinkedAction.OptionChanged) {
 			Option<?> option = ((ILinkedAction.OptionChanged<?>) action).option;
 
@@ -159,8 +159,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 			}
 		}
 
-		excludedTEs.add(this);
-		createLinkedBlockAction(action, excludedTEs);
+		excludedBEs.add(this);
+		createLinkedBlockAction(action, excludedBEs);
 	}
 
 	@Override

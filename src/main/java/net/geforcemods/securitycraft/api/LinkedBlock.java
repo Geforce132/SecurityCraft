@@ -17,15 +17,15 @@ public class LinkedBlock {
 		blockPos = blockEntity.getBlockPos();
 	}
 
-	public boolean validate(World world) {
-		return !(world == null || (world.isEmptyBlock(blockPos) || !world.getBlockState(blockPos).getBlock().getDescriptionId().equals(blockName)));
+	public boolean validate(World level) {
+		return !(level == null || (level.isEmptyBlock(blockPos) || !level.getBlockState(blockPos).getBlock().getDescriptionId().equals(blockName)));
 	}
 
-	public LinkableBlockEntity asBlockEntity(World block) {
-		if (!validate(block))
+	public LinkableBlockEntity asBlockEntity(World world) {
+		if (!validate(world))
 			return null;
 
-		return (LinkableBlockEntity) block.getBlockEntity(blockPos);
+		return (LinkableBlockEntity) world.getBlockEntity(blockPos);
 	}
 
 	public void setBlockName(String blockName) {

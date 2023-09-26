@@ -87,13 +87,15 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			if (!level.isClientSide)
 				level.getServer().getPlayerList().broadcastAll(connectedScanner.getUpdatePacket());
 		}
+
+		super.onOwnerChanged(state, level, pos, player);
 	}
 
 	@Override
 	public void load(BlockState state, CompoundNBT tag) {
-		super.load(state, tag);
-
 		ListNBT list = tag.getList("Items", 10);
+
+		super.load(state, tag);
 		inventoryContents = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); ++i) {
@@ -311,7 +313,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	public void stopOpen(PlayerEntity player) {}
 
 	@Override
-	public boolean canPlaceItem(int var1, ItemStack var2) {
+	public boolean canPlaceItem(int index, ItemStack stack) {
 		return true;
 	}
 

@@ -137,18 +137,18 @@ public class AlarmBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public void onNeighborChange(BlockState state, IWorldReader level, BlockPos pos, BlockPos neighbor) {
-		if (level.isClientSide() || !(level instanceof World))
+	public void onNeighborChange(BlockState state, IWorldReader levelReader, BlockPos pos, BlockPos neighbor) {
+		if (levelReader.isClientSide() || !(levelReader instanceof World))
 			return;
 
-		World world = (World) level;
+		World level = (World) levelReader;
 
-		playSoundAndUpdate(world, pos);
+		playSoundAndUpdate(level, pos);
 
-		Direction facing = world.getBlockState(pos).getValue(FACING);
+		Direction facing = level.getBlockState(pos).getValue(FACING);
 
-		if (!BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing))
-			world.destroyBlock(pos, true);
+		if (!BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing))
+			level.destroyBlock(pos, true);
 	}
 
 	@Override

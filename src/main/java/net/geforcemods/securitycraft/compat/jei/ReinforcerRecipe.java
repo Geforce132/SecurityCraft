@@ -11,16 +11,16 @@ public class ReinforcerRecipe {
 		this.securityCraftBlock = securityCraftBlock;
 	}
 
-	public Block getVanillaBlock() {
+	public Block vanillaBlock() {
 		return vanillaBlock;
 	}
 
-	public Block getSecurityCraftBlock() {
+	public Block securityCraftBlock() {
 		return securityCraftBlock;
 	}
 
 	@Override
 	public String toString() {
-		return "Reinforcer Recipe - Vanilla Block: " + getVanillaBlock().getRegistryName().toString() + " - Reinforced Block: " + getSecurityCraftBlock().getRegistryName().toString();
+		return "Reinforcer Recipe - Vanilla Block: " + vanillaBlock().getRegistryName().toString() + " - Reinforced Block: " + securityCraftBlock().getRegistryName().toString();
 	}
 }

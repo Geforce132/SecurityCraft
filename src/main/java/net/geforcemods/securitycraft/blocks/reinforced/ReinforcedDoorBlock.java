@@ -97,12 +97,12 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			DoubleBlockHalf doorHalf = state.getValue(HALF);
 
 			if (doorHalf == DoubleBlockHalf.UPPER) {
-				BlockPos poseBelow = pos.below();
-				BlockState stateBelow = level.getBlockState(poseBelow);
+				BlockPos posBelow = pos.below();
+				BlockState stateBelow = level.getBlockState(posBelow);
 
 				if (stateBelow.getBlock() == state.getBlock() && stateBelow.getValue(HALF) == DoubleBlockHalf.LOWER) {
-					level.setBlock(poseBelow, Blocks.AIR.defaultBlockState(), 35);
-					level.levelEvent(player, 2001, poseBelow, Block.getId(stateBelow));
+					level.setBlock(posBelow, Blocks.AIR.defaultBlockState(), 35);
+					level.levelEvent(player, 2001, posBelow, Block.getId(stateBelow));
 				}
 			}
 		}
@@ -149,10 +149,10 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		level.setBlock(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER), 3);
 	}
 
-	private DoorHingeSide getHingeSide(BlockItemUseContext pContext) {
-		IBlockReader level = pContext.getLevel();
-		BlockPos clickedPos = pContext.getClickedPos();
-		Direction horizontalDirection = pContext.getHorizontalDirection();
+	private DoorHingeSide getHingeSide(BlockItemUseContext ctx) {
+		IBlockReader level = ctx.getLevel();
+		BlockPos clickedPos = ctx.getClickedPos();
+		Direction horizontalDirection = ctx.getHorizontalDirection();
 		BlockPos posAbove = clickedPos.above();
 		Direction horizontalCCW = horizontalDirection.getCounterClockWise();
 		BlockPos clickedPosCCW = clickedPos.relative(horizontalCCW);
@@ -172,7 +172,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			if ((!isCWLower || isCCWLower) && i >= 0) {
 				int stepX = horizontalDirection.getStepX();
 				int stepY = horizontalDirection.getStepZ();
-				Vector3d clickLocation = pContext.getClickLocation();
+				Vector3d clickLocation = ctx.getClickLocation();
 				double clickedX = clickLocation.x - clickedPos.getX();
 				double clickedY = clickLocation.z - clickedPos.getZ();
 
@@ -266,7 +266,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 
 	public void setDoorState(World level, BlockPos pos, BlockState state, boolean open) {
 		level.setBlock(pos, state.setValue(OPEN, open), 2);
-		level.levelEvent((PlayerEntity) null, open ? 1005 : 1011, pos, 0);
+		level.levelEvent(null, open ? 1005 : 1011, pos, 0);
 	}
 
 	@Override

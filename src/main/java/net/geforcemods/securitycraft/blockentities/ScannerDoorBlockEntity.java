@@ -45,13 +45,13 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 	}
 
 	@Override
-	public boolean onEntityViewed(LivingEntity entity, BlockRayTraceResult rayTraceResult) {
+	public boolean onEntityViewed(LivingEntity entity, BlockRayTraceResult hitResult) {
 		BlockState upperState = level.getBlockState(worldPosition);
 		BlockState lowerState = level.getBlockState(worldPosition.below());
 		Direction.Axis facingAxis = ScannerDoorBlock.getFacingAxis(upperState);
 
 		if (upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !EntityUtils.isInvisible(entity)) {
-			if (!(entity instanceof PlayerEntity) || facingAxis != rayTraceResult.getDirection().getAxis())
+			if (!(entity instanceof PlayerEntity) || facingAxis != hitResult.getDirection().getAxis())
 				return false;
 
 			PlayerEntity player = (PlayerEntity) entity;

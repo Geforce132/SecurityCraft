@@ -324,11 +324,6 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 	}
 
 	@Override
-	public TileEntity getTileEntity() {
-		return this;
-	}
-
-	@Override
 	public NonNullList<ItemStack> getInventory() {
 		return modules;
 	}

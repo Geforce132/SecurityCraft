@@ -143,8 +143,8 @@ public class PortableRadarBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public int getSignal(BlockState blockState, IBlockReader level, BlockPos pos, Direction side) {
-		if (blockState.getValue(POWERED) && ((IModuleInventory) level.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
+	public int getSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
+		if (state.getValue(POWERED) && ((IModuleInventory) level.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;

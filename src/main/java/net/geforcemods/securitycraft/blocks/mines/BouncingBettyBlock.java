@@ -61,9 +61,9 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public void attack(BlockState state, World world, BlockPos pos, PlayerEntity player) {
-		if (!player.isCreative() && !EntityUtils.doesPlayerOwn(player, world, pos))
-			explode(world, pos);
+	public void attack(BlockState state, World level, BlockPos pos, PlayerEntity player) {
+		if (!player.isCreative() && !EntityUtils.doesPlayerOwn(player, level, pos))
+			explode(level, pos);
 	}
 
 	@Override

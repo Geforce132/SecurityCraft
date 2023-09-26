@@ -27,11 +27,11 @@ public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements IReinf
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
 
-		super.setPlacedBy(world, pos, state, placer, stack);
+		super.setPlacedBy(level, pos, state, placer, stack);
 	}
 
 	@Override

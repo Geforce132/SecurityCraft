@@ -50,10 +50,10 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (!world.isClientSide && state.getValue(POWERED)) {
-			world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.RETINAL_SCANNER.get());
+	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random random) {
+		if (!level.isClientSide && state.getValue(POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.RETINAL_SCANNER.get());
 		}
 	}
 

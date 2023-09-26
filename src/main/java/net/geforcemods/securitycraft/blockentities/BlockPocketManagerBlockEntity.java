@@ -91,7 +91,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			}
 
 			boolean isCreative = owner.isCreative();
-			boolean placed4 = true;
+			boolean placed4Blocks = true;
 
 			//place 4 blocks per tick
 			//only place the next block if the previous one was placed
@@ -103,7 +103,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 				do {
 					if (placeQueue.isEmpty()) {
-						placed4 = false;
+						placed4Blocks = false;
 						break placeLoop;
 					}
 
@@ -147,11 +147,11 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 				//when an invalid block is in the way
 				PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), new TranslationTextComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), getBlockState().getValue(BlockPocketManagerBlock.FACING)), new TranslationTextComponent(stateInLevel.getBlock().getDescriptionId())), TextFormatting.DARK_AQUA);
-				placed4 = false;
+				placed4Blocks = false;
 				break placeLoop;
 			}
 
-			if (!placed4) {
+			if (!placed4Blocks) {
 				if (!placeQueue.isEmpty()) //there are still blocks left to place, so a different block is blocking (heh) a space
 					placeQueue.clear();
 				else { //no more blocks left to place, assembling must be done
@@ -790,35 +790,35 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		return color;
 	}
 
-	public int getAutoBuildOffset() {
-		return autoBuildOffset;
-	}
-
-	public void setAutoBuildOffset(int autoBuildOffset) {
-		this.autoBuildOffset = autoBuildOffset;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
+	public void setSize(int size) {
+		this.size = size;
 	}
 
 	public int getSize() {
 		return size;
 	}
 
-	public void setSize(int size) {
-		this.size = size;
+	public void setAutoBuildOffset(int autoBuildOffset) {
+		this.autoBuildOffset = autoBuildOffset;
+	}
+
+	public int getAutoBuildOffset() {
+		return autoBuildOffset;
+	}
+
+	public void setShowOutline(boolean showOutline) {
+		this.showOutline = showOutline;
 	}
 
 	public boolean showsOutline() {
 		return showOutline;
 	}
 
-	public void setShowOutline(boolean showOutline) {
-		this.showOutline = showOutline;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
 	}
 }

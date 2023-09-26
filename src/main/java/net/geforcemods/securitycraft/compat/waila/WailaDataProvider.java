@@ -56,15 +56,15 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	}
 
 	@Override
-	public void register(IRegistrar registrar) {
-		registrar.addSyncedConfig(SHOW_OWNER, true);
-		registrar.addSyncedConfig(SHOW_MODULES, true);
-		registrar.addSyncedConfig(SHOW_CUSTOM_NAME, true);
-		registrar.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.HEAD, IOverlayDisplay.class);
-		registrar.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.BODY, IOwnable.class);
-		registrar.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.TAIL, IOverlayDisplay.class);
-		registrar.registerStackProvider(INSTANCE, IOverlayDisplay.class);
-		registrar.registerComponentProvider((IEntityComponentProvider) INSTANCE, TooltipPosition.BODY, Sentry.class);
+	public void register(IRegistrar registration) {
+		registration.addSyncedConfig(SHOW_OWNER, true);
+		registration.addSyncedConfig(SHOW_MODULES, true);
+		registration.addSyncedConfig(SHOW_CUSTOM_NAME, true);
+		registration.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.HEAD, IOverlayDisplay.class);
+		registration.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.BODY, IOwnable.class);
+		registration.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.TAIL, IOverlayDisplay.class);
+		registration.registerStackProvider(INSTANCE, IOverlayDisplay.class);
+		registration.registerComponentProvider((IEntityComponentProvider) INSTANCE, TooltipPosition.BODY, Sentry.class);
 	}
 
 	@Override

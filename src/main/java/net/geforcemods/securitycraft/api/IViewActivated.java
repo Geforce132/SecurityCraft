@@ -37,9 +37,9 @@ public interface IViewActivated {
 			for (LivingEntity entity : entities) {
 				double eyeHeight = entity.getEyeHeight();
 				Vector3d lookVec = new Vector3d(entity.getX() + (entity.getLookAngle().x * maximumDistance), (eyeHeight + entity.getY()) + (entity.getLookAngle().y * maximumDistance), entity.getZ() + (entity.getLookAngle().z * maximumDistance));
-				BlockRayTraceResult rtr = level.clip(new RayTraceContext(new Vector3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
+				BlockRayTraceResult hitResult = level.clip(new RayTraceContext(new Vector3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
 
-				if (rtr != null && rtr.getBlockPos().getX() == pos.getX() && rtr.getBlockPos().getY() == pos.getY() && rtr.getBlockPos().getZ() == pos.getZ() && onEntityViewed(entity, rtr))
+				if (hitResult != null && hitResult.getBlockPos().getX() == pos.getX() && hitResult.getBlockPos().getY() == pos.getY() && hitResult.getBlockPos().getZ() == pos.getZ() && onEntityViewed(entity, hitResult))
 					setViewCooldown(getDefaultViewCooldown());
 			}
 		}
@@ -68,10 +68,10 @@ public interface IViewActivated {
 	 * Called when a view check is successful, aka when an entity is looking at this block entity
 	 *
 	 * @param entity The entity that is looking at this block entity
-	 * @param rayTraceResult The context with which the entity is looking at this block entity
+	 * @param hitResult The context with which the entity is looking at this block entity
 	 * @return true if the block entity's view cooldown should be updated
 	 */
-	public boolean onEntityViewed(LivingEntity entity, BlockRayTraceResult rayTraceResult);
+	public boolean onEntityViewed(LivingEntity entity, BlockRayTraceResult hitResult);
 
 	/**
 	 * @return true if the view check should only pass if a player is looking at this block entity, false otherwise

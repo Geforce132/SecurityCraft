@@ -231,17 +231,17 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 		}
 
 		@Override
-		public boolean convert(PlayerEntity player, World world, BlockPos pos) {
-			BlockState state = world.getBlockState(pos);
+		public boolean convert(PlayerEntity player, World level, BlockPos pos) {
+			BlockState state = level.getBlockState(pos);
 			Direction facing = state.getValue(FACING);
 			boolean lit = state.getValue(LIT);
-			AbstractFurnaceTileEntity furnace = (AbstractFurnaceTileEntity) world.getBlockEntity(pos);
+			AbstractFurnaceTileEntity furnace = (AbstractFurnaceTileEntity) level.getBlockEntity(pos);
 			CompoundNBT tag = furnace.save(new CompoundNBT());
 
 			furnace.clearContent();
-			world.setBlockAndUpdate(pos, AbstractKeypadFurnaceBlock.this.defaultBlockState().setValue(FACING, facing).setValue(OPEN, false).setValue(LIT, lit));
-			furnace = (AbstractKeypadFurnaceBlockEntity) world.getBlockEntity(pos);
-			furnace.load(world.getBlockState(pos), tag);
+			level.setBlockAndUpdate(pos, AbstractKeypadFurnaceBlock.this.defaultBlockState().setValue(FACING, facing).setValue(OPEN, false).setValue(LIT, lit));
+			furnace = (AbstractKeypadFurnaceBlockEntity) level.getBlockEntity(pos);
+			furnace.load(level.getBlockState(pos), tag);
 			((IOwnable) furnace).setOwner(player.getUUID().toString(), player.getName().getString());
 			return true;
 		}

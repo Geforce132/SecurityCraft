@@ -11,17 +11,19 @@ import net.minecraft.world.World;
 
 public class ReinforcedDoorBlockEntity extends OwnableBlockEntity {
 	@Override
-	public void onOwnerChanged(BlockState state, World world, BlockPos pos, PlayerEntity player) {
+	public void onOwnerChanged(BlockState state, World level, BlockPos pos, PlayerEntity player) {
 		TileEntity be;
 
 		pos = state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? pos.below() : pos.above();
-		be = world.getBlockEntity(pos);
+		be = level.getBlockEntity(pos);
 
 		if (be instanceof ReinforcedDoorBlockEntity) {
 			((ReinforcedDoorBlockEntity) be).setOwner(getOwner().getUUID(), getOwner().getName());
 
-			if (!world.isClientSide)
-				world.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
+			if (!level.isClientSide)
+				level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
 		}
+
+		super.onOwnerChanged(state, this.level, pos, player);
 	}
 }
