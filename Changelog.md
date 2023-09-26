@@ -47,6 +47,7 @@
 - Fix: The Inventory Scanner can void items
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
 - Misc.: More texture and model updates - resource packs may need to be updated
+- Misc.: Improved rendering performance of the Projector
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 

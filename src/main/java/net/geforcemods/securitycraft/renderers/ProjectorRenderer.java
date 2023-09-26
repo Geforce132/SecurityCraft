@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockModelRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -37,6 +38,7 @@ public class ProjectorRenderer extends TileEntityRenderer<ProjectorBlockEntity> 
 			BlockPos pos;
 
 			RenderSystem.disableCull();
+			BlockModelRenderer.enableCaching();
 
 			for (int x = 0; x < te.getProjectionWidth(); x++) {
 				for (int y = 0; yLoopBoundary.test(te, hanging, y); y = hanging ? y - 1 : y + 1) {
@@ -60,6 +62,7 @@ public class ProjectorRenderer extends TileEntityRenderer<ProjectorBlockEntity> 
 				}
 			}
 
+			BlockModelRenderer.clearCache();
 			RenderSystem.enableCull();
 		}
 	}
