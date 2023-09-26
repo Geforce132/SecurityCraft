@@ -21,11 +21,11 @@ public class LinkedBlock {
 		return !(level == null || (level.isEmptyBlock(blockPos) || !level.getBlockState(blockPos).getBlock().getDescriptionId().equals(blockName)));
 	}
 
-	public LinkableBlockEntity asBlockEntity(World world) {
-		if (!validate(world))
+	public LinkableBlockEntity asBlockEntity(World level) {
+		if (!validate(level))
 			return null;
 
-		return (LinkableBlockEntity) world.getBlockEntity(blockPos);
+		return (LinkableBlockEntity) level.getBlockEntity(blockPos);
 	}
 
 	public void setBlockName(String blockName) {
