@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
@@ -35,6 +36,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 			BlockPos pos;
 
 			RenderSystem.disableCull();
+			ModelBlockRenderer.enableCaching();
 
 			for (int x = 0; x < be.getProjectionWidth(); x++) {
 				for (int y = 0; yLoopBoundary.test(be, hanging, y); y = hanging ? y - 1 : y + 1) {
@@ -60,6 +62,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 				}
 			}
 
+			ModelBlockRenderer.clearCache();
 			RenderSystem.enableCull();
 		}
 	}
