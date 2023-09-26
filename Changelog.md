@@ -48,6 +48,7 @@
 - Removed: FTB Teams integration, as the mod has not been updated to 1.19.3/.4. It will get added back if an update of the mod releases.
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
 - Misc.: More texture and model updates - resource packs may need to be updated
+- Misc.: Improved rendering performance of the Projector
 
 --------------------------Changelog for v1.9.7 of SecurityCraft--------------------------
 
