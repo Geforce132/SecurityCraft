@@ -77,29 +77,11 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 		return tag;
 	}
 
-	private void readLinkedBlocks(ListNBT list) {
-		for (int i = 0; i < list.size(); i++) {
-			String name = list.getCompound(i).getString("blockName");
-			int x = list.getCompound(i).getInt("blockX");
-			int y = list.getCompound(i).getInt("blockY");
-			int z = list.getCompound(i).getInt("blockZ");
-
-			LinkedBlock block = new LinkedBlock(name, new BlockPos(x, y, z));
-			if (hasLevel() && !block.validate(level)) {
-				list.remove(i);
-				continue;
-			}
-
-			if (!linkedBlocks.contains(block))
-				link(this, block.asTileEntity(level));
-		}
-	}
-
 	@Override
 	public void setRemoved() {
 		for (LinkedBlock block : linkedBlocks) {
 			if (level.isLoaded(block.getPos()))
-				LinkableBlockEntity.unlink(block.asTileEntity(level), this);
+				LinkableBlockEntity.unlink(block.asBlockEntity(level), this);
 		}
 	}
 
@@ -108,44 +90,62 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 		createLinkedBlockAction(new ILinkedAction.OptionChanged<>(option), this);
 	}
 
+	private void readLinkedBlocks(ListNBT list) {
+		for (int i = 0; i < list.size(); i++) {
+			String name = list.getCompound(i).getString("blockName");
+			int x = list.getCompound(i).getInt("blockX");
+			int y = list.getCompound(i).getInt("blockY");
+			int z = list.getCompound(i).getInt("blockZ");
+			LinkedBlock block = new LinkedBlock(name, new BlockPos(x, y, z));
+
+			if (hasLevel() && !block.validate(level)) {
+				list.remove(i);
+				continue;
+			}
+
+			if (!linkedBlocks.contains(block))
+				link(this, block.asBlockEntity(level));
+		}
+	}
+
 	/**
 	 * Links two blocks together. Calls onLinkedBlockAction() whenever certain events (found in {@link ILinkedAction}) occur.
 	 */
-	public static void link(LinkableBlockEntity tileEntity1, LinkableBlockEntity tileEntity2) {
-		if (isLinkedWith(tileEntity1, tileEntity2))
+	public static void link(LinkableBlockEntity blockEntity1, LinkableBlockEntity blockEntity2) {
+		if (isLinkedWith(blockEntity1, blockEntity2))
 			return;
 
-		LinkedBlock block1 = new LinkedBlock(tileEntity1);
-		LinkedBlock block2 = new LinkedBlock(tileEntity2);
+		LinkedBlock block1 = new LinkedBlock(blockEntity1);
+		LinkedBlock block2 = new LinkedBlock(blockEntity2);
 
-		if (!tileEntity1.linkedBlocks.contains(block2))
-			tileEntity1.linkedBlocks.add(block2);
+		if (!blockEntity1.linkedBlocks.contains(block2))
+			blockEntity1.linkedBlocks.add(block2);
 
-		if (!tileEntity2.linkedBlocks.contains(block1))
-			tileEntity2.linkedBlocks.add(block1);
+		if (!blockEntity2.linkedBlocks.contains(block1))
+			blockEntity2.linkedBlocks.add(block1);
 	}
 
 	/**
 	 * Unlinks the second tile entity from the first.
 	 *
-	 * @param tileEntity1 The tile entity to unlink from
-	 * @param tileEntity2 The tile entity to unlink
+	 * @param blockEntity1 The tile entity to unlink from
+	 * @param blockEntity2 The tile entity to unlink
 	 */
-	public static void unlink(LinkableBlockEntity tileEntity1, LinkableBlockEntity tileEntity2) {
-		if (tileEntity1 == null || tileEntity2 == null)
+	public static void unlink(LinkableBlockEntity blockEntity1, LinkableBlockEntity blockEntity2) {
+		if (blockEntity1 == null || blockEntity2 == null)
 			return;
 
-		LinkedBlock block = new LinkedBlock(tileEntity2);
+		LinkedBlock block = new LinkedBlock(blockEntity2);
 
-		if (tileEntity1.linkedBlocks.contains(block))
-			tileEntity1.linkedBlocks.remove(block);
+		if (blockEntity1.linkedBlocks.contains(block))
+			blockEntity1.linkedBlocks.remove(block);
 	}
 
 	/**
 	 * @return Are the two blocks linked together?
 	 */
-	public static boolean isLinkedWith(LinkableBlockEntity tileEntity1, LinkableBlockEntity tileEntity2) {
-		return tileEntity1.linkedBlocks.contains(new LinkedBlock(tileEntity2)) && tileEntity2.linkedBlocks.contains(new LinkedBlock(tileEntity1));
+	public static boolean isLinkedWith(LinkableBlockEntity blockEntity1, LinkableBlockEntity blockEntity2) {
+		return blockEntity1.linkedBlocks.contains(new LinkedBlock(blockEntity2)) && blockEntity2.linkedBlocks.contains(new LinkedBlock(blockEntity1));
 	}
 
 	/**
@@ -153,12 +153,12 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * onLinkedBlockAction(), use createLinkedBlockAction(EnumILinkedAction, Object[], ArrayList[LinkableTileEntity] instead.
 	 *
 	 * @param action The action that occurred
-	 * @param excludedTE The LinkableTileEntity which called this method, prevents infinite loops.
+	 * @param excludedBE The LinkableTileEntity which called this method, prevents infinite loops.
 	 */
-	public void createLinkedBlockAction(ILinkedAction action, LinkableBlockEntity excludedTE) {
+	public void createLinkedBlockAction(ILinkedAction action, LinkableBlockEntity excludedBE) {
 		List<LinkableBlockEntity> list = new ArrayList<>();
 
-		list.add(excludedTE);
+		list.add(excludedBE);
 		createLinkedBlockAction(action, list);
 	}
 
@@ -166,15 +166,15 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * Calls onLinkedBlockAction() for every block this TileEntity is linked to.
 	 *
 	 * @param action The action that occurred
-	 * @param excludedTEs LinkableTileEntities that shouldn't have onLinkedBlockAction() called on them, prevents infinite loops.
+	 * @param excludedBEs LinkableTileEntities that shouldn't have onLinkedBlockAction() called on them, prevents infinite loops.
 	 *            Always add your tile entity to the list whenever using this method
 	 */
-	public void createLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedTEs) {
+	public void createLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
 		for (LinkedBlock block : linkedBlocks) {
-			if (!excludedTEs.contains(block.asTileEntity(level))) {
+			if (!excludedBEs.contains(block.asBlockEntity(level))) {
 				BlockState state = level.getBlockState(block.getPos());
 
-				block.asTileEntity(level).onLinkedBlockAction(action, excludedTEs);
+				block.asBlockEntity(level).onLinkedBlockAction(action, excludedBEs);
 				level.sendBlockUpdated(worldPosition, state, state, 3);
 			}
 		}
@@ -185,9 +185,9 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * descriptions. <p>
 	 *
 	 * @param action The {@link ILinkedAction} that occurred
-	 * @param excludedTEs LinkableTileEntities that aren't going to have onLinkedBlockAction() called on them, always add your
+	 * @param excludedBEs LinkableTileEntities that aren't going to have onLinkedBlockAction() called on them, always add your
 	 *            tile entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link multiple
 	 *            blocks (i.e: like Laser Blocks)
 	 */
-	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedTEs) {}
+	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {}
 }

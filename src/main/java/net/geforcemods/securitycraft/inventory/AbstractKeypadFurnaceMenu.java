@@ -13,26 +13,26 @@ import net.minecraft.util.IWorldPosCallable;
 
 public abstract class AbstractKeypadFurnaceMenu extends AbstractFurnaceContainer {
 	private final Block furnaceBlock;
-	public final AbstractKeypadFurnaceBlockEntity te;
-	private IWorldPosCallable worldPosCallable;
+	public final AbstractKeypadFurnaceBlockEntity be;
+	private final IWorldPosCallable containerLevelAccess;
 
 	protected AbstractKeypadFurnaceMenu(ContainerType<?> menuType, IRecipeType<? extends AbstractCookingRecipe> recipeType, RecipeBookCategory recipeBookType, int windowId, PlayerInventory inventory, AbstractKeypadFurnaceBlockEntity be) {
 		super(menuType, recipeType, recipeBookType, windowId, inventory, be, be.getFurnaceData());
 
 		furnaceBlock = be.getBlockState().getBlock();
-		te = be;
-		worldPosCallable = IWorldPosCallable.create(be.getLevel(), be.getBlockPos());
-		te.startOpen(inventory.player);
+		this.be = be;
+		containerLevelAccess = IWorldPosCallable.create(be.getLevel(), be.getBlockPos());
+		be.startOpen(inventory.player);
 	}
 
 	@Override
 	public boolean stillValid(PlayerEntity player) {
-		return stillValid(worldPosCallable, player, furnaceBlock);
+		return stillValid(containerLevelAccess, player, furnaceBlock);
 	}
 
 	@Override
 	public void removed(PlayerEntity player) {
 		super.removed(player);
-		te.stopOpen(player);
+		be.stopOpen(player);
 	}
 }

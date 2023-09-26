@@ -25,11 +25,11 @@ import net.geforcemods.securitycraft.itemgroups.SCDecorationTab;
 import net.geforcemods.securitycraft.itemgroups.SCExplosivesTab;
 import net.geforcemods.securitycraft.itemgroups.SCTechnicalTab;
 import net.geforcemods.securitycraft.items.SCManualItem;
+import net.geforcemods.securitycraft.misc.BlockEntityNBTCondition;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
 import net.geforcemods.securitycraft.misc.ConfigAttackTargetCheck;
 import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.misc.SCManualPage;
-import net.geforcemods.securitycraft.misc.TileEntityNBTCondition;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.Utils;
@@ -70,7 +70,7 @@ public class SecurityCraft {
 	public static final ItemGroup TECHNICAL_TAB = new SCTechnicalTab();
 	public static final ItemGroup MINE_TAB = new SCExplosivesTab();
 	public static final ItemGroup DECORATION_TAB = new SCDecorationTab();
-	public static final LootConditionType TILE_ENTITY_NBT_LOOT_CONDITION = LootConditionManager.register(SecurityCraft.MODID + ":tile_entity_nbt", new TileEntityNBTCondition.Serializer());
+	public static final LootConditionType TILE_ENTITY_NBT_LOOT_CONDITION = LootConditionManager.register(SecurityCraft.MODID + ":tile_entity_nbt", new BlockEntityNBTCondition.ConditionSerializer());
 	public static SimpleChannel channel;
 
 	public SecurityCraft() {
@@ -137,6 +137,7 @@ public class SecurityCraft {
 				if (field.isAnnotationPresent(Reinforced.class)) {
 					Block block = ((RegistryObject<Block>) field.get(null)).get();
 					IReinforcedBlock rb = (IReinforcedBlock) block;
+
 					IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.put(rb.getVanillaBlock(), block);
 					IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.put(block, rb.getVanillaBlock());
 				}

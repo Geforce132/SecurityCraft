@@ -91,7 +91,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			}
 
 			boolean isCreative = owner.isCreative();
-			boolean placed4 = true;
+			boolean placed4Blocks = true;
 
 			//place 4 blocks per tick
 			//only place the next block if the previous one was placed
@@ -99,11 +99,11 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			placeLoop:
 			for (int i = 0; i < BLOCK_PLACEMENTS_PER_TICK; i++) {
 				Pair<BlockPos, BlockState> toPlace;
-				BlockState stateInWorld;
+				BlockState stateInLevel;
 
 				do {
 					if (placeQueue.isEmpty()) {
-						placed4 = false;
+						placed4Blocks = false;
 						break placeLoop;
 					}
 
@@ -113,13 +113,13 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 						throw new IllegalStateException(String.format("Tried to automatically place non-block pocket block \"%s\"! This mustn't happen!", toPlace.getRight().getBlock().getDescriptionId()));
 				}
 				//reach the next block that is missing for the block pocket
-				while ((stateInWorld = level.getBlockState(toPlace.getLeft())) == toPlace.getRight());
+				while ((stateInLevel = level.getBlockState(toPlace.getLeft())) == toPlace.getRight());
 
-				if (stateInWorld.getMaterial().isReplaceable()) {
-					BlockPos pos = toPlace.getLeft();
+				if (stateInLevel.getMaterial().isReplaceable()) {
+					BlockPos placeLocation = toPlace.getLeft();
 					BlockState stateToPlace = toPlace.getRight();
 					SoundType soundType = stateToPlace.getSoundType();
-					TileEntity te;
+					TileEntity placedBe;
 
 					if (!isCreative) { //queue blocks for removal from the inventory
 						//remove blocks from inventory
@@ -134,24 +134,24 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 						}
 					}
 
-					level.setBlockAndUpdate(pos, stateToPlace);
-					level.playSound(null, pos, soundType.getPlaceSound(), SoundCategory.BLOCKS, soundType.getVolume(), soundType.getPitch());
-					te = level.getBlockEntity(pos);
+					level.setBlockAndUpdate(placeLocation, stateToPlace);
+					level.playSound(null, placeLocation, soundType.getPlaceSound(), SoundCategory.BLOCKS, soundType.getVolume(), soundType.getPitch());
+					placedBe = level.getBlockEntity(placeLocation);
 
 					//assigning the owner
-					if (te instanceof OwnableBlockEntity)
-						((OwnableBlockEntity) te).setOwner(getOwner().getUUID(), getOwner().getName());
+					if (placedBe instanceof OwnableBlockEntity)
+						((OwnableBlockEntity) placedBe).setOwner(getOwner().getUUID(), getOwner().getName());
 
 					continue;
 				}
 
 				//when an invalid block is in the way
-				PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), new TranslationTextComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), getBlockState().getValue(BlockPocketManagerBlock.FACING)), new TranslationTextComponent(stateInWorld.getBlock().getDescriptionId())), TextFormatting.DARK_AQUA);
-				placed4 = false;
+				PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), new TranslationTextComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), getBlockState().getValue(BlockPocketManagerBlock.FACING)), new TranslationTextComponent(stateInLevel.getBlock().getDescriptionId())), TextFormatting.DARK_AQUA);
+				placed4Blocks = false;
 				break placeLoop;
 			}
 
-			if (!placed4) {
+			if (!placed4Blocks) {
 				if (!placeQueue.isEmpty()) //there are still blocks left to place, so a different block is blocking (heh) a space
 					placeQueue.clear();
 				else { //no more blocks left to place, assembling must be done
@@ -280,9 +280,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 							sides.add(currentPos);
 						}
 
-						OwnableBlockEntity te = (OwnableBlockEntity) level.getBlockEntity(currentPos);
-
-						if (!getOwner().owns(te))
+						if (!getOwner().owns((OwnableBlockEntity) level.getBlockEntity(currentPos)))
 							return new TranslationTextComponent("messages.securitycraft:blockpocket.unowned", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
 						else
 							blocks.add(currentPos);
@@ -304,7 +302,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			this.walls = sides;
 			this.floor = floor;
 			setEnabled(true);
-			this.setAutoBuildOffset(-offset + (getSize() / 2));
+			setAutoBuildOffset(-offset + (getSize() / 2));
 
 			for (BlockPos blockPos : blocks) {
 				TileEntity te = level.getBlockEntity(blockPos);
@@ -425,12 +423,8 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 								wallsNeeded++;
 						}
 
-						if (level.getBlockEntity(currentPos) instanceof OwnableBlockEntity) {
-							OwnableBlockEntity te = (OwnableBlockEntity) level.getBlockEntity(currentPos);
-
-							if (!getOwner().owns(te))
-								return new TranslationTextComponent("messages.securitycraft:blockpocket.unowned", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
-						}
+						if (!getOwner().owns((OwnableBlockEntity) level.getBlockEntity(currentPos)))
+							return new TranslationTextComponent("messages.securitycraft:blockpocket.unowned", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
 
 						xi++;
 					}
@@ -550,11 +544,11 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	}
 
 	private TranslationTextComponent getFormattedRelativeCoordinates(BlockPos pos, Direction managerFacing) {
-		BlockPos difference = pos.subtract(this.worldPosition);
-		int offsetLeft;
+		BlockPos difference = pos.subtract(worldPosition);
 		int offsetBehind;
 		int offsetAbove = difference.getY();
 		List<TranslationTextComponent> components = new ArrayList<>();
+		int offsetLeft;
 
 		switch (managerFacing) {
 			case NORTH:
@@ -796,35 +790,35 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		return color;
 	}
 
-	public int getAutoBuildOffset() {
-		return autoBuildOffset;
-	}
-
-	public void setAutoBuildOffset(int autoBuildOffset) {
-		this.autoBuildOffset = autoBuildOffset;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
+	public void setSize(int size) {
+		this.size = size;
 	}
 
 	public int getSize() {
 		return size;
 	}
 
-	public void setSize(int size) {
-		this.size = size;
+	public void setAutoBuildOffset(int autoBuildOffset) {
+		this.autoBuildOffset = autoBuildOffset;
+	}
+
+	public int getAutoBuildOffset() {
+		return autoBuildOffset;
+	}
+
+	public void setShowOutline(boolean showOutline) {
+		this.showOutline = showOutline;
 	}
 
 	public boolean showsOutline() {
 		return showOutline;
 	}
 
-	public void setShowOutline(boolean showOutline) {
-		this.showOutline = showOutline;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
 	}
 }

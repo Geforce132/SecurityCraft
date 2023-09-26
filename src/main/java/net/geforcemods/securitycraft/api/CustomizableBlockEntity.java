@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 
@@ -40,11 +39,6 @@ public abstract class CustomizableBlockEntity extends NamedBlockEntity implement
 		writeModuleStates(tag);
 		writeOptions(tag);
 		return tag;
-	}
-
-	@Override
-	public TileEntity getTileEntity() {
-		return this;
 	}
 
 	@Override

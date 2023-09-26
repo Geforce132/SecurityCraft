@@ -41,20 +41,20 @@ public class SecurityCamera extends Entity {
 	private int initialChunkLoadingDistance = 0;
 	private boolean hasSentChunks = false;
 
-	public SecurityCamera(EntityType<? extends SecurityCamera> type, World world) {
-		super(SCContent.SECURITY_CAMERA_ENTITY.get(), world);
+	public SecurityCamera(EntityType<? extends SecurityCamera> type, World level) {
+		super(SCContent.SECURITY_CAMERA_ENTITY.get(), level);
 		noPhysics = true;
 		forcedLoading = true;
 	}
 
-	public SecurityCamera(World world) {
-		this(SCContent.SECURITY_CAMERA_ENTITY.get(), world);
+	public SecurityCamera(World level) {
+		this(SCContent.SECURITY_CAMERA_ENTITY.get(), level);
 	}
 
-	public SecurityCamera(World world, BlockPos pos) {
-		this(SCContent.SECURITY_CAMERA_ENTITY.get(), world);
+	public SecurityCamera(World level, BlockPos pos) {
+		this(SCContent.SECURITY_CAMERA_ENTITY.get(), level);
 
-		TileEntity te = world.getBlockEntity(pos);
+		TileEntity te = level.getBlockEntity(pos);
 
 		if (!(te instanceof SecurityCameraBlockEntity)) {
 			remove();
@@ -73,8 +73,8 @@ public class SecurityCamera extends Entity {
 		setInitialPitchYaw();
 	}
 
-	public SecurityCamera(World world, BlockPos pos, SecurityCamera oldCamera) {
-		this(world, pos);
+	public SecurityCamera(World level, BlockPos pos, SecurityCamera oldCamera) {
+		this(level, pos);
 		oldCamera.remove();
 	}
 
@@ -139,10 +139,8 @@ public class SecurityCamera extends Entity {
 		return level.getBlockEntity(blockPosition()) instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) level.getBlockEntity(blockPosition())).isDown();
 	}
 
-	//here to make this method accessible to CameraController
-	@Override
-	protected void setRot(float yaw, float pitch) {
-		super.setRot(yaw, pitch);
+	public void setRotation(float yaw, float pitch) {
+		setRot(yaw, pitch);
 	}
 
 	public void setChunkLoadingDistance(int chunkLoadingDistance) {

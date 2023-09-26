@@ -170,26 +170,26 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 
-		renderBackground(matrix);
+		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
-		blit(matrix, startX, startY, 0, 0, xSize, ySize, 512, 256);
-		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.draw(matrix, title, startX + xSize / 2 - font.width(title) / 2, startY + 6, 4210752);
+		blit(pose, startX, startY, 0, 0, xSize, ySize, 512, 256);
+		super.render(pose, mouseX, mouseY, partialTicks);
+		font.draw(pose, title, startX + xSize / 2 - font.width(title) / 2, startY + 6, 4210752);
 
 		for (int i = 0; i < 12; i++) {
-			font.draw(matrix, lines[i], startX + xSize / 4 - lengths[i] + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 25 + 33, 4210752);
+			font.draw(pose, lines[i], startX + xSize / 4 - lengths[i] + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 25 + 33, 4210752);
 		}
 
-		font.draw(matrix, modifyAll, startX + xSize / 2 - font.width(modifyAll) + 25, startY + 194, 4210752);
+		font.draw(pose, modifyAll, startX + xSize / 2 - font.width(modifyAll) + 25, startY + 194, 4210752);
 
 		for (TextHoverChecker chc : hoverCheckers) {
 			if (chc != null && chc.checkHover(mouseX, mouseY)) {
-				renderTooltip(matrix, chc.getName(), mouseX, mouseY);
+				renderTooltip(pose, chc.getName(), mouseX, mouseY);
 				break;
 			}
 		}

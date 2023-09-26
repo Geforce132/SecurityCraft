@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.util;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import org.lwjgl.opengl.GL11;
 
@@ -46,7 +46,6 @@ public class ClientUtils {
 	 */
 	public static String getFormattedMinecraftTime() {
 		Long time = Minecraft.getInstance().level.getDayTime();
-
 		int hours24 = (int) ((float) time.longValue() / 1000L + 6L) % 24;
 		int hours = hours24 % 12;
 		int minutes = (int) (time.longValue() / 16.666666F % 60.0F);
@@ -54,12 +53,12 @@ public class ClientUtils {
 		return String.format("%02d:%02d %s", Integer.valueOf(hours < 1 ? 12 : hours), Integer.valueOf(minutes), hours24 < 12 ? "AM" : "PM");
 	}
 
-	public static void renderModuleInfo(MatrixStack matrix, ModuleType module, ITextComponent moduleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY) {
+	public static void renderModuleInfo(MatrixStack pose, ModuleType module, ITextComponent moduleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY) {
 		Minecraft mc = Minecraft.getInstance();
 		float alpha = isModuleInstalled ? 1.0F : 0.5F;
 		int moduleRight = moduleLeft + 16;
 		int moduleBottom = moduleTop + 16;
-		Matrix4f m4f = matrix.last().pose();
+		Matrix4f m4f = pose.last().pose();
 		BufferBuilder bufferBuilder = Tessellator.getInstance().getBuilder();
 
 		RenderSystem.enableAlphaTest();
@@ -82,7 +81,7 @@ public class ClientUtils {
 		RenderSystem.disableBlend();
 
 		if (moduleTooltip != null && mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom)
-			GuiUtils.drawHoveringText(matrix, Arrays.asList(moduleTooltip), mouseX, mouseY, screenWidth, screenHeight, -1, mc.font);
+			GuiUtils.drawHoveringText(pose, Collections.singletonList(moduleTooltip), mouseX, mouseY, screenWidth, screenHeight, -1, mc.font);
 	}
 
 	private static void drawTexture(BufferBuilder bufferBuilder, Matrix4f m4f, int moduleLeft, int moduleTop, int moduleRight, int moduleBottom, float alpha) {

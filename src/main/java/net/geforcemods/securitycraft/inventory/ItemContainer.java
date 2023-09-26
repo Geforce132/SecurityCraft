@@ -60,9 +60,9 @@ public class ItemContainer implements IInventory {
 		for (int i = 0; i < getContainerSize(); i++) {
 			if (!getItem(i).isEmpty()) {
 				CompoundNBT item = new CompoundNBT();
+
 				item.putInt("Slot", i);
 				getItem(i).save(item);
-
 				items.add(item);
 			}
 		}
@@ -88,6 +88,7 @@ public class ItemContainer implements IInventory {
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
 		ItemStack stack = getItem(index);
+
 		setItem(index, ItemStack.EMPTY);
 		return stack;
 	}

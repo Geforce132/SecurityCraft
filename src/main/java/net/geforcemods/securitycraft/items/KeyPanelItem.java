@@ -22,18 +22,18 @@ public class KeyPanelItem extends BlockItem {
 
 	@Override
 	public ActionResultType useOn(ItemUseContext ctx) {
-		World world = ctx.getLevel();
+		World level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
-		BlockState state = world.getBlockState(pos);
+		BlockState state = level.getBlockState(pos);
 		PlayerEntity player = ctx.getPlayer();
 		ItemStack stack = ctx.getItemInHand();
 
 		for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
-			if (pc.isValidStateForConversion(state) && pc.convert(player, world, pos)) {
+			if (pc.isValidStateForConversion(state) && pc.convert(player, level, pos)) {
 				if (!player.isCreative())
 					stack.shrink(1);
 
-				world.playSound(null, pos, SCSounds.LOCK.event, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				level.playSound(null, pos, SCSounds.LOCK.event, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				return ActionResultType.SUCCESS;
 			}
 		}

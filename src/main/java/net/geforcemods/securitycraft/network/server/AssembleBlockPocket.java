@@ -30,11 +30,11 @@ public class AssembleBlockPocket {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		TileEntity te = ctx.get().getSender().level.getBlockEntity(pos);
+		TileEntity be = ctx.get().getSender().level.getBlockEntity(pos);
 
-		if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(ctx.get().getSender())) {
-			((BlockPocketManagerBlockEntity) te).setSize(size);
-			((BlockPocketManagerBlockEntity) te).autoAssembleMultiblock();
+		if (be instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) be).isOwnedBy(ctx.get().getSender())) {
+			((BlockPocketManagerBlockEntity) be).setSize(size);
+			((BlockPocketManagerBlockEntity) be).autoAssembleMultiblock();
 		}
 	}
 }

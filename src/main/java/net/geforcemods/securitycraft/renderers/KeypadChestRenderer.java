@@ -35,10 +35,10 @@ public class KeypadChestRenderer extends ChestTileEntityRenderer<KeypadChestBloc
 	}
 
 	@Override
-	protected RenderMaterial getMaterial(KeypadChestBlockEntity te, ChestType type) {
+	protected RenderMaterial getMaterial(KeypadChestBlockEntity be, ChestType type) {
 		if (isChristmas)
 			return getMaterialForType(type, CHRISTMAS_LEFT, CHRISTMAS_RIGHT, CHRISTMAS);
-		else if (te.getOpenNess(0.0F) >= 0.9F)
+		else if (be.getOpenNess(0.0F) >= 0.9F)
 			return getMaterialForType(type, LEFT_ACTIVE, RIGHT_ACTIVE, ACTIVE);
 		else
 			return getMaterialForType(type, LEFT_INACTIVE, RIGHT_INACTIVE, INACTIVE);

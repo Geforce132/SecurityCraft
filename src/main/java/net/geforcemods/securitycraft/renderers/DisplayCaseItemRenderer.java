@@ -11,19 +11,19 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 
 public class DisplayCaseItemRenderer extends ItemStackTileEntityRenderer {
-	private static DisplayCaseBlockEntity dummyTe;
+	private static DisplayCaseBlockEntity dummyBe;
 	private static DisplayCaseRenderer dummyRenderer = null;
 
 	@Override
-	public void renderByItem(ItemStack stack, TransformType transformType, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+	public void renderByItem(ItemStack stack, TransformType transformType, MatrixStack pose, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		if (dummyRenderer == null)
 			dummyRenderer = new DisplayCaseRenderer(TileEntityRendererDispatcher.instance);
 
-		if (dummyTe == null) {
-			dummyTe = new DisplayCaseBlockEntity();
-			dummyTe.blockState = SCContent.DISPLAY_CASE.get().defaultBlockState();
+		if (dummyBe == null) {
+			dummyBe = new DisplayCaseBlockEntity();
+			dummyBe.blockState = SCContent.DISPLAY_CASE.get().defaultBlockState();
 		}
 
-		dummyRenderer.render(dummyTe, 0.0F, matrix, buffer, combinedLight, combinedOverlay);
+		dummyRenderer.render(dummyBe, 0.0F, pose, buffer, combinedLight, combinedOverlay);
 	}
 }

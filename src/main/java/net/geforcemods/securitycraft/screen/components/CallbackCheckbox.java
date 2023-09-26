@@ -33,7 +33,7 @@ public class CallbackCheckbox extends AbstractButton implements IToggleableButto
 	}
 
 	@Override
-	public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+	public void renderButton(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
 		Minecraft minecraft = Minecraft.getInstance();
 
 		minecraft.getTextureManager().bind(TEXTURE);
@@ -42,9 +42,9 @@ public class CallbackCheckbox extends AbstractButton implements IToggleableButto
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		blit(matrix, x, y, width, height, isFocused() ? 20.0F : 0.0F, selected ? 20.0F : 0.0F, 20, 20, 64, 64);
-		renderBg(matrix, minecraft, mouseX, mouseY);
-		minecraft.font.draw(matrix, getMessage(), x + (width * 1.2F), y + (height - 8) / 2, textColor | MathHelper.ceil(alpha * 255.0F) << 24);
+		blit(pose, x, y, width, height, isFocused() ? 20.0F : 0.0F, selected ? 20.0F : 0.0F, 20, 20, 64, 64);
+		renderBg(pose, minecraft, mouseX, mouseY);
+		minecraft.font.draw(pose, getMessage(), x + (width * 1.2F), y + (height - 8) / 2, textColor | MathHelper.ceil(alpha * 255.0F) << 24);
 	}
 
 	public void setSelected(boolean selected) {

@@ -32,24 +32,24 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
 
-		super.setPlacedBy(world, pos, state, placer, stack);
+		super.setPlacedBy(level, pos, state, placer, stack);
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (!world.isClientSide) {
-			TileEntity tileEntity = world.getBlockEntity(pos);
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (!level.isClientSide) {
+			TileEntity te = level.getBlockEntity(pos);
 
-			if (tileEntity instanceof ReinforcedHopperBlockEntity) {
-				ReinforcedHopperBlockEntity te = (ReinforcedHopperBlockEntity) tileEntity;
+			if (te instanceof ReinforcedHopperBlockEntity) {
+				ReinforcedHopperBlockEntity be = (ReinforcedHopperBlockEntity) te;
 
 				//only allow the owner or players on the allowlist to access a reinforced hopper
-				if (te.isOwnedBy(player) || te.isAllowed(player))
-					player.openMenu(te);
+				if (be.isOwnedBy(player) || be.isAllowed(player))
+					player.openMenu(be);
 			}
 		}
 
@@ -57,31 +57,31 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof ReinforcedHopperBlockEntity) {
 				if (!isMoving)
-					InventoryHelper.dropContents(world, pos, (ReinforcedHopperBlockEntity) te);
+					InventoryHelper.dropContents(level, pos, (ReinforcedHopperBlockEntity) te);
 
-				world.updateNeighbourForOutputSignal(pos, this);
+				level.updateNeighbourForOutputSignal(pos, this);
 			}
 		}
 
-		super.onRemove(state, world, pos, newState, isMoving);
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
-	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
-		TileEntity te = world.getBlockEntity(pos);
+	public void entityInside(BlockState state, World level, BlockPos pos, Entity entity) {
+		TileEntity te = level.getBlockEntity(pos);
 
 		if (te instanceof ReinforcedHopperBlockEntity)
 			((ReinforcedHopperBlockEntity) te).entityInside(entity);
 	}
 
 	@Override
-	public TileEntity newBlockEntity(IBlockReader world) {
+	public TileEntity newBlockEntity(IBlockReader level) {
 		return new ReinforcedHopperBlockEntity();
 	}
 
@@ -97,14 +97,14 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 
 	public static class ExtractionBlock implements IExtractionBlock {
 		@Override
-		public boolean canExtract(IOwnable te, World world, BlockPos pos, BlockState state) {
-			ReinforcedHopperBlockEntity hopperTe = (ReinforcedHopperBlockEntity) world.getBlockEntity(pos);
+		public boolean canExtract(IOwnable be, World world, BlockPos pos, BlockState state) {
+			ReinforcedHopperBlockEntity hopperBe = (ReinforcedHopperBlockEntity) world.getBlockEntity(pos);
 
-			if (!hopperTe.getOwner().isValidated())
+			if (!hopperBe.getOwner().isValidated())
 				return false;
-			else if (!te.getOwner().owns(hopperTe)) {
-				if (te instanceof IModuleInventory)
-					return ((IModuleInventory) te).isAllowed(hopperTe.getOwner().getName()); //hoppers can extract out of e.g. chests if the hopper's owner is on the chest's allowlist module
+			else if (!be.getOwner().owns(hopperBe)) {
+				if (be instanceof IModuleInventory)
+					return ((IModuleInventory) be).isAllowed(hopperBe.getOwner().getName()); //hoppers can extract out of e.g. chests if the hopper's owner is on the chest's allowlist module
 
 				return false;
 			}

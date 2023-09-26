@@ -22,7 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class InventoryScannerScreen extends ContainerScreen<InventoryScannerMenu> {
 	private static final ResourceLocation REGULAR_INVENTORY = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_gui.png");
 	private static final ResourceLocation ENHANCED_INVENTORY = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_enhanced_gui.png");
-	public final InventoryScannerBlockEntity tileEntity;
+	public final InventoryScannerBlockEntity be;
 	private boolean owns = false;
 	private boolean hasRedstoneModule = false, hasStorageModule = false;
 	private ITextComponent infoStringRedstone, infoStringStorage;
@@ -34,12 +34,12 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerMenu
 	private ITextComponent redstoneModuleTooltip = null;
 	private ITextComponent storageModuleTooltip = null;
 
-	public InventoryScannerScreen(InventoryScannerMenu container, PlayerInventory inv, ITextComponent name) {
-		super(container, inv, name);
-		tileEntity = container.te;
-		owns = tileEntity.isOwnedBy(inv.player);
-		hasRedstoneModule = tileEntity.isModuleEnabled(ModuleType.REDSTONE);
-		hasStorageModule = tileEntity.isModuleEnabled(ModuleType.STORAGE);
+	public InventoryScannerScreen(InventoryScannerMenu menu, PlayerInventory inv, ITextComponent title) {
+		super(menu, inv, title);
+		be = menu.be;
+		owns = be.isOwnedBy(inv.player);
+		hasRedstoneModule = be.isModuleEnabled(ModuleType.REDSTONE);
+		hasStorageModule = be.isModuleEnabled(ModuleType.STORAGE);
 		infoStringRedstone = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (hasRedstoneModule ? "yes" : "no")));
 		infoStringStorage = Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no")));
 
@@ -63,15 +63,15 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerMenu
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrix, mouseX, mouseY, partialTicks);
+	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
+		super.render(pose, mouseX, mouseY, partialTicks);
 
 		RenderSystem.disableLighting();
 		font.drawWordWrap(infoStringRedstone, leftPos + 28, topPos + 45, 150, 4210752);
 		font.drawWordWrap(infoStringStorage, leftPos + 28, topPos + 75, 150, 4210752);
-		ClientUtils.renderModuleInfo(matrix, ModuleType.REDSTONE, redstoneModuleTooltip, hasRedstoneModule, leftPos + 8, topPos + 45, width, height, mouseX, mouseY);
-		ClientUtils.renderModuleInfo(matrix, ModuleType.STORAGE, storageModuleTooltip, hasStorageModule, leftPos + 8, topPos + 75, width, height, mouseX, mouseY);
-		renderTooltip(matrix, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(pose, ModuleType.REDSTONE, redstoneModuleTooltip, hasRedstoneModule, leftPos + 8, topPos + 45, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(pose, ModuleType.STORAGE, storageModuleTooltip, hasStorageModule, leftPos + 8, topPos + 75, width, height, mouseX, mouseY);
+		renderTooltip(pose, mouseX, mouseY);
 	}
 
 	@Override
@@ -81,21 +81,21 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerMenu
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, prohibitedItems, 8, 6, 4210752);
-		font.draw(matrix, tileEntity.isOwnedBy(minecraft.player) ? adminMode : viewMode, 112, 6, 4210752);
+	protected void renderLabels(MatrixStack pose, int mouseX, int mouseY) {
+		font.draw(pose, prohibitedItems, 8, 6, 4210752);
+		font.draw(pose, be.isOwnedBy(minecraft.player) ? adminMode : viewMode, 112, 6, 4210752);
 
 		if (hasStorageModule && owns)
-			font.draw(matrix, storage, 188, 18, 4210752);
+			font.draw(pose, storage, 188, 18, 4210752);
 
-		font.draw(matrix, Utils.INVENTORY_TEXT, 15, imageHeight - 93, 4210752);
+		font.draw(pose, Utils.INVENTORY_TEXT, 15, imageHeight - 93, 4210752);
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(matrix);
+	protected void renderBg(MatrixStack pose, float partialTicks, int mouseX, int mouseY) {
+		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY);
-		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight + 30);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight + 30);
 	}
 }

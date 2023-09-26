@@ -47,25 +47,25 @@ public class TrophySystemBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
-		return BlockUtils.isSideSolid(world, pos.below(), Direction.UP);
+	public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
+		return BlockUtils.isSideSolid(level, pos.below(), Direction.UP);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if (!canSurvive(state, world, pos))
-			world.destroyBlock(pos, true);
+	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+		if (!canSurvive(state, level, pos))
+			level.destroyBlock(pos, true);
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		TileEntity tile = world.getBlockEntity(pos);
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		TileEntity te = level.getBlockEntity(pos);
 
-		if (tile instanceof TrophySystemBlockEntity) {
-			TrophySystemBlockEntity be = (TrophySystemBlockEntity) tile;
+		if (te instanceof TrophySystemBlockEntity) {
+			TrophySystemBlockEntity be = (TrophySystemBlockEntity) te;
 
 			if (be.isOwnedBy(player)) {
-				if (!world.isClientSide) {
+				if (!level.isClientSide) {
 					if (be.isDisabled())
 						player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 					else
@@ -80,11 +80,11 @@ public class TrophySystemBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
-			return disguisedState.getShape(world, pos, ctx);
+			return disguisedState.getShape(level, pos, ctx);
 		else
 			return SHAPE;
 	}
@@ -104,7 +104,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new TrophySystemBlockEntity();
 	}
 

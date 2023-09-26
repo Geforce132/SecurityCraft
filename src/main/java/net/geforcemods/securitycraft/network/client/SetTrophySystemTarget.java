@@ -33,14 +33,14 @@ public class SetTrophySystemTarget {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		TileEntity te = Minecraft.getInstance().level.getBlockEntity(trophyPos);
+		TileEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(trophyPos);
 
-		if (te instanceof TrophySystemBlockEntity) {
-			TrophySystemBlockEntity trophySystemTE = (TrophySystemBlockEntity) te;
+		if (blockEntity instanceof TrophySystemBlockEntity) {
+			TrophySystemBlockEntity be = (TrophySystemBlockEntity) blockEntity;
 			Entity target = Minecraft.getInstance().level.getEntity(targetID);
 
 			if (target instanceof ProjectileEntity)
-				trophySystemTE.setTarget((ProjectileEntity) target);
+				be.setTarget((ProjectileEntity) target);
 		}
 	}
 }

@@ -43,16 +43,16 @@ public class RemoteControlMine {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		PlayerEntity player = ctx.get().getSender();
-		World world = player.level;
+		World level = player.level;
 		BlockPos pos = new BlockPos(x, y, z);
-		BlockState state = world.getBlockState(pos);
+		BlockState state = level.getBlockState(pos);
 
 		if (state.getBlock() instanceof IExplosive) {
 			IExplosive explosive = ((IExplosive) state.getBlock());
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player))
-				action.act(explosive, world, pos);
+				action.act(explosive, level, pos);
 		}
 	}
 

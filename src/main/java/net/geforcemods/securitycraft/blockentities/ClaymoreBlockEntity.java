@@ -64,13 +64,13 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 			AxisAlignedBB area = new AxisAlignedBB(worldPosition);
 
 			if (dir == Direction.NORTH)
-				area = area.contract(-0, -0, range.get());
+				area = area.contract(0, 0, range.get());
 			else if (dir == Direction.SOUTH)
-				area = area.contract(-0, -0, -range.get());
+				area = area.contract(0, 0, -range.get());
 			else if (dir == Direction.EAST)
-				area = area.contract(-range.get(), -0, -0);
+				area = area.contract(-range.get(), 0, 0);
 			else if (dir == Direction.WEST)
-				area = area.contract(range.get(), -0, -0);
+				area = area.contract(range.get(), 0, 0);
 
 			level.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !(e instanceof PlayerEntity && ((PlayerEntity) e).isCreative()) && !allowsOwnableEntity(e) && !e.isSpectator() && !(EntityUtils.doesEntityOwn(e, level, worldPosition) && ignoresOwner())).stream().findFirst().ifPresent(entity -> {
 				cooldown = 20;

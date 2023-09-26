@@ -34,17 +34,17 @@ public class UniversalBlockModifierItem extends Item {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
-		World world = ctx.getLevel();
+		World level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
-		TileEntity te = world.getBlockEntity(pos);
+		TileEntity be = level.getBlockEntity(pos);
 		PlayerEntity player = ctx.getPlayer();
 
-		if (te instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) te).isOpen() && ((DisplayCaseBlockEntity) te).getDisplayedStack().isEmpty()))
+		if (be instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) be).isOpen() && ((DisplayCaseBlockEntity) be).getDisplayedStack().isEmpty()))
 			return ActionResultType.PASS;
-		else if (te instanceof IModuleInventory) {
-			if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player)) {
-				if (!(te.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem) ((DisguisableBlock) te.getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())), TextFormatting.RED);
+		else if (be instanceof IModuleInventory) {
+			if (be instanceof IOwnable && !((IOwnable) be).isOwnedBy(player)) {
+				if (!(be.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem) ((DisguisableBlock) be.getBlockState().getBlock()).getDisguisedStack(level, pos).getItem()).getBlock() instanceof DisguisableBlock))
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) be).getOwner())), TextFormatting.RED);
 
 				return ActionResultType.FAIL;
 			}
@@ -52,15 +52,15 @@ public class UniversalBlockModifierItem extends Item {
 				NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-						return new CustomizeBlockMenu(windowId, world, pos, inv);
+						return new CustomizeBlockMenu(windowId, level, pos, inv);
 					}
 
 					@Override
 					public ITextComponent getDisplayName() {
-						if (te instanceof INameable)
-							return ((INameable) te).getDisplayName();
+						if (be instanceof INameable)
+							return ((INameable) be).getDisplayName();
 						else
-							return new TranslationTextComponent(te.getBlockState().getBlock().getDescriptionId());
+							return new TranslationTextComponent(be.getBlockState().getBlock().getDescriptionId());
 					}
 				}, pos);
 			}

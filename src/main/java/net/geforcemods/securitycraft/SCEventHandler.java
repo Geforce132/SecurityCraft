@@ -163,10 +163,10 @@ public class SCEventHandler {
 
 		if (player.getCamera() instanceof SecurityCamera) {
 			SecurityCamera cam = (SecurityCamera) player.getCamera();
-			TileEntity tile = player.level.getBlockEntity(cam.blockPosition());
+			TileEntity be = player.level.getBlockEntity(cam.blockPosition());
 
-			if (tile instanceof SecurityCameraBlockEntity)
-				((SecurityCameraBlockEntity) tile).stopViewing();
+			if (be instanceof SecurityCameraBlockEntity)
+				((SecurityCameraBlockEntity) be).stopViewing();
 
 			cam.remove();
 		}
@@ -179,10 +179,10 @@ public class SCEventHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLevelLoad(WorldEvent.Load event) {
-		IWorld world = event.getWorld();
+		IWorld level = event.getWorld();
 
-		if (world instanceof ServerWorld && ((ServerWorld) world).dimension() == World.OVERWORLD)
-			SaltData.refreshLevel(((ServerWorld) world));
+		if (level instanceof ServerWorld && ((ServerWorld) level).dimension() == World.OVERWORLD)
+			SaltData.refreshLevel(((ServerWorld) level));
 	}
 
 	@SubscribeEvent
@@ -193,12 +193,12 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onDamageTaken(LivingHurtEvent event) {
 		LivingEntity entity = event.getEntityLiving();
-		World world = entity.level;
+		World level = entity.level;
 
 		if (event.getSource() == CustomDamageSources.ELECTRICITY)
-			world.playSound(null, entity.blockPosition(), SCSounds.ELECTRIFIED.event, SoundCategory.BLOCKS, 0.25F, 1.0F);
+			level.playSound(null, entity.blockPosition(), SCSounds.ELECTRIFIED.event, SoundCategory.BLOCKS, 0.25F, 1.0F);
 
-		if (!world.isClientSide && entity instanceof ServerPlayerEntity && PlayerUtils.isPlayerMountedOnCamera(entity)) {
+		if (!level.isClientSide && entity instanceof ServerPlayerEntity && PlayerUtils.isPlayerMountedOnCamera(entity)) {
 			ServerPlayerEntity player = (ServerPlayerEntity) entity;
 
 			((SecurityCamera) player.getCamera()).stopViewing(player);
@@ -229,12 +229,12 @@ public class SCEventHandler {
 			return;
 		}
 
-		World world = event.getWorld();
-		TileEntity te = world.getBlockEntity(event.getPos());
-		BlockState state = world.getBlockState(event.getPos());
+		World level = event.getWorld();
+		TileEntity be = level.getBlockEntity(event.getPos());
+		BlockState state = level.getBlockState(event.getPos());
 		Block block = state.getBlock();
 
-		if (te instanceof ILockable && ((ILockable) te).isLocked() && ((ILockable) te).disableInteractionWhenLocked(world, event.getPos(), player) && !player.isShiftKeyDown()) {
+		if (be instanceof ILockable && ((ILockable) be).isLocked() && ((ILockable) be).disableInteractionWhenLocked(level, event.getPos(), player) && !player.isShiftKeyDown()) {
 			if (event.getHand() == Hand.MAIN_HAND) {
 				TranslationTextComponent blockName = Utils.localize(block.getDescriptionId());
 
@@ -245,8 +245,8 @@ public class SCEventHandler {
 			return;
 		}
 
-		if (te instanceof IOwnable) {
-			IOwnable ownable = (IOwnable) te;
+		if (be instanceof IOwnable) {
+			IOwnable ownable = (IOwnable) be;
 			Owner owner = ownable.getOwner();
 
 			if (!owner.isValidated()) {
@@ -263,9 +263,9 @@ public class SCEventHandler {
 			}
 		}
 
-		if (!world.isClientSide) {
-			if (event.getItemStack().getItem() == Items.REDSTONE && te instanceof IEMPAffected && ((IEMPAffected) te).isShutDown()) {
-				((IEMPAffected) te).reactivate();
+		if (!level.isClientSide) {
+			if (event.getItemStack().getItem() == Items.REDSTONE && be instanceof IEMPAffected && ((IEMPAffected) be).isShutDown()) {
+				((IEMPAffected) be).reactivate();
 
 				if (!player.isCreative())
 					event.getItemStack().shrink(1);
@@ -303,7 +303,7 @@ public class SCEventHandler {
 
 		//outside !world.isRemote for properly checking the interaction
 		//all the sentry functionality for when the sentry is diguised
-		List<Sentry> sentries = world.getEntitiesOfClass(Sentry.class, new AxisAlignedBB(event.getPos()));
+		List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AxisAlignedBB(event.getPos()));
 
 		if (!sentries.isEmpty())
 			event.setCanceled(sentries.get(0).mobInteract(player, event.getHand()) == ActionResultType.SUCCESS); //cancel if an action was taken
@@ -318,12 +318,12 @@ public class SCEventHandler {
 
 		ItemStack stack = event.getPlayer().getMainHandItem();
 		Item held = stack.getItem();
-		World world = event.getWorld();
+		World level = event.getWorld();
 		BlockPos pos = event.getPos();
 
 		if (held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()) {
 			UniversalBlockReinforcerItem.maybeRemoveMending(stack);
-			UniversalBlockReinforcerItem.convertBlock(world.getBlockState(pos), world, stack, pos, event.getPlayer());
+			UniversalBlockReinforcerItem.convertBlock(level.getBlockState(pos), level, stack, pos, event.getPlayer());
 		}
 	}
 
@@ -332,11 +332,11 @@ public class SCEventHandler {
 		if (!(event.getWorld() instanceof World))
 			return;
 
-		World world = (World) event.getWorld();
+		World level = (World) event.getWorld();
 
 		//don't let players in creative mode break the disguise block. it's not possible to break it in other gamemodes
 		if (event.getPlayer().isCreative()) {
-			List<Sentry> sentries = world.getEntitiesOfClass(Sentry.class, new AxisAlignedBB(event.getPos()));
+			List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AxisAlignedBB(event.getPos()));
 
 			if (!sentries.isEmpty()) {
 				event.setCanceled(true);
@@ -344,30 +344,30 @@ public class SCEventHandler {
 			}
 		}
 
-		if (!world.isClientSide()) {
+		if (!level.isClientSide()) {
 			BlockPos pos = event.getPos();
-			TileEntity tile = world.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
-			if (tile instanceof IModuleInventory) {
-				IModuleInventory te = (IModuleInventory) tile;
+			if (te instanceof IModuleInventory) {
+				IModuleInventory be = (IModuleInventory) te;
 
-				if (te.shouldDropModules()) {
-					for (int i = 0; i < te.getMaxNumberOfModules(); i++) {
-						if (!te.getInventory().get(i).isEmpty()) {
-							ItemStack stack = te.getInventory().get(i);
-							ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+				if (be.shouldDropModules()) {
+					for (int i = 0; i < be.getMaxNumberOfModules(); i++) {
+						if (!be.getInventory().get(i).isEmpty()) {
+							ItemStack stack = be.getInventory().get(i);
+							ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
 
-							LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(item));
-							te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
+							LevelUtils.addScheduledTask(level, () -> level.addFreshEntity(item));
+							be.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
 
-							if (te instanceof LinkableBlockEntity) {
-								LinkableBlockEntity lbe = (LinkableBlockEntity) te;
+							if (be instanceof LinkableBlockEntity) {
+								LinkableBlockEntity lbe = (LinkableBlockEntity) be;
 
 								lbe.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), lbe);
 							}
 
-							if (te instanceof SecurityCameraBlockEntity) {
-								SecurityCameraBlockEntity cam = (SecurityCameraBlockEntity) te;
+							if (be instanceof SecurityCameraBlockEntity) {
+								SecurityCameraBlockEntity cam = (SecurityCameraBlockEntity) be;
 								BlockPos camPos = cam.getBlockPos();
 								BlockState camState = cam.getLevel().getBlockState(camPos);
 
@@ -381,7 +381,7 @@ public class SCEventHandler {
 			PlayerEntity player = event.getPlayer();
 			BlockState state = event.getState();
 
-			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getBlockEntitiesInRange(world, pos).forEach(detector -> detector.log(player, DetectionMode.BREAK, pos, state));
+			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getBlockEntitiesInRange(level, pos).forEach(detector -> detector.log(player, DetectionMode.BREAK, pos, state));
 		}
 	}
 
@@ -390,19 +390,19 @@ public class SCEventHandler {
 		if (!(event.getWorld() instanceof World))
 			return;
 
-		World world = (World) event.getWorld();
+		World level = (World) event.getWorld();
 
-		if (!world.isClientSide && event.getEntity() instanceof PlayerEntity) {
+		if (!level.isClientSide && event.getEntity() instanceof PlayerEntity) {
 			BlockPos pos = event.getPos();
 			BlockState state = event.getState();
 
-			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getBlockEntitiesInRange(world, pos).forEach(detector -> detector.log((PlayerEntity) event.getEntity(), DetectionMode.PLACE, pos, state));
+			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getBlockEntitiesInRange(level, pos).forEach(detector -> detector.log((PlayerEntity) event.getEntity(), DetectionMode.PLACE, pos, state));
 		}
 	}
 
 	@SubscribeEvent
 	public static void onOwnership(OwnershipEvent event) {
-		TileEntity te = event.getWorld().getBlockEntity(event.getPos());
+		TileEntity te = event.getLevel().getBlockEntity(event.getPos());
 
 		if (te instanceof IOwnable) {
 			String name = event.getPlayer().getName().getString();
@@ -493,8 +493,8 @@ public class SCEventHandler {
 		handlePlayedNote((World) event.getWorld(), event.getPos(), event.getVanillaNoteId(), event.getInstrument().getSerializedName());
 	}
 
-	private static void handlePlayedNote(World world, BlockPos pos, int vanillaNoteId, String instrumentName) {
-		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = BlockEntityTracker.SONIC_SECURITY_SYSTEM.getBlockEntitiesInRange(world, pos);
+	private static void handlePlayedNote(World level, BlockPos pos, int vanillaNoteId, String instrumentName) {
+		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = BlockEntityTracker.SONIC_SECURITY_SYSTEM.getBlockEntitiesInRange(level, pos);
 
 		for (SonicSecuritySystemBlockEntity te : sonicSecuritySystems) {
 			// If the SSS is disabled, don't listen to any notes
@@ -513,25 +513,26 @@ public class SCEventHandler {
 
 	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
 		PlayerEntity player = event.getPlayer();
-		World world = player.level;
+		World level = player.level;
 		BlockPos pos = event.getPos();
-		TileEntity tileEntity = world.getBlockEntity(pos);
+		TileEntity te = level.getBlockEntity(pos);
 
-		if (tileEntity instanceof ICodebreakable) {
-			if (tileEntity instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) tileEntity).isOpen() && ((DisplayCaseBlockEntity) tileEntity).getDisplayedStack().isEmpty()))
+		if (te instanceof ICodebreakable) {
+			ICodebreakable codebreakable = (ICodebreakable) te;
+
+			if (codebreakable instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) te).isOpen() && ((DisplayCaseBlockEntity) te).getDisplayedStack().isEmpty()))
 				return false;
 
 			double chance = ConfigHandler.SERVER.codebreakerChance.get();
 
 			if (chance < 0.0D) {
-				Block block = world.getBlockState(pos).getBlock();
+				Block block = level.getBlockState(pos).getBlock();
 
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(block.getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 			}
 			else {
-				ICodebreakable codebreakable = (ICodebreakable) tileEntity;
 				ItemStack codebreaker = player.getItemInHand(event.getHand());
-				BlockState state = world.getBlockState(pos);
+				BlockState state = level.getBlockState(pos);
 
 				if (!codebreakable.shouldAttemptCodebreak(state, player))
 					return true;

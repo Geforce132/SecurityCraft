@@ -39,12 +39,12 @@ public class ToggleOption {
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		BlockPos pos = new BlockPos(x, y, z);
 		PlayerEntity player = ctx.get().getSender();
-		TileEntity te = player.level.getBlockEntity(pos);
+		TileEntity be = player.level.getBlockEntity(pos);
 
-		if (te instanceof ICustomizable && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
-			((ICustomizable) te).customOptions()[id].toggle();
-			((ICustomizable) te).onOptionChanged(((ICustomizable) te).customOptions()[id]);
-			player.level.sendBlockUpdated(pos, te.getBlockState(), te.getBlockState(), 3);
+		if (be instanceof ICustomizable && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player))) {
+			((ICustomizable) be).customOptions()[id].toggle();
+			((ICustomizable) be).onOptionChanged(((ICustomizable) be).customOptions()[id]);
+			player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
 		}
 	}
 }

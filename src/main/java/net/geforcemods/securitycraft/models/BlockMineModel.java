@@ -33,11 +33,11 @@ public class BlockMineModel implements IBakedModel {
 	}
 
 	@Override
-	public IBakedModel handlePerspective(TransformType cameraTransformType, MatrixStack matrix) {
+	public IBakedModel handlePerspective(TransformType cameraTransformType, MatrixStack pose) {
 		if (cameraTransformType == TransformType.GUI)
-			return ForgeHooksClient.handlePerspective(guiModel, cameraTransformType, matrix);
+			return ForgeHooksClient.handlePerspective(guiModel, cameraTransformType, pose);
 		else
-			return ForgeHooksClient.handlePerspective(defaultModel, cameraTransformType, matrix);
+			return ForgeHooksClient.handlePerspective(defaultModel, cameraTransformType, pose);
 	}
 
 	@Override

@@ -16,8 +16,8 @@ public class ToggleBlockPocketManager {
 
 	public ToggleBlockPocketManager() {}
 
-	public ToggleBlockPocketManager(BlockPocketManagerBlockEntity te, boolean enabling, int size) {
-		pos = te.getBlockPos();
+	public ToggleBlockPocketManager(BlockPocketManagerBlockEntity be, boolean enabling, int size) {
+		pos = be.getBlockPos();
 		this.enabling = enabling;
 		this.size = size;
 	}

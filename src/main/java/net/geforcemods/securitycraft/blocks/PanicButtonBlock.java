@@ -48,42 +48,42 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		boolean newPowered = !state.getValue(POWERED);
 
-		world.setBlockAndUpdate(pos, state.setValue(POWERED, newPowered));
-		playSound(player, world, pos, newPowered);
+		level.setBlockAndUpdate(pos, state.setValue(POWERED, newPowered));
+		playSound(player, level, pos, newPowered);
 
 		if (state.getValue(FACE) == AttachFace.WALL)
-			notifyNeighbors(world, pos, state.getValue(FACING));
+			notifyNeighbors(level, pos, state.getValue(FACING));
 		else if (state.getValue(FACE) == AttachFace.CEILING)
-			notifyNeighbors(world, pos, Direction.DOWN);
+			notifyNeighbors(level, pos, Direction.DOWN);
 		else if (state.getValue(FACE) == AttachFace.FLOOR)
-			notifyNeighbors(world, pos, Direction.UP);
+			notifyNeighbors(level, pos, Direction.UP);
 
 		return ActionResultType.SUCCESS;
 	}
 
-	private void notifyNeighbors(World world, BlockPos pos, Direction facing) {
-		world.updateNeighborsAt(pos, this);
-		world.updateNeighborsAt(pos.relative(facing.getOpposite()), this);
+	private void notifyNeighbors(World level, BlockPos pos, Direction facing) {
+		level.updateNeighborsAt(pos, this);
+		level.updateNeighborsAt(pos.relative(facing.getOpposite()), this);
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param) {
-		TileEntity be = world.getBlockEntity(pos);
+	public boolean triggerEvent(BlockState state, World level, BlockPos pos, int id, int param) {
+		TileEntity be = level.getBlockEntity(pos);
 
 		return be != null && be.triggerEvent(id, param);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		switch (state.getValue(FACE)) {
 			case FLOOR:
 				switch (state.getValue(FACING)) {
@@ -152,7 +152,7 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		return VoxelShapes.empty();
 	}
 
@@ -162,7 +162,7 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new OwnableBlockEntity();
 	}
 

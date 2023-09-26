@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class KeypadSmokerScreen extends AbstractFurnaceScreen<KeypadSmokerMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/container/smoker.png");
 
-	public KeypadSmokerScreen(KeypadSmokerMenu container, PlayerInventory inv, ITextComponent name) {
-		super(container, new SmokerRecipeGui(), inv, container.te.hasCustomName() ? container.te.getCustomName() : name, TEXTURE);
+	public KeypadSmokerScreen(KeypadSmokerMenu menu, PlayerInventory inv, ITextComponent title) {
+		super(menu, new SmokerRecipeGui(), inv, menu.be.hasCustomName() ? menu.be.getCustomName() : title, TEXTURE);
 	}
 }

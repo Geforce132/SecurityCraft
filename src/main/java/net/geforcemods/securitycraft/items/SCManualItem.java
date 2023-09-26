@@ -20,8 +20,8 @@ public class SCManualItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-		if (world.isClientSide)
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
+		if (level.isClientSide)
 			ClientHandler.displaySCManualScreen();
 
 		return ActionResult.consume(player.getItemInHand(hand));

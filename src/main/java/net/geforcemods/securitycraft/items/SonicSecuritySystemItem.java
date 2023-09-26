@@ -45,20 +45,20 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
-		World world = ctx.getLevel();
+		World level = ctx.getLevel();
 		PlayerEntity player = ctx.getPlayer();
 
 		// If the player is not sneaking, add/remove positions from the item when right-clicking a lockable block
-		if (!world.isClientSide && !player.isShiftKeyDown()) {
+		if (!level.isClientSide && !player.isShiftKeyDown()) {
 			BlockPos pos = ctx.getClickedPos();
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity be = level.getBlockEntity(pos);
 
-			if (te instanceof ILockable) {
-				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player)) {
-					Block block = te.getBlockState().getBlock();
+			if (be instanceof ILockable) {
+				if (be instanceof IOwnable && !((IOwnable) be).isOwnedBy(player)) {
+					Block block = be.getBlockState().getBlock();
 
-					if (!(block instanceof DisguisableBlock) || !DisguisableBlock.getDisguisedBlockState(world, pos).isPresent()) {
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) te).getOwner().getName(), pos), TextFormatting.GREEN);
+					if (!(block instanceof DisguisableBlock) || !DisguisableBlock.getDisguisedBlockState(level, pos).isPresent()) {
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) be).getOwner().getName(), pos), TextFormatting.GREEN);
 						return ActionResultType.SUCCESS;
 					}
 				}
@@ -70,11 +70,11 @@ public class SonicSecuritySystemItem extends BlockItem {
 					// If not, link to it
 					if (isAdded(stack.getTag(), pos)) {
 						removeLinkedBlock(stack.getTag(), pos);
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(world.getBlockState(pos).getBlock().getDescriptionId()), pos), TextFormatting.GREEN);
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), TextFormatting.GREEN);
 						return ActionResultType.SUCCESS;
 					}
 					else if (addLinkedBlock(stack.getTag(), pos, player)) {
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(world.getBlockState(pos).getBlock().getDescriptionId()), pos), TextFormatting.GREEN);
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), TextFormatting.GREEN);
 						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new UpdateNBTTagOnClient(stack));
 						return ActionResultType.SUCCESS;
 					}
@@ -85,7 +85,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 		//don't place down the SSS if it has at least one linked block
 		//placing is handled by minecraft otherwise
 		if (!stack.hasTag() || !hasLinkedBlock(stack.getTag())) {
-			if (!world.isClientSide)
+			if (!level.isClientSide)
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.notLinked"), TextFormatting.DARK_RED);
 
 			return ActionResultType.FAIL;
@@ -114,7 +114,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, World level, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		if (!stack.hasTag())
 			return;
 

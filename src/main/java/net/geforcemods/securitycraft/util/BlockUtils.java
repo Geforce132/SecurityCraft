@@ -26,15 +26,15 @@ public class BlockUtils {
 
 	private BlockUtils() {}
 
-	public static boolean isSideSolid(IWorldReader world, BlockPos pos, Direction side) {
-		return world.getBlockState(pos).isFaceSturdy(world, pos, side);
+	public static boolean isSideSolid(IWorldReader level, BlockPos pos, Direction side) {
+		return level.getBlockState(pos).isFaceSturdy(level, pos, side);
 	}
 
-	public static void updateAndNotify(World world, BlockPos pos, Block block, int delay, boolean shouldUpdate) {
+	public static void updateAndNotify(World level, BlockPos pos, Block block, int delay, boolean shouldUpdate) {
 		if (shouldUpdate)
-			world.getBlockTicks().scheduleTick(pos, block, delay);
+			level.getBlockTicks().scheduleTick(pos, block, delay);
 
-		world.updateNeighborsAt(pos, block);
+		level.updateNeighborsAt(pos, block);
 	}
 
 	public static int[] posToIntArray(BlockPos pos) {
@@ -47,35 +47,35 @@ public class BlockUtils {
 		return ConfigHandler.SERVER.mineExplosionsBreakBlocks.get() ? Mode.BREAK : Mode.NONE;
 	}
 
-	public static boolean hasActiveSCBlockNextTo(World world, BlockPos pos) {
-		return SecurityCraftAPI.getRegisteredDoorActivators().stream().anyMatch(activator -> hasActiveSCBlockNextTo(world, pos, world.getBlockEntity(pos), activator));
+	public static boolean hasActiveSCBlockNextTo(World level, BlockPos pos) {
+		return SecurityCraftAPI.getRegisteredDoorActivators().stream().anyMatch(activator -> hasActiveSCBlockNextTo(level, pos, level.getBlockEntity(pos), activator));
 	}
 
-	private static boolean hasActiveSCBlockNextTo(World world, BlockPos pos, TileEntity te, IDoorActivator activator) {
+	private static boolean hasActiveSCBlockNextTo(World level, BlockPos pos, TileEntity be, IDoorActivator activator) {
 		for (Direction dir : Direction.values()) {
 			BlockPos offsetPos = pos.relative(dir);
-			BlockState offsetState = world.getBlockState(offsetPos);
+			BlockState offsetState = level.getBlockState(offsetPos);
 
 			if (activator.getBlocks().contains(offsetState.getBlock())) {
-				TileEntity offsetTe = world.getBlockEntity(offsetPos);
+				TileEntity offsetBe = level.getBlockEntity(offsetPos);
 
-				if (activator.isPowering(world, offsetPos, offsetState, offsetTe, dir, 1) && (!(offsetTe instanceof IOwnable) || ((IOwnable) offsetTe).getOwner().owns((IOwnable) te)))
+				if (activator.isPowering(level, offsetPos, offsetState, offsetBe, dir, 1) && (!(offsetBe instanceof IOwnable) || ((IOwnable) offsetBe).getOwner().owns((IOwnable) be)))
 					return true;
 			}
 
-			if (world.getSignal(offsetPos, dir) == 15 && !offsetState.isSignalSource()) {
+			if (level.getSignal(offsetPos, dir) == 15 && !offsetState.isSignalSource()) {
 				for (Direction dirOffset : Direction.values()) {
 					if (dirOffset.getOpposite() == dir)
 						continue;
 
 					BlockPos newOffsetPos = offsetPos.relative(dirOffset);
 
-					offsetState = world.getBlockState(newOffsetPos);
+					offsetState = level.getBlockState(newOffsetPos);
 
 					if (activator.getBlocks().contains(offsetState.getBlock())) {
-						TileEntity offsetTe = world.getBlockEntity(newOffsetPos);
+						TileEntity offsetBe = level.getBlockEntity(newOffsetPos);
 
-						if (activator.isPowering(world, newOffsetPos, offsetState, offsetTe, dirOffset, 2) && (!(offsetTe instanceof IOwnable) || ((IOwnable) offsetTe).getOwner().owns((IOwnable) te)))
+						if (activator.isPowering(level, newOffsetPos, offsetState, offsetBe, dirOffset, 2) && (!(offsetBe instanceof IOwnable) || ((IOwnable) offsetBe).getOwner().owns((IOwnable) be)))
 							return true;
 					}
 				}
@@ -85,16 +85,16 @@ public class BlockUtils {
 		return false;
 	}
 
-	public static LazyOptional<?> getProtectedCapability(Direction side, TileEntity te, Supplier<LazyOptional<?>> extractionPermittedHandler, Supplier<LazyOptional<?>> insertOnlyHandler) {
+	public static LazyOptional<?> getProtectedCapability(Direction side, TileEntity be, Supplier<LazyOptional<?>> extractionPermittedHandler, Supplier<LazyOptional<?>> insertOnlyHandler) {
 		if (side == null)
 			return EMPTY_INVENTORY;
 
-		BlockPos offsetPos = te.getBlockPos().relative(side);
-		BlockState offsetState = te.getLevel().getBlockState(offsetPos);
+		BlockPos offsetPos = be.getBlockPos().relative(side);
+		BlockState offsetState = be.getLevel().getBlockState(offsetPos);
 
 		for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
 			if (offsetState.getBlock() == extractionBlock.getBlock()) {
-				if (!extractionBlock.canExtract((IOwnable) te, te.getLevel(), offsetPos, offsetState))
+				if (!extractionBlock.canExtract((IOwnable) be, be.getLevel(), offsetPos, offsetState))
 					return EMPTY_INVENTORY;
 				else
 					return extractionPermittedHandler.get();
@@ -104,15 +104,15 @@ public class BlockUtils {
 		return insertOnlyHandler.get();
 	}
 
-	public static void updateIndirectNeighbors(World world, BlockPos pos, Block block) {
-		updateIndirectNeighbors(world, pos, block, Direction.values());
+	public static void updateIndirectNeighbors(World level, BlockPos pos, Block block) {
+		updateIndirectNeighbors(level, pos, block, Direction.values());
 	}
 
-	public static void updateIndirectNeighbors(World world, BlockPos pos, Block block, Direction... directions) {
-		world.updateNeighborsAt(pos, block);
+	public static void updateIndirectNeighbors(World level, BlockPos pos, Block block, Direction... directions) {
+		level.updateNeighborsAt(pos, block);
 
 		for (Direction dir : directions) {
-			world.updateNeighborsAt(pos.relative(dir), block);
+			level.updateNeighborsAt(pos.relative(dir), block);
 		}
 	}
 

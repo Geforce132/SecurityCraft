@@ -42,7 +42,7 @@ public class CommonDoorActivator implements IDoorActivator {
 	//@formatter:on
 
 	@Override
-	public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te, Direction direction, int distance) {
+	public boolean isPowering(World level, BlockPos pos, BlockState state, TileEntity be, Direction direction, int distance) {
 		if (state.getValue(BlockStateProperties.POWERED)) {
 			if (distance == 2) {
 				//checking that e.g. a lever/button is correctly attached to the block

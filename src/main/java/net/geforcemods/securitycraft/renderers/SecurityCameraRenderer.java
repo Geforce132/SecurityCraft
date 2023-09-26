@@ -37,37 +37,37 @@ public class SecurityCameraRenderer extends TileEntityRenderer<SecurityCameraBlo
 	}
 
 	@Override
-	public void render(SecurityCameraBlockEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight, int packedOverlay) {
-		if (te.isDown() || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(te.getBlockPos()))
+	public void render(SecurityCameraBlockEntity be, float partialTicks, MatrixStack pose, IRenderTypeBuffer buffer, int packedLight, int packedOverlay) {
+		if (be.isDown() || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(be.getBlockPos()))
 			return;
 
-		matrix.translate(0.5D, 1.5D, 0.5D);
+		pose.translate(0.5D, 1.5D, 0.5D);
 
-		if (te.hasLevel()) {
-			BlockState state = te.getLevel().getBlockState(te.getBlockPos());
+		if (be.hasLevel()) {
+			BlockState state = be.getLevel().getBlockState(be.getBlockPos());
 
 			if (state.getBlock() == SCContent.SECURITY_CAMERA.get()) {
 				Direction side = state.getValue(SecurityCameraBlock.FACING);
 
 				if (side == Direction.NORTH)
-					matrix.mulPose(POSITIVE_Y_180);
+					pose.mulPose(POSITIVE_Y_180);
 				else if (side == Direction.EAST)
-					matrix.mulPose(POSITIVE_Y_90);
+					pose.mulPose(POSITIVE_Y_90);
 				else if (side == Direction.WEST)
-					matrix.mulPose(NEGATIVE_Y_90);
+					pose.mulPose(NEGATIVE_Y_90);
 			}
 		}
 
-		matrix.mulPose(POSITIVE_X_180);
+		pose.mulPose(POSITIVE_X_180);
 
-		if (!te.isDisabled())
-			MODEL.cameraRotationPoint.yRot = (float) MathHelper.lerp(partialTicks, te.getOriginalCameraRotation(), te.getCameraRotation());
+		if (!be.isDisabled())
+			MODEL.cameraRotationPoint.yRot = (float) MathHelper.lerp(partialTicks, be.getOriginalCameraRotation(), be.getCameraRotation());
 
-		if (te.isShutDown())
+		if (be.isShutDown())
 			MODEL.cameraRotationPoint.xRot = 0.9F;
 		else
 			MODEL.cameraRotationPoint.xRot = 0.2617993877991494F;
 
-		MODEL.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(te.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		MODEL.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(be.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

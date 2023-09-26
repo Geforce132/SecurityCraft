@@ -69,24 +69,24 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 
 	@Override
 	@Nonnull
-	public IModelData getModelData(IBlockDisplayReader world, BlockPos pos, BlockState state, IModelData tileData) {
-		TileEntity te = world.getBlockEntity(pos);
+	public IModelData getModelData(IBlockDisplayReader level, BlockPos pos, BlockState state, IModelData modelData) {
+		TileEntity te = level.getBlockEntity(pos);
 
 		if (te != null) {
 			Block block = te.getBlockState().getBlock();
 
 			if (block instanceof DisguisableBlock) {
-				Optional<BlockState> disguisedState = DisguisableBlock.getDisguisedBlockState(world, pos);
+				Optional<BlockState> disguisedState = DisguisableBlock.getDisguisedBlockState(level, pos);
 
 				if (disguisedState.isPresent()) {
-					tileData.setData(DISGUISED_STATE, disguisedState.get());
-					return tileData;
+					modelData.setData(DISGUISED_STATE, disguisedState.get());
+					return modelData;
 				}
 			}
 		}
 
-		tileData.setData(DISGUISED_STATE, Blocks.AIR.defaultBlockState());
-		return tileData;
+		modelData.setData(DISGUISED_STATE, Blocks.AIR.defaultBlockState());
+		return modelData;
 	}
 
 	@Override

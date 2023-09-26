@@ -35,10 +35,10 @@ public class UniversalBlockReinforcerItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
 		ItemStack heldItem = player.getItemInHand(hand);
 
-		if (!world.isClientSide) {
+		if (!level.isClientSide) {
 			maybeRemoveMending(heldItem);
 			NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 				@Override
@@ -56,7 +56,7 @@ public class UniversalBlockReinforcerItem extends Item {
 		return ActionResult.consume(heldItem);
 	}
 
-	public static boolean convertBlock(BlockState state, World world, ItemStack stack, BlockPos pos, PlayerEntity player) {
+	public static boolean convertBlock(BlockState state, World level, ItemStack stack, BlockPos pos, PlayerEntity player) {
 		if (!player.isCreative()) {
 			boolean isReinforcing = isReinforcing(stack);
 			Block block = state.getBlock();
@@ -64,33 +64,33 @@ public class UniversalBlockReinforcerItem extends Item {
 			BlockState convertedState = null;
 
 			if (isReinforcing && convertedBlock instanceof IReinforcedBlock)
-				convertedState = ((IReinforcedBlock) convertedBlock).convertToReinforced(world, pos, state);
+				convertedState = ((IReinforcedBlock) convertedBlock).convertToReinforced(level, pos, state);
 			else if (!isReinforcing && block instanceof IReinforcedBlock)
-				convertedState = ((IReinforcedBlock) block).convertToVanilla(world, pos, state);
+				convertedState = ((IReinforcedBlock) block).convertToVanilla(level, pos, state);
 
 			if (convertedState != null) {
-				TileEntity te = world.getBlockEntity(pos);
+				TileEntity be = level.getBlockEntity(pos);
 				CompoundNBT tag = null;
 
-				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player))
+				if (be instanceof IOwnable && !((IOwnable) be).isOwnedBy(player))
 					return false;
 
-				if (te != null) {
-					tag = te.save(new CompoundNBT());
+				if (be != null) {
+					tag = be.save(new CompoundNBT());
 
-					if (te instanceof IInventory)
-						((IInventory) te).clearContent();
+					if (be instanceof IInventory)
+						((IInventory) be).clearContent();
 				}
 
-				world.setBlockAndUpdate(pos, convertedState);
-				te = world.getBlockEntity(pos);
+				level.setBlockAndUpdate(pos, convertedState);
+				be = level.getBlockEntity(pos);
 
-				if (te != null) { //in case the converted state gets removed immediately after it is placed down
+				if (be != null) { //in case the converted state gets removed immediately after it is placed down
 					if (tag != null)
-						te.load(convertedState, tag);
+						be.load(convertedState, tag);
 
 					if (isReinforcing)
-						((IOwnable) te).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+						((IOwnable) be).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 				}
 
 				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));

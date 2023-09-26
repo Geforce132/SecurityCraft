@@ -15,17 +15,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockChangeDetectorMenu extends Container {
-	public final TileEntity te;
+	public final TileEntity be;
 	private IWorldPosCallable containerLevelAccess;
 
 	public BlockChangeDetectorMenu(int windowId, World level, BlockPos pos, PlayerInventory inventory) {
 		super(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), windowId);
 
-		te = level.getBlockEntity(pos);
 		containerLevelAccess = IWorldPosCallable.create(level, pos);
+		be = level.getBlockEntity(pos);
 
-		if (te instanceof BlockChangeDetectorBlockEntity) {
-			BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) te;
+		if (be instanceof BlockChangeDetectorBlockEntity) {
+			BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) this.be;
 
 			if (be.isOwnedBy(inventory.player)) {
 				addSlot(new Slot(new BlockEntityInventoryWrapper<>(be, this), 36, 175, 44) {
@@ -88,6 +88,6 @@ public class BlockChangeDetectorMenu extends Container {
 
 	@Override
 	public boolean stillValid(PlayerEntity player) {
-		return stillValid(containerLevelAccess, player, te.getBlockState().getBlock());
+		return stillValid(containerLevelAccess, player, be.getBlockState().getBlock());
 	}
 }

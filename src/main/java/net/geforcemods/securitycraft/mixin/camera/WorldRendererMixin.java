@@ -22,8 +22,8 @@ public class WorldRendererMixin {
 	private Minecraft minecraft;
 
 	@Redirect(method = "setupRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewFrustum;repositionCamera(DD)V"))
-	public void securitycraft$onRepositionCamera(ViewFrustum viewFrustum, double x, double z) {
+	public void securitycraft$onRepositionCamera(ViewFrustum viewArea, double x, double z) {
 		if (!PlayerUtils.isPlayerMountedOnCamera(minecraft.player))
-			viewFrustum.repositionCamera(x, z);
+			viewArea.repositionCamera(x, z);
 	}
 }

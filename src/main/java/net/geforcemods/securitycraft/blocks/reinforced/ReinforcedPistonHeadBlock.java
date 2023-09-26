@@ -27,28 +27,29 @@ public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements IReinf
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
 
-		super.setPlacedBy(world, pos, state, placer, stack);
+		super.setPlacedBy(level, pos, state, placer, stack);
 	}
 
 	@Override
 	public boolean isFittingBase(BlockState baseState, BlockState extendedState) {
 		Block block = baseState.getValue(TYPE) == PistonType.DEFAULT ? SCContent.REINFORCED_PISTON.get() : SCContent.REINFORCED_STICKY_PISTON.get();
+
 		return extendedState.is(block) && extendedState.getValue(PistonBlock.EXTENDED) && extendedState.getValue(FACING) == baseState.getValue(FACING);
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
-		Block behindState = world.getBlockState(pos.relative(state.getValue(FACING).getOpposite())).getBlock();
+	public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
+		Block oppositeState = level.getBlockState(pos.relative(state.getValue(FACING).getOpposite())).getBlock();
 
-		return behindState == SCContent.REINFORCED_PISTON.get() || behindState == SCContent.REINFORCED_STICKY_PISTON.get() || behindState == SCContent.REINFORCED_MOVING_PISTON.get();
+		return oppositeState == SCContent.REINFORCED_PISTON.get() || oppositeState == SCContent.REINFORCED_STICKY_PISTON.get() || oppositeState == SCContent.REINFORCED_MOVING_PISTON.get();
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader world, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(IBlockReader level, BlockPos pos, BlockState state) {
 		return new ItemStack(state.getValue(TYPE) == PistonType.STICKY ? SCContent.REINFORCED_STICKY_PISTON.get() : SCContent.REINFORCED_PISTON.get());
 	}
 
@@ -58,7 +59,7 @@ public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements IReinf
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new OwnableBlockEntity();
 	}
 

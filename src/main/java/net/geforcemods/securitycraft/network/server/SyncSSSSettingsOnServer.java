@@ -43,8 +43,8 @@ public class SyncSSSSettingsOnServer {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		World world = ctx.get().getSender().level;
-		TileEntity te = world.getBlockEntity(pos);
+		World level = ctx.get().getSender().level;
+		TileEntity te = level.getBlockEntity(pos);
 
 		if (te instanceof SonicSecuritySystemBlockEntity && ((SonicSecuritySystemBlockEntity) te).isOwnedBy(ctx.get().getSender())) {
 			SonicSecuritySystemBlockEntity sss = (SonicSecuritySystemBlockEntity) te;

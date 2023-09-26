@@ -53,7 +53,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader access, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		return VoxelShapes.empty();
 	}
 
@@ -76,23 +76,23 @@ public class SecurityCameraBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof IModuleInventory)
 				((IModuleInventory) te).dropAllModules();
 		}
 
-		world.updateNeighborsAt(pos.north(), world.getBlockState(pos).getBlock());
-		world.updateNeighborsAt(pos.south(), world.getBlockState(pos).getBlock());
-		world.updateNeighborsAt(pos.east(), world.getBlockState(pos).getBlock());
-		world.updateNeighborsAt(pos.west(), world.getBlockState(pos).getBlock());
-		super.onRemove(state, world, pos, newState, isMoving);
+		level.updateNeighborsAt(pos.north(), level.getBlockState(pos).getBlock());
+		level.updateNeighborsAt(pos.south(), level.getBlockState(pos).getBlock());
+		level.updateNeighborsAt(pos.east(), level.getBlockState(pos).getBlock());
+		level.updateNeighborsAt(pos.west(), level.getBlockState(pos).getBlock());
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		Direction dir = state.getValue(FACING);
 
 		if (dir == Direction.SOUTH)
@@ -131,26 +131,26 @@ public class SecurityCameraBlock extends OwnableBlock {
 			return null;
 	}
 
-	public void mountCamera(World world, BlockPos pos, PlayerEntity player) {
-		if (!world.isClientSide) {
-			ServerWorld serverWorld = (ServerWorld) world;
+	public void mountCamera(World level, BlockPos pos, PlayerEntity player) {
+		if (!level.isClientSide) {
+			ServerWorld serverLevel = (ServerWorld) level;
 			ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
 			SecurityCamera dummyEntity;
 			SectionPos chunkPos = SectionPos.of(pos);
 			int viewDistance = serverPlayer.server.getPlayerList().getViewDistance();
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (serverPlayer.getCamera() instanceof SecurityCamera)
-				dummyEntity = new SecurityCamera(world, pos, (SecurityCamera) serverPlayer.getCamera());
+				dummyEntity = new SecurityCamera(level, pos, (SecurityCamera) serverPlayer.getCamera());
 			else
-				dummyEntity = new SecurityCamera(world, pos);
+				dummyEntity = new SecurityCamera(level, pos);
 
-			world.addFreshEntity(dummyEntity);
+			level.addFreshEntity(dummyEntity);
 			dummyEntity.setChunkLoadingDistance(viewDistance);
 
 			for (int x = chunkPos.getX() - viewDistance; x <= chunkPos.getX() + viewDistance; x++) {
 				for (int z = chunkPos.getZ() - viewDistance; z <= chunkPos.getZ() + viewDistance; z++) {
-					ForgeChunkManager.forceChunk(serverWorld, SecurityCraft.MODID, dummyEntity, x, z, true, false);
+					ForgeChunkManager.forceChunk(serverLevel, SecurityCraft.MODID, dummyEntity, x, z, true, false);
 				}
 			}
 
@@ -164,10 +164,10 @@ public class SecurityCameraBlock extends OwnableBlock {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
+	public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
 		Direction facing = state.getValue(FACING);
 
-		return BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing);
+		return BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing);
 	}
 
 	@Override
@@ -176,25 +176,25 @@ public class SecurityCameraBlock extends OwnableBlock {
 	}
 
 	@Override
-	public int getSignal(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
-		if (blockState.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
+	public int getSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
+		if (state.getValue(POWERED) && ((IModuleInventory) level.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public int getDirectSignal(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
-		if (blockState.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE) && blockState.getValue(FACING) == side)
+	public int getDirectSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
+		if (state.getValue(POWERED) && ((IModuleInventory) level.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE) && state.getValue(FACING) == side)
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if (!canSurvive(world.getBlockState(pos), world, pos) && !canSurvive(state, world, pos))
-			world.destroyBlock(pos, true);
+	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+		if (!canSurvive(level.getBlockState(pos), level, pos) && !canSurvive(state, level, pos))
+			level.destroyBlock(pos, true);
 	}
 
 	@Override
@@ -203,7 +203,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new SecurityCameraBlockEntity();
 	}
 

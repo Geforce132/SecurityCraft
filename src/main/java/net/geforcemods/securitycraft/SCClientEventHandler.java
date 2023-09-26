@@ -154,20 +154,20 @@ public class SCClientEventHandler {
 			drawCameraOverlay(event.getMatrixStack(), Minecraft.getInstance(), Minecraft.getInstance().gui, Minecraft.getInstance().getWindow(), Minecraft.getInstance().player, Minecraft.getInstance().level, Minecraft.getInstance().cameraEntity.blockPosition());
 	}
 
-	private static void drawCameraOverlay(MatrixStack matrix, Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World world, BlockPos pos) {
+	private static void drawCameraOverlay(MatrixStack matrix, Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World level, BlockPos pos) {
 		if (mc.options.renderDebug)
 			return;
 
-		TileEntity tile = world.getBlockEntity(pos);
+		TileEntity te = level.getBlockEntity(pos);
 
-		if (!(tile instanceof SecurityCameraBlockEntity))
+		if (!(te instanceof SecurityCameraBlockEntity))
 			return;
 
 		FontRenderer font = Minecraft.getInstance().font;
 		GameSettings settings = mc.options;
-		SecurityCameraBlockEntity te = (SecurityCameraBlockEntity) tile;
-		boolean hasRedstoneModule = te.isModuleEnabled(ModuleType.REDSTONE);
-		BlockState state = world.getBlockState(pos);
+		SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) te;
+		boolean hasRedstoneModule = be.isModuleEnabled(ModuleType.REDSTONE);
+		BlockState state = level.getBlockState(pos);
 		ITextComponent lookAround = Utils.localize("gui.securitycraft:camera.lookAround", settings.keyUp.getTranslatedKeyMessage(), settings.keyLeft.getTranslatedKeyMessage(), settings.keyDown.getTranslatedKeyMessage(), settings.keyRight.getTranslatedKeyMessage());
 		ITextComponent exit = Utils.localize("gui.securitycraft:camera.exit", settings.keyShift.getTranslatedKeyMessage());
 		ITextComponent zoom = Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getTranslatedKeyMessage(), KeyBindings.cameraZoomOut.getTranslatedKeyMessage());
@@ -176,8 +176,8 @@ public class SCClientEventHandler {
 		String time = ClientUtils.getFormattedMinecraftTime();
 		int timeY = 25;
 
-		if (te.hasCustomName()) {
-			ITextComponent cameraName = te.getCustomName();
+		if (be.hasCustomName()) {
+			ITextComponent cameraName = be.getCustomName();
 
 			font.drawShadow(matrix, cameraName, resolution.getGuiScaledWidth() - font.width(cameraName) - 8, 25, 16777215);
 			timeY += 10;
@@ -203,7 +203,7 @@ public class SCClientEventHandler {
 			AbstractGui.blit(matrix, 27, -1, 0, 0, 18, 18, 18, 18);
 		}
 
-		if (state.getSignal(world, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
+		if (state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 			if (!hasRedstoneModule)
 				CameraRedstoneModuleState.NOT_INSTALLED.render(gui, matrix, 12, 2);
 			else

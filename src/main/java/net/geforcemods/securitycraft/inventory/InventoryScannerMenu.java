@@ -15,33 +15,33 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class InventoryScannerMenu extends Container {
-	public final InventoryScannerBlockEntity te;
+	public final InventoryScannerBlockEntity be;
 	private IWorldPosCallable worldPosCallable;
 
-	public InventoryScannerMenu(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
+	public InventoryScannerMenu(int windowId, World level, BlockPos pos, PlayerInventory inventory) {
 		super(SCContent.INVENTORY_SCANNER_MENU.get(), windowId);
-		te = (InventoryScannerBlockEntity) world.getBlockEntity(pos);
-		worldPosCallable = IWorldPosCallable.create(world, pos);
+		be = (InventoryScannerBlockEntity) level.getBlockEntity(pos);
+		worldPosCallable = IWorldPosCallable.create(level, pos);
 
 		//prohibited items 0-9
 		for (int i = 0; i < 10; i++) {
-			addSlot(new OwnerRestrictedSlot(te, te, i, (6 + (i * 18)), 16, true));
+			addSlot(new OwnerRestrictedSlot(be, be, i, (6 + (i * 18)), 16, true));
 		}
 
 		//inventory scanner storage 10-36
-		if (te.isOwnedBy(inventory.player) && te.isModuleEnabled(ModuleType.STORAGE)) {
+		if (be.isOwnedBy(inventory.player) && be.isModuleEnabled(ModuleType.STORAGE)) {
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 3; j++) {
-					addSlot(new Slot(te, 10 + ((i * 3) + j), 188 + (j * 18), 29 + i * 18));
+					addSlot(new Slot(be, 10 + ((i * 3) + j), 188 + (j * 18), 29 + i * 18));
 				}
 			}
 		}
 
 		//37
-		addSlot(new LensSlot(te.getLensContainer(), 0, 159, 89) {
+		addSlot(new LensSlot(be.getLensContainer(), 0, 159, 89) {
 			@Override
 			public boolean mayPickup(PlayerEntity player) {
-				return te.isOwnedBy(player);
+				return be.isOwnedBy(player);
 			}
 		});
 
@@ -102,12 +102,12 @@ public class InventoryScannerMenu extends Container {
 	public void removed(PlayerEntity player) {
 		super.removed(player);
 
-		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(player.level, te.getBlockPos());
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(player.level, be.getBlockPos());
 
 		if (connectedScanner == null)
 			return;
 
-		connectedScanner.setContents(te.getContents());
+		connectedScanner.setContents(be.getContents());
 	}
 
 	@Override
@@ -118,11 +118,11 @@ public class InventoryScannerMenu extends Container {
 	@Override
 	public ItemStack clicked(int slotId, int dragType, ClickType clickType, PlayerEntity player) {
 		if (slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof OwnerRestrictedSlot && ((OwnerRestrictedSlot) getSlot(slotId)).isGhostSlot()) {
-			if (te.isOwnedBy(player)) {
+			if (be.isOwnedBy(player)) {
 				ItemStack pickedUpStack = player.inventory.getCarried().copy();
 
 				pickedUpStack.setCount(1);
-				te.getContents().set(slotId, pickedUpStack);
+				be.getContents().set(slotId, pickedUpStack);
 			}
 
 			return ItemStack.EMPTY;

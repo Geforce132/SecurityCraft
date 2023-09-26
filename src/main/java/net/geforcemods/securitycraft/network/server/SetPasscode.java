@@ -47,10 +47,10 @@ public class SetPasscode {
 		BlockPos pos = new BlockPos(x, y, z);
 		PlayerEntity player = ctx.get().getSender();
 		World level = player.level;
-		TileEntity tile = level.getBlockEntity(pos);
+		TileEntity te = level.getBlockEntity(pos);
 
-		if (tile instanceof IPasscodeProtected && (!(tile instanceof IOwnable) || ((IOwnable) tile).isOwnedBy(player))) {
-			IPasscodeProtected be = ((IPasscodeProtected) tile);
+		if (te instanceof IPasscodeProtected && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
+			IPasscodeProtected be = ((IPasscodeProtected) te);
 
 			be.hashAndSetPasscode(passcode);
 
@@ -61,12 +61,12 @@ public class SetPasscode {
 		}
 	}
 
-	private static void checkAndUpdateAdjacentChest(KeypadChestBlockEntity te, World level, BlockPos pos, String codeToSet, byte[] salt) {
-		if (te.getBlockState().getValue(ChestBlock.TYPE) != ChestType.SINGLE) {
-			BlockPos offsetPos = pos.relative(ChestBlock.getConnectedDirection(te.getBlockState()));
+	private static void checkAndUpdateAdjacentChest(KeypadChestBlockEntity be, World level, BlockPos pos, String codeToSet, byte[] salt) {
+		if (be.getBlockState().getValue(ChestBlock.TYPE) != ChestType.SINGLE) {
+			BlockPos offsetPos = pos.relative(ChestBlock.getConnectedDirection(be.getBlockState()));
 			TileEntity otherBe = level.getBlockEntity(offsetPos);
 
-			if (otherBe instanceof KeypadChestBlockEntity && te.getOwner().owns(((KeypadChestBlockEntity) otherBe))) {
+			if (otherBe instanceof KeypadChestBlockEntity && be.getOwner().owns(((KeypadChestBlockEntity) otherBe))) {
 				((KeypadChestBlockEntity) otherBe).hashAndSetPasscode(codeToSet, salt);
 				level.sendBlockUpdated(offsetPos, otherBe.getBlockState(), otherBe.getBlockState(), 2);
 			}

@@ -70,12 +70,12 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	private final int maxNumberOfModules;
 	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
 
-	public CustomizeBlockScreen(CustomizeBlockMenu container, PlayerInventory inv, ITextComponent name) {
-		super(container, inv, name);
-		moduleInv = container.moduleInv;
-		block = menu.moduleInv.getTileEntity().getBlockState().getBlock();
+	public CustomizeBlockScreen(CustomizeBlockMenu menu, PlayerInventory inv, ITextComponent title) {
+		super(menu, inv, title);
+		moduleInv = menu.moduleInv;
+		block = menu.moduleInv.getBlockEntity().getBlockState().getBlock();
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
-		container.addSlotListener(this);
+		menu.addSlotListener(this);
 
 		for (ModuleType type : ModuleType.values()) {
 			if (moduleInv.hasModule(type))
@@ -99,11 +99,11 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
 
-		TileEntity te = moduleInv.getTileEntity();
+		TileEntity te = moduleInv.getBlockEntity();
 
 		if (te instanceof ICustomizable) {
-			ICustomizable customizableTe = (ICustomizable) te;
-			Option<?>[] options = customizableTe.customOptions();
+			ICustomizable customizable = (ICustomizable) te;
+			Option<?>[] options = customizable.customOptions();
 
 			if (options.length > 0) {
 				optionButtons = new Button[options.length];
@@ -145,15 +145,15 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	public boolean mouseReleased(double mouseX, double mouseY, int button) {
 		for (Button b : optionButtons) {
 			if (b instanceof Slider && ((Slider) b).dragging)
-				((Slider) b).mouseReleased(mouseX, mouseY, button);
+				b.mouseReleased(mouseX, mouseY, button);
 		}
 
 		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrix, mouseX, mouseY, partialTicks);
+	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
+		super.render(pose, mouseX, mouseY, partialTicks);
 
 		minecraft.textureManager.bind(BEACON_GUI);
 
@@ -164,32 +164,32 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 				ModuleType type = ((ModuleItem) slot.getItem().getItem()).getModuleType();
 
 				if (indicators.containsKey(type))
-					blit(matrix, leftPos + slot.x - 2, topPos + slot.y + 16, 20, 20, indicators.get(type) ? 88 : 110, 219, 21, 22, 256, 256);
+					blit(pose, leftPos + slot.x - 2, topPos + slot.y + 16, 20, 20, indicators.get(type) ? 88 : 110, 219, 21, 22, 256, 256);
 			}
 		}
 
-		renderTooltip(matrix, mouseX, mouseY);
+		renderTooltip(pose, mouseX, mouseY);
 
 		for (TextHoverChecker hoverChecker : hoverCheckers) {
 			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY)) {
-				renderTooltip(matrix, minecraft.font.split(hoverChecker.getName(), 150), mouseX, mouseY);
+				renderTooltip(pose, minecraft.font.split(hoverChecker.getName(), 150), mouseX, mouseY);
 				break;
 			}
 		}
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
-		font.draw(matrix, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
+	protected void renderLabels(MatrixStack pose, int mouseX, int mouseY) {
+		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
+		font.draw(pose, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(matrix);
+	protected void renderBg(MatrixStack pose, float partialTicks, int mouseX, int mouseY) {
+		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURES[maxNumberOfModules]);
-		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
@@ -223,7 +223,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			moduleInv.insertModule(moduleInv.getModule(moduleType), true);
 		}
 
-		SecurityCraft.channel.sendToServer(new ToggleModule(moduleInv.getTileEntity().getBlockPos(), moduleType));
+		SecurityCraft.channel.sendToServer(new ToggleModule(moduleInv.getBlockEntity().getBlockPos(), moduleType));
 	}
 
 	protected void optionButtonClicked(Button button) {
@@ -231,13 +231,13 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			if (button != optionButtons[i])
 				continue;
 
-			Option<?> tempOption = ((ICustomizable) moduleInv.getTileEntity()).customOptions()[i]; //safe cast, as this method is only called when it can be casted
+			Option<?> tempOption = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[i]; //safe cast, as this method is only called when it can be casted
 
 			tempOption.toggle();
 			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 			button.setMessage(getOptionButtonTitle(tempOption));
 			updateOptionTooltip(i);
-			SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getTileEntity().getBlockPos().getX(), moduleInv.getTileEntity().getBlockPos().getY(), moduleInv.getTileEntity().getBlockPos().getZ(), i));
+			SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getBlockEntity().getBlockPos().getX(), moduleInv.getBlockEntity().getBlockPos().getY(), moduleInv.getBlockEntity().getBlockPos().getZ(), i));
 			return;
 		}
 	}
@@ -253,7 +253,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	}
 
 	private TranslationTextComponent getOptionDescription(int optionId) {
-		Option<?> option = ((ICustomizable) moduleInv.getTileEntity()).customOptions()[optionId];
+		Option<?> option = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[optionId];
 
 		return Utils.localize("gui.securitycraft:customize.tooltip", new TranslationTextComponent(option.getDescriptionKey(block)), new TranslationTextComponent("gui.securitycraft:customize.currentSetting", getValueText(option)));
 	}

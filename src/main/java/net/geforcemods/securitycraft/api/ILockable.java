@@ -20,18 +20,20 @@ public interface ILockable {
 	/**
 	 * @return this as a TileEntity
 	 */
-	public TileEntity getTileEntity();
+	public default TileEntity getThisBlockEntity() {
+		return (TileEntity) this;
+	}
 
 	/**
 	 * @return If this TileEntity is currently being locked down by a Sonic Security System
 	 */
 	public default boolean isLocked() {
-		TileEntity thisTe = getTileEntity();
-		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = BlockEntityTracker.SONIC_SECURITY_SYSTEM.getBlockEntitiesInRange(thisTe.getLevel(), thisTe.getBlockPos());
+		TileEntity thisBe = getThisBlockEntity();
+		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = BlockEntityTracker.SONIC_SECURITY_SYSTEM.getBlockEntitiesInRange(thisBe.getLevel(), thisBe.getBlockPos());
 
-		for (SonicSecuritySystemBlockEntity te : sonicSecuritySystems) {
-			if (te.isActive() && te.isLinkedToBlock(thisTe.getBlockPos()))
-				return te.wasCorrectTunePlayed() == te.disablesBlocksWhenTuneIsPlayed();
+		for (SonicSecuritySystemBlockEntity be : sonicSecuritySystems) {
+			if (be.isActive() && be.isLinkedToBlock(thisBe.getBlockPos()))
+				return be.wasCorrectTunePlayed() == be.disablesBlocksWhenTuneIsPlayed();
 		}
 
 		return false;
@@ -40,11 +42,11 @@ public interface ILockable {
 	/**
 	 * Called when a locked block is right-clicked by a player.
 	 *
-	 * @param world The world that you're in.
+	 * @param level The world that you're in.
 	 * @param pos The position of the block that was clicked.
 	 * @return Return true if you want the player's interaction with the block to be stopped, false otherwise.
 	 */
-	public default boolean disableInteractionWhenLocked(World world, BlockPos pos, PlayerEntity player) {
+	public default boolean disableInteractionWhenLocked(World level, BlockPos pos, PlayerEntity player) {
 		return true;
 	}
 }

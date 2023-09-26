@@ -73,11 +73,11 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public boolean onEntityViewed(LivingEntity entity, BlockRayTraceResult rayTraceResult) {
+	public boolean onEntityViewed(LivingEntity entity, BlockRayTraceResult hitResult) {
 		if (!isLocked() && !isDisabled()) {
 			BlockState state = getBlockState();
 
-			if (state.getValue(RetinalScannerBlock.FACING) != rayTraceResult.getDirection())
+			if (state.getValue(RetinalScannerBlock.FACING) != hitResult.getDirection())
 				return false;
 
 			if (!state.getValue(RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)) {

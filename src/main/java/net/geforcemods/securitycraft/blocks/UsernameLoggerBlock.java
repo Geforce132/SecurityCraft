@@ -31,8 +31,8 @@ public class UsernameLoggerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (world.isClientSide)
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (level.isClientSide)
 			ClientHandler.displayUsernameLoggerScreen(pos);
 
 		return ActionResultType.SUCCESS;
@@ -54,7 +54,7 @@ public class UsernameLoggerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new UsernameLoggerBlockEntity();
 	}
 

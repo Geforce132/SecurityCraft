@@ -21,28 +21,28 @@ public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements IGrowa
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(IBlockReader world, BlockPos pos, BlockState state, boolean flag) {
-		return world.getBlockState(pos.above()).isAir(world, pos);
+	public boolean isValidBonemealTarget(IBlockReader level, BlockPos pos, BlockState state, boolean flag) {
+		return level.getBlockState(pos.above()).isAir(level, pos);
 	}
 
 	@Override
-	public boolean isBonemealSuccess(World world, Random random, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(World level, Random random, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void performBonemeal(ServerWorld world, Random random, BlockPos pos, BlockState blockState) {
-		BlockState state = world.getBlockState(pos);
+	public void performBonemeal(ServerWorld level, Random random, BlockPos pos, BlockState blockState) {
+		BlockState state = level.getBlockState(pos);
 		BlockPos upperPos = pos.above();
 
 		if (state.is(SCContent.REINFORCED_CRIMSON_NYLIUM.get()))
-			NetherVegetationFeature.place(world, random, upperPos, Features.Configs.CRIMSON_FOREST_CONFIG, 3, 1);
+			NetherVegetationFeature.place(level, random, upperPos, Features.Configs.CRIMSON_FOREST_CONFIG, 3, 1);
 		else if (state.is(SCContent.REINFORCED_WARPED_NYLIUM.get())) {
-			NetherVegetationFeature.place(world, random, upperPos, Features.Configs.WARPED_FOREST_CONFIG, 3, 1);
-			NetherVegetationFeature.place(world, random, upperPos, Features.Configs.NETHER_SPROUTS_CONFIG, 3, 1);
+			NetherVegetationFeature.place(level, random, upperPos, Features.Configs.WARPED_FOREST_CONFIG, 3, 1);
+			NetherVegetationFeature.place(level, random, upperPos, Features.Configs.NETHER_SPROUTS_CONFIG, 3, 1);
 
 			if (random.nextInt(8) == 0)
-				TwistingVineFeature.place(world, random, upperPos, 3, 1, 2);
+				TwistingVineFeature.place(level, random, upperPos, 3, 1, 2);
 		}
 	}
 }

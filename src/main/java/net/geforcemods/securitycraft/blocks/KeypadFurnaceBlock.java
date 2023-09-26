@@ -21,14 +21,14 @@ public class KeypadFurnaceBlock extends AbstractKeypadFurnaceBlock {
 	}
 
 	@Override
-	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
-		if (state.getValue(LIT) && getDisguisedStateOrDefault(state, world, pos).getBlock() == this) {
+	public void animateTick(BlockState state, World level, BlockPos pos, Random rand) {
+		if (state.getValue(LIT) && getDisguisedStateOrDefault(state, level, pos).getBlock() == this) {
 			double x = pos.getX() + 0.5D;
 			double y = pos.getY();
 			double z = pos.getZ() + 0.5D;
 
 			if (rand.nextDouble() < 0.1D)
-				world.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+				level.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 
 			if (state.getValue(OPEN)) {
 				Direction direction = state.getValue(FACING);
@@ -38,14 +38,14 @@ public class KeypadFurnaceBlock extends AbstractKeypadFurnaceBlock {
 				double yOffset = rand.nextDouble() * 6.0D / 16.0D;
 				double zOffset = axis == Axis.Z ? direction.getStepZ() * 0.32D : randomNumber;
 
-				world.addParticle(ParticleTypes.SMOKE, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
-				world.addParticle(ParticleTypes.FLAME, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
+				level.addParticle(ParticleTypes.SMOKE, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
+				level.addParticle(ParticleTypes.FLAME, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new KeypadFurnaceBlockEntity();
 	}
 }

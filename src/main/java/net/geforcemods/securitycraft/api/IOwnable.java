@@ -54,26 +54,26 @@ public interface IOwnable {
 	/**
 	 * Executes after the owner has been changed and invalidates this if it needs validation
 	 *
-	 * @param world The current world
+	 * @param level The current world
 	 * @param state The IOwnable's state
 	 * @param pos The IOwnable's position
 	 * @param player The player that changed the owner of the IOwnable
 	 */
-	default void onOwnerChanged(BlockState state, World world, BlockPos pos, PlayerEntity player) {
+	default void onOwnerChanged(BlockState state, World level, BlockPos pos, PlayerEntity player) {
 		if (needsValidation()) {
 			getOwner().setValidated(false);
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), TextFormatting.GREEN);
 		}
 
-		TileEntity te = (TileEntity) this;
+		TileEntity be = (TileEntity) this;
 
-		if (te instanceof LinkableBlockEntity) {
-			LinkableBlockEntity linkable = (LinkableBlockEntity) te;
+		if (be instanceof LinkableBlockEntity) {
+			LinkableBlockEntity linkable = (LinkableBlockEntity) be;
 
 			linkable.createLinkedBlockAction(new ILinkedAction.OwnerChanged(getOwner()), linkable);
 		}
 
-		te.setChanged();
+		be.setChanged();
 	}
 
 	/**

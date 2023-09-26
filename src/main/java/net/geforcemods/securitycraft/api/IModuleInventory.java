@@ -59,7 +59,9 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	/**
 	 * @return The TileEntity this inventory is for
 	 */
-	public TileEntity getTileEntity();
+	public default TileEntity getBlockEntity() {
+		return (TileEntity) this;
+	}
 
 	/**
 	 * @return The amount of modules that can be inserted
@@ -76,14 +78,14 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @param toggled false if the actual item changed, true if the enabled state of the module changed
 	 */
 	public default void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
-		TileEntity te = getTileEntity();
+		TileEntity be = getBlockEntity();
 
-		if (!te.getLevel().isClientSide) {
+		if (!be.getLevel().isClientSide) {
 			if (!toggled)
 				toggleModuleState(module, true);
 
-			te.setChanged();
-			te.getLevel().sendBlockUpdated(te.getBlockPos(), te.getBlockState(), te.getBlockState(), 3);
+			be.setChanged();
+			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		}
 	}
 
@@ -95,14 +97,14 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @param toggled false if the actual item changed, true if the enabled state of the module changed
 	 */
 	public default void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
-		TileEntity te = getTileEntity();
+		TileEntity be = getBlockEntity();
 
-		if (!te.getLevel().isClientSide) {
+		if (!be.getLevel().isClientSide) {
 			if (!toggled)
 				toggleModuleState(module, false);
 
-			te.setChanged();
-			te.getLevel().sendBlockUpdated(te.getBlockPos(), te.getBlockState(), te.getBlockState(), 3);
+			be.setChanged();
+			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		}
 	}
 
@@ -128,7 +130,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	public default void dropAllModules() {
-		TileEntity be = getTileEntity();
+		TileEntity be = getBlockEntity();
 		World level = be.getLevel();
 		BlockPos pos = be.getBlockPos();
 		LinkableBlockEntity linkable = be instanceof LinkableBlockEntity ? (LinkableBlockEntity) be : null;
@@ -171,7 +173,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			return ItemStack.EMPTY;
 		else {
 			if (!simulate) {
-				TileEntity te = getTileEntity();
+				TileEntity te = getBlockEntity();
 
 				if (stack.getItem() instanceof ModuleItem) {
 					onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
@@ -205,7 +207,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 			if (!simulate) {
 				ItemStack copy = stack.copy();
-				TileEntity te = getTileEntity();
+				TileEntity te = getBlockEntity();
 
 				copy.setCount(1);
 				getInventory().set(slot, copy);
@@ -236,7 +238,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	public default void setStackInSlot(int slot, ItemStack stack) {
 		slot = fixSlotId(slot);
 
-		TileEntity te = getTileEntity();
+		TileEntity te = getBlockEntity();
 		ItemStack previous = getModuleInSlot(slot);
 
 		//call the correct methods, should there have been a module in the slot previously
@@ -515,7 +517,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			return true;
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
-		return ModuleItem.doesModuleHaveTeamOf(stack, name, getTileEntity().getLevel()) || ModuleItem.getPlayersFromModule(stack).contains(name.toLowerCase());
+		return ModuleItem.doesModuleHaveTeamOf(stack, name, getBlockEntity().getLevel()) || ModuleItem.getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 
 	/**
@@ -531,11 +533,11 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		ItemStack stack = getModule(ModuleType.DENYLIST);
 
 		if (stack.hasTag() && stack.getTag().getBoolean("affectEveryone")) {
-			if (getTileEntity() instanceof IOwnable) {
+			if (getBlockEntity() instanceof IOwnable) {
 				//only deny players that are not the owner
 				if (entity instanceof PlayerEntity) {
 					//if the player IS the owner, fall back to the default handling (check if the name is on the list)
-					if (!((IOwnable) getTileEntity()).isOwnedBy((PlayerEntity) entity))
+					if (!((IOwnable) getBlockEntity()).isOwnedBy((PlayerEntity) entity))
 						return true;
 				}
 				else
@@ -548,7 +550,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		String name = entity.getName().getString();
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
-		return ModuleItem.doesModuleHaveTeamOf(stack, name, getTileEntity().getLevel()) || ModuleItem.getPlayersFromModule(stack).contains(name.toLowerCase());
+		return ModuleItem.doesModuleHaveTeamOf(stack, name, getBlockEntity().getLevel()) || ModuleItem.getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 
 	/**

@@ -35,43 +35,43 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		return SHAPE;
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		if (world.getBlockState(pos.below()).isAir()) {
-			if (world.getBlockState(pos).getValue(DEACTIVATED))
-				world.destroyBlock(pos, true);
+	public void neighborChanged(BlockState state, World level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
+		if (level.getBlockState(pos.below()).isAir()) {
+			if (level.getBlockState(pos).getValue(DEACTIVATED))
+				level.destroyBlock(pos, true);
 			else
-				explode(world, pos);
+				explode(level, pos);
 		}
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
-		return BlockUtils.isSideSolid(world, pos.below(), Direction.UP);
+	public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
+		return BlockUtils.isSideSolid(level, pos.below(), Direction.UP);
 	}
 
 	@Override
-	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (getShape(state, world, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()) && !EntityUtils.doesEntityOwn(entity, world, pos) && !(entity instanceof PlayerEntity && ((PlayerEntity) entity).isCreative()) && !((IOwnable) world.getBlockEntity(pos)).allowsOwnableEntity(entity))
-			explode(world, pos);
+	public void entityInside(BlockState state, World level, BlockPos pos, Entity entity) {
+		if (getShape(state, level, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()) && !EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof PlayerEntity && ((PlayerEntity) entity).isCreative()) && !((IOwnable) level.getBlockEntity(pos)).allowsOwnableEntity(entity))
+			explode(level, pos);
 	}
 
 	@Override
-	public void attack(BlockState state, World world, BlockPos pos, PlayerEntity player) {
-		if (!player.isCreative() && !EntityUtils.doesPlayerOwn(player, world, pos))
-			explode(world, pos);
+	public void attack(BlockState state, World level, BlockPos pos, PlayerEntity player) {
+		if (!player.isCreative() && !EntityUtils.doesPlayerOwn(player, level, pos))
+			explode(level, pos);
 	}
 
 	@Override
-	public boolean activateMine(World world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
+	public boolean activateMine(World level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
 
 		if (state.getValue(DEACTIVATED)) {
-			world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
+			level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
 			return true;
 		}
 
@@ -79,11 +79,11 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public boolean defuseMine(World world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
+	public boolean defuseMine(World level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
 
 		if (!state.getValue(DEACTIVATED)) {
-			world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
+			level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
 			return true;
 		}
 
@@ -91,24 +91,24 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos) {
-		if (world.isClientSide)
+	public void explode(World level, BlockPos pos) {
+		if (level.isClientSide)
 			return;
 
-		if (world.getBlockState(pos).getValue(DEACTIVATED))
+		if (level.getBlockState(pos).getValue(DEACTIVATED))
 			return;
 
-		BouncingBetty bouncingBetty = new BouncingBetty(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
+		BouncingBetty bouncingBettyEntity = new BouncingBetty(level, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
 
-		world.destroyBlock(pos, false);
-		bouncingBetty.setFuse(15);
-		bouncingBetty.setDeltaMovement(bouncingBetty.getDeltaMovement().multiply(1, 0, 1).add(0, 0.5D, 0));
-		LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(bouncingBetty));
-		bouncingBetty.playSound(SoundEvents.TNT_PRIMED, 1.0F, 1.0F);
+		level.destroyBlock(pos, false);
+		bouncingBettyEntity.setFuse(15);
+		bouncingBettyEntity.setDeltaMovement(bouncingBettyEntity.getDeltaMovement().multiply(1, 0, 1).add(0, 0.5D, 0));
+		LevelUtils.addScheduledTask(level, () -> level.addFreshEntity(bouncingBettyEntity));
+		bouncingBettyEntity.playSound(SoundEvents.TNT_PRIMED, 1.0F, 1.0F);
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(IBlockReader level, BlockPos pos, BlockState state) {
 		return new ItemStack(asItem());
 	}
 
@@ -118,8 +118,8 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public boolean isActive(World world, BlockPos pos) {
-		return !world.getBlockState(pos).getValue(DEACTIVATED);
+	public boolean isActive(World level, BlockPos pos) {
+		return !level.getBlockState(pos).getValue(DEACTIVATED);
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new OwnableBlockEntity(SCContent.ABSTRACT_BLOCK_ENTITY.get());
 	}
 }

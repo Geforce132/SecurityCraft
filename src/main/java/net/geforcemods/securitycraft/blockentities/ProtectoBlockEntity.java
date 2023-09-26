@@ -38,9 +38,8 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 		if (level.isRaining() && level.canSeeSkyFromBelowWater(worldPosition)) {
 			List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(worldPosition).inflate(ATTACK_RANGE));
 
-			if (!getBlockState().getValue(ProtectoBlock.ACTIVATED)) {
+			if (!getBlockState().getValue(ProtectoBlock.ACTIVATED))
 				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ProtectoBlock.ACTIVATED, true));
-			}
 
 			if (!entities.isEmpty()) {
 				boolean shouldDeactivate = false;
@@ -54,24 +53,21 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 								continue;
 						}
 
-						if (!level.isClientSide) {
+						if (!level.isClientSide)
 							LevelUtils.spawnLightning(level, entity.position(), false);
-						}
 
 						shouldDeactivate = true;
 					}
 				}
 
-				if (shouldDeactivate) {
+				if (shouldDeactivate)
 					level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ProtectoBlock.ACTIVATED, false));
-				}
 			}
 
 			cooldown = 0;
 		}
-		else if (getBlockState().getValue(ProtectoBlock.ACTIVATED)) {
+		else if (getBlockState().getValue(ProtectoBlock.ACTIVATED))
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ProtectoBlock.ACTIVATED, false));
-		}
 	}
 
 	@Override

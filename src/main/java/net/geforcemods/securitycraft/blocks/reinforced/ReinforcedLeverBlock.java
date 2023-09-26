@@ -28,9 +28,9 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
-		if (isAllowedToPress((AllowlistOnlyBlockEntity) world.getBlockEntity(pos), player))
-			return super.use(state, world, pos, player, hand, result);
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+		if (isAllowedToPress((AllowlistOnlyBlockEntity) level.getBlockEntity(pos), player))
+			return super.use(state, level, pos, player, hand, result);
 
 		return ActionResultType.FAIL;
 	}
@@ -65,8 +65,8 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
-	public boolean isAllowedToPress(AllowlistOnlyBlockEntity te, PlayerEntity entity) {
-		return te.isOwnedBy(entity) || te.isAllowed(entity);
+	public boolean isAllowedToPress(AllowlistOnlyBlockEntity be, PlayerEntity entity) {
+		return be.isOwnedBy(entity) || be.isAllowed(entity);
 	}
 
 	@Override
@@ -75,9 +75,9 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new AllowlistOnlyBlockEntity();
 	}
 }

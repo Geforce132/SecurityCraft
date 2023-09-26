@@ -103,12 +103,11 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		onHandleUpdateTag(this);
 	}
 
-	public static <T extends IModuleInventory> void onHandleUpdateTag(T moduleInv) {
-		TileEntity be = moduleInv.getTileEntity();
+	public static <T extends TileEntity & IModuleInventory> void onHandleUpdateTag(T be) {
 		World level = be.getLevel();
 
 		if (level != null && level.isClientSide) {
-			ItemStack stack = moduleInv.getModule(ModuleType.DISGUISE);
+			ItemStack stack = be.getModule(ModuleType.DISGUISE);
 
 			if (!stack.isEmpty())
 				ClientHandler.putDisguisedBeRenderer(be, stack);

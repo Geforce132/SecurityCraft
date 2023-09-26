@@ -12,7 +12,7 @@ public class ReinforcedBookshelfBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public float getEnchantPowerBonus(BlockState state, IWorldReader world, BlockPos pos) {
+	public float getEnchantPowerBonus(BlockState state, IWorldReader level, BlockPos pos) {
 		return 1.0F;
 	}
 }

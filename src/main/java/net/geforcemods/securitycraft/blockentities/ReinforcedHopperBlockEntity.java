@@ -14,7 +14,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.HopperTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 
@@ -94,11 +93,6 @@ public class ReinforcedHopperBlockEntity extends HopperTileEntity implements IOw
 	@Override
 	public NonNullList<ItemStack> getInventory() {
 		return modules;
-	}
-
-	@Override
-	public TileEntity getTileEntity() {
-		return this;
 	}
 
 	@Override

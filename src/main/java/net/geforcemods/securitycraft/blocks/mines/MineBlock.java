@@ -36,54 +36,54 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		if (world.getBlockState(pos.below()).getMaterial() == Material.AIR) {
-			if (world.getBlockState(pos).getValue(DEACTIVATED))
-				world.destroyBlock(pos, true);
+	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+		if (level.getBlockState(pos.below()).getMaterial() == Material.AIR) {
+			if (level.getBlockState(pos).getValue(DEACTIVATED))
+				level.destroyBlock(pos, true);
 			else
-				explode(world, pos);
+				explode(level, pos);
 		}
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
-		return BlockUtils.isSideSolid(world, pos.below(), Direction.UP);
+	public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
+		return BlockUtils.isSideSolid(level, pos.below(), Direction.UP);
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
-		if (!world.isClientSide) {
+	public boolean removedByPlayer(BlockState state, World level, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
+		if (!level.isClientSide) {
 			if (player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
-				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
-			else if (!EntityUtils.doesPlayerOwn(player, world, pos)) {
-				explode(world, pos);
-				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
+			else if (!EntityUtils.doesPlayerOwn(player, level, pos)) {
+				explode(level, pos);
+				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
 			}
 		}
 
-		return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+		return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		return SHAPE;
 	}
 
 	@Override
-	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (world.isClientSide || entity instanceof ItemEntity || !getShape(state, world, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
+	public void entityInside(BlockState state, World level, BlockPos pos, Entity entity) {
+		if (level.isClientSide || entity instanceof ItemEntity || !getShape(state, level, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
 			return;
 
-		if (!EntityUtils.doesEntityOwn(entity, world, pos) && !(entity instanceof PlayerEntity && ((PlayerEntity) entity).isCreative()) && !((IOwnable) world.getBlockEntity(pos)).allowsOwnableEntity(entity))
-			explode(world, pos);
+		if (!EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof PlayerEntity && ((PlayerEntity) entity).isCreative()) && !((IOwnable) level.getBlockEntity(pos)).allowsOwnableEntity(entity))
+			explode(level, pos);
 	}
 
 	@Override
-	public boolean activateMine(World world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
+	public boolean activateMine(World level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
 
 		if (state.getValue(DEACTIVATED)) {
-			world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
+			level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
 			return true;
 		}
 
@@ -91,11 +91,11 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public boolean defuseMine(World world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
+	public boolean defuseMine(World level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
 
 		if (!state.getValue(DEACTIVATED)) {
-			world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
+			level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
 			return true;
 		}
 
@@ -103,18 +103,18 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos) {
-		if (world.isClientSide)
+	public void explode(World level, BlockPos pos) {
+		if (level.isClientSide)
 			return;
 
-		if (!world.getBlockState(pos).getValue(DEACTIVATED)) {
-			world.destroyBlock(pos, false);
-			world.explode((Entity) null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.0F : 3.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+		if (!level.getBlockState(pos).getValue(DEACTIVATED)) {
+			level.destroyBlock(pos, false);
+			level.explode((Entity) null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.0F : 3.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 		}
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(IBlockReader level, BlockPos pos, BlockState state) {
 		return new ItemStack(SCContent.MINE.get().asItem());
 	}
 
@@ -134,7 +134,7 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new OwnableBlockEntity();
 	}
 }

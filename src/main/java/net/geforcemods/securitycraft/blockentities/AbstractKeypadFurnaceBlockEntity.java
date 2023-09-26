@@ -61,8 +61,8 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 	private int openCount;
 
-	protected AbstractKeypadFurnaceBlockEntity(TileEntityType<?> teType, IRecipeType<? extends AbstractCookingRecipe> recipeType) {
-		super(teType, recipeType);
+	protected AbstractKeypadFurnaceBlockEntity(TileEntityType<?> beType, IRecipeType<? extends AbstractCookingRecipe> recipeType) {
+		super(beType, recipeType);
 	}
 
 	@Override
@@ -253,7 +253,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 		int returnValue = 0;
 
 		for (PlayerEntity player : world.getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB(x - 5.0F, y - 5.0F, z - 5.0F, x + 1 + 5.0F, y + 1 + 5.0F, z + 1 + 5.0F))) {
-			if (player.containerMenu instanceof AbstractKeypadFurnaceMenu && ((AbstractKeypadFurnaceMenu) player.containerMenu).te == be)
+			if (player.containerMenu instanceof AbstractKeypadFurnaceMenu && ((AbstractKeypadFurnaceMenu) player.containerMenu).be == be)
 				++returnValue;
 		}
 

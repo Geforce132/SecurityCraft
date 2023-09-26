@@ -45,59 +45,59 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
 
-		super.setPlacedBy(world, pos, state, placer, stack);
+		super.setPlacedBy(level, pos, state, placer, stack);
 	}
 
 	@Override
-	public void checkIfExtend(World world, BlockPos pos, BlockState state) {
+	public void checkIfExtend(World level, BlockPos pos, BlockState state) {
 		Direction direction = state.getValue(FACING);
-		boolean hasSignal = shouldBeExtended(world, pos, direction);
-		TileEntity te = world.getBlockEntity(pos);
+		boolean hasSignal = shouldBeExtended(level, pos, direction);
+		TileEntity te = level.getBlockEntity(pos);
 
 		if (te instanceof OwnableBlockEntity && !((OwnableBlockEntity) te).getOwner().isValidated())
 			return;
 
 		if (hasSignal && !state.getValue(EXTENDED)) {
-			if ((new ReinforcedPistonBlockStructureHelper(world, pos, direction, true)).canMove())
-				world.blockEvent(pos, this, 0, direction.get3DDataValue());
+			if (new ReinforcedPistonBlockStructureHelper(level, pos, direction, true).canMove())
+				level.blockEvent(pos, this, 0, direction.get3DDataValue());
 		}
 		else if (!hasSignal && state.getValue(EXTENDED)) {
 			BlockPos offsetPos = pos.relative(direction, 2);
-			BlockState offsetState = world.getBlockState(offsetPos);
+			BlockState offsetState = level.getBlockState(offsetPos);
 			int i = 1;
 
 			if (offsetState.is(SCContent.REINFORCED_MOVING_PISTON.get()) && offsetState.getValue(FACING) == direction) {
-				TileEntity tileentity = world.getBlockEntity(offsetPos);
+				TileEntity offsetTe = level.getBlockEntity(offsetPos);
 
-				if (tileentity instanceof ReinforcedPistonBlockEntity) {
-					ReinforcedPistonBlockEntity pistontileentity = (ReinforcedPistonBlockEntity) tileentity;
+				if (offsetTe instanceof ReinforcedPistonBlockEntity) {
+					ReinforcedPistonBlockEntity pistonTileEntity = (ReinforcedPistonBlockEntity) offsetTe;
 
-					if (pistontileentity.isExtending() && (pistontileentity.getProgress(0.0F) < 0.5F || world.getGameTime() == pistontileentity.getLastTicked() || ((ServerWorld) world).isHandlingTick()))
+					if (pistonTileEntity.isExtending() && (pistonTileEntity.getProgress(0.0F) < 0.5F || level.getGameTime() == pistonTileEntity.getLastTicked() || ((ServerWorld) level).isHandlingTick()))
 						i = 2;
 				}
 			}
 
-			world.blockEvent(pos, this, i, direction.get3DDataValue());
+			level.blockEvent(pos, this, i, direction.get3DDataValue());
 		}
 	}
 
-	private boolean shouldBeExtended(World world, BlockPos pos, Direction direction) { // copied because shouldBeExtended() in PistonBlock is private
+	private boolean shouldBeExtended(World level, BlockPos pos, Direction direction) { // copied because shouldBeExtended() in PistonBlock is private
 		for (Direction dir : Direction.values()) {
-			if (dir != direction && world.hasSignal(pos.relative(dir), dir))
+			if (dir != direction && level.hasSignal(pos.relative(dir), dir))
 				return true;
 		}
 
-		if (world.hasSignal(pos, Direction.DOWN))
+		if (level.hasSignal(pos, Direction.DOWN))
 			return true;
 		else {
 			BlockPos posAbove = pos.above();
 
 			for (Direction dir : Direction.values()) {
-				if (dir != Direction.DOWN && world.hasSignal(posAbove.relative(dir), dir))
+				if (dir != Direction.DOWN && level.hasSignal(posAbove.relative(dir), dir))
 					return true;
 			}
 
@@ -106,14 +106,14 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param) {
+	public boolean triggerEvent(BlockState state, World level, BlockPos pos, int id, int param) {
 		Direction direction = state.getValue(FACING);
 
-		if (!world.isClientSide) {
-			boolean isPowered = this.shouldBeExtended(world, pos, direction);
+		if (!level.isClientSide) {
+			boolean isPowered = this.shouldBeExtended(level, pos, direction);
 
 			if (isPowered && (id == 1 || id == 2)) {
-				world.setBlock(pos, state.setValue(EXTENDED, true), 2);
+				level.setBlock(pos, state.setValue(EXTENDED, true), 2);
 				return false;
 			}
 
@@ -122,81 +122,81 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 		}
 
 		if (id == 0) {
-			if (ForgeEventFactory.onPistonMovePre(world, pos, direction, true))
+			if (ForgeEventFactory.onPistonMovePre(level, pos, direction, true))
 				return false;
 
-			if (!doMove(world, pos, direction, true))
+			if (!doMove(level, pos, direction, true))
 				return false;
 
-			world.setBlock(pos, state.setValue(EXTENDED, true), 67);
-			world.playSound(null, pos, SoundEvents.PISTON_EXTEND, SoundCategory.BLOCKS, 0.5F, world.random.nextFloat() * 0.25F + 0.6F);
+			level.setBlock(pos, state.setValue(EXTENDED, true), 67);
+			level.playSound(null, pos, SoundEvents.PISTON_EXTEND, SoundCategory.BLOCKS, 0.5F, level.random.nextFloat() * 0.25F + 0.6F);
 		}
 		else if (id == 1 || id == 2) {
-			if (ForgeEventFactory.onPistonMovePre(world, pos, direction, false))
+			if (ForgeEventFactory.onPistonMovePre(level, pos, direction, false))
 				return false;
 
-			TileEntity pistonTE = world.getBlockEntity(pos.relative(direction));
+			TileEntity pistonBe = level.getBlockEntity(pos.relative(direction));
 
-			if (pistonTE instanceof ReinforcedPistonBlockEntity)
-				((ReinforcedPistonBlockEntity) pistonTE).clearPistonTileEntity();
+			if (pistonBe instanceof ReinforcedPistonBlockEntity)
+				((ReinforcedPistonBlockEntity) pistonBe).finalTick();
 
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity be = level.getBlockEntity(pos);
 			BlockState movingPiston = SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(MovingPistonBlock.FACING, direction).setValue(MovingPistonBlock.TYPE, this.isSticky ? PistonType.STICKY : PistonType.DEFAULT);
 
-			world.setBlock(pos, movingPiston, 20);
-			world.setBlockEntity(pos, ReinforcedMovingPistonBlock.createTilePiston(this.defaultBlockState().setValue(FACING, Direction.from3DDataValue(param & 7)), te != null ? te.getUpdateTag() : null, direction, false, true));
-			world.blockUpdated(pos, movingPiston.getBlock());
-			movingPiston.updateNeighbourShapes(world, pos, 2);
+			level.setBlock(pos, movingPiston, 20);
+			level.setBlockEntity(pos, ReinforcedMovingPistonBlock.createTilePiston(this.defaultBlockState().setValue(FACING, Direction.from3DDataValue(param & 7)), be != null ? be.getUpdateTag() : null, direction, false, true));
+			level.blockUpdated(pos, movingPiston.getBlock());
+			movingPiston.updateNeighbourShapes(level, pos, 2);
 
 			if (isSticky) {
 				BlockPos offsetPos = pos.offset(direction.getStepX() * 2, direction.getStepY() * 2, direction.getStepZ() * 2);
-				BlockState offsetState = world.getBlockState(offsetPos);
+				BlockState offsetState = level.getBlockState(offsetPos);
 				boolean flag = false;
 
 				if (offsetState.is(SCContent.REINFORCED_MOVING_PISTON.get())) {
-					TileEntity offsetTe = world.getBlockEntity(offsetPos);
+					TileEntity offsetBe = level.getBlockEntity(offsetPos);
 
-					if (offsetTe instanceof ReinforcedPistonBlockEntity) {
-						ReinforcedPistonBlockEntity pistonTe = (ReinforcedPistonBlockEntity) offsetTe;
+					if (offsetBe instanceof ReinforcedPistonBlockEntity) {
+						ReinforcedPistonBlockEntity offsetPistonBe = (ReinforcedPistonBlockEntity) offsetBe;
 
-						if (pistonTe.getFacing() == direction && pistonTe.isExtending()) {
-							pistonTe.clearPistonTileEntity();
+						if (offsetPistonBe.getFacing() == direction && offsetPistonBe.isExtending()) {
+							offsetPistonBe.finalTick();
 							flag = true;
 						}
 					}
 				}
 
 				if (!flag) {
-					if (id != 1 || offsetState.isAir() || !canPush(offsetState, world, pos, offsetPos, direction.getOpposite(), false, direction) || offsetState.getPistonPushReaction() != PushReaction.NORMAL && !offsetState.is(SCContent.REINFORCED_PISTON.get()) && !offsetState.is(SCContent.REINFORCED_STICKY_PISTON.get()))
-						world.removeBlock(pos.relative(direction), false);
+					if (id != 1 || offsetState.isAir() || !canPush(offsetState, level, pos, offsetPos, direction.getOpposite(), false, direction) || offsetState.getPistonPushReaction() != PushReaction.NORMAL && !offsetState.is(SCContent.REINFORCED_PISTON.get()) && !offsetState.is(SCContent.REINFORCED_STICKY_PISTON.get()))
+						level.removeBlock(pos.relative(direction), false);
 					else
-						doMove(world, pos, direction, false);
+						doMove(level, pos, direction, false);
 				}
 			}
 			else
-				world.removeBlock(pos.relative(direction), false);
+				level.removeBlock(pos.relative(direction), false);
 
-			world.playSound(null, pos, SoundEvents.PISTON_CONTRACT, SoundCategory.BLOCKS, 0.5F, world.random.nextFloat() * 0.15F + 0.6F);
+			level.playSound(null, pos, SoundEvents.PISTON_CONTRACT, SoundCategory.BLOCKS, 0.5F, level.random.nextFloat() * 0.15F + 0.6F);
 		}
 
-		ForgeEventFactory.onPistonMovePost(world, pos, direction, (id == 0));
+		ForgeEventFactory.onPistonMovePost(level, pos, direction, (id == 0));
 		return true;
 	}
 
-	public static boolean canPush(BlockState state, World world, BlockPos pistonPos, BlockPos pos, Direction facing, boolean destroyBlocks, Direction direction) {
-		if (pos.getY() >= 0 && pos.getY() < world.getMaxBuildHeight() && world.getWorldBorder().isWithinBounds(pos)) {
+	public static boolean canPush(BlockState state, World level, BlockPos pistonPos, BlockPos pos, Direction facing, boolean destroyBlocks, Direction direction) {
+		if (pos.getY() >= 0 && pos.getY() < level.getMaxBuildHeight() && level.getWorldBorder().isWithinBounds(pos)) {
 			if (state.isAir())
 				return true;
 			else if (!state.is(Blocks.OBSIDIAN) && !state.is(Blocks.CRYING_OBSIDIAN) && !state.is(Blocks.RESPAWN_ANCHOR) && !state.is(SCContent.REINFORCED_OBSIDIAN.get()) && !state.is(SCContent.REINFORCED_CRYING_OBSIDIAN.get())) {
-				if ((facing == Direction.DOWN && pos.getY() == 0) || (facing == Direction.UP && pos.getY() == world.getMaxBuildHeight() - 1))
+				if ((facing == Direction.DOWN && pos.getY() == 0) || (facing == Direction.UP && pos.getY() == level.getMaxBuildHeight() - 1))
 					return false;
 				else {
 					if (!state.is(Blocks.PISTON) && !state.is(Blocks.STICKY_PISTON) && !state.is(SCContent.REINFORCED_PISTON.get()) && !state.is(SCContent.REINFORCED_STICKY_PISTON.get())) {
 						if (state.getBlock() instanceof IReinforcedBlock) {
-							if (!isSameOwner(pos, pistonPos, world))
+							if (!isSameOwner(pos, pistonPos, level))
 								return false;
 						}
-						else if (state.getDestroySpeed(world, pos) == -1.0F)
+						else if (state.getDestroySpeed(level, pos) == -1.0F)
 							return false;
 
 						switch (state.getPistonPushReaction()) {
@@ -221,61 +221,62 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 		return false;
 	}
 
-	private boolean doMove(World world, BlockPos pos, Direction facing, boolean extending) {
+	private boolean doMove(World level, BlockPos pos, Direction facing, boolean extending) {
 		BlockPos frontPos = pos.relative(facing);
-		TileEntity pistonTe = world.getBlockEntity(pos);
+		TileEntity pistonBe = level.getBlockEntity(pos);
 
-		if (!extending && world.getBlockState(frontPos).is(SCContent.REINFORCED_PISTON_HEAD.get()))
-			world.setBlock(frontPos, Blocks.AIR.defaultBlockState(), 20);
+		if (!extending && level.getBlockState(frontPos).is(SCContent.REINFORCED_PISTON_HEAD.get()))
+			level.setBlock(frontPos, Blocks.AIR.defaultBlockState(), 20);
 
-		ReinforcedPistonBlockStructureHelper structureHelper = new ReinforcedPistonBlockStructureHelper(world, pos, facing, extending);
+		ReinforcedPistonBlockStructureHelper structureResolver = new ReinforcedPistonBlockStructureHelper(level, pos, facing, extending);
 
-		if (!structureHelper.canMove())
+		if (!structureResolver.canMove())
 			return false;
 		else {
 			Map<BlockPos, BlockState> stateToPosMap = Maps.newHashMap();
-			List<BlockPos> blocksToMove = structureHelper.getBlocksToMove();
+			List<BlockPos> blocksToMove = structureResolver.getBlocksToMove();
 			List<BlockState> statesToMove = Lists.newArrayList();
 
 			for (int i = 0; i < blocksToMove.size(); ++i) {
 				BlockPos posToMove = blocksToMove.get(i);
-				BlockState stateToMove = world.getBlockState(posToMove);
+				BlockState stateToMove = level.getBlockState(posToMove);
 
 				statesToMove.add(stateToMove);
 				stateToPosMap.put(posToMove, stateToMove);
 			}
 
-			List<BlockPos> blocksToDestroy = structureHelper.getBlocksToDestroy();
+			List<BlockPos> blocksToDestroy = structureResolver.getBlocksToDestroy();
 			BlockState[] updatedBlocks = new BlockState[blocksToMove.size() + blocksToDestroy.size()];
 			Direction direction = extending ? facing : facing.getOpposite();
 			int j = 0;
 
 			for (int k = blocksToDestroy.size() - 1; k >= 0; --k) {
 				BlockPos posToDestroy = blocksToDestroy.get(k);
-				BlockState stateToDestroy = world.getBlockState(posToDestroy);
-				TileEntity teToDestroy = stateToDestroy.hasTileEntity() ? world.getBlockEntity(posToDestroy) : null;
+				BlockState stateToDestroy = level.getBlockState(posToDestroy);
+				TileEntity beToDestroy = stateToDestroy.hasTileEntity() ? level.getBlockEntity(posToDestroy) : null;
 
-				dropResources(stateToDestroy, world, posToDestroy, teToDestroy);
-				world.setBlock(posToDestroy, Blocks.AIR.defaultBlockState(), 18);
+				dropResources(stateToDestroy, level, posToDestroy, beToDestroy);
+				level.setBlock(posToDestroy, Blocks.AIR.defaultBlockState(), 18);
 				updatedBlocks[j++] = stateToDestroy;
 			}
 
 			for (int l = blocksToMove.size() - 1; l >= 0; --l) {
 				BlockPos posToMove = blocksToMove.get(l);
-				BlockState stateToMove = world.getBlockState(posToMove);
-				TileEntity teToMove = world.getBlockEntity(posToMove);
+				BlockState stateToMove = level.getBlockState(posToMove);
+				TileEntity beToMove = level.getBlockEntity(posToMove);
 				CompoundNBT tag = null;
 
-				if (teToMove != null) {
+				posToMove = posToMove.relative(direction);
+
+				if (beToMove != null) {
 					tag = new CompoundNBT();
-					teToMove.setPosition(posToMove.relative(direction));
-					teToMove.save(tag);
+					beToMove.setPosition(posToMove);
+					beToMove.save(tag);
 				}
 
-				posToMove = posToMove.relative(direction);
 				stateToPosMap.remove(posToMove);
-				world.setBlock(posToMove, SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(FACING, facing), 68);
-				world.setBlockEntity(posToMove, ReinforcedMovingPistonBlock.createTilePiston(statesToMove.get(l), tag, facing, extending, false));
+				level.setBlock(posToMove, SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(FACING, facing), 68);
+				level.setBlockEntity(posToMove, ReinforcedMovingPistonBlock.createTilePiston(statesToMove.get(l), tag, facing, extending, false));
 				updatedBlocks[j++] = stateToMove;
 			}
 
@@ -283,29 +284,29 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 				PistonType type = isSticky ? PistonType.STICKY : PistonType.DEFAULT;
 				BlockState pistonHead = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(FACING, facing).setValue(PistonHeadBlock.TYPE, type);
 				BlockState movingPiston = SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(MovingPistonBlock.FACING, facing).setValue(MovingPistonBlock.TYPE, this.isSticky ? PistonType.STICKY : PistonType.DEFAULT);
-				OwnableBlockEntity headTe = new OwnableBlockEntity();
+				OwnableBlockEntity headBe = new OwnableBlockEntity();
 
-				if (pistonTe instanceof OwnableBlockEntity) //synchronize owner to the piston head
-					headTe.setOwner(((OwnableBlockEntity) pistonTe).getOwner().getUUID(), ((OwnableBlockEntity) pistonTe).getOwner().getName());
+				if (pistonBe instanceof OwnableBlockEntity) //synchronize owner to the piston head
+					headBe.setOwner(((OwnableBlockEntity) pistonBe).getOwner().getUUID(), ((OwnableBlockEntity) pistonBe).getOwner().getName());
 
 				stateToPosMap.remove(frontPos);
-				world.setBlock(frontPos, movingPiston, 68);
-				world.setBlockEntity(frontPos, ReinforcedMovingPistonBlock.createTilePiston(pistonHead, headTe.getUpdateTag(), facing, true, true));
+				level.setBlock(frontPos, movingPiston, 68);
+				level.setBlockEntity(frontPos, ReinforcedMovingPistonBlock.createTilePiston(pistonHead, headBe.getUpdateTag(), facing, true, true));
 			}
 
 			BlockState air = Blocks.AIR.defaultBlockState();
 
 			for (BlockPos position : stateToPosMap.keySet()) {
-				world.setBlock(position, air, 82);
+				level.setBlock(position, air, 82);
 			}
 
 			for (Entry<BlockPos, BlockState> entry : stateToPosMap.entrySet()) {
 				BlockPos posToUpdate = entry.getKey();
 				BlockState stateToUpdate = entry.getValue();
 
-				stateToUpdate.updateIndirectNeighbourShapes(world, posToUpdate, 2);
-				air.updateNeighbourShapes(world, posToUpdate, 2);
-				air.updateIndirectNeighbourShapes(world, posToUpdate, 2);
+				stateToUpdate.updateIndirectNeighbourShapes(level, posToUpdate, 2);
+				air.updateNeighbourShapes(level, posToUpdate, 2);
+				air.updateIndirectNeighbourShapes(level, posToUpdate, 2);
 			}
 
 			j = 0;
@@ -314,16 +315,16 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 				BlockState updatedState = updatedBlocks[j++];
 				BlockPos posToDestroy = blocksToDestroy.get(i1);
 
-				updatedState.updateIndirectNeighbourShapes(world, posToDestroy, 2);
-				world.updateNeighborsAt(posToDestroy, updatedState.getBlock());
+				updatedState.updateIndirectNeighbourShapes(level, posToDestroy, 2);
+				level.updateNeighborsAt(posToDestroy, updatedState.getBlock());
 			}
 
 			for (int j1 = blocksToMove.size() - 1; j1 >= 0; --j1) {
-				world.updateNeighborsAt(blocksToMove.get(j1), updatedBlocks[j++].getBlock());
+				level.updateNeighborsAt(blocksToMove.get(j1), updatedBlocks[j++].getBlock());
 			}
 
 			if (extending)
-				world.updateNeighborsAt(frontPos, SCContent.REINFORCED_PISTON_HEAD.get());
+				level.updateNeighborsAt(frontPos, SCContent.REINFORCED_PISTON_HEAD.get());
 
 			return true;
 		}
@@ -335,7 +336,7 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new ValidationOwnableBlockEntity();
 	}
 
@@ -344,12 +345,12 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 		return isSticky ? Blocks.STICKY_PISTON : Blocks.PISTON;
 	}
 
-	private static boolean isSameOwner(BlockPos blockPos, BlockPos pistonPos, World world) {
-		TileEntity pistonTE = world.getBlockEntity(pistonPos);
-		IOwnable blockTE = (IOwnable) world.getBlockEntity(blockPos);
+	private static boolean isSameOwner(BlockPos blockPos, BlockPos pistonPos, World level) {
+		TileEntity pistonBe = level.getBlockEntity(pistonPos);
+		IOwnable blockBe = (IOwnable) level.getBlockEntity(blockPos);
 
-		if (pistonTE instanceof IOwnable)
-			return blockTE.getOwner().owns(((IOwnable) pistonTE));
+		if (pistonBe instanceof IOwnable)
+			return blockBe.getOwner().owns(((IOwnable) pistonBe));
 
 		return false;
 	}

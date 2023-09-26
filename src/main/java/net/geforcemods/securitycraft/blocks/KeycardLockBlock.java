@@ -76,7 +76,7 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		switch (state.getValue(FACE)) {
 			case FLOOR:
 				switch (state.getValue(FACING)) {
@@ -123,7 +123,7 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new KeycardLockBlockEntity();
 	}
 }

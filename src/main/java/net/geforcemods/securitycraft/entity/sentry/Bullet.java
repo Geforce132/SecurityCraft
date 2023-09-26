@@ -29,20 +29,20 @@ public class Bullet extends AbstractArrowEntity {
 	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>defineId(Bullet.class, Owner.getSerializer());
 	private Collection<EffectInstance> potionEffects = Sets.newHashSet();
 
-	public Bullet(EntityType<? extends Bullet> type, World world) {
-		super(type, world);
+	public Bullet(EntityType<? extends Bullet> type, World level) {
+		super(type, level);
 	}
 
-	public Bullet(World world) {
-		this(SCContent.BULLET_ENTITY.get(), world);
+	public Bullet(World level) {
+		this(SCContent.BULLET_ENTITY.get(), level);
 	}
 
-	public Bullet(World world, Sentry shooter) {
-		super(SCContent.BULLET_ENTITY.get(), shooter, world);
+	public Bullet(World level, Sentry shooter) {
+		super(SCContent.BULLET_ENTITY.get(), shooter, level);
 
 		Owner owner = shooter.getOwner();
 
-		this.potionEffects = shooter.getActiveEffects();
+		potionEffects = shooter.getActiveEffects();
 		entityData.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
 	}
 
@@ -110,7 +110,7 @@ public class Bullet extends AbstractArrowEntity {
 	}
 
 	@Override
-	protected void onHitBlock(BlockRayTraceResult raytraceResult) { //onBlockHit
+	protected void onHitBlock(BlockRayTraceResult raytraceResult) {
 		remove();
 	}
 

@@ -36,38 +36,38 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		return ActionResultType.FAIL;
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
 	}
 
 	@Override
-	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (world.getBlockState(pos).getValue(OPEN))
+	public void entityInside(BlockState state, World level, BlockPos pos, Entity entity) {
+		if (level.getBlockState(pos).getValue(OPEN))
 			return;
 
-		if (!getShape(state, world, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
+		if (!getShape(state, level, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
 			return;
 		else if (entity instanceof ItemEntity)
 			return;
 		else if (entity instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity) entity;
 
-			if (((OwnableBlockEntity) world.getBlockEntity(pos)).isOwnedBy(player))
+			if (((OwnableBlockEntity) level.getBlockEntity(pos)).isOwnedBy(player))
 				return;
 		}
-		else if (((OwnableBlockEntity) world.getBlockEntity(pos)).allowsOwnableEntity(entity))
+		else if (((OwnableBlockEntity) level.getBlockEntity(pos)).allowsOwnableEntity(entity))
 			return;
-		else if (!world.isClientSide && entity instanceof CreeperEntity) {
+		else if (!level.isClientSide && entity instanceof CreeperEntity) {
 			CreeperEntity creeper = (CreeperEntity) entity;
-			LightningBoltEntity lightning = LevelUtils.createLightning(world, Vector3d.atBottomCenterOf(pos), true);
+			LightningBoltEntity lightning = LevelUtils.createLightning(level, Vector3d.atBottomCenterOf(pos), true);
 
-			creeper.thunderHit((ServerWorld) world, lightning);
+			creeper.thunderHit((ServerWorld) level, lightning);
 			return;
 		}
 
@@ -75,29 +75,29 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if (!world.isClientSide) {
-			boolean isPoweredSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos);
+	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+		if (!level.isClientSide) {
+			boolean isPoweredSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, pos);
 
 			if (isPoweredSCBlock || block.defaultBlockState().isSignalSource()) {
 				if (isPoweredSCBlock && !state.getValue(OPEN) && !state.getValue(POWERED)) {
-					world.setBlock(pos, state.setValue(OPEN, true).setValue(POWERED, true), 2);
-					world.levelEvent(null, Constants.WorldEvents.IRON_DOOR_OPEN_SOUND, pos, 0);
+					level.setBlock(pos, state.setValue(OPEN, true).setValue(POWERED, true), 2);
+					level.levelEvent(null, Constants.WorldEvents.IRON_DOOR_OPEN_SOUND, pos, 0);
 				}
 				else if (!isPoweredSCBlock && state.getValue(OPEN) && state.getValue(POWERED)) {
-					world.setBlock(pos, state.setValue(OPEN, false).setValue(POWERED, false), 2);
-					world.levelEvent(null, Constants.WorldEvents.IRON_DOOR_CLOSE_SOUND, pos, 0);
+					level.setBlock(pos, state.setValue(OPEN, false).setValue(POWERED, false), 2);
+					level.levelEvent(null, Constants.WorldEvents.IRON_DOOR_CLOSE_SOUND, pos, 0);
 				}
 				else if (isPoweredSCBlock != state.getValue(POWERED)) {
-					world.setBlock(pos, state.setValue(POWERED, isPoweredSCBlock), 2);
+					level.setBlock(pos, state.setValue(POWERED, isPoweredSCBlock), 2);
 				}
 			}
 		}
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param) {
-		TileEntity be = world.getBlockEntity(pos);
+	public boolean triggerEvent(BlockState state, World level, BlockPos pos, int id, int param) {
+		TileEntity be = level.getBlockEntity(pos);
 
 		return be != null && be.triggerEvent(id, param);
 	}
@@ -108,7 +108,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new OwnableBlockEntity(SCContent.ABSTRACT_BLOCK_ENTITY.get());
 	}
 }

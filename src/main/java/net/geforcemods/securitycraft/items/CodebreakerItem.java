@@ -37,7 +37,7 @@ public class CodebreakerItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
 		ItemStack codebreaker = player.getItemInHand(hand);
 
 		if (hand == Hand.MAIN_HAND) {
@@ -54,7 +54,7 @@ public class CodebreakerItem extends Item {
 					else {
 						codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-						if (!world.isClientSide) {
+						if (!level.isClientSide) {
 							if (wasRecentlyUsed(codebreaker))
 								return ActionResult.pass(codebreaker);
 

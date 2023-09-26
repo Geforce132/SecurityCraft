@@ -28,10 +28,10 @@ public class ClearChangeDetectorServer {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		ServerPlayerEntity player = ctx.get().getSender();
-		TileEntity tile = player.level.getBlockEntity(pos);
+		TileEntity te = player.level.getBlockEntity(pos);
 
-		if (tile instanceof BlockChangeDetectorBlockEntity) {
-			BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) tile;
+		if (te instanceof BlockChangeDetectorBlockEntity) {
+			BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) te;
 
 			if (be.isOwnedBy(player)) {
 				be.getEntries().clear();

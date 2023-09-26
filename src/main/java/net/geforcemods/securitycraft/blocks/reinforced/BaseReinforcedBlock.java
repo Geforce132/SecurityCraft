@@ -43,11 +43,11 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
-	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable) {
-		BlockState plant = plantable.getPlant(world, pos.relative(facing));
-		PlantType type = plantable.getPlantType(world, pos.relative(facing));
+	public boolean canSustainPlant(BlockState state, IBlockReader level, BlockPos pos, Direction facing, IPlantable plantable) {
+		BlockState plant = plantable.getPlant(level, pos.relative(facing));
+		PlantType type = plantable.getPlantType(level, pos.relative(facing));
 
-		if (super.canSustainPlant(state, world, pos, facing, plantable))
+		if (super.canSustainPlant(state, level, pos, facing, plantable))
 			return true;
 
 		if (plant.getBlock() == Blocks.CACTUS)
@@ -62,7 +62,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 			else if (plantable instanceof FungusBlock)
 				condition = state.is(SCContent.REINFORCED_MYCELIUM.get()) || state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
 			else if (plantable instanceof LilyPadBlock)
-				condition = world.getFluidState(pos).getType() == SCContent.FAKE_WATER.get() && world.getFluidState(pos.above()).getType() == Fluids.EMPTY;
+				condition = level.getFluidState(pos).getType() == SCContent.FAKE_WATER.get() && level.getFluidState(pos.above()).getType() == Fluids.EMPTY;
 			else if (plantable instanceof WitherRoseBlock)
 				condition = state.is(SCContent.REINFORCED_NETHERRACK.get()) || state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
 			else if (plantable instanceof DeadBushBlock)
@@ -81,8 +81,8 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 			boolean hasWater = false;
 
 			for (Direction face : Direction.Plane.HORIZONTAL) {
-				BlockState blockState = world.getBlockState(pos.relative(face));
-				FluidState fluidState = world.getFluidState(pos.relative(face));
+				BlockState blockState = level.getBlockState(pos.relative(face));
+				FluidState fluidState = level.getFluidState(pos.relative(face));
 
 				hasWater |= blockState.is(Blocks.FROSTED_ICE);
 				hasWater |= fluidState.is(FluidTags.WATER);
@@ -96,7 +96,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
-	public boolean isConduitFrame(BlockState state, IWorldReader world, BlockPos pos, BlockPos conduit) {
+	public boolean isConduitFrame(BlockState state, IWorldReader level, BlockPos pos, BlockPos conduit) {
 		return this == SCContent.REINFORCED_PRISMARINE.get() || this == SCContent.REINFORCED_PRISMARINE_BRICKS.get() || this == SCContent.REINFORCED_SEA_LANTERN.get() || this == SCContent.REINFORCED_DARK_PRISMARINE.get();
 	}
 

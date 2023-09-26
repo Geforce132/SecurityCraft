@@ -25,8 +25,8 @@ public class IMSBombModel extends EntityModel<IMSBomb> {
 	}
 
 	@Override
-	public void renderToBuffer(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		shape1.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
+	public void renderToBuffer(MatrixStack pose, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		shape1.render(pose, builder, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	@Override

@@ -17,17 +17,17 @@ public class ReinforcedGlassBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+	public boolean propagatesSkylightDown(BlockState state, IBlockReader level, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public float getShadeBrightness(BlockState state, IBlockReader world, BlockPos pos) {
+	public float getShadeBrightness(BlockState state, IBlockReader level, BlockPos pos) {
 		return 1.0F;
 	}
 
 	@Override
-	public boolean shouldDisplayFluidOverlay(BlockState state, IBlockDisplayReader world, BlockPos pos, FluidState fluidState) {
+	public boolean shouldDisplayFluidOverlay(BlockState state, IBlockDisplayReader level, BlockPos pos, FluidState fluidState) {
 		return true;
 	}
 

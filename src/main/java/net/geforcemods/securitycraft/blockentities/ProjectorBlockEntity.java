@@ -237,7 +237,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IInv
 	}
 
 	@Override
-	public boolean stillValid(PlayerEntity arg0) {
+	public boolean stillValid(PlayerEntity player) {
 		return true;
 	}
 
@@ -311,11 +311,11 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IInv
 
 	public StandingOrWallType getStandingOrWallType() {
 		if (projectedState != null && projectedBlock != null && projectedBlock.getItem() instanceof WallOrFloorItem) {
-			WallOrFloorItem wofi = (WallOrFloorItem) projectedBlock.getItem();
+			WallOrFloorItem sawbi = (WallOrFloorItem) projectedBlock.getItem();
 
-			if (projectedState.getBlock() == wofi.getBlock())
+			if (projectedState.getBlock() == sawbi.getBlock())
 				return StandingOrWallType.STANDING;
-			else if (projectedState.getBlock() == wofi.wallBlock)
+			else if (projectedState.getBlock() == sawbi.wallBlock)
 				return StandingOrWallType.WALL;
 		}
 

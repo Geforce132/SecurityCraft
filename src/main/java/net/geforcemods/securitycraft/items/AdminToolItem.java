@@ -34,7 +34,7 @@ public class AdminToolItem extends Item {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
-		World world = ctx.getLevel();
+		World level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 		PlayerEntity player = ctx.getPlayer();
 		IFormattableTextComponent adminToolName = Utils.localize(getDescriptionId());
@@ -50,22 +50,22 @@ public class AdminToolItem extends Item {
 			if (briefcaseResult != ActionResultType.PASS)
 				return briefcaseResult;
 
-			TileEntity te = world.getBlockEntity(pos);
+			TileEntity be = level.getBlockEntity(pos);
 
-			if (te != null) {
-				if (te instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) te).isOpen() && ((DisplayCaseBlockEntity) te).getDisplayedStack().isEmpty()))
+			if (be != null) {
+				if (be instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) be).isOpen() && ((DisplayCaseBlockEntity) be).getDisplayedStack().isEmpty()))
 					return ActionResultType.PASS;
 
 				boolean hasInfo = false;
 
-				if (te instanceof IOwnable) {
-					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.name", (((IOwnable) te).getOwner().getName() == null ? "????" : ((IOwnable) te).getOwner().getName())), TextFormatting.DARK_PURPLE);
-					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.uuid", (((IOwnable) te).getOwner().getUUID() == null ? "????" : ((IOwnable) te).getOwner().getUUID())), TextFormatting.DARK_PURPLE);
+				if (be instanceof IOwnable) {
+					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.name", (((IOwnable) be).getOwner().getName() == null ? "????" : ((IOwnable) be).getOwner().getName())), TextFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.uuid", (((IOwnable) be).getOwner().getUUID() == null ? "????" : ((IOwnable) be).getOwner().getUUID())), TextFormatting.DARK_PURPLE);
 					hasInfo = true;
 				}
 
-				if (te instanceof IModuleInventory) {
-					List<ModuleType> modules = ((IModuleInventory) te).getInsertedModules();
+				if (be instanceof IModuleInventory) {
+					List<ModuleType> modules = ((IModuleInventory) be).getInsertedModules();
 
 					if (!modules.isEmpty()) {
 						PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);
@@ -78,11 +78,11 @@ public class AdminToolItem extends Item {
 					}
 				}
 
-				if (te instanceof SecretSignBlockEntity) {
+				if (be instanceof SecretSignBlockEntity) {
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, new StringTextComponent(""), TextFormatting.DARK_PURPLE); //EMPTY
 
 					for (int i = 0; i < 4; i++) {
-						ITextProperties text = ((SecretSignBlockEntity) te).messages[i];
+						ITextProperties text = ((SecretSignBlockEntity) be).messages[i];
 
 						if (text instanceof IFormattableTextComponent)
 							PlayerUtils.sendMessageToPlayer(player, adminToolName, (IFormattableTextComponent) text, TextFormatting.DARK_PURPLE);
@@ -106,7 +106,7 @@ public class AdminToolItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
 		if (!player.isCreative()) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:adminTool.needCreative"), TextFormatting.DARK_PURPLE);
 			return ActionResult.fail(player.getItemInHand(hand));

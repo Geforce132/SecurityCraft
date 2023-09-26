@@ -30,9 +30,9 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (!world.isClientSide) {
-			TileEntity te = world.getBlockEntity(pos);
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (!level.isClientSide) {
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof BlockPocketManagerBlockEntity && !((BlockPocketManagerBlockEntity) te).isPlacingBlocks())
 				NetworkHooks.openGui((ServerPlayerEntity) player, (BlockPocketManagerBlockEntity) te, pos);
@@ -42,23 +42,23 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (world.isClientSide || state.getBlock() == newState.getBlock())
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (level.isClientSide || state.getBlock() == newState.getBlock())
 			return;
 
-		TileEntity tile = world.getBlockEntity(pos);
+		TileEntity te = level.getBlockEntity(pos);
 
-		if (tile instanceof BlockPocketManagerBlockEntity) {
-			BlockPocketManagerBlockEntity te = (BlockPocketManagerBlockEntity) tile;
+		if (te instanceof BlockPocketManagerBlockEntity) {
+			BlockPocketManagerBlockEntity be = (BlockPocketManagerBlockEntity) te;
 
-			te.getStorageHandler().ifPresent(handler -> {
+			be.getStorageHandler().ifPresent(handler -> {
 				for (int i = 0; i < handler.getSlots(); i++) {
-					InventoryHelper.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
+					InventoryHelper.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
 				}
 			});
 		}
 
-		super.onRemove(state, world, pos, newState, isMoving);
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new BlockPocketManagerBlockEntity();
 	}
 

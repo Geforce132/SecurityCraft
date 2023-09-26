@@ -32,12 +32,12 @@ public class SetCameraView {
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Minecraft mc = Minecraft.getInstance();
 		Entity entity = mc.level.getEntity(id);
-		boolean isCamera = entity instanceof SecurityCamera;
+		boolean isMountingCamera = entity instanceof SecurityCamera;
 
-		if (isCamera || entity instanceof PlayerEntity) {
+		if (isMountingCamera || entity instanceof PlayerEntity) {
 			mc.setCameraEntity(entity);
 
-			if (isCamera) {
+			if (isMountingCamera) {
 				CameraController.previousCameraType = mc.options.getCameraType();
 				mc.options.setCameraType(PointOfView.FIRST_PERSON);
 				mc.gui.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);

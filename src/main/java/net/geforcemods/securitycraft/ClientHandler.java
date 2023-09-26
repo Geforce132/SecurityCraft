@@ -517,21 +517,21 @@ public class ClientHandler {
 			else
 				return 0xFFFFFF;
 		}, block));
-		event.getBlockColors().register((state, world, pos, tintIndex) -> {
+		event.getBlockColors().register((state, level, pos, tintIndex) -> {
 			Block block = state.getBlock();
 
 			if (block instanceof DisguisableBlock) {
-				Block blockFromItem = Block.byItem(((DisguisableBlock) block).getDisguisedStack(world, pos).getItem());
+				Block blockFromItem = Block.byItem(((DisguisableBlock) block).getDisguisedStack(level, pos).getItem());
 
 				if (blockFromItem != Blocks.AIR && !(blockFromItem instanceof DisguisableBlock))
-					return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.defaultBlockState(), world, pos, tintIndex);
+					return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.defaultBlockState(), level, pos, tintIndex);
 			}
 
 			return 0xFFFFFF;
 		}, disguisableBlocks.get());
-		event.getBlockColors().register((state, world, pos, tintIndex) -> {
+		event.getBlockColors().register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.getValue(SnowyDirtBlock.SNOWY)) {
-				int grassTint = world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
+				int grassTint = level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos) : GrassColors.get(0.5D, 1.0D);
 
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
@@ -721,24 +721,24 @@ public class ClientHandler {
 		}
 	}
 
-	public static void displayIMSScreen(IMSBlockEntity te) {
-		Minecraft.getInstance().setScreen(new IMSScreen(te));
+	public static void displayIMSScreen(IMSBlockEntity be) {
+		Minecraft.getInstance().setScreen(new IMSScreen(be));
 	}
 
 	public static void displayUniversalKeyChangerScreen(TileEntity be) {
 		Minecraft.getInstance().setScreen(new KeyChangerScreen(be));
 	}
 
-	public static void displayCheckPasscodeScreen(TileEntity te) {
-		ITextComponent displayName = te instanceof INameable ? ((INameable) te).getDisplayName() : new TranslationTextComponent(te.getBlockState().getBlock().getDescriptionId());
+	public static void displayCheckPasscodeScreen(TileEntity be) {
+		ITextComponent displayName = be instanceof INameable ? ((INameable) be).getDisplayName() : new TranslationTextComponent(be.getBlockState().getBlock().getDescriptionId());
 
-		Minecraft.getInstance().setScreen(new CheckPasscodeScreen(te, displayName));
+		Minecraft.getInstance().setScreen(new CheckPasscodeScreen(be, displayName));
 	}
 
-	public static void displaySetPasscodeScreen(TileEntity te) {
-		ITextComponent displayName = te instanceof INameable ? ((INameable) te).getDisplayName() : new TranslationTextComponent(te.getBlockState().getBlock().getDescriptionId());
+	public static void displaySetPasscodeScreen(TileEntity be) {
+		ITextComponent displayName = be instanceof INameable ? ((INameable) be).getDisplayName() : new TranslationTextComponent(be.getBlockState().getBlock().getDescriptionId());
 
-		Minecraft.getInstance().setScreen(new SetPasscodeScreen(te, displayName));
+		Minecraft.getInstance().setScreen(new SetPasscodeScreen(be, displayName));
 	}
 
 	public static void displaySSSItemScreen(ItemStack stack) {
@@ -753,10 +753,10 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new AlarmScreen(be, be.getSound().getLocation()));
 	}
 
-	public static void refreshModelData(TileEntity te) {
-		BlockPos pos = te.getBlockPos();
+	public static void refreshModelData(TileEntity be) {
+		BlockPos pos = be.getBlockPos();
 
-		ModelDataManager.requestModelDataRefresh(te);
+		ModelDataManager.requestModelDataRefresh(be);
 		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
 	}
 

@@ -27,18 +27,18 @@ public class ProtectoBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
-			return disguisedState.getShape(world, pos, ctx);
+			return disguisedState.getShape(level, pos, ctx);
 		else
 			return SHAPE;
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
-		return world.getBlockState(pos.below()).isFaceSturdy(world, pos.below(), Direction.UP);
+	public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
+		return level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class ProtectoBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new ProtectoBlockEntity();
 	}
 }

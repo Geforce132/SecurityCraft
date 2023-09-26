@@ -41,10 +41,10 @@ public class CheckPasscode {
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		BlockPos pos = new BlockPos(x, y, z);
 		ServerPlayerEntity player = ctx.get().getSender();
-		TileEntity tile = player.level.getBlockEntity(pos);
+		TileEntity te = player.level.getBlockEntity(pos);
 
-		if (tile instanceof IPasscodeProtected) {
-			IPasscodeProtected be = (IPasscodeProtected) tile;
+		if (te instanceof IPasscodeProtected) {
+			IPasscodeProtected be = (IPasscodeProtected) te;
 
 			if (be.isOnCooldown())
 				return;

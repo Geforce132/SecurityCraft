@@ -33,16 +33,16 @@ public class SecretSignItem extends WallOrFloorItem {
 	}
 
 	@Override
-	public boolean updateCustomBlockEntityTag(BlockPos pos, World world, @Nullable PlayerEntity player, ItemStack stack, BlockState state) {
-		boolean flag = super.updateCustomBlockEntityTag(pos, world, player, stack, state);
+	public boolean updateCustomBlockEntityTag(BlockPos pos, World level, @Nullable PlayerEntity player, ItemStack stack, BlockState state) {
+		boolean flag = super.updateCustomBlockEntityTag(pos, level, player, stack, state);
 
 		if (!flag && player != null) {
-			SecretSignBlockEntity te = (SecretSignBlockEntity) world.getBlockEntity(pos);
+			SecretSignBlockEntity be = (SecretSignBlockEntity) level.getBlockEntity(pos);
 
-			te.setAllowedPlayerEditor(player);
+			be.setAllowedPlayerEditor(player);
 
-			if (world.isClientSide)
-				ClientHandler.displayEditSecretSignScreen(te);
+			if (level.isClientSide)
+				ClientHandler.displayEditSecretSignScreen(be);
 		}
 
 		return flag;

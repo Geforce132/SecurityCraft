@@ -65,7 +65,7 @@ public class BlockChangeDetectorScreen extends ContainerScreen<BlockChangeDetect
 	public BlockChangeDetectorScreen(BlockChangeDetectorMenu menu, PlayerInventory inv, ITextComponent title) {
 		super(menu, inv, title);
 		menu.addSlotListener(this);
-		be = (BlockChangeDetectorBlockEntity) menu.te;
+		be = (BlockChangeDetectorBlockEntity) menu.be;
 		imageWidth = 200;
 		imageHeight = 256;
 		previousMode = be.getMode();

@@ -26,7 +26,7 @@ public class ReinforcedObserverBlock extends ObserverBlock implements IReinforce
 	}
 
 	@Override
-	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, @Nullable Direction side) {
+	public boolean canConnectRedstone(BlockState state, IBlockReader level, BlockPos pos, @Nullable Direction side) {
 		return side == state.getValue(FACING);
 	}
 
@@ -36,9 +36,9 @@ public class ReinforcedObserverBlock extends ObserverBlock implements IReinforce
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class ReinforcedObserverBlock extends ObserverBlock implements IReinforce
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new OwnableBlockEntity();
 	}
 }

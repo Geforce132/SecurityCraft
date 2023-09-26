@@ -26,9 +26,9 @@ public class BulletRenderer extends EntityRenderer<Bullet> {
 	}
 
 	@Override
-	public void render(Bullet entity, float pEntityYaw, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int pPackedLight) {
-		matrix.mulPose(new Quaternion(Vector3f.YP, entity.yRot, true)); //YP
-		MODEL.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(entity))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+	public void render(Bullet entity, float entityYaw, float partialTicks, MatrixStack pose, IRenderTypeBuffer buffer, int packedLight) {
+		pose.mulPose(new Quaternion(Vector3f.YP, entity.yRot, true)); //YP
+		MODEL.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(entity))), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override

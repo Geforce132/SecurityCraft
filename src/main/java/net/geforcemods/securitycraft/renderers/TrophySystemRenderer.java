@@ -24,17 +24,17 @@ public class TrophySystemRenderer extends TileEntityRenderer<TrophySystemBlockEn
 	}
 
 	@Override
-	public void render(TrophySystemBlockEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
-		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(te, partialTicks, matrix, buffer, combinedLight, combinedOverlay))
+	public void render(TrophySystemBlockEntity be, float partialTicks, MatrixStack pose, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay))
 			return;
 
-		if (te.getTarget() == null)
+		if (be.getTarget() == null)
 			return;
 
 		IVertexBuilder builder = buffer.getBuffer(RenderType.lines());
-		Matrix4f positionMatrix = matrix.last().pose();
-		BlockPos pos = te.getBlockPos();
-		ItemStack lens = te.getLensContainer().getItem(0);
+		Matrix4f positionMatrix = pose.last().pose();
+		BlockPos pos = be.getBlockPos();
+		ItemStack lens = be.getLensContainer().getItem(0);
 		Item item = lens.getItem();
 		int r = 255, g = 255, b = 255;
 
@@ -48,7 +48,7 @@ public class TrophySystemRenderer extends TileEntityRenderer<TrophySystemBlockEn
 
 		//draws a line between the trophy system and the projectile that it's targeting
 		builder.vertex(positionMatrix, 0.5F, 0.75F, 0.5F).color(r, g, b, 255).endVertex();
-		builder.vertex(positionMatrix, (float) (te.getTarget().getX() - pos.getX()), (float) (te.getTarget().getY() - pos.getY()), (float) (te.getTarget().getZ() - pos.getZ())).color(r, g, b, 255).endVertex();
+		builder.vertex(positionMatrix, (float) (be.getTarget().getX() - pos.getX()), (float) (be.getTarget().getY() - pos.getY()), (float) (be.getTarget().getZ() - pos.getZ())).color(r, g, b, 255).endVertex();
 	}
 
 	@Override

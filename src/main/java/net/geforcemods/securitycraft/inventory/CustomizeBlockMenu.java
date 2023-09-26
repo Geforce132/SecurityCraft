@@ -110,7 +110,7 @@ public class CustomizeBlockMenu extends Container {
 
 	@Override
 	public boolean stillValid(PlayerEntity player) {
-		return stillValid(worldPosCallable, player, moduleInv.getTileEntity().getBlockState().getBlock());
+		return stillValid(worldPosCallable, player, moduleInv.getBlockEntity().getBlockState().getBlock());
 	}
 
 	private class CustomSlotItemHandler extends SlotItemHandler {

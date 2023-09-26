@@ -30,14 +30,14 @@ public class SecretStandingSignBlock extends StandingSignBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext context) {
 		return VoxelShapes.empty();
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
 	}
 
 	@Override
@@ -66,20 +66,20 @@ public class SecretStandingSignBlock extends StandingSignBlock {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (!world.isClientSide && player.getItemInHand(hand).getItem() == SCContent.ADMIN_TOOL.get())
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (!level.isClientSide && player.getItemInHand(hand).getItem() == SCContent.ADMIN_TOOL.get())
 			return SCContent.ADMIN_TOOL.get().useOn(new ItemUseContext(player, hand, hit));
 
-		SecretSignBlockEntity te = (SecretSignBlockEntity) world.getBlockEntity(pos);
+		SecretSignBlockEntity te = (SecretSignBlockEntity) level.getBlockEntity(pos);
 
 		if (te != null && te.isPlayerAllowedToSeeText(player))
-			return super.use(state, world, pos, player, hand, hit);
+			return super.use(state, level, pos, player, hand, hit);
 
 		return ActionResultType.FAIL;
 	}
 
 	@Override
-	public TileEntity newBlockEntity(IBlockReader world) {
+	public TileEntity newBlockEntity(IBlockReader level) {
 		return new SecretSignBlockEntity();
 	}
 

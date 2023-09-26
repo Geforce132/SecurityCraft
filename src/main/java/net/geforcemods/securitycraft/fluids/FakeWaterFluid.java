@@ -60,13 +60,13 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void animateTick(World world, BlockPos pos, FluidState state, Random random) {
+	public void animateTick(World level, BlockPos pos, FluidState state, Random random) {
 		if (!state.isSource() && !state.getValue(FALLING)) {
 			if (random.nextInt(64) == 0)
-				world.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.WATER_AMBIENT, SoundCategory.BLOCKS, random.nextFloat() * 0.25F + 0.75F, random.nextFloat() + 0.5F, false);
+				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.WATER_AMBIENT, SoundCategory.BLOCKS, random.nextFloat() * 0.25F + 0.75F, random.nextFloat() + 0.5F, false);
 		}
 		else if (random.nextInt(10) == 0)
-			world.addParticle(ParticleTypes.UNDERWATER, pos.getX() + random.nextFloat(), pos.getY() + random.nextFloat(), pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.UNDERWATER, pos.getX() + random.nextFloat(), pos.getY() + random.nextFloat(), pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
 	}
 
 	@Nullable
@@ -82,14 +82,14 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 	}
 
 	@Override
-	protected void beforeDestroyingBlock(IWorld world, BlockPos pos, BlockState state) {
-		TileEntity te = state.hasTileEntity() ? world.getBlockEntity(pos) : null;
+	protected void beforeDestroyingBlock(IWorld level, BlockPos pos, BlockState state) {
+		TileEntity be = state.hasTileEntity() ? level.getBlockEntity(pos) : null;
 
-		Block.dropResources(state, world, pos, te);
+		Block.dropResources(state, level, pos, be);
 	}
 
 	@Override
-	public int getSlopeFindDistance(IWorldReader world) {
+	public int getSlopeFindDistance(IWorldReader level) {
 		return 4;
 	}
 
@@ -104,17 +104,17 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 	}
 
 	@Override
-	public int getDropOff(IWorldReader world) {
+	public int getDropOff(IWorldReader level) {
 		return 1;
 	}
 
 	@Override
-	public int getTickDelay(IWorldReader world) {
+	public int getTickDelay(IWorldReader level) {
 		return 5;
 	}
 
 	@Override
-	public boolean canBeReplacedWith(FluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction dir) {
+	public boolean canBeReplacedWith(FluidState fluidState, IBlockReader level, BlockPos pos, Fluid fluid, Direction dir) {
 		return dir == Direction.DOWN && !fluid.is(FluidTags.WATER);
 	}
 
@@ -131,8 +131,8 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 		}
 
 		@Override
-		public int getAmount(FluidState pState) {
-			return pState.getValue(LEVEL);
+		public int getAmount(FluidState state) {
+			return state.getValue(LEVEL);
 		}
 
 		@Override
@@ -143,7 +143,7 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 
 	public static class Source extends FakeWaterFluid {
 		@Override
-		public int getAmount(FluidState pState) {
+		public int getAmount(FluidState state) {
 			return 8;
 		}
 

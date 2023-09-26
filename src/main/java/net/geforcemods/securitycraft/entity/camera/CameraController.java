@@ -34,10 +34,10 @@ public class CameraController {
 
 	@SubscribeEvent
 	public static void onClientTick(ClientTickEvent event) {
-		Entity renderViewEntity = Minecraft.getInstance().cameraEntity;
+		Entity cameraEntity = Minecraft.getInstance().cameraEntity;
 
-		if (renderViewEntity instanceof SecurityCamera) {
-			SecurityCamera cam = (SecurityCamera) renderViewEntity;
+		if (cameraEntity instanceof SecurityCamera) {
+			SecurityCamera cam = (SecurityCamera) cameraEntity;
 			GameSettings options = Minecraft.getInstance().options;
 
 			//up/down/left/right handling is split to prevent players who are viewing a camera from moving around in a boat or on a horse
@@ -113,10 +113,10 @@ public class CameraController {
 
 		if (cam.isCameraDown()) {
 			if (next > 40F)
-				cam.setRot(cam.yRot, next);
+				cam.setRotation(cam.yRot, next);
 		}
 		else if (next > -25F)
-			cam.setRot(cam.yRot, next);
+			cam.setRotation(cam.yRot, next);
 	}
 
 	public static void moveViewDown(SecurityCamera cam) {
@@ -124,10 +124,10 @@ public class CameraController {
 
 		if (cam.isCameraDown()) {
 			if (next < 90F)
-				cam.setRot(cam.yRot, next);
+				cam.setRotation(cam.yRot, next);
 		}
 		else if (next < 60F)
-			cam.setRot(cam.yRot, next);
+			cam.setRotation(cam.yRot, next);
 	}
 
 	public static void moveViewHorizontally(SecurityCamera cam, float next) {

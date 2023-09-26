@@ -48,7 +48,7 @@ public class TaserItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (!stack.isDamaged()) {
@@ -95,12 +95,12 @@ public class TaserItem extends Item {
 			Vector3d lookVec = player.getViewVector(1.0F).scale(range);
 			Vector3d endVec = startVec.add(lookVec);
 			AxisAlignedBB boundingBox = player.getBoundingBox().expandTowards(lookVec).inflate(1, 1, 1);
-			EntityRayTraceResult entityRayTraceResult = rayTraceEntities(player, startVec, endVec, boundingBox, LivingEntity.class::isInstance, range * range);
+			EntityRayTraceResult hitResult = rayTraceEntities(player, startVec, endVec, boundingBox, LivingEntity.class::isInstance, range * range);
 
-			world.playSound(player, player.blockPosition(), SCSounds.TASERFIRED.event, SoundCategory.PLAYERS, 1.0F, 1.0F);
+			level.playSound(player, player.blockPosition(), SCSounds.TASERFIRED.event, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
-			if (entityRayTraceResult != null) {
-				LivingEntity entity = (LivingEntity) entityRayTraceResult.getEntity();
+			if (hitResult != null) {
+				LivingEntity entity = (LivingEntity) hitResult.getEntity();
 				double damage = powered ? ConfigHandler.SERVER.poweredTaserDamage.get() : ConfigHandler.SERVER.taserDamage.get();
 
 				if ((damage == 0.0D || entity.hurt(CustomDamageSources.taser(player), (float) damage)) && !entity.isBlocking()) {
@@ -129,12 +129,12 @@ public class TaserItem extends Item {
 
 	//copied from ProjectileHelper#rayTraceEntities because that one's only available on the client
 	private static EntityRayTraceResult rayTraceEntities(Entity shooter, Vector3d startVec, Vector3d endVec, AxisAlignedBB boundingBox, Predicate<Entity> filter, double dist) {
-		World world = shooter.level;
+		World level = shooter.level;
 		double distance = dist;
 		Entity rayTracedEntity = null;
 		Vector3d hitVec = null;
 
-		for (Entity entity : world.getEntities(shooter, boundingBox, filter)) {
+		for (Entity entity : level.getEntities(shooter, boundingBox, filter)) {
 			AxisAlignedBB boxToCheck = entity.getBoundingBox().inflate(entity.getPickRadius());
 			Optional<Vector3d> optional = boxToCheck.clip(startVec, endVec);
 
@@ -169,8 +169,8 @@ public class TaserItem extends Item {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, World world, Entity entity, int slotIndex, boolean isSelected) {
-		if (!world.isClientSide && stack.getDamageValue() >= 1)
+	public void inventoryTick(ItemStack stack, World level, Entity entity, int slotIndex, boolean isSelected) {
+		if (!level.isClientSide && stack.getDamageValue() >= 1)
 			stack.setDamageValue(stack.getDamageValue() - 1);
 	}
 

@@ -25,16 +25,16 @@ public class SentryItem extends Item {
 
 	@Override
 	public ActionResultType useOn(ItemUseContext ctx) {
-		World world = ctx.getLevel();
+		World level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
-		boolean replacesTargetedBlock = world.getBlockState(pos).getMaterial().isReplaceable();
+		boolean replacesTargetedBlock = level.getBlockState(pos).getMaterial().isReplaceable();
 
 		if (!replacesTargetedBlock) {
 			Direction facing = ctx.getClickedFace();
 			BlockState stateAtPlacePos;
 
 			pos = pos.relative(facing); //if the block is not replaceable, place sentry next to targeted block
-			stateAtPlacePos = world.getBlockState(pos);
+			stateAtPlacePos = level.getBlockState(pos);
 
 			if (!stateAtPlacePos.isAir() && !(stateAtPlacePos.getBlock() instanceof FlowingFluidBlock))
 				return ActionResultType.PASS;
@@ -43,12 +43,12 @@ public class SentryItem extends Item {
 		BlockPos downPos = pos.below();
 		PlayerEntity player = ctx.getPlayer();
 
-		if (world.isEmptyBlock(downPos) || world.noCollision(new AxisAlignedBB(downPos))) {
+		if (level.isEmptyBlock(downPos) || level.noCollision(new AxisAlignedBB(downPos))) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
 			return ActionResultType.FAIL;
 		}
 
-		Sentry entity = SCContent.SENTRY_ENTITY.get().create(world);
+		Sentry entity = SCContent.SENTRY_ENTITY.get().create(level);
 		ItemStack stack = ctx.getItemInHand();
 
 		entity.setPos(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
@@ -58,9 +58,9 @@ public class SentryItem extends Item {
 			entity.setCustomName(stack.getHoverName());
 
 		if (replacesTargetedBlock)
-			world.removeBlock(pos, false);
+			level.removeBlock(pos, false);
 
-		world.addFreshEntity(entity);
+		level.addFreshEntity(entity);
 		player.displayClientMessage(Utils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).append(Utils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
 
 		if (!player.isCreative())

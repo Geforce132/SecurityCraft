@@ -35,12 +35,12 @@ public class SonicSecuritySystemRenderer extends TileEntityRenderer<SonicSecurit
 	}
 
 	@Override
-	public void render(SonicSecuritySystemBlockEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight, int packedOverlay) {
-		boolean recording = te.isRecording();
+	public void render(SonicSecuritySystemBlockEntity be, float partialTicks, MatrixStack pose, IRenderTypeBuffer buffer, int packedLight, int packedOverlay) {
+		boolean recording = be.isRecording();
 
-		matrix.translate(0.5D, 1.5D, 0.5D);
+		pose.translate(0.5D, 1.5D, 0.5D);
 
-		if (recording || te.isListening() && !te.isShutDown()) {
+		if (recording || be.isListening() && !be.isShutDown()) {
 			TranslationTextComponent text = recording ? RECORDING_TEXT : LISTENING_TEXT;
 			float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
 			int j = (int) (f1 * 255.0F) << 24;
@@ -48,19 +48,19 @@ public class SonicSecuritySystemRenderer extends TileEntityRenderer<SonicSecurit
 			float halfWidth = -fontRenderer.width(text) / 2;
 			Matrix4f positionMatrix;
 
-			matrix.pushPose();
-			matrix.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
-			matrix.scale(-0.025F, -0.025F, 0.025F);
-			positionMatrix = matrix.last().pose();
+			pose.pushPose();
+			pose.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
+			pose.scale(-0.025F, -0.025F, 0.025F);
+			positionMatrix = pose.last().pose();
 			RenderSystem.disableCull();
 			fontRenderer.drawInBatch(text, halfWidth, 0, 16777215, false, positionMatrix, buffer, true, j, packedLight);
 			fontRenderer.drawInBatch(text, halfWidth, 0, -1, false, positionMatrix, buffer, false, 0, packedLight);
 			RenderSystem.enableCull();
-			matrix.popPose();
+			pose.popPose();
 		}
 
-		matrix.mulPose(POSITIVE_X_180);
-		MODEL.setRadarRotation(MathHelper.lerp(partialTicks, te.getOriginalRadarRotationDegrees(), te.getRadarRotationDegrees()));
-		MODEL.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		pose.mulPose(POSITIVE_X_180);
+		MODEL.setRadarRotation(MathHelper.lerp(partialTicks, be.getOriginalRadarRotationDegrees(), be.getRadarRotationDegrees()));
+		MODEL.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

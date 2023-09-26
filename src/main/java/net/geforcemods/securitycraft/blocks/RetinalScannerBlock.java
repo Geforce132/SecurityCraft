@@ -38,33 +38,33 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
 		if (entity instanceof PlayerEntity) {
-			TileEntity tileentity = world.getBlockEntity(pos);
+			TileEntity te = level.getBlockEntity(pos);
 
-			if (!world.isClientSide && tileentity instanceof RetinalScannerBlockEntity)
-				((RetinalScannerBlockEntity) tileentity).setPlayerProfile(((PlayerEntity) entity).getGameProfile());
+			if (!level.isClientSide && te instanceof RetinalScannerBlockEntity)
+				((RetinalScannerBlockEntity) te).setPlayerProfile(((PlayerEntity) entity).getGameProfile());
 
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) entity));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) entity));
 		}
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (!world.isClientSide && state.getValue(POWERED)) {
-			world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.RETINAL_SCANNER.get());
+	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random random) {
+		if (!level.isClientSide && state.getValue(POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.RETINAL_SCANNER.get());
 		}
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock()) && state.getValue(POWERED)) {
-			world.updateNeighborsAt(pos, this);
-			BlockUtils.updateIndirectNeighbors(world, pos, this);
+			level.updateNeighborsAt(pos, this);
+			BlockUtils.updateIndirectNeighbors(level, pos, this);
 		}
 
-		super.onRemove(state, world, pos, newState, isMoving);
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
@@ -73,20 +73,20 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public boolean shouldCheckWeakPower(BlockState state, IWorldReader world, BlockPos pos, Direction side) {
+	public boolean shouldCheckWeakPower(BlockState state, IWorldReader level, BlockPos pos, Direction side) {
 		return false;
 	}
 
 	@Override
-	public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		if (blockState.getValue(POWERED))
+	public int getSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
+		if (state.getValue(POWERED))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public int getDirectSignal(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+	public int getDirectSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
 		return state.getValue(POWERED) ? 15 : 0;
 	}
 
@@ -101,7 +101,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new RetinalScannerBlockEntity();
 	}
 

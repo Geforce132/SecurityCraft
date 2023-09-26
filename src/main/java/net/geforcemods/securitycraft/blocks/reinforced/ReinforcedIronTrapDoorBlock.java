@@ -16,12 +16,12 @@ public class ReinforcedIronTrapDoorBlock extends BaseIronTrapDoorBlock implement
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos neighbor, boolean flag) {
-		boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos);
+	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos neighbor, boolean flag) {
+		boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, pos);
 
 		if (hasActiveSCBlock != state.getValue(OPEN)) {
-			world.setBlock(pos, state.setValue(OPEN, hasActiveSCBlock), 2);
-			playSound((PlayerEntity) null, world, pos, hasActiveSCBlock);
+			level.setBlock(pos, state.setValue(OPEN, hasActiveSCBlock), 2);
+			playSound((PlayerEntity) null, level, pos, hasActiveSCBlock);
 		}
 	}
 

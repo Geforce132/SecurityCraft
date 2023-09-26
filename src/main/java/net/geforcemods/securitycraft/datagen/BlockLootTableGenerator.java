@@ -13,7 +13,7 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
-import net.geforcemods.securitycraft.misc.TileEntityNBTCondition;
+import net.geforcemods.securitycraft.misc.BlockEntityNBTCondition;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -115,7 +115,7 @@ public class BlockLootTableGenerator implements IDataProvider {
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantRange.exactly(1))
 						.add(ItemLootEntry.lootTableItem(SCContent.REINFORCED_IRON_BARS.get())
-								.when(TileEntityNBTCondition.builder().equals("canDrop", true)))
+								.when(BlockEntityNBTCondition.builder().equals("canDrop", true)))
 						.when(SurvivesExplosion.survivesExplosion())));
 		putTwoHighBlockLootTable(SCContent.RIFT_STABILIZER, SCContent.RIFT_STABILIZER_ITEM);
 		putTwoHighBlockLootTable(SCContent.SCANNER_DOOR, SCContent.SCANNER_DOOR_ITEM);

@@ -47,23 +47,23 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 
 	@Override
 	public ActionResultType useOn(ItemUseContext ctx) {
-		World world = ctx.getLevel();
+		World level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 		ItemStack stack = ctx.getItemInHand();
 		PlayerEntity player = ctx.getPlayer();
 
-		if (world.getBlockState(pos).getBlock() instanceof CauldronBlock) //don't open the briefcase when a cauldron is rightclicked for removing the dye
+		if (level.getBlockState(pos).getBlock() instanceof CauldronBlock) //don't open the briefcase when a cauldron is rightclicked for removing the dye
 			return ActionResultType.SUCCESS;
 
-		handle(stack, world, player);
+		handle(stack, level, player);
 		return ActionResultType.CONSUME;
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		handle(stack, world, player);
+		handle(stack, level, player);
 		return ActionResult.consume(stack);
 	}
 
@@ -79,7 +79,7 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack briefcase, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack briefcase, World level, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		String ownerName = getOwnerName(briefcase);
 
 		if (!ownerName.isEmpty())

@@ -16,7 +16,7 @@ public class ReinforcedGrassPathBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext context) {
 		return SHAPE;
 	}
 }

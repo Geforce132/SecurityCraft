@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -49,24 +48,20 @@ public class SyncKeycardSettings {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		PlayerEntity player = ctx.get().getSender();
-		TileEntity tile = player.level.getBlockEntity(pos);
+		TileEntity te = player.level.getBlockEntity(pos);
 
-		if (tile instanceof KeycardReaderBlockEntity) {
-			KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;
-			boolean isOwner = te.isOwnedBy(player);
+		if (te instanceof KeycardReaderBlockEntity) {
+			KeycardReaderBlockEntity be = (KeycardReaderBlockEntity) te;
+			boolean isOwner = be.isOwnedBy(player);
 
-			if (isOwner || te.isAllowed(player)) {
+			if (isOwner || be.isAllowed(player)) {
 				if (isOwner) {
-					te.setAcceptedLevels(acceptedLevels);
-					te.setSignature(signature);
+					be.setAcceptedLevels(acceptedLevels);
+					be.setSignature(signature);
 				}
 
-				if (link) {
-					Container container = player.containerMenu;
-
-					if (container instanceof KeycardReaderMenu)
-						((KeycardReaderMenu) container).link();
-				}
+				if (link && player.containerMenu instanceof KeycardReaderMenu)
+					((KeycardReaderMenu) player.containerMenu).link();
 			}
 		}
 	}

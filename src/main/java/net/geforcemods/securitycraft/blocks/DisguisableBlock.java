@@ -39,28 +39,28 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		super(properties);
 	}
 
-	public static boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
+	public static boolean isNormalCube(BlockState state, IBlockReader level, BlockPos pos) {
 		//should not happen, but just to be safe
 		if (state.getBlock() instanceof DisguisableBlock) {
-			BlockState disguisedState = ((DisguisableBlock) state.getBlock()).getDisguisedStateOrDefault(state, world, pos);
+			BlockState disguisedState = ((DisguisableBlock) state.getBlock()).getDisguisedStateOrDefault(state, level, pos);
 
 			if (disguisedState.getBlock() != state.getBlock())
-				return disguisedState.isRedstoneConductor(world, pos);
+				return disguisedState.isRedstoneConductor(level, pos);
 		}
 
-		return state.getMaterial().isSolidBlocking() && state.isCollisionShapeFullBlock(world, pos);
+		return state.getMaterial().isSolidBlocking() && state.isCollisionShapeFullBlock(level, pos);
 	}
 
-	public static boolean isSuffocating(BlockState state, IBlockReader world, BlockPos pos) {
+	public static boolean isSuffocating(BlockState state, IBlockReader level, BlockPos pos) {
 		//should not happen, but just to be safe
 		if (state.getBlock() instanceof DisguisableBlock) {
-			BlockState disguisedState = ((DisguisableBlock) state.getBlock()).getDisguisedStateOrDefault(state, world, pos);
+			BlockState disguisedState = ((DisguisableBlock) state.getBlock()).getDisguisedStateOrDefault(state, level, pos);
 
 			if (disguisedState.getBlock() != state.getBlock())
-				return disguisedState.isSuffocating(world, pos);
+				return disguisedState.isSuffocating(level, pos);
 		}
 
-		return state.getMaterial().blocksMotion() && state.isCollisionShapeFullBlock(world, pos);
+		return state.getMaterial().blocksMotion() && state.isCollisionShapeFullBlock(level, pos);
 	}
 
 	@Override
@@ -79,43 +79,43 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	@Override
-	public SoundType getSoundType(BlockState state, IWorldReader world, BlockPos pos, Entity entity) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+	public SoundType getSoundType(BlockState state, IWorldReader level, BlockPos pos, Entity entity) {
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
-			return disguisedState.getSoundType(world, pos, entity);
+			return disguisedState.getSoundType(level, pos, entity);
 		else
-			return super.getSoundType(state, world, pos, entity);
+			return super.getSoundType(state, level, pos, entity);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
-			return disguisedState.getShape(world, pos, ctx);
+			return disguisedState.getShape(level, pos, ctx);
 		else
-			return super.getShape(state, world, pos, ctx);
+			return super.getShape(state, level, pos, ctx);
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
-			return disguisedState.getCollisionShape(world, pos, ctx);
+			return disguisedState.getCollisionShape(level, pos, ctx);
 		else
-			return super.getCollisionShape(state, world, pos, ctx);
+			return super.getCollisionShape(state, level, pos, ctx);
 	}
 
 	@Override
-	public VoxelShape getOcclusionShape(BlockState state, IBlockReader world, BlockPos pos) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+	public VoxelShape getOcclusionShape(BlockState state, IBlockReader level, BlockPos pos) {
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
-			return disguisedState.getOcclusionShape(world, pos);
+			return disguisedState.getOcclusionShape(level, pos);
 		else
-			return super.getOcclusionShape(state, world, pos);
+			return super.getOcclusionShape(state, level, pos);
 	}
 
 	@Override
@@ -127,13 +127,13 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	@Override
-	public float getShadeBrightness(BlockState state, IBlockReader world, BlockPos pos) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+	public float getShadeBrightness(BlockState state, IBlockReader level, BlockPos pos) {
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
-			return disguisedState.getShadeBrightness(world, pos);
+			return disguisedState.getShadeBrightness(level, pos);
 		else
-			return super.getShadeBrightness(state, world, pos);
+			return super.getShadeBrightness(state, level, pos);
 	}
 
 	@Override
@@ -151,18 +151,18 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
-	public final BlockState getDisguisedStateOrDefault(BlockState state, IBlockReader world, BlockPos pos) {
-		return getDisguisedBlockState(world, pos).orElse(state);
+	public final BlockState getDisguisedStateOrDefault(BlockState state, IBlockReader level, BlockPos pos) {
+		return getDisguisedBlockState(level, pos).orElse(state);
 	}
 
-	public static Optional<BlockState> getDisguisedBlockState(IBlockReader world, BlockPos pos) {
-		TileEntity tile = world.getBlockEntity(pos);
+	public static Optional<BlockState> getDisguisedBlockState(IBlockReader level, BlockPos pos) {
+		TileEntity te = level.getBlockEntity(pos);
 
-		if (tile instanceof IModuleInventory) {
-			IModuleInventory te = (IModuleInventory) tile;
+		if (te instanceof IModuleInventory) {
+			IModuleInventory be = (IModuleInventory) te;
 
-			if (te.isModuleEnabled(ModuleType.DISGUISE))
-				return getDisguisedBlockStateFromStack(te.getModule(ModuleType.DISGUISE));
+			if (be.isModuleEnabled(ModuleType.DISGUISE))
+				return getDisguisedBlockStateFromStack(be.getModule(ModuleType.DISGUISE));
 		}
 
 		return Optional.empty();
@@ -185,10 +185,10 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		return Optional.empty();
 	}
 
-	public ItemStack getDisguisedStack(IBlockReader world, BlockPos pos) {
-		if (world != null && world.getBlockEntity(pos) instanceof IModuleInventory) {
-			IModuleInventory te = (IModuleInventory) world.getBlockEntity(pos);
-			ItemStack stack = te.isModuleEnabled(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
+	public ItemStack getDisguisedStack(IBlockReader level, BlockPos pos) {
+		if (level != null && level.getBlockEntity(pos) instanceof IModuleInventory) {
+			IModuleInventory be = (IModuleInventory) level.getBlockEntity(pos);
+			ItemStack stack = be.isModuleEnabled(ModuleType.DISGUISE) ? be.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if (!stack.isEmpty()) {
 				Block block = ((ModuleItem) stack.getItem()).getBlockAddon(stack.getTag());
@@ -202,17 +202,17 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, BlockState state, BlockPos pos) {
-		return getDisguisedStack(world, pos);
+	public ItemStack getDisplayStack(World level, BlockState state, BlockPos pos) {
+		return getDisguisedStack(level, pos);
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, BlockState state, BlockPos pos) {
-		return getDisguisedStack(world, pos).getItem() == asItem();
+	public boolean shouldShowSCInfo(World level, BlockState state, BlockPos pos) {
+		return getDisguisedStack(level, pos).getItem() == asItem();
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-		return getDisguisedStack(world, pos);
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader level, BlockPos pos, PlayerEntity player) {
+		return getDisguisedStack(level, pos);
 	}
 }

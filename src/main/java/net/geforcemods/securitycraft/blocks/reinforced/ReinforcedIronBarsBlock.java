@@ -13,7 +13,7 @@ public class ReinforcedIronBarsBlock extends ReinforcedPaneBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new ReinforcedIronBarsBlockEntity();
 	}
 }

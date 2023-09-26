@@ -7,18 +7,18 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class OwnerRestrictedSlot extends Slot {
-	private final IOwnable tileEntity;
+	private final IOwnable ownable;
 	private final boolean isGhostSlot;
 
-	public OwnerRestrictedSlot(IInventory inventory, IOwnable tileEntity, int index, int xPos, int yPos, boolean ghostSlot) {
+	public OwnerRestrictedSlot(IInventory inventory, IOwnable ownable, int index, int xPos, int yPos, boolean ghostSlot) {
 		super(inventory, index, xPos, yPos);
-		this.tileEntity = tileEntity;
+		this.ownable = ownable;
 		isGhostSlot = ghostSlot;
 	}
 
 	@Override
 	public boolean mayPickup(PlayerEntity player) {
-		return tileEntity.isOwnedBy(player) && !isGhostSlot; //the !isGhostSlot check helps to prevent double clicking a stack to pull all items towards the stack
+		return ownable.isOwnedBy(player) && !isGhostSlot; //the !isGhostSlot check helps to prevent double clicking a stack to pull all items towards the stack
 	}
 
 	@Override

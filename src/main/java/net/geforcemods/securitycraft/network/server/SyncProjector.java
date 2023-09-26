@@ -53,40 +53,40 @@ public class SyncProjector {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		PlayerEntity player = ctx.get().getSender();
-		World world = player.level;
-		TileEntity te = world.getBlockEntity(pos);
+		World level = player.level;
+		TileEntity te = level.getBlockEntity(pos);
 
-		if (world.isLoaded(pos) && te instanceof ProjectorBlockEntity && ((ProjectorBlockEntity) te).isOwnedBy(player)) {
-			ProjectorBlockEntity projector = (ProjectorBlockEntity) te;
-			BlockState state = world.getBlockState(pos);
+		if (level.isLoaded(pos) && te instanceof ProjectorBlockEntity && ((ProjectorBlockEntity) te).isOwnedBy(player)) {
+			ProjectorBlockEntity be = (ProjectorBlockEntity) te;
+			BlockState state = level.getBlockState(pos);
 
 			switch (dataType) {
 				case WIDTH:
-					projector.setProjectionWidth(data);
+					be.setProjectionWidth(data);
 					break;
 				case HEIGHT:
-					projector.setProjectionHeight(data);
+					be.setProjectionHeight(data);
 					break;
 				case RANGE:
-					projector.setProjectionRange(data);
+					be.setProjectionRange(data);
 					break;
 				case OFFSET:
-					projector.setProjectionOffset(data);
+					be.setProjectionOffset(data);
 					break;
 				case HORIZONTAL:
-					projector.setHorizontal(data == 1);
+					be.setHorizontal(data == 1);
 					break;
 				case OVERRIDING_BLOCKS:
-					projector.setOverridingBlocks(data == 1);
+					be.setOverridingBlocks(data == 1);
 					break;
 				case BLOCK_STATE:
-					projector.setProjectedState(Block.stateById(data));
+					be.setProjectedState(Block.stateById(data));
 					break;
 				case INVALID:
 					break;
 			}
 
-			world.sendBlockUpdated(pos, state, state, 2);
+			level.sendBlockUpdated(pos, state, state, 2);
 		}
 	}
 

@@ -61,21 +61,21 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}
 
-	public static boolean isNormalCube(BlockState state, IBlockReader reader, BlockPos pos) {
+	public static boolean isNormalCube(BlockState state, IBlockReader level, BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
 		if (state.getValue(WATERLOGGED))
-			world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
-		return facing == Direction.DOWN && !canSurvive(state, world, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+		return facing == Direction.DOWN && !canSurvive(state, level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
-		return canSupportCenter(world, pos.below(), Direction.UP);
+	public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
+		return canSupportCenter(level, pos.below(), Direction.UP);
 	}
 
 	@Override
@@ -104,11 +104,11 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (player.getItemInHand(hand).getItem() != SCContent.PORTABLE_TUNE_PLAYER.get()) {
-			SonicSecuritySystemBlockEntity te = (SonicSecuritySystemBlockEntity) world.getBlockEntity(pos);
+			SonicSecuritySystemBlockEntity te = (SonicSecuritySystemBlockEntity) level.getBlockEntity(pos);
 
-			if (!world.isClientSide && (te.isOwnedBy(player) || te.isAllowed(player)))
+			if (!level.isClientSide && (te.isOwnedBy(player) || te.isAllowed(player)))
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.SONIC_SECURITY_SYSTEM, pos));
 
 			return ActionResultType.SUCCESS;
@@ -123,12 +123,12 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	}
 
 	@Override
-	public int getSignal(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+	public int getSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
 		return state.getValue(POWERED) ? 15 : 0;
 	}
 
 	@Override
-	public int getDirectSignal(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+	public int getDirectSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
 		return state.getValue(POWERED) && side == Direction.UP ? 15 : 0;
 	}
 
@@ -143,7 +143,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext context) {
 		return SHAPE;
 	}
 
@@ -158,11 +158,8 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-		return getItemStackFromBlock(world.getBlockEntity(pos).getUpdateTag());
-	}
-
-	private ItemStack getItemStackFromBlock(CompoundNBT blockTag) {
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader level, BlockPos pos, PlayerEntity player) {
+		CompoundNBT blockTag = level.getBlockEntity(pos).getUpdateTag();
 		ItemStack stack = new ItemStack(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
 
 		if (!blockTag.contains("LinkedBlocks"))
@@ -175,7 +172,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new SonicSecuritySystemBlockEntity();
 	}
 }

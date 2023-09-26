@@ -26,14 +26,14 @@ public class IMSScreen extends Screen {
 	private int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
-	private IMSBlockEntity tileEntity;
+	private IMSBlockEntity be;
 	private Button targetButton;
 	private TargetingMode targetMode;
 
-	public IMSScreen(IMSBlockEntity te) {
-		super(te.getName());
-		tileEntity = te;
-		targetMode = tileEntity.getTargetingMode();
+	public IMSScreen(IMSBlockEntity be) {
+		super(be.getName());
+		this.be = be;
+		targetMode = this.be.getTargetingMode();
 	}
 
 	@Override
@@ -42,19 +42,19 @@ public class IMSScreen extends Screen {
 
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
-		targetButton = addButton(new ExtendedButton(width / 2 - 75, height / 2 - 38, 150, 20, StringTextComponent.EMPTY, this::targetButtonClicked));
+		targetButton = addButton(new ExtendedButton(width / 2 - 75, height / 2 - 38, 150, 20, StringTextComponent.EMPTY, this::modeButtonClicked));
 		updateButtonText();
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(matrix);
+	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
-		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.draw(matrix, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
-		font.draw(matrix, target, width / 2 - font.width(target) / 2, topPos + 30, 4210752);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(pose, mouseX, mouseY, partialTicks);
+		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
+		font.draw(pose, target, width / 2 - font.width(target) / 2, topPos + 30, 4210752);
 	}
 
 	@Override
@@ -72,10 +72,10 @@ public class IMSScreen extends Screen {
 		return false;
 	}
 
-	protected void targetButtonClicked(Button button) {
+	protected void modeButtonClicked(Button button) {
 		targetMode = TargetingMode.values()[(targetMode.ordinal() + 1) % TargetingMode.values().length]; //next enum value
-		tileEntity.setTargetingMode(targetMode);
-		SecurityCraft.channel.sendToServer(new SyncIMSTargetingOption(tileEntity.getBlockPos(), tileEntity.getTargetingMode()));
+		be.setTargetingMode(targetMode);
+		SecurityCraft.channel.sendToServer(new SyncIMSTargetingOption(be.getBlockPos(), be.getTargetingMode()));
 		updateButtonText();
 	}
 

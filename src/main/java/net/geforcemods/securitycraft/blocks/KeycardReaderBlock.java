@@ -50,8 +50,8 @@ public class KeycardReaderBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		return use(state, world, pos, player, hand, (stack, be) -> {
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		return use(state, level, pos, player, hand, (stack, be) -> {
 			//only allow the owner and players on the allowlist to open the gui
 			if (be.isOwnedBy(player) || be.isAllowed(player))
 				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) be, pos);
@@ -86,54 +86,54 @@ public class KeycardReaderBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (!world.isClientSide) {
-			world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.KEYCARD_READER.get());
+	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random random) {
+		if (!level.isClientSide) {
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYCARD_READER.get());
 		}
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock()) && state.getValue(POWERED)) {
-			world.updateNeighborsAt(pos, this);
-			BlockUtils.updateIndirectNeighbors(world, pos, this);
+			level.updateNeighborsAt(pos, this);
+			BlockUtils.updateIndirectNeighbors(level, pos, this);
 		}
 
-		super.onRemove(state, world, pos, newState, isMoving);
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, World level, BlockPos pos, Random rand) {
 		if ((state.getValue(POWERED))) {
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double z = pos.getZ() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double magicNumber1 = 0.2199999988079071D;
 			double magicNumber2 = 0.27000001072883606D;
-			float f1 = 0.6F + 0.4F;
-			float f2 = Math.max(0.0F, 0.7F - 0.5F);
-			float f3 = Math.max(0.0F, 0.6F - 0.7F);
+			float r = 0.6F + 0.4F;
+			float g = Math.max(0.0F, 0.7F - 0.5F);
+			float b = Math.max(0.0F, 0.6F - 0.7F);
 
-			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new RedstoneParticleData(r, g, b, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new RedstoneParticleData(r, g, b, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new RedstoneParticleData(r, g, b, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new RedstoneParticleData(r, g, b, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new RedstoneParticleData(r, g, b, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
 	@Override
-	public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		if ((blockState.getValue(POWERED)))
+	public int getSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
+		if ((state.getValue(POWERED)))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public int getDirectSignal(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+	public int getDirectSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
 		return state.getValue(POWERED) ? 15 : 0;
 	}
 
@@ -153,7 +153,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new KeycardReaderBlockEntity();
 	}
 

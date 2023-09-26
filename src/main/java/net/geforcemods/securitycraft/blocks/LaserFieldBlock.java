@@ -50,7 +50,7 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, IW
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		return VoxelShapes.empty();
 	}
 
@@ -68,18 +68,18 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, IW
 	}
 
 	@Override
-	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (!world.isClientSide && entity instanceof LivingEntity && !EntityUtils.isInvisible((LivingEntity) entity)) {
-			if (!getShape(state, world, pos, ISelectionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
+	public void entityInside(BlockState state, World level, BlockPos pos, Entity entity) {
+		if (!level.isClientSide && entity instanceof LivingEntity && !EntityUtils.isInvisible((LivingEntity) entity)) {
+			if (!getShape(state, level, pos, ISelectionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
 				return;
 
 			for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
 				BlockPos offsetPos = pos.relative(getFieldDirection(state), i);
-				BlockState offsetState = world.getBlockState(offsetPos);
+				BlockState offsetState = level.getBlockState(offsetPos);
 				Block offsetBlock = offsetState.getBlock();
 
 				if (offsetBlock == SCContent.LASER_BLOCK.get()) {
-					TileEntity te = world.getBlockEntity(offsetPos);
+					TileEntity te = level.getBlockEntity(offsetPos);
 
 					if (te instanceof LaserBlockBlockEntity) {
 						LaserBlockBlockEntity laser = (LaserBlockBlockEntity) te;
@@ -92,9 +92,9 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, IW
 								return;
 
 							if (laser.isModuleEnabled(ModuleType.REDSTONE) && !offsetState.getValue(LaserBlock.POWERED)) {
-								world.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
-								BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.LASER_BLOCK.get());
-								world.getBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), laser.getSignalLength());
+								level.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
+								BlockUtils.updateIndirectNeighbors(level, offsetPos, SCContent.LASER_BLOCK.get());
+								level.getBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), laser.getSignalLength());
 								laser.createLinkedBlockAction(new ILinkedAction.StateChanged<>(LaserBlock.POWERED, false, true), laser);
 							}
 
@@ -144,19 +144,19 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, IW
 	}
 
 	@Override
-	public void destroy(IWorld world, BlockPos pos, BlockState state) {
-		if (!world.isClientSide()) {
+	public void destroy(IWorld level, BlockPos pos, BlockState state) {
+		if (!level.isClientSide()) {
 			int boundType = state.getValue(LaserFieldBlock.BOUNDTYPE);
 			Direction direction = Direction.from3DDataValue((boundType - 1) * 2);
 
-			BlockUtils.removeInSequence((directionToCheck, stateToCheck) -> stateToCheck.getBlock() == this && stateToCheck.getValue(BOUNDTYPE) == boundType, world, pos, direction, direction.getOpposite());
+			BlockUtils.removeInSequence((directionToCheck, stateToCheck) -> stateToCheck.getBlock() == this && stateToCheck.getValue(BOUNDTYPE) == boundType, level, pos, direction, direction.getOpposite());
 		}
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
-		if (source.getBlockState(pos).getBlock() instanceof LaserFieldBlock) {
-			int boundType = source.getBlockState(pos).getValue(BOUNDTYPE);
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
+		if (level.getBlockState(pos).getBlock() instanceof LaserFieldBlock) {
+			int boundType = level.getBlockState(pos).getValue(BOUNDTYPE);
 
 			if (boundType == 1)
 				return SHAPE_Y;
@@ -184,12 +184,12 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, IW
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader level, BlockPos pos, PlayerEntity player) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new OwnableBlockEntity(SCContent.ABSTRACT_BLOCK_ENTITY.get());
 	}
 

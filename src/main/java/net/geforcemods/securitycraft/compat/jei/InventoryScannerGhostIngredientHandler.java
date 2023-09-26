@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 public class InventoryScannerGhostIngredientHandler implements IGhostIngredientHandler<InventoryScannerScreen> {
 	@Override
 	public <I> List<Target<I>> getTargets(InventoryScannerScreen screen, I ingredient, boolean doStart) {
-		if (!screen.tileEntity.isOwnedBy(Minecraft.getInstance().player))
+		if (!screen.be.isOwnedBy(Minecraft.getInstance().player))
 			return new ArrayList<>();
 
 		List<Target<I>> targets = new ArrayList<>();
@@ -33,7 +33,7 @@ public class InventoryScannerGhostIngredientHandler implements IGhostIngredientH
 
 					@Override
 					public void accept(I ingredient) {
-						screen.tileEntity.getContents().set(slot.index, (ItemStack) ingredient);
+						screen.be.getContents().set(slot.index, (ItemStack) ingredient);
 						SecurityCraft.channel.sendToServer(new SetGhostSlot(slot.index, (ItemStack) ingredient));
 					}
 				});

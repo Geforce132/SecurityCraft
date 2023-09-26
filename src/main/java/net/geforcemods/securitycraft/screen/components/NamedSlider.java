@@ -14,23 +14,23 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 
 public class NamedSlider extends Slider {
-	private Block block;
-	private Consumer<NamedSlider> consumer;
+	private final Block block;
+	private final Consumer<NamedSlider> onApplyValue;
 
-	public NamedSlider(ITextComponent initialString, Block block, int xPos, int yPos, int width, int height, ITextComponent prefix, String suf, int minVal, int maxVal, int currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method) {
-		super(xPos, yPos, width, height, prefix, new StringTextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
+	public NamedSlider(ITextComponent initialString, Block block, int x, int y, int width, int height, ITextComponent prefix, String suffix, int minValue, int maxValue, int currentValue, boolean showDec, boolean drawString, @Nullable ISlider par, Consumer<NamedSlider> onApplyValue) {
+		super(x, y, width, height, prefix, new StringTextComponent(suffix), minValue, maxValue, currentValue, showDec, drawString, b -> {}, par);
 
 		setMessage(new StringTextComponent(initialString.getString()));
 		this.block = block;
-		consumer = method;
+		this.onApplyValue = onApplyValue;
 	}
 
-	public NamedSlider(ITextComponent initialString, Block block, int xPos, int yPos, int width, int height, ITextComponent prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method) {
-		super(xPos, yPos, width, height, prefix, new StringTextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
+	public NamedSlider(ITextComponent initialString, Block block, int x, int y, int width, int height, ITextComponent prefix, String suffix, double minValue, double maxValue, double currentValue, boolean showDec, boolean drawString, @Nullable ISlider par, Consumer<NamedSlider> onApplyValue) {
+		super(x, y, width, height, prefix, new StringTextComponent(suffix), minValue, maxValue, currentValue, showDec, drawString, b -> {}, par);
 
 		setMessage(new StringTextComponent(initialString.getString()));
 		this.block = block;
-		consumer = method;
+		this.onApplyValue = onApplyValue;
 	}
 
 	@Override
@@ -54,8 +54,8 @@ public class NamedSlider extends Slider {
 	public void onRelease(double mouseX, double mouseY) {
 		super.onRelease(mouseX, mouseY);
 
-		if (consumer != null)
-			consumer.accept(this);
+		if (onApplyValue != null)
+			onApplyValue.accept(this);
 	}
 
 	public Block getBlock() {

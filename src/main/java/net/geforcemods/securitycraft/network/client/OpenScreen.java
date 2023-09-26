@@ -54,12 +54,12 @@ public class OpenScreen {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		TileEntity te = Minecraft.getInstance().level.getBlockEntity(pos);
+		TileEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
 
 		switch (dataType) {
 			case ALARM:
-				if (te instanceof AlarmBlockEntity)
-					ClientHandler.displayAlarmScreen((AlarmBlockEntity) te);
+				if (be instanceof AlarmBlockEntity)
+					ClientHandler.displayAlarmScreen((AlarmBlockEntity) be);
 
 				break;
 			case CHECK_BRIEFCASE_PASSCODE:
@@ -70,18 +70,18 @@ public class OpenScreen {
 
 				break;
 			case CHECK_PASSCODE:
-				if (te instanceof IPasscodeProtected)
-					ClientHandler.displayCheckPasscodeScreen(te);
+				if (be instanceof IPasscodeProtected)
+					ClientHandler.displayCheckPasscodeScreen(be);
 
 				break;
 			case IMS:
-				if (te instanceof IMSBlockEntity)
-					ClientHandler.displayIMSScreen((IMSBlockEntity) te);
+				if (be instanceof IMSBlockEntity)
+					ClientHandler.displayIMSScreen((IMSBlockEntity) be);
 
 				break;
 			case RIFT_STABILIZER:
-				if (te instanceof RiftStabilizerBlockEntity)
-					ClientHandler.displayRiftStabilizerScreen(((RiftStabilizerBlockEntity) te));
+				if (be instanceof RiftStabilizerBlockEntity)
+					ClientHandler.displayRiftStabilizerScreen(((RiftStabilizerBlockEntity) be));
 
 				break;
 			case SENTRY_REMOTE_ACCESS_TOOL:
@@ -98,18 +98,22 @@ public class OpenScreen {
 
 				break;
 			case SET_PASSCODE:
-				if (te instanceof IPasscodeProtected)
-					ClientHandler.displaySetPasscodeScreen(te);
+				if (be instanceof IPasscodeProtected)
+					ClientHandler.displaySetPasscodeScreen(be);
 
 				break;
 			case SONIC_SECURITY_SYSTEM:
-				if (te instanceof SonicSecuritySystemBlockEntity)
-					ClientHandler.displaySonicSecuritySystemScreen((SonicSecuritySystemBlockEntity) te);
+				if (be instanceof SonicSecuritySystemBlockEntity)
+					ClientHandler.displaySonicSecuritySystemScreen((SonicSecuritySystemBlockEntity) be);
 
 				break;
 			case UNIVERSAL_KEY_CHANGER:
-				if (te instanceof IPasscodeProtected)
-					ClientHandler.displayUniversalKeyChangerScreen(te);
+				if (be instanceof IPasscodeProtected)
+					ClientHandler.displayUniversalKeyChangerScreen(be);
+
+				break;
+			default:
+				throw new IllegalStateException("Unhandled data type: " + dataType.name());
 		}
 	}
 

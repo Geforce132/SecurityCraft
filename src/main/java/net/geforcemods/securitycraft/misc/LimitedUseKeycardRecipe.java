@@ -23,7 +23,7 @@ public class LimitedUseKeycardRecipe extends SpecialRecipe {
 	}
 
 	@Override
-	public boolean matches(CraftingInventory inv, World world) {
+	public boolean matches(CraftingInventory inv, World level) {
 		boolean hasNormalKeycard = false;
 		boolean hasLimitedUseKeycard = false;
 

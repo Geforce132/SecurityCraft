@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class KeypadFurnaceScreen extends AbstractFurnaceScreen<KeypadFurnaceMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/container/furnace.png");
 
-	public KeypadFurnaceScreen(KeypadFurnaceMenu container, PlayerInventory inv, ITextComponent name) {
-		super(container, new FurnaceRecipeGui(), inv, SecurityCraft.RANDOM.nextInt(100) < 5 ? new StringTextComponent("Keypad Gurnace") : (container.te.hasCustomName() ? container.te.getCustomName() : name), TEXTURE);
+	public KeypadFurnaceScreen(KeypadFurnaceMenu menu, PlayerInventory inv, ITextComponent title) {
+		super(menu, new FurnaceRecipeGui(), inv, SecurityCraft.RANDOM.nextInt(100) < 5 ? new StringTextComponent("Keypad Gurnace") : (menu.be.hasCustomName() ? menu.be.getCustomName() : title), TEXTURE);
 	}
 }

@@ -41,10 +41,10 @@ public class UpdateSliderValue {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		PlayerEntity player = ctx.get().getSender();
-		TileEntity te = player.level.getBlockEntity(pos);
+		TileEntity be = player.level.getBlockEntity(pos);
 
-		if (te instanceof ICustomizable && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
-			ICustomizable customizable = (ICustomizable) te;
+		if (be instanceof ICustomizable && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player))) {
+			ICustomizable customizable = (ICustomizable) be;
 			Option<?> option = null;
 
 			for (Option<?> o : customizable.customOptions()) {
@@ -64,8 +64,8 @@ public class UpdateSliderValue {
 
 			customizable.onOptionChanged(option);
 
-			if (te instanceof CustomizableBlockEntity)
-				player.level.sendBlockUpdated(pos, te.getBlockState(), te.getBlockState(), 3);
+			if (be instanceof CustomizableBlockEntity)
+				player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
 		}
 	}
 }

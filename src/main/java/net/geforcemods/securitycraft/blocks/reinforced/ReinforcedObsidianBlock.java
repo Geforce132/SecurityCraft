@@ -12,7 +12,7 @@ public class ReinforcedObsidianBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public boolean isPortalFrame(BlockState state, IBlockReader world, BlockPos pos) {
+	public boolean isPortalFrame(BlockState state, IBlockReader level, BlockPos pos) {
 		return true;
 	}
 }

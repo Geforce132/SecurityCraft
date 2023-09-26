@@ -44,10 +44,10 @@ public class SyncBlockChangeDetector {
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		ServerPlayerEntity player = ctx.get().getSender();
 		World level = player.level;
-		TileEntity tile = level.getBlockEntity(pos);
+		TileEntity te = level.getBlockEntity(pos);
 
-		if (tile instanceof BlockChangeDetectorBlockEntity) {
-			BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) tile;
+		if (te instanceof BlockChangeDetectorBlockEntity) {
+			BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) te;
 
 			if (be.isOwnedBy(player)) {
 				BlockState state = level.getBlockState(pos);

@@ -35,8 +35,8 @@ public class PictureButton extends ExtendedButton {
 		this(xPos, yPos, width, height, itemRenderer, itemToRender, b -> {});
 	}
 
-	public PictureButton(int xPos, int yPos, int width, int height, ItemRenderer itemRenderer, ItemStack itemToRender, IPressable onClick) {
-		super(xPos, yPos, width, height, StringTextComponent.EMPTY, onClick);
+	public PictureButton(int xPos, int yPos, int width, int height, ItemRenderer itemRenderer, ItemStack itemToRender, IPressable onPress) {
+		super(xPos, yPos, width, height, StringTextComponent.EMPTY, onPress);
 		this.itemRenderer = itemRenderer;
 
 		if (!itemToRender.isEmpty() && itemToRender.getItem() instanceof BlockItem)
@@ -45,8 +45,8 @@ public class PictureButton extends ExtendedButton {
 			this.itemToRender = new ItemStack(itemToRender.getItem());
 	}
 
-	public PictureButton(int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, IPressable onClick) {
-		super(xPos, yPos, width, height, StringTextComponent.EMPTY, onClick);
+	public PictureButton(int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, IPressable onPress) {
+		super(xPos, yPos, width, height, StringTextComponent.EMPTY, onPress);
 
 		itemRenderer = null;
 		textureLocation = texture;
@@ -61,14 +61,14 @@ public class PictureButton extends ExtendedButton {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
 		if (visible) {
 			Minecraft mc = Minecraft.getInstance();
 			FontRenderer font = mc.font;
 
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-			GuiUtils.drawContinuousTexturedBox(matrix, WIDGETS_LOCATION, x, y, 0, 46 + getYImage(isHovered()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
+			GuiUtils.drawContinuousTexturedBox(pose, WIDGETS_LOCATION, x, y, 0, 46 + getYImage(isHovered()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
 
 			if (!blockToRender.isEmpty()) {
 				RenderSystem.enableRescaleNormal();
@@ -87,7 +87,7 @@ public class PictureButton extends ExtendedButton {
 				if (texture != null) {
 					RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 					mc.getTextureManager().bind(texture);
-					blit(matrix, x + drawOffsetX, y + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
+					blit(pose, x + drawOffsetX, y + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
 				}
 			}
 		}

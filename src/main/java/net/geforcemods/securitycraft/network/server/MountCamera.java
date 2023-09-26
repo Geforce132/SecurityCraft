@@ -35,19 +35,19 @@ public class MountCamera {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		ServerPlayerEntity player = ctx.get().getSender();
-		World world = player.level;
-		BlockState state = world.getBlockState(pos);
+		World level = player.level;
+		BlockState state = level.getBlockState(pos);
 
-		if (world.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get()) {
-			TileEntity te = world.getBlockEntity(pos);
+		if (level.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get()) {
+			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof SecurityCameraBlockEntity) {
-				SecurityCameraBlockEntity cam = (SecurityCameraBlockEntity) te;
+				SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) te;
 
-				if (cam.isOwnedBy(player) || cam.isAllowed(player))
-					((SecurityCameraBlock) state.getBlock()).mountCamera(world, pos, player);
+				if (be.isOwnedBy(player) || be.isAllowed(player))
+					((SecurityCameraBlock) state.getBlock()).mountCamera(level, pos, player);
 				else
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", cam.getOwner().getName()), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", be.getOwner().getName()), TextFormatting.RED);
 
 				return;
 			}

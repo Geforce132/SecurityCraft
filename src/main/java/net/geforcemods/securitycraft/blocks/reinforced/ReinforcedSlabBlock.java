@@ -60,7 +60,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext context) {
 		SlabType type = state.getValue(TYPE);
 
 		switch (type) {
@@ -76,13 +76,13 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 	@Override
 	@Nullable
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		World world = ctx.getLevel();
+		World level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
-		BlockState state = world.getBlockState(pos);
-		TileEntity te = world.getBlockEntity(pos);
+		BlockState state = level.getBlockState(pos);
+		TileEntity be = level.getBlockEntity(pos);
 
 		if (state.getBlock() == this) {
-			if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(ctx.getPlayer())) {
+			if (be instanceof IOwnable && !((IOwnable) be).isOwnedBy(ctx.getPlayer())) {
 				PlayerUtils.sendMessageToPlayer(ctx.getPlayer(), Utils.localize("messages.securitycraft:reinforcedSlab"), Utils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
 
 				return state;
@@ -127,21 +127,21 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 	}
 
 	@Override
-	public boolean placeLiquid(IWorld world, BlockPos pos, BlockState state, FluidState fluidState) {
-		return state.getValue(TYPE) != SlabType.DOUBLE && IWaterLoggable.super.placeLiquid(world, pos, state, fluidState);
+	public boolean placeLiquid(IWorld level, BlockPos pos, BlockState state, FluidState fluidState) {
+		return state.getValue(TYPE) != SlabType.DOUBLE && IWaterLoggable.super.placeLiquid(level, pos, state, fluidState);
 	}
 
 	@Override
-	public boolean canPlaceLiquid(IBlockReader world, BlockPos pos, BlockState state, Fluid fluid) {
-		return state.getValue(TYPE) != SlabType.DOUBLE && IWaterLoggable.super.canPlaceLiquid(world, pos, state, fluid);
+	public boolean canPlaceLiquid(IBlockReader level, BlockPos pos, BlockState state, Fluid fluid) {
+		return state.getValue(TYPE) != SlabType.DOUBLE && IWaterLoggable.super.canPlaceLiquid(level, pos, state, fluid);
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
 		if (state.getValue(WATERLOGGED))
-			world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
-		return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
 	@Override

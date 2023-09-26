@@ -62,10 +62,10 @@ public class AlarmBlock extends OwnableBlock implements IWaterLoggable {
 
 	@Override
 	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		TileEntity tile = level.getBlockEntity(pos);
+		TileEntity te = level.getBlockEntity(pos);
 
-		if (tile instanceof AlarmBlockEntity) {
-			AlarmBlockEntity be = (AlarmBlockEntity) tile;
+		if (te instanceof AlarmBlockEntity) {
+			AlarmBlockEntity be = (AlarmBlockEntity) te;
 
 			if (be.isOwnedBy(player)) {
 				if (!level.isClientSide) {
@@ -82,10 +82,10 @@ public class AlarmBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
+	public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
 		Direction facing = state.getValue(FACING);
 
-		return facing == Direction.UP && BlockUtils.isSideSolid(world, pos.below(), Direction.UP) || BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing);
+		return facing == Direction.UP && BlockUtils.isSideSolid(level, pos.below(), Direction.UP) || BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing);
 	}
 
 	@Override
@@ -94,18 +94,18 @@ public class AlarmBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if (!canSurvive(state, world, pos))
-			world.destroyBlock(pos, true);
+	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+		if (!canSurvive(state, level, pos))
+			level.destroyBlock(pos, true);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		World world = ctx.getLevel();
+		World level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 		Direction facing = ctx.getClickedFace();
 
-		return BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing).setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER) : null;
+		return BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing).setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER) : null;
 	}
 
 	@Override
@@ -122,37 +122,37 @@ public class AlarmBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public void onPlace(BlockState state, World world, BlockPos pos, BlockState oldState, boolean flag) {
-		if (!world.isClientSide)
-			world.getBlockTicks().scheduleTick(pos, state.getBlock(), 5);
+	public void onPlace(BlockState state, World level, BlockPos pos, BlockState oldState, boolean flag) {
+		if (!level.isClientSide)
+			level.getBlockTicks().scheduleTick(pos, state.getBlock(), 5);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (!world.isClientSide) {
-			playSoundAndUpdate(world, pos);
+	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random random) {
+		if (!level.isClientSide) {
+			playSoundAndUpdate(level, pos);
 
-			world.getBlockTicks().scheduleTick(pos, state.getBlock(), 5);
+			level.getBlockTicks().scheduleTick(pos, state.getBlock(), 5);
 		}
 	}
 
 	@Override
-	public void onNeighborChange(BlockState state, IWorldReader w, BlockPos pos, BlockPos neighbor) {
-		if (w.isClientSide() || !(w instanceof World))
+	public void onNeighborChange(BlockState state, IWorldReader levelReader, BlockPos pos, BlockPos neighbor) {
+		if (levelReader.isClientSide() || !(levelReader instanceof World))
 			return;
 
-		World world = (World) w;
+		World level = (World) levelReader;
 
-		playSoundAndUpdate(world, pos);
+		playSoundAndUpdate(level, pos);
 
-		Direction facing = world.getBlockState(pos).getValue(FACING);
+		Direction facing = level.getBlockState(pos).getValue(FACING);
 
-		if (!BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing))
-			world.destroyBlock(pos, true);
+		if (!BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing))
+			level.destroyBlock(pos, true);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		Direction facing = state.getValue(FACING);
 
 		switch (facing) {
@@ -173,31 +173,31 @@ public class AlarmBlock extends OwnableBlock implements IWaterLoggable {
 		return VoxelShapes.block();
 	}
 
-	private void playSoundAndUpdate(World world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
+	private void playSoundAndUpdate(World level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
 
 		if (state.getBlock() != SCContent.ALARM.get())
 			return;
 
-		TileEntity tile = world.getBlockEntity(pos);
+		TileEntity te = level.getBlockEntity(pos);
 
-		if (tile instanceof AlarmBlockEntity) {
-			AlarmBlockEntity te = (AlarmBlockEntity) tile;
+		if (te instanceof AlarmBlockEntity) {
+			AlarmBlockEntity be = (AlarmBlockEntity) te;
 
-			if (world.getBestNeighborSignal(pos) > 0) {
-				boolean isPowered = te.isPowered();
+			if (level.getBestNeighborSignal(pos) > 0) {
+				boolean isPowered = be.isPowered();
 
 				if (!isPowered) {
-					world.setBlockAndUpdate(pos, state.setValue(LIT, true));
-					te.setPowered(true);
+					level.setBlockAndUpdate(pos, state.setValue(LIT, true));
+					be.setPowered(true);
 				}
 			}
 			else {
-				boolean isPowered = te.isPowered();
+				boolean isPowered = be.isPowered();
 
 				if (isPowered) {
-					world.setBlockAndUpdate(pos, state.setValue(LIT, false));
-					te.setPowered(false);
+					level.setBlockAndUpdate(pos, state.setValue(LIT, false));
+					be.setPowered(false);
 				}
 			}
 		}
@@ -229,7 +229,7 @@ public class AlarmBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader world, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(IBlockReader level, BlockPos pos, BlockState state) {
 		return new ItemStack(SCContent.ALARM.get().asItem());
 	}
 
@@ -239,7 +239,7 @@ public class AlarmBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader reader) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new AlarmBlockEntity();
 	}
 

@@ -169,12 +169,10 @@ public class BlockReinforcerMenu extends Container {
 		}
 
 		if (stack.getCount() > 0) {
-			if (useEndIndex) {
+			if (useEndIndex)
 				currentIndex = endIndex - 1;
-			}
-			else {
+			else
 				currentIndex = startIndex;
-			}
 
 			while (!useEndIndex && currentIndex < endIndex || useEndIndex && currentIndex >= startIndex) {
 				slot = slots.get(currentIndex);

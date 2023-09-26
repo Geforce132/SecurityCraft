@@ -49,7 +49,7 @@ public class PortableRadarBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
 		Direction facing = state.getValue(FACING);
 
 		switch (facing) {
@@ -91,16 +91,16 @@ public class PortableRadarBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
+	public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
 		Direction facing = state.getValue(FACING);
 
-		return BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing);
+		return BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		if (!canSurvive(state, world, pos))
-			world.destroyBlock(pos, true);
+	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+		if (!canSurvive(state, level, pos))
+			level.destroyBlock(pos, true);
 	}
 
 	@Override
@@ -128,12 +128,12 @@ public class PortableRadarBlock extends OwnableBlock implements IWaterLoggable {
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
-	public static void togglePowerOutput(World world, BlockPos pos, boolean shouldPower) {
-		BlockState state = world.getBlockState(pos);
+	public static void togglePowerOutput(World level, BlockPos pos, boolean shouldPower) {
+		BlockState state = level.getBlockState(pos);
 
 		if (shouldPower != state.getValue(POWERED)) {
-			world.setBlockAndUpdate(pos, state.setValue(POWERED, shouldPower));
-			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING).getOpposite());
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, shouldPower));
+			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING).getOpposite());
 		}
 	}
 
@@ -143,16 +143,16 @@ public class PortableRadarBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public int getSignal(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
-		if (blockState.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
+	public int getSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
+		if (state.getValue(POWERED) && ((IModuleInventory) level.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public int getDirectSignal(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return state.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE) && state.getValue(FACING) == side ? 15 : 0;
+	public int getDirectSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
+		return state.getValue(POWERED) && ((IModuleInventory) level.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE) && state.getValue(FACING) == side ? 15 : 0;
 	}
 
 	@Override
@@ -161,7 +161,7 @@ public class PortableRadarBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new PortableRadarBlockEntity();
 	}
 

@@ -28,18 +28,18 @@ public class SentryRenderer extends EntityRenderer<Sentry> {
 	}
 
 	@Override
-	public void render(Sentry entity, float partialTicks, float pPartialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int pPackedLight) {
+	public void render(Sentry entity, float entityYaw, float partialTicks, MatrixStack pose, IRenderTypeBuffer buffer, int pPackedLight) {
 		IVertexBuilder builder = buffer.getBuffer(RenderType.entitySolid(getTextureLocation(entity)));
 
-		stack.pushPose();
-		stack.translate(0.0D, 1.5D, 0.0D);
-		stack.scale(-1, -1, 1); //rotate model rightside up
+		pose.pushPose();
+		pose.translate(0.0D, 1.5D, 0.0D);
+		pose.scale(-1, -1, 1); //rotate model rightside up
 		Minecraft.getInstance().textureManager.bind(getTextureLocation(entity));
-		MODEL.renderBase(stack, builder, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		stack.mulPose(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.getOriginalHeadRotation(), entity.getHeadRotation())));
-		stack.translate(0.0F, entity.getHeadYTranslation(partialTicks), 0.0F);
-		MODEL.renderToBuffer(stack, builder, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		stack.popPose();
+		MODEL.renderBase(pose, builder, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		pose.mulPose(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.getOriginalHeadRotation(), entity.getHeadRotation())));
+		pose.translate(0.0F, entity.getHeadYTranslation(partialTicks), 0.0F);
+		MODEL.renderToBuffer(pose, builder, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		pose.popPose();
 	}
 
 	@Override

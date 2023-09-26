@@ -12,28 +12,28 @@ public class LinkedBlock {
 		blockPos = pos;
 	}
 
-	public LinkedBlock(LinkableBlockEntity tileEntity) {
-		blockName = tileEntity.getBlockState().getBlock().getDescriptionId();
-		blockPos = tileEntity.getBlockPos();
+	public LinkedBlock(LinkableBlockEntity blockEntity) {
+		blockName = blockEntity.getBlockState().getBlock().getDescriptionId();
+		blockPos = blockEntity.getBlockPos();
 	}
 
-	public boolean validate(World world) {
-		return !(world == null || (world.isEmptyBlock(blockPos) || !world.getBlockState(blockPos).getBlock().getDescriptionId().equals(blockName)));
+	public boolean validate(World level) {
+		return !(level == null || (level.isEmptyBlock(blockPos) || !level.getBlockState(blockPos).getBlock().getDescriptionId().equals(blockName)));
 	}
 
-	public LinkableBlockEntity asTileEntity(World world) {
-		if (!validate(world))
+	public LinkableBlockEntity asBlockEntity(World level) {
+		if (!validate(level))
 			return null;
 
-		return (LinkableBlockEntity) world.getBlockEntity(blockPos);
+		return (LinkableBlockEntity) level.getBlockEntity(blockPos);
+	}
+
+	public void setBlockName(String blockName) {
+		this.blockName = blockName;
 	}
 
 	public String getBlockName() {
 		return blockName;
-	}
-
-	public void setName(String blockName) {
-		this.blockName = blockName;
 	}
 
 	public void setPos(BlockPos pos) {

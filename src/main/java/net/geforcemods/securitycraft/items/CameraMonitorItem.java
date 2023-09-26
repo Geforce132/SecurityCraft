@@ -41,15 +41,15 @@ public class CameraMonitorItem extends Item {
 
 	@Override
 	public ActionResultType useOn(ItemUseContext ctx) {
-		World world = ctx.getLevel();
+		World level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 		PlayerEntity player = ctx.getPlayer();
 
-		if (world.getBlockState(pos).getBlock() == SCContent.SECURITY_CAMERA.get() && !PlayerUtils.isPlayerMountedOnCamera(player)) {
-			SecurityCameraBlockEntity te = (SecurityCameraBlockEntity) world.getBlockEntity(pos);
+		if (level.getBlockState(pos).getBlock() == SCContent.SECURITY_CAMERA.get() && !PlayerUtils.isPlayerMountedOnCamera(player)) {
+			SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) level.getBlockEntity(pos);
 			ItemStack stack = ctx.getItemInHand();
 
-			if (!te.isOwnedBy(player) && !te.isAllowed(player)) {
+			if (!be.isOwnedBy(player) && !be.isAllowed(player)) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
 				return ActionResultType.FAIL;
 			}
@@ -73,7 +73,7 @@ public class CameraMonitorItem extends Item {
 				}
 			}
 
-			if (!world.isClientSide)
+			if (!level.isClientSide)
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new UpdateNBTTagOnClient(stack));
 
 			return ActionResultType.SUCCESS;
@@ -83,7 +83,7 @@ public class CameraMonitorItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (!stack.hasTag() || !hasCameraAdded(stack.getTag())) {
@@ -91,7 +91,7 @@ public class CameraMonitorItem extends Item {
 			return ActionResult.pass(stack);
 		}
 
-		if (world.isClientSide && stack.getItem() == SCContent.CAMERA_MONITOR.get())
+		if (level.isClientSide && stack.getItem() == SCContent.CAMERA_MONITOR.get())
 			ClientHandler.displayCameraMonitorScreen(player.inventory, (CameraMonitorItem) stack.getItem(), stack.getTag());
 
 		return ActionResult.consume(stack);
@@ -99,7 +99,7 @@ public class CameraMonitorItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, World level, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		if (stack.getTag() == null)
 			return;
 

@@ -78,22 +78,24 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public void onOwnerChanged(BlockState state, World world, BlockPos pos, PlayerEntity player) {
-		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos, getBlockState(), be -> be.setOwner(getOwner().getUUID(), getOwner().getName()));
+	public void onOwnerChanged(BlockState state, World level, BlockPos pos, PlayerEntity player) {
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, pos, getBlockState(), be -> be.setOwner(getOwner().getUUID(), getOwner().getName()));
 
 		if (connectedScanner != null) {
 			connectedScanner.setOwner(getOwner().getUUID(), getOwner().getName());
 
-			if (!world.isClientSide)
-				world.getServer().getPlayerList().broadcastAll(connectedScanner.getUpdatePacket());
+			if (!level.isClientSide)
+				level.getServer().getPlayerList().broadcastAll(connectedScanner.getUpdatePacket());
 		}
+
+		super.onOwnerChanged(state, level, pos, player);
 	}
 
 	@Override
 	public void load(BlockState state, CompoundNBT tag) {
-		super.load(state, tag);
-
 		ListNBT list = tag.getList("Items", 10);
+
+		super.load(state, tag);
 		inventoryContents = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); ++i) {
@@ -311,7 +313,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	public void stopOpen(PlayerEntity player) {}
 
 	@Override
-	public boolean canPlaceItem(int var1, ItemStack var2) {
+	public boolean canPlaceItem(int index, ItemStack stack) {
 		return true;
 	}
 
