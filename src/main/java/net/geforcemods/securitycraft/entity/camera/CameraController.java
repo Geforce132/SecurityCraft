@@ -113,10 +113,10 @@ public class CameraController {
 
 		if (cam.isCameraDown()) {
 			if (next > 40F)
-				cam.setRot(cam.yRot, next);
+				cam.setRotation(cam.yRot, next);
 		}
 		else if (next > -25F)
-			cam.setRot(cam.yRot, next);
+			cam.setRotation(cam.yRot, next);
 	}
 
 	public static void moveViewDown(SecurityCamera cam) {
@@ -124,10 +124,10 @@ public class CameraController {
 
 		if (cam.isCameraDown()) {
 			if (next < 90F)
-				cam.setRot(cam.yRot, next);
+				cam.setRotation(cam.yRot, next);
 		}
 		else if (next < 60F)
-			cam.setRot(cam.yRot, next);
+			cam.setRotation(cam.yRot, next);
 	}
 
 	public static void moveViewHorizontally(SecurityCamera cam, float next) {

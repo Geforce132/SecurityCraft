@@ -196,16 +196,12 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 
 	@Override
 	protected void spreadTo(IWorld level, BlockPos pos, BlockState state, Direction direction, FluidState fluidState) {
-		if (direction == Direction.DOWN) {
-			FluidState ifluidstate = level.getFluidState(pos);
+		if (direction == Direction.DOWN && is(FluidTags.LAVA) && fluidState.is(FluidTags.WATER)) {
+			if (state.getBlock() instanceof FlowingFluidBlock)
+				level.setBlock(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, pos, Blocks.STONE.defaultBlockState()), 3);
 
-			if (is(FluidTags.LAVA) && ifluidstate.is(FluidTags.WATER)) {
-				if (state.getBlock() instanceof FlowingFluidBlock)
-					level.setBlock(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, pos, Blocks.STONE.defaultBlockState()), 3);
-
-				triggerEffects(level, pos);
-				return;
-			}
+			triggerEffects(level, pos);
+			return;
 		}
 
 		super.spreadTo(level, pos, state, direction, fluidState);

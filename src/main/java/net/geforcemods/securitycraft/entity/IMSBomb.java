@@ -37,19 +37,18 @@ public class IMSBomb extends AbstractFireballEntity {
 
 	public IMSBomb(World world, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, IMSBlockEntity te) {
 		super(SCContent.IMS_BOMB_ENTITY.get(), x, y, z, accelerationX, accelerationY, accelerationZ, world);
-		launchTime = height * 3; //the ims bomb entity travels upwards by 1/3 blocks per tick
 
 		Owner owner = te.getOwner();
 
+		launchTime = height * 3; //the ims bomb entity travels upwards by 1/3 blocks per tick
 		entityData.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
 		isFast = te.isModuleEnabled(ModuleType.SPEED);
 	}
 
 	@Override
 	public void tick() {
-		if (!launching) {
+		if (!launching)
 			super.tick();
-		}
 		else {
 			if (ticksFlying == 0)
 				setDeltaMovement(getDeltaMovement().x, isFast ? 0.66F : 0.33F, getDeltaMovement().z);

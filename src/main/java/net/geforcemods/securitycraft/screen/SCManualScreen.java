@@ -121,8 +121,8 @@ public class SCManualScreen extends Screen {
 		pageIcon = new IngredientDisplay(startX + 19, 22);
 		updateRecipeAndIcons();
 		SCManualItem.PAGES.sort((page1, page2) -> {
-			String key1 = page1.getTitle().getString();
-			String key2 = page2.getTitle().getString();
+			String key1 = page1.title().getString();
+			String key2 = page2.title().getString();
 
 			return key1.compareTo(key2);
 		});
@@ -359,9 +359,9 @@ public class SCManualScreen extends Screen {
 		}
 
 		SCManualPage page = SCManualItem.PAGES.get(currentPage);
-		String designerName = page.getDesignedBy();
-		Item item = page.getItem();
-		PageGroup pageGroup = page.getGroup();
+		String designerName = page.designedBy();
+		Item item = page.item();
+		PageGroup pageGroup = page.group();
 
 		if (designerName != null && !designerName.isEmpty())
 			designedBy = Utils.localize("gui.securitycraft:scManual.designedBy", designerName);
@@ -392,7 +392,7 @@ public class SCManualScreen extends Screen {
 				else if (object instanceof ShapelessRecipe) {
 					ShapelessRecipe shapelessRecipe = (ShapelessRecipe) object;
 
-					if (shapelessRecipe.getResultItem().getItem() == page.getItem()) {
+					if (shapelessRecipe.getResultItem().getItem() == page.item()) {
 						//don't show keycard reset recipes
 						if (shapelessRecipe.getId().getPath().endsWith("_reset"))
 							continue;
@@ -475,7 +475,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		if (page.hasRecipeDescription()) {
-			String name = page.getItem().getRegistryName().getPath();
+			String name = page.item().getRegistryName().getPath();
 
 			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.recipe." + name)));
 		}
@@ -493,7 +493,7 @@ public class SCManualScreen extends Screen {
 		else
 			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.disabled")));
 
-		pageTitle = page.getTitle();
+		pageTitle = page.title();
 
 		if (pageGroup != PageGroup.NONE)
 			pageIcon.setIngredient(pageGroup.getItems());
@@ -588,7 +588,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		//set up subpages
-		subpages = font.getSplitter().splitLines(page.getHelpInfo(), SUBPAGE_LENGTH, Style.EMPTY);
+		subpages = font.getSplitter().splitLines(page.helpInfo(), SUBPAGE_LENGTH, Style.EMPTY);
 		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
 		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}

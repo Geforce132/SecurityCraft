@@ -129,12 +129,12 @@ public class TaserItem extends Item {
 
 	//copied from ProjectileHelper#rayTraceEntities because that one's only available on the client
 	private static EntityRayTraceResult rayTraceEntities(Entity shooter, Vector3d startVec, Vector3d endVec, AxisAlignedBB boundingBox, Predicate<Entity> filter, double dist) {
-		World world = shooter.level;
+		World level = shooter.level;
 		double distance = dist;
 		Entity rayTracedEntity = null;
 		Vector3d hitVec = null;
 
-		for (Entity entity : world.getEntities(shooter, boundingBox, filter)) {
+		for (Entity entity : level.getEntities(shooter, boundingBox, filter)) {
 			AxisAlignedBB boxToCheck = entity.getBoundingBox().inflate(entity.getPickRadius());
 			Optional<Vector3d> optional = boxToCheck.clip(startVec, endVec);
 
@@ -169,8 +169,8 @@ public class TaserItem extends Item {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, World world, Entity entity, int slotIndex, boolean isSelected) {
-		if (!world.isClientSide && stack.getDamageValue() >= 1)
+	public void inventoryTick(ItemStack stack, World level, Entity entity, int slotIndex, boolean isSelected) {
+		if (!level.isClientSide && stack.getDamageValue() >= 1)
 			stack.setDamageValue(stack.getDamageValue() - 1);
 	}
 

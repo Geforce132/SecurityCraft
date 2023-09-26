@@ -135,11 +135,12 @@ public class EditModuleScreen extends Screen {
 
 	@Override
 	public void render(MatrixStack pose, int mouseX, int mouseY, float partialTicks) {
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+
 		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
 		blit(pose, startX, startY, 0, 0, xSize, ySize);
 		super.render(pose, mouseX, mouseY, partialTicks);
 		font.drawWordWrap(editModule, startX + xSize / 2 - font.width(editModule) / 2, startY + 6, width, 4210752);
@@ -374,10 +375,8 @@ public class EditModuleScreen extends Screen {
 				int slotIndex = mouseListY / SLOTH_HEIGHT;
 
 				//highlight hovered slot
-				if (slotIndex != selectedIndex && mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < LIST_LENGTH && mouseY >= top && mouseY <= bottom) {
-					if (tag.contains("Player" + (slotIndex + 1)) && !tag.getString("Player" + (slotIndex + 1)).isEmpty())
-						renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + slotIndex * SLOTH_HEIGHT, SLOTH_HEIGHT - 4, 0x80);
-				}
+				if (slotIndex != selectedIndex && mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < LIST_LENGTH && mouseY >= top && mouseY <= bottom && tag.contains("Player" + (slotIndex + 1)) && !tag.getString("Player" + (slotIndex + 1)).isEmpty())
+					renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + slotIndex * SLOTH_HEIGHT, SLOTH_HEIGHT - 4, 0x80);
 
 				if (selectedIndex >= 0)
 					renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + selectedIndex * SLOTH_HEIGHT, SLOTH_HEIGHT - 4, 0xFF);

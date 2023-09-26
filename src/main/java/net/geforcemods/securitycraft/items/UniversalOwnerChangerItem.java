@@ -82,10 +82,8 @@ public class UniversalOwnerChangerItem extends Item {
 			}
 		}
 
-		if (be instanceof IOwnable) {
-			((IOwnable) be).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
-			((IOwnable) be).onOwnerChanged(state, level, pos, player);
-		}
+		ownable.setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
+		ownable.onOwnerChanged(state, level, pos, player);
 
 		if (!level.isClientSide)
 			level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());

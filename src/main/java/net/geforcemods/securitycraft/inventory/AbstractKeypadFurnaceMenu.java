@@ -22,7 +22,7 @@ public abstract class AbstractKeypadFurnaceMenu extends AbstractFurnaceContainer
 		furnaceBlock = be.getBlockState().getBlock();
 		this.be = be;
 		containerLevelAccess = IWorldPosCallable.create(be.getLevel(), be.getBlockPos());
-		this.be.startOpen(inventory.player);
+		be.startOpen(inventory.player);
 	}
 
 	@Override

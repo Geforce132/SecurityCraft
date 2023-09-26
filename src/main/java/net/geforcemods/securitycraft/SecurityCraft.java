@@ -70,7 +70,7 @@ public class SecurityCraft {
 	public static final ItemGroup TECHNICAL_TAB = new SCTechnicalTab();
 	public static final ItemGroup MINE_TAB = new SCExplosivesTab();
 	public static final ItemGroup DECORATION_TAB = new SCDecorationTab();
-	public static final LootConditionType TILE_ENTITY_NBT_LOOT_CONDITION = LootConditionManager.register(SecurityCraft.MODID + ":tile_entity_nbt", new BlockEntityNBTCondition.Serializer());
+	public static final LootConditionType TILE_ENTITY_NBT_LOOT_CONDITION = LootConditionManager.register(SecurityCraft.MODID + ":tile_entity_nbt", new BlockEntityNBTCondition.ConditionSerializer());
 	public static SimpleChannel channel;
 
 	public SecurityCraft() {

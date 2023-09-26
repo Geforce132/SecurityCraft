@@ -293,7 +293,7 @@ public class StateSelector extends Screen implements IGuiEventListener, IContain
 		if (slotIndex == slotToCheck) {
 			if (newStack.getItem() instanceof BlockItem && (state == null || ((BlockItem) newStack.getItem()).getBlock() != state.getBlock())) {
 				state = ((BlockItem) newStack.getItem()).getBlock().defaultBlockState();
-				this.blockItem = newStack.getItem();
+				blockItem = newStack.getItem();
 			}
 			else {
 				state = Blocks.AIR.defaultBlockState();

@@ -110,6 +110,10 @@ public class OpenScreen {
 			case UNIVERSAL_KEY_CHANGER:
 				if (be instanceof IPasscodeProtected)
 					ClientHandler.displayUniversalKeyChangerScreen(be);
+
+				break;
+			default:
+				throw new IllegalStateException("Unhandled data type: " + dataType.name());
 		}
 	}
 

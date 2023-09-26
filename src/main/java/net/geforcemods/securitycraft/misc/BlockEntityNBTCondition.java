@@ -35,8 +35,8 @@ public class BlockEntityNBTCondition implements ILootCondition {
 
 	@Override
 	public boolean test(LootContext lootContext) {
-		TileEntity te = lootContext.getLevel().getBlockEntity(new BlockPos(lootContext.getParamOrNull(LootParameters.ORIGIN)));
-		CompoundNBT nbt = te.save(new CompoundNBT());
+		TileEntity be = lootContext.getLevel().getBlockEntity(new BlockPos(lootContext.getParamOrNull(LootParameters.ORIGIN)));
+		CompoundNBT nbt = be.save(new CompoundNBT());
 
 		return nbt.contains(key) && nbt.getBoolean(key) == value;
 	}
@@ -46,15 +46,15 @@ public class BlockEntityNBTCondition implements ILootCondition {
 		return SecurityCraft.TILE_ENTITY_NBT_LOOT_CONDITION;
 	}
 
-	public static Builder builder() {
-		return new Builder();
+	public static ConditionBuilder builder() {
+		return new ConditionBuilder();
 	}
 
-	public static class Builder implements IBuilder {
+	public static class ConditionBuilder implements IBuilder {
 		private String key;
 		private boolean value;
 
-		public Builder equals(String key, boolean value) {
+		public ConditionBuilder equals(String key, boolean value) {
 			this.key = key;
 			this.value = value;
 			return this;
@@ -66,7 +66,7 @@ public class BlockEntityNBTCondition implements ILootCondition {
 		}
 	}
 
-	public static class Serializer implements ILootSerializer<BlockEntityNBTCondition> {
+	public static class ConditionSerializer implements ILootSerializer<BlockEntityNBTCondition> {
 		@Override
 		public void serialize(JsonObject json, BlockEntityNBTCondition condition, JsonSerializationContext ctx) {
 			json.addProperty("key", condition.key);

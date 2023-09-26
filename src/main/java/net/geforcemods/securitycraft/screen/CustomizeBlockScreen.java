@@ -102,8 +102,8 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 		TileEntity te = moduleInv.getBlockEntity();
 
 		if (te instanceof ICustomizable) {
-			ICustomizable customizableTe = (ICustomizable) te;
-			Option<?>[] options = customizableTe.customOptions();
+			ICustomizable customizable = (ICustomizable) te;
+			Option<?>[] options = customizable.customOptions();
 
 			if (options.length > 0) {
 				optionButtons = new Button[options.length];

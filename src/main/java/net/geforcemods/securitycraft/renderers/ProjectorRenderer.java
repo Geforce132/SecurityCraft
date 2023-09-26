@@ -21,7 +21,7 @@ import net.minecraftforge.common.util.TriPredicate;
 
 @OnlyIn(Dist.CLIENT)
 public class ProjectorRenderer extends TileEntityRenderer<ProjectorBlockEntity> {
-	private final TriPredicate<ProjectorBlockEntity, Boolean, Integer> yLoopBoundary = (te, hanging, y) -> hanging ? y > -te.getProjectionHeight() : y < te.getProjectionHeight();
+	private final TriPredicate<ProjectorBlockEntity, Boolean, Integer> yLoopBoundary = (be, hanging, y) -> hanging ? y > -be.getProjectionHeight() : y < be.getProjectionHeight();
 
 	public ProjectorRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);

@@ -56,9 +56,9 @@ public class ModuleItemContainer implements IInventory {
 		for (int i = 0; i < getContainerSize(); i++) {
 			if (!getItem(i).isEmpty()) {
 				CompoundNBT item = new CompoundNBT();
+
 				item.putInt("Slot", i);
 				getItem(i).save(item);
-
 				items.add(item);
 			}
 		}

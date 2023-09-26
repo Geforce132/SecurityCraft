@@ -49,9 +49,8 @@ public class SetPasscodeScreen extends Screen {
 
 		Button saveAndContinueButton = addButton(new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:passcode.save"), this::saveAndContinueButtonClicked));
 
-		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		saveAndContinueButton.active = false;
-
+		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		keycodeTextbox = addButton(new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, StringTextComponent.EMPTY));
 		keycodeTextbox.setMaxLength(Integer.MAX_VALUE);
 		keycodeTextbox.setFilter(s -> s.matches("\\d*"));

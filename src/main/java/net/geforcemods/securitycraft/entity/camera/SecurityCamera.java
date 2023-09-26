@@ -139,10 +139,8 @@ public class SecurityCamera extends Entity {
 		return level.getBlockEntity(blockPosition()) instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) level.getBlockEntity(blockPosition())).isDown();
 	}
 
-	//here to make this method accessible to CameraController
-	@Override
-	protected void setRot(float yaw, float pitch) {
-		super.setRot(yaw, pitch);
+	public void setRotation(float yaw, float pitch) {
+		setRot(yaw, pitch);
 	}
 
 	public void setChunkLoadingDistance(int chunkLoadingDistance) {

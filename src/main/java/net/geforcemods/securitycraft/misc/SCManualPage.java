@@ -20,23 +20,23 @@ public class SCManualPage {
 		this.hasRecipeDescription = hasRecipeDescription;
 	}
 
-	public Item getItem() {
+	public Item item() {
 		return item;
 	}
 
-	public PageGroup getGroup() {
+	public PageGroup group() {
 		return group;
 	}
 
-	public TranslationTextComponent getTitle() {
+	public TranslationTextComponent title() {
 		return title;
 	}
 
-	public TranslationTextComponent getHelpInfo() {
+	public TranslationTextComponent helpInfo() {
 		return helpInfo;
 	}
 
-	public String getDesignedBy() {
+	public String designedBy() {
 		return designedBy;
 	}
 

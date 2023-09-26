@@ -54,9 +54,9 @@ public class MineRemoteAccessToolItem extends Item {
 			PlayerEntity player = ctx.getPlayer();
 
 			if (!isMineAdded(stack, pos)) {
-				int availSlot = getNextAvaliableSlot(stack);
+				int nextSlot = getNextAvaliableSlot(stack);
 
-				if (availSlot == 0) {
+				if (nextSlot == 0) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.noSlots"), TextFormatting.RED);
 					return ActionResultType.FAIL;
 				}
@@ -73,7 +73,7 @@ public class MineRemoteAccessToolItem extends Item {
 				if (stack.getTag() == null)
 					stack.setTag(new CompoundNBT());
 
-				stack.getTag().putIntArray(("mine" + availSlot), BlockUtils.posToIntArray(pos));
+				stack.getTag().putIntArray(("mine" + nextSlot), BlockUtils.posToIntArray(pos));
 
 				if (!level.isClientSide)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new UpdateNBTTagOnClient(stack));

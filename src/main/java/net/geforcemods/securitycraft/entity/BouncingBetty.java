@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class BouncingBetty extends Entity {
-	/** How long the fuse is */
+	/** How many ticks until the explosion */
 	private int fuse;
 
 	public BouncingBetty(EntityType<? extends BouncingBetty> type, World level) {

@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -61,12 +60,8 @@ public class SyncKeycardSettings {
 					be.setSignature(signature);
 				}
 
-				if (link) {
-					Container container = player.containerMenu;
-
-					if (container instanceof KeycardReaderMenu)
-						((KeycardReaderMenu) container).link();
-				}
+				if (link && player.containerMenu instanceof KeycardReaderMenu)
+					((KeycardReaderMenu) player.containerMenu).link();
 			}
 		}
 	}

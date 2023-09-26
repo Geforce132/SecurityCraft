@@ -42,7 +42,7 @@ public class Bullet extends AbstractArrowEntity {
 
 		Owner owner = shooter.getOwner();
 
-		this.potionEffects = shooter.getActiveEffects();
+		potionEffects = shooter.getActiveEffects();
 		entityData.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
 	}
 
@@ -110,7 +110,7 @@ public class Bullet extends AbstractArrowEntity {
 	}
 
 	@Override
-	protected void onHitBlock(BlockRayTraceResult raytraceResult) { //onBlockHit
+	protected void onHitBlock(BlockRayTraceResult raytraceResult) {
 		remove();
 	}
 
