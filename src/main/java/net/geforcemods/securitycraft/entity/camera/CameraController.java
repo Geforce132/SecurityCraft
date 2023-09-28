@@ -187,14 +187,14 @@ public class CameraController {
 
 	public static void emitRedstone(SecurityCamera cam) {
 		if (cam.redstoneCooldown == 0) {
-			cam.toggleRedstonePower();
+			cam.toggleRedstonePowerFromClient();
 			cam.redstoneCooldown = 30;
 		}
 	}
 
 	public static void giveNightVision(SecurityCamera cam) {
 		if (cam.toggleNightVisionCooldown == 0)
-			cam.toggleNightVision();
+			cam.toggleNightVisionFromClient();
 	}
 
 	public static ClientChunkCache.Storage getCameraStorage() {
