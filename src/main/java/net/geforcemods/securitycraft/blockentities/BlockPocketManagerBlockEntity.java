@@ -544,7 +544,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	}
 
 	private Component getFormattedRelativeCoordinates(BlockPos pos, Direction managerFacing) {
-		BlockPos difference = pos.subtract(this.worldPosition);
+		BlockPos difference = pos.subtract(worldPosition);
 		int offsetBehind;
 		int offsetAbove = difference.getY();
 		List<Component> components = new ArrayList<>();

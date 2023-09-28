@@ -383,7 +383,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		throwableEntity.shoot(x, y + yOffset, z, 1.6F, 0.0F); //no inaccuracy for sentries!
 
 		if (shootSound == null) {
-			if (!level().isClientSide)
+			if (!level().isClientSide && pdb != null)
 				pdb.playSound(new BlockSourceImpl((ServerLevel) level(), blockPosition()));
 		}
 		else

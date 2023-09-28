@@ -72,7 +72,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	private BlockEntity be = null;
 	@SuppressWarnings("rawtypes")
 	private BlockEntityRenderer beRenderer = null;
-	private List<BlockStatePropertyButton<?>> buttons = new ArrayList<>();
+	private List<BlockStatePropertyButton<?>> propertyButtons = new ArrayList<>();
 	private int page, amountOfPages;
 	private Button previousPageButton, nextPageButton;
 	private Matrix4f dragRotation = new Matrix4f();
@@ -141,8 +141,8 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 		pose.popPose();
 
-		for (int i = 0; i < buttons.size(); i++) {
-			String propertyName = buttons.get(i).getProperty().getName();
+		for (int i = 0; i < propertyButtons.size(); i++) {
+			String propertyName = propertyButtons.get(i).getProperty().getName();
 
 			guiGraphics.drawString(font, propertyName, xStart + 91 - font.width(propertyName) - 2, yStart + i * 23 + 10, 0x404040, false);
 		}
@@ -179,8 +179,8 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		int pageStartIndex = (page - 1) * PAGE_LENGTH;
 		int i = 0;
 
-		buttons.forEach(this::removeWidget);
-		buttons.clear();
+		propertyButtons.forEach(this::removeWidget);
+		propertyButtons.clear();
 
 		for (Property<?> property : properties) {
 			if (i < pageStartIndex) {
@@ -201,7 +201,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 				defaultValueIndex++;
 			}
 
-			buttons.add(addRenderableWidget(new BlockStatePropertyButton<>(xStart + 91, yStart + buttonY + 5, 100, 20, defaultValueIndex, property)));
+			propertyButtons.add(addRenderableWidget(new BlockStatePropertyButton<>(xStart + 91, yStart + buttonY + 5, 100, 20, defaultValueIndex, property)));
 			buttonY += 23;
 			i++;
 		}
@@ -278,8 +278,8 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		for (int i = 0; i < buttons.size(); i++) {
-			if (buttons.get(i).mouseClicked(mouseX, mouseY, button))
+		for (int i = 0; i < propertyButtons.size(); i++) {
+			if (propertyButtons.get(i).mouseClicked(mouseX, mouseY, button))
 				break;
 		}
 
@@ -297,8 +297,8 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-		for (int i = 0; i < buttons.size(); i++) {
-			if (buttons.get(i).mouseScrolled(mouseX, mouseY, delta))
+		for (int i = 0; i < propertyButtons.size(); i++) {
+			if (propertyButtons.get(i).mouseScrolled(mouseX, mouseY, delta))
 				break;
 		}
 
@@ -310,7 +310,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		if (slotIndex == slotToCheck) {
 			if (newStack.getItem() instanceof BlockItem item && (state == null || item.getBlock() != state.getBlock())) {
 				state = item.getBlock().defaultBlockState();
-				this.blockItem = item;
+				blockItem = item;
 			}
 			else {
 				state = Blocks.AIR.defaultBlockState();

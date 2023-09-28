@@ -179,13 +179,13 @@ public class CageTrapBlock extends DisguisableBlock {
 	}
 
 	public static class BlockModifier {
-		private Level world;
+		private Level level;
 		private BlockPos.MutableBlockPos pos;
 		private BlockPos origin;
 		private Owner owner;
 
 		public BlockModifier(Level level, BlockPos.MutableBlockPos origin, Owner owner) {
-			this.world = level;
+			this.level = level;
 			pos = origin.move(-1, 1, -1);
 			this.origin = origin.immutable();
 			this.owner = owner;
@@ -197,7 +197,7 @@ public class CageTrapBlock extends DisguisableBlock {
 					for (int z = 0; z < 3; z++) {
 						//skip the middle column above the cage trap, but not the place where the horizontal iron bars are
 						if (!(x == 1 && z == 1 && y != 3))
-							ifTrue.accept(world, pos, owner);
+							ifTrue.accept(level, pos, owner);
 
 						pos.move(0, 0, 1);
 					}

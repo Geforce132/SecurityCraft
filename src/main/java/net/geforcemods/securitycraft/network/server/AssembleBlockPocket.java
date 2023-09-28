@@ -13,8 +13,8 @@ public class AssembleBlockPocket {
 
 	public AssembleBlockPocket() {}
 
-	public AssembleBlockPocket(BlockPocketManagerBlockEntity te, int size) {
-		pos = te.getBlockPos();
+	public AssembleBlockPocket(BlockPocketManagerBlockEntity be, int size) {
+		pos = be.getBlockPos();
 		this.size = size;
 	}
 
