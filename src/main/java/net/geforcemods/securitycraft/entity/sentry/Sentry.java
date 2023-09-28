@@ -758,8 +758,12 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 			return type == 1;
 		}
 
-		public TargetingMode getTargetingMode() {
-			return targetingMode;
+		public boolean attacksHostile() {
+			return targetingMode != null && targetingMode.allowsMobs();
+		}
+
+		public boolean attacksPlayers() {
+			return targetingMode != null && targetingMode.allowsPlayers();
 		}
 
 		public String getModeKey() {
