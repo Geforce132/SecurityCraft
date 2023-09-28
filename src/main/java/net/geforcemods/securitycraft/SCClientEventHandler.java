@@ -63,9 +63,9 @@ public class SCClientEventHandler {
 	@SubscribeEvent
 	public static void onRenderLevelStage(RenderLevelStageEvent event) {
 		if (event.getStage() == Stage.AFTER_TRIPWIRE_BLOCKS) {
+			Minecraft mc = Minecraft.getInstance();
 			Vec3 camPos = event.getCamera().getPosition();
 			PoseStack pose = event.getPoseStack();
-			Minecraft mc = Minecraft.getInstance();
 			Level level = mc.level;
 
 			for (BlockPos bcdPos : BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedBlockEntities(level)) {

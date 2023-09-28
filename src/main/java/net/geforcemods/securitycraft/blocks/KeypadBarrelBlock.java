@@ -109,13 +109,15 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
-			if (level.getBlockEntity(pos) instanceof Container container) {
+			BlockEntity be = level.getBlockEntity(pos);
+
+			if (be instanceof Container container) {
 				Containers.dropContents(level, pos, container);
 				level.updateNeighbourForOutputSignal(pos, this);
 			}
 
-			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
-				SaltData.removeSalt(be.getSaltKey());
+			if (be instanceof IPasscodeProtected passcodeProtected)
+				SaltData.removeSalt(passcodeProtected.getSaltKey());
 		}
 
 		super.onRemove(state, level, pos, newState, isMoving);

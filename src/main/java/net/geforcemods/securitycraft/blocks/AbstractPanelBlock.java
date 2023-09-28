@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
@@ -108,7 +109,9 @@ public abstract class AbstractPanelBlock extends OwnableBlock implements SimpleW
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
-			if (level.getBlockEntity(pos) instanceof IModuleInventory inv)
+			BlockEntity be = level.getBlockEntity(pos);
+
+			if (be instanceof IModuleInventory inv)
 				inv.dropAllModules();
 
 			if (state.getValue(POWERED)) {
@@ -116,8 +119,8 @@ public abstract class AbstractPanelBlock extends OwnableBlock implements SimpleW
 				level.updateNeighborsAt(pos.relative(state.getValue(FACING).getOpposite()), this);
 			}
 
-			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
-				SaltData.removeSalt(be.getSaltKey());
+			if (be instanceof IPasscodeProtected passcodeProtected)
+				SaltData.removeSalt(passcodeProtected.getSaltKey());
 		}
 
 		super.onRemove(state, level, pos, newState, isMoving);

@@ -46,13 +46,13 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 	@Nullable
 	@Override
 	public Void apply(ITheOneProbe theOneProbe) {
-		theOneProbe.registerBlockDisplayOverride((mode, probeInfo, player, level, blockState, data) -> {
+		theOneProbe.registerBlockDisplayOverride((mode, probeInfo, player, level, state, data) -> {
 			ItemStack disguisedAs = ItemStack.EMPTY;
 
-			if (blockState.getBlock() instanceof DisguisableBlock disguisedBlock)
+			if (state.getBlock() instanceof DisguisableBlock disguisedBlock)
 				disguisedAs = disguisedBlock.getDisguisedStack(level, data.getPos());
-			else if (blockState.getBlock() instanceof IOverlayDisplay display) {
-				ItemStack displayStack = display.getDisplayStack(level, blockState, data.getPos());
+			else if (state.getBlock() instanceof IOverlayDisplay display) {
+				ItemStack displayStack = display.getDisplayStack(level, state, data.getPos());
 
 				if (displayStack != null)
 					disguisedAs = displayStack;
@@ -78,10 +78,10 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 			}
 
 			@Override
-			public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, Player player, Level level, BlockState blockState, IProbeHitData data) {
-				Block block = blockState.getBlock();
+			public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, Player player, Level level, BlockState state, IProbeHitData data) {
+				Block block = state.getBlock();
 
-				if (block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(level, blockState, data.getPos()))
+				if (block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(level, state, data.getPos()))
 					return;
 
 				BlockEntity be = level.getBlockEntity(data.getPos());

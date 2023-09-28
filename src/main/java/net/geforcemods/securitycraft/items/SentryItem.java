@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -28,12 +27,10 @@ public class SentryItem extends Item {
 	public InteractionResult useOn(UseOnContext ctx) {
 		Level level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
-		Direction facing = ctx.getClickedFace();
-		Player player = ctx.getPlayer();
 		boolean replacesTargetedBlock = level.getBlockState(pos).getMaterial().isReplaceable();
 
 		if (!replacesTargetedBlock) {
-			pos = pos.relative(facing); //if the block is not replaceable, place sentry next to targeted block
+			pos = pos.relative(ctx.getClickedFace()); //if the block is not replaceable, place sentry next to targeted block
 
 			BlockState stateAtPlacePos = level.getBlockState(pos);
 
@@ -41,6 +38,7 @@ public class SentryItem extends Item {
 				return InteractionResult.PASS;
 		}
 
+		Player player = ctx.getPlayer();
 		BlockPos downPos = pos.below();
 
 		if (level.isEmptyBlock(downPos) || level.noCollision(new AABB(downPos))) {

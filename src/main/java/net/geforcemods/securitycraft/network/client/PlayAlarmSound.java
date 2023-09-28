@@ -54,7 +54,7 @@ public class PlayAlarmSound {
 		Level level = ClientHandler.getClientLevel();
 
 		if (level.getBlockEntity(bePos) instanceof AlarmBlockEntity be)
-			be.playSound(level, getX(), getY(), getZ(), sound, volume, pitch);
+			be.playSound(getX(), getY(), getZ(), sound, volume, pitch);
 	}
 
 	public double getX() {

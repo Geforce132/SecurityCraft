@@ -151,8 +151,8 @@ public class SecurityCamera extends Entity {
 	}
 
 	@Override
-	public void remove(RemovalReason pReason) {
-		super.remove(pReason);
+	public void remove(RemovalReason reason) {
+		super.remove(reason);
 		discardCamera();
 	}
 

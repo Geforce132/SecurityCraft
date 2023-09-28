@@ -16,16 +16,16 @@ public class ProjectECompatConversionProvider extends CustomConversionProvider {
 
 	@Override
 	protected void addCustomConversions() {
-		CustomConversionBuilder reinforcedBlocksconversionBuilder = createConversionBuilder(new ResourceLocation(SecurityCraft.MODID, "reinforced_blocks"));
+		CustomConversionBuilder reinforcedBlocksConversionBuilder = createConversionBuilder(new ResourceLocation(SecurityCraft.MODID, "reinforced_blocks"));
 		CustomConversionBuilder passcodeProtectedConversionBuilder = createConversionBuilder(new ResourceLocation(SecurityCraft.MODID, "passcode_protected"));
 		long keyPanelEMC = 520;
 
 		SecurityCraft.collectSCContentData();
-		reinforcedBlocksconversionBuilder.comment("Conversions for vanilla blocks to reinforced blocks. The only cost is durability of the reinforcer, so they are close enough to balance out.");
+		reinforcedBlocksConversionBuilder.comment("Conversions for vanilla blocks to reinforced blocks. The only cost is durability of the reinforcer, so they are close enough to balance out.");
 		//@formatter:off
 		IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.entrySet().stream()
 			.filter(entry -> entry.getKey().asItem() != Items.AIR && entry.getValue().asItem() != Items.AIR)
-			.forEach(entry -> reinforcedBlocksconversionBuilder.conversion(entry.getValue()).ingredient(entry.getKey()).end());
+			.forEach(entry -> reinforcedBlocksConversionBuilder.conversion(entry.getValue()).ingredient(entry.getKey()).end());
 		//@formatter:on
 		passcodeProtectedConversionBuilder.comment("Passcode-protected blocks are created by rightclicking a non-passcode-protected block with a key panel, so the EMC is that block's EMC + the key panel's EMC.");
 		passcodeProtectedConversionBuilder.before(SCContent.KEYPAD.get(), 1856 + keyPanelEMC);

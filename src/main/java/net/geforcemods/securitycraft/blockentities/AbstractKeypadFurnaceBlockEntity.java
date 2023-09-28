@@ -226,7 +226,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	@Override
 	public void startOpen(Player player) {
 		if (!remove && !player.isSpectator())
-			openersCounter.incrementOpeners(player, this.getLevel(), getBlockPos(), getBlockState());
+			openersCounter.incrementOpeners(player, getLevel(), getBlockPos(), getBlockState());
 	}
 
 	@Override

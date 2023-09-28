@@ -172,7 +172,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 			stopPlayingSound();
 	}
 
-	public void playSound(Level level, double x, double y, double z, SoundEvent sound, float volume, float pitch) {
+	public void playSound(double x, double y, double z, SoundEvent sound, float volume, float pitch) {
 		AlarmSoundHandler.playSound(this, x, y, z, sound, SoundSource.BLOCKS, volume, pitch);
 		soundPlaying = true;
 	}

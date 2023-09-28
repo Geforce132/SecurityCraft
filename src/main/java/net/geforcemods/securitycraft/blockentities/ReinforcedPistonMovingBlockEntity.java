@@ -151,6 +151,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 							return;
 
 						entity = entities.next();
+
 						if (entity.getPistonPushReaction() != PushReaction.IGNORE) {
 							if (!isSlimeBlock)
 								break;
@@ -181,6 +182,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 
 						if (movementArea.intersects(entityCollision)) {
 							d4 = Math.max(d4, getMovement(movementArea, direction, entityCollision));
+
 							if (d4 >= progressChange)
 								break;
 						}
@@ -287,11 +289,11 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 					pushedState = Block.updateFromNeighbourShapes(movedState, level, worldPosition);
 
 				if (movedBlockEntityTag != null) {
-					BlockEntity te = pushedState.hasBlockEntity() ? ((EntityBlock) pushedState.getBlock()).newBlockEntity(worldPosition, pushedState) : null;
+					BlockEntity be = pushedState.hasBlockEntity() ? ((EntityBlock) pushedState.getBlock()).newBlockEntity(worldPosition, pushedState) : null;
 
-					if (te != null) {
-						te.load(movedBlockEntityTag);
-						level.setBlockEntity(te);
+					if (be != null) {
+						be.load(movedBlockEntityTag);
+						level.setBlockEntity(be);
 					}
 				}
 

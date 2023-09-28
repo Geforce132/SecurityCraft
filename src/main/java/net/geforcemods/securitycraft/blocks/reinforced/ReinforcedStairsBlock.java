@@ -272,7 +272,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type) {
+	public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
 		return false;
 	}
 }
