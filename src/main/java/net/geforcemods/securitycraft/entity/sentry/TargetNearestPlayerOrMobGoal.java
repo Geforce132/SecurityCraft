@@ -37,7 +37,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 		List<LivingEntity> list = mob.level.<LivingEntity>getEntitiesOfClass(targetType, getTargetSearchArea(getFollowDistance()), e -> sentry.getSensing().hasLineOfSight(e) && !EntityUtils.isInvisible(e));
 
 		if (!list.isEmpty()) {
-			SentryMode mode = sentry.getMode();
+			SentryMode sentryMode = sentry.getMode();
 			int i;
 
 			Collections.sort(list, (e1, e2) -> {
@@ -58,7 +58,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 					continue;
 
 				//@formatter:off
-				if (mode.attacksPlayers() && potentialTarget instanceof Player player
+				if (sentryMode.getTargetingMode().allowsPlayers() && potentialTarget instanceof Player player
 						&& !player.isSpectator()
 						&& !player.isCreative()
 						&& !((Sentry) mob).isOwnedBy(player)
@@ -67,7 +67,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 				}
 				//@formatter:on
 
-				if (mode.attacksHostile() && isSupportedTarget(potentialTarget))
+				if (sentryMode.getTargetingMode().allowsMobs() && isSupportedTarget(potentialTarget))
 					break;
 			}
 
