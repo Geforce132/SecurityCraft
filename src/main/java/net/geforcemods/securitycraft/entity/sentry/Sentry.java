@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -712,21 +713,21 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	public enum SentryMode {
-		CAMOUFLAGE_HP(1, 0, 1),
-		CAMOUFLAGE_H(1, 1, 3),
-		CAMOUFLAGE_P(1, 2, 5),
-		AGGRESSIVE_HP(0, 0, 0),
-		AGGRESSIVE_H(0, 1, 2),
-		AGGRESSIVE_P(0, 2, 4),
-		IDLE(-1, -1, 6);
+		CAMOUFLAGE_HP(1, TargetingMode.PLAYERS_AND_MOBS, 1),
+		CAMOUFLAGE_H(1, TargetingMode.MOBS, 3),
+		CAMOUFLAGE_P(1, TargetingMode.PLAYERS, 5),
+		AGGRESSIVE_HP(0, TargetingMode.PLAYERS_AND_MOBS, 0),
+		AGGRESSIVE_H(0, TargetingMode.MOBS, 2),
+		AGGRESSIVE_P(0, TargetingMode.PLAYERS, 4),
+		IDLE(-1, null, 6);
 
 		private final int type;
-		private final int attack;
+		private final TargetingMode targetingMode;
 		private final int descriptionKeyIndex;
 
-		SentryMode(int type, int attack, int descriptionKeyIndex) {
+		SentryMode(int type, TargetingMode targetingMode, int descriptionKeyIndex) {
 			this.type = type;
-			this.attack = attack;
+			this.targetingMode = targetingMode;
 			this.descriptionKeyIndex = descriptionKeyIndex;
 		}
 
@@ -738,12 +739,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			return type == 1;
 		}
 
-		public boolean attacksHostile() {
-			return attack == 0 || attack == 1;
-		}
-
-		public boolean attacksPlayers() {
-			return attack == 0 || attack == 2;
+		public TargetingMode getTargetingMode() {
+			return targetingMode;
 		}
 
 		public String getModeKey() {
@@ -755,7 +752,12 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		public String getTargetKey() {
 			String key = "gui.securitycraft:srat.targets";
 
-			return attacksHostile() && attacksPlayers() ? key + "1" : (attacksHostile() ? key + "2" : (attacksPlayers() ? key + "3" : ""));
+			return switch (targetingMode) {
+				case PLAYERS_AND_MOBS -> key + "1";
+				case MOBS -> key + "2";
+				case PLAYERS -> key + "3";
+				default -> "";
+			};
 		}
 
 		public String getDescriptionKey() {
