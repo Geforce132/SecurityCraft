@@ -34,6 +34,7 @@ import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
+import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
@@ -65,6 +66,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.Effects;
 import net.minecraft.state.properties.NoteBlockInstrument;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -164,6 +166,9 @@ public class SCEventHandler {
 		if (player.getCamera() instanceof SecurityCamera) {
 			SecurityCamera cam = (SecurityCamera) player.getCamera();
 			TileEntity be = player.level.getBlockEntity(cam.blockPosition());
+
+			if (player.getEffect(Effects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)
+				player.removeEffect(Effects.NIGHT_VISION);
 
 			if (be instanceof SecurityCameraBlockEntity)
 				((SecurityCameraBlockEntity) be).stopViewing();

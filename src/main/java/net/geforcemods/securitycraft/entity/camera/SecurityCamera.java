@@ -11,14 +11,15 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
-import net.geforcemods.securitycraft.network.server.GiveNightVision;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
+import net.geforcemods.securitycraft.network.server.ToggleNightVision;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -35,7 +36,6 @@ public class SecurityCamera extends Entity {
 	private int screenshotSoundCooldown = 0;
 	protected int redstoneCooldown = 0;
 	protected int toggleNightVisionCooldown = 0;
-	private boolean shouldProvideNightVision = false;
 	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
 	private int initialChunkLoadingDistance = 0;
@@ -107,28 +107,25 @@ public class SecurityCamera extends Entity {
 				setScreenshotSoundCooldown(getScreenshotSoundCooldown() - 1);
 
 			if (redstoneCooldown > 0)
-				redstoneCooldown -= 1;
+				redstoneCooldown--;
 
 			if (toggleNightVisionCooldown > 0)
-				toggleNightVisionCooldown -= 1;
-
-			if (shouldProvideNightVision)
-				SecurityCraft.channel.sendToServer(new GiveNightVision());
+				toggleNightVisionCooldown--;
 		}
 		else if (level.getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get())
 			remove();
 	}
 
-	public void toggleRedstonePower() {
+	public void toggleRedstonePowerFromClient() {
 		BlockPos pos = blockPosition();
 
 		if (((IModuleInventory) level.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
 			SecurityCraft.channel.sendToServer(new SetCameraPowered(pos, !level.getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
 	}
 
-	public void toggleNightVision() {
+	public void toggleNightVisionFromClient() {
 		toggleNightVisionCooldown = 30;
-		shouldProvideNightVision = !shouldProvideNightVision;
+		SecurityCraft.channel.sendToServer(new ToggleNightVision());
 	}
 
 	public float getZoomAmount() {
@@ -171,6 +168,9 @@ public class SecurityCamera extends Entity {
 			player.camera = player;
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new SetCameraView(player));
 			DISMOUNTED_PLAYERS.add(player);
+
+			if (player.getEffect(Effects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)
+				player.removeEffect(Effects.NIGHT_VISION);
 		}
 	}
 
