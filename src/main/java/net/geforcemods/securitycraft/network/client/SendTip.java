@@ -38,15 +38,15 @@ public class SendTip {
 			return;
 
 		//@formatter:off
-			String tipKey = getRandomTip();
-			MutableComponent message = Component.literal("[")
-					.append(Component.literal("SecurityCraft").withStyle(ChatFormatting.GOLD))
-					.append(Component.literal("] "))
-					.append(Utils.localize("messages.securitycraft:thanks",
-							SecurityCraft.getVersion(),
-							Utils.localize("messages.securitycraft:tip"),
-							Utils.localize(tipKey)));
-			//@formatter:on
+		String tipKey = getRandomTip();
+		MutableComponent message = Component.literal("[")
+				.append(Component.literal("SecurityCraft").withStyle(ChatFormatting.GOLD))
+				.append(Component.literal("] "))
+				.append(Utils.localize("messages.securitycraft:thanks",
+						SecurityCraft.getVersion(),
+						Utils.localize("messages.securitycraft:tip"),
+						Utils.localize(tipKey)));
+		//@formatter:on
 
 		if (TIPS_WITH_LINK.containsKey(tipKey.split("\\.")[2]))
 			message = message.append(ForgeHooks.newChatWithLinks(TIPS_WITH_LINK.get(tipKey.split("\\.")[2])));

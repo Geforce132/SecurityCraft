@@ -25,7 +25,7 @@ public class ModuleItemContainer implements Container {
 		if (!module.hasTag())
 			module.setTag(new CompoundTag());
 
-		readFromNBT(module.getTag());
+		load(module.getTag());
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class ModuleItemContainer implements Container {
 		return moduleInventory.get(index);
 	}
 
-	public void readFromNBT(CompoundTag tag) {
+	public void load(CompoundTag tag) {
 		ListTag items = tag.getList("ItemInventory", Tag.TAG_COMPOUND);
 
 		for (int i = 0; i < items.size(); i++) {
@@ -50,15 +50,15 @@ public class ModuleItemContainer implements Container {
 		}
 	}
 
-	public void writeToNBT(CompoundTag tag) {
+	public void save(CompoundTag tag) {
 		ListTag items = new ListTag();
 
 		for (int i = 0; i < getContainerSize(); i++) {
 			if (!getItem(i).isEmpty()) {
 				CompoundTag item = new CompoundTag();
+
 				item.putInt("Slot", i);
 				getItem(i).save(item);
-
 				items.add(item);
 			}
 		}
@@ -113,7 +113,7 @@ public class ModuleItemContainer implements Container {
 				moduleInventory.set(i, ItemStack.EMPTY);
 		}
 
-		writeToNBT(module.getTag());
+		save(module.getTag());
 
 		if (menu != null)
 			menu.slotsChanged(this);

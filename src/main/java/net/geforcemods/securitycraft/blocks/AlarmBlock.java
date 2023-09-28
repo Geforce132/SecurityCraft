@@ -128,7 +128,6 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (!level.isClientSide) {
 			playSoundAndUpdate(level, pos);
-
 			level.scheduleTick(pos, state.getBlock(), 5);
 		}
 	}

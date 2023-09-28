@@ -110,8 +110,8 @@ public abstract class FakeLavaFluid extends ForgeFlowingFluid {
 	}
 
 	private boolean isSurroundingBlockFlammable(Level level, BlockPos pos) {
-		for (Direction Direction : Direction.values()) {
-			if (getCanBlockBurn(level, pos.relative(Direction)))
+		for (Direction direction : Direction.values()) {
+			if (getCanBlockBurn(level, pos.relative(direction)))
 				return true;
 		}
 

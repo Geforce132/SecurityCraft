@@ -41,7 +41,6 @@ public class CameraMonitorItem extends Item {
 		Player player = ctx.getPlayer();
 		Level level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
-		ItemStack stack = ctx.getItemInHand();
 
 		if (level.getBlockState(pos).getBlock() == SCContent.SECURITY_CAMERA.get() && !PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) level.getBlockEntity(pos);
@@ -50,6 +49,8 @@ public class CameraMonitorItem extends Item {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cannotView"), ChatFormatting.RED);
 				return InteractionResult.FAIL;
 			}
+
+			ItemStack stack = ctx.getItemInHand();
 
 			if (stack.getTag() == null)
 				stack.setTag(new CompoundTag());
@@ -62,12 +63,13 @@ public class CameraMonitorItem extends Item {
 				return InteractionResult.SUCCESS;
 			}
 
-			for (int i = 1; i <= 30; i++)
+			for (int i = 1; i <= 30; i++) {
 				if (!stack.getTag().contains("Camera" + i)) {
 					stack.getTag().putString("Camera" + i, LevelUtils.toNBTString(view));
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
 					break;
 				}
+			}
 
 			if (!level.isClientSide && !stack.isEmpty())
 				SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
@@ -87,7 +89,7 @@ public class CameraMonitorItem extends Item {
 			return InteractionResultHolder.pass(stack);
 		}
 
-		if (stack.getItem() == SCContent.CAMERA_MONITOR.get() && level.isClientSide)
+		if (level.isClientSide && stack.getItem() == SCContent.CAMERA_MONITOR.get())
 			ClientHandler.displayCameraMonitorScreen(player.getInventory(), (CameraMonitorItem) stack.getItem(), stack.getTag());
 
 		return InteractionResultHolder.consume(stack);

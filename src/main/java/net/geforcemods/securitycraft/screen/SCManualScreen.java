@@ -487,18 +487,18 @@ public class SCManualScreen extends Screen {
 				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
 			if (block.defaultBlockState().hasBlockEntity()) {
-				BlockEntity te = ((EntityBlock) block).newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
+				BlockEntity be = ((EntityBlock) block).newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
 
-				if (ownable = te instanceof IOwnable)
+				if (ownable = be instanceof IOwnable)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock")));
 
-				if (passcodeProtected = te instanceof IPasscodeProtected)
+				if (passcodeProtected = be instanceof IPasscodeProtected)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passcodeProtectedBlock")));
 
-				if (viewActivated = te instanceof IViewActivated)
+				if (viewActivated = be instanceof IViewActivated)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
-				if (te instanceof ICustomizable customizableBe) {
+				if (be instanceof ICustomizable customizableBe) {
 					Option<?>[] options = customizableBe.customOptions();
 
 					if (options != null && options.length > 0) {
@@ -518,7 +518,7 @@ public class SCManualScreen extends Screen {
 					}
 				}
 
-				if (te instanceof IModuleInventory moduleInv && moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0) {
+				if (be instanceof IModuleInventory moduleInv && moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0) {
 					List<Component> display = new ArrayList<>();
 
 					moduleInventory = true;
@@ -534,7 +534,7 @@ public class SCManualScreen extends Screen {
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, display));
 				}
 
-				if (lockable = te instanceof ILockable)
+				if (lockable = be instanceof ILockable)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 189, startX + 189 + 16, Utils.localize("gui.securitycraft:scManual.lockable")));
 
 				if (customizable || moduleInventory)

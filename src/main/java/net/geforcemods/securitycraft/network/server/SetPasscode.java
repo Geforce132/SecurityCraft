@@ -58,12 +58,12 @@ public class SetPasscode {
 		}
 	}
 
-	private static void checkAndUpdateAdjacentChest(KeypadChestBlockEntity te, Level level, BlockPos pos, String codeToSet, byte[] salt) {
-		if (te.getBlockState().getValue(ChestBlock.TYPE) != ChestType.SINGLE) {
-			BlockPos offsetPos = pos.relative(ChestBlock.getConnectedDirection(te.getBlockState()));
+	private static void checkAndUpdateAdjacentChest(KeypadChestBlockEntity be, Level level, BlockPos pos, String codeToSet, byte[] salt) {
+		if (be.getBlockState().getValue(ChestBlock.TYPE) != ChestType.SINGLE) {
+			BlockPos offsetPos = pos.relative(ChestBlock.getConnectedDirection(be.getBlockState()));
 			BlockEntity otherBe = level.getBlockEntity(offsetPos);
 
-			if (otherBe instanceof KeypadChestBlockEntity chestBe && te.getOwner().owns(chestBe)) {
+			if (otherBe instanceof KeypadChestBlockEntity chestBe && be.getOwner().owns(chestBe)) {
 				chestBe.hashAndSetPasscode(codeToSet, salt);
 				level.sendBlockUpdated(offsetPos, otherBe.getBlockState(), otherBe.getBlockState(), 2);
 			}
