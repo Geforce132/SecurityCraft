@@ -751,8 +751,12 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			return type == 1;
 		}
 
-		public TargetingMode getTargetingMode() {
-			return targetingMode;
+		public boolean attacksHostile() {
+			return targetingMode != null && targetingMode.allowsMobs();
+		}
+
+		public boolean attacksPlayers() {
+			return targetingMode != null && targetingMode.allowsPlayers();
 		}
 
 		public String getModeKey() {
