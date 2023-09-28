@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.entity.sentry;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.entity.sentry.Sentry.EnumSentryMode;
+import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -31,7 +31,7 @@ public class AttackRangedIfEnabledGoal extends EntityAIBase {
 			return false;
 		else {
 			attackTarget = potentialTarget;
-			return sentry.getMode() != EnumSentryMode.IDLE;
+			return sentry.getMode() != SentryMode.IDLE;
 		}
 	}
 

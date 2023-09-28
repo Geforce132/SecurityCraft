@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
@@ -101,7 +102,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		dataManager.set(OWNER, owner);
 		dataManager.set(ALLOWLIST, new NBTTagCompound());
 		dataManager.set(HAS_SPEED_MODULE, false);
-		dataManager.set(MODE, EnumSentryMode.CAMOUFLAGE_HP.ordinal());
+		dataManager.set(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.set(HEAD_ROTATION, 0.0F);
 		setPosition(x, y, z);
 		getSentryDisguiseBlockEntity(); //here to set the disguise block and its owner
@@ -113,7 +114,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		dataManager.register(OWNER, new Owner());
 		dataManager.register(ALLOWLIST, new NBTTagCompound());
 		dataManager.register(HAS_SPEED_MODULE, false);
-		dataManager.register(MODE, EnumSentryMode.CAMOUFLAGE_HP.ordinal());
+		dataManager.register(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.register(HEAD_ROTATION, 0.0F);
 	}
 
@@ -314,16 +315,16 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 	 * @param sendMessage Whether or not to send a message to the player
 	 */
 	public void toggleMode(EntityPlayer player, int mode, boolean sendMessage) {
-		if (mode < 0 || mode >= EnumSentryMode.values().length)
+		if (mode < 0 || mode >= SentryMode.values().length)
 			mode = 0;
 
 		dataManager.set(MODE, mode);
 
 		if (sendMessage)
-			player.sendStatusMessage(Utils.localize(EnumSentryMode.values()[mode].getModeKey()).appendSibling(Utils.localize(EnumSentryMode.values()[mode].getDescriptionKey())), true);
+			player.sendStatusMessage(Utils.localize(SentryMode.values()[mode].getModeKey()).appendSibling(Utils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
 
 		if (!player.world.isRemote)
-			SecurityCraft.network.sendToAllTracking(new InitSentryAnimation(getPosition(), true, EnumSentryMode.values()[mode].isAggressive(), isShutDown()), this);
+			SecurityCraft.network.sendToAllTracking(new InitSentryAnimation(getPosition(), true, SentryMode.values()[mode].isAggressive(), isShutDown()), this);
 	}
 
 	@Override
@@ -542,10 +543,10 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 	/**
 	 * @return The mode in which the sentry is currently in, CAMOUFLAGE_HP as a fallback if the saved mode is not a valid mode
 	 */
-	public EnumSentryMode getMode() {
+	public SentryMode getMode() {
 		int mode = dataManager.get(MODE);
 
-		return mode < 0 || mode >= EnumSentryMode.values().length ? EnumSentryMode.CAMOUFLAGE_HP : EnumSentryMode.values()[mode];
+		return mode < 0 || mode >= SentryMode.values().length ? SentryMode.CAMOUFLAGE_HP : SentryMode.values()[mode];
 	}
 
 	/**
@@ -743,22 +744,22 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		}
 	}
 
-	public enum EnumSentryMode {
-		CAMOUFLAGE_HP(1, 0, 1),
-		CAMOUFLAGE_H(1, 1, 3),
-		CAMOUFLAGE_P(1, 2, 5),
-		AGGRESSIVE_HP(0, 0, 0),
-		AGGRESSIVE_H(0, 1, 2),
-		AGGRESSIVE_P(0, 2, 4),
-		IDLE(-1, -1, 6);
+	public enum SentryMode {
+		CAMOUFLAGE_HP(1, TargetingMode.PLAYERS_AND_MOBS, 1),
+		CAMOUFLAGE_H(1, TargetingMode.MOBS, 3),
+		CAMOUFLAGE_P(1, TargetingMode.PLAYERS, 5),
+		AGGRESSIVE_HP(0, TargetingMode.PLAYERS_AND_MOBS, 0),
+		AGGRESSIVE_H(0, TargetingMode.MOBS, 2),
+		AGGRESSIVE_P(0, TargetingMode.PLAYERS, 4),
+		IDLE(-1, null, 6);
 
 		private final int type;
-		private final int attack;
+		private final TargetingMode targetingMode;
 		private final int descriptionKeyIndex;
 
-		EnumSentryMode(int type, int attack, int descriptionKeyIndex) {
+		SentryMode(int type, TargetingMode targetingMode, int descriptionKeyIndex) {
 			this.type = type;
-			this.attack = attack;
+			this.targetingMode = targetingMode;
 			this.descriptionKeyIndex = descriptionKeyIndex;
 		}
 
@@ -771,11 +772,11 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		}
 
 		public boolean attacksHostile() {
-			return attack == 0 || attack == 1;
+			return targetingMode != null && targetingMode.allowsMobs();
 		}
 
 		public boolean attacksPlayers() {
-			return attack == 0 || attack == 2;
+			return targetingMode != null && targetingMode.allowsPlayers();
 		}
 
 		public String getModeKey() {
@@ -787,7 +788,16 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		public String getTargetKey() {
 			String key = "gui.securitycraft:srat.targets";
 
-			return attacksHostile() && attacksPlayers() ? key + "1" : (attacksHostile() ? key + "2" : (attacksPlayers() ? key + "3" : ""));
+			switch (targetingMode) {
+				case PLAYERS_AND_MOBS:
+					return key + "1";
+				case MOBS:
+					return key + "2";
+				case PLAYERS:
+					return key + "3";
+				default:
+					return "";
+			}
 		}
 
 		public String getDescriptionKey() {

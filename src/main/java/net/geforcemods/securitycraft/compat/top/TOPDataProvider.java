@@ -19,7 +19,7 @@ import net.geforcemods.securitycraft.blocks.FakeLavaBaseBlock;
 import net.geforcemods.securitycraft.blocks.FakeWaterBaseBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
-import net.geforcemods.securitycraft.entity.sentry.Sentry.EnumSentryMode;
+import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -132,7 +132,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, EntityPlayer player, World world, Entity entity, IProbeHitEntityData data) {
 				if (entity instanceof Sentry) {
 					Sentry sentry = (Sentry) entity;
-					EnumSentryMode mode = sentry.getMode();
+					SentryMode mode = sentry.getMode();
 
 					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())).getFormattedText());
 
@@ -151,7 +151,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 
 					String modeDescription = Utils.localize(mode.getModeKey()).getFormattedText();
 
-					if (mode != EnumSentryMode.IDLE)
+					if (mode != SentryMode.IDLE)
 						modeDescription += " - " + Utils.localize(mode.getTargetKey()).getFormattedText();
 
 					probeInfo.text(TextFormatting.GRAY + modeDescription);

@@ -7,7 +7,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
-import net.geforcemods.securitycraft.entity.sentry.Sentry.EnumSentryMode;
+import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
 import net.geforcemods.securitycraft.network.server.RemoveSentryFromSRAT;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
@@ -103,7 +103,7 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 
 					if (!sentries.isEmpty()) {
 						Sentry sentry = sentries.get(0);
-						EnumSentryMode mode = sentry.getMode();
+						SentryMode mode = sentry.getMode();
 
 						if (sentry.hasCustomName()) {
 							String line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])).getFormattedText();
@@ -117,7 +117,7 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 						}
 
 						guiButtons[i][MODE].enabled = true;
-						guiButtons[i][TARGETS].enabled = mode != EnumSentryMode.IDLE;
+						guiButtons[i][TARGETS].enabled = mode != SentryMode.IDLE;
 						guiButtons[i][UNBIND].enabled = true;
 						((TogglePictureButton) guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
 						((TogglePictureButton) guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
@@ -206,7 +206,7 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 		if (!sentries.isEmpty()) {
 			int resultingMode = Math.max(0, Math.min(targets + mode * 3, 6)); //bind between 0 and 6
 
-			guiButtons[sentry][TARGETS].enabled = EnumSentryMode.values()[resultingMode] != EnumSentryMode.IDLE;
+			guiButtons[sentry][TARGETS].enabled = SentryMode.values()[resultingMode] != SentryMode.IDLE;
 			sentries.get(0).toggleMode(Minecraft.getMinecraft().player, resultingMode, false);
 			SecurityCraft.network.sendToServer(new SetSentryMode(sentries.get(0).getPosition(), resultingMode));
 		}

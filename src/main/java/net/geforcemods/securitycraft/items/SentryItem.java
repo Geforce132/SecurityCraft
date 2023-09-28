@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
-import net.geforcemods.securitycraft.entity.sentry.Sentry.EnumSentryMode;
+import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -48,7 +48,7 @@ public class SentryItem extends Item {
 
 		if (!world.isRemote) {
 			LevelUtils.addScheduledTask(world, () -> world.spawnEntity(entity));
-			player.sendStatusMessage(Utils.localize(EnumSentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(Utils.localize(EnumSentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
+			player.sendStatusMessage(Utils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(Utils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
 		}
 
 		if (!player.isCreative())

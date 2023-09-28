@@ -15,7 +15,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
-import net.geforcemods.securitycraft.entity.sentry.Sentry.EnumSentryMode;
+import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -115,7 +115,7 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 	public List<String> getWailaBody(Entity entity, List<String> body, IWailaEntityAccessor data, IWailaConfigHandler config) {
 		if (entity instanceof Sentry) {
 			Sentry sentry = (Sentry) entity;
-			EnumSentryMode mode = sentry.getMode();
+			SentryMode mode = sentry.getMode();
 
 			if (config.getConfig(SHOW_OWNER))
 				body.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())).getFormattedText());
@@ -135,7 +135,7 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 
 			String modeDescription = Utils.localize(mode.getModeKey()).getFormattedText();
 
-			if (mode != EnumSentryMode.IDLE)
+			if (mode != SentryMode.IDLE)
 				modeDescription += " - " + Utils.localize(mode.getTargetKey()).getFormattedText();
 
 			body.add(modeDescription);

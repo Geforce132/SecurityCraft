@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
-import net.geforcemods.securitycraft.entity.sentry.Sentry.EnumSentryMode;
+import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
@@ -39,7 +39,7 @@ public class TargetNearestPlayerOrMobGoal extends EntityAINearestAttackableTarge
 		List<EntityLivingBase> list = taskOwner.world.<EntityLivingBase>getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), e -> sentry.getEntitySenses().canSee(e) && !EntityUtils.isInvisible(e));
 
 		if (!list.isEmpty()) {
-			EnumSentryMode mode = sentry.getMode();
+			SentryMode sentryMode = sentry.getMode();
 			int i;
 
 			Collections.sort(list, sorter);
@@ -51,7 +51,7 @@ public class TargetNearestPlayerOrMobGoal extends EntityAINearestAttackableTarge
 				if (potentialTarget.getIsInvulnerable())
 					continue;
 
-				if (mode.attacksPlayers()) {
+				if (sentryMode.attacksPlayers()) {
 					//@formatter:off
 					if(potentialTarget instanceof EntityPlayer
 							&& !((EntityPlayer) potentialTarget).isSpectator()
@@ -64,7 +64,7 @@ public class TargetNearestPlayerOrMobGoal extends EntityAINearestAttackableTarge
 					//@formatter:on
 				}
 
-				if (mode.attacksHostile() && isSupportedTarget(potentialTarget))
+				if (sentryMode.attacksHostile() && isSupportedTarget(potentialTarget))
 					break;
 			}
 
