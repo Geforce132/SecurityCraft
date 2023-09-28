@@ -55,10 +55,9 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickableTileEntity, ILockable, IToggleableEntries<EntityType<?>>, INamedContainerProvider {
-	/* The range (in blocks) that the trophy system will search for projectiles in */
+	/** The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
-
-	/*
+	/**
 	 * The number of blocks away from the trophy system you can be for the laser beam between itself and the projectile to be
 	 * rendered
 	 */

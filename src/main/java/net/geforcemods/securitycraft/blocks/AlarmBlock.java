@@ -131,7 +131,6 @@ public class AlarmBlock extends OwnableBlock implements IWaterLoggable {
 	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random random) {
 		if (!level.isClientSide) {
 			playSoundAndUpdate(level, pos);
-
 			level.getBlockTicks().scheduleTick(pos, state.getBlock(), 5);
 		}
 	}

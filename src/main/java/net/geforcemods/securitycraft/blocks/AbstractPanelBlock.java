@@ -113,18 +113,18 @@ public abstract class AbstractPanelBlock extends OwnableBlock implements IWaterL
 	@Override
 	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
-			TileEntity te = level.getBlockEntity(pos);
+			TileEntity be = level.getBlockEntity(pos);
 
-			if (te instanceof IModuleInventory)
-				((IModuleInventory) te).dropAllModules();
+			if (be instanceof IModuleInventory)
+				((IModuleInventory) be).dropAllModules();
 
 			if (state.getValue(POWERED)) {
 				level.updateNeighborsAt(pos, this);
 				level.updateNeighborsAt(pos.relative(state.getValue(FACING).getOpposite()), this);
 			}
 
-			if (te instanceof IPasscodeProtected)
-				SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
+			if (be instanceof IPasscodeProtected)
+				SaltData.removeSalt(((IPasscodeProtected) be).getSaltKey());
 		}
 
 		super.onRemove(state, level, pos, newState, isMoving);

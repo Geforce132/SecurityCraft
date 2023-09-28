@@ -187,13 +187,13 @@ public class DisplayCaseBlock extends OwnableBlock implements IWaterLoggable {
 	@Override
 	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
-			TileEntity te = level.getBlockEntity(pos);
+			TileEntity be = level.getBlockEntity(pos);
 
-			if (te instanceof DisplayCaseBlockEntity)
-				Block.popResource(level, pos, ((DisplayCaseBlockEntity) te).getDisplayedStack());
+			if (be instanceof DisplayCaseBlockEntity)
+				Block.popResource(level, pos, ((DisplayCaseBlockEntity) be).getDisplayedStack());
 
-			if (te instanceof IPasscodeProtected)
-				SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
+			if (be instanceof IPasscodeProtected)
+				SaltData.removeSalt(((IPasscodeProtected) be).getSaltKey());
 		}
 
 		super.onRemove(state, level, pos, newState, isMoving);

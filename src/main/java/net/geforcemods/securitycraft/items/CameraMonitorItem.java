@@ -47,12 +47,13 @@ public class CameraMonitorItem extends Item {
 
 		if (level.getBlockState(pos).getBlock() == SCContent.SECURITY_CAMERA.get() && !PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) level.getBlockEntity(pos);
-			ItemStack stack = ctx.getItemInHand();
 
 			if (!be.isOwnedBy(player) && !be.isAllowed(player)) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
 				return ActionResultType.FAIL;
 			}
+
+			ItemStack stack = ctx.getItemInHand();
 
 			if (stack.getTag() == null)
 				stack.setTag(new CompoundNBT());

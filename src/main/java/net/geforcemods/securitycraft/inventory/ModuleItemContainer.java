@@ -25,7 +25,7 @@ public class ModuleItemContainer implements IInventory {
 		if (!module.hasTag())
 			module.setTag(new CompoundNBT());
 
-		readFromNBT(module.getTag());
+		load(module.getTag());
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class ModuleItemContainer implements IInventory {
 		return moduleInventory.get(index);
 	}
 
-	public void readFromNBT(CompoundNBT tag) {
+	public void load(CompoundNBT tag) {
 		ListNBT items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
 		for (int i = 0; i < items.size(); i++) {
@@ -50,7 +50,7 @@ public class ModuleItemContainer implements IInventory {
 		}
 	}
 
-	public void writeToNBT(CompoundNBT tag) {
+	public void save(CompoundNBT tag) {
 		ListNBT items = new ListNBT();
 
 		for (int i = 0; i < getContainerSize(); i++) {
@@ -111,7 +111,7 @@ public class ModuleItemContainer implements IInventory {
 				moduleInventory.set(i, ItemStack.EMPTY);
 		}
 
-		writeToNBT(module.getTag());
+		save(module.getTag());
 
 		if (menu != null)
 			menu.slotsChanged(this);
