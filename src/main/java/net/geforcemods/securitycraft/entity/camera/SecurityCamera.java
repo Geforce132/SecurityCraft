@@ -159,7 +159,7 @@ public class SecurityCamera extends Entity {
 			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new SetCameraView(player));
 			DISMOUNTED_PLAYERS.add(player);
 
-			if (player.hasEffect(MobEffects.NIGHT_VISION) && player.getEffect(MobEffects.NIGHT_VISION).isInfiniteDuration())
+			if (player.getEffect(MobEffects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)
 				player.removeEffect(MobEffects.NIGHT_VISION);
 		}
 	}
