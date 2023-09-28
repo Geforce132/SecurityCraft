@@ -26,7 +26,7 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 	public KeycardReaderMenu(int windowId, Inventory inventory, Level level, BlockPos pos) {
 		super(SCContent.KEYCARD_READER_MENU.get(), windowId);
 
-		this.be = (KeycardReaderBlockEntity) level.getBlockEntity(pos);
+		be = (KeycardReaderBlockEntity) level.getBlockEntity(pos);
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
 
 		//main player inventory
