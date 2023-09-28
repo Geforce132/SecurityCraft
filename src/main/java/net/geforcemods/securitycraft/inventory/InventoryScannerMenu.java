@@ -81,7 +81,7 @@ public class InventoryScannerMenu extends Container {
 					return ItemStack.EMPTY;
 			}
 			//hotbar; try to move it to the main inventory
-			else if (index < inventorySlots.size() && !mergeItemStack(slotStack, 38, 64, true))
+			else if (index < inventorySlots.size() && !mergeItemStack(slotStack, 38, 65, true))
 				return ItemStack.EMPTY;
 
 			if (slotStack.isEmpty())
