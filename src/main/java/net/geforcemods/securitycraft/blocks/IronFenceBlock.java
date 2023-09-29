@@ -1,6 +1,8 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IEMPAffectedBE;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IronFenceBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -17,7 +19,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -73,17 +74,23 @@ public class IronFenceBlock extends BlockFence implements ITileEntityProvider {
 
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+		hurtOrConvertEntity(world, pos, state, entity);
+	}
+
+	public static void hurtOrConvertEntity(World world, BlockPos pos, IBlockState state, Entity entity) {
 		TileEntity tile = world.getTileEntity(pos);
 
-		if (!(tile instanceof IronFenceBlockEntity))
+		if (!(tile instanceof IOwnable))
 			return;
 
-		IronFenceBlockEntity te = (IronFenceBlockEntity) tile;
+		IOwnable te = (IOwnable) tile;
 
-		if (te.isShutDown())
+		if (te instanceof IEMPAffectedBE && ((IEMPAffectedBE) te).isShutDown())
 			return;
 
-		if (!state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()))
+		if (world.provider.getWorldTime() % 20 != 0)
+			return;
+		else if (!state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()))
 			return;
 		else if (entity instanceof EntityItem) //so dropped items don't get destroyed
 			return;
@@ -93,12 +100,11 @@ public class IronFenceBlock extends BlockFence implements ITileEntityProvider {
 		}
 		else if (((OwnableBlockEntity) world.getTileEntity(pos)).allowsOwnableEntity(entity))
 			return;
-		else if (entity instanceof EntityCreeper) {
-			EntityCreeper creeper = (EntityCreeper) entity;
+		else if (!world.isRemote) {
 			EntityLightningBolt lightning = new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), true);
 
-			creeper.onStruckByLightning(lightning);
-			creeper.extinguish();
+			entity.onStruckByLightning(lightning);
+			entity.extinguish();
 			return;
 		}
 

@@ -1,8 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IronFenceBlockEntity;
-import net.geforcemods.securitycraft.misc.CustomDamageSources;
+import net.geforcemods.securitycraft.blocks.IronFenceBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
@@ -14,9 +13,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -68,37 +64,7 @@ public class ReinforcedFenceGateBlock extends BlockFenceGate implements ITileEnt
 		if (state.getValue(OPEN))
 			return;
 
-		TileEntity tile = world.getTileEntity(pos);
-
-		if (!(tile instanceof IronFenceBlockEntity))
-			return;
-
-		IronFenceBlockEntity te = (IronFenceBlockEntity) tile;
-
-		if (te.isShutDown())
-			return;
-
-		if (!state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()))
-			return;
-		else if (entity instanceof EntityItem)
-			return;
-		else if (entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entity;
-
-			if (te.isOwnedBy(player))
-				return;
-		}
-		else if (((OwnableBlockEntity) world.getTileEntity(pos)).allowsOwnableEntity(entity))
-			return;
-		else if (entity instanceof EntityCreeper) {
-			EntityCreeper creeper = (EntityCreeper) entity;
-			EntityLightningBolt lightning = new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), true);
-
-			creeper.onStruckByLightning(lightning);
-			return;
-		}
-
-		entity.attackEntityFrom(CustomDamageSources.ELECTRICITY, 6.0F);
+		IronFenceBlock.hurtOrConvertEntity(world, pos, state, entity);
 	}
 
 	@Override
