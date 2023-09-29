@@ -1,6 +1,7 @@
 {
-    "parent": "block/template_fence_gate_wall",
-    "textures": {
-        "texture": "securitycraft:block/reinforced_door_lower"
-    }
+  "parent": "securitycraft:block/template_custom_fence_gate_wall",
+  "textures": {
+    "particle": "securitycraft:block/reinforced_fence_gate_particle",
+    "texture": "securitycraft:block/reinforced_fence_gate"
+  }
 }
