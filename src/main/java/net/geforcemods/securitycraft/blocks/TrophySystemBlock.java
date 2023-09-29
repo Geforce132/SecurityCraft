@@ -30,17 +30,20 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class TrophySystemBlock extends DisguisableBlock {
 	//@formatter:off
 	private static final VoxelShape SHAPE = Stream.of(
-			Block.box(6.5, 0, 12, 9.5, 1.5, 15),
-			Block.box(5.5, 7, 5.5, 10.5, 11, 10.5),
-			Block.box(7, 12, 7, 9, 13, 9),
-			Block.box(6.5, 12.5, 6.5, 9.5, 15, 9.5),
-			Block.box(7, 14.5, 7, 9, 15.5, 9),
-			Block.box(7.25, 9, 7.25, 8.75, 12, 8.75),
-			Block.box(1, 0, 6.5, 4, 1.5, 9.5),
-			Block.box(12, 0, 6.5, 15, 1.5, 9.5),
-			Block.box(6.5, 0, 1, 9.5, 1.5, 4)
-			).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.block());
+			VoxelShapes.box(0.3125, 0.625, 0.3125, 0.6875, 1, 0.6875),
+			VoxelShapes.box(0.375, 0.375, 0.375, 0.625, 0.625, 0.625),
+			VoxelShapes.box(0.4375, 0.4375, 0.625, 0.5625, 0.5625, 0.875),
+			VoxelShapes.box(0.375, 0.5, 0.8125, 0.625, 0.75, 1),
+			VoxelShapes.box(0, 0.5, 0.375, 0.1875, 0.75, 0.625),
+			VoxelShapes.box(0.625, 0.4375, 0.4375, 0.875, 0.5625, 0.5625),
+			VoxelShapes.box(0.125, 0.4375, 0.4375, 0.375, 0.5625, 0.5625),
+			VoxelShapes.box(0.8125, 0.5, 0.375, 1, 0.75, 0.625),
+			VoxelShapes.box(0.4375, 0.4375, 0.125, 0.5625, 0.5625, 0.375),
+			VoxelShapes.box(0.375, 0.5, 0, 0.625, 0.75, 0.1875),
+			VoxelShapes.box(0.4375, 0.1875, 0.4375, 0.5625, 0.375, 0.5625)
+	).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.block());
 	//@formatter:on
+
 	public TrophySystemBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false));
