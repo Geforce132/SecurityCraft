@@ -17,7 +17,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -202,7 +201,13 @@ public class IronFenceBlock extends OwnableBlock {
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
+		hurtOrConvertEntity(this, state, level, pos, entity);
+	}
+
+	public static void hurtOrConvertEntity(Block electrifiedBlock, BlockState state, Level level, BlockPos pos, Entity entity) {
+		if (level.getGameTime() % 20 != 0)
+			return;
+		else if (!electrifiedBlock.getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
 			return;
 		else if (entity instanceof ItemEntity) //so dropped items don't get destroyed
 			return;
@@ -214,11 +219,11 @@ public class IronFenceBlock extends OwnableBlock {
 			if (((OwnableBlockEntity) level.getBlockEntity(pos)).allowsOwnableEntity(ownableEntity))
 				return;
 		}
-		else if (!level.isClientSide && entity instanceof Creeper creeper) {
+		else if (!level.isClientSide) {
 			LightningBolt lightning = LevelUtils.createLightning(level, Vec3.atBottomCenterOf(pos), true);
 
-			creeper.thunderHit((ServerLevel) level, lightning);
-			creeper.clearFire();
+			entity.thunderHit((ServerLevel) level, lightning);
+			entity.clearFire();
 			return;
 		}
 

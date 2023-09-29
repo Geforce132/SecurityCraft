@@ -2,23 +2,17 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
-import net.geforcemods.securitycraft.misc.CustomDamageSources;
+import net.geforcemods.securitycraft.blocks.IronFenceBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.OwnableEntity;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -30,8 +24,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBlock {
@@ -59,26 +51,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBl
 		if (level.getBlockState(pos).getValue(OPEN))
 			return;
 
-		if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
-			return;
-		if (entity instanceof ItemEntity)
-			return;
-		else if (entity instanceof Player player) {
-			if (((OwnableBlockEntity) level.getBlockEntity(pos)).isOwnedBy(player))
-				return;
-		}
-		else if (entity instanceof OwnableEntity ownableEntity) {
-			if (((OwnableBlockEntity) level.getBlockEntity(pos)).allowsOwnableEntity(ownableEntity))
-				return;
-		}
-		else if (!level.isClientSide && entity instanceof Creeper creeper) {
-			LightningBolt lightning = LevelUtils.createLightning(level, Vec3.atBottomCenterOf(pos), true);
-
-			creeper.thunderHit((ServerLevel) level, lightning);
-			return;
-		}
-
-		entity.hurt(CustomDamageSources.ELECTRICITY, 6.0F);
+		IronFenceBlock.hurtOrConvertEntity(this, state, level, pos, entity);
 	}
 
 	@Override
