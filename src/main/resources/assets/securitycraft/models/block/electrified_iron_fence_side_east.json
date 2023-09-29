@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/custom_fence_inventory",
+  "parent": "minecraft:block/custom_fence_side_east",
   "textures": {
     "texture": "securitycraft:block/electrified_iron_fence"
   }
