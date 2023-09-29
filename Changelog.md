@@ -27,6 +27,7 @@
 - Change: The recipe for the Keycard Reader has been slightly adjusted
 - Change: The Portable Radar now sends proximity messages to everyone on the same team instead of just the radar's owner
 - Change: The Trophy System's model has been changed to be more true to the original from Call of Duty
+- Change: Electrified Iron Fences and Electrified Iron Fence Gates can now convert any mob that is converted by lightning instead of just creepers
 - API: IReinforcedBlock has been moved to the API package
 - API: New methods IReinforcedBlock#convertToReinforced and IReinforcedBlock#convertToVanilla
 - API: New method IOwnable#allowsOwnableEntity to check whether an ownable entity's owner owns the block entity
