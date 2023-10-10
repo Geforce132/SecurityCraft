@@ -133,6 +133,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 			}
 			else if (option.getName().equals("ignoreOwner"))
 				ignoreOwner.copy(option);
+			else if (option.getName().equals("signalLength"))
+				signalLength.copy(option);
 		}
 		else if (action instanceof ILinkedAction.ModuleInserted) {
 			ILinkedAction.ModuleInserted moduleInserted = (ILinkedAction.ModuleInserted) action;
