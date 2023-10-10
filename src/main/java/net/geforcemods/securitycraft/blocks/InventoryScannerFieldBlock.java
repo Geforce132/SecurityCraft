@@ -237,14 +237,10 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if (connectedScanner == null)
 			return;
 
-		updateInvScanner(be);
-		updateInvScanner(connectedScanner);
-	}
-
-	private static void updateInvScanner(InventoryScannerBlockEntity be) {
-		be.activate();
-		BlockUtils.updateAndNotify(be.getLevel(), be.getBlockPos(), be.getBlockState().getBlock(), 1, true);
-		BlockUtils.updateIndirectNeighbors(be.getLevel(), be.getBlockPos(), SCContent.INVENTORY_SCANNER.get());
+		if (!be.wantsToProvidePower()) {
+			be.togglePowerOutput();
+			connectedScanner.togglePowerOutput();
+		}
 	}
 
 	/**
