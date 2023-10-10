@@ -57,7 +57,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	private IntOption signalLength = new SignalLengthOption(60);
 	private LazyOptional<IItemHandler> storageHandler;
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
-	private boolean isProvidingPower;
+	private boolean providePower;
 	private int cooldown;
 	private LensContainer lens = new LensContainer(1);
 
@@ -70,12 +70,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	public void tick(Level level, BlockPos pos, BlockState state) {
 		if (cooldown > 0)
 			cooldown--;
-		else if (isProvidingPower) {
-			isProvidingPower = false;
-			BlockUtils.updateAndNotify(level, pos, state.getBlock(), 1, true);
-			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.INVENTORY_SCANNER.get());
-			setChanged();
-		}
+		else if (providePower)
+			togglePowerOutput();
 	}
 
 	@Override
@@ -108,6 +104,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		}
 
 		cooldown = tag.getInt("cooldown");
+		providePower = tag.getBoolean("is_providing_power");
 		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
 		lens.setChanged();
 	}
@@ -129,6 +126,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		tag.put("Items", list);
 		tag.putInt("cooldown", cooldown);
+		tag.putBoolean("is_providing_power", providePower);
 		tag.put("lens", lens.createTag());
 	}
 
@@ -320,14 +318,21 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		return true;
 	}
 
-	public boolean shouldProvidePower() {
-		return isModuleEnabled(ModuleType.REDSTONE) && isProvidingPower;
+	public boolean isProvidingPower() {
+		return isModuleEnabled(ModuleType.REDSTONE) && providePower;
 	}
 
-	public void activate() {
-		this.isProvidingPower = true;
-		this.cooldown = signalLength.get();
+	public boolean wantsToProvidePower() {
+		return providePower;
+	}
+
+	public void togglePowerOutput() {
+		providePower = !providePower;
+		BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.INVENTORY_SCANNER.get());
 		setChanged();
+
+		if (providePower)
+			cooldown = signalLength.get();
 	}
 
 	public NonNullList<ItemStack> getContents() {
@@ -439,6 +444,12 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			if (connectedScanner != null)
 				connectedScanner.setIgnoresOwner(((BooleanOption) option).get());
 		}
+		else if (option.getName().equals("signalLength")) {
+			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
+
+			if (connectedScanner != null)
+				connectedScanner.setSignalLength(((IntOption) option).get());
+		}
 
 		super.onOptionChanged(option);
 	}
@@ -512,6 +523,12 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
 			setChanged();
 		}
+	}
+
+	public void setSignalLength(int signalLength) {
+		this.signalLength.setValue(signalLength);
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
+		setChanged();
 	}
 
 	@Override
