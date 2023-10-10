@@ -1008,6 +1008,7 @@ tile.securitycraft:retinalScanner.name=Escáner de retina
 tile.securitycraft:rift_stabilizer.name=Estabilizador de grietas
 tile.securitycraft:sandMine.name=Arena con mina
 tile.securitycraft:scannerDoor.name=Puerta con escáner
+tile.securitycraft:scanner_trapdoor.name=Trampilla escáner
 tile.securitycraft:secret_sign.name=Cartel secreto
 tile.securitycraft:securityCamera.name=Cámara de seguridad
 tile.securitycraft:sonic_security_system.name=Sistema de seguridad sónico
