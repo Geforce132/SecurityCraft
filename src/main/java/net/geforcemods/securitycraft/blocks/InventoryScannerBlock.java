@@ -210,7 +210,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 			InventoryHelper.dropInventoryItems(world, pos, te.getLensContainer());
 
-			if (te.shouldProvidePower()) {
+			if (te.isProvidingPower()) {
 				world.notifyNeighborsOfStateChange(pos, this, false);
 				BlockUtils.updateIndirectNeighbors(world, pos, this);
 			}
@@ -274,7 +274,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		if (!(te instanceof InventoryScannerBlockEntity))
 			return 0;
 
-		return (((InventoryScannerBlockEntity) te).isModuleEnabled(ModuleType.REDSTONE) && ((InventoryScannerBlockEntity) te).shouldProvidePower()) ? 15 : 0;
+		return (((InventoryScannerBlockEntity) te).isModuleEnabled(ModuleType.REDSTONE) && ((InventoryScannerBlockEntity) te).isProvidingPower()) ? 15 : 0;
 	}
 
 	@Override
@@ -327,7 +327,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 		@Override
 		public boolean isPowering(World world, BlockPos pos, IBlockState state, TileEntity te, EnumFacing direction, int distance) {
-			return ((InventoryScannerBlockEntity) te).isModuleEnabled(ModuleType.REDSTONE) && ((InventoryScannerBlockEntity) te).shouldProvidePower();
+			return ((InventoryScannerBlockEntity) te).isModuleEnabled(ModuleType.REDSTONE) && ((InventoryScannerBlockEntity) te).isProvidingPower();
 		}
 
 		@Override
