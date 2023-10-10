@@ -20,7 +20,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version = 'v1.9.7'
+version = 'v1.9.8'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
