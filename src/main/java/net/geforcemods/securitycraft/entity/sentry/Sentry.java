@@ -573,7 +573,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 					return true;
 			}
 
-			return ModuleItem.doesModuleHaveTeamOf(allowlistModule, potentialTarget.getName().getString(), level());
+			return ModuleItem.doesModuleHaveTeamOf(allowlistModule, potentialTarget.getName().getString(), level);
 		}
 
 		return false;
