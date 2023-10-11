@@ -47,6 +47,7 @@
 - Fix: The Keypad Trapdoor is not in the correct creative tab
 - Fix: The Inventory Scanner has a delay when checking and collecting prohibited items from inventories (Thanks Tenebrosful!)
 - Fix: The Inventory Scanner can void items
+- Fix: Sentries still attack teams that are allowed through an allowlist module
 - Misc.: Several improvements to the French translation (Thanks Kobrha!)
 - Misc.: Various texture and model updates - resource packs may need to be updated
 
