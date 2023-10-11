@@ -584,6 +584,8 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 				if (potentialTarget.getName().getContents().equalsIgnoreCase(s))
 					return true;
 			}
+
+			return ModuleItem.doesModuleHaveTeamOf(allowlistModule, potentialTarget.getName().getString(), level);
 		}
 
 		return false;
