@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
 import java.util.List;
 
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
@@ -7,7 +8,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.SoundType;
 import net.minecraft.init.Blocks;
-import scala.actors.threadpool.Arrays;
 
 public class ReinforcedLadderBlock extends BlockLadder implements IReinforcedBlock {
 	public ReinforcedLadderBlock() {
@@ -16,9 +16,7 @@ public class ReinforcedLadderBlock extends BlockLadder implements IReinforcedBlo
 
 	@Override
 	public List<Block> getVanillaBlocks() {
-		return Arrays.asList(new Block[] {
-				Blocks.LADDER
-		});
+		return Arrays.asList(Blocks.LADDER);
 	}
 
 	@Override
