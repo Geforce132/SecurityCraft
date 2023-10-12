@@ -81,12 +81,11 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.WIRE_CUTTERS.get()));
 				output.accept(new ItemStack(SCContent.IRON_FENCE.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_FENCE_GATE.get()));
-				output.accept(new ItemStack(SCContent.REINFORCED_IRON_TRAPDOOR.get()));
 				output.accept(new ItemStack(SCContent.KEYPAD_TRAPDOOR.get()));
 				output.accept(new ItemStack(SCContent.SCANNER_TRAPDOOR.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()));
-				output.accept(new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()));
 				output.accept(new ItemStack(SCContent.KEYPAD_DOOR_ITEM.get()));
+				output.accept(new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()));
 				output.accept(new ItemStack(SCContent.BLOCK_POCKET_MANAGER.get()));
 				output.accept(new ItemStack(SCContent.BLOCK_POCKET_WALL.get()));
 				output.accept(new ItemStack(SCContent.SONIC_SECURITY_SYSTEM.get()));
@@ -193,11 +192,11 @@ public class SCCreativeModeTabs {
 					return Integer.compare(indexA, indexB);
 				});
 
-				//loop starts from the back, because the reinforced bookshelf is expected to be towards the end of the list
+				//loop starts from the back, because the reinforced chiseled bookshelf is expected to be towards the end of the list
 				//can't use indexOf, because ItemStack does not implement Object#equals
 				for (int i = decorationGroupItems.size() - 1; i >= 0; i--) {
-					//sort secret signs after the reinforced bookshelf
-					if (decorationGroupItems.get(i).getItem() == SCContent.REINFORCED_BOOKSHELF.get().asItem()) {
+					//sort secret signs after the reinforced chiseled bookshelf
+					if (decorationGroupItems.get(i).getItem() == SCContent.REINFORCED_CHISELED_BOOKSHELF.get().asItem()) {
 						decorationGroupItems.addAll(i + 1, List.of( //@formatter:off
 								new ItemStack(SCContent.SECRET_OAK_SIGN_ITEM.get()),
 								new ItemStack(SCContent.SECRET_OAK_HANGING_SIGN_ITEM.get()),
@@ -248,9 +247,11 @@ public class SCCreativeModeTabs {
 				decorationGroupItems.add(new ItemStack(SCContent.IRON_FENCE.get()));
 				decorationGroupItems.add(new ItemStack(SCContent.REINFORCED_FENCE_GATE.get()));
 				decorationGroupItems.add(new ItemStack(SCContent.REINFORCED_IRON_TRAPDOOR.get()));
+				decorationGroupItems.add(new ItemStack(SCContent.KEYPAD_TRAPDOOR.get()));
+				decorationGroupItems.add(new ItemStack(SCContent.SCANNER_TRAPDOOR.get()));
 				decorationGroupItems.add(new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()));
 				decorationGroupItems.add(new ItemStack(SCContent.KEYPAD_DOOR_ITEM.get()));
+				decorationGroupItems.add(new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()));
 				decorationGroupItems.add(new ItemStack(SCContent.DISPLAY_CASE.get()));
 				decorationGroupItems.add(new ItemStack(SCContent.GLOW_DISPLAY_CASE.get()));
 				output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
