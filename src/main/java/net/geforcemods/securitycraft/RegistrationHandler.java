@@ -261,8 +261,8 @@ public class RegistrationHandler {
 							new ItemStack(SCContent.KEYPAD_TRAPDOOR.get()),
 							new ItemStack(SCContent.SCANNER_TRAPDOOR.get()),
 							new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()),
-							new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()),
 							new ItemStack(SCContent.KEYPAD_DOOR_ITEM.get()),
+							new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()),
 							new ItemStack(SCContent.BLOCK_POCKET_MANAGER.get()),
 							new ItemStack(SCContent.BLOCK_POCKET_WALL.get()),
 							new ItemStack(SCContent.SONIC_SECURITY_SYSTEM.get()),
@@ -421,9 +421,11 @@ public class RegistrationHandler {
 							new ItemStack(SCContent.IRON_FENCE.get()),
 							new ItemStack(SCContent.REINFORCED_FENCE_GATE.get()),
 							new ItemStack(SCContent.REINFORCED_IRON_TRAPDOOR.get()),
+							new ItemStack(SCContent.KEYPAD_TRAPDOOR.get()),
+							new ItemStack(SCContent.SCANNER_TRAPDOOR.get()),
 							new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()),
-							new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()),
 							new ItemStack(SCContent.KEYPAD_DOOR_ITEM.get()),
+							new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()),
 							new ItemStack(SCContent.DISPLAY_CASE.get()),
 							new ItemStack(SCContent.GLOW_DISPLAY_CASE.get())));
 					//@formatter:on
