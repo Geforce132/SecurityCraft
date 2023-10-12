@@ -81,6 +81,7 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.WIRE_CUTTERS.get()));
 				output.accept(new ItemStack(SCContent.IRON_FENCE.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_FENCE_GATE.get()));
+				output.accept(new ItemStack(SCContent.REINFORCED_IRON_TRAPDOOR.get()));
 				output.accept(new ItemStack(SCContent.KEYPAD_TRAPDOOR.get()));
 				output.accept(new ItemStack(SCContent.SCANNER_TRAPDOOR.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()));
