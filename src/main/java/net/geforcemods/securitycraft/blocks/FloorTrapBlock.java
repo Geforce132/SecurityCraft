@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.blockentities.FloorTrapBlockEntity;
 import net.geforcemods.securitycraft.misc.FloorTrapCloudParticle;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -21,6 +22,7 @@ public class FloorTrapBlock extends SometimesVisibleBlock {
 	public FloorTrapBlock(Material material) {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(INVISIBLE, false));
+		setSoundType(SoundType.METAL);
 	}
 
 	@Override

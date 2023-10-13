@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
+
+- Fix: The Floor Trap has incorrect sound
+
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
 - New: The Sonic Security System's functionality can now be inverted (blocks are accessible by default, and get locked when the correct tune is played)
