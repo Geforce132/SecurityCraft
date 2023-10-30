@@ -1,9 +1,10 @@
 plugins {
+	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-	id 'org.spongepowered.mixin' version '0.7.+'
-	id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+	id 'net.neoforged.gradle.userdev' version '7.0.5'
+	id 'net.neoforged.gradle.mixin' version '7.0.5'
+//	id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
 import groovy.json.JsonOutput
@@ -35,47 +36,25 @@ sourceSets.main.resources {
 	srcDir 'src/generated/resources' //include generated files
 }
 
-minecraft {
-	mappings channel: 'parchment', version: '2023.09.03-1.20.1'
-	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-	copyIdeResources = true
+runs {
+	configureEach {
+		systemProperty 'forge.logging.console.level', 'debug'
+		programArgument '-mixin.config=securitycraft.mixins.json'
+		modSource project.sourceSets.main
+	}
 
-	runs {
-		client {
-			workingDirectory project.file('run/client')
-			property 'forge.logging.console.level', 'debug'
-			args '-mixin.config=securitycraft.mixins.json'
+	client {
+		workingDirectory project.file('run/client')
+	}
 
-			mods {
-				securitycraft {
-					source sourceSets.main
-				}
-			}
-		}
+	server {
+		workingDirectory project.file('run/server')
+		programArgument '-nogui'
+	}
 
-		server {
-			workingDirectory project.file('run/server')
-			property 'forge.logging.console.level', 'debug'
-			args '-nogui', '-mixin.config=securitycraft.mixins.json'
-
-			mods {
-				securitycraft {
-					source sourceSets.main
-				}
-			}
-		}
-
-		data {
-			workingDirectory project.file('run/data')
-			property 'forge.logging.console.level', 'debug'
-			args '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/')
-
-			mods {
-				securitycraft {
-					source sourceSets.main
-				}
-			}
-		}
+	data {
+		workingDirectory project.file('run/data')
+		programArguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath()
 	}
 }
 
@@ -89,24 +68,19 @@ repositories {
 }
 
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.20.1-47.1.3'
-	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+	implementation 'net.neoforged:neoforge:20.2.4-beta'
 	
-	implementation fg.deobf("curse.maven:architectury-api-419699:4581905") //ftb teams dependency
-	implementation fg.deobf("curse.maven:ftb-library-forge-404465:4596511") //ftb teams dependency
-	implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4623116")
-	implementation fg.deobf("curse.maven:jei-238222:4597711")
-	implementation fg.deobf("curse.maven:the-one-probe-245211:4579432")
-	implementation fg.deobf("curse.maven:jade-324717:4573193")
-	implementation fg.deobf("curse.maven:betterf3-401648:4641169")
-	implementation fg.deobf("curse.maven:cloth-config-348521:4633444") //betterf3 dependency
-	implementation fg.deobf("curse.maven:wthit-forge-455982:4596739")
-	implementation fg.deobf("curse.maven:badpackets-615134:4438956") //wthit dependency
+//	implementation fg.deobf("curse.maven:architectury-api-419699:4581905") //ftb teams dependency
+//	implementation fg.deobf("curse.maven:ftb-library-forge-404465:4596511") //ftb teams dependency
+//	implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4623116")
+//	implementation fg.deobf("curse.maven:jei-238222:4597711")
+//	implementation fg.deobf("curse.maven:the-one-probe-245211:4579432")
+//	implementation fg.deobf("curse.maven:jade-324717:4573193")
+//	implementation fg.deobf("curse.maven:betterf3-401648:4641169")
+//	implementation fg.deobf("curse.maven:cloth-config-348521:4633444") //betterf3 dependency
+//	implementation fg.deobf("curse.maven:wthit-forge-455982:4596739")
+//	implementation fg.deobf("curse.maven:badpackets-615134:4438956") //wthit dependency
 //	implementation fg.deobf("curse.maven:projecte-226410:3955047")
-}
-
-mixin {
-	add sourceSets.main, "securitycraft.refmap.json"
 }
 
 tasks.named('jar', Jar).configure {
