@@ -11,8 +11,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.scores.PlayerTeam;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public class TeamUtils {
 	private TeamUtils() {}

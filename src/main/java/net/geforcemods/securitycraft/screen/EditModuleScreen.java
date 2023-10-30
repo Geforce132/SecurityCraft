@@ -38,7 +38,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.scores.PlayerTeam;
-import net.minecraftforge.client.gui.widget.ScrollPanel;
+import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
 
 public class EditModuleScreen extends Screen {
 	private static CompoundTag savedModule;

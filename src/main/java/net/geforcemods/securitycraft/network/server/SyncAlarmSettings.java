@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public class SyncAlarmSettings {
 	private BlockPos pos;

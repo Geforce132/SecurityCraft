@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public class UpdateNBTTagOnClient {
 	private ItemStack stack;

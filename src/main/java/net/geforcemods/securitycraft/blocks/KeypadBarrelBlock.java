@@ -43,8 +43,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.Tags;
 
 public class KeypadBarrelBlock extends DisguisableBlock {
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -68,7 +68,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 			barrel.setCustomName(stack.getHoverName());
 
 		if (entity instanceof Player player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
+			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override

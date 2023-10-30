@@ -22,8 +22,8 @@ import net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.level.ChunkEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.level.ChunkEvent;
 
 /**
  * These mixins aim at implementing the camera chunk storage from CameraController into all the places
@@ -88,7 +88,7 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 			LevelChunk chunk = cameraStorage.getChunk(i);
 
 			if (chunk != null && chunk.getPos().x == x && chunk.getPos().z == z) {
-				MinecraftForge.EVENT_BUS.post(new ChunkEvent.Unload(chunk));
+				NeoForge.EVENT_BUS.post(new ChunkEvent.Unload(chunk));
 				cameraStorage.replace(i, chunk, null);
 			}
 		}
@@ -116,7 +116,7 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 				chunk.replaceWithPacketData(buffer, chunkTag, tagOutputConsumer);
 
 			level.onChunkLoaded(chunkPos);
-			MinecraftForge.EVENT_BUS.post(new ChunkEvent.Load(chunk, false));
+			NeoForge.EVENT_BUS.post(new ChunkEvent.Load(chunk, false));
 			callback.setReturnValue(chunk);
 		}
 	}

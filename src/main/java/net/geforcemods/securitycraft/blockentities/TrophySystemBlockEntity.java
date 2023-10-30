@@ -49,12 +49,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable, IToggleableEntries<EntityType<?>>, MenuProvider {
 	/** The range (in blocks) that the trophy system will search for projectiles in */
@@ -176,7 +176,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == ForgeCapabilities.ITEM_HANDLER)
+		if (cap == Capabilities.ITEM_HANDLER)
 			return BlockUtils.getProtectedCapability(side, this, this::getNormalHandler, this::getInsertOnlyHandler).cast();
 		else
 			return super.getCapability(cap, side);

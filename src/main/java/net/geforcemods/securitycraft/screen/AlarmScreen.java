@@ -36,8 +36,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraftforge.client.gui.widget.ScrollPanel;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class AlarmScreen extends Screen {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm.png");

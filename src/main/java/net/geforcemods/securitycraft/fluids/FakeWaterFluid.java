@@ -24,9 +24,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 
-public abstract class FakeWaterFluid extends ForgeFlowingFluid {
+public abstract class FakeWaterFluid extends BaseFlowingFluid {
 	protected FakeWaterFluid(Properties properties) {
 		super(properties);
 	}

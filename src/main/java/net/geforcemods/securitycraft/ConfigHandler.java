@@ -11,29 +11,29 @@ import com.mojang.logging.LogUtils;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod.EventBusSubscriber;
+import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.neoforge.common.NeoForgeConfigSpec;
+import net.neoforged.neoforge.common.NeoForgeConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.NeoForgeConfigSpec.ConfigValue;
+import net.neoforged.neoforge.common.NeoForgeConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.NeoForgeConfigSpec.IntValue;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class ConfigHandler {
 	private static final Logger LOGGER = LogUtils.getLogger();
-	public static final ForgeConfigSpec CLIENT_SPEC;
+	public static final NeoForgeConfigSpec CLIENT_SPEC;
 	public static final Client CLIENT;
-	public static final ForgeConfigSpec SERVER_SPEC;
+	public static final NeoForgeConfigSpec SERVER_SPEC;
 	public static final Server SERVER;
 
 	static {
-		Pair<Client, ForgeConfigSpec> clientSpecPair = new ForgeConfigSpec.Builder().configure(Client::new);
-		Pair<Server, ForgeConfigSpec> serverSpecPair = new ForgeConfigSpec.Builder().configure(Server::new);
+		Pair<Client, NeoForgeConfigSpec> clientSpecPair = new NeoForgeConfigSpec.Builder().configure(Client::new);
+		Pair<Server, NeoForgeConfigSpec> serverSpecPair = new NeoForgeConfigSpec.Builder().configure(Server::new);
 
 		CLIENT_SPEC = clientSpecPair.getRight();
 		CLIENT = clientSpecPair.getLeft();
@@ -49,7 +49,7 @@ public class ConfigHandler {
 		public BooleanValue reinforcedBlockTint;
 		public IntValue reinforcedBlockTintColor;
 
-		Client(ForgeConfigSpec.Builder builder) {
+		Client(NeoForgeConfigSpec.Builder builder) {
 			//@formatter:off
 			sayThanksMessage = builder
 					.comment("Display a 'tip' message at spawn?")
@@ -101,7 +101,7 @@ public class ConfigHandler {
 		public final List<Supplier<MobEffectInstance>> taserEffects = new ArrayList<>();
 		public final List<Supplier<MobEffectInstance>> poweredTaserEffects = new ArrayList<>();
 
-		Server(ForgeConfigSpec.Builder builder) {
+		Server(NeoForgeConfigSpec.Builder builder) {
 			//@formatter:off
 			codebreakerChance = builder
 					.comment("The chance for the codebreaker to successfully hack a block. 0.33 is 33%. Set to a negative value to disable the codebreaker.",

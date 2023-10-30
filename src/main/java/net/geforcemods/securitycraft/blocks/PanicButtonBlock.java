@@ -23,7 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 
 public class PanicButtonBlock extends ButtonBlock implements EntityBlock {
 	private static final VoxelShape FLOOR_NS_POWERED = Block.box(3, 0, 5, 13, 1, 11);
@@ -50,7 +50,7 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock {
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof Player player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
+			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override

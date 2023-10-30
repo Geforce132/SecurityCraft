@@ -38,8 +38,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.EventHooks;
 
 public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinforcedBlock, EntityBlock {
 	public ReinforcedPistonBaseBlock(boolean sticky, BlockBehaviour.Properties properties) {
@@ -49,7 +49,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof Player player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
+			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 
 		super.setPlacedBy(level, pos, state, placer, stack);
 	}
@@ -118,7 +118,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 		}
 
 		if (id == 0) {
-			if (ForgeEventFactory.onPistonMovePre(level, pos, direction, true))
+			if (EventHooks.onPistonMovePre(level, pos, direction, true))
 				return false;
 
 			if (!this.moveBlocks(level, pos, direction, true))
@@ -129,7 +129,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 			level.gameEvent(GameEvent.BLOCK_ACTIVATE, pos, GameEvent.Context.of(extendedState));
 		}
 		else if (id == 1 || id == 2) {
-			if (ForgeEventFactory.onPistonMovePre(level, pos, direction, false))
+			if (EventHooks.onPistonMovePre(level, pos, direction, false))
 				return false;
 
 			if (level.getBlockEntity(pos.relative(direction)) instanceof ReinforcedPistonMovingBlockEntity pistonBe)
@@ -167,7 +167,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 			level.gameEvent(GameEvent.BLOCK_DEACTIVATE, pos, GameEvent.Context.of(movingPiston));
 		}
 
-		ForgeEventFactory.onPistonMovePost(level, pos, direction, id == 0);
+		EventHooks.onPistonMovePost(level, pos, direction, id == 0);
 		return true;
 	}
 

@@ -34,7 +34,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.scores.PlayerTeam;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.network.NetworkHooks;
 
 public class ModuleItem extends Item {
 	private static final MutableComponent MODIFIABLE = Component.translatable("tooltip.securitycraft:module.modifiable").setStyle(Utils.GRAY_STYLE);

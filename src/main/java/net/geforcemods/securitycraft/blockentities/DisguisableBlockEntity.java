@@ -20,8 +20,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	public DisguisableBlockEntity(BlockPos pos, BlockState state) {

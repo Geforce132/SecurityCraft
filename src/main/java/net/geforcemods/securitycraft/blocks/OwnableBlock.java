@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 
 public class OwnableBlock extends BaseEntityBlock {
 	public OwnableBlock(BlockBehaviour.Properties properties) {
@@ -23,7 +23,7 @@ public class OwnableBlock extends BaseEntityBlock {
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof Player player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
+			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 
 		if (stack.hasCustomHoverName() && level.getBlockEntity(pos) instanceof INameSetter nameable)
 			nameable.setCustomName(stack.getHoverName());

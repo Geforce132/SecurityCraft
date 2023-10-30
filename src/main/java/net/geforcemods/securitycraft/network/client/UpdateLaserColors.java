@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public class UpdateLaserColors {
 	private List<BlockPos> positionsToUpdate;

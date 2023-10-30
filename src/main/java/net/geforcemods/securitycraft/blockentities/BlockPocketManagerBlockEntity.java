@@ -52,11 +52,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 
 public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity implements MenuProvider, ITickingBlockEntity, ILockable {
 	public static final int RENDER_DISTANCE = 100;
@@ -598,7 +598,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == ForgeCapabilities.ITEM_HANDLER) {
+		if (cap == Capabilities.ITEM_HANDLER) {
 			if (isPlacingBlocks()) //prevent extracting while auto building the block pocket
 				return getInsertOnlyHandler().cast();
 			else

@@ -46,8 +46,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.Tags;
 
 public class KeypadChestBlock extends ChestBlock {
 	private static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>> CONTAINER_MERGER = new DoubleBlockCombiner.Combiner<>() {
@@ -132,7 +132,7 @@ public class KeypadChestBlock extends ChestBlock {
 		super.setPlacedBy(level, pos, state, entity, stack);
 
 		if (entity instanceof Player player) {
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
+			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 
 			if (state.getValue(TYPE) != ChestType.SINGLE) {
 				KeypadChestBlockEntity thisBe = (KeypadChestBlockEntity) level.getBlockEntity(pos);

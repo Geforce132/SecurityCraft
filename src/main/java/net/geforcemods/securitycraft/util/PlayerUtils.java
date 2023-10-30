@@ -29,10 +29,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PlayerHeadItem;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.util.thread.EffectiveSide;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.fml.LogicalSide;
+import net.neoforged.fml.util.thread.EffectiveSide;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public class PlayerUtils {
 	private PlayerUtils() {}
@@ -117,7 +117,7 @@ public class PlayerUtils {
 				.append(Component.literal("] ")).setStyle(Style.EMPTY.withColor(ChatFormatting.WHITE))
 				.append(text)
 				.append(Component.literal(": "))
-				.append(ForgeHooks.newChatWithLinks(link)));
+				.append(CommonHooks.newChatWithLinks(link)));
 		//@formatter:on
 	}
 

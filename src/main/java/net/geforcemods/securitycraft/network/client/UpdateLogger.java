@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public class UpdateLogger {
 	private int x, y, z, i;

@@ -44,8 +44,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class RiftStabilizerBlock extends DisguisableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -96,7 +96,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 		level.setBlock(posAbove, DoublePlantBlock.copyWaterloggedFrom(level, posAbove, defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER)), 3);
 
 		if (placer instanceof Player player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, posAbove, player));
+			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, posAbove, player));
 
 		super.setPlacedBy(level, pos, state, placer, stack);
 	}

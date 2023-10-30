@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 
 public class ReinforcedEndRodBlock extends EndRodBlock implements EntityBlock, IReinforcedBlock {
 	public ReinforcedEndRodBlock(BlockBehaviour.Properties properties) {
@@ -25,7 +25,7 @@ public class ReinforcedEndRodBlock extends EndRodBlock implements EntityBlock, I
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof Player player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
+			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override

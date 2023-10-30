@@ -37,7 +37,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 
 public final class WTHITDataProvider extends WailaCompatConstants implements IWailaPlugin, IBlockComponentProvider, IEntityComponentProvider, IEventListener {
 	public static final WTHITDataProvider INSTANCE = new WTHITDataProvider();

@@ -33,8 +33,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.NetworkHooks;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class BriefcaseItem extends Item implements DyeableLeatherItem {
 	public BriefcaseItem(Item.Properties properties) {

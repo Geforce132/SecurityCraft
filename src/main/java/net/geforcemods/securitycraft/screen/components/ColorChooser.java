@@ -22,7 +22,7 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraftforge.client.gui.widget.ForgeSlider;
+import net.neoforged.neoforge.client.gui.widget.ExtendedSlider;
 
 public class ColorChooser extends Screen implements GuiEventListener, NarratableEntry {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/color_chooser.png");
@@ -260,7 +260,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		return rgbHexBox;
 	}
 
-	class HueSlider extends ForgeSlider {
+	class HueSlider extends ExtendedSlider {
 		public HueSlider(int x, int y, int width, int height, double currentValue) {
 			super(x, y, width, height, Component.empty(), Component.empty(), 0.0D, 360.0D, currentValue, 1.0D, 0, false);
 		}

@@ -26,8 +26,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.world.ForgeChunkManager;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.common.world.ForcedChunkManager;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecurityCamera extends Entity {
 	private static final List<Player> DISMOUNTED_PLAYERS = new ArrayList<>();
@@ -178,7 +178,7 @@ public class SecurityCamera extends Entity {
 
 			for (int x = chunkPos.getX() - chunkLoadingDistance; x <= chunkPos.getX() + chunkLoadingDistance; x++) {
 				for (int z = chunkPos.getZ() - chunkLoadingDistance; z <= chunkPos.getZ() + chunkLoadingDistance; z++) {
-					ForgeChunkManager.forceChunk((ServerLevel) level(), SecurityCraft.MODID, this, x, z, false, false);
+					ForcedChunkManager.forceChunk((ServerLevel) level(), SecurityCraft.MODID, this, x, z, false, false);
 				}
 			}
 		}

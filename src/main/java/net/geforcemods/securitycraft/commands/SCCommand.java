@@ -26,9 +26,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.RegistryObject;
 
 public class SCCommand {
 	private static final Map<String, DeferredRegister<?>> REGISTRIES = Util.make(() -> {
@@ -103,7 +103,7 @@ public class SCCommand {
 					.append(Component.literal("] "))
 					.append(Utils.localize("messages.securitycraft:irc.connected"))
 					.append(Component.literal(" "))
-					.append(ForgeHooks.newChatWithLinks(SendTip.TIPS_WITH_LINK.get("discord"))));
+					.append(CommonHooks.newChatWithLinks(SendTip.TIPS_WITH_LINK.get("discord"))));
 			//@formatter:on
 			return 0;
 		});

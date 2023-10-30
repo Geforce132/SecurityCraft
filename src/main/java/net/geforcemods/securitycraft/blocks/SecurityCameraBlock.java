@@ -37,8 +37,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.world.ForgeChunkManager;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.common.world.ForcedChunkManager;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecurityCameraBlock extends OwnableBlock {
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> facing != Direction.UP);
@@ -139,7 +139,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 			for (int x = chunkPos.getX() - viewDistance; x <= chunkPos.getX() + viewDistance; x++) {
 				for (int z = chunkPos.getZ() - viewDistance; z <= chunkPos.getZ() + viewDistance; z++) {
-					ForgeChunkManager.forceChunk(serverLevel, SecurityCraft.MODID, dummyEntity, x, z, true, false);
+					ForcedChunkManager.forceChunk(serverLevel, SecurityCraft.MODID, dummyEntity, x, z, true, false);
 				}
 			}
 

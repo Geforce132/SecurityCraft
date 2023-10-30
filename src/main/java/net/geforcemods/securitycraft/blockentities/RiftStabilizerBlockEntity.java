@@ -36,12 +36,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraftforge.event.entity.EntityTeleportEvent;
-import net.minecraftforge.event.entity.EntityTeleportEvent.ChorusFruit;
-import net.minecraftforge.event.entity.EntityTeleportEvent.EnderEntity;
-import net.minecraftforge.event.entity.EntityTeleportEvent.EnderPearl;
-import net.minecraftforge.event.entity.EntityTeleportEvent.SpreadPlayersCommand;
-import net.minecraftforge.event.entity.EntityTeleportEvent.TeleportCommand;
+import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
+import net.neoforged.neoforge.event.entity.EntityTeleportEvent.ChorusFruit;
+import net.neoforged.neoforge.event.entity.EntityTeleportEvent.EnderEntity;
+import net.neoforged.neoforge.event.entity.EntityTeleportEvent.EnderPearl;
+import net.neoforged.neoforge.event.entity.EntityTeleportEvent.SpreadPlayersCommand;
+import net.neoforged.neoforge.event.entity.EntityTeleportEvent.TeleportCommand;
 
 public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable, IToggleableEntries<TeleportationType> {
 	private final IntOption signalLength = new IntOption("signalLength", 60, 5, 400, 5, true); //20 seconds max

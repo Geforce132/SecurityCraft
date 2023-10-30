@@ -66,10 +66,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffected, IOwnable { //needs to be a pathfinder mob so it can target a player, ai is also only given to living entities
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(Sentry.class, Owner.getSerializer());
@@ -347,7 +347,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		if (blockEntity instanceof ISentryBulletContainer be)
 			optional = be.getHandlerForSentry(this);
 		else if (blockEntity != null)
-			optional = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP);
+			optional = blockEntity.getCapability(Capabilities.ITEM_HANDLER, Direction.UP);
 
 		if (optional.isPresent()) {
 			IItemHandler handler = optional.orElse(null); //this is safe, because the presence was checked beforehand

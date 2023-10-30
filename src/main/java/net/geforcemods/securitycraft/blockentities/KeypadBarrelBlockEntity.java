@@ -45,11 +45,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity implements IPasscodeProtected, IOwnable, IModuleInventory, ICustomizable, ILockable, ISentryBulletContainer {
 	private NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
@@ -179,7 +179,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == ForgeCapabilities.ITEM_HANDLER)
+		if (cap == Capabilities.ITEM_HANDLER)
 			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), this::getInsertOnlyHandler).cast();
 		else
 			return super.getCapability(cap, side);
@@ -209,7 +209,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	@Override
 	public LazyOptional<IItemHandler> getHandlerForSentry(Sentry entity) {
 		if (entity.getOwner().owns(this))
-			return super.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP);
+			return super.getCapability(Capabilities.ITEM_HANDLER, Direction.UP);
 		else
 			return LazyOptional.empty();
 	}

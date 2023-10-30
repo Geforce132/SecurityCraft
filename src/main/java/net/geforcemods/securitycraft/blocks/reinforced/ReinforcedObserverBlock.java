@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.ObserverBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 
 public class ReinforcedObserverBlock extends ObserverBlock implements IReinforcedBlock, EntityBlock {
 	public ReinforcedObserverBlock(BlockBehaviour.Properties properties) {
@@ -38,7 +38,7 @@ public class ReinforcedObserverBlock extends ObserverBlock implements IReinforce
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof Player player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
+			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override

@@ -12,11 +12,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.VersionChecker;
-import net.minecraftforge.fml.VersionChecker.Status;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.VersionChecker;
+import net.neoforged.fml.VersionChecker.Status;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public class SendTip {
 	public static final Map<String, String> TIPS_WITH_LINK = new HashMap<>();
@@ -49,7 +49,7 @@ public class SendTip {
 		//@formatter:on
 
 		if (TIPS_WITH_LINK.containsKey(tipKey.split("\\.")[2]))
-			message = message.append(ForgeHooks.newChatWithLinks(TIPS_WITH_LINK.get(tipKey.split("\\.")[2])));
+			message = message.append(CommonHooks.newChatWithLinks(TIPS_WITH_LINK.get(tipKey.split("\\.")[2])));
 
 		ClientHandler.getClientPlayer().sendSystemMessage(message);
 	}

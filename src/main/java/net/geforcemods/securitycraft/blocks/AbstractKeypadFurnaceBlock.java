@@ -45,8 +45,8 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.network.NetworkHooks;
 
 public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -73,7 +73,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof Player player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
+			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 
 		if (stack.hasCustomHoverName() && level.getBlockEntity(pos) instanceof BaseContainerBlockEntity baseContainer)
 			baseContainer.setCustomName(stack.getHoverName());

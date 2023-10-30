@@ -38,10 +38,10 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscodeProtected, IOwnable, IModuleInventory, ICustomizable, ILockable, ISentryBulletContainer {
 	private LazyOptional<IItemHandler> insertOnlyHandler;
@@ -132,7 +132,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == ForgeCapabilities.ITEM_HANDLER)
+		if (cap == Capabilities.ITEM_HANDLER)
 			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), this::getInsertOnlyHandler).cast();
 		else
 			return super.getCapability(cap, side);
@@ -162,7 +162,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	@Override
 	public LazyOptional<IItemHandler> getHandlerForSentry(Sentry entity) {
 		if (entity.getOwner().owns(this))
-			return super.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP);
+			return super.getCapability(Capabilities.ITEM_HANDLER, Direction.UP);
 		else
 			return LazyOptional.empty();
 	}

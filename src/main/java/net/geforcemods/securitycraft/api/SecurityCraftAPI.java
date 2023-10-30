@@ -5,10 +5,10 @@ import java.util.Collections;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod.EventBusSubscriber;
+import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
+import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class SecurityCraftAPI {

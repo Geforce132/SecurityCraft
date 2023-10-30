@@ -38,15 +38,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
-import net.minecraftforge.client.event.ScreenshotEvent;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.RenderHandEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent.Stage;
+import net.neoforged.neoforge.client.event.ScreenshotEvent;
+import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class SCClientEventHandler {
@@ -119,7 +119,7 @@ public class SCClientEventHandler {
 		}
 	}
 
-	public static void cameraOverlay(ForgeGui gui, GuiGraphics guiGraphics, float partialTicks, int width, int height) {
+	public static void cameraOverlay(ExtendedGui gui, GuiGraphics guiGraphics, float partialTicks, int width, int height) {
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
 		BlockPos pos = mc.cameraEntity.blockPosition();

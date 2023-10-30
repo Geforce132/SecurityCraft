@@ -28,8 +28,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.PlantType;
+import net.neoforged.neoforge.common.IPlantable;
+import net.neoforged.neoforge.common.PlantType;
 
 public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock {
 	private final Supplier<Block> vanillaBlockSupplier;
