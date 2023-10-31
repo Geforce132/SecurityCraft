@@ -66,7 +66,7 @@ public class AlarmOptionsScreen extends Screen {
 
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		renderBackground(guiGraphics);
+		renderBackground(guiGraphics, mouseX, mouseY, partialTick);
 		guiGraphics.blit(GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
 		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 0x404040, false);
@@ -132,9 +132,9 @@ public class AlarmOptionsScreen extends Screen {
 		}
 
 		@Override
-		public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-			changeSoundLength((int) Math.signum(delta));
-			return super.mouseScrolled(mouseX, mouseY, delta);
+		public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+			changeSoundLength((int) Math.signum(scrollX));
+			return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
 		}
 
 		@Override
@@ -190,7 +190,7 @@ public class AlarmOptionsScreen extends Screen {
 			}
 
 			setSoundLength(minutes * 60 + seconds, true);
-			moveCursorToEnd();
+			moveCursorToEnd(false);
 		}
 	}
 }

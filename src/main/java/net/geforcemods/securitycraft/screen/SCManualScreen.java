@@ -131,7 +131,7 @@ public class SCManualScreen extends Screen {
 
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(guiGraphics);
+		renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
 		guiGraphics.blit(currentPage == -1 ? TITLE_PAGE : (recipe != null && !recipe.isEmpty() ? PAGE : PAGE_WITH_SCROLL), startX, 5, 0, 0, 256, 250);
 
 		for (Renderable renderable : renderables) {
@@ -234,26 +234,26 @@ public class SCManualScreen extends Screen {
 	}
 
 	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
+	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
 		if (Screen.hasShiftDown()) {
 			for (IngredientDisplay display : displays) {
 				if (display != null)
-					display.changeRenderingStack(-scroll);
+					display.changeRenderingStack(-scrollX);
 			}
 
 			if (pageIcon != null)
-				pageIcon.changeRenderingStack(-scroll);
+				pageIcon.changeRenderingStack(-scrollX);
 
 			return true;
 		}
 
 		if (currentPage == -1 && patronList != null && patronList.isMouseOver(mouseX, mouseY) && !patronList.patrons.isEmpty()) {
-			patronList.mouseScrolled(mouseX, mouseY, scroll);
+			patronList.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
 			return true;
 		}
 
 		if (Screen.hasControlDown() && subpages.size() > 1) {
-			switch ((int) Math.signum(scroll)) {
+			switch ((int) Math.signum(scrollX)) {
 				case -1:
 					nextSubpage();
 					break;
@@ -265,7 +265,7 @@ public class SCManualScreen extends Screen {
 			return true;
 		}
 
-		switch ((int) Math.signum(scroll)) {
+		switch ((int) Math.signum(scrollX)) {
 			case -1:
 				nextPage();
 				break;

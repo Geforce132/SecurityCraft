@@ -127,7 +127,7 @@ public class EditModuleScreen extends Screen {
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 
-		renderBackground(guiGraphics);
+		renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
 		guiGraphics.blit(TEXTURE, startX, startY, 0, 0, xSize, ySize);
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 		guiGraphics.drawWordWrap(font, editModule, startX + xSize / 2 - font.width(editModule) / 2, startY + 6, width, 4210752);
@@ -487,7 +487,7 @@ public class EditModuleScreen extends Screen {
 		}
 
 		@Override
-		public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+		public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
 			return false;
 		}
 	}

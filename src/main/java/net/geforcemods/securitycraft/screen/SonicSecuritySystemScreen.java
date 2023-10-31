@@ -153,7 +153,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 		int textWidth = font.width(title);
 		int soundTextLength = font.width(SOUND_TEXT);
 
-		renderBackground(guiGraphics);
+		renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
 		guiGraphics.blit(TEXTURE, startX, startY, 0, 0, xSize, ySize, 512, 512);
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 		guiGraphics.drawString(font, title, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752, false);

@@ -296,9 +296,9 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	}
 
 	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
 		for (int i = 0; i < propertyButtons.size(); i++) {
-			if (propertyButtons.get(i).mouseScrolled(mouseX, mouseY, delta))
+			if (propertyButtons.get(i).mouseScrolled(mouseX, mouseY, scrollX, scrollY))
 				break;
 		}
 

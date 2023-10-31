@@ -125,7 +125,7 @@ public class SCClientEventHandler {
 		BlockPos pos = mc.cameraEntity.blockPosition();
 		Window window = mc.getWindow();
 
-		if (mc.options.renderDebug)
+		if (mc.getDebugOverlay().showDebugScreen())
 			return;
 
 		if (!(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be))

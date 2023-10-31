@@ -165,7 +165,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-		renderBackground(guiGraphics);
+		renderBackground(guiGraphics, mouseX, mouseY, partialTick);
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
@@ -179,11 +179,11 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	}
 
 	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
 		if (changeEntryList != null)
-			changeEntryList.mouseScrolled(mouseX, mouseY, delta);
+			changeEntryList.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
 
-		return super.mouseScrolled(mouseX, mouseY, delta);
+		return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
 	}
 
 	@Override
@@ -402,11 +402,11 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		@Override
-		public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
+		public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
 			if (getContentHeight() < height)
 				return false;
 
-			return super.mouseScrolled(mouseX, mouseY, scroll);
+			return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
 		}
 
 		@Override
@@ -455,8 +455,8 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		@Override
-		public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-			setCurrentIndex(currentIndex - (int) Math.signum(delta));
+		public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+			setCurrentIndex(currentIndex - (int) Math.signum(scrollX));
 			onPress.onPress(this);
 			return true;
 		}

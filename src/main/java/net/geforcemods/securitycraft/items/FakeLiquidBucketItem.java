@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.items;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.DispensibleContainerItem;
@@ -23,8 +23,8 @@ public class FakeLiquidBucketItem extends BucketItem {
 			@Override
 			public ItemStack execute(BlockSource source, ItemStack stack) {
 				DispensibleContainerItem bucket = (DispensibleContainerItem) stack.getItem();
-				BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
-				Level level = source.getLevel();
+				BlockPos pos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
+				Level level = source.level();
 
 				if (bucket.emptyContents(null, level, pos, null)) {
 					bucket.checkExtraContent(null, level, stack, pos);

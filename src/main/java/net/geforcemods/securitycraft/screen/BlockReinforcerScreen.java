@@ -77,7 +77,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(guiGraphics);
+		renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
 		guiGraphics.blit(menu.isLvl1 ? TEXTURE_LVL1 : TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
