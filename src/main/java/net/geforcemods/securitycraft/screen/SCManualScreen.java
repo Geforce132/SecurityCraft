@@ -60,7 +60,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.Level;
@@ -355,8 +355,8 @@ public class SCManualScreen extends Screen {
 			Level level = Minecraft.getInstance().level;
 			RegistryAccess registryAccess = level.registryAccess();
 
-			for (Recipe<?> object : level.getRecipeManager().getRecipes()) {
-				if (object instanceof ShapedRecipe shapedRecipe) {
+			for (RecipeHolder<?> recipeHolder : level.getRecipeManager().getRecipes()) {
+				if (recipeHolder.value() instanceof ShapedRecipe shapedRecipe) {
 					ItemStack resultItem = shapedRecipe.getResultItem(registryAccess);
 
 					if (resultItem.is(item) && !(resultItem.is(SCContent.LENS.get()) && SCContent.LENS.get().hasCustomColor(resultItem))) {
@@ -371,9 +371,9 @@ public class SCManualScreen extends Screen {
 						break;
 					}
 				}
-				else if (object instanceof ShapelessRecipe shapelessRecipe && shapelessRecipe.getResultItem(registryAccess).is(item)) {
+				else if (recipeHolder.value() instanceof ShapelessRecipe shapelessRecipe && shapelessRecipe.getResultItem(registryAccess).is(item)) {
 					//don't show keycard reset recipes
-					if (shapelessRecipe.getId().getPath().endsWith("_reset"))
+					if (recipeHolder.id().getPath().endsWith("_reset"))
 						continue;
 
 					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(shapelessRecipe.getIngredients().size(), Ingredient.EMPTY);
@@ -398,11 +398,11 @@ public class SCManualScreen extends Screen {
 				recipeStacks.put(i, new ItemStack[pageItems.size()]);
 			}
 
-			for (Recipe<?> object : Minecraft.getInstance().level.getRecipeManager().getRecipes()) {
+			for (RecipeHolder<?> recipeHolder : Minecraft.getInstance().level.getRecipeManager().getRecipes()) {
 				if (stacksLeft == 0)
 					break;
 
-				if (object instanceof ShapedRecipe shapedRecipe) {
+				if (recipeHolder.value() instanceof ShapedRecipe shapedRecipe) {
 					if (!shapedRecipe.getResultItem(registryAccess).isEmpty() && pageItems.contains(shapedRecipe.getResultItem(registryAccess).getItem())) {
 						NonNullList<Ingredient> ingredients = shapedRecipe.getIngredients();
 
@@ -421,9 +421,9 @@ public class SCManualScreen extends Screen {
 						stacksLeft--;
 					}
 				}
-				else if (object instanceof ShapelessRecipe shapelessRecipe && !shapelessRecipe.getResultItem(registryAccess).isEmpty() && pageItems.contains(shapelessRecipe.getResultItem(registryAccess).getItem())) {
+				else if (recipeHolder.value() instanceof ShapelessRecipe shapelessRecipe && !shapelessRecipe.getResultItem(registryAccess).isEmpty() && pageItems.contains(shapelessRecipe.getResultItem(registryAccess).getItem())) {
 					//don't show keycard reset recipes
-					if (shapelessRecipe.getId().getPath().endsWith("_reset"))
+					if (recipeHolder.id().getPath().endsWith("_reset"))
 						continue;
 
 					NonNullList<Ingredient> ingredients = shapelessRecipe.getIngredients();

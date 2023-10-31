@@ -70,7 +70,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
+	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
 		return this == SCContent.REINFORCED_GRASS_BLOCK.get() && level.getBlockState(pos.above()).isAir();
 	}
 

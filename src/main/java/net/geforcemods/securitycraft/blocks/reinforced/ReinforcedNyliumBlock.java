@@ -23,7 +23,7 @@ public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements Boneme
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean flag) {
+	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
 		return level.getBlockState(pos.above()).isAir();
 	}
 

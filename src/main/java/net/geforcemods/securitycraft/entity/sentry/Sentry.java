@@ -20,7 +20,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
@@ -95,7 +94,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	public void setUpSentry(Player player) {
-		entityData.set(OWNER, new Owner(player.getName().getString(), UUIDUtil.getOrCreatePlayerUUID(player.getGameProfile()).toString()));
+		entityData.set(OWNER, new Owner(player.getName().getString(), player.getGameProfile().getId().toString()));
 		entityData.set(ALLOWLIST, new CompoundTag());
 		entityData.set(HAS_SPEED_MODULE, false);
 		entityData.set(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
