@@ -285,7 +285,7 @@ public class SCContent {
 	public static final String GLOW_DISPLAY_CASE_PATH = "glow_display_case";
 
 	//loot item condition types
-	public static final RegistryObject<LootItemConditionType> BLOCK_ENTITY_NBT = LOOT_ITEM_CONDITION_TYPES.register("tile_entity_nbt", () -> new LootItemConditionType(new BlockEntityNBTCondition.ConditionSerializer()));
+	public static final RegistryObject<LootItemConditionType> BLOCK_ENTITY_NBT = LOOT_ITEM_CONDITION_TYPES.register("tile_entity_nbt", () -> new LootItemConditionType(BlockEntityNBTCondition.CODEC));
 
 	//recipe serializers
 	public static final RegistryObject<SimpleCraftingRecipeSerializer<LimitedUseKeycardRecipe>> LIMITED_USE_KEYCARD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("limited_use_keycard_recipe", () -> new SimpleCraftingRecipeSerializer<>(LimitedUseKeycardRecipe::new));

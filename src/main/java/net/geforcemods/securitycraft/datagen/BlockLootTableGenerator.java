@@ -100,7 +100,7 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))
 						.add(LootItem.lootTableItem(SCContent.REINFORCED_IRON_BARS.get())
-								.when(BlockEntityNBTCondition.builder().equals("canDrop", true)))
+								.when(BlockEntityNBTCondition.nbt("canDrop", true)))
 						.when(ExplosionCondition.survivesExplosion())));
 		putStandardBlockLootTable(SCContent.REINFORCED_LAVA_CAULDRON, SCContent.REINFORCED_CAULDRON.get());
 		putStandardBlockLootTable(SCContent.REINFORCED_POWDER_SNOW_CAULDRON, SCContent.REINFORCED_CAULDRON.get());
