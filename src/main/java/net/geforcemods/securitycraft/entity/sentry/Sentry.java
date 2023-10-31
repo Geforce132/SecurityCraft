@@ -384,7 +384,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 		if (shootSound == null) {
 			if (!level().isClientSide && pdb != null)
-				pdb.playSound(new BlockSource((ServerLevel) level(), blockPosition()));
+				pdb.playSound(new BlockSource((ServerLevel) level(), blockPosition(), null, null)); //probably safe as long as playSound does not call the state and blockEntity methods.
 		}
 		else
 			playSound(shootSound, 1.0F, 1.0F / (getRandom().nextFloat() * 0.4F + 0.8F));
