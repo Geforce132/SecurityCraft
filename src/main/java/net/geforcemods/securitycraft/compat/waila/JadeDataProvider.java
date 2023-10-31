@@ -51,7 +51,7 @@ public final class JadeDataProvider extends WailaCompatConstants implements IWai
 		registration.registerBlockComponent(SECURITYCRAFT_INFO, Block.class);
 		registration.registerEntityComponent(SECURITYCRAFT_INFO, Sentry.class);
 
-		registration.addBeforeRenderCallback((tooltip, rect, guiGraphics, accessor, color) -> ClientHandler.isPlayerMountedOnCamera());
+		registration.addBeforeRenderCallback((tooltip, rect, guiGraphics, accessor) -> ClientHandler.isPlayerMountedOnCamera());
 		registration.addRayTraceCallback((hit, accessor, original) -> {
 			if (accessor instanceof BlockAccessor blockAccessor) {
 				Block block = blockAccessor.getBlock();
