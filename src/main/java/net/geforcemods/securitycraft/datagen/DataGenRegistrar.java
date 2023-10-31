@@ -54,6 +54,6 @@ public class DataGenRegistrar {
                         DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
                         Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
 		//@formatter:on
-		generator.addProvider(event.includeServer(), new RecipeGenerator(output));
+		generator.addProvider(event.includeServer(), new RecipeGenerator(output, lookupProvider));
 	}
 }
