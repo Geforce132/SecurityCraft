@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_block_pocket_wall",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_block_pocket_wall"
     ]
   ],
   "rewards": {

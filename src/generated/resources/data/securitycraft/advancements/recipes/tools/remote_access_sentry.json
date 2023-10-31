@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_sentry",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_sentry"
     ]
   ],
   "rewards": {

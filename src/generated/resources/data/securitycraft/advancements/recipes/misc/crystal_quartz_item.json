@@ -20,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_prismarine_crystals",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_prismarine_crystals"
     ]
   ],
   "rewards": {

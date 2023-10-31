@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_reinforced_smooth_red_sandstone",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_reinforced_smooth_red_sandstone"
     ]
   ],
   "rewards": {

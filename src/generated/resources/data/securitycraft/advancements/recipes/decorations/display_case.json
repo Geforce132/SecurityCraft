@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_item_frame",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_item_frame"
     ]
   ],
   "rewards": {

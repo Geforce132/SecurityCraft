@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_reader",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_reader"
     ]
   ],
   "rewards": {

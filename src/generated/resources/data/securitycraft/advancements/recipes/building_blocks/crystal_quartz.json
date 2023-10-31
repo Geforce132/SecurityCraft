@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_crystal_quartz_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_crystal_quartz_item"
     ]
   ],
   "rewards": {

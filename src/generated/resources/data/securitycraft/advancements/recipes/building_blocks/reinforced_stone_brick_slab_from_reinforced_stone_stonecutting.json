@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_reinforced_stone",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_reinforced_stone"
     ]
   ],
   "rewards": {
