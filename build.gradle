@@ -36,6 +36,8 @@ sourceSets.main.resources {
 	srcDir 'src/generated/resources' //include generated files
 }
 
+minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
+
 runs {
 	configureEach {
 		systemProperty 'forge.logging.console.level', 'debug'
