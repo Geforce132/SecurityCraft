@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -29,8 +27,8 @@ public class SetGhostSlot {
 		buf.writeItemStack(stack, false);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		Player player = ctx.get().getSender();
+	public void handle(NetworkEvent.Context ctx) {
+		Player player = ctx.getSender();
 
 		if (player.containerMenu instanceof InventoryScannerMenu menu && menu.be.isOwnedBy(player))
 			menu.be.getContents().set(slotIndex, stack);

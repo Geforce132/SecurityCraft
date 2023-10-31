@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -37,8 +35,8 @@ public class SyncAlarmSettings {
 		buf.writeVarInt(soundLength);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		if (ctx.get().getSender().level().getBlockEntity(pos) instanceof AlarmBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
+	public void handle(NetworkEvent.Context ctx) {
+		if (ctx.getSender().level().getBlockEntity(pos) instanceof AlarmBlockEntity be && be.isOwnedBy(ctx.getSender())) {
 			if (!soundEvent.equals(be.getSound().getLocation()))
 				be.setSound(soundEvent);
 

@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -25,8 +23,8 @@ public class ClearLoggerServer {
 		buf.writeBlockPos(pos);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		ServerPlayer player = ctx.get().getSender();
+	public void handle(NetworkEvent.Context ctx) {
+		ServerPlayer player = ctx.getSender();
 
 		if (player.level().getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be && be.isOwnedBy(player)) {
 			be.setPlayers(new String[100]);

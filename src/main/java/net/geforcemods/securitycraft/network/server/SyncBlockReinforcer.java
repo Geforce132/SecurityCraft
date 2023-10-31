@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.minecraft.network.FriendlyByteBuf;
@@ -27,8 +25,8 @@ public class SyncBlockReinforcer {
 		buf.writeBoolean(isReinforcing);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		ServerPlayer player = ctx.get().getSender();
+	public void handle(NetworkEvent.Context ctx) {
+		ServerPlayer player = ctx.getSender();
 		Inventory inventory = player.getInventory();
 		ItemStack reinforcer = inventory.getSelected().getItem() instanceof UniversalBlockReinforcerItem ? inventory.getSelected() : inventory.offhand.get(0);
 

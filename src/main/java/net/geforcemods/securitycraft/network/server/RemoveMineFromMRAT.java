@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.nbt.CompoundTag;
@@ -27,8 +25,8 @@ public class RemoveMineFromMRAT {
 		buf.writeVarInt(mineIndex);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		Player player = ctx.get().getSender();
+	public void handle(NetworkEvent.Context ctx) {
+		Player player = ctx.getSender();
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.MINE_REMOTE_ACCESS_TOOL.get());
 
 		if (!stack.isEmpty()) {

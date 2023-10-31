@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.client;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
@@ -33,7 +32,7 @@ public class SendTip {
 
 	public void encode(FriendlyByteBuf packet) {}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
+	public void handle(NetworkEvent.Context ctx) {
 		if (!ConfigHandler.CLIENT.sayThanksMessage.get())
 			return;
 

@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
@@ -32,8 +30,8 @@ public class MountCamera {
 		buf.writeBlockPos(pos);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		ServerPlayer player = ctx.get().getSender();
+	public void handle(NetworkEvent.Context ctx) {
+		ServerPlayer player = ctx.getSender();
 		Level level = player.level();
 		BlockState state = level.getBlockState(pos);
 

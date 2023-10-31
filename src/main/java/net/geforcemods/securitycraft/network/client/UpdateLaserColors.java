@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.client;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.minecraft.core.BlockPos;
@@ -36,7 +35,7 @@ public class UpdateLaserColors {
 		}
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
+	public void handle(NetworkEvent.Context ctx) {
 		for (BlockPos pos : positionsToUpdate) {
 			ClientHandler.updateBlockColorAroundPosition(pos);
 		}

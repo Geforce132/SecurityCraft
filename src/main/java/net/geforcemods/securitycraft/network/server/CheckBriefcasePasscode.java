@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
@@ -29,8 +27,8 @@ public class CheckBriefcasePasscode {
 		buf.writeUtf(passcode);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		ServerPlayer player = ctx.get().getSender();
+	public void handle(NetworkEvent.Context ctx) {
+		ServerPlayer player = ctx.getSender();
 		ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get());
 
 		if (!briefcase.isEmpty()) {

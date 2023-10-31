@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.client;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.network.FriendlyByteBuf;
@@ -25,7 +23,7 @@ public class UpdateNBTTagOnClient {
 		buf.writeItem(stack);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
+	public void handle(NetworkEvent.Context ctx) {
 		ItemStack stackToUpdate = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), stack.getItem());
 
 		if (!stackToUpdate.isEmpty())

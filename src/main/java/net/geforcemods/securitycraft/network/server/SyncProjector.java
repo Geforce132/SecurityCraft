@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -50,8 +48,8 @@ public class SyncProjector {
 			buf.writeVarInt(data);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		Player player = ctx.get().getSender();
+	public void handle(NetworkEvent.Context ctx) {
+		Player player = ctx.getSender();
 		Level level = player.level();
 
 		if (level.isLoaded(pos) && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be && be.isOwnedBy(player)) {

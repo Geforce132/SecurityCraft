@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -28,8 +26,8 @@ public class RemovePositionFromSSS {
 		buf.writeBlockPos(pos);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		Player player = ctx.get().getSender();
+	public void handle(NetworkEvent.Context ctx) {
+		Player player = ctx.getSender();
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
 
 		if (!stack.isEmpty())

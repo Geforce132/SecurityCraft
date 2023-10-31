@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.client;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -40,7 +38,7 @@ public class RefreshDisguisableModel {
 		buf.writeBoolean(toggled);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
+	public void handle(NetworkEvent.Context ctx) {
 		IModuleInventory be = (IModuleInventory) Minecraft.getInstance().level.getBlockEntity(pos);
 
 		if (be != null) {

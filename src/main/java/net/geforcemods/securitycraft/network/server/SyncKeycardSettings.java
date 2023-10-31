@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.minecraft.core.BlockPos;
@@ -45,8 +43,8 @@ public class SyncKeycardSettings {
 		}
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		Player player = ctx.get().getSender();
+	public void handle(NetworkEvent.Context ctx) {
+		Player player = ctx.getSender();
 
 		if (player.level().getBlockEntity(pos) instanceof KeycardReaderBlockEntity be) {
 			boolean isOwner = be.isOwnedBy(player);

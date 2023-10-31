@@ -2,9 +2,6 @@ package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
@@ -58,7 +55,6 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab.TabVisibility;
@@ -76,7 +72,9 @@ import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.simple.MessageFunctions.MessageConsumer;
+import net.neoforged.neoforge.network.simple.MessageFunctions.MessageDecoder;
+import net.neoforged.neoforge.network.simple.MessageFunctions.MessageEncoder;
 import net.neoforged.neoforge.registries.ForgeRegistries.Keys;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforge.registries.RegistryObject;
@@ -185,7 +183,7 @@ public class RegistrationHandler {
 		registerPacket(id++, UpdateSliderValue.class, UpdateSliderValue::encode, UpdateSliderValue::new, UpdateSliderValue::handle);
 	}
 
-	private static <MSG> void registerPacket(int id, Class<MSG> type, BiConsumer<MSG, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> messageHandler) {
+	private static <MSG> void registerPacket(int id, Class<MSG> type, MessageEncoder<MSG> encoder, MessageDecoder<MSG> decoder, MessageConsumer<MSG> messageHandler) {
 		SecurityCraft.CHANNEL.messageBuilder(type, id).encoder(encoder).decoder(decoder).consumerMainThread(messageHandler).add();
 	}
 

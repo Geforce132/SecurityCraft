@@ -1,14 +1,12 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.network.NetworkEvent.Context;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public class SyncRiftStabilizer {
 	private BlockPos pos;
@@ -35,11 +33,11 @@ public class SyncRiftStabilizer {
 		buf.writeBoolean(allowed);
 	}
 
-	public void handle(Supplier<Context> ctx) {
+	public void handle(NetworkEvent.Context ctx) {
 		if (teleportationType != null) {
-			Level level = ctx.get().getSender().level();
+			Level level = ctx.getSender().level();
 
-			if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
+			if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be && be.isOwnedBy(ctx.getSender())) {
 				BlockState state = level.getBlockState(pos);
 
 				be.setFilter(teleportationType, allowed);

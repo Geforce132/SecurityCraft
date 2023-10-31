@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.network.server;
 
 import java.util.Arrays;
-import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
@@ -37,9 +36,9 @@ public class CheckPasscode {
 		buf.writeUtf(passcode);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
+	public void handle(NetworkEvent.Context ctx) {
 		BlockPos pos = new BlockPos(x, y, z);
-		ServerPlayer player = ctx.get().getSender();
+		ServerPlayer player = ctx.getSender();
 
 		if (player.level().getBlockEntity(pos) instanceof IPasscodeProtected be) {
 			if (be.isOnCooldown())

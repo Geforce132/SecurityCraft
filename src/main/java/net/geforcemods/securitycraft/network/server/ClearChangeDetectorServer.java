@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -25,8 +23,8 @@ public class ClearChangeDetectorServer {
 		buf.writeBlockPos(pos);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		ServerPlayer player = ctx.get().getSender();
+	public void handle(NetworkEvent.Context ctx) {
+		ServerPlayer player = ctx.getSender();
 
 		if (player.level().getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(player)) {
 			be.getEntries().clear();

@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,8 +12,8 @@ public class DismountCamera {
 
 	public void encode(FriendlyByteBuf buf) {}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		ServerPlayer player = ctx.get().getSender();
+	public void handle(NetworkEvent.Context ctx) {
+		ServerPlayer player = ctx.getSender();
 
 		if (player.getCamera() instanceof SecurityCamera cam)
 			cam.stopViewing(player);

@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.client;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -32,7 +30,7 @@ public class SetCameraView {
 		buf.writeVarInt(id);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
+	public void handle(NetworkEvent.Context ctx) {
 		Minecraft mc = Minecraft.getInstance();
 		Entity entity = mc.level.getEntity(id);
 		boolean isMountingCamera = entity instanceof SecurityCamera;

@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -41,10 +39,10 @@ public class SyncSSSSettingsOnServer {
 			buf.writeBlockPos(posToRemove);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		Level level = ctx.get().getSender().level();
+	public void handle(NetworkEvent.Context ctx) {
+		Level level = ctx.getSender().level();
 
-		if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.isOwnedBy(ctx.get().getSender())) {
+		if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.isOwnedBy(ctx.getSender())) {
 			switch (dataType) {
 				case POWER_ON:
 					sss.setActive(true);

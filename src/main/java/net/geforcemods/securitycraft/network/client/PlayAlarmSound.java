@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.client;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -67,7 +65,7 @@ public class PlayAlarmSound {
 		return soundZ / ClientboundSoundPacket.LOCATION_ACCURACY;
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
+	public void handle(NetworkEvent.Context ctx) {
 		Level level = ClientHandler.getClientLevel();
 
 		if (level.getBlockEntity(bePos) instanceof AlarmBlockEntity be)

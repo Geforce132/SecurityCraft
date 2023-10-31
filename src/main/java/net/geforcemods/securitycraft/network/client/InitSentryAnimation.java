@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.network.client;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.minecraft.client.Minecraft;
@@ -37,7 +36,7 @@ public class InitSentryAnimation {
 		buf.writeBoolean(isShutDown);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
+	public void handle(NetworkEvent.Context ctx) {
 		List<Sentry> sentries = Minecraft.getInstance().level.<Sentry>getEntitiesOfClass(Sentry.class, new AABB(pos));
 
 		if (!sentries.isEmpty()) {

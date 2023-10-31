@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.client;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -46,7 +44,7 @@ public class UpdateLogger {
 		buf.writeLong(timestamp);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
+	public void handle(NetworkEvent.Context ctx) {
 		BlockPos pos = new BlockPos(x, y, z);
 		UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) Minecraft.getInstance().player.level().getBlockEntity(pos);
 

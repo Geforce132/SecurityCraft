@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.client;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -31,7 +29,7 @@ public class SetTrophySystemTarget {
 		buf.writeInt(targetID);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
+	public void handle(NetworkEvent.Context ctx) {
 		BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(trophyPos);
 
 		if (blockEntity instanceof TrophySystemBlockEntity be && Minecraft.getInstance().level.getEntity(targetID) instanceof Projectile projectile)

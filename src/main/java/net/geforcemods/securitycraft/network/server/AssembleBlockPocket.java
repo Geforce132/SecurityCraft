@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -28,8 +26,8 @@ public class AssembleBlockPocket {
 		buf.writeInt(size);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		if (ctx.get().getSender().level().getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
+	public void handle(NetworkEvent.Context ctx) {
+		if (ctx.getSender().level().getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && be.isOwnedBy(ctx.getSender())) {
 			be.setSize(size);
 			be.autoAssembleMultiblock();
 			be.setChanged();

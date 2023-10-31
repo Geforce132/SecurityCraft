@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.minecraft.core.BlockPos;
@@ -30,8 +28,8 @@ public class SyncIMSTargetingOption {
 		buf.writeEnum(targetingMode);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		Player player = ctx.get().getSender();
+	public void handle(NetworkEvent.Context ctx) {
+		Player player = ctx.getSender();
 
 		if (player.level().getBlockEntity(pos) instanceof IMSBlockEntity be && be.isOwnedBy(player))
 			be.setTargetingMode(targetingMode);

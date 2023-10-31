@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.client;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
@@ -51,7 +49,7 @@ public class OpenScreen {
 			buf.writeBlockPos(pos);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
+	public void handle(NetworkEvent.Context ctx) {
 		switch (dataType) {
 			case ALARM:
 				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof AlarmBlockEntity be)

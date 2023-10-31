@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
@@ -38,13 +36,13 @@ public class SyncTrophySystem {
 		buf.writeBoolean(allowed);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
+	public void handle(NetworkEvent.Context ctx) {
 		EntityType<?> projectileType = ForgeRegistries.ENTITY_TYPES.getValue(projectileTypeLocation);
 
 		if (projectileType != null) {
-			Level level = ctx.get().getSender().level();
+			Level level = ctx.getSender().level();
 
-			if (level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
+			if (level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be && be.isOwnedBy(ctx.getSender())) {
 				BlockState state = level.getBlockState(pos);
 
 				be.setFilter(projectileType, allowed);

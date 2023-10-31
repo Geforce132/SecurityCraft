@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.network.server;
 
 import java.util.Map;
-import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -34,8 +33,8 @@ public class SyncLaserSideConfig {
 		buf.writeNbt(sideConfig);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		Player player = ctx.get().getSender();
+	public void handle(NetworkEvent.Context ctx) {
+		Player player = ctx.getSender();
 		Level level = player.level();
 
 		if (level.getBlockEntity(pos) instanceof LaserBlockBlockEntity be && be.isOwnedBy(player)) {

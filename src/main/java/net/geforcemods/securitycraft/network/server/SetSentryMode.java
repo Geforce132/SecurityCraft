@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.network.server;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.minecraft.core.BlockPos;
@@ -32,8 +31,8 @@ public class SetSentryMode {
 		buf.writeInt(mode);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		Player player = ctx.get().getSender();
+	public void handle(NetworkEvent.Context ctx) {
+		Player player = ctx.getSender();
 		Level level = player.level();
 
 		if (level.isLoaded(pos)) {

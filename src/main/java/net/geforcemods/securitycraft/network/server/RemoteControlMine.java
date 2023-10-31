@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import org.apache.logging.log4j.util.TriConsumer;
 
 import net.geforcemods.securitycraft.api.IExplosive;
@@ -40,8 +38,8 @@ public class RemoteControlMine {
 		buf.writeEnum(action);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		Player player = ctx.get().getSender();
+	public void handle(NetworkEvent.Context ctx) {
+		Player player = ctx.getSender();
 		Level level = player.level();
 		BlockPos pos = new BlockPos(x, y, z);
 		BlockState state = level.getBlockState(pos);

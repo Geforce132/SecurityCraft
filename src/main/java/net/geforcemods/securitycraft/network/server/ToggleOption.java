@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.core.BlockPos;
@@ -36,9 +34,9 @@ public class ToggleOption {
 		buf.writeInt(id);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
+	public void handle(NetworkEvent.Context ctx) {
 		BlockPos pos = new BlockPos(x, y, z);
-		Player player = ctx.get().getSender();
+		Player player = ctx.getSender();
 		BlockEntity be = player.level().getBlockEntity(pos);
 
 		if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {

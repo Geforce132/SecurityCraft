@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.function.Supplier;
-
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
 import net.minecraft.core.BlockPos;
@@ -39,10 +37,10 @@ public class SyncBlockChangeDetector {
 		buf.writeInt(color);
 	}
 
-	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		Level level = ctx.get().getSender().level();
+	public void handle(NetworkEvent.Context ctx) {
+		Level level = ctx.getSender().level();
 
-		if (level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
+		if (level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(ctx.getSender())) {
 			BlockState state = level.getBlockState(pos);
 
 			be.setMode(mode);
