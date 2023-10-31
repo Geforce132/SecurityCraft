@@ -1,15 +1,11 @@
 package net.geforcemods.securitycraft.datagen;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -25,13 +21,10 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.conditions.ICondition;
-import net.neoforged.neoforge.common.crafting.ConditionalRecipe;
 
 public class RecipeGenerator extends RecipeProvider {
 	public RecipeGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
@@ -1449,20 +1442,6 @@ public class RecipeGenerator extends RecipeProvider {
 		.requires(SCContent.RETINAL_SCANNER.get())
 		.unlockedBy("has_sign", has(ItemTags.SIGNS))
 		.save(recipeOutput);
-		//@formatter:on
-	}
-
-	protected final void addShapelessConditionalRecipe(RecipeOutput recipeOutput, ItemLike result, int amount, String group, CraftingBookCategory craftingBookCategory, RecipeCategory recipeCategory, List<ItemLike> ingredients, AbstractCriterionTriggerInstance criterion, ICondition condition) {
-		//@formatter:off
-		ShapelessRecipeBuilder.Result recipe;
-		Item resultItem = result.asItem();
-		ResourceLocation id = Utils.getRegistryName(resultItem);
-
-		recipe = new ShapelessRecipeBuilder.Result(id,
-				resultItem, amount, group, craftingBookCategory, ingredients.stream().map(Ingredient::of).collect(Collectors.toList()),
-				Advancement.Builder.advancement().addCriterion("has_item", criterion),
-				new ResourceLocation(id.getNamespace(), "recipes/" + recipeCategory.getFolderName() + "/" + id.getPath()));
-		ConditionalRecipe.builder().addCondition(condition).addRecipe(recipe).build(recipeOutput, id);
 		//@formatter:on
 	}
 
