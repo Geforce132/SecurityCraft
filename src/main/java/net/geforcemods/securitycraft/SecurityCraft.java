@@ -9,7 +9,6 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
-import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock.Convertible;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBarrelBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
