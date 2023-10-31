@@ -62,10 +62,9 @@ public class CollapsibleTextList extends Button {
 		isHovered &= extraHoverCheck.test(mouseX, mouseY);
 
 		Font font = Minecraft.getInstance().font;
-		int v = !active ? 0 : (isHoveredOrFocused() ? 2 : 1);
 		int heightOffset = (height - 8) / 2;
 
-		guiGraphics.blitWithBorder(WIDGETS_LOCATION, getX(), getY(), 0, 46 + v * 20, width, height, 200, 20, 2, 3, 2, 2);
+		guiGraphics.blitSprite(SPRITES.get(active, isHoveredOrFocused()), getX(), getY(), getWidth(), getHeight());
 		guiGraphics.drawCenteredString(font, getMessage(), getX() + font.width(getMessage()) / 2 + 3, getY() + heightOffset, getFGColor());
 
 		int renderedLines = 0;
