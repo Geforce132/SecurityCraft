@@ -19,10 +19,10 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSourceImpl;
 import net.minecraft.core.Direction;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -385,7 +385,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 		if (shootSound == null) {
 			if (!level().isClientSide && pdb != null)
-				pdb.playSound(new BlockSourceImpl((ServerLevel) level(), blockPosition()));
+				pdb.playSound(new BlockSource((ServerLevel) level(), blockPosition()));
 		}
 		else
 			playSound(shootSound, 1.0F, 1.0F / (getRandom().nextFloat() * 0.4F + 0.8F));
