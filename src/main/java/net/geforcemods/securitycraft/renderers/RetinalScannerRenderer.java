@@ -1,15 +1,11 @@
 package net.geforcemods.securitycraft.renderers;
 
-import java.util.Map;
-
 import javax.annotation.Nullable;
 
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -29,7 +25,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LightLayer;
@@ -96,12 +91,9 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 	}
 
 	private static ResourceLocation getSkinTexture(@Nullable GameProfile profile) {
-		if (ConfigHandler.SERVER.retinalScannerFace.get() && profile != null) {
-			Minecraft minecraft = Minecraft.getInstance();
-			Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().getInsecureSkinInformation(profile);
-			return map.containsKey(Type.SKIN) ? minecraft.getSkinManager().registerTexture(map.get(Type.SKIN), Type.SKIN) : DefaultPlayerSkin.getDefaultSkin(UUIDUtil.getOrCreatePlayerUUID(profile));
-		}
+		if (ConfigHandler.SERVER.retinalScannerFace.get() && profile != null)
+			return Minecraft.getInstance().getSkinManager().getInsecureSkin(profile).texture();
 		else
-			return DefaultPlayerSkin.getDefaultSkin();
+			return DefaultPlayerSkin.getDefaultTexture();
 	}
 }
