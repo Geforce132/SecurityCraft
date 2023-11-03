@@ -15,6 +15,7 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -127,7 +128,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 			ServerPlayer serverPlayer = (ServerPlayer) player;
 			SecurityCamera dummyEntity;
 			SectionPos chunkPos = SectionPos.of(pos);
-			int viewDistance = serverPlayer.server.getPlayerList().getViewDistance();
+			int viewDistance = Mth.clamp(serverPlayer.requestedViewDistance(), 2, serverPlayer.server.getPlayerList().getViewDistance());
 
 			if (serverPlayer.getCamera() instanceof SecurityCamera cam)
 				dummyEntity = new SecurityCamera(level, pos, cam);

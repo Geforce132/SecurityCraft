@@ -19,6 +19,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.server.level.ChunkTrackingView;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
@@ -36,7 +37,7 @@ public class SecurityCamera extends Entity {
 	protected int toggleNightVisionCooldown = 0;
 	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
-	private int initialChunkLoadingDistance = 0;
+	private ChunkTrackingView cameraChunks = null;
 	private boolean hasSentChunks = false;
 
 	public SecurityCamera(EntityType<SecurityCamera> type, Level level) {
@@ -130,8 +131,12 @@ public class SecurityCamera extends Entity {
 		setRot(yaw, pitch);
 	}
 
+	public ChunkTrackingView getCameraChunks() {
+		return cameraChunks;
+	}
+
 	public void setChunkLoadingDistance(int chunkLoadingDistance) {
-		initialChunkLoadingDistance = chunkLoadingDistance;
+		cameraChunks = ChunkTrackingView.of(chunkPosition(), chunkLoadingDistance);
 	}
 
 	public boolean hasSentChunks() {
@@ -174,7 +179,7 @@ public class SecurityCamera extends Entity {
 				camBe.stopViewing();
 
 			SectionPos chunkPos = SectionPos.of(blockPosition());
-			int chunkLoadingDistance = initialChunkLoadingDistance <= 0 ? level().getServer().getPlayerList().getViewDistance() : initialChunkLoadingDistance;
+			int chunkLoadingDistance = cameraChunks instanceof ChunkTrackingView.Positioned cameraChunks ? cameraChunks.viewDistance() : level().getServer().getPlayerList().getViewDistance();
 
 			for (int x = chunkPos.getX() - chunkLoadingDistance; x <= chunkPos.getX() + chunkLoadingDistance; x++) {
 				for (int z = chunkPos.getZ() - chunkLoadingDistance; z <= chunkPos.getZ() + chunkLoadingDistance; z++) {

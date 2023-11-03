@@ -1,20 +1,21 @@
 package net.geforcemods.securitycraft.mixin.camera;
 
-import org.apache.commons.lang3.mutable.MutableObject;
+import java.util.Iterator;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
-import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.core.SectionPos;
-import net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket;
 import net.minecraft.server.level.ChunkMap;
+import net.minecraft.server.level.ChunkTrackingView;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.LevelChunk;
 
 /**
  * This mixin makes sure that chunks near cameras are properly sent to the player viewing it, as well as fixing block updates
@@ -23,50 +24,43 @@ import net.minecraft.world.level.ChunkPos;
 @Mixin(value = ChunkMap.class, priority = 1100)
 public abstract class ChunkMapMixin {
 	@Shadow
-	int viewDistance;
+	protected abstract void markChunkPendingToSend(ServerPlayer player, ChunkPos pos);
 
 	@Shadow
-	protected abstract void updateChunkTracking(ServerPlayer player, ChunkPos chunkPos, MutableObject<ClientboundLevelChunkWithLightPacket> packetCache, boolean wasLoaded, boolean load);
+	private static void markChunkPendingToSend(ServerPlayer player, LevelChunk chunk) {}
 
 	/**
-	 * Fixes block updates not getting sent to chunks loaded by cameras by returning the camera's SectionPos to the distance
-	 * checking methods
+	 * Sends chunks loaded by cameras to the client, and re-sends chunks around the player when they stop viewing a camera to
+	 * preemptively prevent missing chunks when exiting the camera
 	 */
-	@Redirect(method = {"getPlayers", "lambda$setViewDistance$51"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getLastSectionPos()Lnet/minecraft/core/SectionPos;"))
-	private SectionPos securitycraft$getCameraSectionPos(ServerPlayer player) {
-		if (PlayerUtils.isPlayerMountedOnCamera(player))
-			return SectionPos.of(player.getCamera());
-
-		return player.getLastSectionPos();
-	}
-
-	/**
-	 * Tracks chunks loaded by cameras to send them to the client, and tracks chunks around the player to properly update them
-	 * when they stop viewing a camera
-	 */
-	@Inject(method = "move", at = @At(value = "TAIL"))
-	private void securitycraft$trackCameraLoadedChunks(ServerPlayer player, CallbackInfo callback) {
+	@Inject(method = "updateChunkTracking", at = @At(value = "HEAD"))
+	private void securitycraft$onUpdateChunkTracking(ServerPlayer player, CallbackInfo callback) {
 		if (player.getCamera() instanceof SecurityCamera camera) {
 			if (!camera.hasSentChunks()) {
-				SectionPos pos = SectionPos.of(camera);
-
-				for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
-					for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
-						updateChunkTracking(player, new ChunkPos(i, j), new MutableObject<>(), false, true);
-					}
-				}
-
+				ChunkTrackingView.difference(player.getChunkTrackingView(), camera.getCameraChunks(), chunkPos -> markChunkPendingToSend(player, chunkPos), chunkPos -> {});
 				camera.setHasSentChunks(true);
 			}
 		}
-		else if (SecurityCamera.hasRecentlyDismounted(player)) {
-			SectionPos pos = player.getLastSectionPos();
+		else if (SecurityCamera.hasRecentlyDismounted(player))
+			player.getChunkTrackingView().forEach(chunkPos -> markChunkPendingToSend(player, chunkPos));
+	}
 
-			for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
-				for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
-					updateChunkTracking(player, new ChunkPos(i, j), new MutableObject<>(), false, true);
-				}
-			}
-		}
+	/**
+	 * Allows chunks that are loaded near a currently active camera (for example by ForcedChunkManager) to be sent to the player
+	 * viewing the camera
+	 */
+	@Inject(method = "onChunkReadyToSend", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getChunkTrackingView()Lnet/minecraft/server/level/ChunkTrackingView;"), locals = LocalCapture.CAPTURE_FAILSOFT)
+	private void securitycraft$sendChunksToCameras(LevelChunk chunk, CallbackInfo callback, ChunkPos pos, Iterator<?> iterator, ServerPlayer player) {
+		if (player.getCamera() instanceof SecurityCamera camera && camera.getCameraChunks().contains(pos))
+			markChunkPendingToSend(player, chunk);
+	}
+
+	/**
+	 * Fixes block updates not getting sent to chunks around cameras by marking all nearby chunks as tracked
+	 */
+	@Inject(method = "isChunkTracked", at = @At("HEAD"), cancellable = true)
+	private void securitycraft$onIsChunkTracked(ServerPlayer player, int x, int z, CallbackInfoReturnable<Boolean> callback) {
+		if (player.getCamera() instanceof SecurityCamera camera && camera.getCameraChunks().contains(x, z) && !player.connection.chunkSender.isPending(ChunkPos.asLong(x, z)))
+			callback.setReturnValue(true);
 	}
 }

@@ -80,7 +80,9 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	 * Handles chunks that are dropped in range of the camera storage
 	 */
 	@Inject(method = "drop", at = @At(value = "HEAD"))
-	public void securitycraft$onDrop(int x, int z, CallbackInfo ci) {
+	public void securitycraft$onDrop(ChunkPos pos, CallbackInfo ci) {
+		int x = pos.x;
+		int z = pos.z;
 		ClientChunkCache.Storage cameraStorage = CameraController.getCameraStorage();
 
 		if (cameraStorage.inRange(x, z)) {
