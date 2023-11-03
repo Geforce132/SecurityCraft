@@ -1,14 +1,12 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.minecraft.MinecraftSessionService;
-import com.mojang.authlib.properties.Property;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -34,7 +32,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.players.GameProfileCache;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,13 +39,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements IViewActivated, ITickingBlockEntity, ILockable {
-	private static GameProfileCache profileCache;
-	private static MinecraftSessionService sessionService;
 	private static Executor mainThreadExecutor;
 	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
@@ -167,14 +163,6 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 		};
 	}
 
-	public static void setProfileCache(GameProfileCache profileCache) {
-		RetinalScannerBlockEntity.profileCache = profileCache;
-	}
-
-	public static void setSessionService(MinecraftSessionService sessionService) {
-		RetinalScannerBlockEntity.sessionService = sessionService;
-	}
-
 	public static void setMainThreadExecutor(Executor mainThreadExecutor) {
 		RetinalScannerBlockEntity.mainThreadExecutor = mainThreadExecutor;
 	}
@@ -201,7 +189,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 
 	@Override
 	public void onOwnerChanged(BlockState state, Level world, BlockPos pos, Player player) {
-		setPlayerProfile(new GameProfile(null, getOwner().getName()));
+		setPlayerProfile(new GameProfile(Util.NIL_UUID, getOwner().getName()));
 		super.onOwnerChanged(state, world, pos, player);
 	}
 
@@ -219,42 +207,17 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	public void updatePlayerProfile() {
-		if (ServerLifecycleHooks.getCurrentServer() != null) {
-			if (profileCache == null)
-				setProfileCache(ServerLifecycleHooks.getCurrentServer().getProfileCache());
-
-			if (sessionService == null)
-				setSessionService(ServerLifecycleHooks.getCurrentServer().getSessionService());
-
-			if (mainThreadExecutor == null)
-				setMainThreadExecutor(ServerLifecycleHooks.getCurrentServer());
-		}
+		if (ServerLifecycleHooks.getCurrentServer() != null && mainThreadExecutor == null)
+			setMainThreadExecutor(ServerLifecycleHooks.getCurrentServer());
 
 		updateGameProfile(ownerProfile, profile -> {
-			ownerProfile = profile;
+			ownerProfile = profile.orElse(ownerProfile);
 			setChanged();
 		});
 	}
 
-	private void updateGameProfile(GameProfile input, Consumer<GameProfile> onChanged) {
-		if (ConfigHandler.SERVER.retinalScannerFace.get() && input != null && !StringUtil.isNullOrEmpty(input.getName()) && (!input.isComplete() || !input.getProperties().containsKey("textures")) && profileCache != null && sessionService != null) {
-			profileCache.getAsync(input.getName(), result -> Util.backgroundExecutor().execute(() -> {
-				Util.ifElse(result, gameProfile -> {
-					Property textures = (Property) Iterables.getFirst(gameProfile.getProperties().get("textures"), (Object) null);
-
-					if (textures == null)
-						gameProfile = sessionService.fillProfileProperties(gameProfile, true);
-
-					GameProfile profile = gameProfile;
-
-					mainThreadExecutor.execute(() -> {
-						profileCache.add(profile);
-						onChanged.accept(profile);
-					});
-				}, () -> mainThreadExecutor.execute(() -> onChanged.accept(input)));
-			}));
-		}
-		else
-			onChanged.accept(input);
+	private void updateGameProfile(GameProfile input, Consumer<Optional<GameProfile>> onChanged) {
+		if (ConfigHandler.SERVER.retinalScannerFace.get() && input != null && !StringUtil.isNullOrEmpty(input.getName()) && !input.getProperties().containsKey("textures") && mainThreadExecutor != null)
+			SkullBlockEntity.fetchGameProfile(input.getName()).thenAcceptAsync(onChanged, mainThreadExecutor);
 	}
 }
