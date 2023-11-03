@@ -14,10 +14,13 @@ issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 	credits="Thanks to all of you guys for your support!"
 	authors="Geforce132, bl4ckscor3, Redstone_Dubstep"
 
+[[mixins]]
+    config="securitycraft.mixins.json"
+
 [[dependencies.securitycraft]]
     modId="neoforge"
     mandatory=true
-    versionRange="[20.2,)"
+    versionRange="[20.2.21-beta,)"
     ordering="NONE"
     side="BOTH"
 

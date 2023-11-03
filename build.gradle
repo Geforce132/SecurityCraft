@@ -3,7 +3,6 @@ plugins {
 	id 'eclipse'
 	id 'idea'
 	id 'net.neoforged.gradle.userdev' version '[7.0,7.1)'
-	id 'net.neoforged.gradle.mixin' version '[7.0,7.1)'
 //	id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
@@ -41,7 +40,6 @@ minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/
 runs {
 	configureEach {
 		systemProperty 'forge.logging.console.level', 'debug'
-		programArgument '-mixin.config=securitycraft.mixins.json'
 		modSource project.sourceSets.main
 	}
 
@@ -70,14 +68,14 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:20.2.8-beta'
+	implementation 'net.neoforged:neoforge:20.2.21-beta'
 	
 //	implementation fg.deobf("curse.maven:architectury-api-419699:4581905") //ftb teams dependency
 //	implementation fg.deobf("curse.maven:ftb-library-forge-404465:4596511") //ftb teams dependency
 //	implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4623116")
 //	implementation fg.deobf("curse.maven:jei-238222:4597711")
 //	implementation fg.deobf("curse.maven:the-one-probe-245211:4579432")
-	implementation "curse.maven:jade-324717:4828742"
+	// implementation "curse.maven:jade-324717:4828742"
 //	implementation fg.deobf("curse.maven:betterf3-401648:4641169")
 //	implementation fg.deobf("curse.maven:cloth-config-348521:4633444") //betterf3 dependency
 //	implementation fg.deobf("curse.maven:wthit-forge-455982:4596739")
