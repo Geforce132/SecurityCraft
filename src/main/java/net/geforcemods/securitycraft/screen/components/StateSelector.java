@@ -123,7 +123,6 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
 		PoseStack pose = guiGraphics.pose();
 
-		guiGraphics.blit(TEXTURE, xStart, yStart, 0, 0, 193, 150);
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
 		previousPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
 		nextPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
@@ -148,6 +147,11 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		}
 
 		guiGraphics.drawString(font, page + "/" + amountOfPages, xStart + 100, yStart + 130, 0x404040, false);
+	}
+
+	@Override
+	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		guiGraphics.blit(TEXTURE, xStart, yStart, 0, 0, 193, 150);
 	}
 
 	public void updateButtons(boolean updateInfo, boolean slotChanged) {

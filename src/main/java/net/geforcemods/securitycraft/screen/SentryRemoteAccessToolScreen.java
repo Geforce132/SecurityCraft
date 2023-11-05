@@ -35,7 +35,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private Button[][] guiButtons = new Button[12][3]; // 12 sentries, 3 actions (mode, targets, unbind)
 	private Button[] guiButtonsGlobal = new Button[3];
 	private static final int MODE = 0, TARGETS = 1, UNBIND = 2;
-	private int xSize = 440, ySize = 215;
+	private int xSize = 440, ySize = 215, leftPos, topPos;
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
 	private final Component notBound = Utils.localize("gui.securitycraft:srat.notBound");
 	private final Component[] lines = new Component[12];
@@ -50,6 +50,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	@Override
 	public void init() {
 		super.init();
+		leftPos = (width - xSize) / 2;
+		topPos = (height - ySize) / 2;
 
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
@@ -170,19 +172,15 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-
-		renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.blit(TEXTURE, startX, startY, 0, 0, xSize, ySize, 512, 256);
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawString(font, title, startX + xSize / 2 - font.width(title) / 2, startY + 6, 4210752, false);
+
+		guiGraphics.drawString(font, title, leftPos + xSize / 2 - font.width(title) / 2, topPos + 6, 4210752, false);
 
 		for (int i = 0; i < 12; i++) {
-			guiGraphics.drawString(font, lines[i], startX + xSize / 4 - lengths[i] + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 25 + 33, 4210752, false);
+			guiGraphics.drawString(font, lines[i], leftPos + xSize / 4 - lengths[i] + 35 + (i / 6) * xSize / 2, topPos + (i % 6) * 25 + 33, 4210752, false);
 		}
 
-		guiGraphics.drawString(font, modifyAll, startX + xSize / 2 - font.width(modifyAll) + 25, startY + 194, 4210752, false);
+		guiGraphics.drawString(font, modifyAll, leftPos + xSize / 2 - font.width(modifyAll) + 25, topPos + 194, 4210752, false);
 
 		for (TextHoverChecker chc : hoverCheckers) {
 			if (chc != null && chc.checkHover(mouseX, mouseY)) {
@@ -190,6 +188,12 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				break;
 			}
 		}
+	}
+
+	@Override
+	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, xSize, ySize, 512, 256);
 	}
 
 	/**

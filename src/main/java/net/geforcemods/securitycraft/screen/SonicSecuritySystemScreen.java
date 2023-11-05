@@ -31,7 +31,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 	/** The number of ticks between each note when playing back a recording **/
 	private static final int PLAYBACK_DELAY = 10;
 	private final SonicSecuritySystemBlockEntity be;
-	private int xSize = 300, ySize = 166;
+	private int xSize = 300, ySize = 166, leftPos, topPos;
 	private Button recordingButton, clearButton, powerButton, playButton, invertButton;
 	private TogglePictureButton soundButton;
 	private SSSConnectionList<SonicSecuritySystemScreen> connectionList;
@@ -77,6 +77,8 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 	@Override
 	public void init() {
 		super.init();
+		leftPos = (width - xSize) / 2;
+		topPos = (height - ySize) / 2;
 
 		boolean isActive = be.isActive();
 		boolean hasNotes = be.getNumberOfNotes() > 0;
@@ -148,16 +150,18 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
 		int textWidth = font.width(title);
 		int soundTextLength = font.width(SOUND_TEXT);
 
-		renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.blit(TEXTURE, startX, startY, 0, 0, xSize, ySize, 512, 512);
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawString(font, title, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752, false);
-		guiGraphics.drawString(font, SOUND_TEXT, soundButton.getX() - soundTextLength - 5, startY + 141, 4210752, false);
+		guiGraphics.drawString(font, title, leftPos + xSize / 2 - textWidth / 2, topPos + 6, 4210752, false);
+		guiGraphics.drawString(font, SOUND_TEXT, soundButton.getX() - soundTextLength - 5, topPos + 141, 4210752, false);
+	}
+
+	@Override
+	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, xSize, ySize, 512, 512);
 	}
 
 	@Override

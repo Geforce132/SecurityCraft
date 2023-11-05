@@ -51,7 +51,7 @@ public class EditModuleScreen extends Screen {
 	private EditBox inputField;
 	private Button addPlayerButton, removePlayerButton, copyButton, pasteButton, clearButton;
 	private CallbackCheckbox affectEveryPlayerCheckbox;
-	private int xSize = 247, ySize = 211;
+	private int xSize = 247, ySize = 211, leftPos, topPos;;
 	private PlayerList playerList;
 	private TeamList teamList;
 
@@ -65,6 +65,8 @@ public class EditModuleScreen extends Screen {
 	@Override
 	public void init() {
 		super.init();
+		leftPos = (width - xSize) / 2;
+		topPos = (height - ySize) / 2;
 
 		int guiLeft = (width - xSize) / 2;
 		int guiTop = (height - ySize) / 2;
@@ -124,13 +126,14 @@ public class EditModuleScreen extends Screen {
 
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-
-		renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.blit(TEXTURE, startX, startY, 0, 0, xSize, ySize);
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawWordWrap(font, editModule, startX + xSize / 2 - font.width(editModule) / 2, startY + 6, width, 4210752);
+		guiGraphics.drawWordWrap(font, editModule, leftPos + xSize / 2 - font.width(editModule) / 2, topPos + 6, width, 4210752);
+	}
+
+	@Override
+	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, xSize, ySize);
 	}
 
 	@Override
