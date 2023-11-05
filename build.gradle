@@ -78,8 +78,8 @@ dependencies {
 //	implementation "curse.maven:jade-324717:4828742"
 //	implementation fg.deobf("curse.maven:betterf3-401648:4641169")
 //	implementation fg.deobf("curse.maven:cloth-config-348521:4633444") //betterf3 dependency
-//	implementation fg.deobf("curse.maven:wthit-forge-455982:4596739")
-//	implementation fg.deobf("curse.maven:badpackets-615134:4438956") //wthit dependency
+	implementation "curse.maven:wthit-forge-455982:4841626"
+	implementation "curse.maven:badpackets-615134:4838088" //wthit dependency
 //	implementation fg.deobf("curse.maven:projecte-226410:3955047")
 }
 
