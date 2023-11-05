@@ -75,7 +75,7 @@ dependencies {
 //	implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4623116")
 //	implementation fg.deobf("curse.maven:jei-238222:4597711")
 //	implementation fg.deobf("curse.maven:the-one-probe-245211:4579432")
-	// implementation "curse.maven:jade-324717:4828742"
+//	implementation "curse.maven:jade-324717:4828742"
 //	implementation fg.deobf("curse.maven:betterf3-401648:4641169")
 //	implementation fg.deobf("curse.maven:cloth-config-348521:4633444") //betterf3 dependency
 //	implementation fg.deobf("curse.maven:wthit-forge-455982:4596739")

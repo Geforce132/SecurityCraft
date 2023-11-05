@@ -53,7 +53,6 @@ public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-		renderBackground(guiGraphics, mouseX, mouseY, partialTick);
 		guiGraphics.blit(GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 

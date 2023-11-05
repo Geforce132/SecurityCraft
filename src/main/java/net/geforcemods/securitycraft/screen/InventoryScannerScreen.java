@@ -75,7 +75,6 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
 		guiGraphics.blit(hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY, leftPos, topPos, 0, 0, imageWidth, imageHeight + 30);
 	}
 }

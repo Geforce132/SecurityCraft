@@ -32,7 +32,6 @@ public abstract class ItemInventoryScreen<T extends AbstractContainerMenu> exten
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
 		guiGraphics.blit(texture, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
