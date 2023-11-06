@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 
 import org.lwjgl.glfw.GLFW;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.Tesselator;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -74,7 +74,16 @@ public class SCManualScreen extends Screen {
 	private static final ResourceLocation PAGE = new ResourceLocation("securitycraft:textures/gui/info_book_texture.png");
 	private static final ResourceLocation PAGE_WITH_SCROLL = new ResourceLocation("securitycraft:textures/gui/info_book_texture_special.png"); //for items without a recipe
 	private static final ResourceLocation TITLE_PAGE = new ResourceLocation("securitycraft:textures/gui/info_book_title_page.png");
-	private static final ResourceLocation ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png");
+	private static final ResourceLocation OWNABLE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/ownable");
+	private static final ResourceLocation PASSCODE_PROTECTED_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/passcode_protected");
+	private static final ResourceLocation VIEW_ACTIVATED_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/view_activated");
+	private static final ResourceLocation EXPLOSIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/explosive");
+	private static final ResourceLocation HAS_OPTIONS_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/has_options");
+	private static final ResourceLocation HAS_MODULES_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/has_modules");
+	private static final ResourceLocation LOCKABLE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/lockable");
+	private static final ResourceLocation CUSTOMIZABLE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/customizable");
+	private static final ResourceLocation LINK_OUT_HIGHLIGHTED_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/link_out_highlighted");
+	private static final ResourceLocation LINK_OUT_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/link_out");
 	private static final ResourceLocation PAGE_FORWARD_HIGHLIGHTED_SPRITE = new ResourceLocation("widget/page_forward_highlighted");
 	private static final ResourceLocation PAGE_FORWARD_SPRITE = new ResourceLocation("widget/page_forward");
 	private static final ResourceLocation PAGE_BACKWARD_HIGHLIGHTED_SPRITE = new ResourceLocation("widget/page_backward_highlighted");
@@ -96,7 +105,7 @@ public class SCManualScreen extends Screen {
 	private Button patreonLinkButton;
 	private Button nextSubpage;
 	private Button previousSubpage;
-	private boolean explosive, ownable, passcodeProtected, viewActivated, customizable, lockable, moduleInventory;
+	private boolean explosive, ownable, passcodeProtected, viewActivated, hasOptions, lockable, hasModules;
 	private IngredientDisplay pageIcon;
 	private Component pageTitle, designedBy;
 
@@ -155,28 +164,28 @@ public class SCManualScreen extends Screen {
 			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270, false);
 
 			if (ownable)
-				guiGraphics.blit(ICONS, startX + 29, 118, 1, 1, 16, 16);
+				guiGraphics.blitSprite(OWNABLE_SPRITE, startX + 29, 118, 16, 16);
 
 			if (passcodeProtected)
-				guiGraphics.blit(ICONS, startX + 55, 118, 18, 1, 17, 16);
+				guiGraphics.blitSprite(PASSCODE_PROTECTED_SPRITE, startX + 56, 118, 16, 16);
 
 			if (viewActivated)
-				guiGraphics.blit(ICONS, startX + 81, 118, 36, 1, 17, 16);
+				guiGraphics.blitSprite(VIEW_ACTIVATED_SPRITE, startX + 82, 118, 16, 16);
 
 			if (explosive)
-				guiGraphics.blit(ICONS, startX + 107, 117, 54, 1, 18, 18);
+				guiGraphics.blitSprite(EXPLOSIVE_SPRITE, startX + 107, 116, 18, 18);
 
-			if (customizable)
-				guiGraphics.blit(ICONS, startX + 136, 118, 88, 1, 16, 16);
+			if (hasOptions)
+				guiGraphics.blitSprite(HAS_OPTIONS_SPRITE, startX + 136, 118, 16, 16);
 
-			if (moduleInventory)
-				guiGraphics.blit(ICONS, startX + 163, 118, 105, 1, 16, 16);
+			if (hasModules)
+				guiGraphics.blitSprite(HAS_MODULES_SPRITE, startX + 163, 118, 16, 16);
 
 			if (lockable)
-				guiGraphics.blit(ICONS, startX + 189, 118, 154, 1, 16, 16);
+				guiGraphics.blitSprite(LOCKABLE_SPRITE, startX + 189, 118, 16, 16);
 
-			if (customizable || moduleInventory)
-				guiGraphics.blit(ICONS, startX + 213, 118, 72, 1, 16, 16);
+			if (hasOptions || hasModules)
+				guiGraphics.blitSprite(CUSTOMIZABLE_SPRITE, startX + 213, 117, 16, 16);
 
 			for (int i = 0; i < hoverCheckers.size(); i++) {
 				HoverChecker chc = hoverCheckers.get(i);
@@ -503,7 +512,7 @@ public class SCManualScreen extends Screen {
 					if (options.length > 0) {
 						List<Component> display = new ArrayList<>();
 
-						customizable = true;
+						hasOptions = true;
 						display.add(Utils.localize("gui.securitycraft:scManual.options"));
 						display.add(Component.literal("---"));
 
@@ -520,7 +529,7 @@ public class SCManualScreen extends Screen {
 				if (be instanceof IModuleInventory moduleInv && moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0) {
 					List<Component> display = new ArrayList<>();
 
-					moduleInventory = true;
+					hasModules = true;
 					display.add(Utils.localize("gui.securitycraft:scManual.modules"));
 					display.add(Component.literal("---"));
 
@@ -536,7 +545,7 @@ public class SCManualScreen extends Screen {
 				if (lockable = be instanceof ILockable)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 189, startX + 189 + 16, Utils.localize("gui.securitycraft:scManual.lockable")));
 
-				if (customizable || moduleInventory)
+				if (hasOptions || hasModules)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, Utils.localize("gui.securitycraft:scManual.customizableBlock")));
 			}
 		}
@@ -570,9 +579,9 @@ public class SCManualScreen extends Screen {
 		ownable = false;
 		passcodeProtected = false;
 		viewActivated = false;
-		customizable = false;
+		hasOptions = false;
 		lockable = false;
-		moduleInventory = false;
+		hasModules = false;
 	}
 
 	@Override
@@ -731,9 +740,8 @@ public class SCManualScreen extends Screen {
 
 		@Override
 		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
-			RenderSystem._setShaderTexture(0, ICONS);
 			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
-			guiGraphics.blit(ICONS, getX(), getY(), isHoveredOrFocused() ? 138 : 122, 1, 16, 16);
+			guiGraphics.blitSprite(isHoveredOrFocused() ? LINK_OUT_HIGHLIGHTED_SPRITE : LINK_OUT_SPRITE, getX(), getY(), 16, 16);
 		}
 	}
 

@@ -6,8 +6,8 @@ import net.geforcemods.securitycraft.SCClientEventHandler;
 import net.minecraft.client.gui.GuiGraphics;
 
 public enum CameraRedstoneModuleState {
-	NOT_INSTALLED((guiGraphics, x, y) -> guiGraphics.blit(SCClientEventHandler.CAMERA_DASHBOARD, x, y, 104, 0, 12, 12)),
-	DEACTIVATED((guiGraphics, x, y) -> guiGraphics.blit(SCClientEventHandler.CAMERA_DASHBOARD, x, y, 90, 0, 12, 12)),
+	NOT_INSTALLED((guiGraphics, x, y) -> guiGraphics.blitSprite(SCClientEventHandler.REDSTONE_MODULE_NOT_PRESENT_SPRITE, x, y, 12, 12)),
+	DEACTIVATED((guiGraphics, x, y) -> guiGraphics.blitSprite(SCClientEventHandler.REDSTONE_MODULE_PRESENT_SPRITE, x, y, 12, 12)),
 	ACTIVATED((guiGraphics, x, y) -> guiGraphics.renderItem(SCClientEventHandler.REDSTONE, x - 2, y - 2));
 
 	private final TriConsumer<GuiGraphics, Integer, Integer> renderer;

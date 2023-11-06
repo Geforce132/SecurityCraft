@@ -50,8 +50,11 @@ import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class SCClientEventHandler {
-	public static final ResourceLocation CAMERA_DASHBOARD = new ResourceLocation("securitycraft:textures/gui/camera/camera_dashboard.png");
-	public static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+	public static final ResourceLocation BACKGROUND_SPRITE = new ResourceLocation(SecurityCraft.MODID, "hud/camera/background");
+	public static final ResourceLocation LIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "hud/camera/live");
+	public static final ResourceLocation NIGHT_VISION_INACTIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "hud/camera/night_vision_inactive");
+	public static final ResourceLocation REDSTONE_MODULE_NOT_PRESENT_SPRITE = new ResourceLocation(SecurityCraft.MODID, "hud/camera/redstone_module_not_present");
+	public static final ResourceLocation REDSTONE_MODULE_PRESENT_SPRITE = new ResourceLocation(SecurityCraft.MODID, "hud/camera/redstone_module_present");
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
 	public static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final Component REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
@@ -159,11 +162,11 @@ public class SCClientEventHandler {
 		guiGraphics.drawString(font, REDSTONE_NOTE, window.getGuiScaledWidth() - font.width(REDSTONE_NOTE) - 8, window.getGuiScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855, true);
 
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		guiGraphics.blit(CAMERA_DASHBOARD, 5, 0, 0, 0, 90, 20);
-		guiGraphics.blit(CAMERA_DASHBOARD, window.getGuiScaledWidth() - 70, 5, 190, 0, 65, 30);
+		guiGraphics.blitSprite(BACKGROUND_SPRITE, 5, 0, 90, 20);
+		guiGraphics.blitSprite(LIVE_SPRITE, window.getGuiScaledWidth() - 70, 5, 65, 16);
 
 		if (!mc.player.hasEffect(MobEffects.NIGHT_VISION))
-			guiGraphics.blit(CAMERA_DASHBOARD, 28, 4, 90, 12, 16, 11);
+			guiGraphics.blitSprite(NIGHT_VISION_INACTIVE_SPRITE, 28, 4, 16, 9);
 		else
 			guiGraphics.blit(NIGHT_VISION, 27, -1, 0, 0, 18, 18, 18, 18);
 

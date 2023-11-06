@@ -22,8 +22,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class AlarmOptionsScreen extends Screen {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm_options.png");
-	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
-	private static final ResourceLocation RESET_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset_inactive.png");
+	private static final ResourceLocation RESET_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/reset");
+	private static final ResourceLocation RESET_INACTIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/reset_inactive");
 	private final Component soundLengthText = Component.translatable("gui.securitycraft:alarm.sound_length").withStyle(ChatFormatting.UNDERLINE);
 	private final AlarmScreen alarmScreen;
 	private int imageWidth = 226, imageHeight = 112, leftPos, topPos;
@@ -56,7 +56,7 @@ public class AlarmOptionsScreen extends Screen {
 		minusMinute = addRenderableWidget(new Button(buttonsX, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_one_minute"), b -> changeSoundLength(-60), Button.DEFAULT_NARRATION));
 		minusTenSeconds = addRenderableWidget(new Button(buttonsX + 34, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_ten_seconds"), b -> changeSoundLength(-10), Button.DEFAULT_NARRATION));
 		minusSecond = addRenderableWidget(new Button(buttonsX + 68, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_one_second"), b -> changeSoundLength(-1), Button.DEFAULT_NARRATION));
-		reset = addRenderableWidget(new ActiveBasedTextureButton(buttonsX + 102, buttonY, 12, buttonHeight, RESET_TEXTURE, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSoundLength(0)));
+		reset = addRenderableWidget(new ActiveBasedTextureButton(buttonsX + 102, buttonY, 12, buttonHeight, RESET_SPRITE, RESET_INACTIVE_SPRITE, 1, 2, 10, 10, b -> changeSoundLength(0)));
 		plusSecond = addRenderableWidget(new Button(buttonsX + 116, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.plus_one_second"), b -> changeSoundLength(1), Button.DEFAULT_NARRATION));
 		plusTenSeconds = addRenderableWidget(new Button(buttonsX + 150, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.plus_ten_seconds"), b -> changeSoundLength(10), Button.DEFAULT_NARRATION));
 		plusMinute = addRenderableWidget(new Button(buttonsX + 184, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.plus_one_minute"), b -> changeSoundLength(60), Button.DEFAULT_NARRATION));

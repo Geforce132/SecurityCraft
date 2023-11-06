@@ -76,7 +76,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 			projectionRangeSlider.setValue(projectionRangeSlider.getValue() - (horizontal ? 16 : -16));
 			applySliderValue(projectionRangeSlider);
 			SecurityCraft.CHANNEL.sendToServer(new SyncProjector(be.getBlockPos(), be.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
-		}, new ResourceLocation(SecurityCraft.MODID, "container/projector/vertical"), new ResourceLocation(SecurityCraft.MODID, "container/projector/horizontal")));
+		}, new ResourceLocation(SecurityCraft.MODID, "projector/vertical"), new ResourceLocation(SecurityCraft.MODID, "projector/horizontal")));
 		horizontalToggleButton.setCurrentIndex(be.isHorizontal() ? 1 : 0);
 		updateHorizontalToggleButtonTooltip();
 

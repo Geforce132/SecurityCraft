@@ -16,15 +16,11 @@ import net.minecraft.world.level.block.Block;
 public class PictureButton extends Button {
 	private ItemStack blockToRender = ItemStack.EMPTY;
 	private ItemStack itemToRender = ItemStack.EMPTY;
-	private ResourceLocation textureLocation;
-	private int u;
-	private int v;
+	private ResourceLocation sprite;
 	private int drawOffsetX;
 	private int drawOffsetY;
 	private int drawWidth;
 	private int drawHeight;
-	private int textureWidth;
-	private int textureHeight;
 
 	public PictureButton(int xPos, int yPos, int width, int height, ItemStack itemToRender) {
 		this(xPos, yPos, width, height, itemToRender, b -> {});
@@ -39,14 +35,10 @@ public class PictureButton extends Button {
 			this.itemToRender = new ItemStack(itemToRender.getItem());
 	}
 
-	public PictureButton(int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, OnPress onPress) {
+	public PictureButton(int xPos, int yPos, int width, int height, ResourceLocation sprite, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, OnPress onPress) {
 		super(xPos, yPos, width, height, Component.empty(), onPress, DEFAULT_NARRATION);
 
-		textureLocation = texture;
-		u = textureX;
-		v = textureY;
-		this.textureWidth = textureWidth;
-		this.textureHeight = textureHeight;
+		this.sprite = sprite;
 		this.drawOffsetX = drawOffsetX;
 		this.drawOffsetY = drawOffsetY;
 		this.drawWidth = drawWidth;
@@ -71,17 +63,13 @@ public class PictureButton extends Button {
 				guiGraphics.renderItem(itemToRender, getX() + 2, getY() + 2);
 				guiGraphics.renderItemDecorations(font, itemToRender, getX() + 2, getY() + 2, "");
 			}
-			else {
-				ResourceLocation texture = getTextureLocation();
-
-				if (texture != null)
-					guiGraphics.blit(texture, getX() + drawOffsetX, getY() + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
-			}
+			else if (getSpriteLocation() != null)
+				guiGraphics.blitSprite(getSpriteLocation(), getX() + drawOffsetX, getY() + drawOffsetY, drawWidth, drawHeight);
 		}
 	}
 
-	public ResourceLocation getTextureLocation() {
-		return textureLocation;
+	public ResourceLocation getSpriteLocation() {
+		return sprite;
 	}
 
 	public ItemStack getItemStack() {

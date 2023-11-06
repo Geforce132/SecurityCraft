@@ -33,12 +33,12 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_reader.png");
 	private static final ResourceLocation CONFIRM_SPRITE = new ResourceLocation("container/beacon/confirm");
 	private static final ResourceLocation CANCEL_SPRITE = new ResourceLocation("container/beacon/cancel");
-	private static final ResourceLocation RANDOM_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/random.png");
-	private static final ResourceLocation RANDOM_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/random_inactive.png");
-	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
-	private static final ResourceLocation RESET_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset_inactive.png");
-	private static final ResourceLocation RETURN_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/return.png");
-	private static final ResourceLocation RETURN_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/return_inactive.png");
+	private static final ResourceLocation RANDOM_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/random");
+	private static final ResourceLocation RANDOM_INACTIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/random_inactive");
+	private static final ResourceLocation RESET_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/reset");
+	private static final ResourceLocation RESET_INACTIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/reset_inactive");
+	private static final ResourceLocation RETURN_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/return.png");
+	private static final ResourceLocation RETURN_INACTIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/return_inactive");
 	private static final ResourceLocation WARNING_HIGHLIGHTED_SPRITE = new ResourceLocation("world_list/warning_highlighted");
 	private static final Component EQUALS = Component.literal("=");
 	private static final Component GREATER_THAN_EQUALS = Component.literal(">=");
@@ -131,11 +131,11 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		minusThree = addRenderableWidget(new Button(leftPos + 22, buttonY, 24, buttonHeight, Component.literal("---"), b -> changeSignature(signature - 100), Button.DEFAULT_NARRATION));
 		minusTwo = addRenderableWidget(new Button(leftPos + 48, buttonY, 18, buttonHeight, Component.literal("--"), b -> changeSignature(signature - 10), Button.DEFAULT_NARRATION));
 		minusOne = addRenderableWidget(new Button(leftPos + 68, buttonY, 12, buttonHeight, Component.literal("-"), b -> changeSignature(signature - 1), Button.DEFAULT_NARRATION));
-		reset = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 82, buttonY, 12, buttonHeight, RESET_TEXTURE, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(previousSignature)));
+		reset = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 82, buttonY, 12, buttonHeight, RESET_SPRITE, RESET_INACTIVE_SPRITE, 1, 2, 10, 10, b -> changeSignature(previousSignature)));
 		plusOne = addRenderableWidget(new Button(leftPos + 96, buttonY, 12, buttonHeight, Component.literal("+"), b -> changeSignature(signature + 1), Button.DEFAULT_NARRATION));
 		plusTwo = addRenderableWidget(new Button(leftPos + 110, buttonY, 18, buttonHeight, Component.literal("++"), b -> changeSignature(signature + 10), Button.DEFAULT_NARRATION));
 		plusThree = addRenderableWidget(new Button(leftPos + 130, buttonY, 24, buttonHeight, Component.literal("+++"), b -> changeSignature(signature + 100), Button.DEFAULT_NARRATION));
-		randomizeButton = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 156, buttonY, 12, buttonHeight, RANDOM_TEXTURE, RANDOM_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(minecraft.level.random.nextInt(MAX_SIGNATURE))));
+		randomizeButton = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 156, buttonY, 12, buttonHeight, RANDOM_SPRITE, RANDOM_INACTIVE_SPRITE, 1, 2, 10, 10, b -> changeSignature(minecraft.level.random.nextInt(MAX_SIGNATURE))));
 		randomizeButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:keycard_reader.randomize_signature")));
 		randomizeButton.active = isOwner;
 		//set correct signature
@@ -151,7 +151,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		}, Button.DEFAULT_NARRATION));
 		linkButton.active = false;
 		//button for saving the amount of limited uses onto the keycard
-		setUsesButton = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 62, topPos + 106, 16, 17, RETURN_TEXTURE, RETURN_INACTIVE_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.CHANNEL.sendToServer(new SetKeycardUses(be.getBlockPos(), Integer.parseInt(usesTextField.getValue())))));
+		setUsesButton = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 62, topPos + 106, 16, 17, RETURN_SPRITE, RETURN_INACTIVE_SPRITE, 2, 2, 14, 14, b -> SecurityCraft.CHANNEL.sendToServer(new SetKeycardUses(be.getBlockPos(), Integer.parseInt(usesTextField.getValue())))));
 		setUsesButton.active = false;
 		//text field for setting amount of limited uses
 		usesTextField = addRenderableWidget(new EditBox(font, leftPos + 28, topPos + 107, 30, 15, Component.empty()));

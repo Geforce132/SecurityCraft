@@ -41,6 +41,8 @@ import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class AlarmScreen extends Screen {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm.png");
+	private static final ResourceLocation PLAY_SOUND_SPRITE = new ResourceLocation(SecurityCraft.MODID, "alarm/play_sound");
+	private static final ResourceLocation PLAY_SOUND_HIGHLIGHTED_SPRITE = new ResourceLocation(SecurityCraft.MODID, "alarm/play_sound_highlighted");
 	protected final AlarmBlockEntity be;
 	private final boolean hasSmartModule;
 	private final Component smartModuleTooltip;
@@ -241,7 +243,7 @@ public class AlarmScreen extends Screen {
 				Component name = getSoundEventComponent(soundEvent);
 
 				guiGraphics.drawString(font, name, left + TEXT_OFFSET, yStart, 0xC6C6C6, false);
-				guiGraphics.blit(GUI_TEXTURE, left, yStart - 1, 0, i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? 9 : 0, 246, 10, 10, 256, 256);
+				guiGraphics.blitSprite(i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? PLAY_SOUND_HIGHLIGHTED_SPRITE : PLAY_SOUND_SPRITE, left, yStart - 1, 10, 10);
 			}
 		}
 
