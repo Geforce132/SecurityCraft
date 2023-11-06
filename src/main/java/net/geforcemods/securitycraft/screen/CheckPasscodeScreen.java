@@ -211,12 +211,12 @@ public class CheckPasscodeScreen extends Screen {
 		}
 
 		@Override
-		public void setHighlightPos(int position) {
+		public void scrollTo(int position) {
 			String originalValue = value;
 
 			updateRenderedText(originalValue);
 			value = renderedText;
-			super.setHighlightPos(position);
+			super.scrollTo(position);
 			value = originalValue;
 		}
 
