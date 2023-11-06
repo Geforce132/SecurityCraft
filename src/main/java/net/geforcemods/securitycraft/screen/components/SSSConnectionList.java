@@ -30,7 +30,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
 
 public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends ScrollPanel {
-	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+	private static final ResourceLocation CANCEL_SPRITE = new ResourceLocation("container/beacon/cancel");
 	private static final int SLOT_HEIGHT = 12;
 	private final T parent;
 	private final List<ConnectionInfo> connectionInfo = new ArrayList<>();
@@ -101,7 +101,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			BufferUploader.drawWithShader(bufferBuilder.end());
 			RenderSystem.disableBlend();
 
-			guiGraphics.blit(BEACON_GUI, left, slotTop - 3, 14, 14, 110, 219, 21, 22, 256, 256);
+			guiGraphics.blitSprite(CANCEL_SPRITE, left + 2, slotTop - 2, 11, 11);
 		}
 
 		int i = 0;

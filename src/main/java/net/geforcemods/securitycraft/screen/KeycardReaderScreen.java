@@ -31,14 +31,15 @@ import net.minecraft.world.item.ItemStack;
 
 public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_reader.png");
-	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+	private static final ResourceLocation CONFIRM_SPRITE = new ResourceLocation("container/beacon/confirm");
+	private static final ResourceLocation CANCEL_SPRITE = new ResourceLocation("container/beacon/cancel");
 	private static final ResourceLocation RANDOM_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/random.png");
 	private static final ResourceLocation RANDOM_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/random_inactive.png");
 	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
 	private static final ResourceLocation RESET_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset_inactive.png");
 	private static final ResourceLocation RETURN_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/return.png");
 	private static final ResourceLocation RETURN_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/return_inactive.png");
-	private static final ResourceLocation WORLD_SELECTION_ICONS = new ResourceLocation("textures/gui/world_selection.png");
+	private static final ResourceLocation WARNING_HIGHLIGHTED_SPRITE = new ResourceLocation("world_list/warning_highlighted");
 	private static final Component EQUALS = Component.literal("=");
 	private static final Component GREATER_THAN_EQUALS = Component.literal(">=");
 	private static final int MAX_SIGNATURE = 99999;
@@ -97,7 +98,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		for (int i = 0; i < 5; i++) {
 			final int thisButtonId = i;
 			//@formatter:off
-			toggleButtons[i] = addRenderableWidget(new TogglePictureButton(leftPos + 100, topPos + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[]{110, 88}, new int[]{219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
+			toggleButtons[i] = addRenderableWidget(new TogglePictureButton(leftPos + 100, topPos + 50 + (i + 1) * 17, 15, 15, 0, 15, 15, 2, thisButton -> {
 				//@formatter:on
 				//TogglePictureButton already implicitly handles changing the button state in the case of isSmart, so only the data needs to be updated
 				if (!hasSmartModule) {
@@ -115,7 +116,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 				}
 				else
 					acceptedLevels[thisButtonId] = !acceptedLevels[thisButtonId];
-			}));
+			}, CANCEL_SPRITE, CONFIRM_SPRITE));
 			toggleButtons[i].setCurrentIndex(acceptedLevels[i] ? 1 : 0); //set correct button state
 			toggleButtons[i].active = isOwner;
 
@@ -254,10 +255,10 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 
 		//if the level of the keycard currently in the slot is not enabled in the keycard reader, show a warning
 		if (!stack.isEmpty() && !acceptedLevels[((KeycardItem) stack.getItem()).getLevel()]) {
-			int left = leftPos + 40;
-			int top = topPos + 60;
+			int left = leftPos + 34;
+			int top = topPos + 55;
 
-			guiGraphics.blit(WORLD_SELECTION_ICONS, left, top, 22, 22, 70, 37, 22, 22, 256, 256);
+			guiGraphics.blitSprite(WARNING_HIGHLIGHTED_SPRITE, left, top, 32, 32);
 
 			if (mouseX >= left - 7 && mouseX < left + 13 && mouseY >= top && mouseY <= top + 22)
 				guiGraphics.renderComponentTooltip(font, Arrays.asList(levelMismatchInfo), mouseX, mouseY);

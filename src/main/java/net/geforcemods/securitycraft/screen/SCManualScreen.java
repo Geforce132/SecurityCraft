@@ -75,7 +75,10 @@ public class SCManualScreen extends Screen {
 	private static final ResourceLocation PAGE_WITH_SCROLL = new ResourceLocation("securitycraft:textures/gui/info_book_texture_special.png"); //for items without a recipe
 	private static final ResourceLocation TITLE_PAGE = new ResourceLocation("securitycraft:textures/gui/info_book_title_page.png");
 	private static final ResourceLocation ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png");
-	private static final ResourceLocation VANILLA_BOOK = new ResourceLocation("textures/gui/book.png");
+	private static final ResourceLocation PAGE_FORWARD_HIGHLIGHTED_SPRITE = new ResourceLocation("widget/page_forward_highlighted");
+	private static final ResourceLocation PAGE_FORWARD_SPRITE = new ResourceLocation("widget/page_forward");
+	private static final ResourceLocation PAGE_BACKWARD_HIGHLIGHTED_SPRITE = new ResourceLocation("widget/page_backward_highlighted");
+	private static final ResourceLocation PAGE_BACKWARD_SPRITE = new ResourceLocation("widget/page_backward");
 	private static final int SUBPAGE_LENGTH = 1285;
 	private static int lastPage = -1;
 	private final MutableComponent intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").setStyle(Style.EMPTY.withUnderlined(true));
@@ -108,10 +111,10 @@ public class SCManualScreen extends Screen {
 		startX = (width - 256) / 2;
 		patreonLinkButton = addRenderableWidget(new HyperlinkButton(startX + 225, 143, 16, 16, Component.empty(), b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
 		patronList = addRenderableWidget(new PatronList(minecraft, 115, 90, 50, startX + 125));
-		previousSubpage = addRenderableWidget(new ChangePageButton(startX + 155, startY + 97, false, b -> previousSubpage()));
-		nextSubpage = addRenderableWidget(new ChangePageButton(startX + 180, startY + 97, true, b -> nextSubpage()));
-		addRenderableWidget(new ChangePageButton(startX + 22, startY + 188, false, b -> previousPage()));
-		addRenderableWidget(new ChangePageButton(startX + 210, startY + 188, true, b -> nextPage()));
+		previousSubpage = addRenderableWidget(new ChangePageButton(startX + 155, startY + 97, PAGE_BACKWARD_SPRITE, PAGE_BACKWARD_HIGHLIGHTED_SPRITE, b -> previousSubpage()));
+		nextSubpage = addRenderableWidget(new ChangePageButton(startX + 180, startY + 97, PAGE_FORWARD_SPRITE, PAGE_FORWARD_HIGHLIGHTED_SPRITE, b -> nextSubpage()));
+		addRenderableWidget(new ChangePageButton(startX + 22, startY + 188, PAGE_BACKWARD_SPRITE, PAGE_BACKWARD_HIGHLIGHTED_SPRITE, b -> previousPage()));
+		addRenderableWidget(new ChangePageButton(startX + 210, startY + 188, PAGE_FORWARD_SPRITE, PAGE_FORWARD_HIGHLIGHTED_SPRITE, b -> nextPage()));
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -704,18 +707,19 @@ public class SCManualScreen extends Screen {
 	}
 
 	static class ChangePageButton extends Button {
-		private final int textureY;
+		private final ResourceLocation normalSprite, highlightedSprite;
 
-		public ChangePageButton(int xPos, int yPos, boolean forward, OnPress onPress) {
+		public ChangePageButton(int xPos, int yPos, ResourceLocation normalSprite, ResourceLocation highlightedSprite, OnPress onPress) {
 			super(xPos, yPos, 23, 13, Component.empty(), onPress, DEFAULT_NARRATION);
-			textureY = forward ? 192 : 205;
+			this.normalSprite = normalSprite;
+			this.highlightedSprite = highlightedSprite;
 		}
 
 		@Override
 		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 			if (visible) {
 				isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
-				guiGraphics.blit(VANILLA_BOOK, getX(), getY(), isHoveredOrFocused() ? 23 : 0, textureY, 23, 13);
+				guiGraphics.blitSprite(isHoveredOrFocused() ? highlightedSprite : normalSprite, getX(), getY(), 23, 13);
 			}
 		}
 	}

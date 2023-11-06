@@ -43,7 +43,8 @@ import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
 public class EditModuleScreen extends Screen {
 	private static CompoundTag savedModule;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/edit_module.png");
-	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+	private static final ResourceLocation CONFIRM_SPRITE = new ResourceLocation("container/beacon/confirm");
+	private static final ResourceLocation CANCEL_SPRITE = new ResourceLocation("container/beacon/cancel");
 	private final Component editModule = Utils.localize("gui.securitycraft:editModule");
 	private final ItemStack module;
 	private final List<PlayerTeam> availableTeams;
@@ -51,7 +52,7 @@ public class EditModuleScreen extends Screen {
 	private EditBox inputField;
 	private Button addPlayerButton, removePlayerButton, copyButton, pasteButton, clearButton;
 	private CallbackCheckbox affectEveryPlayerCheckbox;
-	private int xSize = 247, ySize = 211, leftPos, topPos;;
+	private int xSize = 247, ySize = 211, leftPos, topPos;
 	private PlayerList playerList;
 	private TeamList teamList;
 
@@ -459,7 +460,7 @@ public class EditModuleScreen extends Screen {
 				PlayerTeam team = availableTeams.get(i);
 
 				guiGraphics.drawString(font, team.getDisplayName(), left + 15, yStart, 0xC6C6C6, false);
-				guiGraphics.blit(BEACON_GUI, left, yStart - 3, 14, 14, teamsListedStatus.get(team) ? 88 : 110, 219, 21, 22, 256, 256);
+				guiGraphics.blitSprite(teamsListedStatus.get(team) ? CONFIRM_SPRITE : CANCEL_SPRITE, left + 1, yStart - 3, 12, 12);
 			}
 		}
 

@@ -26,7 +26,6 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 
 public class SonicSecuritySystemScreen extends Screen implements ConnectionAccessor {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/sonic_security_system.png");
-	private static final ResourceLocation STREAMER_ICONS = new ResourceLocation("textures/gui/stream_indicator.png");
 	private static final Component SOUND_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.sound");
 	/** The number of ticks between each note when playing back a recording **/
 	private static final int PLAYBACK_DELAY = 10;
@@ -130,13 +129,13 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 		}, Button.DEFAULT_NARRATION));
 		updateInvertButtonTooltip();
 		//@formatter:off
-		soundButton = addRenderableWidget(new TogglePictureButton(buttonX + 130, height / 2 + 52, 20, 20, STREAMER_ICONS, new int[]{0, 0}, new int[]{32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
+		soundButton = addRenderableWidget(new TogglePictureButton(buttonX + 130, height / 2 + 52, 20, 20, 2, 16, 16, 2, button -> {
 			//@formatter:on
 			boolean toggledPing = !be.pings();
 
 			be.setPings(toggledPing);
 			SecurityCraft.CHANNEL.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), toggledPing ? SyncSSSSettingsOnServer.DataType.SOUND_ON : SyncSSSSettingsOnServer.DataType.SOUND_OFF));
-		}));
+		}, new ResourceLocation(SecurityCraft.MODID, "sonic_security_system/sound"), new ResourceLocation(SecurityCraft.MODID, "sonic_security_system/no_sound")));
 		soundButton.setCurrentIndex(!be.pings() ? 1 : 0); // Use the disabled mic icon if the SSS is not emitting sounds
 
 		connectionList = addRenderableWidget(new SSSConnectionList<>(this, minecraft, 130, 120, powerButton.getY(), leftPos + 10));

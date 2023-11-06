@@ -16,7 +16,10 @@ import net.minecraft.util.Mth;
 
 // copy from vanilla's Checkbox to be able to change the text color and remove the shadow
 public class CallbackCheckbox extends AbstractButton {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/checkbox.png");
+	private static final ResourceLocation CHECKBOX_SELECTED_HIGHLIGHTED_SPRITE = new ResourceLocation("widget/checkbox_selected_highlighted");
+	private static final ResourceLocation CHECKBOX_SELECTED_SPRITE = new ResourceLocation("widget/checkbox_selected");
+	private static final ResourceLocation CHECKBOX_HIGHLIGHTED_SPRITE = new ResourceLocation("widget/checkbox_highlighted");
+	private static final ResourceLocation CHECKBOX_SPRITE = new ResourceLocation("widget/checkbox");
 	private boolean selected;
 	private final Consumer<Boolean> onChange;
 	private final int textColor;
@@ -37,12 +40,19 @@ public class CallbackCheckbox extends AbstractButton {
 	@Override
 	public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		Minecraft minecraft = Minecraft.getInstance();
+		ResourceLocation sprite;
 
 		RenderSystem.enableDepthTest();
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		guiGraphics.blit(TEXTURE, getX(), getY(), width, height, isFocused() ? 20.0F : 0.0F, selected ? 20.0F : 0.0F, 20, 20, 64, 64);
+
+		if (selected)
+			sprite = isFocused() ? CHECKBOX_SELECTED_HIGHLIGHTED_SPRITE : CHECKBOX_SELECTED_SPRITE;
+		else
+			sprite = isFocused() ? CHECKBOX_HIGHLIGHTED_SPRITE : CHECKBOX_SPRITE;
+
+		guiGraphics.blitSprite(sprite, getX(), getY(), 20, height);
 		guiGraphics.drawString(minecraft.font, getMessage(), getX() + (int) (width * 1.2F), getY() + (height - 8) / 2, textColor | Mth.ceil(alpha * 255.0F) << 24, false);
 	}
 

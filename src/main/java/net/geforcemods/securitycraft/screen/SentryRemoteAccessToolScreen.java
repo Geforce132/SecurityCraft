@@ -29,7 +29,12 @@ import net.minecraft.world.phys.AABB;
 
 public class SentryRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/srat.png");
-	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/sentry_icons.png");
+	private static final ResourceLocation CAMOUFLAGE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sentry/camouflage");
+	private static final ResourceLocation AGGRESSIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sentry/aggressive");
+	private static final ResourceLocation IDLE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sentry/idle");
+	private static final ResourceLocation ATTACK_HOSTILE_AND_PLAYERS_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sentry/attack_hostile_and_players");
+	private static final ResourceLocation ATTACK_HOSTILE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sentry/attack_hostile");
+	private static final ResourceLocation ATTACK_PLAYERS_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sentry/attack_players");
 	private final Component modifyAll = Utils.localize("gui.securitycraft:srat.modifyAll");
 	private ItemStack srat;
 	private Button[][] guiButtons = new Button[12][3]; // 12 sentries, 3 actions (mode, targets, unbind)
@@ -60,15 +65,6 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		int[] coords = null;
 		int id = 0;
 		boolean foundSentry = false;
-		int[] modeTextureX = {
-				0, 16, 32
-		};
-		int[] targetTextureX = {
-				48, 64, 80
-		};
-		int[] yStarts = {
-				0, 0, 0
-		};
 
 		hoverCheckers.clear();
 
@@ -86,11 +82,11 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 				switch (j) {
 					case MODE:
-						guiButtons[i][j] = new TogglePictureButton(btnX, btnY, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 2, 3, b -> buttonClicked(b, sentry, type));
+						guiButtons[i][j] = new TogglePictureButton(btnX, btnY, 20, 20, 2, 16, 16, 3, b -> buttonClicked(b, sentry, type), CAMOUFLAGE_SPRITE, AGGRESSIVE_SPRITE, IDLE_SPRITE);
 						guiButtons[i][j].active = false;
 						break;
 					case TARGETS:
-						guiButtons[i][j] = new TogglePictureButton(btnX, btnY, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 2, 3, b -> buttonClicked(b, sentry, type));
+						guiButtons[i][j] = new TogglePictureButton(btnX, btnY, 20, 20, 2, 16, 16, 3, b -> buttonClicked(b, sentry, type), ATTACK_HOSTILE_AND_PLAYERS_SPRITE, ATTACK_HOSTILE_SPRITE, ATTACK_PLAYERS_SPRITE);
 						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:
@@ -156,8 +152,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		}
 
 		//Add buttons for global operation (all sentries)
-		guiButtonsGlobal[0] = new TogglePictureButton(startX + 260, startY + 188, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 2, 3, this::globalModeButtonClicked);
-		guiButtonsGlobal[1] = new TogglePictureButton(startX + 22 + 260, startY + 188, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 2, 3, this::globalTargetsButtonClicked);
+		guiButtonsGlobal[0] = new TogglePictureButton(startX + 260, startY + 188, 20, 20, 2, 16, 16, 3, this::globalModeButtonClicked, CAMOUFLAGE_SPRITE, AGGRESSIVE_SPRITE, IDLE_SPRITE);
+		guiButtonsGlobal[1] = new TogglePictureButton(startX + 22 + 260, startY + 188, 20, 20, 2, 16, 16, 3, this::globalTargetsButtonClicked, ATTACK_HOSTILE_AND_PLAYERS_SPRITE, ATTACK_HOSTILE_SPRITE, ATTACK_PLAYERS_SPRITE);
 		guiButtonsGlobal[2] = new Button(startX + 44 + 260, startY + 188, 20, 20, Component.literal("X"), this::globalUnbindButtonClicked, Button.DEFAULT_NARRATION);
 
 		for (int j = 0; j < 3; j++) {

@@ -22,11 +22,11 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
 
 public class ToggleScrollList<T> extends ScrollPanel {
-	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+	private static final ResourceLocation CONFIRM_SPRITE = new ResourceLocation("container/beacon/confirm");
+	private static final ResourceLocation CANCEL_SPRITE = new ResourceLocation("container/beacon/cancel");
 	private static final int SLOT_HEIGHT = 12;
 	private final int listLength;
 	private final List<T> orderedFilterList;
@@ -139,30 +139,9 @@ public class ToggleScrollList<T> extends ScrollPanel {
 			int yStart = relativeY + (SLOT_HEIGHT * i);
 
 			guiGraphics.drawString(font, name, left + width / 2 - font.width(name) / 2, yStart, 0xC6C6C6, false);
-			guiGraphics.blit(BEACON_GUI, left, yStart - 3, 14, 14, be.getFilter(type) ? 88 : 110, 219, 21, 22, 256, 256);
+			guiGraphics.blitSprite(be.getFilter(type) ? CONFIRM_SPRITE : CANCEL_SPRITE, left + 1, yStart - 3, 12, 12);
 			i++;
 		}
-	}
-
-	//TODO: Remove this fix when updating to NeoForge
-	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		boolean returnValue = super.mouseClicked(mouseX, mouseY, button);
-		int barLeft = ObfuscationReflectionHelper.getPrivateValue(ScrollPanel.class, this, "barLeft");
-		int barWidth = ObfuscationReflectionHelper.getPrivateValue(ScrollPanel.class, this, "barWidth");
-		boolean previousScrolling = ObfuscationReflectionHelper.getPrivateValue(ScrollPanel.class, this, "scrolling");
-
-		if (previousScrolling) {
-			boolean scrolling = button == 0 && mouseX >= barLeft && mouseX < barLeft + barWidth && mouseY >= top && mouseY <= bottom;
-
-			if (!scrolling)
-				ObfuscationReflectionHelper.setPrivateValue(ScrollPanel.class, this, scrolling, "scrolling");
-
-			if (!isMouseOver(mouseX, mouseY) || !scrolling)
-				return clickPanel(mouseX - left, mouseY - top + (int) scrollDistance - border, button);
-		}
-
-		return previousScrolling || (!previousScrolling && returnValue);
 	}
 
 	@Override
