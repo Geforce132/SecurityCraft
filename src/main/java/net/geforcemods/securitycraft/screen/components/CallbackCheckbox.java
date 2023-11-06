@@ -52,7 +52,7 @@ public class CallbackCheckbox extends AbstractButton {
 		else
 			sprite = isFocused() ? CHECKBOX_HIGHLIGHTED_SPRITE : CHECKBOX_SPRITE;
 
-		guiGraphics.blitSprite(sprite, getX(), getY(), 20, height);
+		guiGraphics.blitSprite(sprite, getX(), getY(), width, height);
 		guiGraphics.drawString(minecraft.font, getMessage(), getX() + (int) (width * 1.2F), getY() + (height - 8) / 2, textColor | Mth.ceil(alpha * 255.0F) << 24, false);
 	}
 
