@@ -279,7 +279,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
 		if (isOwner && mouseX >= leftPos + signatureTextStartX && mouseY >= topPos + 23 && mouseX <= leftPos + signatureTextStartX + signatureTextLength && mouseY <= topPos + 43)
-			changeSignature(signature + (int) Math.signum(scrollX));
+			changeSignature(signature + (int) Math.signum(scrollY));
 
 		return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
 	}

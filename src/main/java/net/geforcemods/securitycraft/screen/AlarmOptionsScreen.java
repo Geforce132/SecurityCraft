@@ -136,7 +136,7 @@ public class AlarmOptionsScreen extends Screen {
 
 		@Override
 		public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-			changeSoundLength((int) Math.signum(scrollX));
+			changeSoundLength((int) Math.signum(scrollY));
 			return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
 		}
 

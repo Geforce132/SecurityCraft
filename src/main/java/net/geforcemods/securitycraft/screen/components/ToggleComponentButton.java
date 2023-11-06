@@ -33,7 +33,7 @@ public class ToggleComponentButton extends Button implements IToggleableButton {
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
 		if (clicked(mouseX, mouseY)) {
-			cycleIndex(-(int) Math.signum(scrollX));
+			cycleIndex(-(int) Math.signum(scrollY));
 			onPress();
 			return true;
 		}

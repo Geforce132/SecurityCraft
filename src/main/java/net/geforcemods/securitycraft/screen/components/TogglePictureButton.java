@@ -56,7 +56,7 @@ public class TogglePictureButton extends Button implements IToggleableButton {
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-		setCurrentIndex(currentIndex - (int) Math.signum(scrollX));
+		setCurrentIndex(currentIndex - (int) Math.signum(scrollY));
 		onPress.onPress(this);
 		return true;
 	}

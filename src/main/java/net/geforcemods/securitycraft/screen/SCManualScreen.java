@@ -241,11 +241,11 @@ public class SCManualScreen extends Screen {
 		if (Screen.hasShiftDown()) {
 			for (IngredientDisplay display : displays) {
 				if (display != null)
-					display.changeRenderingStack(-scrollX);
+					display.changeRenderingStack(-scrollY);
 			}
 
 			if (pageIcon != null)
-				pageIcon.changeRenderingStack(-scrollX);
+				pageIcon.changeRenderingStack(-scrollY);
 
 			return true;
 		}
@@ -256,7 +256,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		if (Screen.hasControlDown() && subpages.size() > 1) {
-			switch ((int) Math.signum(scrollX)) {
+			switch ((int) Math.signum(scrollY)) {
 				case -1:
 					nextSubpage();
 					break;
@@ -268,7 +268,7 @@ public class SCManualScreen extends Screen {
 			return true;
 		}
 
-		switch ((int) Math.signum(scrollX)) {
+		switch ((int) Math.signum(scrollY)) {
 			case -1:
 				nextPage();
 				break;
