@@ -74,16 +74,24 @@ public class SCManualScreen extends Screen {
 	private static final ResourceLocation PAGE = new ResourceLocation("securitycraft:textures/gui/info_book_texture.png");
 	private static final ResourceLocation PAGE_WITH_SCROLL = new ResourceLocation("securitycraft:textures/gui/info_book_texture_special.png"); //for items without a recipe
 	private static final ResourceLocation TITLE_PAGE = new ResourceLocation("securitycraft:textures/gui/info_book_title_page.png");
-	private static final ResourceLocation OWNABLE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/ownable");
-	private static final ResourceLocation PASSCODE_PROTECTED_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/passcode_protected");
-	private static final ResourceLocation VIEW_ACTIVATED_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/view_activated");
-	private static final ResourceLocation EXPLOSIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/explosive");
-	private static final ResourceLocation HAS_OPTIONS_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/has_options");
-	private static final ResourceLocation HAS_MODULES_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/has_modules");
-	private static final ResourceLocation LOCKABLE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/lockable");
-	private static final ResourceLocation CUSTOMIZABLE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/customizable");
-	private static final ResourceLocation LINK_OUT_HIGHLIGHTED_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/link_out_highlighted");
-	private static final ResourceLocation LINK_OUT_SPRITE = new ResourceLocation(SecurityCraft.MODID, "book/link_out");
+	private static final ResourceLocation OWNABLE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sc_manual/ownable");
+	private static final ResourceLocation OWNABLE_SPRITE_HIGHLIGHTED = new ResourceLocation(SecurityCraft.MODID, "sc_manual/ownable_highlighted");
+	private static final ResourceLocation PASSCODE_PROTECTED_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sc_manual/passcode_protected");
+	private static final ResourceLocation PASSCODE_PROTECTED_SPRITE_HIGHLIGHTED = new ResourceLocation(SecurityCraft.MODID, "sc_manual/passcode_protected_highlighted");
+	private static final ResourceLocation VIEW_ACTIVATED_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sc_manual/view_activated");
+	private static final ResourceLocation VIEW_ACTIVATED_SPRITE_HIGHLIGHTED = new ResourceLocation(SecurityCraft.MODID, "sc_manual/view_activated_highlighted");
+	private static final ResourceLocation EXPLOSIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sc_manual/explosive");
+	private static final ResourceLocation EXPLOSIVE_SPRITE_HIGHLIGHTED = new ResourceLocation(SecurityCraft.MODID, "sc_manual/explosive_highlighted");
+	private static final ResourceLocation HAS_OPTIONS_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sc_manual/has_options");
+	private static final ResourceLocation HAS_OPTIONS_SPRITE_HIGHLIGHTED = new ResourceLocation(SecurityCraft.MODID, "sc_manual/has_options_highlighted");
+	private static final ResourceLocation HAS_MODULES_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sc_manual/has_modules");
+	private static final ResourceLocation HAS_MODULES_SPRITE_HIGHLIGHTED = new ResourceLocation(SecurityCraft.MODID, "sc_manual/has_modules_highlighted");
+	private static final ResourceLocation LOCKABLE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sc_manual/lockable");
+	private static final ResourceLocation LOCKABLE_SPRITE_HIGHLIGHTED = new ResourceLocation(SecurityCraft.MODID, "sc_manual/lockable_highlighted");
+	private static final ResourceLocation CUSTOMIZABLE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sc_manual/customizable");
+	private static final ResourceLocation CUSTOMIZABLE_SPRITE_HIGHLIGHTED = new ResourceLocation(SecurityCraft.MODID, "sc_manual/customizable_highlighted");
+	private static final ResourceLocation LINK_OUT_HIGHLIGHTED_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sc_manual/link_out_highlighted");
+	private static final ResourceLocation LINK_OUT_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sc_manual/link_out");
 	private static final ResourceLocation PAGE_FORWARD_HIGHLIGHTED_SPRITE = new ResourceLocation("widget/page_forward_highlighted");
 	private static final ResourceLocation PAGE_FORWARD_SPRITE = new ResourceLocation("widget/page_forward");
 	private static final ResourceLocation PAGE_BACKWARD_HIGHLIGHTED_SPRITE = new ResourceLocation("widget/page_backward_highlighted");
@@ -162,30 +170,14 @@ public class SCManualScreen extends Screen {
 			guiGraphics.drawString(font, pageTitle, startX + 39, 27, 0, false);
 			guiGraphics.drawWordWrap(font, subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270, false);
-
-			if (ownable)
-				guiGraphics.blitSprite(OWNABLE_SPRITE, startX + 29, 118, 16, 16);
-
-			if (passcodeProtected)
-				guiGraphics.blitSprite(PASSCODE_PROTECTED_SPRITE, startX + 56, 118, 16, 16);
-
-			if (viewActivated)
-				guiGraphics.blitSprite(VIEW_ACTIVATED_SPRITE, startX + 82, 118, 16, 16);
-
-			if (explosive)
-				guiGraphics.blitSprite(EXPLOSIVE_SPRITE, startX + 107, 116, 18, 18);
-
-			if (hasOptions)
-				guiGraphics.blitSprite(HAS_OPTIONS_SPRITE, startX + 136, 118, 16, 16);
-
-			if (hasModules)
-				guiGraphics.blitSprite(HAS_MODULES_SPRITE, startX + 163, 118, 16, 16);
-
-			if (lockable)
-				guiGraphics.blitSprite(LOCKABLE_SPRITE, startX + 189, 118, 16, 16);
-
-			if (hasOptions || hasModules)
-				guiGraphics.blitSprite(CUSTOMIZABLE_SPRITE, startX + 213, 117, 16, 16);
+			guiGraphics.blitSprite(ownable ? OWNABLE_SPRITE_HIGHLIGHTED : OWNABLE_SPRITE, startX + 29, 118, 16, 16);
+			guiGraphics.blitSprite(passcodeProtected ? PASSCODE_PROTECTED_SPRITE_HIGHLIGHTED : PASSCODE_PROTECTED_SPRITE, startX + 56, 118, 16, 16);
+			guiGraphics.blitSprite(viewActivated ? VIEW_ACTIVATED_SPRITE_HIGHLIGHTED : VIEW_ACTIVATED_SPRITE, startX + 82, 118, 16, 16);
+			guiGraphics.blitSprite(explosive ? EXPLOSIVE_SPRITE_HIGHLIGHTED : EXPLOSIVE_SPRITE, startX + 107, 116, 18, 18);
+			guiGraphics.blitSprite(hasOptions ? HAS_OPTIONS_SPRITE_HIGHLIGHTED : HAS_OPTIONS_SPRITE, startX + 136, 118, 16, 16);
+			guiGraphics.blitSprite(hasModules ? HAS_MODULES_SPRITE_HIGHLIGHTED : HAS_MODULES_SPRITE, startX + 163, 118, 16, 16);
+			guiGraphics.blitSprite(lockable ? LOCKABLE_SPRITE_HIGHLIGHTED : LOCKABLE_SPRITE, startX + 189, 118, 16, 16);
+			guiGraphics.blitSprite(hasOptions || hasModules ? CUSTOMIZABLE_SPRITE_HIGHLIGHTED : CUSTOMIZABLE_SPRITE, startX + 213, 117, 16, 16);
 
 			for (int i = 0; i < hoverCheckers.size(); i++) {
 				HoverChecker chc = hoverCheckers.get(i);
