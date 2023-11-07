@@ -49,7 +49,8 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			new ResourceLocation("securitycraft:textures/gui/container/customize5.png")
 	};
 	//@formatter:on
-	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+	private static final ResourceLocation CONFIRM_SPRITE = new ResourceLocation("container/beacon/confirm");
+	private static final ResourceLocation CANCEL_SPRITE = new ResourceLocation("container/beacon/cancel");
 	private final List<Rect2i> extraAreas = new ArrayList<>();
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
@@ -145,7 +146,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 				ModuleType type = ((ModuleItem) slot.getItem().getItem()).getModuleType();
 
 				if (indicators.containsKey(type))
-					guiGraphics.blit(BEACON_GUI, leftPos + slot.x - 2, topPos + slot.y + 16, 20, 20, indicators.get(type) ? 88 : 110, 219, 21, 22, 256, 256);
+					guiGraphics.blitSprite(indicators.get(type) ? CONFIRM_SPRITE : CANCEL_SPRITE, leftPos + slot.x, topPos + slot.y + 16, 18, 18);
 			}
 		}
 
