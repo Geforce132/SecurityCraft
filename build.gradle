@@ -68,7 +68,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:20.2.21-beta'
+	implementation 'net.neoforged:neoforge:20.2.39-beta'
 	
 //	implementation fg.deobf("curse.maven:architectury-api-419699:4581905") //ftb teams dependency
 //	implementation fg.deobf("curse.maven:ftb-library-forge-404465:4596511") //ftb teams dependency
