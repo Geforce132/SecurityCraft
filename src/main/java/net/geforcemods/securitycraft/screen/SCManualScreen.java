@@ -128,14 +128,14 @@ public class SCManualScreen extends Screen {
 		startX = (width - 256) / 2;
 		patreonLinkButton = addRenderableWidget(new HyperlinkButton(startX + 225, 143, 16, 16, Component.empty(), b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
 		patronList = addRenderableWidget(new PatronList(minecraft, 115, 90, 50, startX + 125));
-		previousSubpage = addRenderableWidget(new ChangePageButton(startX + 155, startY + 97, PAGE_BACKWARD_SPRITE, PAGE_BACKWARD_HIGHLIGHTED_SPRITE, b -> previousSubpage()));
-		nextSubpage = addRenderableWidget(new ChangePageButton(startX + 180, startY + 97, PAGE_FORWARD_SPRITE, PAGE_FORWARD_HIGHLIGHTED_SPRITE, b -> nextSubpage()));
+		previousSubpage = addRenderableWidget(new ChangePageButton(startX + 155, startY + 95, PAGE_BACKWARD_SPRITE, PAGE_BACKWARD_HIGHLIGHTED_SPRITE, b -> previousSubpage()));
+		nextSubpage = addRenderableWidget(new ChangePageButton(startX + 180, startY + 95, PAGE_FORWARD_SPRITE, PAGE_FORWARD_HIGHLIGHTED_SPRITE, b -> nextSubpage()));
 		addRenderableWidget(new ChangePageButton(startX + 22, startY + 188, PAGE_BACKWARD_SPRITE, PAGE_BACKWARD_HIGHLIGHTED_SPRITE, b -> previousPage()));
 		addRenderableWidget(new ChangePageButton(startX + 210, startY + 188, PAGE_FORWARD_SPRITE, PAGE_FORWARD_HIGHLIGHTED_SPRITE, b -> nextPage()));
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				displays[(i * 3) + j] = addRenderableOnly(new IngredientDisplay((startX + 101) + (j * 19), 144 + (i * 19)));
+				displays[(i * 3) + j] = addRenderableOnly(new IngredientDisplay((startX + 101) + (j * 19), 145 + (i * 19)));
 			}
 		}
 
@@ -162,7 +162,7 @@ public class SCManualScreen extends Screen {
 			String pageNumberText = (currentPage + 2) + "/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
 			if (subpages.size() > 1)
-				guiGraphics.drawString(font, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270, false);
+				guiGraphics.drawString(font, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 100, 0x8E8270, false);
 
 			if (designedBy != null)
 				guiGraphics.drawWordWrap(font, designedBy, startX + 18, 150, 75, 0);
