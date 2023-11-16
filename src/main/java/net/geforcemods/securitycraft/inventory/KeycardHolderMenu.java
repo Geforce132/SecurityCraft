@@ -1,10 +1,12 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
@@ -64,6 +66,12 @@ public class KeycardHolderMenu extends AbstractContainerMenu {
 		}
 
 		return slotStackCopy;
+	}
+
+	@Override
+	public void clicked(int slot, int dragType, ClickType clickType, Player player) {
+		if (!(slot >= 0 && getSlot(slot) != null && getSlot(slot).getItem().getItem() instanceof KeycardHolderItem))
+			super.clicked(slot, dragType, clickType, player);
 	}
 
 	@Override
