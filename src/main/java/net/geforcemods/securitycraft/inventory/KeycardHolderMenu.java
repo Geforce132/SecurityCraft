@@ -1,8 +1,10 @@
 package net.geforcemods.securitycraft.inventory;
 
+import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -61,6 +63,14 @@ public class KeycardHolderMenu extends Container {
 		}
 
 		return slotStackCopy;
+	}
+
+	@Override
+	public ItemStack slotClick(int slot, int dragType, ClickType clickType, EntityPlayer player) {
+		if (slot >= 0 && getSlot(slot) != null && getSlot(slot).getStack().getItem() instanceof KeycardHolderItem)
+			return ItemStack.EMPTY;
+
+		return super.slotClick(slot, dragType, clickType, player);
 	}
 
 	@Override

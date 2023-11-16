@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
 - Fix: The Floor Trap has incorrect sound
+- Fix: Duplication exploit involving keycards
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
