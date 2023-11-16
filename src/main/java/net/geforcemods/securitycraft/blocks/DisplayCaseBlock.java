@@ -18,6 +18,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -251,6 +252,16 @@ public class DisplayCaseBlock extends OwnableBlock {
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof DisplayCaseBlockEntity) {
+			DisplayCaseBlockEntity be = (DisplayCaseBlockEntity) te;
+			ItemStack displayedStack = be.getDisplayedStack();
+
+			if (!displayedStack.isEmpty() && be.isOpen() && !GuiScreen.isCtrlKeyDown())
+				return displayedStack;
+		}
+
 		return new ItemStack(SCContent.displayCase);
 	}
 

@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
+- New: Items in open Display Cases can now be picked using the "Pick Block" key
 - Fix: The Floor Trap has incorrect sound
 - Fix: Duplication exploit involving keycards
 
