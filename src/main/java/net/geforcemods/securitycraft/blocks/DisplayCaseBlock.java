@@ -12,6 +12,7 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.IWaterLoggable;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -33,6 +34,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -215,6 +217,21 @@ public class DisplayCaseBlock extends OwnableBlock implements IWaterLoggable {
 	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	}
+
+	@Override
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader level, BlockPos pos, PlayerEntity player) {
+		TileEntity te = level.getBlockEntity(pos);
+
+		if (te instanceof DisplayCaseBlockEntity) {
+			DisplayCaseBlockEntity be = (DisplayCaseBlockEntity) te;
+			ItemStack displayedStack = be.getDisplayedStack();
+
+			if (!displayedStack.isEmpty() && be.isOpen() && !Screen.hasControlDown())
+				return displayedStack;
+		}
+
+		return super.getPickBlock(state, target, level, pos, player);
 	}
 
 	@Override
