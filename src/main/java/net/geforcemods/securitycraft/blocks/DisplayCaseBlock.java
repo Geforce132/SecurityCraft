@@ -212,8 +212,12 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
-		if (level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be && be.isOpen() && !Screen.hasControlDown())
-			return be.getDisplayedStack();
+		if (level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be) {
+			ItemStack displayedStack = be.getDisplayedStack();
+
+			if (!displayedStack.isEmpty() && be.isOpen() && !Screen.hasControlDown())
+				return displayedStack;
+		}
 
 		return super.getCloneItemStack(state, target, level, pos, player);
 	}
