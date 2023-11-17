@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -53,8 +52,8 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof ReinforcedHopperBlockEntity be) {
-			if (!isMoving)
-				Containers.dropContents(level, pos, be);
+			if (isMoving)
+				be.clearContent(); //Clear the items from the block before it is moved by a piston to prevent duplication
 
 			level.updateNeighbourForOutputSignal(pos, this);
 		}
