@@ -35,11 +35,13 @@ public class SCCommand {
 		Map<String, DeferredRegister<?>> map = new Object2ObjectArrayMap<>();
 
 		for (Field field : SCContent.class.getFields()) {
-			if (field.getType() != DeferredRegister.class)
-				return map;
-
 			try {
-				map.put(field.getName().toLowerCase(Locale.ROOT), (DeferredRegister<?>) field.get(null));
+				Object object = field.get(null);
+
+				if (!(object instanceof DeferredRegister))
+					return map;
+
+				map.put(field.getName().toLowerCase(Locale.ROOT), (DeferredRegister<?>) object);
 			}
 			catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
