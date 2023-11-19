@@ -150,6 +150,7 @@ public class AlarmScreen extends Screen {
 
 	public class SoundScrollList extends ScrollPanel {
 		private static final int SLOT_HEIGHT = 12, TEXT_OFFSET = 11;
+		public final List<SoundEvent> allSoundEvents = BuiltInRegistries.SOUND_EVENT.stream().sorted((se1, se2) -> se1.getLocation().toLanguageKey().compareTo(se2.getLocation().toLanguageKey())).toList();
 		private final Map<SoundEvent, Component> soundEventKeys = new HashMap<>();
 		private List<SoundEvent> filteredSoundEvents;
 		private SoundInstance playingSound;
@@ -287,7 +288,7 @@ public class AlarmScreen extends Screen {
 
 		public void updateFilteredEntries(String searchText) {
 			//@formatter:off
-			filteredSoundEvents = new ArrayList<>(BuiltInRegistries.SOUND_EVENT
+			filteredSoundEvents = new ArrayList<>(allSoundEvents
 					.stream()
 					.filter(e -> e.getLocation().toLanguageKey().contains(searchText))
 					.toList());
