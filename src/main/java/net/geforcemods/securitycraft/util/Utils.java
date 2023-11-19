@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.util;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -11,7 +12,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class Utils {
 	public static final Style GRAY_STYLE = Style.EMPTY.withColor(ChatFormatting.GRAY);
@@ -52,18 +52,18 @@ public class Utils {
 	}
 
 	public static ResourceLocation getRegistryName(Block block) {
-		return ForgeRegistries.BLOCKS.getKey(block);
+		return BuiltInRegistries.BLOCK.getKey(block);
 	}
 
 	public static ResourceLocation getRegistryName(EntityType<?> entityType) {
-		return ForgeRegistries.ENTITY_TYPES.getKey(entityType);
+		return BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
 	}
 
 	public static ResourceLocation getRegistryName(Item item) {
-		return ForgeRegistries.ITEMS.getKey(item);
+		return BuiltInRegistries.ITEM.getKey(item);
 	}
 
 	public static ResourceLocation getRegistryName(Potion potion) {
-		return ForgeRegistries.POTIONS.getKey(potion);
+		return BuiltInRegistries.POTION.getKey(potion);
 	}
 }

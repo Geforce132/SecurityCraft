@@ -115,14 +115,14 @@ public class CheckPasscodeScreen extends Screen {
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (keyCode == GLFW.GLFW_KEY_BACKSPACE && keycodeTextbox.getValue().length() > 0)
-			minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
+			minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.15F, 1.0F);
 
 		if (!super.keyPressed(keyCode, scanCode, modifiers) && !keycodeTextbox.keyPressed(keyCode, scanCode, modifiers)) {
 			if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode)))
 				onClose();
 
 			if (!be.isOnCooldown() && (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER)) {
-				minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
+				minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.15F, 1.0F);
 				checkCode(keycodeTextbox.getValue());
 			}
 		}
@@ -139,7 +139,7 @@ public class CheckPasscodeScreen extends Screen {
 	public boolean charTyped(char typedChar, int keyCode) {
 		if (!be.isOnCooldown() && isValidChar(typedChar)) {
 			keycodeTextbox.charTyped(typedChar, keyCode);
-			minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.get(), 0.15F, 1.0F);
+			minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.15F, 1.0F);
 		}
 
 		return true;

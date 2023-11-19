@@ -45,7 +45,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 		this(properties, () -> vB);
 	}
 
-	public ReinforcedSlabBlock(BlockBehaviour.Properties properties, Supplier<Block> vB) {
+	public ReinforcedSlabBlock(BlockBehaviour.Properties properties, Supplier<? extends Block> vB) {
 		super(properties, vB);
 		registerDefaultState(stateDefinition.any().setValue(TYPE, SlabType.BOTTOM).setValue(WATERLOGGED, false));
 	}

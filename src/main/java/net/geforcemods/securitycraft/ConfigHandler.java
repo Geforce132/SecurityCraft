@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -21,7 +22,6 @@ import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class ConfigHandler {
@@ -239,13 +239,13 @@ public class ConfigHandler {
 				if (validateValue(duration, entry) && validateValue(amplifier, entry)) {
 					ResourceLocation effectLocation = new ResourceLocation(split[0]);
 
-					if (!ForgeRegistries.MOB_EFFECTS.containsKey(effectLocation)) {
+					if (!BuiltInRegistries.MOB_EFFECT.containsKey(effectLocation)) {
 						LOGGER.warn("Effect \"{}\" does not exist, skipping", effectLocation);
 						continue;
 					}
 
 					//the amplifier is actually 0-indexed, but 1-indexed in the config for ease of use
-					effects.add(() -> new MobEffectInstance(ForgeRegistries.MOB_EFFECTS.getValue(effectLocation), duration, amplifier - 1));
+					effects.add(() -> new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.get(effectLocation), duration, amplifier - 1));
 				}
 			}
 			else

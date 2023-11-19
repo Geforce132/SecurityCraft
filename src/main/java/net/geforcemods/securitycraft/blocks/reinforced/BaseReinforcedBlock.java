@@ -32,13 +32,13 @@ import net.neoforged.neoforge.common.IPlantable;
 import net.neoforged.neoforge.common.PlantType;
 
 public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock {
-	private final Supplier<Block> vanillaBlockSupplier;
+	private final Supplier<? extends Block> vanillaBlockSupplier;
 
 	public BaseReinforcedBlock(BlockBehaviour.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
 
-	public BaseReinforcedBlock(BlockBehaviour.Properties properties, Supplier<Block> vB) {
+	public BaseReinforcedBlock(BlockBehaviour.Properties properties, Supplier<? extends Block> vB) {
 		super(properties);
 
 		vanillaBlockSupplier = vB;

@@ -3,13 +3,13 @@ package net.geforcemods.securitycraft.network.server;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.NetworkEvent;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class SyncTrophySystem {
 	private BlockPos pos;
@@ -37,7 +37,7 @@ public class SyncTrophySystem {
 	}
 
 	public void handle(NetworkEvent.Context ctx) {
-		EntityType<?> projectileType = ForgeRegistries.ENTITY_TYPES.getValue(projectileTypeLocation);
+		EntityType<?> projectileType = BuiltInRegistries.ENTITY_TYPE.get(projectileTypeLocation);
 
 		if (projectileType != null) {
 			Level level = ctx.getSender().level();

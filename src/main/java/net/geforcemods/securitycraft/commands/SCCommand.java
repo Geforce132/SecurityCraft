@@ -27,8 +27,8 @@ import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.RegistryObject;
 
 public class SCCommand {
 	private static final Map<String, DeferredRegister<?>> REGISTRIES = Util.make(() -> {
@@ -78,7 +78,7 @@ public class SCCommand {
 							final var registryObjects = REGISTRIES.get(registry).getEntries();
 							String result = "";
 
-							for (RegistryObject<?> ro : registryObjects) {
+							for (DeferredHolder<?, ?> ro : registryObjects) {
 								result += ro.getId().toString() + lineSeparator;
 							}
 

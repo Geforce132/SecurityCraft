@@ -54,6 +54,7 @@ import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BlockItem;
@@ -75,9 +76,8 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.network.simple.MessageFunctions.MessageConsumer;
 import net.neoforged.neoforge.network.simple.MessageFunctions.MessageDecoder;
 import net.neoforged.neoforge.network.simple.MessageFunctions.MessageEncoder;
-import net.neoforged.neoforge.registries.ForgeRegistries.Keys;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.RegisterEvent;
-import net.neoforged.neoforge.registries.RegistryObject;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class RegistrationHandler {
@@ -85,13 +85,13 @@ public class RegistrationHandler {
 
 	@SubscribeEvent
 	public static void onRegister(RegisterEvent event) {
-		event.register(Keys.ITEMS, helper -> {
+		event.register(Registries.ITEM, helper -> {
 			//register item blocks from annotated fields
 			for (Field field : SCContent.class.getFields()) {
 				try {
 					if (field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).registerBlockItem()) {
 						SCItemGroup group = field.getAnnotation(Reinforced.class).itemGroup();
-						Block block = ((RegistryObject<Block>) field.get(null)).get();
+						Block block = ((DeferredBlock<Block>) field.get(null)).get();
 						Item blockItem = new BlockItem(block, new Item.Properties().fireResistant());
 
 						helper.register(Utils.getRegistryName(block), blockItem);
@@ -101,7 +101,7 @@ public class RegistrationHandler {
 					}
 					else if (field.isAnnotationPresent(RegisterItemBlock.class)) {
 						SCItemGroup group = field.getAnnotation(RegisterItemBlock.class).value();
-						Block block = ((RegistryObject<Block>) field.get(null)).get();
+						Block block = ((DeferredBlock<Block>) field.get(null)).get();
 						Item blockItem = new BlockItem(block, new Item.Properties());
 
 						helper.register(Utils.getRegistryName(block), blockItem);
@@ -116,7 +116,7 @@ public class RegistrationHandler {
 			}
 		});
 
-		event.register(Keys.SOUND_EVENTS, helper -> {
+		event.register(Registries.SOUND_EVENT, helper -> {
 			for (int i = 0; i < SCSounds.values().length; i++) {
 				SCSounds sound = SCSounds.values()[i];
 

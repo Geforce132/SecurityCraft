@@ -19,7 +19,7 @@ public class ReinforcedRotatedPillarBlock extends BaseReinforcedBlock {
 		this(properties, () -> vB);
 	}
 
-	public ReinforcedRotatedPillarBlock(BlockBehaviour.Properties properties, Supplier<Block> vB) {
+	public ReinforcedRotatedPillarBlock(BlockBehaviour.Properties properties, Supplier<? extends Block> vB) {
 		super(properties, vB);
 
 		registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.Y));

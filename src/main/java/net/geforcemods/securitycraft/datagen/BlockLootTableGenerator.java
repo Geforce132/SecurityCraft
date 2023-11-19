@@ -39,14 +39,14 @@ import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.neoforged.neoforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class BlockLootTableGenerator implements LootTableSubProvider {
-	protected final Map<Supplier<Block>, LootTable.Builder> lootTables = new HashMap<>();
+	protected final Map<Supplier<? extends Block>, LootTable.Builder> lootTables = new HashMap<>();
 
 	@Override
 	public void generate(BiConsumer<ResourceLocation, Builder> consumer) {
-		for (RegistryObject<Block> obj : SCContent.BLOCKS.getEntries()) {
+		for (DeferredHolder<Block, ? extends Block> obj : SCContent.BLOCKS.getEntries()) {
 			Block block = obj.get();
 
 			if (block instanceof ReinforcedSlabBlock)
@@ -142,7 +142,7 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 		lootTables.forEach((block, lootTable) -> consumer.accept(block.get().getLootTable(), lootTable.setParamSet(LootContextParamSets.BLOCK)));
 	}
 
-	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> drop) {
+	protected final LootTable.Builder createStandardBlockLootTable(Supplier<? extends Block> drop) {
 		return createStandardBlockLootTable(drop.get());
 	}
 
@@ -156,7 +156,7 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 		//@formatter:on
 	}
 
-	protected final void putTwoHighBlockLootTable(Supplier<Block> door, Supplier<Item> doorItem) {
+	protected final void putTwoHighBlockLootTable(Supplier<? extends Block> door, Supplier<? extends Item> doorItem) {
 		//@formatter:off
 		lootTables.put(door, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
@@ -169,15 +169,15 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 		//@formatter:on
 	}
 
-	protected final void putStandardBlockLootTable(Supplier<Block> block) {
+	protected final void putStandardBlockLootTable(Supplier<? extends Block> block) {
 		putStandardBlockLootTable(block, block.get());
 	}
 
-	protected final void putStandardBlockLootTable(Supplier<Block> block, ItemLike drop) {
+	protected final void putStandardBlockLootTable(Supplier<? extends Block> block, ItemLike drop) {
 		lootTables.put(block, createStandardBlockLootTable(drop));
 	}
 
-	protected final void putSlabLootTable(Supplier<Block> slab) {
+	protected final void putSlabLootTable(Supplier<? extends Block> slab) {
 		//@formatter:off
 		lootTables.put(slab, LootTable.lootTable()
 				.withPool(LootPool.lootPool()

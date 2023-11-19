@@ -32,12 +32,12 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class AlarmScreen extends Screen {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm.png");
@@ -150,7 +150,6 @@ public class AlarmScreen extends Screen {
 
 	public class SoundScrollList extends ScrollPanel {
 		private static final int SLOT_HEIGHT = 12, TEXT_OFFSET = 11;
-		public final List<SoundEvent> allSoundEvents = new ArrayList<>(ForgeRegistries.SOUND_EVENTS.getValues());
 		private final Map<SoundEvent, Component> soundEventKeys = new HashMap<>();
 		private List<SoundEvent> filteredSoundEvents;
 		private SoundInstance playingSound;
@@ -288,7 +287,7 @@ public class AlarmScreen extends Screen {
 
 		public void updateFilteredEntries(String searchText) {
 			//@formatter:off
-			filteredSoundEvents = new ArrayList<>(allSoundEvents
+			filteredSoundEvents = new ArrayList<>(BuiltInRegistries.SOUND_EVENT
 					.stream()
 					.filter(e -> e.getLocation().toLanguageKey().contains(searchText))
 					.toList());

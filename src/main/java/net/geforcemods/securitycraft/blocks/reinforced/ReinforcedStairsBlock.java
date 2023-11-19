@@ -67,7 +67,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 		this(properties, () -> vB);
 	}
 
-	public ReinforcedStairsBlock(BlockBehaviour.Properties properties, Supplier<Block> vB) {
+	public ReinforcedStairsBlock(BlockBehaviour.Properties properties, Supplier<? extends Block> vB) {
 		super(properties, vB);
 
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HALF, Half.BOTTOM).setValue(SHAPE, StairsShape.STRAIGHT).setValue(WATERLOGGED, false));

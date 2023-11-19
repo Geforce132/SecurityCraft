@@ -147,7 +147,7 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.gui.overlay.IGuiOverlay;
-import net.neoforged.neoforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredBlock;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientHandler {
@@ -460,7 +460,7 @@ public class ClientHandler {
 		for (Field field : SCContent.class.getFields()) {
 			if (field.isAnnotationPresent(Reinforced.class)) {
 				try {
-					Block block = ((RegistryObject<Block>) field.get(null)).get();
+					Block block = ((DeferredBlock<Block>) field.get(null)).get();
 					int customTint = field.getAnnotation(Reinforced.class).customTint();
 
 					if (field.getAnnotation(Reinforced.class).hasReinforcedTint())

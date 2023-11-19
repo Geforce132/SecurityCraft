@@ -45,7 +45,7 @@ import net.neoforged.neoforge.client.model.generators.ModelProvider;
 import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class BlockModelAndStateGenerator extends BlockStateProvider {
 	//@formatter:off
@@ -68,7 +68,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		List<Item> mineTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES).stream().map(ItemStack::getItem).toList();
 		List<Item> decorationTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION).stream().map(ItemStack::getItem).toList();
 
-		for (RegistryObject<Block> obj : SCContent.BLOCKS.getEntries()) {
+		for (DeferredHolder<Block, ? extends Block> obj : SCContent.BLOCKS.getEntries()) {
 			Block block = obj.get();
 			Item item = block.asItem();
 
@@ -98,7 +98,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		simpleBlockWithRenderType(SCContent.FLOOR_TRAP.get(), "translucent");
 		simpleBlockWithRenderType(SCContent.REINFORCED_GLASS.get(), "cutout");
 		reinforcedCarpetBlock(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
-		reinforcedPaneBlock((IronBarsBlock) SCContent.REINFORCED_GLASS_PANE.get(), modelFile -> modelFile.renderType("cutout_mipped"));
+		reinforcedPaneBlock(SCContent.REINFORCED_GLASS_PANE.get(), modelFile -> modelFile.renderType("cutout_mipped"));
 
 		models().reinforcedColumn("reinforced_smooth_stone_slab_double", "smooth_stone_slab_side", "smooth_stone");
 
