@@ -16,7 +16,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class BlockTagGenerator extends BlockTagsProvider {
 	public BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
@@ -500,7 +500,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		TagAppender<Block> dragonImmune = tag(BlockTags.DRAGON_IMMUNE);
 		TagAppender<Block> witherImmune = tag(BlockTags.WITHER_IMMUNE);
 
-		for (RegistryObject<Block> ro : SCContent.BLOCKS.getEntries()) {
+		for (DeferredHolder<Block, ? extends Block> ro : SCContent.BLOCKS.getEntries()) {
 			Block block = ro.get();
 
 			if (block != SCContent.CHISELED_CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ_BLOCK.get() && block != SCContent.CRYSTAL_QUARTZ_PILLAR.get() && block != SCContent.CRYSTAL_QUARTZ_SLAB.get() && block != SCContent.CRYSTAL_QUARTZ_STAIRS.get() && block != SCContent.CRYSTAL_QUARTZ_BRICKS.get() && block != SCContent.SMOOTH_CRYSTAL_QUARTZ.get() && block != SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get() && block != SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get()) {

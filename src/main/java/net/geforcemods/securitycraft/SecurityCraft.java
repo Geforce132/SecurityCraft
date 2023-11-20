@@ -56,7 +56,8 @@ import net.neoforged.neoforge.common.world.ForcedChunkManager;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.network.NetworkRegistry;
 import net.neoforged.neoforge.network.simple.SimpleChannel;
-import net.neoforged.neoforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 @Mod(SecurityCraft.MODID)
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
@@ -132,7 +133,7 @@ public class SecurityCraft {
 		for (Field field : SCContent.class.getFields()) {
 			try {
 				if (field.isAnnotationPresent(Reinforced.class)) {
-					Block block = ((RegistryObject<Block>) field.get(null)).get();
+					Block block = ((DeferredBlock<Block>) field.get(null)).get();
 					IReinforcedBlock rb = (IReinforcedBlock) block;
 
 					IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.put(rb.getVanillaBlock(), block);
@@ -140,7 +141,7 @@ public class SecurityCraft {
 				}
 
 				if (field.isAnnotationPresent(HasManualPage.class)) {
-					Object o = ((RegistryObject<?>) field.get(null)).get();
+					Object o = ((DeferredHolder<?, ?>) field.get(null)).get();
 					HasManualPage hmp = field.getAnnotation(HasManualPage.class);
 					Item item = ((ItemLike) o).asItem();
 					PageGroup group = hmp.value();

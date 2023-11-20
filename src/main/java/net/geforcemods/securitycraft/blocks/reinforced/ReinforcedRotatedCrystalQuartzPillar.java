@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ReinforcedRotatedCrystalQuartzPillar extends ReinforcedRotatedPillarBlock implements IBlockPocket {
-	public ReinforcedRotatedCrystalQuartzPillar(BlockBehaviour.Properties properties, Supplier<Block> vB) {
+	public ReinforcedRotatedCrystalQuartzPillar(BlockBehaviour.Properties properties, Supplier<? extends Block> vB) {
 		super(properties, vB);
 	}
 

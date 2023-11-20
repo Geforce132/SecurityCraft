@@ -27,19 +27,21 @@ import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.RegistryObject;
 
 public class SCCommand {
 	private static final Map<String, DeferredRegister<?>> REGISTRIES = Util.make(() -> {
 		Map<String, DeferredRegister<?>> map = new Object2ObjectArrayMap<>();
 
 		for (Field field : SCContent.class.getFields()) {
-			if (field.getType() != DeferredRegister.class)
-				return map;
-
 			try {
-				map.put(field.getName().toLowerCase(Locale.ROOT), (DeferredRegister<?>) field.get(null));
+				Object object = field.get(null);
+
+				if (!(object instanceof DeferredRegister))
+					return map;
+
+				map.put(field.getName().toLowerCase(Locale.ROOT), (DeferredRegister<?>) object);
 			}
 			catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
@@ -78,7 +80,7 @@ public class SCCommand {
 							final var registryObjects = REGISTRIES.get(registry).getEntries();
 							String result = "";
 
-							for (RegistryObject<?> ro : registryObjects) {
+							for (DeferredHolder<?, ?> ro : registryObjects) {
 								result += ro.getId().toString() + lineSeparator;
 							}
 

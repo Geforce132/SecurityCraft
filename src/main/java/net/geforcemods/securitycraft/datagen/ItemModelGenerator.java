@@ -31,7 +31,8 @@ import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
 
 public class ItemModelGenerator extends ItemModelProvider {
 	public ItemModelGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -54,7 +55,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		flatReinforcedItems.put(SCContent.REINFORCED_LEVER.get(), "block/lever");
 		flatReinforcedItems.put(SCContent.REINFORCED_SOUL_LANTERN.get(), "item/soul_lantern");
 
-		for (RegistryObject<Block> obj : SCContent.BLOCKS.getEntries()) {
+		for (DeferredHolder<Block, ? extends Block> obj : SCContent.BLOCKS.getEntries()) {
 			Block block = obj.get();
 			Item item = block.asItem();
 
@@ -74,14 +75,14 @@ public class ItemModelGenerator extends ItemModelProvider {
 				blockMine(mine.getBlockDisguisedAs(), block);
 		}
 
-		List<RegistryObject<Item>> singleTextureItems = new ArrayList<>(SCContent.ITEMS.getEntries());
+		List<DeferredHolder<Item, ? extends Item>> singleTextureItems = new ArrayList<>(SCContent.ITEMS.getEntries());
 		//@formatter:off
-		List<RegistryObject<Item>> handheldItems = List.of(
+		List<DeferredItem<? extends Item>> handheldItems = List.of(
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1,
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2,
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3,
 				SCContent.UNIVERSAL_KEY_CHANGER);
-		List<RegistryObject<Item>> linkingStateItems = List.of(
+		List<DeferredItem<? extends Item>> linkingStateItems = List.of(
 				SCContent.CAMERA_MONITOR,
 				SCContent.MINE_REMOTE_ACCESS_TOOL,
 				SCContent.SENTRY_REMOTE_ACCESS_TOOL,
@@ -91,8 +92,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 				SCContent.ANCIENT_DEBRIS_MINE_ITEM,
 				SCContent.BRIEFCASE,
 				SCContent.CODEBREAKER,
-				SCContent.DISPLAY_CASE,
-				SCContent.GLOW_DISPLAY_CASE,
+				SCContent.DISPLAY_CASE_ITEM,
+				SCContent.GLOW_DISPLAY_CASE_ITEM,
 				SCContent.KEYCARD_HOLDER,
 				SCContent.KEYPAD_CHEST_ITEM,
 				SCContent.LENS,
@@ -108,11 +109,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTextureItems.removeAll(linkingStateItems);
 		//@formatter:on
 
-		for (RegistryObject<Item> obj : singleTextureItems) {
+		for (DeferredHolder<Item, ? extends Item> obj : singleTextureItems) {
 			simpleItem(obj.get(), "item/generated");
 		}
 
-		for (RegistryObject<Item> obj : handheldItems) {
+		for (DeferredHolder<Item, ? extends Item> obj : handheldItems) {
 			simpleItem(obj.get(), "item/handheld");
 		}
 
@@ -166,7 +167,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		reinforcedWallInventory(SCContent.REINFORCED_DEEPSLATE_TILE_WALL.get(), "deepslate_tiles");
 	}
 
-	public void linkingStateItem(RegistryObject<Item> item) {
+	public void linkingStateItem(DeferredHolder<Item, ? extends Item> item) {
 		String hasLinkedPath = item.getId().getPath();
 		String defaultPath = hasLinkedPath + "_idle";
 		String notLinkedPath = hasLinkedPath + "_not_linked";

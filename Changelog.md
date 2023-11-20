@@ -5,6 +5,11 @@
 - Fix: Error involving SecurityCraft's creative tabs when running SecurityCraft alongside certain other mods
 - Fix: Duplication exploit involving Reinforced Pistons
 
+--------------------------Changelog for v1.9.8-beta2 of SecurityCraft--------------------------
+
+- Fix: Compatibility with NeoForge version 20.2.59-beta and later
+- Misc.: The minimum required NeoForge version is 20.2.59-beta
+
 --------------------------Changelog for v1.9.8-beta1 of SecurityCraft--------------------------
 
 - Misc.: Several gui textures have been split up into sprites
