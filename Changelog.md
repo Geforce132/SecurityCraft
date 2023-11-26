@@ -3,6 +3,7 @@
 - New: Items in open Display Cases can now be picked using the "Pick Block" key
 - Fix: Duplication exploit involving keycards
 - Fix: Duplication exploit involving Reinforced Pistons
+- Fix: Modules in a Passcode-protected Chest get disabled when loading it
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 

@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
 	private long cooldownEnd = 0;
-	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public KeypadChestBlockEntity() {
 		super(SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get());
@@ -87,6 +88,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 		super.load(state, tag);
 
 		modules = readModuleInventory(tag);
+		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 		loadSaltKey(tag);
