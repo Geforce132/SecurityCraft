@@ -347,7 +347,6 @@ public class RegistrationHandler {
 		strongSplashPotionStack.setTag(strongNBT.copy());
 		normalLingeringPotionStack.setTag(normalNBT.copy());
 		strongLingeringPotionStack.setTag(strongNBT.copy());
-
 		return Ingredient.of(normalPotionStack, strongPotionStack, normalSplashPotionStack, strongSplashPotionStack, normalLingeringPotionStack, strongLingeringPotionStack);
 	}
 }

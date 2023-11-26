@@ -2416,7 +2416,7 @@ public class SCContent {
 	//items
 	@HasManualPage(hasRecipeDescription = true)
 	public static final DeferredItem<AdminToolItem> ADMIN_TOOL = ITEMS.register("admin_tool", () -> new AdminToolItem(itemProp().stacksTo(1).stacksTo(1)));
-	public static final DeferredItem<BlockItem> ANCIENT_DEBRIS_MINE_ITEM = ITEMS.registerBlockItem(SCContent.ANCIENT_DEBRIS_MINE, itemProp().fireResistant());
+	public static final DeferredItem<BlockItem> ANCIENT_DEBRIS_MINE_ITEM = ITEMS.registerSimpleBlockItem(SCContent.ANCIENT_DEBRIS_MINE, itemProp().fireResistant());
 	@HasManualPage
 	public static final DeferredItem<BriefcaseItem> BRIEFCASE = ITEMS.register("briefcase", () -> new BriefcaseItem(itemProp().stacksTo(1)));
 	@HasManualPage
@@ -2424,7 +2424,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<CodebreakerItem> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp().stacksTo(1).defaultDurability(5)));
 	@HasManualPage
-	public static final DeferredItem<Item> CRYSTAL_QUARTZ_ITEM = ITEMS.registerItem("crystal_quartz_item");
+	public static final DeferredItem<Item> CRYSTAL_QUARTZ_ITEM = ITEMS.registerSimpleItem("crystal_quartz_item");
 	public static final DeferredItem<DisplayCaseItem> DISPLAY_CASE_ITEM = ITEMS.register(DISPLAY_CASE_PATH, () -> new DisplayCaseItem(SCContent.DISPLAY_CASE.get(), itemProp(), false));
 	@HasManualPage(hasRecipeDescription = true)
 	public static final DeferredItem<FakeLiquidBucketItem> FAKE_LAVA_BUCKET = ITEMS.register("bucket_f_lava", () -> new FakeLiquidBucketItem(SCContent.FAKE_LAVA, itemProp().stacksTo(1)));
@@ -2531,7 +2531,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<UniversalOwnerChangerItem> UNIVERSAL_OWNER_CHANGER = ITEMS.register("universal_owner_changer", () -> new UniversalOwnerChangerItem(itemProp().stacksTo(1).defaultDurability(48)));
 	@HasManualPage
-	public static final DeferredItem<Item> WIRE_CUTTERS = ITEMS.registerItem("wire_cutters", itemProp().stacksTo(1).defaultDurability(476));
+	public static final DeferredItem<Item> WIRE_CUTTERS = ITEMS.registerSimpleItem("wire_cutters", itemProp().stacksTo(1).defaultDurability(476));
 
 	//modules
 	@HasManualPage
