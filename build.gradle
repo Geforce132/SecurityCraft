@@ -102,7 +102,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:cloth-config-348521:4633444") //betterf3 dependency
 	implementation fg.deobf("curse.maven:wthit-forge-455982:4596739")
 	implementation fg.deobf("curse.maven:badpackets-615134:4438956") //wthit dependency
-//	implementation fg.deobf("curse.maven:projecte-226410:3955047")
+	implementation fg.deobf("curse.maven:projecte-226410:4901949")
 }
 
 mixin {

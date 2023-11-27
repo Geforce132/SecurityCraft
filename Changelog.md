@@ -4,6 +4,7 @@
 - Fix: Duplication exploit involving keycards
 - Fix: Error involving SecurityCraft's creative tabs when running SecurityCraft alongside certain other mods
 - Fix: Duplication exploit involving Reinforced Pistons
+- Misc.: ProjectE integration has been updated with previously missing EMC values
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 

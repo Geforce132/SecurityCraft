@@ -1912,6 +1912,12 @@
       },
       {
         "ingredients": [
+          "minecraft:ladder"
+        ],
+        "output": "securitycraft:reinforced_ladder"
+      },
+      {
+        "ingredients": [
           "minecraft:chain"
         ],
         "output": "securitycraft:reinforced_chain"
@@ -2566,6 +2572,138 @@
       },
       {
         "ingredients": [
+          "minecraft:bamboo_block"
+        ],
+        "output": "securitycraft:reinforced_bamboo_block"
+      },
+      {
+        "ingredients": [
+          "minecraft:stripped_bamboo_block"
+        ],
+        "output": "securitycraft:reinforced_stripped_bamboo_block"
+      },
+      {
+        "ingredients": [
+          "minecraft:bamboo_planks"
+        ],
+        "output": "securitycraft:reinforced_bamboo_planks"
+      },
+      {
+        "ingredients": [
+          "minecraft:bamboo_mosaic"
+        ],
+        "output": "securitycraft:reinforced_bamboo_mosaic"
+      },
+      {
+        "ingredients": [
+          "minecraft:bamboo_stairs"
+        ],
+        "output": "securitycraft:reinforced_bamboo_stairs"
+      },
+      {
+        "ingredients": [
+          "minecraft:bamboo_mosaic_stairs"
+        ],
+        "output": "securitycraft:reinforced_bamboo_mosaic_stairs"
+      },
+      {
+        "ingredients": [
+          "minecraft:bamboo_slab"
+        ],
+        "output": "securitycraft:reinforced_bamboo_slab"
+      },
+      {
+        "ingredients": [
+          "minecraft:bamboo_mosaic_slab"
+        ],
+        "output": "securitycraft:reinforced_bamboo_mosaic_slab"
+      },
+      {
+        "ingredients": [
+          "minecraft:bamboo_pressure_plate"
+        ],
+        "output": "securitycraft:reinforced_bamboo_pressure_plate"
+      },
+      {
+        "ingredients": [
+          "minecraft:bamboo_button"
+        ],
+        "output": "securitycraft:reinforced_bamboo_button"
+      },
+      {
+        "ingredients": [
+          "minecraft:chiseled_bookshelf"
+        ],
+        "output": "securitycraft:reinforced_chiseled_bookshelf"
+      },
+      {
+        "ingredients": [
+          "minecraft:cherry_log"
+        ],
+        "output": "securitycraft:reinforced_cherry_log"
+      },
+      {
+        "ingredients": [
+          "minecraft:cherry_wood"
+        ],
+        "output": "securitycraft:reinforced_cherry_wood"
+      },
+      {
+        "ingredients": [
+          "minecraft:stripped_cherry_log"
+        ],
+        "output": "securitycraft:reinforced_stripped_cherry_log"
+      },
+      {
+        "ingredients": [
+          "minecraft:stripped_cherry_wood"
+        ],
+        "output": "securitycraft:reinforced_stripped_cherry_wood"
+      },
+      {
+        "ingredients": [
+          "minecraft:cherry_planks"
+        ],
+        "output": "securitycraft:reinforced_cherry_planks"
+      },
+      {
+        "ingredients": [
+          "minecraft:cherry_stairs"
+        ],
+        "output": "securitycraft:reinforced_cherry_stairs"
+      },
+      {
+        "ingredients": [
+          "minecraft:cherry_slab"
+        ],
+        "output": "securitycraft:reinforced_cherry_slab"
+      },
+      {
+        "ingredients": [
+          "minecraft:cherry_pressure_plate"
+        ],
+        "output": "securitycraft:reinforced_cherry_pressure_plate"
+      },
+      {
+        "ingredients": [
+          "minecraft:cherry_button"
+        ],
+        "output": "securitycraft:reinforced_cherry_button"
+      },
+      {
+        "ingredients": [
+          "securitycraft:crystal_quartz_slab"
+        ],
+        "output": "securitycraft:reinforced_crystal_quartz_slab"
+      },
+      {
+        "ingredients": [
+          "securitycraft:smooth_crystal_quartz"
+        ],
+        "output": "securitycraft:reinforced_smooth_crystal_quartz"
+      },
+      {
+        "ingredients": [
           "securitycraft:chiseled_crystal_quartz"
         ],
         "output": "securitycraft:reinforced_chiseled_crystal_quartz_block"
@@ -2578,21 +2716,33 @@
       },
       {
         "ingredients": [
+          "securitycraft:crystal_quartz_bricks"
+        ],
+        "output": "securitycraft:reinforced_crystal_quartz_bricks"
+      },
+      {
+        "ingredients": [
           "securitycraft:crystal_quartz_pillar"
         ],
         "output": "securitycraft:reinforced_crystal_quartz_pillar"
       },
       {
         "ingredients": [
-          "securitycraft:crystal_quartz_slab"
-        ],
-        "output": "securitycraft:reinforced_crystal_quartz_slab"
-      },
-      {
-        "ingredients": [
           "securitycraft:crystal_quartz_stairs"
         ],
         "output": "securitycraft:reinforced_crystal_quartz_stairs"
+      },
+      {
+        "ingredients": [
+          "securitycraft:smooth_crystal_quartz_stairs"
+        ],
+        "output": "securitycraft:reinforced_smooth_crystal_quartz_stairs"
+      },
+      {
+        "ingredients": [
+          "securitycraft:smooth_crystal_quartz_slab"
+        ],
+        "output": "securitycraft:reinforced_smooth_crystal_quartz_slab"
       },
       {
         "ingredients": [
