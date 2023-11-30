@@ -335,6 +335,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_NETHERITE_BLOCK.get());
 		tag(BlockTags.BIG_DRIPLEAF_PLACEABLE).addTag(SCTags.Blocks.REINFORCED_DIRT);
 		tag(BlockTags.BUTTONS).addTag(SCTags.Blocks.REINFORCED_BUTTONS);
+		tag(BlockTags.CAMEL_SAND_STEP_SOUND_BLOCKS).addTag(SCTags.Blocks.REINFORCED_SAND);
 		tag(BlockTags.CAULDRONS).add(
 				SCContent.REINFORCED_CAULDRON.get(),
 				SCContent.REINFORCED_LAVA_CAULDRON.get(),
