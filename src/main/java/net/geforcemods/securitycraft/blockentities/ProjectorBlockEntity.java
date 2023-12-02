@@ -23,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 
 public class ProjectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ILockable {
 	public static final int MIN_WIDTH = 1; //also for height
@@ -32,7 +31,6 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 	public static final int MAX_RANGE = 30;
 	public static final int MIN_OFFSET = -10;
 	public static final int MAX_OFFSET = 10;
-	public static final int RENDER_DISTANCE = 100;
 	private int projectionWidth = 1;
 	private int projectionHeight = 1;
 	private int projectionRange = 5;
@@ -46,11 +44,6 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 
 	public ProjectorBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.PROJECTOR_BLOCK_ENTITY.get(), pos, state);
-	}
-
-	@Override
-	public AABB getRenderBoundingBox() {
-		return new AABB(getBlockPos()).inflate(RENDER_DISTANCE);
 	}
 
 	@Override

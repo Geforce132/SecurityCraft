@@ -38,7 +38,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.world.ForcedChunkManager;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecurityCameraBlock extends OwnableBlock {
@@ -140,7 +139,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 			for (int x = chunkPos.getX() - viewDistance; x <= chunkPos.getX() + viewDistance; x++) {
 				for (int z = chunkPos.getZ() - viewDistance; z <= chunkPos.getZ() + viewDistance; z++) {
-					ForcedChunkManager.forceChunk(serverLevel, SecurityCraft.MODID, dummyEntity, x, z, true, false);
+					SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk(serverLevel, dummyEntity, x, z, true, false);
 				}
 			}
 

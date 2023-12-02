@@ -59,11 +59,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable, IToggleableEntries<EntityType<?>>, MenuProvider {
 	/** The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
-	/**
-	 * The number of blocks away from the trophy system you can be for the laser beam between itself and the projectile to be
-	 * rendered
-	 */
-	public static final int RENDER_DISTANCE = 50;
 	private final Map<EntityType<?>, Boolean> projectileFilter = new LinkedHashMap<>();
 	private Projectile entityBeingTargeted = null;
 	private int cooldown = getCooldownTime();
@@ -134,11 +129,6 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		}
 
 		destroyTarget();
-	}
-
-	@Override
-	public AABB getRenderBoundingBox() {
-		return new AABB(getBlockPos()).inflate(RENDER_DISTANCE);
 	}
 
 	@Override

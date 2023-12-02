@@ -15,8 +15,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.AABB;
 
 public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlockEntity> {
+	/**
+	 * The number of blocks away from the trophy system you can be for the laser beam between itself and the projectile to be
+	 * rendered
+	 */
+	public static final int RENDER_DISTANCE = 50;
+
 	public TrophySystemRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
@@ -49,7 +56,12 @@ public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlo
 	}
 
 	@Override
-	public boolean shouldRenderOffScreen(TrophySystemBlockEntity te) {
+	public boolean shouldRenderOffScreen(TrophySystemBlockEntity be) {
 		return true;
+	}
+
+	@Override
+	public AABB getRenderBoundingBox(TrophySystemBlockEntity be) {
+		return new AABB(be.getBlockPos()).inflate(RENDER_DISTANCE);
 	}
 }

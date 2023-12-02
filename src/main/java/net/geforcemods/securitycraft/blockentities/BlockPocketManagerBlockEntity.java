@@ -51,7 +51,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.capabilities.Capabilities;
 import net.neoforged.neoforge.common.capabilities.Capability;
 import net.neoforged.neoforge.common.util.LazyOptional;
@@ -59,7 +58,6 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity implements MenuProvider, ITickingBlockEntity, ILockable {
-	public static final int RENDER_DISTANCE = 100;
 	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;
 	private boolean enabled = false;
 	private boolean showOutline = false;
@@ -733,11 +731,6 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	@Override
 	public Component getDisplayName() {
 		return super.getDisplayName();
-	}
-
-	@Override
-	public AABB getRenderBoundingBox() {
-		return new AABB(getBlockPos()).inflate(RENDER_DISTANCE);
 	}
 
 	public LazyOptional<IItemHandler> getStorageHandler() {

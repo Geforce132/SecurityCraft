@@ -52,7 +52,8 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.world.ForcedChunkManager;
+import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
+import net.neoforged.neoforge.common.world.chunk.TicketController;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.network.NetworkRegistry;
 import net.neoforged.neoforge.network.simple.SimpleChannel;
@@ -67,6 +68,12 @@ public class SecurityCraft {
 	public static final GameRules.Key<GameRules.BooleanValue> RULE_FAKE_LAVA_SOURCE_CONVERSION = GameRules.register("fakeLavaSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(false));
 	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> getVersion(), getVersion()::equals, getVersion()::equals);
 	public static final Random RANDOM = new Random();
+	public static final TicketController CAMERA_TICKET_CONTROLLER = new TicketController(new ResourceLocation(SecurityCraft.MODID, "camera_chunks"), (level, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCamera) somewhere
+		ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
+			if (level.getEntity(uuid) == null)
+				ticketHelper.removeAllTickets(uuid);
+		}));
+	});
 
 	public SecurityCraft(IEventBus modEventBus) {
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
@@ -118,13 +125,12 @@ public class SecurityCraft {
 	@SubscribeEvent
 	public static void onInterModProcess(InterModProcessEvent event) { //stage 4
 		collectSCContentData();
-		ForcedChunkManager.setForcedChunkLoadingCallback(SecurityCraft.MODID, (level, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCamera) somewhere
-			ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
-				if (level.getEntity(uuid) == null)
-					ticketHelper.removeAllTickets(uuid);
-			}));
-		});
 		IReinforcedCauldronInteraction.bootStrap();
+	}
+
+	@SubscribeEvent
+	public static void onRegisterTicketControllers(RegisterTicketControllersEvent event) {
+		event.register(CAMERA_TICKET_CONTROLLER);
 	}
 
 	public static void collectSCContentData() {

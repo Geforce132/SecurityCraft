@@ -27,7 +27,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.world.ForcedChunkManager;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecurityCamera extends Entity {
@@ -183,7 +182,7 @@ public class SecurityCamera extends Entity {
 
 			for (int x = chunkPos.getX() - chunkLoadingDistance; x <= chunkPos.getX() + chunkLoadingDistance; x++) {
 				for (int z = chunkPos.getZ() - chunkLoadingDistance; z <= chunkPos.getZ() + chunkLoadingDistance; z++) {
-					ForcedChunkManager.forceChunk((ServerLevel) level(), SecurityCraft.MODID, this, x, z, false, false);
+					SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level(), this, x, z, false, false);
 				}
 			}
 		}

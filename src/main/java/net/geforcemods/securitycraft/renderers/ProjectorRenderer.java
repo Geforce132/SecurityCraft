@@ -18,10 +18,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.common.util.TriPredicate;
 
 public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEntity> {
+	public static final int RENDER_DISTANCE = 100;
 	private final TriPredicate<ProjectorBlockEntity, Boolean, Integer> yLoopBoundary = (be, hanging, y) -> hanging ? y > -be.getProjectionHeight() : y < be.getProjectionHeight();
 
 	public ProjectorRenderer(BlockEntityRendererProvider.Context ctx) {}
@@ -105,5 +107,10 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 	@Override
 	public boolean shouldRenderOffScreen(ProjectorBlockEntity be) {
 		return true;
+	}
+
+	@Override
+	public AABB getRenderBoundingBox(ProjectorBlockEntity be) {
+		return new AABB(be.getBlockPos()).inflate(RENDER_DISTANCE);
 	}
 }

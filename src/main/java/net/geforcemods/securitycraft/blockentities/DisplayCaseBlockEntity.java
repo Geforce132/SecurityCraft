@@ -25,10 +25,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 
 public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, IPasscodeProtected, ILockable {
-	private final AABB renderBoundingBox;
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
@@ -46,7 +44,6 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 
 	public DisplayCaseBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
-		renderBoundingBox = new AABB(pos);
 	}
 
 	@Override
@@ -210,10 +207,5 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 			setChanged();
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 		}
-	}
-
-	@Override
-	public AABB getRenderBoundingBox() {
-		return renderBoundingBox;
 	}
 }
