@@ -28,8 +28,8 @@ import net.neoforged.neoforge.common.NeoForge;
 public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
 
-	public ReinforcedPressurePlateBlock(Sensitivity sensitivity, BlockBehaviour.Properties properties, Block vanillaBlock, BlockSetType blockSetType) {
-		super(sensitivity, properties, blockSetType);
+	public ReinforcedPressurePlateBlock(BlockBehaviour.Properties properties, Block vanillaBlock, BlockSetType blockSetType) {
+		super(properties, blockSetType);
 		this.vanillaBlock = vanillaBlock;
 		DoorActivator.addActivator(this);
 	}

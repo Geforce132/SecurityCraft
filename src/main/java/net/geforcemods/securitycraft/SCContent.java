@@ -243,7 +243,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
-import net.minecraft.world.level.block.PressurePlateBlock.Sensitivity;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -282,6 +281,7 @@ public class SCContent {
 	public static final String KEYPAD_CHEST_PATH = "keypad_chest";
 	public static final String DISPLAY_CASE_PATH = "display_case";
 	public static final String GLOW_DISPLAY_CASE_PATH = "glow_display_case";
+	public static final WoodType IRON_WOOD_TYPE = WoodType.register(new WoodType("securitycraft:iron", BlockSetType.IRON));
 
 	//loot item condition types
 	public static final DeferredHolder<LootItemConditionType, LootItemConditionType> BLOCK_ENTITY_NBT = LOOT_ITEM_CONDITION_TYPES.register("tile_entity_nbt", () -> new LootItemConditionType(BlockEntityNBTCondition.CODEC));
@@ -397,7 +397,7 @@ public class SCContent {
 	public static final DeferredBlock<ReinforcedDoorBlock> REINFORCED_DOOR = BLOCKS.register("iron_door_reinforced", () -> new ReinforcedDoorBlock(prop(MapColor.METAL).sound(SoundType.METAL).noOcclusion().pushReaction(PushReaction.BLOCK)));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_FENCE_GATE = BLOCKS.register("reinforced_fence_gate", () -> new ReinforcedFenceGateBlock(prop(MapColor.METAL).sound(SoundType.METAL)));
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_FENCE_GATE = BLOCKS.register("reinforced_fence_gate", () -> new ReinforcedFenceGateBlock(IRON_WOOD_TYPE, prop(MapColor.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<RetinalScannerBlock> RETINAL_SCANNER = BLOCKS.register("retinal_scanner", () -> new RetinalScannerBlock(propDisguisable()));
@@ -2369,9 +2369,9 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final DeferredBlock<RotatedPillarBlock> CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("crystal_quartz_pillar", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
 	@RegisterItemBlock
-	public static final DeferredBlock<StairBlock> CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("crystal_quartz_stairs", () -> new StairBlock(() -> CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.copy(CRYSTAL_QUARTZ_BLOCK.get())));
+	public static final DeferredBlock<StairBlock> CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("crystal_quartz_stairs", () -> new StairBlock(() -> CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.ofLegacyCopy(CRYSTAL_QUARTZ_BLOCK.get())));
 	@RegisterItemBlock
-	public static final DeferredBlock<StairBlock> SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("smooth_crystal_quartz_stairs", () -> new StairBlock(() -> SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), BlockBehaviour.Properties.copy(SMOOTH_CRYSTAL_QUARTZ.get())));
+	public static final DeferredBlock<StairBlock> SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("smooth_crystal_quartz_stairs", () -> new StairBlock(() -> SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), BlockBehaviour.Properties.ofLegacyCopy(SMOOTH_CRYSTAL_QUARTZ.get())));
 	@RegisterItemBlock
 	public static final DeferredBlock<SlabBlock> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("smooth_crystal_quartz_slab", () -> new SlabBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@HasManualPage(PageGroup.REINFORCED)
@@ -2827,7 +2827,7 @@ public class SCContent {
 	}
 
 	private static BlockBehaviour.Properties mineProp(Block block) {
-		return BlockBehaviour.Properties.copy(block).explosionResistance(Float.MAX_VALUE).pushReaction(PushReaction.NORMAL);
+		return BlockBehaviour.Properties.ofLegacyCopy(block).explosionResistance(Float.MAX_VALUE).pushReaction(PushReaction.NORMAL);
 	}
 
 	private static final Item.Properties itemProp() {
@@ -2872,16 +2872,16 @@ public class SCContent {
 	}
 
 	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, BlockSetType blockSetType) {
-		return new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
+		return new ReinforcedPressurePlateBlock(prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
 	}
 
 	@SuppressWarnings("unused")
 	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, BlockSetType blockSetType, FeatureFlag... requiredFeatures) {
-		return new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().requiredFeatures(requiredFeatures).pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
+		return new ReinforcedPressurePlateBlock(prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().requiredFeatures(requiredFeatures).pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
 	}
 
 	private static ReinforcedPressurePlateBlock stonePressurePlate(Block vanillaBlock, BlockSetType blockSetType) {
-		return new ReinforcedPressurePlateBlock(Sensitivity.MOBS, prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
+		return new ReinforcedPressurePlateBlock(prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
 	}
 
 	private SCContent() {}

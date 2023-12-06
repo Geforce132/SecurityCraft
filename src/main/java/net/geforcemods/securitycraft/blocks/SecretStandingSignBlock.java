@@ -22,7 +22,7 @@ import net.neoforged.neoforge.common.NeoForge;
 
 public class SecretStandingSignBlock extends StandingSignBlock {
 	public SecretStandingSignBlock(BlockBehaviour.Properties properties, WoodType woodType) {
-		super(properties, woodType);
+		super(woodType, properties);
 	}
 
 	@Override

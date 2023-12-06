@@ -21,8 +21,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class SecretWallHangingSignBlock extends WallHangingSignBlock {
-	public SecretWallHangingSignBlock(BlockBehaviour.Properties properties, WoodType type) {
-		super(properties, type);
+	public SecretWallHangingSignBlock(BlockBehaviour.Properties properties, WoodType woodType) {
+		super(woodType, properties);
 	}
 
 	@Override

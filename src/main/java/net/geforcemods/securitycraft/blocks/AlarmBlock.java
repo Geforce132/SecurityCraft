@@ -202,7 +202,7 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
 		return new ItemStack(SCContent.ALARM.get().asItem());
 	}
 

@@ -153,7 +153,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		CompoundTag blockTag = level.getBlockEntity(pos).getUpdateTag();
 		ItemStack stack = new ItemStack(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
 

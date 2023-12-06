@@ -13,8 +13,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.EntityBlock;
@@ -28,7 +28,7 @@ import net.minecraft.world.phys.HitResult;
 
 public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock {
 	protected SpecialDoorBlock(BlockBehaviour.Properties properties, BlockSetType blockSetType) {
-		super(properties, blockSetType);
+		super(blockSetType, properties);
 	}
 
 	//redstone signals should not be able to open these doors
@@ -110,7 +110,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock 
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		return new ItemStack(getDoorItem());
 	}
 
