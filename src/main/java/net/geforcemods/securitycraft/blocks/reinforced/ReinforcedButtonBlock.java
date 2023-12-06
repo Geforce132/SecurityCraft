@@ -25,8 +25,8 @@ import net.neoforged.neoforge.common.NeoForge;
 public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
 
-	public ReinforcedButtonBlock(BlockBehaviour.Properties properties, Block vb, BlockSetType blockSetType, int ticksToStayPressed, boolean arrowsCanPush) {
-		super(properties, blockSetType, ticksToStayPressed, arrowsCanPush);
+	public ReinforcedButtonBlock(BlockBehaviour.Properties properties, Block vb, BlockSetType blockSetType, int ticksToStayPressed) {
+		super(blockSetType, ticksToStayPressed, properties);
 		this.vanillaBlock = vb;
 		CommonDoorActivator.addActivator(this);
 	}

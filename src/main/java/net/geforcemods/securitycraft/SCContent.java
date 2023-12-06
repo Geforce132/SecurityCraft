@@ -382,7 +382,7 @@ public class SCContent {
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final DeferredBlock<PanicButtonBlock> PANIC_BUTTON = BLOCKS.register("panic_button", () -> new PanicButtonBlock(prop().lightLevel(state -> state.getValue(ButtonBlock.POWERED) ? 4 : 0), BlockSetType.STONE, -1, false));
+	public static final DeferredBlock<PanicButtonBlock> PANIC_BUTTON = BLOCKS.register("panic_button", () -> new PanicButtonBlock(prop().lightLevel(state -> state.getValue(ButtonBlock.POWERED) ? 4 : 0), BlockSetType.STONE, -1));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<PortableRadarBlock> PORTABLE_RADAR = BLOCKS.register("portable_radar", () -> new PortableRadarBlock(prop(MapColor.METAL)));
@@ -2859,16 +2859,16 @@ public class SCContent {
 	}
 
 	private static ReinforcedButtonBlock woodenButton(Block vanillaBlock, BlockSetType blockSetType) {
-		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType, 30, true);
+		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType, 30);
 	}
 
 	@SuppressWarnings("unused")
 	private static ReinforcedButtonBlock woodenButton(Block vanillaBlock, BlockSetType blockSetType, FeatureFlag... requiredFeatures) {
-		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK).requiredFeatures(requiredFeatures), vanillaBlock, blockSetType, 30, true);
+		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK).requiredFeatures(requiredFeatures), vanillaBlock, blockSetType, 30);
 	}
 
 	private static ReinforcedButtonBlock stoneButton(Block vanillaBlock, BlockSetType blockSetType) {
-		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType, 20, false);
+		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType, 20);
 	}
 
 	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, BlockSetType blockSetType) {

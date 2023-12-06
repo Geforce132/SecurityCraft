@@ -29,7 +29,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	private final Block vanillaBlock;
 
 	public ReinforcedPressurePlateBlock(BlockBehaviour.Properties properties, Block vanillaBlock, BlockSetType blockSetType) {
-		super(properties, blockSetType);
+		super(blockSetType, properties);
 		this.vanillaBlock = vanillaBlock;
 		DoorActivator.addActivator(this);
 	}
