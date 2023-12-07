@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
 import net.geforcemods.securitycraft.ConfigHandler;
@@ -41,8 +42,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
 import net.neoforged.neoforge.common.capabilities.Capability;
 import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -383,7 +384,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			for (ModuleType type : thisInsertedModules) {
 				ItemStack thisModule = getModule(type);
 
-				if (thatInsertedModules.contains(type) && !thisModule.areShareTagsEqual(that.getModule(type)))
+				if (thatInsertedModules.contains(type) && !Objects.equals(thisModule.getTag(), that.getModule(type).getTag()))
 					return type;
 
 				bothInsertedModules.put(thisModule.copy(), isModuleEnabled(type));
