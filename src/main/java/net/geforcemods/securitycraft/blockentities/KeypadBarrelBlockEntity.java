@@ -46,10 +46,8 @@ import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity implements IPasscodeProtected, IOwnable, IModuleInventory, ICustomizable, ILockable, ISentryBulletContainer {
 	private NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
@@ -77,7 +75,6 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 			return false;
 		}
 	};
-	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private byte[] passcode;
 	private UUID saltKey;
 	private Owner owner = new Owner();
@@ -177,41 +174,16 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		return Utils.localize("block.securitycraft.keypad_barrel");
 	}
 
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == Capabilities.ITEM_HANDLER)
-			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), this::getInsertOnlyHandler).cast();
-		else
-			return super.getCapability(cap, side);
+	public static IItemHandler getCapability(KeypadBarrelBlockEntity be, Direction side) {
+		return BlockUtils.getProtectedCapability(side, be, () -> new InvWrapper(be), () -> new InsertOnlyInvWrapper(be));
 	}
 
 	@Override
-	public void invalidateCaps() {
-		if (insertOnlyHandler != null)
-			insertOnlyHandler.invalidate();
-
-		super.invalidateCaps();
-	}
-
-	@Override
-	public void reviveCaps() {
-		insertOnlyHandler = null; //recreated in getInsertOnlyHandler
-		super.reviveCaps();
-	}
-
-	private LazyOptional<IItemHandler> getInsertOnlyHandler() {
-		if (insertOnlyHandler == null)
-			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(KeypadBarrelBlockEntity.this));
-
-		return insertOnlyHandler;
-	}
-
-	@Override
-	public LazyOptional<IItemHandler> getHandlerForSentry(Sentry entity) {
+	public IItemHandler getHandlerForSentry(Sentry entity) {
 		if (entity.getOwner().owns(this))
-			return super.getCapability(Capabilities.ITEM_HANDLER, Direction.UP);
+			return new InvWrapper(this);
 		else
-			return LazyOptional.empty();
+			return null;
 	}
 
 	@Override

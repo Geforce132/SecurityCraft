@@ -17,13 +17,10 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.EmptyHandler;
 
 public class BlockUtils {
-	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> EmptyHandler.INSTANCE);
-
 	private BlockUtils() {}
 
 	public static boolean isSideSolid(LevelReader level, BlockPos pos, Direction side) {
@@ -86,9 +83,9 @@ public class BlockUtils {
 		return false;
 	}
 
-	public static LazyOptional<?> getProtectedCapability(Direction side, BlockEntity be, Supplier<LazyOptional<?>> extractionPermittedHandler, Supplier<LazyOptional<?>> insertOnlyHandler) {
+	public static IItemHandler getProtectedCapability(Direction side, BlockEntity be, Supplier<IItemHandler> extractionPermittedHandler, Supplier<IItemHandler> insertOnlyHandler) {
 		if (side == null)
-			return EMPTY_INVENTORY;
+			return EmptyHandler.INSTANCE;
 
 		BlockPos offsetPos = be.getBlockPos().relative(side);
 		BlockState offsetState = be.getLevel().getBlockState(offsetPos);
@@ -96,7 +93,7 @@ public class BlockUtils {
 		for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
 			if (offsetState.getBlock() == extractionBlock.getBlock()) {
 				if (!extractionBlock.canExtract((IOwnable) be, be.getLevel(), offsetPos, offsetState))
-					return EMPTY_INVENTORY;
+					return EmptyHandler.INSTANCE;
 				else
 					return extractionPermittedHandler.get();
 			}

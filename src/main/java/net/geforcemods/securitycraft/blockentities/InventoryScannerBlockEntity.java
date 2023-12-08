@@ -42,20 +42,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.EmptyHandler;
 
 public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ITickingBlockEntity, ILockable, ContainerListener {
-	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> EmptyHandler.INSTANCE);
 	private BooleanOption horizontal = new BooleanOption("horizontal", false);
 	private BooleanOption solidifyField = new BooleanOption("solidifyField", false);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private IntOption signalLength = new SignalLengthOption(60);
-	private LazyOptional<IItemHandler> storageHandler;
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean providePower;
 	private int cooldown;
@@ -262,39 +257,13 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			otherScanner.getLensContainer().setItemExclusively(0, lens.getItem(0));
 	}
 
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == Capabilities.ITEM_HANDLER)
-			return BlockUtils.getProtectedCapability(side, this, this::getExtractionHandler, () -> EMPTY_INVENTORY).cast(); //disallow inserting
-		else
-			return super.getCapability(cap, side);
-	}
-
-	@Override
-	public void invalidateCaps() {
-		if (storageHandler != null)
-			storageHandler.invalidate();
-
-		super.invalidateCaps();
-	}
-
-	@Override
-	public void reviveCaps() {
-		storageHandler = null; //recreated in getExtractionHandler
-		super.reviveCaps();
-	}
-
-	public LazyOptional<IItemHandler> getExtractionHandler() {
-		if (storageHandler == null) {
-			storageHandler = LazyOptional.of(() -> new ExtractOnlyItemStackHandler(inventoryContents) {
-				@Override
-				public ItemStack extractItem(int slot, int amount, boolean simulate) {
-					return slot < 10 ? ItemStack.EMPTY : super.extractItem(slot, amount, simulate); //don't allow extracting from the prohibited item slots
-				}
-			});
-		}
-
-		return storageHandler;
+	public static IItemHandler getCapability(InventoryScannerBlockEntity be, Direction side) {
+		return BlockUtils.getProtectedCapability(side, be, () -> new ExtractOnlyItemStackHandler(be.inventoryContents) {
+			@Override
+			public ItemStack extractItem(int slot, int amount, boolean simulate) {
+				return slot < 10 ? ItemStack.EMPTY : super.extractItem(slot, amount, simulate); //don't allow extracting from the prohibited item slots
+			}
+		}, () -> EmptyHandler.INSTANCE); //disallow inserting
 	}
 
 	@Override

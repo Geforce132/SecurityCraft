@@ -43,13 +43,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 
 public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity implements IPasscodeProtected, MenuProvider, IOwnable, IModuleInventory, ICustomizable, ILockable {
-	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private Owner owner = new Owner();
 	private byte[] passcode;
 	private UUID saltKey;
@@ -167,33 +165,8 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		owner.set(uuid, name);
 	}
 
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == Capabilities.ITEM_HANDLER)
-			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), this::getInsertOnlyHandler).cast();
-		else
-			return super.getCapability(cap, side);
-	}
-
-	@Override
-	public void invalidateCaps() {
-		if (insertOnlyHandler != null)
-			insertOnlyHandler.invalidate();
-
-		super.invalidateCaps();
-	}
-
-	@Override
-	public void reviveCaps() {
-		insertOnlyHandler = null; //recreated in getInsertOnlyHandler
-		super.reviveCaps();
-	}
-
-	private LazyOptional<IItemHandler> getInsertOnlyHandler() {
-		if (insertOnlyHandler == null)
-			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(AbstractKeypadFurnaceBlockEntity.this));
-
-		return insertOnlyHandler;
+	public static IItemHandler getCapability(AbstractKeypadFurnaceBlockEntity be, Direction side) {
+		return BlockUtils.getProtectedCapability(side, be, () -> side == null ? new InvWrapper(be) : new SidedInvWrapper(be, side), () -> new InsertOnlyInvWrapper(be));
 	}
 
 	@Override

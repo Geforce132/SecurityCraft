@@ -67,7 +67,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -342,16 +341,14 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		Projectile throwableEntity = null;
 		SoundEvent shootSound = SoundEvents.ARROW_SHOOT;
 		AbstractProjectileDispenseBehavior pdb = null;
-		LazyOptional<IItemHandler> optional = LazyOptional.empty();
+		IItemHandler handler = null;
 
 		if (blockEntity instanceof ISentryBulletContainer be)
-			optional = be.getHandlerForSentry(this);
+			handler = be.getHandlerForSentry(this);
 		else if (blockEntity != null)
-			optional = blockEntity.getCapability(Capabilities.ITEM_HANDLER, Direction.UP);
+			handler = level().getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, Direction.UP);
 
-		if (optional.isPresent()) {
-			IItemHandler handler = optional.orElse(null); //this is safe, because the presence was checked beforehand
-
+		if (handler != null) {
 			for (int i = 0; i < handler.getSlots(); i++) {
 				ItemStack stack = handler.getStackInSlot(i);
 

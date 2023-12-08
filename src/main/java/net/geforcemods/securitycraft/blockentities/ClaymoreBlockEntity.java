@@ -30,16 +30,12 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, MenuProvider {
 	private IntOption range = new IntOption("range", 5, 1, 10, 1, true);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
-	private LazyOptional<IItemHandler> insertOnlyHandler, lensHandler;
 	private SimpleContainer lens = new SimpleContainer(1);
 	private int cooldown = -1;
 
@@ -94,44 +90,8 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
 	}
 
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == Capabilities.ITEM_HANDLER)
-			return BlockUtils.getProtectedCapability(side, this, this::getNormalHandler, this::getInsertOnlyHandler).cast();
-		else
-			return super.getCapability(cap, side);
-	}
-
-	@Override
-	public void invalidateCaps() {
-		if (insertOnlyHandler != null)
-			insertOnlyHandler.invalidate();
-
-		if (lensHandler != null)
-			lensHandler.invalidate();
-
-		super.invalidateCaps();
-	}
-
-	@Override
-	public void reviveCaps() {
-		insertOnlyHandler = null;
-		lensHandler = null;
-		super.reviveCaps();
-	}
-
-	private LazyOptional<IItemHandler> getInsertOnlyHandler() {
-		if (insertOnlyHandler == null)
-			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(lens));
-
-		return insertOnlyHandler;
-	}
-
-	private LazyOptional<IItemHandler> getNormalHandler() {
-		if (lensHandler == null)
-			lensHandler = LazyOptional.of(() -> new InvWrapper(lens));
-
-		return lensHandler;
+	public static IItemHandler getCapability(ClaymoreBlockEntity be, Direction side) {
+		return BlockUtils.getProtectedCapability(side, be, () -> new InvWrapper(be.lens), () -> new InsertOnlyInvWrapper(be.lens));
 	}
 
 	@Override

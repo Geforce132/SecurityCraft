@@ -42,10 +42,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -69,7 +66,6 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 
 		return map;
 	});
-	private LazyOptional<IItemHandler> insertOnlyHandler, lensHandler;
 	private LensContainer lenses = new LensContainer(6);
 
 	public LaserBlockBlockEntity(BlockPos pos, BlockState state) {
@@ -229,44 +225,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		}
 	}
 
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == Capabilities.ITEM_HANDLER)
-			return BlockUtils.getProtectedCapability(side, this, this::getNormalHandler, this::getInsertOnlyHandler).cast();
-		else
-			return super.getCapability(cap, side);
-	}
-
-	@Override
-	public void invalidateCaps() {
-		if (insertOnlyHandler != null)
-			insertOnlyHandler.invalidate();
-
-		if (lensHandler != null)
-			lensHandler.invalidate();
-
-		super.invalidateCaps();
-	}
-
-	@Override
-	public void reviveCaps() {
-		insertOnlyHandler = null;
-		lensHandler = null;
-		super.reviveCaps();
-	}
-
-	private LazyOptional<IItemHandler> getInsertOnlyHandler() {
-		if (insertOnlyHandler == null)
-			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(lenses));
-
-		return insertOnlyHandler;
-	}
-
-	private LazyOptional<IItemHandler> getNormalHandler() {
-		if (lensHandler == null)
-			lensHandler = LazyOptional.of(() -> new InvWrapper(lenses));
-
-		return lensHandler;
+	public static IItemHandler getCapability(LaserBlockBlockEntity be, Direction side) {
+		return BlockUtils.getProtectedCapability(side, be, () -> new InvWrapper(be.lenses), () -> new InsertOnlyInvWrapper(be.lenses));
 	}
 
 	@Override
