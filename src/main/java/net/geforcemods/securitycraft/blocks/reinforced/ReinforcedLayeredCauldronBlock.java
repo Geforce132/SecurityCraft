@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import java.util.Map;
-import java.util.function.Predicate;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
@@ -13,7 +10,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -36,8 +32,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
 
-	public ReinforcedLayeredCauldronBlock(BlockBehaviour.Properties properties, Predicate<Precipitation> fillPredicate, Map<Item, CauldronInteraction> interactions, Block vanillaBlock) {
-		super(properties, fillPredicate, interactions);
+	public ReinforcedLayeredCauldronBlock(Precipitation precipitation, CauldronInteraction.InteractionMap interactions, BlockBehaviour.Properties properties, Block vanillaBlock) {
+		super(precipitation, interactions, properties);
 		this.vanillaBlock = vanillaBlock;
 	}
 
@@ -77,7 +73,7 @@ public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock impleme
 	}
 
 	@Override
-	protected void handleEntityOnFireInside(BlockState state, Level level, BlockPos pos) {
+	public void handleEntityOnFireInside(BlockState state, Level level, BlockPos pos) {
 		lowerFillLevel(state, level, pos);
 	}
 
