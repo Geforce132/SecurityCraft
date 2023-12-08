@@ -114,7 +114,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onServerTick(ServerTickEvent event) {
-		if (event.phase == Phase.END && (!event.getServer().tickRateManager().isFrozen() || event.getServer().tickRateManager().isSteppingForward())) {
+		if (event.phase == Phase.START && (!event.getServer().tickRateManager().isFrozen() || event.getServer().tickRateManager().isSteppingForward())) {
 			PLAYING_TUNES.forEach((player, pair) -> {
 				int ticksRemaining = pair.getLeft();
 
