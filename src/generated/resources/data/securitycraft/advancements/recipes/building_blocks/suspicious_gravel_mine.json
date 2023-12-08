@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:suspicious_gravel_mine"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

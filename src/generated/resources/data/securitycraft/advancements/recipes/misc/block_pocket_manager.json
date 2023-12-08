@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:block_pocket_manager"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

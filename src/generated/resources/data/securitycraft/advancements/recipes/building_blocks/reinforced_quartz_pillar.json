@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_quartz_pillar"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_bamboo_mosaic_stairs"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

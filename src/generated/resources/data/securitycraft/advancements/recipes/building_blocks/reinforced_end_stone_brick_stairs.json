@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_end_stone_brick_stairs"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_granite_wall"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

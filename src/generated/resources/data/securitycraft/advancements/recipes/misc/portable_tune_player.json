@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:portable_tune_player"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

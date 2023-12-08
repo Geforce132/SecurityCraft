@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:reinforced_dark_oak_planks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

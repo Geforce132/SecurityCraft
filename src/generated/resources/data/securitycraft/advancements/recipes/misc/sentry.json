@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:sentry"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

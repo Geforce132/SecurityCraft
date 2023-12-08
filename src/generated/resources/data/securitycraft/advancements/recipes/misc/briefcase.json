@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:briefcase"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_chiseled_quartz_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

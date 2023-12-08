@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:iron_mine"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

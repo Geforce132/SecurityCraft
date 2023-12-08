@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_packed_ice"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

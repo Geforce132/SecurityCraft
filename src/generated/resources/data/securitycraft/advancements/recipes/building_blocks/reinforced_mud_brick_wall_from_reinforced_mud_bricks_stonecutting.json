@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_mud_brick_wall_from_reinforced_mud_bricks_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

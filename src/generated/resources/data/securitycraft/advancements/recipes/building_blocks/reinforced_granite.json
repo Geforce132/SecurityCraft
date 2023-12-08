@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:reinforced_granite"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

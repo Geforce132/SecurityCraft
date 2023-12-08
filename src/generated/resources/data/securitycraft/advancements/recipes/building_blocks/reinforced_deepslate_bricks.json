@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_deepslate_bricks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

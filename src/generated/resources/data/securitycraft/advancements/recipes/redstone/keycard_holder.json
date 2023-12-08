@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:keycard_holder"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

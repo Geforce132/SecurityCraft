@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:keycard_lv4_reset"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

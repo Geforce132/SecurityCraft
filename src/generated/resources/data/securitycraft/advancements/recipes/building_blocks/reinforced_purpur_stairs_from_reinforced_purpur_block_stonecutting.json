@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_purpur_stairs_from_reinforced_purpur_block_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:reinforced_lime_carpet"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

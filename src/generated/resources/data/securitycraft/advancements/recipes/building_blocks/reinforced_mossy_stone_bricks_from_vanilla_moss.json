@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_mossy_stone_bricks_from_vanilla_moss"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

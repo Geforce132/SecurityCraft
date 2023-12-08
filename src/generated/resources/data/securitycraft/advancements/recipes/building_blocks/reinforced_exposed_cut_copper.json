@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_exposed_cut_copper"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

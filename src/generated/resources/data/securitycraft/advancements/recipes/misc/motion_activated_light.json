@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:motion_activated_light"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

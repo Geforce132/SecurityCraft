@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:wire_cutters"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

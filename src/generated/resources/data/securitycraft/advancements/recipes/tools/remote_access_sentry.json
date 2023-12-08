@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:remote_access_sentry"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

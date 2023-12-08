@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_mossy_stone_brick_slab_from_reinforced_mossy_stone_bricks_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

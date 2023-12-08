@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:smooth_crystal_quartz_stairs_from_smooth_crystal_quartz_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

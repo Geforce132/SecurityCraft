@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:keycard_reader"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_pink_terracotta"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

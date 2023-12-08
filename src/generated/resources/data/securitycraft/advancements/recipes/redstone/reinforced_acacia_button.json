@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_acacia_button"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:blast_furnace_mine"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

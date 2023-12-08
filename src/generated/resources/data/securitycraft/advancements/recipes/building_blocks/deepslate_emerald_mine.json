@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:deepslate_emerald_mine"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
