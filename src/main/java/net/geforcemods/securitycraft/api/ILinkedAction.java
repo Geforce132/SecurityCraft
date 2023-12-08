@@ -1,10 +1,5 @@
 package net.geforcemods.securitycraft.api;
 
-import net.geforcemods.securitycraft.api.ILinkedAction.ModuleInserted;
-import net.geforcemods.securitycraft.api.ILinkedAction.ModuleRemoved;
-import net.geforcemods.securitycraft.api.ILinkedAction.OptionChanged;
-import net.geforcemods.securitycraft.api.ILinkedAction.OwnerChanged;
-import net.geforcemods.securitycraft.api.ILinkedAction.StateChanged;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +11,7 @@ import net.minecraft.world.level.block.state.properties.Property;
  *
  * @author Geforce, bl4ckscor3
  */
-public sealed interface ILinkedAction permits OptionChanged, ModuleInserted, ModuleRemoved, OwnerChanged, StateChanged {
+public sealed interface ILinkedAction permits ILinkedAction.OptionChanged, ILinkedAction.ModuleInserted, ILinkedAction.ModuleRemoved, ILinkedAction.OwnerChanged, ILinkedAction.StateChanged {
 	/**
 	 * Used when an {@link Option} in a block entity is changed
 	 */
