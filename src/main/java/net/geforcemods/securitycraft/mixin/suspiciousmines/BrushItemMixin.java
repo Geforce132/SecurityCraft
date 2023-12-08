@@ -34,18 +34,18 @@ public class BrushItemMixin {
 	 * in creative mode, this has to be adjusted for them.
 	 */
 	@Inject(method = "calculateHitResult", at = @At("HEAD"), cancellable = true)
-	private void securitycraft$makeSuspiciousMinesBrushablePartTwo(LivingEntity entity, CallbackInfoReturnable<HitResult> cir) {
-		Vec3 eyePosition = entity.getEyePosition();
+	private void securitycraft$makeSuspiciousMinesBrushablePartTwo(Player player, CallbackInfoReturnable<HitResult> cir) {
+		Vec3 eyePosition = player.getEyePosition();
 		Predicate<Entity> entitySelector = e -> (e instanceof LivingEntity livingEntity ? livingEntity.canBeSeenByAnyone() : !e.isSpectator()) && e.isPickable();
-		Vec3 viewVector = entity.getViewVector(0.0F).scale(5.0D);
-		Level level = entity.level();
+		Vec3 viewVector = player.getViewVector(0.0F).scale(5.0D);
+		Level level = player.level();
 		Vec3 direction = eyePosition.add(viewVector);
-		HitResult hitResult = level.clip(new ClipContext(eyePosition, direction, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity));
+		HitResult hitResult = level.clip(new ClipContext(eyePosition, direction, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
 
 		if (hitResult.getType() != Type.MISS)
 			direction = hitResult.getLocation();
 
-		HitResult hitResult1 = ProjectileUtil.getEntityHitResult(level, entity, eyePosition, direction, entity.getBoundingBox().expandTowards(viewVector).inflate(1.0D), entitySelector);
+		HitResult hitResult1 = ProjectileUtil.getEntityHitResult(level, player, eyePosition, direction, player.getBoundingBox().expandTowards(viewVector).inflate(1.0D), entitySelector);
 
 		if (hitResult1 != null)
 			hitResult = hitResult1;
