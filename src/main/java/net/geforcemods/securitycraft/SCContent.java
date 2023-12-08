@@ -281,7 +281,6 @@ public class SCContent {
 	public static final String KEYPAD_CHEST_PATH = "keypad_chest";
 	public static final String DISPLAY_CASE_PATH = "display_case";
 	public static final String GLOW_DISPLAY_CASE_PATH = "glow_display_case";
-	public static final WoodType IRON_WOOD_TYPE = WoodType.register(new WoodType("securitycraft:iron", BlockSetType.IRON));
 
 	//loot item condition types
 	public static final DeferredHolder<LootItemConditionType, LootItemConditionType> BLOCK_ENTITY_NBT = LOOT_ITEM_CONDITION_TYPES.register("tile_entity_nbt", () -> new LootItemConditionType(BlockEntityNBTCondition.CODEC));
@@ -397,7 +396,7 @@ public class SCContent {
 	public static final DeferredBlock<ReinforcedDoorBlock> REINFORCED_DOOR = BLOCKS.register("iron_door_reinforced", () -> new ReinforcedDoorBlock(prop(MapColor.METAL).sound(SoundType.METAL).noOcclusion().pushReaction(PushReaction.BLOCK)));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_FENCE_GATE = BLOCKS.register("reinforced_fence_gate", () -> new ReinforcedFenceGateBlock(IRON_WOOD_TYPE, prop(MapColor.METAL).sound(SoundType.METAL)));
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_FENCE_GATE = BLOCKS.register("reinforced_fence_gate", () -> new ReinforcedFenceGateBlock(prop(MapColor.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<RetinalScannerBlock> RETINAL_SCANNER = BLOCKS.register("retinal_scanner", () -> new RetinalScannerBlock(propDisguisable()));

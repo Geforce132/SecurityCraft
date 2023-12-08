@@ -21,14 +21,13 @@ import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBlock {
-	public ReinforcedFenceGateBlock(WoodType woodType, BlockBehaviour.Properties properties) {
-		super(woodType, properties);
+	public ReinforcedFenceGateBlock(BlockBehaviour.Properties properties) {
+		super(properties, SoundEvents.IRON_DOOR_OPEN, SoundEvents.IRON_DOOR_CLOSE);
 	}
 
 	@Override
