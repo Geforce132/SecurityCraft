@@ -62,7 +62,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 	@Override
 	public void wasExploded(Level level, BlockPos pos, Explosion explosion) {
 		if (!level.isClientSide) {
-			if (pos.equals(BlockPos.containing(explosion.getPosition())))
+			if (pos.equals(BlockPos.containing(explosion.center())))
 				return;
 
 			explode(level, pos);
