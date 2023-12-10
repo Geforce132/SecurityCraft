@@ -7,7 +7,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import com.llamalad7.mixinextras.sugar.Local;
 
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.blockentities.BrushableMineBlockEntity;
@@ -58,8 +59,8 @@ public class BrushItemMixin {
 	 * The brush is hardcoded to only be able to successfully brush vanilla blocks. Because the suspicious mines should also
 	 * yield items when being brushed while disarmed, the brush needs to check for that as well.
 	 */
-	@Inject(method = "onUseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;isClientSide()Z"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
-	private void securitycraft$checkForSuspiciousMine(Level level, LivingEntity entity, ItemStack stack, int tick, CallbackInfo ci, Player player, HitResult hitResult, BlockHitResult blockHitResult, int i, boolean flag, BlockPos pos, BlockState brushedState) {
+	@Inject(method = "onUseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;isClientSide()Z"), cancellable = true)
+	private void securitycraft$checkForSuspiciousMine(Level level, LivingEntity entity, ItemStack stack, int tick, CallbackInfo ci, @Local Player player, @Local BlockHitResult blockHitResult, @Local BlockPos pos, @Local BlockState brushedState) {
 		if (!level.isClientSide() && brushedState.is(SCTags.Blocks.SUSPICIOUS_MINES) && level.getBlockEntity(pos) instanceof BrushableMineBlockEntity be) {
 			boolean brushFinished = be.brush(level.getGameTime(), player, blockHitResult.getDirection());
 

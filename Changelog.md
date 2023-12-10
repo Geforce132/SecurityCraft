@@ -1,3 +1,10 @@
+--------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
+
+- New: Items in open Display Cases can now be picked using the "Pick Block" key
+- Fix: Duplication exploit involving keycards
+- Fix: Error involving SecurityCraft's creative tabs when running SecurityCraft alongside certain other mods
+- Fix: Duplication exploit involving Reinforced Pistons
+
 --------------------------Changelog for v1.9.8-beta4 of SecurityCraft--------------------------
 
 - New: Reinforced Sand and Reinforced Red Sand are now in the minecraft:camel_sand_step_sound_blocks tag

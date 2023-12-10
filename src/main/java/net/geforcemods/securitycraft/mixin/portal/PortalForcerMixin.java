@@ -2,11 +2,10 @@ package net.geforcemods.securitycraft.mixin.portal;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.portal.PortalForcer;
@@ -17,10 +16,8 @@ import net.minecraft.world.level.portal.PortalForcer;
  */
 @Mixin(PortalForcer.class)
 public class PortalForcerMixin {
-	@Redirect(method = "canHostFrame", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
-	private BlockState securitycraft$addReinforcedBlockCheck(ServerLevel level, BlockPos offsetPos) {
-		BlockState offsetState = level.getBlockState(offsetPos);
-
+	@ModifyExpressionValue(method = "canHostFrame", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
+	private BlockState securitycraft$addReinforcedBlockCheck(BlockState offsetState) {
 		if (offsetState.getBlock() instanceof IReinforcedBlock)
 			return Blocks.AIR.defaultBlockState(); //this causes the check to pass (because air's material is not solid) and return false for "canHostFrame"
 		else
