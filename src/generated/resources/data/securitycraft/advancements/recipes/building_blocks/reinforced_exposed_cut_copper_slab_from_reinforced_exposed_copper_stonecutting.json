@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_exposed_cut_copper_slab_from_reinforced_exposed_copper_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

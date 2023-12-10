@@ -28,8 +28,8 @@ import net.neoforged.neoforge.common.NeoForge;
 public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
 
-	public ReinforcedPressurePlateBlock(Sensitivity sensitivity, BlockBehaviour.Properties properties, Block vanillaBlock, BlockSetType blockSetType) {
-		super(sensitivity, properties, blockSetType);
+	public ReinforcedPressurePlateBlock(BlockBehaviour.Properties properties, Block vanillaBlock, BlockSetType blockSetType) {
+		super(blockSetType, properties);
 		this.vanillaBlock = vanillaBlock;
 		DoorActivator.addActivator(this);
 	}
@@ -58,12 +58,12 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		//prevents dropping twice the amount of modules when breaking the block in creative mode
 		if (player.isCreative() && level.getBlockEntity(pos) instanceof IModuleInventory inv)
 			inv.getInventory().clear();
 
-		super.playerWillDestroy(level, pos, state, player);
+		return super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override

@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:keycard_lv4"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

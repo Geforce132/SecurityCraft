@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:electrified_iron_fence"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

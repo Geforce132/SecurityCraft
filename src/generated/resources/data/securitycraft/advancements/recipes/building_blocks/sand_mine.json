@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:sand_mine"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

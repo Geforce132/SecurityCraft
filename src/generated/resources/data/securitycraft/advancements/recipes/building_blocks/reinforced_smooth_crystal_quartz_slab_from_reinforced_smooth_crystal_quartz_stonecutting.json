@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_smooth_crystal_quartz_slab_from_reinforced_smooth_crystal_quartz_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

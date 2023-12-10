@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:gilded_blackstone_mine"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

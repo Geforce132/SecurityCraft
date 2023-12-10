@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_jungle_button"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

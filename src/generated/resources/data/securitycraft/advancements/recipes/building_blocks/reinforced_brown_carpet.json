@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:reinforced_brown_carpet"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

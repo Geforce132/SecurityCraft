@@ -3,6 +3,8 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import com.mojang.serialization.MapCodec;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
@@ -51,8 +53,19 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IReinforcedBlock, EntityBlock {
-	public ReinforcedCauldronBlock(BlockBehaviour.Properties properties, Map<Item, CauldronInteraction> interactions) {
+	public static final MapCodec<ReinforcedCauldronBlock> CODEC = simpleCodec(ReinforcedCauldronBlock::new);
+
+	public ReinforcedCauldronBlock(BlockBehaviour.Properties properties) {
+		this(properties, IReinforcedCauldronInteraction.EMPTY);
+	}
+
+	public ReinforcedCauldronBlock(BlockBehaviour.Properties properties, CauldronInteraction.InteractionMap interactions) {
 		super(properties, interactions);
+	}
+
+	@Override
+	protected MapCodec<? extends AbstractCauldronBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -160,10 +173,10 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 	}
 
 	public interface IReinforcedCauldronInteraction extends CauldronInteraction {
-		Map<Item, CauldronInteraction> EMPTY = CauldronInteraction.newInteractionMap();
-		Map<Item, CauldronInteraction> WATER = CauldronInteraction.newInteractionMap();
-		Map<Item, CauldronInteraction> LAVA = CauldronInteraction.newInteractionMap();
-		Map<Item, CauldronInteraction> POWDER_SNOW = CauldronInteraction.newInteractionMap();
+		InteractionMap EMPTY = CauldronInteraction.newInteractionMap("reinforced_empty");
+		InteractionMap WATER = CauldronInteraction.newInteractionMap("reinforced_water");
+		InteractionMap LAVA = CauldronInteraction.newInteractionMap("reinforced_lava");
+		InteractionMap POWDER_SNOW = CauldronInteraction.newInteractionMap("reinforced_powder_snow");
 		CauldronInteraction FILL_WATER = (state, level, pos, player, hand, stack) -> emptyBucket(level, pos, player, hand, stack, SCContent.REINFORCED_WATER_CAULDRON.get().defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 3), SoundEvents.BUCKET_EMPTY);
 		CauldronInteraction FILL_LAVA = (state, level, pos, player, hand, stack) -> emptyBucket(level, pos, player, hand, stack, SCContent.REINFORCED_LAVA_CAULDRON.get().defaultBlockState(), SoundEvents.BUCKET_EMPTY_LAVA);
 		CauldronInteraction FILL_POWDER_SNOW = (state, level, pos, player, hand, stack) -> emptyBucket(level, pos, player, hand, stack, SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get().defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 3), SoundEvents.BUCKET_EMPTY_POWDER_SNOW);
@@ -235,8 +248,14 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 		};
 
 		static void bootStrap() {
-			addDefaultInteractions(EMPTY);
-			EMPTY.put(Items.POTION, (state, level, pos, player, hand, stack) -> {
+			Map<Item, CauldronInteraction> emptyMap = EMPTY.map();
+			Map<Item, CauldronInteraction> waterMap = WATER.map();
+			Map<Item, CauldronInteraction> lavaMap = LAVA.map();
+			Map<Item, CauldronInteraction> powderSnowMap = POWDER_SNOW.map();
+			Map<Item, CauldronInteraction> vanillaWaterMap = CauldronInteraction.WATER.map();
+
+			addDefaultInteractions(emptyMap);
+			emptyMap.put(Items.POTION, (state, level, pos, player, hand, stack) -> {
 				if (PotionUtils.getPotion(stack) != Potions.WATER)
 					return InteractionResult.PASS;
 				else {
@@ -257,9 +276,9 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 					return InteractionResult.sidedSuccess(level.isClientSide);
 				}
 			});
-			addDefaultInteractions(WATER);
-			WATER.put(Items.BUCKET, (state, level, pos, player, hand, stack) -> fillBucket(state, level, pos, player, hand, stack, new ItemStack(Items.WATER_BUCKET), s -> s.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL));
-			WATER.put(Items.GLASS_BOTTLE, (state, level, pos, player, hand, stack) -> {
+			addDefaultInteractions(waterMap);
+			waterMap.put(Items.BUCKET, (state, level, pos, player, hand, stack) -> fillBucket(state, level, pos, player, hand, stack, new ItemStack(Items.WATER_BUCKET), s -> s.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL));
+			waterMap.put(Items.GLASS_BOTTLE, (state, level, pos, player, hand, stack) -> {
 				if (!level.isClientSide) {
 					Item item = stack.getItem();
 
@@ -273,7 +292,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 
 				return InteractionResult.sidedSuccess(level.isClientSide);
 			});
-			WATER.put(Items.POTION, (state, level, pos, player, hand, stack) -> {
+			waterMap.put(Items.POTION, (state, level, pos, player, hand, stack) -> {
 				if (state.getValue(LayeredCauldronBlock.LEVEL) != 3 && PotionUtils.getPotion(stack) == Potions.WATER) {
 					if (!level.isClientSide) {
 						player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
@@ -289,53 +308,53 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 				else
 					return InteractionResult.PASS;
 			});
-			WATER.put(Items.LEATHER_BOOTS, DYED_ITEM);
-			WATER.put(Items.LEATHER_LEGGINGS, DYED_ITEM);
-			WATER.put(Items.LEATHER_CHESTPLATE, DYED_ITEM);
-			WATER.put(Items.LEATHER_HELMET, DYED_ITEM);
-			WATER.put(Items.LEATHER_HORSE_ARMOR, DYED_ITEM);
-			WATER.put(Items.WHITE_BANNER, BANNER);
-			WATER.put(Items.GRAY_BANNER, BANNER);
-			WATER.put(Items.BLACK_BANNER, BANNER);
-			WATER.put(Items.BLUE_BANNER, BANNER);
-			WATER.put(Items.BROWN_BANNER, BANNER);
-			WATER.put(Items.CYAN_BANNER, BANNER);
-			WATER.put(Items.GREEN_BANNER, BANNER);
-			WATER.put(Items.LIGHT_BLUE_BANNER, BANNER);
-			WATER.put(Items.LIGHT_GRAY_BANNER, BANNER);
-			WATER.put(Items.LIME_BANNER, BANNER);
-			WATER.put(Items.MAGENTA_BANNER, BANNER);
-			WATER.put(Items.ORANGE_BANNER, BANNER);
-			WATER.put(Items.PINK_BANNER, BANNER);
-			WATER.put(Items.PURPLE_BANNER, BANNER);
-			WATER.put(Items.RED_BANNER, BANNER);
-			WATER.put(Items.YELLOW_BANNER, BANNER);
-			WATER.put(Items.WHITE_SHULKER_BOX, SHULKER_BOX);
-			WATER.put(Items.GRAY_SHULKER_BOX, SHULKER_BOX);
-			WATER.put(Items.BLACK_SHULKER_BOX, SHULKER_BOX);
-			WATER.put(Items.BLUE_SHULKER_BOX, SHULKER_BOX);
-			WATER.put(Items.BROWN_SHULKER_BOX, SHULKER_BOX);
-			WATER.put(Items.CYAN_SHULKER_BOX, SHULKER_BOX);
-			WATER.put(Items.GREEN_SHULKER_BOX, SHULKER_BOX);
-			WATER.put(Items.LIGHT_BLUE_SHULKER_BOX, SHULKER_BOX);
-			WATER.put(Items.LIGHT_GRAY_SHULKER_BOX, SHULKER_BOX);
-			WATER.put(Items.LIME_SHULKER_BOX, SHULKER_BOX);
-			WATER.put(Items.MAGENTA_SHULKER_BOX, SHULKER_BOX);
-			WATER.put(Items.ORANGE_SHULKER_BOX, SHULKER_BOX);
-			WATER.put(Items.PINK_SHULKER_BOX, SHULKER_BOX);
-			WATER.put(Items.PURPLE_SHULKER_BOX, SHULKER_BOX);
-			WATER.put(Items.RED_SHULKER_BOX, SHULKER_BOX);
-			WATER.put(Items.YELLOW_SHULKER_BOX, SHULKER_BOX);
-			LAVA.put(Items.BUCKET, (state, level, pos, player, hand, stack) -> fillBucket(state, level, pos, player, hand, stack, new ItemStack(Items.LAVA_BUCKET), s -> true, SoundEvents.BUCKET_FILL_LAVA));
-			addDefaultInteractions(LAVA);
-			POWDER_SNOW.put(Items.BUCKET, (state, level, pos, player, hand, stack) -> fillBucket(state, level, pos, player, hand, stack, new ItemStack(Items.POWDER_SNOW_BUCKET), l -> l.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL_POWDER_SNOW));
-			addDefaultInteractions(POWDER_SNOW);
+			waterMap.put(Items.LEATHER_BOOTS, DYED_ITEM);
+			waterMap.put(Items.LEATHER_LEGGINGS, DYED_ITEM);
+			waterMap.put(Items.LEATHER_CHESTPLATE, DYED_ITEM);
+			waterMap.put(Items.LEATHER_HELMET, DYED_ITEM);
+			waterMap.put(Items.LEATHER_HORSE_ARMOR, DYED_ITEM);
+			waterMap.put(Items.WHITE_BANNER, BANNER);
+			waterMap.put(Items.GRAY_BANNER, BANNER);
+			waterMap.put(Items.BLACK_BANNER, BANNER);
+			waterMap.put(Items.BLUE_BANNER, BANNER);
+			waterMap.put(Items.BROWN_BANNER, BANNER);
+			waterMap.put(Items.CYAN_BANNER, BANNER);
+			waterMap.put(Items.GREEN_BANNER, BANNER);
+			waterMap.put(Items.LIGHT_BLUE_BANNER, BANNER);
+			waterMap.put(Items.LIGHT_GRAY_BANNER, BANNER);
+			waterMap.put(Items.LIME_BANNER, BANNER);
+			waterMap.put(Items.MAGENTA_BANNER, BANNER);
+			waterMap.put(Items.ORANGE_BANNER, BANNER);
+			waterMap.put(Items.PINK_BANNER, BANNER);
+			waterMap.put(Items.PURPLE_BANNER, BANNER);
+			waterMap.put(Items.RED_BANNER, BANNER);
+			waterMap.put(Items.YELLOW_BANNER, BANNER);
+			waterMap.put(Items.WHITE_SHULKER_BOX, SHULKER_BOX);
+			waterMap.put(Items.GRAY_SHULKER_BOX, SHULKER_BOX);
+			waterMap.put(Items.BLACK_SHULKER_BOX, SHULKER_BOX);
+			waterMap.put(Items.BLUE_SHULKER_BOX, SHULKER_BOX);
+			waterMap.put(Items.BROWN_SHULKER_BOX, SHULKER_BOX);
+			waterMap.put(Items.CYAN_SHULKER_BOX, SHULKER_BOX);
+			waterMap.put(Items.GREEN_SHULKER_BOX, SHULKER_BOX);
+			waterMap.put(Items.LIGHT_BLUE_SHULKER_BOX, SHULKER_BOX);
+			waterMap.put(Items.LIGHT_GRAY_SHULKER_BOX, SHULKER_BOX);
+			waterMap.put(Items.LIME_SHULKER_BOX, SHULKER_BOX);
+			waterMap.put(Items.MAGENTA_SHULKER_BOX, SHULKER_BOX);
+			waterMap.put(Items.ORANGE_SHULKER_BOX, SHULKER_BOX);
+			waterMap.put(Items.PINK_SHULKER_BOX, SHULKER_BOX);
+			waterMap.put(Items.PURPLE_SHULKER_BOX, SHULKER_BOX);
+			waterMap.put(Items.RED_SHULKER_BOX, SHULKER_BOX);
+			waterMap.put(Items.YELLOW_SHULKER_BOX, SHULKER_BOX);
+			lavaMap.put(Items.BUCKET, (state, level, pos, player, hand, stack) -> fillBucket(state, level, pos, player, hand, stack, new ItemStack(Items.LAVA_BUCKET), s -> true, SoundEvents.BUCKET_FILL_LAVA));
+			addDefaultInteractions(lavaMap);
+			powderSnowMap.put(Items.BUCKET, (state, level, pos, player, hand, stack) -> fillBucket(state, level, pos, player, hand, stack, new ItemStack(Items.POWDER_SNOW_BUCKET), l -> l.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL_POWDER_SNOW));
+			addDefaultInteractions(powderSnowMap);
 
 			//add cyeable item interactions
-			CauldronInteraction.WATER.put(SCContent.BRIEFCASE.get(), CauldronInteraction.DYED_ITEM);
-			WATER.put(SCContent.BRIEFCASE.get(), DYED_ITEM);
-			CauldronInteraction.WATER.put(SCContent.LENS.get(), CauldronInteraction.DYED_ITEM);
-			WATER.put(SCContent.LENS.get(), DYED_ITEM);
+			vanillaWaterMap.put(SCContent.BRIEFCASE.get(), CauldronInteraction.DYED_ITEM);
+			waterMap.put(SCContent.BRIEFCASE.get(), DYED_ITEM);
+			vanillaWaterMap.put(SCContent.LENS.get(), CauldronInteraction.DYED_ITEM);
+			waterMap.put(SCContent.LENS.get(), DYED_ITEM);
 		}
 
 		static void addDefaultInteractions(Map<Item, CauldronInteraction> interactions) {

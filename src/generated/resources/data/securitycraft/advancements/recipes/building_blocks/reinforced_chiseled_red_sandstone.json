@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_chiseled_red_sandstone"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

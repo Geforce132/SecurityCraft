@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:cobbled_deepslate_mine"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

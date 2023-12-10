@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -34,7 +35,7 @@ public class RecipeGenerator extends RecipeProvider {
 	@Override
 	protected final void buildRecipes(RecipeOutput recipeOutput) {
 		//combine keycard with limited use keycard to get keycards with a configurable limited amount of uses
-		SpecialRecipeBuilder.special(SCContent.LIMITED_USE_KEYCARD_RECIPE_SERIALIZER.get()).save(recipeOutput, "limited_use_keycards");
+		SpecialRecipeBuilder.special(LimitedUseKeycardRecipe::new).save(recipeOutput, "limited_use_keycards");
 
 		//@formatter:off
 		//shaped recipes

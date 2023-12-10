@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_red_glazed_terracotta"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

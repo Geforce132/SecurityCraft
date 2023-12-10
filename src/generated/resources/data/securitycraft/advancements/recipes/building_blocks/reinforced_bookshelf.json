@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_bookshelf"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

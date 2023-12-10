@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import com.mojang.serialization.MapCodec;
+
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -37,5 +39,10 @@ public class OwnableBlock extends BaseEntityBlock {
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new OwnableBlockEntity(pos, state);
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return null;
 	}
 }

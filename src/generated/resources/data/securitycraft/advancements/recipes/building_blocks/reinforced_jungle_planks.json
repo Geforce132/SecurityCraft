@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:reinforced_jungle_planks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

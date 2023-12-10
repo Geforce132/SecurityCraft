@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:reinforced_crimson_planks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_normal_stone_slab_from_reinforced_stone_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

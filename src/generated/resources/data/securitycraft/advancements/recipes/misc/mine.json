@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:mine"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_polished_basalt"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

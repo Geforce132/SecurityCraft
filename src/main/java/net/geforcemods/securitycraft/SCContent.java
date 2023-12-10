@@ -239,11 +239,10 @@ import net.minecraft.world.item.SignItem;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
-import net.minecraft.world.level.block.LayeredCauldronBlock;
-import net.minecraft.world.level.block.PressurePlateBlock.Sensitivity;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -382,7 +381,7 @@ public class SCContent {
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final DeferredBlock<PanicButtonBlock> PANIC_BUTTON = BLOCKS.register("panic_button", () -> new PanicButtonBlock(prop().lightLevel(state -> state.getValue(ButtonBlock.POWERED) ? 4 : 0), BlockSetType.STONE, -1, false));
+	public static final DeferredBlock<PanicButtonBlock> PANIC_BUTTON = BLOCKS.register("panic_button", () -> new PanicButtonBlock(prop().lightLevel(state -> state.getValue(ButtonBlock.POWERED) ? 4 : 0), BlockSetType.STONE, -1));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<PortableRadarBlock> PORTABLE_RADAR = BLOCKS.register("portable_radar", () -> new PortableRadarBlock(prop(MapColor.METAL)));
@@ -2243,11 +2242,11 @@ public class SCContent {
 	@Reinforced
 	public static final DeferredBlock<ReinforcedCauldronBlock> REINFORCED_CAULDRON = BLOCKS.register("reinforced_cauldron", () -> new ReinforcedCauldronBlock(prop(MapColor.STONE).noOcclusion(), IReinforcedCauldronInteraction.EMPTY));
 	@Reinforced(registerBlockItem = false)
-	public static final DeferredBlock<ReinforcedLayeredCauldronBlock> REINFORCED_WATER_CAULDRON = BLOCKS.register("reinforced_water_cauldron", () -> new ReinforcedLayeredCauldronBlock(prop(MapColor.STONE).noOcclusion(), LayeredCauldronBlock.RAIN, IReinforcedCauldronInteraction.WATER, Blocks.WATER_CAULDRON));
+	public static final DeferredBlock<ReinforcedLayeredCauldronBlock> REINFORCED_WATER_CAULDRON = BLOCKS.register("reinforced_water_cauldron", () -> new ReinforcedLayeredCauldronBlock(Biome.Precipitation.RAIN, IReinforcedCauldronInteraction.WATER, prop(MapColor.STONE).noOcclusion(), Blocks.WATER_CAULDRON));
 	@Reinforced(registerBlockItem = false)
 	public static final DeferredBlock<ReinforcedLavaCauldronBlock> REINFORCED_LAVA_CAULDRON = BLOCKS.register("reinforced_lava_cauldron", () -> new ReinforcedLavaCauldronBlock(prop(MapColor.STONE).noOcclusion().lightLevel(state -> 15)));
 	@Reinforced(registerBlockItem = false)
-	public static final DeferredBlock<ReinforcedLayeredCauldronBlock> REINFORCED_POWDER_SNOW_CAULDRON = BLOCKS.register("reinforced_powder_snow_cauldron", () -> new ReinforcedLayeredCauldronBlock(prop(MapColor.STONE).noOcclusion(), LayeredCauldronBlock.SNOW, IReinforcedCauldronInteraction.POWDER_SNOW, Blocks.POWDER_SNOW_CAULDRON));
+	public static final DeferredBlock<ReinforcedLayeredCauldronBlock> REINFORCED_POWDER_SNOW_CAULDRON = BLOCKS.register("reinforced_powder_snow_cauldron", () -> new ReinforcedLayeredCauldronBlock(Biome.Precipitation.SNOW, IReinforcedCauldronInteraction.POWDER_SNOW, prop(MapColor.STONE).noOcclusion(), Blocks.POWDER_SNOW_CAULDRON));
 
 	//1.19.3+ content
 	@HasManualPage(PageGroup.REINFORCED)
@@ -2369,9 +2368,9 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final DeferredBlock<RotatedPillarBlock> CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("crystal_quartz_pillar", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
 	@RegisterItemBlock
-	public static final DeferredBlock<StairBlock> CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("crystal_quartz_stairs", () -> new StairBlock(() -> CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.copy(CRYSTAL_QUARTZ_BLOCK.get())));
+	public static final DeferredBlock<StairBlock> CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("crystal_quartz_stairs", () -> new StairBlock(() -> CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.ofLegacyCopy(CRYSTAL_QUARTZ_BLOCK.get())));
 	@RegisterItemBlock
-	public static final DeferredBlock<StairBlock> SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("smooth_crystal_quartz_stairs", () -> new StairBlock(() -> SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), BlockBehaviour.Properties.copy(SMOOTH_CRYSTAL_QUARTZ.get())));
+	public static final DeferredBlock<StairBlock> SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("smooth_crystal_quartz_stairs", () -> new StairBlock(() -> SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), BlockBehaviour.Properties.ofLegacyCopy(SMOOTH_CRYSTAL_QUARTZ.get())));
 	@RegisterItemBlock
 	public static final DeferredBlock<SlabBlock> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("smooth_crystal_quartz_slab", () -> new SlabBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@HasManualPage(PageGroup.REINFORCED)
@@ -2416,7 +2415,7 @@ public class SCContent {
 	//items
 	@HasManualPage(hasRecipeDescription = true)
 	public static final DeferredItem<AdminToolItem> ADMIN_TOOL = ITEMS.register("admin_tool", () -> new AdminToolItem(itemProp().stacksTo(1).stacksTo(1)));
-	public static final DeferredItem<BlockItem> ANCIENT_DEBRIS_MINE_ITEM = ITEMS.registerBlockItem(SCContent.ANCIENT_DEBRIS_MINE, itemProp().fireResistant());
+	public static final DeferredItem<BlockItem> ANCIENT_DEBRIS_MINE_ITEM = ITEMS.registerSimpleBlockItem(SCContent.ANCIENT_DEBRIS_MINE, itemProp().fireResistant());
 	@HasManualPage
 	public static final DeferredItem<BriefcaseItem> BRIEFCASE = ITEMS.register("briefcase", () -> new BriefcaseItem(itemProp().stacksTo(1)));
 	@HasManualPage
@@ -2424,7 +2423,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<CodebreakerItem> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp().stacksTo(1).defaultDurability(5)));
 	@HasManualPage
-	public static final DeferredItem<Item> CRYSTAL_QUARTZ_ITEM = ITEMS.registerItem("crystal_quartz_item");
+	public static final DeferredItem<Item> CRYSTAL_QUARTZ_ITEM = ITEMS.registerSimpleItem("crystal_quartz_item");
 	public static final DeferredItem<DisplayCaseItem> DISPLAY_CASE_ITEM = ITEMS.register(DISPLAY_CASE_PATH, () -> new DisplayCaseItem(SCContent.DISPLAY_CASE.get(), itemProp(), false));
 	@HasManualPage(hasRecipeDescription = true)
 	public static final DeferredItem<FakeLiquidBucketItem> FAKE_LAVA_BUCKET = ITEMS.register("bucket_f_lava", () -> new FakeLiquidBucketItem(SCContent.FAKE_LAVA, itemProp().stacksTo(1)));
@@ -2531,7 +2530,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<UniversalOwnerChangerItem> UNIVERSAL_OWNER_CHANGER = ITEMS.register("universal_owner_changer", () -> new UniversalOwnerChangerItem(itemProp().stacksTo(1).defaultDurability(48)));
 	@HasManualPage
-	public static final DeferredItem<Item> WIRE_CUTTERS = ITEMS.registerItem("wire_cutters", itemProp().stacksTo(1).defaultDurability(476));
+	public static final DeferredItem<Item> WIRE_CUTTERS = ITEMS.registerSimpleItem("wire_cutters", itemProp().stacksTo(1).defaultDurability(476));
 
 	//modules
 	@HasManualPage
@@ -2827,7 +2826,7 @@ public class SCContent {
 	}
 
 	private static BlockBehaviour.Properties mineProp(Block block) {
-		return BlockBehaviour.Properties.copy(block).explosionResistance(Float.MAX_VALUE).pushReaction(PushReaction.NORMAL);
+		return BlockBehaviour.Properties.ofLegacyCopy(block).explosionResistance(Float.MAX_VALUE).pushReaction(PushReaction.NORMAL);
 	}
 
 	private static final Item.Properties itemProp() {
@@ -2859,29 +2858,29 @@ public class SCContent {
 	}
 
 	private static ReinforcedButtonBlock woodenButton(Block vanillaBlock, BlockSetType blockSetType) {
-		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType, 30, true);
+		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType, 30);
 	}
 
 	@SuppressWarnings("unused")
 	private static ReinforcedButtonBlock woodenButton(Block vanillaBlock, BlockSetType blockSetType, FeatureFlag... requiredFeatures) {
-		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK).requiredFeatures(requiredFeatures), vanillaBlock, blockSetType, 30, true);
+		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK).requiredFeatures(requiredFeatures), vanillaBlock, blockSetType, 30);
 	}
 
 	private static ReinforcedButtonBlock stoneButton(Block vanillaBlock, BlockSetType blockSetType) {
-		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType, 20, false);
+		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType, 20);
 	}
 
 	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, BlockSetType blockSetType) {
-		return new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
+		return new ReinforcedPressurePlateBlock(prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
 	}
 
 	@SuppressWarnings("unused")
 	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, BlockSetType blockSetType, FeatureFlag... requiredFeatures) {
-		return new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().requiredFeatures(requiredFeatures).pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
+		return new ReinforcedPressurePlateBlock(prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().requiredFeatures(requiredFeatures).pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
 	}
 
 	private static ReinforcedPressurePlateBlock stonePressurePlate(Block vanillaBlock, BlockSetType blockSetType) {
-		return new ReinforcedPressurePlateBlock(Sensitivity.MOBS, prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
+		return new ReinforcedPressurePlateBlock(prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
 	}
 
 	private SCContent() {}

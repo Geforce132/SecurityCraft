@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:smooth_crystal_quartz_slab"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_polished_blackstone_brick_slab_from_reinforced_polished_blackstone_bricks_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

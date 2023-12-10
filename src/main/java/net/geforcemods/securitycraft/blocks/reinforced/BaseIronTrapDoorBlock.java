@@ -27,7 +27,7 @@ import net.neoforged.neoforge.common.NeoForge;
 
 public class BaseIronTrapDoorBlock extends TrapDoorBlock implements EntityBlock {
 	public BaseIronTrapDoorBlock(BlockBehaviour.Properties properties, BlockSetType blockSetType) {
-		super(properties, blockSetType);
+		super(blockSetType, properties);
 	}
 
 	@Override

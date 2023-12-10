@@ -397,7 +397,7 @@ public class ClientHandler {
 	@SubscribeEvent
 	public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
 		cameraOverlay = SCClientEventHandler::cameraOverlay;
-		event.registerAboveAll("camera_overlay", cameraOverlay);
+		event.registerAboveAll(new ResourceLocation(SecurityCraft.MODID, "camera_overlay"), cameraOverlay);
 		OverlayToggleHandler.disable(cameraOverlay);
 	}
 

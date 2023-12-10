@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_packed_mud"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

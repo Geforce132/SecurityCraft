@@ -185,12 +185,12 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		//prevents dropping twice the amount of modules when breaking the block in creative mode
 		if (player.isCreative() && level.getBlockEntity(pos) instanceof IModuleInventory inv)
 			inv.getInventory().clear();
 
-		super.playerWillDestroy(level, pos, state, player);
+		return super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override
@@ -202,7 +202,7 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
 		return new ItemStack(SCContent.ALARM.get().asItem());
 	}
 

@@ -43,8 +43,8 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock {
 	private static final VoxelShape CEILING_EW_POWERED = Block.box(5, 15, 3, 11, 16, 13);
 	private static final VoxelShape CEILING_EW_UNPOWERED = Block.box(5, 14, 3, 11, 16, 13);
 
-	public PanicButtonBlock(BlockBehaviour.Properties properties, BlockSetType blockSetType, int ticksToStayPressed, boolean arrowsCanPush) {
-		super(properties, blockSetType, ticksToStayPressed, arrowsCanPush);
+	public PanicButtonBlock(BlockBehaviour.Properties properties, BlockSetType blockSetType, int ticksToStayPressed) {
+		super(blockSetType, ticksToStayPressed, properties);
 	}
 
 	@Override

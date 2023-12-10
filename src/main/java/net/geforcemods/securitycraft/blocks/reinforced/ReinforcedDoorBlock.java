@@ -89,7 +89,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		if (!level.isClientSide && player.isCreative()) {
 			DoubleBlockHalf doorHalf = state.getValue(HALF);
 
@@ -104,7 +104,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			}
 		}
 
-		super.playerWillDestroy(level, pos, state, player);
+		return super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override
@@ -289,7 +289,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
 		return new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get());
 	}
 

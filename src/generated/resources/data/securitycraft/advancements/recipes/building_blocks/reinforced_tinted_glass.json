@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_tinted_glass"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

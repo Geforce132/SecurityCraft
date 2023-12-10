@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_cracked_deepslate_tiles"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

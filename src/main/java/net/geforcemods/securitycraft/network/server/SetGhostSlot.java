@@ -24,7 +24,7 @@ public class SetGhostSlot {
 
 	public void encode(FriendlyByteBuf buf) {
 		buf.writeVarInt(slotIndex);
-		buf.writeItemStack(stack, false);
+		buf.writeItem(stack);
 	}
 
 	public void handle(NetworkEvent.Context ctx) {

@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:username_logger"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

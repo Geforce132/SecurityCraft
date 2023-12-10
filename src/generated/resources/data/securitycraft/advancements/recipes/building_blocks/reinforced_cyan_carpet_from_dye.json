@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:reinforced_cyan_carpet_from_dye"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

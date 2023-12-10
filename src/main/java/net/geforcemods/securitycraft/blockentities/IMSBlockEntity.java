@@ -27,7 +27,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	private IntOption range = new IntOption("range", 15, 1, 30, 1, true);
@@ -59,7 +60,9 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 				BlockEntity be = level.getBlockEntity(pos.below());
 
 				if (be != null) {
-					be.getCapability(Capabilities.ITEM_HANDLER, Direction.UP).ifPresent(handler -> {
+					IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, pos, be.getBlockState(), be, Direction.UP);
+
+					if (handler != null) {
 						for (int i = 0; i < handler.getSlots(); i++) {
 							if (handler.getStackInSlot(i).getItem() == SCContent.BOUNCING_BETTY.get().asItem()) {
 								handler.extractItem(i, 1, false);
@@ -67,7 +70,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 								return;
 							}
 						}
-					});
+					}
 				}
 			}
 			else

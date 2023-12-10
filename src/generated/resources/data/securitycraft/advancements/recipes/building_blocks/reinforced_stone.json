@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_stone"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

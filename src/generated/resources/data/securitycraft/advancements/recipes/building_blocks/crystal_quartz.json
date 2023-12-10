@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:crystal_quartz"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

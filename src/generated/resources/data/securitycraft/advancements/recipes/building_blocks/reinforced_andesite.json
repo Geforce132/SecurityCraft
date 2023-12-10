@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:reinforced_andesite"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

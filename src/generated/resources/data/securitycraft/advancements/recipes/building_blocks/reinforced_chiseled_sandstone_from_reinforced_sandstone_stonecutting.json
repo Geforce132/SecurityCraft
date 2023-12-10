@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_chiseled_sandstone_from_reinforced_sandstone_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

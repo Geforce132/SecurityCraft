@@ -10,8 +10,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
 
 public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPocketManagerBlockEntity> {
+	public static final int RENDER_DISTANCE = 100;
+
 	public BlockPocketManagerRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
@@ -44,5 +47,10 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 	@Override
 	public boolean shouldRenderOffScreen(BlockPocketManagerBlockEntity be) {
 		return be.showsOutline();
+	}
+
+	@Override
+	public AABB getRenderBoundingBox(BlockPocketManagerBlockEntity be) {
+		return new AABB(be.getBlockPos()).inflate(RENDER_DISTANCE);
 	}
 }

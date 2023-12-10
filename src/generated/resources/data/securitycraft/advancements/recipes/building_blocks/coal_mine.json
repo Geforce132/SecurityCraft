@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:coal_mine"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

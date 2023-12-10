@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:deepslate_gold_mine"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

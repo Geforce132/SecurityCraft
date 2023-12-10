@@ -24,6 +24,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -250,23 +251,23 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 	private void updateMaterialInformation(boolean recalculateStoredStacks) {
 		if (recalculateStoredStacks) {
+			NonNullList<ItemStack> storage = be.getStorage();
+
 			materialCounts[0] = materialCounts[1] = materialCounts[2] = 0;
-			be.getStorageHandler().ifPresent(handler -> {
-				for (int i = 0; i < handler.getSlots(); i++) {
-					ItemStack stack = handler.getStackInSlot(i);
+			for (int i = 0; i < storage.size(); i++) {
+				ItemStack stack = storage.get(i);
 
-					if (stack.getItem() instanceof BlockItem blockItem) {
-						Block block = blockItem.getBlock();
+				if (stack.getItem() instanceof BlockItem blockItem) {
+					Block block = blockItem.getBlock();
 
-						if (block == SCContent.BLOCK_POCKET_WALL.get())
-							materialCounts[0] += stack.getCount();
-						else if (block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
-							materialCounts[1] += stack.getCount();
-						else if (block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
-							materialCounts[2] += stack.getCount();
-					}
+					if (block == SCContent.BLOCK_POCKET_WALL.get())
+						materialCounts[0] += stack.getCount();
+					else if (block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
+						materialCounts[1] += stack.getCount();
+					else if (block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
+						materialCounts[2] += stack.getCount();
 				}
-			});
+			}
 		}
 
 		wallsNeededOverall = (size - 2) * (size - 2) * 6;

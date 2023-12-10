@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:reinforced_lime_stained_glass"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

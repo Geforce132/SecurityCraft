@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_hardened_clay"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

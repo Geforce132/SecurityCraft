@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_chiseled_polished_blackstone"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

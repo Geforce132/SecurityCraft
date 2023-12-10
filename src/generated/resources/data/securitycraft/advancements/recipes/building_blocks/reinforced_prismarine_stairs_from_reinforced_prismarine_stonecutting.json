@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_prismarine_stairs_from_reinforced_prismarine_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

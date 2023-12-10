@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:reinforced_brown_stained_glass"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

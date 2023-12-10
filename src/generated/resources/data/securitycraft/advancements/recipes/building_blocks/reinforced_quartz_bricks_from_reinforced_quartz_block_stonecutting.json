@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_quartz_bricks_from_reinforced_quartz_block_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

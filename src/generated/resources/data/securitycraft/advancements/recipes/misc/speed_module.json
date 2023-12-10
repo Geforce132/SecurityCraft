@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:speed_module"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

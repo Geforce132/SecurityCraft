@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:chiseled_crystal_quartz_from_crystal_quartz_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

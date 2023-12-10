@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_crimson_slab"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

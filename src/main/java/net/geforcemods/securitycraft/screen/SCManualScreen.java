@@ -717,11 +717,8 @@ public class SCManualScreen extends Screen {
 		}
 
 		@Override
-		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-			if (visible) {
-				isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
-				guiGraphics.blitSprite(isHoveredOrFocused() ? highlightedSprite : normalSprite, getX(), getY(), 23, 13);
-			}
+		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+			guiGraphics.blitSprite(isHoveredOrFocused() ? highlightedSprite : normalSprite, getX(), getY(), 23, 13);
 		}
 	}
 

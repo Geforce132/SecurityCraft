@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:inventory_scanner"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

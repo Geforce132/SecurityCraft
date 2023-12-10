@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:reinforced_light_blue_carpet"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

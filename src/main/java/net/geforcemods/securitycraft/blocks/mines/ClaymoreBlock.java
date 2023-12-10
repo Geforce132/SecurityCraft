@@ -93,7 +93,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	@Override
 	public void wasExploded(Level level, BlockPos pos, Explosion explosion) {
 		if (!level.isClientSide && level.getBlockState(pos).hasProperty(ClaymoreBlock.DEACTIVATED) && !level.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
-			if (pos.equals(BlockPos.containing(explosion.getPosition())))
+			if (pos.equals(BlockPos.containing(explosion.center())))
 				return;
 
 			explode(level, pos);
@@ -140,12 +140,12 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		//prevents dropping twice the amount of modules when breaking the block in creative mode
 		if (player.isCreative() && level.getBlockEntity(pos) instanceof IModuleInventory inv)
 			inv.getInventory().clear();
 
-		super.playerWillDestroy(level, pos, state, player);
+		return super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override

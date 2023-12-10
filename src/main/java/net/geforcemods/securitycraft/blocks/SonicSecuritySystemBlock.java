@@ -82,12 +82,12 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		//prevents dropping twice the amount of modules when breaking the block in creative mode
 		if (player.isCreative() && level.getBlockEntity(pos) instanceof IModuleInventory inv)
 			inv.getInventory().clear();
 
-		super.playerWillDestroy(level, pos, state, player);
+		return super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override
@@ -153,7 +153,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		CompoundTag blockTag = level.getBlockEntity(pos).getUpdateTag();
 		ItemStack stack = new ItemStack(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
 

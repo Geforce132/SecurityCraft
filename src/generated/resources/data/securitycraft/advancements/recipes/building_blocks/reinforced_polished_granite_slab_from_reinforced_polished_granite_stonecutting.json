@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_polished_granite_slab_from_reinforced_polished_granite_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

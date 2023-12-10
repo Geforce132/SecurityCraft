@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_deepslate_tiles_from_reinforced_cobbled_deepslate_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

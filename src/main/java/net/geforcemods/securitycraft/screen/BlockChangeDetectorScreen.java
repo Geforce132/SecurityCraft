@@ -91,20 +91,18 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			changeEntryList.updateFilteredEntries();
 			be.updateFilteredEntries();
 		}));
-		showAllCheckbox = addRenderableWidget(new Checkbox(settingsX, topPos + 65, 20, 20, Component.empty(), false, false) {
-			@Override
-			public void onPress() {
-				super.onPress();
-				changeEntryList.updateFilteredEntries();
-			}
-		});
-		highlightInWorldCheckbox = addRenderableWidget(new Checkbox(settingsX, topPos + 90, 20, 20, Component.empty(), be.isShowingHighlights(), false) {
-			@Override
-			public void onPress() {
-				super.onPress();
-				be.showHighlights(selected());
-			}
-		});
+		//@formatter:off
+		showAllCheckbox = addRenderableWidget(Checkbox.builder(Component.empty(), minecraft.font)
+				.pos(settingsX, topPos + 65)
+				.selected(false)
+				.onValueChange((checkbox, isSelected) -> changeEntryList.updateFilteredEntries())
+				.build());
+		highlightInWorldCheckbox = addRenderableWidget(Checkbox.builder(Component.empty(), minecraft.font)
+				.pos(settingsX, topPos + 90)
+				.selected(be.isShowingHighlights())
+				.onValueChange((checkbox, isSelected) -> be.showHighlights(isSelected))
+				.build());
+		//@formatter:on
 		colorChooser = addRenderableWidget(new ColorChooser(Component.empty(), settingsX, topPos + 135, previousColor) {
 			@Override
 			public void onColorChange() {
@@ -430,8 +428,8 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		@Override
-		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-			super.render(guiGraphics, mouseX, mouseY, partialTick);
+		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+			super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
 
 			if (currentIndex == DetectionMode.BREAK.ordinal())
 				guiGraphics.renderItem(ironPickaxe, getX() + 2, getY() + 2);

@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:reinforced_acacia_planks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

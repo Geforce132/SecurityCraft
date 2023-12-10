@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_polished_granite_slab"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

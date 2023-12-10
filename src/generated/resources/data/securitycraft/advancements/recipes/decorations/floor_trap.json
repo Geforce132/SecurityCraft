@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:floor_trap"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

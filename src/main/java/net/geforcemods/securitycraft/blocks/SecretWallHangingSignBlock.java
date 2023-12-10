@@ -21,8 +21,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class SecretWallHangingSignBlock extends WallHangingSignBlock {
-	public SecretWallHangingSignBlock(BlockBehaviour.Properties properties, WoodType type) {
-		super(properties, type);
+	public SecretWallHangingSignBlock(BlockBehaviour.Properties properties, WoodType woodType) {
+		super(woodType, properties);
 	}
 
 	@Override
@@ -32,12 +32,12 @@ public class SecretWallHangingSignBlock extends WallHangingSignBlock {
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		//prevents dropping twice the amount of modules when breaking the block in creative mode
 		if (player.isCreative() && level.getBlockEntity(pos) instanceof IModuleInventory inv)
 			inv.getInventory().clear();
 
-		super.playerWillDestroy(level, pos, state, player);
+		return super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override

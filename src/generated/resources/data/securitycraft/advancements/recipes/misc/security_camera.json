@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:security_camera"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

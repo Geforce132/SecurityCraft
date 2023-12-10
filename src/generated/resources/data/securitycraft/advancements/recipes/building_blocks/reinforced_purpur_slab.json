@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_purpur_slab"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_warped_stairs"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

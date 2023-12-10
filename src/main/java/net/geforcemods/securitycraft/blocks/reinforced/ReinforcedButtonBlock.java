@@ -25,8 +25,8 @@ import net.neoforged.neoforge.common.NeoForge;
 public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
 
-	public ReinforcedButtonBlock(BlockBehaviour.Properties properties, Block vb, BlockSetType blockSetType, int ticksToStayPressed, boolean arrowsCanPush) {
-		super(properties, blockSetType, ticksToStayPressed, arrowsCanPush);
+	public ReinforcedButtonBlock(BlockBehaviour.Properties properties, Block vb, BlockSetType blockSetType, int ticksToStayPressed) {
+		super(blockSetType, ticksToStayPressed, properties);
 		this.vanillaBlock = vb;
 		CommonDoorActivator.addActivator(this);
 	}
@@ -39,12 +39,12 @@ public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		//prevents dropping twice the amount of modules when breaking the block in creative mode
 		if (player.isCreative() && level.getBlockEntity(pos) instanceof IModuleInventory inv)
 			inv.getInventory().clear();
 
-		super.playerWillDestroy(level, pos, state, player);
+		return super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override

@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:universal_block_reinforcer_lvl1"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

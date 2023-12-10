@@ -9,6 +9,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.geforcemods.securitycraft.SCContent;
@@ -17,7 +18,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
-import net.minecraft.commands.CommandRuntimeException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -31,6 +31,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class SCCommand {
+	private static final DynamicCommandExceptionType ERROR_NOT_FOUND = new DynamicCommandExceptionType(registry -> Component.translatable("messages.securitycraft:dump.notFound", registry));
 	private static final Map<String, DeferredRegister<?>> REGISTRIES = Util.make(() -> {
 		Map<String, DeferredRegister<?>> map = new Object2ObjectArrayMap<>();
 
@@ -73,7 +74,7 @@ public class SCCommand {
 							String registry = ctx.getArgument("registry", String.class);
 
 							if (!REGISTRIES.containsKey(registry))
-								throw new CommandRuntimeException(Component.translatable("messages.securitycraft:dump.notFound", registry));
+								throw ERROR_NOT_FOUND.create(registry);
 
 							final String lineSeparator = System.lineSeparator();
 							final String finalResult;

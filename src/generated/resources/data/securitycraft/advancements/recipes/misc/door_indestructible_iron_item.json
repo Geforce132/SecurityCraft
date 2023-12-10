@@ -28,6 +28,5 @@
     "recipes": [
       "securitycraft:door_indestructible_iron_item"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

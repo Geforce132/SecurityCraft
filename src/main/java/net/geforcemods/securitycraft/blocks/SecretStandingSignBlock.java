@@ -22,7 +22,7 @@ import net.neoforged.neoforge.common.NeoForge;
 
 public class SecretStandingSignBlock extends StandingSignBlock {
 	public SecretStandingSignBlock(BlockBehaviour.Properties properties, WoodType woodType) {
-		super(properties, woodType);
+		super(woodType, properties);
 	}
 
 	@Override
@@ -32,12 +32,12 @@ public class SecretStandingSignBlock extends StandingSignBlock {
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		//prevents dropping twice the amount of modules when breaking the block in creative mode
 		if (player.isCreative() && level.getBlockEntity(pos) instanceof IModuleInventory inv)
 			inv.getInventory().clear();
 
-		super.playerWillDestroy(level, pos, state, player);
+		return super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override
