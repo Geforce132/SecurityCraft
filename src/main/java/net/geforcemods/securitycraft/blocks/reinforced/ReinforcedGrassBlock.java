@@ -13,11 +13,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.GrassBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.IPlantable;
@@ -26,6 +28,16 @@ import net.minecraftforge.common.MinecraftForge;
 public class ReinforcedGrassBlock extends GrassBlock implements IReinforcedBlock {
 	public ReinforcedGrassBlock(AbstractBlock.Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
+		return facing == Direction.UP ? state.setValue(SNOWY, ReinforcedSnowyDirtBlock.isSnowySetting(facingState.getBlock())) : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+		return defaultBlockState().setValue(SNOWY, ReinforcedSnowyDirtBlock.isSnowySetting(ctx.getLevel().getBlockState(ctx.getClickedPos().above()).getBlock()));
 	}
 
 	@Override

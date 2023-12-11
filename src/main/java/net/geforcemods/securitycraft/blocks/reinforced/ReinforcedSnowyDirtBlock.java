@@ -13,11 +13,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SnowyDirtBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.MinecraftForge;
@@ -28,6 +30,20 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	public ReinforcedSnowyDirtBlock(AbstractBlock.Properties properties, Block vB) {
 		super(properties);
 		this.vanillaBlock = vB;
+	}
+
+	@Override
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
+		return facing == Direction.UP ? state.setValue(SNOWY, isSnowySetting(facingState.getBlock())) : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+		return defaultBlockState().setValue(SNOWY, isSnowySetting(ctx.getLevel().getBlockState(ctx.getClickedPos().above()).getBlock()));
+	}
+
+	public static boolean isSnowySetting(Block block) {
+		return block == Blocks.SNOW_BLOCK || block == Blocks.SNOW || block == SCContent.REINFORCED_SNOW_BLOCK.get();
 	}
 
 	@Override
