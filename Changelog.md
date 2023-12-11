@@ -3,6 +3,7 @@
 - New: Items in open Display Cases can now be picked using the "Pick Block" key
 - Fix: Duplication exploit involving keycards
 - Fix: Duplication exploit involving Reinforced Pistons
+- Fix: The name of certain SecurityCraft blocks is displayed within brackets by WTHIT and similar mods
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
