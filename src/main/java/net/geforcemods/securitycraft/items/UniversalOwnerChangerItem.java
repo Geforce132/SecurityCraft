@@ -88,14 +88,14 @@ public class UniversalOwnerChangerItem extends Item {
 		if (!world.isRemote)
 			world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
 
-		if (!world.isRemote && te instanceof IModuleInventory) {
+		/*if (!world.isRemote && te instanceof IModuleInventory) {
 			for (ModuleType moduleType : ((IModuleInventory) te).getInsertedModules()) {
 				ItemStack moduleStack = ((IModuleInventory) te).getModule(moduleType);
 
 				((IModuleInventory) te).removeModule(moduleType, false);
 				Block.spawnAsEntity(world, pos, moduleStack);
 			}
-		}
+		}*/
 
 		PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
 		return EnumActionResult.SUCCESS;
