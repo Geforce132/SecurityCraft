@@ -4,6 +4,7 @@
 - Fix: Duplication exploit involving keycards
 - Fix: Duplication exploit involving Reinforced Pistons
 - Fix: The name of certain SecurityCraft blocks is displayed within brackets by WTHIT and similar mods
+- Fix: Using bone meal on a Reinforced Grass Block does not grow plants on adjacent ones
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
