@@ -9,7 +9,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
 public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter {
-	private ITextComponent customName = StringTextComponent.EMPTY;
+	private ITextComponent customName;
 
 	public NamedBlockEntity() {
 		this(SCContent.ABSTRACT_BLOCK_ENTITY.get());
@@ -22,7 +22,10 @@ public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter 
 	@Override
 	public CompoundNBT save(CompoundNBT tag) {
 		super.save(tag);
-		tag.putString("customName", customName.getString());
+
+		if (customName != null)
+			tag.putString("customName", customName.getString());
+
 		return tag;
 	}
 
