@@ -4,6 +4,7 @@
 - Fix: Duplication exploit involving keycards
 - Fix: Error involving SecurityCraft's creative tabs when running SecurityCraft alongside certain other mods
 - Fix: Duplication exploit involving Reinforced Pistons
+- Fix: The name of certain SecurityCraft blocks is displayed within brackets by WTHIT and similar mods
 
 --------------------------Changelog for v1.9.8-beta1 of SecurityCraft--------------------------
 
