@@ -89,6 +89,7 @@ import net.geforcemods.securitycraft.blocks.PanicButtonBlock;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
 import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
+import net.geforcemods.securitycraft.blocks.ReinforcedGrassBlock;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
@@ -608,7 +609,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSnowyDirtBlock> REINFORCED_GRASS_BLOCK = BLOCKS.register("reinforced_grass_block", () -> new ReinforcedSnowyDirtBlock(prop(MapColor.GRASS).sound(SoundType.GRASS), Blocks.GRASS_BLOCK));
+	public static final DeferredBlock<ReinforcedGrassBlock> REINFORCED_GRASS_BLOCK = BLOCKS.register("reinforced_grass_block", () -> new ReinforcedGrassBlock(prop(MapColor.GRASS).sound(SoundType.GRASS)));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
