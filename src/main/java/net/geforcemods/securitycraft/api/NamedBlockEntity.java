@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter {
-	private Component customName = Component.empty();
+	private Component customName;
 
 	public NamedBlockEntity(BlockPos pos, BlockState state) {
 		this(SCContent.ABSTRACT_BLOCK_ENTITY.get(), pos, state);
@@ -22,7 +22,9 @@ public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter 
 	@Override
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
-		tag.putString("customName", customName.getString());
+
+		if (customName != null)
+			tag.putString("customName", customName.getString());
 	}
 
 	@Override
