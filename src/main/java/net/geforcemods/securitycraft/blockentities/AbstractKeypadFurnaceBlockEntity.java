@@ -16,7 +16,7 @@ import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
 import net.geforcemods.securitycraft.inventory.AbstractKeypadFurnaceMenu;
-import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.InsertOnlySidedInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
@@ -166,7 +166,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	}
 
 	public static IItemHandler getCapability(AbstractKeypadFurnaceBlockEntity be, Direction side) {
-		return BlockUtils.getProtectedCapability(side, be, () -> side == null ? new InvWrapper(be) : new SidedInvWrapper(be, side), () -> new InsertOnlyInvWrapper(be));
+		return BlockUtils.getProtectedCapability(side, be, () -> side == null ? new InvWrapper(be) : new SidedInvWrapper(be, side), () -> new InsertOnlySidedInvWrapper(be, side));
 	}
 
 	@Override
