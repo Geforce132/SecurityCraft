@@ -57,7 +57,7 @@ public class UniversalBlockReinforcerItem extends Item {
 	}
 
 	public static boolean convertBlock(BlockState state, Level level, ItemStack stack, BlockPos pos, Player player) { //gets rid of the stuttering experienced with onBlockStartBreak
-		if (!player.isCreative()) {
+		if (!level.isClientSide && !player.isCreative() && level.mayInteract(player, pos)) {
 			boolean isReinforcing = isReinforcing(stack);
 			Block block = state.getBlock();
 			Block convertedBlock = (isReinforcing ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).get(block);
