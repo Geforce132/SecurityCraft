@@ -1,5 +1,11 @@
 {
   "type": "minecraft:block",
+  "functions": [
+    {
+      "function": "minecraft:copy_name",
+      "source": "block_entity"
+    }
+  ],
   "pools": [
     {
       "bonus_rolls": 0.0,

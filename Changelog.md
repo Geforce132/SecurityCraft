@@ -13,6 +13,7 @@
 - Fix: Reinforced Ladders have no owner and thus cannot be removed (enable "allowBlockClaim" in the server config to set the owner of already placed ladders)
 - Fix: Vanishmod support does not work with the Protecto
 - Fix: Universal Block Reinforcers can be used under spawn protection
+- Fix: Several blocks (Key Panel, Passcode-protected Chest, Rift Stabilizer, Security Camera) don't keep their custom name when they're broken
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
