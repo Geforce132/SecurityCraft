@@ -101,8 +101,7 @@ public class BlockLootTableGenerator implements DataProvider {
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))
 						.add(imsLootEntryBuilder)));
-		putStandardBlockLootTable(SCContent.KEY_PANEL_BLOCK, SCContent.KEY_PANEL.get());
-		putStandardBlockLootTable(SCContent.KEYPAD_CHEST);
+		lootTables.put(SCContent.KEY_PANEL_BLOCK, createStandardBlockLootTable(SCContent.KEY_PANEL.get()).apply(CopyNameFunction.copyName(NameSource.BLOCK_ENTITY)));
 		putTwoHighBlockLootTable(SCContent.KEYPAD_DOOR, SCContent.KEYPAD_DOOR_ITEM);
 		putTwoHighBlockLootTable(SCContent.REINFORCED_DOOR, SCContent.REINFORCED_DOOR_ITEM);
 		lootTables.put(SCContent.REINFORCED_IRON_BARS,
@@ -115,7 +114,7 @@ public class BlockLootTableGenerator implements DataProvider {
 		putStandardBlockLootTable(SCContent.REINFORCED_LAVA_CAULDRON, SCContent.REINFORCED_CAULDRON.get());
 		putStandardBlockLootTable(SCContent.REINFORCED_POWDER_SNOW_CAULDRON, SCContent.REINFORCED_CAULDRON.get());
 		putStandardBlockLootTable(SCContent.REINFORCED_WATER_CAULDRON, SCContent.REINFORCED_CAULDRON.get());
-		putTwoHighBlockLootTable(SCContent.RIFT_STABILIZER, SCContent.RIFT_STABILIZER_ITEM);
+		lootTables.put(SCContent.RIFT_STABILIZER, createTwoHighBlockLootTable(SCContent.RIFT_STABILIZER, SCContent.RIFT_STABILIZER_ITEM).apply(CopyNameFunction.copyName(NameSource.BLOCK_ENTITY)));
 		putTwoHighBlockLootTable(SCContent.SCANNER_DOOR, SCContent.SCANNER_DOOR_ITEM);
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_WALL_SIGN);
@@ -133,7 +132,6 @@ public class BlockLootTableGenerator implements DataProvider {
 		putStandardBlockLootTable(SCContent.SECRET_SPRUCE_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_WARPED_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_WARPED_WALL_SIGN);
-		putStandardBlockLootTable(SCContent.SECURITY_CAMERA);
 		putStandardBlockLootTable(SCContent.CRYSTAL_QUARTZ_STAIRS);
 		putStandardBlockLootTable(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS);
 		lootTables.put(SCContent.SONIC_SECURITY_SYSTEM, LootTable.lootTable()
@@ -161,15 +159,19 @@ public class BlockLootTableGenerator implements DataProvider {
 	}
 
 	protected final void putTwoHighBlockLootTable(Supplier<Block> door, Supplier<Item> doorItem) {
+		lootTables.put(door, createTwoHighBlockLootTable(door, doorItem));
+	}
+
+	protected final LootTable.Builder createTwoHighBlockLootTable(Supplier<Block> door, Supplier<Item> doorItem) {
 		//@formatter:off
-		lootTables.put(door, LootTable.lootTable()
+		return LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))
 						.add(LootItem.lootTableItem(doorItem.get())
 								.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(door.get())
 										.setProperties(StatePropertiesPredicate.Builder.properties()
 												.hasProperty(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER)))
-								.when(ExplosionCondition.survivesExplosion()))));
+								.when(ExplosionCondition.survivesExplosion())));
 		//@formatter:on
 	}
 
