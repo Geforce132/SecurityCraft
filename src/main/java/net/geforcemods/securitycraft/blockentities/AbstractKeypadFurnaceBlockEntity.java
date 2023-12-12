@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
@@ -16,7 +17,7 @@ import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
 import net.geforcemods.securitycraft.inventory.AbstractKeypadFurnaceMenu;
-import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.InsertOnlySidedInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
@@ -47,9 +48,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity implements IPasscodeProtected, MenuProvider, IOwnable, IModuleInventory, ICustomizable, ILockable {
-	private LazyOptional<IItemHandler> insertOnlyHandler;
+	private LazyOptional<IItemHandlerModifiable>[] insertOnlyHandlers;
 	private Owner owner = new Owner();
 	private byte[] passcode;
 	private UUID saltKey;
@@ -171,30 +173,35 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), this::getInsertOnlyHandler).cast();
+			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), () -> getInsertOnlyHandler(side)).cast();
 		else
 			return super.getCapability(cap, side);
 	}
 
 	@Override
 	public void invalidateCaps() {
-		if (insertOnlyHandler != null)
-			insertOnlyHandler.invalidate();
+		if (insertOnlyHandlers != null)
+			Arrays.stream(insertOnlyHandlers).forEach(LazyOptional::invalidate);
 
 		super.invalidateCaps();
 	}
 
 	@Override
 	public void reviveCaps() {
-		insertOnlyHandler = null; //recreated in getInsertOnlyHandler
+		insertOnlyHandlers = null; //recreated in getInsertOnlyHandler
 		super.reviveCaps();
 	}
 
-	private LazyOptional<IItemHandler> getInsertOnlyHandler() {
-		if (insertOnlyHandler == null)
-			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(AbstractKeypadFurnaceBlockEntity.this));
+	private LazyOptional<IItemHandler> getInsertOnlyHandler(Direction side) {
+		if (insertOnlyHandlers == null)
+			insertOnlyHandlers = InsertOnlySidedInvWrapper.create(this, Direction.UP, Direction.DOWN, Direction.NORTH);
 
-		return insertOnlyHandler;
+		if (side == Direction.UP)
+			return insertOnlyHandlers[0].cast();
+		else if (side == Direction.DOWN)
+			return insertOnlyHandlers[1].cast();
+		else
+			return insertOnlyHandlers[2].cast();
 	}
 
 	@Override
