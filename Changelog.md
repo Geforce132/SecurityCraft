@@ -6,6 +6,8 @@
 - Fix: Modules in a Passcode-protected Chest get disabled when loading it
 - Fix: The name of certain SecurityCraft blocks is displayed within brackets by WTHIT and similar mods
 - Fix: Inserting fuel into any type of passcode-protected furnace using hoppers/pipes/etc. puts the fuel into the wrong slot
+- Fix: Items other than colored lenses can be inserted into some lens slots using hoppers/pipes/etc.
+- Fix: More than one colored lens can be inserted into some lens slots using hoppers/pipes/etc.
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 

@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
@@ -68,7 +69,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private LazyOptional<IItemHandler> insertOnlyHandler, lensHandler;
-	private Inventory lens = new Inventory(1);
+	private LensContainer lens = new LensContainer(1);
 
 	public TrophySystemBlockEntity() {
 		super(SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get());
