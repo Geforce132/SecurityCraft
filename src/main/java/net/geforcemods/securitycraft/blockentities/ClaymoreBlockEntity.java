@@ -21,6 +21,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerListener;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
@@ -33,7 +34,7 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
-public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, MenuProvider {
+public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, MenuProvider, ContainerListener {
 	private IntOption range = new IntOption("range", 5, 1, 10, 1, true);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private LensContainer lens = new LensContainer(1);
@@ -41,6 +42,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 
 	public ClaymoreBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.CLAYMORE_BLOCK_ENTITY.get(), pos, state);
+		lens.addListener(this);
 	}
 
 	@Override
@@ -92,6 +94,14 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 
 	public static IItemHandler getCapability(ClaymoreBlockEntity be, Direction side) {
 		return BlockUtils.getProtectedCapability(side, be, () -> new InvWrapper(be.lens), () -> new InsertOnlyInvWrapper(be.lens));
+	}
+
+	@Override
+	public void containerChanged(Container container) {
+		if (level == null)
+			return;
+
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 	}
 
 	@Override
