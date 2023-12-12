@@ -167,7 +167,7 @@ public class SCCreativeModeTabs {
 			.displayItems((itemDisplayParameters, output) -> {
 				//@formatter:on
 				List<Item> vanillaOrderedItems = getVanillaOrderedItems();
-				List<ItemStack> decorationGroupItems = STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION);
+				List<ItemStack> decorationGroupItems = new ArrayList<>(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION));
 
 				decorationGroupItems.sort((a, b) -> {
 					//if a isn't an item that has a vanilla counterpart, it should appear at the back
