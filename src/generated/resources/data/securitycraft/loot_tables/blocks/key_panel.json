@@ -15,5 +15,11 @@
         }
       ]
     }
+  ],
+  "functions": [
+    {
+      "function": "minecraft:copy_name",
+      "source": "block_entity"
+    }
   ]
 }
