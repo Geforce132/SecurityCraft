@@ -8,13 +8,15 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter {
-	private String customName = "";
+	private String customName;
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
-		tag.setString("customName", customName);
+		if (hasCustomName())
+			tag.setString("customName", customName);
+
 		return tag;
 	}
 
@@ -42,7 +44,7 @@ public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter 
 
 	@Override
 	public String getName() {
-		return customName;
+		return hasCustomName() ? this.customName : getDefaultName().getFormattedText();
 	}
 
 	@Override

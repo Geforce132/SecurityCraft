@@ -3,6 +3,7 @@
 - New: Items in open Display Cases can now be picked using the "Pick Block" key
 - Fix: The Floor Trap has incorrect sound
 - Fix: Duplication exploit involving keycards
+- Fix: The name of certain SecurityCraft blocks is displayed within brackets by WTHIT and similar mods
 - Fix: Inserting fuel into any type of passcode-protected furnace using hoppers/pipes/etc. puts the fuel into the wrong slot
 - Fix: Items other than colored lenses can be inserted into some lens slots using hoppers/pipes/etc.
 - Fix: More than one colored lens can be inserted into some lens slots using hoppers/pipes/etc.

@@ -2,9 +2,11 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -86,14 +88,14 @@ public class UniversalOwnerChangerItem extends Item {
 		if (!world.isRemote)
 			world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
 
-		/*if (!world.isRemote && te instanceof IModuleInventory) {
+		if (!world.isRemote && te instanceof IModuleInventory) {
 			for (ModuleType moduleType : ((IModuleInventory) te).getInsertedModules()) {
 				ItemStack moduleStack = ((IModuleInventory) te).getModule(moduleType);
 
 				((IModuleInventory) te).removeModule(moduleType, false);
 				Block.spawnAsEntity(world, pos, moduleStack);
 			}
-		}*/
+		}
 
 		PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
 		return EnumActionResult.SUCCESS;
