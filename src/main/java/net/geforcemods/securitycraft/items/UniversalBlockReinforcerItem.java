@@ -42,9 +42,10 @@ public class UniversalBlockReinforcerItem extends Item {
 	}
 
 	public static boolean convertBlock(ItemStack stack, BlockPos pos, EntityPlayer player) {
-		if (!player.capabilities.isCreativeMode) {
+		World world = player.getEntityWorld();
+
+		if (!world.isRemote && !player.capabilities.isCreativeMode && world.isBlockModifiable(player, pos)) {
 			boolean isReinforcing = isReinforcing(stack);
-			World world = player.getEntityWorld();
 			IBlockState state = world.getBlockState(pos);
 			Block blockToConvert = state.getBlock();
 
