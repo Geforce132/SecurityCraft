@@ -36,6 +36,8 @@ import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.TridentEntity;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -55,7 +57,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickableTileEntity, ILockable, IToggleableEntries<EntityType<?>>, INamedContainerProvider {
+public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickableTileEntity, ILockable, IToggleableEntries<EntityType<?>>, INamedContainerProvider, IInventoryChangedListener {
 	/** The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
 	/**
@@ -73,6 +75,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 	public TrophySystemBlockEntity() {
 		super(SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get());
+		lens.addListener(this);
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
 		//ordering is done in ToggleListScreen based on the user's current language
 		projectileFilter.put(SCContent.BULLET_ENTITY.get(), true);
@@ -216,6 +219,14 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 	public Inventory getLensContainer() {
 		return lens;
+	}
+
+	@Override
+	public void containerChanged(IInventory container) {
+		if (level == null)
+			return;
+
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 	}
 
 	@Override

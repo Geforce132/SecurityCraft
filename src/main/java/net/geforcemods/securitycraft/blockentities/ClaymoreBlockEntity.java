@@ -16,6 +16,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -34,7 +36,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity, INamedContainerProvider {
+public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity, INamedContainerProvider, IInventoryChangedListener {
 	private IntOption range = new IntOption(this::getBlockPos, "range", 5, 1, 10, 1, true);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private LazyOptional<IItemHandler> insertOnlyHandler, lensHandler;
@@ -43,6 +45,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 
 	public ClaymoreBlockEntity() {
 		super(SCContent.CLAYMORE_BLOCK_ENTITY.get());
+		lens.addListener(this);
 	}
 
 	@Override
@@ -136,6 +139,14 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 			lensHandler = LazyOptional.of(() -> new InvWrapper(lens));
 
 		return lensHandler;
+	}
+
+	@Override
+	public void containerChanged(IInventory container) {
+		if (level == null)
+			return;
+
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 	}
 
 	@Override
