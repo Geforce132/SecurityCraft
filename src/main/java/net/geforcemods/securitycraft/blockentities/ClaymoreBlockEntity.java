@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -31,7 +32,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private int cooldown = -1;
 	private IItemHandler insertOnlyHandler, lensHandler;
-	private InventoryBasic lens = new InventoryBasic("", false, 1);
+	private LensContainer lens = new LensContainer(1);
 
 	@Override
 	public void update() {

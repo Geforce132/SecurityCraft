@@ -51,7 +51,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean providePower;
 	private int cooldown;
-	private LensContainer lens = new LensContainer("", false, 1);
+	private LensContainer lens = new LensContainer(1);
 
 	public InventoryScannerBlockEntity() {
 		lens.addInventoryChangeListener(this);

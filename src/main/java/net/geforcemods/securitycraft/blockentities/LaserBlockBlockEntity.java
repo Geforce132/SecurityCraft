@@ -59,7 +59,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 	private IntOption signalLength = new SignalLengthOption(this::getPos, 50);
 	private Map<EnumFacing, Boolean> sideConfig;
 	private IItemHandler insertOnlyHandler, lensHandler;
-	private LensContainer lenses = new LensContainer("", false, 6);
+	private LensContainer lenses = new LensContainer(6);
 
 	public LaserBlockBlockEntity() {
 		lenses.addInventoryChangeListener(this);
