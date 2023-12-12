@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
-import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.InsertOnlySidedInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
@@ -41,7 +41,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements ISidedInventory, IPasscodeProtected, ITickable, INameSetter, ILockable {
-	private IItemHandler insertOnlyHandler;
+	private IItemHandler insertOnlyHandlerTop, insertOnlyHandlerBottom, insertOnlyHandlerSide;
 	private static final int[] slotsTop = {
 			0
 	};
@@ -454,16 +454,30 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return (T) BlockUtils.getProtectedCapability(facing, this, () -> super.getCapability(capability, facing), this::getInsertOnlyHandler);
+			return (T) BlockUtils.getProtectedCapability(facing, this, () -> super.getCapability(capability, facing), () -> getInsertOnlyHandler(facing));
 		else
 			return super.getCapability(capability, facing);
 	}
 
-	private IItemHandler getInsertOnlyHandler() {
-		if (insertOnlyHandler == null)
-			insertOnlyHandler = new InsertOnlyInvWrapper(this);
+	private IItemHandler getInsertOnlyHandler(EnumFacing facing) {
+		if (facing == EnumFacing.DOWN) {
+			if (insertOnlyHandlerBottom == null)
+				insertOnlyHandlerBottom = new InsertOnlySidedInvWrapper(this, EnumFacing.DOWN);
 
-		return insertOnlyHandler;
+			return insertOnlyHandlerBottom;
+		}
+		else if (facing == EnumFacing.UP) {
+			if (insertOnlyHandlerTop == null)
+				insertOnlyHandlerTop = new InsertOnlySidedInvWrapper(this, EnumFacing.UP);
+
+			return insertOnlyHandlerTop;
+		}
+		else {
+			if (insertOnlyHandlerSide == null)
+				insertOnlyHandlerSide = new InsertOnlySidedInvWrapper(this, EnumFacing.WEST);
+
+			return insertOnlyHandlerSide;
+		}
 	}
 
 	@Override
