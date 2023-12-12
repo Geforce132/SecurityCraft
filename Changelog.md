@@ -6,6 +6,7 @@
 - Fix: Duplication exploit involving Reinforced Pistons
 - Fix: The name of certain SecurityCraft blocks is displayed within brackets by WTHIT and similar mods
 - Fix: Using bone meal on a Reinforced Grass Block does not grow plants on adjacent ones
+- Fix: The wrong explosive icon is used in the Mine Remote Access Tool screen
 
 --------------------------Changelog for v1.9.8-beta1 of SecurityCraft--------------------------
 
