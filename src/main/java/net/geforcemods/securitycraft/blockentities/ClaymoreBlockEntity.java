@@ -14,7 +14,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -27,12 +28,16 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickable {
+public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickable, IInventoryChangedListener {
 	private IntOption range = new IntOption(this::getPos, "range", 5, 1, 10, 1, true);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private int cooldown = -1;
 	private IItemHandler insertOnlyHandler, lensHandler;
 	private LensContainer lens = new LensContainer(1);
+
+	public ClaymoreBlockEntity() {
+		lens.addInventoryChangeListener(this);
+	}
 
 	@Override
 	public void update() {
@@ -113,7 +118,17 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 		return lensHandler;
 	}
 
-	public InventoryBasic getLensContainer() {
+	@Override
+	public void onInventoryChanged(IInventory container) {
+		if (world == null)
+			return;
+
+		IBlockState state = world.getBlockState(pos);
+
+		world.notifyBlockUpdate(pos, state, state, 2);
+	}
+
+	public LensContainer getLensContainer() {
 		return lens;
 	}
 

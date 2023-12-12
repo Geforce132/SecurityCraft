@@ -25,6 +25,7 @@ import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.geforcemods.securitycraft.util.TeamUtils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
@@ -36,6 +37,8 @@ import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -53,7 +56,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickable, ILockable, IToggleableEntries<EntityEntry> {
+public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickable, ILockable, IToggleableEntries<EntityEntry>, IInventoryChangedListener {
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
 
@@ -72,6 +75,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	private LensContainer lens = new LensContainer(1);
 
 	public TrophySystemBlockEntity() {
+		lens.addInventoryChangeListener(this);
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
 		//ordering is done in TrophySystemScreen based on the user's current language
 		projectileFilter.put(ForgeRegistries.ENTITIES.getValue(new ResourceLocation(SecurityCraft.MODID, "bullet")), true);
@@ -205,6 +209,16 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 	public InventoryBasic getLensContainer() {
 		return lens;
+	}
+
+	@Override
+	public void onInventoryChanged(IInventory container) {
+		if (world == null)
+			return;
+
+		IBlockState state = world.getBlockState(pos);
+
+		world.notifyBlockUpdate(pos, state, state, 2);
 	}
 
 	public void setTarget(Entity target) {
