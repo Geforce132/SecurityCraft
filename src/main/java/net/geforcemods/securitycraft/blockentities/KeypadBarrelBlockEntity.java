@@ -175,7 +175,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	}
 
 	public static IItemHandler getCapability(KeypadBarrelBlockEntity be, Direction side) {
-		return BlockUtils.getProtectedCapability(side, be, () -> new InvWrapper(be), () -> new InsertOnlyInvWrapper(be));
+		return BlockUtils.isAllowedToExtractFromProtectedBlock(side, be) ? new InvWrapper(be) : new InsertOnlyInvWrapper(be);
 	}
 
 	@Override

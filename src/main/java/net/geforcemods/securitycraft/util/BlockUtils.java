@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.util;
 
 import java.util.function.BiPredicate;
-import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDoorActivator;
@@ -17,8 +16,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.EmptyHandler;
 
 public class BlockUtils {
 	private BlockUtils() {}
@@ -83,23 +80,18 @@ public class BlockUtils {
 		return false;
 	}
 
-	public static IItemHandler getProtectedCapability(Direction side, BlockEntity be, Supplier<IItemHandler> extractionPermittedHandler, Supplier<IItemHandler> insertOnlyHandler) {
-		if (side == null)
-			return EmptyHandler.INSTANCE;
+	public static boolean isAllowedToExtractFromProtectedBlock(Direction side, BlockEntity be) {
+		if (side != null) {
+			BlockPos offsetPos = be.getBlockPos().relative(side);
+			BlockState offsetState = be.getLevel().getBlockState(offsetPos);
 
-		BlockPos offsetPos = be.getBlockPos().relative(side);
-		BlockState offsetState = be.getLevel().getBlockState(offsetPos);
-
-		for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
-			if (offsetState.getBlock() == extractionBlock.getBlock()) {
-				if (!extractionBlock.canExtract((IOwnable) be, be.getLevel(), offsetPos, offsetState))
-					return EmptyHandler.INSTANCE;
-				else
-					return extractionPermittedHandler.get();
+			for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
+				if (offsetState.getBlock() == extractionBlock.getBlock())
+					return extractionBlock.canExtract((IOwnable) be, be.getLevel(), offsetPos, offsetState);
 			}
 		}
 
-		return insertOnlyHandler.get();
+		return false;
 	}
 
 	public static void updateIndirectNeighbors(Level level, BlockPos pos, Block block) {

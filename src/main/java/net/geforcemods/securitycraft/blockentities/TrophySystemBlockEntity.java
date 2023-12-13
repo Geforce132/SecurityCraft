@@ -165,7 +165,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	}
 
 	public static IItemHandler getCapability(TrophySystemBlockEntity be, Direction side) {
-		return BlockUtils.getProtectedCapability(side, be, () -> new InvWrapper(be.lens), () -> new InsertOnlyInvWrapper(be.lens));
+		return BlockUtils.isAllowedToExtractFromProtectedBlock(side, be) ? new InvWrapper(be.lens) : new InsertOnlyInvWrapper(be.lens);
 	}
 
 	public SimpleContainer getLensContainer() {

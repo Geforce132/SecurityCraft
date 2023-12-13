@@ -258,12 +258,16 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	public static IItemHandler getCapability(InventoryScannerBlockEntity be, Direction side) {
-		return BlockUtils.getProtectedCapability(side, be, () -> new ExtractOnlyItemStackHandler(be.inventoryContents) {
-			@Override
-			public ItemStack extractItem(int slot, int amount, boolean simulate) {
-				return slot < 10 ? ItemStack.EMPTY : super.extractItem(slot, amount, simulate); //don't allow extracting from the prohibited item slots
-			}
-		}, () -> EmptyHandler.INSTANCE); //disallow inserting
+		if (BlockUtils.isAllowedToExtractFromProtectedBlock(side, be)) {
+			return new ExtractOnlyItemStackHandler(be.inventoryContents) {
+				@Override
+				public ItemStack extractItem(int slot, int amount, boolean simulate) {
+					return slot < 10 ? ItemStack.EMPTY : super.extractItem(slot, amount, simulate); //don't allow extracting from the prohibited item slots
+				}
+			};
+		}
+		else
+			return EmptyHandler.INSTANCE; //disallow inserting
 	}
 
 	@Override

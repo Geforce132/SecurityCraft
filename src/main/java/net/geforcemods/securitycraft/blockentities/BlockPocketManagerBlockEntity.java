@@ -590,10 +590,11 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	}
 
 	public static IItemHandler getCapability(BlockPocketManagerBlockEntity be, Direction side) {
-		if (be.isPlacingBlocks()) //prevent extracting while auto building the block pocket
-			return new ValidityCheckInsertOnlyItemStackHandler(be.storage);
+		//prevent extracting while auto building the block pocket
+		if (!be.isPlacingBlocks() && BlockUtils.isAllowedToExtractFromProtectedBlock(side, be))
+			return new ValidityCheckItemStackHandler(be.storage);
 		else
-			return BlockUtils.getProtectedCapability(side, be, () -> new ValidityCheckItemStackHandler(be.storage), () -> new ValidityCheckInsertOnlyItemStackHandler(be.storage));
+			return new ValidityCheckInsertOnlyItemStackHandler(be.storage);
 	}
 
 	public NonNullList<ItemStack> getStorage() {
