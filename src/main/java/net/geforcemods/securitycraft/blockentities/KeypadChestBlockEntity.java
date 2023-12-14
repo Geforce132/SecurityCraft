@@ -133,7 +133,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == ForgeCapabilities.ITEM_HANDLER)
-			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), this::getInsertOnlyHandler).cast();
+			return BlockUtils.isAllowedToExtractFromProtectedBlock(side, this) ? super.getCapability(cap, side) : getInsertOnlyHandler().cast();
 		else
 			return super.getCapability(cap, side);
 	}
