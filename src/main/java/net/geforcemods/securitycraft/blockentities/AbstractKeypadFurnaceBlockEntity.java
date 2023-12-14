@@ -47,7 +47,6 @@ import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity implements IPasscodeProtected, MenuProvider, IOwnable, IModuleInventory, ICustomizable, ILockable {
@@ -173,7 +172,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), () -> getInsertOnlyHandler(side)).cast();
+			return BlockUtils.isAllowedToExtractFromProtectedBlock(side, this) ? super.getCapability(cap, side) : getInsertOnlyHandler(side).cast();
 		else
 			return super.getCapability(cap, side);
 	}
@@ -192,16 +191,16 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		super.reviveCaps();
 	}
 
-	private LazyOptional<IItemHandler> getInsertOnlyHandler(Direction side) {
+	private LazyOptional<IItemHandlerModifiable> getInsertOnlyHandler(Direction side) {
 		if (insertOnlyHandlers == null)
 			insertOnlyHandlers = InsertOnlySidedInvWrapper.create(this, Direction.UP, Direction.DOWN, Direction.NORTH);
 
 		if (side == Direction.UP)
-			return insertOnlyHandlers[0].cast();
+			return insertOnlyHandlers[0];
 		else if (side == Direction.DOWN)
-			return insertOnlyHandlers[1].cast();
+			return insertOnlyHandlers[1];
 		else
-			return insertOnlyHandlers[2].cast();
+			return insertOnlyHandlers[2];
 	}
 
 	@Override
