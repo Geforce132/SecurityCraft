@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.util;
 
 import java.util.function.BiPredicate;
-import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDoorActivator;
@@ -17,13 +16,8 @@ import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class BlockUtils {
-	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> EmptyHandler.INSTANCE);
-
 	private BlockUtils() {}
 
 	public static boolean isSideSolid(IWorldReader level, BlockPos pos, Direction side) {
@@ -85,23 +79,18 @@ public class BlockUtils {
 		return false;
 	}
 
-	public static LazyOptional<?> getProtectedCapability(Direction side, TileEntity be, Supplier<LazyOptional<?>> extractionPermittedHandler, Supplier<LazyOptional<?>> insertOnlyHandler) {
-		if (side == null)
-			return EMPTY_INVENTORY;
+	public static boolean isAllowedToExtractFromProtectedBlock(Direction side, TileEntity be) {
+		if (side != null) {
+			BlockPos offsetPos = be.getBlockPos().relative(side);
+			BlockState offsetState = be.getLevel().getBlockState(offsetPos);
 
-		BlockPos offsetPos = be.getBlockPos().relative(side);
-		BlockState offsetState = be.getLevel().getBlockState(offsetPos);
-
-		for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
-			if (offsetState.getBlock() == extractionBlock.getBlock()) {
-				if (!extractionBlock.canExtract((IOwnable) be, be.getLevel(), offsetPos, offsetState))
-					return EMPTY_INVENTORY;
-				else
-					return extractionPermittedHandler.get();
+			for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
+				if (offsetState.getBlock() == extractionBlock.getBlock())
+					return extractionBlock.canExtract((IOwnable) be, be.getLevel(), offsetPos, offsetState);
 			}
 		}
 
-		return insertOnlyHandler.get();
+		return false;
 	}
 
 	public static void updateIndirectNeighbors(World level, BlockPos pos, Block block) {

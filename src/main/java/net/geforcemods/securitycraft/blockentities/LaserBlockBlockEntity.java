@@ -245,7 +245,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.getProtectedCapability(side, this, this::getNormalHandler, this::getInsertOnlyHandler).cast();
+			return BlockUtils.isAllowedToExtractFromProtectedBlock(side, this) ? getNormalHandler().cast() : getInsertOnlyHandler().cast();
 		else
 			return super.getCapability(cap, side);
 	}

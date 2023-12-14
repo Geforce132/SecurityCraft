@@ -600,12 +600,9 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			if (isPlacingBlocks()) //prevent extracting while auto building the block pocket
-				return getInsertOnlyHandler().cast();
-			else
-				return BlockUtils.getProtectedCapability(side, this, this::getStorageHandler, this::getInsertOnlyHandler).cast();
-		}
+		//"!isPlacingBlocks()" prevents extracting while auto building the block pocket
+		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return !isPlacingBlocks() && BlockUtils.isAllowedToExtractFromProtectedBlock(side, this) ? getStorageHandler().cast() : getInsertOnlyHandler().cast();
 		else
 			return super.getCapability(cap, side);
 	}
