@@ -261,7 +261,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return (T) BlockUtils.getProtectedCapability(facing, this, this::getNormalHandler, this::getInsertOnlyHandler);
+			return BlockUtils.isAllowedToExtractFromProtectedBlock(facing, this) ? (T) getNormalHandler() : (T) getInsertOnlyHandler();
 		else
 			return super.getCapability(capability, facing);
 	}

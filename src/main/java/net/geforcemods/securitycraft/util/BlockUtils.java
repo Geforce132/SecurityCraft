@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.util;
 
 import java.util.function.BiPredicate;
-import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
@@ -15,7 +14,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class BlockUtils {
 	private BlockUtils() {}
@@ -81,23 +79,18 @@ public class BlockUtils {
 		return false;
 	}
 
-	public static <T> T getProtectedCapability(EnumFacing side, TileEntity te, Supplier<T> extractionPermittedHandler, Supplier<T> insertOnlyHandler) {
-		if (side == null)
-			return (T) EmptyHandler.INSTANCE;
+	public static boolean isAllowedToExtractFromProtectedBlock(EnumFacing side, TileEntity te) {
+		if (side != null) {
+			BlockPos offsetPos = te.getPos().offset(side);
+			IBlockState offsetState = te.getWorld().getBlockState(offsetPos);
 
-		BlockPos offsetPos = te.getPos().offset(side);
-		IBlockState offsetState = te.getWorld().getBlockState(offsetPos);
-
-		for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
-			if (offsetState.getBlock() == extractionBlock.getBlock()) {
-				if (!extractionBlock.canExtract((IOwnable) te, te.getWorld(), offsetPos, offsetState))
-					return (T) EmptyHandler.INSTANCE;
-				else
-					return extractionPermittedHandler.get();
+			for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
+				if (offsetState.getBlock() == extractionBlock.getBlock())
+					return extractionBlock.canExtract((IOwnable) te, te.getWorld(), offsetPos, offsetState);
 			}
 		}
 
-		return insertOnlyHandler.get();
+		return false;
 	}
 
 	public static boolean isWithinUsableDistance(World world, BlockPos pos, EntityPlayer player, Block block) {

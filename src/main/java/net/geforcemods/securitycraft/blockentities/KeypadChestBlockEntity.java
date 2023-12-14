@@ -113,7 +113,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return (T) BlockUtils.getProtectedCapability(facing, this, () -> super.getCapability(capability, facing), this::getInsertOnlyHandler);
+			return BlockUtils.isAllowedToExtractFromProtectedBlock(facing, this) ? (T) super.getCapability(capability, facing) : (T) getInsertOnlyHandler();
 		else
 			return super.getCapability(capability, facing);
 	}

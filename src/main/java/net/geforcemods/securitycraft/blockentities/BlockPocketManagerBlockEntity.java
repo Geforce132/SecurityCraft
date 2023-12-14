@@ -605,12 +605,9 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 	@Override
 	public <T> T getCapability(Capability<T> cap, EnumFacing side) {
-		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			if (isPlacingBlocks()) //prevent extracting while auto building the block pocket
-				return (T) getInsertOnlyHandler();
-			else
-				return (T) BlockUtils.getProtectedCapability(side, this, this::getStorageHandler, this::getInsertOnlyHandler);
-		}
+		//"!isPlacingBlocks()" prevents extracting while auto building the block pocket
+		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return !isPlacingBlocks() && BlockUtils.isAllowedToExtractFromProtectedBlock(side, this) ? (T) getStorageHandler() : (T) getInsertOnlyHandler();
 		else
 			return super.getCapability(cap, side);
 	}

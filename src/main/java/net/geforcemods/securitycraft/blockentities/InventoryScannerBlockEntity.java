@@ -252,7 +252,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return (T) BlockUtils.getProtectedCapability(facing, this, this::getExtractionHandler, () -> EmptyHandler.INSTANCE); //disallow inserting
+			return BlockUtils.isAllowedToExtractFromProtectedBlock(facing, this) ? (T) getExtractionHandler() : (T) EmptyHandler.INSTANCE; //disallow inserting
 		else
 			return super.getCapability(capability, facing);
 	}
