@@ -231,7 +231,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == ForgeCapabilities.ITEM_HANDLER)
-			return BlockUtils.getProtectedCapability(side, this, this::getNormalHandler, this::getInsertOnlyHandler).cast();
+			return BlockUtils.isAllowedToExtractFromProtectedBlock(side, this) ? getNormalHandler().cast() : getInsertOnlyHandler().cast();
 		else
 			return super.getCapability(cap, side);
 	}
