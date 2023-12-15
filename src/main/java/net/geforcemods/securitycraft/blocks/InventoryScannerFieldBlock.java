@@ -157,9 +157,12 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 							updateInventoryScannerPower(be);
 
 						itemFound = true;
+						break;
 					}
-					else if (checkForShulkerBox(stackToCheck, prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule))
+					else if (checkForShulkerBox(stackToCheck, prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule)) {
 						itemFound = true;
+						break;
+					}
 				}
 			}
 		}
@@ -175,8 +178,6 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction))
 			return false;
 
-		boolean itemFound = false;
-
 		for (ItemStack prohibitedItem : prohibitedItems) {
 			if (areItemsEqual(entity.getItem(), prohibitedItem, hasSmartModule)) {
 				if (hasStorageModule) {
@@ -191,13 +192,13 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 				if (hasRedstoneModule)
 					updateInventoryScannerPower(be);
 
-				itemFound = true;
+				return true;
 			}
 			else if (checkForShulkerBox(entity.getItem(), prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule))
-				itemFound = true;
+				return true;
 		}
 
-		return itemFound;
+		return false;
 	}
 
 	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity be, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
