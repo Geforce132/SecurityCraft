@@ -421,7 +421,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			if (tag.contains("InstalledModule")) {
 				ItemStack module = ItemStack.of(tag.getCompound("InstalledModule"));
 
-				if (!module.isEmpty() && module.getItem() instanceof ModuleItem moduleItem && moduleItem.getBlockAddon(module.getOrCreateTag()) != null) {
+				if (!module.isEmpty() && module.getItem() instanceof ModuleItem moduleItem && ModuleItem.getBlockAddon(module) != null) {
 					be.insertModule(module, false);
 					level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SometimesVisibleBlock.INVISIBLE, false));
 				}
@@ -456,7 +456,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	 * @param module The module to set
 	 */
 	public void addDisguiseModule(ItemStack module) {
-		if (((ModuleItem) module.getItem()).getBlockAddon(module.getTag()) != null) {
+		if (ModuleItem.getBlockAddon(module) != null) {
 			getSentryDisguiseBlockEntity().ifPresent(be -> {
 				//remove a possibly existing old disguise module
 				be.removeModule(ModuleType.DISGUISE, false);
