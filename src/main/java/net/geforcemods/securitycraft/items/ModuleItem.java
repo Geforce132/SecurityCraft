@@ -121,7 +121,7 @@ public class ModuleItem extends Item {
 			list.add(NOT_MODIFIABLE);
 
 		if (canBeCustomized()) {
-			Block addon = getBlockAddon(stack.getTag());
+			Block addon = getBlockAddon(stack);
 
 			if (addon != null)
 				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.added", Utils.localize(addon.getDescriptionId())).setStyle(Utils.GRAY_STYLE));
@@ -156,11 +156,11 @@ public class ModuleItem extends Item {
 		return module;
 	}
 
-	public Block getBlockAddon(CompoundTag tag) {
-		if (tag == null)
+	public static Block getBlockAddon(ItemStack stack) {
+		if (!stack.hasTag())
 			return null;
 
-		ListTag items = tag.getList("ItemInventory", Tag.TAG_COMPOUND);
+		ListTag items = stack.getTag().getList("ItemInventory", Tag.TAG_COMPOUND);
 
 		if (items != null && !items.isEmpty() && ItemStack.of(items.getCompound(0)).getItem() instanceof BlockItem blockItem)
 			return blockItem.getBlock();
