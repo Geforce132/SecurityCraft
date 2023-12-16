@@ -14,6 +14,7 @@
 - Fix: Vanishmod support does not work with the Protecto
 - Fix: Universal Block Reinforcers can be used under spawn protection
 - Fix: Several blocks (Key Panel, Passcode-protected Chest, Rift Stabilizer, Security Camera) don't keep their custom name when they're broken
+- Fix: Inventory Scanner dupe
 - Misc.: ProjectE support has been updated with previously missing EMC values
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
