@@ -16,6 +16,7 @@ import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -46,7 +47,10 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 
 		Direction direction = be.getBlockState().getValue(RetinalScannerBlock.FACING);
 
-		if (!be.isModuleEnabled(ModuleType.DISGUISE) && direction != null) {
+		if (direction != null) {
+			if (be.isModuleEnabled(ModuleType.DISGUISE) && SCContent.DISGUISE_MODULE.get().getBlockAddon(be.getModule(ModuleType.DISGUISE).getTag()) != null)
+				return;
+
 			pose.pushPose();
 
 			switch (direction) {
