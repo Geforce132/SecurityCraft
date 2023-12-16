@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
@@ -145,7 +144,6 @@ public class RegistrationHandler {
 		int id = 0;
 
 		//client
-		registerPacket(id++, InitSentryAnimation.class, InitSentryAnimation::encode, InitSentryAnimation::new, InitSentryAnimation::handle);
 		registerPacket(id++, OpenScreen.class, OpenScreen::encode, OpenScreen::new, OpenScreen::handle);
 		registerPacket(id++, PlayAlarmSound.class, PlayAlarmSound::encode, PlayAlarmSound::new, PlayAlarmSound::handle);
 		registerPacket(id++, RefreshDisguisableModel.class, RefreshDisguisableModel::encode, RefreshDisguisableModel::new, RefreshDisguisableModel::handle);
