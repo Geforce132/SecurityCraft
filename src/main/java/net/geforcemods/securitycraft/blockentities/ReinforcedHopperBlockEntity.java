@@ -13,6 +13,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
@@ -97,6 +98,12 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 	@Override
 	public ItemStack getItem(int slot) {
 		return getStackInSlot(slot);
+	}
+
+	@Override
+	public boolean canTakeItem(Container container, int slot, ItemStack stack) {
+		//Forge's capability code rightfully fails to insert an item, however that means hoppers fall back to the default vanilla code, which calls this method and will extract an item if this is not set to false
+		return false;
 	}
 
 	@Override
