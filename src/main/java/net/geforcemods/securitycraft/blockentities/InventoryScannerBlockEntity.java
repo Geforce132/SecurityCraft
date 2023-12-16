@@ -315,7 +315,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 	@Override
 	public boolean canPlaceItem(int index, ItemStack stack) {
-		return true;
+		return false;
 	}
 
 	public boolean isProvidingPower() {

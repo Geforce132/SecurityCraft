@@ -15,6 +15,7 @@
 - Fix: Universal Block Reinforcers can be used under spawn protection
 - Fix: Several blocks (Key Panel, Passcode-protected Chest, Rift Stabilizer, Security Camera) don't keep their custom name when they're broken
 - Fix: Inventory Scanner dupe
+- Fix: Items can be inserted into the prohibited item slots and storage of an Inventory Scanner
 - Misc.: ProjectE support has been updated with previously missing EMC values
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
