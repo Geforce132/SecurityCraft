@@ -12,9 +12,9 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
+import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -49,7 +49,7 @@ public class RetinalScannerRenderer extends TileEntityRenderer<RetinalScannerBlo
 		Direction direction = be.getBlockState().getValue(RetinalScannerBlock.FACING);
 
 		if (direction != null) {
-			if (be.isModuleEnabled(ModuleType.DISGUISE) && SCContent.DISGUISE_MODULE.get().getBlockAddon(be.getModule(ModuleType.DISGUISE).getTag()) != null)
+			if (be.isModuleEnabled(ModuleType.DISGUISE) && ModuleItem.getBlockAddon(be.getModule(ModuleType.DISGUISE)) != null)
 				return;
 
 			pose.pushPose();

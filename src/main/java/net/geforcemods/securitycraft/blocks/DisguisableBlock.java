@@ -175,7 +175,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
 				return Optional.of(disguisedState);
 			else { //fallback, mainly for upgrading old worlds from before the state selector existed
-				Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
+				Block block = ModuleItem.getBlockAddon(module);
 
 				if (block != null)
 					return Optional.of(block.defaultBlockState());
@@ -191,7 +191,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 			ItemStack stack = be.isModuleEnabled(ModuleType.DISGUISE) ? be.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if (!stack.isEmpty()) {
-				Block block = ((ModuleItem) stack.getItem()).getBlockAddon(stack.getTag());
+				Block block = ModuleItem.getBlockAddon(stack);
 
 				if (block != null)
 					return new ItemStack(block);

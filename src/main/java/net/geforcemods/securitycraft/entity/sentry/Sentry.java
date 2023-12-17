@@ -139,7 +139,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 			if (!oldModule.isEmpty()) {
 				getSentryDisguiseBlockEntity().ifPresent(be -> {
 					//put the old module, if it exists, into the new disguise block
-					if (!oldModule.isEmpty() && oldModule.getItem() instanceof ModuleItem && ((ModuleItem) oldModule.getItem()).getBlockAddon(oldModule.getOrCreateTag()) != null) {
+					if (!oldModule.isEmpty() && oldModule.getItem() instanceof ModuleItem && ModuleItem.getBlockAddon(oldModule) != null) {
 						be.insertModule(oldModule, false);
 						level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SometimesVisibleBlock.INVISIBLE, false));
 					}
@@ -471,7 +471,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 	 * @param module The module to set
 	 */
 	public void addDisguiseModule(ItemStack module) {
-		if (((ModuleItem) module.getItem()).getBlockAddon(module.getTag()) != null) {
+		if (ModuleItem.getBlockAddon(module) != null) {
 			getSentryDisguiseBlockEntity().ifPresent(be -> {
 				//remove a possibly existing old disguise module
 				be.removeModule(ModuleType.DISGUISE, false);
