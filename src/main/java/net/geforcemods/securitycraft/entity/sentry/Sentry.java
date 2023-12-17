@@ -613,7 +613,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 	}
 
 	public int getShootingSpeed() {
-		return hasSpeedModule() ? 5 : 10;
+		return hasSpeedModule() ? 10 : 20;
 	}
 
 	@Override
