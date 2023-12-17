@@ -83,7 +83,6 @@ import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
@@ -547,7 +546,6 @@ public class RegistrationHandler {
 		network.registerMessage(ToggleOption.Handler.class, ToggleOption.class, 19, Side.SERVER);
 		network.registerMessage(UpdateSliderValue.Handler.class, UpdateSliderValue.class, 22, Side.SERVER);
 		network.registerMessage(RemoveCameraTag.Handler.class, RemoveCameraTag.class, 23, Side.SERVER);
-		network.registerMessage(InitSentryAnimation.Handler.class, InitSentryAnimation.class, 24, Side.CLIENT);
 		network.registerMessage(ToggleBlockPocketManager.Handler.class, ToggleBlockPocketManager.class, 25, Side.SERVER);
 		network.registerMessage(ClearLoggerServer.Handler.class, ClearLoggerServer.class, 27, Side.SERVER);
 		network.registerMessage(RefreshDiguisedModel.Handler.class, RefreshDiguisedModel.class, 28, Side.CLIENT);

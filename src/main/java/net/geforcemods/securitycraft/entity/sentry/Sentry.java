@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
@@ -15,7 +14,6 @@ import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
-import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -67,6 +65,8 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 	private static final DataParameter<NBTTagCompound> ALLOWLIST = EntityDataManager.<NBTTagCompound>createKey(Sentry.class, DataSerializers.COMPOUND_TAG);
 	private static final DataParameter<Boolean> HAS_SPEED_MODULE = EntityDataManager.<Boolean>createKey(Sentry.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(Sentry.class, DataSerializers.VARINT);
+	private static final DataParameter<Boolean> HAS_TARGET = EntityDataManager.<Boolean>createKey(Sentry.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Boolean> SHUT_DOWN = EntityDataManager.<Boolean>createKey(Sentry.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Float> HEAD_ROTATION = EntityDataManager.<Float>createKey(Sentry.class, DataSerializers.FLOAT);
 	public static final float MAX_TARGET_DISTANCE = 20.0F;
 	private static final float ANIMATION_STEP_SIZE = 0.025F;
@@ -74,12 +74,11 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 	private static final float DOWNWARDS_ANIMATION_LIMIT = 0.9F;
 	private float headYTranslation = 0.9F;
 	private float oHeadYTranslation = 0.9F;
-	private boolean shutDown = false;
 	private boolean animateUpwards = true;
 	private boolean animate = false;
-	private long previousTargetId = Long.MIN_VALUE;
 	private float headRotation;
 	private float oHeadRotation;
+	private boolean hasReceivedEntityData = false;
 	/**
 	 * @deprecated Only used for upgrading old sentries
 	 */
@@ -103,6 +102,8 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		dataManager.set(ALLOWLIST, new NBTTagCompound());
 		dataManager.set(HAS_SPEED_MODULE, false);
 		dataManager.set(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
+		dataManager.set(HAS_TARGET, false);
+		dataManager.set(SHUT_DOWN, false);
 		dataManager.set(HEAD_ROTATION, 0.0F);
 		setPosition(x, y, z);
 		getSentryDisguiseBlockEntity(); //here to set the disguise block and its owner
@@ -115,6 +116,8 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		dataManager.register(ALLOWLIST, new NBTTagCompound());
 		dataManager.register(HAS_SPEED_MODULE, false);
 		dataManager.register(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
+		dataManager.register(HAS_TARGET, false);
+		dataManager.register(SHUT_DOWN, false);
 		dataManager.register(HEAD_ROTATION, 0.0F);
 	}
 
@@ -152,8 +155,14 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 			headRotation = dataManager.get(HEAD_ROTATION);
 			oHeadYTranslation = headYTranslation;
 
-			if (!shutDown && !shouldAnimate() && headYTranslation > 0.0F && getMode().isAggressive()) {
-				setAnimateUpwards(true);
+			if (shouldHeadBeUp()) {
+				if (headYTranslation > UPWARDS_ANIMATION_LIMIT){
+					setAnimateUpwards(true);
+					setAnimate(true);
+				}
+			}
+			else if (headYTranslation < DOWNWARDS_ANIMATION_LIMIT) {
+				setAnimateUpwards(false);
 				setAnimate(true);
 			}
 
@@ -322,9 +331,6 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 
 		if (sendMessage)
 			player.sendStatusMessage(Utils.localize(SentryMode.values()[mode].getModeKey()).appendSibling(Utils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
-
-		if (!player.world.isRemote)
-			SecurityCraft.network.sendToAllTracking(new InitSentryAnimation(getPosition(), true, SentryMode.values()[mode].isAggressive(), isShutDown()), this);
 	}
 
 	@Override
@@ -334,14 +340,12 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 			return;
 		}
 
-		if (!getMode().isAggressive() && (target == null && previousTargetId != Long.MIN_VALUE || (target != null && previousTargetId != target.getEntityId()))) {
-			setAnimateUpwards(getMode().isCamouflage() && target != null);
-			setAnimate(true);
-			SecurityCraft.network.sendToAllTracking(new InitSentryAnimation(getPosition(), shouldAnimate(), animatesUpwards(), isShutDown()), this);
-		}
-
-		previousTargetId = target == null ? Long.MIN_VALUE : target.getEntityId();
+		dataManager.set(HAS_TARGET, target != null);
 		super.setAttackTarget(target);
+	}
+
+	public boolean hasTarget() {
+		return dataManager.get(HAS_TARGET);
 	}
 
 	@Override
@@ -429,6 +433,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		tag.setTag("InstalledWhitelist", getAllowlistModule().writeToNBT(new NBTTagCompound()));
 		tag.setBoolean("HasSpeedModule", hasSpeedModule());
 		tag.setInteger("SentryMode", dataManager.get(MODE));
+		tag.setBoolean("HasTarget", hasTarget());
 		tag.setFloat("HeadRotation", dataManager.get(HEAD_ROTATION));
 		tag.setBoolean("ShutDown", isShutDown());
 		super.writeEntityToNBT(tag);
@@ -458,11 +463,28 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 		dataManager.set(ALLOWLIST, tag.getCompoundTag("InstalledWhitelist"));
 		dataManager.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
 		dataManager.set(MODE, tag.getInteger("SentryMode"));
+		dataManager.set(HAS_TARGET, tag.getBoolean("HasTarget"));
+		dataManager.set(SHUT_DOWN, tag.getBoolean("ShutDown"));
 		dataManager.set(HEAD_ROTATION, savedHeadRotation);
 		oHeadRotation = savedHeadRotation;
 		headRotation = savedHeadRotation;
-		shutDown = tag.getBoolean("ShutDown");
 		super.readEntityFromNBT(tag);
+	}
+
+	@Override
+	public void notifyDataManagerChange(DataParameter<?> data) {
+		super.notifyDataManagerChange(data);
+
+		if (world.isRemote && data.equals(HAS_TARGET) && !hasReceivedEntityData) {
+			if (shouldHeadBeUp())
+				headYTranslation = UPWARDS_ANIMATION_LIMIT; //skip upwards animation when the sentry spawns on the client
+
+			hasReceivedEntityData = true;
+		}
+	}
+
+	private boolean shouldHeadBeUp() {
+		return !isShutDown() && (getMode().isAggressive() || (getMode().isCamouflage() && hasTarget()));
 	}
 
 	@Override
@@ -615,19 +637,12 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 
 	@Override
 	public boolean isShutDown() {
-		return shutDown;
+		return dataManager.get(SHUT_DOWN);
 	}
 
 	@Override
 	public void setShutDown(boolean shutDown) {
-		this.shutDown = shutDown;
-
-		if (!world.isRemote) {
-			if (shutDown)
-				SecurityCraft.network.sendToAllTracking(new InitSentryAnimation(getPosition(), true, false, shutDown), this);
-			else
-				SecurityCraft.network.sendToAllTracking(new InitSentryAnimation(getPosition(), true, getMode().isAggressive(), shutDown), this);
-		}
+		dataManager.set(SHUT_DOWN, shutDown);
 	}
 
 	//start: disallow sentry to take damage

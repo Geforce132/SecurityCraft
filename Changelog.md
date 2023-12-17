@@ -14,6 +14,8 @@
 - Fix: Items can be inserted into the prohibited item slots and storage of an Inventory Scanner
 - Fix: Vanilla Hoppers and Reinforced Hoppers from different owners can take out items from a Reinforced Hopper
 - Fix: A Portable Radar does not send a message to its owner if the owner is not part of a team
+- Fix: The head of a sentry in Camouflage Mode can visually be retracted while the sentry is shooting at a target
+- Fix: Sentries always animate their head upwards when they first appear for a player
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
