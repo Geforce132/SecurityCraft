@@ -287,8 +287,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	public void closeInventory(EntityPlayer player) {}
 
 	@Override
-	public boolean isItemValidForSlot(int var1, ItemStack var2) {
-		return true;
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+		return false;
 	}
 
 	public boolean isProvidingPower() {

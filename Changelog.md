@@ -11,6 +11,7 @@
 - Fix: Reinforced Ladders have no owner and thus cannot be removed (enable "allowBlockClaim" in the server config to set the owner of already placed ladders)
 - Fix: Universal Block Reinforcers can be used under spawn protection
 - Fix: Inventory Scanner dupe
+- Fix: Items can be inserted into the prohibited item slots and storage of an Inventory Scanner
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
