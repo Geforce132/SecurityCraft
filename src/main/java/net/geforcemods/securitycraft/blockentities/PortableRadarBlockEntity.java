@@ -53,8 +53,12 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 			if (!closebyPlayers.isEmpty()) {
 				Collection<EntityPlayerMP> onlineTeamPlayers = TeamUtils.getOnlinePlayersInTeam(world.getMinecraftServer(), getOwner());
 
-				if (onlineTeamPlayers.isEmpty()) //owner may not be in a team
-					onlineTeamPlayers = Arrays.asList(world.getMinecraftServer().getPlayerList().getPlayerByUsername(getOwner().getName()));
+				if (onlineTeamPlayers.isEmpty()) { //owner may not be in a team
+					EntityPlayerMP ownerPlayer = world.getMinecraftServer().getPlayerList().getPlayerByUsername(getOwner().getName());
+
+					if (ownerPlayer != null)
+						onlineTeamPlayers = Arrays.asList(ownerPlayer);
+				}
 
 				for (EntityPlayer closebyPlayer : closebyPlayers) {
 					if (shouldSendMessage(closebyPlayer)) {
@@ -66,7 +70,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 						else
 							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, pos);
 
-						if (onlineTeamPlayers != null)
+						if (!onlineTeamPlayers.isEmpty())
 							onlineTeamPlayers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.portableRadar), text, TextFormatting.BLUE));
 
 						setSentMessage();
