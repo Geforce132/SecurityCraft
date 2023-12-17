@@ -123,7 +123,8 @@ public class DisguisableBlock extends OwnableBlock implements IOverlayDisplay {
 			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
 				return disguisedState.getBlockFaceShape(world, pos, face);
 			else {
-				Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTagCompound());
+				Block block = ModuleItem.getBlockAddon(module);
+
 				if (block == null)
 					return BlockFaceShape.SOLID;
 				else
@@ -156,7 +157,7 @@ public class DisguisableBlock extends OwnableBlock implements IOverlayDisplay {
 					return checkForSideTransparency(world, world.getBlockState(pos.offset(side)), pos.offset(side));
 			}
 			else {
-				Block blockToDisguiseAs = ((ModuleItem) disguiseModule.getItem()).getBlockAddon(disguiseModule.getTagCompound());
+				Block blockToDisguiseAs = ModuleItem.getBlockAddon(disguiseModule);
 
 				// If this block has a disguise module added with a transparent block inserted.
 				if (blockToDisguiseAs != null && (!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube()))
@@ -222,7 +223,7 @@ public class DisguisableBlock extends OwnableBlock implements IOverlayDisplay {
 			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
 				return disguisedState;
 			else if (world != null && pos != null) { //fallback, mainly for upgrading old worlds from before the state selector existed
-				ItemStack disguisedStack = ((ModuleItem) module.getItem()).getAddonAsStack(module.getTagCompound());
+				ItemStack disguisedStack = ModuleItem.getAddonAsStack(module);
 				Block block = Block.getBlockFromItem(disguisedStack.getItem());
 				boolean hasMeta = disguisedStack.getHasSubtypes();
 

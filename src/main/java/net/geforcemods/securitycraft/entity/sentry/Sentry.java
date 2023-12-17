@@ -138,7 +138,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 			if (!oldModule.isEmpty()) {
 				getSentryDisguiseBlockEntity().ifPresent(be -> {
 					//put the old module, if it exists, into the new disguise block
-					if (!oldModule.isEmpty() && oldModule.getItem() instanceof ModuleItem && ((ModuleItem) oldModule.getItem()).getBlockAddon(oldModule.getTagCompound()) != null) {
+					if (!oldModule.isEmpty() && oldModule.getItem() instanceof ModuleItem && ModuleItem.getBlockAddon(oldModule) != null) {
 						be.insertModule(oldModule, false);
 						world.setBlockState(getPosition(), world.getBlockState(getPosition()).withProperty(SometimesVisibleBlock.INVISIBLE, false));
 					}
@@ -238,7 +238,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 			}
 			else if (item == SCContent.universalBlockModifier) {
 				if (!getDisguiseModule().isEmpty()) {
-					Block block = ((ModuleItem) getDisguiseModule().getItem()).getBlockAddon(getDisguiseModule().getTagCompound());
+					Block block = ModuleItem.getBlockAddon(getDisguiseModule());
 
 					if (block == world.getBlockState(pos).getBlock())
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -484,7 +484,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 	 * @param module The module to set
 	 */
 	public void addDisguiseModule(ItemStack module) {
-		if (((ModuleItem) module.getItem()).getBlockAddon(module.getTagCompound()) != null) {
+		if (ModuleItem.getBlockAddon(module) != null) {
 			getSentryDisguiseBlockEntity().ifPresent(be -> {
 				//remove a possibly existing old disguise module
 				be.removeModule(ModuleType.DISGUISE, false);

@@ -102,7 +102,7 @@ public class CageTrapBlock extends DisguisableBlock {
 		if (disguisableTe.isModuleEnabled(ModuleType.DISGUISE)) {
 			ItemStack moduleStack = disguisableTe.getModule(ModuleType.DISGUISE);
 
-			if (!moduleStack.isEmpty() && (((ModuleItem) moduleStack.getItem()).getBlockAddon(moduleStack.getTagCompound()) != null))
+			if (!moduleStack.isEmpty() && ModuleItem.getBlockAddon(moduleStack) != null)
 				super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, isActualState);
 		}
 

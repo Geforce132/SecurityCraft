@@ -113,7 +113,7 @@ public class ModuleItem extends Item {
 			list.add(Utils.localize("tooltip.securitycraft:module.notModifiable").getFormattedText());
 
 		if (canBeCustomized()) {
-			Block addon = getBlockAddon(stack.getTagCompound());
+			Block addon = getBlockAddon(stack);
 
 			if (addon != null)
 				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.added", TextFormatting.GRAY + Utils.localize(addon).getFormattedText()).getFormattedText());
@@ -148,8 +148,8 @@ public class ModuleItem extends Item {
 		return module;
 	}
 
-	public Block getBlockAddon(NBTTagCompound tag) {
-		ItemStack stack = getAddonAsStack(tag);
+	public static Block getBlockAddon(ItemStack moduleStack) {
+		ItemStack stack = getAddonAsStack(moduleStack);
 
 		if (stack.getItem() instanceof ItemBlock)
 			return ((ItemBlock) stack.getItem()).getBlock();
@@ -157,11 +157,11 @@ public class ModuleItem extends Item {
 			return null;
 	}
 
-	public ItemStack getAddonAsStack(NBTTagCompound tag) {
-		if (tag == null)
+	public static ItemStack getAddonAsStack(ItemStack stack) {
+		if (!stack.hasTagCompound())
 			return ItemStack.EMPTY;
 
-		NBTTagList items = tag.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+		NBTTagList items = stack.getTagCompound().getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
 		if (items != null && !items.isEmpty())
 			return new ItemStack(items.getCompoundTagAt(0));
