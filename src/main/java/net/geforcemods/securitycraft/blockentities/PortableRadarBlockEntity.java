@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -56,6 +57,9 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 			if (!closebyPlayers.isEmpty()) {
 				Collection<ServerPlayerEntity> onlineTeamPlayers = TeamUtils.getOnlinePlayersInTeam(level.getServer(), getOwner());
 
+				if (onlineTeamPlayers.isEmpty()) //owner may not be in a team
+					onlineTeamPlayers = Arrays.asList(level.getServer().getPlayerList().getPlayerByName(getOwner().getName()));
+
 				for (PlayerEntity closebyPlayer : closebyPlayers) {
 					if (shouldSendMessage(closebyPlayer)) {
 						IFormattableTextComponent attackedName = closebyPlayer.getName().plainCopy().withStyle(TextFormatting.ITALIC);
@@ -66,7 +70,9 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 						else
 							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(worldPosition));
 
-						onlineTeamPlayers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, TextFormatting.BLUE));
+						if (onlineTeamPlayers != null)
+							onlineTeamPlayers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, TextFormatting.BLUE));
+
 						setSentMessage();
 					}
 				}
