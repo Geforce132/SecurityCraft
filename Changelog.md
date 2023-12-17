@@ -14,6 +14,7 @@
 - Fix: Several blocks (Key Panel, Passcode-protected Chest, Rift Stabilizer, Security Camera) don't keep their custom name when they're broken
 - Fix: Inventory Scanner dupe
 - Fix: Items can be inserted into the prohibited item slots and storage of an Inventory Scanner
+- Fix: Vanilla Hoppers and Reinforced Hoppers from different owners can take out items from a Reinforced Hopper
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
