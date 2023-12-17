@@ -13,6 +13,7 @@
 - Fix: Inventory Scanner dupe
 - Fix: Items can be inserted into the prohibited item slots and storage of an Inventory Scanner
 - Fix: Vanilla Hoppers and Reinforced Hoppers from different owners can take out items from a Reinforced Hopper
+- Fix: A Portable Radar does not send a message to its owner if the owner is not part of a team
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
