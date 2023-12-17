@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
@@ -15,7 +14,6 @@ import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
-import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -67,13 +65,14 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.network.PacketDistributor;
 
 public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffected, IOwnable { //needs to be a pathfinder mob so it can target a player, ai is also only given to living entities
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(Sentry.class, Owner.getSerializer());
 	private static final EntityDataAccessor<CompoundTag> ALLOWLIST = SynchedEntityData.<CompoundTag>defineId(Sentry.class, EntityDataSerializers.COMPOUND_TAG);
 	private static final EntityDataAccessor<Boolean> HAS_SPEED_MODULE = SynchedEntityData.<Boolean>defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Integer> MODE = SynchedEntityData.<Integer>defineId(Sentry.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Boolean> HAS_TARGET = SynchedEntityData.<Boolean>defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> SHUT_DOWN = SynchedEntityData.<Boolean>defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Float> HEAD_ROTATION = SynchedEntityData.<Float>defineId(Sentry.class, EntityDataSerializers.FLOAT);
 	public static final float MAX_TARGET_DISTANCE = 20.0F;
 	private static final float ANIMATION_STEP_SIZE = 0.025F;
@@ -81,12 +80,11 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	private static final float DOWNWARDS_ANIMATION_LIMIT = 0.9F;
 	private float headYTranslation = 0.9F;
 	private float oHeadYTranslation = 0.9F;
-	private boolean shutDown = false;
 	private boolean animateUpwards = false;
 	private boolean animate = false;
-	private long previousTargetId = Long.MIN_VALUE;
 	private float headRotation;
 	private float oHeadRotation;
+	private boolean hasReceivedEntityData = false;
 
 	public Sentry(EntityType<Sentry> type, Level level) {
 		super(SCContent.SENTRY_ENTITY.get(), level);
@@ -97,6 +95,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		entityData.set(ALLOWLIST, new CompoundTag());
 		entityData.set(HAS_SPEED_MODULE, false);
 		entityData.set(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
+		entityData.set(HAS_TARGET, false);
+		entityData.set(SHUT_DOWN, false);
 		entityData.set(HEAD_ROTATION, (float) (Mth.atan2(player.getX() - getX(), -(player.getZ() - getZ())) * (180D / Math.PI)));
 		getSentryDisguiseBlockEntity(); //here to set the disguise block and its owner
 	}
@@ -108,6 +108,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		entityData.define(ALLOWLIST, new CompoundTag());
 		entityData.define(HAS_SPEED_MODULE, false);
 		entityData.define(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
+		entityData.define(HAS_TARGET, false);
+		entityData.define(SHUT_DOWN, false);
 		entityData.define(HEAD_ROTATION, 0.0F);
 	}
 
@@ -132,8 +134,14 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			headRotation = entityData.get(HEAD_ROTATION);
 			oHeadYTranslation = headYTranslation;
 
-			if (!shutDown && !isAnimating() && headYTranslation > 0.0F && getMode().isAggressive()) {
-				setAnimateUpwards(true);
+			if (shouldHeadBeUp()) {
+				if (headYTranslation > UPWARDS_ANIMATION_LIMIT){
+					setAnimateUpwards(true);
+					setAnimate(true);
+				}
+			}
+			else if (headYTranslation < DOWNWARDS_ANIMATION_LIMIT) {
+				setAnimateUpwards(false);
 				setAnimate(true);
 			}
 
@@ -295,9 +303,6 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 		if (sendMessage)
 			player.displayClientMessage(Utils.localize(SentryMode.values()[mode].getModeKey()).append(Utils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
-
-		if (!player.level.isClientSide)
-			SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, SentryMode.values()[mode].isAggressive(), isShutDown()));
 	}
 
 	@Override
@@ -307,14 +312,12 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			return;
 		}
 
-		if (!getMode().isAggressive() && (target == null && previousTargetId != Long.MIN_VALUE || (target != null && previousTargetId != target.getId()))) {
-			setAnimateUpwards(getMode().isCamouflage() && target != null);
-			setAnimate(true);
-			SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), isAnimating(), animatesUpwards(), isShutDown()));
-		}
-
-		previousTargetId = target == null ? Long.MIN_VALUE : target.getId();
+		entityData.set(HAS_TARGET, target != null);
 		super.setTarget(target);
+	}
+
+	public boolean hasTarget() {
+		return entityData.get(HAS_TARGET);
 	}
 
 	@Override
@@ -396,6 +399,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		tag.put("InstalledWhitelist", getAllowlistModule().save(new CompoundTag()));
 		tag.putBoolean("HasSpeedModule", hasSpeedModule());
 		tag.putInt("SentryMode", entityData.get(MODE));
+		tag.putBoolean("HasTarget", hasTarget());
 		tag.putFloat("HeadRotation", entityData.get(HEAD_ROTATION));
 		tag.putBoolean("ShutDown", isShutDown());
 		super.addAdditionalSaveData(tag);
@@ -430,11 +434,28 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		entityData.set(ALLOWLIST, tag.getCompound("InstalledWhitelist"));
 		entityData.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
 		entityData.set(MODE, tag.getInt("SentryMode"));
+		entityData.set(HAS_TARGET, tag.getBoolean("HasTarget"));
+		entityData.set(SHUT_DOWN, tag.getBoolean("ShutDown"));
 		entityData.set(HEAD_ROTATION, savedHeadRotation);
 		oHeadRotation = savedHeadRotation;
 		headRotation = savedHeadRotation;
-		shutDown = tag.getBoolean("ShutDown");
 		super.readAdditionalSaveData(tag);
+	}
+
+	@Override
+	public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
+		super.onSyncedDataUpdated(data);
+
+		if (level.isClientSide && data.equals(HAS_TARGET) && !hasReceivedEntityData) {
+			if (shouldHeadBeUp())
+				headYTranslation = UPWARDS_ANIMATION_LIMIT; //skip upwards animation when the sentry spawns on the client
+
+			hasReceivedEntityData = true;
+		}
+	}
+
+	private boolean shouldHeadBeUp() {
+		return !isShutDown() && (getMode().isAggressive() || (getMode().isCamouflage() && hasTarget()));
 	}
 
 	@Override
@@ -588,19 +609,12 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 	@Override
 	public boolean isShutDown() {
-		return shutDown;
+		return entityData.get(SHUT_DOWN);
 	}
 
 	@Override
 	public void setShutDown(boolean shutDown) {
-		this.shutDown = shutDown;
-
-		if (!level.isClientSide) {
-			if (shutDown)
-				SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, false, shutDown));
-			else
-				SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, getMode().isAggressive(), shutDown));
-		}
+		entityData.set(SHUT_DOWN, shutDown);
 	}
 
 	//start: disallow sentry to take damage
