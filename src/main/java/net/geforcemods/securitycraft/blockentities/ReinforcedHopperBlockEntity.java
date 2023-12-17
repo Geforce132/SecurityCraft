@@ -7,18 +7,24 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.inventory.VanillaHopperInsertOnlyItemHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public class ReinforcedHopperBlockEntity extends TileEntityHopper implements IOwnable, IModuleInventory {
+	private VanillaHopperInsertOnlyItemHandler insertOnlyHandler;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private Owner owner = new Owner();
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
@@ -57,6 +63,21 @@ public class ReinforcedHopperBlockEntity extends TileEntityHopper implements IOw
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		return slot >= 100 ? getModuleInSlot(slot) : super.getStackInSlot(slot);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return BlockUtils.isAllowedToExtractFromProtectedBlock(facing, this) ? (T) super.getCapability(capability, facing) : (T) getInsertOnlyHandler();
+		else
+			return super.getCapability(capability, facing);
+	}
+
+	private VanillaHopperInsertOnlyItemHandler getInsertOnlyHandler() {
+		if (insertOnlyHandler == null)
+			insertOnlyHandler = new VanillaHopperInsertOnlyItemHandler(this);
+
+		return insertOnlyHandler;
 	}
 
 	@Override

@@ -12,6 +12,7 @@
 - Fix: Universal Block Reinforcers can be used under spawn protection
 - Fix: Inventory Scanner dupe
 - Fix: Items can be inserted into the prohibited item slots and storage of an Inventory Scanner
+- Fix: Vanilla Hoppers and Reinforced Hoppers from different owners can take out items from a Reinforced Hopper
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
