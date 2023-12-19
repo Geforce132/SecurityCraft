@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
 - New: Items in open Display Cases can now be picked using the "Pick Block" key
+- New: The Sentry Remote Access tool now displays the last known name of a Sentry if the Sentry is out of range
 - Fix: Duplication exploit involving keycards
 - Fix: Error involving SecurityCraft's creative tabs when running SecurityCraft alongside certain other mods
 - Fix: Duplication exploit involving Reinforced Pistons
