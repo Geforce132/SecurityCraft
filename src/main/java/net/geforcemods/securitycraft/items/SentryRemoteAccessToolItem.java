@@ -40,8 +40,10 @@ public class SentryRemoteAccessToolItem extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if (!world.isRemote)
+		if (!world.isRemote) {
+			updateTagWithNames(stack, world);
 			player.openGui(SecurityCraft.instance, Screens.SRAT.ordinal(), world, player.getServer().getPlayerList().getEntityViewDistance(), (int) player.posY, (int) player.posZ);
+		}
 
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
@@ -57,9 +59,9 @@ public class SentryRemoteAccessToolItem extends Item {
 			BlockPos pos2 = sentry.getPosition();
 
 			if (!isSentryAdded(stack, pos2)) {
-				int availSlot = getNextAvailableSlot(stack);
+				int nextAvailableSlot = getNextAvailableSlot(stack);
 
-				if (availSlot == 0) {
+				if (nextAvailableSlot == 0) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessSentry.name"), Utils.localize("messages.securitycraft:srat.noSlots"), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
@@ -72,7 +74,8 @@ public class SentryRemoteAccessToolItem extends Item {
 				if (stack.getTagCompound() == null)
 					stack.setTagCompound(new NBTTagCompound());
 
-				stack.getTagCompound().setIntArray(("sentry" + availSlot), BlockUtils.posToIntArray(pos2));
+				stack.getTagCompound().setIntArray("sentry" + nextAvailableSlot, BlockUtils.posToIntArray(pos2));
+				stack.getTagCompound().setString("sentry" + nextAvailableSlot + "_name", sentry.getCustomNameTag());
 
 				if (!world.isRemote)
 					SecurityCraft.network.sendTo(new UpdateNBTTagOnClient(stack), (EntityPlayerMP) player);
@@ -100,21 +103,62 @@ public class SentryRemoteAccessToolItem extends Item {
 			if (stack.getTagCompound().getIntArray("sentry" + i).length > 0) {
 				int[] coords = stack.getTagCompound().getIntArray("sentry" + i);
 
-				if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
+				if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
+					list.add("---");
+				else {
 					BlockPos pos = new BlockPos(coords[0], coords[1], coords[2]);
-					List<Sentry> sentries = Minecraft.getMinecraft().player.world.getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(pos));
-					String nameToShow;
+					String nameKey = "sentry" + i + "_name";
+					String nameToShow = null;
 
-					if (!sentries.isEmpty() && sentries.get(0).hasCustomName())
-						nameToShow = sentries.get(0).getCustomNameTag();
-					else
-						nameToShow = Utils.localize("tooltip.securitycraft:sentry").getFormattedText() + TextFormatting.GRAY + " " + i;
+					if (stack.getTagCompound().hasKey(nameKey))
+						nameToShow = stack.getTagCompound().getString(nameKey);
+					else {
+						List<Sentry> sentries = Minecraft.getMinecraft().player.world.getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(pos));
+
+						if (!sentries.isEmpty() && sentries.get(0).hasCustomName())
+							nameToShow = sentries.get(0).getCustomNameTag();
+						else
+							nameToShow = Utils.localize("tooltip.securitycraft:sentry").getFormattedText() + TextFormatting.GRAY + " " + i;
+					}
 
 					list.add(nameToShow + ": " + Utils.getFormattedCoordinates(pos).setStyle(GRAY_STYLE).getFormattedText());
 				}
 			}
+			else
+				list.add("---");
+		}
+	}
 
-			list.add("---");
+	private void updateTagWithNames(ItemStack stack, World level) {
+		if (!stack.hasTagCompound())
+			return;
+
+		NBTTagCompound tag = stack.getTagCompound();
+
+		for (int i = 1; i <= 12; i++) {
+			int[] coords = tag.getIntArray("sentry" + i);
+			String nameKey = "sentry" + i + "_name";
+
+			if (coords.length == 3 && !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
+				BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
+
+				if (level.isBlockLoaded(sentryPos, false)) {
+					List<Sentry> sentries = level.getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(sentryPos));
+
+					if (!sentries.isEmpty()) {
+						Sentry sentry = sentries.get(0);
+
+						if (sentry.hasCustomName()) {
+							tag.setString(nameKey, sentry.getCustomNameTag());
+							continue;
+						}
+					}
+				}
+				else
+					continue;
+			}
+
+			tag.removeTag(nameKey);
 		}
 	}
 

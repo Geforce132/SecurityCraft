@@ -96,6 +96,13 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 			World world = Minecraft.getMinecraft().player.world;
 
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
+				String nameKey = "sentry" + (i + 1) + "_name";
+				String sentryName = null;
+
+				if (srat.hasTagCompound() && srat.getTagCompound().hasKey(nameKey))
+					sentryName = srat.getTagCompound().getString(nameKey);
+
+				names[i] = Utils.getFormattedCoordinates(sentryPos).getFormattedText();
 				guiButtons[i][UNBIND].enabled = true;
 
 				if (world.isBlockLoaded(sentryPos, false)) {
@@ -105,15 +112,8 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 						Sentry sentry = sentries.get(0);
 						SentryMode mode = sentry.getMode();
 
-						if (sentry.hasCustomName()) {
-							String line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])).getFormattedText();
-							int nameWidth = fontRenderer.getStringWidth(sentry.getCustomNameTag());
-							int nameX = guiLeft + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
-							StringHoverChecker posTooltipText = new StringHoverChecker(btnY, btnY + 20, nameX, nameX + nameWidth + 2, line);
-
-							names[i] = sentry.getCustomNameTag();
-							hoverCheckers.add(posTooltipText);
-						}
+						if (sentryName == null && sentry.hasCustomName())
+							sentryName = sentry.getCustomNameTag();
 
 						guiButtons[i][MODE].enabled = true;
 						guiButtons[i][TARGETS].enabled = mode != SentryMode.IDLE;
@@ -125,6 +125,15 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:srat.unbind").getFormattedText()));
 						foundSentry = true;
 					}
+				}
+
+				if (sentryName != null) {
+					int nameWidth = fontRenderer.getStringWidth(sentryName);
+					int nameX = guiLeft + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
+					StringHoverChecker posTooltipText = new StringHoverChecker(btnY, btnY + 20, nameX, nameX + nameWidth + 2, names[i]);
+
+					names[i] = sentryName;
+					hoverCheckers.add(posTooltipText);
 				}
 
 				if (!foundSentry) {
