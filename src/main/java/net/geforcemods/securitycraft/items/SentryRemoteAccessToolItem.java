@@ -39,8 +39,10 @@ public class SentryRemoteAccessToolItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (!level.isClientSide)
-			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL));
+		if (!level.isClientSide) {
+			updateTagWithNames(stack, level);
+			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, stack.getTag()));
+		}
 
 		return InteractionResultHolder.consume(stack);
 	}
@@ -51,16 +53,16 @@ public class SentryRemoteAccessToolItem extends Item {
 		BlockPos pos = ctx.getClickedPos();
 		Player player = ctx.getPlayer();
 		List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(pos));
+		ItemStack stack = ctx.getItemInHand();
 
 		if (!sentries.isEmpty()) {
-			ItemStack stack = ctx.getItemInHand();
 			Sentry sentry = sentries.get(0);
 			BlockPos sentryPos = sentry.blockPosition();
 
 			if (!isSentryAdded(stack, sentryPos)) {
-				int availSlot = getNextAvailableSlot(stack);
+				int nextAvailableSlot = getNextAvailableSlot(stack);
 
-				if (availSlot == 0) {
+				if (nextAvailableSlot == 0) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.noSlots"), ChatFormatting.RED);
 					return InteractionResult.FAIL;
 				}
@@ -70,10 +72,10 @@ public class SentryRemoteAccessToolItem extends Item {
 					return InteractionResult.FAIL;
 				}
 
-				if (stack.getTag() == null)
-					stack.setTag(new CompoundTag());
+				stack.getOrCreateTag().putIntArray("sentry" + nextAvailableSlot, BlockUtils.posToIntArray(sentryPos));
 
-				stack.getTag().putIntArray(("sentry" + availSlot), BlockUtils.posToIntArray(sentryPos));
+				if (sentry.hasCustomName())
+					stack.getTag().putString("sentry" + nextAvailableSlot + "_name", sentry.getCustomName().getString());
 
 				if (!level.isClientSide && !stack.isEmpty())
 					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
@@ -87,8 +89,10 @@ public class SentryRemoteAccessToolItem extends Item {
 
 			return InteractionResult.SUCCESS;
 		}
-		else if (!level.isClientSide)
-			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL));
+		else if (!level.isClientSide) {
+			updateTagWithNames(stack, level);
+			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, stack.getTag()));
+		}
 
 		return InteractionResult.SUCCESS;
 	}
@@ -105,16 +109,55 @@ public class SentryRemoteAccessToolItem extends Item {
 				tooltip.add(new TextComponent(ChatFormatting.GRAY + "---"));
 			else {
 				BlockPos pos = new BlockPos(coords[0], coords[1], coords[2]);
-				List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(pos));
-				String nameToShow;
+				String nameKey = "sentry" + i + "_name";
+				String nameToShow = null;
 
-				if (!sentries.isEmpty() && sentries.get(0).hasCustomName())
-					nameToShow = sentries.get(0).getCustomName().getString();
-				else
-					nameToShow = Utils.localize("tooltip.securitycraft:sentry").getString() + " " + i;
+				if (stack.getTag().contains(nameKey))
+					nameToShow = stack.getTag().getString(nameKey);
+				else {
+					List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(pos));
+
+					if (!sentries.isEmpty() && sentries.get(0).hasCustomName())
+						nameToShow = sentries.get(0).getCustomName().getString();
+					else
+						nameToShow = Utils.localize("tooltip.securitycraft:sentry").getString() + " " + i;
+				}
 
 				tooltip.add(new TextComponent(ChatFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos).getString()));
 			}
+		}
+	}
+
+	private void updateTagWithNames(ItemStack stack, Level level) {
+		if (!stack.hasTag())
+			return;
+
+		CompoundTag tag = stack.getTag();
+
+		for (int i = 1; i <= 12; i++) {
+			int[] coords = tag.getIntArray("sentry" + i);
+			String nameKey = "sentry" + i + "_name";
+
+			if (coords.length == 3) {
+				BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
+
+				if (level.isLoaded(sentryPos)) {
+					List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(sentryPos));
+
+					if (!sentries.isEmpty()) {
+						Sentry sentry = sentries.get(0);
+
+						if (sentry.hasCustomName()) {
+							tag.putString(nameKey, sentry.getCustomName().getString());
+							continue;
+						}
+					}
+				}
+				else
+					continue;
+			}
+
+			tag.remove(nameKey);
 		}
 	}
 
