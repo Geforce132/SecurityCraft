@@ -145,7 +145,7 @@ public class SentryRemoteAccessToolItem extends Item {
 			int[] coords = tag.getIntArray("sentry" + i);
 			String nameKey = "sentry" + i + "_name";
 
-			if (coords.length == 3) {
+			if (coords.length == 3 && !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
 
 				if (level.isLoaded(sentryPos)) {

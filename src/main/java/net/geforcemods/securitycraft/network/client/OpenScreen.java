@@ -53,7 +53,7 @@ public class OpenScreen {
 			pos = BlockPos.ZERO;
 
 		if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
-			buf.writeNbt(tag);
+			tag = buf.readNbt();
 	}
 
 	public void encode(PacketBuffer buf) {
