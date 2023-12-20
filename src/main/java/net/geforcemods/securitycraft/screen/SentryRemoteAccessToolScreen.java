@@ -106,6 +106,11 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			if (coords.length == 3) {
 				BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
 				Level level = Minecraft.getInstance().player.level;
+				String nameKey = "sentry" + (i + 1) + "_name";
+				Component sentryName = null;
+
+				if (srat.hasTag() && srat.getTag().contains(nameKey))
+					sentryName = Component.literal(srat.getTag().getString(nameKey));
 
 				lines[i] = Utils.getFormattedCoordinates(sentryPos);
 				guiButtons[i][UNBIND].active = true;
@@ -117,15 +122,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						Sentry sentry = sentries.get(0);
 						SentryMode mode = sentry.getMode();
 
-						if (sentry.hasCustomName()) {
-							Component line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
-							int nameWidth = font.width(sentry.getCustomName());
-							int nameX = startX + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
-							TextHoverChecker posTooltipText = new TextHoverChecker(btnY, btnY + 20, nameX, nameX + nameWidth + 2, line);
-
-							lines[i] = sentry.getCustomName();
-							hoverCheckers.add(posTooltipText);
-						}
+						if (sentryName == null && sentry.hasCustomName())
+							sentryName = sentry.getCustomName();
 
 						guiButtons[i][MODE].active = true;
 						guiButtons[i][TARGETS].active = mode != SentryMode.IDLE;
@@ -137,6 +135,15 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						guiButtons[i][UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:srat.unbind")));
 						foundSentry = true;
 					}
+				}
+
+				if (sentryName != null) {
+					int nameWidth = font.width(sentryName);
+					int nameX = startX + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
+					TextHoverChecker posTooltipText = new TextHoverChecker(btnY, btnY + 20, nameX, nameX + nameWidth + 2, lines[i]);
+
+					lines[i] = sentryName;
+					hoverCheckers.add(posTooltipText);
 				}
 
 				if (!foundSentry) {
