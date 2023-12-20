@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
 - New: Items in open Display Cases can now be picked using the "Pick Block" key
+- New: The Sentry Remote Access tool now displays the last known name of a Sentry if the Sentry is out of range
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
 - Fix: Duplication exploit involving keycards
 - Fix: Duplication exploit involving Reinforced Pistons

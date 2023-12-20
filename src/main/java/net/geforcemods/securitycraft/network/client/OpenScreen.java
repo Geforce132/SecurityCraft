@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -22,6 +23,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public class OpenScreen {
 	private DataType dataType;
 	private BlockPos pos;
+	private CompoundNBT tag;
 
 	public OpenScreen() {}
 
@@ -37,6 +39,11 @@ public class OpenScreen {
 		this.pos = pos;
 	}
 
+	public OpenScreen(DataType dataType, CompoundNBT tag) {
+		this.dataType = dataType;
+		this.tag = tag;
+	}
+
 	public OpenScreen(PacketBuffer buf) {
 		dataType = buf.readEnum(DataType.class);
 
@@ -44,6 +51,9 @@ public class OpenScreen {
 			pos = buf.readBlockPos();
 		else
 			pos = BlockPos.ZERO;
+
+		if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
+			buf.writeNbt(tag);
 	}
 
 	public void encode(PacketBuffer buf) {
@@ -51,6 +61,9 @@ public class OpenScreen {
 
 		if (dataType.needsPosition)
 			buf.writeBlockPos(pos);
+
+		if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
+			buf.writeNbt(tag);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
@@ -87,8 +100,11 @@ public class OpenScreen {
 			case SENTRY_REMOTE_ACCESS_TOOL:
 				ItemStack srat = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.SENTRY_REMOTE_ACCESS_TOOL.get());
 
-				if (!srat.isEmpty())
+				if (!srat.isEmpty()) {
+					srat.setTag(tag);
 					ClientHandler.displaySRATScreen(srat);
+				}
+
 				break;
 			case SET_BRIEFCASE_PASSCODE:
 				ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
