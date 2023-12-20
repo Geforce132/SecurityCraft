@@ -67,12 +67,12 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 		for (int i = 0; i < 12; i++) {
 			int x = (i / 6) * xSize / 2; //first six sentries in the left column, second six sentries in the right column
 			int y = ((i % 6) + 1) * 25 + paddingY;
+			int btnY = guiTop + y - 48;
 			coords = getSentryCoordinates(i);
 
 			//initialize buttons
 			for (int j = 0; j < 3; j++) {
 				int btnX = guiLeft + j * paddingX + 147 + x;
-				int btnY = guiTop + y - 48;
 
 				switch (j) {
 					case MODE:
@@ -109,8 +109,7 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 							String line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])).getFormattedText();
 							int nameWidth = fontRenderer.getStringWidth(sentry.getCustomNameTag());
 							int nameX = guiLeft + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
-							int nameY = guiTop + (i % 6) * 30 + 7;
-							StringHoverChecker posTooltipText = new StringHoverChecker(nameY + 4, nameY + 18, nameX, nameX + nameWidth + 2, line);
+							StringHoverChecker posTooltipText = new StringHoverChecker(btnY, btnY + 20, nameX, nameX + nameWidth + 2, line);
 
 							names[i] = sentry.getCustomNameTag();
 							hoverCheckers.add(posTooltipText);

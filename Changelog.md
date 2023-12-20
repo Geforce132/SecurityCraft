@@ -17,6 +17,7 @@
 - Fix: A Portable Radar does not send a message to its owner if the owner is not part of a team
 - Fix: The head of a sentry in Camouflage Mode can visually be retracted while the sentry is shooting at a target
 - Fix: Sentries always animate their head upwards when they first appear for a player
+- Fix: The position tooltip for a named Sentry in the Sentry Remote Access Tool is misplaced
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
