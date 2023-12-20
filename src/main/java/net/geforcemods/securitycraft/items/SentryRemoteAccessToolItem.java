@@ -59,9 +59,9 @@ public class SentryRemoteAccessToolItem extends Item {
 			BlockPos sentryPos = sentry.blockPosition();
 
 			if (!isSentryAdded(stack, sentryPos)) {
-				int availSlot = getNextAvailableSlot(stack);
+				int nextAvailableSlot = getNextAvailableSlot(stack);
 
-				if (availSlot == 0) {
+				if (nextAvailableSlot == 0) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.noSlots"), ChatFormatting.RED);
 					return InteractionResult.FAIL;
 				}
@@ -71,10 +71,10 @@ public class SentryRemoteAccessToolItem extends Item {
 					return InteractionResult.FAIL;
 				}
 
-				if (stack.getTag() == null)
-					stack.setTag(new CompoundTag());
+				stack.getOrCreateTag().putIntArray("sentry" + nextAvailableSlot, BlockUtils.posToIntArray(sentryPos));
 
-				stack.getTag().putIntArray(("sentry" + availSlot), BlockUtils.posToIntArray(sentryPos));
+				if (sentry.hasCustomName())
+					stack.getTag().putString("sentry" + nextAvailableSlot + "_name", sentry.getCustomName().getString());
 
 				if (!level.isClientSide && !stack.isEmpty())
 					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
