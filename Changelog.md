@@ -20,6 +20,7 @@
 - Fix: Adding an empty Disguise Module to a Retinal Scanner makes the player face disappear
 - Fix: The head of a sentry in Camouflage Mode can visually be retracted while the sentry is shooting at a target
 - Fix: Sentries always animate their head upwards when they first appear for a player
+- Fix: The position tooltip for a named Sentry in the Sentry Remote Access Tool is misplaced
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
