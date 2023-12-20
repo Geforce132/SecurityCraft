@@ -74,11 +74,11 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		for (int i = 0; i < 12; i++) {
 			int x = (i / 6) * xSize / 2; //first six sentries in the left column, second six sentries in the right column
 			int y = ((i % 6) + 1) * 25 + paddingY;
+			int btnY = startY + y - 48;
 			coords = getSentryCoordinates(i);
 
 			for (int j = 0; j < 3; j++) {
 				int btnX = startX + j * paddingX + 147 + x;
-				int btnY = startY + y - 48;
 				int sentry = id / 3;
 				int type = id % 3;
 				final int index = id++;
@@ -121,8 +121,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 							Component line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
 							int nameWidth = font.width(sentry.getCustomName());
 							int nameX = startX + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
-							int nameY = startY + (i % 6) * 30 + 7;
-							TextHoverChecker posTooltipText = new TextHoverChecker(nameY + 4, nameY + 18, nameX, nameX + nameWidth + 2, line);
+							TextHoverChecker posTooltipText = new TextHoverChecker(btnY, btnY + 20, nameX, nameX + nameWidth + 2, line);
 
 							lines[i] = sentry.getCustomName();
 							hoverCheckers.add(posTooltipText);
