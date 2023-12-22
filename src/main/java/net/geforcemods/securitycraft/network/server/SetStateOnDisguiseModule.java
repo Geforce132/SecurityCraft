@@ -42,8 +42,15 @@ public class SetStateOnDisguiseModule {
 		if (!stack.isEmpty()) {
 			CompoundTag tag = stack.getOrCreateTag();
 
-			tag.put("SavedState", NbtUtils.writeBlockState(state));
-			tag.putInt("StandingOrWall", standingOrWall.ordinal());
+			if (state.isAir()) {
+				tag.remove("SavedState");
+				tag.remove("StandingOrWall");
+				tag.remove("ItemInventory");
+			}
+			else {
+				tag.put("SavedState", NbtUtils.writeBlockState(state));
+				tag.putInt("StandingOrWall", standingOrWall.ordinal());
+			}
 		}
 	}
 }
