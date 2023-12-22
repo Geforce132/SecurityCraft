@@ -26,6 +26,7 @@
 - Fix: The position tooltip for a named Sentry in the Sentry Remote Access Tool is misplaced
 - Fix: The Trophy System does not drop installed modules when the block below it is broken
 - Fix: Manually editing the time in an Alarm and exitigin the screen using the escape key does not save the time
+- Fix: Removing a block from a Disguise Module and then adding the module to a block still disguises the block
 
 --------------------------Changelog for v1.9.8-beta1 of SecurityCraft--------------------------
 
