@@ -24,6 +24,7 @@
 - Fix: Sentries always animate their head upwards when they first appear for a player
 - Fix: The position tooltip for a named Sentry in the Sentry Remote Access Tool is misplaced
 - Fix: The Trophy System does not drop installed modules when the block below it is broken
+- Fix: Manually editing the time in an Alarm and exiting the screen using the escape key does not save the time
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
