@@ -93,12 +93,26 @@ public class TrophySystemBlock extends DisguisableBlock {
 	}
 
 	@Override
+	public void playerWillDestroy(World level, BlockPos pos, BlockState state, PlayerEntity player) {
+		//prevents dropping twice the amount of modules when breaking the block in creative mode
+		if (player.isCreative()) {
+			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof TrophySystemBlockEntity)
+				((TrophySystemBlockEntity) te).getInventory().clear();
+		}
+
+		super.playerWillDestroy(level, pos, state, player);
+	}
+
+	@Override
 	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
 			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof TrophySystemBlockEntity) {
 				InventoryHelper.dropContents(level, pos, ((TrophySystemBlockEntity) te).getLensContainer());
+				((TrophySystemBlockEntity) te).dropAllModules();
 				level.updateNeighbourForOutputSignal(pos, this);
 			}
 		}
