@@ -23,6 +23,7 @@
 - Fix: The head of a sentry in Camouflage Mode can visually be retracted while the sentry is shooting at a target
 - Fix: Sentries always animate their head upwards when they first appear for a player
 - Fix: The position tooltip for a named Sentry in the Sentry Remote Access Tool is misplaced
+- Fix: The Trophy System does not drop installed modules when the block below it is broken
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
