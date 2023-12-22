@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.entity.player.PlayerInventory;
@@ -80,16 +81,19 @@ public class DisguiseModuleScreen extends ContainerScreen<DisguiseModuleMenu> im
 	public void onClose() {
 		super.onClose();
 
-		if (!menu.getSlot(0).getItem().isEmpty() && stateSelector.getState() != null) {
-			ItemStack module = menu.getInventory().getModule();
-			CompoundNBT moduleTag = module.getOrCreateTag();
-			BlockState state = stateSelector.getState();
-			StandingOrWallType standingOrWall = stateSelector.getStandingOrWallType();
+		ItemStack module = menu.getInventory().getModule();
+		CompoundNBT moduleTag = module.getOrCreateTag();
+		BlockState state = Blocks.AIR.defaultBlockState();
+		StandingOrWallType standingOrWall = StandingOrWallType.NONE;
 
-			moduleTag.put("SavedState", NBTUtil.writeBlockState(state));
-			moduleTag.putInt("StandingOrWall", standingOrWall.ordinal());
-			SecurityCraft.channel.sendToServer(new SetStateOnDisguiseModule(state, standingOrWall));
+		if (!menu.getSlot(0).getItem().isEmpty() && stateSelector.getState() != null) {
+			state = stateSelector.getState();
+			standingOrWall = stateSelector.getStandingOrWallType();
 		}
+
+		moduleTag.put("SavedState", NBTUtil.writeBlockState(state));
+		moduleTag.putInt("StandingOrWall", standingOrWall.ordinal());
+		SecurityCraft.channel.sendToServer(new SetStateOnDisguiseModule(state, standingOrWall));
 	}
 
 	@Override
