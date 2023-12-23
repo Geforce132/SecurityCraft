@@ -12,7 +12,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -95,13 +94,25 @@ public class TrophySystemBlock extends DisguisableBlock {
 	}
 
 	@Override
+	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		//prevents dropping twice the amount of modules when breaking the block in creative mode
+		if (player.isCreative()) {
+			TileEntity te = world.getTileEntity(pos);
+
+			if (te instanceof TrophySystemBlockEntity)
+				((TrophySystemBlockEntity) te).getInventory().clear();
+		}
+
+		super.onBlockHarvested(world, pos, state, player);
+	}
+
+	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
 		if (te instanceof TrophySystemBlockEntity) {
-			InventoryBasic lensContainer = ((TrophySystemBlockEntity) te).getLensContainer();
-
-			InventoryHelper.dropInventoryItems(world, pos, lensContainer);
+			InventoryHelper.dropInventoryItems(world, pos, ((TrophySystemBlockEntity) te).getLensContainer());
+			((TrophySystemBlockEntity) te).dropAllModules();
 			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.trophySystem);
 		}
 
