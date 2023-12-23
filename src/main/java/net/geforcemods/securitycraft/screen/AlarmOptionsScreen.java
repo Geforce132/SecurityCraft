@@ -32,7 +32,7 @@ public class AlarmOptionsScreen extends GuiScreen implements ISlider {
 	private final AlarmScreen alarmScreen;
 	private int imageWidth = 226, imageHeight = 112, leftPos, topPos;
 	private GuiButton minusMinute, minusTenSeconds, minusSecond, reset, plusSecond, plusTenSeconds, plusMinute;
-	private SoundLengthEditBox timeEditBox;
+	private SoundLengthEditBox soundLengthEditBox;
 	private Slider pitchSlider;
 	private int soundLengthTextXPosition;
 
@@ -57,8 +57,8 @@ public class AlarmOptionsScreen extends GuiScreen implements ISlider {
 
 		buttonList.add(new ClickButton(id++, leftPos + imageWidth - 12, topPos + 4, 8, 8, "x", b -> mc.displayGuiScreen(alarmScreen)));
 		soundLengthTextXPosition = width / 2 - combinedTextAndBoxWidth / 2;
-		timeEditBox = new SoundLengthEditBox(id++, fontRenderer, soundLengthTextXPosition + soundLengthTextWidthPlusBuffer, buttonY - 15, timeEditBoxWidth, 12);
-		timeEditBox.setValidator(string -> string.matches("[0-9:]*"));
+		soundLengthEditBox = new SoundLengthEditBox(id++, fontRenderer, soundLengthTextXPosition + soundLengthTextWidthPlusBuffer, buttonY - 15, timeEditBoxWidth, 12);
+		soundLengthEditBox.setValidator(string -> string.matches("[0-9:]*"));
 		minusMinute = addButton(new ClickButton(id++, buttonsX, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.minus_one_minute").getFormattedText(), b -> changeSoundLength(-60)));
 		minusTenSeconds = addButton(new ClickButton(id++, buttonsX + 34, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.minus_ten_seconds").getFormattedText(), b -> changeSoundLength(-10)));
 		minusSecond = addButton(new ClickButton(id++, buttonsX + 68, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.minus_one_second").getFormattedText(), b -> changeSoundLength(-1)));
@@ -100,7 +100,7 @@ public class AlarmOptionsScreen extends GuiScreen implements ISlider {
 		mc.getTextureManager().bindTexture(GUI_TEXTURE);
 		drawTexturedModalRect(leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.drawScreen(mouseX, mouseY, partialTicks);
-		timeEditBox.drawTextBox();
+		soundLengthEditBox.drawTextBox();
 		fontRenderer.drawString(title, width / 2 - fontRenderer.getStringWidth(title) / 2, topPos + 6, 0x404040);
 		fontRenderer.drawString(soundLengthText, soundLengthTextXPosition, topPos + 27, 0x404040);
 
@@ -129,7 +129,7 @@ public class AlarmOptionsScreen extends GuiScreen implements ISlider {
 		int soundLength = Math.max(1, Math.min(newSoundLength, AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH));
 
 		if (updateTimeEditBox)
-			timeEditBox.setText(String.format("%02d:%02d", soundLength / 60, soundLength % 60));
+			soundLengthEditBox.setText(String.format("%02d:%02d", soundLength / 60, soundLength % 60));
 
 		enablePlusButtons = soundLength < AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH;
 		enableMinusButtons = soundLength > 1;
@@ -152,7 +152,7 @@ public class AlarmOptionsScreen extends GuiScreen implements ISlider {
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
-		timeEditBox.mouseClicked(mouseX, mouseY, mouseButton);
+		soundLengthEditBox.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	@Override
@@ -162,14 +162,14 @@ public class AlarmOptionsScreen extends GuiScreen implements ISlider {
 		double mouseX = Mouse.getEventX() * width / mc.displayWidth;
 		double mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
 
-		if (timeEditBox.isHovered(mouseX, mouseY))
-			timeEditBox.mouseScrolled(Mouse.getEventDWheel());
+		if (soundLengthEditBox.isHovered(mouseX, mouseY) && Mouse.getEventDWheel() != 0)
+			soundLengthEditBox.mouseScrolled(Mouse.getEventDWheel());
 	}
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		super.keyTyped(typedChar, keyCode);
-		timeEditBox.textboxKeyTyped(typedChar, keyCode);
+		soundLengthEditBox.textboxKeyTyped(typedChar, keyCode);
 
 		if (keyCode == 1 || (mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode)))
 			mc.displayGuiScreen(alarmScreen);
@@ -180,13 +180,19 @@ public class AlarmOptionsScreen extends GuiScreen implements ISlider {
 		return alarmScreen.doesGuiPauseGame();
 	}
 
+	@Override
+	public void onGuiClosed() {
+		soundLengthEditBox.checkAndProcessInput();
+		super.onGuiClosed();
+	}
+
 	public class SoundLengthEditBox extends GuiTextField {
 		public SoundLengthEditBox(int id, FontRenderer font, int x, int y, int width, int height) {
 			super(id, font, x, y, width, height);
 		}
 
 		public void mouseScrolled(double delta) {
-			setSoundLength((int) Math.signum(delta));
+			changeSoundLength((int) Math.signum(delta));
 		}
 
 		@Override
@@ -205,7 +211,7 @@ public class AlarmOptionsScreen extends GuiScreen implements ISlider {
 			super.setFocused(focused);
 		}
 
-		private void checkAndProcessInput() {
+		public void checkAndProcessInput() {
 			int minutes = 0;
 			int seconds = 2;
 
