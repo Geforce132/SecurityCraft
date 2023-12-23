@@ -19,6 +19,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
@@ -83,18 +84,20 @@ public class DisguiseModuleScreen extends GuiContainer implements IHasExtraAreas
 	public void onGuiClosed() {
 		super.onGuiClosed();
 
-		if (!inventorySlots.getSlot(0).getStack().isEmpty() && stateSelector.getState() != null) {
-			ItemStack module = ((DisguiseModuleMenu) inventorySlots).getModuleInventory().getModule();
-			NBTTagCompound moduleTag;
-			IBlockState state = stateSelector.getState();
+		ItemStack module = ((DisguiseModuleMenu) inventorySlots).getModuleInventory().getModule();
+		NBTTagCompound moduleTag;
+		IBlockState state = Blocks.AIR.getDefaultState();
 
-			if (!module.hasTagCompound())
-				module.setTagCompound(new NBTTagCompound());
+		if (!module.hasTagCompound())
+			module.setTagCompound(new NBTTagCompound());
 
-			moduleTag = module.getTagCompound();
-			moduleTag.setTag("SavedState", NBTUtil.writeBlockState(new NBTTagCompound(), state));
-			SecurityCraft.network.sendToServer(new SetStateOnDisguiseModule(state));
-		}
+		moduleTag = module.getTagCompound();
+
+		if (!inventorySlots.getSlot(0).getStack().isEmpty() && stateSelector.getState() != null)
+			state = stateSelector.getState();
+
+		moduleTag.setTag("SavedState", NBTUtil.writeBlockState(new NBTTagCompound(), state));
+		SecurityCraft.network.sendToServer(new SetStateOnDisguiseModule(state));
 	}
 
 	@Override

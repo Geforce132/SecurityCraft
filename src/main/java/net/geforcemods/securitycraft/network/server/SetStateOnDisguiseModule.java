@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -44,7 +45,14 @@ public class SetStateOnDisguiseModule implements IMessage {
 					if (!stack.hasTagCompound())
 						stack.setTagCompound(new NBTTagCompound());
 
-					stack.getTagCompound().setTag("SavedState", NBTUtil.writeBlockState(new NBTTagCompound(), message.state));
+					NBTTagCompound tag = stack.getTagCompound();
+
+					if (message.state.getMaterial() == Material.AIR) {
+						tag.removeTag("SavedState");
+						tag.removeTag("ItemInventory");
+					}
+					else
+						tag.setTag("SavedState", NBTUtil.writeBlockState(new NBTTagCompound(), message.state));
 				}
 			});
 			return null;
