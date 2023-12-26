@@ -1,12 +1,10 @@
 {
   "pack": {
     "description": "SecurityCraft resources & data",
-    "neoforge": {
-      "versions": {
-        "client_resources": 22,
-        "server_data": 26
-      }
-    },
-    "pack_format": 22
+    "pack_format": 22,
+    "supported_formats": [
+      0,
+      2147483647
+    ]
   }
 }

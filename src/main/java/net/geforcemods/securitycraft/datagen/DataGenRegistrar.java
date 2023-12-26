@@ -1,12 +1,10 @@
 package net.geforcemods.securitycraft.datagen;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.DetectedVersion;
@@ -19,6 +17,7 @@ import net.minecraft.data.metadata.PackMetadataGenerator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.util.InclusiveRange;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod.EventBusSubscriber;
@@ -52,7 +51,7 @@ public class DataGenRegistrar {
 		generator.addProvider(true, new PackMetadataGenerator(output)
                 .add(PackMetadataSection.TYPE, new PackMetadataSection(Component.literal("SecurityCraft resources & data"),
                         DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
-                        Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
+                        Optional.of(new InclusiveRange<>(0, Integer.MAX_VALUE)))));
 		//@formatter:on
 		generator.addProvider(event.includeServer(), new RecipeGenerator(output, lookupProvider));
 	}
