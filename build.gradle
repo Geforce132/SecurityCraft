@@ -75,7 +75,7 @@ dependencies {
 //	implementation "curse.maven:ftb-teams-forge-404468:4623116"
 //	implementation "curse.maven:jei-238222:4597711"
 //	implementation "curse.maven:the-one-probe-245211:4579432"
-//	implementation "curse.maven:jade-324717:4845321"
+	implementation "curse.maven:jade-324717:4980188"
 //	implementation "curse.maven:betterf3-401648:4641169"
 //	implementation "curse.maven:cloth-config-348521:4633444" //betterf3 dependency
 	implementation "curse.maven:wthit-forge-455982:4931929"
