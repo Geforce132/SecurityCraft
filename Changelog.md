@@ -21,12 +21,13 @@
 - Fix: Vanilla Hoppers and Reinforced Hoppers from different owners can take out items from a Reinforced Hopper
 - Fix: A Portable Radar does not send a message to its owner if the owner is not part of a team
 - Fix: Adding an empty Disguise Module to a Retinal Scanner makes the player face disappear
-- Fix: The head of a sentry in Camouflage Mode can visually be retracted while the sentry is shooting at a target
+- Fix: The head of a Sentry in camouflage mode can visually retract while the Sentry is shooting at a target
 - Fix: Sentries always animate their head upwards when they first appear for a player
 - Fix: The position tooltip for a named Sentry in the Sentry Remote Access Tool is misplaced
 - Fix: The Trophy System does not drop installed modules when the block below it is broken
 - Fix: Manually editing the time in an Alarm and exiting the screen using the escape key does not save the time
 - Fix: The Disguise Module still applies a disguise after the block inside the module was removed
+- Misc.: The minimum required NeoForge version is 20.2.88 (necessary to fix players getting kicked from the server when placing a Sentry)
 
 --------------------------Changelog for v1.9.8-beta4 of SecurityCraft--------------------------
 
