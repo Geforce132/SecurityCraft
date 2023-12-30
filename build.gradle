@@ -3,7 +3,6 @@ plugins {
 	id 'eclipse'
 	id 'idea'
 	id 'net.neoforged.gradle.userdev' version '[7.0,7.1)'
-//	id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
 import groovy.json.JsonOutput
