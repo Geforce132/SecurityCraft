@@ -2,6 +2,7 @@
 
 - New: Items in open Display Cases can now be picked using the "Pick Block" key
 - New: The Sentry Remote Access tool now displays the last known name of a Sentry if the Sentry is out of range
+- New: The Portable Radar now always shows its coordinates in messages, even when it has a custom name
 - Fix: Duplication exploit involving keycards
 - Fix: Error involving SecurityCraft's creative tabs when running SecurityCraft alongside certain other mods
 - Fix: Duplication exploit involving Reinforced Pistons
@@ -21,7 +22,7 @@
 - Fix: Vanilla Hoppers and Reinforced Hoppers from different owners can take out items from a Reinforced Hopper
 - Fix: A Portable Radar does not send a message to its owner if the owner is not part of a team
 - Fix: Adding an empty Disguise Module to a Retinal Scanner makes the player face disappear
-- Fix: The head of a sentry in Camouflage Mode can visually be retracted while the sentry is shooting at a target
+- Fix: The head of a Sentry in camouflage mode can visually retract while the Sentry is shooting at a target
 - Fix: Sentries always animate their head upwards when they first appear for a player
 - Fix: The position tooltip for a named Sentry in the Sentry Remote Access Tool is misplaced
 - Fix: The Trophy System does not drop installed modules when the block below it is broken
