@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -69,12 +70,13 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 				for (Player closebyPlayer : closebyPlayers) {
 					if (shouldSendMessage(closebyPlayer)) {
 						MutableComponent attackedName = closebyPlayer.getName().plainCopy().withStyle(ChatFormatting.ITALIC);
+						Component coords = Utils.getFormattedCoordinates(pos);
 						MutableComponent text;
 
 						if (hasCustomName())
-							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomName().plainCopy().withStyle(ChatFormatting.ITALIC));
+							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomName().plainCopy().withStyle(ChatFormatting.ITALIC), coords);
 						else
-							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(pos));
+							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, coords);
 
 						if (!onlineTeamPlayers.isEmpty())
 							onlineTeamPlayers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, ChatFormatting.BLUE));
