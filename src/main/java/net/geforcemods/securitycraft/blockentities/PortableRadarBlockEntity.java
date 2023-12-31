@@ -66,7 +66,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 						ITextComponent text;
 
 						if (hasCustomName())
-							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, TextFormatting.ITALIC + getName() + TextFormatting.RESET);
+							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, TextFormatting.ITALIC + getName() + TextFormatting.RESET, pos);
 						else
 							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, pos);
 
