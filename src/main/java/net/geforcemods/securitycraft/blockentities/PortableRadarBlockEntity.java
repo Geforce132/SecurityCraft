@@ -67,12 +67,13 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 				for (PlayerEntity closebyPlayer : closebyPlayers) {
 					if (shouldSendMessage(closebyPlayer)) {
 						IFormattableTextComponent attackedName = closebyPlayer.getName().plainCopy().withStyle(TextFormatting.ITALIC);
+						IFormattableTextComponent coords = Utils.getFormattedCoordinates(worldPosition);
 						IFormattableTextComponent text;
 
 						if (hasCustomName())
-							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomName().plainCopy().withStyle(TextFormatting.ITALIC));
+							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomName().plainCopy().withStyle(TextFormatting.ITALIC), coords);
 						else
-							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(worldPosition));
+							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, coords);
 
 						if (!onlineTeamPlayers.isEmpty())
 							onlineTeamPlayers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, TextFormatting.BLUE));
