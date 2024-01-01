@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import net.geforcemods.securitycraft.blockentities.AbstractKeypadFurnaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
@@ -63,6 +64,9 @@ import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab.TabVisibility;
@@ -83,6 +87,8 @@ import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
@@ -139,56 +145,61 @@ public class RegistrationHandler {
 
 	@SubscribeEvent
 	public static void registerPackets(RegisterPayloadHandlerEvent event) {
-		//@formatter:off
-		event.registrar(SecurityCraft.MODID).versioned(SecurityCraft.getVersion())
-		//client
-		.play(InitSentryAnimation.ID, InitSentryAnimation::new, play -> play.client(InitSentryAnimation::handle))
-		.play(OpenScreen.ID, OpenScreen::new, play -> play.client(OpenScreen::handle))
-		.play(PlayAlarmSound.ID, PlayAlarmSound::new, play -> play.client(PlayAlarmSound::handle))
-		.play(RefreshDisguisableModel.ID, RefreshDisguisableModel::new, play -> play.client(RefreshDisguisableModel::handle))
-		.play(SetCameraView.ID, SetCameraView::new, play -> play.client(SetCameraView::handle))
-		.play(SetTrophySystemTarget.ID, SetTrophySystemTarget::new, play -> play.client(SetTrophySystemTarget::handle))
-		.play(UpdateLaserColors.ID, UpdateLaserColors::new, play -> play.client(UpdateLaserColors::handle))
-		.play(UpdateLogger.ID, UpdateLogger::new, play -> play.client(UpdateLogger::handle))
-		.play(UpdateNBTTagOnClient.ID, UpdateNBTTagOnClient::new, play -> play.client(UpdateNBTTagOnClient::handle))
-		//server
-		.play(AssembleBlockPocket.ID, AssembleBlockPocket::new, play -> play.server(AssembleBlockPocket::handle))
-		.play(CheckPasscode.ID, CheckPasscode::new, play -> play.server(CheckPasscode::handle))
-		.play(ClearChangeDetectorServer.ID, ClearChangeDetectorServer::new, play -> play.server(ClearChangeDetectorServer::handle))
-		.play(ClearLoggerServer.ID, ClearLoggerServer::new, play -> play.server(ClearLoggerServer::handle))
-		.play(DismountCamera.ID, DismountCamera::new, play -> play.server(DismountCamera::handle))
-		.play(MountCamera.ID, MountCamera::new, play -> play.server(MountCamera::handle))
-		.play(CheckBriefcasePasscode.ID, CheckBriefcasePasscode::new, play -> play.server(CheckBriefcasePasscode::handle))
-		.play(RemoteControlMine.ID, RemoteControlMine::new, play -> play.server(RemoteControlMine::handle))
-		.play(RemoveCameraTag.ID, RemoveCameraTag::new, play -> play.server(RemoveCameraTag::handle))
-		.play(RemoveMineFromMRAT.ID, RemoveMineFromMRAT::new, play -> play.server(RemoveMineFromMRAT::handle))
-		.play(RemovePositionFromSSS.ID, RemovePositionFromSSS::new, play -> play.server(RemovePositionFromSSS::handle))
-		.play(RemoveSentryFromSRAT.ID, RemoveSentryFromSRAT::new, play -> play.server(RemoveSentryFromSRAT::handle))
-		.play(SyncAlarmSettings.ID, SyncAlarmSettings::new, play -> play.server(SyncAlarmSettings::handle))
-		.play(SetBriefcasePasscodeAndOwner.ID, SetBriefcasePasscodeAndOwner::new, play -> play.server(SetBriefcasePasscodeAndOwner::handle))
-		.play(SetCameraPowered.ID, SetCameraPowered::new, play -> play.server(SetCameraPowered::handle))
-		.play(SetGhostSlot.ID, SetGhostSlot::new, play -> play.server(SetGhostSlot::handle))
-		.play(SetKeycardUses.ID, SetKeycardUses::new, play -> play.server(SetKeycardUses::handle))
-		.play(SetListModuleData.ID, SetListModuleData::new, play -> play.server(SetListModuleData::handle))
-		.play(SetPasscode.ID, SetPasscode::new, play -> play.server(SetPasscode::handle))
-		.play(SetSentryMode.ID, SetSentryMode::new, play -> play.server(SetSentryMode::handle))
-		.play(SetStateOnDisguiseModule.ID, SetStateOnDisguiseModule::new, play -> play.server(SetStateOnDisguiseModule::handle))
-		.play(SyncBlockChangeDetector.ID, SyncBlockChangeDetector::new, play -> play.server(SyncBlockChangeDetector::handle))
-		.play(SyncBlockReinforcer.ID, SyncBlockReinforcer::new, play -> play.server(SyncBlockReinforcer::handle))
-		.play(SyncBlockPocketManager.ID, SyncBlockPocketManager::new, play -> play.server(SyncBlockPocketManager::handle))
-		.play(SyncIMSTargetingOption.ID, SyncIMSTargetingOption::new, play -> play.server(SyncIMSTargetingOption::handle))
-		.play(SyncKeycardSettings.ID, SyncKeycardSettings::new, play -> play.server(SyncKeycardSettings::handle))
-		.play(SyncLaserSideConfig.ID, SyncLaserSideConfig::new, play -> play.server(SyncLaserSideConfig::handle))
-		.play(SyncProjector.ID, SyncProjector::new, play -> play.server(SyncProjector::handle))
-		.play(SyncRiftStabilizer.ID, SyncRiftStabilizer::new, play -> play.server(SyncRiftStabilizer::handle))
-		.play(SyncSSSSettingsOnServer.ID, SyncSSSSettingsOnServer::new, play -> play.server(SyncSSSSettingsOnServer::handle))
-		.play(SyncTrophySystem.ID, SyncTrophySystem::new, play -> play.server(SyncTrophySystem::handle))
-		.play(ToggleBlockPocketManager.ID, ToggleBlockPocketManager::new, play -> play.server(ToggleBlockPocketManager::handle))
-		.play(ToggleModule.ID, ToggleModule::new, play -> play.server(ToggleModule::handle))
-		.play(ToggleNightVision.ID, ToggleNightVision::new, play -> play.server(ToggleNightVision::handle))
-		.play(ToggleOption.ID, ToggleOption::new, play -> play.server(ToggleOption::handle))
-		.play(UpdateSliderValue.ID, UpdateSliderValue::new, play -> play.server(UpdateSliderValue::handle));
-		//@formatter:on
+		IPayloadRegistrar registrar = event.registrar(SecurityCraft.MODID).versioned(SecurityCraft.getVersion());
+
+		clientPacket(registrar, InitSentryAnimation.ID, InitSentryAnimation::new, InitSentryAnimation::handle);
+		clientPacket(registrar, OpenScreen.ID, OpenScreen::new, OpenScreen::handle);
+		clientPacket(registrar, PlayAlarmSound.ID, PlayAlarmSound::new, PlayAlarmSound::handle);
+		clientPacket(registrar, RefreshDisguisableModel.ID, RefreshDisguisableModel::new, RefreshDisguisableModel::handle);
+		clientPacket(registrar, SetCameraView.ID, SetCameraView::new, SetCameraView::handle);
+		clientPacket(registrar, SetTrophySystemTarget.ID, SetTrophySystemTarget::new, SetTrophySystemTarget::handle);
+		clientPacket(registrar, UpdateLaserColors.ID, UpdateLaserColors::new, UpdateLaserColors::handle);
+		clientPacket(registrar, UpdateLogger.ID, UpdateLogger::new, UpdateLogger::handle);
+		clientPacket(registrar, UpdateNBTTagOnClient.ID, UpdateNBTTagOnClient::new, UpdateNBTTagOnClient::handle);
+		serverPacket(registrar, AssembleBlockPocket.ID, AssembleBlockPocket::new, AssembleBlockPocket::handle);
+		serverPacket(registrar, CheckPasscode.ID, CheckPasscode::new, CheckPasscode::handle);
+		serverPacket(registrar, ClearChangeDetectorServer.ID, ClearChangeDetectorServer::new, ClearChangeDetectorServer::handle);
+		serverPacket(registrar, ClearLoggerServer.ID, ClearLoggerServer::new, ClearLoggerServer::handle);
+		serverPacket(registrar, DismountCamera.ID, DismountCamera::new, DismountCamera::handle);
+		serverPacket(registrar, MountCamera.ID, MountCamera::new, MountCamera::handle);
+		serverPacket(registrar, CheckBriefcasePasscode.ID, CheckBriefcasePasscode::new, CheckBriefcasePasscode::handle);
+		serverPacket(registrar, RemoteControlMine.ID, RemoteControlMine::new, RemoteControlMine::handle);
+		serverPacket(registrar, RemoveCameraTag.ID, RemoveCameraTag::new, RemoveCameraTag::handle);
+		serverPacket(registrar, RemoveMineFromMRAT.ID, RemoveMineFromMRAT::new, RemoveMineFromMRAT::handle);
+		serverPacket(registrar, RemovePositionFromSSS.ID, RemovePositionFromSSS::new, RemovePositionFromSSS::handle);
+		serverPacket(registrar, RemoveSentryFromSRAT.ID, RemoveSentryFromSRAT::new, RemoveSentryFromSRAT::handle);
+		serverPacket(registrar, SyncAlarmSettings.ID, SyncAlarmSettings::new, SyncAlarmSettings::handle);
+		serverPacket(registrar, SetBriefcasePasscodeAndOwner.ID, SetBriefcasePasscodeAndOwner::new, SetBriefcasePasscodeAndOwner::handle);
+		serverPacket(registrar, SetCameraPowered.ID, SetCameraPowered::new, SetCameraPowered::handle);
+		serverPacket(registrar, SetGhostSlot.ID, SetGhostSlot::new, SetGhostSlot::handle);
+		serverPacket(registrar, SetKeycardUses.ID, SetKeycardUses::new, SetKeycardUses::handle);
+		serverPacket(registrar, SetListModuleData.ID, SetListModuleData::new, SetListModuleData::handle);
+		serverPacket(registrar, SetPasscode.ID, SetPasscode::new, SetPasscode::handle);
+		serverPacket(registrar, SetSentryMode.ID, SetSentryMode::new, SetSentryMode::handle);
+		serverPacket(registrar, SetStateOnDisguiseModule.ID, SetStateOnDisguiseModule::new, SetStateOnDisguiseModule::handle);
+		serverPacket(registrar, SyncBlockChangeDetector.ID, SyncBlockChangeDetector::new, SyncBlockChangeDetector::handle);
+		serverPacket(registrar, SyncBlockReinforcer.ID, SyncBlockReinforcer::new, SyncBlockReinforcer::handle);
+		serverPacket(registrar, SyncBlockPocketManager.ID, SyncBlockPocketManager::new, SyncBlockPocketManager::handle);
+		serverPacket(registrar, SyncIMSTargetingOption.ID, SyncIMSTargetingOption::new, SyncIMSTargetingOption::handle);
+		serverPacket(registrar, SyncKeycardSettings.ID, SyncKeycardSettings::new, SyncKeycardSettings::handle);
+		serverPacket(registrar, SyncLaserSideConfig.ID, SyncLaserSideConfig::new, SyncLaserSideConfig::handle);
+		serverPacket(registrar, SyncProjector.ID, SyncProjector::new, SyncProjector::handle);
+		serverPacket(registrar, SyncRiftStabilizer.ID, SyncRiftStabilizer::new, SyncRiftStabilizer::handle);
+		serverPacket(registrar, SyncSSSSettingsOnServer.ID, SyncSSSSettingsOnServer::new, SyncSSSSettingsOnServer::handle);
+		serverPacket(registrar, SyncTrophySystem.ID, SyncTrophySystem::new, SyncTrophySystem::handle);
+		serverPacket(registrar, ToggleBlockPocketManager.ID, ToggleBlockPocketManager::new, ToggleBlockPocketManager::handle);
+		serverPacket(registrar, ToggleModule.ID, ToggleModule::new, ToggleModule::handle);
+		serverPacket(registrar, ToggleNightVision.ID, ToggleNightVision::new, ToggleNightVision::handle);
+		serverPacket(registrar, ToggleOption.ID, ToggleOption::new, ToggleOption::handle);
+		serverPacket(registrar, UpdateSliderValue.ID, UpdateSliderValue::new, UpdateSliderValue::handle);
+	}
+
+	private static final <T extends CustomPacketPayload> void clientPacket(IPayloadRegistrar registrar, ResourceLocation id, FriendlyByteBuf.Reader<T> reader, BiConsumer<T, PlayPayloadContext> handler) {
+		registrar.play(id, reader, play -> play.client((packet, ctx) -> ctx.workHandler().submitAsync(() -> handler.accept(packet, ctx))));
+	}
+
+	private static final <T extends CustomPacketPayload> void serverPacket(IPayloadRegistrar registrar, ResourceLocation id, FriendlyByteBuf.Reader<T> reader, BiConsumer<T, PlayPayloadContext> handler) {
+		registrar.play(id, reader, play -> play.server((packet, ctx) -> ctx.workHandler().submitAsync(() -> handler.accept(packet, ctx))));
 	}
 
 	@SubscribeEvent
