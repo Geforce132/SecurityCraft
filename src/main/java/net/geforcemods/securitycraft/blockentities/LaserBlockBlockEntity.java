@@ -10,7 +10,6 @@ import java.util.Objects;
 import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -200,7 +199,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 				otherLaser.getLensContainer().setItemExclusively(direction.getOpposite().ordinal(), lenses.getItem(direction.ordinal()));
 
 				if (!level.isClientSide)
-					SecurityCraft.CHANNEL.send(PacketDistributor.DIMENSION.with(() -> level.dimension()), new UpdateLaserColors(positionsToUpdate));
+					PacketDistributor.DIMENSION.with(level.dimension()).send(new UpdateLaserColors(positionsToUpdate));
 
 				level.sendBlockUpdated(modifiedPos, stateAtModifiedPos, stateAtModifiedPos, 2);
 			}

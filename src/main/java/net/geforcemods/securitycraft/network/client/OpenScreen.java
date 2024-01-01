@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network.client;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
@@ -13,11 +14,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class OpenScreen {
+public class OpenScreen implements CustomPacketPayload {
+	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "open_screen");
 	private DataType dataType;
 	private BlockPos pos;
 
@@ -42,14 +46,20 @@ public class OpenScreen {
 			pos = buf.readBlockPos();
 	}
 
-	public void encode(FriendlyByteBuf buf) {
+	@Override
+	public void write(FriendlyByteBuf buf) {
 		buf.writeEnum(dataType);
 
 		if (dataType.needsPosition)
 			buf.writeBlockPos(pos);
 	}
 
-	public void handle(NetworkEvent.Context ctx) {
+	@Override
+	public ResourceLocation id() {
+		return ID;
+	}
+
+	public void handle(PlayPayloadContext ctx) {
 		switch (dataType) {
 			case ALARM:
 				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof AlarmBlockEntity be)

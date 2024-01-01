@@ -16,11 +16,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +36,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 public class KeycardReaderBlock extends DisguisableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -54,7 +51,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 		return use(state, level, pos, player, hand, (stack, be) -> {
 			//only allow the owner and players on the allowlist to open the gui
 			if (be.isOwnedBy(player) || be.isAllowed(player))
-				NetworkHooks.openScreen((ServerPlayer) player, (MenuProvider) be, pos);
+				player.openMenu(be, pos);
 		});
 	}
 

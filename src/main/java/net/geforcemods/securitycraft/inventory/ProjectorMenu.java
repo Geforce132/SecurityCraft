@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
@@ -14,6 +13,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class ProjectorMenu extends StateSelectorAccessMenu {
 	public static final int SIZE = 1;
@@ -91,7 +91,7 @@ public class ProjectorMenu extends StateSelectorAccessMenu {
 		broadcastChanges();
 
 		if (be.getLevel().isClientSide)
-			SecurityCraft.CHANNEL.sendToServer(new SyncProjector(be.getBlockPos(), state));
+			PacketDistributor.SERVER.noArg().send(new SyncProjector(be.getBlockPos(), state));
 	}
 
 	@Override

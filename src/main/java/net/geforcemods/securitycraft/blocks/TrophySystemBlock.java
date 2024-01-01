@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,7 +28,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 public class TrophySystemBlock extends DisguisableBlock {
 	//@formatter:off
@@ -71,7 +69,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					NetworkHooks.openScreen((ServerPlayer) player, be, pos);
+					player.openMenu(be, pos);
 			}
 
 			return InteractionResult.SUCCESS;

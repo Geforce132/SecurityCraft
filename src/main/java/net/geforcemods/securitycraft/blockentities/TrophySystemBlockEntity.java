@@ -183,7 +183,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		setChanged();
 
 		if (!level.isClientSide)
-			SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new SetTrophySystemTarget(worldPosition, target.getId()));
+			PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(worldPosition)).send(new SetTrophySystemTarget(worldPosition, target.getId()));
 	}
 
 	/**
@@ -256,7 +256,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 			setChanged();
 
 			if (level.isClientSide)
-				SecurityCraft.CHANNEL.sendToServer(new SyncTrophySystem(worldPosition, projectileType, allowed));
+				PacketDistributor.SERVER.noArg().send(new SyncTrophySystem(worldPosition, projectileType, allowed));
 		}
 	}
 

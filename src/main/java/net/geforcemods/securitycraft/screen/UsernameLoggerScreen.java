@@ -12,7 +12,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.screen.components.SmallXButton;
@@ -26,6 +25,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class UsernameLoggerScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
@@ -51,7 +51,7 @@ public class UsernameLoggerScreen extends Screen {
 
 		Button clearButton = addRenderableWidget(new SmallXButton(leftPos + 4, topPos + 4, b -> {
 			be.setPlayers(new String[100]);
-			SecurityCraft.CHANNEL.sendToServer(new ClearLoggerServer(be.getBlockPos()));
+			PacketDistributor.SERVER.noArg().send(new ClearLoggerServer(be.getBlockPos()));
 		}));
 
 		clearButton.active = be.isOwnedBy(minecraft.player);

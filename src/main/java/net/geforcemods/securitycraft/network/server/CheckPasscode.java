@@ -2,14 +2,18 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.Arrays;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class CheckPasscode {
+public class CheckPasscode implements CustomPacketPayload {
+	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "check_passcode");
 	private String passcode;
 	private int x, y, z;
 
@@ -29,16 +33,22 @@ public class CheckPasscode {
 		passcode = buf.readUtf(Integer.MAX_VALUE / 4);
 	}
 
-	public void encode(FriendlyByteBuf buf) {
+	@Override
+	public void write(FriendlyByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
 		buf.writeUtf(passcode);
 	}
 
-	public void handle(NetworkEvent.Context ctx) {
+	@Override
+	public ResourceLocation id() {
+		return ID;
+	}
+
+	public void handle(PlayPayloadContext ctx) {
 		BlockPos pos = new BlockPos(x, y, z);
-		ServerPlayer player = ctx.getSender();
+		Player player = ctx.player().orElseThrow();
 
 		if (player.level().getBlockEntity(pos) instanceof IPasscodeProtected be) {
 			if (be.isOnCooldown())

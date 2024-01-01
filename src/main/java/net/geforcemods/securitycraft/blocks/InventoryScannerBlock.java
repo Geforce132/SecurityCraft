@@ -47,7 +47,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 public class InventoryScannerBlock extends DisguisableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -65,7 +64,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					NetworkHooks.openScreen(serverPlayer, be, pos);
+					serverPlayer.openMenu(be, pos);
 			}
 
 			return InteractionResult.SUCCESS;

@@ -6,7 +6,6 @@ import java.util.Set;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
@@ -73,7 +72,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
 
 						if (!stack.isEmpty())
-							SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+							PacketDistributor.PLAYER.with((ServerPlayer) player).send(new UpdateNBTTagOnClient(stack));
 
 						return InteractionResult.SUCCESS;
 					}

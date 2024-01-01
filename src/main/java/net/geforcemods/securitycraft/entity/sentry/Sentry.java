@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
@@ -299,7 +298,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			player.displayClientMessage(Utils.localize(SentryMode.values()[mode].getModeKey()).append(Utils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
 
 		if (!player.level().isClientSide)
-			SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, SentryMode.values()[mode].isAggressive(), isShutDown()));
+			PacketDistributor.TRACKING_ENTITY.with(this).send(new InitSentryAnimation(blockPosition(), true, SentryMode.values()[mode].isAggressive(), isShutDown()));
 	}
 
 	@Override
@@ -312,7 +311,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		if (!getMode().isAggressive() && (target == null && previousTargetId != Long.MIN_VALUE || (target != null && previousTargetId != target.getId()))) {
 			setAnimateUpwards(getMode().isCamouflage() && target != null);
 			setAnimate(true);
-			SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), isAnimating(), animatesUpwards(), isShutDown()));
+			PacketDistributor.TRACKING_ENTITY.with(this).send(new InitSentryAnimation(blockPosition(), isAnimating(), animatesUpwards(), isShutDown()));
 		}
 
 		previousTargetId = target == null ? Long.MIN_VALUE : target.getId();
@@ -595,12 +594,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	public void setShutDown(boolean shutDown) {
 		this.shutDown = shutDown;
 
-		if (!level().isClientSide) {
-			if (shutDown)
-				SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, false, shutDown));
-			else
-				SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, getMode().isAggressive(), shutDown));
-		}
+		if (!level().isClientSide)
+			PacketDistributor.TRACKING_ENTITY.with(this).send(new InitSentryAnimation(blockPosition(), true, !shutDown && getMode().isAggressive(), shutDown));
 	}
 
 	//start: disallow sentry to take damage

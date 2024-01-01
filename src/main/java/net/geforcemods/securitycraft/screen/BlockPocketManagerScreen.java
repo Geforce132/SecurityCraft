@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
@@ -355,6 +354,6 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	}
 
 	private void sync() {
-		SecurityCraft.CHANNEL.send(PacketDistributor.SERVER.noArg(), new SyncBlockPocketManager(be.getBlockPos(), be.getSize(), be.showsOutline(), be.getAutoBuildOffset(), be.getColor()));
+		PacketDistributor.SERVER.noArg().send(new SyncBlockPocketManager(be.getBlockPos(), be.getSize(), be.showsOutline(), be.getAutoBuildOffset(), be.getColor()));
 	}
 }

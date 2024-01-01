@@ -11,7 +11,6 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -36,7 +35,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 public class ProjectorBlock extends DisguisableBlock {
 	private static final MutableComponent TOOLTIP = Component.translatable("tooltip.securitycraft:projector").setStyle(Utils.GRAY_STYLE);
@@ -90,7 +88,7 @@ public class ProjectorBlock extends DisguisableBlock {
 		boolean isOwner = be.isOwnedBy(player);
 
 		if (!level.isClientSide && isOwner)
-			NetworkHooks.openScreen((ServerPlayer) player, be, pos);
+			player.openMenu(be, pos);
 
 		return isOwner ? InteractionResult.SUCCESS : InteractionResult.FAIL;
 	}

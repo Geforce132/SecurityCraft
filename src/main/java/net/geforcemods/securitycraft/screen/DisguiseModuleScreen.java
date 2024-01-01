@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.screen;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.network.server.SetStateOnDisguiseModule;
 import net.geforcemods.securitycraft.screen.components.StateSelector;
@@ -20,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModuleMenu> implements IHasExtraAreas {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/customize1.png");
@@ -76,7 +76,7 @@ public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModule
 
 			moduleTag.put("SavedState", NbtUtils.writeBlockState(state));
 			moduleTag.putInt("StandingOrWall", standingOrWall.ordinal());
-			SecurityCraft.CHANNEL.sendToServer(new SetStateOnDisguiseModule(state, standingOrWall));
+			PacketDistributor.SERVER.noArg().send(new SetStateOnDisguiseModule(state, standingOrWall));
 		}
 	}
 

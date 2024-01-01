@@ -23,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SonicSecuritySystemScreen extends Screen implements ConnectionAccessor {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/sonic_security_system.png");
@@ -89,7 +90,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 			boolean containsNotes = be.getNumberOfNotes() > 0;
 
 			be.setActive(toggledState);
-			SecurityCraft.CHANNEL.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), toggledState ? SyncSSSSettingsOnServer.DataType.POWER_ON : SyncSSSSettingsOnServer.DataType.POWER_OFF));
+			PacketDistributor.SERVER.noArg().send(new SyncSSSSettingsOnServer(be.getBlockPos(), toggledState ? SyncSSSSettingsOnServer.DataType.POWER_ON : SyncSSSSettingsOnServer.DataType.POWER_OFF));
 			powerButton.setMessage(getPowerString(toggledState));
 
 			if (!toggledState)
@@ -105,7 +106,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 		recordingButton = addRenderableWidget(new Button(buttonX, height / 2 - 37, 150, 20, getRecordingString(be.isRecording()), button -> {
 			boolean recording = !be.isRecording();
 			be.setRecording(recording);
-			SecurityCraft.CHANNEL.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), recording ? SyncSSSSettingsOnServer.DataType.RECORDING_ON : SyncSSSSettingsOnServer.DataType.RECORDING_OFF));
+			PacketDistributor.SERVER.noArg().send(new SyncSSSSettingsOnServer(be.getBlockPos(), recording ? SyncSSSSettingsOnServer.DataType.RECORDING_ON : SyncSSSSettingsOnServer.DataType.RECORDING_OFF));
 			recordingButton.setMessage(getRecordingString(be.isRecording()));
 		}, Button.DEFAULT_NARRATION));
 
@@ -117,7 +118,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 
 		clearButton = addRenderableWidget(new Button(buttonX, height / 2 + 7, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.clear"), button -> {
 			be.clearNotes();
-			SecurityCraft.CHANNEL.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.CLEAR_NOTES));
+			PacketDistributor.SERVER.noArg().send(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.CLEAR_NOTES));
 			playButton.active = false;
 			clearButton.active = false;
 		}, Button.DEFAULT_NARRATION));
@@ -125,7 +126,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 		invertButton = addRenderableWidget(new Button(buttonX, height / 2 + 29, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.invert_functionality"), button -> {
 			be.setDisableBlocksWhenTuneIsPlayed(!be.disablesBlocksWhenTuneIsPlayed());
 			updateInvertButtonTooltip();
-			SecurityCraft.CHANNEL.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.INVERT_FUNCTIONALITY));
+			PacketDistributor.SERVER.noArg().send(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.INVERT_FUNCTIONALITY));
 		}, Button.DEFAULT_NARRATION));
 		updateInvertButtonTooltip();
 		//@formatter:off
@@ -134,7 +135,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 			boolean toggledPing = !be.pings();
 
 			be.setPings(toggledPing);
-			SecurityCraft.CHANNEL.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), toggledPing ? SyncSSSSettingsOnServer.DataType.SOUND_ON : SyncSSSSettingsOnServer.DataType.SOUND_OFF));
+			PacketDistributor.SERVER.noArg().send(new SyncSSSSettingsOnServer(be.getBlockPos(), toggledPing ? SyncSSSSettingsOnServer.DataType.SOUND_ON : SyncSSSSettingsOnServer.DataType.SOUND_OFF));
 		}, new ResourceLocation(SecurityCraft.MODID, "sonic_security_system/sound"), new ResourceLocation(SecurityCraft.MODID, "sonic_security_system/no_sound")));
 		soundButton.setCurrentIndex(!be.pings() ? 1 : 0); // Use the disabled mic icon if the SSS is not emitting sounds
 
@@ -190,7 +191,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 	public void removePosition(BlockPos pos) {
 		be.delink(pos, true);
 		connectionList.refreshPositions();
-		SecurityCraft.CHANNEL.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.REMOVE_POS, pos));
+		PacketDistributor.SERVER.noArg().send(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.REMOVE_POS, pos));
 	}
 
 	private Component getRecordingString(boolean recording) {

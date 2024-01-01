@@ -13,7 +13,7 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.network.client.SendTip;
+import net.geforcemods.securitycraft.misc.Tips;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -106,7 +106,7 @@ public class SCCommand {
 					.append(Component.literal("] "))
 					.append(Utils.localize("messages.securitycraft:irc.connected"))
 					.append(Component.literal(" "))
-					.append(CommonHooks.newChatWithLinks(SendTip.TIPS_WITH_LINK.get("discord"))));
+					.append(CommonHooks.newChatWithLinks(Tips.TIPS_WITH_LINK.get("discord"))));
 			//@formatter:on
 			return 0;
 		});
@@ -126,7 +126,7 @@ public class SCCommand {
 
 	private static ArgumentBuilder<CommandSourceStack, ?> bug() {
 		return Commands.literal("bug").executes(ctx -> {
-			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().getPlayerOrException(), Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), SendTip.TIPS_WITH_LINK.get("discord"), ChatFormatting.GOLD);
+			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().getPlayerOrException(), Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), Tips.TIPS_WITH_LINK.get("discord"), ChatFormatting.GOLD);
 			return 0;
 		});
 	}

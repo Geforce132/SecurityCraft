@@ -24,6 +24,7 @@ import net.neoforged.fml.common.Mod.EventBusSubscriber;
 import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
 import net.neoforged.neoforge.event.TickEvent.ClientTickEvent;
 import net.neoforged.neoforge.event.TickEvent.Phase;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class CameraController {
@@ -121,7 +122,7 @@ public class CameraController {
 	}
 
 	private static void dismount() {
-		SecurityCraft.CHANNEL.sendToServer(new DismountCamera());
+		PacketDistributor.SERVER.noArg().send(new DismountCamera());
 	}
 
 	public static void moveViewUp(SecurityCamera cam) {

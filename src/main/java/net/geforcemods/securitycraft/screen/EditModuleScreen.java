@@ -16,7 +16,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.network.server.SetListModuleData;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
@@ -39,6 +38,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.scores.PlayerTeam;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class EditModuleScreen extends Screen {
 	private static CompoundTag savedModule;
@@ -121,8 +121,7 @@ public class EditModuleScreen extends Screen {
 	@Override
 	public void onClose() {
 		super.onClose();
-
-		SecurityCraft.CHANNEL.sendToServer(new SetListModuleData(module.getOrCreateTag()));
+		PacketDistributor.SERVER.noArg().send(new SetListModuleData(module.getOrCreateTag()));
 	}
 
 	@Override

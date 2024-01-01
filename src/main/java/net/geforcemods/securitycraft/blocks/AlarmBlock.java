@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
@@ -69,7 +68,7 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.ALARM, pos));
+					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.ALARM, pos));
 			}
 
 			return InteractionResult.SUCCESS;

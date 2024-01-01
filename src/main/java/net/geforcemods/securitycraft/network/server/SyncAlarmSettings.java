@@ -1,12 +1,16 @@
 package net.geforcemods.securitycraft.network.server;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class SyncAlarmSettings {
+public class SyncAlarmSettings implements CustomPacketPayload {
+	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "sync_alarm_settings");
 	private BlockPos pos;
 	private ResourceLocation soundEvent;
 	private float pitch;
@@ -28,15 +32,23 @@ public class SyncAlarmSettings {
 		soundLength = buf.readVarInt();
 	}
 
-	public void encode(FriendlyByteBuf buf) {
+	@Override
+	public void write(FriendlyByteBuf buf) {
 		buf.writeLong(pos.asLong());
 		buf.writeResourceLocation(soundEvent);
 		buf.writeFloat(pitch);
 		buf.writeVarInt(soundLength);
 	}
 
-	public void handle(NetworkEvent.Context ctx) {
-		if (ctx.getSender().level().getBlockEntity(pos) instanceof AlarmBlockEntity be && be.isOwnedBy(ctx.getSender())) {
+	@Override
+	public ResourceLocation id() {
+		return ID;
+	}
+
+	public void handle(PlayPayloadContext ctx) {
+		Player player = ctx.player().orElseThrow();
+
+		if (player.level().getBlockEntity(pos) instanceof AlarmBlockEntity be && be.isOwnedBy(player)) {
 			if (!soundEvent.equals(be.getSound().getLocation()))
 				be.setSound(soundEvent);
 

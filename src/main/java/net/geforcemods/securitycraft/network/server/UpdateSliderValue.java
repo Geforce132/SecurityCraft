@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.network.server;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -8,11 +9,14 @@ import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class UpdateSliderValue {
+public class UpdateSliderValue implements CustomPacketPayload {
+	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "update_slider_value");
 	private BlockPos pos;
 	private String optionName;
 	private double value;
@@ -31,14 +35,20 @@ public class UpdateSliderValue {
 		value = buf.readDouble();
 	}
 
-	public void encode(FriendlyByteBuf buf) {
+	@Override
+	public void write(FriendlyByteBuf buf) {
 		buf.writeBlockPos(pos);
 		buf.writeUtf(optionName);
 		buf.writeDouble(value);
 	}
 
-	public void handle(NetworkEvent.Context ctx) {
-		Player player = ctx.getSender();
+	@Override
+	public ResourceLocation id() {
+		return ID;
+	}
+
+	public void handle(PlayPayloadContext ctx) {
+		Player player = ctx.player().orElseThrow();
 		BlockEntity be = player.level().getBlockEntity(pos);
 
 		if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {

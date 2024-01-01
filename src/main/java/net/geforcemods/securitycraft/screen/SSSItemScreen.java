@@ -5,7 +5,6 @@ import java.util.Set;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.network.server.RemovePositionFromSSS;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList;
@@ -16,6 +15,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SSSItemScreen extends Screen implements ConnectionAccessor {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
@@ -81,7 +81,7 @@ public class SSSItemScreen extends Screen implements ConnectionAccessor {
 	@Override
 	public void removePosition(BlockPos pos) {
 		SonicSecuritySystemItem.removeLinkedBlock(stack.getTag(), pos);
-		SecurityCraft.CHANNEL.sendToServer(new RemovePositionFromSSS(pos));
+		PacketDistributor.SERVER.noArg().send(new RemovePositionFromSSS(pos));
 		connectionList.refreshPositions();
 	}
 }

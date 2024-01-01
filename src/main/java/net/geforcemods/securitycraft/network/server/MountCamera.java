@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.network.server;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -8,12 +9,15 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class MountCamera {
+public class MountCamera implements CustomPacketPayload {
+	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "mount_camera");
 	private BlockPos pos;
 
 	public MountCamera() {}
@@ -26,12 +30,18 @@ public class MountCamera {
 		pos = buf.readBlockPos();
 	}
 
-	public void encode(FriendlyByteBuf buf) {
+	@Override
+	public void write(FriendlyByteBuf buf) {
 		buf.writeBlockPos(pos);
 	}
 
-	public void handle(NetworkEvent.Context ctx) {
-		ServerPlayer player = ctx.getSender();
+	@Override
+	public ResourceLocation id() {
+		return ID;
+	}
+
+	public void handle(PlayPayloadContext ctx) {
+		Player player = ctx.player().orElseThrow();
 		Level level = player.level();
 		BlockState state = level.getBlockState(pos);
 

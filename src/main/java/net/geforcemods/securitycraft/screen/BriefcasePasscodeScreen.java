@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.CheckBriefcasePasscode;
 import net.geforcemods.securitycraft.network.server.SetBriefcasePasscodeAndOwner;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -15,6 +14,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class BriefcasePasscodeScreen extends Screen {
 	public static final String UP_ARROW = "\u2191";
@@ -91,11 +91,11 @@ public class BriefcasePasscodeScreen extends Screen {
 			String passcode = digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3];
 
 			if (isSetup) {
-				SecurityCraft.CHANNEL.sendToServer(new SetBriefcasePasscodeAndOwner(passcode));
+				PacketDistributor.SERVER.noArg().send(new SetBriefcasePasscodeAndOwner(passcode));
 				ClientHandler.displayBriefcasePasscodeScreen(briefcase.getHoverName());
 			}
 			else
-				SecurityCraft.CHANNEL.sendToServer(new CheckBriefcasePasscode(passcode));
+				PacketDistributor.SERVER.noArg().send(new CheckBriefcasePasscode(passcode));
 		}
 	}
 

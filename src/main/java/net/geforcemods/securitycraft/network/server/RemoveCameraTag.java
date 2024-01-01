@@ -1,13 +1,17 @@
 package net.geforcemods.securitycraft.network.server;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class RemoveCameraTag {
+public class RemoveCameraTag implements CustomPacketPayload {
+	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "remove_camera_tag");
 	private int camID;
 
 	public RemoveCameraTag() {}
@@ -20,12 +24,18 @@ public class RemoveCameraTag {
 		camID = buf.readInt();
 	}
 
-	public void encode(FriendlyByteBuf buf) {
+	@Override
+	public void write(FriendlyByteBuf buf) {
 		buf.writeInt(camID);
 	}
 
-	public void handle(NetworkEvent.Context ctx) {
-		ItemStack monitor = PlayerUtils.getItemStackFromAnyHand(ctx.getSender(), SCContent.CAMERA_MONITOR.get());
+	@Override
+	public ResourceLocation id() {
+		return ID;
+	}
+
+	public void handle(PlayPayloadContext ctx) {
+		ItemStack monitor = PlayerUtils.getItemStackFromAnyHand(ctx.player().orElseThrow(), SCContent.CAMERA_MONITOR.get());
 
 		if (!monitor.isEmpty())
 			monitor.getTag().remove(CameraMonitorItem.getTagNameFromPosition(monitor.getTag(), CameraMonitorItem.getCameraPositions(monitor.getTag()).get(camID - 1)));

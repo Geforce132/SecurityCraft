@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.LevelUtils;
@@ -72,7 +71,7 @@ public class CameraMonitorItem extends Item {
 			}
 
 			if (!level.isClientSide && !stack.isEmpty())
-				SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+				PacketDistributor.PLAYER.with((ServerPlayer) player).send(new UpdateNBTTagOnClient(stack));
 
 			return InteractionResult.SUCCESS;
 		}

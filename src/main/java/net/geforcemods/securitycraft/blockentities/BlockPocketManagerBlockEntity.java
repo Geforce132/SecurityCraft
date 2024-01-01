@@ -7,7 +7,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
@@ -53,6 +52,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity implements MenuProvider, ITickingBlockEntity, ILockable {
 	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;
@@ -166,7 +166,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	public MutableComponent enableMultiblock() {
 		if (!isEnabled()) { //multiblock detection
 			if (level.isClientSide)
-				SecurityCraft.CHANNEL.sendToServer(new ToggleBlockPocketManager(this, true, getSize()));
+				PacketDistributor.SERVER.noArg().send(new ToggleBlockPocketManager(this, true, getSize()));
 
 			List<BlockPos> blocks = new ArrayList<>();
 			List<BlockPos> sides = new ArrayList<>();
@@ -325,7 +325,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	public MutableComponent autoAssembleMultiblock() {
 		if (!isEnabled()) {
 			if (level.isClientSide)
-				SecurityCraft.CHANNEL.sendToServer(new AssembleBlockPocket(this, getSize()));
+				PacketDistributor.SERVER.noArg().send(new AssembleBlockPocket(this, getSize()));
 
 			final Direction managerFacing = getBlockState().getValue(BlockPocketManagerBlock.FACING);
 			final Direction left = managerFacing.getClockWise();
@@ -508,7 +508,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	public void disableMultiblock() {
 		if (isEnabled()) {
 			if (level.isClientSide) {
-				SecurityCraft.CHANNEL.sendToServer(new ToggleBlockPocketManager(this, false, getSize()));
+				PacketDistributor.SERVER.noArg().send(new ToggleBlockPocketManager(this, false, getSize()));
 				PlayerUtils.sendMessageToPlayer(ClientHandler.getClientPlayer(), Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:blockpocket.deactivated"), ChatFormatting.DARK_AQUA, true);
 			}
 

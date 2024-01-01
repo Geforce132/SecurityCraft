@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> implements IHasExtraAreas {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/projector.png");
@@ -75,14 +76,14 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 			projectionRangeSlider.setMaxValue(projectionRangeSlider.getMaxValue() - (horizontal ? 16 : -16));
 			projectionRangeSlider.setValue(projectionRangeSlider.getValue() - (horizontal ? 16 : -16));
 			applySliderValue(projectionRangeSlider);
-			SecurityCraft.CHANNEL.sendToServer(new SyncProjector(be.getBlockPos(), be.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
+			PacketDistributor.SERVER.noArg().send(new SyncProjector(be.getBlockPos(), be.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
 		}, new ResourceLocation(SecurityCraft.MODID, "projector/vertical"), new ResourceLocation(SecurityCraft.MODID, "projector/horizontal")));
 		horizontalToggleButton.setCurrentIndex(be.isHorizontal() ? 1 : 0);
 		updateHorizontalToggleButtonTooltip();
 
 		overrideCheckbox = addRenderableWidget(new CallbackCheckbox(left + sliderWidth - 41, topPos + 36, 20, 20, Component.empty(), be.isOverridingBlocks(), newValue -> {
 			be.setOverridingBlocks(newValue);
-			SecurityCraft.CHANNEL.sendToServer(new SyncProjector(be.getBlockPos(), be.isOverridingBlocks() ? 1 : 0, DataType.OVERRIDING_BLOCKS));
+			PacketDistributor.SERVER.noArg().send(new SyncProjector(be.getBlockPos(), be.isOverridingBlocks() ? 1 : 0, DataType.OVERRIDING_BLOCKS));
 			updateOverrideCheckboxTooltip();
 		}, 0));
 		updateOverrideCheckboxTooltip();
@@ -143,7 +144,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 
 		if (stateSelector.getState() != null) {
 			be.setProjectedState(stateSelector.getState());
-			SecurityCraft.CHANNEL.sendToServer(new SyncProjector(be.getBlockPos(), stateSelector.getState()));
+			PacketDistributor.SERVER.noArg().send(new SyncProjector(be.getBlockPos(), stateSelector.getState()));
 		}
 	}
 
@@ -176,6 +177,6 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 			dataType = DataType.OFFSET;
 		}
 
-		SecurityCraft.CHANNEL.sendToServer(new SyncProjector(be.getBlockPos(), data, dataType));
+		PacketDistributor.SERVER.noArg().send(new SyncProjector(be.getBlockPos(), data, dataType));
 	}
 }

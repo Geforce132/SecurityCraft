@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.screen;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
@@ -13,6 +12,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class IMSScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
@@ -70,6 +70,6 @@ public class IMSScreen extends Screen {
 	private void modeButtonClicked(Button button) {
 		targetMode = TargetingMode.values()[((ToggleComponentButton) button).getCurrentIndex()];
 		be.setTargetingMode(targetMode);
-		SecurityCraft.CHANNEL.sendToServer(new SyncIMSTargetingOption(be.getBlockPos(), be.getTargetingMode()));
+		PacketDistributor.SERVER.noArg().send(new SyncIMSTargetingOption(be.getBlockPos(), be.getTargetingMode()));
 	}
 }

@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
@@ -69,7 +68,7 @@ public class MineRemoteAccessToolItem extends Item {
 				stack.getTag().putIntArray(("mine" + nextSlot), BlockUtils.posToIntArray(pos));
 
 				if (!level.isClientSide && !stack.isEmpty())
-					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new UpdateNBTTagOnClient(stack));
 
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
 				return InteractionResult.SUCCESS;
@@ -122,7 +121,7 @@ public class MineRemoteAccessToolItem extends Item {
 				stack.getTag().remove("mine" + i);
 
 				if (!player.level().isClientSide && !stack.isEmpty())
-					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new UpdateNBTTagOnClient(stack));
 
 				return;
 			}

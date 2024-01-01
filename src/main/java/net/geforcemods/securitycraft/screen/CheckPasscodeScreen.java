@@ -4,7 +4,6 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -21,6 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class CheckPasscodeScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/check_passcode.png");
@@ -178,7 +178,7 @@ public class CheckPasscodeScreen extends Screen {
 			toggleChildrenActive(false);
 
 		keycodeTextbox.setValue("");
-		SecurityCraft.CHANNEL.sendToServer(new CheckPasscode(pos.getX(), pos.getY(), pos.getZ(), code));
+		PacketDistributor.SERVER.noArg().send(new CheckPasscode(pos.getX(), pos.getY(), pos.getZ(), code));
 	}
 
 	public static class CensoringEditBox extends EditBox {

@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -72,7 +71,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.RIFT_STABILIZER, pos));
+					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.RIFT_STABILIZER, pos));
 			}
 
 			return InteractionResult.SUCCESS;

@@ -26,6 +26,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SentryRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/srat.png");
@@ -206,7 +207,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 				guiButtons[sentry][TARGETS].active = SentryMode.values()[resultingMode] != SentryMode.IDLE;
 				sentries.get(0).toggleMode(Minecraft.getInstance().player, resultingMode, false);
-				SecurityCraft.CHANNEL.sendToServer(new SetSentryMode(sentries.get(0).blockPosition(), resultingMode));
+				PacketDistributor.SERVER.noArg().send(new SetSentryMode(sentries.get(0).blockPosition(), resultingMode));
 				updateModeButtonTooltip(guiButtons[sentry][MODE]);
 				updateTargetsButtonTooltip(guiButtons[sentry][TARGETS]);
 			}
@@ -316,7 +317,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 			if (coords.length == 3 && coords[0] == x && coords[1] == y && coords[2] == z) {
 				stack.getTag().remove("sentry" + i);
-				SecurityCraft.CHANNEL.sendToServer(new RemoveSentryFromSRAT(i));
+				PacketDistributor.SERVER.noArg().send(new RemoveSentryFromSRAT(i));
 				return;
 			}
 		}

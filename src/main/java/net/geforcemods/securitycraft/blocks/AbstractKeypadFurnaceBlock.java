@@ -46,7 +46,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -157,7 +156,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	public void activate(AbstractKeypadFurnaceBlockEntity be, Level level, BlockPos pos, Player player) {
 		if (player instanceof ServerPlayer serverPlayer) {
 			level.gameEvent(player, GameEvent.CONTAINER_OPEN, pos);
-			NetworkHooks.openScreen(serverPlayer, be, pos);
+			serverPlayer.openMenu(be, pos);
 		}
 	}
 

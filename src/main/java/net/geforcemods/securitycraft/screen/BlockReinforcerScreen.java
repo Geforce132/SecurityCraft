@@ -13,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforcerMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer.png");
@@ -83,6 +84,6 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	@Override
 	public void onClose() {
 		super.onClose();
-		SecurityCraft.CHANNEL.sendToServer(new SyncBlockReinforcer(!unreinforceCheckbox.selected()));
+		PacketDistributor.SERVER.noArg().send(new SyncBlockReinforcer(!unreinforceCheckbox.selected()));
 	}
 }

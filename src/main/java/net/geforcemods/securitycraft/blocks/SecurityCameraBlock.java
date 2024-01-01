@@ -145,7 +145,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 			//can't use ServerPlayer#setCamera here because it also teleports the player
 			serverPlayer.camera = dummyEntity;
-			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SetCameraView(dummyEntity));
+			PacketDistributor.PLAYER.with(serverPlayer).send(new SetCameraView(dummyEntity));
 
 			if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity cam)
 				cam.startViewing();

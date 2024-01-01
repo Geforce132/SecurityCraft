@@ -16,7 +16,6 @@ import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
-import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
@@ -83,9 +82,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.network.simple.MessageFunctions.MessageConsumer;
-import net.neoforged.neoforge.network.simple.MessageFunctions.MessageDecoder;
-import net.neoforged.neoforge.network.simple.MessageFunctions.MessageEncoder;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
@@ -140,61 +137,58 @@ public class RegistrationHandler {
 		event.put(SCContent.SENTRY_ENTITY.get(), Mob.createMobAttributes().build());
 	}
 
-	public static void registerPackets() {
-		int id = 0;
-
+	@SubscribeEvent
+	public static void registerPackets(RegisterPayloadHandlerEvent event) {
+		//@formatter:off
+		event.registrar(SecurityCraft.MODID).versioned(SecurityCraft.getVersion())
 		//client
-		registerPacket(id++, InitSentryAnimation.class, InitSentryAnimation::encode, InitSentryAnimation::new, InitSentryAnimation::handle);
-		registerPacket(id++, OpenScreen.class, OpenScreen::encode, OpenScreen::new, OpenScreen::handle);
-		registerPacket(id++, PlayAlarmSound.class, PlayAlarmSound::encode, PlayAlarmSound::new, PlayAlarmSound::handle);
-		registerPacket(id++, RefreshDisguisableModel.class, RefreshDisguisableModel::encode, RefreshDisguisableModel::new, RefreshDisguisableModel::handle);
-		registerPacket(id++, SendTip.class, SendTip::encode, SendTip::new, SendTip::handle);
-		registerPacket(id++, SetCameraView.class, SetCameraView::encode, SetCameraView::new, SetCameraView::handle);
-		registerPacket(id++, SetTrophySystemTarget.class, SetTrophySystemTarget::encode, SetTrophySystemTarget::new, SetTrophySystemTarget::handle);
-		registerPacket(id++, UpdateLaserColors.class, UpdateLaserColors::encode, UpdateLaserColors::new, UpdateLaserColors::handle);
-		registerPacket(id++, UpdateLogger.class, UpdateLogger::encode, UpdateLogger::new, UpdateLogger::handle);
-		registerPacket(id++, UpdateNBTTagOnClient.class, UpdateNBTTagOnClient::encode, UpdateNBTTagOnClient::new, UpdateNBTTagOnClient::handle);
+		.play(InitSentryAnimation.ID, InitSentryAnimation::new, play -> play.client(InitSentryAnimation::handle))
+		.play(OpenScreen.ID, OpenScreen::new, play -> play.client(OpenScreen::handle))
+		.play(PlayAlarmSound.ID, PlayAlarmSound::new, play -> play.client(PlayAlarmSound::handle))
+		.play(RefreshDisguisableModel.ID, RefreshDisguisableModel::new, play -> play.client(RefreshDisguisableModel::handle))
+		.play(SetCameraView.ID, SetCameraView::new, play -> play.client(SetCameraView::handle))
+		.play(SetTrophySystemTarget.ID, SetTrophySystemTarget::new, play -> play.client(SetTrophySystemTarget::handle))
+		.play(UpdateLaserColors.ID, UpdateLaserColors::new, play -> play.client(UpdateLaserColors::handle))
+		.play(UpdateLogger.ID, UpdateLogger::new, play -> play.client(UpdateLogger::handle))
+		.play(UpdateNBTTagOnClient.ID, UpdateNBTTagOnClient::new, play -> play.client(UpdateNBTTagOnClient::handle))
 		//server
-		registerPacket(id++, AssembleBlockPocket.class, AssembleBlockPocket::encode, AssembleBlockPocket::new, AssembleBlockPocket::handle);
-		registerPacket(id++, CheckPasscode.class, CheckPasscode::encode, CheckPasscode::new, CheckPasscode::handle);
-		registerPacket(id++, ClearChangeDetectorServer.class, ClearChangeDetectorServer::encode, ClearChangeDetectorServer::new, ClearChangeDetectorServer::handle);
-		registerPacket(id++, ClearLoggerServer.class, ClearLoggerServer::encode, ClearLoggerServer::new, ClearLoggerServer::handle);
-		registerPacket(id++, DismountCamera.class, DismountCamera::encode, DismountCamera::new, DismountCamera::handle);
-		registerPacket(id++, MountCamera.class, MountCamera::encode, MountCamera::new, MountCamera::handle);
-		registerPacket(id++, CheckBriefcasePasscode.class, CheckBriefcasePasscode::encode, CheckBriefcasePasscode::new, CheckBriefcasePasscode::handle);
-		registerPacket(id++, RemoteControlMine.class, RemoteControlMine::encode, RemoteControlMine::new, RemoteControlMine::handle);
-		registerPacket(id++, RemoveCameraTag.class, RemoveCameraTag::encode, RemoveCameraTag::new, RemoveCameraTag::handle);
-		registerPacket(id++, RemoveMineFromMRAT.class, RemoveMineFromMRAT::encode, RemoveMineFromMRAT::new, RemoveMineFromMRAT::handle);
-		registerPacket(id++, RemovePositionFromSSS.class, RemovePositionFromSSS::encode, RemovePositionFromSSS::new, RemovePositionFromSSS::handle);
-		registerPacket(id++, RemoveSentryFromSRAT.class, RemoveSentryFromSRAT::encode, RemoveSentryFromSRAT::new, RemoveSentryFromSRAT::handle);
-		registerPacket(id++, SyncAlarmSettings.class, SyncAlarmSettings::encode, SyncAlarmSettings::new, SyncAlarmSettings::handle);
-		registerPacket(id++, SetBriefcasePasscodeAndOwner.class, SetBriefcasePasscodeAndOwner::encode, SetBriefcasePasscodeAndOwner::new, SetBriefcasePasscodeAndOwner::handle);
-		registerPacket(id++, SetCameraPowered.class, SetCameraPowered::encode, SetCameraPowered::new, SetCameraPowered::handle);
-		registerPacket(id++, SetGhostSlot.class, SetGhostSlot::encode, SetGhostSlot::new, SetGhostSlot::handle);
-		registerPacket(id++, SetKeycardUses.class, SetKeycardUses::encode, SetKeycardUses::new, SetKeycardUses::handle);
-		registerPacket(id++, SetListModuleData.class, SetListModuleData::encode, SetListModuleData::new, SetListModuleData::handle);
-		registerPacket(id++, SetPasscode.class, SetPasscode::encode, SetPasscode::new, SetPasscode::handle);
-		registerPacket(id++, SetSentryMode.class, SetSentryMode::encode, SetSentryMode::new, SetSentryMode::handle);
-		registerPacket(id++, SetStateOnDisguiseModule.class, SetStateOnDisguiseModule::encode, SetStateOnDisguiseModule::new, SetStateOnDisguiseModule::handle);
-		registerPacket(id++, SyncBlockChangeDetector.class, SyncBlockChangeDetector::encode, SyncBlockChangeDetector::new, SyncBlockChangeDetector::handle);
-		registerPacket(id++, SyncBlockReinforcer.class, SyncBlockReinforcer::encode, SyncBlockReinforcer::new, SyncBlockReinforcer::handle);
-		registerPacket(id++, SyncBlockPocketManager.class, SyncBlockPocketManager::encode, SyncBlockPocketManager::new, SyncBlockPocketManager::handle);
-		registerPacket(id++, SyncIMSTargetingOption.class, SyncIMSTargetingOption::encode, SyncIMSTargetingOption::new, SyncIMSTargetingOption::handle);
-		registerPacket(id++, SyncKeycardSettings.class, SyncKeycardSettings::encode, SyncKeycardSettings::new, SyncKeycardSettings::handle);
-		registerPacket(id++, SyncLaserSideConfig.class, SyncLaserSideConfig::encode, SyncLaserSideConfig::new, SyncLaserSideConfig::handle);
-		registerPacket(id++, SyncProjector.class, SyncProjector::encode, SyncProjector::new, SyncProjector::handle);
-		registerPacket(id++, SyncRiftStabilizer.class, SyncRiftStabilizer::encode, SyncRiftStabilizer::new, SyncRiftStabilizer::handle);
-		registerPacket(id++, SyncSSSSettingsOnServer.class, SyncSSSSettingsOnServer::encode, SyncSSSSettingsOnServer::new, SyncSSSSettingsOnServer::handle);
-		registerPacket(id++, SyncTrophySystem.class, SyncTrophySystem::encode, SyncTrophySystem::new, SyncTrophySystem::handle);
-		registerPacket(id++, ToggleBlockPocketManager.class, ToggleBlockPocketManager::encode, ToggleBlockPocketManager::new, ToggleBlockPocketManager::handle);
-		registerPacket(id++, ToggleModule.class, ToggleModule::encode, ToggleModule::new, ToggleModule::handle);
-		registerPacket(id++, ToggleNightVision.class, ToggleNightVision::encode, ToggleNightVision::new, ToggleNightVision::handle);
-		registerPacket(id++, ToggleOption.class, ToggleOption::encode, ToggleOption::new, ToggleOption::handle);
-		registerPacket(id++, UpdateSliderValue.class, UpdateSliderValue::encode, UpdateSliderValue::new, UpdateSliderValue::handle);
-	}
-
-	private static <MSG> void registerPacket(int id, Class<MSG> type, MessageEncoder<MSG> encoder, MessageDecoder<MSG> decoder, MessageConsumer<MSG> messageHandler) {
-		SecurityCraft.CHANNEL.messageBuilder(type, id).encoder(encoder).decoder(decoder).consumerMainThread(messageHandler).add();
+		.play(AssembleBlockPocket.ID, AssembleBlockPocket::new, play -> play.server(AssembleBlockPocket::handle))
+		.play(CheckPasscode.ID, CheckPasscode::new, play -> play.server(CheckPasscode::handle))
+		.play(ClearChangeDetectorServer.ID, ClearChangeDetectorServer::new, play -> play.server(ClearChangeDetectorServer::handle))
+		.play(ClearLoggerServer.ID, ClearLoggerServer::new, play -> play.server(ClearLoggerServer::handle))
+		.play(DismountCamera.ID, DismountCamera::new, play -> play.server(DismountCamera::handle))
+		.play(MountCamera.ID, MountCamera::new, play -> play.server(MountCamera::handle))
+		.play(CheckBriefcasePasscode.ID, CheckBriefcasePasscode::new, play -> play.server(CheckBriefcasePasscode::handle))
+		.play(RemoteControlMine.ID, RemoteControlMine::new, play -> play.server(RemoteControlMine::handle))
+		.play(RemoveCameraTag.ID, RemoveCameraTag::new, play -> play.server(RemoveCameraTag::handle))
+		.play(RemoveMineFromMRAT.ID, RemoveMineFromMRAT::new, play -> play.server(RemoveMineFromMRAT::handle))
+		.play(RemovePositionFromSSS.ID, RemovePositionFromSSS::new, play -> play.server(RemovePositionFromSSS::handle))
+		.play(RemoveSentryFromSRAT.ID, RemoveSentryFromSRAT::new, play -> play.server(RemoveSentryFromSRAT::handle))
+		.play(SyncAlarmSettings.ID, SyncAlarmSettings::new, play -> play.server(SyncAlarmSettings::handle))
+		.play(SetBriefcasePasscodeAndOwner.ID, SetBriefcasePasscodeAndOwner::new, play -> play.server(SetBriefcasePasscodeAndOwner::handle))
+		.play(SetCameraPowered.ID, SetCameraPowered::new, play -> play.server(SetCameraPowered::handle))
+		.play(SetGhostSlot.ID, SetGhostSlot::new, play -> play.server(SetGhostSlot::handle))
+		.play(SetKeycardUses.ID, SetKeycardUses::new, play -> play.server(SetKeycardUses::handle))
+		.play(SetListModuleData.ID, SetListModuleData::new, play -> play.server(SetListModuleData::handle))
+		.play(SetPasscode.ID, SetPasscode::new, play -> play.server(SetPasscode::handle))
+		.play(SetSentryMode.ID, SetSentryMode::new, play -> play.server(SetSentryMode::handle))
+		.play(SetStateOnDisguiseModule.ID, SetStateOnDisguiseModule::new, play -> play.server(SetStateOnDisguiseModule::handle))
+		.play(SyncBlockChangeDetector.ID, SyncBlockChangeDetector::new, play -> play.server(SyncBlockChangeDetector::handle))
+		.play(SyncBlockReinforcer.ID, SyncBlockReinforcer::new, play -> play.server(SyncBlockReinforcer::handle))
+		.play(SyncBlockPocketManager.ID, SyncBlockPocketManager::new, play -> play.server(SyncBlockPocketManager::handle))
+		.play(SyncIMSTargetingOption.ID, SyncIMSTargetingOption::new, play -> play.server(SyncIMSTargetingOption::handle))
+		.play(SyncKeycardSettings.ID, SyncKeycardSettings::new, play -> play.server(SyncKeycardSettings::handle))
+		.play(SyncLaserSideConfig.ID, SyncLaserSideConfig::new, play -> play.server(SyncLaserSideConfig::handle))
+		.play(SyncProjector.ID, SyncProjector::new, play -> play.server(SyncProjector::handle))
+		.play(SyncRiftStabilizer.ID, SyncRiftStabilizer::new, play -> play.server(SyncRiftStabilizer::handle))
+		.play(SyncSSSSettingsOnServer.ID, SyncSSSSettingsOnServer::new, play -> play.server(SyncSSSSettingsOnServer::handle))
+		.play(SyncTrophySystem.ID, SyncTrophySystem::new, play -> play.server(SyncTrophySystem::handle))
+		.play(ToggleBlockPocketManager.ID, ToggleBlockPocketManager::new, play -> play.server(ToggleBlockPocketManager::handle))
+		.play(ToggleModule.ID, ToggleModule::new, play -> play.server(ToggleModule::handle))
+		.play(ToggleNightVision.ID, ToggleNightVision::new, play -> play.server(ToggleNightVision::handle))
+		.play(ToggleOption.ID, ToggleOption::new, play -> play.server(ToggleOption::handle))
+		.play(UpdateSliderValue.ID, UpdateSliderValue::new, play -> play.server(UpdateSliderValue::handle));
+		//@formatter:on
 	}
 
 	@SubscribeEvent

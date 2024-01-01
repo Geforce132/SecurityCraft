@@ -1,14 +1,19 @@
 package net.geforcemods.securitycraft.network.server;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class SyncRiftStabilizer {
+public class SyncRiftStabilizer implements CustomPacketPayload {
+	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "sync_rift_stabilizer");
 	private BlockPos pos;
 	private TeleportationType teleportationType;
 	private boolean allowed;
@@ -27,17 +32,24 @@ public class SyncRiftStabilizer {
 		allowed = buf.readBoolean();
 	}
 
-	public void encode(FriendlyByteBuf buf) {
+	@Override
+	public void write(FriendlyByteBuf buf) {
 		buf.writeBlockPos(pos);
 		buf.writeEnum(teleportationType);
 		buf.writeBoolean(allowed);
 	}
 
-	public void handle(NetworkEvent.Context ctx) {
-		if (teleportationType != null) {
-			Level level = ctx.getSender().level();
+	@Override
+	public ResourceLocation id() {
+		return ID;
+	}
 
-			if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be && be.isOwnedBy(ctx.getSender())) {
+	public void handle(PlayPayloadContext ctx) {
+		if (teleportationType != null) {
+			Player player = ctx.player().orElseThrow();
+			Level level = player.level();
+
+			if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be && be.isOwnedBy(player)) {
 				BlockState state = level.getBlockState(pos);
 
 				be.setFilter(teleportationType, allowed);

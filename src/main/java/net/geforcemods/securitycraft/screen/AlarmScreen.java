@@ -38,6 +38,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class AlarmScreen extends Screen {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm.png");
@@ -130,7 +131,7 @@ public class AlarmScreen extends Screen {
 		}
 
 		if (changed)
-			SecurityCraft.CHANNEL.sendToServer(new SyncAlarmSettings(be.getBlockPos(), selectedSoundEvent, pitch, soundLength));
+			PacketDistributor.SERVER.noArg().send(new SyncAlarmSettings(be.getBlockPos(), selectedSoundEvent, pitch, soundLength));
 	}
 
 	@Override

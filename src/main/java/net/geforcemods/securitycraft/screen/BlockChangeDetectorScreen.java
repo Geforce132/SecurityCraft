@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 import com.mojang.blaze3d.vertex.Tesselator;
 
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
@@ -44,6 +43,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChangeDetectorMenu> implements ContainerListener, IHasExtraAreas {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_change_detector.png");
@@ -77,7 +77,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			changeEntryList.filteredEntries.clear();
 			be.getEntries().clear();
 			be.setChanged();
-			SecurityCraft.CHANNEL.sendToServer(new ClearChangeDetectorServer(be.getBlockPos()));
+			PacketDistributor.SERVER.noArg().send(new ClearChangeDetectorServer(be.getBlockPos()));
 		}));
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
 		boolean isOwner = be.isOwnedBy(minecraft.player);
@@ -239,7 +239,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		int currentColor = be.getColor();
 
 		if (previousMode != currentMode || wasShowingHighlights != isShowingHighlights || previousColor != currentColor)
-			SecurityCraft.CHANNEL.sendToServer(new SyncBlockChangeDetector(be.getBlockPos(), currentMode, isShowingHighlights, currentColor));
+			PacketDistributor.SERVER.noArg().send(new SyncBlockChangeDetector(be.getBlockPos(), currentMode, isShowingHighlights, currentColor));
 
 		be.updateFilteredEntries();
 	}

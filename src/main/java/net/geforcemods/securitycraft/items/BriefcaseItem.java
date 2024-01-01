@@ -6,7 +6,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.misc.SaltData;
@@ -33,7 +32,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.NetworkHooks;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class BriefcaseItem extends Item implements DyeableLeatherItem {
@@ -62,7 +60,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 
 	private void handle(ItemStack stack, Level level, Player player) {
 		if (!level.isClientSide)
-			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(stack.getOrCreateTag().contains("passcode") ? OpenScreen.DataType.CHECK_BRIEFCASE_PASSCODE : OpenScreen.DataType.SET_BRIEFCASE_PASSCODE));
+			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(stack.getOrCreateTag().contains("passcode") ? OpenScreen.DataType.CHECK_BRIEFCASE_PASSCODE : OpenScreen.DataType.SET_BRIEFCASE_PASSCODE));
 	}
 
 	@Override
@@ -83,7 +81,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 		});
 	}
 
-	public static void checkPasscode(ServerPlayer player, ItemStack briefcase, String incomingCode, String briefcaseCode, CompoundTag tag) {
+	public static void checkPasscode(Player player, ItemStack briefcase, String incomingCode, String briefcaseCode, CompoundTag tag) {
 		UUID saltKey = tag.contains("saltKey", Tag.TAG_INT_ARRAY) ? tag.getUUID("saltKey") : null;
 		byte[] salt = SaltData.getSalt(saltKey);
 
@@ -99,7 +97,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 					tag.putString("ownerUUID", player.getUUID().toString());
 				}
 
-				NetworkHooks.openScreen(player, new MenuProvider() {
+				player.openMenu(new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 						return new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get())));

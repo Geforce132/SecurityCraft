@@ -6,7 +6,6 @@ import java.util.function.ToIntFunction;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.Option;
@@ -42,6 +41,7 @@ import net.neoforged.neoforge.event.entity.EntityTeleportEvent.EnderEntity;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent.EnderPearl;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent.SpreadPlayersCommand;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent.TeleportCommand;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable, IToggleableEntries<TeleportationType> {
 	private final IntOption signalLength = new IntOption("signalLength", 60, 5, 400, 5, true); //20 seconds max
@@ -87,7 +87,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 			setChanged();
 
 			if (level.isClientSide)
-				SecurityCraft.CHANNEL.sendToServer(new SyncRiftStabilizer(worldPosition, teleportationType, allowed));
+				PacketDistributor.SERVER.noArg().send(new SyncRiftStabilizer(worldPosition, teleportationType, allowed));
 
 			RiftStabilizerBlockEntity connectedBlockEntity = RiftStabilizerBlock.getConnectedBlockEntity(level, worldPosition);
 

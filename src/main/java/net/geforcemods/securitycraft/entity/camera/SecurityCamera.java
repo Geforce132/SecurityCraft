@@ -110,12 +110,12 @@ public class SecurityCamera extends Entity {
 		BlockPos pos = blockPosition();
 
 		if (((IModuleInventory) level().getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
-			SecurityCraft.CHANNEL.sendToServer(new SetCameraPowered(pos, !level().getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
+			PacketDistributor.SERVER.noArg().send(new SetCameraPowered(pos, !level().getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
 	}
 
 	public void toggleNightVisionFromClient() {
 		toggleNightVisionCooldown = 30;
-		SecurityCraft.CHANNEL.sendToServer(new ToggleNightVision());
+		PacketDistributor.SERVER.noArg().send(new ToggleNightVision());
 	}
 
 	public float getZoomAmount() {
@@ -160,7 +160,7 @@ public class SecurityCamera extends Entity {
 		if (!level().isClientSide) {
 			discard();
 			player.camera = player;
-			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new SetCameraView(player));
+			PacketDistributor.PLAYER.with(player).send(new SetCameraView(player));
 			DISMOUNTED_PLAYERS.add(player);
 
 			if (player.getEffect(MobEffects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)
