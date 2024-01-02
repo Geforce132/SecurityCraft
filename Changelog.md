@@ -28,6 +28,7 @@
 - Fix: Manually editing the time in an Alarm and exiting the screen using the escape key does not save the time
 - Fix: The Disguise Module still applies a disguise after the block inside the module was removed
 - Fix: The block state preview does not show in the Disguise Module's and Projector's screen
+- Fix: Fake Lava can ignite non-flammable blocks around itself
 - Misc.: ProjectE support has been updated with previously missing EMC values
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
