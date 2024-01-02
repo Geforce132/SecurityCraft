@@ -30,6 +30,7 @@
 - Fix: The Disguise Module still applies a disguise after the block inside the module was removed
 - Fix: The "return" button in the Keycard Reader does not display correctly sometimes
 - Fix: The block state preview does not show in the Disguise Module's and Projector's screen
+- Fix: Fake Lava can ignite non-flammable blocks around itself
 - Misc.: The minimum required NeoForge version is 20.2.88 (necessary to fix players getting kicked from the server when placing a Sentry)
 
 --------------------------Changelog for v1.9.8-beta4 of SecurityCraft--------------------------
