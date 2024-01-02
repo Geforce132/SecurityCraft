@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -114,7 +113,7 @@ public class IMSBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 					be.setBombsRemaining(mines + 1);
 				}
 				else
-					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.IMS, pos));
+					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.IMS, pos));
 			}
 		}
 

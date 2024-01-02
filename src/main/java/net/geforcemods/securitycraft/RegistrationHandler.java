@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import net.geforcemods.securitycraft.blockentities.AbstractKeypadFurnaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
@@ -16,7 +17,6 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
-import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
@@ -64,6 +64,9 @@ import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab.TabVisibility;
@@ -84,9 +87,9 @@ import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
 import net.neoforged.neoforge.common.util.MutableHashedLinkedMap;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.network.simple.MessageFunctions.MessageConsumer;
-import net.neoforged.neoforge.network.simple.MessageFunctions.MessageDecoder;
-import net.neoforged.neoforge.network.simple.MessageFunctions.MessageEncoder;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
@@ -141,60 +144,62 @@ public class RegistrationHandler {
 		event.put(SCContent.SENTRY_ENTITY.get(), Mob.createMobAttributes().build());
 	}
 
-	public static void registerPackets() {
-		int id = 0;
+	@SubscribeEvent
+	public static void registerPackets(RegisterPayloadHandlerEvent event) {
+		IPayloadRegistrar registrar = event.registrar(SecurityCraft.MODID).versioned(SecurityCraft.getVersion());
 
-		//client
-		registerPacket(id++, OpenScreen.class, OpenScreen::encode, OpenScreen::new, OpenScreen::handle);
-		registerPacket(id++, PlayAlarmSound.class, PlayAlarmSound::encode, PlayAlarmSound::new, PlayAlarmSound::handle);
-		registerPacket(id++, RefreshDisguisableModel.class, RefreshDisguisableModel::encode, RefreshDisguisableModel::new, RefreshDisguisableModel::handle);
-		registerPacket(id++, SendTip.class, SendTip::encode, SendTip::new, SendTip::handle);
-		registerPacket(id++, SetCameraView.class, SetCameraView::encode, SetCameraView::new, SetCameraView::handle);
-		registerPacket(id++, SetTrophySystemTarget.class, SetTrophySystemTarget::encode, SetTrophySystemTarget::new, SetTrophySystemTarget::handle);
-		registerPacket(id++, UpdateLaserColors.class, UpdateLaserColors::encode, UpdateLaserColors::new, UpdateLaserColors::handle);
-		registerPacket(id++, UpdateLogger.class, UpdateLogger::encode, UpdateLogger::new, UpdateLogger::handle);
-		registerPacket(id++, UpdateNBTTagOnClient.class, UpdateNBTTagOnClient::encode, UpdateNBTTagOnClient::new, UpdateNBTTagOnClient::handle);
-		//server
-		registerPacket(id++, AssembleBlockPocket.class, AssembleBlockPocket::encode, AssembleBlockPocket::new, AssembleBlockPocket::handle);
-		registerPacket(id++, CheckPasscode.class, CheckPasscode::encode, CheckPasscode::new, CheckPasscode::handle);
-		registerPacket(id++, ClearChangeDetectorServer.class, ClearChangeDetectorServer::encode, ClearChangeDetectorServer::new, ClearChangeDetectorServer::handle);
-		registerPacket(id++, ClearLoggerServer.class, ClearLoggerServer::encode, ClearLoggerServer::new, ClearLoggerServer::handle);
-		registerPacket(id++, DismountCamera.class, DismountCamera::encode, DismountCamera::new, DismountCamera::handle);
-		registerPacket(id++, MountCamera.class, MountCamera::encode, MountCamera::new, MountCamera::handle);
-		registerPacket(id++, CheckBriefcasePasscode.class, CheckBriefcasePasscode::encode, CheckBriefcasePasscode::new, CheckBriefcasePasscode::handle);
-		registerPacket(id++, RemoteControlMine.class, RemoteControlMine::encode, RemoteControlMine::new, RemoteControlMine::handle);
-		registerPacket(id++, RemoveCameraTag.class, RemoveCameraTag::encode, RemoveCameraTag::new, RemoveCameraTag::handle);
-		registerPacket(id++, RemoveMineFromMRAT.class, RemoveMineFromMRAT::encode, RemoveMineFromMRAT::new, RemoveMineFromMRAT::handle);
-		registerPacket(id++, RemovePositionFromSSS.class, RemovePositionFromSSS::encode, RemovePositionFromSSS::new, RemovePositionFromSSS::handle);
-		registerPacket(id++, RemoveSentryFromSRAT.class, RemoveSentryFromSRAT::encode, RemoveSentryFromSRAT::new, RemoveSentryFromSRAT::handle);
-		registerPacket(id++, SyncAlarmSettings.class, SyncAlarmSettings::encode, SyncAlarmSettings::new, SyncAlarmSettings::handle);
-		registerPacket(id++, SetBriefcasePasscodeAndOwner.class, SetBriefcasePasscodeAndOwner::encode, SetBriefcasePasscodeAndOwner::new, SetBriefcasePasscodeAndOwner::handle);
-		registerPacket(id++, SetCameraPowered.class, SetCameraPowered::encode, SetCameraPowered::new, SetCameraPowered::handle);
-		registerPacket(id++, SetGhostSlot.class, SetGhostSlot::encode, SetGhostSlot::new, SetGhostSlot::handle);
-		registerPacket(id++, SetKeycardUses.class, SetKeycardUses::encode, SetKeycardUses::new, SetKeycardUses::handle);
-		registerPacket(id++, SetListModuleData.class, SetListModuleData::encode, SetListModuleData::new, SetListModuleData::handle);
-		registerPacket(id++, SetPasscode.class, SetPasscode::encode, SetPasscode::new, SetPasscode::handle);
-		registerPacket(id++, SetSentryMode.class, SetSentryMode::encode, SetSentryMode::new, SetSentryMode::handle);
-		registerPacket(id++, SetStateOnDisguiseModule.class, SetStateOnDisguiseModule::encode, SetStateOnDisguiseModule::new, SetStateOnDisguiseModule::handle);
-		registerPacket(id++, SyncBlockChangeDetector.class, SyncBlockChangeDetector::encode, SyncBlockChangeDetector::new, SyncBlockChangeDetector::handle);
-		registerPacket(id++, SyncBlockReinforcer.class, SyncBlockReinforcer::encode, SyncBlockReinforcer::new, SyncBlockReinforcer::handle);
-		registerPacket(id++, SyncBlockPocketManager.class, SyncBlockPocketManager::encode, SyncBlockPocketManager::new, SyncBlockPocketManager::handle);
-		registerPacket(id++, SyncIMSTargetingOption.class, SyncIMSTargetingOption::encode, SyncIMSTargetingOption::new, SyncIMSTargetingOption::handle);
-		registerPacket(id++, SyncKeycardSettings.class, SyncKeycardSettings::encode, SyncKeycardSettings::new, SyncKeycardSettings::handle);
-		registerPacket(id++, SyncLaserSideConfig.class, SyncLaserSideConfig::encode, SyncLaserSideConfig::new, SyncLaserSideConfig::handle);
-		registerPacket(id++, SyncProjector.class, SyncProjector::encode, SyncProjector::new, SyncProjector::handle);
-		registerPacket(id++, SyncRiftStabilizer.class, SyncRiftStabilizer::encode, SyncRiftStabilizer::new, SyncRiftStabilizer::handle);
-		registerPacket(id++, SyncSSSSettingsOnServer.class, SyncSSSSettingsOnServer::encode, SyncSSSSettingsOnServer::new, SyncSSSSettingsOnServer::handle);
-		registerPacket(id++, SyncTrophySystem.class, SyncTrophySystem::encode, SyncTrophySystem::new, SyncTrophySystem::handle);
-		registerPacket(id++, ToggleBlockPocketManager.class, ToggleBlockPocketManager::encode, ToggleBlockPocketManager::new, ToggleBlockPocketManager::handle);
-		registerPacket(id++, ToggleModule.class, ToggleModule::encode, ToggleModule::new, ToggleModule::handle);
-		registerPacket(id++, ToggleNightVision.class, ToggleNightVision::encode, ToggleNightVision::new, ToggleNightVision::handle);
-		registerPacket(id++, ToggleOption.class, ToggleOption::encode, ToggleOption::new, ToggleOption::handle);
-		registerPacket(id++, UpdateSliderValue.class, UpdateSliderValue::encode, UpdateSliderValue::new, UpdateSliderValue::handle);
+		clientPacket(registrar, OpenScreen.ID, OpenScreen::new, OpenScreen::handle);
+		clientPacket(registrar, PlayAlarmSound.ID, PlayAlarmSound::new, PlayAlarmSound::handle);
+		clientPacket(registrar, RefreshDisguisableModel.ID, RefreshDisguisableModel::new, RefreshDisguisableModel::handle);
+		clientPacket(registrar, SetCameraView.ID, SetCameraView::new, SetCameraView::handle);
+		clientPacket(registrar, SetTrophySystemTarget.ID, SetTrophySystemTarget::new, SetTrophySystemTarget::handle);
+		clientPacket(registrar, UpdateLaserColors.ID, UpdateLaserColors::new, UpdateLaserColors::handle);
+		clientPacket(registrar, UpdateLogger.ID, UpdateLogger::new, UpdateLogger::handle);
+		clientPacket(registrar, UpdateNBTTagOnClient.ID, UpdateNBTTagOnClient::new, UpdateNBTTagOnClient::handle);
+		serverPacket(registrar, AssembleBlockPocket.ID, AssembleBlockPocket::new, AssembleBlockPocket::handle);
+		serverPacket(registrar, CheckPasscode.ID, CheckPasscode::new, CheckPasscode::handle);
+		serverPacket(registrar, ClearChangeDetectorServer.ID, ClearChangeDetectorServer::new, ClearChangeDetectorServer::handle);
+		serverPacket(registrar, ClearLoggerServer.ID, ClearLoggerServer::new, ClearLoggerServer::handle);
+		serverPacket(registrar, DismountCamera.ID, DismountCamera::new, DismountCamera::handle);
+		serverPacket(registrar, MountCamera.ID, MountCamera::new, MountCamera::handle);
+		serverPacket(registrar, CheckBriefcasePasscode.ID, CheckBriefcasePasscode::new, CheckBriefcasePasscode::handle);
+		serverPacket(registrar, RemoteControlMine.ID, RemoteControlMine::new, RemoteControlMine::handle);
+		serverPacket(registrar, RemoveCameraTag.ID, RemoveCameraTag::new, RemoveCameraTag::handle);
+		serverPacket(registrar, RemoveMineFromMRAT.ID, RemoveMineFromMRAT::new, RemoveMineFromMRAT::handle);
+		serverPacket(registrar, RemovePositionFromSSS.ID, RemovePositionFromSSS::new, RemovePositionFromSSS::handle);
+		serverPacket(registrar, RemoveSentryFromSRAT.ID, RemoveSentryFromSRAT::new, RemoveSentryFromSRAT::handle);
+		serverPacket(registrar, SyncAlarmSettings.ID, SyncAlarmSettings::new, SyncAlarmSettings::handle);
+		serverPacket(registrar, SetBriefcasePasscodeAndOwner.ID, SetBriefcasePasscodeAndOwner::new, SetBriefcasePasscodeAndOwner::handle);
+		serverPacket(registrar, SetCameraPowered.ID, SetCameraPowered::new, SetCameraPowered::handle);
+		serverPacket(registrar, SetGhostSlot.ID, SetGhostSlot::new, SetGhostSlot::handle);
+		serverPacket(registrar, SetKeycardUses.ID, SetKeycardUses::new, SetKeycardUses::handle);
+		serverPacket(registrar, SetListModuleData.ID, SetListModuleData::new, SetListModuleData::handle);
+		serverPacket(registrar, SetPasscode.ID, SetPasscode::new, SetPasscode::handle);
+		serverPacket(registrar, SetSentryMode.ID, SetSentryMode::new, SetSentryMode::handle);
+		serverPacket(registrar, SetStateOnDisguiseModule.ID, SetStateOnDisguiseModule::new, SetStateOnDisguiseModule::handle);
+		serverPacket(registrar, SyncBlockChangeDetector.ID, SyncBlockChangeDetector::new, SyncBlockChangeDetector::handle);
+		serverPacket(registrar, SyncBlockReinforcer.ID, SyncBlockReinforcer::new, SyncBlockReinforcer::handle);
+		serverPacket(registrar, SyncBlockPocketManager.ID, SyncBlockPocketManager::new, SyncBlockPocketManager::handle);
+		serverPacket(registrar, SyncIMSTargetingOption.ID, SyncIMSTargetingOption::new, SyncIMSTargetingOption::handle);
+		serverPacket(registrar, SyncKeycardSettings.ID, SyncKeycardSettings::new, SyncKeycardSettings::handle);
+		serverPacket(registrar, SyncLaserSideConfig.ID, SyncLaserSideConfig::new, SyncLaserSideConfig::handle);
+		serverPacket(registrar, SyncProjector.ID, SyncProjector::new, SyncProjector::handle);
+		serverPacket(registrar, SyncRiftStabilizer.ID, SyncRiftStabilizer::new, SyncRiftStabilizer::handle);
+		serverPacket(registrar, SyncSSSSettingsOnServer.ID, SyncSSSSettingsOnServer::new, SyncSSSSettingsOnServer::handle);
+		serverPacket(registrar, SyncTrophySystem.ID, SyncTrophySystem::new, SyncTrophySystem::handle);
+		serverPacket(registrar, ToggleBlockPocketManager.ID, ToggleBlockPocketManager::new, ToggleBlockPocketManager::handle);
+		serverPacket(registrar, ToggleModule.ID, ToggleModule::new, ToggleModule::handle);
+		serverPacket(registrar, ToggleNightVision.ID, ToggleNightVision::new, ToggleNightVision::handle);
+		serverPacket(registrar, ToggleOption.ID, ToggleOption::new, ToggleOption::handle);
+		serverPacket(registrar, UpdateSliderValue.ID, UpdateSliderValue::new, UpdateSliderValue::handle);
 	}
 
-	private static <MSG> void registerPacket(int id, Class<MSG> type, MessageEncoder<MSG> encoder, MessageDecoder<MSG> decoder, MessageConsumer<MSG> messageHandler) {
-		SecurityCraft.CHANNEL.messageBuilder(type, id).encoder(encoder).decoder(decoder).consumerMainThread(messageHandler).add();
+	private static final <T extends CustomPacketPayload> void clientPacket(IPayloadRegistrar registrar, ResourceLocation id, FriendlyByteBuf.Reader<T> reader, BiConsumer<T, PlayPayloadContext> handler) {
+		registrar.play(id, reader, play -> play.client((packet, ctx) -> ctx.workHandler().submitAsync(() -> handler.accept(packet, ctx))));
+	}
+
+	private static final <T extends CustomPacketPayload> void serverPacket(IPayloadRegistrar registrar, ResourceLocation id, FriendlyByteBuf.Reader<T> reader, BiConsumer<T, PlayPayloadContext> handler) {
+		registrar.play(id, reader, play -> play.server((packet, ctx) -> ctx.workHandler().submitAsync(() -> handler.accept(packet, ctx))));
 	}
 
 	@SubscribeEvent

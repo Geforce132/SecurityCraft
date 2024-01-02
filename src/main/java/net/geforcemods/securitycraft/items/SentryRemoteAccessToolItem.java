@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.items;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
@@ -40,7 +39,7 @@ public class SentryRemoteAccessToolItem extends Item {
 
 		if (!level.isClientSide) {
 			updateTagWithNames(stack, level);
-			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, stack.getTag()));
+			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, stack.getTag()));
 		}
 
 		return InteractionResultHolder.consume(stack);
@@ -77,7 +76,7 @@ public class SentryRemoteAccessToolItem extends Item {
 					stack.getTag().putString("sentry" + nextAvailableSlot + "_name", sentry.getCustomName().getString());
 
 				if (!level.isClientSide && !stack.isEmpty())
-					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new UpdateNBTTagOnClient(stack));
 
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.bound", sentryPos), ChatFormatting.GREEN);
 			}
@@ -90,7 +89,7 @@ public class SentryRemoteAccessToolItem extends Item {
 		}
 		else if (!level.isClientSide) {
 			updateTagWithNames(stack, level);
-			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, stack.getTag()));
+			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, stack.getTag()));
 		}
 
 		return InteractionResult.SUCCESS;
@@ -171,7 +170,7 @@ public class SentryRemoteAccessToolItem extends Item {
 				stack.getTag().remove("sentry" + i);
 
 				if (!player.level().isClientSide && !stack.isEmpty())
-					SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new UpdateNBTTagOnClient(stack));
 
 				return;
 			}

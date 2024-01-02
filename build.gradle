@@ -3,13 +3,12 @@ plugins {
 	id 'eclipse'
 	id 'idea'
 	id 'net.neoforged.gradle.userdev' version '[7.0,7.1)'
-//	id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-version = '1.9.8-beta1'
+version = '1.9.8-beta2'
 group = 'net.geforcemods.securitycraft'
 
 base {
@@ -68,18 +67,18 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:20.4.60-beta'
+	implementation 'net.neoforged:neoforge:20.4.70-beta'
 	
 //	implementation "curse.maven:architectury-api-419699:4581905" //ftb teams dependency
 //	implementation "curse.maven:ftb-library-forge-404465:4596511" //ftb teams dependency
 //	implementation "curse.maven:ftb-teams-forge-404468:4623116"
 //	implementation "curse.maven:jei-238222:4597711"
 //	implementation "curse.maven:the-one-probe-245211:4579432"
-//	implementation "curse.maven:jade-324717:4845321"
+//	implementation "curse.maven:jade-324717:4980188"
 //	implementation "curse.maven:betterf3-401648:4641169"
 //	implementation "curse.maven:cloth-config-348521:4633444" //betterf3 dependency
-	implementation "curse.maven:wthit-forge-455982:4931929"
-	implementation "curse.maven:badpackets-615134:4838088" //wthit dependency
+//	implementation "curse.maven:wthit-forge-455982:4931929"
+//	implementation "curse.maven:badpackets-615134:4838088" //wthit dependency
 //	implementation "curse.maven:projecte-226410:3955047"
 }
 

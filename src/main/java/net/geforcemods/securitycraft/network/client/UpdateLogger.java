@@ -1,12 +1,16 @@
 package net.geforcemods.securitycraft.network.client;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class UpdateLogger {
+public class UpdateLogger implements CustomPacketPayload {
+	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "update_logger");
 	private int x, y, z, i;
 	private String username;
 	private String uuid;
@@ -34,7 +38,8 @@ public class UpdateLogger {
 		timestamp = buf.readLong();
 	}
 
-	public void encode(FriendlyByteBuf buf) {
+	@Override
+	public void write(FriendlyByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -44,7 +49,12 @@ public class UpdateLogger {
 		buf.writeLong(timestamp);
 	}
 
-	public void handle(NetworkEvent.Context ctx) {
+	@Override
+	public ResourceLocation id() {
+		return ID;
+	}
+
+	public void handle(PlayPayloadContext ctx) {
 		BlockPos pos = new BlockPos(x, y, z);
 		UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) Minecraft.getInstance().player.level().getBlockEntity(pos);
 

@@ -1,15 +1,19 @@
 package net.geforcemods.securitycraft.network.server;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class SyncProjector {
+public class SyncProjector implements CustomPacketPayload {
+	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "sync_projector");
 	private BlockPos pos;
 	private int data;
 	private DataType dataType;
@@ -38,7 +42,8 @@ public class SyncProjector {
 			data = buf.readVarInt();
 	}
 
-	public void encode(FriendlyByteBuf buf) {
+	@Override
+	public void write(FriendlyByteBuf buf) {
 		buf.writeBlockPos(pos);
 		buf.writeEnum(dataType);
 
@@ -48,8 +53,13 @@ public class SyncProjector {
 			buf.writeVarInt(data);
 	}
 
-	public void handle(NetworkEvent.Context ctx) {
-		Player player = ctx.getSender();
+	@Override
+	public ResourceLocation id() {
+		return ID;
+	}
+
+	public void handle(PlayPayloadContext ctx) {
+		Player player = ctx.player().orElseThrow();
 		Level level = player.level();
 
 		if (level.isLoaded(pos) && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be && be.isOwnedBy(player)) {

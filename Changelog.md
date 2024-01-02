@@ -29,6 +29,12 @@
 - Fix: Manually editing the time in an Alarm and exiting the screen using the escape key does not save the time
 - Fix: The Disguise Module still applies a disguise after the block inside the module was removed
 
+--------------------------Changelog for v1.9.8-beta2 of SecurityCraft--------------------------
+
+- Fix: Jade integration does not work
+- Fix: Compatibility with NeoForge version 20.4.70-beta and later
+- Misc.: The minimum required NeoForge version is 20.4.70-beta
+
 --------------------------Changelog for v1.9.8-beta1 of SecurityCraft--------------------------
 
 - Misc.: The minimum required NeoForge version is 20.4.5-beta

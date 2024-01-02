@@ -5,7 +5,6 @@ import java.util.List;
 
 import mezz.jei.api.gui.handlers.IGhostIngredientHandler;
 import mezz.jei.api.ingredients.ITypedIngredient;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.OwnerRestrictedSlot;
 import net.geforcemods.securitycraft.network.server.SetGhostSlot;
 import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
@@ -13,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class InventoryScannerGhostIngredientHandler implements IGhostIngredientHandler<InventoryScannerScreen> {
 	@Override
@@ -35,7 +35,7 @@ public class InventoryScannerGhostIngredientHandler implements IGhostIngredientH
 					@Override
 					public void accept(I ingredient) {
 						screen.be.getContents().set(slot.index, (ItemStack) ingredient);
-						SecurityCraft.CHANNEL.sendToServer(new SetGhostSlot(slot.index, (ItemStack) ingredient));
+						PacketDistributor.SERVER.noArg().send(new SetGhostSlot(slot.index, (ItemStack) ingredient));
 					}
 				});
 			}

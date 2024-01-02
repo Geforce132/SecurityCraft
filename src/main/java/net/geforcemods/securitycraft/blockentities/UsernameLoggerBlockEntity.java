@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -102,7 +101,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	public void syncLoggedPlayersToClient() {
 		for (int i = 0; i < getPlayers().length; i++) {
 			if (getPlayers()[i] != null)
-				SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new UpdateLogger(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), i, getPlayers()[i], getUuids()[i], getTimestamps()[i]));
+				PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(worldPosition)).send(new UpdateLogger(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), i, getPlayers()[i], getUuids()[i], getTimestamps()[i]));
 		}
 	}
 

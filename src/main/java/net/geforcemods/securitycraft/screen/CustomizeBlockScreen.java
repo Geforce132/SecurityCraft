@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
@@ -37,6 +36,7 @@ import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas, ContainerListener {
 	//@formatter:off
@@ -104,7 +104,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
 								doubleOption.setValue(slider.getValue());
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
-								SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, doubleOption.get()));
+								PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, doubleOption.get()));
 							});
 						}
 						else if (option instanceof IntOption intOption) {
@@ -113,7 +113,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
 								intOption.setValue(slider.getValueInt());
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
-								SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, intOption.get()));
+								PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, intOption.get()));
 							});
 						}
 
@@ -201,7 +201,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			moduleInv.insertModule(moduleInv.getModule(moduleType), true);
 		}
 
-		SecurityCraft.CHANNEL.sendToServer(new ToggleModule(moduleInv.getBlockEntity().getBlockPos(), moduleType));
+		PacketDistributor.SERVER.noArg().send(new ToggleModule(moduleInv.getBlockEntity().getBlockPos(), moduleType));
 	}
 
 	private void optionButtonClicked(Button button) {
@@ -215,7 +215,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 			button.setMessage(getOptionButtonTitle(tempOption));
 			optionButtons[i].setTooltip(Tooltip.create(getOptionDescription(i)));
-			SecurityCraft.CHANNEL.sendToServer(new ToggleOption(moduleInv.getBlockEntity().getBlockPos().getX(), moduleInv.getBlockEntity().getBlockPos().getY(), moduleInv.getBlockEntity().getBlockPos().getZ(), i));
+			PacketDistributor.SERVER.noArg().send(new ToggleOption(moduleInv.getBlockEntity().getBlockPos().getX(), moduleInv.getBlockEntity().getBlockPos().getY(), moduleInv.getBlockEntity().getBlockPos().getZ(), i));
 			return;
 		}
 	}

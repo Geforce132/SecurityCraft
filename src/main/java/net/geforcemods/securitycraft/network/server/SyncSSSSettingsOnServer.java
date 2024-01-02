@@ -1,12 +1,17 @@
 package net.geforcemods.securitycraft.network.server;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class SyncSSSSettingsOnServer {
+public class SyncSSSSettingsOnServer implements CustomPacketPayload {
+	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "sync_sss_settings_on_server");
 	private BlockPos pos;
 	private DataType dataType;
 	private BlockPos posToRemove;
@@ -31,7 +36,8 @@ public class SyncSSSSettingsOnServer {
 			posToRemove = buf.readBlockPos();
 	}
 
-	public void encode(FriendlyByteBuf buf) {
+	@Override
+	public void write(FriendlyByteBuf buf) {
 		buf.writeBlockPos(pos);
 		buf.writeEnum(dataType);
 
@@ -39,10 +45,16 @@ public class SyncSSSSettingsOnServer {
 			buf.writeBlockPos(posToRemove);
 	}
 
-	public void handle(NetworkEvent.Context ctx) {
-		Level level = ctx.getSender().level();
+	@Override
+	public ResourceLocation id() {
+		return ID;
+	}
 
-		if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.isOwnedBy(ctx.getSender())) {
+	public void handle(PlayPayloadContext ctx) {
+		Player player = ctx.player().orElseThrow();
+		Level level = player.level();
+
+		if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.isOwnedBy(player)) {
 			switch (dataType) {
 				case POWER_ON:
 					sss.setActive(true);

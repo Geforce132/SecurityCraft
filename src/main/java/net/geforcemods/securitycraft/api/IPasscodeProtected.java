@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.api;
 import java.util.UUID;
 
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SaltData;
@@ -42,7 +41,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 */
 	public default void openPasscodeGUI(Level level, BlockPos pos, Player player) {
 		if (!level.isClientSide && getPasscode() != null)
-			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.CHECK_PASSCODE, pos));
+			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.CHECK_PASSCODE, pos));
 	}
 
 	/**
@@ -60,7 +59,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 				return true;
 
 			if (ownable.isOwnedBy(player))
-				SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SET_PASSCODE, pos));
+				PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SET_PASSCODE, pos));
 			else
 				PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.notSetUp"), ChatFormatting.DARK_RED);
 		}

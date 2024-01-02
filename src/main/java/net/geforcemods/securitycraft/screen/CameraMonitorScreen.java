@@ -5,7 +5,6 @@ import java.util.List;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
@@ -28,6 +27,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class CameraMonitorScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
@@ -147,7 +147,7 @@ public class CameraMonitorScreen extends Screen {
 			return;
 		}
 
-		SecurityCraft.CHANNEL.sendToServer(new MountCamera(cameraPos));
+		PacketDistributor.SERVER.noArg().send(new MountCamera(cameraPos));
 		Minecraft.getInstance().player.closeContainer();
 	}
 
@@ -156,7 +156,7 @@ public class CameraMonitorScreen extends Screen {
 		int i = (camID - 1) % 10;
 		Button cameraButton = cameraButtons[i];
 
-		SecurityCraft.CHANNEL.sendToServer(new RemoveCameraTag(camID));
+		PacketDistributor.SERVER.noArg().send(new RemoveCameraTag(camID));
 		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1)));
 		button.active = false;
 		cameraButton.active = false;

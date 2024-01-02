@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
@@ -104,7 +103,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 			SonicSecuritySystemBlockEntity be = (SonicSecuritySystemBlockEntity) level.getBlockEntity(pos);
 
 			if (!level.isClientSide && (be.isOwnedBy(player) || be.isAllowed(player)))
-				SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SONIC_SECURITY_SYSTEM, pos));
+				PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SONIC_SECURITY_SYSTEM, pos));
 
 			return InteractionResult.SUCCESS;
 		}

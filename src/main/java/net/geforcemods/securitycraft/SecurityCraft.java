@@ -55,8 +55,6 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.network.NetworkRegistry;
-import net.neoforged.neoforge.network.simple.SimpleChannel;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -66,7 +64,6 @@ public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	public static final GameRules.Key<GameRules.BooleanValue> RULE_FAKE_WATER_SOURCE_CONVERSION = GameRules.register("fakeWaterSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true));
 	public static final GameRules.Key<GameRules.BooleanValue> RULE_FAKE_LAVA_SOURCE_CONVERSION = GameRules.register("fakeLavaSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(false));
-	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> getVersion(), getVersion()::equals, getVersion()::equals);
 	public static final Random RANDOM = new Random();
 	public static final TicketController CAMERA_TICKET_CONTROLLER = new TicketController(new ResourceLocation(SecurityCraft.MODID, "camera_chunks"), (level, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCamera) somewhere
 		ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
@@ -94,7 +91,6 @@ public class SecurityCraft {
 
 	@SubscribeEvent
 	public static void onFMLCommonSetup(FMLCommonSetupEvent event) { //stage 1
-		RegistrationHandler.registerPackets();
 		RegistrationHandler.registerFakeLiquidRecipes();
 	}
 

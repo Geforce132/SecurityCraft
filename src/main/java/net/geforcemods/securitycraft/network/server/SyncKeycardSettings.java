@@ -1,13 +1,17 @@
 package net.geforcemods.securitycraft.network.server;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class SyncKeycardSettings {
+public class SyncKeycardSettings implements CustomPacketPayload {
+	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "sync_keycard_settings");
 	private BlockPos pos;
 	private int signature;
 	private boolean[] acceptedLevels;
@@ -33,7 +37,8 @@ public class SyncKeycardSettings {
 		}
 	}
 
-	public void encode(FriendlyByteBuf buf) {
+	@Override
+	public void write(FriendlyByteBuf buf) {
 		buf.writeBlockPos(pos);
 		buf.writeVarInt(signature);
 		buf.writeBoolean(link);
@@ -43,8 +48,13 @@ public class SyncKeycardSettings {
 		}
 	}
 
-	public void handle(NetworkEvent.Context ctx) {
-		Player player = ctx.getSender();
+	@Override
+	public ResourceLocation id() {
+		return ID;
+	}
+
+	public void handle(PlayPayloadContext ctx) {
+		Player player = ctx.player().orElseThrow();
 
 		if (player.level().getBlockEntity(pos) instanceof KeycardReaderBlockEntity be) {
 			boolean isOwner = be.isOwnedBy(player);

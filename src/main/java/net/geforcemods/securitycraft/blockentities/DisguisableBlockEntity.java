@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
@@ -46,7 +45,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		BlockPos worldPosition = be.getBlockPos();
 
 		if (!level.isClientSide) {
-			SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
+			PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(worldPosition)).send(new RefreshDisguisableModel(worldPosition, true, stack, toggled));
 
 			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
 				level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
@@ -76,7 +75,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		if (!level.isClientSide) {
 			BlockState state = be.getBlockState();
 
-			SecurityCraft.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
+			PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(worldPosition)).send(new RefreshDisguisableModel(worldPosition, false, stack, toggled));
 
 			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
 				level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));

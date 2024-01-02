@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.Nameable;
@@ -24,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 public class UniversalBlockModifierItem extends Item {
 	public UniversalBlockModifierItem(Item.Properties properties) {
@@ -48,7 +46,7 @@ public class UniversalBlockModifierItem extends Item {
 				return InteractionResult.FAIL;
 			}
 			else if (!ctx.getLevel().isClientSide) {
-				NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
+				player.openMenu(new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 						return new CustomizeBlockMenu(windowId, level, pos, inv);

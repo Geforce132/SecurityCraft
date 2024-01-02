@@ -18,7 +18,6 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -34,7 +33,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.scores.PlayerTeam;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 public class ModuleItem extends Item {
 	private static final MutableComponent MODIFIABLE = Component.translatable("tooltip.securitycraft:module.modifiable").setStyle(Utils.GRAY_STYLE);
@@ -93,7 +91,7 @@ public class ModuleItem extends Item {
 			}
 			else if (module == ModuleType.DISGUISE) {
 				if (!level.isClientSide) {
-					NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
+					player.openMenu(new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 							return new DisguiseModuleMenu(windowId, inv, new ModuleItemContainer(player.getItemInHand(hand)));

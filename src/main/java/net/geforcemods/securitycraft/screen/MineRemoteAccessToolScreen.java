@@ -21,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class MineRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
@@ -153,20 +154,20 @@ public class MineRemoteAccessToolScreen extends Screen {
 			switch (action) {
 				case DEFUSE:
 					((IExplosive) Minecraft.getInstance().player.level().getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getInstance().player.level(), new BlockPos(coords[0], coords[1], coords[2]));
-					SecurityCraft.CHANNEL.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], Action.DEFUSE));
+					PacketDistributor.SERVER.noArg().send(new RemoteControlMine(coords[0], coords[1], coords[2], Action.DEFUSE));
 					guiButtons[mine][DEFUSE].active = false;
 					guiButtons[mine][ACTIVATE].active = true;
 					guiButtons[mine][DETONATE].active = false;
 					break;
 				case ACTIVATE:
 					((IExplosive) Minecraft.getInstance().player.level().getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getInstance().player.level(), new BlockPos(coords[0], coords[1], coords[2]));
-					SecurityCraft.CHANNEL.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], Action.ACTIVATE));
+					PacketDistributor.SERVER.noArg().send(new RemoteControlMine(coords[0], coords[1], coords[2], Action.ACTIVATE));
 					guiButtons[mine][DEFUSE].active = true;
 					guiButtons[mine][ACTIVATE].active = false;
 					guiButtons[mine][DETONATE].active = true;
 					break;
 				case DETONATE:
-					SecurityCraft.CHANNEL.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], Action.DETONATE));
+					PacketDistributor.SERVER.noArg().send(new RemoteControlMine(coords[0], coords[1], coords[2], Action.DETONATE));
 					removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
 
 					for (int i = 0; i < 4; i++) {
@@ -213,7 +214,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 			if (coords.length == 3 && coords[0] == x && coords[1] == y && coords[2] == z) {
 				stack.getTag().remove("mine" + i);
-				SecurityCraft.CHANNEL.sendToServer(new RemoveMineFromMRAT(i));
+				PacketDistributor.SERVER.noArg().send(new RemoveMineFromMRAT(i));
 				return;
 			}
 		}
