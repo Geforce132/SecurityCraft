@@ -38,7 +38,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	private static final ResourceLocation RANDOM_INACTIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/random_inactive");
 	private static final ResourceLocation RESET_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/reset");
 	private static final ResourceLocation RESET_INACTIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/reset_inactive");
-	private static final ResourceLocation RETURN_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/return.png");
+	private static final ResourceLocation RETURN_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/return");
 	private static final ResourceLocation RETURN_INACTIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/return_inactive");
 	private static final ResourceLocation WARNING_HIGHLIGHTED_SPRITE = new ResourceLocation("world_list/warning_highlighted");
 	private static final Component EQUALS = Component.literal("=");
