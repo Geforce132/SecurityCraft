@@ -28,6 +28,7 @@
 - Fix: The Trophy System does not drop installed modules when the block below it is broken
 - Fix: Manually editing the time in an Alarm and exiting the screen using the escape key does not save the time
 - Fix: The Disguise Module still applies a disguise after the block inside the module was removed
+- Fix: The "return" button in the Keycard Reader does not display correctly sometimes
 - Misc.: The minimum required NeoForge version is 20.2.88 (necessary to fix players getting kicked from the server when placing a Sentry)
 
 --------------------------Changelog for v1.9.8-beta4 of SecurityCraft--------------------------
