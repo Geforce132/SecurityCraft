@@ -10,7 +10,6 @@ import org.joml.Vector3f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.mojang.math.MatrixUtil;
 
 import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -59,8 +58,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	private static final int PAGE_LENGTH = 5;
 	private static final float ROTATION_SENSITIVITY = 0.1F;
 	private static final Vector3f Y_DRAG_ROTATION_VECTOR = new Vector3f((float) (1.0D / Math.sqrt(2)), 0, (float) (1.0D / Math.sqrt(2)));
-	private static final Quaternionf DEFAULT_ROTATION_1 = ClientUtils.fromXYZDegrees(15.0F, -135.0F, 0.0F);
-	private static final Matrix4f DEFAULT_ROTATION_2 = new Matrix4f().rotate(Axis.ZP.rotationDegrees(180.0F)).rotate(Axis.YP.rotationDegrees(-90.0F));
+	private static final Quaternionf DEFAULT_ROTATION = ClientUtils.fromXYZDegrees(15.0F, -135.0F, 0.0F);
 	private static final EnumProperty<StandingOrWallType> STANDING_OR_WALL_TYPE_PROPERTY = EnumProperty.create("standing_or_wall", StandingOrWallType.class);
 	private final StateSelectorAccessMenu menu;
 	private final int xStart, yStart, slotToCheck;
@@ -130,11 +128,9 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		nextPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
 		pose.pushPose();
 		pose.translate(xStart + previewXTranslation, yStart + previewYTranslation, 100);
-		pose.scale(16.0F, 16.0F, 16.0F);
-		MatrixUtil.mulComponentWise(pose.last().pose(), 1.5F);
+		pose.scale(24.0F, -24.0F, 24.0F);
 		pose.translate(0.5F, 0.5F, 0.5F);
-		pose.mulPose(DEFAULT_ROTATION_1);
-		pose.mulPoseMatrix(DEFAULT_ROTATION_2);
+		pose.mulPose(DEFAULT_ROTATION);
 		pose.mulPoseMatrix(dragRotation);
 		pose.translate(-0.5F, -0.5F, -0.5F);
 		renderBlockModel(state, pose, bufferSource);
