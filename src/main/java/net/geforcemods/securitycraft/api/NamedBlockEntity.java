@@ -15,7 +15,7 @@ public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter 
 		super.writeToNBT(tag);
 
 		if (hasCustomName())
-			tag.setString("customName", customName);
+			tag.setString("customName", getName());
 
 		return tag;
 	}
