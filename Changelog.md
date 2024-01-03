@@ -4,6 +4,7 @@
 - New: The Sentry Remote Access tool now displays the last known name of a Sentry if the Sentry is out of range
 - New: The Portable Radar now always shows its coordinates in messages, even when it has a custom name
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
+- Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Fix: The Floor Trap has incorrect sound
 - Fix: Duplication exploit involving keycards
 - Fix: The name of certain SecurityCraft blocks is displayed within brackets by WTHIT and similar mods
@@ -24,6 +25,7 @@
 - Fix: Manually editing the time in an Alarm and exiting the screen using the escape key does not save the time
 - Fix: The Disguise Module still applies a disguise after the block inside the module was removed
 - Fix: Briefcases lose their passcode when they are moved to another slot in the Creative inventory screen
+- Fix: Reinforced Hoppers do not keep their name when placing them after renaming them in an Anvil
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 

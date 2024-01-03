@@ -5,11 +5,13 @@ import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.inventory.VanillaHopperInsertOnlyItemHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,11 +21,13 @@ import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class ReinforcedHopperBlockEntity extends TileEntityHopper implements IOwnable, IModuleInventory {
+public class ReinforcedHopperBlockEntity extends TileEntityHopper implements IOwnable, IModuleInventory, INameSetter {
 	private VanillaHopperInsertOnlyItemHandler insertOnlyHandler;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private Owner owner = new Owner();
@@ -63,6 +67,16 @@ public class ReinforcedHopperBlockEntity extends TileEntityHopper implements IOw
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		return slot >= 100 ? getModuleInSlot(slot) : super.getStackInSlot(slot);
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return hasCustomName() ? new TextComponentString(customName) : getDefaultName();
+	}
+
+	@Override
+	public ITextComponent getDefaultName() {
+		return Utils.localize(SCContent.reinforcedHopper);
 	}
 
 	@Override
