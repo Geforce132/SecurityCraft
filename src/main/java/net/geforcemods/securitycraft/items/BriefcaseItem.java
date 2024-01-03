@@ -73,13 +73,6 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(Utils.GRAY_STYLE));
 	}
 
-	@Override
-	public CompoundTag getShareTag(ItemStack stack) {
-		CompoundTag tag = super.getShareTag(stack);
-
-		return tag == null ? null : PasscodeUtils.filterPasscodeAndSaltFromTag(tag.copy());
-	}
-
 	public static void hashAndSetPasscode(CompoundTag briefcaseTag, String passcode, Consumer<byte[]> afterSet) {
 		byte[] salt = PasscodeUtils.generateSalt();
 
