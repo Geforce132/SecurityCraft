@@ -12,11 +12,13 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.inventory.VanillaHopperInsertOnlyItemHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -107,6 +109,11 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 	@Override
 	public ItemStack getItem(int slot) {
 		return getStackInSlot(slot);
+	}
+
+	@Override
+	protected Component getDefaultName() {
+		return Utils.localize("block.securitycraft.reinforced_hopper");
 	}
 
 	@Override
