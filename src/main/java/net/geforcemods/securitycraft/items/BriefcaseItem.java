@@ -67,13 +67,6 @@ public class BriefcaseItem extends ColorableItem {
 	}
 
 	@Override
-	public NBTTagCompound getNBTShareTag(ItemStack stack) {
-		NBTTagCompound tag = super.getNBTShareTag(stack);
-
-		return tag == null ? null : PasscodeUtils.filterPasscodeAndSaltFromTag(tag.copy());
-	}
-
-	@Override
 	public int getDefaultColor() {
 		return 0x333333;
 	}
