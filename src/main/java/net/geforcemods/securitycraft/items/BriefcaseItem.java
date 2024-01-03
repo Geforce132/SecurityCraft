@@ -86,13 +86,6 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(Utils.GRAY_STYLE));
 	}
 
-	@Override
-	public CompoundNBT getShareTag(ItemStack stack) {
-		CompoundNBT tag = super.getShareTag(stack);
-
-		return tag == null ? null : PasscodeUtils.filterPasscodeAndSaltFromTag(tag.copy());
-	}
-
 	public static void hashAndSetPasscode(CompoundNBT briefcaseTag, String passcode, Consumer<byte[]> afterSet) {
 		byte[] salt = PasscodeUtils.generateSalt();
 
