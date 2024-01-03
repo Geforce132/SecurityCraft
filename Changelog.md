@@ -27,6 +27,7 @@
 - Fix: The Trophy System does not drop installed modules when the block below it is broken
 - Fix: Manually editing the time in an Alarm and exiting the screen using the escape key does not save the time
 - Fix: The Disguise Module still applies a disguise after the block inside the module was removed
+- Fix: Briefcases lose their passcode when they are moved to another slot in the Creative inventory screen
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
