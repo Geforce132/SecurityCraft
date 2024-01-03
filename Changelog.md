@@ -4,6 +4,7 @@
 - New: The Sentry Remote Access tool now displays the last known name of a Sentry if the Sentry is out of range
 - New: The Portable Radar now always shows its coordinates in messages, even when it has a custom name
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
+- Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Fix: Duplication exploit involving keycards
 - Fix: Duplication exploit involving Reinforced Pistons
 - Fix: Modules in a Passcode-protected Chest get disabled when loading it

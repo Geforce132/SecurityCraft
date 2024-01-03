@@ -19,6 +19,8 @@ import net.minecraft.tileentity.HopperTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -89,6 +91,11 @@ public class ReinforcedHopperBlockEntity extends HopperTileEntity implements IOw
 	@Override
 	public ItemStack getItem(int slot) {
 		return slot >= 100 ? getModuleInSlot(slot) : super.getItem(slot);
+	}
+
+	@Override
+	protected ITextComponent getDefaultName() {
+		return new TranslationTextComponent("block.securitycraft.reinforced_hopper");
 	}
 
 	@Override
