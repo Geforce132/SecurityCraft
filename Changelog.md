@@ -5,6 +5,7 @@
 - New: The Portable Radar now always shows its coordinates in messages, even when it has a custom name
 - New: Crafting Recipes for Reinforced Pistons and Reinforced Sticky Pistons
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
+- Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now
 - Fix: Duplication exploit involving keycards
 - Fix: Error involving SecurityCraft's creative tabs when running SecurityCraft alongside certain other mods
 - Fix: Duplication exploit involving Reinforced Pistons

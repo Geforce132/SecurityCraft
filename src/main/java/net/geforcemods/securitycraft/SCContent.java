@@ -2757,7 +2757,7 @@ public class SCContent {
 			.build(SecurityCraft.MODID + ":securitycamera"));
 	public static final DeferredHolder<EntityType<?>, EntityType<Sentry>> SENTRY_ENTITY = ENTITY_TYPES.register("sentry",
 			() -> EntityType.Builder.<Sentry>of(Sentry::new, MobCategory.MISC)
-			.sized(1.0F, 2.0F)
+			.sized(1.0F, 1.01F)
 			.setTrackingRange(256)
 			.setUpdateInterval(1)
 			.setShouldReceiveVelocityUpdates(true)
