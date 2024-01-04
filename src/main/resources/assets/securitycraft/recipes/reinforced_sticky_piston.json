@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "P"
+  ],
+  "key": {
+    "P": {
+      "item": "securitycraft:reinforced_piston"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "slimeball"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_sticky_piston"
+  }
+}

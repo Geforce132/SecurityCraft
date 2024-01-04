@@ -1,0 +1,50 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "CIC",
+    "CRC"
+  ],
+  "key": {
+    "P": [
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 0
+      },
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 1
+      },
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 2
+      },
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 3
+      },
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 4
+      },
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 5
+      }
+    ],
+    "C": {
+      "item": "securitycraft:reinforced_cobblestone"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_piston"
+  }
+}
