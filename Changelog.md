@@ -29,6 +29,7 @@
 - Fix: Manually editing the time in an Alarm and exiting the screen using the escape key does not save the time
 - Fix: The Disguise Module still applies a disguise after the block inside the module was removed
 - Fix: Briefcases lose their passcode when they are moved to another slot in the Creative inventory screen
+- Fix: Modules that are inserted in reinforced blocks get deleted when unreinforcing these blocks
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
