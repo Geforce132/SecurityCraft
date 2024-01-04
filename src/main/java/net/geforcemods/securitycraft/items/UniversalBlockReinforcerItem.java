@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.items;
 import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
@@ -77,6 +78,9 @@ public class UniversalBlockReinforcerItem extends Item {
 
 				if (be != null) {
 					tag = be.saveWithoutMetadata();
+
+					if (be instanceof IModuleInventory inv)
+						inv.dropAllModules();
 
 					if (be instanceof Container container)
 						container.clearContent();
