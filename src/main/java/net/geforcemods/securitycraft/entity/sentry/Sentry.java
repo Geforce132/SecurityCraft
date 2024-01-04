@@ -87,8 +87,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 
 	public Sentry(World world) {
 		super(world);
-		preventEntitySpawning = false;
-		setSize(1.0001F, 1.0001F);
+		setSize(1.0F, 1.0001F);
 	}
 
 	public Sentry(World world, double x, double y, double z, EntityPlayer owner) {
@@ -350,7 +349,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 
 	@Override
 	public float getEyeHeight() { //the sentry's eyes are higher so that it can see players even if it's inside a block when disguised - this also makes bullets spawn higher
-		return 1.5F;
+		return 1.6F;
 	}
 
 	@Override
