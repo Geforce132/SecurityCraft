@@ -32,6 +32,7 @@
 - Fix: The "return" button in the Keycard Reader does not display correctly sometimes
 - Fix: The block state preview does not show in the Disguise Module's and Projector's screen
 - Fix: Fake Lava can ignite non-flammable blocks around itself
+- Fix: Modules that are inserted in reinforced blocks get deleted when unreinforcing these blocks
 
 --------------------------Changelog for v1.9.8-beta2 of SecurityCraft--------------------------
 
