@@ -3,8 +3,10 @@ package net.geforcemods.securitycraft.items;
 import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
+import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -78,8 +80,14 @@ public class UniversalBlockReinforcerItem extends Item {
 				if (be != null) {
 					tag = be.save(new CompoundNBT());
 
+					if (be instanceof IModuleInventory)
+						((IModuleInventory) be).dropAllModules();
+
 					if (be instanceof IInventory)
 						((IInventory) be).clearContent();
+
+					if (be instanceof ReinforcedHopperBlockEntity)
+						level.removeBlockEntity(pos); //Because ReinforcedHopperBlock overrides Block#is to mimic the Vanilla Hopper, we need to remove the BE here (usually this is done in Block#onRemove)
 				}
 
 				level.setBlockAndUpdate(pos, convertedState);
