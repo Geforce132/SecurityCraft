@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "CIC",
+    "CRC"
+  ],
+  "key": {
+    "P": {
+      "tag": "securitycraft:reinforced/planks"
+    },
+    "C": {
+      "tag": "securitycraft:reinforced/stone_crafting_materials"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_piston"
+  }
+}
