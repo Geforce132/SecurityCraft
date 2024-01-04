@@ -362,6 +362,16 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_quartz", has(Tags.Items.GEMS_QUARTZ))
 		.save(consumer);
+		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_PISTON.get())
+		.pattern("PPP")
+		.pattern("CIC")
+		.pattern("CRC")
+		.define('P', SCTags.Items.REINFORCED_PLANKS)
+		.define('C', SCTags.Items.REINFORCED_STONE_CRAFTING_MATERIALS)
+		.define('I', Tags.Items.INGOTS_IRON)
+		.define('R', Tags.Items.DUSTS_REDSTONE)
+		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
+		.save(consumer);
 		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_REDSTONE_LAMP.get())
 		.pattern(" R ")
 		.pattern("RGR")
@@ -369,6 +379,13 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', SCContent.REINFORCED_GLOWSTONE.get())
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
+		.save(consumer);
+		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_STICKY_PISTON.get())
+		.pattern("S")
+		.pattern("P")
+		.define('P', SCContent.REINFORCED_PISTON.get())
+		.define('S', Tags.Items.SLIMEBALLS)
+		.unlockedBy("has_slime_ball", has(Tags.Items.SLIMEBALLS))
 		.save(consumer);
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_STONE.get(), SCContent.REINFORCED_STONE_PRESSURE_PLATE.get());
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_PRESSURE_PLATE.get());
