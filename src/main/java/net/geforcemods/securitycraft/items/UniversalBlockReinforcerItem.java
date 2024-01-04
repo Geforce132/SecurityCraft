@@ -4,6 +4,7 @@ import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
@@ -86,6 +87,9 @@ public class UniversalBlockReinforcerItem extends Item {
 					}
 
 					if (convertedState != null) {
+						if (te instanceof IModuleInventory)
+							((IModuleInventory) te).dropAllModules();
+
 						if (te instanceof IInventory)
 							((IInventory) te).clear();
 
