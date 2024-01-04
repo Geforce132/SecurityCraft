@@ -396,7 +396,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.save(recipeOutput);
 		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_STICKY_PISTON.get())
 		.pattern("S")
-		.pattern("P")c
+		.pattern("P")
 		.define('P', SCContent.REINFORCED_PISTON.get())
 		.define('S', Tags.Items.SLIMEBALLS)
 		.unlockedBy("has_slime_ball", has(Tags.Items.SLIMEBALLS))
