@@ -26,6 +26,7 @@ import net.minecraft.dispenser.ProjectileDispenseBehavior;
 import net.minecraft.dispenser.ProxyBlockSource;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
@@ -341,8 +342,8 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) { //the sentry's eyes are higher so that it can see players even if it's inside a block when disguised - this also makes bullets spawn higher
-		return 1.5F;
+	public float getStandingEyeHeight(Pose pose, EntitySize size) { //the sentry's eyes are higher so that it can see players even if it's inside a block when disguised - this also makes bullets spawn higher
+		return size.height * 1.6F;
 	}
 
 	@Override

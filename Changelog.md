@@ -6,6 +6,7 @@
 - New: Crafting Recipes for Reinforced Pistons and Reinforced Sticky Pistons
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
+- Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now
 - Fix: Duplication exploit involving keycards
 - Fix: Duplication exploit involving Reinforced Pistons
 - Fix: Modules in a Passcode-protected Chest get disabled when loading it
