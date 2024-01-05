@@ -2001,6 +2001,12 @@
         ]
       },
       {
+        "output": "securitycraft:reinforced_dispenser",
+        "ingredients": [
+          "minecraft:dispenser"
+        ]
+      },
+      {
         "output": "securitycraft:reinforced_sticky_piston",
         "ingredients": [
           "minecraft:sticky_piston"
@@ -2154,6 +2160,12 @@
         "output": "securitycraft:reinforced_hopper",
         "ingredients": [
           "minecraft:hopper"
+        ]
+      },
+      {
+        "output": "securitycraft:reinforced_dropper",
+        "ingredients": [
+          "minecraft:dropper"
         ]
       },
       {

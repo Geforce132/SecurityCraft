@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "C C",
+    "CRC"
+  ],
+  "key": {
+    "C": {
+      "tag": "securitycraft:reinforced/stone_crafting_materials"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_dropper"
+  }
+}

@@ -35,6 +35,8 @@ import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedDispenserBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedDropperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonBlockEntity;
@@ -112,7 +114,9 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChainBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCobwebBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCryingObsidianBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDispenserBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDropperBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedEndRodBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFallingBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
@@ -1803,6 +1807,9 @@ public class SCContent {
 	//ordered by vanilla redstone tab order
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_DISPENSER = BLOCKS.register("reinforced_dispenser", () -> new ReinforcedDispenserBlock(prop(Material.STONE)));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_STICKY_PISTON = BLOCKS.register("reinforced_sticky_piston", () -> new ReinforcedPistonBlock(true, prop(Material.PISTON).isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> !s.getValue(PistonBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBlock.EXTENDED))));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
@@ -1881,6 +1888,9 @@ public class SCContent {
 	@HasManualPage
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(prop(Material.METAL, MaterialColor.STONE).sound(SoundType.METAL).noOcclusion()));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_DROPPER = BLOCKS.register("reinforced_dropper", () -> new ReinforcedDropperBlock(prop(Material.STONE)));
 	@HasManualPage(hasRecipeDescription = true)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
@@ -2191,6 +2201,8 @@ public class SCContent {
 	public static final RegistryObject<TileEntityType<FloorTrapBlockEntity>> FLOOR_TRAP_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("floor_trap", () -> TileEntityType.Builder.of(FloorTrapBlockEntity::new, SCContent.FLOOR_TRAP.get()).build(null));
 	public static final RegistryObject<TileEntityType<KeycardLockBlockEntity>> KEYCARD_LOCK_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keycard_lock", () -> TileEntityType.Builder.of(KeycardLockBlockEntity::new, SCContent.KEYCARD_LOCK.get()).build(null));
 	public static final RegistryObject<TileEntityType<ScannerTrapdoorBlockEntity>> SCANNER_TRAPDOOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("scanner_trapdoor", () -> TileEntityType.Builder.of(ScannerTrapdoorBlockEntity::new, SCContent.SCANNER_TRAPDOOR.get()).build(null));
+	public static final RegistryObject<TileEntityType<ReinforcedDispenserBlockEntity>> REINFORCED_DISPENSER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_dispenser", () -> TileEntityType.Builder.of(ReinforcedDispenserBlockEntity::new, SCContent.REINFORCED_DISPENSER.get()).build(null));
+	public static final RegistryObject<TileEntityType<ReinforcedDropperBlockEntity>> REINFORCED_DROPPER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_dropper", () -> TileEntityType.Builder.of(ReinforcedDropperBlockEntity::new, SCContent.REINFORCED_DROPPER.get()).build(null));
 
 	//entity types
 	public static final RegistryObject<EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",
