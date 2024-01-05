@@ -112,7 +112,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 
 	@Override
 	public Component getDefaultName() {
-		return Utils.localize("block.securitycraft.keypad_chest");
+		return Utils.localize(SCContent.KEYPAD_CHEST.get().getDescriptionId());
 	}
 
 	@Override
