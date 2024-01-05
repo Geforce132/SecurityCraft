@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "building",
+  "category": "misc",
   "key": {
     "F": {
-      "tag": "minecraft:wooden_fences"
+      "tag": "securitycraft:reinforced/wooden_fences"
     },
     "I": {
       "tag": "forge:ingots/iron"

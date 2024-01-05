@@ -3,7 +3,7 @@
   "category": "redstone",
   "key": {
     "G": {
-      "tag": "forge:fence_gates/wooden"
+      "tag": "securitycraft:reinforced/wooden_fence_gates"
     },
     "I": {
       "tag": "forge:ingots/iron"
