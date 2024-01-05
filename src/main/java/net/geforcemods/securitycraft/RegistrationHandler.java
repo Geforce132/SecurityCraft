@@ -330,7 +330,7 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.riftStabilizer);
 		registerBlock(event, SCContent.displayCase);
 		registerBlock(event, SCContent.keypadTrapdoor);
-		registerBlock(event, SCContent.reinforcedLadder);
+		registerBlock(event, SCContent.reinforcedLadder, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.floorTrap);
 		event.getRegistry().register(SCContent.keycardLockFloorCeilingBlock);
 		event.getRegistry().register(SCContent.keycardLockWallBlock);

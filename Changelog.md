@@ -29,6 +29,7 @@
 - Fix: Reinforced Hoppers do not keep their name when placing them after renaming them in an Anvil
 - Fix: Modules that are inserted in reinforced blocks get deleted when unreinforcing these blocks
 - Fix: Blocks can be placed on top of a Sentry's base to block it from shooting
+- Fix: The Reinforced Ladder incorrectly has a manual page
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
