@@ -23,6 +23,7 @@ public class ReinforcedDropperBlock extends ReinforcedDispenserBlock {
 		return DISPENSE_BEHAVIOUR;
 	}
 
+	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ReinforcedDropperBlockEntity(pos, state);
 	}

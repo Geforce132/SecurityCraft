@@ -2692,6 +2692,18 @@
       },
       {
         "ingredients": [
+          "minecraft:dispenser"
+        ],
+        "output": "securitycraft:reinforced_dispenser"
+      },
+      {
+        "ingredients": [
+          "minecraft:dropper"
+        ],
+        "output": "securitycraft:reinforced_dropper"
+      },
+      {
+        "ingredients": [
           "securitycraft:crystal_quartz_slab"
         ],
         "output": "securitycraft:reinforced_crystal_quartz_slab"
