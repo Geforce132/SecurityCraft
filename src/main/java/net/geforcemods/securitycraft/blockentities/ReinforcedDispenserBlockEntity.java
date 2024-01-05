@@ -42,7 +42,7 @@ public class ReinforcedDispenserBlockEntity extends DispenserBlockEntity impleme
 
 	@Override
 	protected Component getDefaultName() {
-		return Component.translatable("block.securitycraft.reinforced_dispenser");
+		return Component.translatable(SCContent.REINFORCED_DISPENSER.get().getDescriptionId());
 	}
 
 	@Override
