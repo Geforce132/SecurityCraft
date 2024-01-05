@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "securitycraft:reinforced_nether_bricks"
+    },
+    "S": {
+      "tag": "forge:ingots/nether_brick"
+    }
+  },
+  "pattern": [
+    "MSM",
+    "MSM"
+  ],
+  "result": {
+    "count": 6,
+    "item": "securitycraft:reinforced_nether_brick_fence"
+  },
+  "show_notification": true
+}

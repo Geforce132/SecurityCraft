@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "securitycraft:reinforced_fences",
+  "key": {
+    "M": {
+      "item": "securitycraft:reinforced_crimson_planks"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "MSM",
+    "MSM"
+  ],
+  "result": {
+    "count": 3,
+    "item": "securitycraft:reinforced_crimson_fence"
+  },
+  "show_notification": true
+}

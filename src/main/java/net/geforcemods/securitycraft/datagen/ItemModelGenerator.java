@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.blocks.mines.BrushableMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.DeepslateMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChiseledBookshelfBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBaseBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
@@ -68,6 +69,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 					reinforcedWallInventory(block, wall.getVanillaBlock());
 				else if (block instanceof ReinforcedButtonBlock || block instanceof ReinforcedPistonBaseBlock || block instanceof ReinforcedChiseledBookshelfBlock)
 					reinforcedBlockInventory(block);
+				else if (block instanceof ReinforcedFenceBlock) {
+					ResourceLocation registryName = Utils.getRegistryName(block);
+
+					parent(registryName.toString(), modBlock(registryName.getPath() + "_inventory"));
+				}
 				else if (block instanceof IReinforcedBlock)
 					simpleReinforcedParent(block);
 			}
