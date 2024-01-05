@@ -42,7 +42,7 @@ public class ReinforcedDispenserBlockEntity extends DispenserTileEntity implemen
 
 	@Override
 	protected ITextComponent getDefaultName() {
-		return new TranslationTextComponent("block.securitycraft.reinforced_dispenser");
+		return new TranslationTextComponent(SCContent.REINFORCED_DISPENSER.get().getDescriptionId());
 	}
 
 	@Override

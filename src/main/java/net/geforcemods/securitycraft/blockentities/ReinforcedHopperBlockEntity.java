@@ -95,7 +95,7 @@ public class ReinforcedHopperBlockEntity extends HopperTileEntity implements IOw
 
 	@Override
 	protected ITextComponent getDefaultName() {
-		return new TranslationTextComponent("block.securitycraft.reinforced_hopper");
+		return new TranslationTextComponent(SCContent.REINFORCED_HOPPER.get().getDescriptionId());
 	}
 
 	@Override

@@ -139,7 +139,7 @@ public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPassco
 
 	@Override
 	public ITextComponent getDefaultName() {
-		return Utils.localize("block.securitycraft.keypad_barrel");
+		return Utils.localize(SCContent.KEYPAD_BARREL.get().getDescriptionId());
 	}
 
 	@Override
