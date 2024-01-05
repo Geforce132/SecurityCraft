@@ -862,7 +862,7 @@
 	"help.securitycraft.reinforced_buttons.info": "Die verstärkten Knöpfe können nur von ihrem Besitzer oder zugelassenen Spielern aktiviert werden.",
 	"help.securitycraft.reinforced_chiseled_bookshelf.info": "Das Verstärkte gearbeitete Bücherregal hat die gleichen Eigenschaften wie sein Vanilla-Gegenstück, wobei nur der Besitzer oder Spieler auf der Zulassungsliste Bücher hinzufügen und entfernen können.",
 	"help.securitycraft.reinforced_crystal_quartz.info": "Verstärkte Kristallquarz-Blöcke werden benutzt, um die Blocktasche zu bauen. Mehr Infos auf der Seite des Blocktaschenverwalters.",
-	"help.securitycraft.reinforced_fence_gate.info": "Das elektrische Eisenzaungitter ist wie das normale Zaungitter, jedoch kann es nur durch Nummernschlösser, Inventarscanner, etc. geöffnet werden. Es gibt jedem außer dem Besitzer einen Stromschlag (tödlich!).",
+	"help.securitycraft.reinforced_fence_gate.info": "Das elektrische Eisenzauntor ist wie das normale Zauntor, jedoch kann es nur durch Nummernschlösser, Inventarscanner, etc. geöffnet werden. Es gibt jedem außer dem Besitzer einen Stromschlag (tödlich!).",
 	"help.securitycraft.reinforced_fence_gates.info": "Die verstärkten Zauntore können nur von ihrem Besitzer oder zugelassenen Spielern geöffnet werden.",
 	"help.securitycraft.reinforced_glass_pane.info": "Die verstärkte Glasscheibe ist wie eine normale Glasscheibe, jedoch kann sie nur von dem Besitzer mit einem Universellen Blockentferner entfernt werden.",
 	"help.securitycraft.reinforced_hopper.info": "Der verstärkte Trichter ist der einzige Block, der benutzt werden kann, um Items aus einer Passwort-gesicherten Truhe oder Fass zu extrahieren. Sonst verhält er sich wie ein normaler Trichter.",
