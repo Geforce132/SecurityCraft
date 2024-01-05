@@ -2165,15 +2165,15 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedObserverBlock> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(prop()));
+	@HasManualPage
+	@Reinforced
+	public static final DeferredBlock<ReinforcedHopperBlock> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(prop(MapColor.STONE).sound(SoundType.METAL).noOcclusion()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedDispenserBlock> REINFORCED_DISPENSER = BLOCKS.register("reinforced_dispenser", () -> new ReinforcedDispenserBlock(prop(MapColor.STONE).sound(SoundType.STONE)));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedDropperBlock> REINFORCED_DROPPER = BLOCKS.register("reinforced_dropper", () -> new ReinforcedDropperBlock(prop(MapColor.STONE).sound(SoundType.STONE)));
-	@HasManualPage
-	@Reinforced
-	public static final DeferredBlock<ReinforcedHopperBlock> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(prop(MapColor.STONE).sound(SoundType.METAL).noOcclusion()));
 	@HasManualPage
 	@Reinforced
 	public static final DeferredBlock<ReinforcedLeverBlock> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop(MapColor.NONE).noCollission().sound(SoundType.WOOD).pushReaction(PushReaction.BLOCK)));
