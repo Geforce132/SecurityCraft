@@ -66,13 +66,14 @@ import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
+import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceBlock;
+import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.FakeLavaBlock;
 import net.geforcemods.securitycraft.blocks.FakeWaterBlock;
 import net.geforcemods.securitycraft.blocks.FloorTrapBlock;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
-import net.geforcemods.securitycraft.blocks.IronFenceBlock;
 import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
 import net.geforcemods.securitycraft.blocks.KeycardLockBlock;
 import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
@@ -132,6 +133,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDropperBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedEndRodBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFallingBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlazedTerracottaBlock;
@@ -260,6 +262,7 @@ import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
@@ -349,7 +352,7 @@ public class SCContent {
 	public static final RegistryObject<Block> INVENTORY_SCANNER_FIELD = BLOCKS.register("inventory_scanner_field", () -> new InventoryScannerFieldBlock(prop(MapColor.NONE)));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> IRON_FENCE = BLOCKS.register("electrified_iron_fence", () -> new IronFenceBlock(prop(MapColor.METAL).sound(SoundType.METAL)));
+	public static final RegistryObject<Block> ELECTRIFIED_IRON_FENCE = BLOCKS.register("electrified_iron_fence", () -> new ElectrifiedIronFenceBlock(prop(MapColor.METAL).sound(SoundType.METAL)));
 	public static final RegistryObject<Block> KEY_PANEL_BLOCK = BLOCKS.register("key_panel", () -> new KeyPanelBlock(prop(MapColor.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
@@ -403,7 +406,7 @@ public class SCContent {
 	public static final RegistryObject<Block> REINFORCED_DOOR = BLOCKS.register("iron_door_reinforced", () -> new ReinforcedDoorBlock(prop(MapColor.METAL).sound(SoundType.METAL).noOcclusion().pushReaction(PushReaction.BLOCK)));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> REINFORCED_FENCE_GATE = BLOCKS.register("reinforced_fence_gate", () -> new ReinforcedFenceGateBlock(prop(MapColor.METAL).sound(SoundType.METAL)));
+	public static final RegistryObject<Block> ELECTRIFIED_IRON_FENCE_GATE = BLOCKS.register("reinforced_fence_gate", () -> new ElectrifiedIronFenceGateBlock(prop(MapColor.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> RETINAL_SCANNER = BLOCKS.register("retinal_scanner", () -> new RetinalScannerBlock(propDisguisable()));
@@ -2167,6 +2170,12 @@ public class SCContent {
 	@HasManualPage
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(prop(MapColor.STONE).sound(SoundType.METAL).noOcclusion()));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_DISPENSER = BLOCKS.register("reinforced_dispenser", () -> new ReinforcedDispenserBlock(prop(MapColor.STONE).sound(SoundType.STONE)));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_DROPPER = BLOCKS.register("reinforced_dropper", () -> new ReinforcedDropperBlock(prop(MapColor.STONE).sound(SoundType.STONE)));
 	@HasManualPage
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop(MapColor.NONE).noCollission().sound(SoundType.WOOD).pushReaction(PushReaction.BLOCK)));
@@ -2360,11 +2369,86 @@ public class SCContent {
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_CHERRY_BUTTON = BLOCKS.register("reinforced_cherry_button", () -> woodenButton(Blocks.CHERRY_BUTTON, BlockSetType.CHERRY));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DISPENSER = BLOCKS.register("reinforced_dispenser", () -> new ReinforcedDispenserBlock(prop(MapColor.STONE).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> REINFORCED_OAK_FENCE = BLOCKS.register("reinforced_oak_fence", () -> new ReinforcedFenceBlock(prop(Blocks.OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.OAK_FENCE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DROPPER = BLOCKS.register("reinforced_dropper", () -> new ReinforcedDropperBlock(prop(MapColor.STONE).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> REINFORCED_SPRUCE_FENCE = BLOCKS.register("reinforced_spruce_fence", () -> new ReinforcedFenceBlock(prop(Blocks.SPRUCE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.SPRUCE_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_BIRCH_FENCE = BLOCKS.register("reinforced_birch_fence", () -> new ReinforcedFenceBlock(prop(Blocks.BIRCH_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.BIRCH_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_JUNGLE_FENCE = BLOCKS.register("reinforced_jungle_fence", () -> new ReinforcedFenceBlock(prop(Blocks.JUNGLE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.JUNGLE_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_ACACIA_FENCE = BLOCKS.register("reinforced_acacia_fence", () -> new ReinforcedFenceBlock(prop(Blocks.ACACIA_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.ACACIA_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_DARK_OAK_FENCE = BLOCKS.register("reinforced_dark_oak_fence", () -> new ReinforcedFenceBlock(prop(Blocks.DARK_OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.DARK_OAK_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_MANGROVE_FENCE = BLOCKS.register("reinforced_mangrove_fence", () -> new ReinforcedFenceBlock(prop(Blocks.MANGROVE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.MANGROVE_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_FENCE = BLOCKS.register("reinforced_cherry_fence", () -> new ReinforcedFenceBlock(prop(Blocks.CHERRY_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.CHERRY_WOOD), Blocks.CHERRY_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_BAMBOO_FENCE = BLOCKS.register("reinforced_bamboo_fence", () -> new ReinforcedFenceBlock(prop(Blocks.BAMBOO_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.BAMBOO_WOOD), Blocks.BAMBOO_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CRIMSON_FENCE = BLOCKS.register("reinforced_crimson_fence", () -> new ReinforcedFenceBlock(prop(Blocks.CRIMSON_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.NETHER_WOOD), Blocks.CRIMSON_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_WARPED_FENCE = BLOCKS.register("reinforced_warped_fence", () -> new ReinforcedFenceBlock(prop(Blocks.WARPED_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.NETHER_WOOD), Blocks.WARPED_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_NETHER_BRICK_FENCE = BLOCKS.register("reinforced_nether_brick_fence", () -> new ReinforcedFenceBlock(prop(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.NETHER_BRICKS), Blocks.NETHER_BRICK_FENCE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_OAK_FENCE_GATE = BLOCKS.register("reinforced_oak_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.OAK, Blocks.OAK_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_SPRUCE_FENCE_GATE = BLOCKS.register("reinforced_spruce_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.SPRUCE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.SPRUCE, Blocks.SPRUCE_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_BIRCH_FENCE_GATE = BLOCKS.register("reinforced_birch_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.BIRCH_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.BIRCH, Blocks.BIRCH_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_JUNGLE_FENCE_GATE = BLOCKS.register("reinforced_jungle_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.JUNGLE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.JUNGLE, Blocks.JUNGLE_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_ACACIA_FENCE_GATE = BLOCKS.register("reinforced_acacia_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.ACACIA_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.ACACIA, Blocks.ACACIA_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_DARK_OAK_FENCE_GATE = BLOCKS.register("reinforced_dark_oak_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.DARK_OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.DARK_OAK, Blocks.DARK_OAK_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_MANGROVE_FENCE_GATE = BLOCKS.register("reinforced_mangrove_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.MANGROVE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.MANGROVE, Blocks.MANGROVE_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CHERRY_FENCE_GATE = BLOCKS.register("reinforced_cherry_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.CHERRY_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.CHERRY, Blocks.CHERRY_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_BAMBOO_FENCE_GATE = BLOCKS.register("reinforced_bamboo_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.BAMBOO_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.BAMBOO, Blocks.BAMBOO_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_CRIMSON_FENCE_GATE = BLOCKS.register("reinforced_crimson_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.CRIMSON_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.CRIMSON, Blocks.CRIMSON_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_WARPED_FENCE_GATE = BLOCKS.register("reinforced_warped_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.WARPED_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.WARPED, Blocks.WARPED_FENCE_GATE));
 
 	//misc
 	@RegisterItemBlock
@@ -2585,7 +2669,7 @@ public class SCContent {
 	public static final RegistryObject<BlockEntityType<NamedBlockEntity>> ABSTRACT_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("abstract", () -> BlockEntityType.Builder.of(NamedBlockEntity::new,
 			SCContent.LASER_FIELD.get(),
 			SCContent.INVENTORY_SCANNER_FIELD.get(),
-			SCContent.IRON_FENCE.get(),
+			SCContent.ELECTRIFIED_IRON_FENCE.get(),
 			SCContent.COBBLESTONE_MINE.get(),
 			SCContent.DIAMOND_ORE_MINE.get(),
 			SCContent.DIRT_MINE.get(),
@@ -2593,7 +2677,7 @@ public class SCContent {
 			SCContent.SAND_MINE.get(),
 			SCContent.STONE_MINE.get(),
 			SCContent.BOUNCING_BETTY.get(),
-			SCContent.REINFORCED_FENCE_GATE.get(),
+			SCContent.ELECTRIFIED_IRON_FENCE_GATE.get(),
 			SCContent.ANCIENT_DEBRIS_MINE.get(),
 			SCContent.COAL_ORE_MINE.get(),
 			SCContent.EMERALD_ORE_MINE.get(),
@@ -2745,6 +2829,18 @@ public class SCContent {
 	public static final RegistryObject<BlockEntityType<ScannerTrapdoorBlockEntity>> SCANNER_TRAPDOOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("scanner_trapdoor", () -> BlockEntityType.Builder.of(ScannerTrapdoorBlockEntity::new, SCContent.SCANNER_TRAPDOOR.get()).build(null));
 	public static final RegistryObject<BlockEntityType<ReinforcedDispenserBlockEntity>> REINFORCED_DISPENSER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_dispenser", () -> BlockEntityType.Builder.of(ReinforcedDispenserBlockEntity::new, SCContent.REINFORCED_DISPENSER.get()).build(null));
 	public static final RegistryObject<BlockEntityType<ReinforcedDropperBlockEntity>> REINFORCED_DROPPER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_dropper", () -> BlockEntityType.Builder.of(ReinforcedDropperBlockEntity::new, SCContent.REINFORCED_DROPPER.get()).build(null));
+	public static final RegistryObject<BlockEntityType<AllowlistOnlyBlockEntity>> REINFORCED_FENCE_GATE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_fence_gate", () -> BlockEntityType.Builder.of(AllowlistOnlyBlockEntity::new,
+			SCContent.REINFORCED_OAK_FENCE_GATE.get(),
+			SCContent.REINFORCED_SPRUCE_FENCE_GATE.get(),
+			SCContent.REINFORCED_BIRCH_FENCE_GATE.get(),
+			SCContent.REINFORCED_JUNGLE_FENCE_GATE.get(),
+			SCContent.REINFORCED_ACACIA_FENCE_GATE.get(),
+			SCContent.REINFORCED_DARK_OAK_FENCE_GATE.get(),
+			SCContent.REINFORCED_MANGROVE_FENCE_GATE.get(),
+			SCContent.REINFORCED_CHERRY_FENCE_GATE.get(),
+			SCContent.REINFORCED_BAMBOO_FENCE_GATE.get(),
+			SCContent.REINFORCED_CRIMSON_FENCE_GATE.get(),
+			SCContent.REINFORCED_WARPED_FENCE_GATE.get()).build(null));
 
 	//entity types
 	public static final RegistryObject<EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",

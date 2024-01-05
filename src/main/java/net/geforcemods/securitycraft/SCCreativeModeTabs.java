@@ -79,8 +79,8 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.FLOOR_TRAP.get()));
 				output.accept(new ItemStack(SCContent.CAGE_TRAP.get()));
 				output.accept(new ItemStack(SCContent.WIRE_CUTTERS.get()));
-				output.accept(new ItemStack(SCContent.IRON_FENCE.get()));
-				output.accept(new ItemStack(SCContent.REINFORCED_FENCE_GATE.get()));
+				output.accept(new ItemStack(SCContent.ELECTRIFIED_IRON_FENCE.get()));
+				output.accept(new ItemStack(SCContent.ELECTRIFIED_IRON_FENCE_GATE.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_IRON_TRAPDOOR.get()));
 				output.accept(new ItemStack(SCContent.KEYPAD_TRAPDOOR.get()));
 				output.accept(new ItemStack(SCContent.SCANNER_TRAPDOOR.get()));
@@ -219,8 +219,8 @@ public class SCCreativeModeTabs {
 				output.accept(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS.get());
 				output.accept(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB.get());
 				output.accept(SCContent.BLOCK_POCKET_WALL.get());
-				output.accept(SCContent.IRON_FENCE.get());
-				output.accept(SCContent.REINFORCED_FENCE_GATE.get());
+				output.accept(SCContent.ELECTRIFIED_IRON_FENCE.get());
+				output.accept(SCContent.ELECTRIFIED_IRON_FENCE_GATE.get());
 				output.accept(SCContent.REINFORCED_IRON_TRAPDOOR.get());
 				output.accept(SCContent.KEYPAD_TRAPDOOR.get());
 				output.accept(SCContent.SCANNER_TRAPDOOR.get());

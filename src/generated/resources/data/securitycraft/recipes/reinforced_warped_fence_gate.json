@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "securitycraft:reinforced_fence_gates",
+  "key": {
+    "M": {
+      "item": "securitycraft:reinforced_warped_planks"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "SMS",
+    "SMS"
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_warped_fence_gate"
+  },
+  "show_notification": true
+}

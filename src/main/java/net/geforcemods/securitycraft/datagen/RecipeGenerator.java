@@ -179,12 +179,12 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('D', Items.IRON_DOOR)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SCContent.IRON_FENCE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.ELECTRIFIED_IRON_FENCE.get())
 		.pattern(" I ")
 		.pattern("IFI")
 		.pattern(" I ")
 		.define('I', Tags.Items.INGOTS_IRON)
-		.define('F', ItemTags.WOODEN_FENCES)
+		.define('F', SCTags.Items.REINFORCED_WOODEN_FENCES)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.IMS.get())
@@ -374,12 +374,12 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_FENCE_GATE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.ELECTRIFIED_IRON_FENCE_GATE.get())
 		.pattern(" I ")
 		.pattern("IGI")
 		.pattern(" I ")
 		.define('I', Tags.Items.INGOTS_IRON)
-		.define('G', Tags.Items.FENCE_GATES_WOODEN)
+		.define('G', SCTags.Items.REINFORCED_WOODEN_FENCE_GATES)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
 		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_LEVER.get())
@@ -775,6 +775,29 @@ public class RecipeGenerator extends RecipeProvider {
 		addColoredWoolRecipe(consumer, Tags.Items.DYES_YELLOW, SCContent.REINFORCED_YELLOW_WOOL.get());
 		addCompressingRecipe(consumer, SCContent.REINFORCED_ICE.get(), SCContent.REINFORCED_PACKED_ICE.get());
 		addCompressingRecipe(consumer, SCContent.REINFORCED_PACKED_ICE.get(), SCContent.REINFORCED_BLUE_ICE.get());
+		addFenceRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_FENCE.get());
+		addFenceRecipe(consumer, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_FENCE.get());
+		addFenceRecipe(consumer, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.REINFORCED_BIRCH_FENCE.get());
+		addFenceRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_FENCE.get());
+		addFenceRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_FENCE.get());
+		addFenceRecipe(consumer, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.REINFORCED_DARK_OAK_FENCE.get());
+		addFenceRecipe(consumer, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_FENCE.get());
+		addFenceRecipe(consumer, SCContent.REINFORCED_CHERRY_PLANKS.get(), SCContent.REINFORCED_CHERRY_FENCE.get());
+		addFenceRecipe(consumer, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.REINFORCED_BAMBOO_FENCE.get());
+		addFenceRecipe(consumer, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_FENCE.get());
+		addFenceRecipe(consumer, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_FENCE.get());
+		addFenceRecipe(consumer, SCContent.REINFORCED_NETHER_BRICKS.get(), Tags.Items.INGOTS_NETHER_BRICK, SCContent.REINFORCED_NETHER_BRICK_FENCE.get(), 6, false);
+		addFenceGateRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_FENCE_GATE.get());
+		addFenceGateRecipe(consumer, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_FENCE_GATE.get());
+		addFenceGateRecipe(consumer, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.REINFORCED_BIRCH_FENCE_GATE.get());
+		addFenceGateRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_FENCE_GATE.get());
+		addFenceGateRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_FENCE_GATE.get());
+		addFenceGateRecipe(consumer, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.REINFORCED_DARK_OAK_FENCE_GATE.get());
+		addFenceGateRecipe(consumer, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_FENCE_GATE.get());
+		addFenceGateRecipe(consumer, SCContent.REINFORCED_CHERRY_PLANKS.get(), SCContent.REINFORCED_CHERRY_FENCE_GATE.get());
+		addFenceGateRecipe(consumer, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.REINFORCED_BAMBOO_FENCE_GATE.get());
+		addFenceGateRecipe(consumer, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_FENCE_GATE.get());
+		addFenceGateRecipe(consumer, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_FENCE_GATE.get());
 		addKeycardRecipe(consumer, Tags.Items.INGOTS_GOLD, SCContent.KEYCARD_LVL_1.get());
 		addKeycardRecipe(consumer, Tags.Items.INGOTS_BRICK, SCContent.KEYCARD_LVL_2.get());
 		addKeycardRecipe(consumer, Tags.Items.INGOTS_NETHER_BRICK, SCContent.KEYCARD_LVL_3.get());
@@ -1378,6 +1401,39 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("BBB")
 		.define('B', block)
 		.unlockedBy("has_block", has(block))
+		.save(consumer);
+		//@formatter:on
+	}
+
+	protected final void addFenceRecipe(Consumer<FinishedRecipe> consumer, ItemLike material, ItemLike result) {
+		addFenceRecipe(consumer, material, Tags.Items.RODS_WOODEN, result, 3, true);
+	}
+
+	protected final void addFenceRecipe(Consumer<FinishedRecipe> consumer, ItemLike material, TagKey<Item> stick, ItemLike result, int amount, boolean group) {
+		//@formatter:off
+		ShapedRecipeBuilder builder = ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, amount)
+		.pattern("MSM")
+		.pattern("MSM")
+		.define('M', material)
+		.define('S', stick)
+		.unlockedBy("has_stick", has(stick));
+		//@formatter:on
+
+		if (group)
+			builder.group("securitycraft:reinforced_fences");
+
+		builder.save(consumer);
+	}
+
+	protected final void addFenceGateRecipe(Consumer<FinishedRecipe> consumer, ItemLike material, ItemLike result) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, result)
+		.group("securitycraft:reinforced_fence_gates")
+		.pattern("SMS")
+		.pattern("SMS")
+		.define('S', Tags.Items.RODS_WOODEN)
+		.define('M', material)
+		.unlockedBy("has_stick", has(Tags.Items.RODS_WOODEN))
 		.save(consumer);
 		//@formatter:on
 	}

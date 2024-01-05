@@ -2416,6 +2416,18 @@
       },
       {
         "ingredients": [
+          "minecraft:dispenser"
+        ],
+        "output": "securitycraft:reinforced_dispenser"
+      },
+      {
+        "ingredients": [
+          "minecraft:dropper"
+        ],
+        "output": "securitycraft:reinforced_dropper"
+      },
+      {
+        "ingredients": [
           "minecraft:lever"
         ],
         "output": "securitycraft:reinforced_lever"
@@ -2692,15 +2704,141 @@
       },
       {
         "ingredients": [
-          "minecraft:dispenser"
+          "minecraft:oak_fence"
         ],
-        "output": "securitycraft:reinforced_dispenser"
+        "output": "securitycraft:reinforced_oak_fence"
       },
       {
         "ingredients": [
-          "minecraft:dropper"
+          "minecraft:spruce_fence"
         ],
-        "output": "securitycraft:reinforced_dropper"
+        "output": "securitycraft:reinforced_spruce_fence"
+      },
+      {
+        "ingredients": [
+          "minecraft:birch_fence"
+        ],
+        "output": "securitycraft:reinforced_birch_fence"
+      },
+      {
+        "ingredients": [
+          "minecraft:jungle_fence"
+        ],
+        "output": "securitycraft:reinforced_jungle_fence"
+      },
+      {
+        "ingredients": [
+          "minecraft:acacia_fence"
+        ],
+        "output": "securitycraft:reinforced_acacia_fence"
+      },
+      {
+        "ingredients": [
+          "minecraft:dark_oak_fence"
+        ],
+        "output": "securitycraft:reinforced_dark_oak_fence"
+      },
+      {
+        "ingredients": [
+          "minecraft:mangrove_fence"
+        ],
+        "output": "securitycraft:reinforced_mangrove_fence"
+      },
+      {
+        "ingredients": [
+          "minecraft:cherry_fence"
+        ],
+        "output": "securitycraft:reinforced_cherry_fence"
+      },
+      {
+        "ingredients": [
+          "minecraft:bamboo_fence"
+        ],
+        "output": "securitycraft:reinforced_bamboo_fence"
+      },
+      {
+        "ingredients": [
+          "minecraft:crimson_fence"
+        ],
+        "output": "securitycraft:reinforced_crimson_fence"
+      },
+      {
+        "ingredients": [
+          "minecraft:warped_fence"
+        ],
+        "output": "securitycraft:reinforced_warped_fence"
+      },
+      {
+        "ingredients": [
+          "minecraft:nether_brick_fence"
+        ],
+        "output": "securitycraft:reinforced_nether_brick_fence"
+      },
+      {
+        "ingredients": [
+          "minecraft:oak_fence_gate"
+        ],
+        "output": "securitycraft:reinforced_oak_fence_gate"
+      },
+      {
+        "ingredients": [
+          "minecraft:spruce_fence_gate"
+        ],
+        "output": "securitycraft:reinforced_spruce_fence_gate"
+      },
+      {
+        "ingredients": [
+          "minecraft:birch_fence_gate"
+        ],
+        "output": "securitycraft:reinforced_birch_fence_gate"
+      },
+      {
+        "ingredients": [
+          "minecraft:jungle_fence_gate"
+        ],
+        "output": "securitycraft:reinforced_jungle_fence_gate"
+      },
+      {
+        "ingredients": [
+          "minecraft:acacia_fence_gate"
+        ],
+        "output": "securitycraft:reinforced_acacia_fence_gate"
+      },
+      {
+        "ingredients": [
+          "minecraft:dark_oak_fence_gate"
+        ],
+        "output": "securitycraft:reinforced_dark_oak_fence_gate"
+      },
+      {
+        "ingredients": [
+          "minecraft:mangrove_fence_gate"
+        ],
+        "output": "securitycraft:reinforced_mangrove_fence_gate"
+      },
+      {
+        "ingredients": [
+          "minecraft:cherry_fence_gate"
+        ],
+        "output": "securitycraft:reinforced_cherry_fence_gate"
+      },
+      {
+        "ingredients": [
+          "minecraft:bamboo_fence_gate"
+        ],
+        "output": "securitycraft:reinforced_bamboo_fence_gate"
+      },
+      {
+        "ingredients": [
+          "minecraft:crimson_fence_gate"
+        ],
+        "output": "securitycraft:reinforced_crimson_fence_gate"
+      },
+      {
+        "ingredients": [
+          "minecraft:warped_fence_gate"
+        ],
+        "output": "securitycraft:reinforced_warped_fence_gate"
       },
       {
         "ingredients": [
