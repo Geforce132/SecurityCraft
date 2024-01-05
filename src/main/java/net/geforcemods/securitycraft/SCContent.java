@@ -2198,28 +2198,28 @@ public class SCContent {
 	public static final RegistryObject<Block> REINFORCED_IRON_TRAPDOOR = BLOCKS.register("reinforced_iron_trapdoor", () -> new ReinforcedIronTrapDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion().isValidSpawn(SCContent::never)));
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OAK_FENCE_GATE = BLOCKS.register("reinforced_oak_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.OAK_PLANKS.defaultMaterialColor()), Blocks.OAK_FENCE_GATE));
+	public static final RegistryObject<Block> REINFORCED_OAK_FENCE_GATE = BLOCKS.register("reinforced_oak_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.OAK_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.OAK_FENCE_GATE));
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SPRUCE_FENCE_GATE = BLOCKS.register("reinforced_spruce_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.SPRUCE_PLANKS.defaultMaterialColor()), Blocks.SPRUCE_FENCE_GATE));
+	public static final RegistryObject<Block> REINFORCED_SPRUCE_FENCE_GATE = BLOCKS.register("reinforced_spruce_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.SPRUCE_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.SPRUCE_FENCE_GATE));
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BIRCH_FENCE_GATE = BLOCKS.register("reinforced_birch_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.BIRCH_PLANKS.defaultMaterialColor()), Blocks.BIRCH_FENCE_GATE));
+	public static final RegistryObject<Block> REINFORCED_BIRCH_FENCE_GATE = BLOCKS.register("reinforced_birch_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.BIRCH_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.BIRCH_FENCE_GATE));
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_JUNGLE_FENCE_GATE = BLOCKS.register("reinforced_jungle_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.JUNGLE_PLANKS.defaultMaterialColor()), Blocks.JUNGLE_FENCE_GATE));
+	public static final RegistryObject<Block> REINFORCED_JUNGLE_FENCE_GATE = BLOCKS.register("reinforced_jungle_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.JUNGLE_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.JUNGLE_FENCE_GATE));
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ACACIA_FENCE_GATE = BLOCKS.register("reinforced_acacia_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.ACACIA_PLANKS.defaultMaterialColor()), Blocks.ACACIA_FENCE_GATE));
+	public static final RegistryObject<Block> REINFORCED_ACACIA_FENCE_GATE = BLOCKS.register("reinforced_acacia_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.ACACIA_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.ACACIA_FENCE_GATE));
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_OAK_FENCE_GATE = BLOCKS.register("reinforced_dark_oak_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.DARK_OAK_PLANKS.defaultMaterialColor()), Blocks.DARK_OAK_FENCE_GATE));
+	public static final RegistryObject<Block> REINFORCED_DARK_OAK_FENCE_GATE = BLOCKS.register("reinforced_dark_oak_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.DARK_OAK_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.DARK_OAK_FENCE_GATE));
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRIMSON_FENCE_GATE = BLOCKS.register("reinforced_crimson_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.CRIMSON_PLANKS.defaultMaterialColor()), Blocks.CRIMSON_FENCE_GATE));
+	public static final RegistryObject<Block> REINFORCED_CRIMSON_FENCE_GATE = BLOCKS.register("reinforced_crimson_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.CRIMSON_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.CRIMSON_FENCE_GATE));
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WARPED_FENCE_GATE = BLOCKS.register("reinforced_warped_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.WARPED_PLANKS.defaultMaterialColor()), Blocks.WARPED_FENCE_GATE));
+	public static final RegistryObject<Block> REINFORCED_WARPED_FENCE_GATE = BLOCKS.register("reinforced_warped_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.WARPED_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.WARPED_FENCE_GATE));
 
 	//ordered by vanilla brewing tab order
 	@Reinforced
