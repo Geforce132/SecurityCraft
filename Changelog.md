@@ -3,9 +3,11 @@
 - New: Items in open Display Cases can now be picked using the "Pick Block" key
 - New: The Sentry Remote Access tool now displays the last known name of a Sentry if the Sentry is out of range
 - New: The Portable Radar now always shows its coordinates in messages, even when it has a custom name
-- New: Crafting Recipes for Reinforced Pistons and Reinforced Sticky Pistons
+- New: Crafting recipes for Reinforced Pistons and Reinforced Sticky Pistons
+- New: Reinforced fences and fence gates
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
+- Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate
 - Fix: The Floor Trap has incorrect sound
 - Fix: Duplication exploit involving keycards
 - Fix: The name of certain SecurityCraft blocks is displayed within brackets by WTHIT and similar mods

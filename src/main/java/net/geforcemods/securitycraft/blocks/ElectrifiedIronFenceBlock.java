@@ -6,50 +6,27 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IronFenceBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 
-public class IronFenceBlock extends BlockFence implements ITileEntityProvider {
-	public IronFenceBlock(Material material) {
+public class ElectrifiedIronFenceBlock extends OwnableFenceBlock {
+	public ElectrifiedIronFenceBlock(Material material) {
 		super(material, MapColor.IRON);
 		setSoundType(SoundType.METAL);
-	}
-
-	@Override
-	public float getExplosionResistance(Entity exploder) {
-		return Float.MAX_VALUE;
-	}
-
-	@Override
-	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-		return Float.MAX_VALUE;
-	}
-
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		if (placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
@@ -62,7 +39,7 @@ public class IronFenceBlock extends BlockFence implements ITileEntityProvider {
 		Block block = world.getBlockState(pos).getBlock();
 
 		//split up oneliner to be more readable
-		if (block != this && !(block instanceof BlockFenceGate) && block != SCContent.reinforcedFencegate) {
+		if (block != this && !(block instanceof BlockFenceGate) && block != SCContent.electrifiedIronFenceGate) {
 			if (block.getDefaultState().getMaterial().isOpaque())
 				return block.getDefaultState().getMaterial() != Material.GOURD;
 			else
@@ -109,19 +86,6 @@ public class IronFenceBlock extends BlockFence implements ITileEntityProvider {
 		}
 
 		entity.attackEntityFrom(CustomDamageSources.ELECTRICITY, 6.0F); //3 hearts per attack
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		super.breakBlock(world, pos, state);
-		world.removeTileEntity(pos);
-	}
-
-	@Override
-	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int eventID, int eventParam) {
-		TileEntity te = world.getTileEntity(pos);
-
-		return te != null && te.receiveClientEvent(eventID, eventParam);
 	}
 
 	@Override

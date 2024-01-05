@@ -57,6 +57,7 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(modid = SecurityCraft.MODID, name = "SecurityCraft", dependencies = "required-after:forge@[14.23.5.2826,)", updateJSON = "https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json", acceptedMinecraftVersions = "[1.12.2]")
 public class SecurityCraft {
@@ -173,6 +174,19 @@ public class SecurityCraft {
 			});
 		});
 		ConfigHandler.loadEffects();
+		OreDictionary.registerOre("securitycraftReinforcedFence", SCContent.reinforcedOakFence);
+		OreDictionary.registerOre("securitycraftReinforcedFence", SCContent.reinforcedNetherBrickFence);
+		OreDictionary.registerOre("securitycraftReinforcedFence", SCContent.reinforcedSpruceFence);
+		OreDictionary.registerOre("securitycraftReinforcedFence", SCContent.reinforcedBirchFence);
+		OreDictionary.registerOre("securitycraftReinforcedFence", SCContent.reinforcedJungleFence);
+		OreDictionary.registerOre("securitycraftReinforcedFence", SCContent.reinforcedDarkOakFence);
+		OreDictionary.registerOre("securitycraftReinforcedFence", SCContent.reinforcedAcaciaFence);
+		OreDictionary.registerOre("securitycraftReinforcedFenceGate", SCContent.reinforcedOakFenceGate);
+		OreDictionary.registerOre("securitycraftReinforcedFenceGate", SCContent.reinforcedSpruceFenceGate);
+		OreDictionary.registerOre("securitycraftReinforcedFenceGate", SCContent.reinforcedBirchFenceGate);
+		OreDictionary.registerOre("securitycraftReinforcedFenceGate", SCContent.reinforcedJungleFenceGate);
+		OreDictionary.registerOre("securitycraftReinforcedFenceGate", SCContent.reinforcedDarkOakFenceGate);
+		OreDictionary.registerOre("securitycraftReinforcedFenceGate", SCContent.reinforcedAcaciaFenceGate);
 	}
 
 	@EventHandler

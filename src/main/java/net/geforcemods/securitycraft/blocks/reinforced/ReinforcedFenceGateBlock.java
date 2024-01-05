@@ -1,101 +1,85 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.geforcemods.securitycraft.blockentities.IronFenceBlockEntity;
-import net.geforcemods.securitycraft.blocks.IronFenceBlock;
-import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.util.BlockUtils;
+import java.util.Arrays;
+import java.util.List;
+
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
+import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableFenceGateBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFenceGate;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-public class ReinforcedFenceGateBlock extends BlockFenceGate implements ITileEntityProvider {
-	public ReinforcedFenceGateBlock() {
-		super(BlockPlanks.EnumType.OAK);
-		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, Material.IRON, 18);
-		setSoundType(SoundType.METAL);
+public class ReinforcedFenceGateBlock extends OwnableFenceGateBlock implements IReinforcedBlock {
+	private final Block vanillaBlock;
+
+	public ReinforcedFenceGateBlock(EnumType type, Block vanillaBlock) {
+		super(type, SoundEvents.BLOCK_FENCE_GATE_OPEN, SoundEvents.BLOCK_FENCE_GATE_CLOSE);
+		this.vanillaBlock = vanillaBlock;
+		setSoundType(SoundType.WOOD);
 	}
 
 	@Override
-	public float getExplosionResistance(Entity exploder) {
-		return Float.MAX_VALUE;
-	}
+	public boolean onBlockActivated(World level, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		TileEntity te = level.getTileEntity(pos);
 
-	@Override
-	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-		return Float.MAX_VALUE;
-	}
+		if (te instanceof AllowlistOnlyBlockEntity) {
+			AllowlistOnlyBlockEntity be = (AllowlistOnlyBlockEntity) te;
 
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		if (placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
-	}
-
-	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		return false;
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		super.breakBlock(world, pos, state);
-		world.removeTileEntity(pos);
-	}
-
-	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-		if (state.getValue(OPEN))
-			return;
-
-		IronFenceBlock.hurtOrConvertEntity(world, pos, state, entity);
-	}
-
-	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		if (!world.isRemote) {
-			boolean isPoweredSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos);
-
-			if (isPoweredSCBlock || block.getDefaultState().canProvidePower()) {
-				if (isPoweredSCBlock && !state.getValue(OPEN) && !state.getValue(POWERED)) {
-					world.setBlockState(pos, state.withProperty(OPEN, true).withProperty(POWERED, true), 2);
-					world.playEvent(null, Constants.WorldEvents.IRON_DOOR_OPEN_SOUND, pos, 0);
+			//only allow the owner or players on the allowlist to access a reinforced fence gate
+			if (be.isOwnedBy(player) || be.isAllowed(player)) {
+				if ((state.getValue(OPEN))) {
+					state = state.withProperty(OPEN, false);
+					level.setBlockState(pos, state, 10);
 				}
-				else if (!isPoweredSCBlock && state.getValue(OPEN) && state.getValue(POWERED)) {
-					world.setBlockState(pos, state.withProperty(OPEN, false).withProperty(POWERED, false), 2);
-					world.playEvent(null, Constants.WorldEvents.IRON_DOOR_CLOSE_SOUND, pos, 0);
+				else {
+					EnumFacing playerRotation = EnumFacing.fromAngle(player.rotationYaw);
+
+					if (state.getValue(FACING) == playerRotation.getOpposite())
+						state = state.withProperty(FACING, playerRotation);
+
+					state = state.withProperty(OPEN, true);
+					level.setBlockState(pos, state, 10);
 				}
-				else if (isPoweredSCBlock != state.getValue(POWERED))
-					world.setBlockState(pos, state.withProperty(POWERED, isPoweredSCBlock), 2);
+
+				boolean isOpen = state.getValue(OPEN);
+
+				level.playSound(null, pos, isOpen ? openSound : closeSound, SoundCategory.BLOCKS, 1.0F, SecurityCraft.RANDOM.nextFloat() * 0.1F + 0.9F);
 			}
 		}
+
+		return true;
 	}
 
 	@Override
-	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
-		TileEntity te = world.getTileEntity(pos);
+	public boolean eventReceived(IBlockState state, World level, BlockPos pos, int id, int param) {
+		TileEntity be = level.getTileEntity(pos);
 
-		return te != null && te.receiveClientEvent(id, param);
+		return be != null && be.receiveClientEvent(id, param);
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new IronFenceBlockEntity();
+		return new AllowlistOnlyBlockEntity();
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks() {
+		return Arrays.asList(vanillaBlock);
+	}
+
+	@Override
+	public int getAmount() {
+		return 1;
 	}
 }

@@ -1,0 +1,6 @@
+{
+    "parent": "securitycraft:block/template_wall_gate_open",
+    "textures": {
+        "texture": "blocks/planks_acacia"
+    }
+}

@@ -42,6 +42,8 @@ public class SCContent {
 	public static Block displayCase;
 	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false)
 	public static Block doubleCrystalQuartzSlab;
+	public static Block electrifiedIronFence;
+	public static Block electrifiedIronFenceGate;
 	public static Block emeraldOreMine;
 	public static Block endStoneMine;
 	public static BlockStaticLiquid fakeLava;
@@ -54,7 +56,6 @@ public class SCContent {
 	public static Block ims;
 	public static Block inventoryScanner;
 	public static Block inventoryScannerField;
-	public static Block ironFence;
 	public static Block ironOreMine;
 	public static Block keycardLockFloorCeilingBlock;
 	public static Block keycardLockWallBlock;
@@ -135,7 +136,45 @@ public class SCContent {
 	@Reinforced
 	@Tinted
 	public static Block reinforcedEndStoneBricks;
-	public static Block reinforcedFencegate;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedOakFence;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedNetherBrickFence;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedSpruceFence;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedBirchFence;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedJungleFence;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedDarkOakFence;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedAcaciaFence;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedOakFenceGate;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedSpruceFenceGate;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedBirchFenceGate;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedJungleFenceGate;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedDarkOakFenceGate;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedAcaciaFenceGate;
 	@Reinforced
 	public static Block reinforcedGlass;
 	@Reinforced

@@ -202,7 +202,7 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedSandstone, new ItemBlockReinforcedSandstone(SCContent.reinforcedSandstone), PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedDirt, new ItemBlockReinforcedDirt(SCContent.reinforcedDirt), PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedCobblestone, PageGroup.REINFORCED);
-		registerBlock(event, SCContent.reinforcedFencegate);
+		registerBlock(event, SCContent.electrifiedIronFenceGate);
 		registerBlock(event, SCContent.reinforcedWoodPlanks, new ItemBlockReinforcedPlanks(SCContent.reinforcedWoodPlanks), PageGroup.REINFORCED);
 		registerBlock(event, SCContent.panicButton);
 		registerBlock(event, SCContent.frame);
@@ -218,7 +218,7 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedStairsAcacia, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedStairsDarkoak, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedStairsStone, PageGroup.REINFORCED);
-		registerBlock(event, SCContent.ironFence);
+		registerBlock(event, SCContent.electrifiedIronFence);
 		registerBlock(event, SCContent.ims, ConfigHandler.ableToCraftMines);
 		registerBlock(event, SCContent.reinforcedGlass, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedStainedGlass, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedStainedGlass), PageGroup.REINFORCED);
@@ -335,6 +335,19 @@ public class RegistrationHandler {
 		event.getRegistry().register(SCContent.keycardLockFloorCeilingBlock);
 		event.getRegistry().register(SCContent.keycardLockWallBlock);
 		registerBlock(event, SCContent.scannerTrapdoor);
+		registerBlock(event, SCContent.reinforcedOakFence, PageGroup.REINFORCED);
+		registerBlock(event, SCContent.reinforcedNetherBrickFence, PageGroup.REINFORCED);
+		registerBlock(event, SCContent.reinforcedSpruceFence, PageGroup.REINFORCED);
+		registerBlock(event, SCContent.reinforcedBirchFence, PageGroup.REINFORCED);
+		registerBlock(event, SCContent.reinforcedJungleFence, PageGroup.REINFORCED);
+		registerBlock(event, SCContent.reinforcedDarkOakFence, PageGroup.REINFORCED);
+		registerBlock(event, SCContent.reinforcedAcaciaFence, PageGroup.REINFORCED);
+		registerBlock(event, SCContent.reinforcedOakFenceGate, PageGroup.FENCE_GATES);
+		registerBlock(event, SCContent.reinforcedSpruceFenceGate, PageGroup.FENCE_GATES);
+		registerBlock(event, SCContent.reinforcedBirchFenceGate, PageGroup.FENCE_GATES);
+		registerBlock(event, SCContent.reinforcedJungleFenceGate, PageGroup.FENCE_GATES);
+		registerBlock(event, SCContent.reinforcedDarkOakFenceGate, PageGroup.FENCE_GATES);
+		registerBlock(event, SCContent.reinforcedAcaciaFenceGate, PageGroup.FENCE_GATES);
 
 		//block mines
 		registerBlockMine(event, SCContent.stoneMine);
@@ -649,8 +662,8 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.alarm, 0, "alarm");
 		registerInventoryModel(SCContent.alarmLit, 0, "alarm_lit");
 		registerInventoryModel(SCContent.usernameLogger, 0, "username_logger");
-		registerInventoryModel(SCContent.reinforcedFencegate, 0, "reinforced_fence_gate");
-		registerInventoryModel(SCContent.ironFence, 0, "electrified_iron_fence");
+		registerInventoryModel(SCContent.electrifiedIronFenceGate, 0, "reinforced_fence_gate");
+		registerInventoryModel(SCContent.electrifiedIronFence, 0, "electrified_iron_fence");
 		registerInventoryModel(SCContent.reinforcedWoodPlanks, 0, "reinforced_planks_oak");
 		registerInventoryModel(SCContent.reinforcedWoodPlanks, 1, "reinforced_planks_spruce");
 		registerInventoryModel(SCContent.reinforcedWoodPlanks, 2, "reinforced_planks_birch");
@@ -905,6 +918,19 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.reinforcedLadder, 0, "reinforced_ladder");
 		registerInventoryModel(SCContent.floorTrap, 0, "floor_trap");
 		registerInventoryModel(SCContent.scannerTrapdoor, 0, "scanner_trapdoor");
+		registerInventoryModel(SCContent.reinforcedOakFence, 0, "reinforced_oak_fence");
+		registerInventoryModel(SCContent.reinforcedNetherBrickFence, 0, "reinforced_nether_brick_fence");
+		registerInventoryModel(SCContent.reinforcedSpruceFence, 0, "reinforced_spruce_fence");
+		registerInventoryModel(SCContent.reinforcedBirchFence, 0, "reinforced_birch_fence");
+		registerInventoryModel(SCContent.reinforcedJungleFence, 0, "reinforced_jungle_fence");
+		registerInventoryModel(SCContent.reinforcedDarkOakFence, 0, "reinforced_dark_oak_fence");
+		registerInventoryModel(SCContent.reinforcedAcaciaFence, 0, "reinforced_acacia_fence");
+		registerInventoryModel(SCContent.reinforcedOakFenceGate, 0, "reinforced_oak_fence_gate");
+		registerInventoryModel(SCContent.reinforcedSpruceFenceGate, 0, "reinforced_spruce_fence_gate");
+		registerInventoryModel(SCContent.reinforcedBirchFenceGate, 0, "reinforced_birch_fence_gate");
+		registerInventoryModel(SCContent.reinforcedJungleFenceGate, 0, "reinforced_jungle_fence_gate");
+		registerInventoryModel(SCContent.reinforcedDarkOakFenceGate, 0, "reinforced_dark_oak_fence_gate");
+		registerInventoryModel(SCContent.reinforcedAcaciaFenceGate, 0, "reinforced_acacia_fence_gate");
 
 		//items
 		registerInventoryModel(SCContent.codebreaker, 0, "codebreaker");

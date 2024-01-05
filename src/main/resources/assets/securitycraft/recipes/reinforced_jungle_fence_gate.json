@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:wooden_fence_gate",
+  "pattern": [
+    "#W#",
+    "#W#"
+  ],
+  "key": {
+    "#": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    "W": {
+      "item": "securitycraft:reinforced_planks",
+      "data": 3
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_jungle_fence_gate"
+  }
+}

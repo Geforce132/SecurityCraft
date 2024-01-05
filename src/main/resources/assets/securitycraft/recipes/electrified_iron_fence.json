@@ -12,7 +12,7 @@
     },
     "F": {
       "type": "forge:ore_dict",
-      "ore": "fenceWood"
+      "ore": "securitycraftReinforcedFence"
     }
   },
   "result": {

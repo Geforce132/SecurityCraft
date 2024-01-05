@@ -9,6 +9,8 @@ import net.geforcemods.securitycraft.blocks.CrystalQuartzBlock;
 import net.geforcemods.securitycraft.blocks.CrystalQuartzSlabBlock;
 import net.geforcemods.securitycraft.blocks.CustomStairsBlock;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
+import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceBlock;
+import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.FakeLavaBaseBlock;
 import net.geforcemods.securitycraft.blocks.FakeLavaBlock;
 import net.geforcemods.securitycraft.blocks.FakeWaterBaseBlock;
@@ -17,7 +19,6 @@ import net.geforcemods.securitycraft.blocks.FloorTrapBlock;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
-import net.geforcemods.securitycraft.blocks.IronFenceBlock;
 import net.geforcemods.securitycraft.blocks.KeyPanelFloorCeilingBlock;
 import net.geforcemods.securitycraft.blocks.KeyPanelItem;
 import net.geforcemods.securitycraft.blocks.KeyPanelWallBlock;
@@ -73,6 +74,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDirtBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedEndRodBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFallingBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlassPaneBlock;
@@ -177,7 +179,7 @@ public class SetupHandler {
 		SCContent.alarm = new AlarmBlock(Material.IRON).setBlockUnbreakable().setTickRandomly(true).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("alarm").setTranslationKey("securitycraft:alarm");
 		SCContent.alarmLit = new OldLitAlarmBlock(Material.IRON).setBlockUnbreakable().setTickRandomly(true).setRegistryName("alarm_lit").setTranslationKey("securitycraft:alarmLit");
 		SCContent.reinforcedStone = new ReinforcedStoneBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_stone").setTranslationKey("securitycraft:reinforcedStone");
-		SCContent.reinforcedFencegate = new ReinforcedFenceGateBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_fence_gate").setTranslationKey("securitycraft:reinforcedFenceGate");
+		SCContent.electrifiedIronFenceGate = new ElectrifiedIronFenceGateBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_fence_gate").setTranslationKey("securitycraft:reinforcedFenceGate");
 		SCContent.reinforcedWoodPlanks = new ReinforcedPlanksBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_planks").setTranslationKey("securitycraft:reinforcedPlanks");
 		SCContent.panicButton = new PanicButtonBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("panic_button").setTranslationKey("securitycraft:panicButton");
 		SCContent.frame = new FrameBlock(Material.ROCK).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("keypad_frame").setTranslationKey("securitycraft:keypadFrame");
@@ -190,7 +192,7 @@ public class SetupHandler {
 		SCContent.reinforcedStairsAcacia = new ReinforcedStairsBlock(SCContent.reinforcedWoodPlanks, 4, Blocks.ACACIA_STAIRS).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_stairs_acacia").setTranslationKey("securitycraft:reinforcedStairsAcacia");
 		SCContent.reinforcedStairsDarkoak = new ReinforcedStairsBlock(SCContent.reinforcedWoodPlanks, 5, Blocks.DARK_OAK_STAIRS).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_stairs_darkoak").setTranslationKey("securitycraft:reinforcedStairsDarkoak");
 		SCContent.reinforcedStairsStone = new OwnableStairsBlock(SCContent.reinforcedStone, 0).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_stairs_stone").setTranslationKey("securitycraft:reinforcedStairsStone");
-		SCContent.ironFence = new IronFenceBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("electrified_iron_fence").setTranslationKey("securitycraft:electrifiedIronFence");
+		SCContent.electrifiedIronFence = new ElectrifiedIronFenceBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("electrified_iron_fence").setTranslationKey("securitycraft:electrifiedIronFence");
 		SCContent.reinforcedGlass = new ReinforcedGlassBlock(Material.GLASS).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_glass_block").setTranslationKey("securitycraft:reinforcedGlassBlock");
 		SCContent.reinforcedStainedGlass = new ReinforcedStainedGlassBlock(Material.GLASS).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_stained_glass").setTranslationKey("securitycraft:reinforcedStainedGlass");
 		SCContent.reinforcedDirt = new ReinforcedDirtBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_dirt").setTranslationKey("securitycraft:reinforcedDirt");
@@ -312,6 +314,19 @@ public class SetupHandler {
 		SCContent.keycardLockFloorCeilingBlock = new KeycardLockFloorCeilingBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setBlockUnbreakable().setRegistryName("floor_ceiling_keycard_lock").setTranslationKey("securitycraft:keycard_lock");
 		SCContent.keycardLockWallBlock = new KeycardLockWallBlock(Material.ROCK).setBlockUnbreakable().setRegistryName("wall_keycard_lock").setTranslationKey("securitycraft:keycard_lock");
 		SCContent.scannerTrapdoor = (ScannerTrapDoorBlock) new ScannerTrapDoorBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("scanner_trapdoor").setTranslationKey("securitycraft:scanner_trapdoor");
+		SCContent.reinforcedOakFence = new ReinforcedFenceBlock(BlockPlanks.EnumType.OAK.getMapColor(), Blocks.OAK_FENCE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_oak_fence").setTranslationKey("securitycraft:reinforced_oak_fence");
+		SCContent.reinforcedNetherBrickFence = new ReinforcedFenceBlock(Material.ROCK, MapColor.NETHERRACK, Blocks.NETHER_BRICK_FENCE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_nether_brick_fence").setTranslationKey("securitycraft:reinforced_nether_brick_fence");
+		SCContent.reinforcedSpruceFence = new ReinforcedFenceBlock(BlockPlanks.EnumType.SPRUCE.getMapColor(), Blocks.SPRUCE_FENCE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_spruce_fence").setTranslationKey("securitycraft:reinforced_spruce_fence");
+		SCContent.reinforcedBirchFence = new ReinforcedFenceBlock(BlockPlanks.EnumType.BIRCH.getMapColor(), Blocks.BIRCH_FENCE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_birch_fence").setTranslationKey("securitycraft:reinforced_birch_fence");
+		SCContent.reinforcedJungleFence = new ReinforcedFenceBlock(BlockPlanks.EnumType.JUNGLE.getMapColor(), Blocks.JUNGLE_FENCE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_jungle_fence").setTranslationKey("securitycraft:reinforced_jungle_fence");
+		SCContent.reinforcedDarkOakFence = new ReinforcedFenceBlock(BlockPlanks.EnumType.DARK_OAK.getMapColor(), Blocks.DARK_OAK_FENCE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_dark_oak_fence").setTranslationKey("securitycraft:reinforced_dark_oak_fence");
+		SCContent.reinforcedAcaciaFence = new ReinforcedFenceBlock(BlockPlanks.EnumType.ACACIA.getMapColor(), Blocks.ACACIA_FENCE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_acacia_fence").setTranslationKey("securitycraft:reinforced_acacia_fence");
+		SCContent.reinforcedOakFenceGate = new ReinforcedFenceGateBlock(BlockPlanks.EnumType.OAK, Blocks.OAK_FENCE_GATE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_oak_fence_gate").setTranslationKey("securitycraft:reinforced_oak_fence_gate");
+		SCContent.reinforcedSpruceFenceGate = new ReinforcedFenceGateBlock(BlockPlanks.EnumType.SPRUCE, Blocks.SPRUCE_FENCE_GATE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_spruce_fence_gate").setTranslationKey("securitycraft:reinforced_spruce_fence_gate");
+		SCContent.reinforcedBirchFenceGate = new ReinforcedFenceGateBlock(BlockPlanks.EnumType.BIRCH, Blocks.BIRCH_FENCE_GATE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_birch_fence_gate").setTranslationKey("securitycraft:reinforced_birch_fence_gate");
+		SCContent.reinforcedJungleFenceGate = new ReinforcedFenceGateBlock(BlockPlanks.EnumType.JUNGLE, Blocks.JUNGLE_FENCE_GATE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_jungle_fence_gate").setTranslationKey("securitycraft:reinforced_jungle_fence_gate");
+		SCContent.reinforcedDarkOakFenceGate = new ReinforcedFenceGateBlock(BlockPlanks.EnumType.DARK_OAK, Blocks.DARK_OAK_FENCE_GATE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_dark_oak_fence_gate").setTranslationKey("securitycraft:reinforced_dark_oak_fence_gate");
+		SCContent.reinforcedAcaciaFenceGate = new ReinforcedFenceGateBlock(BlockPlanks.EnumType.ACACIA, Blocks.ACACIA_FENCE_GATE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_acacia_fence_gate").setTranslationKey("securitycraft:reinforced_acacia_fence_gate");
 	}
 
 	public static void setupMines() {

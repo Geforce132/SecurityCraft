@@ -10,7 +10,8 @@ public enum PageGroup {
 	BUTTONS(true, "gui.securitycraft:scManual.reinforced_buttons", "help.securitycraft.reinforced_buttons.info"),
 	PRESSURE_PLATES(true, "gui.securitycraft:scManual.reinforced_pressure_plates", "help.securitycraft.reinforced_pressure_plates.info"),
 	KEYCARDS(true, "gui.securitycraft:scManual.keycards", "help.securitycraft.keycards.info"),
-	BLOCK_REINFORCERS(true, "gui.securitycraft:scManual.block_reinforcers", "help.securitycraft.block_reinforcers.info");
+	BLOCK_REINFORCERS(true, "gui.securitycraft:scManual.block_reinforcers", "help.securitycraft.block_reinforcers.info"),
+	FENCE_GATES(true, "gui.securitycraft:scManual.reinforced_fence_gates", "help.securitycraft.reinforced_fence_gates.info");
 
 	private final boolean hasRecipeGrid;
 	private final String title;

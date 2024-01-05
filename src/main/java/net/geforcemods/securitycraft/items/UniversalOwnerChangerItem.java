@@ -86,7 +86,7 @@ public class UniversalOwnerChangerItem extends Item {
 		}
 
 		if (!world.isRemote)
-			world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
+			world.notifyBlockUpdate(pos, state, state, 3);
 
 		if (!world.isRemote && te instanceof IModuleInventory) {
 			for (ModuleType moduleType : ((IModuleInventory) te).getInsertedModules()) {

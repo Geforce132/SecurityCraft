@@ -62,6 +62,7 @@ import net.geforcemods.securitycraft.renderers.TrophySystemRenderer;
 import net.geforcemods.securitycraft.util.Tinted;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
+import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -183,6 +184,12 @@ public class ClientProxy implements IProxy {
 		ModelLoader.setCustomStateMapper(SCContent.reinforcedStainedGlassPanes, new StateMap.Builder().withName(BlockColored.COLOR).withSuffix("_reinforced_stained_glass_panes").build());
 		ModelLoader.setCustomStateMapper(SCContent.reinforcedWalls, new StateMap.Builder().withName(ReinforcedWallBlock.VARIANT).withSuffix("_wall").build());
 		ModelLoader.setCustomStateMapper(SCContent.reinforcedHopper, new StateMap.Builder().ignore(BlockHopper.ENABLED).build());
+		ModelLoader.setCustomStateMapper(SCContent.reinforcedOakFenceGate, new StateMap.Builder().ignore(BlockFenceGate.POWERED).build());
+		ModelLoader.setCustomStateMapper(SCContent.reinforcedSpruceFenceGate, new StateMap.Builder().ignore(BlockFenceGate.POWERED).build());
+		ModelLoader.setCustomStateMapper(SCContent.reinforcedBirchFenceGate, new StateMap.Builder().ignore(BlockFenceGate.POWERED).build());
+		ModelLoader.setCustomStateMapper(SCContent.reinforcedJungleFenceGate, new StateMap.Builder().ignore(BlockFenceGate.POWERED).build());
+		ModelLoader.setCustomStateMapper(SCContent.reinforcedDarkOakFenceGate, new StateMap.Builder().ignore(BlockFenceGate.POWERED).build());
+		ModelLoader.setCustomStateMapper(SCContent.reinforcedAcaciaFenceGate, new StateMap.Builder().ignore(BlockFenceGate.POWERED).build());
 	}
 
 	private Item findItem(String modid, String resourceName) {
