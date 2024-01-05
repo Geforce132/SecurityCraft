@@ -50,7 +50,6 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 	protected void dispenseFrom(ServerLevel level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof ReinforcedDispenserBlockEntity be) {
 			BlockSourceImpl source = new BlockSourceImpl(level, pos);
-
 			int randomSlot = be.getRandomSlot(level.random);
 
 			if (randomSlot < 0) {
@@ -79,6 +78,7 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
+	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ReinforcedDispenserBlockEntity(pos, state);
 	}
