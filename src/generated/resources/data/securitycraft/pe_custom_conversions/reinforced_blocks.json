@@ -2307,6 +2307,18 @@
         ]
       },
       {
+        "output": "securitycraft:reinforced_dispenser",
+        "ingredients": [
+          "minecraft:dispenser"
+        ]
+      },
+      {
+        "output": "securitycraft:reinforced_dropper",
+        "ingredients": [
+          "minecraft:dropper"
+        ]
+      },
+      {
         "output": "securitycraft:reinforced_observer",
         "ingredients": [
           "minecraft:observer"
