@@ -2368,39 +2368,51 @@ public class SCContent {
 	@Reinforced
 	public static final DeferredBlock<ReinforcedButtonBlock> REINFORCED_CHERRY_BUTTON = BLOCKS.register("reinforced_cherry_button", () -> woodenButton(Blocks.CHERRY_BUTTON, BlockSetType.CHERRY));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_OAK_FENCE = BLOCKS.register("reinforced_oak_fence", () -> new ReinforcedFenceBlock(prop(Blocks.OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.OAK_FENCE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_SPRUCE_FENCE = BLOCKS.register("reinforced_spruce_fence", () -> new ReinforcedFenceBlock(prop(Blocks.SPRUCE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.SPRUCE_FENCE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_BIRCH_FENCE = BLOCKS.register("reinforced_birch_fence", () -> new ReinforcedFenceBlock(prop(Blocks.BIRCH_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.BIRCH_FENCE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_JUNGLE_FENCE = BLOCKS.register("reinforced_jungle_fence", () -> new ReinforcedFenceBlock(prop(Blocks.JUNGLE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.JUNGLE_FENCE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_ACACIA_FENCE = BLOCKS.register("reinforced_acacia_fence", () -> new ReinforcedFenceBlock(prop(Blocks.ACACIA_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.ACACIA_FENCE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_DARK_OAK_FENCE = BLOCKS.register("reinforced_dark_oak_fence", () -> new ReinforcedFenceBlock(prop(Blocks.DARK_OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.DARK_OAK_FENCE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_MANGROVE_FENCE = BLOCKS.register("reinforced_mangrove_fence", () -> new ReinforcedFenceBlock(prop(Blocks.MANGROVE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.MANGROVE_FENCE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_CHERRY_FENCE = BLOCKS.register("reinforced_cherry_fence", () -> new ReinforcedFenceBlock(prop(Blocks.CHERRY_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.CHERRY_WOOD), Blocks.CHERRY_FENCE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_BAMBOO_FENCE = BLOCKS.register("reinforced_bamboo_fence", () -> new ReinforcedFenceBlock(prop(Blocks.BAMBOO_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.BAMBOO_WOOD), Blocks.BAMBOO_FENCE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_CRIMSON_FENCE = BLOCKS.register("reinforced_crimson_fence", () -> new ReinforcedFenceBlock(prop(Blocks.CRIMSON_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.NETHER_WOOD), Blocks.CRIMSON_FENCE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_WARPED_FENCE = BLOCKS.register("reinforced_warped_fence", () -> new ReinforcedFenceBlock(prop(Blocks.WARPED_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.NETHER_WOOD), Blocks.WARPED_FENCE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_NETHER_BRICK_FENCE = BLOCKS.register("reinforced_nether_brick_fence", () -> new ReinforcedFenceBlock(prop(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.NETHER_BRICKS), Blocks.NETHER_BRICK_FENCE));
 	@HasManualPage(PageGroup.FENCE_GATES)
