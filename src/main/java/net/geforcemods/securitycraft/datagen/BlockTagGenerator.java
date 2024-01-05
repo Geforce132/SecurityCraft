@@ -12,6 +12,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.Tags;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -72,6 +73,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_ROOTED_DIRT.get());
 		tag(SCTags.Blocks.REINFORCED_END_STONES).add(
 				SCContent.REINFORCED_END_STONE.get());
+		tag(SCTags.Blocks.REINFORCED_FENCES).addTag(SCTags.Blocks.REINFORCED_WOODEN_FENCES).add(
+				SCContent.REINFORCED_NETHER_BRICK_FENCE.get());
 		tag(SCTags.Blocks.REINFORCED_GLASS_PANES).add(
 				SCContent.REINFORCED_GLASS_PANE.get(),
 				SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get(),
@@ -189,6 +192,30 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_BAMBOO_BUTTON.get(),
 				SCContent.REINFORCED_CRIMSON_BUTTON.get(),
 				SCContent.REINFORCED_WARPED_BUTTON.get());
+		tag(SCTags.Blocks.REINFORCED_WOODEN_FENCES).add(
+				SCContent.REINFORCED_OAK_FENCE.get(),
+				SCContent.REINFORCED_SPRUCE_FENCE.get(),
+				SCContent.REINFORCED_BIRCH_FENCE.get(),
+				SCContent.REINFORCED_JUNGLE_FENCE.get(),
+				SCContent.REINFORCED_ACACIA_FENCE.get(),
+				SCContent.REINFORCED_DARK_OAK_FENCE.get(),
+				SCContent.REINFORCED_MANGROVE_FENCE.get(),
+				SCContent.REINFORCED_CHERRY_FENCE.get(),
+				SCContent.REINFORCED_BAMBOO_FENCE.get(),
+				SCContent.REINFORCED_CRIMSON_FENCE.get(),
+				SCContent.REINFORCED_WARPED_FENCE.get());
+		tag(SCTags.Blocks.REINFORCED_WOODEN_FENCE_GATES).add(
+				SCContent.REINFORCED_OAK_FENCE_GATE.get(),
+				SCContent.REINFORCED_SPRUCE_FENCE_GATE.get(),
+				SCContent.REINFORCED_BIRCH_FENCE_GATE.get(),
+				SCContent.REINFORCED_JUNGLE_FENCE_GATE.get(),
+				SCContent.REINFORCED_ACACIA_FENCE_GATE.get(),
+				SCContent.REINFORCED_DARK_OAK_FENCE_GATE.get(),
+				SCContent.REINFORCED_MANGROVE_FENCE_GATE.get(),
+				SCContent.REINFORCED_CHERRY_FENCE_GATE.get(),
+				SCContent.REINFORCED_BAMBOO_FENCE_GATE.get(),
+				SCContent.REINFORCED_CRIMSON_FENCE_GATE.get(),
+				SCContent.REINFORCED_WARPED_FENCE_GATE.get());
 		tag(SCTags.Blocks.REINFORCED_WOODEN_PRESSURE_PLATES).add(
 				SCContent.REINFORCED_OAK_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get(),
@@ -342,8 +369,11 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.DEAD_BUSH_MAY_PLACE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA).addTag(SCTags.Blocks.REINFORCED_DIRT);
 		tag(BlockTags.DOORS).add(SCContent.KEYPAD_DOOR.get(), SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
 		tag(BlockTags.FALL_DAMAGE_RESETTING).add(SCContent.REINFORCED_LADDER.get());
-		tag(BlockTags.FENCE_GATES).add(SCContent.REINFORCED_FENCE_GATE.get());
-		tag(BlockTags.FENCES).add(SCContent.IRON_FENCE.get());
+		tag(BlockTags.FENCE_GATES).addTag(SCTags.Blocks.REINFORCED_WOODEN_FENCE_GATES).add(
+				SCContent.ELECTRIFIED_IRON_FENCE_GATE.get());
+		tag(BlockTags.FENCES).add(
+				SCContent.ELECTRIFIED_IRON_FENCE.get(),
+				SCContent.REINFORCED_NETHER_BRICK_FENCE.get());
 		tag(BlockTags.GUARDED_BY_PIGLINS).add(
 				SCContent.DEEPSLATE_GOLD_ORE_MINE.get(),
 				SCContent.GILDED_BLACKSTONE_MINE.get(),
@@ -473,8 +503,12 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.WALL_SIGNS).addTag(SCTags.Blocks.SECRET_WALL_SIGNS);
 		tag(BlockTags.WALL_HANGING_SIGNS).addTag(SCTags.Blocks.SECRET_WALL_HANGING_SIGNS);
 		tag(BlockTags.WITHER_SUMMON_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SOIL.get());
+		tag(BlockTags.WOODEN_FENCES).addTag(SCTags.Blocks.REINFORCED_WOODEN_FENCES);
 		tag(BlockTags.WOOL_CARPETS).addTag(SCTags.Blocks.REINFORCED_WOOL_CARPETS);
 		//@formatter:on
+
+		//Forge tags
+		tag(Tags.Blocks.FENCE_GATES_WOODEN).addTag(SCTags.Blocks.REINFORCED_WOODEN_FENCE_GATES);
 
 		//automatic
 		TagAppender<Block> dragonImmune = tag(BlockTags.DRAGON_IMMUNE);
