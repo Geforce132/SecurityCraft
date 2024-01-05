@@ -140,7 +140,7 @@ public class KeypadBarrelBlockEntity extends BarrelBlockEntity implements IPassc
 
 	@Override
 	public Component getDefaultName() {
-		return Utils.localize("block.securitycraft.keypad_barrel");
+		return Utils.localize(SCContent.KEYPAD_BARREL.get().getDescriptionId());
 	}
 
 	@Override

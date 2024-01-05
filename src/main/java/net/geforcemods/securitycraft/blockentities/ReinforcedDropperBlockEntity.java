@@ -13,6 +13,6 @@ public class ReinforcedDropperBlockEntity extends ReinforcedDispenserBlockEntity
 
 	@Override
 	protected Component getDefaultName() {
-		return new TranslatableComponent("block.securitycraft.reinforced_dropper");
+		return new TranslatableComponent(SCContent.REINFORCED_DROPPER.get().getDescriptionId());
 	}
 }

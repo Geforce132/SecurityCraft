@@ -113,7 +113,7 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 
 	@Override
 	protected Component getDefaultName() {
-		return Utils.localize("block.securitycraft.reinforced_hopper");
+		return Utils.localize(SCContent.REINFORCED_HOPPER.get().getDescriptionId());
 	}
 
 	@Override
