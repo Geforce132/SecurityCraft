@@ -19,6 +19,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CrossCollisionBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
@@ -89,8 +91,27 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		reinforcedCarpetBlock(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
 		reinforcedPaneBlock((IronBarsBlock) SCContent.REINFORCED_GLASS_PANE.get());
 
-		models().reinforcedColumn("reinforced_smooth_stone_slab_double", "smooth_stone_slab_side", "smooth_stone");
+		reinforcedFenceBlock(SCContent.REINFORCED_OAK_FENCE.get(), "oak_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_SPRUCE_FENCE.get(), "spruce_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_BIRCH_FENCE.get(), "birch_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_JUNGLE_FENCE.get(), "jungle_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_ACACIA_FENCE.get(), "acacia_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_DARK_OAK_FENCE.get(), "dark_oak_planks");
+		//bamboo fence is handled manually
+		reinforcedFenceBlock(SCContent.REINFORCED_CRIMSON_FENCE.get(), "crimson_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_WARPED_FENCE.get(), "warped_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_NETHER_BRICK_FENCE.get(), "nether_bricks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_OAK_FENCE_GATE.get(), "oak_planks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_SPRUCE_FENCE_GATE.get(), "spruce_planks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_BIRCH_FENCE_GATE.get(), "birch_planks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_JUNGLE_FENCE_GATE.get(), "jungle_planks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_ACACIA_FENCE_GATE.get(), "acacia_planks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_DARK_OAK_FENCE_GATE.get(), "dark_oak_planks");
+		//bamboo fence gate is handled manually
+		reinforcedFenceGateBlock(SCContent.REINFORCED_CRIMSON_FENCE_GATE.get(), "crimson_planks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_WARPED_FENCE_GATE.get(), "warped_planks");
 
+		models().reinforcedColumn("reinforced_smooth_stone_slab_double", "smooth_stone_slab_side", "smooth_stone");
 		reinforcedSlabBlock(SCContent.REINFORCED_OAK_SLAB.get(), "reinforced_oak_planks", "oak_planks");
 		reinforcedSlabBlock(SCContent.REINFORCED_SPRUCE_SLAB.get(), "reinforced_spruce_planks", "spruce_planks");
 		reinforcedSlabBlock(SCContent.REINFORCED_BIRCH_SLAB.get(), "reinforced_birch_planks", "birch_planks");
@@ -204,6 +225,25 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[] {
 				new ConfiguredModel(model)
 		});
+	}
+
+	public void reinforcedFenceBlock(Block block, String textureName) {
+		String baseName = block.getRegistryName().toString();
+		ResourceLocation texture = mcBlock(textureName);
+
+		fourWayBlock((CrossCollisionBlock) block, models().fencePost(baseName + "_post", texture), models().fenceSide(baseName + "_side", texture));
+		models().singleTexture(baseName + "_inventory", modBlock("reinforced_fence_inventory"), texture);
+	}
+
+	public void reinforcedFenceGateBlock(Block block, String textureName) {
+		String baseName = block.getRegistryName().toString();
+		ResourceLocation texture = mcBlock(textureName);
+		ModelFile gate = models().fenceGate(baseName, texture);
+		ModelFile gateOpen = models().fenceGateOpen(baseName + "_open", texture);
+		ModelFile gateWall = models().fenceGateWall(baseName + "_wall", texture);
+		ModelFile gateWallOpen = models().fenceGateWallOpen(baseName + "_wall_open", texture);
+
+		fenceGateBlock((FenceGateBlock) block, gate, gateOpen, gateWall, gateWallOpen);
 	}
 
 	public void reinforcedPaneBlock(IronBarsBlock block) {

@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "securitycraft:electrified_iron_fence"
+    "securitycraft:electrified_iron_fence",
+    "securitycraft:reinforced_nether_brick_fence"
   ]
 }

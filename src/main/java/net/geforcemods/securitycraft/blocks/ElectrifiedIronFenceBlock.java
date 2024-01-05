@@ -39,7 +39,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class IronFenceBlock extends OwnableBlock {
+public class ElectrifiedIronFenceBlock extends OwnableBlock {
 	public static final BooleanProperty NORTH = PipeBlock.NORTH;
 	public static final BooleanProperty EAST = PipeBlock.EAST;
 	public static final BooleanProperty SOUTH = PipeBlock.SOUTH;
@@ -49,7 +49,7 @@ public class IronFenceBlock extends OwnableBlock {
 	protected final VoxelShape[] shapes;
 	private final VoxelShape[] renderShapes;
 
-	public IronFenceBlock(BlockBehaviour.Properties properties) {
+	public ElectrifiedIronFenceBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false));

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:reinforced_fence_gates",
+  "pattern": [
+    "SMS",
+    "SMS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:rods/wooden"
+    },
+    "M": {
+      "item": "securitycraft:reinforced_crimson_planks"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_crimson_fence_gate"
+  }
+}

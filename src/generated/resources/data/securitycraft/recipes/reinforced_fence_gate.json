@@ -10,7 +10,7 @@
       "tag": "forge:ingots/iron"
     },
     "G": {
-      "tag": "forge:fence_gates/wooden"
+      "tag": "securitycraft:reinforced/wooden_fence_gates"
     }
   },
   "result": {
