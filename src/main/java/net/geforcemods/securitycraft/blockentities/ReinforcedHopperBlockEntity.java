@@ -112,7 +112,7 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 
 	@Override
 	protected Component getDefaultName() {
-		return Component.translatable("block.securitycraft.reinforced_hopper");
+		return Component.translatable(SCContent.REINFORCED_HOPPER.get().getDescriptionId());
 	}
 
 	@Override
