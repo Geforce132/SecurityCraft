@@ -1,7 +1,7 @@
-package net.geforcemods.securitycraft;
+package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
-import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;

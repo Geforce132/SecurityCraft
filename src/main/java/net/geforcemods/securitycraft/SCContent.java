@@ -67,6 +67,7 @@ import net.geforcemods.securitycraft.blocks.CageTrapBlock;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceBlock;
+import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.FakeLavaBlock;
 import net.geforcemods.securitycraft.blocks.FakeWaterBlock;
 import net.geforcemods.securitycraft.blocks.FloorTrapBlock;
@@ -2164,6 +2165,12 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedObserverBlock> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(prop()));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedDispenserBlock> REINFORCED_DISPENSER = BLOCKS.register("reinforced_dispenser", () -> new ReinforcedDispenserBlock(prop(MapColor.STONE).sound(SoundType.STONE)));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedDropperBlock> REINFORCED_DROPPER = BLOCKS.register("reinforced_dropper", () -> new ReinforcedDropperBlock(prop(MapColor.STONE).sound(SoundType.STONE)));
 	@HasManualPage
 	@Reinforced
 	public static final DeferredBlock<ReinforcedHopperBlock> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(prop(MapColor.STONE).sound(SoundType.METAL).noOcclusion()));
@@ -2359,12 +2366,6 @@ public class SCContent {
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedButtonBlock> REINFORCED_CHERRY_BUTTON = BLOCKS.register("reinforced_cherry_button", () -> woodenButton(Blocks.CHERRY_BUTTON, BlockSetType.CHERRY));
-	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced
-	public static final DeferredBlock<ReinforcedDispenserBlock> REINFORCED_DISPENSER = BLOCKS.register("reinforced_dispenser", () -> new ReinforcedDispenserBlock(prop(MapColor.STONE).sound(SoundType.STONE)));
-	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced
-	public static final DeferredBlock<ReinforcedDropperBlock> REINFORCED_DROPPER = BLOCKS.register("reinforced_dropper", () -> new ReinforcedDropperBlock(prop(MapColor.STONE).sound(SoundType.STONE)));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_OAK_FENCE = BLOCKS.register("reinforced_oak_fence", () -> new ReinforcedFenceBlock(prop(Blocks.OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.OAK_FENCE));

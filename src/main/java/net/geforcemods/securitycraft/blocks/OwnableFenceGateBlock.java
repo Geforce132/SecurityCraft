@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft;
+package net.geforcemods.securitycraft.blocks;
 
 import java.util.function.BiConsumer;
 
