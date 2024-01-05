@@ -3,11 +3,13 @@
 - New: Items in open Display Cases can now be picked using the "Pick Block" key
 - New: The Sentry Remote Access tool now displays the last known name of a Sentry if the Sentry is out of range
 - New: The Portable Radar now always shows its coordinates in messages, even when it has a custom name
-- New: Crafting Recipes for Reinforced Pistons and Reinforced Sticky Pistons
+- New: Crafting recipes for Reinforced Pistons and Reinforced Sticky Pistons
 - New: Reinforced Dispenser and Reinforced Dropper
+- New: Reinforced fences and fence gates
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now
+- Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate
 - Fix: Duplication exploit involving keycards
 - Fix: Duplication exploit involving Reinforced Pistons
 - Fix: Modules in a Passcode-protected Chest get disabled when loading it
@@ -24,7 +26,7 @@
 - Fix: Vanilla Hoppers and Reinforced Hoppers from different owners can take out items from a Reinforced Hopper
 - Fix: A Portable Radar does not send a message to its owner if the owner is not part of a team
 - Fix: Adding an empty Disguise Module to a Retinal Scanner makes the player face disappear
-- Fix: The head of a sentry in Camouflage Mode can visually be retracted while the sentry is shooting at a target
+- Fix: The head of a Sentry in camouflage mode can visually retract while the Sentry is shooting at a target
 - Fix: Sentries always animate their head upwards when they first appear for a player
 - Fix: The position tooltip for a named Sentry in the Sentry Remote Access Tool is misplaced
 - Fix: The Trophy System does not drop installed modules when the block below it is broken

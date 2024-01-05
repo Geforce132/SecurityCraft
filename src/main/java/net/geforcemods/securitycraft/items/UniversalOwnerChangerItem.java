@@ -86,7 +86,7 @@ public class UniversalOwnerChangerItem extends Item {
 		ownable.onOwnerChanged(state, level, pos, player);
 
 		if (!level.isClientSide)
-			level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
+			level.sendBlockUpdated(pos, state, state, 3);
 
 		//disable this in a development environment
 		if (FMLEnvironment.production && be instanceof IModuleInventory) {

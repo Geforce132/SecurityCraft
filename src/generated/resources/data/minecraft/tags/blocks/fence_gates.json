@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#securitycraft:reinforced/wooden_fence_gates",
+    "securitycraft:reinforced_fence_gate"
+  ]
+}

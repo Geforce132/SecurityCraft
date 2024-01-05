@@ -25,6 +25,41 @@ public class SCBlockModelProvider extends BlockModelProvider {
 		//@formatter:on
 	}
 
+	@Override
+	public BlockModelBuilder fencePost(String name, ResourceLocation texture) {
+		return singleTexture(name, modLoc(BLOCK_FOLDER + "/reinforced_fence_post"), texture);
+	}
+
+	@Override
+	public BlockModelBuilder fenceSide(String name, ResourceLocation texture) {
+		return singleTexture(name, modLoc(BLOCK_FOLDER + "/reinforced_fence_side"), texture);
+	}
+
+	@Override
+	public BlockModelBuilder fenceInventory(String name, ResourceLocation texture) {
+		return singleTexture(name, modLoc(BLOCK_FOLDER + "/reinforced_fence_inventory"), texture);
+	}
+
+	@Override
+	public BlockModelBuilder fenceGate(String name, ResourceLocation texture) {
+		return singleTexture(name, modLoc(BLOCK_FOLDER + "/template_reinforced_fence_gate"), texture);
+	}
+
+	@Override
+	public BlockModelBuilder fenceGateOpen(String name, ResourceLocation texture) {
+		return singleTexture(name, modLoc(BLOCK_FOLDER + "/template_reinforced_fence_gate_open"), texture);
+	}
+
+	@Override
+	public BlockModelBuilder fenceGateWall(String name, ResourceLocation texture) {
+		return singleTexture(name, modLoc(BLOCK_FOLDER + "/template_reinforced_fence_gate_wall"), texture);
+	}
+
+	@Override
+	public BlockModelBuilder fenceGateWallOpen(String name, ResourceLocation texture) {
+		return singleTexture(name, modLoc(BLOCK_FOLDER + "/template_reinforced_fence_gate_wall_open"), texture);
+	}
+
 	public BlockModelBuilder reinforcedSlab(String name, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
 		return sideBottomTop(name, modLoc(BLOCK_FOLDER + "/reinforced_slab"), side, bottom, top);
 	}

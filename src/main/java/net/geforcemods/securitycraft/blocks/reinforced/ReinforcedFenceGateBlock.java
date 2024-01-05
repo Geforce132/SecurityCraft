@@ -1,71 +1,62 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableBlockEntity;
-import net.geforcemods.securitycraft.blocks.IronFenceBlock;
-import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
+import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableFenceGateBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.FenceGateBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.Constants;
 
-public class ReinforcedFenceGateBlock extends FenceGateBlock {
-	public ReinforcedFenceGateBlock(AbstractBlock.Properties properties) {
-		super(properties);
+public class ReinforcedFenceGateBlock extends OwnableFenceGateBlock implements IReinforcedBlock {
+	private final Block vanillaBlock;
+
+	public ReinforcedFenceGateBlock(AbstractBlock.Properties properties, Block vanillaBlock) {
+		super(properties, SoundEvents.FENCE_GATE_OPEN, SoundEvents.FENCE_GATE_CLOSE);
+		this.vanillaBlock = vanillaBlock;
 	}
 
 	@Override
 	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		return ActionResultType.FAIL;
-	}
+		TileEntity te = level.getBlockEntity(pos);
 
-	@Override
-	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (PlayerEntity) placer));
-	}
+		if (te instanceof AllowlistOnlyBlockEntity) {
+			AllowlistOnlyBlockEntity be = (AllowlistOnlyBlockEntity) te;
 
-	@Override
-	public void entityInside(BlockState state, World level, BlockPos pos, Entity entity) {
-		if (level.getBlockState(pos).getValue(OPEN))
-			return;
-
-		IronFenceBlock.hurtOrConvertEntity(this, state, level, pos, entity);
-	}
-
-	@Override
-	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if (!level.isClientSide) {
-			boolean isPoweredSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, pos);
-
-			if (isPoweredSCBlock || block.defaultBlockState().isSignalSource()) {
-				if (isPoweredSCBlock && !state.getValue(OPEN) && !state.getValue(POWERED)) {
-					level.setBlock(pos, state.setValue(OPEN, true).setValue(POWERED, true), 2);
-					level.levelEvent(null, Constants.WorldEvents.IRON_DOOR_OPEN_SOUND, pos, 0);
+			//only allow the owner or players on the allowlist to access a reinforced fence gate
+			if (be.isOwnedBy(player) || be.isAllowed(player)) {
+				if (state.getValue(OPEN)) {
+					state = state.setValue(OPEN, false);
+					level.setBlock(pos, state, 10);
 				}
-				else if (!isPoweredSCBlock && state.getValue(OPEN) && state.getValue(POWERED)) {
-					level.setBlock(pos, state.setValue(OPEN, false).setValue(POWERED, false), 2);
-					level.levelEvent(null, Constants.WorldEvents.IRON_DOOR_CLOSE_SOUND, pos, 0);
+				else {
+					Direction direction = player.getDirection();
+
+					if (state.getValue(FACING) == direction.getOpposite())
+						state = state.setValue(FACING, direction);
+
+					state = state.setValue(OPEN, true);
+					level.setBlock(pos, state, 10);
 				}
-				else if (isPoweredSCBlock != state.getValue(POWERED)) {
-					level.setBlock(pos, state.setValue(POWERED, isPoweredSCBlock), 2);
-				}
+
+				boolean isOpen = state.getValue(OPEN);
+
+				level.playSound(null, pos, isOpen ? openSound : closeSound, SoundCategory.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 			}
 		}
+
+		return ActionResultType.sidedSuccess(level.isClientSide);
 	}
 
 	@Override
@@ -82,6 +73,11 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
-		return new OwnableBlockEntity(SCContent.ABSTRACT_BLOCK_ENTITY.get());
+		return new AllowlistOnlyBlockEntity(SCContent.REINFORCED_FENCE_GATE_BLOCK_ENTITY.get());
+	}
+
+	@Override
+	public Block getVanillaBlock() {
+		return vanillaBlock;
 	}
 }

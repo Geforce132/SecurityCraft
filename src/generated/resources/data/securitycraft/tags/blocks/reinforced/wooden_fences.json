@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:reinforced_oak_fence",
+    "securitycraft:reinforced_spruce_fence",
+    "securitycraft:reinforced_birch_fence",
+    "securitycraft:reinforced_jungle_fence",
+    "securitycraft:reinforced_acacia_fence",
+    "securitycraft:reinforced_dark_oak_fence",
+    "securitycraft:reinforced_crimson_fence",
+    "securitycraft:reinforced_warped_fence"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#securitycraft:reinforced/wooden_fences",
+    "securitycraft:reinforced_nether_brick_fence"
+  ]
+}
