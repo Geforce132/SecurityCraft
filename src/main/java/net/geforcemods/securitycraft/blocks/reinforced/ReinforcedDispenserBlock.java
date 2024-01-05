@@ -4,8 +4,6 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedDispenserBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSourceImpl;
-import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -16,11 +14,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -48,23 +44,8 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 
 	@Override
 	protected void dispenseFrom(ServerLevel level, BlockPos pos) {
-		if (level.getBlockEntity(pos) instanceof ReinforcedDispenserBlockEntity be) {
-			BlockSourceImpl source = new BlockSourceImpl(level, pos);
-
-			int randomSlot = be.getRandomSlot();
-
-			if (randomSlot < 0) {
-				level.levelEvent(LevelEvent.SOUND_DISPENSER_FAIL, pos, 0);
-				level.gameEvent(GameEvent.DISPENSE_FAIL, pos);
-			}
-			else {
-				ItemStack dispenseStack = be.getItem(randomSlot);
-				DispenseItemBehavior dispenseBehavior = getDispenseMethod(dispenseStack);
-
-				if (dispenseBehavior != DispenseItemBehavior.NOOP)
-					be.setItem(randomSlot, dispenseBehavior.dispense(source, dispenseStack));
-			}
-		}
+		if (level.getBlockEntity(pos) instanceof ReinforcedDispenserBlockEntity)
+			super.dispenseFrom(level, pos);
 	}
 
 	@Override
@@ -79,6 +60,7 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
+	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ReinforcedDispenserBlockEntity(pos, state);
 	}
