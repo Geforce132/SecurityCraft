@@ -95,6 +95,8 @@ public class SCCreativeModeTabs {
 					output.accept(new ItemStack(SCContent.PORTABLE_TUNE_PLAYER.get()));
 					output.accept(new ItemStack(SCContent.REINFORCED_PISTON.get()));
 					output.accept(new ItemStack(SCContent.REINFORCED_STICKY_PISTON.get()));
+					output.accept(new ItemStack(SCContent.REINFORCED_DISPENSER.get()));
+					output.accept(new ItemStack(SCContent.REINFORCED_DROPPER.get()));
 					output.accept(new ItemStack(SCContent.REINFORCED_OBSERVER.get()));
 					output.accept(new ItemStack(SCContent.REINFORCED_CAULDRON.get()));
 					output.accept(new ItemStack(SCContent.REINFORCED_LADDER.get()));

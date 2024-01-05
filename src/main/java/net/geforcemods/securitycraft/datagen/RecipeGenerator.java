@@ -357,6 +357,23 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('Q', Tags.Items.GEMS_QUARTZ)
 		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
 		.save(consumer);
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_DISPENSER.get())
+		.pattern("CCC")
+		.pattern("CBC")
+		.pattern("CRC")
+		.define('C', SCTags.Items.REINFORCED_STONE_CRAFTING_MATERIALS)
+		.define('R', Tags.Items.DUSTS_REDSTONE)
+		.define('B', Items.BOW)
+		.unlockedBy("has_bow", has(Items.BOW))
+		.save(consumer);
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_DROPPER.get())
+		.pattern("CCC")
+		.pattern("C C")
+		.pattern("CRC")
+		.define('C', SCTags.Items.REINFORCED_STONE_CRAFTING_MATERIALS)
+		.define('R', Tags.Items.DUSTS_REDSTONE)
+		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
+		.save(consumer);
 		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_FENCE_GATE.get())
 		.pattern(" I ")
 		.pattern("IGI")
