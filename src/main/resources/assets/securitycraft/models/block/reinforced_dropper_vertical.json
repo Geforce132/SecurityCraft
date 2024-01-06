@@ -1,0 +1,7 @@
+{
+    "parent": "securitycraft:block/orientable_vertical_tinted",
+    "textures": {
+        "front": "blocks/dropper_front_vertical",
+        "side": "blocks/furnace_top"
+    }
+}

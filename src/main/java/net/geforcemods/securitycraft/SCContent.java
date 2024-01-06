@@ -119,6 +119,9 @@ public class SCContent {
 	public static Block reinforcedCobweb;
 	@Tinted(customTint = 0x15b3a2)
 	public static Block reinforcedCrystalQuartzSlab;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedDispenser;
 	@Tinted(customTint = 0x15b3a2)
 	public static Block reinforcedDoubleCrystalQuartzSlab;
 	@Tinted
@@ -127,6 +130,9 @@ public class SCContent {
 	public static Block reinforcedDoubleStoneSlabs2;
 	@Tinted
 	public static Block reinforcedDoubleWoodSlabs;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedDropper;
 	@Reinforced
 	@Tinted
 	public static Block reinforcedEndRod;

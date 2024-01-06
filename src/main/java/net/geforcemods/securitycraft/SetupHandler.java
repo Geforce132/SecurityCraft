@@ -71,7 +71,9 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedConcreteBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCrystalQuartzBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCrystalQuartzSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDirtBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDispenserBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDropperBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedEndRodBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFallingBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceBlock;
@@ -314,6 +316,8 @@ public class SetupHandler {
 		SCContent.keycardLockFloorCeilingBlock = new KeycardLockFloorCeilingBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setBlockUnbreakable().setRegistryName("floor_ceiling_keycard_lock").setTranslationKey("securitycraft:keycard_lock");
 		SCContent.keycardLockWallBlock = new KeycardLockWallBlock(Material.ROCK).setBlockUnbreakable().setRegistryName("wall_keycard_lock").setTranslationKey("securitycraft:keycard_lock");
 		SCContent.scannerTrapdoor = (ScannerTrapDoorBlock) new ScannerTrapDoorBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("scanner_trapdoor").setTranslationKey("securitycraft:scanner_trapdoor");
+		SCContent.reinforcedDispenser = new ReinforcedDispenserBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_dispenser").setTranslationKey("securitycraft:reinforced_dispenser");
+		SCContent.reinforcedDropper = new ReinforcedDropperBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_dropper").setTranslationKey("securitycraft:reinforced_dropper");
 		SCContent.reinforcedOakFence = new ReinforcedFenceBlock(BlockPlanks.EnumType.OAK.getMapColor(), Blocks.OAK_FENCE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_oak_fence").setTranslationKey("securitycraft:reinforced_oak_fence");
 		SCContent.reinforcedNetherBrickFence = new ReinforcedFenceBlock(Material.ROCK, MapColor.NETHERRACK, Blocks.NETHER_BRICK_FENCE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_nether_brick_fence").setTranslationKey("securitycraft:reinforced_nether_brick_fence");
 		SCContent.reinforcedSpruceFence = new ReinforcedFenceBlock(BlockPlanks.EnumType.SPRUCE.getMapColor(), Blocks.SPRUCE_FENCE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_spruce_fence").setTranslationKey("securitycraft:reinforced_spruce_fence");

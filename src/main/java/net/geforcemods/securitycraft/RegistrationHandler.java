@@ -38,7 +38,9 @@ import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedDispenserBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedDoorBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedDropperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonBlockEntity;
@@ -335,6 +337,8 @@ public class RegistrationHandler {
 		event.getRegistry().register(SCContent.keycardLockFloorCeilingBlock);
 		event.getRegistry().register(SCContent.keycardLockWallBlock);
 		registerBlock(event, SCContent.scannerTrapdoor);
+		registerBlock(event, SCContent.reinforcedDispenser, PageGroup.REINFORCED);
+		registerBlock(event, SCContent.reinforcedDropper, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedOakFence, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedNetherBrickFence, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedSpruceFence, PageGroup.REINFORCED);
@@ -511,6 +515,8 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(FloorTrapBlockEntity.class, new ResourceLocation("securitycraft:floor_trap"));
 		GameRegistry.registerTileEntity(KeycardLockBlockEntity.class, new ResourceLocation("securitycraft:keycard_lock"));
 		GameRegistry.registerTileEntity(ScannerTrapdoorBlockEntity.class, new ResourceLocation("securitycraft:scanner_trapdoor"));
+		GameRegistry.registerTileEntity(ReinforcedDispenserBlockEntity.class, new ResourceLocation("securitycraft:reinforced_dispenser"));
+		GameRegistry.registerTileEntity(ReinforcedDropperBlockEntity.class, new ResourceLocation("securitycraft:reinforced_dropper"));
 	}
 
 	@SubscribeEvent
@@ -918,6 +924,8 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.reinforcedLadder, 0, "reinforced_ladder");
 		registerInventoryModel(SCContent.floorTrap, 0, "floor_trap");
 		registerInventoryModel(SCContent.scannerTrapdoor, 0, "scanner_trapdoor");
+		registerInventoryModel(SCContent.reinforcedDispenser, 0, "reinforced_dispenser");
+		registerInventoryModel(SCContent.reinforcedDropper, 0, "reinforced_dropper");
 		registerInventoryModel(SCContent.reinforcedOakFence, 0, "reinforced_oak_fence");
 		registerInventoryModel(SCContent.reinforcedNetherBrickFence, 0, "reinforced_nether_brick_fence");
 		registerInventoryModel(SCContent.reinforcedSpruceFence, 0, "reinforced_spruce_fence");

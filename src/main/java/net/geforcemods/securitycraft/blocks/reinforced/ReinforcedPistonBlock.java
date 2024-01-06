@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
-import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -31,6 +30,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityLockableLoot;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -246,8 +246,8 @@ public class ReinforcedPistonBlock extends BlockPistonBase implements IReinforce
 					teToMove.setPos(posToMove.offset(direction));
 					teToMove.writeToNBT(tag);
 
-					if (teToMove instanceof ReinforcedHopperBlockEntity)
-						tag.removeTag("Items"); //the reinforced hopper will spew out the items when pushed (and there's nothing we can do about that), so this prevents them from being added to the pushed hopper to avoid duping
+					if (teToMove instanceof TileEntityLockableLoot)
+						tag.removeTag("Items"); //the reinforced hopper and similar blocks will spew out the items when pushed (and there's nothing we can do about that), so this prevents them from being added to the pushed block to avoid duping
 				}
 
 				world.setBlockState(posToMove, Blocks.AIR.getDefaultState(), 2);

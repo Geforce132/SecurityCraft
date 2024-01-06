@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "C C",
+    "CRC"
+  ],
+  "key": {
+    "C": {
+      "item": "securitycraft:reinforced_cobblestone"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_dropper"
+  }
+}
