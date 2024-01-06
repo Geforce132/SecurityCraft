@@ -175,7 +175,6 @@ public class SecurityCraft {
 		});
 		ConfigHandler.loadEffects();
 		OreDictionary.registerOre("securitycraftReinforcedFence", SCContent.reinforcedOakFence);
-		OreDictionary.registerOre("securitycraftReinforcedFence", SCContent.reinforcedNetherBrickFence);
 		OreDictionary.registerOre("securitycraftReinforcedFence", SCContent.reinforcedSpruceFence);
 		OreDictionary.registerOre("securitycraftReinforcedFence", SCContent.reinforcedBirchFence);
 		OreDictionary.registerOre("securitycraftReinforcedFence", SCContent.reinforcedJungleFence);
