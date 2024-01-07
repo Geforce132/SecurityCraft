@@ -6,6 +6,7 @@
 - New: Crafting recipes for Reinforced Pistons and Reinforced Sticky Pistons
 - New: Reinforced Dispenser and Reinforced Dropper
 - New: Reinforced fences and fence gates
+- New: Config option "preventReinforcedFloorGlitching" to control whether players can glitch through a floor made of reinforced blocks using a boat
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now

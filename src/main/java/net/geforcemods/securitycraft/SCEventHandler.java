@@ -58,6 +58,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -85,6 +86,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
@@ -221,6 +223,24 @@ public class SCEventHandler {
 			ServerPlayerEntity player = (ServerPlayerEntity) entity;
 
 			((SecurityCamera) player.getCamera()).stopViewing(player);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onDismount(EntityMountEvent event) {
+		if (ConfigHandler.SERVER.preventReinforcedFloorGlitching.get() && event.isDismounting() && event.getEntityBeingMounted() instanceof BoatEntity && event.getEntityMounting() instanceof PlayerEntity) {
+			BoatEntity boat = (BoatEntity) event.getEntityBeingMounted();
+			PlayerEntity player = ((PlayerEntity) event.getEntityMounting());
+
+			if (player.isAlive() && !player.abilities.invulnerable) {
+				Vector3d incorrectDismountLocation = new Vector3d(boat.getX(), boat.getBoundingBox().maxY, boat.getZ());
+				Vector3d dismountLocation = boat.getDismountLocationForPassenger(player);
+				Vector3d newCenterPos = dismountLocation.add(0.0F, player.getBbHeight() / 2, 0.0F);
+				Vector3d newEyePos = dismountLocation.add(0.0F, player.getEyeHeight(), 0.0F);
+
+				if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideReinforcedBlocks(player.level, player, newEyePos) || BlockUtils.isInsideReinforcedBlocks(player.level, player, newCenterPos)))
+					event.setCanceled(true);
+			}
 		}
 	}
 
