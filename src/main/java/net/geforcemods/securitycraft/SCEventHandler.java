@@ -86,6 +86,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.living.EntityTeleportEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -193,6 +194,19 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onServerStop(FMLServerStoppedEvent event) {
 		PasscodeUtils.stopHashingThread();
+	}
+
+	@SubscribeEvent
+	public static void onLivingAttacked(LivingAttackEvent event) {
+		LivingEntity entity = event.getEntityLiving();
+		World level = entity.level;
+		DamageSource damageSource = event.getSource();
+		boolean isCreativePlayer = entity instanceof PlayerEntity && ((PlayerEntity) entity).isCreative();
+
+		if (!level.isClientSide && !isCreativePlayer && damageSource == DamageSource.IN_WALL && !entity.isInvulnerableTo(damageSource) && BlockUtils.isInsideReinforcedBlocks(level, entity, entity.getEyePosition(1.0F))) {
+			entity.hurt(CustomDamageSources.IN_REINFORCED_WALL, 10.0F);
+			event.setCanceled(true);
+		}
 	}
 
 	@SubscribeEvent

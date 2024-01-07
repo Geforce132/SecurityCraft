@@ -6,12 +6,16 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -91,6 +95,13 @@ public class BlockUtils {
 		}
 
 		return false;
+	}
+
+	public static boolean isInsideReinforcedBlocks(World level, Entity entity, Vector3d pos) {
+		float width = entity.getBbWidth() * 0.8F;
+		AxisAlignedBB inWallArea = AxisAlignedBB.ofSize(width, 0.1F, width).move(pos.x, pos.y, pos.z);
+
+		return level.getBlockCollisions(null, inWallArea, (wallState, testPos) -> wallState.getBlock() instanceof IReinforcedBlock && wallState.isSuffocating(level, testPos)).findAny().isPresent();
 	}
 
 	public static void updateIndirectNeighbors(World level, BlockPos pos, Block block) {

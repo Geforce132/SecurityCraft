@@ -15,6 +15,7 @@ public class CustomDamageSources {
 	public static final DamageSource FAKE_WATER = new DamageSource("securitycraft.fakeWater").bypassArmor();
 	public static final DamageSource ELECTRICITY = new DamageSource("securitycraft.electricity").bypassArmor();
 	public static final DamageSource INCORRECT_PASSCODE = new DamageSource("securitycraft.incorrectPasscode");
+	public static final DamageSource IN_REINFORCED_WALL = new DamageSource("securitycraft.inReinforcedWall").bypassArmor().bypassMagic();
 
 	private CustomDamageSources() {}
 
