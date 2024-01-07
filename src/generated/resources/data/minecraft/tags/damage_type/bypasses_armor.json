@@ -1,6 +1,7 @@
 {
   "values": [
     "securitycraft:fake_water",
-    "securitycraft:electricity"
+    "securitycraft:electricity",
+    "securitycraft:in_reinforced_wall"
   ]
 }

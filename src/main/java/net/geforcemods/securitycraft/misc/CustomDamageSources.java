@@ -15,6 +15,7 @@ public class CustomDamageSources {
 	public static final ResourceKey<DamageType> ELECTRICITY = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(SecurityCraft.MODID, "electricity"));
 	public static final ResourceKey<DamageType> TASER = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(SecurityCraft.MODID, "taser"));
 	public static final ResourceKey<DamageType> INCORRECT_PASSCODE = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(SecurityCraft.MODID, "incorrect_passcode"));
+	public static final ResourceKey<DamageType> IN_REINFORCED_WALL = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(SecurityCraft.MODID, "in_reinforced_wall"));
 
 	private CustomDamageSources() {}
 
@@ -36,5 +37,9 @@ public class CustomDamageSources {
 
 	public static DamageSource incorrectPasscode(RegistryAccess registryAccess) {
 		return new DamageSource(registryAccess.registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(INCORRECT_PASSCODE));
+	}
+
+	public static DamageSource inReinforcedWall(RegistryAccess registryAccess) {
+		return new DamageSource(registryAccess.registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(IN_REINFORCED_WALL));
 	}
 }
