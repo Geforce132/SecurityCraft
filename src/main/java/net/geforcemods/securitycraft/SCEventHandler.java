@@ -64,6 +64,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -86,6 +87,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -190,6 +192,19 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onServerStop(ServerStoppedEvent event) {
 		PasscodeUtils.stopHashingThread();
+	}
+
+	@SubscribeEvent
+	public static void onLivingAttacked(LivingAttackEvent event) {
+		LivingEntity entity = event.getEntity();
+		Level level = entity.level();
+		DamageSource damageSource = event.getSource();
+		boolean isCreativePlayer = entity instanceof Player player && player.isCreative();
+
+		if (!level.isClientSide && !isCreativePlayer && damageSource.equals(level.damageSources().inWall()) && !entity.isInvulnerableTo(damageSource) && BlockUtils.isInsideReinforcedBlocks(level, entity.getEyePosition(), entity.getBbWidth())) {
+			entity.hurt(CustomDamageSources.inReinforcedWall(entity.level().registryAccess()), 10.0F);
+			event.setCanceled(true);
+		}
 	}
 
 	@SubscribeEvent
