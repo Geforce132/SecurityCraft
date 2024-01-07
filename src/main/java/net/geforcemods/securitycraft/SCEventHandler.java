@@ -70,6 +70,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -89,6 +90,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod.EventBusSubscriber;
 import net.neoforged.neoforge.event.TickEvent.Phase;
 import net.neoforged.neoforge.event.TickEvent.ServerTickEvent;
+import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
@@ -208,6 +210,26 @@ public class SCEventHandler {
 
 		if (!level.isClientSide && entity instanceof ServerPlayer player && PlayerUtils.isPlayerMountedOnCamera(entity))
 			((SecurityCamera) player.getCamera()).stopViewing(player);
+	}
+
+	@SubscribeEvent
+	public static void onDismount(EntityMountEvent event) {
+		if (ConfigHandler.SERVER.preventReinforcedFloorGlitching.get() && event.isDismounting() && event.getEntityBeingMounted() instanceof Boat boat && event.getEntityMounting() instanceof Player player && !player.getAbilities().invulnerable) {
+			Vec3 incorrectDismountLocation = new Vec3(boat.getX(), boat.getBoundingBox().maxY, boat.getZ());
+			Vec3 dismountLocation = boat.getDismountLocationForPassenger(player);
+			Vec3 newCenterPos = dismountLocation.add(0.0F, player.getBbHeight() / 2, 0.0F);
+			Vec3 newEyePos = dismountLocation.add(0.0F, player.getEyeHeight(), 0.0F);
+
+			if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideReinforcedBlocks(player.level(), newEyePos, player.getBbWidth()) || BlockUtils.isInsideReinforcedBlocks(player.level(), newCenterPos, player.getBbWidth()))) {
+				player.setYRot(boat.getYRot() + 180.0F % 360.0F); //This doesn't actually change the player's rotation, it' just for the calculation
+				dismountLocation = boat.getDismountLocationForPassenger(player);
+
+				if (!dismountLocation.equals(incorrectDismountLocation))
+					player.setPos(dismountLocation);
+				else
+					event.setCanceled(true);
+			}
+		}
 	}
 
 	//disallow rightclicking doors, fixes wrenches from other mods being able to switch their state

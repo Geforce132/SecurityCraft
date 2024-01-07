@@ -90,6 +90,7 @@ public class ConfigHandler {
 		public BooleanValue enableTeamOwnership;
 		public BooleanValue disableThanksMessage;
 		public BooleanValue trickScannersWithPlayerHeads;
+		public BooleanValue preventReinforcedFloorGlitching;
 		public DoubleValue taserDamage;
 		public DoubleValue poweredTaserDamage;
 		public DoubleValue laserDamage;
@@ -177,6 +178,10 @@ public class ConfigHandler {
 			trickScannersWithPlayerHeads = builder
 					.comment("Set this to true if you want players wearing a different player's skull to be able to trick their retinal scanners and scanner doors into activating.")
 					.define("trick_scanners_with_player_heads", false);
+
+			preventReinforcedFloorGlitching = builder
+					.comment("Set this to true to prevent players from glitching through a floor made of reinforced blocks using a boat. This is achieved by not letting players exit a boat in a way that would place them inside reinfored blocks.")
+					.define("prevent_reinforced_floor_glitching", false);
 
 			taserDamage = builder
 					.comment("Set the amount of damage the taser inflicts onto the mobs it hits. Default is half a heart.")
