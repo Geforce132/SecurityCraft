@@ -180,7 +180,7 @@ public class ConfigHandler {
 					.define("trick_scanners_with_player_heads", false);
 
 			preventReinforcedFloorGlitching = builder
-					.comment("Set this to true to prevent players from glitching through a floor made of reinforced blocks using a boat. This is achieved by not letting players exit a boat in a way that would place them inside reinfored blocks.")
+					.comment("Set this to true to prevent players from glitching through a floor made of reinforced blocks using a boat. This is achieved by not letting players exit a boat in a way that would place them inside reinforced blocks.")
 					.define("prevent_reinforced_floor_glitching", false);
 
 			taserDamage = builder
