@@ -221,7 +221,7 @@ public class SCEventHandler {
 			Vec3 newEyePos = dismountLocation.add(0.0F, player.getEyeHeight(), 0.0F);
 
 			if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideReinforcedBlocks(player.level(), newEyePos, player.getBbWidth()) || BlockUtils.isInsideReinforcedBlocks(player.level(), newCenterPos, player.getBbWidth()))) {
-				player.setYRot(boat.getYRot() + 180.0F % 360.0F); //This doesn't actually change the player's rotation, it' just for the calculation
+				player.setYRot(boat.getYRot() + 180.0F % 360.0F); //This doesn't actually alter the player's rotation, the y-rotation is only changed for the calculation of the new dismount location behind the boat in the next line
 				dismountLocation = boat.getDismountLocationForPassenger(player);
 
 				if (!dismountLocation.equals(incorrectDismountLocation))
