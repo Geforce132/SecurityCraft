@@ -549,6 +549,8 @@
 	"death.attack.securitycraft.electricity.player": "%1$s was electrocuted whilst fighting %2$s",
 	"death.attack.securitycraft.fakeWater": "%s fell into poisonous water...?",
 	"death.attack.securitycraft.fakeWater.player": "%1$s fell into poisonous water whilst fighting %2$s...?",
+	"death.attack.securitycraft.inReinforcedWall": "%s suffocated in a reinforced wall",
+	"death.attack.securitycraft.inReinforcedWall.player": "%1$s suffocated in a reinforced wall whilst fighting %2$s",
 	"death.attack.securitycraft.incorrectPasscode": "%s entered an incorrect code",
 	"death.attack.securitycraft.incorrectPasscode.player": "%1$s entered an incorrect code whilst fighting %2$s",
 	"death.attack.securitycraft.laser": "%s was sliced to death by a laser",

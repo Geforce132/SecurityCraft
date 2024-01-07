@@ -549,6 +549,8 @@
 	"death.attack.securitycraft.electricity.player": "%1$s erlitt während des Kampfes mit %2$s einen Stromschlag",
 	"death.attack.securitycraft.fakeWater": "%s fiel in giftiges Wasser...?",
 	"death.attack.securitycraft.fakeWater.player": "%1$s fiel während des Kampfes mit %2$s in giftiges Wasser...?",
+	"death.attack.securitycraft.inReinforcedWall": "%s wurde lebendig in verstärkten Blöcken begraben",
+	"death.attack.securitycraft.inReinforcedWall.player": "%1$s wurde während des Kampfes mit %2$s lebending in verstärkten Blöcken begraben",
 	"death.attack.securitycraft.incorrectPasscode": "%s hat einen falschen Code eingegeben",
 	"death.attack.securitycraft.incorrectPasscode.player": "%1$s hat während des Kampfes mit %2$s einen falschen Code eingegeben",
 	"death.attack.securitycraft.laser": "%s wurde von einem Laser zerschnitten",
