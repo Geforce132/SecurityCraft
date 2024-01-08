@@ -39,6 +39,7 @@
 - Fix: Fake Lava can ignite non-flammable blocks around itself
 - Fix: Briefcases lose their passcode when they are moved to another slot in the Creative inventory screen
 - Fix: Modules that are inserted in reinforced blocks get deleted when unreinforcing these blocks
+- Fix: Mobs can be converted multiple times by an Electrified Iron Fence (Gate)
 - Misc.: ProjectE support has been updated with previously missing EMC values
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
