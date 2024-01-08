@@ -9,6 +9,7 @@
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate
+- Change: Players now take 5 instead of 0.5 hearts of damage when suffocating inside reinforced blocks
 - Fix: The Floor Trap has incorrect sound
 - Fix: Duplication exploit involving keycards
 - Fix: The name of certain SecurityCraft blocks is displayed within brackets by WTHIT and similar mods

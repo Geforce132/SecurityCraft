@@ -5,14 +5,17 @@ import java.util.function.BiPredicate;
 import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class BlockUtils {
@@ -90,6 +93,30 @@ public class BlockUtils {
 			}
 		}
 
+		return false;
+	}
+
+	public static boolean isInsideReinforcedBlocks(World level, Entity entity, double yHeight) {
+		BlockPos.PooledMutableBlockPos testPos = BlockPos.PooledMutableBlockPos.retain();
+
+		for (int i = 0; i < 8; ++i) {
+			int x = MathHelper.floor(entity.posX + ((i >> 1) % 2 - 0.5F) * entity.width * 0.8F);
+			int y = MathHelper.floor(entity.posY + ((i % 2 - 0.5F) * 0.1F) + yHeight);
+			int z = MathHelper.floor(entity.posZ + ((i >> 2) % 2 - 0.5F) * entity.width * 0.8F);
+
+			if (testPos.getX() != x || testPos.getY() != y || testPos.getZ() != z) {
+				testPos.setPos(x, y, z);
+
+				IBlockState state = level.getBlockState(testPos);
+
+				if (state.getBlock() instanceof IReinforcedBlock && state.causesSuffocation()) {
+					testPos.release();
+					return true;
+				}
+			}
+		}
+
+		testPos.release();
 		return false;
 	}
 

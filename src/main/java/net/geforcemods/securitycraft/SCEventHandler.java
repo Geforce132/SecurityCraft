@@ -95,6 +95,7 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -218,6 +219,19 @@ public class SCEventHandler {
 
 		if (world instanceof WorldServer && world.provider.getDimensionType() == DimensionType.OVERWORLD)
 			SaltData.refreshLevel(((WorldServer) world));
+	}
+
+	@SubscribeEvent
+	public static void onLivingAttacked(LivingAttackEvent event) {
+		EntityLivingBase entity = event.getEntityLiving();
+		World level = entity.world;
+		DamageSource damageSource = event.getSource();
+		boolean isCreativePlayer = entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative();
+
+		if (!level.isRemote && !isCreativePlayer && damageSource == DamageSource.IN_WALL && !entity.isEntityInvulnerable(damageSource) && BlockUtils.isInsideReinforcedBlocks(level, entity, entity.getEyeHeight())) {
+			entity.attackEntityFrom(CustomDamageSources.IN_REINFORCED_WALL, 10.0F);
+			event.setCanceled(true);
+		}
 	}
 
 	@SubscribeEvent
