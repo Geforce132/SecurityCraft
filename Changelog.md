@@ -41,6 +41,7 @@
 - Fix: Fake Lava can ignite non-flammable blocks around itself
 - Fix: Briefcases lose their passcode when they are moved to another slot in the Creative inventory screen
 - Fix: Modules that are inserted in reinforced blocks get deleted when unreinforcing these blocks
+- Fix: Mobs can be converted multiple times by an Electrified Iron Fence (Gate)
 - Misc.: The minimum required NeoForge version is 20.2.88 (necessary to fix players getting kicked from the server when placing a Sentry)
 
 --------------------------Changelog for v1.9.8-beta4 of SecurityCraft--------------------------
