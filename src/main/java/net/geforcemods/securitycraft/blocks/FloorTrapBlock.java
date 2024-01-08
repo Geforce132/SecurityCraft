@@ -17,6 +17,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class FloorTrapBlock extends SometimesVisibleBlock {
 	public FloorTrapBlock(Material material) {
@@ -77,6 +79,7 @@ public class FloorTrapBlock extends SometimesVisibleBlock {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World level, BlockPos pos, Random rand) {
 		if (state.getValue(INVISIBLE)) {
 			for (int i = 0; i < 3; i++) {
