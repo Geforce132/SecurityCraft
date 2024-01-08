@@ -207,7 +207,7 @@ public class ElectrifiedIronFenceBlock extends OwnableBlock {
 	public static void hurtOrConvertEntity(Block electrifiedBlock, BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (level.getGameTime() % 20 != 0)
 			return;
-		else if (!electrifiedBlock.getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
+		else if (entity.isRemoved() || !electrifiedBlock.getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
 			return;
 		else if (entity instanceof ItemEntity) //so dropped items don't get destroyed
 			return;
