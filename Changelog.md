@@ -40,6 +40,7 @@
 - Fix: The block state preview does not show in the Disguise Module's and Projector's screen
 - Fix: Fake Lava can ignite non-flammable blocks around itself
 - Fix: Modules that are inserted in reinforced blocks get deleted when unreinforcing these blocks
+- Fix: Mobs can be converted multiple times by an Electrified Iron Fence (Gate)
 
 --------------------------Changelog for v1.9.8-beta2 of SecurityCraft--------------------------
 
