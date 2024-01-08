@@ -33,6 +33,7 @@
 - Fix: Modules that are inserted in reinforced blocks get deleted when unreinforcing these blocks
 - Fix: Blocks can be placed on top of a Sentry's base to block it from shooting
 - Fix: The Reinforced Ladder incorrectly has a manual page
+- Fix: Ghost items when using JEI's cheat mode in survival after opening certain GUIs
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 

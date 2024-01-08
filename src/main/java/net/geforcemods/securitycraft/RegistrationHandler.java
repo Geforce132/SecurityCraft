@@ -85,6 +85,7 @@ import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
@@ -594,6 +595,7 @@ public class RegistrationHandler {
 		network.registerMessage(PlayAlarmSound.Handler.class, PlayAlarmSound.class, 52, Side.CLIENT);
 		network.registerMessage(SyncAlarmSettings.Handler.class, SyncAlarmSettings.class, 53, Side.SERVER);
 		network.registerMessage(SyncBlockReinforcer.Handler.class, SyncBlockReinforcer.class, 54, Side.SERVER);
+		network.registerMessage(OpenScreen.Handler.class, OpenScreen.class, 55, Side.CLIENT);
 	}
 
 	@SubscribeEvent

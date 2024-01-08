@@ -59,17 +59,17 @@ public class AlarmScreen extends GuiScreen {
 	protected int previousSoundLength, soundLength;
 	protected float previousPitch, pitch;
 
-	public AlarmScreen(AlarmBlockEntity be, ResourceLocation selectedSoundEvent) {
+	public AlarmScreen(AlarmBlockEntity be) {
 		this.be = be;
 		this.hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		smartModuleTooltip = Utils.localize(hasSmartModule ? "gui.securitycraft:alarm.smart_module" : "gui.securitycraft:alarm.no_smart_module").getFormattedText();
-		previousSelectedSoundEvent = selectedSoundEvent;
+		previousSelectedSoundEvent = be.getSound().getRegistryName();
 		previousSoundLength = be.getSoundLength();
 		soundLength = previousSoundLength;
 		previousPitch = be.getPitch();
 		pitch = previousPitch;
 		title = be.getDisplayName().getFormattedText();
-		selectSound(selectedSoundEvent);
+		selectSound(previousSelectedSoundEvent);
 	}
 
 	@Override

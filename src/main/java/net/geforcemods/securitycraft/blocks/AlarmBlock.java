@@ -6,7 +6,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
-import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -16,6 +17,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
@@ -49,7 +51,7 @@ public class AlarmBlock extends OwnableBlock {
 					if (te.isDisabled())
 						player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 					else
-						player.openGui(SecurityCraft.instance, Screens.ALARM.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
+						SecurityCraft.network.sendTo(new OpenScreen(DataType.ALARM, pos), (EntityPlayerMP) player);
 				}
 
 				return true;

@@ -7,7 +7,8 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -24,6 +25,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -81,7 +83,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 					if (riftStabilizer.isDisabled())
 						player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 					else
-						player.openGui(SecurityCraft.instance, Screens.RIFT_STABILIZER.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
+						SecurityCraft.network.sendTo(new OpenScreen(DataType.RIFT_STABILIZER, pos), (EntityPlayerMP) player);
 				}
 
 				return true;

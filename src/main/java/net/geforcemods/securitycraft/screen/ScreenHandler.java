@@ -4,7 +4,6 @@ import java.util.function.BiFunction;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
@@ -14,7 +13,6 @@ import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
-import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
@@ -176,12 +174,6 @@ public class ScreenHandler implements IGuiHandler {
 
 				return heldStack.isEmpty() ? null : new SSSItemScreen(heldStack);
 			}),
-		RIFT_STABILIZER(
-			(player, te) -> new GenericMenu(te),
-			(player, te) -> new RiftStabilizerScreen((RiftStabilizerBlockEntity) te)),
-		ALARM(
-			(player, te) -> new GenericMenu(te),
-			(player, te) -> new AlarmScreen((AlarmBlockEntity) te, ((AlarmBlockEntity) te).getSound().getRegistryName())),
 		KEYCARD_HOLDER(
 			(player, te) -> {
 				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.keycardHolder);
