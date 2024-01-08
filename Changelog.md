@@ -34,6 +34,7 @@
 - Fix: Blocks can be placed on top of a Sentry's base to block it from shooting
 - Fix: The Reinforced Ladder incorrectly has a manual page
 - Fix: Ghost items when using JEI's cheat mode in survival after opening certain GUIs
+- Fix: Mobs can be converted multiple times by an Electrified Iron Fence (Gate)
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 

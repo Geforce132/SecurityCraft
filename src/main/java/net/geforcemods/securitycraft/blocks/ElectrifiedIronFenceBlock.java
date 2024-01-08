@@ -67,7 +67,7 @@ public class ElectrifiedIronFenceBlock extends OwnableFenceBlock {
 
 		if (world.provider.getWorldTime() % 20 != 0)
 			return;
-		else if (!state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()))
+		else if (!entity.isEntityAlive() || !state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()))
 			return;
 		else if (entity instanceof EntityItem) //so dropped items don't get destroyed
 			return;
