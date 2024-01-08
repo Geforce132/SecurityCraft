@@ -61,6 +61,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -94,6 +95,7 @@ import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
@@ -246,6 +248,35 @@ public class SCEventHandler {
 			EntityPlayerMP player = (EntityPlayerMP) entity;
 
 			((SecurityCamera) player.getSpectatingEntity()).stopViewing(player);
+		}
+	}
+    
+    @SubscribeEvent
+	public static void onDismount(EntityMountEvent event) {
+		if (!event.getWorldObj().isRemote && ConfigHandler.preventReinforcedFloorGlitching && event.isDismounting() && event.getEntityBeingMounted() instanceof EntityBoat && event.getEntityMounting() instanceof EntityPlayer) {
+			EntityBoat boat = (EntityBoat) event.getEntityBeingMounted();
+			EntityPlayer player = (EntityPlayer) event.getEntityMounting();
+
+			if (player.isEntityAlive() && !player.capabilities.disableDamage) {
+				Vec3d oldPlayerPos = new Vec3d(player.posX, player.posY, player.posZ);
+				Vec3d incorrectDismountLocation = new Vec3d(boat.posX, boat.posY + player.height + 0.001D, boat.posZ);
+				Vec3d dismountLocation;
+
+				player.dismountEntity(boat);
+				dismountLocation = new Vec3d(player.posX, player.posY, player.posZ);
+
+				if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideReinforcedBlocks(player.world, player, player.getEyeHeight()) || BlockUtils.isInsideReinforcedBlocks(player.world, player, player.height / 2) || BlockUtils.isInsideReinforcedBlocks(player.world, player, 0))) {
+					player.rotationYaw = boat.rotationYaw + 180.0F % 360.0F; //The y-rotation is changed for the calculation of the new dismount location behind the boat in the next line
+					player.setPosition(oldPlayerPos.x, oldPlayerPos.y, oldPlayerPos.z);
+					player.dismountEntity(boat);
+					dismountLocation = new Vec3d(player.posX, player.posY, player.posZ);
+
+					if (dismountLocation.equals(incorrectDismountLocation))
+						event.setCanceled(true);
+				}
+
+				player.setPosition(oldPlayerPos.x, oldPlayerPos.y, oldPlayerPos.z);
+			}
 		}
 	}
 

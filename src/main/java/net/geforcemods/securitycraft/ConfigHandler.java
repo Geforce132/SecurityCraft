@@ -144,6 +144,10 @@ public class ConfigHandler {
 	@LangKey("config.securitycraft:trickScannersWithPlayerHeads")
 	public static boolean trickScannersWithPlayerHeads = false;
 
+	@Name("Prevent reinforced floor glitching?")
+	@LangKey("config.securitycraft:preventReinforcedFloorGlitching")
+	public static boolean preventReinforcedFloorGlitching = false;
+
 	@Name("Taser damage")
 	@LangKey("config.securitycraft:taser_damage")
 	@RangeDouble(min = 0.0D)
