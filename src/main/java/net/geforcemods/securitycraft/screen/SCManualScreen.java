@@ -16,8 +16,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-import org.lwjgl.glfw.GLFW;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
@@ -225,16 +223,6 @@ public class SCManualScreen extends Screen {
 	public void removed() {
 		super.removed();
 		lastPage = currentPage;
-	}
-
-	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (keyCode == GLFW.GLFW_KEY_LEFT)
-			previousSubpage();
-		else if (keyCode == GLFW.GLFW_KEY_RIGHT)
-			nextSubpage();
-
-		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
 	private void hideSubpageButtonsOnMainPage() {
