@@ -451,7 +451,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onFurnaceFuelBurnTime(FurnaceFuelBurnTimeEvent event) {
-		if (event.getItemStack().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ReinforcedCarpetBlock)
+		if (event.getItemStack().getItem() instanceof BlockItem blockItem && (blockItem.getBlock() instanceof ReinforcedCarpetBlock || blockItem.getBlock() == SCContent.ELECTRIFIED_IRON_FENCE_GATE.get()))
 			event.setBurnTime(0);
 	}
 
