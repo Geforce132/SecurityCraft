@@ -37,6 +37,7 @@
 - Fix: Briefcases lose their passcode when they are moved to another slot in the Creative inventory screen
 - Fix: Modules that are inserted in reinforced blocks get deleted when unreinforcing these blocks
 - Fix: Mobs can be converted multiple times by an Electrified Iron Fence (Gate)
+- Fix: Incorrect button is being hidden while navigating in the SecurityCraft Manual
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 

@@ -94,6 +94,7 @@ public class SCManualScreen extends Screen {
 	private boolean explosive, ownable, passcodeProtected, viewActivated, customizable, lockable, moduleInventory;
 	private IngredientDisplay pageIcon;
 	private TranslationTextComponent pageTitle, designedBy;
+	private ChangePageButton previousSubpageButton, nextSubpageButton;
 
 	public SCManualScreen() {
 		super(new TranslationTextComponent(SCContent.SC_MANUAL.get().getDescriptionId()));
@@ -107,8 +108,8 @@ public class SCManualScreen extends Screen {
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		patreonLinkButton = addButton(new HyperlinkButton(startX + 225, 143, 16, 16, StringTextComponent.EMPTY, b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
 		children.add(patronList = new PatronList(minecraft, 115, 90, 50, startX + 125));
-		addButton(new ChangePageButton(startX + 155, startY + 97, false, b -> previousSubpage()));
-		addButton(new ChangePageButton(startX + 180, startY + 97, true, b -> nextSubpage()));
+		previousSubpageButton = addButton(new ChangePageButton(startX + 155, startY + 97, false, b -> previousSubpage()));
+		nextSubpageButton = addButton(new ChangePageButton(startX + 180, startY + 97, true, b -> nextSubpage()));
 		addButton(new ChangePageButton(startX + 22, startY + 188, false, b -> previousPage()));
 		addButton(new ChangePageButton(startX + 210, startY + 188, true, b -> nextPage()));
 
@@ -248,8 +249,8 @@ public class SCManualScreen extends Screen {
 	}
 
 	private void hideSubpageButtonsOnMainPage() {
-		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
-		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
+		previousSubpageButton.visible = currentPage != -1 && subpages.size() > 1;
+		nextSubpageButton.visible = currentPage != -1 && subpages.size() > 1;
 	}
 
 	@Override
@@ -294,8 +295,8 @@ public class SCManualScreen extends Screen {
 		}
 
 		//hide subpage buttons on main page
-		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
-		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
+		previousSubpageButton.visible = currentPage != -1 && subpages.size() > 1;
+		nextSubpageButton.visible = currentPage != -1 && subpages.size() > 1;
 		return true;
 	}
 
@@ -345,8 +346,8 @@ public class SCManualScreen extends Screen {
 
 			pageIcon.setIngredient(Ingredient.EMPTY);
 			recipe = null;
-			buttons.get(2).visible = false;
-			buttons.get(3).visible = false;
+			previousSubpageButton.visible = false;
+			nextSubpageButton.visible = false;
 
 			if (I18n.exists("gui.securitycraft:scManual.author"))
 				author = font.split(Utils.localize("gui.securitycraft:scManual.author"), 180);
@@ -589,8 +590,8 @@ public class SCManualScreen extends Screen {
 
 		//set up subpages
 		subpages = font.getSplitter().splitLines(page.helpInfo(), SUBPAGE_LENGTH, Style.EMPTY);
-		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
-		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
+		previousSubpageButton.visible = currentPage != -1 && subpages.size() > 1;
+		nextSubpageButton.visible = currentPage != -1 && subpages.size() > 1;
 	}
 
 	private void resetTileEntityInfo() {
