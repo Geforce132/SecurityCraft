@@ -95,11 +95,6 @@ public class ReinforcedWoodSlabsBlock extends BlockWoodSlab implements ITileEnti
 
 	@Override
 	public List<Block> getVanillaBlocks() {
-		return Arrays.asList(Blocks.WOODEN_SLAB);
-	}
-
-	@Override
-	public int getAmount() {
-		return 6;
+		return Arrays.asList(isDouble ? Blocks.DOUBLE_WOODEN_SLAB : Blocks.WOODEN_SLAB);
 	}
 }

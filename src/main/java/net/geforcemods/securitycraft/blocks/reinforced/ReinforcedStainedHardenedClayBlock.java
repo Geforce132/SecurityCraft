@@ -85,9 +85,4 @@ public class ReinforcedStainedHardenedClayBlock extends BlockStainedHardenedClay
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.STAINED_HARDENED_CLAY);
 	}
-
-	@Override
-	public int getAmount() {
-		return 16;
-	}
 }

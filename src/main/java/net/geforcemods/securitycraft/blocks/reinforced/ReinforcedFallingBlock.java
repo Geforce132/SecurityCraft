@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ReinforcedFallingBlock extends BaseReinforcedBlock {
 	public ReinforcedFallingBlock(Material material, Block disguisedBlock) {
-		super(material, 1, disguisedBlock);
+		super(material, disguisedBlock);
 
 		if (material == Material.SAND)
 			setSoundType(SoundType.SAND);

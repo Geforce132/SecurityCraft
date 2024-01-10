@@ -58,11 +58,6 @@ public class ReinforcedLadderBlock extends BlockLadder implements IReinforcedBlo
 	}
 
 	@Override
-	public int getAmount() {
-		return 1;
-	}
-
-	@Override
 	public boolean hasTileEntity(IBlockState state) {
 		return true;
 	}

@@ -84,11 +84,6 @@ public class ReinforcedCauldronBlock extends BlockCauldron implements IReinforce
 	}
 
 	@Override
-	public int getAmount() {
-		return 1;
-	}
-
-	@Override
 	public boolean hasTileEntity(IBlockState state) {
 		return true;
 	}

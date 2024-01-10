@@ -73,11 +73,6 @@ public class ReinforcedGlassBlock extends BlockGlass implements ITileEntityProvi
 	}
 
 	@Override
-	public int getAmount() {
-		return 1;
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		IBlockState offsetState = blockAccess.getBlockState(pos.offset(side));

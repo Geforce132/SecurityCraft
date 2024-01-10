@@ -72,9 +72,4 @@ public class ReinforcedRedSandstoneBlock extends BlockRedSandstone implements IT
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.RED_SANDSTONE);
 	}
-
-	@Override
-	public int getAmount() {
-		return 3;
-	}
 }

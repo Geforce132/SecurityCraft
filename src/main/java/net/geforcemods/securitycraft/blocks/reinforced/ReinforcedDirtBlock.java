@@ -76,9 +76,4 @@ public class ReinforcedDirtBlock extends BlockDirt implements IReinforcedBlock {
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.DIRT);
 	}
-
-	@Override
-	public int getAmount() {
-		return 3;
-	}
 }

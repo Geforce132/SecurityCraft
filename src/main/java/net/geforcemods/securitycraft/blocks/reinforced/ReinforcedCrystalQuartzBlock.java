@@ -79,9 +79,4 @@ public class ReinforcedCrystalQuartzBlock extends BlockQuartz implements ITileEn
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(SCContent.crystalQuartz);
 	}
-
-	@Override
-	public int getAmount() {
-		return 3;
-	}
 }

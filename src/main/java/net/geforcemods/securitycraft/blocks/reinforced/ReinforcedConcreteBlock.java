@@ -76,9 +76,4 @@ public class ReinforcedConcreteBlock extends BlockColored implements ITileEntity
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.CONCRETE);
 	}
-
-	@Override
-	public int getAmount() {
-		return 16;
-	}
 }

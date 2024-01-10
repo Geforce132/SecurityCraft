@@ -102,8 +102,39 @@ public class ReinforcedMetalsBlock extends OwnableBlock implements IOverlayDispl
 	}
 
 	@Override
-	public int getAmount() {
-		return 5;
+	public IBlockState convertToReinforced(IBlockState state) {
+		Block block = state.getBlock();
+
+		if (block == Blocks.GOLD_BLOCK)
+			return getDefaultState().withProperty(VARIANT, EnumType.GOLD);
+		else if (block == Blocks.IRON_BLOCK)
+			return getDefaultState().withProperty(VARIANT, EnumType.IRON);
+		else if (block == Blocks.DIAMOND_BLOCK)
+			return getDefaultState().withProperty(VARIANT, EnumType.DIAMOND);
+		else if (block == Blocks.EMERALD_BLOCK)
+			return getDefaultState().withProperty(VARIANT, EnumType.EMERALD);
+		else if (block == Blocks.REDSTONE_BLOCK)
+			return getDefaultState().withProperty(VARIANT, EnumType.REDSTONE);
+		else
+			return state;
+	}
+
+	@Override
+	public IBlockState convertToVanilla(IBlockState state) {
+		switch (state.getValue(VARIANT)) {
+			case GOLD:
+				return Blocks.GOLD_BLOCK.getDefaultState();
+			case IRON:
+				return Blocks.IRON_BLOCK.getDefaultState();
+			case DIAMOND:
+				return Blocks.DIAMOND_BLOCK.getDefaultState();
+			case EMERALD:
+				return Blocks.EMERALD_BLOCK.getDefaultState();
+			case REDSTONE:
+				return Blocks.REDSTONE_BLOCK.getDefaultState();
+			default:
+				return state;
+		}
 	}
 
 	public enum EnumType implements IStringSerializable {

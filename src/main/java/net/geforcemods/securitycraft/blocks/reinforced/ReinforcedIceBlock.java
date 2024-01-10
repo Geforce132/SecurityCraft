@@ -10,8 +10,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 public class ReinforcedIceBlock extends ReinforcedIceBaseBlock {
-	public ReinforcedIceBlock(Material mat, int a, SoundType sound, Block... vB) {
-		super(mat, a, sound, vB);
+	public ReinforcedIceBlock(Material mat, SoundType sound, Block... vB) {
+		super(mat, sound, vB);
 	}
 
 	@Override

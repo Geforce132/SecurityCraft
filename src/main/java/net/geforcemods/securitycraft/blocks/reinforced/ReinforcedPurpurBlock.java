@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -19,6 +20,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Rotation;
@@ -131,8 +133,48 @@ public class ReinforcedPurpurBlock extends OwnableBlock implements IOverlayDispl
 	}
 
 	@Override
-	public int getAmount() {
-		return 2;
+	public IBlockState convertToReinforced(IBlockState state) {
+		Block block = state.getBlock();
+
+		if (block == Blocks.PURPUR_BLOCK)
+			return getDefaultState().withProperty(VARIANT, EnumType.DEFAULT);
+		else if (block == Blocks.PURPUR_PILLAR) {
+			Axis axis = state.getValue(BlockRotatedPillar.AXIS);
+			EnumType variant = null;
+
+			switch (axis) {
+				case X:
+					variant = EnumType.LINES_X;
+					break;
+				case Y:
+					variant = EnumType.LINES_Y;
+					break;
+				case Z:
+					variant = EnumType.LINES_Z;
+					break;
+			}
+
+			if (variant != null)
+				return getDefaultState().withProperty(VARIANT, variant);
+		}
+
+		return state;
+	}
+
+	@Override
+	public IBlockState convertToVanilla(IBlockState state) {
+		switch (state.getValue(VARIANT)) {
+			case DEFAULT:
+				return Blocks.PURPUR_BLOCK.getDefaultState();
+			case LINES_Y:
+				return Blocks.PURPUR_PILLAR.getDefaultState().withProperty(BlockRotatedPillar.AXIS, Axis.Y);
+			case LINES_X:
+				return Blocks.PURPUR_PILLAR.getDefaultState().withProperty(BlockRotatedPillar.AXIS, Axis.X);
+			case LINES_Z:
+				return Blocks.PURPUR_PILLAR.getDefaultState().withProperty(BlockRotatedPillar.AXIS, Axis.Z);
+			default:
+				return state;
+		}
 	}
 
 	public enum EnumType implements IStringSerializable {

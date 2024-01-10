@@ -42,7 +42,7 @@ public class ReinforcedWallBlock extends BaseReinforcedBlock {
 	};
 
 	public ReinforcedWallBlock() {
-		super(Material.ROCK, 2, Blocks.COBBLESTONE_WALL);
+		super(Material.ROCK, Blocks.COBBLESTONE_WALL);
 		setDefaultState(blockState.getBaseState().withProperty(UP, false).withProperty(NORTH, false).withProperty(EAST, false).withProperty(SOUTH, false).withProperty(WEST, false).withProperty(VARIANT, EnumType.NORMAL));
 	}
 

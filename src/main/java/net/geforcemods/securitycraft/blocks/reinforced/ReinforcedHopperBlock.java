@@ -86,11 +86,6 @@ public class ReinforcedHopperBlock extends BlockHopper implements IReinforcedBlo
 		return Arrays.asList(Blocks.HOPPER);
 	}
 
-	@Override
-	public int getAmount() {
-		return 1;
-	}
-
 	public static class ExtractionBlock implements IExtractionBlock, Function<Object, IExtractionBlock> {
 		@Override
 		public IExtractionBlock apply(Object o) {

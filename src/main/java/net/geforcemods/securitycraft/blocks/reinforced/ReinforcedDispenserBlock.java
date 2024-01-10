@@ -86,9 +86,4 @@ public class ReinforcedDispenserBlock extends BlockDispenser implements IReinfor
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.DISPENSER);
 	}
-
-	@Override
-	public int getAmount() {
-		return 1;
-	}
 }

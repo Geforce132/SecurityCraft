@@ -1,11 +1,15 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -19,6 +23,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -31,7 +36,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedSlabsBlock extends BlockSlab implements ITileEntityProvider, IOverlayDisplay {
+public class ReinforcedSlabsBlock extends BlockSlab implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock {
 	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class);
 	private final boolean isDouble;
 
@@ -214,5 +219,10 @@ public class ReinforcedSlabsBlock extends BlockSlab implements ITileEntityProvid
 	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return true;
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks() {
+		return Arrays.asList(isDouble ? Blocks.DOUBLE_STONE_SLAB : Blocks.STONE_SLAB);
 	}
 }

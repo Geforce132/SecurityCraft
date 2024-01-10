@@ -299,11 +299,6 @@ public class ReinforcedPistonBlock extends BlockPistonBase implements IReinforce
 		return Arrays.asList(isSticky ? Blocks.STICKY_PISTON : Blocks.PISTON);
 	}
 
-	@Override
-	public int getAmount() {
-		return 0;
-	}
-
 	private static boolean isSameOwner(BlockPos blockPos, BlockPos pistonPos, World world) {
 		TileEntity pistonTE = world.getTileEntity(pistonPos);
 		IOwnable blockTE = (IOwnable) world.getTileEntity(blockPos);

@@ -55,9 +55,4 @@ public class ReinforcedGlassPaneBlock extends BlockPane implements ITileEntityPr
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.GLASS_PANE);
 	}
-
-	@Override
-	public int getAmount() {
-		return 1;
-	}
 }

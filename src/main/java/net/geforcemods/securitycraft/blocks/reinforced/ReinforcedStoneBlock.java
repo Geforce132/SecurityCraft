@@ -70,9 +70,4 @@ public class ReinforcedStoneBlock extends BlockStone implements ITileEntityProvi
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.STONE);
 	}
-
-	@Override
-	public int getAmount() {
-		return 7;
-	}
 }

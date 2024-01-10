@@ -127,11 +127,6 @@ public class ReinforcedPressurePlateBlock extends BlockPressurePlate implements 
 	}
 
 	@Override
-	public int getAmount() {
-		return 1;
-	}
-
-	@Override
 	public boolean hasTileEntity(IBlockState state) {
 		return true;
 	}

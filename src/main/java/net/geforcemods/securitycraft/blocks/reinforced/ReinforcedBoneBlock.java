@@ -19,7 +19,7 @@ public class ReinforcedBoneBlock extends BaseReinforcedBlock {
 	public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.<EnumFacing.Axis>create("axis", EnumFacing.Axis.class);
 
 	public ReinforcedBoneBlock(Material mat) {
-		super(mat, 1, MapColor.SAND, Blocks.BONE_BLOCK);
+		super(mat, MapColor.SAND, Blocks.BONE_BLOCK);
 	}
 
 	@Override

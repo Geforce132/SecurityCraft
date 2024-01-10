@@ -38,9 +38,4 @@ public class ReinforcedFenceBlock extends OwnableFenceBlock implements IReinforc
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(vanillaBlock);
 	}
-
-	@Override
-	public int getAmount() {
-		return 1;
-	}
 }

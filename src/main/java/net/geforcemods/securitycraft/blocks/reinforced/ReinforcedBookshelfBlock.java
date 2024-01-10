@@ -7,9 +7,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ReinforcedBookshelfBlock extends BaseReinforcedBlock {
-	public ReinforcedBookshelfBlock(Material mat, int a, Block... vB) {
-		super(mat, a, vB);
-
+	public ReinforcedBookshelfBlock(Material mat, Block... vB) {
+		super(mat, vB);
 		setSoundType(SoundType.WOOD);
 	}
 

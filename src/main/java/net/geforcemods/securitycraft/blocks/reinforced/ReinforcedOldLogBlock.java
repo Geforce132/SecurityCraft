@@ -19,7 +19,7 @@ public class ReinforcedOldLogBlock extends ReinforcedLogBlock implements IReinfo
 	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class, type -> type.getMetadata() < 4);
 
 	public ReinforcedOldLogBlock() {
-		super(4, Blocks.LOG);
+		super(Blocks.LOG);
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.OAK).withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
 	}
 

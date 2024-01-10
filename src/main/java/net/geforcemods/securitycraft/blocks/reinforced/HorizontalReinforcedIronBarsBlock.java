@@ -89,8 +89,13 @@ public class HorizontalReinforcedIronBarsBlock extends OwnableBlock implements I
 	}
 
 	@Override
-	public int getAmount() {
-		return 0;
+	public IBlockState convertToReinforced(IBlockState state) {
+		return state;
+	}
+
+	@Override
+	public IBlockState convertToVanilla(IBlockState state) {
+		return state;
 	}
 
 	@Override

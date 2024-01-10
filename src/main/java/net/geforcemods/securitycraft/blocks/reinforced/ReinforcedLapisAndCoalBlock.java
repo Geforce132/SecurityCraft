@@ -81,8 +81,27 @@ public class ReinforcedLapisAndCoalBlock extends OwnableBlock implements IOverla
 	}
 
 	@Override
-	public int getAmount() {
-		return 2;
+	public IBlockState convertToReinforced(IBlockState state) {
+		Block block = state.getBlock();
+
+		if (block == Blocks.LAPIS_BLOCK)
+			return getDefaultState().withProperty(VARIANT, EnumType.LAPIS);
+		else if (block == Blocks.COAL_BLOCK)
+			return getDefaultState().withProperty(VARIANT, EnumType.COAL);
+		else
+			return state;
+	}
+
+	@Override
+	public IBlockState convertToVanilla(IBlockState state) {
+		switch (state.getValue(VARIANT)) {
+			case LAPIS:
+				return Blocks.LAPIS_BLOCK.getDefaultState();
+			case COAL:
+				return Blocks.COAL_BLOCK.getDefaultState();
+			default:
+				return state;
+		}
 	}
 
 	public enum EnumType implements IStringSerializable {

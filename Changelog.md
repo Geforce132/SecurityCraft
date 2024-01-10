@@ -37,6 +37,10 @@
 - Fix: The Reinforced Ladder incorrectly has a manual page
 - Fix: Ghost items when using JEI's cheat mode in survival after opening certain GUIs
 - Fix: Mobs can be converted multiple times by an Electrified Iron Fence (Gate)
+[TODO] Apply these fixes/Check if they work
+- Fix: Un-/Reinforcing blocks in the world does not retain the block's state (e.g. stair orientation)
+- Fix: Some slabs cannot be reinforced even though they have a reinforced variant
+[/TODO]
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 

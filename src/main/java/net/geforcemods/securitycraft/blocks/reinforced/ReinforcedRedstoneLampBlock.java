@@ -16,7 +16,7 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 	public static final PropertyBool LIT = PropertyBool.create("lit");
 
 	public ReinforcedRedstoneLampBlock() {
-		super(Material.REDSTONE_LIGHT, 1, Blocks.REDSTONE_LAMP, Blocks.LIT_REDSTONE_LAMP);
+		super(Material.REDSTONE_LIGHT, Blocks.REDSTONE_LAMP, Blocks.LIT_REDSTONE_LAMP);
 
 		setDefaultState(getDefaultState().withProperty(LIT, false));
 		setSoundType(SoundType.GLASS);
@@ -70,5 +70,25 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, LIT);
+	}
+
+	@Override
+	public IBlockState convertToReinforced(IBlockState state) {
+		Block block = state.getBlock();
+
+		if (block == Blocks.REDSTONE_LAMP)
+			return getDefaultState().withProperty(LIT, false);
+		else if (block == Blocks.LIT_REDSTONE_LAMP)
+			return getDefaultState().withProperty(LIT, true);
+		else
+			return state;
+	}
+
+	@Override
+	public IBlockState convertToVanilla(IBlockState state) {
+		if (state.getValue(LIT))
+			return Blocks.LIT_REDSTONE_LAMP.getDefaultState();
+		else
+			return Blocks.REDSTONE_LAMP.getDefaultState();
 	}
 }

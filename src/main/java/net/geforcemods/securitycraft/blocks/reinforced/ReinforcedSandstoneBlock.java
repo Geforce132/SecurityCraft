@@ -65,9 +65,4 @@ public class ReinforcedSandstoneBlock extends BlockSandStone implements ITileEnt
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.SANDSTONE);
 	}
-
-	@Override
-	public int getAmount() {
-		return 3;
-	}
 }

@@ -154,8 +154,45 @@ public class ReinforcedRedSandstoneAndPurpurSlabsBlock extends BlockSlab impleme
 	}
 
 	@Override
-	public int getAmount() {
-		return 2;
+	public IBlockState convertToReinforced(IBlockState state) {
+		Block block = state.getBlock();
+
+		if (block == Blocks.STONE_SLAB2)
+			return getDefaultState().withProperty(VARIANT, EnumType.RED_SANDSTONE).withProperty(HALF, state.getValue(HALF));
+		else if (block == Blocks.DOUBLE_STONE_SLAB2)
+			return getDefaultState().withProperty(VARIANT, EnumType.RED_SANDSTONE).withProperty(HALF, EnumBlockHalf.TOP);
+		else if (block == Blocks.PURPUR_SLAB)
+			return getDefaultState().withProperty(VARIANT, EnumType.PURPUR).withProperty(HALF, state.getValue(HALF));
+		else if (block == Blocks.PURPUR_DOUBLE_SLAB)
+			return getDefaultState().withProperty(VARIANT, EnumType.PURPUR).withProperty(HALF, EnumBlockHalf.TOP);
+		else
+			return state;
+	}
+
+	@Override
+	public IBlockState convertToVanilla(IBlockState state) {
+		if (this == SCContent.reinforcedStoneSlabs2) {
+			switch (state.getValue(VARIANT)) {
+				case RED_SANDSTONE:
+					return Blocks.STONE_SLAB2.getDefaultState().withProperty(HALF, state.getValue(HALF));
+				case PURPUR:
+					return Blocks.PURPUR_SLAB.getDefaultState().withProperty(HALF, state.getValue(HALF));
+				default:
+					return state;
+			}
+		}
+		else if (this == SCContent.reinforcedDoubleStoneSlabs2) {
+			switch (state.getValue(VARIANT)) {
+				case RED_SANDSTONE:
+					return Blocks.DOUBLE_STONE_SLAB2.getDefaultState();
+				case PURPUR:
+					return Blocks.PURPUR_DOUBLE_SLAB.getDefaultState();
+				default:
+					return state;
+			}
+		}
+		else
+			return state;
 	}
 
 	public enum EnumType implements IStringSerializable {

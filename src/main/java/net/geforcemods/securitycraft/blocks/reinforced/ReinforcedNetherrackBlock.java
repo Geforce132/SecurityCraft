@@ -10,8 +10,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class ReinforcedNetherrackBlock extends BaseReinforcedBlock {
-	public ReinforcedNetherrackBlock(Material mat, int a, Block... vB) {
-		super(mat, a, vB);
+	public ReinforcedNetherrackBlock(Material mat, Block... vB) {
+		super(mat, vB);
 	}
 
 	@Override
