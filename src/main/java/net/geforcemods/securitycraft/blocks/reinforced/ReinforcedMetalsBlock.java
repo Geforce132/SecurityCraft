@@ -102,7 +102,7 @@ public class ReinforcedMetalsBlock extends OwnableBlock implements IOverlayDispl
 	}
 
 	@Override
-	public IBlockState convertToReinforced(IBlockState state) {
+	public IBlockState convertToReinforcedState(IBlockState state) {
 		Block block = state.getBlock();
 
 		if (block == Blocks.GOLD_BLOCK)
@@ -120,7 +120,7 @@ public class ReinforcedMetalsBlock extends OwnableBlock implements IOverlayDispl
 	}
 
 	@Override
-	public IBlockState convertToVanilla(IBlockState state) {
+	public IBlockState convertToVanillaState(IBlockState state) {
 		switch (state.getValue(VARIANT)) {
 			case GOLD:
 				return Blocks.GOLD_BLOCK.getDefaultState();
@@ -135,6 +135,26 @@ public class ReinforcedMetalsBlock extends OwnableBlock implements IOverlayDispl
 			default:
 				return state;
 		}
+	}
+
+	@Override
+	public ItemStack convertToReinforcedStack(ItemStack stackToConvert, Block blockToConvert) {
+		int index = getVanillaBlocks().indexOf(blockToConvert);
+
+		if (index >= 0)
+			return new ItemStack(this, 1, index);
+		else
+			return ItemStack.EMPTY;
+	}
+
+	@Override
+	public ItemStack convertToVanillaStack(ItemStack stackToConvert) {
+		int meta = stackToConvert.getMetadata();
+
+		if (meta >= 0 && meta <= 4)
+			return new ItemStack(getVanillaBlocks().get(meta));
+		else
+			return ItemStack.EMPTY;
 	}
 
 	public enum EnumType implements IStringSerializable {

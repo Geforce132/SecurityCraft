@@ -9,6 +9,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -73,7 +74,7 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public IBlockState convertToReinforced(IBlockState state) {
+	public IBlockState convertToReinforcedState(IBlockState state) {
 		Block block = state.getBlock();
 
 		if (block == Blocks.REDSTONE_LAMP)
@@ -85,10 +86,23 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public IBlockState convertToVanilla(IBlockState state) {
+	public IBlockState convertToVanillaState(IBlockState state) {
 		if (state.getValue(LIT))
 			return Blocks.LIT_REDSTONE_LAMP.getDefaultState();
 		else
 			return Blocks.REDSTONE_LAMP.getDefaultState();
+	}
+
+	@Override
+	public ItemStack convertToReinforcedStack(ItemStack stackToConvert, Block blockToConvert) {
+		if (blockToConvert == Blocks.REDSTONE_LAMP)
+			return new ItemStack(this);
+		else
+			return ItemStack.EMPTY;
+	}
+
+	@Override
+	public ItemStack convertToVanillaStack(ItemStack stackToConvert) {
+		return new ItemStack(Blocks.REDSTONE_LAMP);
 	}
 }

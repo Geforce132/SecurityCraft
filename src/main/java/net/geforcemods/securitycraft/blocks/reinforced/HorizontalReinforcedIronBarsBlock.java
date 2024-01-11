@@ -89,13 +89,23 @@ public class HorizontalReinforcedIronBarsBlock extends OwnableBlock implements I
 	}
 
 	@Override
-	public IBlockState convertToReinforced(IBlockState state) {
+	public IBlockState convertToReinforcedState(IBlockState state) {
 		return state;
 	}
 
 	@Override
-	public IBlockState convertToVanilla(IBlockState state) {
+	public IBlockState convertToVanillaState(IBlockState state) {
 		return state;
+	}
+
+	@Override
+	public ItemStack convertToReinforcedStack(ItemStack stackToConvert, Block blockToConvert) {
+		return ItemStack.EMPTY;
+	}
+
+	@Override
+	public ItemStack convertToVanillaStack(ItemStack stackToConvert) {
+		return ItemStack.EMPTY;
 	}
 
 	@Override

@@ -81,7 +81,7 @@ public class ReinforcedLapisAndCoalBlock extends OwnableBlock implements IOverla
 	}
 
 	@Override
-	public IBlockState convertToReinforced(IBlockState state) {
+	public IBlockState convertToReinforcedState(IBlockState state) {
 		Block block = state.getBlock();
 
 		if (block == Blocks.LAPIS_BLOCK)
@@ -93,7 +93,7 @@ public class ReinforcedLapisAndCoalBlock extends OwnableBlock implements IOverla
 	}
 
 	@Override
-	public IBlockState convertToVanilla(IBlockState state) {
+	public IBlockState convertToVanillaState(IBlockState state) {
 		switch (state.getValue(VARIANT)) {
 			case LAPIS:
 				return Blocks.LAPIS_BLOCK.getDefaultState();
@@ -102,6 +102,26 @@ public class ReinforcedLapisAndCoalBlock extends OwnableBlock implements IOverla
 			default:
 				return state;
 		}
+	}
+
+	@Override
+	public ItemStack convertToReinforcedStack(ItemStack stackToConvert, Block blockToConvert) {
+		int index = getVanillaBlocks().indexOf(blockToConvert);
+
+		if (index >= 0)
+			return new ItemStack(this, 1, index);
+		else
+			return ItemStack.EMPTY;
+	}
+
+	@Override
+	public ItemStack convertToVanillaStack(ItemStack stackToConvert) {
+		int meta = stackToConvert.getMetadata();
+
+		if (meta >= 0 && meta <= 1)
+			return new ItemStack(getVanillaBlocks().get(meta));
+		else
+			return ItemStack.EMPTY;
 	}
 
 	public enum EnumType implements IStringSerializable {

@@ -55,10 +55,10 @@ public class UniversalBlockReinforcerItem extends Item {
 				Block convertedBlock = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(blockToConvert);
 
 				if (convertedBlock instanceof IReinforcedBlock)
-					convertedState = ((IReinforcedBlock) convertedBlock).convertToReinforced(state);
+					convertedState = ((IReinforcedBlock) convertedBlock).convertToReinforcedState(state);
 			}
 			else if (blockToConvert instanceof IReinforcedBlock)
-				convertedState = ((IReinforcedBlock) blockToConvert).convertToVanilla(state);
+				convertedState = ((IReinforcedBlock) blockToConvert).convertToVanillaState(state);
 
 			if (convertedState != null) {
 				TileEntity te = world.getTileEntity(pos);
