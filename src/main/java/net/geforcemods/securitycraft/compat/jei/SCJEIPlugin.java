@@ -49,16 +49,11 @@ public class SCJEIPlugin implements IModPlugin {
 			NonNullList<ItemStack> subBlocks = NonNullList.create();
 
 			vanillaBlock.getSubBlocks(CreativeTabs.SEARCH, subBlocks);
-			subBlocks.forEach(subStack -> vtsRecipes.add(new ReinforcerRecipe(subStack, reinforcedBlock.convertToReinforcedStack(subStack, vanillaBlock))));
-			subBlocks.clear();
-			securityCraftBlock.getSubBlocks(CreativeTabs.SEARCH, subBlocks);
-			subBlocks.forEach(subStack -> {
-				try {
-					stvRecipes.add(new ReinforcerRecipe(reinforcedBlock.convertToVanillaStack(subStack), subStack));
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-				}
+			subBlocks.forEach(vanillaStack -> {
+				ItemStack reinforcedStack = reinforcedBlock.convertToReinforcedStack(vanillaStack, vanillaBlock);
+
+				vtsRecipes.add(new ReinforcerRecipe(vanillaStack, reinforcedStack));
+				stvRecipes.add(new ReinforcerRecipe(reinforcedStack, vanillaStack));
 			});
 		});
 		registry.addRecipes(vtsRecipes, VTS_ID);
