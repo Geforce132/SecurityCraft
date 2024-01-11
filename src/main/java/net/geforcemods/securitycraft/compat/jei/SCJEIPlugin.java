@@ -18,7 +18,9 @@ import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
 import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 @JEIPlugin
 public class SCJEIPlugin implements IModPlugin {
@@ -42,21 +44,20 @@ public class SCJEIPlugin implements IModPlugin {
 		registry.addIngredientInfo(new ItemStack(SCContent.keypad), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypadChest), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad_chest");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypadFurnace), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad_furnace");
-		IReinforcedBlock.BLOCKS.forEach(rb -> {
-			IReinforcedBlock reinforcedBlock = (IReinforcedBlock) rb;
+		IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.forEach((vanillaBlock, securityCraftBlock) -> {
+			IReinforcedBlock reinforcedBlock = (IReinforcedBlock) securityCraftBlock;
+			NonNullList<ItemStack> subBlocks = NonNullList.create();
 
-			reinforcedBlock.getVanillaBlocks().forEach(vanillaBlock -> {
-				if (reinforcedBlock.getVanillaBlocks().size() == reinforcedBlock.getAmount()) {
-					int meta = reinforcedBlock.getVanillaBlocks().indexOf(vanillaBlock);
-
-					vtsRecipes.add(new ReinforcerRecipe(new ItemStack(vanillaBlock, 1, 0), new ItemStack(rb, 1, meta)));
-					stvRecipes.add(new ReinforcerRecipe(new ItemStack(rb, 1, meta), new ItemStack(vanillaBlock, 1, 0)));
+			vanillaBlock.getSubBlocks(CreativeTabs.SEARCH, subBlocks);
+			subBlocks.forEach(subStack -> vtsRecipes.add(new ReinforcerRecipe(subStack, reinforcedBlock.convertToReinforcedStack(subStack, vanillaBlock))));
+			subBlocks.clear();
+			securityCraftBlock.getSubBlocks(CreativeTabs.SEARCH, subBlocks);
+			subBlocks.forEach(subStack -> {
+				try {
+					stvRecipes.add(new ReinforcerRecipe(reinforcedBlock.convertToVanillaStack(subStack), subStack));
 				}
-				else {
-					for (int i = 0; i < reinforcedBlock.getAmount(); i++) {
-						vtsRecipes.add(new ReinforcerRecipe(new ItemStack(vanillaBlock, 1, i), new ItemStack(rb, 1, i)));
-						stvRecipes.add(new ReinforcerRecipe(new ItemStack(rb, 1, i), new ItemStack(vanillaBlock, 1, i)));
-					}
+				catch (Exception e) {
+					e.printStackTrace();
 				}
 			});
 		});
