@@ -17,8 +17,13 @@ public interface IReinforcedBlock {
 		return ((Block) this).getStateFromMeta(state.getBlock().getMetaFromState(state));
 	}
 
-	public default IBlockState convertToVanillaState(IBlockState state) {
-		return ((Block) this).getStateFromMeta(state.getBlock().getMetaFromState(state));
+	public default IBlockState convertToVanillaState(IBlockState state) throws Exception {
+		List<Block> vanillaBlocks = getVanillaBlocks();
+
+		if (vanillaBlocks.size() > 1)
+			throw new Exception(state.getBlock().getRegistryName() + " has more than 1 vanilla counterpart, but does not override convertToVanillaState! Cannot determine vanilla state.");
+
+		return vanillaBlocks.get(0).getStateFromMeta(state.getBlock().getMetaFromState(state));
 	}
 
 	public default ItemStack convertToReinforcedStack(ItemStack stackToConvert, Block blockToConvert) {
@@ -29,7 +34,7 @@ public interface IReinforcedBlock {
 		List<Block> vanillaBlocks = getVanillaBlocks();
 
 		if (vanillaBlocks.size() > 1)
-			throw new Exception(stackToConvert.getItem().getRegistryName() + " has more than 1 vanilla counterparts, but does not override convertToVanillaStack! Cannot determine vanilla stack.");
+			throw new Exception(stackToConvert.getItem().getRegistryName() + " has more than 1 vanilla counterpart, but does not override convertToVanillaStack! Cannot determine vanilla stack.");
 
 		return new ItemStack(vanillaBlocks.get(0), 1, stackToConvert.getMetadata());
 	}

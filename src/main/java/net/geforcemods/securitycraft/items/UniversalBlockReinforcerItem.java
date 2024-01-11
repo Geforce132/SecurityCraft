@@ -57,8 +57,14 @@ public class UniversalBlockReinforcerItem extends Item {
 				if (convertedBlock instanceof IReinforcedBlock)
 					convertedState = ((IReinforcedBlock) convertedBlock).convertToReinforcedState(state);
 			}
-			else if (blockToConvert instanceof IReinforcedBlock)
-				convertedState = ((IReinforcedBlock) blockToConvert).convertToVanillaState(state);
+			else if (blockToConvert instanceof IReinforcedBlock) {
+				try {
+					convertedState = ((IReinforcedBlock) blockToConvert).convertToVanillaState(state);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 
 			if (convertedState != null) {
 				TileEntity te = world.getTileEntity(pos);
