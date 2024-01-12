@@ -1,13 +1,10 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import java.util.Arrays;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -28,7 +25,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class HorizontalReinforcedIronBarsBlock extends OwnableBlock implements IReinforcedBlock {
+public class HorizontalReinforcedIronBarsBlock extends OwnableBlock {
 	protected static final AxisAlignedBB SHAPE = new AxisAlignedBB(-8.0D / 16D, 14.0D / 16D, -8.0D / 16D, 24.0D / 16D, 16.0D / 16D, 24.0D / 16D);
 
 	public HorizontalReinforcedIronBarsBlock() {
@@ -81,31 +78,6 @@ public class HorizontalReinforcedIronBarsBlock extends OwnableBlock implements I
 	@Override
 	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		return NonNullList.from(ItemStack.EMPTY);
-	}
-
-	@Override
-	public List<Block> getVanillaBlocks() {
-		return Arrays.asList();
-	}
-
-	@Override
-	public IBlockState convertToReinforcedState(IBlockState state) {
-		return state;
-	}
-
-	@Override
-	public IBlockState convertToVanillaState(IBlockState state) {
-		return state;
-	}
-
-	@Override
-	public ItemStack convertToReinforcedStack(ItemStack stackToConvert, Block blockToConvert) {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public ItemStack convertToVanillaStack(ItemStack stackToConvert) {
-		return ItemStack.EMPTY;
 	}
 
 	@Override
