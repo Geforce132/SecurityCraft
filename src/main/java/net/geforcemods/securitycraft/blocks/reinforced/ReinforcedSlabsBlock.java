@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
+import net.minecraft.block.BlockStoneSlab;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -224,5 +225,133 @@ public class ReinforcedSlabsBlock extends BlockSlab implements ITileEntityProvid
 	@Override
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(isDouble ? Blocks.DOUBLE_STONE_SLAB : Blocks.STONE_SLAB);
+	}
+
+	@Override
+	public IBlockState convertToReinforcedState(IBlockState state) {
+		EnumType type = null;
+
+		switch (state.getValue(BlockStoneSlab.VARIANT)) {
+			case STONE:
+				type = EnumType.STONE;
+				break;
+			case SAND:
+				type = EnumType.SANDSTONE;
+				break;
+			case WOOD:
+				break;
+			case COBBLESTONE:
+				type = EnumType.COBBLESTONE;
+				break;
+			case BRICK:
+				type = EnumType.BRICK;
+				break;
+			case SMOOTHBRICK:
+				type = EnumType.STONEBRICK;
+				break;
+			case NETHERBRICK:
+				type = EnumType.NETHERBRICK;
+				break;
+			case QUARTZ:
+				type = EnumType.QUARTZ;
+				break;
+		}
+
+		if (type != null) {
+			IBlockState convertedState = getDefaultState().withProperty(VARIANT, type);
+
+			if (!isDouble)
+				convertedState = convertedState.withProperty(HALF, state.getValue(HALF));
+
+			return convertedState;
+		}
+		else
+			return state;
+	}
+
+	@Override
+	public IBlockState convertToVanillaState(IBlockState state) throws Exception {
+		BlockStoneSlab.EnumType type = null;
+
+		switch (state.getValue(VARIANT)) {
+			case STONE:
+				type = BlockStoneSlab.EnumType.STONE;
+				break;
+			case COBBLESTONE:
+				type = BlockStoneSlab.EnumType.COBBLESTONE;
+				break;
+			case SANDSTONE:
+				type = BlockStoneSlab.EnumType.SAND;
+				break;
+			case STONEBRICK:
+				type = BlockStoneSlab.EnumType.SMOOTHBRICK;
+				break;
+			case BRICK:
+				type = BlockStoneSlab.EnumType.BRICK;
+				break;
+			case NETHERBRICK:
+				type = BlockStoneSlab.EnumType.NETHERBRICK;
+				break;
+			case QUARTZ:
+				type = BlockStoneSlab.EnumType.QUARTZ;
+				break;
+		}
+
+		if (type != null) {
+			if (isDouble)
+				return Blocks.DOUBLE_STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, type).withProperty(BlockStoneSlab.SEAMLESS, false);
+			else
+				return Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, type).withProperty(HALF, state.getValue(HALF));
+		}
+		else
+			return state;
+	}
+
+	@Override
+	public ItemStack convertToReinforcedStack(ItemStack stackToConvert, Block blockToConvert) {
+		if (!isDouble) {
+			switch (stackToConvert.getMetadata()) {
+				case 0:
+					return new ItemStack(this, 1, 0);
+				case 1:
+					return new ItemStack(this, 1, 2);
+				case 3:
+					return new ItemStack(this, 1, 1);
+				case 4:
+					return new ItemStack(this, 1, 4);
+				case 5:
+					return new ItemStack(this, 1, 3);
+				case 6:
+					return new ItemStack(this, 1, 5);
+				case 7:
+					return new ItemStack(this, 1, 6);
+				default:
+					return ItemStack.EMPTY;
+			}
+		}
+		else
+			return ItemStack.EMPTY;
+	}
+
+	@Override
+	public ItemStack convertToVanillaStack(ItemStack stackToConvert) throws Exception {
+		switch (stackToConvert.getMetadata()) {
+			case 0:
+				return new ItemStack(this, 1, 0);
+			case 1:
+				return new ItemStack(this, 1, 3);
+			case 2:
+				return new ItemStack(this, 1, 1);
+			case 3:
+				return new ItemStack(this, 1, 5);
+			case 4:
+				return new ItemStack(this, 1, 4);
+			case 5:
+				return new ItemStack(this, 1, 6);
+			case 6:
+				return new ItemStack(this, 1, 7);
+			default:
+				return ItemStack.EMPTY;
+		}
 	}
 }

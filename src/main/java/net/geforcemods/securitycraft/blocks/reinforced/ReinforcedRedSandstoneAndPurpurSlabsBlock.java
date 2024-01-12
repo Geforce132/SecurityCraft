@@ -150,7 +150,10 @@ public class ReinforcedRedSandstoneAndPurpurSlabsBlock extends BlockSlab impleme
 
 	@Override
 	public List<Block> getVanillaBlocks() {
-		return Arrays.asList(Blocks.STONE_SLAB2, Blocks.PURPUR_SLAB);
+		if (isDouble)
+			return Arrays.asList(Blocks.DOUBLE_STONE_SLAB2, Blocks.PURPUR_DOUBLE_SLAB);
+		else
+			return Arrays.asList(Blocks.STONE_SLAB2, Blocks.PURPUR_SLAB);
 	}
 
 	@Override
@@ -171,7 +174,7 @@ public class ReinforcedRedSandstoneAndPurpurSlabsBlock extends BlockSlab impleme
 
 	@Override
 	public IBlockState convertToVanillaState(IBlockState state) {
-		if (this == SCContent.reinforcedStoneSlabs2) {
+		if (!isDouble) {
 			switch (state.getValue(VARIANT)) {
 				case RED_SANDSTONE:
 					return Blocks.STONE_SLAB2.getDefaultState().withProperty(HALF, state.getValue(HALF));
@@ -181,7 +184,7 @@ public class ReinforcedRedSandstoneAndPurpurSlabsBlock extends BlockSlab impleme
 					return state;
 			}
 		}
-		else if (this == SCContent.reinforcedDoubleStoneSlabs2) {
+		else {
 			switch (state.getValue(VARIANT)) {
 				case RED_SANDSTONE:
 					return Blocks.DOUBLE_STONE_SLAB2.getDefaultState();
@@ -191,8 +194,6 @@ public class ReinforcedRedSandstoneAndPurpurSlabsBlock extends BlockSlab impleme
 					return state;
 			}
 		}
-		else
-			return state;
 	}
 
 	@Override
