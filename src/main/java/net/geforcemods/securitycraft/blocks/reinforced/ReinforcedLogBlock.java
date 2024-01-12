@@ -19,8 +19,8 @@ import net.minecraft.world.World;
 public abstract class ReinforcedLogBlock extends BaseReinforcedBlock implements IOverlayDisplay {
 	public static final PropertyEnum<EnumAxis> LOG_AXIS = PropertyEnum.create("axis", EnumAxis.class);
 
-	protected ReinforcedLogBlock(int a, Block... vB) {
-		super(Material.WOOD, a, SoundType.WOOD, vB);
+	protected ReinforcedLogBlock(Block... vB) {
+		super(Material.WOOD, SoundType.WOOD, vB);
 	}
 
 	@Override

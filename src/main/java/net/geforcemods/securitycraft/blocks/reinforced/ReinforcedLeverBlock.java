@@ -102,11 +102,6 @@ public class ReinforcedLeverBlock extends BlockLever implements IReinforcedBlock
 	}
 
 	@Override
-	public int getAmount() {
-		return 1;
-	}
-
-	@Override
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.LEVER);
 	}

@@ -58,9 +58,4 @@ public class ReinforcedEndRodBlock extends BlockEndRod implements IReinforcedBlo
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.END_ROD);
 	}
-
-	@Override
-	public int getAmount() {
-		return 1;
-	}
 }

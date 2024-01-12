@@ -1,11 +1,15 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -27,7 +31,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedCrystalQuartzSlabBlock extends BlockSlab implements ITileEntityProvider, IOverlayDisplay {
+public class ReinforcedCrystalQuartzSlabBlock extends BlockSlab implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock {
 	private final boolean isDouble;
 
 	public ReinforcedCrystalQuartzSlabBlock(boolean isDouble, Material blockMaterial) {
@@ -126,5 +130,10 @@ public class ReinforcedCrystalQuartzSlabBlock extends BlockSlab implements ITile
 	@Override
 	public String getTranslationKey(int meta) {
 		return super.getTranslationKey();
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks() {
+		return Arrays.asList(isDouble ? SCContent.doubleCrystalQuartzSlab : SCContent.crystalQuartzSlab);
 	}
 }

@@ -78,9 +78,4 @@ public class ReinforcedPlanksBlock extends BlockPlanks implements ITileEntityPro
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.PLANKS);
 	}
-
-	@Override
-	public int getAmount() {
-		return 6;
-	}
 }

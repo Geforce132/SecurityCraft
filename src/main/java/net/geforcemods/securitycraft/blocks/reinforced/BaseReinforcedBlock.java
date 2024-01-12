@@ -24,27 +24,24 @@ import net.minecraftforge.common.IPlantable;
 
 public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock {
 	private List<Block> vanillaBlocks;
-	private int amount;
 
-	public BaseReinforcedBlock(Material mat, int a, Block... vB) {
+	public BaseReinforcedBlock(Material mat, Block... vB) {
 		super(mat);
-
 		vanillaBlocks = Arrays.asList(vB);
-		amount = a;
 	}
 
-	public BaseReinforcedBlock(Material mat, int a, MapColor color, Block... vB) {
-		this(mat, a, vB);
+	public BaseReinforcedBlock(Material mat, MapColor color, Block... vB) {
+		this(mat, vB);
 		blockMapColor = color;
 	}
 
-	public BaseReinforcedBlock(Material mat, int a, SoundType sound, Block... vB) {
-		this(mat, a, vB);
+	public BaseReinforcedBlock(Material mat, SoundType sound, Block... vB) {
+		this(mat, vB);
 		setSoundType(sound);
 	}
 
-	public BaseReinforcedBlock(Material mat, int a, SoundType sound, MapColor color, Block... vB) {
-		this(mat, a, color, vB);
+	public BaseReinforcedBlock(Material mat, SoundType sound, MapColor color, Block... vB) {
+		this(mat, color, vB);
 		setSoundType(sound);
 	}
 
@@ -96,10 +93,5 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	@Override
 	public List<Block> getVanillaBlocks() {
 		return vanillaBlocks;
-	}
-
-	@Override
-	public int getAmount() {
-		return amount;
 	}
 }

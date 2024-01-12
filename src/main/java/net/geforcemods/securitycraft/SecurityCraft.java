@@ -82,9 +82,7 @@ public class SecurityCraft {
 	public void preInit(FMLPreInitializationEvent event) {
 		SecurityCraft.network = NetworkRegistry.INSTANCE.newSimpleChannel(SecurityCraft.MODID);
 		RegistrationHandler.registerPackets(SecurityCraft.network);
-		SetupHandler.setupBlocks();
-		SetupHandler.setupMines();
-		SetupHandler.setupItems();
+		SetupHandler.init();
 		proxy.registerEntityRenderingHandlers();
 
 		if (Loader.isModLoaded("icbmclassic"))
@@ -156,8 +154,14 @@ public class SecurityCraft {
 
 		for (Field field : SCContent.class.getFields()) {
 			try {
-				if (field.isAnnotationPresent(Reinforced.class))
-					IReinforcedBlock.BLOCKS.add((Block) field.get(null));
+				if (field.isAnnotationPresent(Reinforced.class)) {
+					Block block = (Block) field.get(null);
+					IReinforcedBlock rb = (IReinforcedBlock) block;
+
+					for (Block vanillaBlock : rb.getVanillaBlocks()) {
+						IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.put(vanillaBlock, block);
+					}
+				}
 			}
 			catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();

@@ -7,13 +7,13 @@ import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
@@ -212,16 +212,19 @@ public class BlockReinforcerMenu extends Container {
 			if (!itemInventory.getStackInSlot((slotNumber + 1) % 2).isEmpty())
 				return false;
 
-			return IReinforcedBlock.BLOCKS.stream().anyMatch(reinforcedBlock -> {
-				if (reinforce)
-					return ((IReinforcedBlock) reinforcedBlock).getVanillaBlocks().stream().anyMatch(vanillaBlock -> stack.getItem().equals(Item.getItemFromBlock(vanillaBlock)));
-				else {
-					NonNullList<ItemStack> subBlocks = NonNullList.create();
+			Item item = stack.getItem();
+			Block block = Block.getBlockFromItem(item);
 
-					reinforcedBlock.getSubBlocks(SecurityCraft.DECORATION_TAB, subBlocks);
-					return subBlocks.stream().anyMatch(subBlock -> stack.getMetadata() == subBlock.getMetadata() && stack.getItem() == subBlock.getItem());
-				}
-			});
+			if (reinforce)
+				return IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.containsKey(block) || item == Items.CAULDRON;
+			else if (block instanceof IReinforcedBlock) {
+				NonNullList<ItemStack> subBlocks = NonNullList.create();
+
+				block.getSubBlocks(SecurityCraft.DECORATION_TAB, subBlocks);
+				return subBlocks.stream().anyMatch(subBlock -> stack.getMetadata() == subBlock.getMetadata() && stack.getItem() == subBlock.getItem());
+			}
+
+			return false;
 		}
 
 		@Override
@@ -229,36 +232,30 @@ public class BlockReinforcerMenu extends Container {
 			ItemStack stack = itemInventory.getStackInSlot(slotNumber % 2);
 
 			if (!stack.isEmpty()) {
-				Item item = stack.getItem();
+				Item itemToConvert = stack.getItem();
+				Block blockToConvert = Block.getBlockFromItem(itemToConvert);
 				ItemStack newStack = ItemStack.EMPTY;
-				int customMeta = -1;
 
-				for (Block rb : IReinforcedBlock.BLOCKS) {
-					IReinforcedBlock block = (IReinforcedBlock) rb;
+				if (reinforce) {
+					Block convertedBlock = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(blockToConvert);
 
-					if (reinforce && block.getVanillaBlocks().contains(Block.getBlockFromItem(item))) {
-						newStack = new ItemStack(rb);
-
-						if (block.getVanillaBlocks().size() == block.getAmount())
-							customMeta = block.getVanillaBlocks().indexOf(Block.getBlockFromItem(item));
+					if (convertedBlock instanceof IReinforcedBlock)
+						newStack = ((IReinforcedBlock) convertedBlock).convertToReinforcedStack(stack, blockToConvert);
+					else if (itemToConvert == Items.CAULDRON)
+						newStack = new ItemStack(SCContent.reinforcedCauldron);
+				}
+				else if (blockToConvert instanceof IReinforcedBlock) {
+					try {
+						newStack = ((IReinforcedBlock) blockToConvert).convertToVanillaStack(stack);
 					}
-					else if (!reinforce && rb == ((ItemBlock) stack.getItem()).getBlock()) {
-						if (block.getVanillaBlocks().size() == block.getAmount()) {
-							newStack = new ItemStack(block.getVanillaBlocks().get(stack.getMetadata()));
-							customMeta = -2;
-						}
-						else
-							newStack = new ItemStack(block.getVanillaBlocks().get(0), 1, stack.getMetadata());
+					catch (Exception e) {
+						e.printStackTrace();
+						return;
 					}
 				}
 
 				if (!newStack.isEmpty()) {
 					boolean isLvl3 = blockReinforcer.getItem() == SCContent.universalBlockReinforcerLvL3;
-
-					if (customMeta != -1)
-						newStack.setItemDamage(customMeta);
-					else if (customMeta != -2)
-						newStack.setItemDamage(stack.getItemDamage());
 
 					newStack.setCount(isLvl3 ? stack.getCount() : Math.min(stack.getCount(), blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() + 1));
 					output = newStack;

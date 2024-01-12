@@ -240,15 +240,15 @@ public class ClientProxy implements IProxy {
 	}
 
 	private static void initTint() {
-		for (Field field : SCContent.class.getFields()) {
-			if (field.isAnnotationPresent(Tinted.class)) {
-				int tint = field.getAnnotation(Tinted.class).customTint();
-				boolean hasReinforcedTint = field.getAnnotation(Tinted.class).hasReinforcedTint();
+		if (toTint != null) { //apparently some mods post the color handler events again, after forge already posted them.
+			for (Field field : SCContent.class.getFields()) {
+				if (field.isAnnotationPresent(Tinted.class)) {
+					int tint = field.getAnnotation(Tinted.class).customTint();
+					boolean hasReinforcedTint = field.getAnnotation(Tinted.class).hasReinforcedTint();
 
-				try {
-					Block block = (Block) field.get(null);
+					try {
+						Block block = (Block) field.get(null);
 
-					if (toTint != null) { //apparently some mods post the color handler events again, after forge already posted them.
 						//@formatter:off
 						//registering reinforced blocks color overlay for world
 						toTint.put(block, Pair.of(
@@ -268,9 +268,9 @@ public class ClientProxy implements IProxy {
 						));
 						//@formatter:on
 					}
-				}
-				catch (IllegalArgumentException | IllegalAccessException e) {
-					e.printStackTrace();
+					catch (IllegalArgumentException | IllegalAccessException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}

@@ -77,9 +77,4 @@ public class ReinforcedFenceGateBlock extends OwnableFenceGateBlock implements I
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(vanillaBlock);
 	}
-
-	@Override
-	public int getAmount() {
-		return 1;
-	}
 }

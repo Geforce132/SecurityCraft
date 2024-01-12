@@ -84,9 +84,4 @@ public class ReinforcedIronBarsBlock extends BlockPane implements ITileEntityPro
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.IRON_BARS);
 	}
-
-	@Override
-	public int getAmount() {
-		return 1;
-	}
 }

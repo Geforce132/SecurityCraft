@@ -22,7 +22,7 @@ public class ReinforcedGlazedTerracottaBlock extends BaseReinforcedBlock {
 	private final EnumDyeColor color;
 
 	public ReinforcedGlazedTerracottaBlock(EnumDyeColor color, Block vB) {
-		super(Material.ROCK, 4, vB);
+		super(Material.ROCK, vB);
 		this.color = color;
 	}
 

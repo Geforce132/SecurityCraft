@@ -33,9 +33,4 @@ public class ReinforcedIronTrapDoorBlock extends BaseIronTrapDoorBlock implement
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.IRON_TRAPDOOR);
 	}
-
-	@Override
-	public int getAmount() {
-		return 1;
-	}
 }

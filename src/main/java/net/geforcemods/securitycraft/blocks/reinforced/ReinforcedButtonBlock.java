@@ -122,11 +122,6 @@ public class ReinforcedButtonBlock extends BlockButton implements IReinforcedBlo
 	}
 
 	@Override
-	public int getAmount() {
-		return 1;
-	}
-
-	@Override
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(isWooden ? Blocks.WOODEN_BUTTON : Blocks.STONE_BUTTON);
 	}

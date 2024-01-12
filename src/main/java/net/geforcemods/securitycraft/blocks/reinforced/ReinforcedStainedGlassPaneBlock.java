@@ -76,9 +76,4 @@ public class ReinforcedStainedGlassPaneBlock extends BlockStainedGlassPane imple
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.STAINED_GLASS_PANE);
 	}
-
-	@Override
-	public int getAmount() {
-		return 16;
-	}
 }

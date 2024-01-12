@@ -21,7 +21,7 @@ public class ReinforcedGrassBlock extends BaseReinforcedBlock implements IGrowab
 	public static final PropertyBool SNOWY = PropertyBool.create("snowy");
 
 	public ReinforcedGrassBlock() {
-		super(Material.GRASS, 1, Blocks.GRASS);
+		super(Material.GRASS, Blocks.GRASS);
 
 		setDefaultState(blockState.getBaseState().withProperty(SNOWY, false));
 		setTickRandomly(true);

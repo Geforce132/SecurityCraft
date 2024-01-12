@@ -55,9 +55,4 @@ public class ReinforcedSandBlock extends ReinforcedFallingBlock {
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, VARIANT);
 	}
-
-	@Override
-	public int getAmount() {
-		return 2;
-	}
 }

@@ -20,9 +20,4 @@ public class ReinforcedStairsBlock extends OwnableStairsBlock implements IReinfo
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(vanillaBlock);
 	}
-
-	@Override
-	public int getAmount() {
-		return 1;
-	}
 }

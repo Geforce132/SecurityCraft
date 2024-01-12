@@ -11,6 +11,7 @@
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate
 - Change: Players now take 5 instead of 0.5 hearts of damage when suffocating inside reinforced blocks
+- API: Refactored IReinforcedBlock to address several issues with block conversion
 - Fix: The Floor Trap has incorrect sound
 - Fix: Duplication exploit involving keycards
 - Fix: The name of certain SecurityCraft blocks is displayed within brackets by WTHIT and similar mods
@@ -37,6 +38,11 @@
 - Fix: The Reinforced Ladder incorrectly has a manual page
 - Fix: Ghost items when using JEI's cheat mode in survival after opening certain GUIs
 - Fix: Mobs can be converted multiple times by an Electrified Iron Fence (Gate)
+- Fix: Un-/Reinforcing blocks in the world does not retain the block's state (e.g. stair orientation)
+- Fix: Some slabs cannot be reinforced even though they have a reinforced variant
+- Fix: Trying to unreinforce someone else's block can lead to item loss
+- Fix: The Reinforced Cauldron can't be un-/reinforced in the Universal Block Reinforcer's GUI
+- Fix: The un-/reinforcing recipes for the Reinforced Cauldron don't show up correctly in JEI
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 

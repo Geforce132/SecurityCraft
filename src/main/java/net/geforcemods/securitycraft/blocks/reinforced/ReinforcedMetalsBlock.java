@@ -102,8 +102,59 @@ public class ReinforcedMetalsBlock extends OwnableBlock implements IOverlayDispl
 	}
 
 	@Override
-	public int getAmount() {
-		return 5;
+	public IBlockState convertToReinforcedState(IBlockState state) {
+		Block block = state.getBlock();
+
+		if (block == Blocks.GOLD_BLOCK)
+			return getDefaultState().withProperty(VARIANT, EnumType.GOLD);
+		else if (block == Blocks.IRON_BLOCK)
+			return getDefaultState().withProperty(VARIANT, EnumType.IRON);
+		else if (block == Blocks.DIAMOND_BLOCK)
+			return getDefaultState().withProperty(VARIANT, EnumType.DIAMOND);
+		else if (block == Blocks.EMERALD_BLOCK)
+			return getDefaultState().withProperty(VARIANT, EnumType.EMERALD);
+		else if (block == Blocks.REDSTONE_BLOCK)
+			return getDefaultState().withProperty(VARIANT, EnumType.REDSTONE);
+		else
+			return state;
+	}
+
+	@Override
+	public IBlockState convertToVanillaState(IBlockState state) {
+		switch (state.getValue(VARIANT)) {
+			case GOLD:
+				return Blocks.GOLD_BLOCK.getDefaultState();
+			case IRON:
+				return Blocks.IRON_BLOCK.getDefaultState();
+			case DIAMOND:
+				return Blocks.DIAMOND_BLOCK.getDefaultState();
+			case EMERALD:
+				return Blocks.EMERALD_BLOCK.getDefaultState();
+			case REDSTONE:
+				return Blocks.REDSTONE_BLOCK.getDefaultState();
+			default:
+				return state;
+		}
+	}
+
+	@Override
+	public ItemStack convertToReinforcedStack(ItemStack stackToConvert, Block blockToConvert) {
+		int index = getVanillaBlocks().indexOf(blockToConvert);
+
+		if (index >= 0)
+			return new ItemStack(this, 1, index);
+		else
+			return ItemStack.EMPTY;
+	}
+
+	@Override
+	public ItemStack convertToVanillaStack(ItemStack stackToConvert) {
+		int meta = stackToConvert.getMetadata();
+
+		if (meta >= 0 && meta <= 4)
+			return new ItemStack(getVanillaBlocks().get(meta));
+		else
+			return ItemStack.EMPTY;
 	}
 
 	public enum EnumType implements IStringSerializable {

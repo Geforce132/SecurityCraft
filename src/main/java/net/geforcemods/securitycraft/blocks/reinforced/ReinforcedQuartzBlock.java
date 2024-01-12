@@ -73,9 +73,4 @@ public class ReinforcedQuartzBlock extends BlockQuartz implements ITileEntityPro
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.QUARTZ_BLOCK);
 	}
-
-	@Override
-	public int getAmount() {
-		return 3;
-	}
 }

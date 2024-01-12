@@ -17,7 +17,7 @@ public class ReinforcedGrassPathBlock extends BaseReinforcedBlock {
 	protected static final AxisAlignedBB GRASS_PATH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
 
 	public ReinforcedGrassPathBlock() {
-		super(Material.GROUND, 1, SoundType.PLANT, Blocks.GRASS_PATH);
+		super(Material.GROUND, SoundType.PLANT, Blocks.GRASS_PATH);
 
 		setLightOpacity(255);
 	}

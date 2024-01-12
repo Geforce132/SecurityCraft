@@ -71,9 +71,4 @@ public class ReinforcedCarpetBlock extends BlockCarpet implements ITileEntityPro
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.CARPET);
 	}
-
-	@Override
-	public int getAmount() {
-		return 16;
-	}
 }

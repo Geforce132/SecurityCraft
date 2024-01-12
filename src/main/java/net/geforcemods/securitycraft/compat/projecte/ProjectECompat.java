@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.compat.projecte;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableMap;
 
 import moze_intel.projecte.api.ProjectEAPI;
@@ -9,8 +7,9 @@ import moze_intel.projecte.api.proxy.IConversionProxy;
 import moze_intel.projecte.api.proxy.IEMCProxy;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
-import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 public class ProjectECompat {
 	private ProjectECompat() {}
@@ -20,29 +19,19 @@ public class ProjectECompat {
 		IEMCProxy passcodeProtectedEMCProxy = ProjectEAPI.getEMCProxy();
 		long keyPanelEMC = 520;
 
-		IReinforcedBlock.BLOCKS.forEach(block -> {
-			IReinforcedBlock reinforcedBlock = (IReinforcedBlock) block;
-			List<Block> vanillaBlocks = reinforcedBlock.getVanillaBlocks();
+		IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.forEach((vanillaBlock, securityCraftBlock) -> {
+			IReinforcedBlock reinforcedBlock = (IReinforcedBlock) securityCraftBlock;
+			NonNullList<ItemStack> subBlocks = NonNullList.create();
 
-			for (Block vanillaBlock : vanillaBlocks) {
-				if (vanillaBlocks.size() == reinforcedBlock.getAmount()) {
-					int meta = vanillaBlocks.indexOf(vanillaBlock);
-					ItemStack vanillaStack = new ItemStack(vanillaBlock, 1, 0);
-					ItemStack reinforcedStack = new ItemStack(block, 1, meta);
+			vanillaBlock.getSubBlocks(CreativeTabs.SEARCH, subBlocks);
+			subBlocks.forEach(vanillaStack -> {
+				if (!vanillaStack.isEmpty()) {
+					ItemStack reinforcedStack = reinforcedBlock.convertToReinforcedStack(vanillaStack, vanillaBlock);
 
-					if (!vanillaStack.isEmpty() && !reinforcedStack.isEmpty())
+					if (!reinforcedStack.isEmpty())
 						reinforcedBlocksConversionProxy.addConversion(1, reinforcedStack, ImmutableMap.<Object, Integer>builder().put(vanillaStack, 1).build());
 				}
-				else {
-					for (int meta = 0; meta < reinforcedBlock.getAmount(); meta++) {
-						ItemStack vanillaStack = new ItemStack(vanillaBlock, 1, meta);
-						ItemStack reinforcedStack = new ItemStack(block, 1, meta);
-
-						if (!vanillaStack.isEmpty() && !reinforcedStack.isEmpty())
-							reinforcedBlocksConversionProxy.addConversion(1, reinforcedStack, ImmutableMap.<Object, Integer>builder().put(vanillaStack, 1).build());
-					}
-				}
-			}
+			});
 		});
 		passcodeProtectedEMCProxy.registerCustomEMC(new ItemStack(SCContent.keypad), 1856 + keyPanelEMC);
 		passcodeProtectedEMCProxy.registerCustomEMC(new ItemStack(SCContent.keypadChest), 64 + keyPanelEMC);

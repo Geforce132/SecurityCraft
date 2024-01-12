@@ -150,12 +150,70 @@ public class ReinforcedRedSandstoneAndPurpurSlabsBlock extends BlockSlab impleme
 
 	@Override
 	public List<Block> getVanillaBlocks() {
-		return Arrays.asList(Blocks.STONE_SLAB2, Blocks.PURPUR_SLAB);
+		if (isDouble)
+			return Arrays.asList(Blocks.DOUBLE_STONE_SLAB2, Blocks.PURPUR_DOUBLE_SLAB);
+		else
+			return Arrays.asList(Blocks.STONE_SLAB2, Blocks.PURPUR_SLAB);
 	}
 
 	@Override
-	public int getAmount() {
-		return 2;
+	public IBlockState convertToReinforcedState(IBlockState state) {
+		Block block = state.getBlock();
+
+		if (block == Blocks.STONE_SLAB2)
+			return getDefaultState().withProperty(VARIANT, EnumType.RED_SANDSTONE).withProperty(HALF, state.getValue(HALF));
+		else if (block == Blocks.DOUBLE_STONE_SLAB2)
+			return getDefaultState().withProperty(VARIANT, EnumType.RED_SANDSTONE).withProperty(HALF, EnumBlockHalf.TOP);
+		else if (block == Blocks.PURPUR_SLAB)
+			return getDefaultState().withProperty(VARIANT, EnumType.PURPUR).withProperty(HALF, state.getValue(HALF));
+		else if (block == Blocks.PURPUR_DOUBLE_SLAB)
+			return getDefaultState().withProperty(VARIANT, EnumType.PURPUR).withProperty(HALF, EnumBlockHalf.TOP);
+		else
+			return state;
+	}
+
+	@Override
+	public IBlockState convertToVanillaState(IBlockState state) {
+		if (!isDouble) {
+			switch (state.getValue(VARIANT)) {
+				case RED_SANDSTONE:
+					return Blocks.STONE_SLAB2.getDefaultState().withProperty(HALF, state.getValue(HALF));
+				case PURPUR:
+					return Blocks.PURPUR_SLAB.getDefaultState().withProperty(HALF, state.getValue(HALF));
+				default:
+					return state;
+			}
+		}
+		else {
+			switch (state.getValue(VARIANT)) {
+				case RED_SANDSTONE:
+					return Blocks.DOUBLE_STONE_SLAB2.getDefaultState();
+				case PURPUR:
+					return Blocks.PURPUR_DOUBLE_SLAB.getDefaultState();
+				default:
+					return state;
+			}
+		}
+	}
+
+	@Override
+	public ItemStack convertToReinforcedStack(ItemStack stackToConvert, Block blockToConvert) {
+		int index = getVanillaBlocks().indexOf(blockToConvert);
+
+		if (index >= 0)
+			return new ItemStack(this, 1, index);
+		else
+			return ItemStack.EMPTY;
+	}
+
+	@Override
+	public ItemStack convertToVanillaStack(ItemStack stackToConvert) {
+		int meta = stackToConvert.getMetadata();
+
+		if (meta >= 0 && meta <= 1)
+			return new ItemStack(getVanillaBlocks().get(meta));
+		else
+			return ItemStack.EMPTY;
 	}
 
 	public enum EnumType implements IStringSerializable {

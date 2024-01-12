@@ -117,17 +117,22 @@ public class SCContent {
 	@Reinforced
 	@Tinted
 	public static Block reinforcedCobweb;
+	@Reinforced
 	@Tinted(customTint = 0x15b3a2)
 	public static Block reinforcedCrystalQuartzSlab;
 	@Reinforced
 	@Tinted
 	public static Block reinforcedDispenser;
+	@Reinforced
 	@Tinted(customTint = 0x15b3a2)
 	public static Block reinforcedDoubleCrystalQuartzSlab;
+	@Reinforced
 	@Tinted
 	public static Block reinforcedDoubleStoneSlabs;
+	@Reinforced
 	@Tinted
 	public static Block reinforcedDoubleStoneSlabs2;
+	@Reinforced
 	@Tinted
 	public static Block reinforcedDoubleWoodSlabs;
 	@Reinforced
@@ -404,6 +409,7 @@ public class SCContent {
 	@Reinforced
 	@Tinted
 	public static Block reinforcedStonePressurePlate;
+	@Reinforced
 	@Tinted
 	public static Block reinforcedStoneSlabs;
 	@Reinforced

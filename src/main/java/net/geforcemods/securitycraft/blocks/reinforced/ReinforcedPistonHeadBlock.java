@@ -96,9 +96,4 @@ public class ReinforcedPistonHeadBlock extends BlockPistonExtension implements I
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.PISTON_HEAD);
 	}
-
-	@Override
-	public int getAmount() {
-		return 1;
-	}
 }

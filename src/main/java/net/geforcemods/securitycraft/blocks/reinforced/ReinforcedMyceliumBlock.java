@@ -69,9 +69,4 @@ public class ReinforcedMyceliumBlock extends BlockMycelium implements IReinforce
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.MYCELIUM);
 	}
-
-	@Override
-	public int getAmount() {
-		return 1;
-	}
 }

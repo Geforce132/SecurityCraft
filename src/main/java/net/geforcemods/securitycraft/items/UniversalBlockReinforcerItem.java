@@ -49,69 +49,53 @@ public class UniversalBlockReinforcerItem extends Item {
 			boolean isReinforcing = isReinforcing(stack);
 			IBlockState state = world.getBlockState(pos);
 			Block blockToConvert = state.getBlock();
+			IBlockState convertedState = null;
 
-			for (Block securityCraftBlock : IReinforcedBlock.BLOCKS) {
-				IReinforcedBlock reinforcedBlock = (IReinforcedBlock) securityCraftBlock;
+			if (isReinforcing) {
+				Block convertedBlock = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(blockToConvert);
 
-				if (isReinforcing && reinforcedBlock.getVanillaBlocks().contains(blockToConvert) || !isReinforcing && securityCraftBlock == blockToConvert) {
-					IBlockState convertedState = null;
-					TileEntity te = world.getTileEntity(pos);
-					NBTTagCompound tag = null;
-
-					if (te != null)
-						tag = te.writeToNBT(new NBTTagCompound());
-
-					if (reinforcedBlock.getVanillaBlocks().size() == reinforcedBlock.getAmount()) {
-						if (isReinforcing) {
-							for (int i = 0; i < reinforcedBlock.getAmount(); i++) {
-								Block vanillaBlock = reinforcedBlock.getVanillaBlocks().get(i);
-
-								if (blockToConvert.equals(vanillaBlock))
-									convertedState = securityCraftBlock.getStateFromMeta(i);
-							}
-						}
-						else {
-							int meta = 0;
-
-							if (reinforcedBlock.getAmount() > 1)
-								meta = securityCraftBlock.getMetaFromState(state);
-
-							convertedState = reinforcedBlock.getVanillaBlocks().get(meta).getDefaultState();
-						}
-					}
-					else {
-						if (isReinforcing)
-							convertedState = securityCraftBlock.getStateFromMeta(blockToConvert.getMetaFromState(blockToConvert.getActualState(state, world, pos)));
-						else
-							convertedState = reinforcedBlock.getVanillaBlocks().get(0).getStateFromMeta(blockToConvert.getMetaFromState(blockToConvert.getActualState(state, world, pos)));
-					}
-
-					if (convertedState != null) {
-						if (te instanceof IModuleInventory)
-							((IModuleInventory) te).dropAllModules();
-
-						if (te instanceof IInventory)
-							((IInventory) te).clear();
-
-						if (!isReinforcing && te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player))
-							return false;
-
-						world.setBlockState(pos, convertedState);
-						te = world.getTileEntity(pos);
-
-						if (te != null) { //in case the converted state gets removed immediately after it is placed down
-							if (tag != null)
-								te.readFromNBT(tag);
-
-							if (isReinforcing)
-								((IOwnable) te).setOwner(player.getGameProfile().getId().toString(), player.getName());
-						}
-
-						stack.damageItem(1, player);
-					}
-
-					return true;
+				if (convertedBlock instanceof IReinforcedBlock)
+					convertedState = ((IReinforcedBlock) convertedBlock).convertToReinforcedState(state);
+			}
+			else if (blockToConvert instanceof IReinforcedBlock) {
+				try {
+					convertedState = ((IReinforcedBlock) blockToConvert).convertToVanillaState(state);
 				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+			if (convertedState != null) {
+				TileEntity te = world.getTileEntity(pos);
+				NBTTagCompound tag = null;
+
+				if (!isReinforcing && te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player))
+					return false;
+
+				if (te != null) {
+					tag = te.writeToNBT(new NBTTagCompound());
+
+					if (te instanceof IModuleInventory)
+						((IModuleInventory) te).dropAllModules();
+
+					if (te instanceof IInventory)
+						((IInventory) te).clear();
+				}
+
+				world.setBlockState(pos, convertedState);
+				te = world.getTileEntity(pos);
+
+				if (te != null) { //in case the converted state gets removed immediately after it is placed down
+					if (tag != null)
+						te.readFromNBT(tag);
+
+					if (isReinforcing)
+						((IOwnable) te).setOwner(player.getGameProfile().getId().toString(), player.getName());
+				}
+
+				stack.damageItem(1, player);
+				return true;
 			}
 		}
 

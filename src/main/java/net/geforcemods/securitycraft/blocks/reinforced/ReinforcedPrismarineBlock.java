@@ -71,9 +71,4 @@ public class ReinforcedPrismarineBlock extends BlockPrismarine implements ITileE
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.PRISMARINE);
 	}
-
-	@Override
-	public int getAmount() {
-		return 3;
-	}
 }

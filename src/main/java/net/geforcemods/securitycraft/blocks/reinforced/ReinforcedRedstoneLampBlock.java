@@ -9,6 +9,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -16,7 +17,7 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 	public static final PropertyBool LIT = PropertyBool.create("lit");
 
 	public ReinforcedRedstoneLampBlock() {
-		super(Material.REDSTONE_LIGHT, 1, Blocks.REDSTONE_LAMP, Blocks.LIT_REDSTONE_LAMP);
+		super(Material.REDSTONE_LIGHT, Blocks.REDSTONE_LAMP, Blocks.LIT_REDSTONE_LAMP);
 
 		setDefaultState(getDefaultState().withProperty(LIT, false));
 		setSoundType(SoundType.GLASS);
@@ -70,5 +71,38 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, LIT);
+	}
+
+	@Override
+	public IBlockState convertToReinforcedState(IBlockState state) {
+		Block block = state.getBlock();
+
+		if (block == Blocks.REDSTONE_LAMP)
+			return getDefaultState().withProperty(LIT, false);
+		else if (block == Blocks.LIT_REDSTONE_LAMP)
+			return getDefaultState().withProperty(LIT, true);
+		else
+			return state;
+	}
+
+	@Override
+	public IBlockState convertToVanillaState(IBlockState state) {
+		if (state.getValue(LIT))
+			return Blocks.LIT_REDSTONE_LAMP.getDefaultState();
+		else
+			return Blocks.REDSTONE_LAMP.getDefaultState();
+	}
+
+	@Override
+	public ItemStack convertToReinforcedStack(ItemStack stackToConvert, Block blockToConvert) {
+		if (blockToConvert == Blocks.REDSTONE_LAMP)
+			return new ItemStack(this);
+		else
+			return ItemStack.EMPTY;
+	}
+
+	@Override
+	public ItemStack convertToVanillaStack(ItemStack stackToConvert) {
+		return new ItemStack(Blocks.REDSTONE_LAMP);
 	}
 }

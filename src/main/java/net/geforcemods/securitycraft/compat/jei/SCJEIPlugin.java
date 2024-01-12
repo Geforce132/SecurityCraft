@@ -18,7 +18,10 @@ import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
 import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 @JEIPlugin
 public class SCJEIPlugin implements IModPlugin {
@@ -29,6 +32,8 @@ public class SCJEIPlugin implements IModPlugin {
 	public void register(IModRegistry registry) {
 		List<ReinforcerRecipe> vtsRecipes = new ArrayList<>();
 		List<ReinforcerRecipe> stvRecipes = new ArrayList<>();
+		ItemStack vanillaCauldron = new ItemStack(Items.CAULDRON);
+		ItemStack reinforcedCauldron = new ItemStack(SCContent.reinforcedCauldron);
 
 		//@formatter:off
 		registry.addAdvancedGuiHandlers(
@@ -42,24 +47,22 @@ public class SCJEIPlugin implements IModPlugin {
 		registry.addIngredientInfo(new ItemStack(SCContent.keypad), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypadChest), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad_chest");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypadFurnace), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad_furnace");
-		IReinforcedBlock.BLOCKS.forEach(rb -> {
-			IReinforcedBlock reinforcedBlock = (IReinforcedBlock) rb;
+		IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.forEach((vanillaBlock, securityCraftBlock) -> {
+			IReinforcedBlock reinforcedBlock = (IReinforcedBlock) securityCraftBlock;
+			NonNullList<ItemStack> subBlocks = NonNullList.create();
 
-			reinforcedBlock.getVanillaBlocks().forEach(vanillaBlock -> {
-				if (reinforcedBlock.getVanillaBlocks().size() == reinforcedBlock.getAmount()) {
-					int meta = reinforcedBlock.getVanillaBlocks().indexOf(vanillaBlock);
+			vanillaBlock.getSubBlocks(CreativeTabs.SEARCH, subBlocks);
+			subBlocks.forEach(vanillaStack -> {
+				if (!vanillaStack.isEmpty()) {
+					ItemStack reinforcedStack = reinforcedBlock.convertToReinforcedStack(vanillaStack, vanillaBlock);
 
-					vtsRecipes.add(new ReinforcerRecipe(new ItemStack(vanillaBlock, 1, 0), new ItemStack(rb, 1, meta)));
-					stvRecipes.add(new ReinforcerRecipe(new ItemStack(rb, 1, meta), new ItemStack(vanillaBlock, 1, 0)));
-				}
-				else {
-					for (int i = 0; i < reinforcedBlock.getAmount(); i++) {
-						vtsRecipes.add(new ReinforcerRecipe(new ItemStack(vanillaBlock, 1, i), new ItemStack(rb, 1, i)));
-						stvRecipes.add(new ReinforcerRecipe(new ItemStack(rb, 1, i), new ItemStack(vanillaBlock, 1, i)));
-					}
+					vtsRecipes.add(new ReinforcerRecipe(vanillaStack, reinforcedStack));
+					stvRecipes.add(new ReinforcerRecipe(reinforcedStack, vanillaStack));
 				}
 			});
 		});
+		vtsRecipes.add(new ReinforcerRecipe(vanillaCauldron, reinforcedCauldron));
+		stvRecipes.add(new ReinforcerRecipe(reinforcedCauldron, vanillaCauldron));
 		registry.addRecipes(vtsRecipes, VTS_ID);
 		registry.addRecipes(stvRecipes, STV_ID);
 		registry.addRecipeCatalyst(new ItemStack(SCContent.keypadFurnace), VanillaRecipeCategoryUid.SMELTING);
