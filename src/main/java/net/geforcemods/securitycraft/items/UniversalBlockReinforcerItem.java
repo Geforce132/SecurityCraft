@@ -25,6 +25,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class UniversalBlockReinforcerItem extends Item {
@@ -81,6 +82,8 @@ public class UniversalBlockReinforcerItem extends Item {
 
 					if (be instanceof Container container)
 						container.clearContent();
+					else if (be instanceof LecternBlockEntity lectern)
+						lectern.clearContent();
 				}
 
 				level.setBlockAndUpdate(pos, convertedState);
@@ -95,11 +98,11 @@ public class UniversalBlockReinforcerItem extends Item {
 				}
 
 				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
-				return false;
+				return true;
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	public static boolean isReinforcing(ItemStack stack) {
