@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
 import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
@@ -31,6 +32,8 @@ public class SCJEIPlugin implements IModPlugin {
 	public void register(IModRegistry registry) {
 		List<ReinforcerRecipe> vtsRecipes = new ArrayList<>();
 		List<ReinforcerRecipe> stvRecipes = new ArrayList<>();
+		ItemStack vanillaCauldron = new ItemStack(Items.CAULDRON);
+		ItemStack reinforcedCauldron = new ItemStack(SCContent.reinforcedCauldron);
 
 		//@formatter:off
 		registry.addAdvancedGuiHandlers(
@@ -50,12 +53,16 @@ public class SCJEIPlugin implements IModPlugin {
 
 			vanillaBlock.getSubBlocks(CreativeTabs.SEARCH, subBlocks);
 			subBlocks.forEach(vanillaStack -> {
-				ItemStack reinforcedStack = reinforcedBlock.convertToReinforcedStack(vanillaStack, vanillaBlock);
+				if (!vanillaStack.isEmpty()) {
+					ItemStack reinforcedStack = reinforcedBlock.convertToReinforcedStack(vanillaStack, vanillaBlock);
 
-				vtsRecipes.add(new ReinforcerRecipe(vanillaStack, reinforcedStack));
-				stvRecipes.add(new ReinforcerRecipe(reinforcedStack, vanillaStack));
+					vtsRecipes.add(new ReinforcerRecipe(vanillaStack, reinforcedStack));
+					stvRecipes.add(new ReinforcerRecipe(reinforcedStack, vanillaStack));
+				}
 			});
 		});
+		vtsRecipes.add(new ReinforcerRecipe(vanillaCauldron, reinforcedCauldron));
+		stvRecipes.add(new ReinforcerRecipe(reinforcedCauldron, vanillaCauldron));
 		registry.addRecipes(vtsRecipes, VTS_ID);
 		registry.addRecipes(stvRecipes, STV_ID);
 		registry.addRecipeCatalyst(new ItemStack(SCContent.keypadFurnace), VanillaRecipeCategoryUid.SMELTING);

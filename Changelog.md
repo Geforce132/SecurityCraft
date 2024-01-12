@@ -43,6 +43,8 @@
 - Fix: Some slabs cannot be reinforced even though they have a reinforced variant
 - Fix: Trying to unreinforce someone else's block can lead to item loss
 [/TODO]
+- Fix: The Reinforced Cauldron can't be un-/reinforced in the Universal Block Reinforcer's GUI
+- Fix: The un-/reinforcing recipes for the Reinforced Cauldron don't show up correctly in JEI
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 

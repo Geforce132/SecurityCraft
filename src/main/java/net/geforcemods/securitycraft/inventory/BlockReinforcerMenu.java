@@ -7,11 +7,13 @@ import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
@@ -210,10 +212,11 @@ public class BlockReinforcerMenu extends Container {
 			if (!itemInventory.getStackInSlot((slotNumber + 1) % 2).isEmpty())
 				return false;
 
-			Block block = Block.getBlockFromItem(stack.getItem());
+			Item item = stack.getItem();
+			Block block = Block.getBlockFromItem(item);
 
 			if (reinforce)
-				return IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.containsKey(block);
+				return IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.containsKey(block) || item == Items.CAULDRON;
 			else if (block instanceof IReinforcedBlock) {
 				NonNullList<ItemStack> subBlocks = NonNullList.create();
 
@@ -229,14 +232,17 @@ public class BlockReinforcerMenu extends Container {
 			ItemStack stack = itemInventory.getStackInSlot(slotNumber % 2);
 
 			if (!stack.isEmpty()) {
+				Item itemToConvert = stack.getItem();
+				Block blockToConvert = Block.getBlockFromItem(itemToConvert);
 				ItemStack newStack = ItemStack.EMPTY;
-				Block blockToConvert = Block.getBlockFromItem(stack.getItem());
 
 				if (reinforce) {
 					Block convertedBlock = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(blockToConvert);
 
 					if (convertedBlock instanceof IReinforcedBlock)
 						newStack = ((IReinforcedBlock) convertedBlock).convertToReinforcedStack(stack, blockToConvert);
+					else if (itemToConvert == Items.CAULDRON)
+						newStack = new ItemStack(SCContent.reinforcedCauldron);
 				}
 				else if (blockToConvert instanceof IReinforcedBlock) {
 					try {

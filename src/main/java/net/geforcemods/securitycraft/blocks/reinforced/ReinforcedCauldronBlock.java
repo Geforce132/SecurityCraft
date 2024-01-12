@@ -15,6 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -81,6 +82,11 @@ public class ReinforcedCauldronBlock extends BlockCauldron implements IReinforce
 	@Override
 	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.CAULDRON);
+	}
+
+	@Override
+	public ItemStack convertToVanillaStack(ItemStack stackToConvert) throws Exception {
+		return new ItemStack(Items.CAULDRON);
 	}
 
 	@Override
