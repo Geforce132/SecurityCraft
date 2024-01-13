@@ -2385,6 +2385,12 @@
         ]
       },
       {
+        "output": "securitycraft:reinforced_lectern",
+        "ingredients": [
+          "minecraft:lectern"
+        ]
+      },
+      {
         "output": "securitycraft:reinforced_lever",
         "ingredients": [
           "minecraft:lever"
