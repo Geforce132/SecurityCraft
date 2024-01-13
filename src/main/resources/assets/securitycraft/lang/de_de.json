@@ -1280,6 +1280,8 @@
 	"option.securitycraft.reinforced_cauldron.isPublic.description": "Soll jeder Spieler mit diesem Block interagieren können?",
 	"option.securitycraft.reinforced_lava_cauldron.isPublic": "Öffentlich: %s",
 	"option.securitycraft.reinforced_lava_cauldron.isPublic.description": "Soll jeder Spieler mit diesem Block interagieren können?",
+	"option.securitycraft.reinforced_lectern.lockPage": "Seite sperren: %s",
+	"option.securitycraft.reinforced_lectern.lockPage.description": "Soll Spielern, die nicht der Besitzer sind, verboten werden, die Seite des Buches zu ändern?",
 	"option.securitycraft.reinforced_powder_snow_cauldron.isPublic": "Öffentlich: %s",
 	"option.securitycraft.reinforced_powder_snow_cauldron.isPublic.description": "Soll jeder Spieler mit diesem Block interagieren können?",
 	"option.securitycraft.reinforced_water_cauldron.isPublic": "Öffentlich: %s",

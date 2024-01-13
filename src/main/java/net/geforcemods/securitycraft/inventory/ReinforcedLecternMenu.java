@@ -23,8 +23,8 @@ public class ReinforcedLecternMenu extends LecternMenu {
 
 	@Override
 	public boolean clickMenuButton(Player player, int id) {
-		//while the button to take out the book is removed in the screen clientside, the server should still prevent any attempts by unallowed clients at taking out the book
-		if (id == LecternMenu.BUTTON_TAKE_BOOK && !be.isOwnedBy(player))
+		//while the respective buttons are removed in the screen clientside, the server should still prevent any attempts by unallowed clients at using their functionality
+		if (!be.isOwnedBy(player) && (id == LecternMenu.BUTTON_TAKE_BOOK || be.isPageLocked() && (id == LecternMenu.BUTTON_PREV_PAGE || id == LecternMenu.BUTTON_NEXT_PAGE)))
 			return false;
 
 		return super.clickMenuButton(player, id);

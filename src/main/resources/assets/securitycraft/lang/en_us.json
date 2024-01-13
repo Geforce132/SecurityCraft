@@ -1289,6 +1289,8 @@
 	"option.securitycraft.reinforced_cauldron.isPublic.description": "Should every player be able to interact with this block?",
 	"option.securitycraft.reinforced_lava_cauldron.isPublic": "Public: %s",
 	"option.securitycraft.reinforced_lava_cauldron.isPublic.description": "Should every player be able to interact with this block?",
+	"option.securitycraft.reinforced_lectern.lockPage": "Lock Page: %s",
+	"option.securitycraft.reinforced_lectern.lockPage.description": "Should players other than the owner be unable to change the page of the book?",
 	"option.securitycraft.reinforced_powder_snow_cauldron.isPublic": "Public: %s",
 	"option.securitycraft.reinforced_powder_snow_cauldron.isPublic.description": "Should every player be able to interact with this block?",
 	"option.securitycraft.reinforced_water_cauldron.isPublic": "Public: %s",

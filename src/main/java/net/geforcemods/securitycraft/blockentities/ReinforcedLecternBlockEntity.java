@@ -4,8 +4,11 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.inventory.ReinforcedLecternMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -23,10 +26,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ReinforcedLecternBlockEntity extends LecternBlockEntity implements IOwnable, IModuleInventory {
+public class ReinforcedLecternBlockEntity extends LecternBlockEntity implements IOwnable, IModuleInventory, ICustomizable {
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private BooleanOption lockPage = new BooleanOption("lockPage", false);
 
 	public ReinforcedLecternBlockEntity(BlockPos pos, BlockState state) {
 		super(pos, state);
@@ -38,6 +42,7 @@ public class ReinforcedLecternBlockEntity extends LecternBlockEntity implements 
 		owner.load(tag);
 		modules = readModuleInventory(tag);
 		moduleStates = readModuleStates(tag);
+		readOptions(tag);
 	}
 
 	@Override
@@ -49,6 +54,7 @@ public class ReinforcedLecternBlockEntity extends LecternBlockEntity implements 
 
 		writeModuleInventory(tag);
 		writeModuleStates(tag);
+		writeOptions(tag);
 	}
 
 	@Override
@@ -88,6 +94,17 @@ public class ReinforcedLecternBlockEntity extends LecternBlockEntity implements 
 		return new ModuleType[] {
 				ModuleType.ALLOWLIST
 		};
+	}
+
+	@Override
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				lockPage
+		};
+	}
+
+	public boolean isPageLocked() {
+		return lockPage.get();
 	}
 
 	@Override
