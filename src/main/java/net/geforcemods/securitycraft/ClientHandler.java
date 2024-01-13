@@ -78,6 +78,7 @@ import net.geforcemods.securitycraft.screen.KeypadSmokerScreen;
 import net.geforcemods.securitycraft.screen.LaserBlockScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
+import net.geforcemods.securitycraft.screen.ReinforcedLecternScreen;
 import net.geforcemods.securitycraft.screen.RiftStabilizerScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SSSItemScreen;
@@ -352,6 +353,7 @@ public class ClientHandler {
 		ScreenManager.register(SCContent.TROPHY_SYSTEM_MENU.get(), TrophySystemScreen::new);
 		ScreenManager.register(SCContent.CLAYMORE_MENU.get(), ClaymoreScreen::new);
 		ScreenManager.register(SCContent.LASER_BLOCK_MENU.get(), LaserBlockScreen::new);
+		ScreenManager.register(SCContent.REINFORCED_LECTERN_MENU.get(), ReinforcedLecternScreen::new);
 		ItemModelsProperties.register(SCContent.KEYCARD_HOLDER.get(), KeycardHolderItem.COUNT_PROPERTY, (stack, level, entity) -> KeycardHolderItem.getCardCount(stack) / (float) KeycardHolderMenu.CONTAINER_SIZE);
 		ItemModelsProperties.register(SCContent.LENS.get(), LensItem.COLOR_PROPERTY, (stack, level, entity) -> ((IDyeableArmorItem) stack.getItem()).hasCustomColor(stack) ? 1.0F : 0.0F);
 		ItemModelsProperties.register(SCContent.CAMERA_MONITOR.get(), LINKING_STATE_PROPERTY, (stack, level, entity) -> {

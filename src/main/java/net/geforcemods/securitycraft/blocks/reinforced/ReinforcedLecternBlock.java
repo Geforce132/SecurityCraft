@@ -44,7 +44,7 @@ public class ReinforcedLecternBlock extends LecternBlock implements IReinforcedB
 				ReinforcedLecternBlockEntity be = (ReinforcedLecternBlockEntity) te;
 
 				if (be.isOwnedBy(player) || be.isAllowed(player))
-					super.use(state, level, pos, player, hand, hit);
+					return super.use(state, level, pos, player, hand, hit);
 			}
 		}
 
