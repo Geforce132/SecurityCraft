@@ -24,6 +24,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedLecternBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
@@ -61,6 +62,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -77,6 +79,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -99,6 +102,8 @@ import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
+import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
+import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent.UsePhase;
 import net.neoforged.neoforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
@@ -228,6 +233,31 @@ public class SCEventHandler {
 					player.setPos(dismountLocation);
 				else
 					event.setCanceled(true);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onUseItemOnBlock(UseItemOnBlockEvent event) {
+		if (event.getUsePhase() == UsePhase.ITEM_AFTER_BLOCK) {
+			ItemStack stack = event.getItemStack();
+
+			if (stack.is(Items.WRITABLE_BOOK) || stack.is(Items.WRITTEN_BOOK)) {
+				Level level = event.getLevel();
+				BlockPos pos = event.getPos();
+				BlockState state = level.getBlockState(pos);
+
+				if (state.is(SCContent.REINFORCED_LECTERN.get())) {
+					ReinforcedLecternBlockEntity be = (ReinforcedLecternBlockEntity) level.getBlockEntity(pos);
+					Player player = event.getEntity();
+
+					if (be.isOwnedBy(player) && LecternBlock.tryPlaceBook(player, level, pos, state, stack)) {
+						player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+						event.setCancellationResult(InteractionResult.sidedSuccess(level.isClientSide));
+					}
+
+					event.setCanceled(true);
+				}
 			}
 		}
 	}
