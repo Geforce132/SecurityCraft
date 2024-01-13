@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "securitycraft:reinforced_lectern"
-  }
+  },
+  "show_notification": true
 }
