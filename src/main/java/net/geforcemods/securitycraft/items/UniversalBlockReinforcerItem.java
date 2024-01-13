@@ -22,6 +22,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.LecternTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -85,9 +86,10 @@ public class UniversalBlockReinforcerItem extends Item {
 
 					if (be instanceof IInventory)
 						((IInventory) be).clearContent();
-
-					if (be instanceof ReinforcedHopperBlockEntity)
-						level.removeBlockEntity(pos); //Because ReinforcedHopperBlock overrides Block#is to mimic the Vanilla Hopper, we need to remove the BE here (usually this is done in Block#onRemove)
+					else if (be instanceof ReinforcedHopperBlockEntity)
+						level.removeBlockEntity(pos); //because ReinforcedHopperBlock overrides Block#is to mimic the vanilla hopper, the BE needs to be removed here (usually this is done in Block#onRemove)
+					else if (be instanceof LecternTileEntity)
+						((LecternTileEntity) be).clearContent();
 				}
 
 				level.setBlockAndUpdate(pos, convertedState);
@@ -102,11 +104,11 @@ public class UniversalBlockReinforcerItem extends Item {
 				}
 
 				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
-				return false;
+				return true;
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	public static boolean isReinforcing(ItemStack stack) {

@@ -2223,18 +2223,6 @@
         ]
       },
       {
-        "output": "securitycraft:reinforced_iron_trapdoor",
-        "ingredients": [
-          "minecraft:iron_trapdoor"
-        ]
-      },
-      {
-        "output": "securitycraft:reinforced_observer",
-        "ingredients": [
-          "minecraft:observer"
-        ]
-      },
-      {
         "output": "securitycraft:reinforced_oak_fence_gate",
         "ingredients": [
           "minecraft:oak_fence_gate"
@@ -2280,6 +2268,24 @@
         "output": "securitycraft:reinforced_warped_fence_gate",
         "ingredients": [
           "minecraft:warped_fence_gate"
+        ]
+      },
+      {
+        "output": "securitycraft:reinforced_iron_trapdoor",
+        "ingredients": [
+          "minecraft:iron_trapdoor"
+        ]
+      },
+      {
+        "output": "securitycraft:reinforced_observer",
+        "ingredients": [
+          "minecraft:observer"
+        ]
+      },
+      {
+        "output": "securitycraft:reinforced_lectern",
+        "ingredients": [
+          "minecraft:lectern"
         ]
       },
       {

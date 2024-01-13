@@ -101,6 +101,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
+import net.minecraft.client.renderer.tileentity.LecternTileEntityRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.IDyeableArmorItem;
@@ -319,6 +320,7 @@ public class ClientHandler {
 		ClientRegistry.bindTileEntityRenderer(SCContent.REINFORCED_PISTON_BLOCK_ENTITY.get(), ReinforcedPistonRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.SONIC_SECURITY_SYSTEM_BLOCK_ENTITY.get(), SonicSecuritySystemRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), DisplayCaseRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.REINFORCED_LECTERN_BLOCK_ENTITY.get(), LecternTileEntityRenderer::new);
 		//disguisable block entity renderers
 		ClientRegistry.bindTileEntityRenderer(SCContent.BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.CAGE_TRAP_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);

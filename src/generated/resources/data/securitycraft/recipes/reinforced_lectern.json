@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    " B ",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "tag": "securitycraft:reinforced/wooden_slabs"
+    },
+    "B": {
+      "item": "securitycraft:reinforced_bookshelf"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_lectern"
+  }
+}

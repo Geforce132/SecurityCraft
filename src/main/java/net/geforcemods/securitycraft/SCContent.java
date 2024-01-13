@@ -39,6 +39,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedDispenserBlockEntit
 import net.geforcemods.securitycraft.blockentities.ReinforcedDropperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedLecternBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
@@ -131,6 +132,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronBarsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLadderBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLanternBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLecternBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMovingPistonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedNyliumBlock;
@@ -174,6 +176,7 @@ import net.geforcemods.securitycraft.inventory.KeypadSmokerMenu;
 import net.geforcemods.securitycraft.inventory.LaserBlockMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
+import net.geforcemods.securitycraft.inventory.ReinforcedLecternMenu;
 import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.items.AdminToolItem;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
@@ -1929,14 +1932,6 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_DROPPER = BLOCKS.register("reinforced_dropper", () -> new ReinforcedDropperBlock(prop(Material.STONE)));
-	@HasManualPage(hasRecipeDescription = true)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_IRON_TRAPDOOR = BLOCKS.register("reinforced_iron_trapdoor", () -> new ReinforcedIronTrapDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion().isValidSpawn(SCContent::never)));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(prop()));
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_OAK_FENCE_GATE = BLOCKS.register("reinforced_oak_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.OAK_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.OAK_FENCE_GATE));
@@ -1961,6 +1956,17 @@ public class SCContent {
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_WARPED_FENCE_GATE = BLOCKS.register("reinforced_warped_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.WARPED_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.WARPED_FENCE_GATE));
+	@HasManualPage(hasRecipeDescription = true)
+	@OwnableBE
+	@Reinforced(hasReinforcedTint = false)
+	public static final RegistryObject<Block> REINFORCED_IRON_TRAPDOOR = BLOCKS.register("reinforced_iron_trapdoor", () -> new ReinforcedIronTrapDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion().isValidSpawn(SCContent::never)));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(prop()));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_LECTERN = BLOCKS.register("reinforced_lectern", () -> new ReinforcedLecternBlock(prop(Material.WOOD).sound(SoundType.WOOD)));
 
 	//ordered by vanilla brewing tab order
 	@HasManualPage(PageGroup.REINFORCED)
@@ -2274,6 +2280,7 @@ public class SCContent {
 			SCContent.REINFORCED_DARK_OAK_FENCE_GATE.get(),
 			SCContent.REINFORCED_CRIMSON_FENCE_GATE.get(),
 			SCContent.REINFORCED_WARPED_FENCE_GATE.get()).build(null));
+	public static final RegistryObject<TileEntityType<ReinforcedLecternBlockEntity>> REINFORCED_LECTERN_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_lectern", () -> TileEntityType.Builder.of(ReinforcedLecternBlockEntity::new, SCContent.REINFORCED_LECTERN.get()).build(null));
 
 	//entity types
 	public static final RegistryObject<EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",
@@ -2335,6 +2342,7 @@ public class SCContent {
 	public static final RegistryObject<ContainerType<TrophySystemMenu>> TROPHY_SYSTEM_MENU = MENU_TYPES.register("trophy_system", () -> IForgeContainerType.create((windowId, inv, data) -> new TrophySystemMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
 	public static final RegistryObject<ContainerType<ClaymoreMenu>> CLAYMORE_MENU = MENU_TYPES.register("claymore", () -> IForgeContainerType.create((windowId, inv, data) -> new ClaymoreMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
 	public static final RegistryObject<ContainerType<LaserBlockMenu>> LASER_BLOCK_MENU = MENU_TYPES.register("laser_block", () -> IForgeContainerType.create((windowId, inv, data) -> new LaserBlockMenu(windowId, inv.player.level, data.readBlockPos(), LaserBlockBlockEntity.loadSideConfig(data.readNbt()), inv)));
+	public static final RegistryObject<ContainerType<ReinforcedLecternMenu>> REINFORCED_LECTERN_MENU = MENU_TYPES.register("reinforced_lectern", () -> IForgeContainerType.create((windowId, inv, data) -> new ReinforcedLecternMenu(windowId, inv.player.level, data.readBlockPos())));
 
 	private static final AbstractBlock.Properties prop() {
 		return prop(Material.STONE);
