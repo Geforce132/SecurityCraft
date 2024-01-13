@@ -19,6 +19,7 @@
 		"camera.TrackedEntityMixin",
 		"portal.PortalForcerMixin",
 		"potion.BrewingStandMenuMixin",
+		"reinforcedlectern.WritableAndWrittenBookItemMixin",
 		"sussandmine.BrushItemMixin"
 	],
 	"minVersion": "0.8"

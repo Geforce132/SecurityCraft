@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "securitycraft:block/reinforced_lectern",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "securitycraft:block/reinforced_lectern"
+    },
+    "facing=south": {
+      "model": "securitycraft:block/reinforced_lectern",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "securitycraft:block/reinforced_lectern",
+      "y": 270
+    }
+  }
+}

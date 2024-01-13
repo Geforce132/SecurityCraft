@@ -259,6 +259,14 @@ public class RecipeGenerator extends RecipeProvider {
 		.unlockedBy("has_stone", has(ItemTags.STONE_CRAFTING_MATERIALS))
 		.save(consumer);
 		//k you can change again :)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.REINFORCED_LECTERN.get())
+		.pattern("SSS")
+		.pattern(" B ")
+		.pattern(" S ")
+		.define('S', SCTags.Items.REINFORCED_WOODEN_SLABS)
+		.define('B', SCContent.REINFORCED_BOOKSHELF.get())
+		.unlockedBy("has_bookshelf", has(Items.BOOKSHELF))
+		.save(consumer);
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.LENS.get(), 6)
 		.group("securitycraft:lens")
 		.pattern(" P")
