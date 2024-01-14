@@ -23,7 +23,6 @@ import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
-import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.network.server.CheckBriefcasePasscode;
 import net.geforcemods.securitycraft.network.server.CheckPasscode;
@@ -157,7 +156,6 @@ public class RegistrationHandler {
 		clientPacket(registrar, SetTrophySystemTarget.ID, SetTrophySystemTarget::new, SetTrophySystemTarget::handle);
 		clientPacket(registrar, UpdateLaserColors.ID, UpdateLaserColors::new, UpdateLaserColors::handle);
 		clientPacket(registrar, UpdateLogger.ID, UpdateLogger::new, UpdateLogger::handle);
-		clientPacket(registrar, UpdateNBTTagOnClient.ID, UpdateNBTTagOnClient::new, UpdateNBTTagOnClient::handle);
 		serverPacket(registrar, AssembleBlockPocket.ID, AssembleBlockPocket::new, AssembleBlockPocket::handle);
 		serverPacket(registrar, CheckPasscode.ID, CheckPasscode::new, CheckPasscode::handle);
 		serverPacket(registrar, ClearChangeDetectorServer.ID, ClearChangeDetectorServer::new, ClearChangeDetectorServer::handle);

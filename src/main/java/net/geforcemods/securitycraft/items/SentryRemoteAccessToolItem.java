@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
-import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -75,13 +74,10 @@ public class SentryRemoteAccessToolItem extends Item {
 				if (sentry.hasCustomName())
 					stack.getTag().putString("sentry" + nextAvailableSlot + "_name", sentry.getCustomName().getString());
 
-				if (!level.isClientSide && !stack.isEmpty())
-					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new UpdateNBTTagOnClient(stack));
-
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.bound", sentryPos), ChatFormatting.GREEN);
 			}
 			else {
-				removeTagFromItemAndUpdate(stack, sentryPos, player);
+				removeSentry(stack, sentryPos, player);
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.unbound", sentryPos), ChatFormatting.RED);
 			}
 
@@ -159,7 +155,7 @@ public class SentryRemoteAccessToolItem extends Item {
 		}
 	}
 
-	private void removeTagFromItemAndUpdate(ItemStack stack, BlockPos pos, Player player) {
+	private void removeSentry(ItemStack stack, BlockPos pos, Player player) {
 		if (stack.getTag() == null)
 			return;
 
@@ -168,10 +164,6 @@ public class SentryRemoteAccessToolItem extends Item {
 
 			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
 				stack.getTag().remove("sentry" + i);
-
-				if (!player.level().isClientSide && !stack.isEmpty())
-					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new UpdateNBTTagOnClient(stack));
-
 				return;
 			}
 		}

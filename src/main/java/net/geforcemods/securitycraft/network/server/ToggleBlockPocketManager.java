@@ -17,23 +17,23 @@ public class ToggleBlockPocketManager implements CustomPacketPayload {
 
 	public ToggleBlockPocketManager() {}
 
-	public ToggleBlockPocketManager(BlockPocketManagerBlockEntity be, boolean enabling, int size) {
+	public ToggleBlockPocketManager(BlockPocketManagerBlockEntity be, boolean enabling) {
 		pos = be.getBlockPos();
+		size = be.getSize();
 		this.enabling = enabling;
-		this.size = size;
 	}
 
 	public ToggleBlockPocketManager(FriendlyByteBuf buf) {
 		pos = BlockPos.of(buf.readLong());
-		enabling = buf.readBoolean();
 		size = buf.readInt();
+		enabling = buf.readBoolean();
 	}
 
 	@Override
 	public void write(FriendlyByteBuf buf) {
 		buf.writeLong(pos.asLong());
-		buf.writeBoolean(enabling);
 		buf.writeInt(size);
+		buf.writeBoolean(enabling);
 	}
 
 	@Override

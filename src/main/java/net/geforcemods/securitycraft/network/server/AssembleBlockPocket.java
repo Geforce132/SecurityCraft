@@ -16,19 +16,19 @@ public class AssembleBlockPocket implements CustomPacketPayload {
 
 	public AssembleBlockPocket() {}
 
-	public AssembleBlockPocket(BlockPocketManagerBlockEntity be, int size) {
+	public AssembleBlockPocket(BlockPocketManagerBlockEntity be) {
 		pos = be.getBlockPos();
-		this.size = size;
+		size = be.getSize();
 	}
 
 	public AssembleBlockPocket(FriendlyByteBuf buf) {
-		pos = BlockPos.of(buf.readLong());
+		pos = buf.readBlockPos();
 		size = buf.readInt();
 	}
 
 	@Override
 	public void write(FriendlyByteBuf buf) {
-		buf.writeLong(pos.asLong());
+		buf.writeBlockPos(pos);
 		buf.writeInt(size);
 	}
 
