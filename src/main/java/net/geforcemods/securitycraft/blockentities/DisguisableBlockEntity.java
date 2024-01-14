@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class DisguisableBlockEntity extends CustomizableBlockEntity {
@@ -86,12 +85,8 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
 
 		DisguisableBlock.getDisguisedBlockStateFromStack(level, stack).ifPresent(disguisedState -> {
-			if (disguisedState.getLightEmission(level, worldPosition) > 0) {
-				AuxiliaryLightManager manager = level.getAuxLightManager(worldPosition);
-
-				manager.removeLightAt(worldPosition);
-				manager.setLightAt(worldPosition, state.getLightEmission(level, worldPosition));
-			}
+			if (disguisedState.getLightEmission(level, worldPosition) > 0)
+				level.getAuxLightManager(worldPosition).removeLightAt(worldPosition);
 		});
 	}
 
