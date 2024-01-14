@@ -20,6 +20,7 @@ public class UpdateLogger implements CustomPacketPayload {
 	public UpdateLogger() {}
 
 	public UpdateLogger(BlockPos pos, int index, String username, String uuid, long timestamp) {
+		this.pos = pos;
 		this.index = index;
 		this.username = username;
 		this.uuid = uuid;
