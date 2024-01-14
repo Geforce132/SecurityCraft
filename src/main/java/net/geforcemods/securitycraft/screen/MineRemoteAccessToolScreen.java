@@ -47,14 +47,12 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 		int padding = 25;
 		int y = 50;
-		int[] coords = null;
 		int id = 0;
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 
 		for (int i = 0; i < 6; i++) {
 			y += 25;
-			coords = getMineCoordinates(i);
 
 			// initialize buttons
 			for (int j = 0; j < 4; j++) {
@@ -86,9 +84,9 @@ public class MineRemoteAccessToolScreen extends Screen {
 				addRenderableWidget(guiButtons[i][j]);
 			}
 
-			if (coords.length == 3) {
-				BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
+			BlockPos minePos = getMineCoordinates(i);
 
+			if (minePos != null) {
 				guiButtons[i][UNBIND].active = true;
 				lines[i] = Utils.localize("gui.securitycraft:mrat.mineLocations", minePos);
 
@@ -108,7 +106,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 						guiButtons[i][UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:mrat.unbind")));
 					}
 					else {
-						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
+						removeTagFromToolAndUpdate(mrat, minePos);
 
 						for (int j = 0; j < 4; j++) {
 							guiButtons[i][j].active = false;
@@ -147,27 +145,27 @@ public class MineRemoteAccessToolScreen extends Screen {
 	}
 
 	private void buttonClicked(int mine, int action) {
-		int[] coords = getMineCoordinates(mine);
+		BlockPos pos = getMineCoordinates(mine);
 
-		if (coords.length == 3) {
+		if (pos != null) {
 			switch (action) {
 				case DEFUSE:
-					((IExplosive) Minecraft.getInstance().player.level().getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getInstance().player.level(), new BlockPos(coords[0], coords[1], coords[2]));
-					SecurityCraft.CHANNEL.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], Action.DEFUSE));
+					((IExplosive) Minecraft.getInstance().player.level().getBlockState(pos).getBlock()).defuseMine(Minecraft.getInstance().player.level(), pos);
+					SecurityCraft.CHANNEL.sendToServer(new RemoteControlMine(pos, Action.DEFUSE));
 					guiButtons[mine][DEFUSE].active = false;
 					guiButtons[mine][ACTIVATE].active = true;
 					guiButtons[mine][DETONATE].active = false;
 					break;
 				case ACTIVATE:
-					((IExplosive) Minecraft.getInstance().player.level().getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getInstance().player.level(), new BlockPos(coords[0], coords[1], coords[2]));
-					SecurityCraft.CHANNEL.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], Action.ACTIVATE));
+					((IExplosive) Minecraft.getInstance().player.level().getBlockState(pos).getBlock()).activateMine(Minecraft.getInstance().player.level(), pos);
+					SecurityCraft.CHANNEL.sendToServer(new RemoteControlMine(pos, Action.ACTIVATE));
 					guiButtons[mine][DEFUSE].active = true;
 					guiButtons[mine][ACTIVATE].active = false;
 					guiButtons[mine][DETONATE].active = true;
 					break;
 				case DETONATE:
-					SecurityCraft.CHANNEL.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], Action.DETONATE));
-					removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
+					SecurityCraft.CHANNEL.sendToServer(new RemoteControlMine(pos, Action.DETONATE));
+					removeTagFromToolAndUpdate(mrat, pos);
 
 					for (int i = 0; i < 4; i++) {
 						guiButtons[mine][i].active = false;
@@ -175,7 +173,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 					break;
 				case UNBIND:
-					removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
+					removeTagFromToolAndUpdate(mrat, pos);
 
 					for (int i = 0; i < 4; i++) {
 						guiButtons[mine][i].active = false;
@@ -191,27 +189,27 @@ public class MineRemoteAccessToolScreen extends Screen {
 	/**
 	 * @param mine 0 based
 	 */
-	private int[] getMineCoordinates(int mine) {
+	private BlockPos getMineCoordinates(int mine) {
 		mine++; //mines are stored starting by mine1 up to mine6
 
 		if (mrat.getItem() == SCContent.MINE_REMOTE_ACCESS_TOOL.get() && mrat.hasTag()) {
 			int[] coords = mrat.getTag().getIntArray("mine" + mine);
 
 			if (coords.length == 3)
-				return coords;
+				return new BlockPos(coords[0], coords[1], coords[2]);
 		}
 
-		return new int[0];
+		return null;
 	}
 
-	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z) {
+	private void removeTagFromToolAndUpdate(ItemStack stack, BlockPos pos) {
 		if (stack.getTag() == null)
 			return;
 
 		for (int i = 1; i <= 6; i++) {
 			int[] coords = stack.getTag().getIntArray("mine" + i);
 
-			if (coords.length == 3 && coords[0] == x && coords[1] == y && coords[2] == z) {
+			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
 				stack.getTag().remove("mine" + i);
 				SecurityCraft.CHANNEL.sendToServer(new RemoveMineFromMRAT(i));
 				return;

@@ -9,39 +9,33 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.NetworkEvent;
 
 public class ToggleOption {
-	private int x, y, z, id;
+	private BlockPos pos;
+	private int optionId;
 
 	public ToggleOption() {}
 
-	public ToggleOption(int x, int y, int z, int id) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.id = id;
+	public ToggleOption(BlockPos pos, int opionId) {
+		this.pos = pos;
+		this.optionId = opionId;
 	}
 
 	public ToggleOption(FriendlyByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		id = buf.readInt();
+		pos = buf.readBlockPos();
+		optionId = buf.readInt();
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeInt(id);
+		buf.writeBlockPos(pos);
+		buf.writeInt(optionId);
 	}
 
 	public void handle(NetworkEvent.Context ctx) {
-		BlockPos pos = new BlockPos(x, y, z);
 		Player player = ctx.getSender();
 		BlockEntity be = player.level().getBlockEntity(pos);
 
 		if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
-			customizable.customOptions()[id].toggle();
-			customizable.onOptionChanged(customizable.customOptions()[id]);
+			customizable.customOptions()[optionId].toggle();
+			customizable.onOptionChanged(customizable.customOptions()[optionId]);
 			player.level().sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
 		}
 	}

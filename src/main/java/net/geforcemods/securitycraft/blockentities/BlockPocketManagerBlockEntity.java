@@ -171,7 +171,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	public MutableComponent enableMultiblock() {
 		if (!isEnabled()) { //multiblock detection
 			if (level.isClientSide)
-				SecurityCraft.CHANNEL.sendToServer(new ToggleBlockPocketManager(this, true, getSize()));
+				SecurityCraft.CHANNEL.sendToServer(new ToggleBlockPocketManager(this, true));
 
 			List<BlockPos> blocks = new ArrayList<>();
 			List<BlockPos> sides = new ArrayList<>();
@@ -330,7 +330,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	public MutableComponent autoAssembleMultiblock() {
 		if (!isEnabled()) {
 			if (level.isClientSide)
-				SecurityCraft.CHANNEL.sendToServer(new AssembleBlockPocket(this, getSize()));
+				SecurityCraft.CHANNEL.sendToServer(new AssembleBlockPocket(this));
 
 			final Direction managerFacing = getBlockState().getValue(BlockPocketManagerBlock.FACING);
 			final Direction left = managerFacing.getClockWise();
@@ -513,7 +513,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	public void disableMultiblock() {
 		if (isEnabled()) {
 			if (level.isClientSide) {
-				SecurityCraft.CHANNEL.sendToServer(new ToggleBlockPocketManager(this, false, getSize()));
+				SecurityCraft.CHANNEL.sendToServer(new ToggleBlockPocketManager(this, false));
 				PlayerUtils.sendMessageToPlayer(ClientHandler.getClientPlayer(), Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:blockpocket.deactivated"), ChatFormatting.DARK_AQUA, true);
 			}
 

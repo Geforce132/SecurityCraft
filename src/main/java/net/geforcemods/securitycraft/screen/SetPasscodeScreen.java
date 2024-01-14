@@ -85,7 +85,7 @@ public class SetPasscodeScreen extends Screen {
 	}
 
 	private void saveAndContinueButtonClicked(Button button) {
-		SecurityCraft.CHANNEL.sendToServer(new SetPasscode(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ(), keycodeTextbox.getValue()));
+		SecurityCraft.CHANNEL.sendToServer(new SetPasscode(be.getBlockPos(), keycodeTextbox.getValue()));
 		Minecraft.getInstance().player.closeContainer();
 	}
 }

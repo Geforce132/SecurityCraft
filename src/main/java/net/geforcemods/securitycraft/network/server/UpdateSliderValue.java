@@ -21,7 +21,7 @@ public class UpdateSliderValue {
 
 	public UpdateSliderValue(BlockPos pos, Option<?> option, double v) {
 		this.pos = pos;
-		this.optionName = option.getName();
+		optionName = option.getName();
 		value = v;
 	}
 
