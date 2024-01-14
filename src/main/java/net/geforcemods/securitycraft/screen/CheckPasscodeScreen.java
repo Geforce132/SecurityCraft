@@ -193,7 +193,7 @@ public class CheckPasscodeScreen extends Screen {
 			toggleChildrenActive(false);
 
 		keycodeTextbox.setValue("");
-		SecurityCraft.CHANNEL.sendToServer(new CheckPasscode(pos.getX(), pos.getY(), pos.getZ(), code));
+		SecurityCraft.CHANNEL.sendToServer(new CheckPasscode(pos, code));
 	}
 
 	public static class CensoringEditBox extends EditBox {

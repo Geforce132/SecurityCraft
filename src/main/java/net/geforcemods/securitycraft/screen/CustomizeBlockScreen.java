@@ -234,7 +234,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 			button.setMessage(getOptionButtonTitle(tempOption));
 			hoverCheckers.set(i, new TextHoverChecker(optionButtons[i], getOptionDescription(i)));
-			SecurityCraft.CHANNEL.sendToServer(new ToggleOption(moduleInv.getBlockEntity().getBlockPos().getX(), moduleInv.getBlockEntity().getBlockPos().getY(), moduleInv.getBlockEntity().getBlockPos().getZ(), i));
+			SecurityCraft.CHANNEL.sendToServer(new ToggleOption(moduleInv.getBlockEntity().getBlockPos(), i));
 			return;
 		}
 	}

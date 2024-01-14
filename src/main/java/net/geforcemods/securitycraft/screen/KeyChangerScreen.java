@@ -103,7 +103,7 @@ public class KeyChangerScreen extends Screen {
 	}
 
 	private void confirmButtonClicked(Button button) {
-		SecurityCraft.CHANNEL.sendToServer(new SetPasscode(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ(), textboxNewPasscode.getValue()));
+		SecurityCraft.CHANNEL.sendToServer(new SetPasscode(be.getBlockPos(), textboxNewPasscode.getValue()));
 		Minecraft.getInstance().player.closeContainer();
 		PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), ChatFormatting.GREEN, true);
 	}
