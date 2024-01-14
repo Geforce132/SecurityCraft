@@ -11,34 +11,27 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
 public class CheckPasscode {
+	private BlockPos pos;
 	private String passcode;
-	private int x, y, z;
 
 	public CheckPasscode() {}
 
-	public CheckPasscode(int x, int y, int z, String passcode) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public CheckPasscode(BlockPos pos, String passcode) {
+		this.pos = pos;
 		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
 	}
 
 	public CheckPasscode(FriendlyByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
+		pos = buf.readBlockPos();
 		passcode = buf.readUtf(Integer.MAX_VALUE / 4);
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
+		buf.writeBlockPos(pos);
 		buf.writeUtf(passcode);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		BlockPos pos = new BlockPos(x, y, z);
 		ServerPlayer player = ctx.get().getSender();
 
 		if (player.level().getBlockEntity(pos) instanceof IPasscodeProtected be) {

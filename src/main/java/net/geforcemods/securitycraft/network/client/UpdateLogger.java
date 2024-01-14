@@ -9,51 +9,44 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
 public class UpdateLogger {
-	private int x, y, z, i;
+	private BlockPos pos;
+	private int index;
 	private String username;
 	private String uuid;
 	private long timestamp;
 
 	public UpdateLogger() {}
 
-	public UpdateLogger(int x, int y, int z, int i, String username, String uuid, long timestamp) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.i = i;
+	public UpdateLogger(BlockPos pos, int index, String username, String uuid, long timestamp) {
+		this.index = index;
 		this.username = username;
 		this.uuid = uuid;
 		this.timestamp = timestamp;
 	}
 
 	public UpdateLogger(FriendlyByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		i = buf.readInt();
+		pos = buf.readBlockPos();
+		index = buf.readInt();
 		username = buf.readUtf(Integer.MAX_VALUE / 4);
 		uuid = buf.readUtf(Integer.MAX_VALUE / 4);
 		timestamp = buf.readLong();
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeInt(i);
+		buf.writeBlockPos(pos);
+		buf.writeInt(index);
 		buf.writeUtf(username);
 		buf.writeUtf(uuid);
 		buf.writeLong(timestamp);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		BlockPos pos = new BlockPos(x, y, z);
 		UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) Minecraft.getInstance().player.level().getBlockEntity(pos);
 
 		if (be != null) {
-			be.getPlayers()[i] = username;
-			be.getUuids()[i] = uuid;
-			be.getTimestamps()[i] = timestamp;
+			be.getPlayers()[index] = username;
+			be.getUuids()[index] = uuid;
+			be.getTimestamps()[index] = timestamp;
 		}
 	}
 }
