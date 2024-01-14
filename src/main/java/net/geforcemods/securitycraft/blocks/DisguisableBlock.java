@@ -61,12 +61,9 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
+		int lightValue = level.getAuxLightManager(pos).getLightAt(pos);
 
-		if (disguisedState.getBlock() != this)
-			return disguisedState.getLightEmission(level, pos);
-		else
-			return super.getLightEmission(state, level, pos);
+		return lightValue > 0 ? lightValue : super.getLightEmission(state, level, pos);
 	}
 
 	@Override
