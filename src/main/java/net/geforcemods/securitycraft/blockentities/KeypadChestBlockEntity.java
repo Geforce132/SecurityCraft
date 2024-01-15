@@ -30,6 +30,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -53,6 +54,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
 	private long cooldownEnd = 0;
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private ResourceLocation previousChest;
 
 	public KeypadChestBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), pos, state);
@@ -77,6 +79,9 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 
 		if (owner != null)
 			owner.save(tag, needsValidation());
+
+		if (previousChest != null)
+			tag.putString("previous_chest", previousChest.toString());
 	}
 
 	@Override
@@ -90,6 +95,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		loadSaltKey(tag);
 		loadPasscode(tag);
 		owner.load(tag);
+		previousChest = new ResourceLocation(tag.getString("previous_chest"));
 	}
 
 	@Override
@@ -396,5 +402,13 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		sendMessage.setValue(value);
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
 		setChanged();
+	}
+
+	public void setPreviousChest(Block previousChest) {
+		this.previousChest = Utils.getRegistryName(previousChest);
+	}
+
+	public ResourceLocation getPreviousChest() {
+		return previousChest;
 	}
 }
