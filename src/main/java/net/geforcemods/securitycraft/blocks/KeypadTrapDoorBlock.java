@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadTrapdoorBlockEntity;
@@ -92,25 +92,41 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 
 	public static class Convertible implements IPasscodeConvertible {
 		@Override
-		public boolean isValidStateForConversion(BlockState state) {
+		public boolean isUnprotectedBlock(BlockState state) {
 			return state.is(SCContent.REINFORCED_IRON_TRAPDOOR.get());
 		}
 
 		@Override
-		public boolean convert(Player player, Level level, BlockPos pos) {
+		public boolean isProtectedBlock(BlockState state) {
+			return state.is(SCContent.KEYPAD_TRAPDOOR.get());
+		}
+
+		@Override
+		public boolean protect(Player player, Level level, BlockPos pos) {
+			return convert(level, pos, SCContent.KEYPAD_TRAPDOOR.get());
+		}
+
+		@Override
+		public boolean unprotect(Player player, Level level, BlockPos pos) {
+			return convert(level, pos, SCContent.REINFORCED_IRON_TRAPDOOR.get());
+		}
+
+		private boolean convert(Level level, BlockPos pos, Block convertedBlock) {
 			BlockState state = level.getBlockState(pos);
 			Direction facing = state.getValue(FACING);
 			boolean open = state.getValue(OPEN);
 			Half half = state.getValue(HALF);
 			boolean powered = state.getValue(POWERED);
 			boolean waterlogged = state.getValue(WATERLOGGED);
-			BlockEntity trapdoor = level.getBlockEntity(pos);
-			CompoundTag tag = trapdoor.saveWithFullMetadata();
+			BlockEntity be = level.getBlockEntity(pos);
+			CompoundTag tag;
 
-			level.setBlockAndUpdate(pos, SCContent.KEYPAD_TRAPDOOR.get().defaultBlockState().setValue(FACING, facing).setValue(OPEN, open).setValue(HALF, half).setValue(POWERED, powered).setValue(WATERLOGGED, waterlogged));
-			trapdoor = level.getBlockEntity(pos);
-			trapdoor.load(tag);
-			((IOwnable) trapdoor).setOwner(player.getUUID().toString(), player.getName().getString());
+			if (be instanceof IModuleInventory moduleInv)
+				moduleInv.dropAllModules();
+
+			tag = be.saveWithFullMetadata();
+			level.setBlockAndUpdate(pos, convertedBlock.defaultBlockState().setValue(FACING, facing).setValue(OPEN, open).setValue(HALF, half).setValue(POWERED, powered).setValue(WATERLOGGED, waterlogged));
+			level.getBlockEntity(pos).load(tag);
 			return true;
 		}
 	}
