@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -10,6 +11,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -27,14 +29,17 @@ public class KeyPanelItem extends BlockItem {
 		BlockState state = level.getBlockState(pos);
 		PlayerEntity player = ctx.getPlayer();
 		ItemStack stack = ctx.getItemInHand();
+		TileEntity be = level.getBlockEntity(pos);
 
-		for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
-			if (pc.isUnprotectedBlock(state) && pc.protect(player, level, pos)) {
-				if (!player.isCreative())
-					stack.shrink(1);
+		if (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player)) {
+			for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
+				if (pc.isUnprotectedBlock(state) && pc.protect(player, level, pos)) {
+					if (!player.isCreative())
+						stack.shrink(1);
 
-				level.playSound(null, pos, SCSounds.LOCK.event, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				return ActionResultType.SUCCESS;
+					level.playSound(null, pos, SCSounds.LOCK.event, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					return ActionResultType.SUCCESS;
+				}
 			}
 		}
 

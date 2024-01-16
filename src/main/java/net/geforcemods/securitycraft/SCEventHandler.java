@@ -269,11 +269,12 @@ public class SCEventHandler {
 		}
 
 		World level = event.getWorld();
-		TileEntity be = level.getBlockEntity(event.getPos());
-		BlockState state = level.getBlockState(event.getPos());
+		BlockPos pos = event.getPos();
+		TileEntity be = level.getBlockEntity(pos);
+		BlockState state = level.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (be instanceof ILockable && ((ILockable) be).isLocked() && ((ILockable) be).disableInteractionWhenLocked(level, event.getPos(), player) && !player.isShiftKeyDown()) {
+		if (be instanceof ILockable && ((ILockable) be).isLocked() && ((ILockable) be).disableInteractionWhenLocked(level, pos, player) && !player.isShiftKeyDown()) {
 			if (event.getHand() == Hand.MAIN_HAND) {
 				TranslationTextComponent blockName = Utils.localize(block.getDescriptionId());
 
@@ -317,7 +318,7 @@ public class SCEventHandler {
 
 			ItemStack heldItem = player.getItemInHand(event.getHand());
 
-			if (heldItem.getItem() == SCContent.KEY_PANEL.get()) {
+			if (heldItem.getItem() == SCContent.KEY_PANEL.get() && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player))) {
 				for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
 					if (pc.isUnprotectedBlock(state)) {
 						event.setUseBlock(Result.DENY);
@@ -342,7 +343,7 @@ public class SCEventHandler {
 
 		//outside !world.isRemote for properly checking the interaction
 		//all the sentry functionality for when the sentry is diguised
-		List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AxisAlignedBB(event.getPos()));
+		List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AxisAlignedBB(pos));
 
 		if (!sentries.isEmpty())
 			event.setCanceled(sentries.get(0).mobInteract(player, event.getHand()) == ActionResultType.SUCCESS); //cancel if an action was taken
