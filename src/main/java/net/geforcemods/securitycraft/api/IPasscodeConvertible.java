@@ -46,7 +46,7 @@ public interface IPasscodeConvertible {
 	public boolean protect(Player player, Level level, BlockPos pos);
 
 	/**
-	 * Converts the original block to the passcode-protected one
+	 * Converts the passcode-protected block to the original one
 	 *
 	 * @param player The player who initiated the conversion
 	 * @param level The level in which the conversion takes place

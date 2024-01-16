@@ -114,9 +114,7 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 		private boolean convert(Level level, BlockPos pos, Block convertedBlock) {
 			BlockState state = level.getBlockState(pos);
 			Direction facing = state.getValue(FACING);
-			boolean open = state.getValue(OPEN);
 			Half half = state.getValue(HALF);
-			boolean powered = state.getValue(POWERED);
 			boolean waterlogged = state.getValue(WATERLOGGED);
 			BlockEntity be = level.getBlockEntity(pos);
 			CompoundTag tag;
@@ -125,7 +123,7 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 				moduleInv.dropAllModules();
 
 			tag = be.saveWithFullMetadata();
-			level.setBlockAndUpdate(pos, convertedBlock.defaultBlockState().setValue(FACING, facing).setValue(OPEN, open).setValue(HALF, half).setValue(POWERED, powered).setValue(WATERLOGGED, waterlogged));
+			level.setBlockAndUpdate(pos, convertedBlock.defaultBlockState().setValue(FACING, facing).setValue(OPEN, false).setValue(HALF, half).setValue(POWERED, false).setValue(WATERLOGGED, waterlogged));
 			level.getBlockEntity(pos).load(tag);
 			return true;
 		}
