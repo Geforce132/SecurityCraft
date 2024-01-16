@@ -266,11 +266,12 @@ public class SCEventHandler {
 		}
 
 		Level level = event.getLevel();
-		BlockEntity be = level.getBlockEntity(event.getPos());
-		BlockState state = level.getBlockState(event.getPos());
+		BlockPos pos = event.getPos();
+		BlockEntity be = level.getBlockEntity(pos);
+		BlockState state = level.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, event.getPos(), player) && !player.isShiftKeyDown()) {
+		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, pos, player) && !player.isShiftKeyDown()) {
 			if (event.getHand() == InteractionHand.MAIN_HAND) {
 				MutableComponent blockName = Utils.localize(block.getDescriptionId());
 
@@ -315,7 +316,7 @@ public class SCEventHandler {
 
 			if (heldItem.is(SCContent.KEY_PANEL.get())) {
 				for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
-					if (pc.isUnprotectedBlock(state)) {
+					if (pc.isUnprotectedBlock(state) && (!(level.getBlockEntity(pos) instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 						event.setUseBlock(Result.DENY);
 						event.setUseItem(Result.ALLOW);
 					}
@@ -338,7 +339,7 @@ public class SCEventHandler {
 
 		//outside !world.isRemote for properly checking the interaction
 		//all the sentry functionality for when the sentry is diguised
-		List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(event.getPos()));
+		List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(pos));
 
 		if (!sentries.isEmpty())
 			event.setCanceled(sentries.get(0).mobInteract(player, event.getHand()) == InteractionResult.SUCCESS); //cancel if an action was taken
