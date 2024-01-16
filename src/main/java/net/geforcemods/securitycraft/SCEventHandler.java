@@ -319,7 +319,7 @@ public class SCEventHandler {
 
 			if (heldItem.getItem() == SCContent.KEY_PANEL.get()) {
 				for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
-					if (pc.isValidStateForConversion(state)) {
+					if (pc.isUnprotectedBlock(state)) {
 						event.setUseBlock(Result.DENY);
 						event.setUseItem(Result.ALLOW);
 					}

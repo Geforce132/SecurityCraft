@@ -8,11 +8,13 @@
 - New: Reinforced fences and fence gates
 - New: Config option "preventReinforcedFloorGlitching" to control whether players can glitch through a floor made of reinforced blocks using a boat
 - New: Reinforced Lectern
+- New: Wire Cutters can now be used to remove the passcode protection from a block via sneak-rightclicking
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now
 - Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate
 - Change: Players now take 5 instead of 0.5 hearts of damage when suffocating inside reinforced blocks
+- API: Refactored IPasscodeConvertible to account for the new Wire Cutters functionality
 - Fix: Duplication exploit involving keycards
 - Fix: Duplication exploit involving Reinforced Pistons
 - Fix: Modules in a Passcode-protected Chest get disabled when loading it

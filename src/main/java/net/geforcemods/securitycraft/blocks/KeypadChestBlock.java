@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Optional;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
@@ -13,7 +14,9 @@ import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -46,6 +49,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class KeypadChestBlock extends ChestBlock {
 	private static final TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>> CONTAINER_MERGER = new TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>>() {
@@ -242,17 +246,37 @@ public class KeypadChestBlock extends ChestBlock {
 
 	public static class Convertible implements IPasscodeConvertible {
 		@Override
-		public boolean isValidStateForConversion(BlockState state) {
+		public boolean isUnprotectedBlock(BlockState state) {
 			return state.is(Tags.Blocks.CHESTS_WOODEN);
 		}
 
 		@Override
-		public boolean convert(PlayerEntity player, World level, BlockPos pos) {
+		public boolean isProtectedBlock(BlockState state) {
+			return state.is(SCContent.KEYPAD_CHEST.get());
+		}
+
+		@Override
+		public boolean protect(PlayerEntity player, World level, BlockPos pos) {
+			convert(player, level, pos, true);
+			return true;
+		}
+
+		@Override
+		public boolean unprotect(PlayerEntity player, World level, BlockPos pos) {
+			convert(player, level, pos, false);
+			return true;
+		}
+
+		private void convert(PlayerEntity player, World level, BlockPos pos, boolean protect) {
 			BlockState state = level.getBlockState(pos);
 			Direction facing = state.getValue(FACING);
 			ChestType type = state.getValue(TYPE);
+			ChestTileEntity chest = (ChestTileEntity) level.getBlockEntity(pos);
 
-			convertChest(player, level, pos, facing, type);
+			if (!protect)
+				((IModuleInventory) chest).dropAllModules();
+
+			convertSingleChest(chest, player, level, pos, state, facing, type, protect);
 
 			if (type != ChestType.SINGLE) {
 				BlockPos newPos = pos.relative(getConnectedDirection(state));
@@ -260,23 +284,34 @@ public class KeypadChestBlock extends ChestBlock {
 				Direction newFacing = newState.getValue(FACING);
 				ChestType newType = newState.getValue(TYPE);
 
-				convertChest(player, level, newPos, newFacing, newType);
+				convertSingleChest((ChestTileEntity) level.getBlockEntity(newPos), player, level, newPos, newState, newFacing, newType, protect);
 			}
-
-			return true;
 		}
 
-		private void convertChest(PlayerEntity player, World level, BlockPos pos, Direction facing, ChestType type) {
-			ChestTileEntity chest = (ChestTileEntity) level.getBlockEntity(pos);
+		private void convertSingleChest(ChestTileEntity chest, PlayerEntity player, World level, BlockPos pos, BlockState oldChestState, Direction facing, ChestType type, boolean protect) {
 			CompoundNBT tag;
+			Block convertedBlock;
+
+			if (protect)
+				convertedBlock = SCContent.KEYPAD_CHEST.get();
+			else {
+				convertedBlock = ForgeRegistries.BLOCKS.getValue(((KeypadChestBlockEntity) chest).getPreviousChest());
+
+				if (convertedBlock == Blocks.AIR)
+					convertedBlock = Blocks.CHEST;
+			}
 
 			chest.unpackLootTable(player); //generate loot (if any), so items don't spill out when converting and no additional loot table is generated
 			tag = chest.save(new CompoundNBT());
 			chest.clearContent();
-			level.setBlockAndUpdate(pos, SCContent.KEYPAD_CHEST.get().defaultBlockState().setValue(FACING, facing).setValue(TYPE, type));
-			chest = ((ChestTileEntity) level.getBlockEntity(pos));
-			chest.load(level.getBlockState(pos), tag);
-			((IOwnable) chest).setOwner(player.getUUID().toString(), player.getName().getString());
+			level.setBlockAndUpdate(pos, convertedBlock.defaultBlockState().setValue(FACING, facing).setValue(TYPE, type));
+			chest = (ChestTileEntity) level.getBlockEntity(pos);
+			chest.load(null, tag);
+
+			if (protect) {
+				((IOwnable) chest).setOwner(player.getUUID().toString(), player.getName().getString());
+				((KeypadChestBlockEntity) chest).setPreviousChest(oldChestState.getBlock());
+			}
 		}
 	}
 }

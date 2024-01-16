@@ -36,6 +36,7 @@ import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -57,6 +58,7 @@ public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPassco
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
 	private long cooldownEnd = 0;
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private ResourceLocation previousBarrel;
 
 	@Override
 	public TileEntityType<?> getType() {
@@ -83,6 +85,9 @@ public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPassco
 		if (owner != null)
 			owner.save(tag, needsValidation());
 
+		if (previousBarrel != null)
+			tag.putString("previous_barrel", previousBarrel.toString());
+
 		return tag;
 	}
 
@@ -97,6 +102,7 @@ public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPassco
 		loadSaltKey(tag);
 		loadPasscode(tag);
 		owner.load(tag);
+		previousBarrel = new ResourceLocation(tag.getString("previous_barrel"));
 	}
 
 	@Override
@@ -345,6 +351,14 @@ public class KeypadBarrelBlockEntity extends BarrelTileEntity implements IPassco
 		double z = worldPosition.getZ() + 0.5D + facingNormal.getZ() / 2.0D;
 
 		level.playSound(null, x, y, z, sound, SoundCategory.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
+	}
+
+	public void setPreviousBarrel(Block previousBarrel) {
+		this.previousBarrel = previousBarrel.getRegistryName();
+	}
+
+	public ResourceLocation getPreviousBarrel() {
+		return previousBarrel;
 	}
 
 	private Direction directionFromLidFacing(BlockState state, LidFacing lidFacing) {

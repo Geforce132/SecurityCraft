@@ -15,6 +15,7 @@ import net.minecraft.block.BarrelBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
@@ -46,6 +47,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class KeypadBarrelBlock extends DisguisableBlock {
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -180,12 +182,17 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 
 	public static class Convertible implements IPasscodeConvertible {
 		@Override
-		public boolean isValidStateForConversion(BlockState state) {
+		public boolean isUnprotectedBlock(BlockState state) {
 			return state.is(Tags.Blocks.BARRELS_WOODEN);
 		}
 
 		@Override
-		public boolean convert(PlayerEntity player, World level, BlockPos pos) {
+		public boolean isProtectedBlock(BlockState state) {
+			return state.is(SCContent.KEYPAD_BARREL.get());
+		}
+
+		@Override
+		public boolean protect(PlayerEntity player, World level, BlockPos pos) {
 			BlockState state = level.getBlockState(pos);
 			BarrelTileEntity barrel = (BarrelTileEntity) level.getBlockEntity(pos);
 			LidFacing generalFacing = LidFacing.fromDirection(state.getValue(BarrelBlock.FACING));
@@ -206,10 +213,46 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 					horizontalFacing = state.getValue(BarrelBlock.FACING);
 			}
 
-			level.setBlockAndUpdate(pos, SCContent.KEYPAD_BARREL.get().defaultBlockState().setValue(HORIZONTAL_FACING, horizontalFacing).setValue(LID_FACING, generalFacing).setValue(OPEN, state.getValue(BarrelBlock.OPEN)));
+			level.setBlockAndUpdate(pos, SCContent.KEYPAD_BARREL.get().defaultBlockState().setValue(HORIZONTAL_FACING, horizontalFacing).setValue(LID_FACING, generalFacing).setValue(OPEN, false));
 			keypadBarrel = (KeypadBarrelBlockEntity) level.getBlockEntity(pos);
 			keypadBarrel.load(keypadBarrel.getBlockState(), tag);
 			keypadBarrel.setOwner(player.getUUID().toString(), player.getName().getString());
+			keypadBarrel.setPreviousBarrel(state.getBlock());
+			return true;
+		}
+
+		@Override
+		public boolean unprotect(PlayerEntity player, World level, BlockPos pos) {
+			BlockState state = level.getBlockState(pos);
+			KeypadBarrelBlockEntity keypadBarrel = (KeypadBarrelBlockEntity) level.getBlockEntity(pos);
+			LidFacing lidFacing = state.getValue(LID_FACING);
+			Direction direction = null;
+			CompoundNBT tag;
+			BarrelTileEntity barrel;
+			Block convertedBlock = ForgeRegistries.BLOCKS.getValue(keypadBarrel.getPreviousBarrel());
+
+			switch (lidFacing) {
+				case UP:
+					direction = Direction.UP;
+					break;
+				case SIDEWAYS:
+					direction = state.getValue(KeypadBarrelBlock.HORIZONTAL_FACING);
+					break;
+				case DOWN:
+					direction = Direction.DOWN;
+					break;
+			}
+
+			if (convertedBlock == Blocks.AIR)
+				convertedBlock = Blocks.BARREL;
+
+			keypadBarrel.dropAllModules();
+			keypadBarrel.unpackLootTable(player); //generate loot (if any), so items don't spill out when converting and no additional loot table is generated
+			tag = keypadBarrel.save(new CompoundNBT());
+			keypadBarrel.clearContent();
+			level.setBlockAndUpdate(pos, convertedBlock.defaultBlockState().setValue(BarrelBlock.FACING, direction).setValue(OPEN, false));
+			barrel = (BarrelTileEntity) level.getBlockEntity(pos);
+			barrel.load(null, tag);
 			return true;
 		}
 	}

@@ -37,6 +37,7 @@ import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
@@ -55,6 +56,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
 	private long cooldownEnd = 0;
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private ResourceLocation previousChest;
 
 	public KeypadChestBlockEntity() {
 		super(SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get());
@@ -80,6 +82,9 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 		if (owner != null)
 			owner.save(tag, needsValidation());
 
+		if (previousChest != null)
+			tag.putString("previous_chest", previousChest.toString());
+
 		return tag;
 	}
 
@@ -94,6 +99,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 		loadSaltKey(tag);
 		loadPasscode(tag);
 		owner.load(tag);
+		previousChest = new ResourceLocation(tag.getString("previous_chest"));
 	}
 
 	@Override
@@ -400,5 +406,13 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 	public void setSendsMessages(boolean value) {
 		sendMessage.setValue(value);
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
+	}
+
+	public void setPreviousChest(Block previousChest) {
+		this.previousChest = previousChest.getRegistryName();
+	}
+
+	public ResourceLocation getPreviousChest() {
+		return previousChest;
 	}
 }
