@@ -219,6 +219,7 @@ import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.items.UniversalBlockRemoverItem;
 import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
+import net.geforcemods.securitycraft.items.WireCuttersItem;
 import net.geforcemods.securitycraft.misc.BlockEntityNBTCondition;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -2633,7 +2634,7 @@ public class SCContent {
 	@HasManualPage
 	public static final RegistryObject<Item> UNIVERSAL_OWNER_CHANGER = ITEMS.register("universal_owner_changer", () -> new UniversalOwnerChangerItem(itemProp().stacksTo(1).defaultDurability(48)));
 	@HasManualPage
-	public static final RegistryObject<Item> WIRE_CUTTERS = ITEMS.register("wire_cutters", () -> new Item(itemProp().stacksTo(1).defaultDurability(476)));
+	public static final RegistryObject<Item> WIRE_CUTTERS = ITEMS.register("wire_cutters", () -> new WireCuttersItem(itemProp().stacksTo(1).defaultDurability(476)));
 
 	//modules
 	@HasManualPage
