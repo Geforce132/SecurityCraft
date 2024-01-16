@@ -40,6 +40,7 @@
 - Fix: Briefcases lose their passcode when they are moved to another slot in the Creative inventory screen
 - Fix: Modules that are inserted in reinforced blocks get deleted when unreinforcing these blocks
 - Fix: Mobs can be converted multiple times by an Electrified Iron Fence (Gate)
+- Fix: Anyone can convert a Frame/Reinforced Iron Trapdoor to a Keypad/Passcode-protected Trapdoor
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 

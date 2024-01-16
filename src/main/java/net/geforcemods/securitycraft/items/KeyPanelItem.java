@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -29,7 +30,7 @@ public class KeyPanelItem extends BlockItem {
 		ItemStack stack = ctx.getItemInHand();
 
 		for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
-			if (pc.isUnprotectedBlock(state) && pc.protect(player, level, pos)) {
+			if (pc.isUnprotectedBlock(state) && (!(level.getBlockEntity(pos) instanceof IOwnable ownable) || ownable.isOwnedBy(player)) && pc.protect(player, level, pos)) {
 				if (!player.isCreative())
 					stack.shrink(1);
 
