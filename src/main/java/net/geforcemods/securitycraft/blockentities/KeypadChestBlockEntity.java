@@ -410,7 +410,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	}
 
 	public void setPreviousChest(Block previousChest) {
-		this.previousChest = Utils.getRegistryName(previousChest);
+		this.previousChest = previousChest.getRegistryName();
 	}
 
 	public ResourceLocation getPreviousChest() {

@@ -333,7 +333,7 @@ public class KeypadBarrelBlockEntity extends BarrelBlockEntity implements IPassc
 	}
 
 	public void setPreviousBarrel(Block previousBarrel) {
-		this.previousBarrel = Utils.getRegistryName(previousBarrel);
+		this.previousBarrel = previousBarrel.getRegistryName();
 	}
 
 	public ResourceLocation getPreviousBarrel() {

@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
@@ -47,6 +46,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class KeypadBarrelBlock extends DisguisableBlock {
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -213,7 +213,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 			};
 			CompoundTag tag;
 			BarrelBlockEntity barrel;
-			Block convertedBlock = BuiltInRegistries.BLOCK.get(keypadBarrel.getPreviousBarrel());
+			Block convertedBlock = ForgeRegistries.BLOCKS.getValue(keypadBarrel.getPreviousBarrel());
 
 			if (convertedBlock == Blocks.AIR)
 				convertedBlock = Blocks.BARREL;
