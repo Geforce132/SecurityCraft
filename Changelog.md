@@ -47,6 +47,7 @@
 - Fix: The Reinforced Cauldron can't be un-/reinforced in the Universal Block Reinforcer's GUI
 - Fix: The un-/reinforcing recipes for the Reinforced Cauldron don't show up correctly in JEI
 - Fix: Reinforced Iron Trapdoors and lit furnaces cannot be passcode-protected
+- Fix: Anyone can convert a Frame/Reinforced Iron Trapdoor to a Keypad/Passcode-protected Trapdoor
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
