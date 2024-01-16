@@ -29,7 +29,7 @@ public class KeyPanelItem extends BlockItem {
 		ItemStack stack = ctx.getItemInHand();
 
 		for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
-			if (pc.isValidStateForConversion(state) && pc.convert(player, level, pos)) {
+			if (pc.isUnprotectedBlock(state) && pc.protect(player, level, pos)) {
 				if (!player.isCreative())
 					stack.shrink(1);
 
