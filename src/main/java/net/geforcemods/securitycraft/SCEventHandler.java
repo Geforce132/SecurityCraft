@@ -335,9 +335,9 @@ public class SCEventHandler {
 
 			ItemStack heldItem = player.getItemInHand(event.getHand());
 
-			if (heldItem.is(SCContent.KEY_PANEL.get())) {
+			if (heldItem.is(SCContent.KEY_PANEL.get()) && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 				for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
-					if (pc.isUnprotectedBlock(state) && (!(level.getBlockEntity(pos) instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+					if (pc.isUnprotectedBlock(state)) {
 						event.setUseBlock(Result.DENY);
 						event.setUseItem(Result.ALLOW);
 					}
