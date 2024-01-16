@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
@@ -12,6 +13,7 @@ import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -25,7 +27,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -242,22 +243,55 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 		}
 
 		@Override
-		public boolean isValidStateForConversion(IBlockState state) {
-			return state.getBlock() == Blocks.FURNACE;
+		public boolean isUnprotectedBlock(IBlockState state) {
+			return state.getBlock() == Blocks.FURNACE || state.getBlock() == Blocks.LIT_FURNACE;
 		}
 
 		@Override
-		public boolean convert(EntityPlayer player, World world, BlockPos pos) {
-			EnumFacing facing = world.getBlockState(pos).getValue(FACING);
-			TileEntityFurnace furnace = (TileEntityFurnace) world.getTileEntity(pos);
-			NBTTagCompound tag = furnace.writeToNBT(new NBTTagCompound());
+		public boolean isProtectedBlock(IBlockState state) {
+			return state.getBlock() == SCContent.keypadFurnace;
+		}
+
+		@Override
+		public boolean protect(EntityPlayer player, World level, BlockPos pos) {
+			return convert(player, level, pos, true);
+		}
+
+		@Override
+		public boolean unprotect(EntityPlayer player, World level, BlockPos pos) {
+			return convert(player, level, pos, false);
+		}
+
+		public boolean convert(EntityPlayer player, World world, BlockPos pos, boolean protect) {
+			IBlockState oldState = world.getBlockState(pos);
+			boolean isLit;
+
+			if (protect)
+				isLit = oldState.getBlock() == Blocks.LIT_FURNACE;
+			else
+				isLit = oldState.getValue(LIT);
+
+			Block convertedBlock = protect ? SCContent.keypadFurnace : (isLit ? Blocks.LIT_FURNACE : Blocks.FURNACE);
+			EnumFacing facing = oldState.getValue(FACING);
+			IBlockState convertedState = convertedBlock.getDefaultState().withProperty(FACING, facing);
+			TileEntity be = world.getTileEntity(pos);
+			NBTTagCompound tag;
 			TileEntity newTe;
 
-			furnace.clear();
-			world.setBlockState(pos, SCContent.keypadFurnace.getDefaultState().withProperty(FACING, facing).withProperty(OPEN, false));
+			if (protect)
+				convertedState = convertedState.withProperty(OPEN, false).withProperty(LIT, isLit);
+			else
+				((IModuleInventory) be).dropAllModules();
+
+			tag = be.writeToNBT(new NBTTagCompound());
+			((IInventory) be).clear();
+			world.setBlockState(pos, convertedState);
 			newTe = world.getTileEntity(pos);
-			((KeypadFurnaceBlockEntity) newTe).readFromNBT(tag);
-			((IOwnable) newTe).setOwner(player.getUniqueID().toString(), player.getName());
+			newTe.readFromNBT(tag);
+
+			if (protect)
+				((IOwnable) newTe).setOwner(player.getUniqueID().toString(), player.getName());
+
 			return true;
 		}
 	}

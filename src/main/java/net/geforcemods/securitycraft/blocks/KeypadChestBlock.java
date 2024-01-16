@@ -1,8 +1,11 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
@@ -13,7 +16,6 @@ import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -24,6 +26,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
@@ -46,6 +49,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class KeypadChestBlock extends OwnableBlock {
@@ -495,46 +499,80 @@ public class KeypadChestBlock extends OwnableBlock {
 		}
 
 		@Override
-		public boolean isValidStateForConversion(IBlockState state) {
-			return OreDictionary.getOres("chestWood").stream().anyMatch(stack -> stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).getBlock() == state.getBlock());
+		public boolean isUnprotectedBlock(IBlockState state) {
+			List<ItemStack> chests = new ArrayList<>();
+
+			chests.addAll(OreDictionary.getOres("chestWood"));
+			chests.addAll(OreDictionary.getOres("chestTrapped"));
+			return chests.stream().anyMatch(stack -> stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).getBlock() == state.getBlock());
 		}
 
 		@Override
-		public boolean convert(EntityPlayer player, World world, BlockPos pos) {
-			EnumFacing facing = world.getBlockState(pos).getValue(FACING);
-			EnumFacing doubleFacing = getDoubleChestFacing(world, pos);
+		public boolean isProtectedBlock(IBlockState state) {
+			return state.getBlock() == SCContent.keypadChest;
+		}
 
-			convertChest(player, world, pos, facing);
-
-			if (doubleFacing != EnumFacing.UP) {
-				BlockPos newPos = pos.offset(doubleFacing);
-
-				convertChest(player, world, newPos, world.getBlockState(newPos).getValue(FACING));
-			}
-
+		@Override
+		public boolean protect(EntityPlayer player, World level, BlockPos pos) {
+			convert(player, level, pos, true);
 			return true;
 		}
 
-		private void convertChest(EntityPlayer player, World world, BlockPos pos, EnumFacing facing) {
+		@Override
+		public boolean unprotect(EntityPlayer player, World level, BlockPos pos) {
+			convert(player, level, pos, false);
+			return true;
+		}
+
+		public void convert(EntityPlayer player, World world, BlockPos pos, boolean protect) {
+			IBlockState oldChestState = world.getBlockState(pos);
+			EnumFacing facing = oldChestState.getValue(FACING);
+			EnumFacing doubleFacing = getDoubleChestFacing(oldChestState, world, pos);
 			TileEntityChest chest = (TileEntityChest) world.getTileEntity(pos);
+
+			if (!protect)
+				((IModuleInventory) chest).dropAllModules();
+
+			convertSingleChest(chest, player, world, pos, oldChestState, facing, protect);
+
+			if (doubleFacing != EnumFacing.UP) {
+				pos = pos.offset(doubleFacing);
+				oldChestState = world.getBlockState(pos);
+				convertSingleChest((TileEntityChest) world.getTileEntity(pos), player, world, pos, oldChestState, oldChestState.getValue(FACING), protect);
+			}
+		}
+
+		private void convertSingleChest(TileEntityChest chest, EntityPlayer player, World world, BlockPos pos, IBlockState oldChestState, EnumFacing facing, boolean protect) {
 			NBTTagCompound tag;
 			TileEntity newTe;
+			Block convertedBlock;
+
+			if (protect)
+				convertedBlock = SCContent.keypadChest;
+			else {
+				convertedBlock = ForgeRegistries.BLOCKS.getValue(((KeypadChestBlockEntity) chest).getPreviousChest());
+
+				if (convertedBlock == Blocks.AIR)
+					convertedBlock = Blocks.CHEST;
+			}
 
 			chest.fillWithLoot(player); //generate loot (if any), so items don't spill out when converting and no additional loot table is generated
 			tag = chest.writeToNBT(new NBTTagCompound());
 			chest.clear();
-			world.setBlockState(pos, SCContent.keypadChest.getDefaultState().withProperty(FACING, facing));
+			world.setBlockState(pos, convertedBlock.getDefaultState().withProperty(FACING, facing));
 			newTe = world.getTileEntity(pos);
-			((TileEntityChest) newTe).readFromNBT(tag);
-			((IOwnable) newTe).setOwner(player.getUniqueID().toString(), player.getName());
+			newTe.readFromNBT(tag);
+
+			if (protect) {
+				((IOwnable) newTe).setOwner(player.getUniqueID().toString(), player.getName());
+				((KeypadChestBlockEntity) newTe).setPreviousChest(oldChestState.getBlock());
+			}
 		}
 
-		private EnumFacing getDoubleChestFacing(World world, BlockPos pos) {
-			if (world.getBlockState(pos).getBlock() instanceof BlockChest) {
-				for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
-					if (world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockChest)
-						return facing;
-				}
+		private EnumFacing getDoubleChestFacing(IBlockState oldChestState, World world, BlockPos pos) {
+			for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
+				if (world.getBlockState(pos.offset(facing)).getBlock() == oldChestState.getBlock())
+					return facing;
 			}
 
 			return EnumFacing.UP;

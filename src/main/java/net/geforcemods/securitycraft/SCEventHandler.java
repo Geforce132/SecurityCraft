@@ -250,8 +250,8 @@ public class SCEventHandler {
 			((SecurityCamera) player.getSpectatingEntity()).stopViewing(player);
 		}
 	}
-    
-    @SubscribeEvent
+
+	@SubscribeEvent
 	public static void onDismount(EntityMountEvent event) {
 		if (!event.getWorldObj().isRemote && ConfigHandler.preventReinforcedFloorGlitching && event.isDismounting() && event.getEntityBeingMounted() instanceof EntityBoat && event.getEntityMounting() instanceof EntityPlayer) {
 			EntityBoat boat = (EntityBoat) event.getEntityBeingMounted();
@@ -385,7 +385,7 @@ public class SCEventHandler {
 
 		if (heldItem == SCContent.keyPanel) {
 			for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
-				if (pc.isValidStateForConversion(state)) {
+				if (pc.isUnprotectedBlock(state)) {
 					event.setUseBlock(Result.DENY);
 					event.setUseItem(Result.ALLOW);
 				}

@@ -34,6 +34,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -53,6 +54,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
 	private long cooldownEnd = 0;
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private ResourceLocation previousChest;
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
@@ -74,6 +76,9 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 		if (owner != null)
 			owner.save(tag, needsValidation());
 
+		if (previousChest != null)
+			tag.setString("previous_chest", previousChest.toString());
+
 		return tag;
 	}
 
@@ -93,6 +98,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 		loadSaltKey(tag);
 		loadPasscode(tag);
 		owner.load(tag);
+		previousChest = new ResourceLocation(tag.getString("previous_chest"));
 	}
 
 	@Override
@@ -432,6 +438,14 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 
 	@Override
 	public ITextComponent getDefaultName() {
-		return Utils.localize(SCContent.keypadChest.getTranslationKey() + ".name");
+		return Utils.localize(SCContent.keypadChest);
+	}
+
+	public void setPreviousChest(Block previousChest) {
+		this.previousChest = previousChest.getRegistryName();
+	}
+
+	public ResourceLocation getPreviousChest() {
+		return previousChest;
 	}
 }

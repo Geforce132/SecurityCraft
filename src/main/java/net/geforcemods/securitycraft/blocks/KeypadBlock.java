@@ -198,16 +198,32 @@ public class KeypadBlock extends DisguisableBlock {
 		}
 
 		@Override
-		public boolean isValidStateForConversion(IBlockState state) {
+		public boolean isUnprotectedBlock(IBlockState state) {
 			return state.getBlock() == SCContent.frame;
 		}
 
 		@Override
-		public boolean convert(EntityPlayer player, World world, BlockPos pos) {
-			Owner oldOwner = ((IOwnable) world.getTileEntity(pos)).getOwner();
+		public boolean isProtectedBlock(IBlockState state) {
+			return state.getBlock() == SCContent.keypad;
+		}
+
+		@Override
+		public boolean protect(EntityPlayer player, World world, BlockPos pos) {
+			Owner owner = ((IOwnable) world.getTileEntity(pos)).getOwner();
 
 			world.setBlockState(pos, SCContent.keypad.getDefaultState().withProperty(KeypadBlock.FACING, world.getBlockState(pos).getValue(FrameBlock.FACING)).withProperty(KeypadBlock.POWERED, false));
-			((IOwnable) world.getTileEntity(pos)).setOwner(oldOwner.getUUID(), oldOwner.getName());
+			((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
+			return true;
+		}
+
+		@Override
+		public boolean unprotect(EntityPlayer player, World world, BlockPos pos) {
+			KeypadBlockEntity be = (KeypadBlockEntity) world.getTileEntity(pos);
+			Owner owner = be.getOwner();
+
+			be.dropAllModules();
+			world.setBlockState(pos, SCContent.frame.getDefaultState().withProperty(FrameBlock.FACING, world.getBlockState(pos).getValue(KeypadBlock.FACING)));
+			((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
 			return true;
 		}
 	}

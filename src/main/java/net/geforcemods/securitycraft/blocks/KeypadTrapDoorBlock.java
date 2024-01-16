@@ -3,10 +3,9 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.function.Function;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
-import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeypadTrapdoorBlockEntity;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseIronTrapDoorBlock;
 import net.geforcemods.securitycraft.misc.SaltData;
@@ -88,24 +87,38 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 		}
 
 		@Override
-		public boolean isValidStateForConversion(IBlockState state) {
-			return state.getBlock() == SCContent.frame;
+		public boolean isUnprotectedBlock(IBlockState state) {
+			return state.getBlock() == SCContent.reinforcedIronTrapdoor;
 		}
 
 		@Override
-		public boolean convert(EntityPlayer player, World level, BlockPos pos) {
+		public boolean isProtectedBlock(IBlockState state) {
+			return state.getBlock() == SCContent.keypadTrapdoor;
+		}
+
+		@Override
+		public boolean protect(EntityPlayer player, World level, BlockPos pos) {
+			return convert(level, pos, SCContent.keypadTrapdoor);
+		}
+
+		@Override
+		public boolean unprotect(EntityPlayer player, World level, BlockPos pos) {
+			return convert(level, pos, SCContent.reinforcedIronTrapdoor);
+		}
+
+		public boolean convert(World level, BlockPos pos, Block convertedBlock) {
 			IBlockState state = level.getBlockState(pos);
 			EnumFacing facing = state.getValue(FACING);
-			boolean open = state.getValue(OPEN);
 			DoorHalf half = state.getValue(HALF);
-			TileEntity trapdoor = level.getTileEntity(pos);
-			Owner oldOwner = ((IOwnable) trapdoor).getOwner();
-			NBTTagCompound tag = trapdoor.writeToNBT(new NBTTagCompound());
+			TileEntity be = level.getTileEntity(pos);
+			NBTTagCompound tag;
 
-			level.setBlockState(pos, SCContent.keypadTrapdoor.getDefaultState().withProperty(FACING, facing).withProperty(OPEN, open).withProperty(HALF, half));
-			trapdoor = level.getTileEntity(pos);
-			trapdoor.readFromNBT(tag);
-			((IOwnable) trapdoor).setOwner(oldOwner.getUUID(), oldOwner.getName());
+			if (be instanceof IModuleInventory)
+				((IModuleInventory) be).dropAllModules();
+
+			tag = be.writeToNBT(new NBTTagCompound());
+			level.setBlockState(pos, convertedBlock.getDefaultState().withProperty(FACING, facing).withProperty(OPEN, false).withProperty(HALF, half));
+			level.getTileEntity(pos).readFromNBT(tag);
 			return true;
 		}
 	}
