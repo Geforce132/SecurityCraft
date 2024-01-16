@@ -46,6 +46,7 @@
 - Fix: Modules that are inserted in reinforced blocks get deleted when unreinforcing these blocks
 - Fix: Mobs can be converted multiple times by an Electrified Iron Fence (Gate)
 - Fix: The Electrified Iron Fence Gate can be used as fuel in a furnace
+- Fix: Anyone can convert a Frame/Reinforced Iron Trapdoor to a Keypad/Passcode-protected Trapdoor
 - Removed: Ability to change the subpage in the SecurityCraft Manual using the arrow keys. This is still possible by scrolling while holding down CTRL
 - Misc.: The minimum required NeoForge version is 20.2.88 (necessary to fix players getting kicked from the server when placing a Sentry)
 
