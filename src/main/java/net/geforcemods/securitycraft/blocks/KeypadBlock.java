@@ -172,6 +172,7 @@ public class KeypadBlock extends DisguisableBlock {
 		public boolean unprotect(Player player, Level level, BlockPos pos) {
 			((IModuleInventory) level.getBlockEntity(pos)).dropAllModules();
 			level.setBlockAndUpdate(pos, SCContent.FRAME.get().defaultBlockState().setValue(FrameBlock.FACING, level.getBlockState(pos).getValue(KeypadBlock.FACING)));
+			((IOwnable) level.getBlockEntity(pos)).setOwner(player.getUUID().toString(), player.getName().getString());
 			return true;
 		}
 	}
