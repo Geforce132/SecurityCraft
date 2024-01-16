@@ -31,6 +31,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
@@ -55,6 +56,7 @@ public class KeypadBarrelBlockEntity extends BarrelBlockEntity implements IPassc
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
 	private long cooldownEnd = 0;
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private ResourceLocation previousBarrel;
 
 	public KeypadBarrelBlockEntity(BlockPos pos, BlockState state) {
 		super(pos, state);
@@ -85,6 +87,9 @@ public class KeypadBarrelBlockEntity extends BarrelBlockEntity implements IPassc
 
 		if (owner != null)
 			owner.save(tag, needsValidation());
+
+		if (previousBarrel != null)
+			tag.putString("previous_barrel", previousBarrel.toString());
 	}
 
 	@Override
@@ -98,6 +103,7 @@ public class KeypadBarrelBlockEntity extends BarrelBlockEntity implements IPassc
 		loadSaltKey(tag);
 		loadPasscode(tag);
 		owner.load(tag);
+		previousBarrel = new ResourceLocation(tag.getString("previous_barrel"));
 	}
 
 	@Override
@@ -324,5 +330,13 @@ public class KeypadBarrelBlockEntity extends BarrelBlockEntity implements IPassc
 		double z = worldPosition.getZ() + 0.5D + facingNormal.getZ() / 2.0D;
 
 		level.playSound(null, x, y, z, sound, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
+	}
+
+	public void setPreviousBarrel(Block previousBarrel) {
+		this.previousBarrel = Utils.getRegistryName(previousBarrel);
+	}
+
+	public ResourceLocation getPreviousBarrel() {
+		return previousBarrel;
 	}
 }
