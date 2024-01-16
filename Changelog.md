@@ -12,6 +12,7 @@
 - New: SecurityCraft's /sc command can now be accessed via /securitycraft as well
 - New: "/sc owner" command to set/fill the owner of blocks
 - New: The Bouncing Betty, Claymore, Frame, Mine, Panic Button, and Security Camera are now waterloggable
+- New: The existing "Message" option has been split up into separate "Allowlist Message" and "Denylist Message" options
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now
 - Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate

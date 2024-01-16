@@ -190,6 +190,28 @@ public abstract class Option<T> {
 		}
 	}
 
+	public static class SendAllowlistMessageOption extends BooleanOption {
+		public SendAllowlistMessageOption(Boolean value) {
+			super("sendAllowlistMessage", value);
+		}
+
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.sendAllowlistMessage";
+		}
+	}
+
+	public static class SendDenylistMessageOption extends BooleanOption {
+		public SendDenylistMessageOption(Boolean value) {
+			super("sendDenylistMessage", value);
+		}
+
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.sendDenylistMessage";
+		}
+	}
+
 	/**
 	 * A subclass of {@link Option}, set up to handle integers.
 	 */
