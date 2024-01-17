@@ -84,8 +84,10 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYCARD_READER.get());
+		if (state.getValue(POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYCARD_READER.get());
+		}
 	}
 
 	@Override

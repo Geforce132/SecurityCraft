@@ -94,9 +94,14 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 				else if (activatedOnlyByPlayer())
 					return false;
 
-				level.setBlockAndUpdate(worldPosition, state.setValue(RetinalScannerBlock.POWERED, true));
+				int signalLength = getSignalLength();
+
+				level.setBlockAndUpdate(worldPosition, state.cycle(RetinalScannerBlock.POWERED));
 				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.RETINAL_SCANNER.get());
-				level.scheduleTick(new BlockPos(worldPosition), SCContent.RETINAL_SCANNER.get(), getSignalLength());
+
+				if (signalLength > 0)
+					level.scheduleTick(new BlockPos(worldPosition), SCContent.RETINAL_SCANNER.get(), signalLength);
+
 				return true;
 			}
 		}

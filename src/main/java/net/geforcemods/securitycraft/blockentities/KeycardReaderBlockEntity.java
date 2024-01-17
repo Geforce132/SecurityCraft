@@ -211,10 +211,13 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 
 	public void activate() {
 		Block block = getBlockState().getBlock();
+		int signalLength = getSignalLength();
 
-		level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, true));
+		level.setBlockAndUpdate(worldPosition, getBlockState().cycle(BlockStateProperties.POWERED));
 		BlockUtils.updateIndirectNeighbors(level, worldPosition, block);
-		level.scheduleTick(worldPosition, block, getSignalLength());
+
+		if (signalLength > 0)
+			level.scheduleTick(worldPosition, block, signalLength);
 	}
 
 	public void setAcceptedLevels(boolean[] acceptedLevels) {

@@ -517,9 +517,13 @@ public class SCEventHandler {
 			riftStabilizer.setLastTeleport(Math.max(Math.abs(distance.x), Math.max(Math.abs(distance.y), Math.abs(distance.z))) - 0.5D, type);
 
 			if (riftStabilizer.isModuleEnabled(ModuleType.REDSTONE)) {
-				level.setBlockAndUpdate(pos, riftStabilizer.getBlockState().setValue(RiftStabilizerBlock.POWERED, true));
+				int signalLength = riftStabilizer.getSignalLength();
+
+				level.setBlockAndUpdate(pos, riftStabilizer.getBlockState().cycle(RiftStabilizerBlock.POWERED));
 				BlockUtils.updateIndirectNeighbors(level, pos, SCContent.RIFT_STABILIZER.get());
-				level.scheduleTick(pos, SCContent.RIFT_STABILIZER.get(), riftStabilizer.getSignalLength());
+
+				if (signalLength > 0)
+					level.scheduleTick(pos, SCContent.RIFT_STABILIZER.get(), signalLength);
 			}
 
 			event.setCanceled(true);

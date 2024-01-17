@@ -65,7 +65,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	public void tick(Level level, BlockPos pos, BlockState state) {
 		if (cooldown > 0)
 			cooldown--;
-		else if (providePower)
+		else if (providePower && signalLength.get() > 0)
 			togglePowerOutput();
 	}
 
@@ -304,7 +304,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.INVENTORY_SCANNER.get());
 		setChanged();
 
-		if (providePower)
+		if (providePower && signalLength.get() > 0)
 			cooldown = signalLength.get();
 	}
 
