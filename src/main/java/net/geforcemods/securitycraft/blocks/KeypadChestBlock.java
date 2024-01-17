@@ -301,7 +301,9 @@ public class KeypadChestBlock extends ChestBlock {
 			chest.load(tag);
 
 			if (protect) {
-				((IOwnable) chest).setOwner(player.getUUID().toString(), player.getName().getString());
+				if (player != null)
+					((IOwnable) chest).setOwner(player.getUUID().toString(), player.getName().getString());
+
 				((KeypadChestBlockEntity) chest).setPreviousChest(oldChestState.getBlock());
 			}
 		}

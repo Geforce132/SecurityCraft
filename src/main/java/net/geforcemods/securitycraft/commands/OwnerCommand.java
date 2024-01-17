@@ -8,7 +8,6 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.Dynamic2CommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -18,6 +17,7 @@ import net.minecraft.commands.arguments.GameProfileArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.commands.FillCommand;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -25,7 +25,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 public class OwnerCommand {
 	private static final SimpleCommandExceptionType ERROR_SET_FAILED = new SimpleCommandExceptionType(Component.translatable("commands.securitycraft.owner.set.failed"));
 	private static final SimpleCommandExceptionType ERROR_FILL_FAILED = new SimpleCommandExceptionType(Component.translatable("commands.securitycraft.owner.fill.failed"));
-	private static final Dynamic2CommandExceptionType ERROR_AREA_TOO_LARGE = new Dynamic2CommandExceptionType((maxAmount, amountSpecified) -> Component.translatableEscape("commands.fill.toobig", maxAmount, amountSpecified));
 
 	public static ArgumentBuilder<CommandSourceStack, ?> register() {
 		//@formatter:off
@@ -86,7 +85,7 @@ public class OwnerCommand {
 		int commandModificationBlockLimit = level.getGameRules().getInt(GameRules.RULE_COMMAND_MODIFICATION_BLOCK_LIMIT);
 
 		if (blockCount > commandModificationBlockLimit)
-			throw ERROR_AREA_TOO_LARGE.create(commandModificationBlockLimit, blockCount);
+			throw FillCommand.ERROR_AREA_TOO_LARGE.create(commandModificationBlockLimit, blockCount);
 		else {
 			int blocksModified = 0;
 
@@ -97,9 +96,8 @@ public class OwnerCommand {
 				}
 			}
 
-			if (blocksModified == 0) {
+			if (blocksModified == 0)
 				throw ERROR_FILL_FAILED.create();
-			}
 			else {
 				int finalBlocksModified = blocksModified;
 
