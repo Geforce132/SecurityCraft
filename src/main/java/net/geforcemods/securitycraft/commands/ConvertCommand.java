@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.neoforged.neoforge.common.util.TriPredicate;
-import net.neoforged.neoforge.server.command.EnumArgument;
 
 public class ConvertCommand {
 	private static final SimpleCommandExceptionType ERROR_SET_FAILED = new SimpleCommandExceptionType(Component.translatableWithFallback("commands.securitycraft.convert.set.failed", "There is no convertible block at the given position"));
@@ -31,7 +30,7 @@ public class ConvertCommand {
 		//@formatter:off
 		return Commands.literal("convert")
                 .requires(ctx -> ctx.hasPermission(2))
-                .then(Commands.argument("mode", EnumArgument.enumArgument(ConversionMode.class))
+                .then(Commands.argument("mode", LowercasedEnumArgument.enumArgument(ConversionMode.class))
                 		.then(Commands.literal("set")
                 				.then(Commands.argument("pos", BlockPosArgument.blockPos())
                 						.executes(ctx -> set(ctx.getSource(), ctx.getArgument("mode", ConversionMode.class), BlockPosArgument.getLoadedBlockPos(ctx, "pos")))))
@@ -121,7 +120,7 @@ public class ConvertCommand {
 			return false;
 		});
 
-		private TriPredicate<BlockState, Level, BlockPos> converter;
+		private final TriPredicate<BlockState, Level, BlockPos> converter;
 
 		ConversionMode(TriPredicate<BlockState, Level, BlockPos> converter) {
 			this.converter = converter;
