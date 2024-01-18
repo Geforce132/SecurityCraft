@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.api;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -45,7 +43,7 @@ public interface IPasscodeConvertible {
 	 * @param pos The position the conversaion takes place at
 	 * @return true if the conversion was successful, false otherwise
 	 */
-	public boolean protect(@Nullable Player player, Level level, BlockPos pos);
+	public boolean protect(Player player, Level level, BlockPos pos);
 
 	/**
 	 * Converts the passcode-protected block to the original one
@@ -55,5 +53,5 @@ public interface IPasscodeConvertible {
 	 * @param pos The position the conversaion takes place at
 	 * @return true if the conversion was successful, false otherwise
 	 */
-	public boolean unprotect(@Nullable Player player, Level level, BlockPos pos);
+	public boolean unprotect(Player player, Level level, BlockPos pos);
 }
