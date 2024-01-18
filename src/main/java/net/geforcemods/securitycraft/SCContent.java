@@ -302,9 +302,9 @@ public class SCContent {
 	public static final String GLOW_DISPLAY_CASE_PATH = "glow_display_case";
 
 	//command argument types
-	public static final DeferredHolder<ArgumentTypeInfo<?, ?>, SingletonArgumentInfo<SingleGameProfileArgument>> SINGLE_GAME_PROFILE_ARGUMENT = COMMAND_ARGUMENT_TYPES.register("single_game_profile", () -> ArgumentTypeInfos.registerByClass(SingleGameProfileArgument.class, SingletonArgumentInfo.contextFree(SingleGameProfileArgument::singleGameProfile)));
+	public static final DeferredHolder<ArgumentTypeInfo<?, ?>, SingletonArgumentInfo<SingleGameProfileArgument>> SINGLE_GAME_PROFILE_COMMAND_ARGUMENT_TYPE = COMMAND_ARGUMENT_TYPES.register("single_game_profile", () -> ArgumentTypeInfos.registerByClass(SingleGameProfileArgument.class, SingletonArgumentInfo.contextFree(SingleGameProfileArgument::singleGameProfile)));
 	@SuppressWarnings("rawtypes")
-	public static final Holder<ArgumentTypeInfo<?, ?>> ENUM_COMMAND_ARGUMENT_TYPE = COMMAND_ARGUMENT_TYPES.register("lowercased_enum", () -> ArgumentTypeInfos.registerByClass(LowercasedEnumArgument.class, new LowercasedEnumArgument.Info()));
+	public static final Holder<ArgumentTypeInfo<?, ?>> LOWERCASED_ENUM_COMMAND_ARGUMENT_TYPE = COMMAND_ARGUMENT_TYPES.register("lowercased_enum", () -> ArgumentTypeInfos.registerByClass(LowercasedEnumArgument.class, new LowercasedEnumArgument.Info()));
 
 	//loot item condition types
 	public static final DeferredHolder<LootItemConditionType, LootItemConditionType> BLOCK_ENTITY_NBT = LOOT_ITEM_CONDITION_TYPES.register("tile_entity_nbt", () -> new LootItemConditionType(BlockEntityNBTCondition.CODEC));
