@@ -37,8 +37,9 @@ public class OwnerCommand {
                 						.executes(ctx -> setOwner(ctx.getSource(), BlockPosArgument.getLoadedBlockPos(ctx, "pos"), "ownerUUID", "owner")))
                 				.then(Commands.literal("random")
                 						.executes(ctx -> setRandomOwner(ctx.getSource(), BlockPosArgument.getLoadedBlockPos(ctx, "pos"))))
-                				.then(Commands.argument("owner", GameProfileArgument.gameProfile())
-                						.executes(ctx -> setOwner(ctx.getSource(), BlockPosArgument.getLoadedBlockPos(ctx, "pos"), GameProfileArgument.getGameProfiles(ctx, "owner").iterator().next())))))
+                				.then(Commands.literal("player")
+                						.then(Commands.argument("owner", GameProfileArgument.gameProfile())
+                								.executes(ctx -> setOwner(ctx.getSource(), BlockPosArgument.getLoadedBlockPos(ctx, "pos"), GameProfileArgument.getGameProfiles(ctx, "owner").iterator().next()))))))
                 .then(Commands.literal("fill")
                 		.then(Commands.argument("from", BlockPosArgument.blockPos())
                 				.then(Commands.argument("to", BlockPosArgument.blockPos())
@@ -46,8 +47,9 @@ public class OwnerCommand {
                         						.executes(ctx -> fillOwner(ctx, "ownerUUID", "owner")))
                         				.then(Commands.literal("random")
                         						.executes(ctx -> fillRandomOwner(ctx)))
-                        				.then(Commands.argument("owner", GameProfileArgument.gameProfile())
-                        						.executes(ctx -> fillOwner(ctx, GameProfileArgument.getGameProfiles(ctx, "owner").iterator().next()))))));
+                        				.then(Commands.literal("player")
+                        						.then(Commands.argument("owner", GameProfileArgument.gameProfile())
+                        								.executes(ctx -> fillOwner(ctx, GameProfileArgument.getGameProfiles(ctx, "owner").iterator().next())))))));
 		//@formatter:on
 	}
 
