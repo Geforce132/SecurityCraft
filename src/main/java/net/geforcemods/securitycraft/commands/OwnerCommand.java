@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.commands.arguments.GameProfileArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -38,8 +37,8 @@ public class OwnerCommand {
                 				.then(Commands.literal("random")
                 						.executes(ctx -> setRandomOwner(ctx.getSource(), BlockPosArgument.getLoadedBlockPos(ctx, "pos"))))
                 				.then(Commands.literal("player")
-                						.then(Commands.argument("owner", GameProfileArgument.gameProfile())
-                								.executes(ctx -> setOwner(ctx.getSource(), BlockPosArgument.getLoadedBlockPos(ctx, "pos"), GameProfileArgument.getGameProfiles(ctx, "owner").iterator().next()))))))
+                						.then(Commands.argument("owner", SingleGameProfileArgument.singleGameProfile())
+                								.executes(ctx -> setOwner(ctx.getSource(), BlockPosArgument.getLoadedBlockPos(ctx, "pos"), SingleGameProfileArgument.getGameProfile(ctx, "owner")))))))
                 .then(Commands.literal("fill")
                 		.then(Commands.argument("from", BlockPosArgument.blockPos())
                 				.then(Commands.argument("to", BlockPosArgument.blockPos())
@@ -48,8 +47,8 @@ public class OwnerCommand {
                         				.then(Commands.literal("random")
                         						.executes(ctx -> fillRandomOwner(ctx)))
                         				.then(Commands.literal("player")
-                        						.then(Commands.argument("owner", GameProfileArgument.gameProfile())
-                        								.executes(ctx -> fillOwner(ctx, GameProfileArgument.getGameProfiles(ctx, "owner").iterator().next())))))));
+                        						.then(Commands.argument("owner", SingleGameProfileArgument.singleGameProfile())
+                        								.executes(ctx -> fillOwner(ctx, SingleGameProfileArgument.getGameProfile(ctx, "owner"))))))));
 		//@formatter:on
 	}
 
