@@ -11,6 +11,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Owner;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.GameProfileArgument;
@@ -64,9 +65,15 @@ public class OwnerCommand {
 		if (!(level.getBlockEntity(pos) instanceof IOwnable ownable))
 			throw ERROR_SET_FAILED.create();
 
-		ownable.setOwner(uuid, name);
-		source.sendSuccess(() -> Component.translatable("commands.securitycraft.owner.set.success", pos.getX(), pos.getY(), pos.getZ()), true);
-		return 1;
+		Owner previousOwner = ownable.getOwner();
+
+		if (!previousOwner.getUUID().equals(uuid) || !previousOwner.getName().equals(name)) {
+			ownable.setOwner(uuid, name);
+			source.sendSuccess(() -> Component.translatable("commands.securitycraft.owner.set.success", pos.getX(), pos.getY(), pos.getZ()), true);
+			return 1;
+		}
+		else
+			throw ERROR_SET_FAILED.create();
 	}
 
 	private static int fillRandomOwner(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
@@ -91,8 +98,12 @@ public class OwnerCommand {
 
 			for (BlockPos pos : BlockPos.betweenClosed(area.minX(), area.minY(), area.minZ(), area.maxX(), area.maxY(), area.maxZ())) {
 				if (level.getBlockEntity(pos) instanceof IOwnable ownable) {
-					ownable.setOwner(uuid, name);
-					blocksModified++;
+					Owner previousOwner = ownable.getOwner();
+
+					if (!previousOwner.getUUID().equals(uuid) || !previousOwner.getName().equals(name)) {
+						ownable.setOwner(uuid, name);
+						blocksModified++;
+					}
 				}
 			}
 
