@@ -24,8 +24,8 @@ import net.neoforged.neoforge.common.util.TriPredicate;
 import net.neoforged.neoforge.server.command.EnumArgument;
 
 public class ConvertCommand {
-	private static final SimpleCommandExceptionType ERROR_SET_FAILED = new SimpleCommandExceptionType(Component.translatable("commands.securitycraft.convert.set.failed"));
-	private static final SimpleCommandExceptionType ERROR_FILL_FAILED = new SimpleCommandExceptionType(Component.translatable("commands.securitycraft.convert.fill.failed"));
+	private static final SimpleCommandExceptionType ERROR_SET_FAILED = new SimpleCommandExceptionType(Component.translatableWithFallback("commands.securitycraft.convert.set.failed", "There is no convertible block at the given position"));
+	private static final SimpleCommandExceptionType ERROR_FILL_FAILED = new SimpleCommandExceptionType(Component.translatableWithFallback("commands.securitycraft.convert.fill.failed", "There are no convertible blocks in the given area"));
 
 	public static ArgumentBuilder<CommandSourceStack, ?> register() {
 		//@formatter:off
@@ -48,7 +48,7 @@ public class ConvertCommand {
 		if (!mode.convert(level.getBlockState(pos), level, pos))
 			throw ERROR_SET_FAILED.create();
 
-		source.sendSuccess(() -> Component.translatable("commands.securitycraft.convert.set.success", pos.getX(), pos.getY(), pos.getZ()), true);
+		source.sendSuccess(() -> Component.translatableWithFallback("commands.securitycraft.convert.set.success", "Converted the block at %s, %s, %s", pos.getX(), pos.getY(), pos.getZ()), true);
 		return 1;
 	}
 
@@ -77,7 +77,7 @@ public class ConvertCommand {
 			else {
 				int finalBlocksModified = blocksModified;
 
-				source.sendSuccess(() -> Component.translatable("commands.securitycraft.convert.fill.success", finalBlocksModified), true);
+				source.sendSuccess(() -> Component.translatableWithFallback("commands.securitycraft.convert.fill.success", "Successfully converted %s block(s)", finalBlocksModified), true);
 				return blocksModified;
 			}
 		}

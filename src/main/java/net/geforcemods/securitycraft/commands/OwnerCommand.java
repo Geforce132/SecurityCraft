@@ -23,8 +23,8 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 public class OwnerCommand {
-	private static final SimpleCommandExceptionType ERROR_SET_FAILED = new SimpleCommandExceptionType(Component.translatable("commands.securitycraft.owner.set.failed"));
-	private static final SimpleCommandExceptionType ERROR_FILL_FAILED = new SimpleCommandExceptionType(Component.translatable("commands.securitycraft.owner.fill.failed"));
+	private static final SimpleCommandExceptionType ERROR_SET_FAILED = new SimpleCommandExceptionType(Component.translatableWithFallback("commands.securitycraft.owner.set.failed", "There is no ownable block at the given position or it is already owned by the given player"));
+	private static final SimpleCommandExceptionType ERROR_FILL_FAILED = new SimpleCommandExceptionType(Component.translatableWithFallback("commands.securitycraft.owner.fill.failed", "There are no ownable blocks in the given area or they are already owned by the given player"));
 
 	public static ArgumentBuilder<CommandSourceStack, ?> register() {
 		//@formatter:off
@@ -70,7 +70,7 @@ public class OwnerCommand {
 
 		if (!previousOwner.getUUID().equals(uuid) || !previousOwner.getName().equals(name)) {
 			ownable.setOwner(uuid, name);
-			source.sendSuccess(() -> Component.translatable("commands.securitycraft.owner.set.success", pos.getX(), pos.getY(), pos.getZ()), true);
+			source.sendSuccess(() -> Component.translatableWithFallback("commands.securitycraft.owner.set.success", "Set the owner at %s, %s, %s", pos.getX(), pos.getY(), pos.getZ()), true);
 			return 1;
 		}
 		else
@@ -113,7 +113,7 @@ public class OwnerCommand {
 			else {
 				int finalBlocksModified = blocksModified;
 
-				source.sendSuccess(() -> Component.translatable("commands.securitycraft.owner.fill.success", finalBlocksModified), true);
+				source.sendSuccess(() -> Component.translatableWithFallback("commands.securitycraft.owner.fill.success", "Successfully set the owner of %s block(s)", finalBlocksModified), true);
 				return blocksModified;
 			}
 		}
