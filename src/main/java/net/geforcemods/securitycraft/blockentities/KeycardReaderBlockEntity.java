@@ -191,20 +191,22 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		if (!getAcceptedLevels()[keycardLevel]) //both are 0 indexed, so it's ok
 			return Component.translatable("messages.securitycraft:keycardReader.wrongLevel", keycardLevel + 1); //level is 0-indexed, so it has to be increased by one to match with the item name
 
-		boolean powered = level.getBlockState(worldPosition).getValue(BlockStateProperties.POWERED);
+		//don't consider the block powered if the signal length is 0, because players need to be able to toggle it off
+		boolean powered = level.getBlockState(worldPosition).getValue(BlockStateProperties.POWERED) && getSignalLength() > 0;
 
-		if (tag.getBoolean("limited")) {
-			int uses = tag.getInt("uses");
+		if (!powered) {
+			if (tag.getBoolean("limited")) {
+				int uses = tag.getInt("uses");
 
-			if (uses <= 0)
-				return Component.translatable("messages.securitycraft:keycardReader.noUses");
+				if (uses <= 0)
+					return Component.translatable("messages.securitycraft:keycardReader.noUses");
 
-			if (!player.isCreative() && !powered)
-				tag.putInt("uses", --uses);
-		}
+				if (!player.isCreative())
+					tag.putInt("uses", --uses);
+			}
 
-		if (!powered)
 			activate();
+		}
 
 		return null;
 	}

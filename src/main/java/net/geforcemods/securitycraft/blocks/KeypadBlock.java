@@ -48,11 +48,11 @@ public class KeypadBlock extends DisguisableBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (state.getValue(POWERED))
+		KeypadBlockEntity be = (KeypadBlockEntity) level.getBlockEntity(pos);
+
+		if (state.getValue(POWERED) && be.getSignalLength() > 0)
 			return InteractionResult.PASS;
 		else if (!level.isClientSide) {
-			KeypadBlockEntity be = (KeypadBlockEntity) level.getBlockEntity(pos);
-
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			else if (be.verifyPasscodeSet(level, pos, be, player)) {
