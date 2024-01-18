@@ -26,17 +26,6 @@ import net.minecraft.world.level.block.state.BlockState;
 public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPasscodeProtected, ILockable {
 	private byte[] passcode;
 	private UUID saltKey;
-	private BooleanOption isAlwaysActive = new BooleanOption("isAlwaysActive", false) {
-		@Override
-		public void toggle() {
-			super.toggle();
-
-			if (!isDisabled()) {
-				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeyPanelBlock.POWERED, get()));
-				level.updateNeighborsAt(worldPosition, SCContent.KEY_PANEL_BLOCK.get());
-			}
-		}
-	};
 	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
 	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	private IntOption signalLength = new SignalLengthOption(60);
@@ -106,7 +95,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				isAlwaysActive, sendAllowlistMessage, sendDenylistMessage, signalLength, disabled, smartModuleCooldown
+				sendAllowlistMessage, sendDenylistMessage, signalLength, disabled, smartModuleCooldown
 		};
 	}
 
@@ -133,8 +122,6 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 
 			if (isDisabled && getBlockState().getValue(KeyPanelBlock.POWERED))
 				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeyPanelBlock.POWERED, false));
-			else if (!isDisabled && isAlwaysActive.get())
-				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeyPanelBlock.POWERED, true));
 		}
 	}
 

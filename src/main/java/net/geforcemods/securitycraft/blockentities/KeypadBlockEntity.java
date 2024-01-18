@@ -25,17 +25,6 @@ import net.minecraft.world.level.block.state.BlockState;
 public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasscodeProtected, ILockable {
 	private byte[] passcode;
 	private UUID saltKey;
-	private BooleanOption isAlwaysActive = new BooleanOption("isAlwaysActive", false) {
-		@Override
-		public void toggle() {
-			super.toggle();
-
-			if (!isDisabled()) {
-				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeypadBlock.POWERED, get()));
-				level.updateNeighborsAt(worldPosition, SCContent.KEYPAD.get());
-			}
-		}
-	};
 	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
 	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	private IntOption signalLength = new SignalLengthOption(60);
@@ -99,8 +88,6 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 
 			if (isDisabled && getBlockState().getValue(KeypadBlock.POWERED))
 				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeypadBlock.POWERED, false));
-			else if (!isDisabled && isAlwaysActive.get())
-				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeypadBlock.POWERED, true));
 		}
 	}
 
@@ -154,7 +141,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				isAlwaysActive, sendAllowlistMessage, sendDenylistMessage, signalLength, disabled, smartModuleCooldown
+				sendAllowlistMessage, sendDenylistMessage, signalLength, disabled, smartModuleCooldown
 		};
 	}
 
