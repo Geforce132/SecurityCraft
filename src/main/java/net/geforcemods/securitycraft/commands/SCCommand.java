@@ -37,7 +37,7 @@ public class SCCommand {
 
 	private static ArgumentBuilder<CommandSourceStack, ?> bug() {
 		return Commands.literal("bug").executes(ctx -> {
-			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().getPlayerOrException(), Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), Tips.TIPS_WITH_LINK.get("discord"), ChatFormatting.GOLD);
+			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().getPlayerOrException(), Component.literal("SecurityCraft"), Utils.localize("commands.securitycraft.bug"), Tips.TIPS_WITH_LINK.get("discord"), ChatFormatting.GOLD);
 			return 0;
 		});
 	}
