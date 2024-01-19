@@ -20,11 +20,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -34,16 +36,19 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-public class SecurityCameraBlock extends OwnableBlock {
+public class SecurityCameraBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> facing != Direction.UP);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty BEING_VIEWED = BooleanProperty.create("being_viewed");
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final VoxelShape SHAPE_SOUTH = Shapes.create(new AABB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F));
 	private static final VoxelShape SHAPE_NORTH = Shapes.create(new AABB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F));
 	private static final VoxelShape SHAPE_WEST = Shapes.create(new AABB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F));
@@ -52,7 +57,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	public SecurityCameraBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(BEING_VIEWED, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(BEING_VIEWED, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -115,7 +120,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 				}
 			}
 
-			return state;
+			return state.setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER);
 		}
 		else
 			return null;
@@ -160,6 +165,19 @@ public class SecurityCameraBlock extends OwnableBlock {
 	}
 
 	@Override
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED))
+			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	}
+
+	@Override
 	public boolean isSignalSource(BlockState state) {
 		return true;
 	}
@@ -182,13 +200,13 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if (!canSurvive(level.getBlockState(pos), level, pos) && !canSurvive(state, level, pos))
+		if (!canSurvive(state, level, pos))
 			level.destroyBlock(pos, true);
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(FACING, POWERED, BEING_VIEWED);
+		builder.add(FACING, POWERED, BEING_VIEWED, WATERLOGGED);
 	}
 
 	@Override
