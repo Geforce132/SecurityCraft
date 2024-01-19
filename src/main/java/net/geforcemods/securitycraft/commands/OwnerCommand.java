@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.commands;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -20,6 +22,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.commands.FillCommand;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 public class OwnerCommand {
@@ -69,7 +73,10 @@ public class OwnerCommand {
 		Owner previousOwner = ownable.getOwner();
 
 		if (!previousOwner.getUUID().equals(uuid) || !previousOwner.getName().equals(name)) {
+			BlockState state = ((BlockEntity) ownable).getBlockState();
+
 			ownable.setOwner(uuid, name);
+			level.sendBlockUpdated(pos, state, state, 3);
 			source.sendSuccess(() -> Component.translatableWithFallback("commands.securitycraft.owner.set.success", "Set the owner at %s, %s, %s", pos.getX(), pos.getY(), pos.getZ()), true);
 			return 1;
 		}
@@ -95,7 +102,7 @@ public class OwnerCommand {
 		if (blockCount > commandModificationBlockLimit)
 			throw FillCommand.ERROR_AREA_TOO_LARGE.create(commandModificationBlockLimit, blockCount);
 		else {
-			int blocksModified = 0;
+			List<BlockEntity> modifedBlocks = new ArrayList<>();
 
 			for (BlockPos pos : BlockPos.betweenClosed(area.minX(), area.minY(), area.minZ(), area.maxX(), area.maxY(), area.maxZ())) {
 				if (level.getBlockEntity(pos) instanceof IOwnable ownable) {
@@ -103,17 +110,21 @@ public class OwnerCommand {
 
 					if (!previousOwner.getUUID().equals(uuid) || !previousOwner.getName().equals(name)) {
 						ownable.setOwner(uuid, name);
-						blocksModified++;
+						modifedBlocks.add((BlockEntity) ownable);
 					}
 				}
 			}
 
+			int blocksModified = modifedBlocks.size();
+
 			if (blocksModified == 0)
 				throw ERROR_FILL_FAILED.create();
 			else {
-				int finalBlocksModified = blocksModified;
+				for (BlockEntity be : modifedBlocks) {
+					level.sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
+				}
 
-				source.sendSuccess(() -> Component.translatableWithFallback("commands.securitycraft.owner.fill.success", "Successfully set the owner of %s block(s)", finalBlocksModified), true);
+				source.sendSuccess(() -> Component.translatableWithFallback("commands.securitycraft.owner.fill.success", "Successfully set the owner of %s block(s)", blocksModified), true);
 				return blocksModified;
 			}
 		}
