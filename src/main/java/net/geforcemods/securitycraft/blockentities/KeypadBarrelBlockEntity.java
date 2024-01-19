@@ -12,6 +12,8 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
+import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadBarrelBlock;
@@ -83,7 +85,8 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	private UUID saltKey;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
-	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
+	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
 	private long cooldownEnd = 0;
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
@@ -138,6 +141,11 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		loadPasscode(tag);
 		owner.load(tag);
 		previousBarrel = new ResourceLocation(tag.getString("previous_barrel"));
+
+		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
+			sendAllowlistMessage.setValue(false);
+			sendDenylistMessage.setValue(false);
+		}
 	}
 
 	@Override
@@ -336,7 +344,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, smartModuleCooldown
+				sendAllowlistMessage, sendDenylistMessage, smartModuleCooldown
 		};
 	}
 
@@ -361,14 +369,12 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		return DisguisableBlockEntity.getModelData(this);
 	}
 
-	public boolean sendsMessages() {
-		return sendMessage.get();
+	public boolean sendsAllowlistMessage() {
+		return sendAllowlistMessage.get();
 	}
 
-	public void setSendsMessages(boolean value) {
-		sendMessage.setValue(value);
-		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
-		setChanged();
+	public boolean sendsDenylistMessage() {
+		return sendDenylistMessage.get();
 	}
 
 	@Override

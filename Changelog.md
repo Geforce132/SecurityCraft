@@ -16,6 +16,7 @@
 - Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now
 - Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate
 - Change: Players now take 5 instead of 0.5 hearts of damage when suffocating inside reinforced blocks
+- Change: The existing "Message" option has been split up into separate "Allowlist Message" and "Denylist Message" options for several blocks
 - API: Refactored IPasscodeConvertible to account for the new Wire Cutters functionality
 - Fix: Duplication exploit involving keycards
 - Fix: Error involving SecurityCraft's creative tabs when running SecurityCraft alongside certain other mods
