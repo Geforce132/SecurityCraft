@@ -292,8 +292,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		return lastToggleTime;
 	}
 
-	public boolean canToggleAgain() {
-		return System.currentTimeMillis() - getLastToggleTime() >= 500;
+	public long timeSinceLastToggle() {
+		return System.currentTimeMillis() - getLastToggleTime();
 	}
 
 	public void applyNewSideConfig(Map<Direction, Boolean> sideConfig, Player player) {

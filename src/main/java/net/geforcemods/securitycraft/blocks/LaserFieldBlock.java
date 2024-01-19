@@ -88,17 +88,21 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, Si
 						if (entity instanceof OwnableEntity ownableEntity && laser.allowsOwnableEntity(ownableEntity))
 							return;
 
-						if (laser.isModuleEnabled(ModuleType.REDSTONE) && laser.canToggleAgain()) {
-							int signalLength = laser.getSignalLength();
-							boolean wasPowered = offsetState.getValue(LaserBlock.POWERED);
+						if (laser.isModuleEnabled(ModuleType.REDSTONE)) {
+							if (laser.timeSinceLastToggle() < 500)
+								laser.setLastToggleTime(System.currentTimeMillis());
+							else {
+								int signalLength = laser.getSignalLength();
+								boolean wasPowered = offsetState.getValue(LaserBlock.POWERED);
 
-							laser.setLastToggleTime(System.currentTimeMillis());
-							level.setBlockAndUpdate(offsetPos, offsetState.cycle(LaserBlock.POWERED));
-							BlockUtils.updateIndirectNeighbors(level, offsetPos, SCContent.LASER_BLOCK.get());
-							laser.createLinkedBlockAction(new ILinkedAction.StateChanged<>(LaserBlock.POWERED, wasPowered, !wasPowered), laser);
+								laser.setLastToggleTime(System.currentTimeMillis());
+								level.setBlockAndUpdate(offsetPos, offsetState.cycle(LaserBlock.POWERED));
+								BlockUtils.updateIndirectNeighbors(level, offsetPos, SCContent.LASER_BLOCK.get());
+								laser.createLinkedBlockAction(new ILinkedAction.StateChanged<>(LaserBlock.POWERED, wasPowered, !wasPowered), laser);
 
-							if (signalLength > 0)
-								level.scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), signalLength);
+								if (signalLength > 0)
+									level.scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), signalLength);
+							}
 						}
 
 						if (laser.isModuleEnabled(ModuleType.HARMING)) {

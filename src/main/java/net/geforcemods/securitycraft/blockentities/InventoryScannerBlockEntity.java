@@ -303,8 +303,10 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	public void togglePowerOutput() {
-		if (togglePowerCooldown <= 0) {
-			togglePowerCooldown = 10;
+		if (togglePowerCooldown > 0)
+			togglePowerCooldown = 5;
+		else {
+			togglePowerCooldown = 5;
 			providePower = !providePower;
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.INVENTORY_SCANNER.get());
 			setChanged();
