@@ -54,6 +54,7 @@
 - Fix: Monsters can spawn near blocks disguised as a light-emitting block
 - Fix: Anyone can convert a Frame/Reinforced Iron Trapdoor to a Keypad/Passcode-protected Trapdoor
 - Fix: The Keypad Trapdoor's signal length option cannot be set to 0 despite the description saying it can
+- Fix: Placing an unnamed Keypad Door or Scanner Door sets the block's custom name to the default name
 - Removed: Ability to change the subpage in the SecurityCraft Manual using the arrow keys. This is still possible by scrolling while holding down CTRL
 - Removed: "Is always active" option of Keypads and Key Panels. The same behavior can be achieved by setting the "Signal length" option to 0 and activating the block
 
