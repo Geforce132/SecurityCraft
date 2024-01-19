@@ -88,10 +88,11 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, Si
 						if (entity instanceof OwnableEntity ownableEntity && laser.allowsOwnableEntity(ownableEntity))
 							return;
 
-						if (laser.isModuleEnabled(ModuleType.REDSTONE) && !offsetState.getValue(LaserBlock.POWERED)) {
+						if (laser.isModuleEnabled(ModuleType.REDSTONE) && laser.canToggleAgain()) {
 							int signalLength = laser.getSignalLength();
 							boolean wasPowered = offsetState.getValue(LaserBlock.POWERED);
 
+							laser.setLastToggleTime(System.currentTimeMillis());
 							level.setBlockAndUpdate(offsetPos, offsetState.cycle(LaserBlock.POWERED));
 							BlockUtils.updateIndirectNeighbors(level, offsetPos, SCContent.LASER_BLOCK.get());
 							laser.createLinkedBlockAction(new ILinkedAction.StateChanged<>(LaserBlock.POWERED, wasPowered, !wasPowered), laser);
