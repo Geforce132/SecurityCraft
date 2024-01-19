@@ -44,7 +44,7 @@ import net.neoforged.neoforge.event.entity.EntityTeleportEvent.SpreadPlayersComm
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent.TeleportCommand;
 
 public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable, IToggleableEntries<TeleportationType> {
-	private final IntOption signalLength = new IntOption("signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private final IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5, true); //20 seconds max
 	private final IntOption range = new IntOption("range", 5, 1, 15, 1, true);
 	private final DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);

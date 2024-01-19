@@ -12,6 +12,7 @@
 - New: SecurityCraft's /sc command can now be accessed via /securitycraft as well
 - New: "/sc owner" command to set/fill the owner of blocks
 - New: The Bouncing Betty, Claymore, Frame, Mine, Panic Button, and Security Camera are now waterloggable
+- New: Several blocks with a signal length option for redstone signal length can now be set to toggle the redstone signal instead by setting the option to 0
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now
 - Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate
@@ -51,7 +52,9 @@
 - Fix: Mobs can be converted multiple times by an Electrified Iron Fence (Gate)
 - Fix: The Electrified Iron Fence Gate can be used as fuel in a furnace
 - Fix: Anyone can convert a Frame/Reinforced Iron Trapdoor to a Keypad/Passcode-protected Trapdoor
+- Fix: The Keypad Trapdoor's signal length option cannot be set to 0 despite the description saying it can
 - Removed: Ability to change the subpage in the SecurityCraft Manual using the arrow keys. This is still possible by scrolling while holding down CTRL
+- Removed: "Is always active" option of Keypads and Key Panels. The same behavior can be achieved by setting the "Signal length" option to 0 and activating the block
 - Misc.: The minimum required NeoForge version is 20.2.88 (necessary to fix players getting kicked from the server when placing a Sentry)
 
 --------------------------Changelog for v1.9.8-beta4 of SecurityCraft--------------------------
