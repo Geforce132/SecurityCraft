@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
@@ -30,6 +31,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IViewActivated, ITickingBlockEntity {
+	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private DoubleOption maximumDistance = new DoubleOption("maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D, true) {
 		@Override
 		public String getKey(Block block) {
@@ -121,6 +123,10 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 		return new Option[] {
 				sendMessage, signalLength, disabled, maximumDistance
 		};
+	}
+
+	public boolean sendsMessages() {
+		return sendMessage.get();
 	}
 
 	@Override

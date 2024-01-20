@@ -43,11 +43,11 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			else if (be.verifyPasscodeSet(level, pos, be, player)) {
 				if (be.isDenied(player)) {
-					if (be.sendsMessages())
+					if (be.sendsDenylistMessage())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 				}
 				else if (be.isAllowed(player)) {
-					if (be.sendsMessages())
+					if (be.sendsAllowlistMessage())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
 					activate(state, level, pos, be.getSignalLength());
