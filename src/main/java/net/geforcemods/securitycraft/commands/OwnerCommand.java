@@ -30,6 +30,8 @@ public class OwnerCommand {
 	private static final SimpleCommandExceptionType ERROR_SET_FAILED = new SimpleCommandExceptionType(Component.translatableWithFallback("commands.securitycraft.owner.set.failed", "There is no ownable block at the given position or it is already owned by the given player"));
 	private static final SimpleCommandExceptionType ERROR_FILL_FAILED = new SimpleCommandExceptionType(Component.translatableWithFallback("commands.securitycraft.owner.fill.failed", "There are no ownable blocks in the given area or they are already owned by the given player"));
 
+	private OwnerCommand() {}
+
 	public static ArgumentBuilder<CommandSourceStack, ?> register() {
 		//@formatter:off
 		return Commands.literal("owner")

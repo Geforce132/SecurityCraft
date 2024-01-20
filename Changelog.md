@@ -11,6 +11,7 @@
 - New: Wire Cutters can now be used to remove the passcode protection from a block via sneak-rightclicking
 - New: SecurityCraft's /sc command can now be accessed via /securitycraft as well
 - New: "/sc owner" command to set/fill the owner of blocks
+- New: "/sc convert" command to un-/reinforce and un-/passcode-protect blocks
 - New: The Bouncing Betty, Claymore, Frame, Mine, Panic Button, and Security Camera are now waterloggable
 - New: Several blocks with a signal length option for redstone signal length can now be set to toggle the redstone signal instead by setting the option to 0
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
