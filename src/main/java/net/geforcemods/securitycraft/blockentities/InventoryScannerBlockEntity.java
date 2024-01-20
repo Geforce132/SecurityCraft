@@ -58,7 +58,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	private LazyOptional<IItemHandler> storageHandler;
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean providePower;
-	private int cooldown;
+	private int signalCooldown, togglePowerCooldown;
 	private LensContainer lens = new LensContainer(1);
 
 	public InventoryScannerBlockEntity(BlockPos pos, BlockState state) {
@@ -68,9 +68,12 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		if (cooldown > 0)
-			cooldown--;
-		else if (providePower)
+		if (togglePowerCooldown > 0)
+			togglePowerCooldown--;
+
+		if (signalCooldown > 0)
+			signalCooldown--;
+		else if (providePower && signalLength.get() > 0)
 			togglePowerOutput();
 	}
 
@@ -103,7 +106,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 				inventoryContents.set(slot, ItemStack.of(stackTag));
 		}
 
-		cooldown = tag.getInt("cooldown");
+		signalCooldown = tag.getInt("cooldown");
 		providePower = tag.getBoolean("is_providing_power");
 		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
 		lens.setChanged();
@@ -125,7 +128,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			}
 
 		tag.put("Items", list);
-		tag.putInt("cooldown", cooldown);
+		tag.putInt("cooldown", signalCooldown);
 		tag.putBoolean("is_providing_power", providePower);
 		tag.put("lens", lens.createTag());
 	}
@@ -327,12 +330,22 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	public void togglePowerOutput() {
-		providePower = !providePower;
-		BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.INVENTORY_SCANNER.get());
-		setChanged();
+		int signalLength = this.signalLength.get();
+		boolean shouldTurnOffAgain = signalLength > 0;
 
-		if (providePower)
-			cooldown = signalLength.get();
+		if (!shouldTurnOffAgain && togglePowerCooldown > 0)
+			togglePowerCooldown = 5;
+		else {
+			if (!shouldTurnOffAgain || signalCooldown <= 0) {
+				togglePowerCooldown = 5;
+				providePower = !providePower;
+				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.INVENTORY_SCANNER.get());
+				setChanged();
+			}
+
+			if (providePower && shouldTurnOffAgain)
+				signalCooldown = signalLength;
+		}
 	}
 
 	public NonNullList<ItemStack> getContents() {
