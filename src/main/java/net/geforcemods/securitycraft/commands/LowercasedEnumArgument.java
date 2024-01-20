@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.commands;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
@@ -37,21 +38,25 @@ public class LowercasedEnumArgument<T extends Enum<T>> implements ArgumentType<T
 		String name = reader.readUnquotedString();
 
 		try {
-			return Enum.valueOf(enumClass, name.toUpperCase());
+			return Enum.valueOf(enumClass, name.toUpperCase(Locale.ENGLISH));
 		}
 		catch (IllegalArgumentException e) {
-			throw INVALID_ENUM.createWithContext(reader, name.toLowerCase(), Arrays.toString(Arrays.stream(enumClass.getEnumConstants()).map(theEnum -> theEnum.name().toLowerCase()).toArray()));
+			throw INVALID_ENUM.createWithContext(reader, name.toLowerCase(Locale.ENGLISH), Arrays.toString(Arrays.stream(enumClass.getEnumConstants()).map(this::toLowercasedEnumName).toArray()));
 		}
 	}
 
 	@Override
 	public <S> CompletableFuture<Suggestions> listSuggestions(final CommandContext<S> context, final SuggestionsBuilder builder) {
-		return SharedSuggestionProvider.suggest(Stream.of(enumClass.getEnumConstants()).map(theEnum -> theEnum.name().toLowerCase()), builder);
+		return SharedSuggestionProvider.suggest(Stream.of(enumClass.getEnumConstants()).map(this::toLowercasedEnumName), builder);
 	}
 
 	@Override
 	public Collection<String> getExamples() {
-		return Stream.of(enumClass.getEnumConstants()).map(theEnum -> theEnum.name().toLowerCase()).toList();
+		return Stream.of(enumClass.getEnumConstants()).map(this::toLowercasedEnumName).toList();
+	}
+
+	private String toLowercasedEnumName(Enum<?> theEnum) {
+		return theEnum.name().toLowerCase(Locale.ENGLISH);
 	}
 
 	public static class Info<T extends Enum<T>> implements ArgumentTypeInfo<LowercasedEnumArgument<T>, Info<T>.Template> {
