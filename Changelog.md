@@ -10,6 +10,7 @@
 - New: Reinforced Lectern
 - New: Wire Cutters can now be used to remove the passcode protection from a block via sneak-rightclicking
 - New: SecurityCraft's /sc command can now be accessed via /securitycraft as well
+- New: "/sc owner" command to set/fill the owner of blocks
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now
 - Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate
