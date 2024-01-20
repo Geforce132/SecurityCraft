@@ -33,7 +33,8 @@ public class SCCommand {
 				.then(bug())
 				.then(connect())
 				.then(DumpCommand.register())
-				.then(help());
+				.then(help())
+				.then(OwnerCommand.register());
 		//@formatter:on
 	}
 
