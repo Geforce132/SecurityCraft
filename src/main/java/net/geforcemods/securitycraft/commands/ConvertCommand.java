@@ -26,6 +26,8 @@ public class ConvertCommand {
 	private static final SimpleCommandExceptionType ERROR_SET_FAILED = new SimpleCommandExceptionType(Component.translatableWithFallback("commands.securitycraft.convert.set.failed", "There is no convertible block at the given position"));
 	private static final SimpleCommandExceptionType ERROR_FILL_FAILED = new SimpleCommandExceptionType(Component.translatableWithFallback("commands.securitycraft.convert.fill.failed", "There are no convertible blocks in the given area"));
 
+	private ConvertCommand() {}
+
 	public static ArgumentBuilder<CommandSourceStack, ?> register() {
 		//@formatter:off
 		return Commands.literal("convert")

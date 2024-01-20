@@ -43,6 +43,8 @@ public class DumpCommand {
 		return map;
 	});
 
+	private DumpCommand() {}
+
 	public static ArgumentBuilder<CommandSourceStack, ?> register() {
 		//@formatter:off
 		return Commands.literal("dump")
