@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.minecraft.core.BlockPos;
@@ -18,7 +17,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity implements ILockable {
-	protected BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	protected IntOption signalLength = new IntOption("signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
 	protected DisabledOption disabled = new DisabledOption(false);
 
@@ -58,17 +56,6 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 			insertModule(moduleInserted.stack(), moduleInserted.wasModuleToggled());
 		else if (action instanceof ILinkedAction.ModuleRemoved moduleRemoved)
 			removeModule(moduleRemoved.moduleType(), moduleRemoved.wasModuleToggled());
-	}
-
-	@Override
-	public Option<?>[] customOptions() {
-		return new Option[] {
-				sendMessage, signalLength, disabled
-		};
-	}
-
-	public boolean sendsMessages() {
-		return sendMessage.get();
 	}
 
 	public int getSignalLength() {
