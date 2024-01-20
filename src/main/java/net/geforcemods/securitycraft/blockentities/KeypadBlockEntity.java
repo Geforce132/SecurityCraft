@@ -15,12 +15,14 @@ import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasscodeProtected, ILockable {
 	private byte[] passcode;
@@ -83,11 +85,9 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals("disabled")) {
-			boolean isDisabled = ((BooleanOption) option).get();
-
-			if (isDisabled && getBlockState().getValue(KeypadBlock.POWERED))
-				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeypadBlock.POWERED, false));
+		if ((option.getName().equals(disabled.getName()) && ((BooleanOption) option).get() || option.getName().equals(signalLength.getName()))) {
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}
 	}
 

@@ -126,8 +126,10 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			}
 			else if (option.getName().equals("ignoreOwner"))
 				ignoreOwner.copy(option);
-			else if (option.getName().equals("signalLength"))
+			else if (option.getName().equals("signalLength")) {
 				signalLength.copy(option);
+				turnOffRedstoneOutput();
+			}
 		}
 		else if (action instanceof ILinkedAction.ModuleInserted moduleInserted)
 			insertModule(moduleInserted.stack(), moduleInserted.wasModuleToggled());
@@ -157,6 +159,19 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	}
 
 	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals(signalLength.getName()))
+			turnOffRedstoneOutput();
+
+		super.onOptionChanged(option);
+	}
+
+	private void turnOffRedstoneOutput() {
+		level.setBlockAndUpdate(worldPosition, getBlockState().setValue(LaserBlock.POWERED, false));
+		BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+	}
+
+	@Override
 	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
 		super.onModuleInserted(stack, module, toggled);
 
@@ -173,10 +188,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		if (module == ModuleType.DISGUISE)
 			DisguisableBlockEntity.onDisguiseModuleRemoved(this, stack, toggled);
 		else if (module == ModuleType.REDSTONE) {
-			if (getBlockState().getValue(LaserBlock.POWERED)) {
-				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(LaserBlock.POWERED, false));
-				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
-			}
+			if (getBlockState().getValue(LaserBlock.POWERED))
+				turnOffRedstoneOutput();
 		}
 		else if (module == ModuleType.SMART)
 			applyExistingSideConfig();

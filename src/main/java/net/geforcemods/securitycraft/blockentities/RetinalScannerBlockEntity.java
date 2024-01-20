@@ -121,6 +121,14 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals(signalLength.getName())) {
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(RetinalScannerBlock.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+		}
+	}
+
+	@Override
 	public int getDefaultViewCooldown() {
 		return getSignalLength() + 30;
 	}
