@@ -34,7 +34,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ILockable, ITickingBlockEntity {
-	private IntOption signalLength = new IntOption("signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5, true); //20 seconds max
 	private IntOption range = new IntOption("range", 5, 1, 15, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
@@ -68,9 +68,13 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 			return;
 
 		if (isModuleEnabled(ModuleType.REDSTONE)) {
-			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockChangeDetectorBlock.POWERED, true));
+			int signalLength = getSignalLength();
+
+			level.setBlockAndUpdate(worldPosition, getBlockState().cycle(BlockChangeDetectorBlock.POWERED));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get());
-			level.scheduleTick(worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get(), signalLength.get());
+
+			if (signalLength > 0)
+				level.scheduleTick(worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get(), signalLength);
 		}
 
 		entries.add(new ChangeEntry(player.getDisplayName().getString(), player.getUUID(), System.currentTimeMillis(), action, pos, state));
@@ -143,6 +147,10 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 	public DetectionMode getMode() {
 		return mode;
+	}
+
+	public int getSignalLength() {
+		return signalLength.get();
 	}
 
 	public int getRange() {

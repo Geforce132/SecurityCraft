@@ -70,6 +70,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	});
 	private LazyOptional<IItemHandler> insertOnlyHandler, lensHandler;
 	private LensContainer lenses = new LensContainer(6);
+	private long lastToggleTime;
 
 	public LaserBlockBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), pos, state);
@@ -129,8 +130,10 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			}
 			else if (option.getName().equals("ignoreOwner"))
 				ignoreOwner.copy(option);
-			else if (option.getName().equals("signalLength"))
+			else if (option.getName().equals("signalLength")) {
 				signalLength.copy(option);
+				turnOffRedstoneOutput();
+			}
 		}
 		else if (action instanceof ILinkedAction.ModuleInserted moduleInserted)
 			insertModule(moduleInserted.stack(), moduleInserted.wasModuleToggled());
@@ -144,15 +147,32 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		else if (action instanceof ILinkedAction.StateChanged<?> stateChanged) {
 			BlockState state = getBlockState();
 
-			if (stateChanged.property() == LaserBlock.POWERED && !state.getValue(LaserBlock.POWERED)) {
-				level.setBlockAndUpdate(worldPosition, state.setValue(LaserBlock.POWERED, true));
+			if (stateChanged.property() == LaserBlock.POWERED) {
+				int signalLength = getSignalLength();
+
+				level.setBlockAndUpdate(worldPosition, state.cycle(LaserBlock.POWERED));
 				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
-				level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength.get());
+
+				if (signalLength > 0)
+					level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength);
 			}
 		}
 
 		excludedBEs.add(this);
 		createLinkedBlockAction(action, excludedBEs);
+	}
+
+	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals(signalLength.getName()))
+			turnOffRedstoneOutput();
+
+		super.onOptionChanged(option);
+	}
+
+	private void turnOffRedstoneOutput() {
+		level.setBlockAndUpdate(worldPosition, getBlockState().setValue(LaserBlock.POWERED, false));
+		BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 	}
 
 	@Override
@@ -172,10 +192,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		if (module == ModuleType.DISGUISE)
 			DisguisableBlockEntity.onDisguiseModuleRemoved(this, stack, toggled);
 		else if (module == ModuleType.REDSTONE) {
-			if (getBlockState().getValue(LaserBlock.POWERED)) {
-				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(LaserBlock.POWERED, false));
-				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
-			}
+			if (getBlockState().getValue(LaserBlock.POWERED))
+				turnOffRedstoneOutput();
 		}
 		else if (module == ModuleType.SMART)
 			applyExistingSideConfig();
@@ -317,6 +335,18 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 
 	public int getSignalLength() {
 		return signalLength.get();
+	}
+
+	public void setLastToggleTime(long lastToggleTime) {
+		this.lastToggleTime = lastToggleTime;
+	}
+
+	public long getLastToggleTime() {
+		return lastToggleTime;
+	}
+
+	public long timeSinceLastToggle() {
+		return System.currentTimeMillis() - getLastToggleTime();
 	}
 
 	public void applyNewSideConfig(Map<Direction, Boolean> sideConfig, Player player) {

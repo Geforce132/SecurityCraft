@@ -47,11 +47,11 @@ public class KeypadBlock extends DisguisableBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (state.getValue(POWERED))
+		KeypadBlockEntity be = (KeypadBlockEntity) level.getBlockEntity(pos);
+
+		if (state.getValue(POWERED) && be.getSignalLength() > 0)
 			return InteractionResult.PASS;
 		else if (!level.isClientSide) {
-			KeypadBlockEntity be = (KeypadBlockEntity) level.getBlockEntity(pos);
-
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			else if (be.verifyPasscodeSet(level, pos, be, player)) {
@@ -74,15 +74,19 @@ public class KeypadBlock extends DisguisableBlock {
 	}
 
 	public void activate(BlockState state, Level level, BlockPos pos, int signalLength) {
-		level.setBlockAndUpdate(pos, state.setValue(POWERED, true));
+		level.setBlockAndUpdate(pos, state.cycle(POWERED));
 		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYPAD.get());
-		level.scheduleTick(pos, this, signalLength);
+
+		if (signalLength > 0)
+			level.scheduleTick(pos, this, signalLength);
 	}
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
-		level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYPAD.get());
+		if (state.getValue(POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYPAD.get());
+		}
 	}
 
 	@Override
