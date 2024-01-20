@@ -22,7 +22,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class DumpCommand {
-	private static final DynamicCommandExceptionType ERROR_NOT_FOUND = new DynamicCommandExceptionType(registry -> Component.translatable("commands.securitycraft.dump.notFound", registry));
+	private static final DynamicCommandExceptionType ERROR_REGISTRY_NOT_FOUND = new DynamicCommandExceptionType(registry -> Component.translatableWithFallback("commands.securitycraft.dump.notFound", "SecurityCraft has nothing registered to \"%s\".", registry));
 	private static final Map<String, DeferredRegister<?>> REGISTRIES = Util.make(() -> {
 		Map<String, DeferredRegister<?>> map = new Object2ObjectArrayMap<>();
 
@@ -52,8 +52,9 @@ public class DumpCommand {
 							String registry = ctx.getArgument("registry", String.class);
 
 							if (!REGISTRIES.containsKey(registry))
-								throw ERROR_NOT_FOUND.create(registry);
+								throw ERROR_REGISTRY_NOT_FOUND.create(registry);
 
+							CommandSourceStack source = ctx.getSource();
 							final String lineSeparator = System.lineSeparator();
 							final String finalResult;
 							final var registryObjects = REGISTRIES.get(registry).getEntries();
@@ -63,15 +64,21 @@ public class DumpCommand {
 								result += ro.getId().toString() + lineSeparator;
 							}
 
-							finalResult = result;
-							ctx.getSource().getPlayerOrException().sendSystemMessage(Component.literal("[") //@formatter:off
+							finalResult = result.substring(0, result.lastIndexOf(lineSeparator));
+
+							if (source.isPlayer()) {
+								source.getPlayer().sendSystemMessage(Component.literal("[") //@formatter:off
 									.append(Component.literal("SecurityCraft").withStyle(ChatFormatting.GOLD))
 									.append(Component.literal("] "))
 									.append(Component.translatable("commands.securitycraft.dump.result", registryObjects.size())
 											.withStyle(style -> style
 													.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal(registry)))
-													.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, finalResult.substring(0, finalResult.lastIndexOf(lineSeparator)))))));
-							//@formatter:on
+													.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, finalResult)))));
+								//@formatter:on
+							}
+							else
+								source.source.sendSystemMessage(Component.literal(finalResult));
+
 							return 0;
 						}));
 	}

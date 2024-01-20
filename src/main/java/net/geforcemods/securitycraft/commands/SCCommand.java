@@ -6,7 +6,6 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import net.geforcemods.securitycraft.misc.Tips;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -37,7 +36,7 @@ public class SCCommand {
 
 	private static ArgumentBuilder<CommandSourceStack, ?> bug() {
 		return Commands.literal("bug").executes(ctx -> {
-			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().getPlayerOrException(), Component.literal("SecurityCraft"), Utils.localize("commands.securitycraft.bug"), Tips.TIPS_WITH_LINK.get("discord"), ChatFormatting.GOLD);
+			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().source, Component.literal("SecurityCraft"), Component.translatableWithFallback("commands.securitycraft.bug", "Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please"), Tips.TIPS_WITH_LINK.get("discord"), ChatFormatting.GOLD);
 			return 0;
 		});
 	}
@@ -45,10 +44,10 @@ public class SCCommand {
 	private static ArgumentBuilder<CommandSourceStack, ?> connect() {
 		return Commands.literal("connect").executes(ctx -> {
 			//@formatter:off
-			ctx.getSource().getPlayerOrException().sendSystemMessage(Component.literal("[")
+			ctx.getSource().source.sendSystemMessage(Component.literal("[")
 					.append(Component.literal("IRC").withStyle(ChatFormatting.GREEN))
 					.append(Component.literal("] "))
-					.append(Utils.localize("commands.securitycraft.irc.connected"))
+					.append(Component.translatableWithFallback("commands.securitycraft.irc.connected", "IRC chat is no longer supported as of v1.8.3 of SecurityCraft. If you need help, please refer to the #help channel on SecurityCraft's Discord!"))
 					.append(Component.literal(" "))
 					.append(CommonHooks.newChatWithLinks(Tips.TIPS_WITH_LINK.get("discord"))));
 			//@formatter:on
@@ -59,7 +58,7 @@ public class SCCommand {
 	private static ArgumentBuilder<CommandSourceStack, ?> help() {
 		return Commands.literal("help").executes(ctx -> {
 			//@formatter:off
-			ctx.getSource().getPlayerOrException().sendSystemMessage(Component.translatable("commands.securitycraft.help",
+			ctx.getSource().source.sendSystemMessage(Component.translatableWithFallback("commands.securitycraft.help", "%s: %s + %s",
 					Component.translatable(Blocks.CRAFTING_TABLE.getDescriptionId()),
 					Component.translatable(Items.BOOK.getDescriptionId()),
 					Component.translatable(Items.IRON_BARS.getDescriptionId())));
