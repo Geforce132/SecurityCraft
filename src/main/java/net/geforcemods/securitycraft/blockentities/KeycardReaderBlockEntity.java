@@ -222,6 +222,14 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 			level.scheduleTick(worldPosition, block, signalLength);
 	}
 
+	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals(signalLength.getName())) {
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+		}
+	}
+
 	public void setAcceptedLevels(boolean[] acceptedLevels) {
 		this.acceptedLevels = acceptedLevels;
 		setChanged();
