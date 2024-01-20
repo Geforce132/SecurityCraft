@@ -102,7 +102,7 @@ public class OwnerCommand {
 		if (blockCount > commandModificationBlockLimit)
 			throw FillCommand.ERROR_AREA_TOO_LARGE.create(commandModificationBlockLimit, blockCount);
 		else {
-			List<BlockEntity> modifedBlocks = new ArrayList<>();
+			List<BlockEntity> modifiedBlocks = new ArrayList<>();
 
 			for (BlockPos pos : BlockPos.betweenClosed(area.minX(), area.minY(), area.minZ(), area.maxX(), area.maxY(), area.maxZ())) {
 				if (level.getBlockEntity(pos) instanceof IOwnable ownable) {
@@ -110,17 +110,17 @@ public class OwnerCommand {
 
 					if (!previousOwner.getUUID().equals(uuid) || !previousOwner.getName().equals(name)) {
 						ownable.setOwner(uuid, name);
-						modifedBlocks.add((BlockEntity) ownable);
+						modifiedBlocks.add((BlockEntity) ownable);
 					}
 				}
 			}
 
-			int blocksModified = modifedBlocks.size();
+			int blocksModified = modifiedBlocks.size();
 
 			if (blocksModified == 0)
 				throw ERROR_FILL_FAILED.create();
 			else {
-				for (BlockEntity be : modifedBlocks) {
+				for (BlockEntity be : modifiedBlocks) {
 					level.sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 				}
 
