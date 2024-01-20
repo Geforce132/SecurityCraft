@@ -32,6 +32,7 @@ public class SCCommand {
 				.requires(Predicates.alwaysTrue())
 				.then(bug())
 				.then(connect())
+				.then(ConvertCommand.register())
 				.then(DumpCommand.register())
 				.then(help())
 				.then(OwnerCommand.register());

@@ -5,6 +5,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.commands.LowercasedEnumArgument;
 import net.geforcemods.securitycraft.commands.SingleGameProfileArgument;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
@@ -53,6 +54,7 @@ import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
+import net.minecraft.commands.synchronization.ArgumentSerializer;
 import net.minecraft.commands.synchronization.ArgumentTypes;
 import net.minecraft.commands.synchronization.EmptyArgumentSerializer;
 import net.minecraft.nbt.CompoundTag;
@@ -202,7 +204,9 @@ public class RegistrationHandler {
 		return Ingredient.of(normalPotionStack, strongPotionStack, normalSplashPotionStack, strongSplashPotionStack, normalLingeringPotionStack, strongLingeringPotionStack);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static void registerArgumentTypes() {
 		ArgumentTypes.register(SecurityCraft.MODID + ":single_game_profile", SingleGameProfileArgument.class, new EmptyArgumentSerializer<>(SingleGameProfileArgument::singleGameProfile));
+		ArgumentTypes.register(SecurityCraft.MODID + ":lowercased_enum", LowercasedEnumArgument.class, (ArgumentSerializer) new LowercasedEnumArgument.Serializer());
 	}
 }

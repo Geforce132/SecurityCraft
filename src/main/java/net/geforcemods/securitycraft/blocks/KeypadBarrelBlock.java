@@ -190,14 +190,17 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 			tag = barrel.saveWithFullMetadata();
 			barrel.clearContent();
 			horizontalFacing = switch (generalFacing) {
-				case UP, DOWN -> player.getDirection().getOpposite();
+				case UP, DOWN -> player == null ? Direction.NORTH : player.getDirection().getOpposite();
 				case SIDEWAYS -> state.getValue(BarrelBlock.FACING);
 			};
 			level.setBlockAndUpdate(pos, SCContent.KEYPAD_BARREL.get().defaultBlockState().setValue(HORIZONTAL_FACING, horizontalFacing).setValue(LID_FACING, generalFacing).setValue(OPEN, false));
 			keypadBarrel = (KeypadBarrelBlockEntity) level.getBlockEntity(pos);
 			keypadBarrel.load(tag);
-			keypadBarrel.setOwner(player.getUUID().toString(), player.getName().getString());
 			keypadBarrel.setPreviousBarrel(state.getBlock());
+
+			if (player != null)
+				keypadBarrel.setOwner(player.getUUID().toString(), player.getName().getString());
+
 			return true;
 		}
 

@@ -235,7 +235,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 			furnace = (AbstractFurnaceBlockEntity) level.getBlockEntity(pos);
 			furnace.load(tag);
 
-			if (protect)
+			if (protect && player != null)
 				((IOwnable) furnace).setOwner(player.getUUID().toString(), player.getName().getString());
 
 			return true;
