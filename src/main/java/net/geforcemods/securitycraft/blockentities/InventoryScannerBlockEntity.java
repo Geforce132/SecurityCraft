@@ -330,16 +330,21 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	public void togglePowerOutput() {
-		if (togglePowerCooldown > 0)
+		int signalLength = this.signalLength.get();
+		boolean shouldTurnOffAgain = signalLength > 0;
+
+		if (!shouldTurnOffAgain && togglePowerCooldown > 0)
 			togglePowerCooldown = 5;
 		else {
-			togglePowerCooldown = 5;
-			providePower = !providePower;
-			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.INVENTORY_SCANNER.get());
-			setChanged();
+			if (!shouldTurnOffAgain || signalCooldown <= 0) {
+				togglePowerCooldown = 5;
+				providePower = !providePower;
+				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.INVENTORY_SCANNER.get());
+				setChanged();
+			}
 
-			if (providePower && signalLength.get() > 0)
-				signalCooldown = signalLength.get();
+			if (providePower && shouldTurnOffAgain)
+				signalCooldown = signalLength;
 		}
 	}
 
