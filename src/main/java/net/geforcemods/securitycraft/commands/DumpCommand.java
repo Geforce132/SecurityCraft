@@ -22,7 +22,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class DumpCommand {
-	private static final DynamicCommandExceptionType ERROR_REGISTRY_NOT_FOUND = new DynamicCommandExceptionType(registry -> Component.translatable("commands.securitycraft.dump.notFound", registry));
+	private static final DynamicCommandExceptionType ERROR_REGISTRY_NOT_FOUND = new DynamicCommandExceptionType(registry -> Component.translatableWithFallback("commands.securitycraft.dump.notFound", "SecurityCraft has nothing registered to \"%s\".", registry));
 	private static final Map<String, DeferredRegister<?>> REGISTRIES = Util.make(() -> {
 		Map<String, DeferredRegister<?>> map = new Object2ObjectArrayMap<>();
 
