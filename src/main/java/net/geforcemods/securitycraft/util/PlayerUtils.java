@@ -14,7 +14,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.commands.CommandSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
@@ -31,7 +30,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PlayerHeadItem;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -107,20 +105,6 @@ public class PlayerUtils {
 					.append(text), Util.NIL_UUID); //appendSibling
 			//@formatter:on
 		}
-	}
-
-	/**
-	 * Sends the given {@link ICommandSource} a chat message, followed by a link prefixed with a colon. <p>
-	 */
-	public static void sendMessageEndingWithLink(CommandSource sender, MutableComponent prefix, MutableComponent text, String link, ChatFormatting color) {
-		//@formatter:off
-		sender.sendMessage(new TextComponent("[")
-				.append(prefix.setStyle(Style.EMPTY.withColor(color)))
-				.append(new TextComponent("] ")).setStyle(Style.EMPTY.withColor(ChatFormatting.WHITE))
-				.append(text)
-				.append(new TextComponent(": "))
-				.append(ForgeHooks.newChatWithLinks(link)), Util.NIL_UUID); //appendSibling
-		//@formatter:on
 	}
 
 	/**
