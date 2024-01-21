@@ -9,6 +9,7 @@
 - New: Config option "preventReinforcedFloorGlitching" to control whether players can glitch through a floor made of reinforced blocks using a boat
 - New: Wire Cutters can now be used to remove the passcode protection from a block via sneak-rightclicking
 - New: Trapped chests can now be passcode-protected
+- New: Several blocks with a signal length option for redstone signal length can now be set to toggle the redstone signal instead by setting the option to 0
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate
@@ -49,6 +50,8 @@
 - Fix: The un-/reinforcing recipes for the Reinforced Cauldron don't show up correctly in JEI
 - Fix: Reinforced Iron Trapdoors and lit furnaces cannot be passcode-protected
 - Fix: Anyone can convert a Frame/Reinforced Iron Trapdoor to a Keypad/Passcode-protected Trapdoor
+- Fix: The Keypad Trapdoor's signal length option cannot be set to 0 despite the description saying it can
+- Removed: "Is always active" option of Keypads and Key Panels. The same behavior can be achieved by setting the "Signal length" option to 0 and activating the block
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 

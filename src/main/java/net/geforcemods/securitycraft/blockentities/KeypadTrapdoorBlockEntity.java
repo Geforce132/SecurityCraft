@@ -25,7 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class KeypadTrapdoorBlockEntity extends CustomizableBlockEntity implements IPasscodeProtected, ILockable {
 	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
 	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
-	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 0, 400, 5, true); //20 seconds max
 	private DisabledOption disabled = new DisabledOption(false);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
 	private long cooldownEnd = 0;
@@ -79,14 +79,11 @@ public class KeypadTrapdoorBlockEntity extends CustomizableBlockEntity implement
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals("disabled")) {
-			boolean isDisabled = ((BooleanOption) option).get();
+		if ((option.getName().equals(disabled.getName()) && ((BooleanOption) option).get() || option.getName().equals(signalLength.getName()))) {
 			IBlockState state = world.getBlockState(pos);
 
-			if (isDisabled && state.getValue(BlockTrapDoor.OPEN)) {
-				world.setBlockState(pos, state.withProperty(BlockTrapDoor.OPEN, false));
-				SCContent.keypadTrapdoor.playSound(null, world, pos, false);
-			}
+			world.setBlockState(pos, state.withProperty(BlockTrapDoor.OPEN, false));
+			SCContent.keypadTrapdoor.playSound(null, world, pos, false);
 		}
 	}
 

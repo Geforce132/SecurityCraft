@@ -30,7 +30,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants;
 
 public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements IInventory, ILockable, ITickable {
-	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 0, 400, 5, true); //20 seconds max
 	private IntOption range = new IntOption(this::getPos, "range", 5, 1, 15, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
@@ -71,9 +71,13 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		IBlockState thisState = world.getBlockState(thisPos);
 
 		if (isModuleEnabled(ModuleType.REDSTONE)) {
-			world.setBlockState(thisPos, thisState.withProperty(BlockChangeDetectorBlock.POWERED, true));
+			int signalLength = getSignalLength();
+
+			world.setBlockState(thisPos, thisState.cycleProperty(BlockChangeDetectorBlock.POWERED));
 			BlockUtils.updateIndirectNeighbors(world, thisPos, SCContent.blockChangeDetector);
-			world.scheduleUpdate(thisPos, SCContent.blockChangeDetector, signalLength.get());
+
+			if (signalLength > 0)
+				world.scheduleUpdate(thisPos, SCContent.blockChangeDetector, signalLength);
 		}
 
 		entries.add(new ChangeEntry(player.getName(), player.getGameProfile().getId(), System.currentTimeMillis(), action, changedPos, state));
@@ -142,6 +146,10 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 	public EnumDetectionMode getMode() {
 		return mode;
+	}
+
+	public int getSignalLength() {
+		return signalLength.get();
 	}
 
 	public int getRange() {

@@ -107,7 +107,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
-		if (!world.isRemote) {
+		if (state.getValue(POWERED)) {
 			world.setBlockState(pos, state.withProperty(POWERED, false));
 			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.keycardReader);
 		}

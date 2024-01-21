@@ -60,6 +60,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 	private Map<EnumFacing, Boolean> sideConfig;
 	private IItemHandler insertOnlyHandler, lensHandler;
 	private LensContainer lenses = new LensContainer(6);
+	private long lastToggleTime;
 
 	public LaserBlockBlockEntity() {
 		lenses.addInventoryChangeListener(this);
@@ -125,8 +126,10 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 			}
 			else if (option.getName().equals("ignoreOwner"))
 				ignoreOwner.copy(option);
-			else if (option.getName().equals("signalLength"))
+			else if (option.getName().equals("signalLength")) {
 				signalLength.copy(option);
+				onRemoveRedstoneModule();
+			}
 		}
 		else if (action instanceof ILinkedAction.ModuleInserted) {
 			ILinkedAction.ModuleInserted moduleInserted = (ILinkedAction.ModuleInserted) action;
@@ -150,15 +153,27 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 		else if (action instanceof ILinkedAction.StateChanged<?>) {
 			IBlockState state = world.getBlockState(pos);
 
-			if (((ILinkedAction.StateChanged<?>) action).property == LaserBlock.POWERED && !state.getValue(LaserBlock.POWERED)) {
-				world.setBlockState(pos, state.withProperty(LaserBlock.POWERED, true));
+			if (((ILinkedAction.StateChanged<?>) action).property == LaserBlock.POWERED) {
+				int signalLength = getSignalLength();
+
+				world.setBlockState(pos, state.cycleProperty(LaserBlock.POWERED));
 				BlockUtils.updateIndirectNeighbors(world, pos, SCContent.laserBlock);
-				world.scheduleUpdate(pos, SCContent.laserBlock, signalLength.get());
+
+				if (signalLength > 0)
+					world.scheduleUpdate(pos, SCContent.laserBlock, signalLength);
 			}
 		}
 
 		excludedTEs.add(this);
 		createLinkedBlockAction(action, excludedTEs);
+	}
+
+	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals(signalLength.getName()))
+			onRemoveRedstoneModule();
+
+		super.onOptionChanged(option);
 	}
 
 	@Override
@@ -334,6 +349,18 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 
 	public int getSignalLength() {
 		return signalLength.get();
+	}
+
+	public void setLastToggleTime(long lastToggleTime) {
+		this.lastToggleTime = lastToggleTime;
+	}
+
+	public long getLastToggleTime() {
+		return lastToggleTime;
+	}
+
+	public long timeSinceLastToggle() {
+		return System.currentTimeMillis() - getLastToggleTime();
 	}
 
 	public void applyNewSideConfig(Map<EnumFacing, Boolean> sideConfig, EntityPlayer player) {

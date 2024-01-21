@@ -178,20 +178,22 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		if (!getAcceptedLevels()[level]) //both are 0 indexed, so it's ok
 			return new TextComponentTranslation("messages.securitycraft:keycardReader.wrongLevel", level + 1); //level is 0-indexed, so it has to be increased by one to match with the item name
 
-		boolean powered = world.getBlockState(pos).getValue(KeycardReaderBlock.POWERED);
+		//don't consider the block powered if the signal length is 0, because players need to be able to toggle it off
+		boolean powered = world.getBlockState(pos).getValue(KeycardReaderBlock.POWERED) && getSignalLength() > 0;
 
-		if (tag.getBoolean("limited")) {
-			int uses = tag.getInteger("uses");
+		if (!powered) {
+			if (tag.getBoolean("limited")) {
+				int uses = tag.getInteger("uses");
 
-			if (uses <= 0)
-				return new TextComponentTranslation("messages.securitycraft:keycardReader.noUses");
+				if (uses <= 0)
+					return new TextComponentTranslation("messages.securitycraft:keycardReader.noUses");
 
-			if (!player.isCreative() && !powered)
-				tag.setInteger("uses", --uses);
-		}
+				if (!player.isCreative())
+					tag.setInteger("uses", --uses);
+			}
 
-		if (!powered)
 			activate();
+		}
 
 		return null;
 	}
@@ -199,10 +201,21 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	public void activate() {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
+		int signalLength = getSignalLength();
 
-		world.setBlockState(pos, state.withProperty(KeycardReaderBlock.POWERED, true));
+		world.setBlockState(pos, state.cycleProperty(KeycardReaderBlock.POWERED));
 		BlockUtils.updateIndirectNeighbors(world, pos, block);
-		world.scheduleUpdate(pos, block, getSignalLength());
+
+		if (signalLength > 0)
+			world.scheduleUpdate(pos, block, signalLength);
+	}
+
+	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals(signalLength.getName())) {
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(KeycardReaderBlock.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.keycardReader);
+		}
 	}
 
 	public void setAcceptedLevels(boolean[] acceptedLevels) {

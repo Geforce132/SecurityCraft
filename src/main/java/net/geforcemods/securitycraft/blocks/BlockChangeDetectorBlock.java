@@ -87,8 +87,10 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		world.setBlockState(pos, state.withProperty(POWERED, false));
-		BlockUtils.updateIndirectNeighbors(world, pos, this);
+		if (state.getValue(POWERED)) {
+			world.setBlockState(pos, state.withProperty(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(world, pos, this);
+		}
 	}
 
 	@Override

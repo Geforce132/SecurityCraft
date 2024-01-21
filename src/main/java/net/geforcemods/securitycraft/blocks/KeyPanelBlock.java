@@ -64,11 +64,11 @@ public abstract class KeyPanelBlock extends OwnableBlock {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (state.getValue(POWERED))
+		KeyPanelBlockEntity be = (KeyPanelBlockEntity) world.getTileEntity(pos);
+
+		if (state.getValue(POWERED) && be.getSignalLength() > 0)
 			return false;
 		else if (!world.isRemote) {
-			KeyPanelBlockEntity be = (KeyPanelBlockEntity) world.getTileEntity(pos);
-
 			if (be.isDisabled())
 				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			else if (be.verifyPasscodeSet(world, pos, be, player)) {

@@ -74,7 +74,9 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 			if (state.getValue(RetinalScannerBlock.FACING) != rayTraceResult.sideHit)
 				return false;
 
-			if (!state.getValue(RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)) {
+			int signalLength = getSignalLength();
+
+			if ((!state.getValue(RetinalScannerBlock.POWERED) || signalLength == 0) && !EntityUtils.isInvisible(entity)) {
 				if (entity instanceof EntityPlayer) {
 					EntityPlayer player = (EntityPlayer) entity;
 					Owner viewingPlayer = new Owner(player);
@@ -93,9 +95,12 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 				else if (activatedOnlyByPlayer())
 					return false;
 
-				world.setBlockState(pos, state.withProperty(RetinalScannerBlock.POWERED, true));
+				world.setBlockState(pos, state.cycleProperty(RetinalScannerBlock.POWERED));
 				BlockUtils.updateIndirectNeighbors(world, pos, SCContent.retinalScanner);
-				world.scheduleUpdate(pos, SCContent.retinalScanner, getSignalLength());
+
+				if (signalLength > 0)
+					world.scheduleUpdate(pos, SCContent.retinalScanner, signalLength);
+
 				return true;
 			}
 		}
@@ -109,6 +114,14 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 		}
 
 		return false;
+	}
+
+	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals(signalLength.getName())) {
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(RetinalScannerBlock.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.retinalScanner);
+		}
 	}
 
 	@Override
