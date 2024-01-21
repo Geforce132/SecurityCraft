@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
@@ -25,17 +26,6 @@ import net.minecraft.nbt.CompoundNBT;
 public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPasscodeProtected, ILockable {
 	private byte[] passcode;
 	private UUID saltKey;
-	private BooleanOption isAlwaysActive = new BooleanOption("isAlwaysActive", false) {
-		@Override
-		public void toggle() {
-			super.toggle();
-
-			if (!isDisabled()) {
-				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeyPanelBlock.POWERED, get()));
-				level.updateNeighborsAt(worldPosition, SCContent.KEY_PANEL_BLOCK.get());
-			}
-		}
-	};
 	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
 	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	private IntOption signalLength = new SignalLengthOption(this::getBlockPos, 60);
@@ -106,7 +96,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				isAlwaysActive, sendAllowlistMessage, sendDenylistMessage, signalLength, disabled, smartModuleCooldown
+				sendAllowlistMessage, sendDenylistMessage, signalLength, disabled, smartModuleCooldown
 		};
 	}
 
@@ -128,13 +118,9 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals("disabled")) {
-			boolean isDisabled = ((BooleanOption) option).get();
-
-			if (isDisabled && getBlockState().getValue(KeyPanelBlock.POWERED))
-				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeyPanelBlock.POWERED, false));
-			else if (!isDisabled && isAlwaysActive.get())
-				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeyPanelBlock.POWERED, true));
+		if ((option.getName().equals(disabled.getName()) && ((BooleanOption) option).get() || option.getName().equals(signalLength.getName()))) {
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeyPanelBlock.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}
 	}
 

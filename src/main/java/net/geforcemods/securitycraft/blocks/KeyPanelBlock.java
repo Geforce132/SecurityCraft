@@ -36,11 +36,11 @@ public class KeyPanelBlock extends AbstractPanelBlock {
 
 	@Override
 	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (state.getValue(POWERED))
+		KeyPanelBlockEntity be = (KeyPanelBlockEntity) level.getBlockEntity(pos);
+
+		if (state.getValue(POWERED) && be.getSignalLength() > 0)
 			return ActionResultType.PASS;
 		else if (!level.isClientSide) {
-			KeyPanelBlockEntity be = (KeyPanelBlockEntity) level.getBlockEntity(pos);
-
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			else if (be.verifyPasscodeSet(level, pos, be, player)) {

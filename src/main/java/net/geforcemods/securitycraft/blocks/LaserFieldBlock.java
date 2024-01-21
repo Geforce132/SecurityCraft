@@ -91,11 +91,21 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, IW
 							if (laser.allowsOwnableEntity(entity))
 								return;
 
-							if (laser.isModuleEnabled(ModuleType.REDSTONE) && !offsetState.getValue(LaserBlock.POWERED)) {
-								level.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
-								BlockUtils.updateIndirectNeighbors(level, offsetPos, SCContent.LASER_BLOCK.get());
-								level.getBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), laser.getSignalLength());
-								laser.createLinkedBlockAction(new ILinkedAction.StateChanged<>(LaserBlock.POWERED, false, true), laser);
+							if (laser.isModuleEnabled(ModuleType.REDSTONE)) {
+								if (laser.timeSinceLastToggle() < 500)
+									laser.setLastToggleTime(System.currentTimeMillis());
+								else {
+									int signalLength = laser.getSignalLength();
+									boolean wasPowered = offsetState.getValue(LaserBlock.POWERED);
+
+									laser.setLastToggleTime(System.currentTimeMillis());
+									level.setBlockAndUpdate(offsetPos, offsetState.cycle(LaserBlock.POWERED));
+									BlockUtils.updateIndirectNeighbors(level, offsetPos, SCContent.LASER_BLOCK.get());
+									laser.createLinkedBlockAction(new ILinkedAction.StateChanged<>(LaserBlock.POWERED, wasPowered, !wasPowered), laser);
+
+									if (signalLength > 0)
+										level.getBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), signalLength);
+								}
 							}
 
 							if (laser.isModuleEnabled(ModuleType.HARMING)) {

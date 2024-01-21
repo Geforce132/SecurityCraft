@@ -45,8 +45,10 @@ public abstract class AbstractPanelBlock extends OwnableBlock implements IWaterL
 
 	@Override
 	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random random) {
-		level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-		BlockUtils.updateIndirectNeighbors(level, pos, this, getConnectedDirection(state).getOpposite());
+		if (state.getValue(POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, pos, this, getConnectedDirection(state).getOpposite());
+		}
 	}
 
 	@Override
@@ -151,9 +153,11 @@ public abstract class AbstractPanelBlock extends OwnableBlock implements IWaterL
 	}
 
 	public void activate(BlockState state, World level, BlockPos pos, int signalLength) {
-		level.setBlockAndUpdate(pos, state.setValue(POWERED, true));
+		level.setBlockAndUpdate(pos, state.cycle(POWERED));
 		BlockUtils.updateIndirectNeighbors(level, pos, this, getConnectedDirection(state).getOpposite());
-		level.getBlockTicks().scheduleTick(pos, this, signalLength);
+
+		if (signalLength > 0)
+			level.getBlockTicks().scheduleTick(pos, this, signalLength);
 	}
 
 	protected static Direction getConnectedDirection(BlockState state) {

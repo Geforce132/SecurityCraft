@@ -239,10 +239,8 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if (connectedScanner == null)
 			return;
 
-		if (!be.wantsToProvidePower()) {
-			be.togglePowerOutput();
-			connectedScanner.togglePowerOutput();
-		}
+		be.togglePowerOutput();
+		connectedScanner.togglePowerOutput();
 	}
 
 	/**

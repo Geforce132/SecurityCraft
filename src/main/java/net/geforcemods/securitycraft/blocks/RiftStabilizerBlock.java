@@ -57,8 +57,10 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 
 	@Override
 	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random random) {
-		level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-		BlockUtils.updateIndirectNeighbors(level, pos, this);
+		if (state.getValue(POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, pos, this);
+		}
 	}
 
 	@Override
