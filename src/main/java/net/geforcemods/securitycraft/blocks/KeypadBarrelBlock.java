@@ -207,7 +207,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 			switch (generalFacing) {
 				case UP:
 				case DOWN:
-					horizontalFacing = player.getDirection().getOpposite();
+					horizontalFacing = player == null ? Direction.NORTH : player.getDirection().getOpposite();
 					break;
 				case SIDEWAYS:
 					horizontalFacing = state.getValue(BarrelBlock.FACING);
@@ -216,8 +216,11 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 			level.setBlockAndUpdate(pos, SCContent.KEYPAD_BARREL.get().defaultBlockState().setValue(HORIZONTAL_FACING, horizontalFacing).setValue(LID_FACING, generalFacing).setValue(OPEN, false));
 			keypadBarrel = (KeypadBarrelBlockEntity) level.getBlockEntity(pos);
 			keypadBarrel.load(keypadBarrel.getBlockState(), tag);
-			keypadBarrel.setOwner(player.getUUID().toString(), player.getName().getString());
 			keypadBarrel.setPreviousBarrel(state.getBlock());
+
+			if (player != null)
+				keypadBarrel.setOwner(player.getUUID().toString(), player.getName().getString());
+
 			return true;
 		}
 

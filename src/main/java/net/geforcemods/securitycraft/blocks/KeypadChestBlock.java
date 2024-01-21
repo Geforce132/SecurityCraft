@@ -281,10 +281,8 @@ public class KeypadChestBlock extends ChestBlock {
 			if (type != ChestType.SINGLE) {
 				BlockPos newPos = pos.relative(getConnectedDirection(state));
 				BlockState newState = level.getBlockState(newPos);
-				Direction newFacing = newState.getValue(FACING);
-				ChestType newType = newState.getValue(TYPE);
 
-				convertSingleChest((ChestTileEntity) level.getBlockEntity(newPos), player, level, newPos, newState, newFacing, newType, protect);
+				convertSingleChest((ChestTileEntity) level.getBlockEntity(newPos), player, level, newPos, newState, facing, type.getOpposite(), protect);
 			}
 		}
 
@@ -309,7 +307,9 @@ public class KeypadChestBlock extends ChestBlock {
 			chest.load(null, tag);
 
 			if (protect) {
-				((IOwnable) chest).setOwner(player.getUUID().toString(), player.getName().getString());
+				if (player != null)
+					((IOwnable) chest).setOwner(player.getUUID().toString(), player.getName().getString());
+
 				((KeypadChestBlockEntity) chest).setPreviousChest(oldChestState.getBlock());
 			}
 		}
