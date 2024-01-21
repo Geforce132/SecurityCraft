@@ -9,6 +9,7 @@
 - New: Config option "preventReinforcedFloorGlitching" to control whether players can glitch through a floor made of reinforced blocks using a boat
 - New: Reinforced Lectern
 - New: Wire Cutters can now be used to remove the passcode protection from a block via sneak-rightclicking
+- New: SecurityCraft's /sc command can now be accessed via /securitycraft as well
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now
