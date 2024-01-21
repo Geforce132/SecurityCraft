@@ -93,6 +93,7 @@ public class SecurityCraft {
 	public static void onFMLCommonSetup(FMLCommonSetupEvent event) { //stage 1
 		RegistrationHandler.registerPackets();
 		RegistrationHandler.registerFakeLiquidRecipes();
+		RegistrationHandler.registerArgumentTypes();
 	}
 
 	@SubscribeEvent
