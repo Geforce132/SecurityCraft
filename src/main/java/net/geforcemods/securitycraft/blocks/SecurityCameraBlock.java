@@ -11,8 +11,11 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -31,16 +34,18 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class SecurityCameraBlock extends OwnableBlock {
+public class SecurityCameraBlock extends OwnableBlock implements IWaterLoggable {
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> facing != Direction.UP);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty BEING_VIEWED = BooleanProperty.create("being_viewed");
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final VoxelShape SHAPE_SOUTH = VoxelShapes.create(new AxisAlignedBB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F));
 	private static final VoxelShape SHAPE_NORTH = VoxelShapes.create(new AxisAlignedBB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F));
 	private static final VoxelShape SHAPE_WEST = VoxelShapes.create(new AxisAlignedBB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F));
@@ -49,7 +54,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	public SecurityCameraBlock(AbstractBlock.Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(BEING_VIEWED, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(BEING_VIEWED, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -112,20 +117,20 @@ public class SecurityCameraBlock extends OwnableBlock {
 		Direction facing = ctx.getClickedFace();
 
 		if (facing != Direction.UP) {
-			World world = ctx.getLevel();
+			World level = ctx.getLevel();
 			BlockPos pos = ctx.getClickedPos();
 			BlockState state = defaultBlockState().setValue(FACING, facing);
 
-			if (!canSurvive(state, world, pos)) {
+			if (!canSurvive(state, level, pos)) {
 				for (Direction newFacing : Plane.HORIZONTAL) {
 					state = state.setValue(FACING, newFacing);
 
-					if (canSurvive(state, world, pos))
+					if (canSurvive(state, level, pos))
 						break;
 				}
 			}
 
-			return state;
+			return state.setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER);
 		}
 		else
 			return null;
@@ -171,6 +176,19 @@ public class SecurityCameraBlock extends OwnableBlock {
 	}
 
 	@Override
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED))
+			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	}
+
+	@Override
 	public boolean isSignalSource(BlockState state) {
 		return true;
 	}
@@ -193,13 +211,13 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if (!canSurvive(level.getBlockState(pos), level, pos) && !canSurvive(state, level, pos))
+		if (!canSurvive(state, level, pos))
 			level.destroyBlock(pos, true);
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(FACING, POWERED, BEING_VIEWED);
+		builder.add(FACING, POWERED, BEING_VIEWED, WATERLOGGED);
 	}
 
 	@Override
