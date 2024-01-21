@@ -7,23 +7,26 @@ import java.util.Map;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 
 public class DumpCommand {
+	private static final DynamicCommandExceptionType ERROR_REGISTRY_NOT_FOUND = new DynamicCommandExceptionType(registry -> new TranslationTextComponent("commands.securitycraft.dump.notFound", registry));
 	private static final Map<String, DeferredRegister<?>> REGISTRIES = Util.make(() -> {
 		Map<String, DeferredRegister<?>> map = new Object2ObjectArrayMap<>();
 
@@ -53,8 +56,9 @@ public class DumpCommand {
 							String registry = ctx.getArgument("registry", String.class);
 
 							if (!REGISTRIES.containsKey(registry))
-								throw new CommandException(Utils.localize("commands.securitycraft.dump.notFound", registry));
+								throw ERROR_REGISTRY_NOT_FOUND.create(registry);
 
+							CommandSource source = ctx.getSource();
 							final String lineSeparator = System.lineSeparator();
 							final String finalResult;
 							final Collection<?> registryObjects = REGISTRIES.get(registry).getEntries();
@@ -64,15 +68,21 @@ public class DumpCommand {
 								result += ((RegistryObject<?>) ro).getId().toString() + lineSeparator;
 							}
 
-							finalResult = result;
-							ctx.getSource().getPlayerOrException().sendMessage(new StringTextComponent("[") //@formatter:off
+							finalResult = result.substring(0, result.lastIndexOf(lineSeparator));
+
+							if (source.getEntity() instanceof ServerPlayerEntity) {
+								ctx.getSource().sendSuccess(new StringTextComponent("[") //@formatter:off
 									.append(new StringTextComponent("SecurityCraft").withStyle(TextFormatting.GOLD))
 									.append(new StringTextComponent("] "))
 									.append(Utils.localize("commands.securitycraft.dump.result", registryObjects.size())
 											.withStyle(style -> style
 													.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new StringTextComponent(registry)))
-													.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, finalResult.substring(0, finalResult.lastIndexOf(lineSeparator)))))), Util.NIL_UUID);
-							//@formatter:on
+													.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, finalResult)))), true);
+								//@formatter:on
+							}
+							else
+								source.sendSuccess(new StringTextComponent(finalResult), true);
+
 							return 0;
 						}));
 	}
