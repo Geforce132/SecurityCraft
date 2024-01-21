@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.util.TeamUtils.TeamRepresentation;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.commands.CommandSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
@@ -31,7 +30,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PlayerHeadItem;
 import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.util.thread.EffectiveSide;
-import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public class PlayerUtils {
@@ -105,20 +103,6 @@ public class PlayerUtils {
 					.append(text));
 			//@formatter:on
 		}
-	}
-
-	/**
-	 * Sends the given {@link ICommandSource} a chat message, followed by a link prefixed with a colon. <p>
-	 */
-	public static void sendMessageEndingWithLink(CommandSource sender, MutableComponent prefix, MutableComponent text, String link, ChatFormatting color) {
-		//@formatter:off
-		sender.sendSystemMessage(Component.literal("[")
-				.append(prefix.setStyle(Style.EMPTY.withColor(color)))
-				.append(Component.literal("] ")).setStyle(Style.EMPTY.withColor(ChatFormatting.WHITE))
-				.append(text)
-				.append(Component.literal(": "))
-				.append(CommonHooks.newChatWithLinks(link)));
-		//@formatter:on
 	}
 
 	/**
