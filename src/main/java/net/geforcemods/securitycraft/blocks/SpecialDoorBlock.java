@@ -52,7 +52,7 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 			if (lowerBe instanceof LinkableBlockEntity && upperBe instanceof LinkableBlockEntity)
 				LinkableBlockEntity.link((LinkableBlockEntity) lowerBe, (LinkableBlockEntity) upperBe);
 
-			if (lowerBe instanceof INameSetter && upperBe instanceof INameSetter) {
+			if (stack.hasCustomHoverName() && lowerBe instanceof INameSetter && upperBe instanceof INameSetter) {
 				((INameSetter) lowerBe).setCustomName(stack.getHoverName());
 				((INameSetter) upperBe).setCustomName(stack.getHoverName());
 			}
