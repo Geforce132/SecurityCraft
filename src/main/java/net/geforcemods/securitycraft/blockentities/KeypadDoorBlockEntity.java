@@ -7,6 +7,9 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
+import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -22,6 +25,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
 
 public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasscodeProtected {
+	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
+	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
 	private long cooldownEnd = 0;
 	private byte[] passcode;
@@ -54,6 +59,11 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 		loadSaltKey(tag);
 		loadPasscode(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
+
+		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
+			sendAllowlistMessage.setValue(false);
+			sendDenylistMessage.setValue(false);
+		}
 	}
 
 	@Override
@@ -130,8 +140,16 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, signalLength, disabled, smartModuleCooldown
+				sendAllowlistMessage, sendDenylistMessage, signalLength, disabled, smartModuleCooldown
 		};
+	}
+
+	public boolean sendsAllowlistMessage() {
+		return sendAllowlistMessage.get();
+	}
+
+	public boolean sendsDenylistMessage() {
+		return sendDenylistMessage.get();
 	}
 
 	@Override

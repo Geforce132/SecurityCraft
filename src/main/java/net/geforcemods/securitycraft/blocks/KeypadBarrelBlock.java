@@ -85,11 +85,11 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 
 			if (be.verifyPasscodeSet(level, pos, be, player)) {
 				if (be.isDenied(player)) {
-					if (be.sendsMessages())
+					if (be.sendsDenylistMessage())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 				}
 				else if (be.isAllowed(player)) {
-					if (be.sendsMessages())
+					if (be.sendsAllowlistMessage())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 					activate(state, level, pos, player);

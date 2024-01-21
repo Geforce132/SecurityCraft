@@ -9,6 +9,8 @@ import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
+import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -29,7 +31,8 @@ import net.minecraft.world.World;
 
 public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity, IPasscodeProtected, ILockable {
 	private AxisAlignedBB renderBoundingBox = AxisAlignedBB.ofSize(0.0D, 0.0D, 0.0D);
-	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
+	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
 	private long cooldownEnd = 0;
@@ -135,6 +138,11 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 
 		if (forceOpenness)
 			forceOpen(shouldBeOpen);
+
+		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
+			sendAllowlistMessage.setValue(false);
+			sendDenylistMessage.setValue(false);
+		}
 	}
 
 	@Override
@@ -166,12 +174,16 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, disabled, smartModuleCooldown
+				sendAllowlistMessage, sendDenylistMessage, disabled, smartModuleCooldown
 		};
 	}
 
-	public boolean sendsMessages() {
-		return sendMessage.get();
+	public boolean sendsAllowlistMessage() {
+		return sendAllowlistMessage.get();
+	}
+
+	public boolean sendsDenylistMessage() {
+		return sendDenylistMessage.get();
 	}
 
 	public boolean isDisabled() {

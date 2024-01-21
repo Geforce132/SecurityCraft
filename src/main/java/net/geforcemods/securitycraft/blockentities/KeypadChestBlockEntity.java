@@ -13,6 +13,8 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
+import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
@@ -52,7 +54,8 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 	private UUID saltKey;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
-	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
+	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
 	private long cooldownEnd = 0;
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
@@ -100,6 +103,11 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 		loadPasscode(tag);
 		owner.load(tag);
 		previousChest = new ResourceLocation(tag.getString("previous_chest"));
+
+		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
+			sendAllowlistMessage.setValue(false);
+			sendDenylistMessage.setValue(false);
+		}
 	}
 
 	@Override
@@ -210,8 +218,10 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 		KeypadChestBlockEntity otherBe = findOther();
 
 		if (otherBe != null) {
-			if (option.getName().equals("sendMessage"))
-				otherBe.setSendsMessages(((BooleanOption) option).get());
+			if (option.getName().equals("sendAllowlistMessage"))
+				otherBe.setSendsAllowlistMessage(((BooleanOption) option).get());
+			else if (option.getName().equals("sendDenylistMessage"))
+				otherBe.setSendsDenylistMessage(((BooleanOption) option).get());
 			else if (option.getName().equals("smartModuleCooldown"))
 				otherBe.smartModuleCooldown.copy(option);
 		}
@@ -380,7 +390,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, smartModuleCooldown
+				sendAllowlistMessage, sendDenylistMessage, smartModuleCooldown
 		};
 	}
 
@@ -399,13 +409,23 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 			onModuleRemoved(getModule(module), module, true);
 	}
 
-	public boolean sendsMessages() {
-		return sendMessage.get();
+	public boolean sendsAllowlistMessage() {
+		return sendAllowlistMessage.get();
 	}
 
-	public void setSendsMessages(boolean value) {
-		sendMessage.setValue(value);
+	public void setSendsAllowlistMessage(boolean value) {
+		sendAllowlistMessage.setValue(value);
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
+	}
+
+	public boolean sendsDenylistMessage() {
+		return sendDenylistMessage.get();
+	}
+
+	public void setSendsDenylistMessage(boolean value) {
+		sendDenylistMessage.setValue(value);
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
+		setChanged();
 	}
 
 	public void setPreviousChest(Block previousChest) {
