@@ -47,12 +47,14 @@ public interface IOwnable {
 	 * @param level The current level
 	 * @param state The IOwnable's state
 	 * @param pos The IOwnable's position
-	 * @param player The player that changed the owner of the IOwnable
+	 * @param player The player who changed the owner of the IOwnable
 	 */
 	default void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {
 		if (needsValidation()) {
 			getOwner().setValidated(false);
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), ChatFormatting.GREEN);
+
+			if (player != null)
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), ChatFormatting.GREEN);
 		}
 
 		BlockEntity be = (BlockEntity) this;
