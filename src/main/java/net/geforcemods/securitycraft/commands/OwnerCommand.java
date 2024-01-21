@@ -77,6 +77,7 @@ public class OwnerCommand {
 			BlockState state = ((BlockEntity) ownable).getBlockState();
 
 			ownable.setOwner(uuid, name);
+			ownable.onOwnerChanged(state, level, pos, null);
 			level.sendBlockUpdated(pos, state, state, 3);
 			source.sendSuccess(new TranslatableComponent("commands.securitycraft.owner.set.success", pos.getX(), pos.getY(), pos.getZ()), true);
 			return 1;
@@ -121,7 +122,11 @@ public class OwnerCommand {
 				throw ERROR_FILL_FAILED.create();
 			else {
 				for (BlockEntity be : modifiedBlocks) {
-					level.sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
+					BlockPos pos = be.getBlockPos();
+					BlockState state = be.getBlockState();
+
+					((IOwnable) be).onOwnerChanged(state, level, pos, null);
+					level.sendBlockUpdated(pos, state, state, 3);
 				}
 
 				source.sendSuccess(new TranslatableComponent("commands.securitycraft.owner.fill.success", blocksModified), true);
