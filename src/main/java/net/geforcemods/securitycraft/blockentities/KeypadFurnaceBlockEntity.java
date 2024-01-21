@@ -9,6 +9,8 @@ import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
+import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
 import net.geforcemods.securitycraft.inventory.InsertOnlySidedInvWrapper;
@@ -60,7 +62,8 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 	private byte[] passcode;
 	private UUID saltKey;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
-	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
+	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
 	private long cooldownEnd = 0;
@@ -176,6 +179,11 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
 		tag.setLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 		furnaceCustomName = tag.getString("CustomName");
+
+		if (tag.hasKey("sendMessage") && !tag.getBoolean("sendMessage")) {
+			sendAllowlistMessage.setValue(false);
+			sendDenylistMessage.setValue(false);
+		}
 	}
 
 	@Override
@@ -542,12 +550,16 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, disabled, smartModuleCooldown
+				sendAllowlistMessage, sendDenylistMessage, disabled, smartModuleCooldown
 		};
 	}
 
-	public boolean sendsMessages() {
-		return sendMessage.get();
+	public boolean sendsAllowlistMessage() {
+		return sendAllowlistMessage.get();
+	}
+
+	public boolean sendsDenylistMessage() {
+		return sendDenylistMessage.get();
 	}
 
 	public boolean isDisabled() {

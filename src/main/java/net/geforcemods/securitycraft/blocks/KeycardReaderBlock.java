@@ -80,12 +80,12 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 	public static <TE extends KeycardReaderBlockEntity> boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, BiConsumer<ItemStack, TE> noKeycardRightclick) {
 		if (!world.isRemote) {
-			TE te = (TE) world.getTileEntity(pos);
+			TE be = (TE) world.getTileEntity(pos);
 
-			if (te.isDisabled())
+			if (be.isDisabled())
 				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (te.isDenied(player)) {
-				if (te.sendsMessages())
+			else if (be.isDenied(player)) {
+				if (be.sendsDenylistMessage())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(state.getBlock()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 			}
 			else {
@@ -96,9 +96,9 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 				//either no keycard, or an unlinked keycard, or an admin tool
 				if (!isKeycardHolder && (!(item instanceof KeycardItem) || !stack.hasTagCompound() || !stack.getTagCompound().getBoolean("linked")) && !isCodebreaker)
-					noKeycardRightclick.accept(stack, te);
+					noKeycardRightclick.accept(stack, be);
 				else if (item != SCContent.limitedUseKeycard) //limited use keycards are only crafting components now
-					return te.onRightClickWithActionItem(stack, hand, player, isCodebreaker, isKeycardHolder);
+					return be.onRightClickWithActionItem(stack, hand, player, isCodebreaker, isKeycardHolder);
 			}
 		}
 

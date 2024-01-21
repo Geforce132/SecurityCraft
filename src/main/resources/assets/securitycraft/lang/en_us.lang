@@ -619,6 +619,10 @@ option.generic.disabled.description=Should this block be disabled, making it no 
 option.generic.disabled=Disabled: #
 option.generic.ignoreOwner.description=Should this block ignore its owner, meaning any functionality it has will not work for the owner?
 option.generic.ignoreOwner=Ignore Owner: #
+option.generic.sendAllowlistMessage.description=Does this block send a message upon activation when the player is added to the allowlist?
+option.generic.sendAllowlistMessage=Allowlist Message: #
+option.generic.sendDenylistMessage.description=Does this block send a message upon activation when the player is added to the denylist?
+option.generic.sendDenylistMessage=Denylist Message: #
 option.generic.signalLength.description=How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)
 option.generic.signalLength=Signal length: #
 option.generic.smartModuleCooldown.description=How long can players not enter a passcode after an incorrect code has been entered? (In Ticks, 20 ticks = 1 second; requires Smart Module)
@@ -637,8 +641,6 @@ option.securitycraft:cageTrap.captureMobs.description=Should this cage trap capt
 option.securitycraft:cageTrap.captureMobs=Capture mobs: #
 option.securitycraft:claymore.range.description=From how many blocks can the claymore be tripped from?
 option.securitycraft:claymore.range=Range: #
-option.securitycraft:display_case.sendMessage.description=Does this case send a message upon activation (when using allowlist/denylist modules)?
-option.securitycraft:display_case.sendMessage=Message: #
 option.securitycraft:floor_trap.disappearDelay.description=How many ticks it takes until the block disappears (20 ticks = 1 second)
 option.securitycraft:floor_trap.disappearDelay=Disappear Delay: #
 option.securitycraft:floor_trap.disappearInstantlyInChains.description=Should this trap disappear instantly if it has a smart module and a trap next to it disappears?
@@ -655,28 +657,12 @@ option.securitycraft:inventoryScanner.solidifyField.description=Should the inven
 option.securitycraft:inventoryScanner.solidifyField=Solidify Fields: #
 option.securitycraft:key_panel.isAlwaysActive.description=Should the key panel remain active and unlocked?
 option.securitycraft:key_panel.isAlwaysActive=Is always active: #
-option.securitycraft:key_panel.sendMessage.description=Does this key panel send a message upon activation (when using allowlist/denylist modules)?
-option.securitycraft:key_panel.sendMessage=Message: #
-option.securitycraft:keycardReader.sendMessage.description=Does this keycard reader send a message upon activation (when using allowlist/denylist modules)?
-option.securitycraft:keycardReader.sendMessage=Message: #
 option.securitycraft:keycard_lock.exactLevel.description=Does this keycard lock allow only the exact keycard level, or also every level above that one?
 option.securitycraft:keycard_lock.exactLevel=Exact Level: #
-option.securitycraft:keycard_lock.sendMessage.description=Does this keycard lock send a message upon activation (when using allowlist/denylist modules)?
-option.securitycraft:keycard_lock.sendMessage=Message: #
 option.securitycraft:keypad.isAlwaysActive.description=Should the keypad remain active and unlocked?
 option.securitycraft:keypad.isAlwaysActive=Is always active: #
-option.securitycraft:keypad.sendMessage.description=Does this keypad send a message upon activation (when using allowlist/denylist modules)?
-option.securitycraft:keypad.sendMessage=Message: #
-option.securitycraft:keypadChest.sendMessage.description=Does this chest send a message upon activation (when using allowlist/denylist modules)?
-option.securitycraft:keypadChest.sendMessage=Message: #
-option.securitycraft:keypadFurnace.sendMessage.description=Does this furnace send a message upon activation (when using allowlist/denylist modules)?
-option.securitycraft:keypadFurnace.sendMessage=Message: #
-option.securitycraft:keypad_door.sendMessage.description=Does this keypad door send a message upon activation (when using allowlist/denylist modules)?
-option.securitycraft:keypad_door.sendMessage=Message: #
 option.securitycraft:keypad_door.signalLength.description=How long should the door stay open? (In ticks, 20 ticks = 1 second. Set to 0 to have the door stay open)
 option.securitycraft:keypad_door.signalLength=Signal length: #
-option.securitycraft:keypad_trapdoor.sendMessage.description=Does this keypad trapdoor send a message upon activation (when using allowlist/denylist modules)?
-option.securitycraft:keypad_trapdoor.sendMessage=Message: #
 option.securitycraft:keypad_trapdoor.signalLength.description=How long should the trapdoor stay open? (In ticks, 20 ticks = 1 second. Set to 0 to have the trapdoor stay open)
 option.securitycraft:keypad_trapdoor.signalLength=Signal length: #
 option.securitycraft:motionActivatedLight.searchRadius.description=How far will the light detect an entity?

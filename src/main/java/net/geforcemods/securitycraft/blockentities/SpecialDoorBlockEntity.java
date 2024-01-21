@@ -6,10 +6,8 @@ import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
@@ -19,7 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity implements ILockable {
-	protected BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	protected IntOption signalLength = new IntOption(this::getPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
 	protected DisabledOption disabled = new DisabledOption(false);
 
@@ -60,24 +57,6 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 
 			removeModule(moduleRemoved.moduleType, moduleRemoved.wasModuleToggled);
 		}
-	}
-
-	@Override
-	public ModuleType[] acceptedModules() {
-		return new ModuleType[] {
-				ModuleType.ALLOWLIST
-		};
-	}
-
-	@Override
-	public Option<?>[] customOptions() {
-		return new Option[] {
-				sendMessage, signalLength, disabled
-		};
-	}
-
-	public boolean sendsMessages() {
-		return sendMessage.get();
 	}
 
 	public int getSignalLength() {

@@ -604,8 +604,6 @@ option.securitycraft:cageTrap.captureMobs.description=Cette cage doit-elle captu
 option.securitycraft:cageTrap.captureMobs=Mobs capturés : #
 option.securitycraft:claymore.range.description=À partir de combien de blocs de distance la mine à détecteur peut-elle être déclenchée ?
 option.securitycraft:claymore.range=Portée : #
-option.securitycraft:display_case.sendMessage.description=Cette vitrine envoie-t-elle un message à son activation (en utilisant les modules d'autorisation / de refus)?
-option.securitycraft:display_case.sendMessage=Message : #
 option.securitycraft:floor_trap.disappearDelay.description=e nombre de ticks nécessaires avant que le bloc ne disparaisse (20 ticks = 1 seconde)?
 option.securitycraft:floor_trap.disappearDelay=Délai de disparition : #
 option.securitycraft:floor_trap.disappearInstantlyInChains.description=Ce piège doit-il disparaître instantanément s'il a un module intelligent et qu'un piège à coté de lui disparaît ?
@@ -622,28 +620,12 @@ option.securitycraft:inventoryScanner.solidifyField.description=Le champ du scan
 option.securitycraft:inventoryScanner.solidifyField=Solidifier le champ : %s
 option.securitycraft:key_panel.isAlwaysActive.description=Le panneau à touches devrait-il rester actif et déverrouillé ?
 option.securitycraft:key_panel.isAlwaysActive=Est toujours actif : #
-option.securitycraft:key_panel.sendMessage.description=Ce panneau à touches envoie-t-il un message lors de son activation (en utilisant un module de liste d'autorisation/de refus) ?
-option.securitycraft:key_panel.sendMessage=Message : #
-option.securitycraft:keycardReader.sendMessage.description=Cette carte d'accès envoie-t-elle un message lors de son activation (en utilisant un module de liste d'autorisation/de refus) ?
-option.securitycraft:keycardReader.sendMessage=Message : #
 option.securitycraft:keycard_lock.exactLevel.description=Est-ce que cette Serrure à cartes d'accès n'accepte qu'un niveau de carte précis ou aussi tous les niveaux au-dessus de celui déjà enregistré ?
 option.securitycraft:keycard_lock.exactLevel=Niveau exact : #
-option.securitycraft:keycard_lock.sendMessage.description=Est-ce que cette Serrure à cartes d'accès envoie un message lors de son activation (lors de l'utilisation de modules de liste d'autorisation/de refus)?
-option.securitycraft:keycard_lock.sendMessage=Message : #
 option.securitycraft:keypad.isAlwaysActive.description=Le clavier à code doit-il rester actif et déverrouillé ?
 option.securitycraft:keypad.isAlwaysActive=Est toujours actif : #
-option.securitycraft:keypad.sendMessage.description=Ce clavier à code envoie-t-il un message lors de son activation (en utilisant un module de liste d'autorisation/de refus) ?
-option.securitycraft:keypad.sendMessage=Message : #
-option.securitycraft:keypadChest.sendMessage.description=Ce coffre protégé par un code d'accès envoie-t-il un message lors de son activation (en utilisant un module de liste d'autorisation/de refus) ?
-option.securitycraft:keypadChest.sendMessage=Message : #
-option.securitycraft:keypadFurnace.sendMessage.description=Ce fourneau protégé par un code d'accès envoie-t-il un message lors de son activation (en utilisant un module de liste d'autorisation/de refus) ?
-option.securitycraft:keypadFurnace.sendMessage=Message : #
-option.securitycraft:keypad_door.sendMessage.description=Cette porte à code envoie-t-elle un message lors de son activation (en utilisant un module de liste d'autorisation/de refus) ?
-option.securitycraft:keypad_door.sendMessage=Message : #
 option.securitycraft:keypad_door.signalLength.description=Combien de temps la porte doit-elle rester ouverte ? (En ticks, 20 ticks = 1 seconde. Régler à 0 pour que la porte reste ouverte)
 option.securitycraft:keypad_door.signalLength=Largeur du signal : #
-option.securitycraft:keypad_trapdoor.sendMessage.description=Le clavier à code envoie-t-il un message à son d'activation (en utilisation les modules d'autorisation / de refus) ?
-option.securitycraft:keypad_trapdoor.sendMessage=Message : #
 option.securitycraft:keypad_trapdoor.signalLength.description=Combien de temps la trappe avec clavier à code doit-elle rester ouverte ? (En ticks, 20 ticks = 1 seconde. Régler à 0 pour que la trappe reste ouverte)
 option.securitycraft:keypad_trapdoor.signalLength=Largeur du signal : #
 option.securitycraft:motionActivatedLight.searchRadius.description=À quelle distance la lumière pourra détecter une entité ?

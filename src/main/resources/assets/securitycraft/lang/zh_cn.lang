@@ -624,8 +624,6 @@ option.securitycraft:cageTrap.captureMobs.description=该诱捕笼是捕捉敌�
 option.securitycraft:cageTrap.captureMobs=捕捉生物：#
 option.securitycraft:claymore.range.description=该阔剑地雷触发的范围有多远？
 option.securitycraft:claymore.range=范围：#
-option.securitycraft:display_case.sendMessage.description=该展示柜是否在激活时发送消息（当使用白名单/黑名单模块时）？
-option.securitycraft:display_case.sendMessage=消息：#
 option.securitycraft:floor_trap.disappearDelay.description=从触发到方块消失需要多长时间（20游戏刻=1秒）
 option.securitycraft:floor_trap.disappearDelay=消失时间：#
 option.securitycraft:floor_trap.disappearInstantlyInChains.description=如果使用了智能模块，当周围的陷阱消失时，此陷阱是否会立即消失？
@@ -642,28 +640,12 @@ option.securitycraft:inventoryScanner.solidifyField.description=当检测到违�
 option.securitycraft:inventoryScanner.solidifyField=区域固体化：#
 option.securitycraft:key_panel.isAlwaysActive.description=该密码盘面板是否应保持激活并解锁状态？
 option.securitycraft:key_panel.isAlwaysActive=始终激活：#
-option.securitycraft:key_panel.sendMessage.description=该密码盘面板在激活时是否发送消息（当使用白名单/黑名单模块时）？
-option.securitycraft:key_panel.sendMessage=消息：#
-option.securitycraft:keycardReader.sendMessage.description=该安全卡读取器在激活时是否发送消息（当使用白名单/黑名单模块时）？
-option.securitycraft:keycardReader.sendMessage=消息：#
 option.securitycraft:keycard_lock.exactLevel.description=该安全卡锁只允许唯一的安全卡等级，还是允许所有更高的等级？
 option.securitycraft:keycard_lock.exactLevel=精确等级：#
-option.securitycraft:keycard_lock.sendMessage.description=该安全卡锁在激活时是否发送消息（当使用白名单/黑名单模块时）？
-option.securitycraft:keycard_lock.sendMessage=消息：#
 option.securitycraft:keypad.isAlwaysActive.description=该密码盘是否保持激活并解锁的状态？
 option.securitycraft:keypad.isAlwaysActive=始终激活：#
-option.securitycraft:keypad.sendMessage.description=该密码盘在激活时是否发送消息（当使用白名单/黑名单模块时）？
-option.securitycraft:keypad.sendMessage=消息：#
-option.securitycraft:keypadChest.sendMessage.description=该密码保护箱子在激活时是否发送消息（当使用白名单/黑名单模块时）？
-option.securitycraft:keypadChest.sendMessage=消息：#
-option.securitycraft:keypadFurnace.sendMessage.description=该密码保护熔炉在激活时是否发送消息（当使用白名单/黑名单模块时）？
-option.securitycraft:keypadFurnace.sendMessage=消息：#
-option.securitycraft:keypad_door.sendMessage.description=激活该密码门时是否发送消息（当使用白名单/黑名单模块时）？
-option.securitycraft:keypad_door.sendMessage=消息：#
 option.securitycraft:keypad_door.signalLength.description=成功激活后门会开多久？（以游戏刻为单位，20 游戏刻 = 1 秒。设置为 0 会使门始终打开）
 option.securitycraft:keypad_door.signalLength=信号时长：#
-option.securitycraft:keypad_trapdoor.sendMessage.description=激活该密码活板门时是否发送消息（当使用白名单/黑名单模块时）？
-option.securitycraft:keypad_trapdoor.sendMessage=消息：#
 option.securitycraft:keypad_trapdoor.signalLength.description=成功激活后活板门会开多久？（以游戏刻为单位，20 游戏刻 = 1 秒。设置为 0 会使活板门始终打开）
 option.securitycraft:keypad_trapdoor.signalLength=信号时长：#
 option.securitycraft:motionActivatedLight.searchRadius.description=该运动感应灯能检测实体的范围？

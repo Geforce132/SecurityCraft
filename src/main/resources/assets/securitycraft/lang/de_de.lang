@@ -610,6 +610,10 @@ option.generic.disabled.description=Soll dieser Block deaktiviert werden, sodass
 option.generic.disabled=Deaktiviert: #
 option.generic.ignoreOwner.description=Soll dieser Block seinen Besitzer ignorieren? Dies führt dazu, dass jedwede Funktionalität des Blocks nicht für seinen Besitzer funktioniert.
 option.generic.ignoreOwner=Besitzer ignorieren: #
+option.generic.sendAllowlistMessage.description=Sendet dieser Block eine Nachricht, wenn er von einem Spieler auf der Zulassungsliste aktiviert wird?
+option.generic.sendAllowlistMessage=Zulassungslisten-Nachricht: #
+option.generic.sendDenylistMessage.description=Sendet dieser Block eine Nachricht, wenn er von einem Spieler auf der Sperrliste aktiviert wird?
+option.generic.sendDenylistMessage=Sperrlisten-Nachricht: #
 option.generic.signalLength.description=Wie lange soll das Redstonesignal bei erfolgreicher Aktivierung sein? (In Ticks, 20 Ticks = 1 Sekunde)
 option.generic.signalLength=Signallänge: #
 option.generic.smartModuleCooldown.description=Wie lange können Spieler keinen Code mehr eingeben, nachdem ein falscher Code eingegeben wurde? (In Ticks, 20 Ticks = 1 Sekunde; benötigt ein schlaues Modul)
@@ -628,8 +632,6 @@ option.securitycraft:cageTrap.captureMobs.description=Solle die Käfigfalle Mobs
 option.securitycraft:cageTrap.captureMobs=Mobs einsperren: #
 option.securitycraft:claymore.range.description=Von wie vielen Blöcken entfernt kann die Claymore aktiviert werden?
 option.securitycraft:claymore.range=Reichweite: #
-option.securitycraft:display_case.sendMessage.description=Sendet diese Vitrine eine Nachricht, wenn sie geöffnet wird (bei Nutzung von Zulassungslisten/Sperrlisten-Modulen)?
-option.securitycraft:display_case.sendMessage=Nachricht: #
 option.securitycraft:floor_trap.disappearDelay.description=Wie viele Ticks dauert es, bis die Falle verschwindet? (20 Ticks = 1 Sekunde)
 option.securitycraft:floor_trap.disappearDelay=Zeit zum Verschwinden: #
 option.securitycraft:floor_trap.disappearInstantlyInChains.description=Soll diese Bodenfalle sofort verschwinden, wenn ein schlaues Modul installiert ist und eine Bodenfalle neben ihr verschwindet?
@@ -646,28 +648,12 @@ option.securitycraft:inventoryScanner.solidifyField.description=Sollen sich die 
 option.securitycraft:inventoryScanner.solidifyField=Felder verfestigen: #
 option.securitycraft:key_panel.isAlwaysActive.description=Soll das Nummernfeld aktiv bleiben und immer offen sein?
 option.securitycraft:key_panel.isAlwaysActive=Immer aktiv: #
-option.securitycraft:key_panel.sendMessage.description=Sendet dieses Nummernfeld eine Nachricht, wenn es aktiviert wird (bei Nutzung von Zulassungslisten/Sperrlisten-Modulen)?
-option.securitycraft:key_panel.sendMessage=Nachricht: #
-option.securitycraft:keycardReader.sendMessage.description=Sendet dieser Schlüsselkartenleser eine Nachricht, wenn er aktiviert wird (bei Nutzung von Zulassungslisten/Sperrlisten-Modulen)?
-option.securitycraft:keycardReader.sendMessage=Nachricht: #
 option.securitycraft:keycard_lock.exactLevel.description=Soll dieses Schlüsselkartenschloss nur den genauen Schlüsselkarten-Level akzeptieren, oder ebenfalls alle Level darüber?
 option.securitycraft:keycard_lock.exactLevel=Genauer Level: #
-option.securitycraft:keycard_lock.sendMessage.description=Sendet dieses Schlüsselkartenschloss eine Nachricht, wenn es aktiviert wird (bei Nutzung von Zulassungslisten/Sperrlisten-Modulen)?
-option.securitycraft:keycard_lock.sendMessage=Nachricht: #
 option.securitycraft:keypad.isAlwaysActive.description=Soll das Nummernschloss aktiv bleiben und immer offen sein?
 option.securitycraft:keypad.isAlwaysActive=Immer aktiv: #
-option.securitycraft:keypad.sendMessage.description=Sendet dieses Nummernschloss eine Nachricht, wenn es aktiviert wird (bei Nutzung von Zulassungslisten/Sperrlisten-Modulen)?
-option.securitycraft:keypad.sendMessage=Nachricht: #
-option.securitycraft:keypadChest.sendMessage.description=Sendet diese Truhe eine Nachricht, wenn sie aktiviert wird (bei Nutzung von Zulassungslisten/Sperrlisten-Modulen)?
-option.securitycraft:keypadChest.sendMessage=Nachricht: #
-option.securitycraft:keypadFurnace.sendMessage.description=Sendet dieser Ofen eine Nachricht, wenn er aktiviert wird (bei Nutzung von Zulassungslisten/Sperrlisten-Modulen)?
-option.securitycraft:keypadFurnace.sendMessage=Nachricht: #
-option.securitycraft:keypad_door.sendMessage.description=Sendet diese Nummernschloss-Tür eine Nachricht, wenn sie aktiviert wird?
-option.securitycraft:keypad_door.sendMessage=Nachricht: #
 option.securitycraft:keypad_door.signalLength.description=Wie lange soll die Tür offen bleiben? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, damit sich die Tür nicht schließt)
 option.securitycraft:keypad_door.signalLength=Dauer zum Schließen: #
-option.securitycraft:keypad_trapdoor.sendMessage.description=Sendet diese Nummernschloss-Falltür eine Nachricht, wenn sie aktiviert wird?
-option.securitycraft:keypad_trapdoor.sendMessage=Nachricht: #
 option.securitycraft:keypad_trapdoor.signalLength.description=Wie lange soll die Falltür offen bleiben? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, damit sich die Falltür nicht schließt)
 option.securitycraft:keypad_trapdoor.signalLength=Dauer zum Schließen: #
 option.securitycraft:motionActivatedLight.searchRadius.description=Wie weit entfernt erkennt das Licht einen Mob/Spieler?

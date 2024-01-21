@@ -25,26 +25,23 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 		if (state.getValue(POWERED))
 			return false;
 		else if (!world.isRemote) {
-			KeypadDoorBlockEntity te = (KeypadDoorBlockEntity) world.getTileEntity(pos);
+			KeypadDoorBlockEntity be = (KeypadDoorBlockEntity) world.getTileEntity(pos);
 
-			if (te.isDisabled())
+			if (be.isDisabled())
 				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (te.verifyPasscodeSet(world, pos, te, player)) {
-				if (te.isDenied(player)) {
-					if (te.sendsMessages())
+			else if (be.verifyPasscodeSet(world, pos, be, player)) {
+				if (be.isDenied(player)) {
+					if (be.sendsDenylistMessage())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-
-					return true;
 				}
-				else if (te.isAllowed(player)) {
-					if (te.sendsMessages())
+				else if (be.isAllowed(player)) {
+					if (be.sendsAllowlistMessage())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-					activate(state, world, pos, te.getSignalLength());
-					return true;
+					activate(state, world, pos, be.getSignalLength());
 				}
 				else if (player.getHeldItem(hand).getItem() != SCContent.codebreaker)
-					te.openPasscodeGUI(world, pos, player);
+					be.openPasscodeGUI(world, pos, player);
 			}
 		}
 

@@ -119,23 +119,23 @@ public class KeypadChestBlock extends OwnableBlock {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
-			KeypadChestBlockEntity te = (KeypadChestBlockEntity) world.getTileEntity(pos);
+			KeypadChestBlockEntity be = (KeypadChestBlockEntity) world.getTileEntity(pos);
 
-			if (te.verifyPasscodeSet(world, pos, te, player)) {
-				if (te.isDenied(player)) {
-					if (te.sendsMessages())
+			if (be.verifyPasscodeSet(world, pos, be, player)) {
+				if (be.isDenied(player)) {
+					if (be.sendsDenylistMessage())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 
 					return true;
 				}
-				else if (te.isAllowed(player)) {
-					if (te.sendsMessages())
+				else if (be.isAllowed(player)) {
+					if (be.sendsAllowlistMessage())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 					activate(world, pos, player);
 				}
 				else if (player.getHeldItem(hand).getItem() != SCContent.codebreaker)
-					te.openPasscodeGUI(world, pos, player);
+					be.openPasscodeGUI(world, pos, player);
 			}
 		}
 
@@ -190,10 +190,10 @@ public class KeypadChestBlock extends OwnableBlock {
 			world.setBlockState(pos, state, 3);
 		}
 
-		KeypadChestBlockEntity thisTe = (KeypadChestBlockEntity) world.getTileEntity(pos);
+		KeypadChestBlockEntity thisBe = (KeypadChestBlockEntity) world.getTileEntity(pos);
 
 		if (stack.hasDisplayName())
-			thisTe.setCustomName(stack.getDisplayName());
+			thisBe.setCustomName(stack.getDisplayName());
 
 		if (entity instanceof EntityPlayer) {
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) entity));
@@ -201,19 +201,20 @@ public class KeypadChestBlock extends OwnableBlock {
 			if (otherChestPos != null) {
 				TileEntity otherTe = world.getTileEntity(otherChestPos);
 
-				if (otherTe instanceof KeypadChestBlockEntity && thisTe.getOwner().owns((KeypadChestBlockEntity) otherTe)) {
-					KeypadChestBlockEntity te = (KeypadChestBlockEntity) otherTe;
+				if (otherTe instanceof KeypadChestBlockEntity && thisBe.getOwner().owns((KeypadChestBlockEntity) otherTe)) {
+					KeypadChestBlockEntity be = (KeypadChestBlockEntity) otherTe;
 
-					for (ModuleType type : te.getInsertedModules()) {
-						thisTe.insertModule(te.getModule(type), false);
+					for (ModuleType type : be.getInsertedModules()) {
+						thisBe.insertModule(be.getModule(type), false);
 					}
 
-					thisTe.setSendsMessages(te.sendsMessages());
+					thisBe.setSendsAllowlistMessage(be.sendsAllowlistMessage());
+					thisBe.setSendsDenylistMessage(be.sendsDenylistMessage());
 
-					if (te.getSaltKey() != null)
-						thisTe.setSaltKey(SaltData.putSalt(te.getSalt()));
+					if (be.getSaltKey() != null)
+						thisBe.setSaltKey(SaltData.putSalt(be.getSalt()));
 
-					thisTe.setPasscode(te.getPasscode());
+					thisBe.setPasscode(be.getPasscode());
 				}
 			}
 		}

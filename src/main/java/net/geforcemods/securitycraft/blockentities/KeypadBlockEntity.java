@@ -9,6 +9,8 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
+import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
@@ -32,7 +34,8 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 			}
 		}
 	};
-	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
+	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	private IntOption signalLength = new SignalLengthOption(this::getPos, 60);
 	private DisabledOption disabled = new DisabledOption(false);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
@@ -60,6 +63,11 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 		loadSaltKey(tag);
 		loadPasscode(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
+
+		if (tag.hasKey("sendMessage") && !tag.getBoolean("sendMessage")) {
+			sendAllowlistMessage.setValue(false);
+			sendDenylistMessage.setValue(false);
+		}
 	}
 
 	@Override
@@ -137,12 +145,16 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				isAlwaysActive, sendMessage, signalLength, disabled, smartModuleCooldown
+				isAlwaysActive, sendAllowlistMessage, sendDenylistMessage, signalLength, disabled, smartModuleCooldown
 		};
 	}
 
-	public boolean sendsMessages() {
-		return sendMessage.get();
+	public boolean sendsAllowlistMessage() {
+		return sendAllowlistMessage.get();
+	}
+
+	public boolean sendsDenylistMessage() {
+		return sendDenylistMessage.get();
 	}
 
 	public int getSignalLength() {

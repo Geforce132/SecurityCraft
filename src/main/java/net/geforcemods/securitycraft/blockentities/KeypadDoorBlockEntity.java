@@ -6,6 +6,9 @@ import java.util.function.Consumer;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
+import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
@@ -19,6 +22,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasscodeProtected {
+	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
+	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
 	private long cooldownEnd = 0;
 	private byte[] passcode;
@@ -40,13 +45,15 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
-		long cooldownLeft;
-
 		super.readFromNBT(tag);
 		loadSaltKey(tag);
 		loadPasscode(tag);
-		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
-		tag.setLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
+		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
+
+		if (tag.hasKey("sendMessage") && !tag.getBoolean("sendMessage")) {
+			sendAllowlistMessage.setValue(false);
+			sendDenylistMessage.setValue(false);
+		}
 	}
 
 	@Override
@@ -129,8 +136,16 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, signalLength, disabled, smartModuleCooldown
+				sendAllowlistMessage, sendDenylistMessage, signalLength, disabled, smartModuleCooldown
 		};
+	}
+
+	public boolean sendsAllowlistMessage() {
+		return sendAllowlistMessage.get();
+	}
+
+	public boolean sendsDenylistMessage() {
+		return sendDenylistMessage.get();
 	}
 
 	@Override

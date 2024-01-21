@@ -13,6 +13,7 @@
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate
 - Change: Players now take 5 instead of 0.5 hearts of damage when suffocating inside reinforced blocks
+- Change: The existing "Message" option has been split up into separate "Allowlist Message" and "Denylist Message" options for several blocks
 - API: Refactored IReinforcedBlock to address several issues with block conversion
 - API: Refactored IPasscodeConvertible to account for the new Wire Cutters functionality
 - Fix: The Floor Trap has incorrect sound

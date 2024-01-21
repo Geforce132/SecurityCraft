@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
@@ -37,7 +38,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 			true, false, false, false, false
 	};
 	private int signature = 0;
-	protected BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	protected BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	protected IntOption signalLength = new SignalLengthOption(this::getPos, 60);
 	protected DisabledOption disabled = new DisabledOption(false);
 
@@ -83,6 +84,9 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		}
 
 		signature = tag.getInteger("signature");
+
+		if (tag.hasKey("sendMessage"))
+			sendDenylistMessage.setValue(tag.getBoolean("sendMessage"));
 	}
 
 	@Override
@@ -227,12 +231,12 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, signalLength, disabled
+				sendDenylistMessage, signalLength, disabled
 		};
 	}
 
-	public boolean sendsMessages() {
-		return sendMessage.get();
+	public boolean sendsDenylistMessage() {
+		return sendDenylistMessage.get();
 	}
 
 	public int getSignalLength() {
