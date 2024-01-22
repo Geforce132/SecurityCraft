@@ -36,6 +36,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ILockable, ITickingBlockEntity {
 	private IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5, true); //20 seconds max
@@ -124,6 +125,14 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		showHighlights = tag.getBoolean("ShowHighlights");
 		setColor(tag.getInt("Color"));
 		updateFilteredEntries();
+	}
+
+	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals(signalLength.getName())) {
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+		}
 	}
 
 	@Override
