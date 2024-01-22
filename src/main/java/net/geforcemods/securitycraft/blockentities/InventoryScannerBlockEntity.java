@@ -501,6 +501,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			IBlockState state = world.getBlockState(pos);
 
 			this.signalLength.setValue(signalLength);
+			togglePowerCooldown = 5;
+			providePower = false;
 			world.notifyBlockUpdate(pos, state, state, 3); //sync option change to client
 			markDirty();
 		}

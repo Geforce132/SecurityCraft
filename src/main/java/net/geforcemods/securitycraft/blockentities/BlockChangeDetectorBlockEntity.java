@@ -127,6 +127,14 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals(signalLength.getName())) {
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockChangeDetectorBlock.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.blockChangeDetector);
+		}
+	}
+
+	@Override
 	public void invalidate() {
 		super.invalidate();
 		BlockEntityTracker.BLOCK_CHANGE_DETECTOR.stopTracking(this);

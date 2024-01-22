@@ -92,14 +92,18 @@ public abstract class KeyPanelBlock extends OwnableBlock {
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
-		world.setBlockState(pos, state.withProperty(POWERED, false));
-		BlockUtils.updateIndirectNeighbors(world, pos, this, getConnectedDirection(state).getOpposite());
+		if (state.getValue(POWERED)) {
+			world.setBlockState(pos, state.withProperty(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(world, pos, this, getConnectedDirection(state).getOpposite());
+		}
 	}
 
 	public void activate(IBlockState state, World world, BlockPos pos, int signalLength) {
-		world.setBlockState(pos, state.withProperty(POWERED, true));
+		world.setBlockState(pos, state.cycleProperty(POWERED));
 		BlockUtils.updateIndirectNeighbors(world, pos, this, getConnectedDirection(state).getOpposite());
-		world.scheduleUpdate(pos, this, signalLength);
+
+		if (signalLength > 0)
+			world.scheduleUpdate(pos, this, signalLength);
 	}
 
 	protected abstract EnumFacing getConnectedDirection(IBlockState state);

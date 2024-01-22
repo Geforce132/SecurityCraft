@@ -270,6 +270,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 			IBlockState state = world.getBlockState(pos);
 
 			this.signalLength.setValue(signalLength);
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(RiftStabilizerBlock.POWERED, false));
 			world.notifyBlockUpdate(pos, state, state, 3); //sync option change to client
 		}
 	}

@@ -638,12 +638,8 @@ option.securitycraft:inventoryScanner.horizontal.description=此扫描仪方块�
 option.securitycraft:inventoryScanner.horizontal=水平：#
 option.securitycraft:inventoryScanner.solidifyField.description=当检测到违禁物品时，物品栏扫描仪区域是否变为固体？
 option.securitycraft:inventoryScanner.solidifyField=区域固体化：#
-option.securitycraft:key_panel.isAlwaysActive.description=该密码盘面板是否应保持激活并解锁状态？
-option.securitycraft:key_panel.isAlwaysActive=始终激活：#
 option.securitycraft:keycard_lock.exactLevel.description=该安全卡锁只允许唯一的安全卡等级，还是允许所有更高的等级？
 option.securitycraft:keycard_lock.exactLevel=精确等级：#
-option.securitycraft:keypad.isAlwaysActive.description=该密码盘是否保持激活并解锁的状态？
-option.securitycraft:keypad.isAlwaysActive=始终激活：#
 option.securitycraft:keypad_door.signalLength.description=成功激活后门会开多久？（以游戏刻为单位，20 游戏刻 = 1 秒。设置为 0 会使门始终打开）
 option.securitycraft:keypad_door.signalLength=信号时长：#
 option.securitycraft:keypad_trapdoor.signalLength.description=成功激活后活板门会开多久？（以游戏刻为单位，20 游戏刻 = 1 秒。设置为 0 会使活板门始终打开）

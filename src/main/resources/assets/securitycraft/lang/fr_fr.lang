@@ -618,12 +618,8 @@ option.securitycraft:inventoryScanner.horizontal.description=Les champs créés 
 option.securitycraft:inventoryScanner.horizontal=Horizontale : #
 option.securitycraft:inventoryScanner.solidifyField.description=Le champ du scanner d'inventaire se solidifie-t-il lorsqu'un objet interdit est détecté ?
 option.securitycraft:inventoryScanner.solidifyField=Solidifier le champ : %s
-option.securitycraft:key_panel.isAlwaysActive.description=Le panneau à touches devrait-il rester actif et déverrouillé ?
-option.securitycraft:key_panel.isAlwaysActive=Est toujours actif : #
 option.securitycraft:keycard_lock.exactLevel.description=Est-ce que cette Serrure à cartes d'accès n'accepte qu'un niveau de carte précis ou aussi tous les niveaux au-dessus de celui déjà enregistré ?
 option.securitycraft:keycard_lock.exactLevel=Niveau exact : #
-option.securitycraft:keypad.isAlwaysActive.description=Le clavier à code doit-il rester actif et déverrouillé ?
-option.securitycraft:keypad.isAlwaysActive=Est toujours actif : #
 option.securitycraft:keypad_door.signalLength.description=Combien de temps la porte doit-elle rester ouverte ? (En ticks, 20 ticks = 1 seconde. Régler à 0 pour que la porte reste ouverte)
 option.securitycraft:keypad_door.signalLength=Largeur du signal : #
 option.securitycraft:keypad_trapdoor.signalLength.description=Combien de temps la trappe avec clavier à code doit-elle rester ouverte ? (En ticks, 20 ticks = 1 seconde. Régler à 0 pour que la trappe reste ouverte)

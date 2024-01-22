@@ -623,7 +623,7 @@ option.generic.sendAllowlistMessage.description=Does this block send a message u
 option.generic.sendAllowlistMessage=Allowlist Message: #
 option.generic.sendDenylistMessage.description=Does this block send a message upon activation when the player is added to the denylist?
 option.generic.sendDenylistMessage=Denylist Message: #
-option.generic.signalLength.description=How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)
+option.generic.signalLength.description=How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second. Set to 0 to toggle the signal)
 option.generic.signalLength=Signal length: #
 option.generic.smartModuleCooldown.description=How long can players not enter a passcode after an incorrect code has been entered? (In Ticks, 20 ticks = 1 second; requires Smart Module)
 option.generic.smartModuleCooldown=Cooldown: #
@@ -635,7 +635,7 @@ option.securitycraft:alarm.resetCooldown.description=Should the cooldown between
 option.securitycraft:alarm.resetCooldown=Reset Cooldown: #
 option.securitycraft:block_change_detector.range.description=How far away should the detector be able to detect block changes by players?
 option.securitycraft:block_change_detector.range=Detection radius: #
-option.securitycraft:block_change_detector.signalLength.description=How long should the redstone signal after detecting a block change be? (In ticks, 20 ticks = 1 second)
+option.securitycraft:block_change_detector.signalLength.description=How long should the redstone signal after detecting a block change be? (In ticks, 20 ticks = 1 second. Set to 0 to toggle the signal)
 option.securitycraft:block_change_detector.signalLength=Signal length: #
 option.securitycraft:cageTrap.captureMobs.description=Should this cage trap capture hostile mobs and players, or only players?
 option.securitycraft:cageTrap.captureMobs=Capture mobs: #
@@ -655,12 +655,8 @@ option.securitycraft:inventoryScanner.horizontal.description=Should the inventor
 option.securitycraft:inventoryScanner.horizontal=Horizontal: #
 option.securitycraft:inventoryScanner.solidifyField.description=Should the inventory scanner's fields solidify when a prohibited item is detected?
 option.securitycraft:inventoryScanner.solidifyField=Solidify Fields: #
-option.securitycraft:key_panel.isAlwaysActive.description=Should the key panel remain active and unlocked?
-option.securitycraft:key_panel.isAlwaysActive=Is always active: #
 option.securitycraft:keycard_lock.exactLevel.description=Does this keycard lock allow only the exact keycard level, or also every level above that one?
 option.securitycraft:keycard_lock.exactLevel=Exact Level: #
-option.securitycraft:keypad.isAlwaysActive.description=Should the keypad remain active and unlocked?
-option.securitycraft:keypad.isAlwaysActive=Is always active: #
 option.securitycraft:keypad_door.signalLength.description=How long should the door stay open? (In ticks, 20 ticks = 1 second. Set to 0 to have the door stay open)
 option.securitycraft:keypad_door.signalLength=Signal length: #
 option.securitycraft:keypad_trapdoor.signalLength.description=How long should the trapdoor stay open? (In ticks, 20 ticks = 1 second. Set to 0 to have the trapdoor stay open)
@@ -681,7 +677,7 @@ option.securitycraft:retinalScanner.sendMessage.description=Does this scanner se
 option.securitycraft:retinalScanner.sendMessage=Message: #
 option.securitycraft:rift_stabilizer.range.description=How far away should the Rift Stabilizer be able to prevent teleportation attempts?
 option.securitycraft:rift_stabilizer.range=Detection radius: #
-option.securitycraft:rift_stabilizer.signalLength.description=How long should the redstone signal after detecting a teleportation attempt be? (In ticks, 20 ticks = 1 second)
+option.securitycraft:rift_stabilizer.signalLength.description=How long should the redstone signal after detecting a teleportation attempt be? (In ticks, 20 ticks = 1 second. Set to 0 to toggle the signal)
 option.securitycraft:rift_stabilizer.signalLength=Signal length: #
 option.securitycraft:scannerDoor.sendMessage.description=Does this scanner door send a message upon activation?
 option.securitycraft:scannerDoor.sendMessage=Message: #

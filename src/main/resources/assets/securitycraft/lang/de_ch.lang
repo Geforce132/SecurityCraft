@@ -614,7 +614,7 @@ option.generic.sendAllowlistMessage.description=Sendet dieser Block eine Nachric
 option.generic.sendAllowlistMessage=Zulassungslisten-Nachricht: #
 option.generic.sendDenylistMessage.description=Sendet dieser Block eine Nachricht, wenn er von einem Spieler auf der Sperrliste aktiviert wird?
 option.generic.sendDenylistMessage=Sperrlisten-Nachricht: #
-option.generic.signalLength.description=Wie lange soll das Redstonesignal bei erfolgreicher Aktivierung sein? (In Ticks, 20 Ticks = 1 Sekunde)
+option.generic.signalLength.description=Wie lange soll das Redstonesignal bei erfolgreicher Aktivierung sein? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, um das Signal umzuschalten))
 option.generic.signalLength=Signallänge: #
 option.generic.smartModuleCooldown.description=Wie lange können Spieler keinen Code mehr eingeben, nachdem ein falscher Code eingegeben wurde? (In Ticks, 20 Ticks = 1 Sekunde; benötigt ein schlaues Modul)
 option.generic.smartModuleCooldown=Abklingzeit: #
@@ -626,7 +626,7 @@ option.securitycraft:alarm.resetCooldown.description=Soll die Abklingzeit zwisch
 option.securitycraft:alarm.resetCooldown=Abklingzeit zurücksetzen: #
 option.securitycraft:block_change_detector.range.description=Wie weit weg soll der Detektor Blöcke, die von Spielern platziert/zerbrochen wurden, detektieren?
 option.securitycraft:block_change_detector.range=Detektionsradius: #
-option.securitycraft:block_change_detector.signalLength.description=Wie lange soll das Redstonesignal nach Detektion einer Block-Änderung sein? (In Ticks, 20 Ticks = 1 Sekunde)
+option.securitycraft:block_change_detector.signalLength.description=Wie lange soll das Redstonesignal nach Detektion einer Block-Änderung sein? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, um das Signal umzuschalten))
 option.securitycraft:block_change_detector.signalLength=Signallänge: #
 option.securitycraft:cageTrap.captureMobs.description=Solle die Käfigfalle Mobs und Spieler einsperren, oder nur Spieler?
 option.securitycraft:cageTrap.captureMobs=Mobs einsperren: #
@@ -646,12 +646,8 @@ option.securitycraft:inventoryScanner.horizontal.description=Sollen die Inventar
 option.securitycraft:inventoryScanner.horizontal=Horizontal: #
 option.securitycraft:inventoryScanner.solidifyField.description=Sollen sich die Inventarscannerfelder von diesem Inventarscanner verfestigen, wenn ein unerlaubtes Item erkannt wird?
 option.securitycraft:inventoryScanner.solidifyField=Felder verfestigen: #
-option.securitycraft:key_panel.isAlwaysActive.description=Soll das Nummernfeld aktiv bleiben und immer offen sein?
-option.securitycraft:key_panel.isAlwaysActive=Immer aktiv: #
 option.securitycraft:keycard_lock.exactLevel.description=Soll dieses Schlüsselkartenschloss nur den genauen Schlüsselkarten-Level akzeptieren, oder ebenfalls alle Level darüber?
 option.securitycraft:keycard_lock.exactLevel=Genauer Level: #
-option.securitycraft:keypad.isAlwaysActive.description=Soll das Nummernschloss aktiv bleiben und immer offen sein?
-option.securitycraft:keypad.isAlwaysActive=Immer aktiv: #
 option.securitycraft:keypad_door.signalLength.description=Wie lange soll die Tür offen bleiben? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, damit sich die Tür nicht schließt)
 option.securitycraft:keypad_door.signalLength=Dauer zum Schließen: #
 option.securitycraft:keypad_trapdoor.signalLength.description=Wie lange soll die Falltür offen bleiben? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, damit sich die Falltür nicht schließt)
@@ -672,7 +668,7 @@ option.securitycraft:retinalScanner.sendMessage.description=Sendet dieser Scanne
 option.securitycraft:retinalScanner.sendMessage=Nachricht: #
 option.securitycraft:rift_stabilizer.range.description=Wie weit weg soll der Riss-Stabilisierer Teleportationsversuche verhindern?
 option.securitycraft:rift_stabilizer.range=Detektionsradius: #
-option.securitycraft:rift_stabilizer.signalLength.description=Wie lange soll das Redstonesignal nach Detektion eines Teleportationsversuches sein? (In Ticks, 20 Ticks = 1 Sekunde)
+option.securitycraft:rift_stabilizer.signalLength.description=Wie lange soll das Redstonesignal nach Detektion eines Teleportationsversuches sein? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, um das Signal umzuschalten))
 option.securitycraft:rift_stabilizer.signalLength=Signallänge: #
 option.securitycraft:scannerDoor.sendMessage.description=Sendet diese Scannertür eine Nachricht, wenn sie aktiviert wird?
 option.securitycraft:scannerDoor.sendMessage=Nachricht: #
