@@ -51,6 +51,7 @@
 - Fix: Reinforced Iron Trapdoors and lit furnaces cannot be passcode-protected
 - Fix: Anyone can convert a Frame/Reinforced Iron Trapdoor to a Keypad/Passcode-protected Trapdoor
 - Fix: The Keypad Trapdoor's signal length option cannot be set to 0 despite the description saying it can
+- Fix: Console error when changing a Passcode-protected Chest's options
 - Removed: "Is always active" option of Keypads and Key Panels. The same behavior can be achieved by setting the "Signal length" option to 0 and activating the block
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------

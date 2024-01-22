@@ -51,7 +51,9 @@ public class ToggleOption implements IMessage {
 				if (te instanceof ICustomizable && !(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player)) {
 					((ICustomizable) te).customOptions()[message.id].toggle();
 					((ICustomizable) te).onOptionChanged(((ICustomizable) te).customOptions()[message.id]);
-					((CustomizableBlockEntity) te).sync();
+
+					if (te instanceof CustomizableBlockEntity)
+						((CustomizableBlockEntity) te).sync();
 				}
 			});
 
