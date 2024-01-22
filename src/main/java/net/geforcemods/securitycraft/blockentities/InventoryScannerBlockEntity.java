@@ -540,6 +540,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 	public void setSignalLength(int signalLength) {
 		this.signalLength.setValue(signalLength);
+		togglePowerCooldown = 5;
+		providePower = false;
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
 		setChanged();
 	}

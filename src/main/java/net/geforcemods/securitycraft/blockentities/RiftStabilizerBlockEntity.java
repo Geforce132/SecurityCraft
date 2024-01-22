@@ -281,6 +281,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	public void setSignalLength(int signalLength) {
 		if (getSignalLength() != signalLength) {
 			this.signalLength.setValue(signalLength);
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, false));
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
 			setChanged();
 		}
