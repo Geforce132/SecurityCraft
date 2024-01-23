@@ -536,7 +536,7 @@
 	"block.securitycraft.trophy_system": "Sistema Trophy",
 	"block.securitycraft.username_logger": "Autenticatore per nome utente",
 	"commands.securitycraft.bug": "Per piacere segnala i bug nel canale #bugreport sul nostro server Discord. Leggi prima le regole, grazie",
-	"commands.securitycraft.irc.connected": "La chat IRC non è più supportata dalla versione 1.8.3 della SecurityCraft. Se ti serve aiuto, rivolgiti al canale #help sul server Discord della SecurityCraft!",
+	"commands.securitycraft.connect": "La chat IRC non è più supportata dalla versione 1.8.3 della SecurityCraft. Se ti serve aiuto, rivolgiti al canale #help sul server Discord della SecurityCraft!",
 	"config.jade.plugin_securitycraft": "SecurityCraft",
 	"config.jade.plugin_securitycraft.info": "Mostrare informazioni SecurityCraft?",
 	"config.jade.plugin_securitycraft.showcustomname": "Mostra blocchi rinominati?",
