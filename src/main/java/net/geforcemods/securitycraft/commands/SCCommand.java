@@ -54,7 +54,7 @@ public class SCCommand {
 			ctx.getSource().sendSuccess(() -> Component.literal("[")
 					.append(Component.literal("IRC").withStyle(ChatFormatting.GREEN))
 					.append(Component.literal("] "))
-					.append(Component.translatableWithFallback("commands.securitycraft.irc.connected", "IRC chat is no longer supported as of v1.8.3 of SecurityCraft. If you need help, please refer to the #help channel on SecurityCraft's Discord!"))
+					.append(Component.translatableWithFallback("commands.securitycraft.connect", "IRC chat is no longer supported as of v1.8.3 of SecurityCraft. If you need help, please refer to the #help channel on SecurityCraft's Discord!"))
 					.append(Component.literal(" "))
 					.append(CommonHooks.newChatWithLinks(SendTip.TIPS_WITH_LINK.get("discord"))), true);
 			//@formatter:on
