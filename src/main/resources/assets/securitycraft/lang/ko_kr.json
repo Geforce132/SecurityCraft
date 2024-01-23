@@ -486,7 +486,7 @@
 	"block.securitycraft.trophy_system": "트로피 시스템",
 	"block.securitycraft.username_logger": "사용자 이름 기록기",
 	"commands.securitycraft.bug": "우리 Discord 서버의 #bugreport 채널에 버그를 보고하십시오. 먼저 규칙을 읽어주시길 바랍니다.",
-	"commands.securitycraft.irc.connected": "시큐리티크래프트의 v1.8.3에서는 IRC 채팅이 더 이상 지원되지 않습니다. 도움이 필요한 경우 시큐리티크래프트의 디스코드 #help 채널을 참조해 주세요!",
+	"commands.securitycraft.connect": "시큐리티크래프트의 v1.8.3에서는 IRC 채팅이 더 이상 지원되지 않습니다. 도움이 필요한 경우 시큐리티크래프트의 디스코드 #help 채널을 참조해 주세요!",
 	"config.jade.plugin_securitycraft": "시큐리티크래프트",
 	"config.jade.plugin_securitycraft.showcustomname": "명명된 블록을 표시합니까?",
 	"config.jade.plugin_securitycraft.showmodules": "모듈을 표시합니까?",
