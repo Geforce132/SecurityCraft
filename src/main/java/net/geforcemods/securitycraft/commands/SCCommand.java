@@ -56,7 +56,7 @@ public class SCCommand {
 			ctx.getSource().sendSuccess(new TextComponent("[")
 					.append(new TextComponent("IRC").withStyle(ChatFormatting.GREEN))
 					.append(new TextComponent("] "))
-					.append(Utils.localize("commands.securitycraft.irc.connected"))
+					.append(Utils.localize("commands.securitycraft.connect"))
 					.append(new TextComponent(" "))
 					.append(ForgeHooks.newChatWithLinks(SendTip.TIPS_WITH_LINK.get("discord"))), true);
 			//@formatter:on
