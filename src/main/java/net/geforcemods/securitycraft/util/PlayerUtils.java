@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.util.TeamUtils.TeamRepresentation;
 import net.minecraft.client.Minecraft;
-import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -25,7 +24,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -96,21 +94,6 @@ public class PlayerUtils {
 					.appendSibling(text));
 			//@formatter:on
 		}
-	}
-
-	/**
-	 * Sends the given {@link ICommandSender} a chat message, followed by a link prefixed with a colon. <p> Args: sender, prefix,
-	 * text, link, color.
-	 */
-	public static void sendMessageEndingWithLink(ICommandSender sender, ITextComponent prefix, ITextComponent text, String link, TextFormatting color) {
-		//@formatter:off
-		sender.sendMessage(new TextComponentString("[")
-				.appendSibling(prefix.setStyle(new Style().setColor(color)))
-				.appendSibling(new TextComponentString(TextFormatting.WHITE + "] "))
-				.appendSibling(text)
-				.appendSibling(new TextComponentString(": "))
-				.appendSibling(ForgeHooks.newChatWithLinks(link)));
-		//@formatter:on
 	}
 
 	/**

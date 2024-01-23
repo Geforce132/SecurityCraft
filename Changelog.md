@@ -9,6 +9,7 @@
 - New: Config option "preventReinforcedFloorGlitching" to control whether players can glitch through a floor made of reinforced blocks using a boat
 - New: Wire Cutters can now be used to remove the passcode protection from a block via sneak-rightclicking
 - New: Trapped chests can now be passcode-protected
+- New: SecurityCraft's /sc command can now be accessed via /securitycraft as well
 - New: Several blocks with a signal length option for redstone signal length can now be set to toggle the redstone signal instead by setting the option to 0
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title

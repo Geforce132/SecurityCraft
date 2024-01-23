@@ -1,30 +1,27 @@
 package net.geforcemods.securitycraft.commands;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCEventHandler;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.server.command.CommandTreeBase;
 
-public class SCCommand extends CommandBase implements ICommand {
-	private List<String> nicknames;
-
+public class SCCommand extends CommandTreeBase {
 	public SCCommand() {
-		nicknames = new ArrayList<>();
-		nicknames.add("sc");
+		addSubcommand(new Bug());
+		addSubcommand(new Connect());
+		addSubcommand(new Help());
 	}
 
 	@Override
@@ -34,51 +31,79 @@ public class SCCommand extends CommandBase implements ICommand {
 
 	@Override
 	public String getName() {
-		return "sc";
+		return "securitycraft";
 	}
 
 	@Override
 	public List<String> getAliases() {
-		return nicknames;
+		return Arrays.asList("sc");
 	}
 
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return Utils.localize("messages.securitycraft:command.sc.usage").getFormattedText();
+		return "commands.securitycraft.usage";
 	}
 
-	@Override
-	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-		return true;
+	private static class Bug extends CommandBase {
+		@Override
+		public String getName() {
+			return "bug";
+		}
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return "/securitycraft bug";
+		}
+
+		@Override
+		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+			//@formatter:off
+			sender.sendMessage(new TextComponentString("[")
+					.appendSibling(new TextComponentString("SecurityCraft").setStyle(new Style().setColor(TextFormatting.GOLD)))
+					.appendSibling(new TextComponentString(TextFormatting.WHITE + "] "))
+					.appendSibling(Utils.localize("commands.securitycraft.bug"))
+					.appendSibling(new TextComponentString(": "))
+					.appendSibling(ForgeHooks.newChatWithLinks("https://discord.gg/U8DvBAW")));
+			//@formatter:on
+		}
 	}
 
-	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		if (args.length == 0)
-			throw new WrongUsageException(Utils.localize("messages.securitycraft:command.sc.usage").getFormattedText());
-		else if (args.length == 1) {
-			if (args[0].equals("connect"))
-				sender.sendMessage(new TextComponentString("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + Utils.localize("messages.securitycraft:irc.connected").getFormattedText() + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.TIPS_WITH_LINK.get("discord"))));
-			else if (args[0].equals("help")) {
-				//@formatter:off
-				sender.sendMessage(new TextComponentTranslation("messages.securitycraft:sc_help",
-						new TextComponentTranslation(Blocks.CRAFTING_TABLE.getTranslationKey() + ".name"),
-						new TextComponentTranslation(Items.BOOK.getTranslationKey() + ".name"),
-						new TextComponentTranslation(Blocks.IRON_BARS.getTranslationKey() + ".name")));
-				//@formatter:on
-			}
-			else if (args[0].equals("bug"))
-				PlayerUtils.sendMessageEndingWithLink(sender, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), "https://discord.gg/U8DvBAW", TextFormatting.GOLD);
-			else
-				throw new WrongUsageException(Utils.localize("messages.securitycraft:command.sc.usage").getFormattedText());
+	private static class Connect extends CommandBase {
+		@Override
+		public String getName() {
+			return "connect";
 		}
-		else if (args.length >= 2) {
-			if (args[0].equals("bug"))
-				PlayerUtils.sendMessageEndingWithLink(sender, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), "https://discord.gg/U8DvBAW", TextFormatting.GOLD);
-			else
-				throw new WrongUsageException(Utils.localize("messages.securitycraft:command.sc.usage").getFormattedText());
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return "/securitycraft connect";
 		}
-		else
-			throw new WrongUsageException(Utils.localize("messages.securitycraft:command.sc.usage").getFormattedText());
+
+		@Override
+		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+			//@formatter:off
+			sender.sendMessage(new TextComponentString("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] ")
+					.appendSibling(Utils.localize("commands.securitycraft.connect"))
+					.appendSibling(new TextComponentString(" "))
+					.appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.TIPS_WITH_LINK.get("discord"))));
+			//@formatter:on
+		}
+	}
+
+	private static class Help extends CommandBase {
+		@Override
+		public String getName() {
+			return "help";
+		}
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return "/securitycraft help";
+		}
+
+		@Override
+		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+			sender.sendMessage(Utils.localize("commands.securitycraft.help", Utils.localize(Blocks.CRAFTING_TABLE), Utils.localize(Items.BOOK), Utils.localize(Blocks.IRON_BARS)));
+		}
 	}
 }
