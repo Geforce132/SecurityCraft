@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 import com.feed_the_beast.ftblib.lib.data.FTBLibAPI;
-import com.feed_the_beast.ftblib.lib.data.ForgeTeam;
+import com.feed_the_beast.ftblib.lib.data.ForgePlayer;
 import com.feed_the_beast.ftblib.lib.data.Universe;
 
 import net.geforcemods.securitycraft.api.Owner;
@@ -27,10 +27,10 @@ public class FTBUtilitiesCompat {
 	public static TeamRepresentation getTeamRepresentation(Owner owner) {
 		if (Universe.loaded()) {
 			try {
-				ForgeTeam team = Universe.get().getPlayer(UUID.fromString(owner.getUUID())).team;
+				ForgePlayer player = Universe.get().getPlayer(UUID.fromString(owner.getUUID()));
 
-				if (team != null)
-					return new TeamRepresentation(team.getTitle().getFormattedText(), team.getColor().getTextFormatting());
+				if (player != null && player.team != null)
+					return new TeamRepresentation(player.team.getTitle().getFormattedText(), player.team.getColor().getTextFormatting());
 			}
 			catch (IllegalArgumentException e) {}
 		}
@@ -40,10 +40,10 @@ public class FTBUtilitiesCompat {
 
 	public static Collection<EntityPlayerMP> getOnlinePlayersInTeam(Owner owner) {
 		try {
-			ForgeTeam team = Universe.get().getPlayer(UUID.fromString(owner.getUUID())).team;
+			ForgePlayer player = Universe.get().getPlayer(UUID.fromString(owner.getUUID()));
 
-			if (team != null)
-				return team.getOnlineMembers();
+			if (player != null && player.team != null)
+				return player.team.getOnlineMembers();
 		}
 		catch (IllegalArgumentException e) {}
 

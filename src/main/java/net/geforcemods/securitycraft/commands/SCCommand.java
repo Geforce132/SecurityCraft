@@ -19,9 +19,10 @@ import net.minecraftforge.server.command.CommandTreeBase;
 
 public class SCCommand extends CommandTreeBase {
 	public SCCommand() {
-		addSubcommand(new Bug());
-		addSubcommand(new Connect());
-		addSubcommand(new Help());
+		addSubcommand(new BugCommand());
+		addSubcommand(new ConnectCommand());
+		addSubcommand(new HelpCommand());
+		addSubcommand(new OwnerCommand());
 	}
 
 	@Override
@@ -41,10 +42,10 @@ public class SCCommand extends CommandTreeBase {
 
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return "commands.securitycraft.usage";
+		return "/securitycraft <bug|connect|help|owner>";
 	}
 
-	private static class Bug extends CommandBase {
+	private static class BugCommand extends CommandBase {
 		@Override
 		public String getName() {
 			return "bug";
@@ -68,7 +69,7 @@ public class SCCommand extends CommandTreeBase {
 		}
 	}
 
-	private static class Connect extends CommandBase {
+	private static class ConnectCommand extends CommandBase {
 		@Override
 		public String getName() {
 			return "connect";
@@ -90,7 +91,7 @@ public class SCCommand extends CommandTreeBase {
 		}
 	}
 
-	private static class Help extends CommandBase {
+	private static class HelpCommand extends CommandBase {
 		@Override
 		public String getName() {
 			return "help";

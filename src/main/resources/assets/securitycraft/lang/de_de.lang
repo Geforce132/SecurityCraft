@@ -1,5 +1,11 @@
 commands.securitycraft.bug=Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln
 commands.securitycraft.connect=IRC-Chat wird seit SecurityCraft v1.8.3 nicht mehr unterstützt. Falls du Hilfe benötigst, wende dich bitte an den englischen #help Channel von SecurityCrafts Discord!
+commands.securitycraft.owner.fill.failed=In dem angegebenen Gebiet gibt es keine besitzbaren Blöcke, oder sie sind schon im Besitz des angegebenen Spielers
+commands.securitycraft.owner.fill.success=Der Besitzer von %s Block/Blöcken wurde erfolgreich geändert
+commands.securitycraft.owner.fill.usage=/securitycraft owner fill <x1> <y1> <z1> <x2> <y2> <z2> <player|random|reset> [Spieler]
+commands.securitycraft.owner.set.failed=Bei der angegebenen Position befindet sich kein besitzbarer Block, oder er ist schon im Besitz des angegebenen Spielers
+commands.securitycraft.owner.set.success=Besitzer bei (%s, %s, %s) wurde geändert
+commands.securitycraft.owner.set.usage=/securitycraft owner set <x> <y> <z> <player|random|reset> [Spieler]
 config.securitycraft:ableToBreakMines.tooltip=Sollten Spieler Minen abbauen können, ohne dass diese explodieren?
 config.securitycraft:ableToBreakMines=Sind Minen abbaubar?
 config.securitycraft:ableToCraftKeycard1.tooltip=Ist die Level 1 Schlüsselkarte herstellbar?

@@ -1,7 +1,12 @@
 commands.securitycraft.bug=Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please
 commands.securitycraft.connect=IRC chat is no longer supported as of v1.8.3 of SecurityCraft. If you need help, please refer to the #help channel on SecurityCraft's Discord!
 commands.securitycraft.help=%s: %s + %s
-commands.securitycraft.sc.usage=/securitycraft bug|connect|help
+commands.securitycraft.owner.fill.failed=There are no ownable blocks in the given area or they are already owned by the given player
+commands.securitycraft.owner.fill.success=Successfully set the owner of %s block(s)
+commands.securitycraft.owner.fill.usage=/securitycraft owner fill <x1> <y1> <z1> <x2> <y2> <z2> <player|random|reset> [player]
+commands.securitycraft.owner.set.failed=There is no ownable block at the given position or it is already owned by the given player
+commands.securitycraft.owner.set.success=Set the owner at %s, %s, %s
+commands.securitycraft.owner.set.usage=/securitycraft owner set <x> <y> <z> <player|random|reset> [player]
 config.securitycraft:ableToBreakMines.tooltip=Should players be able to break a mine without it exploding?
 config.securitycraft:ableToBreakMines=Are mines breakable?
 config.securitycraft:ableToCraftKeycard1.tooltip=Is the level 1 keycard craftable?

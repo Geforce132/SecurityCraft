@@ -56,12 +56,14 @@ public interface IOwnable {
 	 * @param world The current world
 	 * @param state The IOwnable's state
 	 * @param pos The IOwnable's position
-	 * @param player The player that changed the owner of the IOwnable
+	 * @param player The player who changed the owner of the IOwnable
 	 */
 	default void onOwnerChanged(IBlockState state, World world, BlockPos pos, EntityPlayer player) {
 		if (needsValidation()) {
 			getOwner().setValidated(false);
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), TextFormatting.GREEN);
+
+			if (player != null)
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), TextFormatting.GREEN);
 		}
 
 		TileEntity te = (TileEntity) this;
