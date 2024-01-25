@@ -287,7 +287,7 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 			newTe = world.getTileEntity(pos);
 			newTe.readFromNBT(tag);
 
-			if (protect)
+			if (protect && player != null)
 				((IOwnable) newTe).setOwner(player.getUniqueID().toString(), player.getName());
 
 			return true;

@@ -227,7 +227,7 @@ public class OwnerCommand extends CommandTreeBase {
 					world.notifyBlockUpdate(pos, state, state, 3);
 				}
 
-				sender.setCommandStat(CommandResultStats.Type.AFFECTED_BLOCKS, 1);
+				sender.setCommandStat(CommandResultStats.Type.AFFECTED_BLOCKS, blocksModified);
 				notifyCommandListener(sender, this, "commands.securitycraft.owner.fill.success", blocksModified);
 			}
 		}

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.renderers;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
+import net.geforcemods.securitycraft.util.TriPredicate;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -106,10 +107,5 @@ public class ProjectorRenderer extends TileEntitySpecialRenderer<ProjectorBlockE
 	@Override
 	public boolean isGlobalRenderer(ProjectorBlockEntity te) {
 		return true;
-	}
-
-	@FunctionalInterface
-	public interface TriPredicate<T, U, V> {
-		boolean test(T t, U u, V v);
 	}
 }

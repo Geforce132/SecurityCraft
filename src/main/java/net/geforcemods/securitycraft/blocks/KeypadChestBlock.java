@@ -565,7 +565,9 @@ public class KeypadChestBlock extends OwnableBlock {
 			newTe.readFromNBT(tag);
 
 			if (protect) {
-				((IOwnable) newTe).setOwner(player.getUniqueID().toString(), player.getName());
+				if (player != null)
+					((IOwnable) newTe).setOwner(player.getUniqueID().toString(), player.getName());
+
 				((KeypadChestBlockEntity) newTe).setPreviousChest(oldChestState.getBlock());
 			}
 		}

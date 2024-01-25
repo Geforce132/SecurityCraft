@@ -1,5 +1,9 @@
 commands.securitycraft.bug=Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please
 commands.securitycraft.connect=IRC chat is no longer supported as of v1.8.3 of SecurityCraft. If you need help, please refer to the #help channel on SecurityCraft's Discord!
+commands.securitycraft.convert.fill.failed=There are no convertible blocks in the given area
+commands.securitycraft.convert.fill.success=Successfully converted %s block(s)
+commands.securitycraft.convert.set.failed=There is no convertible block at the given position
+commands.securitycraft.convert.set.success=Converted the block at %s, %s, %s
 commands.securitycraft.help=%s: %s + %s
 commands.securitycraft.owner.fill.failed=There are no ownable blocks in the given area or they are already owned by the given player
 commands.securitycraft.owner.fill.success=Successfully set the owner of %s block(s)

@@ -1,5 +1,9 @@
 commands.securitycraft.bug=Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln
 commands.securitycraft.connect=IRC-Chat wird seit SecurityCraft v1.8.3 nicht mehr unterstützt. Falls du Hilfe benötigst, wende dich bitte an den englischen #help Channel von SecurityCrafts Discord!
+commands.securitycraft.convert.fill.failed=In dem angegebenen Gebiet gibt es keine konvertierbaren Blöcke
+commands.securitycraft.convert.fill.success=%s Block/Blöcke wurde(n) erfolgreich konvertiert
+commands.securitycraft.convert.set.failed=Bei der angegebenen Position befindet sich kein konvertierbarer Block
+commands.securitycraft.convert.set.success=Block bei (%s, %s, %s) wurde konvertiert
 commands.securitycraft.owner.fill.failed=In dem angegebenen Gebiet gibt es keine besitzbaren Blöcke, oder sie sind schon im Besitz des angegebenen Spielers
 commands.securitycraft.owner.fill.success=Der Besitzer von %s Block/Blöcken wurde erfolgreich geändert
 commands.securitycraft.owner.fill.usage=/securitycraft owner fill <x1> <y1> <z1> <x2> <y2> <z2> <player|random|reset> [Spieler]
