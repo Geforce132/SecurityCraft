@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.commands;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
@@ -81,10 +81,12 @@ public class ConvertCommand extends CommandTreeBase {
 
 		@Override
 		public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos targetPos) {
-			if (args.length >= 2)
+			if (args.length == 1)
+				return getListOfStringsMatchingLastWord(args, "reinforce", "unreinforce", "passcode_protect", "remove_passcode_protection");
+			else if (args.length >= 2 && args.length <= 4)
 				return getTabCompletionCoordinate(args, 1, targetPos);
 			else
-				return Arrays.asList("reinforce", "unreinforce", "passcode_protect", "remove_passcode_protection");
+				return new ArrayList<>();
 		}
 	}
 
@@ -157,12 +159,14 @@ public class ConvertCommand extends CommandTreeBase {
 
 		@Override
 		public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos targetPos) {
-			if (args.length >= 2 && args.length <= 4)
+			if (args.length == 1)
+				return getListOfStringsMatchingLastWord(args, "reinforce", "unreinforce", "passcode_protect", "remove_passcode_protection");
+			else if (args.length >= 2 && args.length <= 4)
 				return getTabCompletionCoordinate(args, 1, targetPos);
 			else if (args.length >= 5 && args.length <= 7)
 				return getTabCompletionCoordinate(args, 4, targetPos);
 			else
-				return Arrays.asList("reinforce", "unreinforce", "passcode_protect", "remove_passcode_protection");
+				return new ArrayList<>();
 		}
 	}
 

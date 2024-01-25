@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.commands;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -119,7 +118,9 @@ public class OwnerCommand extends CommandTreeBase {
 			if (args.length >= 1 && args.length <= 3)
 				return getTabCompletionCoordinate(args, 0, targetPos);
 			else if (args.length == 4)
-				return Arrays.asList("player", "random", "reset");
+				return getListOfStringsMatchingLastWord(args, "player", "random", "reset");
+			else if (isUsernameIndex(args, 4))
+				return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
 			else
 				return new ArrayList<>();
 		}
@@ -239,7 +240,9 @@ public class OwnerCommand extends CommandTreeBase {
 			else if (args.length >= 4 && args.length <= 6)
 				return getTabCompletionCoordinate(args, 3, targetPos);
 			else if (args.length == 7)
-				return Arrays.asList("player", "random", "reset");
+				return getListOfStringsMatchingLastWord(args, "player", "random", "reset");
+			else if (isUsernameIndex(args, 7))
+				return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
 			else
 				return new ArrayList<>();
 		}
