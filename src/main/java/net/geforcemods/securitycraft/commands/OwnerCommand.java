@@ -56,6 +56,11 @@ public class OwnerCommand extends CommandTreeBase {
 		}
 
 		@Override
+		public int getRequiredPermissionLevel() {
+			return 2;
+		}
+
+		@Override
 		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 			if (args.length < 4 || args[3].equals("player") && args.length < 5)
 				throw new WrongUsageException(getUsage(sender));
@@ -142,6 +147,11 @@ public class OwnerCommand extends CommandTreeBase {
 		public String getUsage(ICommandSender sender) {
 			//securitycraft owner fill <x1> <y1> <z1> <x2> <y2> <z2> <random|reset|player> [player]
 			return "commands.securitycraft.owner.fill.usage";
+		}
+
+		@Override
+		public int getRequiredPermissionLevel() {
+			return 2;
 		}
 
 		@Override

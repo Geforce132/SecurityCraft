@@ -52,6 +52,11 @@ public class ConvertCommand extends CommandTreeBase {
 		}
 
 		@Override
+		public int getRequiredPermissionLevel() {
+			return 2;
+		}
+
+		@Override
 		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 			if (args.length < 4)
 				throw new WrongUsageException(getUsage(sender));
@@ -99,6 +104,11 @@ public class ConvertCommand extends CommandTreeBase {
 		@Override
 		public String getUsage(ICommandSender sender) {
 			return "/securitycraft convert fill <reinforce|unreinforce|passcode_protect|remove_passcode_protection> <x1> <y1> <z1> <x2> <y2> <z2>";
+		}
+
+		@Override
+		public int getRequiredPermissionLevel() {
+			return 2;
 		}
 
 		@Override
