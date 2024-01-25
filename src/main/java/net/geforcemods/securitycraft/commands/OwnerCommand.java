@@ -105,6 +105,7 @@ public class OwnerCommand extends CommandTreeBase {
 
 				ownable.setOwner(uuid, name);
 				ownable.onOwnerChanged(state, world, pos, null);
+				ownable.getOwner().setValidated(true);
 				world.notifyBlockUpdate(pos, state, state, 3);
 				sender.setCommandStat(CommandResultStats.Type.AFFECTED_BLOCKS, 1);
 				notifyCommandListener(sender, this, "commands.securitycraft.owner.set.success", pos.getX(), pos.getY(), pos.getZ());
@@ -225,6 +226,7 @@ public class OwnerCommand extends CommandTreeBase {
 					IBlockState state = world.getBlockState(pos);
 
 					((IOwnable) be).onOwnerChanged(state, world, pos, null);
+					((IOwnable) be).getOwner().setValidated(true);
 					world.notifyBlockUpdate(pos, state, state, 3);
 				}
 
