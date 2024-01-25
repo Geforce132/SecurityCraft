@@ -79,6 +79,7 @@ public class OwnerCommand {
 
 			ownable.setOwner(uuid, name);
 			ownable.onOwnerChanged(state, level, pos, null);
+			ownable.getOwner().setValidated(true);
 			level.sendBlockUpdated(pos, state, state, 3);
 			source.sendSuccess(Component.translatableWithFallback("commands.securitycraft.owner.set.success", "Set the owner at %s, %s, %s", pos.getX(), pos.getY(), pos.getZ()), true);
 			return 1;
@@ -128,6 +129,7 @@ public class OwnerCommand {
 					BlockState state = be.getBlockState();
 
 					((IOwnable) be).onOwnerChanged(state, level, pos, null);
+					((IOwnable) be).getOwner().setValidated(true);
 					level.sendBlockUpdated(pos, state, state, 3);
 				}
 
