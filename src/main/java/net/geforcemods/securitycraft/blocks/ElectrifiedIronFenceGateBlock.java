@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ElectrifiedFenceAndGateBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -26,7 +25,7 @@ public class ElectrifiedIronFenceGateBlock extends OwnableFenceGateBlock {
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (level.getBlockState(pos).getValue(OPEN))
+		if (state.getValue(OPEN))
 			return;
 
 		ElectrifiedIronFenceBlock.hurtOrConvertEntity(this, state, level, pos, entity);
@@ -41,6 +40,6 @@ public class ElectrifiedIronFenceGateBlock extends OwnableFenceGateBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new OwnableBlockEntity(SCContent.ABSTRACT_BLOCK_ENTITY.get(), pos, state);
+		return new ElectrifiedFenceAndGateBlockEntity(pos, state);
 	}
 }
