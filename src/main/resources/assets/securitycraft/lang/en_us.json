@@ -1030,6 +1030,7 @@
 	"messages.securitycraft:universalOwnerChanger.noName": "You need to give this item the name of the new block owner. Use an anvil to rename it.",
 	"messages.securitycraft:universalOwnerChanger.notOwned": "This is not your block, you cannot change its owner.",
 	"messages.securitycraft:universalOwnerChanger.ownerInvalidated": "The block's owner has been changed and thus needs to be validated by the new owner to work again. To validate a block, the new owner of the block has to rightclick it.",
+	"module.generic.electrified_fence_and_gate.whitelist_module.description": "Adding an allowlist module to an electrified fence or fence gate will allow listed players to touch it without getting hurt.",
 	"module.generic.reinforced_button.whitelist_module.description": "Adding an allowlist module to a reinforced button will allow listed players to activate it.",
 	"module.generic.reinforced_fence_gate.whitelist_module.description": "Adding an allowlist module to a reinforced fence gate will allow listed players to open it.",
 	"module.generic.reinforced_pressure_plate.whitelist_module.description": "Adding an allowlist module to a reinforced pressure plate will allow listed players to activate it.",

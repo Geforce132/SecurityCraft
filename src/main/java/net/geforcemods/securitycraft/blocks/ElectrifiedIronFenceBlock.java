@@ -2,8 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Map;
 
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ElectrifiedFenceAndGateBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.Util;
@@ -211,12 +210,15 @@ public class ElectrifiedIronFenceBlock extends OwnableBlock {
 			return;
 		else if (entity instanceof ItemEntity) //so dropped items don't get destroyed
 			return;
-		else if (entity instanceof Player player) { //owner check
-			if (((OwnableBlockEntity) level.getBlockEntity(pos)).isOwnedBy(player))
+
+		ElectrifiedFenceAndGateBlockEntity be = (ElectrifiedFenceAndGateBlockEntity) level.getBlockEntity(pos);
+
+		if (entity instanceof Player player) {
+			if (be.isOwnedBy(player) || be.isAllowed(player))
 				return;
 		}
 		else if (entity instanceof OwnableEntity ownableEntity) {
-			if (((OwnableBlockEntity) level.getBlockEntity(pos)).allowsOwnableEntity(ownableEntity))
+			if (be.allowsOwnableEntity(ownableEntity))
 				return;
 		}
 		else if (!level.isClientSide) {
@@ -232,6 +234,6 @@ public class ElectrifiedIronFenceBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new OwnableBlockEntity(SCContent.ABSTRACT_BLOCK_ENTITY.get(), pos, state);
+		return new ElectrifiedFenceAndGateBlockEntity(pos, state);
 	}
 }
