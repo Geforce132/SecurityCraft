@@ -496,13 +496,13 @@ public class ClientHandler {
 	@SubscribeEvent
 	public static void onRegisterColorHandlersBlock(RegisterColorHandlersEvent.Block event) {
 		initTint();
-		blocksWithReinforcedTint.forEach((block, tint) -> event.register((state, world, pos, tintIndex) -> {
+		blocksWithReinforcedTint.forEach((block, tint) -> event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 0)
 				return mixWithReinforcedTintIfEnabled(tint);
 			else
 				return 0xFFFFFF;
 		}, block));
-		blocksWithCustomTint.forEach((block, tint) -> event.register((state, world, pos, tintIndex) -> {
+		blocksWithCustomTint.forEach((block, tint) -> event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 0)
 				return tint;
 			else
@@ -519,7 +519,10 @@ public class ClientHandler {
 					return Minecraft.getInstance().getBlockColors().getColor(defaultBlockState, level, pos, tintIndex);
 			}
 
-			return 0xFFFFFF;
+			if (block == SCContent.REINFORCED_OBSERVER.get())
+				return mixWithReinforcedTintIfEnabled(0xFFFFFF);
+			else
+				return 0xFFFFFF;
 		}, disguisableBlocks.get());
 		event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.getValue(SnowyDirtBlock.SNOWY)) {
@@ -624,7 +627,8 @@ public class ClientHandler {
 		blocksWithReinforcedTint = null;
 		blocksWithCustomTint = null;
 	}
-	private static int mixWithReinforcedTintIfEnabled(int tint1) {
+
+	private static int mixWithReinforcedTintIfEnabled(int tint) {
 		boolean tintReinforcedBlocks;
 
 		if (Minecraft.getInstance().level == null)
@@ -632,7 +636,7 @@ public class ClientHandler {
 		else
 			tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
 
-		return tintReinforcedBlocks ? mixTints(tint1, ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint1;
+		return tintReinforcedBlocks ? mixTints(tint, ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint;
 	}
 
 	private static int mixTints(int tint1, int tint2) {
