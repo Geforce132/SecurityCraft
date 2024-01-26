@@ -344,6 +344,15 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 							if (storedBe != null) {
 								storedBe.load(be.movedBlockEntityTag);
 								level.setBlockEntity(storedBe);
+
+								if (storedBe instanceof IModuleInventory moduleInv) {
+									moduleInv.getInsertedModules().forEach(type -> {
+										if (moduleInv.isModuleEnabled(type))
+											moduleInv.onModuleInserted(moduleInv.getModule(type), type, true);
+										else
+											moduleInv.onModuleRemoved(moduleInv.getModule(type), type, true);
+									});
+								}
 							}
 						}
 
