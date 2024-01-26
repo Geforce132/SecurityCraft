@@ -45,6 +45,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedDropperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedLecternBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedObserverBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonMovingBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
@@ -2668,19 +2669,27 @@ public class SCContent {
 		List<Block> beOwnableBlocks = Arrays.stream(SCContent.class.getFields())
 				.filter(field -> field.isAnnotationPresent(OwnableBE.class))
 				.map(field -> {
+					//@formatter:on
 					try {
 						return ((RegistryObject<Block>) field.get(null)).get();
 					}
-					catch(IllegalArgumentException | IllegalAccessException e) {
+					catch (IllegalArgumentException | IllegalAccessException e) {
 						e.printStackTrace();
 						return null;
 					}
-				})
+				}) //@formatter:off
 				.filter(Predicates.notNull())
 				.toList();
 
-		return BlockEntityType.Builder.of(OwnableBlockEntity::new, beOwnableBlocks.toArray(new Block[beOwnableBlocks.size()])).build(null);
+		//@formatter:on
+		return BlockEntityType.Builder.of((pos, state) -> {
+			if (state.is(REINFORCED_OBSERVER.get()))
+				return new ReinforcedObserverBlockEntity(pos, state);
+			else
+				return new OwnableBlockEntity(pos, state);
+		}, beOwnableBlocks.toArray(new Block[beOwnableBlocks.size()])).build(null);
 	});
+	//@formatter:off
 	public static final RegistryObject<BlockEntityType<NamedBlockEntity>> ABSTRACT_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("abstract", () -> BlockEntityType.Builder.of(NamedBlockEntity::new,
 			SCContent.LASER_FIELD.get(),
 			SCContent.INVENTORY_SCANNER_FIELD.get(),
