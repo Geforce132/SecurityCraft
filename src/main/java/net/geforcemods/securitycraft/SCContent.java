@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ElectrifiedFenceAndGateBlockEntity;
 import net.geforcemods.securitycraft.blockentities.FloorTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.GlowDisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
@@ -2692,7 +2693,12 @@ public class SCContent {
 		}, beOwnableBlocks.toArray(new Block[beOwnableBlocks.size()])).build(null);
 	});
 	//@formatter:off
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NamedBlockEntity>> ABSTRACT_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("abstract", () -> BlockEntityType.Builder.of(NamedBlockEntity::new,
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NamedBlockEntity>> ABSTRACT_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("abstract", () -> BlockEntityType.Builder.of((pos, state) -> {
+		if (state.is(ELECTRIFIED_IRON_FENCE) || state.is(ELECTRIFIED_IRON_FENCE_GATE))
+			return new ElectrifiedFenceAndGateBlockEntity(pos, state);
+		else
+			return new NamedBlockEntity(pos, state);
+	},
 			SCContent.LASER_FIELD.get(),
 			SCContent.INVENTORY_SCANNER_FIELD.get(),
 			SCContent.ELECTRIFIED_IRON_FENCE.get(),
