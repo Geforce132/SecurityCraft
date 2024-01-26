@@ -1179,6 +1179,7 @@
 	"module.securitycraft.reinforced_lava_cauldron.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten Kessel erlaubt zugelassenen Spielern, mit dem Verstärkten Kessel zu interagieren.",
 	"module.securitycraft.reinforced_lectern.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten Lesepult erlaubt zugelassenen Spielern, das Buch in dem Pult zu lesen. Sie können trotzdem das Buch nicht herausnehmen.",
 	"module.securitycraft.reinforced_lever.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten Hebel erlaubt es zugelassenen Spielern, diesen zu aktivieren.",
+	"module.securitycraft.reinforced_observer.disguise_module.description": "Wenn ein Tarnmodul zu einem verstärkten Beobachter hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.",
 	"module.securitycraft.reinforced_powder_snow_cauldron.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten Kessel erlaubt zugelassenen Spielern, mit dem Verstärkten Kessel zu interagieren.",
 	"module.securitycraft.reinforced_water_cauldron.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten Kessel erlaubt zugelassenen Spielern, mit dem Verstärkten Kessel zu interagieren.",
 	"module.securitycraft.retinal_scanner.disguise_module.description": "Wenn ein Tarnmodul zu einem Augenscanner hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.",
