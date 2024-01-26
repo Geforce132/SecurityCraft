@@ -178,6 +178,7 @@ public class ClientHandler {
 			SCContent.LASER_BLOCK.get(),
 			SCContent.PROJECTOR.get(),
 			SCContent.PROTECTO.get(),
+			SCContent.REINFORCED_OBSERVER.get(),
 			SCContent.RETINAL_SCANNER.get(),
 			SCContent.RIFT_STABILIZER.get(),
 			SCContent.SENTRY_DISGUISE.get(),

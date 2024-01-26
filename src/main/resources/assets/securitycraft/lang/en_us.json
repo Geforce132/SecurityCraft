@@ -1124,6 +1124,7 @@
 	"module.securitycraft.reinforced_lava_cauldron.whitelist_module.description": "Adding an allowlist module to a Reinforced Cauldron will allow listed players to interact with the Reinforced Cauldron.",
 	"module.securitycraft.reinforced_lectern.whitelist_module.description": "Adding an allowlist module to a Reinforced Lectern will allow listed players to read the book in the lectern. They still cannot take the book out.",
 	"module.securitycraft.reinforced_lever.whitelist_module.description": "Adding an allowlist module to a Reinforced Lever will allow listed players to activate it.",
+	"module.securitycraft.reinforced_observer.disguise_module.description": "Adding a disguise module to a reinforced observer will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
 	"module.securitycraft.reinforced_powder_snow_cauldron.whitelist_module.description": "Adding an allowlist module to a Reinforced Cauldron will allow listed players to interact with the Reinforced Cauldron.",
 	"module.securitycraft.reinforced_water_cauldron.whitelist_module.description": "Adding an allowlist module to a Reinforced Cauldron will allow listed players to interact with the Reinforced Cauldron.",
 	"module.securitycraft.retinal_scanner.disguise_module.description": "Adding a disguise module to a retinal scanner will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
