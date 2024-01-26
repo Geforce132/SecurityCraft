@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBaseBlock;
@@ -294,6 +295,15 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 					if (be != null) {
 						be.load(movedBlockEntityTag);
 						level.setBlockEntity(be);
+
+						if (be instanceof IModuleInventory moduleInv) {
+							moduleInv.getInsertedModules().forEach(type -> {
+								if (moduleInv.isModuleEnabled(type))
+									moduleInv.onModuleInserted(moduleInv.getModule(type), type, true);
+								else
+									moduleInv.onModuleRemoved(moduleInv.getModule(type), type, true);
+							});
+						}
 					}
 				}
 
@@ -331,6 +341,15 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 							if (storedBe != null) {
 								storedBe.load(be.movedBlockEntityTag);
 								level.setBlockEntity(storedBe);
+
+								if (storedBe instanceof IModuleInventory moduleInv) {
+									moduleInv.getInsertedModules().forEach(type -> {
+										if (moduleInv.isModuleEnabled(type))
+											moduleInv.onModuleInserted(moduleInv.getModule(type), type, true);
+										else
+											moduleInv.onModuleRemoved(moduleInv.getModule(type), type, true);
+									});
+								}
 							}
 						}
 
