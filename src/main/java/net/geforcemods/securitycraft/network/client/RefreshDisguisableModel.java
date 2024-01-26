@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.NetworkEvent;
 
 public class RefreshDisguisableModel {
@@ -39,15 +40,15 @@ public class RefreshDisguisableModel {
 	}
 
 	public void handle(NetworkEvent.Context ctx) {
-		IModuleInventory be = (IModuleInventory) Minecraft.getInstance().level.getBlockEntity(pos);
+		BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
 
-		if (be != null) {
+		if (be instanceof IModuleInventory moduleInv) {
 			if (insert)
-				be.insertModule(stack, toggled);
+				moduleInv.insertModule(stack, toggled);
 			else
-				be.removeModule(ModuleType.DISGUISE, toggled);
+				moduleInv.removeModule(ModuleType.DISGUISE, toggled);
 
-			ClientHandler.refreshModelData(be.getBlockEntity());
+			ClientHandler.refreshModelData(be);
 		}
 	}
 }
