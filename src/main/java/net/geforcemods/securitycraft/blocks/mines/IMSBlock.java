@@ -54,6 +54,11 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return new AxisAlignedBB(0F, 0F, 0F, 1F, 0.45F, 1F);
 	}
