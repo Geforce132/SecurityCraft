@@ -10,7 +10,7 @@
       "tag": "securitycraft:reinforced/planks"
     },
     "C": {
-      "tag": "securitycraft:reinforced/stone_crafting_materials"
+      "item": "securitycraft:reinforced_cobblestone"
     },
     "I": {
       "tag": "forge:ingots/iron"

@@ -36,6 +36,7 @@ public class SCJEIPlugin implements IModPlugin {
 		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_FURNACE.get()), VanillaTypes.ITEM_STACK, Utils.localize("gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_FURNACE.get().getRegistryName().getPath()));
 		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_SMOKER.get()), VanillaTypes.ITEM_STACK, Utils.localize("gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_SMOKER.get().getRegistryName().getPath()));
 		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_BLAST_FURNACE.get()), VanillaTypes.ITEM_STACK, Utils.localize("gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_BLAST_FURNACE.get().getRegistryName().getPath()));
+		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_TRAPDOOR.get()), VanillaTypes.ITEM_STACK, Utils.localize("gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_TRAPDOOR.get().getRegistryName().getPath()));
 		//@formatter:off
 		registration.addRecipes(VTS, IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.entrySet().stream()
 				.filter(entry -> entry.getKey().asItem() != Items.AIR && entry.getValue().asItem() != Items.AIR)
