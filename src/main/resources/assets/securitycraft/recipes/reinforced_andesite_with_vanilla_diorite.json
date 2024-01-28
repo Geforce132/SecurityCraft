@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:stone",
+      "data": 3
+    },
+    {
+      "item": "securitycraft:reinforced_cobblestone"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_stone",
+    "count": 2,
+    "data": 5
+  }
+}

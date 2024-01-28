@@ -11,7 +11,7 @@
       "ore": "dustRedstone"
     },
     "D": {
-      "item": "minecraft:dispenser"
+      "item": "securitycraft:reinforced_dispenser"
     },
     "I": {
       "type": "forge:ore_dict",

@@ -47,6 +47,7 @@ public class SCJEIPlugin implements IModPlugin {
 		registry.addIngredientInfo(new ItemStack(SCContent.keypad), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypadChest), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad_chest");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypadFurnace), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad_furnace");
+		registry.addIngredientInfo(new ItemStack(SCContent.keypadTrapdoor), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad_trapdoor");
 		IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.forEach((vanillaBlock, securityCraftBlock) -> {
 			IReinforcedBlock reinforcedBlock = (IReinforcedBlock) securityCraftBlock;
 			NonNullList<ItemStack> subBlocks = NonNullList.create();

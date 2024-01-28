@@ -11,7 +11,7 @@
       "ore": "ingotIron"
     },
     "B": {
-      "item": "minecraft:stone_button"
+      "item": "securitycraft:reinforced_stone_button"
     },
     "R": {
       "type": "forge:ore_dict",

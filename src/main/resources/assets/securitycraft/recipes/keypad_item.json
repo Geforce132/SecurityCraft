@@ -7,7 +7,7 @@
   ],
   "key": {
     "B": {
-      "item": "minecraft:stone_button"
+      "item": "securitycraft:reinforced_stone_button"
     },
     "P": {
       "item": "minecraft:heavy_weighted_pressure_plate"
