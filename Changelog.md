@@ -14,12 +14,15 @@
 - New: "/sc convert" command to un-/reinforce and un-/passcode-protect blocks
 - New: The Bouncing Betty, Claymore, Frame, Mine, Panic Button, and Security Camera are now waterloggable
 - New: Several blocks with a signal length option for redstone signal length can now be set to toggle the redstone signal instead by setting the option to 0
+- New: Reinforced Mossy Cobblestone and Reinforced Mossy Stone Bricks can now be crafted with vines and their non-mossy counterpart
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now
 - Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate
 - Change: Players now take 5 instead of 0.5 hearts of damage when suffocating inside reinforced blocks
 - Change: The existing "Message" option has been split up into separate "Allowlist Message" and "Denylist Message" options for several blocks
+- Change: The recipes of the Panic Button and Key Panel now require reinforced buttons instead of vanilla ones
+- Change: The Sentry's recipe now requires a Reinforced Dispenser
 - API: Refactored IPasscodeConvertible to account for the new Wire Cutters functionality
 - Fix: Duplication exploit involving keycards
 - Fix: Duplication exploit involving Reinforced Pistons
@@ -51,6 +54,10 @@
 - Fix: The Keypad Trapdoor's signal length option cannot be set to 0 despite the description saying it can
 - Fix: Placing an unnamed Keypad Door or Scanner Door sets the block's custom name to the default name
 - Fix: The bug, connect, dump, and help subcommands cannot be used in the console
+- Fix: Crafting Reinforced (Red) Sandstone yields too many blocks
+- Fix: Crafting Rail Mines yields too few rails
+- Fix: The Keypad Trapdoor doesn't have any info in JEI
+- Fix: Some recipes do not match vanilla's recipes, allowing for more blocks to be used than intended
 - Removed: "Is always active" option of Keypads and Key Panels. The same behavior can be achieved by setting the "Signal length" option to 0 and activating the block
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------

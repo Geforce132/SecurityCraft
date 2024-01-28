@@ -10,7 +10,7 @@
       "tag": "forge:ingots/iron"
     },
     "B": {
-      "item": "minecraft:stone_button"
+      "item": "securitycraft:reinforced_stone_button"
     },
     "R": {
       "tag": "forge:dusts/redstone"

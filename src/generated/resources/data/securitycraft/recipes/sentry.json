@@ -10,7 +10,7 @@
       "tag": "forge:dusts/redstone"
     },
     "D": {
-      "item": "minecraft:dispenser"
+      "item": "securitycraft:reinforced_dispenser"
     },
     "I": {
       "tag": "forge:ingots/iron"
