@@ -6,7 +6,7 @@
       "item": "securitycraft:reinforced_iron_block"
     },
     "D": {
-      "item": "minecraft:dispenser"
+      "item": "securitycraft:reinforced_dispenser"
     },
     "I": {
       "tag": "forge:ingots/iron"

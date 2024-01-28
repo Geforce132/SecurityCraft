@@ -3,7 +3,7 @@
   "category": "building",
   "ingredients": [
     {
-      "item": "securitycraft:reinforced_diorite"
+      "item": "minecraft:diorite"
     },
     {
       "item": "securitycraft:reinforced_cobblestone"
