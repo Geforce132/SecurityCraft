@@ -1,6 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "count": 1,
+  "count": 4,
   "ingredient": {
     "item": "securitycraft:reinforced_weathered_copper"
   },
