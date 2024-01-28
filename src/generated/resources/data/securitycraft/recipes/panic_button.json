@@ -3,7 +3,7 @@
   "category": "redstone",
   "key": {
     "B": {
-      "item": "minecraft:stone_button"
+      "item": "securitycraft:reinforced_stone_button"
     },
     "I": {
       "tag": "forge:ingots/iron"

@@ -2,16 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_red_sand"
+    "S": {
+      "item": "securitycraft:reinforced_cobbled_deepslate_slab"
     }
   },
   "pattern": [
-    "BB",
-    "BB"
+    "S",
+    "S"
   ],
   "result": {
-    "item": "securitycraft:reinforced_red_sandstone"
+    "item": "securitycraft:reinforced_chiseled_deepslate"
   },
   "show_notification": true
 }

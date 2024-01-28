@@ -1,6 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "count": 2,
+  "count": 8,
   "ingredient": {
     "item": "securitycraft:reinforced_oxidized_copper"
   },

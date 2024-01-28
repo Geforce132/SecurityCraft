@@ -3,7 +3,7 @@
   "category": "redstone",
   "key": {
     "C": {
-      "tag": "securitycraft:reinforced/stone_crafting_materials"
+      "item": "securitycraft:reinforced_cobblestone"
     },
     "Q": {
       "tag": "forge:gems/quartz"
