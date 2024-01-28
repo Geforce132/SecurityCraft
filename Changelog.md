@@ -60,7 +60,6 @@
 - Fix: The Keypad Trapdoor doesn't have any info in JEI
 - Fix: Some recipes do not match vanilla's recipes, allowing for more blocks to be used than intended
 - Fix: Stonecutting some types of reinforced copper blocks yields too few blocks compared to vanilla
-- Fix: Reinforced wool cannot be redyed to white
 - Fix: Reinforced Chiseled Deepslate cannot be crafted with Reinforced Cobbled Deepslate Slabs
 - Removed: "Is always active" option of Keypads and Key Panels. The same behavior can be achieved by setting the "Signal length" option to 0 and activating the block
 
