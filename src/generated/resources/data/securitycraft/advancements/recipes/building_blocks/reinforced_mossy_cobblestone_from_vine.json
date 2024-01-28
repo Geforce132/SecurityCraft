@@ -30,6 +30,5 @@
     "recipes": [
       "securitycraft:reinforced_mossy_cobblestone_from_vine"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
