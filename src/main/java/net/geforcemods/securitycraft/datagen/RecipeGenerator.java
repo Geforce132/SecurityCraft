@@ -239,7 +239,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("BBB")
 		.pattern("BPB")
 		.pattern("BBB")
-		.define('B', Items.STONE_BUTTON)
+		.define('B', SCContent.REINFORCED_STONE_BUTTON.get())
 		.define('P', Items.HEAVY_WEIGHTED_PRESSURE_PLATE)
 		.unlockedBy("has_stone_button", has(Items.STONE_BUTTON))
 		.save(recipeOutput);
@@ -291,7 +291,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("IBI")
 		.pattern(" R ")
 		.define('I', Tags.Items.INGOTS_IRON)
-		.define('B', Items.STONE_BUTTON)
+		.define('B', SCContent.REINFORCED_STONE_BUTTON.get())
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(recipeOutput);
@@ -488,7 +488,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("IPI")
 		.pattern("BBB")
 		.define('R', Tags.Items.DUSTS_REDSTONE)
-		.define('D', Blocks.DISPENSER)
+		.define('D', SCContent.REINFORCED_DISPENSER.get())
 		.define('I', Tags.Items.INGOTS_IRON)
 		.define('P', SCContent.PORTABLE_RADAR.get())
 		.define('B', SCContent.REINFORCED_IRON_BLOCK.get())
