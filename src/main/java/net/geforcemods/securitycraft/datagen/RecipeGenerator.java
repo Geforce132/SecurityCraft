@@ -1122,19 +1122,6 @@ public class RecipeGenerator extends RecipeProvider {
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_STONE_BRICKS.get(), SCContent.REINFORCED_STONE_BRICK_STAIRS.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.SMOOTH_CRYSTAL_QUARTZ.get(), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get(), 2);
 		addStonecuttingRecipe(consumer, SCContent.SMOOTH_CRYSTAL_QUARTZ.get(), SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), 1);
-
-		//@formatter:off
-		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
-		.requires(SCContent.REINFORCED_COBBLESTONE.get())
-		.requires(Items.VINE)
-		.unlockedBy("has_vine", has(Items.VINE))
-		.save(consumer, "securitycraft:reinforced_mossy_cobblestone_from_vine");
-		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_STONE_BRICKS.get())
-		.requires(SCContent.REINFORCED_STONE_BRICKS.get())
-		.requires(Items.VINE)
-		.unlockedBy("has_vine", has(Items.VINE))
-		.save(consumer, "securitycraft:reinforced_mossy_stone_bricks_from_vine");
-		//@formatter:on
 	}
 
 	protected final void addBarkRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider log, IItemProvider result) //woof
