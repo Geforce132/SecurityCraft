@@ -4,10 +4,11 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
@@ -59,15 +61,15 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 			return InteractionResult.SUCCESS;
 		}
 
-		if (explodesWhenInteractedWith() && isActive(level, pos) && !EntityUtils.doesPlayerOwn(player, level, pos)) {
+		if (explodesWhenInteractedWith() && isActive(level, pos)) {
+			BlockEntity be = level.getBlockEntity(pos);
+
 			if (level.getBlockEntity(pos) instanceof ICustomizable mine) {
 				for (Option<?> option : mine.customOptions()) {
-					if (option instanceof TargetingModeOption tmo) {
-						if (!tmo.get().allowsPlayers())
-							return InteractionResult.PASS;
-						else
-							break;
-					}
+					if (option instanceof TargetingModeOption targetingMode && !targetingMode.get().allowsPlayers())
+						return InteractionResult.PASS;
+					else if (option instanceof IgnoreOwnerOption ignoreOwner && ((IOwnable) be).isOwnedBy(player) && ignoreOwner.get())
+						return InteractionResult.PASS;
 				}
 			}
 
