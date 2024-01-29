@@ -93,7 +93,7 @@ dependencies {
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 	
 	implementation fg.deobf("curse.maven:architectury-api-419699:4581905") //ftb teams dependency
-	implementation fg.deobf("curse.maven:ftb-library-forge-404465:4596511") //ftb teams dependency
+	implementation fg.deobf("curse.maven:ftb-library-forge-404465:5051953") //ftb teams dependency
 	implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4623116")
 	implementation fg.deobf("curse.maven:jei-238222:4597711")
 	implementation fg.deobf("curse.maven:the-one-probe-245211:4579432")
