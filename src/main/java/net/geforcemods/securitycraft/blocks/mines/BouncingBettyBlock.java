@@ -1,12 +1,10 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.BouncingBettyBlockEntity;
 import net.geforcemods.securitycraft.blockentities.MineBlockEntity;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -84,16 +82,23 @@ public class BouncingBettyBlock extends ExplosiveBlock implements SimpleWaterlog
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		TargetingMode mode = ((MineBlockEntity) level.getBlockEntity(pos)).getTargetingMode();
+		if (getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox())) {
+			MineBlockEntity mine = (MineBlockEntity) level.getBlockEntity(pos);
+			TargetingMode mode = mine.getTargetingMode();
 
-		if (getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()) && !EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof Player player && (!mode.allowsPlayers() || player.isCreative()) || !mode.allowsMobs()) && !(entity instanceof OwnableEntity ownableEntity && ((IOwnable) level.getBlockEntity(pos)).allowsOwnableEntity(ownableEntity)))
-			explode(level, pos);
+			if ((entity instanceof Player player && mode.allowsPlayers() && !player.isCreative() && (!mine.isOwnedBy(player) || !mine.ignoresOwner())) || (mode.allowsMobs() && (!(entity instanceof OwnableEntity ownableEntity) || !mine.allowsOwnableEntity(ownableEntity))))
+				explode(level, pos);
+		}
 	}
 
 	@Override
 	public void attack(BlockState state, Level level, BlockPos pos, Player player) {
-		if (!player.isCreative() && !EntityUtils.doesPlayerOwn(player, level, pos) && ((MineBlockEntity) level.getBlockEntity(pos)).getTargetingMode().allowsPlayers())
-			explode(level, pos);
+		if (!player.isCreative()) {
+			MineBlockEntity mine = (MineBlockEntity) level.getBlockEntity(pos);
+
+			if (mine.getTargetingMode().allowsPlayers() && (!mine.isOwnedBy(player) || !mine.ignoresOwner()))
+				explode(level, pos);
+		}
 	}
 
 	@Override

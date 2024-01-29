@@ -19,6 +19,7 @@
 - New: Reinforced Mossy Cobblestone and Reinforced Mossy Stone Bricks can now be crafted with vines and their non-mossy counterpart
 - New: Option for the Claymore to set whether it only explodes for mobs, players, or both
 - New: Option for the Bouncing Betty and Mine to set whether it only explodes for mobs, players, or both
+- New: Ignore Owner option for the Bouncing Betty and Mine
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now
 - Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate
