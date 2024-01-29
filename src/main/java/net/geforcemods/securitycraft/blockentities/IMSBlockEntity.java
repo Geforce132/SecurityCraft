@@ -95,7 +95,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 					target = mobs.get(0);
 			}
 
-			if (target == null && (targetingMode.allowsPlayers())) {
+			if (target == null && targetingMode.allowsPlayers()) {
 				List<Player> players = level.getEntitiesOfClass(Player.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if (!players.isEmpty())

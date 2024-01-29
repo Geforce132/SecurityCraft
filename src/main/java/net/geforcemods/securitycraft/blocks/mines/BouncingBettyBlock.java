@@ -1,9 +1,10 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BouncingBettyBlockEntity;
+import net.geforcemods.securitycraft.blockentities.MineBlockEntity;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
@@ -83,13 +84,15 @@ public class BouncingBettyBlock extends ExplosiveBlock implements SimpleWaterlog
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()) && !EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof Player player && player.isCreative()) && !(entity instanceof OwnableEntity ownableEntity && ((IOwnable) level.getBlockEntity(pos)).allowsOwnableEntity(ownableEntity)))
+		TargetingMode mode = ((MineBlockEntity) level.getBlockEntity(pos)).getTargetingMode();
+
+		if (getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()) && !EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof Player player && (!mode.allowsPlayers() || player.isCreative()) || !mode.allowsMobs()) && !(entity instanceof OwnableEntity ownableEntity && ((IOwnable) level.getBlockEntity(pos)).allowsOwnableEntity(ownableEntity)))
 			explode(level, pos);
 	}
 
 	@Override
 	public void attack(BlockState state, Level level, BlockPos pos, Player player) {
-		if (!player.isCreative() && !EntityUtils.doesPlayerOwn(player, level, pos))
+		if (!player.isCreative() && !EntityUtils.doesPlayerOwn(player, level, pos) && ((MineBlockEntity) level.getBlockEntity(pos)).getTargetingMode().allowsPlayers())
 			explode(level, pos);
 	}
 
@@ -155,6 +158,6 @@ public class BouncingBettyBlock extends ExplosiveBlock implements SimpleWaterlog
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new OwnableBlockEntity(SCContent.ABSTRACT_BLOCK_ENTITY.get(), pos, state);
+		return new BouncingBettyBlockEntity(pos, state);
 	}
 }
