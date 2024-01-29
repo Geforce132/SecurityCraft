@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.MineBlockEntity;
 import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -77,10 +76,13 @@ public class MineBlock extends ExplosiveBlock implements SimpleWaterloggedBlock 
 
 	@Override
 	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-		if (!level.isClientSide && ((MineBlockEntity) level.getBlockEntity(pos)).getTargetingMode().allowsPlayers()) {
-			if (player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
+		if (!level.isClientSide) {
+			MineBlockEntity mine = (MineBlockEntity) level.getBlockEntity(pos);
+			TargetingMode mode = mine.getTargetingMode();
+
+			if (!mode.allowsPlayers() || player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
 				return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
-			else if (!EntityUtils.doesPlayerOwn(player, level, pos)) {
+			else if (mine.isOwnedBy(player) && !mine.ignoresOwner()) {
 				explode(level, pos);
 				return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 			}
@@ -102,10 +104,10 @@ public class MineBlock extends ExplosiveBlock implements SimpleWaterloggedBlock 
 		MineBlockEntity mine = (MineBlockEntity) level.getBlockEntity(pos);
 		TargetingMode mode = mine.getTargetingMode();
 
-		if (entity instanceof Player player && (!mode.allowsPlayers() || player.isCreative()) || !mode.allowsMobs())
+		if (entity instanceof Player player && (mine.isOwnedBy(player) && mine.ignoresOwner() || !mode.allowsPlayers() || player.isCreative()) || !mode.allowsMobs())
 			return;
 
-		if (!EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof OwnableEntity ownableEntity && mine.allowsOwnableEntity(ownableEntity)))
+		if (!(entity instanceof OwnableEntity ownableEntity && mine.allowsOwnableEntity(ownableEntity)))
 			explode(level, pos);
 	}
 
