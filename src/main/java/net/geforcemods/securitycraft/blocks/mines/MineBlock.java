@@ -5,9 +5,11 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.MineBlockEntity;
 import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -103,12 +105,15 @@ public class MineBlock extends ExplosiveBlock implements SimpleWaterloggedBlock 
 
 		MineBlockEntity mine = (MineBlockEntity) level.getBlockEntity(pos);
 		TargetingMode mode = mine.getTargetingMode();
+		boolean isPlayer = entity instanceof Player;
 
-		if (entity instanceof Player player && (mine.isOwnedBy(player) && mine.ignoresOwner() || !mode.allowsPlayers() || player.isCreative()) || !mode.allowsMobs())
-			return;
-
-		if (!(entity instanceof OwnableEntity ownableEntity && mine.allowsOwnableEntity(ownableEntity)))
+		if ((isPlayer && mode.allowsPlayers() || !isPlayer && mode.allowsMobs() && entity instanceof LivingEntity) && canAttackEntity((LivingEntity) entity, mine))
 			explode(level, pos);
+	}
+
+	public boolean canAttackEntity(LivingEntity entity, MineBlockEntity mine) {
+		return entity != null && !EntityUtils.isInvisible(entity) && (!(entity instanceof Player player) || !(mine.isOwnedBy(player) && mine.ignoresOwner()) && !player.isCreative()) //Player checks
+				&& entity.canBeSeenByAnyone() && !(entity instanceof OwnableEntity ownableEntity && mine.allowsOwnableEntity(ownableEntity)); //checks for all entities
 	}
 
 	@Override
