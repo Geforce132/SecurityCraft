@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -30,13 +31,8 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 	private IntOption range = new IntOption(this::getBlockPos, "range", 15, 1, 30, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
-	/** Number of bombs remaining in storage. **/
+	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS_AND_MOBS);
 	private int bombsRemaining = 4;
-	/**
-	 * The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS =
-	 * hostile mobs.
-	 **/
-	private TargetingMode targetingMode = TargetingMode.PLAYERS_AND_MOBS;
 	private boolean updateBombCount = false;
 	private int attackTime = getAttackInterval();
 
@@ -84,6 +80,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 		if (bombsRemaining > 0) {
 			AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(range.get());
 			LivingEntity target = null;
+			TargetingMode targetingMode = getTargetingMode();
 
 			if (targetingMode.allowsMobs()) {
 				List<MonsterEntity> mobs = level.getEntitiesOfClass(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
@@ -144,7 +141,6 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 		super.save(tag);
 
 		tag.putInt("bombsRemaining", bombsRemaining);
-		tag.putInt("targetingOption", targetingMode.ordinal());
 		tag.putBoolean("updateBombCount", updateBombCount);
 		return tag;
 	}
@@ -154,8 +150,10 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 		super.load(state, tag);
 
 		bombsRemaining = tag.getInt("bombsRemaining");
-		targetingMode = TargetingMode.values()[tag.getInt("targetingOption")];
 		updateBombCount = tag.getBoolean("updateBombCount");
+
+		if (tag.contains("targetingOption"))
+			targetingMode.setValue(TargetingMode.values()[tag.getInt("targetingOption")]);
 	}
 
 	public void setBombsRemaining(int bombsRemaining) {
@@ -163,13 +161,8 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 	}
 
 	public TargetingMode getTargetingMode() {
-		return targetingMode;
+		return targetingMode.get();
 	}
-
-	public void setTargetingMode(TargetingMode targetingOption) {
-		this.targetingMode = targetingOption;
-	}
-
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
@@ -180,7 +173,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range, disabled, ignoreOwner
+				range, disabled, ignoreOwner, targetingMode
 		};
 	}
 

@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.blockentities;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
-import net.geforcemods.securitycraft.api.Option.EnumOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
@@ -18,19 +18,13 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.ITextComponent;
 
 public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITickableTileEntity {
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private BooleanOption disappearInstantlyInChains = new BooleanOption("disappearInstantlyInChains", true);
 	private IntOption disappearDelay = new IntOption(this::getBlockPos, "disappearDelay", 5, 0, 200, 1, true);
 	private IntOption reappearDelay = new IntOption(this::getBlockPos, "reappearDelay", 20, 5, 200, 1, true);
-	private EnumOption<TargetingMode> targetingMode = new EnumOption<TargetingMode>("targetingMode", TargetingMode.PLAYERS, TargetingMode.class) {
-		@Override
-		public ITextComponent getValueName() {
-			return value.translate();
-		}
-	};
+	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS);
 	private boolean shouldDisappear = false, shouldReappear = false;
 	private int ticksUntilDisappearing = -1, ticksUntilReappearing = -1;
 

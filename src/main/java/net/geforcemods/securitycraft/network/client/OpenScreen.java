@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
-import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -87,11 +86,6 @@ public class OpenScreen {
 					ClientHandler.displayCheckPasscodeScreen(be);
 
 				break;
-			case IMS:
-				if (be instanceof IMSBlockEntity)
-					ClientHandler.displayIMSScreen((IMSBlockEntity) be);
-
-				break;
 			case RIFT_STABILIZER:
 				if (be instanceof RiftStabilizerBlockEntity)
 					ClientHandler.displayRiftStabilizerScreen(((RiftStabilizerBlockEntity) be));
@@ -137,7 +131,6 @@ public class OpenScreen {
 		ALARM(true),
 		CHECK_BRIEFCASE_PASSCODE(false),
 		CHECK_PASSCODE(true),
-		IMS(true),
 		RIFT_STABILIZER(true),
 		SENTRY_REMOTE_ACCESS_TOOL(false),
 		SET_BRIEFCASE_PASSCODE(false),
