@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -98,7 +97,7 @@ public class ClaymoreBlock extends ExplosiveBlock implements SimpleWaterloggedBl
 		if (!player.isCreative() && !level.isClientSide && !level.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
 			level.destroyBlock(pos, false);
 
-			if (!EntityUtils.doesPlayerOwn(player, level, pos) && ((ClaymoreBlockEntity) level.getBlockEntity(pos)).getTargetingMode().allowsPlayers())
+			if (level.getBlockEntity(pos) instanceof ClaymoreBlockEntity claymore && claymore.getTargetingMode().allowsPlayers() && (!claymore.isOwnedBy(player) || claymore.ignoresOwner()))
 				explode(level, pos);
 		}
 
