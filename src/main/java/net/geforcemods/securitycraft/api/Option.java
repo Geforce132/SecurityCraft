@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -392,7 +393,7 @@ public abstract class Option<T> {
 	public static class EnumOption<T extends Enum<T>> extends Option<T> {
 		private final Class<T> enumClass;
 
-		protected EnumOption(String optionName, T value, Class<T> enumClass) {
+		public EnumOption(String optionName, T value, Class<T> enumClass) {
 			super(optionName, value);
 			this.enumClass = enumClass;
 		}
@@ -428,6 +429,22 @@ public abstract class Option<T> {
 		@Override
 		public Component getDefaultInfo() {
 			return new TranslatableComponent("securitycraft.option.default", getValueName()).withStyle(ChatFormatting.GRAY);
+		}
+	}
+
+	public static class TargetingModeOption extends EnumOption<TargetingMode> {
+		public TargetingModeOption(TargetingMode defaultValue) {
+			super("targetingMode", defaultValue, TargetingMode.class);
+		}
+
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.targetingMode";
+		}
+
+		@Override
+		public Component getValueName() {
+			return value.translate();
 		}
 	}
 }

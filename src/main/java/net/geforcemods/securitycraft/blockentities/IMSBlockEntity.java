@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -33,13 +34,8 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 	private IntOption range = new IntOption("range", 15, 1, 30, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
-	/** Number of bombs remaining in storage. **/
+	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS_AND_MOBS);
 	private int bombsRemaining = 4;
-	/**
-	 * The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS =
-	 * hostile mobs.
-	 **/
-	private TargetingMode targetingMode = TargetingMode.PLAYERS_AND_MOBS;
 	private boolean updateBombCount = false;
 	private int attackTime = getAttackInterval();
 
@@ -87,6 +83,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 		if (bombsRemaining > 0) {
 			AABB area = new AABB(pos).inflate(range.get());
 			LivingEntity target = null;
+			TargetingMode targetingMode = getTargetingMode();
 
 			if (targetingMode.allowsMobs()) {
 				List<Monster> mobs = level.getEntitiesOfClass(Monster.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
@@ -148,7 +145,6 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 		super.saveAdditional(tag);
 
 		tag.putInt("bombsRemaining", bombsRemaining);
-		tag.putInt("targetingOption", targetingMode.ordinal());
 		tag.putBoolean("updateBombCount", updateBombCount);
 	}
 
@@ -157,8 +153,10 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 		super.load(tag);
 
 		bombsRemaining = tag.getInt("bombsRemaining");
-		targetingMode = TargetingMode.values()[tag.getInt("targetingOption")];
 		updateBombCount = tag.getBoolean("updateBombCount");
+
+		if (tag.contains("targetingOption"))
+			targetingMode.setValue(TargetingMode.values()[tag.getInt("targetingOption")]);
 	}
 
 	public void setBombsRemaining(int bombsRemaining) {
@@ -167,12 +165,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 	}
 
 	public TargetingMode getTargetingMode() {
-		return targetingMode;
-	}
-
-	public void setTargetingMode(TargetingMode targetingOption) {
-		this.targetingMode = targetingOption;
-		setChanged();
+		return targetingMode.get();
 	}
 
 	@Override
@@ -185,7 +178,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range, disabled, ignoreOwner
+				range, disabled, ignoreOwner, targetingMode
 		};
 	}
 

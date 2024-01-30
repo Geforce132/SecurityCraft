@@ -16,7 +16,6 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
-import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
@@ -73,7 +72,6 @@ import net.geforcemods.securitycraft.screen.ClaymoreScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
 import net.geforcemods.securitycraft.screen.EditModuleScreen;
-import net.geforcemods.securitycraft.screen.IMSScreen;
 import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
 import net.geforcemods.securitycraft.screen.ItemInventoryScreen;
 import net.geforcemods.securitycraft.screen.KeyChangerScreen;
@@ -759,10 +757,6 @@ public class ClientHandler {
 			else
 				Minecraft.getInstance().setScreen(new UsernameLoggerScreen(be));
 		}
-	}
-
-	public static void displayIMSScreen(IMSBlockEntity be) {
-		Minecraft.getInstance().setScreen(new IMSScreen(be));
 	}
 
 	public static void displayUniversalKeyChangerScreen(BlockEntity be) {

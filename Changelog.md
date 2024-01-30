@@ -24,6 +24,7 @@
 - Change: The existing "Message" option has been split up into separate "Allowlist Message" and "Denylist Message" options for several blocks
 - Change: The recipes of the Panic Button and Key Panel now require reinforced buttons instead of vanilla ones
 - Change: The Sentry's recipe now requires a Reinforced Dispenser
+- Change: The I.M.S.' targeting mode is now accessible with the Universal Block Modifier instead of rightclicking the block
 - API: Refactored IPasscodeConvertible to account for the new Wire Cutters functionality
 - Fix: Duplication exploit involving keycards
 - Fix: Duplication exploit involving Reinforced Pistons
