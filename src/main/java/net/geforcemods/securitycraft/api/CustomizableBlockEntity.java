@@ -25,6 +25,10 @@ public abstract class CustomizableBlockEntity extends NamedBlockEntity implement
 		super(type, pos, state);
 	}
 
+	protected CustomizableBlockEntity(BlockPos pos, BlockState state) {
+		super(pos, state);
+	}
+
 	@Override
 	public void load(CompoundTag tag) {
 		super.load(tag);
