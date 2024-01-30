@@ -108,30 +108,29 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 
 	@Override
 	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (!level.isClientSide) {
-			TileEntity te = level.getBlockEntity(pos);
+		TileEntity te = level.getBlockEntity(pos);
 
-			if (te instanceof IMSBlockEntity) {
-				IMSBlockEntity be = (IMSBlockEntity) te;
+		if (te instanceof IMSBlockEntity) {
+			IMSBlockEntity be = (IMSBlockEntity) te;
 
-				if (be.isDisabled())
-					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				else if (be.isOwnedBy(player)) {
-					ItemStack held = player.getItemInHand(hand);
-					int mines = state.getValue(MINES);
+			if (be.isDisabled())
+				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else if (be.isOwnedBy(player)) {
+				ItemStack held = player.getItemInHand(hand);
+				int mines = state.getValue(MINES);
 
-					if (held.getItem() == SCContent.BOUNCING_BETTY.get().asItem() && mines < 4) {
-						if (!player.isCreative())
-							held.shrink(1);
+				if (held.getItem() == SCContent.BOUNCING_BETTY.get().asItem() && mines < 4) {
+					if (!player.isCreative())
+						held.shrink(1);
 
-						level.setBlockAndUpdate(pos, state.setValue(MINES, mines + 1));
-						be.setBombsRemaining(mines + 1);
-					}
+					level.setBlockAndUpdate(pos, state.setValue(MINES, mines + 1));
+					be.setBombsRemaining(mines + 1);
+					return ActionResultType.sidedSuccess(level.isClientSide);
 				}
 			}
 		}
 
-		return ActionResultType.SUCCESS;
+		return ActionResultType.PASS;
 	}
 
 	@Override
