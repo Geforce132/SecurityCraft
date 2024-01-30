@@ -134,7 +134,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 		if (!player.capabilities.isCreativeMode && !world.isRemote && !world.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
 			world.destroyBlock(pos, false);
 
-			if (!EntityUtils.doesPlayerOwn(player, world, pos))
+			if (!EntityUtils.doesPlayerOwn(player, world, pos) && ((ClaymoreBlockEntity) world.getTileEntity(pos)).getTargetingMode().allowsPlayers())
 				explode(world, pos);
 		}
 

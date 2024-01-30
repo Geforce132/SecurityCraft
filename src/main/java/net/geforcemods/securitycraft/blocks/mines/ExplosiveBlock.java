@@ -1,7 +1,10 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.material.EnumPushReaction;
@@ -11,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -52,6 +56,21 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 		}
 
 		if (explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos)) {
+			TileEntity te = world.getTileEntity(pos);
+
+			if (te instanceof ICustomizable) {
+				ICustomizable mine = (ICustomizable) te;
+
+				for (Option<?> option : mine.customOptions()) {
+					if (option instanceof TargetingModeOption) {
+						if (!((TargetingModeOption) option).get().allowsPlayers())
+							return false;
+						else
+							break;
+					}
+				}
+			}
+
 			explode(world, pos);
 			return true;
 		}

@@ -4,10 +4,12 @@ import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.state.IBlockState;
@@ -31,6 +33,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickable, IInventoryChangedListener {
 	private IntOption range = new IntOption(this::getPos, "range", 5, 1, 10, 1, true);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
+	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS_AND_MOBS);
 	private int cooldown = -1;
 	private IItemHandler insertOnlyHandler, lensHandler;
 	private LensContainer lens = new LensContainer(1);
@@ -57,6 +60,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 				return;
 			}
 
+			TargetingMode mode = getTargetingMode();
 			EnumFacing dir = state.getValue(ClaymoreBlock.FACING);
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
 
@@ -69,7 +73,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 			else if (dir == EnumFacing.WEST)
 				area = area.contract(range.get(), -0, -0);
 
-			getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area, e -> !EntityUtils.isInvisible(e) && !allowsOwnableEntity(e) && !(e instanceof EntityPlayer && (((EntityPlayer) e).isCreative() || ((EntityPlayer) e).isSpectator())) && !(EntityUtils.doesEntityOwn(e, world, pos) && ignoresOwner())).stream().findFirst().ifPresent(entity -> {
+			getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area, e -> !EntityUtils.isInvisible(e) && !(e instanceof EntityPlayer && (!mode.allowsPlayers() || ((EntityPlayer) e).isCreative() || ((EntityPlayer) e).isSpectator()) || !mode.allowsMobs()) && !allowsOwnableEntity(e) && !(EntityUtils.doesEntityOwn(e, world, pos) && ignoresOwner())).stream().findFirst().ifPresent(entity -> {
 				cooldown = 20;
 				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			});
@@ -135,7 +139,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range, ignoreOwner
+				range, ignoreOwner, targetingMode
 		};
 	}
 
@@ -146,6 +150,10 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
+	}
+
+	public TargetingMode getTargetingMode() {
+		return targetingMode.get();
 	}
 
 	@Override
