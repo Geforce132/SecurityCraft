@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -132,9 +131,11 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
 		if (!player.capabilities.isCreativeMode && !world.isRemote && !world.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
+			ClaymoreBlockEntity claymore = (ClaymoreBlockEntity) world.getTileEntity(pos);
+
 			world.destroyBlock(pos, false);
 
-			if (!EntityUtils.doesPlayerOwn(player, world, pos) && ((ClaymoreBlockEntity) world.getTileEntity(pos)).getTargetingMode().allowsPlayers())
+			if (claymore.getTargetingMode().allowsPlayers() && (!claymore.isOwnedBy(player) || claymore.ignoresOwner()))
 				explode(world, pos);
 		}
 

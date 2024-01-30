@@ -73,11 +73,16 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 			else if (dir == EnumFacing.WEST)
 				area = area.contract(range.get(), -0, -0);
 
-			getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area, e -> !EntityUtils.isInvisible(e) && !(e instanceof EntityPlayer && (!mode.allowsPlayers() || ((EntityPlayer) e).isCreative() || ((EntityPlayer) e).isSpectator()) || !mode.allowsMobs()) && !allowsOwnableEntity(e) && !(EntityUtils.doesEntityOwn(e, world, pos) && ignoresOwner())).stream().findFirst().ifPresent(entity -> {
+			getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area, e -> (mode.allowsPlayers() && e instanceof EntityPlayer || mode.allowsMobs() && !(e instanceof EntityPlayer)) && canAttackEntity(e)).stream().findFirst().ifPresent(e -> {
 				cooldown = 20;
 				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			});
 		}
+	}
+
+	public boolean canAttackEntity(EntityLivingBase entity) {
+		return entity != null && (!(entity instanceof EntityPlayer) || !(isOwnedBy((EntityPlayer) entity) && ignoresOwner()) && !((EntityPlayer) entity).isCreative() && !((EntityPlayer) entity).isSpectator()) //Player checks
+				&& !EntityUtils.isInvisible(entity) && !allowsOwnableEntity(entity); //checks for all entities
 	}
 
 	@Override
