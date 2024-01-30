@@ -120,8 +120,8 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 	}
 
 	public boolean canAttackEntity(LivingEntity entity) {
-		return entity != null && (!(entity instanceof Player player) || !(isOwnedBy(player) && ignoresOwner()) && !player.isCreative() && !player.isSpectator()) //Player checks
-				&& !isAllowed(entity) && !(entity instanceof OwnableEntity ownableEntity && allowsOwnableEntity(ownableEntity)); //checks for all entities
+		return entity != null && (!(entity instanceof Player player) || !(isOwnedBy(player) && ignoresOwner()) && !player.isCreative()) //Player checks
+				&& entity.canBeSeenByAnyone() && !isAllowed(entity) && !(entity instanceof OwnableEntity ownableEntity && allowsOwnableEntity(ownableEntity)); //checks for all entities
 	}
 
 	/**
