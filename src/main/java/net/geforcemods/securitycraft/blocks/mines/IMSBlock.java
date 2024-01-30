@@ -95,7 +95,7 @@ public class IMSBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (!level.isClientSide && level.getBlockEntity(pos) instanceof IMSBlockEntity be) {
+		if (level.getBlockEntity(pos) instanceof IMSBlockEntity be) {
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			else if (be.isOwnedBy(player)) {
@@ -108,11 +108,12 @@ public class IMSBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 
 					level.setBlockAndUpdate(pos, state.setValue(MINES, mines + 1));
 					be.setBombsRemaining(mines + 1);
+					return InteractionResult.sidedSuccess(level.isClientSide);
 				}
 			}
 		}
 
-		return InteractionResult.SUCCESS;
+		return InteractionResult.PASS;
 	}
 
 	@Override
