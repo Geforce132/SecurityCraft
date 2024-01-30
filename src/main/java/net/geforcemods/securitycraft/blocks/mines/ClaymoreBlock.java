@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -97,9 +96,11 @@ public class ClaymoreBlock extends ExplosiveBlock implements IWaterLoggable {
 	@Override
 	public boolean removedByPlayer(BlockState state, World level, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
 		if (!player.isCreative() && !level.isClientSide && !level.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
+			ClaymoreBlockEntity claymore = (ClaymoreBlockEntity) level.getBlockEntity(pos);
+
 			level.destroyBlock(pos, false);
 
-			if (!EntityUtils.doesPlayerOwn(player, level, pos) && ((ClaymoreBlockEntity) level.getBlockEntity(pos)).getTargetingMode().allowsPlayers())
+			if (claymore.getTargetingMode().allowsPlayers() && (!claymore.isOwnedBy(player) || claymore.ignoresOwner()))
 				explode(level, pos);
 		}
 

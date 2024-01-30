@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import java.util.List;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -79,30 +77,15 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 	private void launchMine() {
 		if (bombsRemaining > 0) {
 			AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(range.get());
-			LivingEntity target = null;
-			TargetingMode targetingMode = getTargetingMode();
+			TargetingMode mode = getTargetingMode();
 
-			if (targetingMode.allowsMobs()) {
-				List<MonsterEntity> mobs = level.getEntitiesOfClass(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
-
-				if (!mobs.isEmpty())
-					target = mobs.get(0);
-			}
-
-			if (target == null && targetingMode.allowsPlayers()) {
-				List<PlayerEntity> players = level.getEntitiesOfClass(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
-
-				if (!players.isEmpty())
-					target = players.get(0);
-			}
-
-			if (target != null) {
+			level.getEntitiesOfClass(LivingEntity.class, area, e -> (mode.allowsPlayers() && e instanceof PlayerEntity || mode.allowsMobs() && !(e instanceof PlayerEntity) && e instanceof MonsterEntity) && canAttackEntity(e)).stream().findFirst().ifPresent(e -> {
 				double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 0.84375D : 0.0D; //0.84375 is the offset towards the bomb's position in the model
 				double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 0.84375D : 0.0D;
 				int launchHeight = getLaunchHeight();
-				double accelerationX = target.getX() - worldPosition.getX();
-				double accelerationY = target.getBoundingBox().minY + target.getBbHeight() / 2.0F - worldPosition.getY() - launchHeight;
-				double accelerationZ = target.getZ() - worldPosition.getZ();
+				double accelerationX = e.getX() - worldPosition.getX();
+				double accelerationY = e.getBoundingBox().minY + e.getBbHeight() / 2.0F - worldPosition.getY() - launchHeight;
+				double accelerationZ = e.getZ() - worldPosition.getZ();
 
 				level.addFreshEntity(new IMSBomb(level, worldPosition.getX() + addToX, worldPosition.getY(), worldPosition.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight, this));
 
@@ -111,13 +94,13 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 
 				bombsRemaining--;
 				updateBombCount = true;
-			}
+			});
 		}
 	}
 
 	public boolean canAttackEntity(LivingEntity entity) {
-		return entity != null && (!(entity instanceof PlayerEntity) || !(isOwnedBy((PlayerEntity) entity) && ignoresOwner()) && !((PlayerEntity) entity).isCreative() && !((PlayerEntity) entity).isSpectator()) //PlayerEntity checks
-				&& !isAllowed(entity) && !allowsOwnableEntity(entity); //checks for all entities
+		return entity != null && !EntityUtils.isInvisible(entity) && (!(entity instanceof PlayerEntity) || !(isOwnedBy((PlayerEntity) entity) && ignoresOwner()) && !((PlayerEntity) entity).isCreative()) //PlayerEntity checks
+				&& !entity.isSpectator() && !isAllowed(entity) && !allowsOwnableEntity(entity); //checks for all entities
 	}
 
 	/**
