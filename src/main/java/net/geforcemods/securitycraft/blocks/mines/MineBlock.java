@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blockentities.MineBlockEntity;
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.core.BlockPos;
@@ -77,13 +77,14 @@ public class MineBlock extends ExplosiveBlock implements SimpleWaterloggedBlock 
 
 	@Override
 	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-		if (!level.isClientSide)
+		if (!level.isClientSide && ((MineBlockEntity) level.getBlockEntity(pos)).getTargetingMode().allowsPlayers()) {
 			if (player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
 				return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 			else if (!EntityUtils.doesPlayerOwn(player, level, pos)) {
 				explode(level, pos);
 				return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 			}
+		}
 
 		return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 	}
@@ -98,7 +99,13 @@ public class MineBlock extends ExplosiveBlock implements SimpleWaterloggedBlock 
 		if (level.isClientSide || entity instanceof ItemEntity || !getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
 			return;
 
-		if (!EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof Player player && player.isCreative()) && !(entity instanceof OwnableEntity ownableEntity && ((IOwnable) level.getBlockEntity(pos)).allowsOwnableEntity(ownableEntity)))
+		MineBlockEntity mine = (MineBlockEntity) level.getBlockEntity(pos);
+		TargetingMode mode = mine.getTargetingMode();
+
+		if (entity instanceof Player player && (!mode.allowsPlayers() || player.isCreative()) || !mode.allowsMobs())
+			return;
+
+		if (!EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof OwnableEntity ownableEntity && mine.allowsOwnableEntity(ownableEntity)))
 			explode(level, pos);
 	}
 
@@ -158,6 +165,6 @@ public class MineBlock extends ExplosiveBlock implements SimpleWaterloggedBlock 
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new OwnableBlockEntity(pos, state);
+		return new MineBlockEntity(pos, state);
 	}
 }
