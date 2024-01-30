@@ -589,6 +589,8 @@ option.generic.signalLength.description=Combien de temps le signal de redstone d
 option.generic.signalLength=Largeur du signal : #
 option.generic.smartModuleCooldown.description=Pendant combien de temps les joueurs ne peuvent-ils pas saisir un code d'accès après la saisie d'un code incorrect ? (En ticks, 20 ticks = 1 seconde ; requiert un module intelligent)
 option.generic.smartModuleCooldown=Attente : #
+option.generic.targetingMode.description=Quelles entités peuvent activer ce piège ?
+option.generic.targetingMode=Mode de ciblage : #
 option.generic.viewActivated.maximumDistance.description=A partir de combien de blocs au maximum est-il possible d'activer ce bloc ?
 option.generic.viewActivated.maximumDistance=Distance maximale : #
 option.securitycraft:alarm.range.description=À combien de blocs de distance la sonnerie peut-elle être entendue ?
@@ -609,8 +611,6 @@ option.securitycraft:floor_trap.disappearInstantlyInChains.description=Ce piège
 option.securitycraft:floor_trap.disappearInstantlyInChains=Disparaît instantanément : #
 option.securitycraft:floor_trap.reappearDelay.description=Le nombre de ticks nécessaires avant que le bloc ne réapparaisse (20 ticks = 1 seconde)?
 option.securitycraft:floor_trap.reappearDelay=Délai de réapparition : #
-option.securitycraft:floor_trap.targetingMode.description=Quelles entités peuvent activer ce piège ?
-option.securitycraft:floor_trap.targetingMode=Mode de ciblage : #
 option.securitycraft:ims.range.description=À partir de combien de blocs la S.M.I. peut détecter des cibles potentielles ?
 option.securitycraft:ims.range=Portée : #
 option.securitycraft:inventoryScanner.horizontal.description=Les champs créés par ce scanner d'inventaire doivent-ils être horizontaux ?

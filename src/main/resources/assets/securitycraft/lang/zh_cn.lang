@@ -608,6 +608,8 @@ option.generic.signalLength.description=成功激活后的红石信号应该持�
 option.generic.signalLength=信号时长：#
 option.generic.smartModuleCooldown.description=输入错误密码后，玩家无法输入密码的时间？（以游戏刻为单位，20 游戏刻 = 1 秒；需要智能模块）
 option.generic.smartModuleCooldown=冷却时间：#
+option.generic.targetingMode.description=哪些种类的实体可以触发陷阱？
+option.generic.targetingMode=目标锁定模式：#
 option.generic.viewActivated.maximumDistance.description=最远可以在多少格外激活此方块？
 option.generic.viewActivated.maximumDistance=最大距离：#
 option.securitycraft:alarm.range.description=可以听到警报声的范围有多远？
@@ -628,8 +630,6 @@ option.securitycraft:floor_trap.disappearInstantlyInChains.description=如果使
 option.securitycraft:floor_trap.disappearInstantlyInChains=立即消失：#
 option.securitycraft:floor_trap.reappearDelay.description=从方块消失到重新出现需要多长时间（20游戏刻=1秒）
 option.securitycraft:floor_trap.reappearDelay=重新出现时间：#
-option.securitycraft:floor_trap.targetingMode.description=哪些种类的实体可以触发陷阱？
-option.securitycraft:floor_trap.targetingMode=目标锁定模式：#
 option.securitycraft:ims.range.description=I.M.S. 能探测到潜在目标的范围有多远？
 option.securitycraft:ims.range=范围：#
 option.securitycraft:inventoryScanner.horizontal.description=此扫描仪方块创建的物品栏扫描区域是否是水平的？

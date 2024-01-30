@@ -636,6 +636,8 @@ option.generic.signalLength.description=How long should the redstone signal upon
 option.generic.signalLength=Signal length: #
 option.generic.smartModuleCooldown.description=How long can players not enter a passcode after an incorrect code has been entered? (In Ticks, 20 ticks = 1 second; requires Smart Module)
 option.generic.smartModuleCooldown=Cooldown: #
+option.generic.targetingMode.description=Which entities can trigger this block?
+option.generic.targetingMode=Targeting Mode: #
 option.generic.viewActivated.maximumDistance.description=From at most how many blocks away is it possible to activate this block?
 option.generic.viewActivated.maximumDistance=Maximum Distance: #
 option.securitycraft:alarm.range.description=How many blocks away can the alarm sound be heard?
@@ -656,8 +658,6 @@ option.securitycraft:floor_trap.disappearInstantlyInChains.description=Should th
 option.securitycraft:floor_trap.disappearInstantlyInChains=Disappear Instantly: #
 option.securitycraft:floor_trap.reappearDelay.description=How many ticks it takes until the block reappears (20 ticks = 1 second)
 option.securitycraft:floor_trap.reappearDelay=Reappear Delay: #
-option.securitycraft:floor_trap.targetingMode.description=Which entities can trigger this trap?
-option.securitycraft:floor_trap.targetingMode=Targeting Mode: #
 option.securitycraft:ims.range.description=How many blocks away can the I.M.S. detect potential targets from?
 option.securitycraft:ims.range=Range: #
 option.securitycraft:inventoryScanner.horizontal.description=Should the inventory scanner fields created by this scanner be horizontal?

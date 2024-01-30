@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.api;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.components.Slider;
@@ -434,7 +435,7 @@ public abstract class Option<T> {
 	public static class EnumOption<T extends Enum<T>> extends Option<T> {
 		private final Class<T> enumClass;
 
-		protected EnumOption(String optionName, T value, Class<T> enumClass) {
+		public EnumOption(String optionName, T value, Class<T> enumClass) {
 			super(optionName, value);
 			this.enumClass = enumClass;
 		}
@@ -470,6 +471,22 @@ public abstract class Option<T> {
 		@Override
 		public ITextComponent getDefaultInfo() {
 			return Utils.localize("securitycraft.option.default", getValueName()).setStyle(new Style().setColor(TextFormatting.GRAY));
+		}
+	}
+
+	public static class TargetingModeOption extends EnumOption<TargetingMode> {
+		public TargetingModeOption(TargetingMode defaultValue) {
+			super("targetingMode", defaultValue, TargetingMode.class);
+		}
+
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.targetingMode";
+		}
+
+		@Override
+		public ITextComponent getValueName() {
+			return value.translate();
 		}
 	}
 }

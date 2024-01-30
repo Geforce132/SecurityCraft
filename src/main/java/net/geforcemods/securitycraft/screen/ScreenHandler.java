@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
-import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
@@ -79,9 +78,6 @@ public class ScreenHandler implements IGuiHandler {
 		INSERT_PASSCODE(
 			(player, te) -> new GenericMenu(te),
 			(player, te) -> new CheckPasscodeScreen(te)),
-		IMS(
-			(player, te) -> new GenericMenu(te),
-			(player, te) -> new IMSScreen((IMSBlockEntity) te)),
 		CAMERA_MONITOR(
 			(player, te) -> PlayerUtils.getItemStackFromAnyHand(player, SCContent.cameraMonitor).isEmpty() ? null : new GenericMenu(te),
 			(player, te) -> {
@@ -191,6 +187,7 @@ public class ScreenHandler implements IGuiHandler {
 		CLAYMORE(
 			(player, te) -> new ClaymoreMenu((ClaymoreBlockEntity) te, player.inventory),
 			(player, te) -> new ClaymoreScreen(new ClaymoreMenu((ClaymoreBlockEntity) te, player.inventory)));
+		//@formatter:on
 
 		private final BiFunction<EntityPlayer, TileEntity, Object> server, client;
 

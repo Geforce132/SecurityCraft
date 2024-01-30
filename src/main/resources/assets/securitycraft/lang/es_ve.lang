@@ -592,6 +592,8 @@ option.generic.signalLength.description=¿Cómo de larga debería ser la señal 
 option.generic.signalLength=Longitud de la señal: #
 option.generic.smartModuleCooldown.description=¿Cuánto debería esperar un jugador para teclear una contraseña tras haber introducido otra incorrecta? (En ticks, 20 ticks = 1 segundo)
 option.generic.smartModuleCooldown=Enfriamiento: #
+option.generic.targetingMode.description=¿Qué entidades pueden activar esta trampa?
+option.generic.targetingMode=Objetivos: #
 option.generic.viewActivated.maximumDistance.description=¿A partir de cuántos bloques, como máximo, se puede activar este bloque?
 option.generic.viewActivated.maximumDistance=Distancia máxima: %s
 option.securitycraft:alarm.range.description=¿A cuántos bloques de distancia se debería poder escuchar la alarma?
@@ -614,8 +616,6 @@ option.securitycraft:floor_trap.disappearInstantlyInChains.description= ¿Deber�
 option.securitycraft:floor_trap.disappearInstantlyInChains=Desaparición instantánea: #
 option.securitycraft:floor_trap.reappearDelay.description=¿Cuántos ticks tarda el bloque en reaparecer? (20 ticks = 1 segundo)
 option.securitycraft:floor_trap.reappearDelay=Retraso en la reaparición: #
-option.securitycraft:floor_trap.targetingMode.description=¿Qué entidades pueden activar esta trampa?
-option.securitycraft:floor_trap.targetingMode=Objetivos: #
 option.securitycraft:ims.range.description=¿A cuántos bloques de distancia puede el S.M.I. detectar objetivos potenciales?
 option.securitycraft:ims.range=Alcance: #
 option.securitycraft:inventoryScanner.horizontal.description=¿Los campos del escáner de inventario creados por este escáner deben estar en horizontal?
