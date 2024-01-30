@@ -4,17 +4,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 
 public enum TargetingMode {
-	PLAYERS("gui.securitycraft:srat.targets3", true, false),
-	PLAYERS_AND_MOBS("gui.securitycraft:srat.targets1", true, true),
-	MOBS("gui.securitycraft:srat.targets2", false, true);
+	PLAYERS("gui.securitycraft:srat.targets3"),
+	PLAYERS_AND_MOBS("gui.securitycraft:srat.targets1"),
+	MOBS("gui.securitycraft:srat.targets2");
 
 	private final String translationKey;
-	private final boolean allowsPlayers, allowsMobs;
 
-	private TargetingMode(String translationKey, boolean allowsPlayers, boolean allowsMobs) {
+	private TargetingMode(String translationKey) {
 		this.translationKey = translationKey;
-		this.allowsPlayers = allowsPlayers;
-		this.allowsMobs = allowsMobs;
 	}
 
 	public Component translate() {
@@ -22,10 +19,10 @@ public enum TargetingMode {
 	}
 
 	public boolean allowsPlayers() {
-		return allowsPlayers;
+		return this == PLAYERS || this == PLAYERS_AND_MOBS;
 	}
 
 	public boolean allowsMobs() {
-		return allowsMobs;
+		return this == MOBS || this == PLAYERS_AND_MOBS;
 	}
 }

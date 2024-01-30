@@ -2,7 +2,10 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.core.BlockPos;
@@ -57,6 +60,17 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 		}
 
 		if (explodesWhenInteractedWith() && isActive(level, pos) && !EntityUtils.doesPlayerOwn(player, level, pos)) {
+			if (level.getBlockEntity(pos) instanceof ICustomizable mine) {
+				for (Option<?> option : mine.customOptions()) {
+					if (option instanceof TargetingModeOption tmo) {
+						if (!tmo.get().allowsPlayers())
+							return InteractionResult.PASS;
+						else
+							break;
+					}
+				}
+			}
+
 			explode(level, pos);
 			return InteractionResult.SUCCESS;
 		}

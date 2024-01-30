@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BouncingBettyBlockEntity;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
@@ -33,6 +34,7 @@ import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadSmokerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadTrapdoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
+import net.geforcemods.securitycraft.blockentities.MineBlockEntity;
 import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
@@ -2431,6 +2433,8 @@ public class SCContent {
 		return BlockEntityType.Builder.of((pos, state) -> {
 			if (state.is(REINFORCED_OBSERVER.get()))
 				return new ReinforcedObserverBlockEntity(pos, state);
+			else if (state.is(MINE.get()))
+				return new MineBlockEntity(pos, state);
 			else
 				return new OwnableBlockEntity(pos, state);
 		}, beOwnableBlocks.toArray(new Block[beOwnableBlocks.size()])).build(null);
@@ -2439,6 +2443,8 @@ public class SCContent {
 	public static final RegistryObject<BlockEntityType<NamedBlockEntity>> ABSTRACT_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("abstract", () -> BlockEntityType.Builder.of((pos, state) -> {
 		if (state.is(ELECTRIFIED_IRON_FENCE.get()) || state.is(ELECTRIFIED_IRON_FENCE_GATE.get()))
 			return new ElectrifiedFenceAndGateBlockEntity(pos, state);
+		else if (state.is(BOUNCING_BETTY.get()))
+			return new BouncingBettyBlockEntity(pos, state);
 		else
 			return new NamedBlockEntity(pos, state);
 	},
