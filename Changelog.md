@@ -14,6 +14,7 @@
 - New: "/sc convert" command to un-/reinforce and un-/passcode-protect blocks
 - New: The Bouncing Betty, Claymore, Frame, Mine, Panic Button, and Security Camera are now waterloggable
 - New: Several blocks with a signal length option for redstone signal length can now be set to toggle the redstone signal instead by setting the option to 0
+- New: Option for the Claymore to set whether it only explodes for mobs, players, or both
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now

@@ -89,7 +89,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 					target = mobs.get(0);
 			}
 
-			if (target == null && (targetingMode.allowsPlayers())) {
+			if (target == null && targetingMode.allowsPlayers()) {
 				List<PlayerEntity> players = level.getEntitiesOfClass(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if (!players.isEmpty())
@@ -163,6 +163,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 	public TargetingMode getTargetingMode() {
 		return targetingMode.get();
 	}
+
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {

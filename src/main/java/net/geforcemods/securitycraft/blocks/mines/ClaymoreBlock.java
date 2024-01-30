@@ -99,7 +99,7 @@ public class ClaymoreBlock extends ExplosiveBlock implements IWaterLoggable {
 		if (!player.isCreative() && !level.isClientSide && !level.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
 			level.destroyBlock(pos, false);
 
-			if (!EntityUtils.doesPlayerOwn(player, level, pos))
+			if (!EntityUtils.doesPlayerOwn(player, level, pos) && ((ClaymoreBlockEntity) level.getBlockEntity(pos)).getTargetingMode().allowsPlayers())
 				explode(level, pos);
 		}
 

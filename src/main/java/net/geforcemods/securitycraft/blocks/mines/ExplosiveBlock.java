@@ -2,7 +2,10 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.AbstractBlock;
@@ -10,6 +13,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
@@ -57,6 +61,21 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 		}
 
 		if (explodesWhenInteractedWith() && isActive(level, pos) && !EntityUtils.doesPlayerOwn(player, level, pos)) {
+			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof ICustomizable) {
+				ICustomizable mine = (ICustomizable) te;
+
+				for (Option<?> option : mine.customOptions()) {
+					if (option instanceof TargetingModeOption) {
+						if (!((TargetingModeOption) option).get().allowsPlayers())
+							return ActionResultType.PASS;
+						else
+							break;
+					}
+				}
+			}
+
 			explode(level, pos);
 			return ActionResultType.SUCCESS;
 		}
