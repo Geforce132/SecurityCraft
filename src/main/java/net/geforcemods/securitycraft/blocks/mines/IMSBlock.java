@@ -92,30 +92,29 @@ public class IMSBlock extends OwnableBlock {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (!world.isRemote) {
-			TileEntity tile = world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
-			if (tile instanceof IMSBlockEntity) {
-				IMSBlockEntity te = (IMSBlockEntity) tile;
+		if (tile instanceof IMSBlockEntity) {
+			IMSBlockEntity te = (IMSBlockEntity) tile;
 
-				if (te.isDisabled())
-					player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				else if (te.isOwnedBy(player)) {
-					ItemStack held = player.getHeldItem(hand);
-					int mines = state.getValue(MINES);
+			if (te.isDisabled())
+				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else if (te.isOwnedBy(player)) {
+				ItemStack held = player.getHeldItem(hand);
+				int mines = state.getValue(MINES);
 
-					if (held.getItem() == Item.getItemFromBlock(SCContent.bouncingBetty) && mines < 4) {
-						if (!player.capabilities.isCreativeMode)
-							held.shrink(1);
+				if (held.getItem() == Item.getItemFromBlock(SCContent.bouncingBetty) && mines < 4) {
+					if (!player.capabilities.isCreativeMode)
+						held.shrink(1);
 
-						world.setBlockState(pos, state.withProperty(MINES, mines + 1));
-						te.setBombsRemaining(mines + 1);
-					}
+					world.setBlockState(pos, state.withProperty(MINES, mines + 1));
+					te.setBombsRemaining(mines + 1);
+					return true;
 				}
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	@Override
