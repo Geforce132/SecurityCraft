@@ -35,6 +35,7 @@ public class MineBlockEntity extends CustomizableBlockEntity {
 		return new ModuleType[0];
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}
