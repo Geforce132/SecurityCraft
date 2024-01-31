@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,7 +18,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -82,7 +80,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 			AABB area = new AABB(pos).inflate(range.get());
 			TargetingMode mode = getTargetingMode();
 
-			level.getEntitiesOfClass(LivingEntity.class, area, e -> (mode.allowsPlayers() && e instanceof Player || mode.allowsMobs() && !(e instanceof Player) && e instanceof Monster) && canAttackEntity(e)).stream().findFirst().ifPresent(e -> {
+			level.getEntitiesOfClass(LivingEntity.class, area, e -> (e instanceof Player || e instanceof Monster) && mode.canAttackEntity(e, this, true)).stream().findFirst().ifPresent(e -> {
 				double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 0.84375D : 0.0D; //0.84375 is the offset towards the bomb's position in the model
 				double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 0.84375D : 0.0D;
 				int launchHeight = getLaunchHeight();
@@ -100,11 +98,6 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 				setChanged();
 			});
 		}
-	}
-
-	public boolean canAttackEntity(LivingEntity entity) {
-		return entity != null && !EntityUtils.isInvisible(entity) && (!(entity instanceof Player player) || !(isOwnedBy(player) && ignoresOwner()) && !player.isCreative()) //Player checks
-				&& entity.canBeSeenByAnyone() && !isAllowed(entity) && !(entity instanceof OwnableEntity ownableEntity && allowsOwnableEntity(ownableEntity)); //checks for all entities
 	}
 
 	/**
@@ -173,6 +166,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 		return disabled.get();
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

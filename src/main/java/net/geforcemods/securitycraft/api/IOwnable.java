@@ -111,4 +111,14 @@ public interface IOwnable {
 
 		return entity.getOwnerUUID() != null && (entity.getOwnerUUID().toString().equals(beOwner.getUUID()) || TeamUtils.areOnSameTeam(beOwner, new Owner(entity.getOwner())));
 	}
+
+	/**
+	 * Checks if this block entity should ignore its owner. Note that this is not used in {@link #isOwnedBy(Player)}, so there
+	 * are cases where SecurityCraft does not use this method in conjunction with owner checks (e.g. breaking reinforced blocks).
+	 *
+	 * @return true if the owner is ignored, false otherwise
+	 */
+	public default boolean ignoresOwner() {
+		return false;
+	}
 }

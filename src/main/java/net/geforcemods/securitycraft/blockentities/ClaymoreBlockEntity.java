@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,7 +25,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -77,15 +75,10 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 			default -> new AABB(pos);
 		};
 
-		level.getEntitiesOfClass(LivingEntity.class, area, e -> (mode.allowsPlayers() && e instanceof Player || mode.allowsMobs() && !(e instanceof Player)) && canAttackEntity(e)).stream().findFirst().ifPresent(e -> {
+		level.getEntitiesOfClass(LivingEntity.class, area, e -> mode.canAttackEntity(e, this, true)).stream().findFirst().ifPresent(e -> {
 			cooldown = 20;
 			level.playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
 		});
-	}
-
-	public boolean canAttackEntity(LivingEntity entity) {
-		return entity != null && !EntityUtils.isInvisible(entity) && (!(entity instanceof Player player) || !(isOwnedBy(player) && ignoresOwner()) && !player.isCreative()) //Player checks
-				&& entity.canBeSeenByAnyone() && !(entity instanceof OwnableEntity ownableEntity && allowsOwnableEntity(ownableEntity)); //checks for all entities
 	}
 
 	@Override
@@ -176,6 +169,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 		return new ModuleType[0];
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}
