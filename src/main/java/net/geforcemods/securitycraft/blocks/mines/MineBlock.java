@@ -9,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -98,14 +97,16 @@ public class MineBlock extends ExplosiveBlock implements SimpleWaterloggedBlock 
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (level.isClientSide || entity instanceof ItemEntity || !getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
+		if (level.isClientSide && !getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
 			return;
 
-		MineBlockEntity mine = (MineBlockEntity) level.getBlockEntity(pos);
-		TargetingMode mode = mine.getTargetingMode();
+		if (entity instanceof LivingEntity livingEntity) {
+			MineBlockEntity mine = (MineBlockEntity) level.getBlockEntity(pos);
+			TargetingMode mode = mine.getTargetingMode();
 
-		if (mode.canAttackEntity((LivingEntity) entity, mine))
-			explode(level, pos);
+			if (mode.canAttackEntity(livingEntity, mine, false))
+				explode(level, pos);
+		}
 	}
 
 	@Override

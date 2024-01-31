@@ -83,7 +83,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 			AABB area = new AABB(pos).inflate(range.get());
 			TargetingMode mode = getTargetingMode();
 
-			level.getEntitiesOfClass(LivingEntity.class, area, e -> (e instanceof Player || e instanceof Monster) && mode.canAttackEntity(e, this)).stream().findFirst().ifPresent(e -> {
+			level.getEntitiesOfClass(LivingEntity.class, area, e -> (e instanceof Player || e instanceof Monster) && mode.canAttackEntity(e, this, true)).stream().findFirst().ifPresent(e -> {
 				double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 0.84375D : 0.0D; //0.84375 is the offset towards the bomb's position in the model
 				double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 0.84375D : 0.0D;
 				int launchHeight = getLaunchHeight();

@@ -71,7 +71,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 			default -> new AABB(pos);
 		};
 
-		level.getEntitiesOfClass(LivingEntity.class, area, e -> mode.canAttackEntity(e, this)).stream().findFirst().ifPresent(e -> {
+		level.getEntitiesOfClass(LivingEntity.class, area, e -> mode.canAttackEntity(e, this, true)).stream().findFirst().ifPresent(e -> {
 			cooldown = 20;
 			level.playSound(null, BlockPos.containing(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
 		});

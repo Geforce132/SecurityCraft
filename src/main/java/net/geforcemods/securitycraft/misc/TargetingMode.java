@@ -31,7 +31,7 @@ public enum TargetingMode {
 		return this == MOBS || this == PLAYERS_AND_MOBS;
 	}
 
-	public <T extends IOwnable> boolean canAttackEntity(LivingEntity entity, T be) {
+	public <T extends IOwnable> boolean canAttackEntity(LivingEntity entity, T be, boolean checkInvisibility) {
 		if (entity == null || be instanceof IModuleInventory moduleInv && moduleInv.isAllowed(entity))
 			return false;
 
@@ -39,7 +39,7 @@ public enum TargetingMode {
 
 		if (isPlayer && allowsPlayers() || !isPlayer && allowsMobs()) {
 			return (!isPlayer || !(be.isOwnedBy((Player) entity) && be.ignoresOwner()) && !((Player) entity).isCreative()) //Player checks
-					&& entity.canBeSeenByAnyone() && !EntityUtils.isInvisible(entity) && !(entity instanceof OwnableEntity ownableEntity && be.allowsOwnableEntity(ownableEntity)); //checks for all entities
+					&& entity.canBeSeenByAnyone() && (!checkInvisibility || !EntityUtils.isInvisible(entity)) && !(entity instanceof OwnableEntity ownableEntity && be.allowsOwnableEntity(ownableEntity)); //checks for all entities
 		}
 		else
 			return false;
