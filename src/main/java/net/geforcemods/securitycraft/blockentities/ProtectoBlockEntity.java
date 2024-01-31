@@ -104,6 +104,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 		return disabled.get();
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

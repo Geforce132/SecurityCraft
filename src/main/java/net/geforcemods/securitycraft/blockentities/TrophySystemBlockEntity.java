@@ -346,6 +346,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		return disabled.get();
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

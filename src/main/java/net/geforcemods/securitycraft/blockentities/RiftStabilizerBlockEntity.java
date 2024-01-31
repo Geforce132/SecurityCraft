@@ -323,6 +323,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 		}
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}
