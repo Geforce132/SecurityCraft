@@ -97,10 +97,7 @@ public class MineBlock extends ExplosiveBlock implements SimpleWaterloggedBlock 
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (level.isClientSide || !getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
-			return;
-
-		if (entity instanceof LivingEntity livingEntity) {
+		if (!level.isClientSide && entity instanceof LivingEntity livingEntity && getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox())) {
 			MineBlockEntity mine = (MineBlockEntity) level.getBlockEntity(pos);
 			TargetingMode mode = mine.getTargetingMode();
 
