@@ -123,6 +123,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		return disabled.get();
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

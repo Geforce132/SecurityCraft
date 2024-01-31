@@ -111,4 +111,13 @@ public interface IOwnable {
 
 		return entity.getOwnerUUID() != null && (entity.getOwnerUUID().toString().equals(beOwner.getUUID()) || TeamUtils.areOnSameTeam(beOwner, new Owner(entity.getOwner())));
 	}
+
+	/**
+	 * Checks if this block entity should ignore its owner
+	 *
+	 * @return true if the owner is ignored, false otherwise
+	 */
+	public default boolean ignoresOwner() {
+		return false;
+	}
 }

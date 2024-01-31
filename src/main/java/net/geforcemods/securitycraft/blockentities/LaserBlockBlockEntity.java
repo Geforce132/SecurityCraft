@@ -289,6 +289,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		return !disabled.get();
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

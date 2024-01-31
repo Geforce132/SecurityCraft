@@ -499,6 +499,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		}
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}
