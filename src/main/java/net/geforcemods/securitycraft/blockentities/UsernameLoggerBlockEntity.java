@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
@@ -40,8 +42,13 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		if (cooldown > 0)
 			cooldown--;
 		else if (level.getBestNeighborSignal(pos) > 0) {
-			level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get()), e -> !e.isSpectator()).forEach(this::addPlayer);
-			syncLoggedPlayersToClient();
+			List<Player> nearbyPlayers = level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get()), e -> !e.isSpectator());
+
+			if (!nearbyPlayers.isEmpty()) {
+				nearbyPlayers.forEach(this::addPlayer);
+				syncLoggedPlayersToClient();
+			}
+
 			cooldown = TICKS_BETWEEN_ATTACKS;
 		}
 	}

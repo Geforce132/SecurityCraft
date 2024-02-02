@@ -18,7 +18,6 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBl
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyItemStackHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IBlockPocket;
@@ -164,10 +163,10 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	 * @return The feedback message. null if none should be sent.
 	 */
 	public MutableComponent enableMultiblock() {
-		if (!isEnabled()) { //multiblock detection
-			if (level.isClientSide)
-				PacketDistributor.SERVER.noArg().send(new ToggleBlockPocketManager(this, true));
+		if (level.isClientSide)
+			return Component.translatable("enableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
 
+		if (!isEnabled()) { //multiblock detection
 			List<BlockPos> blocks = new ArrayList<>();
 			List<BlockPos> sides = new ArrayList<>();
 			List<BlockPos> floor = new ArrayList<>();
@@ -323,10 +322,10 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	 * @return The feedback message. null if none should be sent.
 	 */
 	public MutableComponent autoAssembleMultiblock() {
-		if (!isEnabled()) {
-			if (level.isClientSide)
-				PacketDistributor.SERVER.noArg().send(new AssembleBlockPocket(this));
+		if (level.isClientSide)
+			return Component.translatable("autoAssembleMultiblock called on client! Send an AssembleBlockPocket packet instead.");
 
+		if (!isEnabled()) {
 			final Direction managerFacing = getBlockState().getValue(BlockPocketManagerBlock.FACING);
 			final Direction left = managerFacing.getClockWise();
 			final Direction right = left.getOpposite();
@@ -505,7 +504,10 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		return null;
 	}
 
-	public void disableMultiblock() {
+	public MutableComponent disableMultiblock() {
+		if (level.isClientSide)
+			return Component.translatable("disableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
+
 		if (isEnabled()) {
 			if (level.isClientSide) {
 				PacketDistributor.SERVER.noArg().send(new ToggleBlockPocketManager(this, false));
@@ -533,7 +535,10 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			walls.clear();
 			floor.clear();
 			setChanged();
+			return Utils.localize("messages.securitycraft:blockpocket.deactivated");
 		}
+
+		return null;
 	}
 
 	private Component getFormattedRelativeCoordinates(BlockPos pos, Direction managerFacing) {
