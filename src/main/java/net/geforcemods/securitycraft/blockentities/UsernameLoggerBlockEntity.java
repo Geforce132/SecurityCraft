@@ -42,7 +42,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		if (cooldown > 0)
 			cooldown--;
 		else if (level.getBestNeighborSignal(pos) > 0) {
-			List<Player> nearbyPlayers = level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get()), e -> !e.isSpectator());
+			List<Player> nearbyPlayers = level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get()), Player::canBeSeenByAnyone);
 
 			if (!nearbyPlayers.isEmpty()) {
 				nearbyPlayers.forEach(this::addPlayer);
