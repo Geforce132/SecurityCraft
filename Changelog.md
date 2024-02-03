@@ -74,6 +74,7 @@
 - Removed: Ability to change the subpage in the SecurityCraft Manual using the arrow keys. This is still possible by scrolling while holding down CTRL
 - Removed: "Is always active" option of Keypads and Key Panels. The same behavior can be achieved by setting the "Signal length" option to 0 and activating the block
 - Misc.: ProjectE support has been updated with previously missing EMC values
+- Misc.: Small optimizations to certain network and client performance
 
 --------------------------Changelog for v1.9.8 of SecurityCraft--------------------------
 
