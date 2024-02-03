@@ -29,6 +29,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
+import net.minecraftforge.network.PacketDistributor;
 
 public class SentryRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/srat.png");
@@ -204,7 +205,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	/**
 	 * Change the sentry mode, and update GUI buttons state
 	 */
-	protected void performSingleAction(int sentry, int mode, int targets) {
+	protected SetSentryMode.Info performSingleAction(int sentry, int mode, int targets) {
 		BlockPos pos = getSentryCoordinates(sentry);
 
 		if (pos != null) {
@@ -215,9 +216,11 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 				guiButtons[sentry][TARGETS].active = SentryMode.values()[resultingMode] != SentryMode.IDLE;
 				sentries.get(0).toggleMode(Minecraft.getInstance().player, resultingMode, false);
-				SecurityCraft.CHANNEL.sendToServer(new SetSentryMode(sentries.get(0).blockPosition(), resultingMode));
+				return new SetSentryMode.Info(sentries.get(0).blockPosition(), resultingMode);
 			}
 		}
+
+		return null;
 	}
 
 	private void unbindButtonClicked(int id) {
@@ -259,10 +262,12 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		else if (type == 1)
 			mode = ((TogglePictureButton) guiButtons[sentry][MODE]).getCurrentIndex();
 
-		performSingleAction(sentry, mode, targets);
+		sendUpdates(Arrays.asList(performSingleAction(sentry, mode, targets)));
 	}
 
 	protected void globalModeButtonClicked(Button button) {
+		List<SetSentryMode.Info> sentriesToUpdate = new ArrayList<>();
+
 		for (int i = 0; i < guiButtons.length; i++) {
 			TogglePictureButton modeButton = (TogglePictureButton) guiButtons[i][MODE];
 
@@ -272,12 +277,14 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				int targets = ((TogglePictureButton) guiButtons[sentry][TARGETS]).getCurrentIndex();
 
 				modeButton.setCurrentIndex(mode);
-				performSingleAction(sentry, mode, targets);
+				sentriesToUpdate.add(performSingleAction(sentry, mode, targets));
 			}
 		}
 	}
 
 	protected void globalTargetsButtonClicked(Button button) {
+		List<SetSentryMode.Info> sentriesToUpdate = new ArrayList<>();
+
 		for (int i = 0; i < guiButtons.length; i++) {
 			TogglePictureButton targetsButton = (TogglePictureButton) guiButtons[i][TARGETS];
 
@@ -287,9 +294,13 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				int targets = ((TogglePictureButton) button).getCurrentIndex();
 
 				targetsButton.setCurrentIndex(targets);
-				performSingleAction(sentry, mode, targets);
+				sentriesToUpdate.add(performSingleAction(sentry, mode, targets));
 			}
 		}
+	}
+
+	private void sendUpdates(List<SetSentryMode.Info> sentriesToUpdate) {
+		SecurityCraft.CHANNEL.send(PacketDistributor.SERVER.noArg(), new SetSentryMode(sentriesToUpdate));
 	}
 
 	/**
