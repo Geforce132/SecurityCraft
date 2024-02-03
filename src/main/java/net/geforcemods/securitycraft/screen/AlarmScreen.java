@@ -52,6 +52,7 @@ public class AlarmScreen extends Screen {
 	private SoundScrollList soundList;
 	protected int previousSoundLength, soundLength;
 	protected float previousPitch, pitch;
+	private HintEditBox searchBar;
 
 	public AlarmScreen(AlarmBlockEntity be, ResourceLocation selectedSoundEvent) {
 		super(be.getDisplayName());
@@ -71,8 +72,6 @@ public class AlarmScreen extends Screen {
 		super.init();
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
-
-		HintEditBox searchBar;
 		Component searchText = Utils.localize("gui.securitycraft:alarm.search");
 
 		soundList = addRenderableWidget(new SoundScrollList(minecraft, imageWidth - 10, imageHeight - 105, topPos + 40, leftPos + 5));
@@ -131,7 +130,7 @@ public class AlarmScreen extends Screen {
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+		if (!searchBar.isFocused() && minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
 			onClose();
 			return true;
 		}
