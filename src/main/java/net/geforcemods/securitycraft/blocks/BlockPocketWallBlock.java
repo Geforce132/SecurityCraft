@@ -41,14 +41,8 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
-		if (!state.getValue(SOLID) && collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity() != null && ctx.getEntity() instanceof Player player && level.getBlockEntity(pos) instanceof BlockPocketBlockEntity be) {
-			if (be.getManager() == null)
-				return Shapes.empty();
-			else if (be.getManager().isAllowed(player))
-				return Shapes.empty();
-			else if (!be.isOwnedBy(player))
-				return Shapes.block();
-			else
+		if (!state.getValue(SOLID) && collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity() instanceof Player player && level.getBlockEntity(pos) instanceof BlockPocketBlockEntity be) {
+			if (be.isOwnedBy(player) || be.getManager() == null || be.getManager().isAllowed(player))
 				return Shapes.empty();
 		}
 

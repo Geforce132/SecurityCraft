@@ -42,35 +42,31 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		if (cooldown > 0)
 			cooldown--;
 		else if (level.getBestNeighborSignal(pos) > 0) {
-			List<Player> nearbyPlayers = level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get()), Player::canBeSeenByAnyone);
+			long timestamp = System.currentTimeMillis();
+			List<Player> nearbyPlayers = level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get()), e -> e.canBeSeenByAnyone() && !(isOwnedBy(e) && ignoresOwner() || isAllowed(e)) && !EntityUtils.isInvisible(e) && !wasPlayerRecentlyAdded(e.getName().getString(), timestamp));
 
 			if (!nearbyPlayers.isEmpty()) {
-				nearbyPlayers.forEach(this::addPlayer);
-				syncLoggedPlayersToClient();
+				boolean changed = false;
+				int playerIndex = 0;
+
+				for (int i = 0; i < getPlayers().length && playerIndex < nearbyPlayers.size(); i++) {
+					if (getPlayers()[i] == null || getPlayers()[i].equals("")) {
+						Player player = nearbyPlayers.get(playerIndex++);
+
+						getPlayers()[i] = player.getName().getString();
+						getUuids()[i] = player.getGameProfile().getId().toString();
+						getTimestamps()[i] = timestamp;
+						changed = true;
+					}
+				}
+
+				if (changed) {
+					setChanged();
+					syncLoggedPlayersToClient();
+				}
 			}
 
 			cooldown = TICKS_BETWEEN_ATTACKS;
-		}
-	}
-
-	public void addPlayer(Player player) {
-		String playerName = player.getName().getString();
-		long timestamp = System.currentTimeMillis();
-
-		if (!(isOwnedBy(player) && ignoresOwner()) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp)) {
-			//ignore players on the allowlist
-			if (isAllowed(player))
-				return;
-
-			for (int i = 0; i < getPlayers().length; i++) {
-				if (getPlayers()[i] == null || getPlayers()[i].equals("")) {
-					getPlayers()[i] = player.getName().getString();
-					getUuids()[i] = player.getGameProfile().getId().toString();
-					getTimestamps()[i] = timestamp;
-					setChanged();
-					break;
-				}
-			}
 		}
 	}
 
