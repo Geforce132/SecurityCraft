@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
+import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -59,8 +60,12 @@ public class ToggleBlockPocketManager implements CustomPacketPayload {
 			else
 				feedback = be.disableMultiblock();
 
-			if (feedback != null)
+			if (feedback != null) {
+				if (enabling && !be.isEnabled())
+					ctx.replyHandler().send(new BlockPocketManagerFailedActivation(pos));
+
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), feedback, ChatFormatting.DARK_AQUA, false);
+			}
 
 			be.setChanged();
 		}

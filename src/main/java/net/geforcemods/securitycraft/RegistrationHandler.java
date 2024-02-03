@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedDropperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
@@ -148,6 +149,7 @@ public class RegistrationHandler {
 	public static void registerPackets(RegisterPayloadHandlerEvent event) {
 		IPayloadRegistrar registrar = event.registrar(SecurityCraft.MODID).versioned(SecurityCraft.getVersion());
 
+		clientPacket(registrar, BlockPocketManagerFailedActivation.ID, BlockPocketManagerFailedActivation::new, BlockPocketManagerFailedActivation::handle);
 		clientPacket(registrar, OpenScreen.ID, OpenScreen::new, OpenScreen::handle);
 		clientPacket(registrar, PlayAlarmSound.ID, PlayAlarmSound::new, PlayAlarmSound::handle);
 		clientPacket(registrar, RefreshDisguisableModel.ID, RefreshDisguisableModel::new, RefreshDisguisableModel::handle);
