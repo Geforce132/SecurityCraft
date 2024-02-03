@@ -39,7 +39,7 @@
 - Fix: More than one colored lens can be inserted into some lens slots using hoppers/pipes/etc.
 - Fix: The color of a Claymore/Trophy System does not update when inserting a lens using hoppers/pipes/etc.
 - Fix: Reinforced Ladders have no owner and thus cannot be removed (enable "allowBlockClaim" in the server config to set the owner of already placed ladders)
-- Fix: Vanishmod support does not work with the I.M.S. and Protecto
+- Fix: Vanishmod support does not work with the I.M.S., Protecto, and Username Logger
 - Fix: Universal Block Reinforcers can be used under spawn protection
 - Fix: Several blocks (Key Panel, Passcode-protected Chest, Rift Stabilizer, Security Camera) don't keep their custom name when they're broken
 - Fix: Inventory Scanner dupe
