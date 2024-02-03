@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -150,9 +150,9 @@ public class AlarmScreen extends Screen {
 
 	public class SoundScrollList extends ScrollPanel {
 		private static final int SLOT_HEIGHT = 12, TEXT_OFFSET = 11;
-		public final List<SoundEvent> allSoundEvents = BuiltInRegistries.SOUND_EVENT.stream().sorted((se1, se2) -> se1.getLocation().toLanguageKey().compareTo(se2.getLocation().toLanguageKey())).toList();
-		private final Map<SoundEvent, Component> soundEventKeys = new HashMap<>();
-		private List<SoundEvent> filteredSoundEvents;
+		public final List<ResourceLocation> allSoundEvents = minecraft.getSoundManager().getAvailableSounds().stream().sorted(Comparator.comparing(ResourceLocation::toLanguageKey)).toList();
+		private final Map<ResourceLocation, Component> soundEventKeys = new HashMap<>();
+		private List<ResourceLocation> filteredSoundEvents;
 		private SoundInstance playingSound;
 		private int selectedSoundIndex, contentHeight = 0;
 		private String previousSearchText = "";
@@ -239,7 +239,7 @@ public class AlarmScreen extends Screen {
 				else if (yStart > top + height)
 					break;
 
-				SoundEvent soundEvent = filteredSoundEvents.get(i);
+				ResourceLocation soundEvent = filteredSoundEvents.get(i);
 				Component name = getSoundEventComponent(soundEvent);
 
 				guiGraphics.drawString(font, name, left + TEXT_OFFSET, yStart, 0xC6C6C6, false);
@@ -247,8 +247,8 @@ public class AlarmScreen extends Screen {
 			}
 		}
 
-		private Component getSoundEventComponent(SoundEvent soundEvent) {
-			return soundEventKeys.computeIfAbsent(soundEvent, t -> Utils.localize(soundEvent.getLocation().toLanguageKey()));
+		private Component getSoundEventComponent(ResourceLocation soundEvent) {
+			return soundEventKeys.computeIfAbsent(soundEvent, t -> Utils.localize(soundEvent.toLanguageKey()));
 		}
 
 		private void renderHighlightBox(int entryRight, Tesselator tesselator, int baseY, int slotBuffer, int slotIndex, int min) {
@@ -273,16 +273,16 @@ public class AlarmScreen extends Screen {
 
 		public void selectSound(int slotIndex) {
 			selectedSoundIndex = slotIndex;
-			AlarmScreen.this.selectSound(filteredSoundEvents.get(slotIndex).getLocation());
+			AlarmScreen.this.selectSound(filteredSoundEvents.get(slotIndex));
 		}
 
-		public void playSound(SoundEvent soundEvent) {
+		public void playSound(ResourceLocation soundEvent) {
 			SoundManager soundManager = Minecraft.getInstance().getSoundManager();
 
 			if (playingSound != null)
 				soundManager.stop(playingSound);
 
-			playingSound = SimpleSoundInstance.forUI(soundEvent, pitch, 1.0F);
+			playingSound = SimpleSoundInstance.forUI(SoundEvent.createFixedRangeEvent(soundEvent, 1.0F), pitch, 1.0F);
 			soundManager.play(playingSound);
 		}
 
@@ -290,7 +290,7 @@ public class AlarmScreen extends Screen {
 			//@formatter:off
 			filteredSoundEvents = new ArrayList<>(allSoundEvents
 					.stream()
-					.filter(e -> e.getLocation().toLanguageKey().contains(searchText))
+					.filter(e -> e.toLanguageKey().contains(searchText))
 					.toList());
 			//@formatter:on
 			recalculateContentHeight();
@@ -312,7 +312,7 @@ public class AlarmScreen extends Screen {
 		}
 
 		public void updateSelectedSoundIndex() {
-			selectedSoundIndex = Iterables.indexOf(filteredSoundEvents, se -> se.getLocation().equals(selectedSoundEvent));
+			selectedSoundIndex = Iterables.indexOf(filteredSoundEvents, se -> se.equals(selectedSoundEvent));
 		}
 
 		@Override
