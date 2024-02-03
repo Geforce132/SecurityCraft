@@ -44,7 +44,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 			cooldown--;
 		else if (level.getBestNeighborSignal(pos) > 0) {
 			long timestamp = System.currentTimeMillis();
-			List<Player> nearbyPlayers = level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get()), e -> !e.isSpectator() && !(isOwnedBy(e) && ignoresOwner() || isAllowed(e)) && !EntityUtils.isInvisible(e) && !wasPlayerRecentlyAdded(e.getName().getString(), timestamp));
+			List<Player> nearbyPlayers = level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get()), e -> e.canBeSeenByAnyone() && !(isOwnedBy(e) && ignoresOwner() || isAllowed(e)) && !EntityUtils.isInvisible(e) && !wasPlayerRecentlyAdded(e.getName().getString(), timestamp));
 
 			if (!nearbyPlayers.isEmpty()) {
 				boolean changed = false;
