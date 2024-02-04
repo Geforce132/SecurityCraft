@@ -6,17 +6,15 @@ import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class SyncAlarmSettings implements IMessage {
 	private BlockPos pos;
-	private SoundEvent soundEvent;
+	private ResourceLocation soundEvent;
 	private float pitch;
 	private int soundLength;
 
@@ -24,7 +22,7 @@ public class SyncAlarmSettings implements IMessage {
 
 	public SyncAlarmSettings(BlockPos pos, ResourceLocation soundEvent, float pitch, int soundLength) {
 		this.pos = pos;
-		this.soundEvent = ForgeRegistries.SOUND_EVENTS.getValue(soundEvent);
+		this.soundEvent = soundEvent;
 		this.pitch = pitch;
 		this.soundLength = soundLength;
 	}
@@ -32,7 +30,7 @@ public class SyncAlarmSettings implements IMessage {
 	@Override
 	public void toBytes(ByteBuf buf) {
 		buf.writeLong(pos.toLong());
-		ByteBufUtils.writeRegistryEntry(buf, soundEvent);
+		ByteBufUtils.writeUTF8String(buf, soundEvent.toString());
 		buf.writeFloat(pitch);
 		ByteBufUtils.writeVarInt(buf, soundLength, 5);
 	}
@@ -40,7 +38,7 @@ public class SyncAlarmSettings implements IMessage {
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		pos = BlockPos.fromLong(buf.readLong());
-		soundEvent = ByteBufUtils.readRegistryEntry(buf, ForgeRegistries.SOUND_EVENTS);
+		soundEvent = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
 		pitch = buf.readFloat();
 		soundLength = ByteBufUtils.readVarInt(buf, 5);
 	}

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.screen;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.Style;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class AlarmScreen extends GuiScreen {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm.png");
@@ -63,7 +63,7 @@ public class AlarmScreen extends GuiScreen {
 		this.be = be;
 		this.hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		smartModuleTooltip = Utils.localize(hasSmartModule ? "gui.securitycraft:alarm.smart_module" : "gui.securitycraft:alarm.no_smart_module").getFormattedText();
-		previousSelectedSoundEvent = be.getSound().getRegistryName();
+		previousSelectedSoundEvent = be.getSound();
 		previousSoundLength = be.getSoundLength();
 		soundLength = previousSoundLength;
 		previousPitch = be.getPitch();
@@ -193,9 +193,9 @@ public class AlarmScreen extends GuiScreen {
 
 	public class SoundScrollList extends ColorableScrollPanel {
 		private static final int TEXT_OFFSET = 11;
-		public final List<SoundEvent> allSoundEvents = new ArrayList<>(ForgeRegistries.SOUND_EVENTS.getValues());
-		private final Map<SoundEvent, String> soundEventKeys = new HashMap<>();
-		private List<SoundEvent> filteredSoundEvents;
+		public final List<ResourceLocation> allSoundEvents = mc.getSoundHandler().soundRegistry.getKeys().stream().sorted(Comparator.comparing(rl -> toLanguageKey(rl))).collect(Collectors.toList());
+		private final Map<ResourceLocation, String> soundEventKeys = new HashMap<>();
+		private List<ResourceLocation> filteredSoundEvents;
 		private ISound playingSound;
 		private int selectedSoundIndex, contentHeight = 0;
 		private String previousSearchText = "";
@@ -274,7 +274,7 @@ public class AlarmScreen extends GuiScreen {
 				else if (yStart > top + height)
 					break;
 
-				SoundEvent soundEvent = filteredSoundEvents.get(i);
+				ResourceLocation soundEvent = filteredSoundEvents.get(i);
 				String name = getSoundEventString(soundEvent);
 
 				fontRenderer.drawString(name, left + TEXT_OFFSET, yStart, 0xC6C6C6);
@@ -283,8 +283,8 @@ public class AlarmScreen extends GuiScreen {
 			}
 		}
 
-		private String getSoundEventString(SoundEvent soundEvent) {
-			return soundEventKeys.computeIfAbsent(soundEvent, t -> Utils.localize(toLanguageKey(soundEvent.getRegistryName())).getFormattedText());
+		private String getSoundEventString(ResourceLocation soundEvent) {
+			return soundEventKeys.computeIfAbsent(soundEvent, t -> Utils.localize(toLanguageKey(soundEvent)).getFormattedText());
 		}
 
 		private void renderHighlightBox(int entryRight, Tessellator tesselator, int baseY, int slotBuffer, int slotIndex, int min) {
@@ -310,16 +310,16 @@ public class AlarmScreen extends GuiScreen {
 
 		public void selectSound(int slotIndex) {
 			selectedSoundIndex = slotIndex;
-			AlarmScreen.this.selectSound(filteredSoundEvents.get(slotIndex).getRegistryName());
+			AlarmScreen.this.selectSound(filteredSoundEvents.get(slotIndex));
 		}
 
-		public void playSound(SoundEvent soundEvent) {
+		public void playSound(ResourceLocation soundEvent) {
 			SoundHandler soundManager = Minecraft.getMinecraft().getSoundHandler();
 
 			if (playingSound != null)
 				soundManager.stopSound(playingSound);
 
-			playingSound = PositionedSoundRecord.getRecord(soundEvent, 1.0F, 1.0F);
+			playingSound = PositionedSoundRecord.getRecord(new SoundEvent(soundEvent), 1.0F, 1.0F);
 			soundManager.playSound(playingSound);
 		}
 
@@ -327,8 +327,8 @@ public class AlarmScreen extends GuiScreen {
 			//@formatter:off
 			filteredSoundEvents = new ArrayList<>(allSoundEvents
 					.stream()
-					.filter(e -> toLanguageKey(e.getRegistryName()).contains(searchText))
-					.sorted((se1, se2) -> se1.getRegistryName().toString().compareTo(se2.getRegistryName().toString()))
+					.filter(e -> toLanguageKey(e).contains(searchText))
+					.sorted(Comparator.comparing(ResourceLocation::toString))
 					.collect(Collectors.toList()));
 			//@formatter:on
 			recalculateContentHeight();
@@ -350,7 +350,7 @@ public class AlarmScreen extends GuiScreen {
 		}
 
 		public void updateSelectedSoundIndex() {
-			selectedSoundIndex = Iterables.indexOf(filteredSoundEvents, se -> se.getRegistryName().equals(selectedSoundEvent));
+			selectedSoundIndex = Iterables.indexOf(filteredSoundEvents, se -> se.equals(selectedSoundEvent));
 		}
 
 		@Override

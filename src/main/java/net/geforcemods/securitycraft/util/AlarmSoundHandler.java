@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
+import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -25,9 +27,13 @@ public final class AlarmSoundHandler {
 			return;
 
 		PositionedSoundRecord soundInstance = new PositionedSoundRecord(event.getSound(), event.getCategory(), event.getVolume(), event.getPitch(), (float) x, (float) y, (float) z);
+		SoundHandler soundManager = mc.getSoundHandler();
+
+		if (soundInstance.createAccessor(soundManager) == null)
+			soundInstance = new PositionedSoundRecord(SCSounds.ALARM.event, event.getCategory(), event.getVolume(), event.getPitch(), (float) x, (float) y, (float) z);
 
 		stopCurrentSound(be);
-		mc.getSoundHandler().playSound(soundInstance);
+		soundManager.playSound(soundInstance);
 		SOUND_STORAGE.put(be, soundInstance);
 	}
 

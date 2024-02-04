@@ -22,7 +22,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickable {
 	public static final int MAXIMUM_ALARM_SOUND_LENGTH = 3600; //one hour
@@ -31,7 +30,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 	private BooleanOption resetCooldown = new BooleanOption("resetCooldown", true);
 	private int cooldown = 0;
 	private boolean isPowered = false;
-	private SoundEvent sound = SCSounds.ALARM.event;
+	private ResourceLocation sound = SCSounds.ALARM.location;
 	private float pitch = 1.0F;
 	private boolean soundPlaying = false;
 	private int soundLength = 2;
@@ -58,7 +57,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 		if (!isDisabled() && --cooldown <= 0) {
 			if (!world.isRemote && isPowered) {
 				double rangeSqr = Math.pow(range.get(), 2);
-				SoundEvent soundEvent = isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event;
+				ResourceLocation soundEvent = getSound();
 
 				for (EntityPlayerMP player : world.getPlayers(EntityPlayerMP.class, p -> p.getPosition().distanceSq(pos) <= rangeSqr)) {
 					float volume = (float) (1.0F - ((player.getPosition().distanceSq(pos)) / rangeSqr));
@@ -76,7 +75,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 		super.writeToNBT(tag);
 		tag.setInteger("cooldown", cooldown);
 		tag.setBoolean("isPowered", isPowered);
-		tag.setString("sound", sound.getRegistryName().toString());
+		tag.setString("sound", sound.toString());
 		tag.setFloat("pitch", pitch);
 		tag.setInteger("delay", soundLength);
 		return tag;
@@ -102,16 +101,12 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 	}
 
 	public void setSound(ResourceLocation soundEvent) {
-		setSound(ForgeRegistries.SOUND_EVENTS.getValue(soundEvent));
-	}
-
-	public void setSound(SoundEvent soundEvent) {
 		sound = soundEvent;
 		markDirty();
 	}
 
-	public SoundEvent getSound() {
-		return isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event;
+	public ResourceLocation getSound() {
+		return isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.location;
 	}
 
 	public void setPitch(float pitch) {
