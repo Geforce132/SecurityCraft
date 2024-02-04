@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -80,16 +79,11 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 			else if (dir == Direction.WEST)
 				area = area.contract(range.get(), 0, 0);
 
-			level.getEntitiesOfClass(LivingEntity.class, area, e -> (mode.allowsPlayers() && e instanceof PlayerEntity || mode.allowsMobs() && !(e instanceof PlayerEntity)) && canAttackEntity(e)).stream().findFirst().ifPresent(e -> {
+			level.getEntitiesOfClass(LivingEntity.class, area, e -> mode.canAttackEntity(e, this, true)).stream().findFirst().ifPresent(e -> {
 				cooldown = 20;
 				getLevel().playSound(null, new BlockPos(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			});
 		}
-	}
-
-	public boolean canAttackEntity(LivingEntity entity) {
-		return entity != null && !EntityUtils.isInvisible(entity) && (!(entity instanceof PlayerEntity) || !(isOwnedBy((PlayerEntity) entity) && ignoresOwner()) && !((PlayerEntity) entity).isCreative()) //Player checks
-				&& !entity.isSpectator() && !allowsOwnableEntity(entity); //checks for all entities
 	}
 
 	@Override
@@ -181,6 +175,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 		return new ModuleType[0];
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

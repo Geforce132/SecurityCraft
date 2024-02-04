@@ -125,6 +125,7 @@ public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITic
 		};
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

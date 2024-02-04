@@ -170,6 +170,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		return disabled.get();
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

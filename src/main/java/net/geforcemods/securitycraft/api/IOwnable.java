@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.UUID;
 
+import moze_intel.projecte.config.ServerConfig.Cooldown.Player;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -129,5 +130,15 @@ public interface IOwnable {
 			animalOwnerUUID = ((TameableEntity) entity).getOwnerUUID();
 
 		return animalOwnerUUID != null && (animalOwnerUUID.toString().equals(beOwner.getUUID()) || TeamUtils.areOnSameTeam(beOwner, new Owner(entity.level.getPlayerByUUID(animalOwnerUUID))));
+	}
+
+	/**
+	 * Checks if this block entity should ignore its owner. Note that this is not used in {@link #isOwnedBy(Player)}, so there
+	 * are cases where SecurityCraft does not use this method in conjunction with owner checks (e.g. breaking reinforced blocks).
+	 *
+	 * @return true if the owner is ignored, false otherwise
+	 */
+	public default boolean ignoresOwner() {
+		return false;
 	}
 }

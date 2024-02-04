@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -79,7 +78,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 			AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(range.get());
 			TargetingMode mode = getTargetingMode();
 
-			level.getEntitiesOfClass(LivingEntity.class, area, e -> (mode.allowsPlayers() && e instanceof PlayerEntity || mode.allowsMobs() && !(e instanceof PlayerEntity) && e instanceof MonsterEntity) && canAttackEntity(e)).stream().findFirst().ifPresent(e -> {
+			level.getEntitiesOfClass(LivingEntity.class, area, e -> (e instanceof PlayerEntity || e instanceof MonsterEntity) && mode.canAttackEntity(e, this, true)).stream().findFirst().ifPresent(e -> {
 				double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 0.84375D : 0.0D; //0.84375 is the offset towards the bomb's position in the model
 				double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 0.84375D : 0.0D;
 				int launchHeight = getLaunchHeight();
@@ -96,11 +95,6 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 				updateBombCount = true;
 			});
 		}
-	}
-
-	public boolean canAttackEntity(LivingEntity entity) {
-		return entity != null && !EntityUtils.isInvisible(entity) && (!(entity instanceof PlayerEntity) || !(isOwnedBy((PlayerEntity) entity) && ignoresOwner()) && !((PlayerEntity) entity).isCreative()) //PlayerEntity checks
-				&& !entity.isSpectator() && !isAllowed(entity) && !allowsOwnableEntity(entity); //checks for all entities
 	}
 
 	/**
@@ -169,6 +163,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 		return disabled.get();
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

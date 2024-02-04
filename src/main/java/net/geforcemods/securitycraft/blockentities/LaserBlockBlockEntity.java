@@ -343,6 +343,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 		return !disabled.get();
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

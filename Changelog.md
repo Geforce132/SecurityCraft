@@ -25,6 +25,7 @@
 - Change: The Sentry's recipe now requires a Reinforced Dispenser
 - Change: The I.M.S.' targeting mode is now accessible with the Universal Block Modifier instead of rightclicking the block
 - API: Refactored IPasscodeConvertible to account for the new Wire Cutters functionality
+- API: New method IOwnable#ignoresOwner to check whether the owner should be ignored by this block entity
 - Fix: Duplication exploit involving keycards
 - Fix: Duplication exploit involving Reinforced Pistons
 - Fix: Modules in a Passcode-protected Chest get disabled when loading it
