@@ -25,6 +25,7 @@
 - Change: The I.M.S.' targeting mode is now accessible with the Universal Block Modifier instead of rightclicking the block
 - API: Refactored IReinforcedBlock to address several issues with block conversion
 - API: Refactored IPasscodeConvertible to account for the new Wire Cutters functionality
+- API: New method IOwnable#ignoresOwner to check whether the owner should be ignored by this block entity
 - Fix: The Floor Trap has incorrect sound
 - Fix: Duplication exploit involving keycards
 - Fix: The name of certain SecurityCraft blocks is displayed within brackets by WTHIT and similar mods

@@ -140,6 +140,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 		return searchDelayOption.get() * 20;
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
@@ -82,7 +81,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range.get(), range.get(), range.get());
 			TargetingMode mode = getTargetingMode();
 
-			world.getEntitiesWithinAABB(EntityLivingBase.class, area, e -> (mode.allowsPlayers() && e instanceof EntityPlayer || mode.allowsMobs() && !(e instanceof EntityPlayer) && e instanceof EntityMob) && canAttackEntity(e)).stream().findFirst().ifPresent(e -> {
+			world.getEntitiesWithinAABB(EntityLivingBase.class, area, e -> (e instanceof EntityPlayer || e instanceof EntityMob) && mode.canAttackEntity(e, this, true)).stream().findFirst().ifPresent(e -> {
 				double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 0.84375D : 0.0D; //0.84375 is the offset towards the bomb's position in the model
 				double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 0.84375D : 0.0D;
 				int launchHeight = getLaunchHeight();
@@ -96,11 +95,6 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 				updateBombCount = true;
 			});
 		}
-	}
-
-	public boolean canAttackEntity(EntityLivingBase entity) {
-		return entity != null && (!(entity instanceof EntityPlayer) || !(isOwnedBy((EntityPlayer) entity) && ignoresOwner()) && !((EntityPlayer) entity).isCreative() && !((EntityPlayer) entity).isSpectator()) //PlayerEntity checks
-				&& !EntityUtils.isInvisible(entity) && !isAllowed(entity) && !allowsOwnableEntity(entity); //checks for all entities
 	}
 
 	/**
@@ -173,6 +167,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 		return disabled.get();
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

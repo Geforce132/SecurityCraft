@@ -26,6 +26,7 @@ public class CageTrapBlockEntity extends DisguisableBlockEntity {
 		return disabled.get();
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}
