@@ -2,10 +2,16 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class AssembleBlockPocket {
@@ -14,9 +20,9 @@ public class AssembleBlockPocket {
 
 	public AssembleBlockPocket() {}
 
-	public AssembleBlockPocket(BlockPocketManagerBlockEntity te, int size) {
-		pos = te.getBlockPos();
-		this.size = size;
+	public AssembleBlockPocket(BlockPocketManagerBlockEntity be) {
+		pos = be.getBlockPos();
+		size = be.getSize();
 	}
 
 	public AssembleBlockPocket(PacketBuffer buf) {
@@ -31,10 +37,15 @@ public class AssembleBlockPocket {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		TileEntity be = ctx.get().getSender().level.getBlockEntity(pos);
+		PlayerEntity player = ctx.get().getSender();
+		if (be instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) be).isOwnedBy(player)) {
+			TranslationTextComponent feedback;
 
-		if (be instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) be).isOwnedBy(ctx.get().getSender())) {
 			((BlockPocketManagerBlockEntity) be).setSize(size);
-			((BlockPocketManagerBlockEntity) be).autoAssembleMultiblock();
+			feedback = ((BlockPocketManagerBlockEntity) be).autoAssembleMultiblock();
+
+			if (feedback != null)
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), feedback, TextFormatting.DARK_AQUA);
 		}
 	}
 }

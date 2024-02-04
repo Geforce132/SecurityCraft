@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.commands.LowercasedEnumArgument;
 import net.geforcemods.securitycraft.commands.SingleGameProfileArgument;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
@@ -172,6 +173,7 @@ public class RegistrationHandler {
 
 		SecurityCraft.channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(SecurityCraft.MODID, SecurityCraft.MODID), SecurityCraft::getVersion, SecurityCraft.getVersion()::equals, SecurityCraft.getVersion()::equals);
 		//client
+		registerPacket(id++, BlockPocketManagerFailedActivation.class, BlockPocketManagerFailedActivation::encode, BlockPocketManagerFailedActivation::new, BlockPocketManagerFailedActivation::handle);
 		registerPacket(id++, OpenScreen.class, OpenScreen::encode, OpenScreen::new, OpenScreen::handle);
 		registerPacket(id++, PlayAlarmSound.class, PlayAlarmSound::encode, PlayAlarmSound::new, PlayAlarmSound::handle);
 		registerPacket(id++, RefreshDisguisableModel.class, RefreshDisguisableModel::encode, RefreshDisguisableModel::new, RefreshDisguisableModel::handle);

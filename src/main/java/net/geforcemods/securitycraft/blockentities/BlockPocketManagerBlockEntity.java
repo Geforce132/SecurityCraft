@@ -5,9 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
@@ -19,8 +17,6 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBl
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyItemStackHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
-import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -47,7 +43,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -170,10 +165,10 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	 * @return The feedback message. null if none should be sent.
 	 */
 	public TranslationTextComponent enableMultiblock() {
-		if (!isEnabled()) { //multiblock detection
-			if (level.isClientSide)
-				SecurityCraft.channel.sendToServer(new ToggleBlockPocketManager(this, true, getSize()));
+		if (level.isClientSide)
+			return new TranslationTextComponent("enableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
 
+		if (!isEnabled()) { //multiblock detection
 			List<BlockPos> blocks = new ArrayList<>();
 			List<BlockPos> sides = new ArrayList<>();
 			List<BlockPos> floor = new ArrayList<>();
@@ -328,11 +323,11 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	 *
 	 * @return The feedback message. null if none should be sent.
 	 */
-	public IFormattableTextComponent autoAssembleMultiblock() {
-		if (!isEnabled()) {
-			if (level.isClientSide)
-				SecurityCraft.channel.sendToServer(new AssembleBlockPocket(this, getSize()));
+	public TranslationTextComponent autoAssembleMultiblock() {
+		if (level.isClientSide)
+			return new TranslationTextComponent("autoAssembleMultiblock called on client! Send an AssembleBlockPocket packet instead.");
 
+		if (!isEnabled()) {
 			final Direction managerFacing = getBlockState().getValue(BlockPocketManagerBlock.FACING);
 			final Direction left = managerFacing.getClockWise();
 			final Direction right = left.getOpposite();
@@ -511,13 +506,11 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		return null;
 	}
 
-	public void disableMultiblock() {
-		if (isEnabled()) {
-			if (level.isClientSide) {
-				SecurityCraft.channel.sendToServer(new ToggleBlockPocketManager(this, false, getSize()));
-				PlayerUtils.sendMessageToPlayer(ClientHandler.getClientPlayer(), Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA, true);
-			}
+	public TranslationTextComponent disableMultiblock() {
+		if (level.isClientSide)
+			return new TranslationTextComponent("disableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
 
+		if (isEnabled()) {
 			setEnabled(false);
 
 			for (BlockPos pos : blocks) {
@@ -540,7 +533,10 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			blocks.clear();
 			walls.clear();
 			floor.clear();
+			return Utils.localize("messages.securitycraft:blockpocket.deactivated");
 		}
+
+		return null;
 	}
 
 	private TranslationTextComponent getFormattedRelativeCoordinates(BlockPos pos, Direction managerFacing) {

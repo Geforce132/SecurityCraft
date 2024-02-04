@@ -11,14 +11,15 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
+import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
+import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.screen.components.ColorChooser;
 import net.geforcemods.securitycraft.screen.components.ColorChooserButton;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.StackHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -31,10 +32,8 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.client.gui.GuiUtils;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
@@ -119,7 +118,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active = offsetSlider.active = colorChooserButton.active = false;
 		else {
 			updateMaterialInformation(true);
-			sizeButton.active = offsetSlider.active = !be.isEnabled();
+			sizeButton.active = assembleButton.active = offsetSlider.active = !be.isEnabled();
 		}
 
 		if (!storage) {
@@ -312,18 +311,9 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 	}
 
 	public void toggleButtonClicked(Button button) {
-		if (be.isEnabled())
-			be.disableMultiblock();
-		else {
-			TranslationTextComponent feedback;
-
-			be.setSize(size);
-			feedback = be.enableMultiblock();
-
-			if (feedback != null)
-				PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), feedback, TextFormatting.DARK_AQUA, true);
-		}
-
+		be.setSize(size);
+		be.setEnabled(!be.isEnabled());
+		SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new ToggleBlockPocketManager(be, be.isEnabled()));
 		Minecraft.getInstance().player.closeContainer();
 	}
 
@@ -357,14 +347,8 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 	}
 
 	public void assembleButtonClicked(Button button) {
-		IFormattableTextComponent feedback;
-
 		be.setSize(size);
-		feedback = be.autoAssembleMultiblock();
-
-		if (feedback != null)
-			PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), feedback, TextFormatting.DARK_AQUA, true);
-
+		SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new AssembleBlockPocket(be));
 		Minecraft.getInstance().player.closeContainer();
 	}
 

@@ -29,6 +29,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SentryRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/srat.png");
@@ -202,7 +203,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		}
 	}
 
-	protected void performSingleAction(int sentry, int mode, int targets) {
+	protected SetSentryMode.Info performSingleAction(int sentry, int mode, int targets) {
 		int[] coords = getSentryCoordinates(sentry);
 		List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AxisAlignedBB(new BlockPos(coords[0], coords[1], coords[2])));
 
@@ -211,8 +212,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 			guiButtons[sentry][TARGETS].active = SentryMode.values()[resultingMode] != SentryMode.IDLE;
 			sentries.get(0).toggleMode(Minecraft.getInstance().player, resultingMode, false);
-			SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).blockPosition(), resultingMode));
+			return new SetSentryMode.Info(sentries.get(0).blockPosition(), resultingMode);
 		}
+
+		return null;
 	}
 
 	private void unbindButtonClicked(int id) {
@@ -253,10 +256,12 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		else if (type == 1)
 			mode = ((TogglePictureButton) guiButtons[sentry][MODE]).getCurrentIndex();
 
-		performSingleAction(sentry, mode, targets);
+		sendUpdates(Arrays.asList(performSingleAction(sentry, mode, targets)));
 	}
 
 	protected void globalModeButtonClicked(Button button) {
+		List<SetSentryMode.Info> sentriesToUpdate = new ArrayList<>();
+
 		for (int i = 0; i < guiButtons.length; i++) {
 			TogglePictureButton modeButton = (TogglePictureButton) guiButtons[i][MODE];
 
@@ -266,12 +271,16 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				int targets = ((TogglePictureButton) guiButtons[sentry][TARGETS]).getCurrentIndex();
 
 				modeButton.setCurrentIndex(mode);
-				performSingleAction(sentry, mode, targets);
+				sentriesToUpdate.add(performSingleAction(sentry, mode, targets));
 			}
 		}
+
+		sendUpdates(sentriesToUpdate);
 	}
 
 	protected void globalTargetsButtonClicked(Button button) {
+		List<SetSentryMode.Info> sentriesToUpdate = new ArrayList<>();
+
 		for (int i = 0; i < guiButtons.length; i++) {
 			TogglePictureButton targetsButton = (TogglePictureButton) guiButtons[i][TARGETS];
 
@@ -281,9 +290,15 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				int targets = ((TogglePictureButton) button).getCurrentIndex();
 
 				targetsButton.setCurrentIndex(targets);
-				performSingleAction(sentry, mode, targets);
+				sentriesToUpdate.add(performSingleAction(sentry, mode, targets));
 			}
 		}
+
+		sendUpdates(sentriesToUpdate);
+	}
+
+	private void sendUpdates(List<SetSentryMode.Info> sentriesToUpdate) {
+		SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SetSentryMode(sentriesToUpdate));
 	}
 
 	/**
