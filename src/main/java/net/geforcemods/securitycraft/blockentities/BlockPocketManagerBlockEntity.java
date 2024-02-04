@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -18,7 +17,6 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBl
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyItemStackHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
@@ -51,7 +49,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity implements MenuProvider, ITickingBlockEntity, ILockable {
 	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;
@@ -509,11 +506,6 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			return Component.translatable("disableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
 
 		if (isEnabled()) {
-			if (level.isClientSide) {
-				PacketDistributor.SERVER.noArg().send(new ToggleBlockPocketManager(this, false));
-				PlayerUtils.sendMessageToPlayer(ClientHandler.getClientPlayer(), Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:blockpocket.deactivated"), ChatFormatting.DARK_AQUA, true);
-			}
-
 			setEnabled(false);
 
 			for (BlockPos pos : blocks) {
