@@ -280,6 +280,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				sentriesToUpdate.add(performSingleAction(sentry, mode, targets));
 			}
 		}
+
+		sendUpdates(sentriesToUpdate);
 	}
 
 	protected void globalTargetsButtonClicked(Button button) {
@@ -297,6 +299,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				sentriesToUpdate.add(performSingleAction(sentry, mode, targets));
 			}
 		}
+
+		sendUpdates(sentriesToUpdate);
 	}
 
 	private void sendUpdates(List<SetSentryMode.Info> sentriesToUpdate) {
