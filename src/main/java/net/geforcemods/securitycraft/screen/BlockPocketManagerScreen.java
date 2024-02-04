@@ -13,7 +13,9 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
+import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.screen.components.ColorChooser;
 import net.geforcemods.securitycraft.screen.components.ColorChooserButton;
@@ -23,7 +25,6 @@ import net.geforcemods.securitycraft.screen.components.StackHoverChecker;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -36,9 +37,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.items.IItemHandler;
 
 public class BlockPocketManagerScreen extends GuiContainer implements ISlider, IHasExtraAreas {
@@ -123,7 +121,7 @@ public class BlockPocketManagerScreen extends GuiContainer implements ISlider, I
 			sizeButton.enabled = toggleButton.enabled = assembleButton.enabled = outlineButton.enabled = offsetSlider.enabled = colorChooserButton.enabled = false;
 		else {
 			updateMaterialInformation(true);
-			sizeButton.enabled = offsetSlider.enabled = !te.isEnabled();
+			sizeButton.enabled = assembleButton.enabled = offsetSlider.enabled = !te.isEnabled();
 		}
 
 		if (!storage) {
@@ -271,18 +269,9 @@ public class BlockPocketManagerScreen extends GuiContainer implements ISlider, I
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
 		if (button.id == toggleButton.id) {
-			if (te.isEnabled())
-				te.disableMultiblock();
-			else {
-				TextComponentTranslation feedback;
-
-				te.setSize(size);
-				feedback = te.enableMultiblock();
-
-				if (feedback != null)
-					PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, Utils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), feedback, TextFormatting.DARK_AQUA, true);
-			}
-
+			te.setSize(size);
+			te.setEnabled(!te.isEnabled());
+			SecurityCraft.network.sendToServer(new ToggleBlockPocketManager(te, te.isEnabled()));
 			Minecraft.getMinecraft().player.closeScreen();
 		}
 		else if (button.id == sizeButton.id) {
@@ -314,14 +303,8 @@ public class BlockPocketManagerScreen extends GuiContainer implements ISlider, I
 			sync();
 		}
 		else if (button.id == assembleButton.id) {
-			ITextComponent feedback;
-
 			te.setSize(size);
-			feedback = te.autoAssembleMultiblock();
-
-			if (feedback != null)
-				PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, Utils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), feedback, TextFormatting.DARK_AQUA);
-
+			SecurityCraft.network.sendToServer(new AssembleBlockPocket(te));
 			Minecraft.getMinecraft().player.closeScreen();
 		}
 		else if (button.id == outlineButton.id) {

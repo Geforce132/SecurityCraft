@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
@@ -16,8 +15,6 @@ import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCrystalQuartzBlock;
 import net.geforcemods.securitycraft.inventory.InsertOnlyItemStackHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
-import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -40,7 +37,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.Capability;
@@ -163,10 +159,10 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	 * @return The feedback message. null if none should be sent.
 	 */
 	public TextComponentTranslation enableMultiblock() {
-		if (!isEnabled()) { //multiblock detection
-			if (world.isRemote)
-				SecurityCraft.network.sendToServer(new ToggleBlockPocketManager(this, true, getSize()));
+		if (world.isRemote)
+			return new TextComponentTranslation("enableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
 
+		if (!isEnabled()) { //multiblock detection
 			List<BlockPos> blocks = new ArrayList<>();
 			List<BlockPos> sides = new ArrayList<>();
 			List<BlockPos> floor = new ArrayList<>();
@@ -325,11 +321,12 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	 *
 	 * @return The feedback message. null if none should be sent.
 	 */
-	public ITextComponent autoAssembleMultiblock() {
-		if (!isEnabled()) {
-			if (world.isRemote)
-				SecurityCraft.network.sendToServer(new AssembleBlockPocket(this, getSize()));
 
+	public TextComponentTranslation autoAssembleMultiblock() {
+		if (world.isRemote)
+			return new TextComponentTranslation("autoAssembleMultiblock called on client! Send an AssembleBlockPocket packet instead.");
+
+		if (!isEnabled()) {
 			final EnumFacing managerFacing = world.getBlockState(pos).getValue(BlockPocketManagerBlock.FACING);
 			final EnumFacing left = managerFacing.rotateY();
 			final EnumFacing right = left.getOpposite();
@@ -512,12 +509,11 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		return null;
 	}
 
-	public void disableMultiblock() {
-		if (isEnabled()) {
-			if (world.isRemote)
-				SecurityCraft.network.sendToServer(new ToggleBlockPocketManager(this, false, getSize()));
+	public TextComponentTranslation disableMultiblock() {
+		if (world.isRemote)
+			return new TextComponentTranslation("disableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
 
-			PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), Utils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA, true);
+		if (isEnabled()) {
 			setEnabled(false);
 
 			for (BlockPos pos : blocks) {
@@ -540,7 +536,10 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			blocks.clear();
 			walls.clear();
 			floor.clear();
+			return Utils.localize("messages.securitycraft:blockpocket.deactivated");
 		}
+
+		return null;
 	}
 
 	private TextComponentTranslation getFormattedRelativeCoordinates(BlockPos pos, EnumFacing managerFacing) {

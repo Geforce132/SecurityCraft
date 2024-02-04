@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
@@ -34,29 +36,31 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 			if (cooldown > 0)
 				cooldown--;
 			else if (world.getRedstonePowerFromNeighbors(pos) > 0) {
-				world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(searchRadius.get()), e -> !e.isSpectator()).forEach(this::addPlayer);
-				syncLoggedPlayersToClient();
-				cooldown = TICKS_BETWEEN_ATTACKS;
-			}
-		}
-	}
+				long timestamp = System.currentTimeMillis();
+				List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(searchRadius.get()), e -> !e.isSpectator() && !(isOwnedBy(e) && ignoresOwner() || isAllowed(e)) && !EntityUtils.isInvisible(e) && !wasPlayerRecentlyAdded(e.getName(), timestamp));
 
-	public void addPlayer(EntityPlayer player) {
-		String playerName = player.getName();
-		long timestamp = System.currentTimeMillis();
+				if (!nearbyPlayers.isEmpty()) {
+					boolean changed = false;
+					int playerIndex = 0;
 
-		if (!(isOwnedBy(player) && ignoresOwner()) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp)) {
-			//ignore players on the allowlist
-			if (isAllowed(player))
-				return;
+					for (int i = 0; i < getPlayers().length && playerIndex < nearbyPlayers.size(); i++) {
+						if (getPlayers()[i] == null || getPlayers()[i].equals("")) {
+							EntityPlayer player = nearbyPlayers.get(playerIndex++);
 
-			for (int i = 0; i < getPlayers().length; i++) {
-				if (getPlayers()[i] == null || getPlayers()[i].equals("")) {
-					getPlayers()[i] = player.getName();
-					getUuids()[i] = player.getGameProfile().getId().toString();
-					getTimestamps()[i] = timestamp;
-					break;
+							getPlayers()[i] = player.getName();
+							getUuids()[i] = player.getGameProfile().getId().toString();
+							getTimestamps()[i] = timestamp;
+							changed = true;
+						}
+					}
+
+					if (changed) {
+						markDirty();
+						syncLoggedPlayersToClient();
+					}
 				}
+
+				cooldown = TICKS_BETWEEN_ATTACKS;
 			}
 		}
 	}

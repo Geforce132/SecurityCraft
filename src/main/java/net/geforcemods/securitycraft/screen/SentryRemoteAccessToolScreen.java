@@ -207,7 +207,7 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 	/**
 	 * Change the sentry mode, and update GUI buttons state
 	 */
-	protected void performSingleAction(int sentry, int mode, int targets) {
+	protected SetSentryMode.Info performSingleAction(int sentry, int mode, int targets) {
 		int[] coords = getSentryCoordinates(sentry);
 		List<Sentry> sentries = Minecraft.getMinecraft().player.world.getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(new BlockPos(coords[0], coords[1], coords[2])));
 
@@ -216,8 +216,10 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 
 			guiButtons[sentry][TARGETS].enabled = SentryMode.values()[resultingMode] != SentryMode.IDLE;
 			sentries.get(0).toggleMode(Minecraft.getMinecraft().player, resultingMode, false);
-			SecurityCraft.network.sendToServer(new SetSentryMode(sentries.get(0).getPosition(), resultingMode));
+			return new SetSentryMode.Info(sentries.get(0).getPosition(), resultingMode);
 		}
+
+		return null;
 	}
 
 	private void clickUnbind(ClickButton button) {
@@ -266,10 +268,12 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 		else if (type == 1)
 			mode = ((TogglePictureButton) guiButtons[sentry][MODE]).getCurrentIndex();
 
-		performSingleAction(sentry, mode, targets);
+		sendUpdates(Arrays.asList(performSingleAction(sentry, mode, targets)));
 	}
 
 	protected void actionPerformedGlobal(ClickButton button) {
+		List<SetSentryMode.Info> sentriesToUpdate = new ArrayList<>();
+
 		for (int i = 0; i < buttonList.size() / 3; i++) {
 			GuiButton buttonFromList = buttonList.get(i * 3);
 
@@ -280,9 +284,15 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 
 				((TogglePictureButton) guiButtons[sentry][MODE]).setCurrentIndex(mode);
 				((TogglePictureButton) guiButtons[sentry][TARGETS]).setCurrentIndex(targets);
-				performSingleAction(sentry, mode, targets);
+				sentriesToUpdate.add(performSingleAction(sentry, mode, targets));
 			}
 		}
+
+		sendUpdates(sentriesToUpdate);
+	}
+
+	private void sendUpdates(List<SetSentryMode.Info> sentriesToUpdate) {
+		SecurityCraft.network.sendToServer(new SetSentryMode(sentriesToUpdate));
 	}
 
 	/**
