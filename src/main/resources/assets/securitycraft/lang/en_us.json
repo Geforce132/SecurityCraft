@@ -1301,6 +1301,8 @@
 	"option.securitycraft.security_camera.rotationSpeed.description": "The speed at which the camera rotates.",
 	"option.securitycraft.security_camera.shouldRotate": "Should rotate: %s",
 	"option.securitycraft.security_camera.shouldRotate.description": "Should the camera rotate?",
+	"option.securitycraft.security_camera.transparency": "Lens Transparency: %s",
+	"option.securitycraft.security_camera.transparency.description": "The transparency of the lens' color.",
 	"option.securitycraft.sonic_security_system.signalLength": "Time active: %s",
 	"option.securitycraft.sonic_security_system.signalLength.description": "How long should the sonic security system unlock blocks/give off a redstone signal after hearing the correct tune? (In ticks, 20 ticks = 1 second)",
 	"option.securitycraft.username_logger.searchRadius": "Search radius: %s",

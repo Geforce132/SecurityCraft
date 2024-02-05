@@ -71,7 +71,7 @@ import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
 import net.geforcemods.securitycraft.screen.BriefcasePasscodeScreen;
 import net.geforcemods.securitycraft.screen.CameraMonitorScreen;
 import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
-import net.geforcemods.securitycraft.screen.ClaymoreScreen;
+import net.geforcemods.securitycraft.screen.SingleLensScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
 import net.geforcemods.securitycraft.screen.EditModuleScreen;
@@ -395,7 +395,7 @@ public class ClientHandler {
 		event.register(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), BlockChangeDetectorScreen::new);
 		event.register(SCContent.KEYCARD_HOLDER_MENU.get(), ItemInventoryScreen.KeycardHolder::new);
 		event.register(SCContent.TROPHY_SYSTEM_MENU.get(), TrophySystemScreen::new);
-		event.register(SCContent.CLAYMORE_MENU.get(), ClaymoreScreen::new);
+		event.register(SCContent.SINGLE_LENS_MENU.get(), SingleLensScreen::new);
 		event.register(SCContent.LASER_BLOCK_MENU.get(), LaserBlockScreen::new);
 		event.register(SCContent.REINFORCED_LECTERN_MENU.get(), ReinforcedLecternScreen::new);
 	}

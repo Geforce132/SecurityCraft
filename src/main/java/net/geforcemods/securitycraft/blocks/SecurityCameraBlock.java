@@ -16,6 +16,8 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -39,6 +41,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -58,6 +61,18 @@ public class SecurityCameraBlock extends OwnableBlock implements SimpleWaterlogg
 	public SecurityCameraBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(BEING_VIEWED, false).setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be && be.isOwnedBy(player)) {
+			if (!level.isClientSide)
+				player.openMenu(be, pos);
+
+			return InteractionResult.SUCCESS;
+		}
+
+		return InteractionResult.PASS;
 	}
 
 	@Override

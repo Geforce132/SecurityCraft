@@ -1292,6 +1292,8 @@
 	"option.securitycraft.security_camera.rotationSpeed.description": "Die Geschwindigkeit, mit der die Kamera rotiert.",
 	"option.securitycraft.security_camera.shouldRotate": "Rotieren: %s",
 	"option.securitycraft.security_camera.shouldRotate.description": "Soll die Kamera rotieren?",
+	"option.securitycraft.security_camera.transparency": "Linsen-Transparenz: %s",
+	"option.securitycraft.security_camera.transparency.description": "Die Transparenz der Farbe der Linse.",
 	"option.securitycraft.sonic_security_system.signalLength": "Zeit aktiv: %s",
 	"option.securitycraft.sonic_security_system.signalLength.description": "Wie lange soll das Schallsicherheitssystem Blöcke entsperren/ein Redstonesignal ausgeben, nachdem die korrekte Melodie gespielt wurde? (In Ticks, 20 Ticks = 1 Sekunde)",
 	"option.securitycraft.username_logger.searchRadius": "Suchradius: %s",
