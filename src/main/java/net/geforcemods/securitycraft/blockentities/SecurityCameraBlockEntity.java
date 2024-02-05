@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IEMPAffectedBE;
 import net.geforcemods.securitycraft.api.Option;
@@ -41,7 +42,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 public class SecurityCameraBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity, IEMPAffectedBE, INamedContainerProvider, IInventoryChangedListener, SingleLensContainer {
 	private double cameraRotation = 0.0D;
 	private double oCameraRotation = 0.0D;
-	private boolean addToRotation = true;
+	private boolean addToRotation = SecurityCraft.RANDOM.nextBoolean();
 	private boolean down = false, downSet = false;
 	private int playersViewing = 0;
 	private boolean shutDown = false;
