@@ -186,7 +186,6 @@ import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
-import net.geforcemods.securitycraft.inventory.SingleLensMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
@@ -200,6 +199,7 @@ import net.geforcemods.securitycraft.inventory.LaserBlockMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.inventory.ReinforcedLecternMenu;
+import net.geforcemods.securitycraft.inventory.SingleLensMenu;
 import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.items.AdminToolItem;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
@@ -2934,7 +2934,7 @@ public class SCContent {
 	public static final DeferredHolder<MenuType<?>, MenuType<BlockChangeDetectorMenu>> BLOCK_CHANGE_DETECTOR_MENU = MENU_TYPES.register("block_change_detector", () -> IMenuTypeExtension.create((windowId, inv, data) -> new BlockChangeDetectorMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 	public static final DeferredHolder<MenuType<?>, MenuType<KeycardHolderMenu>> KEYCARD_HOLDER_MENU = MENU_TYPES.register("keycard_holder", () -> IMenuTypeExtension.create((windowId, inv, data) -> new KeycardHolderMenu(windowId, inv, ItemContainer.keycardHolder(PlayerUtils.getItemStackFromAnyHand(inv.player, SCContent.KEYCARD_HOLDER.get())))));
 	public static final DeferredHolder<MenuType<?>, MenuType<TrophySystemMenu>> TROPHY_SYSTEM_MENU = MENU_TYPES.register("trophy_system", () -> IMenuTypeExtension.create((windowId, inv, data) -> new TrophySystemMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
-	public static final DeferredHolder<MenuType<?>, MenuType<SingleLensMenu>> SINGLE_LENS_MENU = MENU_TYPES.register("claymore", () -> IMenuTypeExtension.create((windowId, inv, data) -> new SingleLensMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
+	public static final DeferredHolder<MenuType<?>, MenuType<SingleLensMenu>> SINGLE_LENS_MENU = MENU_TYPES.register("single_lens", () -> IMenuTypeExtension.create((windowId, inv, data) -> new SingleLensMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 	public static final DeferredHolder<MenuType<?>, MenuType<LaserBlockMenu>> LASER_BLOCK_MENU = MENU_TYPES.register("laser_block", () -> IMenuTypeExtension.create((windowId, inv, data) -> new LaserBlockMenu(windowId, inv.player.level(), data.readBlockPos(), LaserBlockBlockEntity.loadSideConfig(data.readNbt()), inv)));
 	public static final DeferredHolder<MenuType<?>, MenuType<ReinforcedLecternMenu>> REINFORCED_LECTERN_MENU = MENU_TYPES.register("reinforced_lectern", () -> IMenuTypeExtension.create((windowId, inv, data) -> new ReinforcedLecternMenu(windowId, inv.player.level(), data.readBlockPos())));
 

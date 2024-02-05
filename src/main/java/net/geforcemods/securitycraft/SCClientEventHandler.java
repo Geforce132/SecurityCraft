@@ -32,7 +32,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -134,11 +133,6 @@ public class SCClientEventHandler {
 
 		if (!(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be))
 			return;
-
-		ItemStack lens = be.getLensContainer().getItem(0);
-
-		if (lens.getItem() instanceof DyeableLeatherItem item && item.hasCustomColor(lens))
-			guiGraphics.fill(0, 0, window.getGuiScaledWidth(), window.getGuiScaledHeight(), item.getColor(lens) + (be.getTransparency() << 24));
 
 		Font font = Minecraft.getInstance().font;
 		Options settings = Minecraft.getInstance().options;

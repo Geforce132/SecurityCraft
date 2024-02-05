@@ -65,7 +65,7 @@ public class SecurityCameraBlock extends OwnableBlock implements SimpleWaterlogg
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be && be.isOwnedBy(player)) {
+		if (!player.getItemInHand(hand).is(SCContent.CAMERA_MONITOR.get()) && level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be && be.isOwnedBy(player)) {
 			if (!level.isClientSide)
 				player.openMenu(be, pos);
 

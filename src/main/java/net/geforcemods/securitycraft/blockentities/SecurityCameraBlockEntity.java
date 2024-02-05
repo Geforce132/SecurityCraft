@@ -47,7 +47,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
 	private DoubleOption customRotationOption = new DoubleOption("customRotation", getCameraRotation(), 1.55D, -1.55D, rotationSpeedOption.get(), true);
 	private DisabledOption disabled = new DisabledOption(false);
-	private IntOption transparency = new IntOption("transparency", 170, 0, 255, 1, true);
+	private IntOption opacity = new IntOption("opacity", 100, 0, 255, 1, true);
 	private LensContainer lens = new LensContainer(1);
 
 	public SecurityCameraBlockEntity(BlockPos pos, BlockState state) {
@@ -133,7 +133,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				rotationSpeedOption, shouldRotateOption, customRotationOption, disabled, transparency
+				rotationSpeedOption, shouldRotateOption, customRotationOption, disabled, opacity
 		};
 	}
 
@@ -202,7 +202,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 		return down;
 	}
 
-	public int getTransparency() {
-		return transparency.get();
+	public int getOpacity() {
+		return opacity.get();
 	}
 }
