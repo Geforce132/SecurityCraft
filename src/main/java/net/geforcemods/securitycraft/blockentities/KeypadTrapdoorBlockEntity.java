@@ -88,6 +88,8 @@ public class KeypadTrapdoorBlockEntity extends CustomizableBlockEntity implement
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(TrapDoorBlock.OPEN, false));
 			SCContent.KEYPAD_TRAPDOOR.get().playSound(null, level, worldPosition, false);
 		}
+
+		super.onOptionChanged(option);
 	}
 
 	@Override

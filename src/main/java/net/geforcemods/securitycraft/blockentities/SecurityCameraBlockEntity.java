@@ -195,6 +195,8 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 					camera.stopViewing(player);
 			}
 		}
+
+		super.onOptionChanged(option);
 	}
 
 	@Override

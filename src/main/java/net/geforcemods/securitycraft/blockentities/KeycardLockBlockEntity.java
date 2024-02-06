@@ -85,6 +85,8 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 					swap = true;
 			}
 		}
+
+		super.onOptionChanged(option);
 	}
 
 	@Override

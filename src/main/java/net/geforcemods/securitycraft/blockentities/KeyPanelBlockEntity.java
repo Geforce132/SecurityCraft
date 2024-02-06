@@ -122,6 +122,8 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeyPanelBlock.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}
+
+		super.onOptionChanged(option);
 	}
 
 	@Override
