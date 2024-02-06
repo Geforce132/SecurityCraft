@@ -1,8 +1,9 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -10,19 +11,20 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class ClaymoreMenu extends AbstractContainerMenu {
-	public final ClaymoreBlockEntity be;
+public class SingleLensMenu extends AbstractContainerMenu {
+	public final BlockEntity be;
 	private ContainerLevelAccess containerLevelAccess;
 
-	public ClaymoreMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
-		super(SCContent.CLAYMORE_MENU.get(), windowId);
+	public SingleLensMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
+		super(SCContent.SINGLE_LENS_MENU.get(), windowId);
 
 		containerLevelAccess = ContainerLevelAccess.create(level, pos);
-		be = (ClaymoreBlockEntity) level.getBlockEntity(pos);
+		be = level.getBlockEntity(pos);
 
-		if (be.isOwnedBy(inventory.player))
-			addSlot(new LensSlot(be.getLensContainer(), 0, 80, 20));
+		if (((IOwnable) be).isOwnedBy(inventory.player))
+			addSlot(new LensSlot(((SingleLensContainer) be).getLensContainer(), 0, 80, 20));
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; ++x) {
@@ -71,5 +73,9 @@ public class ClaymoreMenu extends AbstractContainerMenu {
 	@Override
 	public boolean stillValid(Player player) {
 		return stillValid(containerLevelAccess, player, be.getBlockState().getBlock());
+	}
+
+	public interface SingleLensContainer {
+		public Container getLensContainer();
 	}
 }
