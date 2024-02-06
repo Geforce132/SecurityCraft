@@ -7,20 +7,31 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.LensContainer;
+import net.geforcemods.securitycraft.inventory.SingleLensMenu.SingleLensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class SecurityCameraBlockEntity extends CustomizableBlockEntity implements IEMPAffectedBE, ITickable {
+public class SecurityCameraBlockEntity extends CustomizableBlockEntity implements IEMPAffectedBE, ITickable, IInventoryChangedListener, SingleLensContainer {
 	private static final double CAMERA_SPEED = 0.0180D;
 	private double cameraRotation = 0.0D;
 	private double oCameraRotation = 0.0D;
@@ -31,13 +42,20 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
 	private DoubleOption customRotationOption = new DoubleOption(this::getPos, "customRotation", getCameraRotation(), 1.55D, -1.55D, rotationSpeedOption.get(), true);
 	private DisabledOption disabled = new DisabledOption(false);
+	private IntOption opacity = new IntOption(this::getPos, "opacity", 100, 0, 255, 1, true);
+	private IItemHandler insertOnlyHandler, lensHandler;
+	private LensContainer lens = new LensContainer(1);
 	private int playersViewing = 0;
+
+	public SecurityCameraBlockEntity() {
+		lens.addInventoryChangeListener(this);
+	}
 
 	@Override
 	public void update() {
-		if (!shutDown) {
-			oCameraRotation = getCameraRotation();
+		oCameraRotation = getCameraRotation();
 
+		if (!shutDown) {
 			if (!shouldRotateOption.get()) {
 				cameraRotation = customRotationOption.get();
 				return;
@@ -86,6 +104,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		tag.setBoolean("ShutDown", shutDown);
 		tag.setInteger("PlayersViewing", playersViewing);
+		tag.setTag("lens", lens.getStackInSlot(0).writeToNBT(new NBTTagCompound()));
 		return super.writeToNBT(tag);
 	}
 
@@ -94,6 +113,49 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 		super.readFromNBT(tag);
 		shutDown = tag.getBoolean("ShutDown");
 		playersViewing = tag.getInteger("PlayersViewing");
+		lens.setInventorySlotContents(0, new ItemStack(tag.getCompoundTag("lens")));
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return BlockUtils.isAllowedToExtractFromProtectedBlock(facing, this) ? (T) getNormalHandler() : (T) getInsertOnlyHandler();
+		else
+			return super.getCapability(capability, facing);
+	}
+
+	private IItemHandler getInsertOnlyHandler() {
+		if (insertOnlyHandler == null)
+			insertOnlyHandler = new InsertOnlyInvWrapper(lens);
+
+		return insertOnlyHandler;
+	}
+
+	private IItemHandler getNormalHandler() {
+		if (lensHandler == null)
+			lensHandler = new InvWrapper(lens);
+
+		return lensHandler;
+	}
+
+	@Override
+	public void onInventoryChanged(IInventory container) {
+		if (world == null)
+			return;
+
+		IBlockState state = world.getBlockState(pos);
+
+		world.notifyBlockUpdate(pos, state, state, 2);
+	}
+
+	@Override
+	public LensContainer getLensContainer() {
+		return lens;
 	}
 
 	@Override
@@ -119,7 +181,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				rotationSpeedOption, shouldRotateOption, customRotationOption, disabled
+				rotationSpeedOption, shouldRotateOption, customRotationOption, disabled, opacity
 		};
 	}
 
@@ -180,5 +242,9 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 	public boolean isDown() {
 		return down;
+	}
+
+	public int getOpacity() {
+		return opacity.get();
 	}
 }

@@ -1,21 +1,22 @@
 package net.geforcemods.securitycraft.inventory;
 
-import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
-public class ClaymoreMenu extends Container {
-	public final ClaymoreBlockEntity be;
+public class SingleLensMenu extends Container {
+	public final TileEntity be;
 
-	public ClaymoreMenu(ClaymoreBlockEntity te, InventoryPlayer inventory) {
-		be = te;
+	public SingleLensMenu(TileEntity be, InventoryPlayer inventory) {
+		this.be = be;
 
-		if (be.isOwnedBy(inventory.player))
-			addSlotToContainer(new LensSlot(be.getLensContainer(), 0, 80, 20));
+		if (((IOwnable) be).isOwnedBy(inventory.player))
+			addSlotToContainer(new LensSlot(((SingleLensContainer) be).getLensContainer(), 0, 80, 20));
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; ++x) {
@@ -66,5 +67,9 @@ public class ClaymoreMenu extends Container {
 		BlockPos pos = be.getPos();
 
 		return player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
+	}
+
+	public interface SingleLensContainer {
+		public LensContainer getLensContainer();
 	}
 }

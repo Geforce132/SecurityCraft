@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.inventory.LensContainer;
+import net.geforcemods.securitycraft.inventory.SingleLensMenu.SingleLensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -28,7 +29,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickable, IInventoryChangedListener {
+public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickable, IInventoryChangedListener, SingleLensContainer {
 	private IntOption range = new IntOption(this::getPos, "range", 5, 1, 10, 1, true);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS_AND_MOBS);
@@ -130,6 +131,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 		world.notifyBlockUpdate(pos, state, state, 2);
 	}
 
+	@Override
 	public LensContainer getLensContainer() {
 		return lens;
 	}

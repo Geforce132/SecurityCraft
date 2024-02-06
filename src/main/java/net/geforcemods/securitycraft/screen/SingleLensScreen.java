@@ -1,17 +1,17 @@
 package net.geforcemods.securitycraft.screen;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.inventory.ClaymoreMenu;
+import net.geforcemods.securitycraft.inventory.SingleLensMenu;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
-public class ClaymoreScreen extends GuiContainer {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/claymore.png");
+public class SingleLensScreen extends GuiContainer {
+	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/single_lens.png");
 	private final String inventoryText = Utils.localize("container.inventory").getFormattedText(), title;
 
-	public ClaymoreScreen(ClaymoreMenu menu) {
+	public SingleLensScreen(SingleLensMenu menu) {
 		super(menu);
 		title = menu.be.getDisplayName().getFormattedText();
 	}

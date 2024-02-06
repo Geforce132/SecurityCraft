@@ -1,11 +1,13 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -43,6 +45,22 @@ public class SecurityCameraBlock extends OwnableBlock {
 	public SecurityCameraBlock(Material material) {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false));
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (player.getHeldItem(hand).getItem() != SCContent.cameraMonitor) {
+			TileEntity be = world.getTileEntity(pos);
+
+			if (be instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) be).isOwnedBy(player)) {
+				if (!world.isRemote)
+					player.openGui(SecurityCraft.instance, Screens.SINGLE_LENS.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	@Override

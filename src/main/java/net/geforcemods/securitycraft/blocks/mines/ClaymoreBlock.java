@@ -53,7 +53,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 		if (be instanceof ClaymoreBlockEntity && ((ClaymoreBlockEntity) be).isOwnedBy(player)) {
 			if (!world.isRemote)
-				player.openGui(SecurityCraft.instance, Screens.CLAYMORE.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(SecurityCraft.instance, Screens.SINGLE_LENS.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 
 			return true;
 		}

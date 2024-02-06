@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.renderers;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.items.LensItem;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -12,6 +13,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
@@ -62,14 +65,32 @@ public class SecurityCameraRenderer extends TileEntitySpecialRenderer<SecurityCa
 		GlStateManager.rotate(180F, rotation, 0.0F, 1.0F);
 
 		if (!te.isDisabled())
-			MODEL.cameraRotationPoint.rotateAngleY = (float) ClientUtils.lerp(partialTicks, te.getOriginalCameraRotation(), te.getCameraRotation());
+			MODEL.rotateCameraY((float) ClientUtils.lerp(partialTicks, te.getOriginalCameraRotation(), te.getCameraRotation()));
 
 		if (te.isShutDown())
-			MODEL.cameraRotationPoint.rotateAngleX = 0.9F;
+			MODEL.rotateCameraX(0.9F);
 		else
-			MODEL.cameraRotationPoint.rotateAngleX = 0.2617993877991494F;
+			MODEL.rotateCameraX(SecurityCameraModel.DEFAULT_X_ROT);
+
+		ItemStack lens = te.getLensContainer().getStackInSlot(0);
+		Item item = lens.getItem();
+
+		if (item instanceof LensItem && ((LensItem) item).hasColor(lens)) {
+			int color = ((LensItem) item).getColor(lens);
+
+			MODEL.r = ((color >> 0x10) & 0xFF) / 255.0F;
+			MODEL.g = ((color >> 0x8) & 0xFF) / 255.0F;
+			MODEL.b = (color & 0xFF) / 255.0F;
+		}
+		else {
+			MODEL.r = 0.4392156862745098F;
+			MODEL.g = 1.0F;
+			MODEL.b = 1.0F;
+			MODEL.cameraRotationPoint2.isHidden = true;
+		}
 
 		MODEL.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		MODEL.cameraRotationPoint2.isHidden = false;
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();
 	}

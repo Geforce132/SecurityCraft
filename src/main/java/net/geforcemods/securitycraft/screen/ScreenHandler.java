@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
-import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
@@ -19,7 +18,6 @@ import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
-import net.geforcemods.securitycraft.inventory.ClaymoreMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
@@ -31,6 +29,7 @@ import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.LaserBlockMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
+import net.geforcemods.securitycraft.inventory.SingleLensMenu;
 import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -184,9 +183,9 @@ public class ScreenHandler implements IGuiHandler {
 		LASER_BLOCK(
 			(player, te) -> new LaserBlockMenu((LaserBlockBlockEntity) te, player.inventory),
 			(player, te) -> new LaserBlockScreen(new LaserBlockMenu((LaserBlockBlockEntity) te, player.inventory))),
-		CLAYMORE(
-			(player, te) -> new ClaymoreMenu((ClaymoreBlockEntity) te, player.inventory),
-			(player, te) -> new ClaymoreScreen(new ClaymoreMenu((ClaymoreBlockEntity) te, player.inventory)));
+		SINGLE_LENS(
+			(player, te) -> new SingleLensMenu(te, player.inventory),
+			(player, te) -> new SingleLensScreen(new SingleLensMenu(te, player.inventory)));
 		//@formatter:on
 
 		private final BiFunction<EntityPlayer, TileEntity, Object> server, client;
