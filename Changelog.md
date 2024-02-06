@@ -20,6 +20,7 @@
 - New: Option for the Claymore to set whether it only explodes for mobs, players, or both
 - New: Option for the Bouncing Betty and Mine to set whether it only explodes for mobs, players, or both
 - New: Ignore Owner option for the Bouncing Betty and Mine
+- New: The Security Camera can now have a Lens, making it possible to tint the camera view in a different color
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now
 - Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate
