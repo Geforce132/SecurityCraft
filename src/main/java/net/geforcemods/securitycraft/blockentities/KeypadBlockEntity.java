@@ -89,6 +89,8 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}
+
+		super.onOptionChanged(option);
 	}
 
 	@Override
