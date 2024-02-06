@@ -133,6 +133,8 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}
+
+		super.onOptionChanged(option);
 	}
 
 	@Override
