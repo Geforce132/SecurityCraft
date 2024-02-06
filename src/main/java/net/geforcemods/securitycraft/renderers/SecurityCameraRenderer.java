@@ -79,7 +79,10 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 			g = ((color >> 0x8) & 0xFF) / 255.0F;
 			b = (color & 0xFF) / 255.0F;
 		}
+		else
+			model.cameraRotationPoint2.visible = false;
 
 		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(be.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, r, g, b, 1.0F);
+		model.cameraRotationPoint2.visible = true;
 	}
 }

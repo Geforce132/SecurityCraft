@@ -17,7 +17,7 @@ public class SecurityCameraModel extends EntityModel<SecurityCamera> {
 	private ModelPart attachment;
 	private ModelPart stickTop;
 	private ModelPart cameraRotationPoint1;
-	private ModelPart cameraRotationPoint2;
+	public final ModelPart cameraRotationPoint2;
 
 	public SecurityCameraModel(ModelPart modelPart) {
 		attachment = modelPart.getChild("attachment");
