@@ -7,20 +7,39 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.LensContainer;
+import net.geforcemods.securitycraft.inventory.SingleLensMenu;
+import net.geforcemods.securitycraft.inventory.SingleLensMenu.SingleLensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerListener;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class SecurityCameraBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE {
+public class SecurityCameraBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE, MenuProvider, ContainerListener, SingleLensContainer {
 	private double cameraRotation = 0.0D;
 	private double oCameraRotation = 0.0D;
 	private boolean addToRotation = true;
@@ -31,9 +50,13 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
 	private DoubleOption customRotationOption = new DoubleOption("customRotation", getCameraRotation(), 1.55D, -1.55D, rotationSpeedOption.get(), true);
 	private DisabledOption disabled = new DisabledOption(false);
+	private IntOption opacity = new IntOption("opacity", 100, 0, 255, 1, true);
+	private LazyOptional<IItemHandler> insertOnlyHandler, lensHandler;
+	private LensContainer lens = new LensContainer(1);
 
 	public SecurityCameraBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), pos, state);
+		lens.addListener(this);
 	}
 
 	@Override
@@ -43,9 +66,9 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 			downSet = true;
 		}
 
-		if (!shutDown) {
-			oCameraRotation = getCameraRotation();
+		oCameraRotation = getCameraRotation();
 
+		if (!shutDown) {
 			if (!shouldRotateOption.get()) {
 				cameraRotation = customRotationOption.get();
 				return;
@@ -67,12 +90,77 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		tag.putBoolean("shutDown", shutDown);
+		tag.put("lens", lens.createTag());
 	}
 
 	@Override
 	public void load(CompoundTag tag) {
 		super.load(tag);
 		shutDown = tag.getBoolean("shutDown");
+		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
+	}
+
+	@Override
+	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return BlockUtils.isAllowedToExtractFromProtectedBlock(side, this) ? getNormalHandler().cast() : getInsertOnlyHandler().cast();
+		else
+			return super.getCapability(cap, side);
+	}
+
+	@Override
+	public void invalidateCaps() {
+		if (insertOnlyHandler != null)
+			insertOnlyHandler.invalidate();
+
+		if (lensHandler != null)
+			lensHandler.invalidate();
+
+		super.invalidateCaps();
+	}
+
+	@Override
+	public void reviveCaps() {
+		insertOnlyHandler = null;
+		lensHandler = null;
+		super.reviveCaps();
+	}
+
+	private LazyOptional<IItemHandler> getInsertOnlyHandler() {
+		if (insertOnlyHandler == null)
+			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(lens));
+
+		return insertOnlyHandler;
+	}
+
+	private LazyOptional<IItemHandler> getNormalHandler() {
+		if (lensHandler == null)
+			lensHandler = LazyOptional.of(() -> new InvWrapper(lens));
+
+		return lensHandler;
+	}
+
+	@Override
+	public void containerChanged(Container container) {
+		if (level == null)
+			return;
+
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+	}
+
+	@Override
+	public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+		return new SingleLensMenu(id, level, worldPosition, inventory);
+	}
+
+	@Override
+	public Component getDisplayName() {
+		return super.getDisplayName();
+	}
+
+	@Override
+	public Container getLensContainer() {
+		return lens;
 	}
 
 	@Override
@@ -85,7 +173,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				rotationSpeedOption, shouldRotateOption, customRotationOption, disabled
+				rotationSpeedOption, shouldRotateOption, customRotationOption, disabled, opacity
 		};
 	}
 
@@ -152,5 +240,9 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 	public boolean isDown() {
 		return down;
+	}
+
+	public int getOpacity() {
+		return opacity.get();
 	}
 }
