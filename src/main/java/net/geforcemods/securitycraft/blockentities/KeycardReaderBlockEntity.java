@@ -229,6 +229,8 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}
+
+		super.onOptionChanged(option);
 	}
 
 	public void setAcceptedLevels(boolean[] acceptedLevels) {

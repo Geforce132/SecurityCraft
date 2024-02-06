@@ -130,6 +130,8 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(RetinalScannerBlock.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}
+
+		super.onOptionChanged(option);
 	}
 
 	@Override
