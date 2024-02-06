@@ -62,7 +62,7 @@ import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
 import net.geforcemods.securitycraft.screen.BriefcasePasscodeScreen;
 import net.geforcemods.securitycraft.screen.CameraMonitorScreen;
 import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
-import net.geforcemods.securitycraft.screen.ClaymoreScreen;
+import net.geforcemods.securitycraft.screen.SingleLensScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
 import net.geforcemods.securitycraft.screen.EditModuleScreen;
@@ -349,7 +349,7 @@ public class ClientHandler {
 		ScreenManager.register(SCContent.PROJECTOR_MENU.get(), ProjectorScreen::new);
 		ScreenManager.register(SCContent.KEYCARD_HOLDER_MENU.get(), ItemInventoryScreen.KeycardHolder::new);
 		ScreenManager.register(SCContent.TROPHY_SYSTEM_MENU.get(), TrophySystemScreen::new);
-		ScreenManager.register(SCContent.CLAYMORE_MENU.get(), ClaymoreScreen::new);
+		ScreenManager.register(SCContent.SINGLE_LENS_MENU.get(), SingleLensScreen::new);
 		ScreenManager.register(SCContent.LASER_BLOCK_MENU.get(), LaserBlockScreen::new);
 		ScreenManager.register(SCContent.REINFORCED_LECTERN_MENU.get(), ReinforcedLecternScreen::new);
 		ItemModelsProperties.register(SCContent.KEYCARD_HOLDER.get(), KeycardHolderItem.COUNT_PROPERTY, (stack, level, entity) -> KeycardHolderItem.getCardCount(stack) / (float) KeycardHolderMenu.CONTAINER_SIZE);

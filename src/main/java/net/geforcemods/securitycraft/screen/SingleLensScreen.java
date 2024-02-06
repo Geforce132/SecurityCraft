@@ -4,16 +4,16 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.inventory.ClaymoreMenu;
+import net.geforcemods.securitycraft.inventory.SingleLensMenu;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
-public class ClaymoreScreen extends ContainerScreen<ClaymoreMenu> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/claymore.png");
+public class SingleLensScreen extends ContainerScreen<SingleLensMenu> {
+	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/single_lens.png");
 
-	public ClaymoreScreen(ClaymoreMenu menu, PlayerInventory inv, ITextComponent title) {
+	public SingleLensScreen(SingleLensMenu menu, PlayerInventory inv, ITextComponent title) {
 		super(menu, inv, title);
 	}
 

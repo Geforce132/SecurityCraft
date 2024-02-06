@@ -7,18 +7,38 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.LensContainer;
+import net.geforcemods.securitycraft.inventory.SingleLensMenu;
+import net.geforcemods.securitycraft.inventory.SingleLensMenu.SingleLensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class SecurityCameraBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity, IEMPAffectedBE {
+public class SecurityCameraBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity, IEMPAffectedBE, INamedContainerProvider, IInventoryChangedListener, SingleLensContainer {
 	private double cameraRotation = 0.0D;
 	private double oCameraRotation = 0.0D;
 	private boolean addToRotation = true;
@@ -29,9 +49,13 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
 	private DoubleOption customRotationOption = new DoubleOption(this::getBlockPos, "customRotation", getCameraRotation(), 1.55D, -1.55D, rotationSpeedOption.get(), true);
 	private DisabledOption disabled = new DisabledOption(false);
+	private IntOption opacity = new IntOption(this::getBlockPos, "opacity", 100, 0, 255, 1, true);
+	private LazyOptional<IItemHandler> insertOnlyHandler, lensHandler;
+	private LensContainer lens = new LensContainer(1);
 
 	public SecurityCameraBlockEntity() {
 		super(SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get());
+		lens.addListener(this);
 	}
 
 	@Override
@@ -41,9 +65,9 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 			downSet = true;
 		}
 
-		if (!shutDown) {
-			oCameraRotation = getCameraRotation();
+		oCameraRotation = getCameraRotation();
 
+		if (!shutDown) {
 			if (!shouldRotateOption.get()) {
 				cameraRotation = customRotationOption.get();
 				return;
@@ -65,6 +89,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	public CompoundNBT save(CompoundNBT tag) {
 		super.save(tag);
 		tag.putBoolean("shutDown", shutDown);
+		tag.put("lens", lens.createTag());
 		return tag;
 	}
 
@@ -72,6 +97,70 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	public void load(BlockState state, CompoundNBT tag) {
 		super.load(state, tag);
 		shutDown = tag.getBoolean("shutDown");
+		lens.fromTag(tag.getList("lens", Constants.NBT.TAG_COMPOUND));
+	}
+
+	@Override
+	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return BlockUtils.isAllowedToExtractFromProtectedBlock(side, this) ? getNormalHandler().cast() : getInsertOnlyHandler().cast();
+		else
+			return super.getCapability(cap, side);
+	}
+
+	@Override
+	public void invalidateCaps() {
+		if (insertOnlyHandler != null)
+			insertOnlyHandler.invalidate();
+
+		if (lensHandler != null)
+			lensHandler.invalidate();
+
+		super.invalidateCaps();
+	}
+
+	@Override
+	public void reviveCaps() {
+		insertOnlyHandler = null;
+		lensHandler = null;
+		super.reviveCaps();
+	}
+
+	private LazyOptional<IItemHandler> getInsertOnlyHandler() {
+		if (insertOnlyHandler == null)
+			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(lens));
+
+		return insertOnlyHandler;
+	}
+
+	private LazyOptional<IItemHandler> getNormalHandler() {
+		if (lensHandler == null)
+			lensHandler = LazyOptional.of(() -> new InvWrapper(lens));
+
+		return lensHandler;
+	}
+
+	@Override
+	public void containerChanged(IInventory container) {
+		if (level == null)
+			return;
+
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+	}
+
+	@Override
+	public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
+		return new SingleLensMenu(id, level, worldPosition, inventory);
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return super.getDisplayName();
+	}
+
+	@Override
+	public Inventory getLensContainer() {
+		return lens;
 	}
 
 	@Override
@@ -84,7 +173,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				rotationSpeedOption, shouldRotateOption, customRotationOption, disabled
+				rotationSpeedOption, shouldRotateOption, customRotationOption, disabled, opacity
 		};
 	}
 
@@ -155,5 +244,9 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 	public double getCameraRotation() {
 		return cameraRotation;
+	}
+
+	public int getOpacity() {
+		return opacity.get();
 	}
 }

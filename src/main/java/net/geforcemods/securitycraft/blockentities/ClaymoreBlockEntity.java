@@ -7,9 +7,10 @@ import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
-import net.geforcemods.securitycraft.inventory.ClaymoreMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.inventory.LensContainer;
+import net.geforcemods.securitycraft.inventory.SingleLensMenu;
+import net.geforcemods.securitycraft.inventory.SingleLensMenu.SingleLensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -37,7 +38,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity, INamedContainerProvider, IInventoryChangedListener {
+public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity, INamedContainerProvider, IInventoryChangedListener, SingleLensContainer {
 	private IntOption range = new IntOption(this::getBlockPos, "range", 5, 1, 10, 1, true);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS_AND_MOBS);
@@ -151,7 +152,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 
 	@Override
 	public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
-		return new ClaymoreMenu(id, level, worldPosition, inventory);
+		return new SingleLensMenu(id, level, worldPosition, inventory);
 	}
 
 	@Override
@@ -159,6 +160,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 		return super.getDisplayName();
 	}
 
+	@Override
 	public Inventory getLensContainer() {
 		return lens;
 	}

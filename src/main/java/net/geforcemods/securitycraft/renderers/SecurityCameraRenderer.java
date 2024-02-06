@@ -14,6 +14,9 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.item.IDyeableArmorItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -61,13 +64,28 @@ public class SecurityCameraRenderer extends TileEntityRenderer<SecurityCameraBlo
 		pose.mulPose(POSITIVE_X_180);
 
 		if (!be.isDisabled())
-			MODEL.cameraRotationPoint.yRot = (float) MathHelper.lerp(partialTicks, be.getOriginalCameraRotation(), be.getCameraRotation());
+			MODEL.rotateCameraY((float) MathHelper.lerp(partialTicks, be.getOriginalCameraRotation(), be.getCameraRotation()));
 
 		if (be.isShutDown())
-			MODEL.cameraRotationPoint.xRot = 0.9F;
+			MODEL.rotateCameraX(0.9F);
 		else
-			MODEL.cameraRotationPoint.xRot = 0.2617993877991494F;
+			MODEL.rotateCameraX(0.2617993877991494F);
 
-		MODEL.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(be.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		ItemStack lens = be.getLensContainer().getItem(0);
+		Item item = lens.getItem();
+		float r = 0.4392156862745098F, g = 1.0F, b = 1.0F;
+
+		if (item instanceof IDyeableArmorItem && ((IDyeableArmorItem) item).hasCustomColor(lens)) {
+			int color = ((IDyeableArmorItem) item).getColor(lens);
+
+			r = ((color >> 0x10) & 0xFF) / 255.0F;
+			g = ((color >> 0x8) & 0xFF) / 255.0F;
+			b = (color & 0xFF) / 255.0F;
+		}
+		else
+			MODEL.cameraRotationPoint2.visible = false;
+
+		MODEL.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(be.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, r, g, b, 1.0F);
+		MODEL.cameraRotationPoint2.visible = true;
 	}
 }

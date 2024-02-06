@@ -1,28 +1,30 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ClaymoreMenu extends Container {
-	public final ClaymoreBlockEntity be;
+public class SingleLensMenu extends Container {
+	public final TileEntity be;
 	private IWorldPosCallable containerLevelAccess;
 
-	public ClaymoreMenu(int windowId, World level, BlockPos pos, PlayerInventory inventory) {
-		super(SCContent.CLAYMORE_MENU.get(), windowId);
+	public SingleLensMenu(int windowId, World level, BlockPos pos, PlayerInventory inventory) {
+		super(SCContent.SINGLE_LENS_MENU.get(), windowId);
 
 		containerLevelAccess = IWorldPosCallable.create(level, pos);
-		be = (ClaymoreBlockEntity) level.getBlockEntity(pos);
+		be = level.getBlockEntity(pos);
 
-		if (be.isOwnedBy(inventory.player))
-			addSlot(new LensSlot(be.getLensContainer(), 0, 80, 20));
+		if (((IOwnable) be).isOwnedBy(inventory.player))
+			addSlot(new LensSlot(((SingleLensContainer) be).getLensContainer(), 0, 80, 20));
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; ++x) {
@@ -71,5 +73,9 @@ public class ClaymoreMenu extends Container {
 	@Override
 	public boolean stillValid(PlayerEntity player) {
 		return stillValid(containerLevelAccess, player, be.getBlockState().getBlock());
+	}
+
+	public interface SingleLensContainer {
+		public IInventory getLensContainer();
 	}
 }

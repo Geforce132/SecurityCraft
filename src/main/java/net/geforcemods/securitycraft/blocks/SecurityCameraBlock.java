@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
@@ -22,13 +23,16 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.Direction.Plane;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.SectionPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -39,6 +43,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.world.ForgeChunkManager;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SecurityCameraBlock extends OwnableBlock implements IWaterLoggable {
@@ -55,6 +60,22 @@ public class SecurityCameraBlock extends OwnableBlock implements IWaterLoggable 
 	public SecurityCameraBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(BEING_VIEWED, false).setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (player.getItemInHand(hand).getItem() != SCContent.CAMERA_MONITOR.get()) {
+			TileEntity be = level.getBlockEntity(pos);
+
+			if (be instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) be).isOwnedBy(player)) {
+				if (!level.isClientSide)
+					NetworkHooks.openGui((ServerPlayerEntity) player, (SecurityCameraBlockEntity) be, pos);
+
+				return ActionResultType.SUCCESS;
+			}
+		}
+
+		return ActionResultType.PASS;
 	}
 
 	@Override
