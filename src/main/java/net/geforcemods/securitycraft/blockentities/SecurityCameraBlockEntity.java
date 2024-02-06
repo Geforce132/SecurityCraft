@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IEMPAffectedBE;
 import net.geforcemods.securitycraft.api.Option;
@@ -35,7 +36,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	private static final double CAMERA_SPEED = 0.0180D;
 	private double cameraRotation = 0.0D;
 	private double oCameraRotation = 0.0D;
-	private boolean addToRotation = true;
+	private boolean addToRotation = SecurityCraft.RANDOM.nextBoolean();
 	private boolean down = false;
 	private boolean shutDown = false;
 	private DoubleOption rotationSpeedOption = new DoubleOption(this::getPos, "rotationSpeed", CAMERA_SPEED, 0.01D, 0.025D, 0.001D, true);
