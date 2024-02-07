@@ -15,6 +15,7 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -97,8 +98,10 @@ public class SecurityCameraBlock extends OwnableBlock implements SimpleWaterlogg
 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof IModuleInventory inv)
-			inv.dropAllModules();
+		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
+			be.dropAllModules();
+			Containers.dropContents(level, pos, be.getLensContainer());
+		}
 
 		level.updateNeighborsAt(pos.north(), state.getBlock());
 		level.updateNeighborsAt(pos.south(), state.getBlock());
