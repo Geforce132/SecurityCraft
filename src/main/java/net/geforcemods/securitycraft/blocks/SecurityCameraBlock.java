@@ -19,6 +19,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityTrackerEntry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -107,8 +108,10 @@ public class SecurityCameraBlock extends OwnableBlock {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof IModuleInventory)
-			((IModuleInventory) te).dropAllModules();
+		if (te instanceof SecurityCameraBlockEntity) {
+			((SecurityCameraBlockEntity) te).dropAllModules();
+			InventoryHelper.dropInventoryItems(world, pos, ((SecurityCameraBlockEntity) te).getLensContainer());
+		}
 
 		super.breakBlock(world, pos, state);
 		world.notifyNeighborsOfStateChange(pos.north(), world.getBlockState(pos).getBlock(), true);
