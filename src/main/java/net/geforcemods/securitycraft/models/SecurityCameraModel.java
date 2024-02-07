@@ -22,7 +22,7 @@ public class SecurityCameraModel extends EntityModel<SecurityCamera> {
 	public SecurityCameraModel(ModelPart modelPart) {
 		attachment = modelPart.getChild("attachment");
 		stickTop = modelPart.getChild("stick_top");
-		stickTop.xRot = -0.5235987755982988F;
+		stickTop.xRot = -(DEFAULT_X_ROT * 2);
 		cameraRotationPoint1 = setUpRotationPoint(modelPart, "camera_rotation_point_1", "camera_body");
 		cameraRotationPoint2 = setUpRotationPoint(modelPart, "camera_rotation_point_2", "camera_lens");
 	}
