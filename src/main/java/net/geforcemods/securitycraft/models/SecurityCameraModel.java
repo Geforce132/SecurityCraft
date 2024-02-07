@@ -32,11 +32,11 @@ public class SecurityCameraModel extends EntityModel<SecurityCamera> {
 		cameraRotationPoint1 = new ModelRenderer(this, 0, 25);
 		cameraRotationPoint1.setPos(0.0F, 14.0F, 3.0F);
 		cameraRotationPoint1.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-		cameraRotationPoint1.xRot = 0.2617993877991494F;
+		cameraRotationPoint1.xRot = DEFAULT_X_ROT;
 		cameraRotationPoint2 = new ModelRenderer(this, 0, 25);
 		cameraRotationPoint2.setPos(0.0F, 14.0F, 3.0F);
 		cameraRotationPoint2.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-		cameraRotationPoint2.xRot = 0.2617993877991494F;
+		cameraRotationPoint2.xRot = DEFAULT_X_ROT;
 		cameraLensRight = new ModelRenderer(this, 10, 40);
 		cameraLensRight.setPos(3.0F, 0.0F, -3.0F);
 		cameraLensRight.addBox(-2.0F, 0.0F, 0.0F, 1, 3, 1);
@@ -49,11 +49,11 @@ public class SecurityCameraModel extends EntityModel<SecurityCamera> {
 		cameraBody = new ModelRenderer(this, 0, 25);
 		cameraBody.setPos(0.0F, 0.0F, -5.0F);
 		cameraBody.addBox(-2.0F, 0.0F, -2.0F, 4, 3, 8);
-		cameraBody.xRot = 0.2617993877991494F;
+		cameraBody.xRot = DEFAULT_X_ROT;
 		cameraLens = new ModelRenderer(this, 0, 50);
 		cameraLens.setPos(0.0F, 0.0F, -5.0F);
 		cameraLens.addBox(-1.99F, 0.01F, -2.01F, 3.98F, 2.98F, 0.01F);
-		cameraLens.xRot = 0.2617993877991494F;
+		cameraLens.xRot = DEFAULT_X_ROT;
 		attachment = new ModelRenderer(this, 0, 0);
 		attachment.setPos(-3.0F, 13.0F, 7.0F);
 		attachment.addBox(0.0F, 0.0F, 0.0F, 6, 6, 1);
@@ -63,7 +63,7 @@ public class SecurityCameraModel extends EntityModel<SecurityCamera> {
 		stickTop = new ModelRenderer(this, 2, 12);
 		stickTop.setPos(-1.0F, 13.75F, 2.25F);
 		stickTop.addBox(0.0F, 0.0F, 0.0F, 2, 1, 6);
-		stickTop.xRot = -0.5235987755982988F;
+		stickTop.xRot = -(DEFAULT_X_ROT * 2);
 		cameraBody.addChild(cameraLensRight);
 		stickTop.addChild(stickBottom);
 		cameraBody.addChild(cameraLensLeft);

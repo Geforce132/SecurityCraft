@@ -17,6 +17,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -106,8 +107,10 @@ public class SecurityCameraBlock extends OwnableBlock implements IWaterLoggable 
 		if (!state.is(newState.getBlock())) {
 			TileEntity te = level.getBlockEntity(pos);
 
-			if (te instanceof IModuleInventory)
-				((IModuleInventory) te).dropAllModules();
+			if (te instanceof SecurityCameraBlockEntity) {
+				((SecurityCameraBlockEntity) te).dropAllModules();
+				InventoryHelper.dropContents(level, pos, ((SecurityCameraBlockEntity) te).getLensContainer());
+			}
 		}
 
 		level.updateNeighborsAt(pos.north(), level.getBlockState(pos).getBlock());

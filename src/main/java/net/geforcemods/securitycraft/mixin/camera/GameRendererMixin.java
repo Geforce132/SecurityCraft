@@ -37,8 +37,8 @@ public class GameRendererMixin {
 	 */
 	@ModifyConstant(method = "tickFov", constant = @Constant(floatValue = 1.0F))
 	private float securitycraft$modifyInitialFValue(float f) {
-		if (Minecraft.getInstance().cameraEntity instanceof SecurityCamera)
-			return ((SecurityCamera) Minecraft.getInstance().cameraEntity).getZoomAmount();
+		if (minecraft.cameraEntity instanceof SecurityCamera)
+			return ((SecurityCamera) minecraft.cameraEntity).getZoomAmount();
 		else
 			return f;
 	}

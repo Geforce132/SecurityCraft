@@ -69,7 +69,7 @@ public class SecurityCameraRenderer extends TileEntityRenderer<SecurityCameraBlo
 		if (be.isShutDown())
 			MODEL.rotateCameraX(0.9F);
 		else
-			MODEL.rotateCameraX(0.2617993877991494F);
+			MODEL.rotateCameraX(SecurityCameraModel.DEFAULT_X_ROT);
 
 		ItemStack lens = be.getLensContainer().getItem(0);
 		Item item = lens.getItem();
