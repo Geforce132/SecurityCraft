@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.misc;
 
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
@@ -39,7 +39,7 @@ public enum TargetingMode {
 
 		if (isPlayer && allowsPlayers() || !isPlayer && allowsMobs()) {
 			return (!isPlayer || !(be.isOwnedBy((PlayerEntity) entity) && be.ignoresOwner()) && !((PlayerEntity) entity).isCreative()) //Player checks
-					&& !entity.isSpectator() && (!checkInvisibility || !EntityUtils.isInvisible(entity)) && !be.allowsOwnableEntity(entity); //checks for all entities
+					&& !entity.isSpectator() && (!checkInvisibility || !Utils.isEntityInvisible(entity)) && !be.allowsOwnableEntity(entity); //checks for all entities
 		}
 		else
 			return false;

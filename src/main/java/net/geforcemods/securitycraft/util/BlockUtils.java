@@ -28,19 +28,6 @@ public class BlockUtils {
 		return level.getBlockState(pos).isFaceSturdy(level, pos, side);
 	}
 
-	public static void updateAndNotify(World level, BlockPos pos, Block block, int delay, boolean shouldUpdate) {
-		if (shouldUpdate)
-			level.getBlockTicks().scheduleTick(pos, block, delay);
-
-		level.updateNeighborsAt(pos, block);
-	}
-
-	public static int[] posToIntArray(BlockPos pos) {
-		return new int[] {
-				pos.getX(), pos.getY(), pos.getZ()
-		};
-	}
-
 	public static Mode getExplosionMode() {
 		return ConfigHandler.SERVER.mineExplosionsBreakBlocks.get() ? Mode.BREAK : Mode.NONE;
 	}

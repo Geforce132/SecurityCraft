@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -79,7 +79,7 @@ public class MineBlock extends ExplosiveBlock implements IWaterLoggable {
 		if (!level.isClientSide) {
 			if (player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
-			else if (!EntityUtils.doesPlayerOwn(player, level, pos)) {
+			else if (!Utils.doesEntityOwn(player, level, pos)) {
 				explode(level, pos);
 				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
 			}
@@ -98,7 +98,9 @@ public class MineBlock extends ExplosiveBlock implements IWaterLoggable {
 		if (level.isClientSide || entity instanceof ItemEntity || !getShape(state, level, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
 			return;
 
-		if (!EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof PlayerEntity && ((PlayerEntity) entity).isCreative()) && !((IOwnable) level.getBlockEntity(pos)).allowsOwnableEntity(entity))
+		IOwnable ownable = (IOwnable) level.getBlockEntity(pos);
+
+		if (!ownable.isOwnedBy(entity) && !(entity instanceof PlayerEntity && ((PlayerEntity) entity).isCreative()) && !ownable.allowsOwnableEntity(entity))
 			explode(level, pos);
 	}
 

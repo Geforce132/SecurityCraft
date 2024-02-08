@@ -1,26 +1,23 @@
 package net.geforcemods.securitycraft.util;
 
+import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.api.IOwnable;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.potion.Effects;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 
 public class Utils {
 	public static final Style GRAY_STYLE = Style.EMPTY.withColor(TextFormatting.GRAY);
 	public static final ITextComponent INVENTORY_TEXT = Utils.localize("container.inventory");
 
 	private Utils() {}
-
-	/**
-	 * Removes the last character in the given String. <p>
-	 */
-	public static String removeLastChar(String line) {
-		if (line == null || line.isEmpty())
-			return "";
-
-		return line.substring(0, line.length() - 1);
-	}
 
 	public static TranslationTextComponent getFormattedCoordinates(BlockPos pos) {
 		return new TranslationTextComponent("messages.securitycraft:formattedCoordinates", pos.getX(), pos.getY(), pos.getZ());
@@ -42,5 +39,15 @@ public class Utils {
 		}
 
 		return new TranslationTextComponent(key, params);
+	}
+
+	public static boolean doesEntityOwn(Entity entity, World level, BlockPos pos) {
+		TileEntity te = level.getBlockEntity(pos);
+
+		return te instanceof IOwnable && ((IOwnable) te).isOwnedBy(entity);
+	}
+
+	public static boolean isEntityInvisible(LivingEntity entity) {
+		return ConfigHandler.SERVER.respectInvisibility.get() && entity.hasEffect(Effects.INVISIBILITY);
 	}
 }

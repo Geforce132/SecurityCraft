@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
-import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -43,7 +43,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 				cooldown--;
 			else if (level.getBestNeighborSignal(worldPosition) > 0) {
 				long timestamp = System.currentTimeMillis();
-				List<PlayerEntity> nearbyPlayers = level.getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB(worldPosition).inflate(searchRadius.get()), e -> !e.isSpectator() && !(isOwnedBy(e) && ignoresOwner() || isAllowed(e)) && !EntityUtils.isInvisible(e) && !wasPlayerRecentlyAdded(e.getName().getString(), timestamp));
+				List<PlayerEntity> nearbyPlayers = level.getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB(worldPosition).inflate(searchRadius.get()), e -> !e.isSpectator() && !(isOwnedBy(e) && ignoresOwner() || isAllowed(e)) && !Utils.isEntityInvisible(e) && !wasPlayerRecentlyAdded(e.getName().getString(), timestamp));
 
 				if (!nearbyPlayers.isEmpty()) {
 					boolean changed = false;

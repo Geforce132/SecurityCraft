@@ -4,10 +4,10 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.PushReaction;
@@ -60,8 +60,11 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 			return ActionResultType.SUCCESS;
 		}
 
-		if (explodesWhenInteractedWith() && isActive(level, pos) && !EntityUtils.doesPlayerOwn(player, level, pos)) {
+		if (explodesWhenInteractedWith() && isActive(level, pos)) {
 			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player))
+				return ActionResultType.PASS;
 
 			if (te instanceof ICustomizable) {
 				ICustomizable mine = (ICustomizable) te;

@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -52,7 +51,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 		BlockState lowerState = level.getBlockState(worldPosition.below());
 		Direction.Axis facingAxis = ScannerDoorBlock.getFacingAxis(upperState);
 
-		if (upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !EntityUtils.isInvisible(entity)) {
+		if (upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !Utils.isEntityInvisible(entity)) {
 			if (!(entity instanceof PlayerEntity) || facingAxis != hitResult.getDirection().getAxis())
 				return false;
 

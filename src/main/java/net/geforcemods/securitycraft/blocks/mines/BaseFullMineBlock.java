@@ -5,8 +5,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -66,7 +66,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public void entityInside(BlockState state, World level, BlockPos pos, Entity entity) {
-		if (!EntityUtils.doesEntityOwn(entity, level, pos))
+		if (!Utils.doesEntityOwn(entity, level, pos))
 			explode(level, pos);
 	}
 
@@ -85,7 +85,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 		if (!level.isClientSide) {
 			if (player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
-			else if (!EntityUtils.doesPlayerOwn(player, level, pos)) {
+			else if (!Utils.doesEntityOwn(player, level, pos)) {
 				explode(level, pos);
 				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
 			}

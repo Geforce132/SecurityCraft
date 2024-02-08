@@ -5,8 +5,8 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -81,13 +81,13 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IWaterLoggable
 
 	@Override
 	public void entityInside(BlockState state, World level, BlockPos pos, Entity entity) {
-		if (getShape(state, level, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()) && !EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof PlayerEntity && ((PlayerEntity) entity).isCreative()) && !((IOwnable) level.getBlockEntity(pos)).allowsOwnableEntity(entity))
+		if (getShape(state, level, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()) && !Utils.doesEntityOwn(entity, level, pos) && !(entity instanceof PlayerEntity && ((PlayerEntity) entity).isCreative()) && !((IOwnable) level.getBlockEntity(pos)).allowsOwnableEntity(entity))
 			explode(level, pos);
 	}
 
 	@Override
 	public void attack(BlockState state, World level, BlockPos pos, PlayerEntity player) {
-		if (!player.isCreative() && !EntityUtils.doesPlayerOwn(player, level, pos))
+		if (!player.isCreative() && !Utils.doesEntityOwn(player, level, pos))
 			explode(level, pos);
 	}
 

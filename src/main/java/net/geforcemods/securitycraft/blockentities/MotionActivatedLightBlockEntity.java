@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -32,7 +32,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 		if (level.isClientSide || isDisabled() || cooldown-- > 0)
 			return;
 
-		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(worldPosition).inflate(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && !e.isSpectator() && !(e instanceof Sentry || e instanceof ArmorStandEntity));
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(worldPosition).inflate(searchRadiusOption.get()), e -> !Utils.isEntityInvisible(e) && !e.isSpectator() && !(e instanceof Sentry || e instanceof ArmorStandEntity));
 		boolean shouldBeOn = !entities.isEmpty();
 
 		if (getBlockState().getValue(MotionActivatedLightBlock.LIT) != shouldBeOn)

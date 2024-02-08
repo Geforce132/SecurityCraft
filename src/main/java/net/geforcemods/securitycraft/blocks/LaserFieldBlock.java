@@ -9,7 +9,7 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -69,7 +69,7 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, IW
 
 	@Override
 	public void entityInside(BlockState state, World level, BlockPos pos, Entity entity) {
-		if (!level.isClientSide && entity instanceof LivingEntity && !EntityUtils.isInvisible((LivingEntity) entity)) {
+		if (!level.isClientSide && entity instanceof LivingEntity && !Utils.isEntityInvisible((LivingEntity) entity)) {
 			if (!getShape(state, level, pos, ISelectionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
 				return;
 
