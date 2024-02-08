@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.ModuleItem;
-import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -38,7 +38,7 @@ public class SetListModuleData implements IMessage {
 	public static class Handler implements IMessageHandler<SetListModuleData, IMessage> {
 		@Override
 		public IMessage onMessage(SetListModuleData message, MessageContext ctx) {
-			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
 				ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.allowlistModule);
 

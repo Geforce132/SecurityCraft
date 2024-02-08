@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.misc.LinkingStateItemPropertyHandler;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
@@ -68,7 +67,9 @@ public class MineRemoteAccessToolItem extends Item {
 				if (stack.getTagCompound() == null)
 					stack.setTagCompound(new NBTTagCompound());
 
-				stack.getTagCompound().setIntArray(("mine" + availSlot), BlockUtils.posToIntArray(pos));
+				stack.getTagCompound().setIntArray(("mine" + availSlot), new int[] {
+						pos.getX(), pos.getY(), pos.getZ()
+				});
 
 				if (!world.isRemote)
 					SecurityCraft.network.sendTo(new UpdateNBTTagOnClient(stack), (EntityPlayerMP) player);

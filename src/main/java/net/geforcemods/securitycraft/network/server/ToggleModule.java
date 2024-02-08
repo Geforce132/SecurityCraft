@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -44,7 +44,7 @@ public class ToggleModule implements IMessage {
 	public static class Handler implements IMessageHandler<ToggleModule, IMessage> {
 		@Override
 		public IMessage onMessage(ToggleModule message, MessageContext ctx) {
-			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
 				TileEntity be = player.world.getTileEntity(message.pos);
 

@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityArmorStand;
@@ -29,7 +29,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 		if (world.isRemote || isDisabled() || cooldown-- > 0)
 			return;
 
-		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && (!(e instanceof EntityPlayer) || !((EntityPlayer) e).isSpectator()) && !(e instanceof Sentry || e instanceof EntityArmorStand));
+		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !Utils.isEntityInvisible(e) && (!(e instanceof EntityPlayer) || !((EntityPlayer) e).isSpectator()) && !(e instanceof Sentry || e instanceof EntityArmorStand));
 		IBlockState state = world.getBlockState(pos);
 		boolean shouldBeOn = !entities.isEmpty();
 

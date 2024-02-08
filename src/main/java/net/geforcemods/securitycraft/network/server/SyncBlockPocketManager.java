@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -51,7 +51,7 @@ public class SyncBlockPocketManager implements IMessage {
 	public static class Handler implements IMessageHandler<SyncBlockPocketManager, IMessage> {
 		@Override
 		public IMessage onMessage(SyncBlockPocketManager message, MessageContext ctx) {
-			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
 				World world = player.world;
 				TileEntity te = world.getTileEntity(message.pos);

@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -45,7 +45,7 @@ public class UpdateSliderValue implements IMessage {
 	public static class Handler implements IMessageHandler<UpdateSliderValue, IMessage> {
 		@Override
 		public IMessage onMessage(UpdateSliderValue message, MessageContext context) {
-			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(message.pos);
 

@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.network.server;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
-import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,7 +44,7 @@ public class AssembleBlockPocket implements IMessage {
 	public static class Handler implements IMessageHandler<AssembleBlockPocket, IMessage> {
 		@Override
 		public IMessage onMessage(AssembleBlockPocket message, MessageContext ctx) {
-			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				TileEntity te = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension).getTileEntity(message.pos);
 				EntityPlayer player = ctx.getServerHandler().player;
 

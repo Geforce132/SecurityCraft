@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
-import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -47,7 +47,7 @@ public class FurnaceMineBlock extends BaseFullMineBlock {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (player.getHeldItem(hand).getItem() != SCContent.mineRemoteAccessTool && !EntityUtils.doesPlayerOwn(player, world, pos)) {
+		if (player.getHeldItem(hand).getItem() != SCContent.mineRemoteAccessTool && !Utils.doesEntityOwn(player, world, pos)) {
 			explode(world, pos);
 			return true;
 		}

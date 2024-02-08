@@ -26,7 +26,6 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -76,7 +75,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 
 			int signalLength = getSignalLength();
 
-			if ((!state.getValue(RetinalScannerBlock.POWERED) || signalLength == 0) && !EntityUtils.isInvisible(entity)) {
+			if ((!state.getValue(RetinalScannerBlock.POWERED) || signalLength == 0) && !Utils.isEntityInvisible(entity)) {
 				if (entity instanceof EntityPlayer) {
 					EntityPlayer player = (EntityPlayer) entity;
 					Owner viewingPlayer = new Owner(player);

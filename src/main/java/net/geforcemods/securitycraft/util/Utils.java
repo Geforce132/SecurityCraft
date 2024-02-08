@@ -1,22 +1,21 @@
 package net.geforcemods.securitycraft.util;
 
+import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 public class Utils {
 	private Utils() {}
-
-	/**
-	 * Removes the last character in the given String. <p>
-	 */
-	public static String removeLastChar(String line) {
-		if (line == null || line.isEmpty())
-			return "";
-
-		return line.substring(0, line.length() - 1);
-	}
 
 	public static TextComponentTranslation getFormattedCoordinates(BlockPos pos) {
 		return new TextComponentTranslation("messages.securitycraft:formattedCoordinates", pos.getX(), pos.getY(), pos.getZ());
@@ -60,5 +59,28 @@ public class Utils {
 		}
 
 		return new TextComponentTranslation(key, params);
+	}
+
+	public static boolean doesEntityOwn(Entity entity, World world, BlockPos pos) {
+		TileEntity te = world.getTileEntity(pos);
+
+		return te instanceof IOwnable && ((IOwnable) te).isOwnedBy(entity);
+	}
+
+	public static boolean isEntityInvisible(EntityLivingBase entity) {
+		return ConfigHandler.respectInvisibility && entity.isPotionActive(MobEffects.INVISIBILITY);
+	}
+
+	/**
+	 * Correctly schedules a task for execution on the main thread depending on if the provided world is client- or serverside
+	 *
+	 * @param world The world to schedule the task on
+	 * @param runnable The task to schedule
+	 */
+	public static void addScheduledTask(World world, Runnable runnable) {
+		if (world.isRemote)
+			Minecraft.getMinecraft().addScheduledTask(runnable);
+		else
+			((WorldServer) world).addScheduledTask(runnable);
 	}
 }

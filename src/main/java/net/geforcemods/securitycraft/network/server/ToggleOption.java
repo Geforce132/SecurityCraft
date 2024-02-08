@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -43,7 +43,7 @@ public class ToggleOption implements IMessage {
 	public static class Handler implements IMessageHandler<ToggleOption, IMessage> {
 		@Override
 		public IMessage onMessage(ToggleOption message, MessageContext ctx) {
-			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				BlockPos pos = new BlockPos(message.x, message.y, message.z);
 				EntityPlayer player = ctx.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);

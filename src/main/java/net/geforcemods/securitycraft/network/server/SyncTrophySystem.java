@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
@@ -46,7 +46,7 @@ public class SyncTrophySystem implements IMessage {
 	public static class Handler implements IMessageHandler<SyncTrophySystem, IMessage> {
 		@Override
 		public IMessage onMessage(SyncTrophySystem message, MessageContext ctx) {
-			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityEntry projectileType = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(message.projectileTypeLocation));
 
 				if (projectileType != null) {

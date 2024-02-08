@@ -79,16 +79,16 @@ public interface IOwnable {
 	}
 
 	/**
-	 * Checks whether the given player owns this IOwnable.
+	 * Checks whether the given entity owns this IOwnable.
 	 *
-	 * @param player The player to check ownership of
-	 * @return true if the given player owns this IOwnable, false otherwise
+	 * @param entity The entity to check ownership of
+	 * @return true if the given entity owns this IOwnable, false otherwise
 	 */
-	public default boolean isOwnedBy(EntityPlayer player) {
-		if (player == null)
+	public default boolean isOwnedBy(Entity entity) {
+		if (entity instanceof EntityPlayer)
+			return isOwnedBy(new Owner((EntityPlayer) entity));
+		else
 			return false;
-
-		return isOwnedBy(new Owner(player));
 	}
 
 	/**

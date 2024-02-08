@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.network.server;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
-import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,7 +36,7 @@ public class CheckBriefcasePasscode implements IMessage {
 	public static class Handler implements IMessageHandler<CheckBriefcasePasscode, IMessage> {
 		@Override
 		public IMessage onMessage(CheckBriefcasePasscode message, MessageContext ctx) {
-			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayerMP player = ctx.getServerHandler().player;
 				ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase);
 

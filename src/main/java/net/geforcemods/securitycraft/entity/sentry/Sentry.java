@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -423,7 +422,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 
 		final Entity entity = (Entity) throwableEntity; //reee
 
-		LevelUtils.addScheduledTask(world, () -> world.spawnEntity(entity));
+		Utils.addScheduledTask(world, () -> world.spawnEntity(entity));
 	}
 
 	@Override

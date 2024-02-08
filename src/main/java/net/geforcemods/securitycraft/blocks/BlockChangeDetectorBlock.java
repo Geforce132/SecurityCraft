@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
@@ -79,7 +79,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 		if (te instanceof BlockChangeDetectorBlockEntity) {
 			EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), ((BlockChangeDetectorBlockEntity) te).getStackInSlot(36));
 
-			LevelUtils.addScheduledTask(world, () -> world.spawnEntity(item));
+			Utils.addScheduledTask(world, () -> world.spawnEntity(item));
 		}
 
 		super.breakBlock(world, pos, state);

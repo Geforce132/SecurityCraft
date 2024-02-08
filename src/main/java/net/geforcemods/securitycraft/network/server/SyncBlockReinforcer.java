@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,7 +33,7 @@ public class SyncBlockReinforcer implements IMessage {
 	public static class Handler implements IMessageHandler<SyncBlockReinforcer, IMessage> {
 		@Override
 		public IMessage onMessage(SyncBlockReinforcer message, MessageContext ctx) {
-			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayerMP player = ctx.getServerHandler().player;
 				ItemStack reinforcer = player.inventory.getCurrentItem().getItem() instanceof UniversalBlockReinforcerItem ? player.inventory.getCurrentItem() : player.inventory.offHandInventory.get(0);
 

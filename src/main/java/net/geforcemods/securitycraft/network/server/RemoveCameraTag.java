@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
-import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -32,7 +32,7 @@ public class RemoveCameraTag implements IMessage {
 	public static class Handler implements IMessageHandler<RemoveCameraTag, IMessage> {
 		@Override
 		public IMessage onMessage(RemoveCameraTag message, MessageContext context) {
-			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				ItemStack monitor = PlayerUtils.getItemStackFromAnyHand(context.getServerHandler().player, SCContent.cameraMonitor);
 
 				if (!monitor.isEmpty())

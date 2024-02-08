@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
@@ -53,7 +53,7 @@ public class SyncKeycardSettings implements IMessage {
 	public static class Handler implements IMessageHandler<SyncKeycardSettings, IMessage> {
 		@Override
 		public IMessage onMessage(SyncKeycardSettings message, MessageContext context) {
-			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
 				TileEntity tile = player.world.getTileEntity(message.pos);
 

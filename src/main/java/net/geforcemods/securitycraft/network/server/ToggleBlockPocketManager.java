@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
-import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -51,7 +50,7 @@ public class ToggleBlockPocketManager implements IMessage {
 	public static class Handler implements IMessageHandler<ToggleBlockPocketManager, IMessage> {
 		@Override
 		public IMessage onMessage(ToggleBlockPocketManager message, MessageContext ctx) {
-			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayerMP player = ctx.getServerHandler().player;
 				World world = player.world;
 				TileEntity te = world.getTileEntity(message.pos);

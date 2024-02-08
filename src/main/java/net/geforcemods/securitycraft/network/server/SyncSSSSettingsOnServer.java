@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -48,7 +48,7 @@ public class SyncSSSSettingsOnServer implements IMessage {
 	public static class Handler implements IMessageHandler<SyncSSSSettingsOnServer, IMessage> {
 		@Override
 		public IMessage onMessage(SyncSSSSettingsOnServer message, MessageContext ctx) {
-			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				World world = ctx.getServerHandler().player.world;
 				TileEntity te = world.getTileEntity(message.pos);
 

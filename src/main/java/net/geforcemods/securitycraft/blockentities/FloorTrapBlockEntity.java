@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,7 +42,7 @@ public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITic
 		AxisAlignedBB area = new AxisAlignedBB(pos.getX(), pos.getY() + 1.0D, pos.getZ(), pos.getX() + 1.0D, pos.getY() + 1.1666D, pos.getZ() + 1.0D);
 
 		//@formatter:off
-		shouldDisappear = world.getEntitiesWithinAABB(EntityLivingBase.class, area, e -> !(e instanceof EntityPlayer && ((EntityPlayer) e).isSpectator()) && !allowsOwnableEntity(e) && !isAllowed(e) && !(EntityUtils.doesEntityOwn(e, world, pos) && ignoresOwner()))
+		shouldDisappear = world.getEntitiesWithinAABB(EntityLivingBase.class, area, e -> !(e instanceof EntityPlayer && ((EntityPlayer) e).isSpectator()) && !allowsOwnableEntity(e) && !isAllowed(e) && !(isOwnedBy(e) && ignoresOwner()))
 			.stream()
 			.anyMatch(entity -> mode.allowsPlayers() && entity instanceof EntityPlayer || mode.allowsMobs());
 		//@formatter:on

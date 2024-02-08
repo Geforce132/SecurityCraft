@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +37,7 @@ public class SetStateOnDisguiseModule implements IMessage {
 	public static class Handler implements IMessageHandler<SetStateOnDisguiseModule, IMessage> {
 		@Override
 		public IMessage onMessage(SetStateOnDisguiseModule message, MessageContext context) {
-			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
 				ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.disguiseModule);
 

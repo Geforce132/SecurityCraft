@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.EnumDetectionMode;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -48,7 +48,7 @@ public class SyncBlockChangeDetector implements IMessage {
 	public static class Handler implements IMessageHandler<SyncBlockChangeDetector, IMessage> {
 		@Override
 		public IMessage onMessage(SyncBlockChangeDetector message, MessageContext ctx) {
-			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
 				World level = player.world;
 				TileEntity tile = level.getTileEntity(message.pos);

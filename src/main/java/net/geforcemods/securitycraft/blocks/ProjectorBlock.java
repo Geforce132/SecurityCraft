@@ -6,7 +6,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -106,7 +106,7 @@ public class ProjectorBlock extends DisguisableBlock {
 			// Drop the block being projected
 			EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorBlockEntity) te).getStackInSlot(36));
 
-			LevelUtils.addScheduledTask(world, () -> world.spawnEntity(item));
+			Utils.addScheduledTask(world, () -> world.spawnEntity(item));
 		}
 
 		super.breakBlock(world, pos, state);

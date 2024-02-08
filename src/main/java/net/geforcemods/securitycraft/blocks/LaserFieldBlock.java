@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
@@ -79,7 +79,7 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay {
 
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-		if (!world.isRemote && entity instanceof EntityLivingBase && !EntityUtils.isInvisible((EntityLivingBase) entity)) {
+		if (!world.isRemote && entity instanceof EntityLivingBase && !Utils.isEntityInvisible((EntityLivingBase) entity)) {
 			if (!state.getBoundingBox(world, pos).offset(pos).intersects(entity.getEntityBoundingBox()))
 				return;
 

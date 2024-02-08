@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -67,7 +67,7 @@ public class MineBlock extends ExplosiveBlock {
 		if (!world.isRemote)
 			if (player != null && player.capabilities.isCreativeMode && !ConfigHandler.mineExplodesWhenInCreative)
 				return super.removedByPlayer(state, world, pos, player, willHarvest);
-			else if (!EntityUtils.doesPlayerOwn(player, world, pos)) {
+			else if (!Utils.doesEntityOwn(player, world, pos)) {
 				explode(world, pos);
 				return super.removedByPlayer(state, world, pos, player, willHarvest);
 			}
@@ -88,7 +88,9 @@ public class MineBlock extends ExplosiveBlock {
 		if (world.isRemote || entity instanceof EntityItem || !state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()))
 			return;
 
-		if (!EntityUtils.doesEntityOwn(entity, world, pos) && !(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative()) && !((IOwnable) world.getTileEntity(pos)).allowsOwnableEntity(entity))
+		IOwnable ownable = (IOwnable) world.getTileEntity(pos);
+
+		if (!ownable.isOwnedBy(entity) && !(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative()) && !ownable.allowsOwnableEntity(entity))
 			explode(world, pos);
 	}
 

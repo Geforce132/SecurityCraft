@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -41,7 +41,7 @@ public class SyncRiftStabilizer implements IMessage {
 	public static class Handler implements IMessageHandler<SyncRiftStabilizer, IMessage> {
 		@Override
 		public IMessage onMessage(SyncRiftStabilizer message, MessageContext ctx) {
-			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				if (message.teleportationType != null) {
 					World world = ctx.getServerHandler().player.world;
 

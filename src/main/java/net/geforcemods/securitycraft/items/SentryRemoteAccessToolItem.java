@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.misc.LinkingStateItemPropertyHandler;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -56,9 +55,9 @@ public class SentryRemoteAccessToolItem extends Item {
 
 		if (!sentries.isEmpty()) {
 			Sentry sentry = sentries.get(0);
-			BlockPos pos2 = sentry.getPosition();
+			BlockPos sentryPos = sentry.getPosition();
 
-			if (!isSentryAdded(stack, pos2)) {
+			if (!isSentryAdded(stack, sentryPos)) {
 				int nextAvailableSlot = getNextAvailableSlot(stack);
 
 				if (nextAvailableSlot == 0) {
@@ -74,17 +73,19 @@ public class SentryRemoteAccessToolItem extends Item {
 				if (stack.getTagCompound() == null)
 					stack.setTagCompound(new NBTTagCompound());
 
-				stack.getTagCompound().setIntArray("sentry" + nextAvailableSlot, BlockUtils.posToIntArray(pos2));
+				stack.getTagCompound().setIntArray("sentry" + nextAvailableSlot, new int[] {
+						sentryPos.getX(), sentryPos.getY(), sentryPos.getZ()
+				});
 				stack.getTagCompound().setString("sentry" + nextAvailableSlot + "_name", sentry.getCustomNameTag());
 
 				if (!world.isRemote)
 					SecurityCraft.network.sendTo(new UpdateNBTTagOnClient(stack), (EntityPlayerMP) player);
 
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessSentry.name"), Utils.localize("messages.securitycraft:srat.bound", pos2), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessSentry.name"), Utils.localize("messages.securitycraft:srat.bound", sentryPos), TextFormatting.GREEN);
 			}
 			else {
-				removeTagFromItemAndUpdate(stack, pos2, player);
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessSentry.name"), Utils.localize("messages.securitycraft:srat.unbound", pos2), TextFormatting.RED);
+				removeTagFromItemAndUpdate(stack, sentryPos, player);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessSentry.name"), Utils.localize("messages.securitycraft:srat.unbound", sentryPos), TextFormatting.RED);
 			}
 
 			return EnumActionResult.SUCCESS;

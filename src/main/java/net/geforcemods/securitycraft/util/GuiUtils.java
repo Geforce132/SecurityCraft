@@ -67,6 +67,11 @@ public class GuiUtils {
 		GameSettings settings = Minecraft.getMinecraft().gameSettings;
 		IBlockState state = world.getBlockState(pos);
 		String lookAround = GameSettings.getKeyDisplayString(settings.keyBindForward.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindLeft.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindBack.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindRight.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.lookAround").getFormattedText();
+		long worldTime = Minecraft.getMinecraft().world.provider.getWorldTime();
+		int hours24 = (int) ((float) worldTime / 1000L + 6L) % 24;
+		int hours = hours24 % 12;
+		int minutes = (int) (worldTime / 16.666666F % 60.0F);
+		String time = String.format("%02d:%02d %s", Integer.valueOf(hours < 1 ? 12 : hours), Integer.valueOf(minutes), hours24 < 12 ? "AM" : "PM");
 		int timeY = 25;
 
 		if (te.hasCustomName()) {
@@ -76,7 +81,7 @@ public class GuiUtils {
 			timeY += 10;
 		}
 
-		font.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() - font.getStringWidth(ClientUtils.getFormattedMinecraftTime()) - 4, timeY, 16777215);
+		font.drawStringWithShadow(time, resolution.getScaledWidth() - font.getStringWidth(time) - 4, timeY, 16777215);
 		font.drawStringWithShadow(lookAround, resolution.getScaledWidth() - font.getStringWidth(lookAround) - 8, resolution.getScaledHeight() - 80, 16777215);
 		font.drawStringWithShadow(GameSettings.getKeyDisplayString(settings.keyBindSneak.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.exit").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(settings.keyBindSneak.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.exit").getFormattedText()) - 8, resolution.getScaledHeight() - 70, 16777215);
 		font.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText()) - 8, resolution.getScaledHeight() - 60, 16777215);

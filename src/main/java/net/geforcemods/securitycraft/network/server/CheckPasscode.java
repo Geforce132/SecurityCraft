@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
-import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -46,7 +46,7 @@ public class CheckPasscode implements IMessage {
 	public static class Handler implements IMessageHandler<CheckPasscode, IMessage> {
 		@Override
 		public IMessage onMessage(CheckPasscode message, MessageContext ctx) {
-			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				BlockPos pos = new BlockPos(message.x, message.y, message.z);
 				EntityPlayer player = ctx.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);

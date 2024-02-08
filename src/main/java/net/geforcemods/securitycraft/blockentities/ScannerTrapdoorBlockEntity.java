@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -49,7 +48,7 @@ public class ScannerTrapdoorBlockEntity extends CustomizableBlockEntity implemen
 
 	@Override
 	public boolean onEntityViewed(EntityLivingBase entity, RayTraceResult hitResult) {
-		if (!EntityUtils.isInvisible(entity)) {
+		if (!Utils.isEntityInvisible(entity)) {
 			IBlockState state = world.getBlockState(pos);
 
 			if (!(entity instanceof EntityPlayer) || !(state.getValue(BlockTrapDoor.OPEN) ? hitResult.sideHit.getAxis() == state.getValue(BlockHorizontal.FACING).getAxis() : hitResult.sideHit.getAxis() == Axis.Y))

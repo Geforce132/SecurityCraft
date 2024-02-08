@@ -5,8 +5,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
-import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -68,13 +67,13 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-		if (state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()) && !EntityUtils.doesEntityOwn(entity, world, pos) && !(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative()) && !((IOwnable) world.getTileEntity(pos)).allowsOwnableEntity(entity))
+		if (state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()) && !Utils.doesEntityOwn(entity, world, pos) && !(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative()) && !((IOwnable) world.getTileEntity(pos)).allowsOwnableEntity(entity))
 			explode(world, pos);
 	}
 
 	@Override
 	public void onBlockClicked(World world, BlockPos pos, EntityPlayer player) {
-		if (!player.capabilities.isCreativeMode && !EntityUtils.doesPlayerOwn(player, world, pos))
+		if (!player.capabilities.isCreativeMode && !Utils.doesEntityOwn(player, world, pos))
 			explode(world, pos);
 	}
 
@@ -112,7 +111,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 		world.setBlockToAir(pos);
 		bouncingBetty.setFuse(15);
 		bouncingBetty.motionY = 0.5D;
-		LevelUtils.addScheduledTask(world, () -> world.spawnEntity(bouncingBetty));
+		Utils.addScheduledTask(world, () -> world.spawnEntity(bouncingBetty));
 		bouncingBetty.playSound(SoundEvents.ENTITY_TNT_PRIMED, 1.0F, 1.0F);
 	}
 

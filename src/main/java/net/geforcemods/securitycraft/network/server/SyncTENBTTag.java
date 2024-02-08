@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -13,41 +13,34 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class SyncTENBTTag implements IMessage {
-	private int x, y, z;
+	private BlockPos pos;
 	private NBTTagCompound tag;
 
 	public SyncTENBTTag() {}
 
-	public SyncTENBTTag(int x, int y, int z, NBTTagCompound tag) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public SyncTENBTTag(BlockPos pos, NBTTagCompound tag) {
+		this.pos = pos;
 		this.tag = tag;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
+		pos = BlockPos.fromLong(buf.readLong());
 		tag = ByteBufUtils.readTag(buf);
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
+		buf.writeLong(pos.toLong());
 		ByteBufUtils.writeTag(buf, tag);
 	}
 
 	public static class Handler implements IMessageHandler<SyncTENBTTag, IMessage> {
 		@Override
 		public IMessage onMessage(SyncTENBTTag message, MessageContext ctx) {
-			LevelUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
-				BlockPos pos = new BlockPos(message.x, message.y, message.z);
+			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
-				TileEntity te = player.world.getTileEntity(pos);
+				TileEntity te = player.world.getTileEntity(message.pos);
 
 				if (te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player))
 					te.readFromNBT(message.tag);

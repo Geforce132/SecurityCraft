@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -46,7 +46,7 @@ public class SyncAlarmSettings implements IMessage {
 	public static class Handler implements IMessageHandler<SyncAlarmSettings, IMessage> {
 		@Override
 		public IMessage onMessage(SyncAlarmSettings message, MessageContext context) {
-			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
 				TileEntity tile = player.world.getTileEntity(message.pos);
 

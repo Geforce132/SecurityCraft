@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -45,7 +45,7 @@ public class SetSentryMode implements IMessage {
 	public static class Handler implements IMessageHandler<SetSentryMode, IMessage> {
 		@Override
 		public IMessage onMessage(SetSentryMode message, MessageContext context) {
-			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
 				World level = player.world;
 

@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -40,7 +40,7 @@ public class SetCameraPowered implements IMessage {
 	public static class Handler implements IMessageHandler<SetCameraPowered, IMessage> {
 		@Override
 		public IMessage onMessage(SetCameraPowered message, MessageContext context) {
-			LevelUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+			Utils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
 				World world = player.world;
 				TileEntity te = world.getTileEntity(message.pos);

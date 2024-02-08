@@ -21,13 +21,6 @@ import net.minecraft.world.World;
 public class BlockUtils {
 	private BlockUtils() {}
 
-	public static void updateAndNotify(World world, BlockPos pos, Block block, int delay, boolean shouldUpdate) {
-		if (shouldUpdate)
-			world.scheduleUpdate(pos, block, delay);
-
-		world.notifyNeighborsOfStateChange(pos, block, false);
-	}
-
 	public static AxisAlignedBB fromBounds(double x1, double y1, double z1, double x2, double y2, double z2) {
 		double d6 = Math.min(x1, x2);
 		double d7 = Math.min(y1, y2);
@@ -36,12 +29,6 @@ public class BlockUtils {
 		double d10 = Math.max(y1, y2);
 		double d11 = Math.max(z1, z2);
 		return new AxisAlignedBB(d6, d7, d8, d9, d10, d11);
-	}
-
-	public static int[] posToIntArray(BlockPos pos) {
-		return new int[] {
-				pos.getX(), pos.getY(), pos.getZ()
-		};
 	}
 
 	public static boolean hasActiveSCBlockNextTo(World world, BlockPos pos) {

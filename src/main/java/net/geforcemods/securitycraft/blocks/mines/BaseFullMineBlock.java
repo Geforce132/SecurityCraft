@@ -5,8 +5,8 @@ import java.util.List;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -82,7 +82,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-		if (!EntityUtils.doesEntityOwn(entity, world, pos))
+		if (!Utils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 
@@ -101,7 +101,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 		if (!world.isRemote)
 			if (player != null && player.capabilities.isCreativeMode && !ConfigHandler.mineExplodesWhenInCreative)
 				return super.removedByPlayer(state, world, pos, player, willHarvest);
-			else if (!EntityUtils.doesPlayerOwn(player, world, pos)) {
+			else if (!Utils.doesEntityOwn(player, world, pos)) {
 				explode(world, pos);
 				return super.removedByPlayer(state, world, pos, player, willHarvest);
 			}

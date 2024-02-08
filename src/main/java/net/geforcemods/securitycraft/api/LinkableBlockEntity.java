@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
@@ -44,7 +44,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 		if (hasWorld() && !linkedBlocks.isEmpty()) {
 			NBTTagList tagList = new NBTTagList();
 
-			LevelUtils.addScheduledTask(world, () -> {
+			Utils.addScheduledTask(world, () -> {
 				for (int i = linkedBlocks.size() - 1; i >= 0; i--) {
 					LinkedBlock block = linkedBlocks.get(i);
 					NBTTagCompound toAppend = new NBTTagCompound();

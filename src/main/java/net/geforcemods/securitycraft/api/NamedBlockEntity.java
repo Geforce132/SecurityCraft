@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
@@ -37,7 +38,7 @@ public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter 
 			return;
 
 		if (world.isRemote)
-			ClientUtils.syncTileEntity(this);
+			SecurityCraft.network.sendToServer(new SyncTENBTTag(getPos(), writeToNBT(new NBTTagCompound())));
 		else
 			FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendPacketToAllPlayers(getUpdatePacket());
 	}

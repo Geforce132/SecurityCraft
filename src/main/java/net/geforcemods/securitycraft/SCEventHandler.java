@@ -51,7 +51,6 @@ import net.geforcemods.securitycraft.misc.SCWorldListener;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -481,7 +480,7 @@ public class SCEventHandler {
 						if (!te.getStackInSlot(i).isEmpty()) {
 							ItemStack stack = te.getStackInSlot(i);
 							EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
-							LevelUtils.addScheduledTask(world, () -> world.spawnEntity(item));
+							Utils.addScheduledTask(world, () -> world.spawnEntity(item));
 
 							te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
 
