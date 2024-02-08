@@ -1,26 +1,19 @@
 package net.geforcemods.securitycraft.util;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 
 public class Utils {
 	public static final Style GRAY_STYLE = Style.EMPTY.withColor(ChatFormatting.GRAY);
 	public static final Component INVENTORY_TEXT = Utils.localize("container.inventory");
 
 	private Utils() {}
-
-	/**
-	 * Removes the last character in the given String. <p>
-	 */
-	public static String removeLastChar(String line) {
-		if (line == null || line.isEmpty())
-			return "";
-
-		return line.substring(0, line.length() - 1);
-	}
 
 	public static TranslatableComponent getFormattedCoordinates(BlockPos pos) {
 		return new TranslatableComponent("messages.securitycraft:formattedCoordinates", pos.getX(), pos.getY(), pos.getZ());
@@ -42,5 +35,9 @@ public class Utils {
 		}
 
 		return new TranslatableComponent(key, params);
+	}
+
+	public static boolean isEntityInvisible(LivingEntity entity) {
+		return ConfigHandler.SERVER.respectInvisibility.get() && entity.hasEffect(MobEffects.INVISIBILITY);
 	}
 }

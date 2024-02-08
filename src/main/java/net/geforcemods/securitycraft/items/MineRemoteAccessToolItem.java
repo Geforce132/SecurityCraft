@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -63,7 +62,9 @@ public class MineRemoteAccessToolItem extends Item {
 				if (stack.getTag() == null)
 					stack.setTag(new CompoundTag());
 
-				stack.getTag().putIntArray(("mine" + nextSlot), BlockUtils.posToIntArray(pos));
+				stack.getTag().putIntArray(("mine" + nextSlot), new int[] {
+						pos.getX(), pos.getY(), pos.getZ()
+				});
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
 				return InteractionResult.SUCCESS;
 			}
