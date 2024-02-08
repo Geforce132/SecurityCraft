@@ -73,7 +73,8 @@ public class SecurityCameraBlock extends OwnableBlock {
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		if (state.getValue(FACING) == EnumFacing.DOWN)
 			return EnumBlockRenderType.MODEL;
-		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+		else
+			return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override

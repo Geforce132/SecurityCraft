@@ -190,8 +190,12 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	public void onLoad() {
 		super.onLoad();
 
-		if (world != null && world.getBlockState(pos).getBlock() instanceof SecurityCameraBlock)
-			down = world.getBlockState(pos).getValue(SecurityCameraBlock.FACING) == EnumFacing.DOWN;
+		if (world != null) {
+			IBlockState state = world.getBlockState(pos);
+
+			if (state.getBlock() instanceof SecurityCameraBlock)
+				down = state.getValue(SecurityCameraBlock.FACING) == EnumFacing.DOWN;
+		}
 	}
 
 	@Override
@@ -217,11 +221,13 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 	public void startViewing() {
 		playersViewing++;
+		markDirty();
 		sync();
 	}
 
 	public void stopViewing() {
 		playersViewing--;
+		markDirty();
 		sync();
 	}
 
