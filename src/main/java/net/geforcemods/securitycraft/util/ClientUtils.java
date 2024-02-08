@@ -43,18 +43,6 @@ public class ClientUtils {
 
 	private ClientUtils() {}
 
-	/**
-	 * Returns the current Minecraft in-game time, in a 12-hour AM/PM format.
-	 */
-	public static String getFormattedMinecraftTime() {
-		long time = Minecraft.getInstance().level.getDayTime();
-		int hours24 = (int) ((float) time / 1000L + 6L) % 24;
-		int hours = hours24 % 12;
-		int minutes = (int) (time / 16.666666F % 60.0F);
-
-		return String.format("%02d:%02d %s", Integer.valueOf(hours < 1 ? 12 : hours), Integer.valueOf(minutes), hours24 < 12 ? "AM" : "PM");
-	}
-
 	public static void renderModuleInfo(GuiGraphics guiGraphics, Font font, ModuleType module, Component moduleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int mouseX, int mouseY) {
 		Minecraft mc = Minecraft.getInstance();
 		float alpha = isModuleInstalled ? 1.0F : 0.5F;

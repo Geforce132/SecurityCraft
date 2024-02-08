@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -54,7 +53,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (!EntityUtils.doesEntityOwn(entity, level, pos))
+		if (level.getBlockEntity(pos) instanceof IOwnable ownable && !ownable.isOwnedBy(entity))
 			explode(level, pos);
 	}
 
@@ -70,13 +69,14 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-		if (!level.isClientSide)
+		if (!level.isClientSide) {
 			if (player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
 				return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
-			else if (!EntityUtils.doesPlayerOwn(player, level, pos)) {
+			else if (!(level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.isOwnedBy(player))) {
 				explode(level, pos);
 				return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 			}
+		}
 
 		return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 	}

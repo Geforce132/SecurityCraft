@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.TeamUtils;
@@ -52,7 +51,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 			ticksUntilNextSearch = getSearchDelay();
 
 			AABB area = new AABB(pos).inflate(getSearchRadius());
-			List<Player> closebyPlayers = level.getEntitiesOfClass(Player.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && e.canBeSeenByAnyone() && !EntityUtils.isInvisible(e));
+			List<Player> closebyPlayers = level.getEntitiesOfClass(Player.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && e.canBeSeenByAnyone() && !Utils.isEntityInvisible(e));
 
 			if (isModuleEnabled(ModuleType.REDSTONE))
 				PortableRadarBlock.togglePowerOutput(level, pos, !closebyPlayers.isEmpty());
