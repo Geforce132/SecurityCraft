@@ -139,7 +139,7 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 
 		playSoundAndUpdate(level, pos);
 
-		Direction facing = level.getBlockState(pos).getValue(FACING);
+		Direction facing = state.getValue(FACING);
 
 		if (!BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing))
 			level.destroyBlock(pos, true);

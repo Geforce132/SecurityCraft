@@ -140,7 +140,11 @@ public class SCClientEventHandler {
 		Component zoom = Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getTranslatedKeyMessage(), KeyBindings.cameraZoomOut.getTranslatedKeyMessage());
 		Component nightVision = Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getTranslatedKeyMessage());
 		Component redstone = Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getTranslatedKeyMessage());
-		String time = ClientUtils.getFormattedMinecraftTime();
+		long dayTime = Minecraft.getInstance().level.getDayTime();
+		int hours24 = (int) ((float) dayTime / 1000L + 6L) % 24;
+		int hours = hours24 % 12;
+		int minutes = (int) (dayTime / 16.666666F % 60.0F);
+		String time = String.format("%02d:%02d %s", Integer.valueOf(hours < 1 ? 12 : hours), Integer.valueOf(minutes), hours24 < 12 ? "AM" : "PM");
 		int timeY = 25;
 
 		if (be.hasCustomName()) {
