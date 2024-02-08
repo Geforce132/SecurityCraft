@@ -69,17 +69,17 @@ repositories {
 dependencies {
 	implementation 'net.neoforged:neoforge:20.4.117-beta'
 	
-//	implementation "curse.maven:architectury-api-419699:4581905" //ftb teams dependency
-//	implementation "curse.maven:ftb-library-forge-404465:4596511" //ftb teams dependency
-//	implementation "curse.maven:ftb-teams-forge-404468:4623116"
+	implementation "curse.maven:architectury-api-419699:4581905" //ftb teams dependency
+	implementation "curse.maven:ftb-library-forge-404465:4596511" //ftb teams dependency
+	implementation "curse.maven:ftb-teams-forge-404468:4623116"
 	implementation "curse.maven:jei-238222:5044537"
 	implementation "curse.maven:the-one-probe-245211:5084077"
-//	implementation "curse.maven:jade-324717:4980188"
-//	implementation "curse.maven:betterf3-401648:4641169"
-//	implementation "curse.maven:cloth-config-348521:4633444" //betterf3 dependency
+	implementation "curse.maven:jade-324717:4980188"
+	implementation "curse.maven:betterf3-401648:4641169"
+	implementation "curse.maven:cloth-config-348521:4633444" //betterf3 dependency
 	implementation "curse.maven:wthit-forge-455982:5042817"
 	implementation "curse.maven:badpackets-615134:5034255" //wthit dependency
-//	implementation "curse.maven:projecte-226410:3955047"
+	implementation "curse.maven:projecte-226410:3955047"
 }
 
 tasks.named('jar', Jar).configure {
