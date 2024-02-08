@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -70,7 +69,9 @@ public class SentryRemoteAccessToolItem extends Item {
 					return InteractionResult.FAIL;
 				}
 
-				stack.getOrCreateTag().putIntArray("sentry" + nextAvailableSlot, BlockUtils.posToIntArray(sentryPos));
+				stack.getOrCreateTag().putIntArray("sentry" + nextAvailableSlot, new int[] {
+						sentryPos.getX(), sentryPos.getY(), sentryPos.getZ()
+				});
 
 				if (sentry.hasCustomName())
 					stack.getTag().putString("sentry" + nextAvailableSlot + "_name", sentry.getCustomName().getString());

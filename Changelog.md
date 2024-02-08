@@ -32,6 +32,7 @@
 - Change: The initial rotation direction of cameras is now randomized clientside, to give a bit more variety
 - API: Refactored IPasscodeConvertible to account for the new Wire Cutters functionality
 - API: New method IOwnable#ignoresOwner to check whether the owner should be ignored by this block entity
+- API: IOwnable#isOwnedBy now takes any Entity instead of only players
 - Fix: Duplication exploit involving keycards
 - Fix: Error involving SecurityCraft's creative tabs when running SecurityCraft alongside certain other mods
 - Fix: Duplication exploit involving Reinforced Pistons

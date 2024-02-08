@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.List;
 
-import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +31,7 @@ public interface IViewActivated {
 		}
 
 		double maximumDistance = getMaximumDistance();
-		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(maximumDistance), e -> e.canBeSeenByAnyone() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof Player));
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(maximumDistance), e -> e.canBeSeenByAnyone() && !Utils.isEntityInvisible(e) && (!activatedOnlyByPlayer() || e instanceof Player));
 
 		for (LivingEntity entity : entities) {
 			double eyeHeight = entity.getEyeHeight();
