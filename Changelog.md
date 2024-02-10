@@ -79,7 +79,7 @@
 - Fix: The alarm screen closes when the inventory button is pressed in the search bar
 - Fix: The alarm can't play sounds added by resource packs
 - Fix: Changes to options of some customizable blocks don't get saved when leaving and re-joining a world
-- Fix: Cameras don't work when Embeddium is installed
+- Fix: Cameras don't work when Embeddium/Rubidium is installed
 - Removed: Ability to change the subpage in the SecurityCraft Manual using the arrow keys. This is still possible by scrolling while holding down CTRL
 - Removed: "Is always active" option of Keypads and Key Panels. The same behavior can be achieved by setting the "Signal length" option to 0 and activating the block
 - Misc.: The minimum required NeoForge version is 20.2.88 (necessary to fix players getting kicked from the server when placing a Sentry)
