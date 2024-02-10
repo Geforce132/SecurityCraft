@@ -75,7 +75,7 @@ public class SecurityCraft {
 	public static final boolean IS_A_SODIUM_MOD_INSTALLED = Util.make(() -> {
 		ModList modList = ModList.get();
 
-		return modList.isLoaded("sodium") || modList.isLoaded("embeddium");
+		return modList.isLoaded("embeddium") || modList.isLoaded("rubidium") || modList.isLoaded("sodium");
 	});
 
 	public SecurityCraft(IEventBus modEventBus) {
