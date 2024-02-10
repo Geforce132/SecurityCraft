@@ -80,6 +80,7 @@ dependencies {
 	implementation "curse.maven:wthit-forge-455982:4841626"
 	implementation "curse.maven:badpackets-615134:4838088" //wthit dependency
 //	implementation "curse.maven:projecte-226410:3955047"
+	implementation "curse.maven:embeddium-908741:4931291"
 }
 
 tasks.named('jar', Jar).configure {
