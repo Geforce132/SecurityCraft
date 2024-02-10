@@ -30,6 +30,7 @@ import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -67,6 +68,11 @@ public class SecurityCraft {
 	public static final GameRules.Key<GameRules.BooleanValue> RULE_FAKE_LAVA_SOURCE_CONVERSION = GameRules.register("fakeLavaSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(false));
 	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> getVersion(), getVersion()::equals, getVersion()::equals);
 	public static final Random RANDOM = new Random();
+	public static final boolean IS_A_SODIUM_MOD_INSTALLED = Util.make(() -> {
+		ModList modList = ModList.get();
+
+		return modList.isLoaded("embeddium") || modList.isLoaded("rubidium") || modList.isLoaded("sodium");
+	});
 
 	public SecurityCraft() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
