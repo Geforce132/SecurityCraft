@@ -73,10 +73,13 @@ public class SecurityCraft {
 	public static final ItemGroup DECORATION_TAB = new SCDecorationTab();
 	public static final LootConditionType TILE_ENTITY_NBT_LOOT_CONDITION = LootConditionManager.register(SecurityCraft.MODID + ":tile_entity_nbt", new BlockEntityNBTCondition.ConditionSerializer());
 	public static SimpleChannel channel;
+	public static boolean isASodiumModInstalled;
 
 	public SecurityCraft() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		ModList modList = ModList.get();
 
+		isASodiumModInstalled = modList.isLoaded("embeddium") || modList.isLoaded("rubidium") || modList.isLoaded("sodium");
 		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ConfigHandler.SERVER_SPEC);

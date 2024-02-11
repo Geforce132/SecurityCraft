@@ -8,6 +8,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.compat.sodium.SodiumCompat;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.misc.IChunkStorageProvider;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -87,6 +89,9 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 			if (chunk != null && chunk.getPos().x == x && chunk.getPos().z == z) {
 				MinecraftForge.EVENT_BUS.post(new ChunkEvent.Unload(chunk));
 				cameraStorage.replace(i, chunk, null);
+
+				if (SecurityCraft.isASodiumModInstalled)
+					SodiumCompat.onChunkStatusRemoved(x, z);
 			}
 		}
 	}
@@ -122,6 +127,10 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 			}
 
 			level.onChunkLoaded(x, z);
+
+			if (SecurityCraft.isASodiumModInstalled)
+				SodiumCompat.onChunkStatusAdded(x, z);
+
 			MinecraftForge.EVENT_BUS.post(new ChunkEvent.Load(chunk));
 			callback.setReturnValue(chunk);
 		}
