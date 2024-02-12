@@ -72,6 +72,7 @@
 - Fix: The collision of Block Pocket Wall blocks gets desynchronized when activating a block pocket
 - Fix: The alarm can't play sounds added by resource packs
 - Fix: Leaving a singleplayer world while viewing a Security Camera does not properly save the viewing indicator
+- Fix: The Panic Button can't open reinforced doors/trapdoors/fence gates
 - Removed: "Is always active" option of Keypads and Key Panels. The same behavior can be achieved by setting the "Signal length" option to 0 and activating the block
 - Misc.: Small optimizations to certain network and client performance
 
