@@ -1074,7 +1074,7 @@
 	"messages.securitycraft:tip": "ヒント:",
 	"messages.securitycraft:tip.discord": "mod の提案やバグを見つけましたなら是非 Discord サーバーに参加してください！ (英語のみ) また、そこでは SecurityCraft に関する重要な更新とお知らせを受け取ることができます。",
 	"messages.securitycraft:tip.outdated": "SecurityCraft のバージョンが古くなっています！ より多くの機能を備えバグを減らしていますので、更新を検討してください。",
-	"messages.securitycraft:tip.patreon": "SecurityCraft が気に入ったらパトロンでのサポートを検討してください! 私たちと協力して選択した機能をmodに組み込むことができます。",
+	"messages.securitycraft:tip.patreon": "SecurityCraft が気に入ったらPatreonでのサポートを検討してください! 私たちと協力して選択した機能をmodに組み込むことができます。",
 	"messages.securitycraft:tip.scHelp": "/sc help と入力すると、SecurityCraft マニュアルのレシピが表示され、SecurityCraft ブロック/アイテムのヘルプ情報が表示されます。",
 	"messages.securitycraft:tip.scserver": "公式 SecurityCraft サーバーが復活しました! 次のアドレスを使用して参加できます: securitycraft.nodecraft.gg",
 	"messages.securitycraft:universalKeyChanger.briefcase.noPasscode": "このカバンにはパスコードがないため、リセットできません。",
