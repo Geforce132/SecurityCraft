@@ -81,6 +81,7 @@
 - Fix: Cameras don't work when Embeddium/Rubidium is installed
 - Fix: Numerous reinforced blocks can be washed away by water
 - Fix: The Panic Button can't open reinforced doors/trapdoors/fence gates
+- Fix: Reinforced Piston Heads are pushable by Reinforced Pistons
 - Removed: Ability to change the subpage in the SecurityCraft Manual using the arrow keys. This is still possible by scrolling while holding down CTRL
 - Removed: "Is always active" option of Keypads and Key Panels. The same behavior can be achieved by setting the "Signal length" option to 0 and activating the block
 - Misc.: ProjectE support has been updated with previously missing EMC values
