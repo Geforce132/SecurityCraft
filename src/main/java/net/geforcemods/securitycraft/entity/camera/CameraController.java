@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.DismountCamera;
+import net.geforcemods.securitycraft.network.server.UpdateInitialCameraRotation;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -68,6 +69,11 @@ public class CameraController {
 					dismount();
 					options.keyShift.setDown(false);
 				}
+
+				if (options.keyAttack.isDown()) {
+					setInitialCameraRotation(cam);
+					options.keyAttack.setDown(false);
+				}
 			}
 			else if (event.phase == Phase.END) {
 				if (wasUpPressed) {
@@ -102,6 +108,9 @@ public class CameraController {
 
 				if (KeyBindings.cameraActivateNightVision.consumeClick())
 					giveNightVision(cam);
+
+				if (KeyBindings.cameraSetInitialRotation.consumeClick())
+					setInitialCameraRotation(cam);
 
 				//update other players with the head rotation
 				LocalPlayer player = Minecraft.getInstance().player;
@@ -196,6 +205,10 @@ public class CameraController {
 	public static void giveNightVision(SecurityCamera cam) {
 		if (cam.toggleNightVisionCooldown == 0)
 			cam.toggleNightVisionFromClient();
+	}
+
+	public static void setInitialCameraRotation(SecurityCamera cam) {
+		PacketDistributor.SERVER.noArg().send(new UpdateInitialCameraRotation(cam));
 	}
 
 	public static ClientChunkCache.Storage getCameraStorage() {
