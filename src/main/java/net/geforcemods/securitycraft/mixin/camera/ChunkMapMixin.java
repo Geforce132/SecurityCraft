@@ -1,14 +1,13 @@
 package net.geforcemods.securitycraft.mixin.camera;
 
-import java.util.Iterator;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import com.llamalad7.mixinextras.sugar.Local;
 
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.server.level.ChunkMap;
@@ -49,9 +48,9 @@ public abstract class ChunkMapMixin {
 	 * Allows chunks that are loaded near a currently active camera (for example by ForcedChunkManager) to be sent to the player
 	 * viewing the camera
 	 */
-	@Inject(method = "onChunkReadyToSend", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getChunkTrackingView()Lnet/minecraft/server/level/ChunkTrackingView;"), locals = LocalCapture.CAPTURE_FAILSOFT)
-	private void securitycraft$sendChunksToCameras(LevelChunk chunk, CallbackInfo callback, ChunkPos pos, Iterator<?> iterator, ServerPlayer player) {
-		if (player.getCamera() instanceof SecurityCamera camera && camera.getCameraChunks().contains(pos))
+	@Inject(method = "onChunkReadyToSend", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getChunkTrackingView()Lnet/minecraft/server/level/ChunkTrackingView;"))
+	private void securitycraft$sendChunksToCameras(LevelChunk chunk, CallbackInfo callback, @Local ServerPlayer player) {
+		if (player.getCamera() instanceof SecurityCamera camera && camera.getCameraChunks().contains(chunk.getPos()))
 			markChunkPendingToSend(player, chunk);
 	}
 

@@ -20,6 +20,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCameraBlockEntity> {
@@ -60,13 +62,27 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 		pose.mulPose(POSITIVE_X_180);
 
 		if (!be.isDisabled())
-			model.getCameraRotationPoint().yRot = (float) Mth.lerp(partialTicks, be.getOriginalCameraRotation(), be.getCameraRotation());
+			model.rotateCameraY((float) Mth.lerp(partialTicks, be.getOriginalCameraRotation(), be.getCameraRotation()));
 
 		if (be.isShutDown())
-			model.getCameraRotationPoint().xRot = 0.9F;
+			model.rotateCameraX(0.9F);
 		else
-			model.getCameraRotationPoint().xRot = 0.2617993877991494F;
+			model.rotateCameraX(SecurityCameraModel.DEFAULT_X_ROT);
 
-		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(be.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		ItemStack lens = be.getLensContainer().getItem(0);
+		float r = 0.4392156862745098F, g = 1.0F, b = 1.0F;
+
+		if (lens.getItem() instanceof DyeableLeatherItem item && item.hasCustomColor(lens)) {
+			int color = item.getColor(lens);
+
+			r = ((color >> 0x10) & 0xFF) / 255.0F;
+			g = ((color >> 0x8) & 0xFF) / 255.0F;
+			b = (color & 0xFF) / 255.0F;
+		}
+		else
+			model.cameraRotationPoint2.visible = false;
+
+		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(be.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, r, g, b, 1.0F);
+		model.cameraRotationPoint2.visible = true;
 	}
 }

@@ -10,7 +10,6 @@ import org.joml.Vector3f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.mojang.math.MatrixUtil;
 
 import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -59,11 +58,12 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	private static final int PAGE_LENGTH = 5;
 	private static final float ROTATION_SENSITIVITY = 0.1F;
 	private static final Vector3f Y_DRAG_ROTATION_VECTOR = new Vector3f((float) (1.0D / Math.sqrt(2)), 0, (float) (1.0D / Math.sqrt(2)));
-	private static final Quaternionf DEFAULT_ROTATION = ClientUtils.fromXYZDegrees(15.0F, -135.0F, 0.0F);
+	private static final Quaternionf DEFAULT_ROTATION_1 = ClientUtils.fromXYZDegrees(15.0F, -135.0F, 0.0F);
+	private static final Matrix4f DEFAULT_ROTATION_2 = new Matrix4f().rotate(30.0F * ((float) Math.PI / 180.0F), Y_DRAG_ROTATION_VECTOR).rotate(Axis.YP.rotationDegrees(-180.0F));
 	private static final EnumProperty<StandingOrWallType> STANDING_OR_WALL_TYPE_PROPERTY = EnumProperty.create("standing_or_wall", StandingOrWallType.class);
 	private final StateSelectorAccessMenu menu;
 	private final int xStart, yStart, slotToCheck;
-	private final float previewXTranslation, previewYTranslation;
+	private final int previewXTranslation, previewYTranslation;
 	private final HoverChecker dragHoverChecker;
 	private final List<Rect2i> extraAreas = new ArrayList<>();
 	private Item blockItem = Items.AIR;
@@ -79,7 +79,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	private boolean clickedInDragRegion = false;
 	private StandingOrWallType standingOrWallType = StandingOrWallType.NONE;
 
-	public StateSelector(StateSelectorAccessMenu menu, Component title, int xStart, int yStart, int slotToCheck, int dragStartX, int dragStartY, float previewXTranslation, float previewYTranslation) {
+	public StateSelector(StateSelectorAccessMenu menu, Component title, int xStart, int yStart, int slotToCheck, int dragStartX, int dragStartY, int previewXTranslation, int previewYTranslation) {
 		super(title);
 		menu.addSlotListener(this);
 		this.menu = menu;
@@ -109,7 +109,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 			else
 				state = item.getBlock().defaultBlockState();
 
-			this.blockItem = item;
+			blockItem = item;
 		}
 
 		previousPageButton = Button.builder(Component.literal("<"), button -> turnPage(-1)).bounds(xStart + 69, yStart + 125, 20, 20).build();
@@ -127,10 +127,11 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		previousPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
 		nextPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
 		pose.pushPose();
-		pose.translate(previewXTranslation, previewYTranslation, 0);
-		MatrixUtil.mulComponentWise(pose.last().pose(), 1.5F);
+		pose.translate(xStart + previewXTranslation, yStart + previewYTranslation, 100);
+		pose.scale(-24.0F, -24.0F, -24.0F);
 		pose.translate(0.5F, 0.5F, 0.5F);
-		pose.mulPose(DEFAULT_ROTATION);
+		pose.mulPose(DEFAULT_ROTATION_1);
+		pose.mulPoseMatrix(DEFAULT_ROTATION_2);
 		pose.mulPoseMatrix(dragRotation);
 		pose.translate(-0.5F, -0.5F, -0.5F);
 		renderBlockModel(state, pose, bufferSource);

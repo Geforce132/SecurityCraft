@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -47,12 +48,14 @@ public interface IOwnable {
 	 * @param level The current level
 	 * @param state The IOwnable's state
 	 * @param pos The IOwnable's position
-	 * @param player The player that changed the owner of the IOwnable
+	 * @param player The player who changed the owner of the IOwnable
 	 */
 	default void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {
 		if (needsValidation()) {
 			getOwner().setValidated(false);
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), ChatFormatting.GREEN);
+
+			if (player != null)
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), ChatFormatting.GREEN);
 		}
 
 		BlockEntity be = (BlockEntity) this;
@@ -64,16 +67,16 @@ public interface IOwnable {
 	}
 
 	/**
-	 * Checks whether the given player owns this IOwnable.
+	 * Checks whether the given entity owns this IOwnable.
 	 *
-	 * @param player The player to check ownership of
-	 * @return true if the given player owns this IOwnable, false otherwise
+	 * @param entity The entity to check ownership of
+	 * @return true if the given entity owns this IOwnable, false otherwise
 	 */
-	public default boolean isOwnedBy(Player player) {
-		if (player == null)
+	public default boolean isOwnedBy(Entity entity) {
+		if (entity instanceof Player player)
+			return isOwnedBy(new Owner(player));
+		else
 			return false;
-
-		return isOwnedBy(new Owner(player));
 	}
 
 	/**
@@ -108,5 +111,15 @@ public interface IOwnable {
 		Owner beOwner = getOwner();
 
 		return entity.getOwnerUUID() != null && (entity.getOwnerUUID().toString().equals(beOwner.getUUID()) || TeamUtils.areOnSameTeam(beOwner, new Owner(entity.getOwner())));
+	}
+
+	/**
+	 * Checks if this block entity should ignore its owner. Note that this is not used in {@link #isOwnedBy(Player)}, so there
+	 * are cases where SecurityCraft does not use this method in conjunction with owner checks (e.g. breaking reinforced blocks).
+	 *
+	 * @return true if the owner is ignored, false otherwise
+	 */
+	public default boolean ignoresOwner() {
+		return false;
 	}
 }

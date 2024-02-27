@@ -22,7 +22,6 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -76,7 +75,9 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 			if (state.getValue(RetinalScannerBlock.FACING) != hitResult.getDirection())
 				return false;
 
-			if (!state.getValue(RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)) {
+			int signalLength = getSignalLength();
+
+			if ((!state.getValue(RetinalScannerBlock.POWERED) || signalLength == 0) && !Utils.isEntityInvisible(entity)) {
 				if (entity instanceof Player player) {
 					Owner viewingPlayer = new Owner(player);
 
@@ -94,9 +95,12 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 				else if (activatedOnlyByPlayer())
 					return false;
 
-				level.setBlockAndUpdate(worldPosition, state.setValue(RetinalScannerBlock.POWERED, true));
+				level.setBlockAndUpdate(worldPosition, state.cycle(RetinalScannerBlock.POWERED));
 				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.RETINAL_SCANNER.get());
-				level.scheduleTick(new BlockPos(worldPosition), SCContent.RETINAL_SCANNER.get(), getSignalLength());
+
+				if (signalLength > 0)
+					level.scheduleTick(new BlockPos(worldPosition), SCContent.RETINAL_SCANNER.get(), signalLength);
+
 				return true;
 			}
 		}
@@ -113,6 +117,16 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 		}
 
 		return false;
+	}
+
+	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals(signalLength.getName())) {
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(RetinalScannerBlock.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+		}
+
+		super.onOptionChanged(option);
 	}
 
 	@Override

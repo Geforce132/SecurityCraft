@@ -79,8 +79,8 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.FLOOR_TRAP.get()));
 				output.accept(new ItemStack(SCContent.CAGE_TRAP.get()));
 				output.accept(new ItemStack(SCContent.WIRE_CUTTERS.get()));
-				output.accept(new ItemStack(SCContent.IRON_FENCE.get()));
-				output.accept(new ItemStack(SCContent.REINFORCED_FENCE_GATE.get()));
+				output.accept(new ItemStack(SCContent.ELECTRIFIED_IRON_FENCE.get()));
+				output.accept(new ItemStack(SCContent.ELECTRIFIED_IRON_FENCE_GATE.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_IRON_TRAPDOOR.get()));
 				output.accept(new ItemStack(SCContent.KEYPAD_TRAPDOOR.get()));
 				output.accept(new ItemStack(SCContent.SCANNER_TRAPDOOR.get()));
@@ -93,6 +93,8 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.PORTABLE_TUNE_PLAYER.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_PISTON.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_STICKY_PISTON.get()));
+				output.accept(new ItemStack(SCContent.REINFORCED_DISPENSER.get()));
+				output.accept(new ItemStack(SCContent.REINFORCED_DROPPER.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_OBSERVER.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_CAULDRON.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_LADDER.get()));
@@ -136,7 +138,7 @@ public class SCCreativeModeTabs {
 			.displayItems((itemDisplayParameters, output) -> {
 				//@formatter:on
 				List<Item> vanillaOrderedItems = getVanillaOrderedItems();
-				List<ItemStack> mineGroupItems = STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES);
+				List<ItemStack> mineGroupItems = new ArrayList<>(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES));
 
 				mineGroupItems.sort((a, b) -> {
 					//if a isn't an item that has a vanilla counterpart, it should appear at the front
@@ -167,7 +169,7 @@ public class SCCreativeModeTabs {
 			.displayItems((itemDisplayParameters, output) -> {
 				//@formatter:on
 				List<Item> vanillaOrderedItems = getVanillaOrderedItems();
-				List<ItemStack> decorationGroupItems = STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION);
+				List<ItemStack> decorationGroupItems = new ArrayList<>(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION));
 
 				decorationGroupItems.sort((a, b) -> {
 					//if a isn't an item that has a vanilla counterpart, it should appear at the back
@@ -193,73 +195,40 @@ public class SCCreativeModeTabs {
 					return Integer.compare(indexA, indexB);
 				});
 
-				//loop starts from the back, because the reinforced chiseled bookshelf is expected to be towards the end of the list
-				//can't use indexOf, because ItemStack does not implement Object#equals
-				for (int i = decorationGroupItems.size() - 1; i >= 0; i--) {
-					//sort secret signs after the reinforced chiseled bookshelf
-					if (decorationGroupItems.get(i).getItem() == SCContent.REINFORCED_CHISELED_BOOKSHELF.get().asItem()) {
-						decorationGroupItems.addAll(i + 1, List.of( //@formatter:off
-								new ItemStack(SCContent.SECRET_OAK_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_OAK_HANGING_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_SPRUCE_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_SPRUCE_HANGING_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_BIRCH_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_BIRCH_HANGING_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_JUNGLE_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_JUNGLE_HANGING_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_ACACIA_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_ACACIA_HANGING_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_DARK_OAK_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_DARK_OAK_HANGING_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_MANGROVE_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_MANGROVE_HANGING_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_CHERRY_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_CHERRY_HANGING_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_BAMBOO_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_BAMBOO_HANGING_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_CRIMSON_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_CRIMSON_HANGING_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_WARPED_SIGN_ITEM.get()),
-								new ItemStack(SCContent.SECRET_WARPED_HANGING_SIGN_ITEM.get())));
-						//@formatter:on
-						break;
-					}
-				}
-
-				decorationGroupItems.add(new ItemStack(SCContent.CRYSTAL_QUARTZ_BLOCK.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.CRYSTAL_QUARTZ_STAIRS.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.CRYSTAL_QUARTZ_SLAB.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.CHISELED_CRYSTAL_QUARTZ.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.CRYSTAL_QUARTZ_BRICKS.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.CRYSTAL_QUARTZ_PILLAR.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.SMOOTH_CRYSTAL_QUARTZ.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_BRICKS.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.BLOCK_POCKET_WALL.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.IRON_FENCE.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.REINFORCED_FENCE_GATE.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.REINFORCED_IRON_TRAPDOOR.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.KEYPAD_TRAPDOOR.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.SCANNER_TRAPDOOR.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.KEYPAD_DOOR_ITEM.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.DISPLAY_CASE.get()));
-				decorationGroupItems.add(new ItemStack(SCContent.GLOW_DISPLAY_CASE.get()));
 				output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
 				output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get());
 				output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get());
 				output.accept(SCContent.UNIVERSAL_BLOCK_REMOVER.get());
 				output.acceptAll(decorationGroupItems);
+				output.accept(SCContent.CRYSTAL_QUARTZ_BLOCK.get());
+				output.accept(SCContent.CRYSTAL_QUARTZ_STAIRS.get());
+				output.accept(SCContent.CRYSTAL_QUARTZ_SLAB.get());
+				output.accept(SCContent.CHISELED_CRYSTAL_QUARTZ.get());
+				output.accept(SCContent.CRYSTAL_QUARTZ_BRICKS.get());
+				output.accept(SCContent.CRYSTAL_QUARTZ_PILLAR.get());
+				output.accept(SCContent.SMOOTH_CRYSTAL_QUARTZ.get());
+				output.accept(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get());
+				output.accept(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get());
+				output.accept(SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK.get());
+				output.accept(SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get());
+				output.accept(SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get());
+				output.accept(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get());
+				output.accept(SCContent.REINFORCED_CRYSTAL_QUARTZ_BRICKS.get());
+				output.accept(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get());
+				output.accept(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ.get());
+				output.accept(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS.get());
+				output.accept(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB.get());
+				output.accept(SCContent.BLOCK_POCKET_WALL.get());
+				output.accept(SCContent.ELECTRIFIED_IRON_FENCE.get());
+				output.accept(SCContent.ELECTRIFIED_IRON_FENCE_GATE.get());
+				output.accept(SCContent.REINFORCED_IRON_TRAPDOOR.get());
+				output.accept(SCContent.KEYPAD_TRAPDOOR.get());
+				output.accept(SCContent.SCANNER_TRAPDOOR.get());
+				output.accept(SCContent.REINFORCED_DOOR_ITEM.get());
+				output.accept(SCContent.KEYPAD_DOOR_ITEM.get());
+				output.accept(SCContent.SCANNER_DOOR_ITEM.get());
+				output.accept(SCContent.DISPLAY_CASE.get());
+				output.accept(SCContent.GLOW_DISPLAY_CASE.get());
 			}).build());
 
 	private static List<Item> getVanillaOrderedItems() {

@@ -1,19 +1,22 @@
 package net.geforcemods.securitycraft.misc;
 
+import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.player.Player;
 
 public enum TargetingMode {
-	PLAYERS("gui.securitycraft:srat.targets3", true, false),
-	PLAYERS_AND_MOBS("gui.securitycraft:srat.targets1", true, true),
-	MOBS("gui.securitycraft:srat.targets2", false, true);
+	PLAYERS("gui.securitycraft:srat.targets3"),
+	PLAYERS_AND_MOBS("gui.securitycraft:srat.targets1"),
+	MOBS("gui.securitycraft:srat.targets2");
 
 	private final String translationKey;
-	private final boolean allowsPlayers, allowsMobs;
 
-	private TargetingMode(String translationKey, boolean allowsPlayers, boolean allowsMobs) {
+	private TargetingMode(String translationKey) {
 		this.translationKey = translationKey;
-		this.allowsPlayers = allowsPlayers;
-		this.allowsMobs = allowsMobs;
 	}
 
 	public Component translate() {
@@ -21,10 +24,24 @@ public enum TargetingMode {
 	}
 
 	public boolean allowsPlayers() {
-		return allowsPlayers;
+		return this == PLAYERS || this == PLAYERS_AND_MOBS;
 	}
 
 	public boolean allowsMobs() {
-		return allowsMobs;
+		return this == MOBS || this == PLAYERS_AND_MOBS;
+	}
+
+	public <T extends IOwnable> boolean canAttackEntity(LivingEntity entity, T be, boolean checkInvisibility) {
+		if (entity == null || be instanceof IModuleInventory moduleInv && moduleInv.isAllowed(entity))
+			return false;
+
+		boolean isPlayer = entity instanceof Player;
+
+		if (isPlayer && allowsPlayers() || !isPlayer && allowsMobs()) {
+			return (!isPlayer || !(be.isOwnedBy((Player) entity) && be.ignoresOwner()) && !((Player) entity).isCreative()) //Player checks
+					&& entity.canBeSeenByAnyone() && (!checkInvisibility || !Utils.isEntityInvisible(entity)) && !(entity instanceof OwnableEntity ownableEntity && be.allowsOwnableEntity(ownableEntity)); //checks for all entities
+		}
+		else
+			return false;
 	}
 }

@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
@@ -31,6 +32,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerListener;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
@@ -53,7 +56,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable, IToggleableEntries<EntityType<?>>, MenuProvider {
+public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable, IToggleableEntries<EntityType<?>>, MenuProvider, ContainerListener {
 	/** The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
 	private final Map<EntityType<?>, Boolean> projectileFilter = new LinkedHashMap<>();
@@ -61,10 +64,11 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	private int cooldown = getCooldownTime();
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
-	private SimpleContainer lens = new SimpleContainer(1);
+	private LensContainer lens = new LensContainer(1);
 
 	public TrophySystemBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get(), pos, state);
+		lens.addListener(this);
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
 		//ordering is done in ToggleListScreen based on the user's current language
 		projectileFilter.put(SCContent.BULLET_ENTITY.get(), true);
@@ -161,11 +165,19 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	}
 
 	public static IItemHandler getCapability(TrophySystemBlockEntity be, Direction side) {
-		return BlockUtils.getProtectedCapability(side, be, () -> new InvWrapper(be.lens), () -> new InsertOnlyInvWrapper(be.lens));
+		return BlockUtils.isAllowedToExtractFromProtectedBlock(side, be) ? new InvWrapper(be.lens) : new InsertOnlyInvWrapper(be.lens);
 	}
 
 	public SimpleContainer getLensContainer() {
 		return lens;
+	}
+
+	@Override
+	public void containerChanged(Container container) {
+		if (level == null)
+			return;
+
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 	}
 
 	@Override
@@ -284,6 +296,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		return disabled.get();
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

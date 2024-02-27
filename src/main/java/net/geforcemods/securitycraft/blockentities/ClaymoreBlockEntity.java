@@ -5,12 +5,15 @@ import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
-import net.geforcemods.securitycraft.inventory.ClaymoreMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.LensContainer;
+import net.geforcemods.securitycraft.inventory.SingleLensMenu;
+import net.geforcemods.securitycraft.inventory.SingleLensMenu.SingleLensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,10 +23,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerListener;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -33,14 +35,16 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
-public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, MenuProvider {
+public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, MenuProvider, ContainerListener, SingleLensContainer {
 	private IntOption range = new IntOption("range", 5, 1, 10, 1, true);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
-	private SimpleContainer lens = new SimpleContainer(1);
+	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS_AND_MOBS);
+	private LensContainer lens = new LensContainer(1);
 	private int cooldown = -1;
 
 	public ClaymoreBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.CLAYMORE_BLOCK_ENTITY.get(), pos, state);
+		lens.addListener(this);
 	}
 
 	@Override
@@ -58,6 +62,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 			return;
 		}
 
+		TargetingMode mode = getTargetingMode();
 		Direction dir = state.getValue(ClaymoreBlock.FACING);
 		AABB area = switch (dir) {
 			case NORTH -> new AABB(pos).contract(0, 0, range.get());
@@ -67,16 +72,15 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 			default -> new AABB(pos);
 		};
 
-		level.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !(e instanceof Player player && player.isCreative()) && !(e instanceof OwnableEntity ownableEntity && allowsOwnableEntity(ownableEntity)) && e.canBeSeenByAnyone() && !(EntityUtils.doesEntityOwn(e, level, pos) && ignoresOwner())).stream().findFirst().ifPresent(entity -> {
+		level.getEntitiesOfClass(LivingEntity.class, area, e -> mode.canAttackEntity(e, this, true)).stream().findFirst().ifPresent(e -> {
 			cooldown = 20;
-			level.playSound(null, BlockPos.containing(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.playSound(null, BlockPos.containing(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
 		});
 	}
 
 	@Override
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
-		writeOptions(tag);
 		tag.putInt("cooldown", cooldown);
 		tag.put("lens", lens.createTag());
 	}
@@ -84,19 +88,25 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	@Override
 	public void load(CompoundTag tag) {
 		super.load(tag);
-
-		readOptions(tag);
 		cooldown = tag.getInt("cooldown");
 		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
 	}
 
 	public static IItemHandler getCapability(ClaymoreBlockEntity be, Direction side) {
-		return BlockUtils.getProtectedCapability(side, be, () -> new InvWrapper(be.lens), () -> new InsertOnlyInvWrapper(be.lens));
+		return BlockUtils.isAllowedToExtractFromProtectedBlock(side, be) ? new InvWrapper(be.lens) : new InsertOnlyInvWrapper(be.lens);
+	}
+
+	@Override
+	public void containerChanged(Container container) {
+		if (level == null)
+			return;
+
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 	}
 
 	@Override
 	public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-		return new ClaymoreMenu(id, level, worldPosition, inventory);
+		return new SingleLensMenu(id, level, worldPosition, inventory);
 	}
 
 	@Override
@@ -104,6 +114,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 		return super.getDisplayName();
 	}
 
+	@Override
 	public Container getLensContainer() {
 		return lens;
 	}
@@ -111,7 +122,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range, ignoreOwner
+				range, ignoreOwner, targetingMode
 		};
 	}
 
@@ -120,7 +131,12 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 		return new ModuleType[0];
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
+	}
+
+	public TargetingMode getTargetingMode() {
+		return targetingMode.get();
 	}
 }

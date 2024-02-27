@@ -1,13 +1,10 @@
 package net.geforcemods.securitycraft.datagen;
 
-import java.util.concurrent.CompletableFuture;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -28,8 +25,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 
 public class RecipeGenerator extends RecipeProvider {
-	public RecipeGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-		super(output, lookupProvider);
+	public RecipeGenerator(PackOutput output) {
+		super(output);
 	}
 
 	@Override
@@ -174,12 +171,12 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('D', Items.IRON_DOOR)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(recipeOutput);
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SCContent.IRON_FENCE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.ELECTRIFIED_IRON_FENCE.get())
 		.pattern(" I ")
 		.pattern("IFI")
 		.pattern(" I ")
 		.define('I', Tags.Items.INGOTS_IRON)
-		.define('F', ItemTags.WOODEN_FENCES)
+		.define('F', SCTags.Items.REINFORCED_WOODEN_FENCES)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(recipeOutput);
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.IMS.get())
@@ -239,7 +236,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("BBB")
 		.pattern("BPB")
 		.pattern("BBB")
-		.define('B', Items.STONE_BUTTON)
+		.define('B', SCContent.REINFORCED_STONE_BUTTON.get())
 		.define('P', Items.HEAVY_WEIGHTED_PRESSURE_PLATE)
 		.unlockedBy("has_stone_button", has(Items.STONE_BUTTON))
 		.save(recipeOutput);
@@ -254,6 +251,14 @@ public class RecipeGenerator extends RecipeProvider {
 		.unlockedBy("has_stone", has(ItemTags.STONE_CRAFTING_MATERIALS))
 		.save(recipeOutput);
 		//k you can change again :)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.REINFORCED_LECTERN.get())
+		.pattern("SSS")
+		.pattern(" B ")
+		.pattern(" S ")
+		.define('S', SCTags.Items.REINFORCED_WOODEN_SLABS)
+		.define('B', SCContent.REINFORCED_BOOKSHELF.get())
+		.unlockedBy("has_bookshelf", has(Items.BOOKSHELF))
+		.save(recipeOutput);
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.LENS.get(), 6)
 		.group("securitycraft:lens")
 		.pattern(" P")
@@ -283,7 +288,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("IBI")
 		.pattern(" R ")
 		.define('I', Tags.Items.INGOTS_IRON)
-		.define('B', Items.STONE_BUTTON)
+		.define('B', SCContent.REINFORCED_STONE_BUTTON.get())
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(recipeOutput);
@@ -352,12 +357,29 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('Q', Tags.Items.GEMS_QUARTZ)
 		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
 		.save(recipeOutput);
-		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_FENCE_GATE.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_DISPENSER.get())
+		.pattern("CCC")
+		.pattern("CBC")
+		.pattern("CRC")
+		.define('C', SCContent.REINFORCED_COBBLESTONE.get())
+		.define('R', Tags.Items.DUSTS_REDSTONE)
+		.define('B', Items.BOW)
+		.unlockedBy("has_bow", has(Items.BOW))
+		.save(recipeOutput);
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_DROPPER.get())
+		.pattern("CCC")
+		.pattern("C C")
+		.pattern("CRC")
+		.define('C', SCContent.REINFORCED_COBBLESTONE.get())
+		.define('R', Tags.Items.DUSTS_REDSTONE)
+		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
+		.save(recipeOutput);
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.ELECTRIFIED_IRON_FENCE_GATE.get())
 		.pattern(" I ")
 		.pattern("IGI")
 		.pattern(" I ")
 		.define('I', Tags.Items.INGOTS_IRON)
-		.define('G', Tags.Items.FENCE_GATES_WOODEN)
+		.define('G', SCTags.Items.REINFORCED_WOODEN_FENCE_GATES)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(recipeOutput);
 		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_LEVER.get())
@@ -371,10 +393,20 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("CCC")
 		.pattern("RRQ")
 		.pattern("CCC")
-		.define('C', SCTags.Items.REINFORCED_STONE_CRAFTING_MATERIALS)
+		.define('C', SCContent.REINFORCED_COBBLESTONE.get())
 		.define('Q', Tags.Items.GEMS_QUARTZ)
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_quartz", has(Tags.Items.GEMS_QUARTZ))
+		.save(recipeOutput);
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_PISTON.get())
+		.pattern("PPP")
+		.pattern("CIC")
+		.pattern("CRC")
+		.define('P', SCTags.Items.REINFORCED_PLANKS)
+		.define('C', SCContent.REINFORCED_COBBLESTONE.get())
+		.define('I', Tags.Items.INGOTS_IRON)
+		.define('R', Tags.Items.DUSTS_REDSTONE)
+		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(recipeOutput);
 		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_REDSTONE_LAMP.get())
 		.pattern(" R ")
@@ -383,6 +415,13 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', SCContent.REINFORCED_GLOWSTONE.get())
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
+		.save(recipeOutput);
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_STICKY_PISTON.get())
+		.pattern("S")
+		.pattern("P")
+		.define('P', SCContent.REINFORCED_PISTON.get())
+		.define('S', Tags.Items.SLIMEBALLS)
+		.unlockedBy("has_slime_ball", has(Tags.Items.SLIMEBALLS))
 		.save(recipeOutput);
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_TINTED_GLASS.get(), 2)
 		.pattern(" A ")
@@ -446,7 +485,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("IPI")
 		.pattern("BBB")
 		.define('R', Tags.Items.DUSTS_REDSTONE)
-		.define('D', Blocks.DISPENSER)
+		.define('D', SCContent.REINFORCED_DISPENSER.get())
 		.define('I', Tags.Items.INGOTS_IRON)
 		.define('P', SCContent.PORTABLE_RADAR.get())
 		.define('B', SCContent.REINFORCED_IRON_BLOCK.get())
@@ -463,7 +502,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('S', Tags.Items.RODS_WOODEN)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(recipeOutput);
-		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, SCContent.TRACK_MINE.get(), 4)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, SCContent.TRACK_MINE.get(), 6)
 		.pattern("I I")
 		.pattern("ISI")
 		.pattern("IGI")
@@ -592,9 +631,19 @@ public class RecipeGenerator extends RecipeProvider {
 		.save(recipeOutput);
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_ANDESITE.get(), 2)
 		.requires(SCContent.REINFORCED_DIORITE.get())
-		.requires(SCTags.Items.REINFORCED_COBBLESTONE)
+		.requires(SCContent.REINFORCED_COBBLESTONE.get())
 		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
 		.save(recipeOutput);
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_ANDESITE.get(), 2)
+		.requires(Blocks.DIORITE)
+		.requires(SCContent.REINFORCED_COBBLESTONE.get())
+		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
+		.save(recipeOutput, "securitycraft:reinforced_andesite_with_vanilla_diorite");
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_ANDESITE.get(), 2)
+		.requires(SCContent.REINFORCED_DIORITE.get())
+		.requires(Blocks.COBBLESTONE)
+		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
+		.save(recipeOutput, "securitycraft:reinforced_andesite_with_vanilla_cobblestone");
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK.get())
 		.requires(SCContent.BLOCK_POCKET_WALL.get())
 		.unlockedBy("has_block_pocket_wall", has(SCContent.BLOCK_POCKET_WALL.get()))
@@ -625,6 +674,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.unlockedBy("has_name_tag", has(Items.NAME_TAG))
 		.save(recipeOutput);
 
+		//@formatter:on
 		//template recipes
 		addBarkRecipe(recipeOutput, SCContent.REINFORCED_ACACIA_LOG.get(), SCContent.REINFORCED_ACACIA_WOOD.get());
 		addBarkRecipe(recipeOutput, SCContent.REINFORCED_BIRCH_LOG.get(), SCContent.REINFORCED_BIRCH_WOOD.get());
@@ -712,6 +762,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addColoredCarpetRecipes(recipeOutput, Tags.Items.DYES_YELLOW, SCContent.REINFORCED_YELLOW_WOOL.get(), SCContent.REINFORCED_YELLOW_CARPET.get());
 		addChiselingRecipe(recipeOutput, SCContent.CRYSTAL_QUARTZ_SLAB.get(), SCContent.CHISELED_CRYSTAL_QUARTZ.get());
 		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get(), SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get());
+		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_COBBLED_DEEPSLATE_SLAB.get(), SCContent.REINFORCED_CHISELED_DEEPSLATE.get());
 		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_PURPUR_SLAB.get(), SCContent.REINFORCED_PURPUR_PILLAR.get());
 		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_NETHER_BRICK_SLAB.get(), SCContent.REINFORCED_CHISELED_NETHER_BRICKS.get());
 		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_QUARTZ_SLAB.get(), SCContent.REINFORCED_CHISELED_QUARTZ.get());
@@ -734,8 +785,32 @@ public class RecipeGenerator extends RecipeProvider {
 		addColoredWoolRecipe(recipeOutput, Tags.Items.DYES_PURPLE, SCContent.REINFORCED_PURPLE_WOOL.get());
 		addColoredWoolRecipe(recipeOutput, Tags.Items.DYES_RED, SCContent.REINFORCED_RED_WOOL.get());
 		addColoredWoolRecipe(recipeOutput, Tags.Items.DYES_YELLOW, SCContent.REINFORCED_YELLOW_WOOL.get());
+		addColoredWoolRecipe(recipeOutput, Tags.Items.DYES_WHITE, SCContent.REINFORCED_WHITE_WOOL.get());
 		addCompressingRecipe(recipeOutput, SCContent.REINFORCED_ICE.get(), SCContent.REINFORCED_PACKED_ICE.get());
 		addCompressingRecipe(recipeOutput, SCContent.REINFORCED_PACKED_ICE.get(), SCContent.REINFORCED_BLUE_ICE.get());
+		addFenceRecipe(recipeOutput, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_FENCE.get());
+		addFenceRecipe(recipeOutput, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_FENCE.get());
+		addFenceRecipe(recipeOutput, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.REINFORCED_BIRCH_FENCE.get());
+		addFenceRecipe(recipeOutput, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_FENCE.get());
+		addFenceRecipe(recipeOutput, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_FENCE.get());
+		addFenceRecipe(recipeOutput, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.REINFORCED_DARK_OAK_FENCE.get());
+		addFenceRecipe(recipeOutput, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_FENCE.get());
+		addFenceRecipe(recipeOutput, SCContent.REINFORCED_CHERRY_PLANKS.get(), SCContent.REINFORCED_CHERRY_FENCE.get());
+		addFenceRecipe(recipeOutput, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.REINFORCED_BAMBOO_FENCE.get());
+		addFenceRecipe(recipeOutput, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_FENCE.get());
+		addFenceRecipe(recipeOutput, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_FENCE.get());
+		addFenceRecipe(recipeOutput, SCContent.REINFORCED_NETHER_BRICKS.get(), Tags.Items.INGOTS_NETHER_BRICK, SCContent.REINFORCED_NETHER_BRICK_FENCE.get(), 6, false);
+		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_FENCE_GATE.get());
+		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_FENCE_GATE.get());
+		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.REINFORCED_BIRCH_FENCE_GATE.get());
+		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_FENCE_GATE.get());
+		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_FENCE_GATE.get());
+		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.REINFORCED_DARK_OAK_FENCE_GATE.get());
+		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_FENCE_GATE.get());
+		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_CHERRY_PLANKS.get(), SCContent.REINFORCED_CHERRY_FENCE_GATE.get());
+		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.REINFORCED_BAMBOO_FENCE_GATE.get());
+		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_FENCE_GATE.get());
+		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_FENCE_GATE.get());
 		addKeycardRecipe(recipeOutput, Tags.Items.INGOTS_GOLD, SCContent.KEYCARD_LVL_1.get());
 		addKeycardRecipe(recipeOutput, Tags.Items.INGOTS_BRICK, SCContent.KEYCARD_LVL_2.get());
 		addKeycardRecipe(recipeOutput, Tags.Items.INGOTS_NETHER_BRICK, SCContent.KEYCARD_LVL_3.get());
@@ -980,9 +1055,9 @@ public class RecipeGenerator extends RecipeProvider {
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_QUARTZ_BLOCK.get(), SCContent.REINFORCED_QUARTZ_BRICKS.get());
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_BLACKSTONE.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICKS.get());
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_TILES.get());
-		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_RED_SAND.get(), SCContent.REINFORCED_RED_SANDSTONE.get());
+		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_RED_SAND.get(), SCContent.REINFORCED_RED_SANDSTONE.get(), 1);
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_RED_SANDSTONE.get(), SCContent.REINFORCED_CUT_RED_SANDSTONE.get());
-		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_SAND.get(), SCContent.REINFORCED_SANDSTONE.get());
+		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_SAND.get(), SCContent.REINFORCED_SANDSTONE.get(), 1);
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_SANDSTONE.get(), SCContent.REINFORCED_CUT_SANDSTONE.get());
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_STONE.get(), SCContent.REINFORCED_STONE_BRICKS.get());
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_COPPER.get(), SCContent.REINFORCED_WEATHERED_CUT_COPPER.get());
@@ -1118,9 +1193,9 @@ public class RecipeGenerator extends RecipeProvider {
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_END_STONE.get(), SCContent.REINFORCED_END_STONE_BRICK_WALL.get(), 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_END_STONE_BRICKS.get(), SCContent.REINFORCED_END_STONE_BRICK_SLAB.get(), 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_END_STONE_BRICKS.get(), SCContent.REINFORCED_END_STONE_BRICK_STAIRS.get(), 1);
-		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_COPPER.get(), SCContent.REINFORCED_EXPOSED_CUT_COPPER.get(), 1);
-		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_COPPER.get(), SCContent.REINFORCED_EXPOSED_CUT_COPPER_SLAB.get(), 2);
-		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_COPPER.get(), SCContent.REINFORCED_EXPOSED_CUT_COPPER_STAIRS.get(), 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_COPPER.get(), SCContent.REINFORCED_EXPOSED_CUT_COPPER.get(), 4);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_COPPER.get(), SCContent.REINFORCED_EXPOSED_CUT_COPPER_SLAB.get(), 8);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_COPPER.get(), SCContent.REINFORCED_EXPOSED_CUT_COPPER_STAIRS.get(), 4);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_CUT_COPPER.get(), SCContent.REINFORCED_EXPOSED_CUT_COPPER_SLAB.get(), 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_CUT_COPPER.get(), SCContent.REINFORCED_EXPOSED_CUT_COPPER_STAIRS.get(), 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_GRANITE.get(), SCContent.REINFORCED_GRANITE_SLAB.get(), 2);
@@ -1137,9 +1212,9 @@ public class RecipeGenerator extends RecipeProvider {
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_NETHER_BRICKS.get(), SCContent.REINFORCED_CHISELED_NETHER_BRICKS.get(), 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_NETHER_BRICKS.get(), SCContent.REINFORCED_NETHER_BRICK_SLAB.get(), 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_NETHER_BRICKS.get(), SCContent.REINFORCED_NETHER_BRICK_STAIRS.get(), 1);
-		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_COPPER.get(), SCContent.REINFORCED_OXIDIZED_CUT_COPPER.get(), 1);
-		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_COPPER.get(), SCContent.REINFORCED_OXIDIZED_CUT_COPPER_SLAB.get(), 2);
-		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_COPPER.get(), SCContent.REINFORCED_OXIDIZED_CUT_COPPER_STAIRS.get(), 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_COPPER.get(), SCContent.REINFORCED_OXIDIZED_CUT_COPPER.get(), 4);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_COPPER.get(), SCContent.REINFORCED_OXIDIZED_CUT_COPPER_SLAB.get(), 8);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_COPPER.get(), SCContent.REINFORCED_OXIDIZED_CUT_COPPER_STAIRS.get(), 4);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_CUT_COPPER.get(), SCContent.REINFORCED_OXIDIZED_CUT_COPPER_SLAB.get(), 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_CUT_COPPER.get(), SCContent.REINFORCED_OXIDIZED_CUT_COPPER_STAIRS.get(), 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_ANDESITE.get(), SCContent.REINFORCED_POLISHED_ANDESITE_SLAB.get(), 2);
@@ -1210,15 +1285,21 @@ public class RecipeGenerator extends RecipeProvider {
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_STONE_BRICKS.get(), SCContent.REINFORCED_CHISELED_STONE_BRICKS.get(), 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_STONE_BRICKS.get(), SCContent.REINFORCED_STONE_BRICK_SLAB.get(), 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_STONE_BRICKS.get(), SCContent.REINFORCED_STONE_BRICK_STAIRS.get(), 1);
-		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_COPPER.get(), SCContent.REINFORCED_WEATHERED_CUT_COPPER.get(), 1);
-		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_COPPER.get(), SCContent.REINFORCED_WEATHERED_CUT_COPPER_SLAB.get(), 2);
-		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_COPPER.get(), SCContent.REINFORCED_WEATHERED_CUT_COPPER_STAIRS.get(), 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_COPPER.get(), SCContent.REINFORCED_WEATHERED_CUT_COPPER.get(), 4);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_COPPER.get(), SCContent.REINFORCED_WEATHERED_CUT_COPPER_SLAB.get(), 8);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_COPPER.get(), SCContent.REINFORCED_WEATHERED_CUT_COPPER_STAIRS.get(), 4);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_CUT_COPPER.get(), SCContent.REINFORCED_WEATHERED_CUT_COPPER_SLAB.get(), 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_CUT_COPPER.get(), SCContent.REINFORCED_WEATHERED_CUT_COPPER_STAIRS.get(), 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.SMOOTH_CRYSTAL_QUARTZ.get(), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get(), 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.SMOOTH_CRYSTAL_QUARTZ.get(), SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), 1);
 
-		//moss conversions
+		//@formatter:off
+		//mossy conversions
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
+		.requires(SCContent.REINFORCED_COBBLESTONE.get())
+		.requires(Items.VINE)
+		.unlockedBy("has_vine", has(Items.VINE))
+		.save(recipeOutput, "securitycraft:reinforced_mossy_cobblestone_from_vine");
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
 		.requires(SCContent.REINFORCED_COBBLESTONE.get())
 		.requires(Blocks.MOSS_BLOCK)
@@ -1234,6 +1315,11 @@ public class RecipeGenerator extends RecipeProvider {
 		.requires(SCContent.REINFORCED_MOSS_BLOCK.get())
 		.unlockedBy("has_reinforced_moss", has(SCContent.REINFORCED_MOSS_BLOCK.get()))
 		.save(recipeOutput, "securitycraft:reinforced_mossy_cobblestone_from_reinforced_ingredients");
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_MOSSY_STONE_BRICKS.get())
+		.requires(SCContent.REINFORCED_STONE_BRICKS.get())
+		.requires(Items.VINE)
+		.unlockedBy("has_vine", has(Items.VINE))
+		.save(recipeOutput, "securitycraft:reinforced_mossy_stone_bricks_from_vine");
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_MOSSY_STONE_BRICKS.get())
 		.requires(SCContent.REINFORCED_STONE_BRICKS.get())
 		.requires(Blocks.MOSS_BLOCK)
@@ -1339,6 +1425,39 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("BBB")
 		.define('B', block)
 		.unlockedBy("has_block", has(block))
+		.save(recipeOutput);
+		//@formatter:on
+	}
+
+	protected final void addFenceRecipe(RecipeOutput recipeOutput, ItemLike material, ItemLike result) {
+		addFenceRecipe(recipeOutput, material, Tags.Items.RODS_WOODEN, result, 3, true);
+	}
+
+	protected final void addFenceRecipe(RecipeOutput recipeOutput, ItemLike material, TagKey<Item> stick, ItemLike result, int amount, boolean group) {
+		//@formatter:off
+		ShapedRecipeBuilder builder = ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, amount)
+		.pattern("MSM")
+		.pattern("MSM")
+		.define('M', material)
+		.define('S', stick)
+		.unlockedBy("has_stick", has(stick));
+		//@formatter:on
+
+		if (group)
+			builder.group("securitycraft:reinforced_fences");
+
+		builder.save(recipeOutput);
+	}
+
+	protected final void addFenceGateRecipe(RecipeOutput recipeOutput, ItemLike material, ItemLike result) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, result)
+		.group("securitycraft:reinforced_fence_gates")
+		.pattern("SMS")
+		.pattern("SMS")
+		.define('S', Tags.Items.RODS_WOODEN)
+		.define('M', material)
+		.unlockedBy("has_stick", has(Tags.Items.RODS_WOODEN))
 		.save(recipeOutput);
 		//@formatter:on
 	}
@@ -1576,8 +1695,12 @@ public class RecipeGenerator extends RecipeProvider {
 	}
 
 	protected final void addTwoByTwoRecipe(RecipeOutput recipeOutput, ItemLike block, ItemLike result) {
+		addTwoByTwoRecipe(recipeOutput, block, result, 4);
+	}
+
+	protected final void addTwoByTwoRecipe(RecipeOutput recipeOutput, ItemLike block, ItemLike result, int amount) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 4)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, amount)
 		.pattern("BB")
 		.pattern("BB")
 		.define('B', block)

@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -63,7 +64,6 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		int startY = (height - ySize) / 2;
 		int paddingX = 22;
 		int paddingY = 50;
-		int[] coords = null;
 		int id = 0;
 		boolean foundSentry = false;
 
@@ -72,11 +72,11 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		for (int i = 0; i < 12; i++) {
 			int x = (i / 6) * xSize / 2; //first six sentries in the left column, second six sentries in the right column
 			int y = ((i % 6) + 1) * 25 + paddingY;
-			coords = getSentryCoordinates(i);
+			int btnY = startY + y - 48;
+			BlockPos sentryPos = getSentryCoordinates(i);
 
 			for (int j = 0; j < 3; j++) {
 				int btnX = startX + j * paddingX + 147 + x;
-				int btnY = startY + y - 48;
 				int sentry = id / 3;
 				int type = id % 3;
 				final int index = id++;
@@ -101,9 +101,13 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				addRenderableWidget(guiButtons[i][j]);
 			}
 
-			if (coords.length == 3) {
-				BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
+			if (sentryPos != null) {
 				Level level = Minecraft.getInstance().player.level();
+				String nameKey = "sentry" + (i + 1) + "_name";
+				Component sentryName = null;
+
+				if (srat.hasTag() && srat.getTag().contains(nameKey))
+					sentryName = Component.literal(srat.getTag().getString(nameKey));
 
 				lines[i] = Utils.getFormattedCoordinates(sentryPos);
 				guiButtons[i][UNBIND].active = true;
@@ -115,16 +119,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						Sentry sentry = sentries.get(0);
 						SentryMode mode = sentry.getMode();
 
-						if (sentry.hasCustomName()) {
-							Component line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
-							int nameWidth = font.width(sentry.getCustomName());
-							int nameX = startX + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
-							int nameY = startY + (i % 6) * 30 + 7;
-							TextHoverChecker posTooltipText = new TextHoverChecker(nameY + 4, nameY + 18, nameX, nameX + nameWidth + 2, line);
-
-							lines[i] = sentry.getCustomName();
-							hoverCheckers.add(posTooltipText);
-						}
+						if (sentryName == null && sentry.hasCustomName())
+							sentryName = sentry.getCustomName();
 
 						guiButtons[i][MODE].active = true;
 						guiButtons[i][TARGETS].active = mode != SentryMode.IDLE;
@@ -136,6 +132,15 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						guiButtons[i][UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:srat.unbind")));
 						foundSentry = true;
 					}
+				}
+
+				if (sentryName != null) {
+					int nameWidth = font.width(sentryName);
+					int nameX = startX + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
+					TextHoverChecker posTooltipText = new TextHoverChecker(btnY, btnY + 20, nameX, nameX + nameWidth + 2, lines[i]);
+
+					lines[i] = sentryName;
+					hoverCheckers.add(posTooltipText);
 				}
 
 				if (!foundSentry) {
@@ -196,22 +201,24 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	/**
 	 * Change the sentry mode, and update GUI buttons state
 	 */
-	protected void performSingleAction(int sentry, int mode, int targets) {
-		int[] coords = getSentryCoordinates(sentry);
+	protected SetSentryMode.Info performSingleAction(int sentry, int mode, int targets) {
+		BlockPos pos = getSentryCoordinates(sentry);
 
-		if (coords.length == 3) {
-			List<Sentry> sentries = Minecraft.getInstance().player.level().getEntitiesOfClass(Sentry.class, new AABB(new BlockPos(coords[0], coords[1], coords[2])));
+		if (pos != null) {
+			List<Sentry> sentries = Minecraft.getInstance().player.level().getEntitiesOfClass(Sentry.class, new AABB(pos));
 
 			if (!sentries.isEmpty()) {
 				int resultingMode = Math.max(0, Math.min(targets + mode * 3, 6)); //bind between 0 and 6
 
 				guiButtons[sentry][TARGETS].active = SentryMode.values()[resultingMode] != SentryMode.IDLE;
 				sentries.get(0).toggleMode(Minecraft.getInstance().player, resultingMode, false);
-				PacketDistributor.SERVER.noArg().send(new SetSentryMode(sentries.get(0).blockPosition(), resultingMode));
 				updateModeButtonTooltip(guiButtons[sentry][MODE]);
 				updateTargetsButtonTooltip(guiButtons[sentry][TARGETS]);
+				return new SetSentryMode.Info(sentries.get(0).blockPosition(), resultingMode);
 			}
 		}
+
+		return null;
 	}
 
 	private void unbindButtonClicked(int id) {
@@ -225,10 +232,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	private void unbindSentry(int sentry) {
-		int[] coords = getSentryCoordinates(sentry);
+		BlockPos pos = getSentryCoordinates(sentry);
 
-		if (coords.length == 3)
-			removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
+		if (pos != null)
+			removeTagFromToolAndUpdate(srat, pos);
 
 		for (int i = 0; i < 3; i++) {
 			guiButtons[sentry][i].active = false;
@@ -255,67 +262,77 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		else if (type == 1)
 			mode = ((TogglePictureButton) guiButtons[sentry][MODE]).getCurrentIndex();
 
-		performSingleAction(sentry, mode, targets);
+		sendUpdates(Arrays.asList(performSingleAction(sentry, mode, targets)));
 	}
 
 	protected void globalModeButtonClicked(Button button) {
+		List<SetSentryMode.Info> sentriesToUpdate = new ArrayList<>();
+
 		for (int i = 0; i < guiButtons.length; i++) {
 			TogglePictureButton modeButton = (TogglePictureButton) guiButtons[i][MODE];
 
-			if (getSentryCoordinates(i).length == 3) {
+			if (getSentryCoordinates(i) != null) {
 				int sentry = i;
 				int mode = ((TogglePictureButton) button).getCurrentIndex();
 				int targets = ((TogglePictureButton) guiButtons[sentry][TARGETS]).getCurrentIndex();
 
 				modeButton.setCurrentIndex(mode);
-				performSingleAction(sentry, mode, targets);
+				sentriesToUpdate.add(performSingleAction(sentry, mode, targets));
 			}
 		}
 
+		sendUpdates(sentriesToUpdate);
 		updateModeButtonTooltip(guiButtonsGlobal[MODE]);
 	}
 
 	protected void globalTargetsButtonClicked(Button button) {
+		List<SetSentryMode.Info> sentriesToUpdate = new ArrayList<>();
+
 		for (int i = 0; i < guiButtons.length; i++) {
 			TogglePictureButton targetsButton = (TogglePictureButton) guiButtons[i][TARGETS];
 
-			if (getSentryCoordinates(i).length == 3) {
+			if (getSentryCoordinates(i) != null) {
 				int sentry = i;
 				int mode = ((TogglePictureButton) guiButtons[sentry][MODE]).getCurrentIndex();
 				int targets = ((TogglePictureButton) button).getCurrentIndex();
 
 				targetsButton.setCurrentIndex(targets);
-				performSingleAction(sentry, mode, targets);
+				sentriesToUpdate.add(performSingleAction(sentry, mode, targets));
 			}
 		}
 
+		sendUpdates(sentriesToUpdate);
 		updateTargetsButtonTooltip(guiButtonsGlobal[TARGETS]);
+	}
+
+	private void sendUpdates(List<SetSentryMode.Info> sentriesToUpdate) {
+		PacketDistributor.SERVER.noArg().send(new SetSentryMode(sentriesToUpdate));
 	}
 
 	/**
 	 * @param sentry 0 based
 	 */
-	private int[] getSentryCoordinates(int sentry) {
+	private BlockPos getSentryCoordinates(int sentry) {
 		sentry++; // sentries are stored starting by sentry1 up to sentry12
 
 		if (srat.getItem() == SCContent.SENTRY_REMOTE_ACCESS_TOOL.get() && srat.hasTag()) {
 			int[] coords = srat.getTag().getIntArray("sentry" + sentry);
 
 			if (coords.length == 3)
-				return coords;
+				return new BlockPos(coords[0], coords[1], coords[2]);
 		}
 
-		return new int[0];
+		return null;
 	}
 
-	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z) {
+	private void removeTagFromToolAndUpdate(ItemStack stack, BlockPos pos) {
 		if (stack.getTag() == null)
 			return;
 
 		for (int i = 1; i <= 12; i++) {
 			int[] coords = stack.getTag().getIntArray("sentry" + i);
 
-			if (coords.length == 3 && coords[0] == x && coords[1] == y && coords[2] == z) {
+			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
 				stack.getTag().remove("sentry" + i);
 				PacketDistributor.SERVER.noArg().send(new RemoveSentryFromSRAT(i));
 				return;

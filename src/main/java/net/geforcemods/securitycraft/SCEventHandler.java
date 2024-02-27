@@ -24,6 +24,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedLecternBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
@@ -61,20 +62,24 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -88,13 +93,17 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod.EventBusSubscriber;
 import net.neoforged.neoforge.event.TickEvent.Phase;
 import net.neoforged.neoforge.event.TickEvent.ServerTickEvent;
+import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
+import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDestroyBlockEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
+import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
+import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent.UsePhase;
 import net.neoforged.neoforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
@@ -184,6 +193,19 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
+	public static void onLivingAttacked(LivingAttackEvent event) {
+		LivingEntity entity = event.getEntity();
+		Level level = entity.level();
+		DamageSource damageSource = event.getSource();
+		boolean isCreativePlayer = entity instanceof Player player && player.isCreative();
+
+		if (!level.isClientSide && !isCreativePlayer && damageSource.equals(level.damageSources().inWall()) && !entity.isInvulnerableTo(damageSource) && BlockUtils.isInsideReinforcedBlocks(level, entity.getEyePosition(), entity.getBbWidth())) {
+			entity.hurt(CustomDamageSources.inReinforcedWall(entity.level().registryAccess()), 10.0F);
+			event.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent
 	public static void onDamageTaken(LivingHurtEvent event) {
 		LivingEntity entity = event.getEntity();
 		Level level = entity.level();
@@ -193,6 +215,51 @@ public class SCEventHandler {
 
 		if (!level.isClientSide && entity instanceof ServerPlayer player && PlayerUtils.isPlayerMountedOnCamera(entity))
 			((SecurityCamera) player.getCamera()).stopViewing(player);
+	}
+
+	@SubscribeEvent
+	public static void onDismount(EntityMountEvent event) {
+		if (ConfigHandler.SERVER.preventReinforcedFloorGlitching.get() && event.isDismounting() && event.getEntityBeingMounted() instanceof Boat boat && event.getEntityMounting() instanceof Player player && !player.getAbilities().invulnerable) {
+			Vec3 incorrectDismountLocation = new Vec3(boat.getX(), boat.getBoundingBox().maxY, boat.getZ());
+			Vec3 dismountLocation = boat.getDismountLocationForPassenger(player);
+			Vec3 newCenterPos = dismountLocation.add(0.0F, player.getBbHeight() / 2, 0.0F);
+			Vec3 newEyePos = dismountLocation.add(0.0F, player.getEyeHeight(), 0.0F);
+
+			if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideReinforcedBlocks(player.level(), newEyePos, player.getBbWidth()) || BlockUtils.isInsideReinforcedBlocks(player.level(), newCenterPos, player.getBbWidth()))) {
+				player.setYRot(boat.getYRot() + 180.0F % 360.0F); //This doesn't actually alter the player's rotation, the y-rotation is only changed for the calculation of the new dismount location behind the boat in the next line
+				dismountLocation = boat.getDismountLocationForPassenger(player);
+
+				if (!dismountLocation.equals(incorrectDismountLocation))
+					player.setPos(dismountLocation);
+				else
+					event.setCanceled(true);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onUseItemOnBlock(UseItemOnBlockEvent event) {
+		if (event.getUsePhase() == UsePhase.ITEM_AFTER_BLOCK) {
+			ItemStack stack = event.getItemStack();
+
+			if (stack.is(Items.WRITABLE_BOOK) || stack.is(Items.WRITTEN_BOOK)) {
+				Level level = event.getLevel();
+				BlockPos pos = event.getPos();
+				BlockState state = level.getBlockState(pos);
+
+				if (state.is(SCContent.REINFORCED_LECTERN.get())) {
+					ReinforcedLecternBlockEntity be = (ReinforcedLecternBlockEntity) level.getBlockEntity(pos);
+					Player player = event.getEntity();
+
+					if (be.isOwnedBy(player) && LecternBlock.tryPlaceBook(player, level, pos, state, stack)) {
+						player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+						event.setCancellationResult(InteractionResult.sidedSuccess(level.isClientSide));
+					}
+
+					event.setCanceled(true);
+				}
+			}
+		}
 	}
 
 	//disallow rightclicking doors, fixes wrenches from other mods being able to switch their state
@@ -220,11 +287,12 @@ public class SCEventHandler {
 		}
 
 		Level level = event.getLevel();
-		BlockEntity be = level.getBlockEntity(event.getPos());
-		BlockState state = level.getBlockState(event.getPos());
+		BlockPos pos = event.getPos();
+		BlockEntity be = level.getBlockEntity(pos);
+		BlockState state = level.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, event.getPos(), player) && !player.isShiftKeyDown()) {
+		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, pos, player) && !player.isShiftKeyDown()) {
 			if (event.getHand() == InteractionHand.MAIN_HAND) {
 				MutableComponent blockName = Utils.localize(block.getDescriptionId());
 
@@ -267,9 +335,9 @@ public class SCEventHandler {
 
 			ItemStack heldItem = player.getItemInHand(event.getHand());
 
-			if (heldItem.is(SCContent.KEY_PANEL.get())) {
+			if (heldItem.is(SCContent.KEY_PANEL.get()) && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 				for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
-					if (pc.isValidStateForConversion(state)) {
+					if (pc.isUnprotectedBlock(state)) {
 						event.setUseBlock(Result.DENY);
 						event.setUseItem(Result.ALLOW);
 					}
@@ -292,7 +360,7 @@ public class SCEventHandler {
 
 		//outside !world.isRemote for properly checking the interaction
 		//all the sentry functionality for when the sentry is diguised
-		List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(event.getPos()));
+		List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(pos));
 
 		if (!sentries.isEmpty())
 			event.setCanceled(sentries.get(0).mobInteract(player, event.getHand()) == InteractionResult.SUCCESS); //cancel if an action was taken
@@ -405,7 +473,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onFurnaceFuelBurnTime(FurnaceFuelBurnTimeEvent event) {
-		if (event.getItemStack().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ReinforcedCarpetBlock)
+		if (event.getItemStack().getItem() instanceof BlockItem blockItem && (blockItem.getBlock() instanceof ReinforcedCarpetBlock || blockItem.getBlock() == SCContent.ELECTRIFIED_IRON_FENCE_GATE.get()))
 			event.setBurnTime(0);
 	}
 
@@ -449,9 +517,13 @@ public class SCEventHandler {
 			riftStabilizer.setLastTeleport(Math.max(Math.abs(distance.x), Math.max(Math.abs(distance.y), Math.abs(distance.z))) - 0.5D, type);
 
 			if (riftStabilizer.isModuleEnabled(ModuleType.REDSTONE)) {
-				level.setBlockAndUpdate(pos, riftStabilizer.getBlockState().setValue(RiftStabilizerBlock.POWERED, true));
+				int signalLength = riftStabilizer.getSignalLength();
+
+				level.setBlockAndUpdate(pos, riftStabilizer.getBlockState().cycle(RiftStabilizerBlock.POWERED));
 				BlockUtils.updateIndirectNeighbors(level, pos, SCContent.RIFT_STABILIZER.get());
-				level.scheduleTick(pos, SCContent.RIFT_STABILIZER.get(), riftStabilizer.getSignalLength());
+
+				if (signalLength > 0)
+					level.scheduleTick(pos, SCContent.RIFT_STABILIZER.get(), signalLength);
 			}
 
 			event.setCanceled(true);

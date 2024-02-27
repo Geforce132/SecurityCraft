@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
@@ -8,8 +10,8 @@ import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -40,30 +42,31 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		if (cooldown > 0)
 			cooldown--;
 		else if (level.getBestNeighborSignal(pos) > 0) {
-			level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get()), e -> !e.isSpectator()).forEach(this::addPlayer);
-			syncLoggedPlayersToClient();
-			cooldown = TICKS_BETWEEN_ATTACKS;
-		}
-	}
+			long timestamp = System.currentTimeMillis();
+			List<Player> nearbyPlayers = level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get()), e -> e.canBeSeenByAnyone() && !(isOwnedBy(e) && ignoresOwner() || isAllowed(e)) && !Utils.isEntityInvisible(e) && !wasPlayerRecentlyAdded(e.getName().getString(), timestamp));
 
-	public void addPlayer(Player player) {
-		String playerName = player.getName().getString();
-		long timestamp = System.currentTimeMillis();
+			if (!nearbyPlayers.isEmpty()) {
+				boolean changed = false;
+				int playerIndex = 0;
 
-		if (!(isOwnedBy(player) && ignoresOwner()) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp)) {
-			//ignore players on the allowlist
-			if (isAllowed(player))
-				return;
+				for (int i = 0; i < getPlayers().length && playerIndex < nearbyPlayers.size(); i++) {
+					if (getPlayers()[i] == null || getPlayers()[i].equals("")) {
+						Player player = nearbyPlayers.get(playerIndex++);
 
-			for (int i = 0; i < getPlayers().length; i++) {
-				if (getPlayers()[i] == null || getPlayers()[i].equals("")) {
-					getPlayers()[i] = player.getName().getString();
-					getUuids()[i] = player.getGameProfile().getId().toString();
-					getTimestamps()[i] = timestamp;
+						getPlayers()[i] = player.getName().getString();
+						getUuids()[i] = player.getGameProfile().getId().toString();
+						getTimestamps()[i] = timestamp;
+						changed = true;
+					}
+				}
+
+				if (changed) {
 					setChanged();
-					break;
+					syncLoggedPlayersToClient();
 				}
 			}
+
+			cooldown = TICKS_BETWEEN_ATTACKS;
 		}
 	}
 
@@ -101,7 +104,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	public void syncLoggedPlayersToClient() {
 		for (int i = 0; i < getPlayers().length; i++) {
 			if (getPlayers()[i] != null)
-				PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(worldPosition)).send(new UpdateLogger(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), i, getPlayers()[i], getUuids()[i], getTimestamps()[i]));
+				PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(worldPosition)).send(new UpdateLogger(worldPosition, i, getPlayers()[i], getUuids()[i], getTimestamps()[i]));
 		}
 	}
 
@@ -123,6 +126,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		return disabled.get();
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

@@ -36,9 +36,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ILockable, ITickingBlockEntity {
-	private IntOption signalLength = new IntOption("signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5, true); //20 seconds max
 	private IntOption range = new IntOption("range", 5, 1, 15, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
@@ -72,9 +73,13 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 			return;
 
 		if (isModuleEnabled(ModuleType.REDSTONE)) {
-			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockChangeDetectorBlock.POWERED, true));
+			int signalLength = getSignalLength();
+
+			level.setBlockAndUpdate(worldPosition, getBlockState().cycle(BlockChangeDetectorBlock.POWERED));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get());
-			level.scheduleTick(worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get(), signalLength.get());
+
+			if (signalLength > 0)
+				level.scheduleTick(worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get(), signalLength);
 		}
 
 		entries.add(new ChangeEntry(player.getDisplayName().getString(), player.getUUID(), System.currentTimeMillis(), action, pos, state));
@@ -123,6 +128,16 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals(signalLength.getName())) {
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+		}
+
+		super.onOptionChanged(option);
+	}
+
+	@Override
 	public void setRemoved() {
 		super.setRemoved();
 		BlockEntityTracker.BLOCK_CHANGE_DETECTOR.stopTracking(this);
@@ -149,6 +164,10 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		return mode;
 	}
 
+	public int getSignalLength() {
+		return signalLength.get();
+	}
+
 	public int getRange() {
 		return range.get();
 	}
@@ -157,6 +176,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		return disabled.get();
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

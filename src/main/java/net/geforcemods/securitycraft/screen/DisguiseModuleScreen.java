@@ -18,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -35,8 +36,7 @@ public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModule
 		super.init();
 
 		leftPos += 90;
-		//stateSelector = new StateSelector(menu, title, leftPos - 190, topPos + 7, 0, 200, 15, -2.725F, -1.2F);
-		stateSelector = addRenderableWidget(new StateSelector(menu, title, leftPos - 190, topPos + 7, 0, 200, 15, -2.725F, -1.2F));
+		stateSelector = addRenderableWidget(new StateSelector(menu, title, leftPos - 190, topPos + 7, 0, 200, 15, 236, 50));
 		stateSelector.init(minecraft, width, height);
 	}
 
@@ -68,16 +68,19 @@ public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModule
 	public void onClose() {
 		super.onClose();
 
-		if (!menu.getSlot(0).getItem().isEmpty() && stateSelector.getState() != null) {
-			ItemStack module = menu.getInventory().getModule();
-			CompoundTag moduleTag = module.getOrCreateTag();
-			BlockState state = stateSelector.getState();
-			StandingOrWallType standingOrWall = stateSelector.getStandingOrWallType();
+		ItemStack module = menu.getInventory().getModule();
+		CompoundTag moduleTag = module.getOrCreateTag();
+		BlockState state = Blocks.AIR.defaultBlockState();
+		StandingOrWallType standingOrWall = StandingOrWallType.NONE;
 
-			moduleTag.put("SavedState", NbtUtils.writeBlockState(state));
-			moduleTag.putInt("StandingOrWall", standingOrWall.ordinal());
-			PacketDistributor.SERVER.noArg().send(new SetStateOnDisguiseModule(state, standingOrWall));
+		if (!menu.getSlot(0).getItem().isEmpty() && stateSelector.getState() != null) {
+			state = stateSelector.getState();
+			standingOrWall = stateSelector.getStandingOrWallType();
 		}
+
+		moduleTag.put("SavedState", NbtUtils.writeBlockState(state));
+		moduleTag.putInt("StandingOrWall", standingOrWall.ordinal());
+		PacketDistributor.SERVER.noArg().send(new SetStateOnDisguiseModule(state, standingOrWall));
 	}
 
 	@Override

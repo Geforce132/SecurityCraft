@@ -19,30 +19,24 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public class SetPasscode implements CustomPacketPayload {
 	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "set_passcode");
+	private BlockPos pos;
 	private String passcode;
-	private int x, y, z;
 
 	public SetPasscode() {}
 
-	public SetPasscode(int x, int y, int z, String code) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public SetPasscode(BlockPos pos, String code) {
+		this.pos = pos;
 		passcode = PasscodeUtils.hashPasscodeWithoutSalt(code);
 	}
 
 	public SetPasscode(FriendlyByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
+		pos = buf.readBlockPos();
 		passcode = buf.readUtf(Integer.MAX_VALUE / 4);
 	}
 
 	@Override
 	public void write(FriendlyByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
+		buf.writeBlockPos(pos);
 		buf.writeUtf(passcode);
 	}
 
@@ -52,7 +46,6 @@ public class SetPasscode implements CustomPacketPayload {
 	}
 
 	public void handle(PlayPayloadContext ctx) {
-		BlockPos pos = new BlockPos(x, y, z);
 		Player player = ctx.player().orElseThrow();
 		Level level = player.level();
 

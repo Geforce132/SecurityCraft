@@ -43,6 +43,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		BlockState state = be.getBlockState();
 		Level level = be.getLevel();
 		BlockPos worldPosition = be.getBlockPos();
+		int newLight = DisguisableBlock.getDisguisedBlockStateFromStack(level, stack).map(s -> s.getLightEmission(level, worldPosition)).orElse(0);
 
 		if (!level.isClientSide) {
 			PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(worldPosition)).send(new RefreshDisguisableModel(worldPosition, true, stack, toggled));
@@ -52,12 +53,11 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 				level.updateNeighborsAt(worldPosition, state.getBlock());
 			}
 		}
-		else {
+		else
 			ClientHandler.putDisguisedBeRenderer(be, stack);
 
-			if (state.getLightEmission(level, worldPosition) > 0)
-				level.getChunkSource().getLightEngine().checkBlock(worldPosition);
-		}
+		if (newLight > 0)
+			level.getAuxLightManager(worldPosition).setLightAt(worldPosition, newLight);
 	}
 
 	@Override
@@ -69,12 +69,11 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	public static void onDisguiseModuleRemoved(BlockEntity be, ItemStack stack, boolean toggled) {
+		BlockState state = be.getBlockState();
 		Level level = be.getLevel();
 		BlockPos worldPosition = be.getBlockPos();
 
 		if (!level.isClientSide) {
-			BlockState state = be.getBlockState();
-
 			PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(worldPosition)).send(new RefreshDisguisableModel(worldPosition, false, stack, toggled));
 
 			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
@@ -82,13 +81,13 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 				level.updateNeighborsAt(worldPosition, state.getBlock());
 			}
 		}
-		else {
+		else
 			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
-			DisguisableBlock.getDisguisedBlockStateFromStack(level, stack).ifPresent(disguisedState -> {
-				if (disguisedState.getLightEmission(level, worldPosition) > 0)
-					level.getChunkSource().getLightEngine().checkBlock(worldPosition);
-			});
-		}
+
+		DisguisableBlock.getDisguisedBlockStateFromStack(level, stack).ifPresent(disguisedState -> {
+			if (disguisedState.getLightEmission(level, worldPosition) > 0)
+				level.getAuxLightManager(worldPosition).removeLightAt(worldPosition);
+		});
 	}
 
 	@Override

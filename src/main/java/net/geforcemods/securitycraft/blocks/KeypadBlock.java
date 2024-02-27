@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeypadBlockEntity;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -46,20 +48,20 @@ public class KeypadBlock extends DisguisableBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (state.getValue(POWERED))
+		KeypadBlockEntity be = (KeypadBlockEntity) level.getBlockEntity(pos);
+
+		if (state.getValue(POWERED) && be.getSignalLength() > 0)
 			return InteractionResult.PASS;
 		else if (!level.isClientSide) {
-			KeypadBlockEntity be = (KeypadBlockEntity) level.getBlockEntity(pos);
-
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			else if (be.verifyPasscodeSet(level, pos, be, player)) {
 				if (be.isDenied(player)) {
-					if (be.sendsMessages())
+					if (be.sendsDenylistMessage())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 				}
 				else if (be.isAllowed(player)) {
-					if (be.sendsMessages())
+					if (be.sendsAllowlistMessage())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
 					activate(state, level, pos, be.getSignalLength());
@@ -73,15 +75,19 @@ public class KeypadBlock extends DisguisableBlock {
 	}
 
 	public void activate(BlockState state, Level level, BlockPos pos, int signalLength) {
-		level.setBlockAndUpdate(pos, state.setValue(POWERED, true));
+		level.setBlockAndUpdate(pos, state.cycle(POWERED));
 		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYPAD.get());
-		level.scheduleTick(pos, this, signalLength);
+
+		if (signalLength > 0)
+			level.scheduleTick(pos, this, signalLength);
 	}
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYPAD.get());
+		if (state.getValue(POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYPAD.get());
+		}
 	}
 
 	@Override
@@ -151,14 +157,31 @@ public class KeypadBlock extends DisguisableBlock {
 
 	public static class Convertible implements IPasscodeConvertible {
 		@Override
-		public boolean isValidStateForConversion(BlockState state) {
+		public boolean isUnprotectedBlock(BlockState state) {
 			return state.is(SCContent.FRAME.get());
 		}
 
 		@Override
-		public boolean convert(Player player, Level level, BlockPos pos) {
+		public boolean isProtectedBlock(BlockState state) {
+			return state.is(SCContent.KEYPAD.get());
+		}
+
+		@Override
+		public boolean protect(Player player, Level level, BlockPos pos) {
+			Owner owner = ((IOwnable) level.getBlockEntity(pos)).getOwner();
+
 			level.setBlockAndUpdate(pos, SCContent.KEYPAD.get().defaultBlockState().setValue(KeypadBlock.FACING, level.getBlockState(pos).getValue(FrameBlock.FACING)).setValue(KeypadBlock.POWERED, false));
-			((IOwnable) level.getBlockEntity(pos)).setOwner(player.getUUID().toString(), player.getName().getString());
+			((IOwnable) level.getBlockEntity(pos)).setOwner(owner.getUUID(), owner.getName());
+			return true;
+		}
+
+		@Override
+		public boolean unprotect(Player player, Level level, BlockPos pos) {
+			Owner owner = ((IOwnable) level.getBlockEntity(pos)).getOwner();
+
+			((IModuleInventory) level.getBlockEntity(pos)).dropAllModules();
+			level.setBlockAndUpdate(pos, SCContent.FRAME.get().defaultBlockState().setValue(FrameBlock.FACING, level.getBlockState(pos).getValue(KeypadBlock.FACING)));
+			((IOwnable) level.getBlockEntity(pos)).setOwner(owner.getUUID(), owner.getName());
 			return true;
 		}
 	}

@@ -13,30 +13,25 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public class ToggleOption implements CustomPacketPayload {
 	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "toggle_option");
-	private int x, y, z, id;
+	private BlockPos pos;
+	private int optionId;
 
 	public ToggleOption() {}
 
-	public ToggleOption(int x, int y, int z, int id) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.id = id;
+	public ToggleOption(BlockPos pos, int opionId) {
+		this.pos = pos;
+		this.optionId = opionId;
 	}
 
 	public ToggleOption(FriendlyByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		id = buf.readInt();
+		pos = buf.readBlockPos();
+		optionId = buf.readInt();
 	}
 
 	@Override
 	public void write(FriendlyByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeInt(id);
+		buf.writeBlockPos(pos);
+		buf.writeInt(optionId);
 	}
 
 	@Override
@@ -45,13 +40,12 @@ public class ToggleOption implements CustomPacketPayload {
 	}
 
 	public void handle(PlayPayloadContext ctx) {
-		BlockPos pos = new BlockPos(x, y, z);
 		Player player = ctx.player().orElseThrow();
 		BlockEntity be = player.level().getBlockEntity(pos);
 
 		if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
-			customizable.customOptions()[id].toggle();
-			customizable.onOptionChanged(customizable.customOptions()[id]);
+			customizable.customOptions()[optionId].toggle();
+			customizable.onOptionChanged(customizable.customOptions()[optionId]);
 			player.level().sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
 		}
 	}

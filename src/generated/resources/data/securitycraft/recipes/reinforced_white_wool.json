@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "securitycraft:reinforced_wool",
+  "ingredients": [
+    {
+      "tag": "forge:dyes/white"
+    },
+    {
+      "tag": "securitycraft:reinforced/wool"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_white_wool"
+  }
+}

@@ -13,11 +13,13 @@ import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BouncingBettyBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BrushableMineBlockEntity;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ElectrifiedFenceAndGateBlockEntity;
 import net.geforcemods.securitycraft.blockentities.FloorTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.GlowDisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
@@ -34,14 +36,19 @@ import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadSmokerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadTrapdoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
+import net.geforcemods.securitycraft.blockentities.MineBlockEntity;
 import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedChiseledBookshelfBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedDispenserBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedDropperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedLecternBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedObserverBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonMovingBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
@@ -64,13 +71,14 @@ import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
+import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceBlock;
+import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.FakeLavaBlock;
 import net.geforcemods.securitycraft.blocks.FakeWaterBlock;
 import net.geforcemods.securitycraft.blocks.FloorTrapBlock;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
-import net.geforcemods.securitycraft.blocks.IronFenceBlock;
 import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
 import net.geforcemods.securitycraft.blocks.KeycardLockBlock;
 import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
@@ -125,12 +133,16 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChiseledBookshe
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCobwebBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCryingObsidianBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDirtPathBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDispenserBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDropperBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedEndRodBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFallingBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlazedTerracottaBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGrassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronBarsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlock;
@@ -138,6 +150,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLadderBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLanternBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLavaCauldronBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLayeredCauldronBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLecternBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMovingPistonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMud;
@@ -160,6 +173,8 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPan
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedTintedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
+import net.geforcemods.securitycraft.commands.LowercasedEnumArgument;
+import net.geforcemods.securitycraft.commands.SingleGameProfileArgument;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -171,7 +186,6 @@ import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
-import net.geforcemods.securitycraft.inventory.ClaymoreMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
@@ -184,6 +198,8 @@ import net.geforcemods.securitycraft.inventory.KeypadSmokerMenu;
 import net.geforcemods.securitycraft.inventory.LaserBlockMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
+import net.geforcemods.securitycraft.inventory.ReinforcedLecternMenu;
+import net.geforcemods.securitycraft.inventory.SingleLensMenu;
 import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.items.AdminToolItem;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
@@ -209,6 +225,7 @@ import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.items.UniversalBlockRemoverItem;
 import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
+import net.geforcemods.securitycraft.items.WireCuttersItem;
 import net.geforcemods.securitycraft.misc.BlockEntityNBTCondition;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -220,8 +237,12 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.SCItemGroup;
+import net.minecraft.commands.synchronization.ArgumentTypeInfo;
+import net.minecraft.commands.synchronization.ArgumentTypeInfos;
+import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
@@ -253,6 +274,7 @@ import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
@@ -270,6 +292,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries.Keys;
 public class SCContent {
 	public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(SecurityCraft.MODID);
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, SecurityCraft.MODID);
+	public static final DeferredRegister<ArgumentTypeInfo<?, ?>> COMMAND_ARGUMENT_TYPES = DeferredRegister.create(Registries.COMMAND_ARGUMENT_TYPE, SecurityCraft.MODID);
 	public static final DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(Keys.ENTITY_DATA_SERIALIZERS, SecurityCraft.MODID);
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, SecurityCraft.MODID);
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, SecurityCraft.MODID);
@@ -281,6 +304,11 @@ public class SCContent {
 	public static final String KEYPAD_CHEST_PATH = "keypad_chest";
 	public static final String DISPLAY_CASE_PATH = "display_case";
 	public static final String GLOW_DISPLAY_CASE_PATH = "glow_display_case";
+
+	//command argument types
+	public static final DeferredHolder<ArgumentTypeInfo<?, ?>, SingletonArgumentInfo<SingleGameProfileArgument>> SINGLE_GAME_PROFILE_COMMAND_ARGUMENT_TYPE = COMMAND_ARGUMENT_TYPES.register("single_game_profile", () -> ArgumentTypeInfos.registerByClass(SingleGameProfileArgument.class, SingletonArgumentInfo.contextFree(SingleGameProfileArgument::singleGameProfile)));
+	@SuppressWarnings("rawtypes")
+	public static final Holder<ArgumentTypeInfo<?, ?>> LOWERCASED_ENUM_COMMAND_ARGUMENT_TYPE = COMMAND_ARGUMENT_TYPES.register("lowercased_enum", () -> ArgumentTypeInfos.registerByClass(LowercasedEnumArgument.class, new LowercasedEnumArgument.Info()));
 
 	//loot item condition types
 	public static final DeferredHolder<LootItemConditionType, LootItemConditionType> BLOCK_ENTITY_NBT = LOOT_ITEM_CONDITION_TYPES.register("tile_entity_nbt", () -> new LootItemConditionType(BlockEntityNBTCondition.CODEC));
@@ -342,7 +370,7 @@ public class SCContent {
 	public static final DeferredBlock<InventoryScannerFieldBlock> INVENTORY_SCANNER_FIELD = BLOCKS.register("inventory_scanner_field", () -> new InventoryScannerFieldBlock(prop(MapColor.NONE)));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<IronFenceBlock> IRON_FENCE = BLOCKS.register("electrified_iron_fence", () -> new IronFenceBlock(prop(MapColor.METAL).sound(SoundType.METAL)));
+	public static final DeferredBlock<ElectrifiedIronFenceBlock> ELECTRIFIED_IRON_FENCE = BLOCKS.register("electrified_iron_fence", () -> new ElectrifiedIronFenceBlock(prop(MapColor.METAL).sound(SoundType.METAL)));
 	public static final DeferredBlock<KeyPanelBlock> KEY_PANEL_BLOCK = BLOCKS.register("key_panel", () -> new KeyPanelBlock(prop(MapColor.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
@@ -396,7 +424,7 @@ public class SCContent {
 	public static final DeferredBlock<ReinforcedDoorBlock> REINFORCED_DOOR = BLOCKS.register("iron_door_reinforced", () -> new ReinforcedDoorBlock(prop(MapColor.METAL).sound(SoundType.METAL).noOcclusion().pushReaction(PushReaction.BLOCK)));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_FENCE_GATE = BLOCKS.register("reinforced_fence_gate", () -> new ReinforcedFenceGateBlock(prop(MapColor.METAL).sound(SoundType.METAL)));
+	public static final DeferredBlock<ElectrifiedIronFenceGateBlock> ELECTRIFIED_IRON_FENCE_GATE = BLOCKS.register("reinforced_fence_gate", () -> new ElectrifiedIronFenceGateBlock(prop(MapColor.METAL).sound(SoundType.METAL).forceSolidOn()));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<RetinalScannerBlock> RETINAL_SCANNER = BLOCKS.register("retinal_scanner", () -> new RetinalScannerBlock(propDisguisable()));
@@ -607,7 +635,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSnowyDirtBlock> REINFORCED_GRASS_BLOCK = BLOCKS.register("reinforced_grass_block", () -> new ReinforcedSnowyDirtBlock(prop(MapColor.GRASS).sound(SoundType.GRASS), Blocks.GRASS_BLOCK));
+	public static final DeferredBlock<ReinforcedGrassBlock> REINFORCED_GRASS_BLOCK = BLOCKS.register("reinforced_grass_block", () -> new ReinforcedGrassBlock(prop(MapColor.GRASS).sound(SoundType.GRASS)));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1812,7 +1840,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_MOSS_CARPET = BLOCKS.register("reinforced_moss_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_GREEN).sound(SoundType.MOSS_CARPET), Blocks.MOSS_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_MOSS_CARPET = BLOCKS.register("reinforced_moss_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_GREEN).sound(SoundType.MOSS_CARPET).forceSolidOn(), Blocks.MOSS_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1928,67 +1956,67 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_WHITE_CARPET = BLOCKS.register("reinforced_white_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.SNOW).sound(SoundType.WOOL), Blocks.WHITE_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_WHITE_CARPET = BLOCKS.register("reinforced_white_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.SNOW).sound(SoundType.WOOL).forceSolidOn(), Blocks.WHITE_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_ORANGE_CARPET = BLOCKS.register("reinforced_orange_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_ORANGE).sound(SoundType.WOOL), Blocks.ORANGE_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_ORANGE_CARPET = BLOCKS.register("reinforced_orange_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_ORANGE).sound(SoundType.WOOL).forceSolidOn(), Blocks.ORANGE_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_MAGENTA_CARPET = BLOCKS.register("reinforced_magenta_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_MAGENTA).sound(SoundType.WOOL), Blocks.MAGENTA_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_MAGENTA_CARPET = BLOCKS.register("reinforced_magenta_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_MAGENTA).sound(SoundType.WOOL).forceSolidOn(), Blocks.MAGENTA_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIGHT_BLUE_CARPET = BLOCKS.register("reinforced_light_blue_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_LIGHT_BLUE).sound(SoundType.WOOL), Blocks.LIGHT_BLUE_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIGHT_BLUE_CARPET = BLOCKS.register("reinforced_light_blue_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_LIGHT_BLUE).sound(SoundType.WOOL).forceSolidOn(), Blocks.LIGHT_BLUE_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_YELLOW_CARPET = BLOCKS.register("reinforced_yellow_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_YELLOW).sound(SoundType.WOOL), Blocks.YELLOW_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_YELLOW_CARPET = BLOCKS.register("reinforced_yellow_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_YELLOW).sound(SoundType.WOOL).forceSolidOn(), Blocks.YELLOW_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIME_CARPET = BLOCKS.register("reinforced_lime_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_LIGHT_GREEN).sound(SoundType.WOOL), Blocks.LIME_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIME_CARPET = BLOCKS.register("reinforced_lime_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_LIGHT_GREEN).sound(SoundType.WOOL).forceSolidOn(), Blocks.LIME_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_PINK_CARPET = BLOCKS.register("reinforced_pink_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_PINK).sound(SoundType.WOOL), Blocks.PINK_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_PINK_CARPET = BLOCKS.register("reinforced_pink_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_PINK).sound(SoundType.WOOL).forceSolidOn(), Blocks.PINK_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_GRAY_CARPET = BLOCKS.register("reinforced_gray_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_GRAY).sound(SoundType.WOOL), Blocks.GRAY_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_GRAY_CARPET = BLOCKS.register("reinforced_gray_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_GRAY).sound(SoundType.WOOL).forceSolidOn(), Blocks.GRAY_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIGHT_GRAY_CARPET = BLOCKS.register("reinforced_light_gray_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_LIGHT_GRAY).sound(SoundType.WOOL), Blocks.LIGHT_GRAY_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIGHT_GRAY_CARPET = BLOCKS.register("reinforced_light_gray_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_LIGHT_GRAY).sound(SoundType.WOOL).forceSolidOn(), Blocks.LIGHT_GRAY_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_CYAN_CARPET = BLOCKS.register("reinforced_cyan_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_CYAN).sound(SoundType.WOOL), Blocks.CYAN_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_CYAN_CARPET = BLOCKS.register("reinforced_cyan_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_CYAN).sound(SoundType.WOOL).forceSolidOn(), Blocks.CYAN_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_PURPLE_CARPET = BLOCKS.register("reinforced_purple_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_PURPLE).sound(SoundType.WOOL), Blocks.PURPLE_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_PURPLE_CARPET = BLOCKS.register("reinforced_purple_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_PURPLE).sound(SoundType.WOOL).forceSolidOn(), Blocks.PURPLE_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BLUE_CARPET = BLOCKS.register("reinforced_blue_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_BLUE).sound(SoundType.WOOL), Blocks.BLUE_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BLUE_CARPET = BLOCKS.register("reinforced_blue_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_BLUE).sound(SoundType.WOOL).forceSolidOn(), Blocks.BLUE_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BROWN_CARPET = BLOCKS.register("reinforced_brown_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_BROWN).sound(SoundType.WOOL), Blocks.BROWN_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BROWN_CARPET = BLOCKS.register("reinforced_brown_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_BROWN).sound(SoundType.WOOL).forceSolidOn(), Blocks.BROWN_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_GREEN_CARPET = BLOCKS.register("reinforced_green_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_GREEN).sound(SoundType.WOOL), Blocks.GREEN_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_GREEN_CARPET = BLOCKS.register("reinforced_green_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_GREEN).sound(SoundType.WOOL).forceSolidOn(), Blocks.GREEN_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_RED_CARPET = BLOCKS.register("reinforced_red_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_RED).sound(SoundType.WOOL), Blocks.RED_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_RED_CARPET = BLOCKS.register("reinforced_red_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_RED).sound(SoundType.WOOL).forceSolidOn(), Blocks.RED_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BLACK_CARPET = BLOCKS.register("reinforced_black_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_BLACK).sound(SoundType.WOOL), Blocks.BLACK_CARPET));
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BLACK_CARPET = BLOCKS.register("reinforced_black_carpet", () -> new ReinforcedCarpetBlock(prop(MapColor.COLOR_BLACK).sound(SoundType.WOOL).forceSolidOn(), Blocks.BLACK_CARPET));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
@@ -2120,11 +2148,11 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_LANTERN = BLOCKS.register("reinforced_lantern", () -> new ReinforcedLanternBlock(prop(MapColor.METAL).sound(SoundType.LANTERN).lightLevel(state -> 15).pushReaction(PushReaction.BLOCK), Blocks.LANTERN));
+	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_LANTERN = BLOCKS.register("reinforced_lantern", () -> new ReinforcedLanternBlock(prop(MapColor.METAL).sound(SoundType.LANTERN).lightLevel(state -> 15).pushReaction(PushReaction.BLOCK).forceSolidOn(), Blocks.LANTERN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_SOUL_LANTERN = BLOCKS.register("reinforced_soul_lantern", () -> new ReinforcedLanternBlock(prop(MapColor.METAL).sound(SoundType.LANTERN).lightLevel(state -> 10).pushReaction(PushReaction.BLOCK), Blocks.SOUL_LANTERN));
+	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_SOUL_LANTERN = BLOCKS.register("reinforced_soul_lantern", () -> new ReinforcedLanternBlock(prop(MapColor.METAL).sound(SoundType.LANTERN).lightLevel(state -> 10).pushReaction(PushReaction.BLOCK).forceSolidOn(), Blocks.SOUL_LANTERN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2160,9 +2188,18 @@ public class SCContent {
 	@HasManualPage
 	@Reinforced
 	public static final DeferredBlock<ReinforcedHopperBlock> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(prop(MapColor.STONE).sound(SoundType.METAL).noOcclusion()));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedDispenserBlock> REINFORCED_DISPENSER = BLOCKS.register("reinforced_dispenser", () -> new ReinforcedDispenserBlock(prop(MapColor.STONE).sound(SoundType.STONE)));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedDropperBlock> REINFORCED_DROPPER = BLOCKS.register("reinforced_dropper", () -> new ReinforcedDropperBlock(prop(MapColor.STONE).sound(SoundType.STONE)));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedLecternBlock> REINFORCED_LECTERN = BLOCKS.register("reinforced_lectern", () -> new ReinforcedLecternBlock(prop(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD)));
 	@HasManualPage
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLeverBlock> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop(MapColor.NONE).noCollission().sound(SoundType.WOOD).pushReaction(PushReaction.BLOCK)));
+	public static final DeferredBlock<ReinforcedLeverBlock> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop(MapColor.NONE).noCollission().sound(SoundType.WOOD).pushReaction(PushReaction.BLOCK).forceSolidOn()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2352,6 +2389,87 @@ public class SCContent {
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedButtonBlock> REINFORCED_CHERRY_BUTTON = BLOCKS.register("reinforced_cherry_button", () -> woodenButton(Blocks.CHERRY_BUTTON, BlockSetType.CHERRY));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_OAK_FENCE = BLOCKS.register("reinforced_oak_fence", () -> new ReinforcedFenceBlock(prop(Blocks.OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.OAK_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_SPRUCE_FENCE = BLOCKS.register("reinforced_spruce_fence", () -> new ReinforcedFenceBlock(prop(Blocks.SPRUCE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.SPRUCE_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_BIRCH_FENCE = BLOCKS.register("reinforced_birch_fence", () -> new ReinforcedFenceBlock(prop(Blocks.BIRCH_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.BIRCH_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_JUNGLE_FENCE = BLOCKS.register("reinforced_jungle_fence", () -> new ReinforcedFenceBlock(prop(Blocks.JUNGLE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.JUNGLE_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_ACACIA_FENCE = BLOCKS.register("reinforced_acacia_fence", () -> new ReinforcedFenceBlock(prop(Blocks.ACACIA_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.ACACIA_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_DARK_OAK_FENCE = BLOCKS.register("reinforced_dark_oak_fence", () -> new ReinforcedFenceBlock(prop(Blocks.DARK_OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.DARK_OAK_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_MANGROVE_FENCE = BLOCKS.register("reinforced_mangrove_fence", () -> new ReinforcedFenceBlock(prop(Blocks.MANGROVE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD), Blocks.MANGROVE_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_CHERRY_FENCE = BLOCKS.register("reinforced_cherry_fence", () -> new ReinforcedFenceBlock(prop(Blocks.CHERRY_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.CHERRY_WOOD), Blocks.CHERRY_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_BAMBOO_FENCE = BLOCKS.register("reinforced_bamboo_fence", () -> new ReinforcedFenceBlock(prop(Blocks.BAMBOO_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.BAMBOO_WOOD), Blocks.BAMBOO_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_CRIMSON_FENCE = BLOCKS.register("reinforced_crimson_fence", () -> new ReinforcedFenceBlock(prop(Blocks.CRIMSON_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.NETHER_WOOD), Blocks.CRIMSON_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_WARPED_FENCE = BLOCKS.register("reinforced_warped_fence", () -> new ReinforcedFenceBlock(prop(Blocks.WARPED_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.NETHER_WOOD), Blocks.WARPED_FENCE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_NETHER_BRICK_FENCE = BLOCKS.register("reinforced_nether_brick_fence", () -> new ReinforcedFenceBlock(prop(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.NETHER_BRICKS), Blocks.NETHER_BRICK_FENCE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_OAK_FENCE_GATE = BLOCKS.register("reinforced_oak_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.OAK, Blocks.OAK_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_SPRUCE_FENCE_GATE = BLOCKS.register("reinforced_spruce_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.SPRUCE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.SPRUCE, Blocks.SPRUCE_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_BIRCH_FENCE_GATE = BLOCKS.register("reinforced_birch_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.BIRCH_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.BIRCH, Blocks.BIRCH_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_JUNGLE_FENCE_GATE = BLOCKS.register("reinforced_jungle_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.JUNGLE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.JUNGLE, Blocks.JUNGLE_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_ACACIA_FENCE_GATE = BLOCKS.register("reinforced_acacia_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.ACACIA_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.ACACIA, Blocks.ACACIA_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_DARK_OAK_FENCE_GATE = BLOCKS.register("reinforced_dark_oak_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.DARK_OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.DARK_OAK, Blocks.DARK_OAK_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_MANGROVE_FENCE_GATE = BLOCKS.register("reinforced_mangrove_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.MANGROVE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.MANGROVE, Blocks.MANGROVE_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_CHERRY_FENCE_GATE = BLOCKS.register("reinforced_cherry_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.CHERRY_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.CHERRY, Blocks.CHERRY_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_BAMBOO_FENCE_GATE = BLOCKS.register("reinforced_bamboo_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.BAMBOO_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.BAMBOO, Blocks.BAMBOO_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_CRIMSON_FENCE_GATE = BLOCKS.register("reinforced_crimson_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.CRIMSON_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.CRIMSON, Blocks.CRIMSON_FENCE_GATE));
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_WARPED_FENCE_GATE = BLOCKS.register("reinforced_warped_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.WARPED_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.WARPED, Blocks.WARPED_FENCE_GATE));
 
 	//misc
 	@RegisterItemBlock
@@ -2409,7 +2527,7 @@ public class SCContent {
 	public static final DeferredBlock<ReinforcedDirtPathBlock> REINFORCED_DIRT_PATH = BLOCKS.register("reinforced_grass_path", () -> new ReinforcedDirtPathBlock(prop(MapColor.DIRT).sound(SoundType.GRASS), Blocks.DIRT_PATH));
 	public static final DeferredBlock<ReinforcedMovingPistonBlock> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop().dynamicShape().noLootTable().noOcclusion().isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> false).isViewBlocking((s, w, p) -> false)));
 	@Reinforced(registerBlockItem = false)
-	public static final DeferredBlock<ReinforcedPistonHeadBlock> REINFORCED_PISTON_HEAD = BLOCKS.register("reinforced_piston_head", () -> new ReinforcedPistonHeadBlock(prop().noLootTable()));
+	public static final DeferredBlock<ReinforcedPistonHeadBlock> REINFORCED_PISTON_HEAD = BLOCKS.register("reinforced_piston_head", () -> new ReinforcedPistonHeadBlock(prop().noLootTable().pushReaction(PushReaction.BLOCK)));
 	public static final DeferredBlock<SometimesVisibleBlock> SENTRY_DISGUISE = BLOCKS.register("sentry_disguise", () -> new SometimesVisibleBlock(propDisguisable().noLootTable().pushReaction(PushReaction.BLOCK)));
 
 	//items
@@ -2530,7 +2648,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<UniversalOwnerChangerItem> UNIVERSAL_OWNER_CHANGER = ITEMS.register("universal_owner_changer", () -> new UniversalOwnerChangerItem(itemProp().stacksTo(1).defaultDurability(48)));
 	@HasManualPage
-	public static final DeferredItem<Item> WIRE_CUTTERS = ITEMS.registerSimpleItem("wire_cutters", itemProp().stacksTo(1).defaultDurability(476));
+	public static final DeferredItem<Item> WIRE_CUTTERS = ITEMS.register("wire_cutters", () -> new WireCuttersItem(itemProp().stacksTo(1).defaultDurability(476)));
 
 	//modules
 	@HasManualPage
@@ -2556,23 +2674,40 @@ public class SCContent {
 		List<Block> beOwnableBlocks = Arrays.stream(SCContent.class.getFields())
 				.filter(field -> field.isAnnotationPresent(OwnableBE.class))
 				.map(field -> {
+					//@formatter:on
 					try {
 						return ((DeferredBlock<Block>) field.get(null)).get();
 					}
-					catch(IllegalArgumentException | IllegalAccessException e) {
+					catch (IllegalArgumentException | IllegalAccessException e) {
 						e.printStackTrace();
 						return null;
 					}
-				})
+				}) //@formatter:off
 				.filter(Predicates.notNull())
 				.toList();
 
-		return BlockEntityType.Builder.of(OwnableBlockEntity::new, beOwnableBlocks.toArray(new Block[beOwnableBlocks.size()])).build(null);
+		//@formatter:on
+		return BlockEntityType.Builder.of((pos, state) -> {
+			if (state.is(REINFORCED_OBSERVER))
+				return new ReinforcedObserverBlockEntity(pos, state);
+			else if (state.is(MINE))
+				return new MineBlockEntity(pos, state);
+			else
+				return new OwnableBlockEntity(pos, state);
+		}, beOwnableBlocks.toArray(new Block[beOwnableBlocks.size()])).build(null);
 	});
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NamedBlockEntity>> ABSTRACT_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("abstract", () -> BlockEntityType.Builder.of(NamedBlockEntity::new,
+	//@formatter:off
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NamedBlockEntity>> ABSTRACT_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("abstract", () -> BlockEntityType.Builder.of((pos, state) -> {
+		if (state.is(ELECTRIFIED_IRON_FENCE) || state.is(ELECTRIFIED_IRON_FENCE_GATE))
+			return new ElectrifiedFenceAndGateBlockEntity(pos, state);
+		else if (state.is(BOUNCING_BETTY))
+			return new BouncingBettyBlockEntity(pos, state);
+		else
+			return new NamedBlockEntity(pos, state);
+	},
 			SCContent.LASER_FIELD.get(),
 			SCContent.INVENTORY_SCANNER_FIELD.get(),
-			SCContent.IRON_FENCE.get(),
+			SCContent.ELECTRIFIED_IRON_FENCE.get(),
 			SCContent.COBBLESTONE_MINE.get(),
 			SCContent.DIAMOND_ORE_MINE.get(),
 			SCContent.DIRT_MINE.get(),
@@ -2580,7 +2715,7 @@ public class SCContent {
 			SCContent.SAND_MINE.get(),
 			SCContent.STONE_MINE.get(),
 			SCContent.BOUNCING_BETTY.get(),
-			SCContent.REINFORCED_FENCE_GATE.get(),
+			SCContent.ELECTRIFIED_IRON_FENCE_GATE.get(),
 			SCContent.ANCIENT_DEBRIS_MINE.get(),
 			SCContent.COAL_ORE_MINE.get(),
 			SCContent.EMERALD_ORE_MINE.get(),
@@ -2730,6 +2865,21 @@ public class SCContent {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FloorTrapBlockEntity>> FLOOR_TRAP_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("floor_trap", () -> BlockEntityType.Builder.of(FloorTrapBlockEntity::new, SCContent.FLOOR_TRAP.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KeycardLockBlockEntity>> KEYCARD_LOCK_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keycard_lock", () -> BlockEntityType.Builder.of(KeycardLockBlockEntity::new, SCContent.KEYCARD_LOCK.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ScannerTrapdoorBlockEntity>> SCANNER_TRAPDOOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("scanner_trapdoor", () -> BlockEntityType.Builder.of(ScannerTrapdoorBlockEntity::new, SCContent.SCANNER_TRAPDOOR.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedDispenserBlockEntity>> REINFORCED_DISPENSER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_dispenser", () -> BlockEntityType.Builder.of(ReinforcedDispenserBlockEntity::new, SCContent.REINFORCED_DISPENSER.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedDropperBlockEntity>> REINFORCED_DROPPER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_dropper", () -> BlockEntityType.Builder.of(ReinforcedDropperBlockEntity::new, SCContent.REINFORCED_DROPPER.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AllowlistOnlyBlockEntity>> REINFORCED_FENCE_GATE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_fence_gate", () -> BlockEntityType.Builder.of(AllowlistOnlyBlockEntity::new,
+			SCContent.REINFORCED_OAK_FENCE_GATE.get(),
+			SCContent.REINFORCED_SPRUCE_FENCE_GATE.get(),
+			SCContent.REINFORCED_BIRCH_FENCE_GATE.get(),
+			SCContent.REINFORCED_JUNGLE_FENCE_GATE.get(),
+			SCContent.REINFORCED_ACACIA_FENCE_GATE.get(),
+			SCContent.REINFORCED_DARK_OAK_FENCE_GATE.get(),
+			SCContent.REINFORCED_MANGROVE_FENCE_GATE.get(),
+			SCContent.REINFORCED_CHERRY_FENCE_GATE.get(),
+			SCContent.REINFORCED_BAMBOO_FENCE_GATE.get(),
+			SCContent.REINFORCED_CRIMSON_FENCE_GATE.get(),
+			SCContent.REINFORCED_WARPED_FENCE_GATE.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedLecternBlockEntity>> REINFORCED_LECTERN_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_lectern", () -> BlockEntityType.Builder.of(ReinforcedLecternBlockEntity::new, SCContent.REINFORCED_LECTERN.get()).build(null));
 
 	//entity types
 	public static final DeferredHolder<EntityType<?>, EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",
@@ -2755,7 +2905,7 @@ public class SCContent {
 			.build(SecurityCraft.MODID + ":securitycamera"));
 	public static final DeferredHolder<EntityType<?>, EntityType<Sentry>> SENTRY_ENTITY = ENTITY_TYPES.register("sentry",
 			() -> EntityType.Builder.<Sentry>of(Sentry::new, MobCategory.MISC)
-			.sized(1.0F, 2.0F)
+			.sized(1.0F, 1.01F)
 			.setTrackingRange(256)
 			.setUpdateInterval(1)
 			.setShouldReceiveVelocityUpdates(true)
@@ -2784,8 +2934,9 @@ public class SCContent {
 	public static final DeferredHolder<MenuType<?>, MenuType<BlockChangeDetectorMenu>> BLOCK_CHANGE_DETECTOR_MENU = MENU_TYPES.register("block_change_detector", () -> IMenuTypeExtension.create((windowId, inv, data) -> new BlockChangeDetectorMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 	public static final DeferredHolder<MenuType<?>, MenuType<KeycardHolderMenu>> KEYCARD_HOLDER_MENU = MENU_TYPES.register("keycard_holder", () -> IMenuTypeExtension.create((windowId, inv, data) -> new KeycardHolderMenu(windowId, inv, ItemContainer.keycardHolder(PlayerUtils.getItemStackFromAnyHand(inv.player, SCContent.KEYCARD_HOLDER.get())))));
 	public static final DeferredHolder<MenuType<?>, MenuType<TrophySystemMenu>> TROPHY_SYSTEM_MENU = MENU_TYPES.register("trophy_system", () -> IMenuTypeExtension.create((windowId, inv, data) -> new TrophySystemMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
-	public static final DeferredHolder<MenuType<?>, MenuType<ClaymoreMenu>> CLAYMORE_MENU = MENU_TYPES.register("claymore", () -> IMenuTypeExtension.create((windowId, inv, data) -> new ClaymoreMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
+	public static final DeferredHolder<MenuType<?>, MenuType<SingleLensMenu>> SINGLE_LENS_MENU = MENU_TYPES.register("single_lens", () -> IMenuTypeExtension.create((windowId, inv, data) -> new SingleLensMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 	public static final DeferredHolder<MenuType<?>, MenuType<LaserBlockMenu>> LASER_BLOCK_MENU = MENU_TYPES.register("laser_block", () -> IMenuTypeExtension.create((windowId, inv, data) -> new LaserBlockMenu(windowId, inv.player.level(), data.readBlockPos(), LaserBlockBlockEntity.loadSideConfig(data.readNbt()), inv)));
+	public static final DeferredHolder<MenuType<?>, MenuType<ReinforcedLecternMenu>> REINFORCED_LECTERN_MENU = MENU_TYPES.register("reinforced_lectern", () -> IMenuTypeExtension.create((windowId, inv, data) -> new ReinforcedLecternMenu(windowId, inv.player.level(), data.readBlockPos())));
 
 	private static final BlockBehaviour.Properties prop() {
 		return prop(MapColor.STONE);
@@ -2858,29 +3009,29 @@ public class SCContent {
 	}
 
 	private static ReinforcedButtonBlock woodenButton(Block vanillaBlock, BlockSetType blockSetType) {
-		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType, 30);
+		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK).forceSolidOn(), vanillaBlock, blockSetType, 30);
 	}
 
 	@SuppressWarnings("unused")
 	private static ReinforcedButtonBlock woodenButton(Block vanillaBlock, BlockSetType blockSetType, FeatureFlag... requiredFeatures) {
-		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK).requiredFeatures(requiredFeatures), vanillaBlock, blockSetType, 30);
+		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK).forceSolidOn().requiredFeatures(requiredFeatures), vanillaBlock, blockSetType, 30);
 	}
 
 	private static ReinforcedButtonBlock stoneButton(Block vanillaBlock, BlockSetType blockSetType) {
-		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType, 20);
+		return new ReinforcedButtonBlock(prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK).forceSolidOn(), vanillaBlock, blockSetType, 20);
 	}
 
 	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, BlockSetType blockSetType) {
-		return new ReinforcedPressurePlateBlock(prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
+		return new ReinforcedPressurePlateBlock(prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK).forceSolidOn(), vanillaBlock, blockSetType);
 	}
 
 	@SuppressWarnings("unused")
 	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock, BlockSetType blockSetType, FeatureFlag... requiredFeatures) {
-		return new ReinforcedPressurePlateBlock(prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().requiredFeatures(requiredFeatures).pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
+		return new ReinforcedPressurePlateBlock(prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().requiredFeatures(requiredFeatures).pushReaction(PushReaction.BLOCK).forceSolidOn(), vanillaBlock, blockSetType);
 	}
 
 	private static ReinforcedPressurePlateBlock stonePressurePlate(Block vanillaBlock, BlockSetType blockSetType) {
-		return new ReinforcedPressurePlateBlock(prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK), vanillaBlock, blockSetType);
+		return new ReinforcedPressurePlateBlock(prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK).forceSolidOn(), vanillaBlock, blockSetType);
 	}
 
 	private SCContent() {}

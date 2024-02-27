@@ -44,7 +44,7 @@ import net.neoforged.neoforge.event.entity.EntityTeleportEvent.TeleportCommand;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable, IToggleableEntries<TeleportationType> {
-	private final IntOption signalLength = new IntOption("signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private final IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5, true); //20 seconds max
 	private final IntOption range = new IntOption("range", 5, 1, 15, 1, true);
 	private final DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
@@ -281,6 +281,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	public void setSignalLength(int signalLength) {
 		if (getSignalLength() != signalLength) {
 			this.signalLength.setValue(signalLength);
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, false));
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
 			setChanged();
 		}
@@ -322,6 +323,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 		}
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

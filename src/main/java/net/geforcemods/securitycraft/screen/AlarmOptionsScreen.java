@@ -28,7 +28,7 @@ public class AlarmOptionsScreen extends Screen {
 	private final AlarmScreen alarmScreen;
 	private int imageWidth = 226, imageHeight = 112, leftPos, topPos;
 	private Button minusMinute, minusTenSeconds, minusSecond, reset, plusSecond, plusTenSeconds, plusMinute;
-	private EditBox timeEditBox;
+	private SoundLengthEditBox soundLengthEditBox;
 	private int soundLengthTextXPosition;
 
 	public AlarmOptionsScreen(AlarmScreen alarmScreen) {
@@ -51,8 +51,8 @@ public class AlarmOptionsScreen extends Screen {
 
 		addRenderableWidget(new SmallXButton(leftPos + imageWidth - 12, topPos + 4, b -> Minecraft.getInstance().popGuiLayer()));
 		soundLengthTextXPosition = width / 2 - combinedTextAndBoxWidth / 2;
-		timeEditBox = addRenderableWidget(new SoundLengthEditBox(font, soundLengthTextXPosition + soundLengthTextWidthPlusBuffer, buttonY - 15, timeEditBoxWidth, 12, Component.empty()));
-		timeEditBox.setFilter(string -> string.matches("[0-9:]*"));
+		soundLengthEditBox = addRenderableWidget(new SoundLengthEditBox(font, soundLengthTextXPosition + soundLengthTextWidthPlusBuffer, buttonY - 15, timeEditBoxWidth, 12, Component.empty()));
+		soundLengthEditBox.setFilter(string -> string.matches("[0-9:]*"));
 		minusMinute = addRenderableWidget(new Button(buttonsX, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_one_minute"), b -> changeSoundLength(-60), Button.DEFAULT_NARRATION));
 		minusTenSeconds = addRenderableWidget(new Button(buttonsX + 34, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_ten_seconds"), b -> changeSoundLength(-10), Button.DEFAULT_NARRATION));
 		minusSecond = addRenderableWidget(new Button(buttonsX + 68, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_one_second"), b -> changeSoundLength(-1), Button.DEFAULT_NARRATION));
@@ -100,7 +100,7 @@ public class AlarmOptionsScreen extends Screen {
 		int soundLength = Math.max(1, Math.min(newSoundLength, AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH));
 
 		if (updateTimeEditBox)
-			timeEditBox.setValue(String.format("%02d:%02d", soundLength / 60, soundLength % 60));
+			soundLengthEditBox.setValue(String.format("%02d:%02d", soundLength / 60, soundLength % 60));
 
 		enablePlusButtons = soundLength < AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH;
 		enableMinusButtons = soundLength > 1;
@@ -122,6 +122,12 @@ public class AlarmOptionsScreen extends Screen {
 		}
 
 		return super.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	@Override
+	public void onClose() {
+		soundLengthEditBox.checkAndProcessInput();
+		super.onClose();
 	}
 
 	@Override
@@ -156,7 +162,7 @@ public class AlarmOptionsScreen extends Screen {
 			super.setFocused(focused);
 		}
 
-		private void checkAndProcessInput() {
+		public void checkAndProcessInput() {
 			int minutes = 0;
 			int seconds = 2;
 

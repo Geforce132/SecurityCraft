@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -18,8 +17,6 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBl
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyItemStackHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
-import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
@@ -52,7 +49,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity implements MenuProvider, ITickingBlockEntity, ILockable {
 	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;
@@ -164,10 +160,10 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	 * @return The feedback message. null if none should be sent.
 	 */
 	public MutableComponent enableMultiblock() {
-		if (!isEnabled()) { //multiblock detection
-			if (level.isClientSide)
-				PacketDistributor.SERVER.noArg().send(new ToggleBlockPocketManager(this, true, getSize()));
+		if (level.isClientSide)
+			return Component.translatable("enableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
 
+		if (!isEnabled()) { //multiblock detection
 			List<BlockPos> blocks = new ArrayList<>();
 			List<BlockPos> sides = new ArrayList<>();
 			List<BlockPos> floor = new ArrayList<>();
@@ -323,10 +319,10 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	 * @return The feedback message. null if none should be sent.
 	 */
 	public MutableComponent autoAssembleMultiblock() {
-		if (!isEnabled()) {
-			if (level.isClientSide)
-				PacketDistributor.SERVER.noArg().send(new AssembleBlockPocket(this, getSize()));
+		if (level.isClientSide)
+			return Component.translatable("autoAssembleMultiblock called on client! Send an AssembleBlockPocket packet instead.");
 
+		if (!isEnabled()) {
 			final Direction managerFacing = getBlockState().getValue(BlockPocketManagerBlock.FACING);
 			final Direction left = managerFacing.getClockWise();
 			final Direction right = left.getOpposite();
@@ -505,13 +501,11 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		return null;
 	}
 
-	public void disableMultiblock() {
-		if (isEnabled()) {
-			if (level.isClientSide) {
-				PacketDistributor.SERVER.noArg().send(new ToggleBlockPocketManager(this, false, getSize()));
-				PlayerUtils.sendMessageToPlayer(ClientHandler.getClientPlayer(), Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:blockpocket.deactivated"), ChatFormatting.DARK_AQUA, true);
-			}
+	public MutableComponent disableMultiblock() {
+		if (level.isClientSide)
+			return Component.translatable("disableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
 
+		if (isEnabled()) {
 			setEnabled(false);
 
 			for (BlockPos pos : blocks) {
@@ -533,7 +527,10 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			walls.clear();
 			floor.clear();
 			setChanged();
+			return Utils.localize("messages.securitycraft:blockpocket.deactivated");
 		}
+
+		return null;
 	}
 
 	private Component getFormattedRelativeCoordinates(BlockPos pos, Direction managerFacing) {
@@ -590,10 +587,11 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	}
 
 	public static IItemHandler getCapability(BlockPocketManagerBlockEntity be, Direction side) {
-		if (be.isPlacingBlocks()) //prevent extracting while auto building the block pocket
-			return new ValidityCheckInsertOnlyItemStackHandler(be.storage);
+		//prevent extracting while auto building the block pocket
+		if (!be.isPlacingBlocks() && BlockUtils.isAllowedToExtractFromProtectedBlock(side, be))
+			return new ValidityCheckItemStackHandler(be.storage);
 		else
-			return BlockUtils.getProtectedCapability(side, be, () -> new ValidityCheckItemStackHandler(be.storage), () -> new ValidityCheckInsertOnlyItemStackHandler(be.storage));
+			return new ValidityCheckInsertOnlyItemStackHandler(be.storage);
 	}
 
 	public NonNullList<ItemStack> getStorage() {

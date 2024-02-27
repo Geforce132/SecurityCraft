@@ -2,38 +2,47 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blockentities.MineBlockEntity;
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.OwnableEntity;
-import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class MineBlock extends ExplosiveBlock {
+public class MineBlock extends ExplosiveBlock implements SimpleWaterloggedBlock {
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final VoxelShape SHAPE = Block.box(5, 0, 5, 11, 3, 11);
 
 	public MineBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(DEACTIVATED, false));
+		registerDefaultState(stateDefinition.any().setValue(DEACTIVATED, false).setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		return defaultBlockState().setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER);
 	}
 
 	@Override
@@ -52,14 +61,31 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED))
+			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	}
+
+	@Override
 	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-		if (!level.isClientSide)
-			if (player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
+		if (!level.isClientSide) {
+			MineBlockEntity mine = (MineBlockEntity) level.getBlockEntity(pos);
+			TargetingMode mode = mine.getTargetingMode();
+
+			if (!mode.allowsPlayers() || player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
 				return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
-			else if (!EntityUtils.doesPlayerOwn(player, level, pos)) {
+			else if (mine.isOwnedBy(player) && !mine.ignoresOwner()) {
 				explode(level, pos);
 				return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 			}
+		}
 
 		return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 	}
@@ -71,11 +97,13 @@ public class MineBlock extends ExplosiveBlock {
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (level.isClientSide || entity instanceof ItemEntity || !getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
-			return;
+		if (!level.isClientSide && entity instanceof LivingEntity livingEntity && getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox())) {
+			MineBlockEntity mine = (MineBlockEntity) level.getBlockEntity(pos);
+			TargetingMode mode = mine.getTargetingMode();
 
-		if (!EntityUtils.doesEntityOwn(entity, level, pos) && !(entity instanceof Player player && player.isCreative()) && !(entity instanceof OwnableEntity ownableEntity && ((IOwnable) level.getBlockEntity(pos)).allowsOwnableEntity(ownableEntity)))
-			explode(level, pos);
+			if (mode.canAttackEntity(livingEntity, mine, false))
+				explode(level, pos);
+		}
 	}
 
 	@Override
@@ -119,7 +147,7 @@ public class MineBlock extends ExplosiveBlock {
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(DEACTIVATED);
+		builder.add(DEACTIVATED, WATERLOGGED);
 	}
 
 	@Override
@@ -134,6 +162,6 @@ public class MineBlock extends ExplosiveBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new OwnableBlockEntity(pos, state);
+		return new MineBlockEntity(pos, state);
 	}
 }

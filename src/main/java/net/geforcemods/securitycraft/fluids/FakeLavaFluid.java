@@ -119,7 +119,12 @@ public abstract class FakeLavaFluid extends BaseFlowingFluid {
 	}
 
 	private boolean isFlammable(LevelReader level, BlockPos pos, Direction face) {
-		return !(pos.getY() >= level.getMinBuildHeight() && pos.getY() < level.getMaxBuildHeight() && !level.hasChunkAt(pos)) || level.getBlockState(pos).isFlammable(level, pos, face);
+		if (pos.getY() >= level.getMinBuildHeight() && pos.getY() < level.getMaxBuildHeight() && !level.hasChunkAt(pos))
+			return false;
+
+		BlockState state = level.getBlockState(pos);
+
+		return state.ignitedByLava() && state.isFlammable(level, pos, face);
 	}
 
 	@Nullable
@@ -174,10 +179,10 @@ public abstract class FakeLavaFluid extends BaseFlowingFluid {
 	}
 
 	@Override
-	public int getSpreadDelay(Level level, BlockPos pos, FluidState fluidState1, FluidState fluidState2) {
+	public int getSpreadDelay(Level level, BlockPos pos, FluidState currentState, FluidState newState) {
 		int tickDelay = getTickDelay(level);
 
-		if (!fluidState1.isEmpty() && !fluidState2.isEmpty() && !fluidState1.getValue(FALLING) && !fluidState2.getValue(FALLING) && fluidState2.getHeight(level, pos) > fluidState1.getHeight(level, pos) && level.getRandom().nextInt(4) != 0)
+		if (!currentState.isEmpty() && !newState.isEmpty() && !currentState.getValue(FALLING) && !newState.getValue(FALLING) && newState.getHeight(level, pos) > currentState.getHeight(level, pos) && level.getRandom().nextInt(4) != 0)
 			tickDelay *= 4;
 
 		return tickDelay;

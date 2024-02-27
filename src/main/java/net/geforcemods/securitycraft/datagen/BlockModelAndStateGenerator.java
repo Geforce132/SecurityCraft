@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.datagen;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.UnaryOperator;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCCreativeModeTabs;
@@ -12,6 +11,8 @@ import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.BrushableMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.DeepslateMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
@@ -36,7 +37,6 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.block.state.properties.WallSide;
-import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -78,7 +78,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 				else if (block instanceof ReinforcedStainedGlassBlock)
 					simpleBlockWithRenderType(block, "translucent");
 				else if (block instanceof ReinforcedStainedGlassPaneBlock)
-					reinforcedPaneBlock((IronBarsBlock) block, modelFile -> modelFile.renderType("translucent"));
+					reinforcedPaneBlock((IronBarsBlock) block, "translucent");
 				else if (block instanceof ReinforcedStairsBlock)
 					reinforcedStairsBlock(block);
 				else if (block instanceof ReinforcedWallBlock)
@@ -98,10 +98,33 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		simpleBlockWithRenderType(SCContent.FLOOR_TRAP.get(), "translucent");
 		simpleBlockWithRenderType(SCContent.REINFORCED_GLASS.get(), "cutout");
 		reinforcedCarpetBlock(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
-		reinforcedPaneBlock(SCContent.REINFORCED_GLASS_PANE.get(), modelFile -> modelFile.renderType("cutout_mipped"));
+		reinforcedPaneBlock(SCContent.REINFORCED_GLASS_PANE.get(), "cutout_mipped");
+
+		reinforcedFenceBlock(SCContent.REINFORCED_OAK_FENCE.get(), "oak_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_SPRUCE_FENCE.get(), "spruce_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_BIRCH_FENCE.get(), "birch_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_JUNGLE_FENCE.get(), "jungle_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_ACACIA_FENCE.get(), "acacia_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_DARK_OAK_FENCE.get(), "dark_oak_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_MANGROVE_FENCE.get(), "mangrove_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_CHERRY_FENCE.get(), "cherry_planks");
+		//bamboo fence is handled manually
+		reinforcedFenceBlock(SCContent.REINFORCED_CRIMSON_FENCE.get(), "crimson_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_WARPED_FENCE.get(), "warped_planks");
+		reinforcedFenceBlock(SCContent.REINFORCED_NETHER_BRICK_FENCE.get(), "nether_bricks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_OAK_FENCE_GATE.get(), "oak_planks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_SPRUCE_FENCE_GATE.get(), "spruce_planks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_BIRCH_FENCE_GATE.get(), "birch_planks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_JUNGLE_FENCE_GATE.get(), "jungle_planks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_ACACIA_FENCE_GATE.get(), "acacia_planks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_DARK_OAK_FENCE_GATE.get(), "dark_oak_planks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_MANGROVE_FENCE_GATE.get(), "mangrove_planks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_CHERRY_FENCE_GATE.get(), "cherry_planks");
+		//bamboo fence gate is handled manually
+		reinforcedFenceGateBlock(SCContent.REINFORCED_CRIMSON_FENCE_GATE.get(), "crimson_planks");
+		reinforcedFenceGateBlock(SCContent.REINFORCED_WARPED_FENCE_GATE.get(), "warped_planks");
 
 		models().reinforcedColumn("reinforced_smooth_stone_slab_double", "smooth_stone_slab_side", "smooth_stone");
-
 		reinforcedSlabBlock(SCContent.REINFORCED_OAK_SLAB.get(), "reinforced_oak_planks", "oak_planks");
 		reinforcedSlabBlock(SCContent.REINFORCED_SPRUCE_SLAB.get(), "reinforced_spruce_planks", "spruce_planks");
 		reinforcedSlabBlock(SCContent.REINFORCED_BIRCH_SLAB.get(), "reinforced_birch_planks", "birch_planks");
@@ -226,22 +249,41 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		});
 	}
 
-	public void reinforcedPaneBlock(IronBarsBlock block, UnaryOperator<BlockModelBuilder> renderTypeApplier) {
+	public void reinforcedFenceBlock(ReinforcedFenceBlock block, String textureName) {
+		String baseName = Utils.getRegistryName(block).toString();
+		ResourceLocation texture = mcBlock(textureName);
+
+		fourWayBlock(block, models().fencePost(baseName + "_post", texture), models().fenceSide(baseName + "_side", texture));
+		models().singleTexture(baseName + "_inventory", modBlock("reinforced_fence_inventory"), texture);
+	}
+
+	public void reinforcedFenceGateBlock(ReinforcedFenceGateBlock block, String textureName) {
+		String baseName = Utils.getRegistryName(block).toString();
+		ResourceLocation texture = mcBlock(textureName);
+		ModelFile gate = models().fenceGate(baseName, texture);
+		ModelFile gateOpen = models().fenceGateOpen(baseName + "_open", texture);
+		ModelFile gateWall = models().fenceGateWall(baseName + "_wall", texture);
+		ModelFile gateWallOpen = models().fenceGateWallOpen(baseName + "_wall_open", texture);
+
+		fenceGateBlock(block, gate, gateOpen, gateWall, gateWallOpen);
+	}
+
+	public void reinforcedPaneBlock(IronBarsBlock block, String renderType) {
 		String name = name(block);
 
-		paneBlock(block, modBlock(name.replace("_pane", "")), modBlock(name + "_top"), renderTypeApplier);
+		paneBlock(block, modBlock(name.replace("_pane", "")), modBlock(name + "_top"), renderType);
 	}
 
-	public void paneBlock(IronBarsBlock block, ResourceLocation pane, ResourceLocation edge, UnaryOperator<BlockModelBuilder> renderTypeApplier) {
-		paneBlockInternal(block, name(block), pane, edge, renderTypeApplier);
+	public void paneBlock(IronBarsBlock block, ResourceLocation pane, ResourceLocation edge, String renderType) {
+		paneBlockInternal(block, name(block), pane, edge, renderType);
 	}
 
-	private void paneBlockInternal(IronBarsBlock block, String baseName, ResourceLocation pane, ResourceLocation edge, UnaryOperator<BlockModelBuilder> renderTypeApplier) {
-		ModelFile post = renderTypeApplier.apply(models().panePost(baseName + "_post", pane, edge));
-		ModelFile side = renderTypeApplier.apply(models().paneSide(baseName + "_side", pane, edge));
-		ModelFile sideAlt = renderTypeApplier.apply(models().paneSideAlt(baseName + "_side_alt", pane, edge));
-		ModelFile noSide = renderTypeApplier.apply(models().paneNoSide(baseName + "_noside", pane));
-		ModelFile noSideAlt = renderTypeApplier.apply(models().paneNoSideAlt(baseName + "_noside_alt", pane));
+	private void paneBlockInternal(IronBarsBlock block, String baseName, ResourceLocation pane, ResourceLocation edge, String renderType) {
+		ModelFile post = models().panePost(baseName + "_post", pane, edge).renderType(renderType);
+		ModelFile side = models().paneSide(baseName + "_side", pane, edge).renderType(renderType);
+		ModelFile sideAlt = models().paneSideAlt(baseName + "_side_alt", pane, edge).renderType(renderType);
+		ModelFile noSide = models().paneNoSide(baseName + "_noside", pane).renderType(renderType);
+		ModelFile noSideAlt = models().paneNoSideAlt(baseName + "_noside_alt", pane).renderType(renderType);
 		paneBlock(block, post, side, sideAlt, noSide, noSideAlt);
 	}
 

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
@@ -136,11 +137,11 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			else if (be.verifyPasscodeSet(level, pos, be, player)) {
 				if (be.isDenied(player)) {
-					if (be.sendsMessages())
+					if (be.sendsDenylistMessage())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 				}
 				else if (be.isAllowed(player)) {
-					if (be.sendsMessages())
+					if (be.sendsAllowlistMessage())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
 					activate(be, level, pos, player);
@@ -186,31 +187,56 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
-	public class Convertible implements IPasscodeConvertible {
-		private final Block originalBlock;
+	public static class Convertible implements IPasscodeConvertible {
+		private final Block unprotectedBlock, protectedBlock;
 
-		public Convertible(Block originalBlock) {
-			this.originalBlock = originalBlock;
+		public Convertible(Block unprotectedBlock, Block protectedBlock) {
+			this.unprotectedBlock = unprotectedBlock;
+			this.protectedBlock = protectedBlock;
 		}
 
 		@Override
-		public boolean isValidStateForConversion(BlockState state) {
-			return state.is(originalBlock);
+		public boolean isUnprotectedBlock(BlockState state) {
+			return state.is(unprotectedBlock);
 		}
 
 		@Override
-		public boolean convert(Player player, Level level, BlockPos pos) {
+		public boolean isProtectedBlock(BlockState state) {
+			return state.is(protectedBlock);
+		}
+
+		@Override
+		public boolean protect(Player player, Level level, BlockPos pos) {
+			return convert(player, level, pos, protectedBlock, true);
+		}
+
+		@Override
+		public boolean unprotect(Player player, Level level, BlockPos pos) {
+			return convert(player, level, pos, unprotectedBlock, false);
+		}
+
+		public boolean convert(Player player, Level level, BlockPos pos, Block convertedBlock, boolean protect) {
 			BlockState state = level.getBlockState(pos);
 			Direction facing = state.getValue(FACING);
 			boolean lit = state.getValue(LIT);
 			AbstractFurnaceBlockEntity furnace = (AbstractFurnaceBlockEntity) level.getBlockEntity(pos);
-			CompoundTag tag = furnace.saveWithFullMetadata();
+			CompoundTag tag;
+			BlockState convertedState = convertedBlock.defaultBlockState().setValue(FACING, facing).setValue(LIT, lit);
 
+			if (protect)
+				convertedState = convertedState.setValue(OPEN, false);
+			else
+				((IModuleInventory) furnace).dropAllModules();
+
+			tag = furnace.saveWithFullMetadata();
 			furnace.clearContent();
-			level.setBlockAndUpdate(pos, AbstractKeypadFurnaceBlock.this.defaultBlockState().setValue(FACING, facing).setValue(OPEN, false).setValue(LIT, lit));
-			furnace = (AbstractKeypadFurnaceBlockEntity) level.getBlockEntity(pos);
+			level.setBlockAndUpdate(pos, convertedState);
+			furnace = (AbstractFurnaceBlockEntity) level.getBlockEntity(pos);
 			furnace.load(tag);
-			((IOwnable) furnace).setOwner(player.getUUID().toString(), player.getName().getString());
+
+			if (protect && player != null)
+				((IOwnable) furnace).setOwner(player.getUUID().toString(), player.getName().getString());
+
 			return true;
 		}
 	}

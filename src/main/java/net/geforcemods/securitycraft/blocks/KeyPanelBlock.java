@@ -36,20 +36,20 @@ public class KeyPanelBlock extends AbstractPanelBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (state.getValue(POWERED))
+		KeyPanelBlockEntity be = (KeyPanelBlockEntity) level.getBlockEntity(pos);
+
+		if (state.getValue(POWERED) && be.getSignalLength() > 0)
 			return InteractionResult.PASS;
 		else if (!level.isClientSide) {
-			KeyPanelBlockEntity be = (KeyPanelBlockEntity) level.getBlockEntity(pos);
-
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			else if (be.verifyPasscodeSet(level, pos, be, player)) {
 				if (be.isDenied(player)) {
-					if (be.sendsMessages())
+					if (be.sendsDenylistMessage())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 				}
 				else if (be.isAllowed(player)) {
-					if (be.sendsMessages())
+					if (be.sendsAllowlistMessage())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
 					activate(state, level, pos, be.getSignalLength());

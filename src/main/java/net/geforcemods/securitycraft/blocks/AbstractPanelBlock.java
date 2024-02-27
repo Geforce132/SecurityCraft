@@ -44,8 +44,10 @@ public abstract class AbstractPanelBlock extends OwnableBlock implements SimpleW
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-		BlockUtils.updateIndirectNeighbors(level, pos, this, getConnectedDirection(state).getOpposite());
+		if (state.getValue(POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, pos, this, getConnectedDirection(state).getOpposite());
+		}
 	}
 
 	@Override
@@ -146,9 +148,11 @@ public abstract class AbstractPanelBlock extends OwnableBlock implements SimpleW
 	}
 
 	public void activate(BlockState state, Level level, BlockPos pos, int signalLength) {
-		level.setBlockAndUpdate(pos, state.setValue(POWERED, true));
+		level.setBlockAndUpdate(pos, state.cycle(POWERED));
 		BlockUtils.updateIndirectNeighbors(level, pos, this, getConnectedDirection(state).getOpposite());
-		level.scheduleTick(pos, this, signalLength);
+
+		if (signalLength > 0)
+			level.scheduleTick(pos, this, signalLength);
 	}
 
 	protected static Direction getConnectedDirection(BlockState state) {

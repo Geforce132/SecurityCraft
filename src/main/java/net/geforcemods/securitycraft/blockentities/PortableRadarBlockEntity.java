@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -14,7 +15,6 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.TeamUtils;
@@ -22,6 +22,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -50,7 +51,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 			ticksUntilNextSearch = getSearchDelay();
 
 			AABB area = new AABB(pos).inflate(getSearchRadius());
-			List<Player> closebyPlayers = level.getEntitiesOfClass(Player.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && e.canBeSeenByAnyone() && !EntityUtils.isInvisible(e));
+			List<Player> closebyPlayers = level.getEntitiesOfClass(Player.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && e.canBeSeenByAnyone() && !Utils.isEntityInvisible(e));
 
 			if (isModuleEnabled(ModuleType.REDSTONE))
 				PortableRadarBlock.togglePowerOutput(level, pos, !closebyPlayers.isEmpty());
@@ -58,17 +59,27 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 			if (!closebyPlayers.isEmpty()) {
 				Collection<ServerPlayer> onlineTeamPlayers = TeamUtils.getOnlinePlayersInTeam(level.getServer(), getOwner());
 
+				if (onlineTeamPlayers.isEmpty()) { //owner may not be in a team
+					ServerPlayer ownerPlayer = level.getServer().getPlayerList().getPlayerByName(getOwner().getName());
+
+					if (ownerPlayer != null)
+						onlineTeamPlayers = Arrays.asList(ownerPlayer);
+				}
+
 				for (Player closebyPlayer : closebyPlayers) {
 					if (shouldSendMessage(closebyPlayer)) {
 						MutableComponent attackedName = closebyPlayer.getName().plainCopy().withStyle(ChatFormatting.ITALIC);
+						Component coords = Utils.getFormattedCoordinates(pos);
 						MutableComponent text;
 
 						if (hasCustomName())
-							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomName().plainCopy().withStyle(ChatFormatting.ITALIC));
+							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomName().plainCopy().withStyle(ChatFormatting.ITALIC), coords);
 						else
-							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(pos));
+							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, coords);
 
-						onlineTeamPlayers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, ChatFormatting.BLUE));
+						if (!onlineTeamPlayers.isEmpty())
+							onlineTeamPlayers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, ChatFormatting.BLUE));
+
 						setSentMessage();
 					}
 				}
@@ -137,6 +148,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 		return searchDelayOption.get() * 20;
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

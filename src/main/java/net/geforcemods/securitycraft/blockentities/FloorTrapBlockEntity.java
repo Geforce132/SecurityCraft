@@ -3,17 +3,15 @@ package net.geforcemods.securitycraft.blockentities;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
-import net.geforcemods.securitycraft.api.Option.EnumOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,12 +26,7 @@ public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITic
 	private BooleanOption disappearInstantlyInChains = new BooleanOption("disappearInstantlyInChains", true);
 	private IntOption disappearDelay = new IntOption("disappearDelay", 5, 0, 200, 1, true);
 	private IntOption reappearDelay = new IntOption("reappearDelay", 20, 5, 200, 1, true);
-	private EnumOption<TargetingMode> targetingMode = new EnumOption<>("targetingMode", TargetingMode.PLAYERS, TargetingMode.class) {
-		@Override
-		public Component getValueName() {
-			return value.translate();
-		}
-	};
+	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS);
 	private boolean shouldDisappear = false, shouldReappear = false;
 	private int ticksUntilDisappearing = -1, ticksUntilReappearing = -1;
 
@@ -53,7 +46,7 @@ public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITic
 		TargetingMode mode = targetingMode.get();
 
 		//@formatter:off
-		shouldDisappear = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos.above()).setMaxY(pos.getY() + 1.1666D), e -> e.canBeSeenByAnyone() && !(e instanceof OwnableEntity ownableEntity && allowsOwnableEntity(ownableEntity)) && !isAllowed(e) && !(EntityUtils.doesEntityOwn(e, level, pos) && ignoresOwner()))
+		shouldDisappear = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos.above()).setMaxY(pos.getY() + 1.1666D), e -> e.canBeSeenByAnyone() && !(e instanceof OwnableEntity ownableEntity && allowsOwnableEntity(ownableEntity)) && !isAllowed(e) && !(isOwnedBy(e) && ignoresOwner()))
 			.stream()
 			.anyMatch(entity -> mode.allowsPlayers() && entity instanceof Player || mode.allowsMobs());
 		//@formatter:on
@@ -129,6 +122,7 @@ public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITic
 		};
 	}
 
+	@Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}

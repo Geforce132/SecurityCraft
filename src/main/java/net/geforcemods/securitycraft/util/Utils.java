@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.util;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -8,7 +9,9 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
@@ -18,16 +21,6 @@ public class Utils {
 	public static final Component INVENTORY_TEXT = Utils.localize("container.inventory");
 
 	private Utils() {}
-
-	/**
-	 * Removes the last character in the given String. <p>
-	 */
-	public static String removeLastChar(String line) {
-		if (line == null || line.isEmpty())
-			return "";
-
-		return line.substring(0, line.length() - 1);
-	}
 
 	public static Component getFormattedCoordinates(BlockPos pos) {
 		return Component.translatable("messages.securitycraft:formattedCoordinates", pos.getX(), pos.getY(), pos.getZ());
@@ -65,5 +58,9 @@ public class Utils {
 
 	public static ResourceLocation getRegistryName(Potion potion) {
 		return BuiltInRegistries.POTION.getKey(potion);
+	}
+
+	public static boolean isEntityInvisible(LivingEntity entity) {
+		return ConfigHandler.SERVER.respectInvisibility.get() && entity.hasEffect(MobEffects.INVISIBILITY);
 	}
 }

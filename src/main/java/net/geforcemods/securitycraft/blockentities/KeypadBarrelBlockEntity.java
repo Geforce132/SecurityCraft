@@ -12,6 +12,8 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
+import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadBarrelBlock;
@@ -31,6 +33,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -79,10 +82,12 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	private UUID saltKey;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
-	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
+	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
 	private long cooldownEnd = 0;
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+	private ResourceLocation previousBarrel;
 
 	public KeypadBarrelBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.KEYPAD_BARREL_BLOCK_ENTITY.get(), pos, state);
@@ -111,6 +116,9 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 
 		if (owner != null)
 			owner.save(tag, needsValidation());
+
+		if (previousBarrel != null)
+			tag.putString("previous_barrel", previousBarrel.toString());
 	}
 
 	@Override
@@ -129,6 +137,12 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		loadSaltKey(tag);
 		loadPasscode(tag);
 		owner.load(tag);
+		previousBarrel = new ResourceLocation(tag.getString("previous_barrel"));
+
+		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
+			sendAllowlistMessage.setValue(false);
+			sendDenylistMessage.setValue(false);
+		}
 	}
 
 	@Override
@@ -171,11 +185,11 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 
 	@Override
 	public Component getDefaultName() {
-		return Utils.localize("block.securitycraft.keypad_barrel");
+		return Utils.localize(SCContent.KEYPAD_BARREL.get().getDescriptionId());
 	}
 
 	public static IItemHandler getCapability(KeypadBarrelBlockEntity be, Direction side) {
-		return BlockUtils.getProtectedCapability(side, be, () -> new InvWrapper(be), () -> new InsertOnlyInvWrapper(be));
+		return BlockUtils.isAllowedToExtractFromProtectedBlock(side, be) ? new InvWrapper(be) : new InsertOnlyInvWrapper(be);
 	}
 
 	@Override
@@ -302,7 +316,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, smartModuleCooldown
+				sendAllowlistMessage, sendDenylistMessage, smartModuleCooldown
 		};
 	}
 
@@ -327,14 +341,12 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		return DisguisableBlockEntity.getModelData(this);
 	}
 
-	public boolean sendsMessages() {
-		return sendMessage.get();
+	public boolean sendsAllowlistMessage() {
+		return sendAllowlistMessage.get();
 	}
 
-	public void setSendsMessages(boolean value) {
-		sendMessage.setValue(value);
-		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
-		setChanged();
+	public boolean sendsDenylistMessage() {
+		return sendDenylistMessage.get();
 	}
 
 	@Override
@@ -370,5 +382,13 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		double z = worldPosition.getZ() + 0.5D + facingNormal.getZ() / 2.0D;
 
 		level.playSound(null, x, y, z, sound, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
+	}
+
+	public void setPreviousBarrel(Block previousBarrel) {
+		this.previousBarrel = Utils.getRegistryName(previousBarrel);
+	}
+
+	public ResourceLocation getPreviousBarrel() {
+		return previousBarrel;
 	}
 }

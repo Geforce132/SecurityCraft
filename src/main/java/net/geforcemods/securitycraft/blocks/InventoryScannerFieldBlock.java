@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -64,7 +64,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, pos);
 
 		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
-			if (entity instanceof Player player && !EntityUtils.isInvisible(player)) {
+			if (entity instanceof Player player && !Utils.isEntityInvisible(player)) {
 				if (connectedScanner.isAllowed(entity))
 					return Shapes.empty();
 
@@ -107,7 +107,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if (connectedScanner == null || connectedScanner.doesFieldSolidify())
 			return;
 
-		if (entity instanceof Player player && !EntityUtils.isInvisible(player)) {
+		if (entity instanceof Player player && !Utils.isEntityInvisible(player)) {
 			if (connectedScanner.isAllowed(entity))
 				return;
 
@@ -157,9 +157,12 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 							updateInventoryScannerPower(be);
 
 						itemFound = true;
+						break;
 					}
-					else if (checkForShulkerBox(stackToCheck, prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule))
+					else if (checkForShulkerBox(stackToCheck, prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule)) {
 						itemFound = true;
+						break;
+					}
 				}
 			}
 		}
@@ -175,8 +178,6 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction))
 			return false;
 
-		boolean itemFound = false;
-
 		for (ItemStack prohibitedItem : prohibitedItems) {
 			if (areItemsEqual(entity.getItem(), prohibitedItem, hasSmartModule)) {
 				if (hasStorageModule) {
@@ -191,13 +192,13 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 				if (hasRedstoneModule)
 					updateInventoryScannerPower(be);
 
-				itemFound = true;
+				return true;
 			}
 			else if (checkForShulkerBox(entity.getItem(), prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule))
-				itemFound = true;
+				return true;
 		}
 
-		return itemFound;
+		return false;
 	}
 
 	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity be, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
@@ -238,10 +239,8 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if (connectedScanner == null)
 			return;
 
-		if (!be.wantsToProvidePower()) {
-			be.togglePowerOutput();
-			connectedScanner.togglePowerOutput();
-		}
+		be.togglePowerOutput();
+		connectedScanner.togglePowerOutput();
 	}
 
 	/**

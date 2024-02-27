@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "item": "minecraft:bow"
+    },
+    "C": {
+      "item": "securitycraft:reinforced_cobblestone"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "CCC",
+    "CBC",
+    "CRC"
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_dispenser"
+  }
+}

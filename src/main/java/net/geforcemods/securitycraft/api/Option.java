@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -190,6 +191,28 @@ public abstract class Option<T> {
 		}
 	}
 
+	public static class SendAllowlistMessageOption extends BooleanOption {
+		public SendAllowlistMessageOption(Boolean value) {
+			super("sendAllowlistMessage", value);
+		}
+
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.sendAllowlistMessage";
+		}
+	}
+
+	public static class SendDenylistMessageOption extends BooleanOption {
+		public SendDenylistMessageOption(Boolean value) {
+			super("sendDenylistMessage", value);
+		}
+
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.sendDenylistMessage";
+		}
+	}
+
 	/**
 	 * A subclass of {@link Option}, set up to handle integers.
 	 */
@@ -367,7 +390,7 @@ public abstract class Option<T> {
 	public static class EnumOption<T extends Enum<T>> extends Option<T> {
 		private final Class<T> enumClass;
 
-		protected EnumOption(String optionName, T value, Class<T> enumClass) {
+		public EnumOption(String optionName, T value, Class<T> enumClass) {
 			super(optionName, value);
 			this.enumClass = enumClass;
 		}
@@ -403,6 +426,22 @@ public abstract class Option<T> {
 		@Override
 		public Component getDefaultInfo() {
 			return Component.translatable("securitycraft.option.default", getValueName()).withStyle(ChatFormatting.GRAY);
+		}
+	}
+
+	public static class TargetingModeOption extends EnumOption<TargetingMode> {
+		public TargetingModeOption(TargetingMode defaultValue) {
+			super("targetingMode", defaultValue, TargetingMode.class);
+		}
+
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.targetingMode";
+		}
+
+		@Override
+		public Component getValueName() {
+			return value.translate();
 		}
 	}
 }

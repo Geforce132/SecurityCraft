@@ -6,15 +6,12 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -24,7 +21,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 public class MineRemoteAccessToolItem extends Item {
 	public MineRemoteAccessToolItem(Item.Properties properties) {
@@ -65,16 +61,14 @@ public class MineRemoteAccessToolItem extends Item {
 				if (stack.getTag() == null)
 					stack.setTag(new CompoundTag());
 
-				stack.getTag().putIntArray(("mine" + nextSlot), BlockUtils.posToIntArray(pos));
-
-				if (!level.isClientSide && !stack.isEmpty())
-					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new UpdateNBTTagOnClient(stack));
-
+				stack.getTag().putIntArray(("mine" + nextSlot), new int[] {
+						pos.getX(), pos.getY(), pos.getZ()
+				});
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
 				return InteractionResult.SUCCESS;
 			}
 			else {
-				removeTagFromItemAndUpdate(stack, pos, player);
+				removeMine(stack, pos, player);
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.unbound", Utils.getFormattedCoordinates(pos)), ChatFormatting.RED);
 				return InteractionResult.SUCCESS;
 			}
@@ -110,7 +104,7 @@ public class MineRemoteAccessToolItem extends Item {
 		return false;
 	}
 
-	public static void removeTagFromItemAndUpdate(ItemStack stack, BlockPos pos, Player player) {
+	public static void removeMine(ItemStack stack, BlockPos pos, Player player) {
 		if (stack.getTag() == null)
 			return;
 
@@ -119,10 +113,6 @@ public class MineRemoteAccessToolItem extends Item {
 
 			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
 				stack.getTag().remove("mine" + i);
-
-				if (!player.level().isClientSide && !stack.isEmpty())
-					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new UpdateNBTTagOnClient(stack));
-
 				return;
 			}
 		}

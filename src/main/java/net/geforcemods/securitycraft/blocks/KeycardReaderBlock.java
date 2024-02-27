@@ -62,7 +62,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			else if (be.isDenied(player)) {
-				if (be.sendsMessages())
+				if (be.sendsDenylistMessage())
 					PlayerUtils.sendMessageToPlayer(player, Component.translatable(state.getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 			}
 			else {
@@ -84,8 +84,10 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYCARD_READER.get());
+		if (state.getValue(POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYCARD_READER.get());
+		}
 	}
 
 	@Override

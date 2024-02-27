@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
@@ -43,7 +44,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 			true, false, false, false, false
 	};
 	private int signature = 0;
-	protected BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	protected BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	protected IntOption signalLength = new SignalLengthOption(60);
 	protected DisabledOption disabled = new DisabledOption(false);
 
@@ -96,6 +97,9 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		}
 
 		signature = tag.getInt("signature");
+
+		if (tag.contains("sendMessage"))
+			sendDenylistMessage.setValue(tag.getBoolean("sendMessage"));
 	}
 
 	@Override
@@ -187,30 +191,45 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		if (!getAcceptedLevels()[keycardLevel]) //both are 0 indexed, so it's ok
 			return Component.translatable("messages.securitycraft:keycardReader.wrongLevel", keycardLevel + 1); //level is 0-indexed, so it has to be increased by one to match with the item name
 
-		boolean powered = level.getBlockState(worldPosition).getValue(BlockStateProperties.POWERED);
+		//don't consider the block powered if the signal length is 0, because players need to be able to toggle it off
+		boolean powered = level.getBlockState(worldPosition).getValue(BlockStateProperties.POWERED) && getSignalLength() > 0;
 
-		if (tag.getBoolean("limited")) {
-			int uses = tag.getInt("uses");
+		if (!powered) {
+			if (tag.getBoolean("limited")) {
+				int uses = tag.getInt("uses");
 
-			if (uses <= 0)
-				return Component.translatable("messages.securitycraft:keycardReader.noUses");
+				if (uses <= 0)
+					return Component.translatable("messages.securitycraft:keycardReader.noUses");
 
-			if (!player.isCreative() && !powered)
-				tag.putInt("uses", --uses);
-		}
+				if (!player.isCreative())
+					tag.putInt("uses", --uses);
+			}
 
-		if (!powered)
 			activate();
+		}
 
 		return null;
 	}
 
 	public void activate() {
 		Block block = getBlockState().getBlock();
+		int signalLength = getSignalLength();
 
-		level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, true));
+		level.setBlockAndUpdate(worldPosition, getBlockState().cycle(BlockStateProperties.POWERED));
 		BlockUtils.updateIndirectNeighbors(level, worldPosition, block);
-		level.scheduleTick(worldPosition, block, getSignalLength());
+
+		if (signalLength > 0)
+			level.scheduleTick(worldPosition, block, signalLength);
+	}
+
+	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals(signalLength.getName())) {
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+		}
+
+		super.onOptionChanged(option);
 	}
 
 	public void setAcceptedLevels(boolean[] acceptedLevels) {
@@ -241,12 +260,12 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, signalLength, disabled
+				sendDenylistMessage, signalLength, disabled
 		};
 	}
 
-	public boolean sendsMessages() {
-		return sendMessage.get();
+	public boolean sendsDenylistMessage() {
+		return sendDenylistMessage.get();
 	}
 
 	public int getSignalLength() {

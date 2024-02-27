@@ -85,6 +85,8 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 					swap = true;
 			}
 		}
+
+		super.onOptionChanged(option);
 	}
 
 	@Override
@@ -109,7 +111,7 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, signalLength, disabled, exactLevel
+				sendDenylistMessage, signalLength, disabled, exactLevel
 		};
 	}
 }

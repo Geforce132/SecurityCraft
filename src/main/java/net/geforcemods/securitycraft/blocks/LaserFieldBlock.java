@@ -9,7 +9,7 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -71,7 +71,7 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, Si
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (!level.isClientSide && entity instanceof LivingEntity livingEntity && !EntityUtils.isInvisible(livingEntity)) {
+		if (!level.isClientSide && entity instanceof LivingEntity livingEntity && !Utils.isEntityInvisible(livingEntity)) {
 			if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
 				return;
 
@@ -88,11 +88,21 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, Si
 						if (entity instanceof OwnableEntity ownableEntity && laser.allowsOwnableEntity(ownableEntity))
 							return;
 
-						if (laser.isModuleEnabled(ModuleType.REDSTONE) && !offsetState.getValue(LaserBlock.POWERED)) {
-							level.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
-							BlockUtils.updateIndirectNeighbors(level, offsetPos, SCContent.LASER_BLOCK.get());
-							level.scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), laser.getSignalLength());
-							laser.createLinkedBlockAction(new ILinkedAction.StateChanged<>(LaserBlock.POWERED, false, true), laser);
+						if (laser.isModuleEnabled(ModuleType.REDSTONE)) {
+							if (laser.timeSinceLastToggle() < 500)
+								laser.setLastToggleTime(System.currentTimeMillis());
+							else {
+								int signalLength = laser.getSignalLength();
+								boolean wasPowered = offsetState.getValue(LaserBlock.POWERED);
+
+								laser.setLastToggleTime(System.currentTimeMillis());
+								level.setBlockAndUpdate(offsetPos, offsetState.cycle(LaserBlock.POWERED));
+								BlockUtils.updateIndirectNeighbors(level, offsetPos, SCContent.LASER_BLOCK.get());
+								laser.createLinkedBlockAction(new ILinkedAction.StateChanged<>(LaserBlock.POWERED, wasPowered, !wasPowered), laser);
+
+								if (signalLength > 0)
+									level.scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), signalLength);
+							}
 						}
 
 						if (laser.isModuleEnabled(ModuleType.HARMING)) {

@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.MutableComponent;
@@ -43,6 +44,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -153,11 +155,11 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else if (be.verifyPasscodeSet(level, pos, be, player)) {
 					if (be.isDenied(player)) {
-						if (be.sendsMessages())
+						if (be.sendsDenylistMessage())
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 					}
 					else if (be.isAllowed(player)) {
-						if (be.sendsMessages())
+						if (be.sendsAllowlistMessage())
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
 						activate(be);
@@ -206,6 +208,18 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	}
+
+	@Override
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+		if (level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be) {
+			ItemStack displayedStack = be.getDisplayedStack();
+
+			if (!displayedStack.isEmpty() && be.isOpen() && !Screen.hasControlDown())
+				return displayedStack;
+		}
+
+		return super.getCloneItemStack(state, target, level, pos, player);
 	}
 
 	@Override
