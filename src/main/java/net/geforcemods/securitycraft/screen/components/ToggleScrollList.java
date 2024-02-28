@@ -144,7 +144,6 @@ public class ToggleScrollList<T> extends ScrollPanel {
 		}
 	}
 
-	//TODO: Remove this fix when updating to NeoForge
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		boolean returnValue = super.mouseClicked(mouseX, mouseY, button);
