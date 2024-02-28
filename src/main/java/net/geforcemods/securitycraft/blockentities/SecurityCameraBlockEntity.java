@@ -233,9 +233,9 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 		setChanged();
 	}
 
-	public void setInitialRotationBasedOnCamera(SecurityCamera camera) {
-		initialXRotation = camera.getXRot();
-		initialYRotation = camera.getYRot();
+	public void setInitialRotation(float initialXRotation, float initialYRotation) {
+		this.initialXRotation = initialXRotation;
+		this.initialYRotation = initialYRotation;
 		setChanged();
 	}
 

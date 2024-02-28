@@ -14,20 +14,27 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 public class UpdateInitialCameraRotation implements CustomPacketPayload {
 	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "update_initial_camera_rotation");
 	private int id;
+	private float initialXRotation, initialYRotation;
 
 	public UpdateInitialCameraRotation() {}
 
 	public UpdateInitialCameraRotation(SecurityCamera cam) {
 		id = cam.getId();
+		initialXRotation = cam.getXRot();
+		initialYRotation = cam.getYRot();
 	}
 
 	public UpdateInitialCameraRotation(FriendlyByteBuf buf) {
 		id = buf.readVarInt();
+		initialXRotation = buf.readFloat();
+		initialYRotation = buf.readFloat();
 	}
 
 	@Override
 	public void write(FriendlyByteBuf buf) {
 		buf.writeVarInt(id);
+		buf.writeFloat(initialXRotation);
+		buf.writeFloat(initialYRotation);
 	}
 
 	@Override
@@ -39,6 +46,6 @@ public class UpdateInitialCameraRotation implements CustomPacketPayload {
 		Player player = ctx.player().orElseThrow();
 
 		if (((ServerPlayer) player).getCamera() instanceof SecurityCamera camera && camera.getId() == id && camera.level().getBlockEntity(camera.blockPosition()) instanceof SecurityCameraBlockEntity be && be.isOwnedBy(player) && be.isModuleEnabled(ModuleType.SMART))
-			be.setInitialRotationBasedOnCamera(camera);
+			be.setInitialRotation(initialXRotation, initialYRotation);
 	}
 }
