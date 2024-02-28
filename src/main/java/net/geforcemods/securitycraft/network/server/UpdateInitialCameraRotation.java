@@ -5,10 +5,10 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public class UpdateInitialCameraRotation implements CustomPacketPayload {
@@ -43,9 +43,20 @@ public class UpdateInitialCameraRotation implements CustomPacketPayload {
 	}
 
 	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+		ServerPlayer player = (ServerPlayer) ctx.player().orElseThrow();
 
-		if (((ServerPlayer) player).getCamera() instanceof SecurityCamera camera && camera.getId() == id && camera.level().getBlockEntity(camera.blockPosition()) instanceof SecurityCameraBlockEntity be && be.isOwnedBy(player) && be.isModuleEnabled(ModuleType.SMART))
-			be.setInitialRotation(initialXRotation, initialYRotation);
+		if (player.getCamera() instanceof SecurityCamera camera && camera.getId() == id && camera.level().getBlockEntity(camera.blockPosition()) instanceof SecurityCameraBlockEntity be) {
+			if (!be.isOwnedBy(player)) {
+				player.displayClientMessage(Component.literal("No permission to set initial rotation"), true);
+				return;
+			}
+
+			if (be.isModuleEnabled(ModuleType.SMART)) {
+				be.setInitialRotation(initialXRotation, initialYRotation);
+				player.displayClientMessage(Component.literal("Initial rotation set"), true);
+			}
+			else
+				player.displayClientMessage(Component.literal("Smart Module required"), true);
+		}
 	}
 }
