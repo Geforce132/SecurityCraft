@@ -41,6 +41,7 @@ public class CameraController {
 	private static boolean wasDownPressed;
 	private static boolean wasLeftPressed;
 	private static boolean wasRightPressed;
+	private static int setInitialRotationCooldown = 0;
 
 	private CameraController() {}
 
@@ -70,9 +71,10 @@ public class CameraController {
 					options.keyShift.setDown(false);
 				}
 
-				if (options.keyAttack.isDown()) {
+				if (setInitialRotationCooldown-- <= 0 && options.keyAttack.isDown()) {
 					setInitialCameraRotation(cam);
 					options.keyAttack.setDown(false);
+					setInitialRotationCooldown = 20;
 				}
 			}
 			else if (event.phase == Phase.END) {
@@ -109,8 +111,10 @@ public class CameraController {
 				if (KeyBindings.cameraActivateNightVision.consumeClick())
 					giveNightVision(cam);
 
-				if (KeyBindings.cameraSetInitialRotation.consumeClick())
+				if (setInitialRotationCooldown-- <= 0 && KeyBindings.cameraSetInitialRotation.consumeClick()) {
 					setInitialCameraRotation(cam);
+					setInitialRotationCooldown = 20;
+				}
 
 				//update other players with the head rotation
 				LocalPlayer player = Minecraft.getInstance().player;

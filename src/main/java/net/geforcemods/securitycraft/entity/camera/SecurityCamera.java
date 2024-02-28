@@ -69,6 +69,7 @@ public class SecurityCamera extends Entity {
 
 	@Override
 	public void tick() {
+		//TODO: move cooldowns to CameraController
 		if (level().isClientSide) {
 			if (getScreenshotSoundCooldown() > 0)
 				setScreenshotSoundCooldown(getScreenshotSoundCooldown() - 1);
