@@ -28,14 +28,16 @@ public class KeyBindings {
 
 	@SubscribeEvent
 	public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
-		cameraZoomIn = new KeyMapping("key.securitycraft.cameraZoomIn", GLFW.GLFW_KEY_EQUAL, "key.categories.securitycraft");
-		cameraZoomOut = new KeyMapping("key.securitycraft.cameraZoomOut", GLFW.GLFW_KEY_MINUS, "key.categories.securitycraft");
-		cameraEmitRedstone = new KeyMapping("key.securitycraft.cameraEmitRedstone", GLFW.GLFW_KEY_R, "key.categories.securitycraft");
-		cameraActivateNightVision = new KeyMapping("key.securitycraft.cameraActivateNightVision", GLFW.GLFW_KEY_N, "key.categories.securitycraft");
+		cameraZoomIn = register(event, "cameraZoomIn", GLFW.GLFW_KEY_EQUAL);
+		cameraZoomOut = register(event, "cameraZoomOut", GLFW.GLFW_KEY_MINUS);
+		cameraEmitRedstone = register(event, "cameraEmitRedstone", GLFW.GLFW_KEY_R);
+		cameraActivateNightVision = register(event, "cameraActivateNightVision", GLFW.GLFW_KEY_N);
+	}
 
-		event.register(cameraZoomIn);
-		event.register(cameraZoomOut);
-		event.register(cameraEmitRedstone);
-		event.register(cameraActivateNightVision);
+	private static KeyMapping register(RegisterKeyMappingsEvent event, String name, int defaultKey) {
+		KeyMapping keyMapping = new KeyMapping("key.securitycraft." + name, defaultKey, "key.categories.securitycraft");
+
+		event.register(keyMapping);
+		return keyMapping;
 	}
 }
