@@ -58,6 +58,7 @@ public class SCClientEventHandler {
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
 	public static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final Component REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
+	private static final Component SMART_MODULE_NOTE = Utils.localize("gui.securitycraft:camera.smartModuleNote");
 
 	private SCClientEventHandler() {}
 
@@ -137,14 +138,14 @@ public class SCClientEventHandler {
 		Font font = Minecraft.getInstance().font;
 		Options settings = Minecraft.getInstance().options;
 		boolean hasRedstoneModule = be.isModuleEnabled(ModuleType.REDSTONE);
+		boolean hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		BlockState state = level.getBlockState(pos);
 		Component lookAround = Utils.localize("gui.securitycraft:camera.lookAround", settings.keyUp.getTranslatedKeyMessage(), settings.keyLeft.getTranslatedKeyMessage(), settings.keyDown.getTranslatedKeyMessage(), settings.keyRight.getTranslatedKeyMessage());
 		Component exit = Utils.localize("gui.securitycraft:camera.exit", settings.keyShift.getTranslatedKeyMessage());
 		Component zoom = Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getTranslatedKeyMessage(), KeyBindings.cameraZoomOut.getTranslatedKeyMessage());
 		Component nightVision = Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getTranslatedKeyMessage());
 		Component redstone = Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getTranslatedKeyMessage());
-		Component key = level.getGameTime() % 40 > 20 ? KeyBindings.cameraSetInitialRotation.getTranslatedKeyMessage() : settings.keyAttack.getTranslatedKeyMessage(); //TODO: change to proper key
-		Component smart = Utils.localize("%s - Set initial rotation", key); //TODO: translate
+		Component smart = Utils.localize("gui.securitycraft:camera.setDefaultViewingDirection", KeyBindings.setDefaultViewingDirection.getTranslatedKeyMessage());
 		long dayTime = Minecraft.getInstance().level.getDayTime();
 		int hours24 = (int) ((float) dayTime / 1000L + 6L) % 24;
 		int hours = hours24 % 12;
@@ -167,8 +168,8 @@ public class SCClientEventHandler {
 		guiGraphics.drawString(font, nightVision, window.getGuiScaledWidth() - font.width(nightVision) - 8, window.getGuiScaledHeight() - 50, 16777215, true);
 		guiGraphics.drawString(font, redstone, window.getGuiScaledWidth() - font.width(redstone) - 8, window.getGuiScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855, true);
 		guiGraphics.drawString(font, REDSTONE_NOTE, window.getGuiScaledWidth() - font.width(REDSTONE_NOTE) - 8, window.getGuiScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855, true);
-		guiGraphics.drawString(font, smart, window.getGuiScaledWidth() - font.width(smart) - 8, window.getGuiScaledHeight() - 20, be.isModuleEnabled(ModuleType.SMART) ? 16777215 : 16724855, true);
-		guiGraphics.drawString(font, Utils.localize("(requires smart module)"), window.getGuiScaledWidth() - font.width(Utils.localize("(requires smart module)")) - 8, window.getGuiScaledHeight() - 10, be.isModuleEnabled(ModuleType.SMART) ? 16777215 : 16724855, true); //TODO: translate
+		guiGraphics.drawString(font, smart, window.getGuiScaledWidth() - font.width(smart) - 8, window.getGuiScaledHeight() - 20, hasSmartModule ? 16777215 : 16724855, true);
+		guiGraphics.drawString(font, SMART_MODULE_NOTE, window.getGuiScaledWidth() - font.width(SMART_MODULE_NOTE) - 8, window.getGuiScaledHeight() - 10, hasSmartModule ? 16777215 : 16724855, true);
 
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		guiGraphics.blitSprite(BACKGROUND_SPRITE, 5, 0, 90, 20);

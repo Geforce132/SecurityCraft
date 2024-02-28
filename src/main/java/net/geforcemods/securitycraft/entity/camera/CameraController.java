@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.DismountCamera;
-import net.geforcemods.securitycraft.network.server.UpdateInitialCameraRotation;
+import net.geforcemods.securitycraft.network.server.SetDefaultCameraViewingDirection;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -41,7 +41,7 @@ public class CameraController {
 	private static boolean wasDownPressed;
 	private static boolean wasLeftPressed;
 	private static boolean wasRightPressed;
-	private static int setInitialRotationCooldown = 0;
+	private static int setDefaultViewingDirectionCooldown = 0;
 
 	private CameraController() {}
 
@@ -69,12 +69,6 @@ public class CameraController {
 				if (options.keyShift.isDown()) {
 					dismount();
 					options.keyShift.setDown(false);
-				}
-
-				if (setInitialRotationCooldown-- <= 0 && options.keyAttack.isDown()) {
-					setInitialCameraRotation(cam);
-					options.keyAttack.setDown(false);
-					setInitialRotationCooldown = 20;
 				}
 			}
 			else if (event.phase == Phase.END) {
@@ -111,9 +105,9 @@ public class CameraController {
 				if (KeyBindings.cameraActivateNightVision.consumeClick())
 					giveNightVision(cam);
 
-				if (setInitialRotationCooldown-- <= 0 && KeyBindings.cameraSetInitialRotation.consumeClick()) {
-					setInitialCameraRotation(cam);
-					setInitialRotationCooldown = 20;
+				if (setDefaultViewingDirectionCooldown-- <= 0 && KeyBindings.setDefaultViewingDirection.consumeClick()) {
+					setDefaultViewingDirection(cam);
+					setDefaultViewingDirectionCooldown = 20;
 				}
 
 				//update other players with the head rotation
@@ -211,8 +205,8 @@ public class CameraController {
 			cam.toggleNightVisionFromClient();
 	}
 
-	public static void setInitialCameraRotation(SecurityCamera cam) {
-		PacketDistributor.SERVER.noArg().send(new UpdateInitialCameraRotation(cam));
+	public static void setDefaultViewingDirection(SecurityCamera cam) {
+		PacketDistributor.SERVER.noArg().send(new SetDefaultCameraViewingDirection(cam));
 	}
 
 	public static ClientChunkCache.Storage getCameraStorage() {

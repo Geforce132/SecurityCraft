@@ -23,7 +23,7 @@ public class KeyBindings {
 	public static KeyMapping cameraZoomOut;
 	public static KeyMapping cameraEmitRedstone;
 	public static KeyMapping cameraActivateNightVision;
-	public static KeyMapping cameraSetInitialRotation;
+	public static KeyMapping setDefaultViewingDirection;
 
 	private KeyBindings() {}
 
@@ -34,12 +34,12 @@ public class KeyBindings {
 		cameraZoomOut = new KeyMapping("key.securitycraft.cameraZoomOut", GLFW.GLFW_KEY_MINUS, "key.categories.securitycraft");
 		cameraEmitRedstone = new KeyMapping("key.securitycraft.cameraEmitRedstone", GLFW.GLFW_KEY_R, "key.categories.securitycraft");
 		cameraActivateNightVision = new KeyMapping("key.securitycraft.cameraActivateNightVision", GLFW.GLFW_KEY_N, "key.categories.securitycraft");
-		cameraSetInitialRotation = new KeyMapping("key.securitycraft.cameraSetInitialRotation", GLFW.GLFW_KEY_U, "key.categories.securitycraft"); //TODO: translate
+		setDefaultViewingDirection = new KeyMapping("key.securitycraft.setDefaultViewingDirection", GLFW.GLFW_KEY_U, "key.categories.securitycraft");
 
 		event.register(cameraZoomIn);
 		event.register(cameraZoomOut);
 		event.register(cameraEmitRedstone);
 		event.register(cameraActivateNightVision);
-		event.register(cameraSetInitialRotation);
+		event.register(setDefaultViewingDirection);
 	}
 }

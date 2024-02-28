@@ -66,7 +66,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 			down = facing == Direction.DOWN;
 
 			if (!isModuleEnabled(ModuleType.SMART))
-				setInitialRotationBasedOnFacing(facing);
+				setDefaultViewingDirectionBasedOnFacing(facing);
 		}
 
 		oCameraRotation = getCameraRotation();
@@ -155,7 +155,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 		if (module == ModuleType.REDSTONE)
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecurityCameraBlock.POWERED, false));
 		else if (module == ModuleType.SMART)
-			setInitialRotationBasedOnFacing(getBlockState().getValue(SecurityCameraBlock.FACING));
+			setDefaultViewingDirectionBasedOnFacing(getBlockState().getValue(SecurityCameraBlock.FACING));
 	}
 
 	@Override
@@ -221,19 +221,17 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 		return opacity.get();
 	}
 
-	public void setInitialRotationBasedOnFacing(Direction facing) {
-		initialXRotation = down ? 75F : 30F;
-		initialYRotation = switch (facing) {
+	public void setDefaultViewingDirectionBasedOnFacing(Direction facing) {
+		setDefaultViewingDirection(down ? 75F : 30F, switch (facing) {
 			case NORTH -> 180F;
 			case WEST -> 90F;
 			case SOUTH -> 0F;
 			case EAST -> 270F;
 			case DOWN, UP -> 0F;
-		};
-		setChanged();
+		});
 	}
 
-	public void setInitialRotation(float initialXRotation, float initialYRotation) {
+	public void setDefaultViewingDirection(float initialXRotation, float initialYRotation) {
 		this.initialXRotation = initialXRotation;
 		this.initialYRotation = initialYRotation;
 		setChanged();
