@@ -29,11 +29,12 @@ public class KeyBindings {
 
 	@SubscribeEvent
 	public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
+		//TODO: simplify
 		cameraZoomIn = new KeyMapping("key.securitycraft.cameraZoomIn", GLFW.GLFW_KEY_EQUAL, "key.categories.securitycraft");
 		cameraZoomOut = new KeyMapping("key.securitycraft.cameraZoomOut", GLFW.GLFW_KEY_MINUS, "key.categories.securitycraft");
 		cameraEmitRedstone = new KeyMapping("key.securitycraft.cameraEmitRedstone", GLFW.GLFW_KEY_R, "key.categories.securitycraft");
 		cameraActivateNightVision = new KeyMapping("key.securitycraft.cameraActivateNightVision", GLFW.GLFW_KEY_N, "key.categories.securitycraft");
-		cameraSetInitialRotation = new KeyMapping("key.securitycraft.cameraSetInitialRotation", GLFW.GLFW_KEY_U, "key.categories.securitycraft");
+		cameraSetInitialRotation = new KeyMapping("key.securitycraft.cameraSetInitialRotation", GLFW.GLFW_KEY_U, "key.categories.securitycraft"); //TODO: translate
 
 		event.register(cameraZoomIn);
 		event.register(cameraZoomOut);
