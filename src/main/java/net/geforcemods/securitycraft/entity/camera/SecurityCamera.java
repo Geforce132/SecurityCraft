@@ -59,8 +59,7 @@ public class SecurityCamera extends Entity {
 			y += 0.25D;
 
 		setPos(x, y, z);
-		setXRot(cam.getInitialXRotation());
-		setYRot(cam.getInitialYRotation());
+		setRot(cam.getInitialYRotation(), cam.getInitialXRotation());
 	}
 
 	@Override
