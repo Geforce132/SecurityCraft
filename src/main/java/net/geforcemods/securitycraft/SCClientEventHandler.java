@@ -114,7 +114,7 @@ public class SCClientEventHandler {
 			Minecraft mc = Minecraft.getInstance();
 			InteractionHand hand = event.getHand();
 
-			if (mc.player.getItemInHand(hand).is(SCContent.CAMERA_MONITOR.get()))
+			if (mc.player.getItemInHand(hand).is(SCContent.CAMERA_MONITOR.get()) && event.isUseItem())
 				SCContent.CAMERA_MONITOR.get().use(mc.level, mc.player, hand);
 
 			event.setCanceled(true);
