@@ -71,7 +71,9 @@ public class KeyBindings {
 		}
 
 		public void tick(T t) {
-			if (cooldown-- <= 0 && consumeClick()) {
+			cooldown--;
+
+			if (consumeClick() && cooldown <= 0) {
 				action.accept(t);
 				cooldown = MAX_COOLDOWN;
 			}
