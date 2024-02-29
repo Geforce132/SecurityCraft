@@ -167,7 +167,7 @@ public class SCClientEventHandler {
 
 		guiGraphics.drawString(font, time, scaledWidth - font.width(time) - 4, timeY, 0xFFFFFF, true);
 
-		int heightOffset = 80;
+		int heightOffset = CAMERA_KEY_INFO_LIST.length * 10;
 
 		for (CameraKeyInfoEntry entry : CAMERA_KEY_INFO_LIST) {
 			entry.drawString(options, guiGraphics, font, scaledWidth, scaledHeight, heightOffset, be);
