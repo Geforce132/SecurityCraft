@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.network.server.DismountCamera;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetDefaultCameraViewingDirection;
 import net.geforcemods.securitycraft.network.server.ToggleNightVision;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -23,11 +24,13 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ScreenshotEvent;
 import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
 import net.neoforged.neoforge.event.TickEvent.ClientTickEvent;
 import net.neoforged.neoforge.event.TickEvent.Phase;
@@ -47,6 +50,7 @@ public class CameraController {
 	private static boolean wasDownPressed;
 	private static boolean wasLeftPressed;
 	private static boolean wasRightPressed;
+	private static int screenshotSoundCooldown = 0;
 
 	private CameraController() {}
 
@@ -107,6 +111,7 @@ public class CameraController {
 				KeyBindings.cameraEmitRedstone.tick(cam);
 				KeyBindings.cameraActivateNightVision.tick(cam);
 				KeyBindings.setDefaultViewingDirection.tick(cam);
+				screenshotSoundCooldown--;
 
 				//update other players with the head rotation
 				LocalPlayer player = Minecraft.getInstance().player;
@@ -123,6 +128,16 @@ public class CameraController {
 			OverlayToggleHandler.enable(VanillaGuiOverlay.JUMP_BAR);
 			OverlayToggleHandler.enable(VanillaGuiOverlay.EXPERIENCE_BAR);
 			OverlayToggleHandler.enable(VanillaGuiOverlay.POTION_ICONS);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onScreenshot(ScreenshotEvent event) {
+		Player player = Minecraft.getInstance().player;
+
+		if (PlayerUtils.isPlayerMountedOnCamera(player) && screenshotSoundCooldown <= 0) {
+			screenshotSoundCooldown = 7;
+			Minecraft.getInstance().level.playLocalSound(player.blockPosition(), SCSounds.CAMERASNAP.event, SoundSource.BLOCKS, 1.0F, 1.0F, true);
 		}
 	}
 
