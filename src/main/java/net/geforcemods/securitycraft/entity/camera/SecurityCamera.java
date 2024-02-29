@@ -5,13 +5,8 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
-import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
-import net.geforcemods.securitycraft.network.server.SetCameraPowered;
-import net.geforcemods.securitycraft.network.server.ToggleNightVision;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
@@ -30,9 +25,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecurityCamera extends Entity {
 	private static final List<Player> DISMOUNTED_PLAYERS = new ArrayList<>();
-	private int screenshotSoundCooldown = 0;
-	protected int redstoneCooldown = 0;
-	protected int toggleNightVisionCooldown = 0;
 	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
 	private ChunkTrackingView cameraChunks = null;
@@ -69,31 +61,10 @@ public class SecurityCamera extends Entity {
 
 	@Override
 	public void tick() {
-		//TODO: move cooldowns to CameraController
-		if (level().isClientSide) {
-			if (getScreenshotSoundCooldown() > 0)
-				setScreenshotSoundCooldown(getScreenshotSoundCooldown() - 1);
+		Level level = level();
 
-			if (redstoneCooldown > 0)
-				redstoneCooldown--;
-
-			if (toggleNightVisionCooldown > 0)
-				toggleNightVisionCooldown--;
-		}
-		else if (level().getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get())
+		if (!level.isClientSide && level().getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get())
 			discard();
-	}
-
-	public void toggleRedstonePowerFromClient() {
-		BlockPos pos = blockPosition();
-
-		if (((IModuleInventory) level().getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
-			PacketDistributor.SERVER.noArg().send(new SetCameraPowered(pos, !level().getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
-	}
-
-	public void toggleNightVisionFromClient() {
-		toggleNightVisionCooldown = 30;
-		PacketDistributor.SERVER.noArg().send(new ToggleNightVision());
 	}
 
 	public float getZoomAmount() {
@@ -183,13 +154,5 @@ public class SecurityCamera extends Entity {
 	@Override
 	public boolean isAlwaysTicking() {
 		return true;
-	}
-
-	public int getScreenshotSoundCooldown() {
-		return screenshotSoundCooldown;
-	}
-
-	public void setScreenshotSoundCooldown(int screenshotSoundCooldown) {
-		this.screenshotSoundCooldown = screenshotSoundCooldown;
 	}
 }

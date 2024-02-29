@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntit
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -59,6 +58,7 @@ public class SCClientEventHandler {
 	public static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final Component REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 	private static final Component SMART_MODULE_NOTE = Utils.localize("gui.securitycraft:camera.smartModuleNote");
+	private static int cameraScreenshotSoundCooldown = 0;
 
 	private SCClientEventHandler() {}
 
@@ -93,13 +93,9 @@ public class SCClientEventHandler {
 	public static void onScreenshot(ScreenshotEvent event) {
 		Player player = Minecraft.getInstance().player;
 
-		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
-			SecurityCamera camera = (SecurityCamera) Minecraft.getInstance().cameraEntity;
-
-			if (camera.getScreenshotSoundCooldown() == 0) {
-				camera.setScreenshotSoundCooldown(7);
-				Minecraft.getInstance().level.playLocalSound(player.blockPosition(), SCSounds.CAMERASNAP.event, SoundSource.BLOCKS, 1.0F, 1.0F, true);
-			}
+		if (PlayerUtils.isPlayerMountedOnCamera(player) && cameraScreenshotSoundCooldown-- <= 0) {
+			cameraScreenshotSoundCooldown = 7;
+			Minecraft.getInstance().level.playLocalSound(player.blockPosition(), SCSounds.CAMERASNAP.event, SoundSource.BLOCKS, 1.0F, 1.0F, true);
 		}
 	}
 

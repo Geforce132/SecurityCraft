@@ -231,7 +231,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		ItemStack previous = getModuleInSlot(slot);
 
 		//Prevent module from being removed and re-added when the slot initializes
-		if (ItemStack.matches(previous, stack)) //TODO: test if this works
+		if (ItemStack.matches(previous, stack))
 			return;
 
 		//call the correct methods, should there have been a module in the slot previously
