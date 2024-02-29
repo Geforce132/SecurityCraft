@@ -40,23 +40,18 @@ public class OwnableFenceGateBlock extends FenceGateBlock implements EntityBlock
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
 		if (!level.isClientSide) {
 			boolean isPoweredSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, pos);
 
-			if (isPoweredSCBlock || block.defaultBlockState().isSignalSource())
-				if (isPoweredSCBlock && !state.getValue(OPEN) && !state.getValue(POWERED)) {
-					level.setBlock(pos, state.setValue(OPEN, true).setValue(POWERED, true), 2);
-					level.playSound(null, pos, openSound, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.1F + 0.9F);
-					level.gameEvent(null, GameEvent.BLOCK_OPEN, pos);
+			if (state.getValue(POWERED) != isPoweredSCBlock) {
+				level.setBlock(pos, state.setValue(POWERED, isPoweredSCBlock).setValue(OPEN, isPoweredSCBlock), 2);
+
+				if (state.getValue(OPEN) != isPoweredSCBlock) {
+					level.playSound(null, pos, isPoweredSCBlock ? openSound : closeSound, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+					level.gameEvent(null, isPoweredSCBlock ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
 				}
-				else if (!isPoweredSCBlock && state.getValue(OPEN) && state.getValue(POWERED)) {
-					level.setBlock(pos, state.setValue(OPEN, false).setValue(POWERED, false), 2);
-					level.playSound(null, pos, closeSound, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.1F + 0.9F);
-					level.gameEvent(null, GameEvent.BLOCK_CLOSE, pos);
-				}
-				else if (isPoweredSCBlock != state.getValue(POWERED))
-					level.setBlock(pos, state.setValue(POWERED, isPoweredSCBlock), 2);
+			}
 		}
 	}
 
