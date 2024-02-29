@@ -41,9 +41,10 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	private double cameraRotation = 0.0D;
 	private double oCameraRotation = 0.0D;
 	private boolean addToRotation = SecurityCraft.RANDOM.nextBoolean();
-	private boolean down = false, downSet = false;
+	private boolean down = false, initialized = false;
 	private int playersViewing = 0;
 	private boolean shutDown = false;
+	private float initialXRotation, initialYRotation;
 	private DoubleOption rotationSpeedOption = new DoubleOption("rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D, true);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
 	private DoubleOption customRotationOption = new DoubleOption("customRotation", getCameraRotation(), 1.55D, -1.55D, rotationSpeedOption.get(), true);
@@ -58,9 +59,14 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		if (!downSet) {
-			down = state.getValue(SecurityCameraBlock.FACING) == Direction.DOWN;
-			downSet = true;
+		if (!initialized) {
+			Direction facing = state.getValue(SecurityCameraBlock.FACING);
+
+			initialized = true;
+			down = facing == Direction.DOWN;
+
+			if (!isModuleEnabled(ModuleType.SMART))
+				setDefaultViewingDirection(facing);
 		}
 
 		oCameraRotation = getCameraRotation();
@@ -88,6 +94,8 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 		super.saveAdditional(tag);
 		tag.putBoolean("shutDown", shutDown);
 		tag.put("lens", lens.createTag());
+		tag.putFloat("initial_x_rotation", initialXRotation);
+		tag.putFloat("initial_y_rotation", initialYRotation);
 	}
 
 	@Override
@@ -95,6 +103,8 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 		super.load(tag);
 		shutDown = tag.getBoolean("shutDown");
 		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
+		initialXRotation = tag.getFloat("initial_x_rotation");
+		initialYRotation = tag.getFloat("initial_y_rotation");
 	}
 
 	public static IItemHandler getCapability(SecurityCameraBlockEntity be, Direction side) {
@@ -127,7 +137,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.REDSTONE, ModuleType.ALLOWLIST
+				ModuleType.REDSTONE, ModuleType.ALLOWLIST, ModuleType.SMART
 		};
 	}
 
@@ -144,6 +154,8 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 		if (module == ModuleType.REDSTONE)
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecurityCameraBlock.POWERED, false));
+		else if (module == ModuleType.SMART)
+			setDefaultViewingDirection(getBlockState().getValue(SecurityCameraBlock.FACING));
 	}
 
 	@Override
@@ -207,5 +219,29 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 	public int getOpacity() {
 		return opacity.get();
+	}
+
+	public void setDefaultViewingDirection(Direction facing) {
+		setDefaultViewingDirection(down ? 75F : 30F, switch (facing) {
+			case NORTH -> 180F;
+			case WEST -> 90F;
+			case SOUTH -> 0F;
+			case EAST -> 270F;
+			case DOWN, UP -> 0F;
+		});
+	}
+
+	public void setDefaultViewingDirection(float initialXRotation, float initialYRotation) {
+		this.initialXRotation = initialXRotation;
+		this.initialYRotation = initialYRotation;
+		setChanged();
+	}
+
+	public float getInitialXRotation() {
+		return initialXRotation;
+	}
+
+	public float getInitialYRotation() {
+		return initialYRotation;
 	}
 }

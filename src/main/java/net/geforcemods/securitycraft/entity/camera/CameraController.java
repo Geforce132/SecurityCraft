@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.DismountCamera;
+import net.geforcemods.securitycraft.network.server.SetDefaultCameraViewingDirection;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -40,6 +41,7 @@ public class CameraController {
 	private static boolean wasDownPressed;
 	private static boolean wasLeftPressed;
 	private static boolean wasRightPressed;
+	private static int setDefaultViewingDirectionCooldown = 0;
 
 	private CameraController() {}
 
@@ -102,6 +104,11 @@ public class CameraController {
 
 				if (KeyBindings.cameraActivateNightVision.consumeClick())
 					giveNightVision(cam);
+
+				if (setDefaultViewingDirectionCooldown-- <= 0 && KeyBindings.setDefaultViewingDirection.consumeClick()) {
+					setDefaultViewingDirection(cam);
+					setDefaultViewingDirectionCooldown = 20;
+				}
 
 				//update other players with the head rotation
 				LocalPlayer player = Minecraft.getInstance().player;
@@ -196,6 +203,10 @@ public class CameraController {
 	public static void giveNightVision(SecurityCamera cam) {
 		if (cam.toggleNightVisionCooldown == 0)
 			cam.toggleNightVisionFromClient();
+	}
+
+	public static void setDefaultViewingDirection(SecurityCamera cam) {
+		PacketDistributor.SERVER.noArg().send(new SetDefaultCameraViewingDirection(cam));
 	}
 
 	public static ClientChunkCache.Storage getCameraStorage() {

@@ -59,6 +59,7 @@ import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.ToggleModule;
 import net.geforcemods.securitycraft.network.server.ToggleNightVision;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
+import net.geforcemods.securitycraft.network.server.SetDefaultCameraViewingDirection;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
@@ -192,6 +193,7 @@ public class RegistrationHandler {
 		serverPacket(registrar, ToggleModule.ID, ToggleModule::new, ToggleModule::handle);
 		serverPacket(registrar, ToggleNightVision.ID, ToggleNightVision::new, ToggleNightVision::handle);
 		serverPacket(registrar, ToggleOption.ID, ToggleOption::new, ToggleOption::handle);
+		serverPacket(registrar, SetDefaultCameraViewingDirection.ID, SetDefaultCameraViewingDirection::new, SetDefaultCameraViewingDirection::handle);
 		serverPacket(registrar, UpdateSliderValue.ID, UpdateSliderValue::new, UpdateSliderValue::handle);
 	}
 
