@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -48,16 +47,16 @@ public class SetDefaultCameraViewingDirection implements CustomPacketPayload {
 
 		if (player.getCamera() instanceof SecurityCamera camera && camera.getId() == id && camera.level().getBlockEntity(camera.blockPosition()) instanceof SecurityCameraBlockEntity be) {
 			if (!be.isOwnedBy(player)) {
-				player.displayClientMessage(Utils.localize("message.securitycraft:security_camera.no_permission"), true);
+				player.displayClientMessage(Utils.localize("messages.securitycraft:security_camera.no_permission"), true);
 				return;
 			}
 
 			if (be.isModuleEnabled(ModuleType.SMART)) {
 				be.setDefaultViewingDirection(initialXRotation, initialYRotation);
-				player.displayClientMessage(Component.literal("message.securitycraft:security_camera.direction_set"), true);
+				player.displayClientMessage(Utils.localize("messages.securitycraft:security_camera.direction_set"), true);
 			}
 			else
-				player.displayClientMessage(Component.literal("message.securitycraft:security_camera.smart_module_needed"), true);
+				player.displayClientMessage(Utils.localize("messages.securitycraft:security_camera.smart_module_needed"), true);
 		}
 	}
 }
