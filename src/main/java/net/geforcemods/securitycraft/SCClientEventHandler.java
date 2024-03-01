@@ -1,5 +1,8 @@
 package net.geforcemods.securitycraft;
 
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -55,6 +58,18 @@ public class SCClientEventHandler {
 	public static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final TranslationTextComponent REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 	private static final TranslationTextComponent SMART_MODULE_NOTE = Utils.localize("gui.securitycraft:camera.smartModuleNote");
+	//@formatter:off
+	private static final CameraKeyInfoEntry[] CAMERA_KEY_INFO_LIST = {
+			new CameraKeyInfoEntry(options -> Utils.localize("gui.securitycraft:camera.lookAround", options.keyUp.getTranslatedKeyMessage(), options.keyLeft.getTranslatedKeyMessage(), options.keyDown.getTranslatedKeyMessage(), options.keyRight.getTranslatedKeyMessage()), $ -> true),
+			new CameraKeyInfoEntry(options -> Utils.localize("gui.securitycraft:camera.exit", options.keyShift.getTranslatedKeyMessage()), $ -> true),
+			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getTranslatedKeyMessage(), KeyBindings.cameraZoomOut.getTranslatedKeyMessage()), $ -> true),
+			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getTranslatedKeyMessage()), $ -> true),
+			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getTranslatedKeyMessage()), be -> be.isModuleEnabled(ModuleType.REDSTONE)),
+			new CameraKeyInfoEntry($ -> REDSTONE_NOTE, be -> be.isModuleEnabled(ModuleType.REDSTONE)),
+			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.setDefaultViewingDirection", KeyBindings.setDefaultViewingDirection.getTranslatedKeyMessage()), be -> be.isModuleEnabled(ModuleType.SMART)),
+			new CameraKeyInfoEntry($ -> SMART_MODULE_NOTE, be -> be.isModuleEnabled(ModuleType.SMART))
+	};
+	//@formatter:on
 
 	private SCClientEventHandler() {}
 
@@ -133,8 +148,11 @@ public class SCClientEventHandler {
 
 	@SubscribeEvent
 	public static void renderGameOverlay(RenderGameOverlayEvent.Post event) {
-		if (event.getType() == ElementType.ALL && ClientHandler.isPlayerMountedOnCamera())
-			drawCameraOverlay(event.getMatrixStack(), Minecraft.getInstance(), Minecraft.getInstance().gui, Minecraft.getInstance().getWindow(), Minecraft.getInstance().player, Minecraft.getInstance().level, Minecraft.getInstance().cameraEntity.blockPosition());
+		if (event.getType() == ElementType.ALL && ClientHandler.isPlayerMountedOnCamera()) {
+			Minecraft mc = Minecraft.getInstance();
+
+			drawCameraOverlay(event.getMatrixStack(), mc, mc.gui, mc.getWindow(), mc.player, mc.level, mc.cameraEntity.blockPosition());
+		}
 	}
 
 	private static void drawCameraOverlay(MatrixStack matrix, Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World level, BlockPos pos) {
@@ -146,18 +164,12 @@ public class SCClientEventHandler {
 		if (!(te instanceof SecurityCameraBlockEntity))
 			return;
 
+		int scaledWidth = resolution.getGuiScaledWidth();
+		int scaledHeight = resolution.getGuiScaledHeight();
 		FontRenderer font = Minecraft.getInstance().font;
 		GameSettings settings = mc.options;
 		SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) te;
-		boolean hasRedstoneModule = be.isModuleEnabled(ModuleType.REDSTONE);
-		boolean hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		BlockState state = level.getBlockState(pos);
-		ITextComponent lookAround = Utils.localize("gui.securitycraft:camera.lookAround", settings.keyUp.getTranslatedKeyMessage(), settings.keyLeft.getTranslatedKeyMessage(), settings.keyDown.getTranslatedKeyMessage(), settings.keyRight.getTranslatedKeyMessage());
-		ITextComponent exit = Utils.localize("gui.securitycraft:camera.exit", settings.keyShift.getTranslatedKeyMessage());
-		ITextComponent zoom = Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getTranslatedKeyMessage(), KeyBindings.cameraZoomOut.getTranslatedKeyMessage());
-		ITextComponent nightVision = Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getTranslatedKeyMessage());
-		ITextComponent redstone = Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getTranslatedKeyMessage());
-		ITextComponent smart = Utils.localize("gui.securitycraft:camera.setDefaultViewingDirection", KeyBindings.setDefaultViewingDirection.getTranslatedKeyMessage());
 		long dayTime = Minecraft.getInstance().level.getDayTime();
 		int hours24 = (int) ((float) dayTime / 1000L + 6L) % 24;
 		int hours = hours24 % 12;
@@ -168,20 +180,18 @@ public class SCClientEventHandler {
 		if (be.hasCustomName()) {
 			ITextComponent cameraName = be.getCustomName();
 
-			font.drawShadow(matrix, cameraName, resolution.getGuiScaledWidth() - font.width(cameraName) - 8, 25, 16777215);
+			font.drawShadow(matrix, cameraName, scaledWidth - font.width(cameraName) - 8, 25, 0xFFFFFF);
 			timeY += 10;
 		}
 
-		//TODO: simplify
-		font.drawShadow(matrix, time, resolution.getGuiScaledWidth() - font.width(time) - 4, timeY, 16777215);
-		font.drawShadow(matrix, lookAround, resolution.getGuiScaledWidth() - font.width(lookAround) - 8, resolution.getGuiScaledHeight() - 80, 16777215);
-		font.drawShadow(matrix, exit, resolution.getGuiScaledWidth() - font.width(exit) - 8, resolution.getGuiScaledHeight() - 70, 16777215);
-		font.drawShadow(matrix, zoom, resolution.getGuiScaledWidth() - font.width(zoom) - 8, resolution.getGuiScaledHeight() - 60, 16777215);
-		font.drawShadow(matrix, nightVision, resolution.getGuiScaledWidth() - font.width(nightVision) - 8, resolution.getGuiScaledHeight() - 50, 16777215);
-		font.drawShadow(matrix, redstone, resolution.getGuiScaledWidth() - font.width(redstone) - 8, resolution.getGuiScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
-		font.drawShadow(matrix, REDSTONE_NOTE, resolution.getGuiScaledWidth() - font.width(REDSTONE_NOTE) - 8, resolution.getGuiScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
-		font.drawShadow(matrix, smart, resolution.getGuiScaledWidth() - font.width(smart) - 8, resolution.getGuiScaledHeight() - 20, hasSmartModule ? 16777215 : 16724855);
-		font.drawShadow(matrix, SMART_MODULE_NOTE, resolution.getGuiScaledWidth() - font.width(SMART_MODULE_NOTE) - 8, resolution.getGuiScaledHeight() - 10, hasSmartModule ? 16777215 : 16724855);
+		font.drawShadow(matrix, time, scaledWidth - font.width(time) - 4, timeY, 0xFFFFFF);
+
+		int heightOffset = CAMERA_KEY_INFO_LIST.length * 10;
+
+		for (CameraKeyInfoEntry entry : CAMERA_KEY_INFO_LIST) {
+			entry.drawString(settings, matrix, font, scaledWidth, scaledHeight, heightOffset, be);
+			heightOffset -= 10;
+		}
 
 		mc.getTextureManager().bind(CAMERA_DASHBOARD);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -196,7 +206,7 @@ public class SCClientEventHandler {
 		}
 
 		if (state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
-			if (!hasRedstoneModule)
+			if (!be.isModuleEnabled(ModuleType.REDSTONE))
 				CameraRedstoneModuleState.NOT_INSTALLED.render(gui, matrix, 12, 2);
 			else
 				CameraRedstoneModuleState.DEACTIVATED.render(gui, matrix, 12, 2);
@@ -238,6 +248,31 @@ public class SCClientEventHandler {
 				Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
 				normalLines.clearRenderState();
 			}
+		}
+	}
+
+	public static final class CameraKeyInfoEntry {
+		private final Function<GameSettings, ITextComponent> text;
+		private final Predicate<SecurityCameraBlockEntity> whiteText;
+
+		public CameraKeyInfoEntry(Function<GameSettings, ITextComponent> text, Predicate<SecurityCameraBlockEntity> whiteText) {
+			this.text = text;
+			this.whiteText = whiteText;
+		}
+
+		public void drawString(GameSettings options, MatrixStack matrix, FontRenderer font, int scaledWidth, int scaledHeight, int heightOffset, SecurityCameraBlockEntity be) {
+			ITextComponent text = text().apply(options);
+			boolean whiteText = whiteText().test(be);
+
+			font.drawShadow(matrix, text, scaledWidth - font.width(text) - 8, scaledHeight - heightOffset, whiteText ? 0xFFFFFF : 0xFF3377);
+		}
+
+		public Function<GameSettings, ITextComponent> text() {
+			return text;
+		}
+
+		public Predicate<SecurityCameraBlockEntity> whiteText() {
+			return whiteText;
 		}
 	}
 }
