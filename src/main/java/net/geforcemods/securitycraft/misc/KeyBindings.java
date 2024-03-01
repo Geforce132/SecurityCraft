@@ -23,6 +23,7 @@ public class KeyBindings {
 	public static KeyMapping cameraZoomOut;
 	public static KeyMapping cameraEmitRedstone;
 	public static KeyMapping cameraActivateNightVision;
+	public static KeyMapping setDefaultViewingDirection;
 
 	private KeyBindings() {}
 
@@ -32,6 +33,7 @@ public class KeyBindings {
 		cameraZoomOut = register(event, "cameraZoomOut", GLFW.GLFW_KEY_MINUS);
 		cameraEmitRedstone = register(event, "cameraEmitRedstone", GLFW.GLFW_KEY_R);
 		cameraActivateNightVision = register(event, "cameraActivateNightVision", GLFW.GLFW_KEY_N);
+		setDefaultViewingDirection = register(event, "setDefaultViewingDirection", GLFW.GLFW_KEY_U);
 	}
 
 	private static KeyMapping register(RegisterKeyMappingsEvent event, String name, int defaultKey) {
