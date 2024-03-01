@@ -154,10 +154,9 @@ public class SecurityCameraBlock extends OwnableBlock implements SimpleWaterlogg
 			int viewDistance = Mth.clamp(serverPlayer.requestedViewDistance(), 2, serverPlayer.server.getPlayerList().getViewDistance());
 
 			if (serverPlayer.getCamera() instanceof SecurityCamera cam)
-				dummyEntity = new SecurityCamera(level, pos, cam);
-			else
-				dummyEntity = new SecurityCamera(level, pos);
+				cam.discard();
 
+			dummyEntity = new SecurityCamera(level, pos);
 			level.addFreshEntity(dummyEntity);
 			dummyEntity.setChunkLoadingDistance(viewDistance);
 
