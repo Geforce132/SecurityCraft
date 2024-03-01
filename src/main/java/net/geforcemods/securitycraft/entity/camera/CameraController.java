@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.entity.camera;
 
+import java.util.function.Consumer;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
@@ -16,6 +18,7 @@ import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.multiplayer.ClientChunkProvider;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.CPlayerPacket;
@@ -33,10 +36,14 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class CameraController {
 	public static PointOfView previousCameraType;
 	private static ClientChunkProvider.ChunkArray cameraStorage;
-	private static boolean wasUpPressed;
-	private static boolean wasDownPressed;
-	private static boolean wasLeftPressed;
-	private static boolean wasRightPressed;
+	//@formatter:off
+	private static final ViewMovementKeyHandler[] MOVE_KEY_HANDLERS = {
+			new ViewMovementKeyHandler(Minecraft.getInstance().options.keyUp, CameraController::moveViewUp),
+			new ViewMovementKeyHandler(Minecraft.getInstance().options.keyDown, CameraController::moveViewDown),
+			new ViewMovementKeyHandler(Minecraft.getInstance().options.keyLeft, cam -> moveViewHorizontally(cam, cam.yRot - (float) cam.cameraSpeed * cam.zoomAmount)),
+			new ViewMovementKeyHandler(Minecraft.getInstance().options.keyRight, cam -> moveViewHorizontally(cam, cam.yRot + (float) cam.cameraSpeed * cam.zoomAmount))
+	};
+	//@formatter:on
 	private static int screenshotSoundCooldown = 0;
 
 	private CameraController() {}
@@ -51,17 +58,9 @@ public class CameraController {
 
 			//up/down/left/right handling is split to prevent players who are viewing a camera from moving around in a boat or on a horse
 			if (event.phase == Phase.START) {
-				if (wasUpPressed = options.keyUp.isDown())
-					options.keyUp.setDown(false);
-
-				if (wasDownPressed = options.keyDown.isDown())
-					options.keyDown.setDown(false);
-
-				if (wasLeftPressed = options.keyLeft.isDown())
-					options.keyLeft.setDown(false);
-
-				if (wasRightPressed = options.keyRight.isDown())
-					options.keyRight.setDown(false);
+				for (ViewMovementKeyHandler handler : MOVE_KEY_HANDLERS) {
+					handler.tickStart();
+				}
 
 				if (options.keyShift.isDown()) {
 					dismount();
@@ -69,24 +68,8 @@ public class CameraController {
 				}
 			}
 			else if (event.phase == Phase.END) {
-				if (wasUpPressed) {
-					moveViewUp(cam);
-					options.keyUp.setDown(true);
-				}
-
-				if (wasDownPressed) {
-					moveViewDown(cam);
-					options.keyDown.setDown(true);
-				}
-
-				if (wasLeftPressed) {
-					moveViewHorizontally(cam, cam.yRot - (float) cam.cameraSpeed * cam.zoomAmount);
-					options.keyLeft.setDown(true);
-				}
-
-				if (wasRightPressed) {
-					moveViewHorizontally(cam, cam.yRot + (float) cam.cameraSpeed * cam.zoomAmount);
-					options.keyRight.setDown(true);
+				for (ViewMovementKeyHandler handler : MOVE_KEY_HANDLERS) {
+					handler.tickEnd(cam);
 				}
 
 				if (KeyBindings.cameraZoomIn.isDown())
@@ -230,6 +213,31 @@ public class CameraController {
 
 			cameraStorage.viewCenterX = cameraPos.x();
 			cameraStorage.viewCenterZ = cameraPos.z();
+		}
+	}
+
+	public static class ViewMovementKeyHandler {
+		private final KeyBinding key;
+		private final Consumer<SecurityCamera> action;
+		private boolean wasPressed;
+
+		public ViewMovementKeyHandler(KeyBinding key, Consumer<SecurityCamera> action) {
+			this.key = key;
+			this.action = action;
+		}
+
+		public void tickStart() {
+			wasPressed = key.isDown();
+
+			if (wasPressed)
+				key.setDown(false);
+		}
+
+		public void tickEnd(SecurityCamera cam) {
+			if (wasPressed) {
+				action.accept(cam);
+				key.setDown(true);
+			}
 		}
 	}
 }
