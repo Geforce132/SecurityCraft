@@ -21,14 +21,16 @@ public class KeyBindings {
 	private KeyBindings() {}
 
 	public static void init() {
-		cameraZoomIn = new KeyMapping("key.securitycraft.cameraZoomIn", GLFW.GLFW_KEY_EQUAL, "key.categories.securitycraft");
-		cameraZoomOut = new KeyMapping("key.securitycraft.cameraZoomOut", GLFW.GLFW_KEY_MINUS, "key.categories.securitycraft");
-		cameraEmitRedstone = new KeyMapping("key.securitycraft.cameraEmitRedstone", GLFW.GLFW_KEY_R, "key.categories.securitycraft");
-		cameraActivateNightVision = new KeyMapping("key.securitycraft.cameraActivateNightVision", GLFW.GLFW_KEY_N, "key.categories.securitycraft");
+		cameraZoomIn = register("cameraZoomIn", GLFW.GLFW_KEY_EQUAL);
+		cameraZoomOut = register("cameraZoomOut", GLFW.GLFW_KEY_MINUS);
+		cameraEmitRedstone = register("cameraEmitRedstone", GLFW.GLFW_KEY_R);
+		cameraActivateNightVision = register("cameraActivateNightVision", GLFW.GLFW_KEY_N);
+	}
 
-		ClientRegistry.registerKeyBinding(cameraZoomIn);
-		ClientRegistry.registerKeyBinding(cameraZoomOut);
-		ClientRegistry.registerKeyBinding(cameraEmitRedstone);
-		ClientRegistry.registerKeyBinding(cameraActivateNightVision);
+	private static KeyMapping register(String name, int defaultKey) {
+		KeyMapping keyMapping = new KeyMapping("key.securitycraft." + name, defaultKey, "key.categories.securitycraft");
+
+		ClientRegistry.registerKeyBinding(keyMapping);
+		return keyMapping;
 	}
 }
