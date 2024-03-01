@@ -61,7 +61,7 @@ public class KeyBindings {
 	}
 
 	public static class TickingKeyMapping<T> extends SCKeyMapping {
-		private static final int MAX_COOLDOWN = 20;
+		private static final int MAX_COOLDOWN = 30;
 		private int cooldown = MAX_COOLDOWN;
 		private Consumer<T> action;
 
