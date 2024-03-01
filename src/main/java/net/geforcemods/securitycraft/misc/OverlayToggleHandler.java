@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.misc;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,28 +15,26 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class OverlayToggleHandler {
-	private static final Map<IGuiOverlay, Boolean> OVERLAY_STATES = new HashMap<>();
+	private static final List<IGuiOverlay> DISABLED_OVERLAYS = new ArrayList<>();
 
 	private OverlayToggleHandler() {}
 
 	@SubscribeEvent
 	public static void onRenderGuiOverlayPre(RenderGuiOverlayEvent.Pre event) {
-		IGuiOverlay overlay = event.getOverlay().overlay();
-
-		if (OVERLAY_STATES.containsKey(overlay) && !isEnabled(overlay))
+		if (isDisabled(event.getOverlay()))
 			event.setCanceled(true);
 	}
 
-	public static boolean isEnabled(VanillaGuiOverlay overlay) {
-		return isEnabled(GuiOverlayManager.findOverlay(overlay.id()).overlay());
+	public static boolean isDisabled(VanillaGuiOverlay overlay) {
+		return isDisabled(GuiOverlayManager.findOverlay(overlay.id()).overlay());
 	}
 
-	public static boolean isEnabled(NamedGuiOverlay overlay) {
-		return isEnabled(overlay.overlay());
+	public static boolean isDisabled(NamedGuiOverlay overlay) {
+		return isDisabled(overlay.overlay());
 	}
 
-	public static boolean isEnabled(IGuiOverlay overlay) {
-		return OVERLAY_STATES.get(overlay);
+	public static boolean isDisabled(IGuiOverlay overlay) {
+		return DISABLED_OVERLAYS.contains(overlay);
 	}
 
 	public static void enable(VanillaGuiOverlay overlay) {
@@ -48,7 +46,7 @@ public class OverlayToggleHandler {
 	}
 
 	public static void enable(IGuiOverlay overlay) {
-		OVERLAY_STATES.put(overlay, true);
+		DISABLED_OVERLAYS.remove(overlay);
 	}
 
 	public static void disable(VanillaGuiOverlay overlay) {
@@ -60,6 +58,7 @@ public class OverlayToggleHandler {
 	}
 
 	public static void disable(IGuiOverlay overlay) {
-		OVERLAY_STATES.put(overlay, false);
+		if (!isDisabled(overlay))
+			DISABLED_OVERLAYS.add(overlay);
 	}
 }
