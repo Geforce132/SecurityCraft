@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.ToggleNightVision;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -61,31 +60,8 @@ public class SecurityCamera extends Entity {
 			y += 0.25D;
 
 		setPos(x, y, z);
-		setInitialPitchYaw();
+		setRot(cam.getInitialYRotation(), cam.getInitialXRotation());
 	}
-
-	public SecurityCamera(Level level, BlockPos pos, SecurityCamera oldCamera) {
-		this(level, pos);
-		oldCamera.discard();
-	}
-
-	private void setInitialPitchYaw() {
-		setXRot(30F);
-
-		Direction facing = level.getBlockState(blockPosition()).getValue(SecurityCameraBlock.FACING);
-
-		if (facing == Direction.NORTH)
-			setYRot(180F);
-		else if (facing == Direction.WEST)
-			setYRot(90F);
-		else if (facing == Direction.SOUTH)
-			setYRot(0F);
-		else if (facing == Direction.EAST)
-			setYRot(270F);
-		else if (facing == Direction.DOWN)
-			setXRot(75F);
-	}
-
 	@Override
 	protected boolean repositionEntityAfterLoad() {
 		return false;
@@ -93,6 +69,7 @@ public class SecurityCamera extends Entity {
 
 	@Override
 	public void tick() {
+		//TODO: move cooldowns to CameraController
 		if (level.isClientSide) {
 			if (getScreenshotSoundCooldown() > 0)
 				setScreenshotSoundCooldown(getScreenshotSoundCooldown() - 1);

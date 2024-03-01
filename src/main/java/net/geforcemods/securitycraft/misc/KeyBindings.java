@@ -1,14 +1,12 @@
 package net.geforcemods.securitycraft.misc;
 
-import javax.swing.text.JTextComponent.KeyBinding;
-
 import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraftforge.client.ClientRegistry;
 
 /**
- * Custom {@link KeyBinding}s that SecurityCraft uses.
+ * Custom {@link KeyMapping}s that SecurityCraft uses.
  *
  * @author Geforce
  */
@@ -17,6 +15,7 @@ public class KeyBindings {
 	public static KeyMapping cameraZoomOut;
 	public static KeyMapping cameraEmitRedstone;
 	public static KeyMapping cameraActivateNightVision;
+	public static KeyMapping setDefaultViewingDirection;
 
 	private KeyBindings() {}
 
@@ -25,6 +24,7 @@ public class KeyBindings {
 		cameraZoomOut = register("cameraZoomOut", GLFW.GLFW_KEY_MINUS);
 		cameraEmitRedstone = register("cameraEmitRedstone", GLFW.GLFW_KEY_R);
 		cameraActivateNightVision = register("cameraActivateNightVision", GLFW.GLFW_KEY_N);
+		setDefaultViewingDirection = register("setDefaultViewingDirection", GLFW.GLFW_KEY_U);
 	}
 
 	private static KeyMapping register(String name, int defaultKey) {

@@ -57,6 +57,7 @@ public class SCClientEventHandler {
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
 	public static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final Component REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
+	private static final Component SMART_MODULE_NOTE = Utils.localize("gui.securitycraft:camera.smartModuleNote");
 
 	private SCClientEventHandler() {}
 
@@ -122,7 +123,7 @@ public class SCClientEventHandler {
 			Minecraft mc = Minecraft.getInstance();
 			InteractionHand hand = event.getHand();
 
-			if (mc.player.getItemInHand(hand).is(SCContent.CAMERA_MONITOR.get()))
+			if (mc.player.getItemInHand(hand).is(SCContent.CAMERA_MONITOR.get()) && event.isUseItem())
 				SCContent.CAMERA_MONITOR.get().use(mc.level, mc.player, hand);
 
 			event.setCanceled(true);
@@ -145,12 +146,14 @@ public class SCClientEventHandler {
 		Font font = Minecraft.getInstance().font;
 		Options settings = Minecraft.getInstance().options;
 		boolean hasRedstoneModule = be.isModuleEnabled(ModuleType.REDSTONE);
+		boolean hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		BlockState state = level.getBlockState(pos);
 		Component lookAround = Utils.localize("gui.securitycraft:camera.lookAround", settings.keyUp.getTranslatedKeyMessage(), settings.keyLeft.getTranslatedKeyMessage(), settings.keyDown.getTranslatedKeyMessage(), settings.keyRight.getTranslatedKeyMessage());
 		Component exit = Utils.localize("gui.securitycraft:camera.exit", settings.keyShift.getTranslatedKeyMessage());
 		Component zoom = Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getTranslatedKeyMessage(), KeyBindings.cameraZoomOut.getTranslatedKeyMessage());
 		Component nightVision = Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getTranslatedKeyMessage());
 		Component redstone = Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getTranslatedKeyMessage());
+		Component smart = Utils.localize("gui.securitycraft:camera.setDefaultViewingDirection", KeyBindings.setDefaultViewingDirection.getTranslatedKeyMessage());
 		long dayTime = Minecraft.getInstance().level.getDayTime();
 		int hours24 = (int) ((float) dayTime / 1000L + 6L) % 24;
 		int hours = hours24 % 12;
@@ -165,6 +168,7 @@ public class SCClientEventHandler {
 			timeY += 10;
 		}
 
+		//TODO: simplify
 		font.drawShadow(pose, time, window.getGuiScaledWidth() - font.width(time) - 4, timeY, 16777215);
 		font.drawShadow(pose, lookAround, window.getGuiScaledWidth() - font.width(lookAround) - 8, window.getGuiScaledHeight() - 80, 16777215);
 		font.drawShadow(pose, exit, window.getGuiScaledWidth() - font.width(exit) - 8, window.getGuiScaledHeight() - 70, 16777215);
@@ -172,6 +176,8 @@ public class SCClientEventHandler {
 		font.drawShadow(pose, nightVision, window.getGuiScaledWidth() - font.width(nightVision) - 8, window.getGuiScaledHeight() - 50, 16777215);
 		font.drawShadow(pose, redstone, window.getGuiScaledWidth() - font.width(redstone) - 8, window.getGuiScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
 		font.drawShadow(pose, REDSTONE_NOTE, window.getGuiScaledWidth() - font.width(REDSTONE_NOTE) - 8, window.getGuiScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
+		font.drawShadow(pose, smart, window.getGuiScaledWidth() - font.width(smart) - 8, window.getGuiScaledHeight() - 20, hasSmartModule ? 16777215 : 16724855);
+		font.drawShadow(pose, SMART_MODULE_NOTE, window.getGuiScaledWidth() - font.width(SMART_MODULE_NOTE) - 8, window.getGuiScaledHeight() - 10, hasSmartModule ? 16777215 : 16724855);
 
 		RenderSystem._setShaderTexture(0, CAMERA_DASHBOARD);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

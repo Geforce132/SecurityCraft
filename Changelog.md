@@ -21,6 +21,7 @@
 - New: Option for the Bouncing Betty and Mine to set whether it only explodes for mobs, players, or both
 - New: Ignore Owner option for the Bouncing Betty and Mine
 - New: The Security Camera can now have a Lens, making it possible to tint the camera view in a different color
+- New: The Security Camera now supports the Smart Module, allowing the owner to set a default viewing direction
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now
 - Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate
@@ -30,6 +31,7 @@
 - Change: The Sentry's recipe now requires a Reinforced Dispenser
 - Change: The I.M.S.' targeting mode is now accessible with the Universal Block Modifier instead of rightclicking the block
 - Change: The initial rotation direction of cameras is now randomized clientside, to give a bit more variety
+- Change: Attacking (by default leftclick with the mouse) while looking through a camera no longer does anything
 - API: Refactored IPasscodeConvertible to account for the new Wire Cutters functionality
 - API: New method IOwnable#ignoresOwner to check whether the owner should be ignored by this block entity
 - API: IOwnable#isOwnedBy now takes any Entity instead of only players
