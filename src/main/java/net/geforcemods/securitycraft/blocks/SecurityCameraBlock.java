@@ -170,10 +170,9 @@ public class SecurityCameraBlock extends OwnableBlock implements IWaterLoggable 
 			TileEntity te = level.getBlockEntity(pos);
 
 			if (serverPlayer.getCamera() instanceof SecurityCamera)
-				dummyEntity = new SecurityCamera(level, pos, (SecurityCamera) serverPlayer.getCamera());
-			else
-				dummyEntity = new SecurityCamera(level, pos);
+				serverPlayer.getCamera().remove();
 
+			dummyEntity = new SecurityCamera(level, pos);
 			level.addFreshEntity(dummyEntity);
 			dummyEntity.setChunkLoadingDistance(viewDistance);
 

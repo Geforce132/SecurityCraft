@@ -58,6 +58,7 @@ public class SCClientEventHandler {
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
 	public static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final TranslationTextComponent REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
+	private static final TranslationTextComponent SMART_MODULE_NOTE = Utils.localize("gui.securitycraft:camera.smartModuleNote");
 
 	private SCClientEventHandler() {}
 
@@ -167,12 +168,14 @@ public class SCClientEventHandler {
 		GameSettings settings = mc.options;
 		SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) te;
 		boolean hasRedstoneModule = be.isModuleEnabled(ModuleType.REDSTONE);
+		boolean hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		BlockState state = level.getBlockState(pos);
 		ITextComponent lookAround = Utils.localize("gui.securitycraft:camera.lookAround", settings.keyUp.getTranslatedKeyMessage(), settings.keyLeft.getTranslatedKeyMessage(), settings.keyDown.getTranslatedKeyMessage(), settings.keyRight.getTranslatedKeyMessage());
 		ITextComponent exit = Utils.localize("gui.securitycraft:camera.exit", settings.keyShift.getTranslatedKeyMessage());
 		ITextComponent zoom = Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getTranslatedKeyMessage(), KeyBindings.cameraZoomOut.getTranslatedKeyMessage());
 		ITextComponent nightVision = Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getTranslatedKeyMessage());
 		ITextComponent redstone = Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getTranslatedKeyMessage());
+		ITextComponent smart = Utils.localize("gui.securitycraft:camera.setDefaultViewingDirection", KeyBindings.setDefaultViewingDirection.getTranslatedKeyMessage());
 		long dayTime = Minecraft.getInstance().level.getDayTime();
 		int hours24 = (int) ((float) dayTime / 1000L + 6L) % 24;
 		int hours = hours24 % 12;
@@ -187,6 +190,7 @@ public class SCClientEventHandler {
 			timeY += 10;
 		}
 
+		//TODO: simplify
 		font.drawShadow(matrix, time, resolution.getGuiScaledWidth() - font.width(time) - 4, timeY, 16777215);
 		font.drawShadow(matrix, lookAround, resolution.getGuiScaledWidth() - font.width(lookAround) - 8, resolution.getGuiScaledHeight() - 80, 16777215);
 		font.drawShadow(matrix, exit, resolution.getGuiScaledWidth() - font.width(exit) - 8, resolution.getGuiScaledHeight() - 70, 16777215);
@@ -194,6 +198,8 @@ public class SCClientEventHandler {
 		font.drawShadow(matrix, nightVision, resolution.getGuiScaledWidth() - font.width(nightVision) - 8, resolution.getGuiScaledHeight() - 50, 16777215);
 		font.drawShadow(matrix, redstone, resolution.getGuiScaledWidth() - font.width(redstone) - 8, resolution.getGuiScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
 		font.drawShadow(matrix, REDSTONE_NOTE, resolution.getGuiScaledWidth() - font.width(REDSTONE_NOTE) - 8, resolution.getGuiScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
+		font.drawShadow(matrix, smart, resolution.getGuiScaledWidth() - font.width(smart) - 8, resolution.getGuiScaledHeight() - 20, hasSmartModule ? 16777215 : 16724855);
+		font.drawShadow(matrix, SMART_MODULE_NOTE, resolution.getGuiScaledWidth() - font.width(SMART_MODULE_NOTE) - 8, resolution.getGuiScaledHeight() - 10, hasSmartModule ? 16777215 : 16724855);
 
 		mc.getTextureManager().bind(CAMERA_DASHBOARD);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);

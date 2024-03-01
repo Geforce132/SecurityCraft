@@ -21,7 +21,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.SectionPos;
 import net.minecraft.world.World;
@@ -70,29 +69,7 @@ public class SecurityCamera extends Entity {
 			y += 0.25D;
 
 		setPos(x, y, z);
-		setInitialPitchYaw();
-	}
-
-	public SecurityCamera(World level, BlockPos pos, SecurityCamera oldCamera) {
-		this(level, pos);
-		oldCamera.remove();
-	}
-
-	private void setInitialPitchYaw() {
-		xRot = 30F;
-
-		Direction facing = level.getBlockState(blockPosition()).getValue(SecurityCameraBlock.FACING);
-
-		if (facing == Direction.NORTH)
-			yRot = 180F;
-		else if (facing == Direction.WEST)
-			yRot = 90F;
-		else if (facing == Direction.SOUTH)
-			yRot = 0F;
-		else if (facing == Direction.EAST)
-			yRot = 270F;
-		else if (facing == Direction.DOWN)
-			xRot = 75F;
+		setRot(cam.getInitialYRotation(), cam.getInitialXRotation());
 	}
 
 	@Override
@@ -102,6 +79,7 @@ public class SecurityCamera extends Entity {
 
 	@Override
 	public void tick() {
+		//TODO: move cooldowns to CameraController
 		if (level.isClientSide) {
 			if (getScreenshotSoundCooldown() > 0)
 				setScreenshotSoundCooldown(getScreenshotSoundCooldown() - 1);
