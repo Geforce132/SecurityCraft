@@ -2,22 +2,30 @@ package net.geforcemods.securitycraft.entity.camera;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.DismountCamera;
+import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetDefaultCameraViewingDirection;
+import net.geforcemods.securitycraft.network.server.ToggleNightVision;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
@@ -37,7 +45,7 @@ public class CameraController {
 	private static boolean wasDownPressed;
 	private static boolean wasLeftPressed;
 	private static boolean wasRightPressed;
-	private static int setDefaultViewingDirectionCooldown = 0;
+	private static int screenshotSoundCooldown = 0;
 
 	private CameraController() {}
 
@@ -95,16 +103,10 @@ public class CameraController {
 				else
 					cam.zooming = false;
 
-				if (KeyBindings.cameraEmitRedstone.consumeClick())
-					emitRedstone(cam);
-
-				if (KeyBindings.cameraActivateNightVision.consumeClick())
-					giveNightVision(cam);
-
-				if (setDefaultViewingDirectionCooldown-- <= 0 && KeyBindings.setDefaultViewingDirection.consumeClick()) {
-					setDefaultViewingDirection(cam);
-					setDefaultViewingDirectionCooldown = 20;
-				}
+				KeyBindings.cameraEmitRedstone.tick(cam);
+				KeyBindings.cameraActivateNightVision.tick(cam);
+				KeyBindings.setDefaultViewingDirection.tick(cam);
+				screenshotSoundCooldown--;
 
 				//update other players with the head rotation
 				LocalPlayer player = Minecraft.getInstance().player;
@@ -119,6 +121,16 @@ public class CameraController {
 			resetOverlaysAfterDismount = false;
 			OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, false);
 			CameraController.restoreOverlayStates();
+		}
+	}
+
+	@SubscribeEvent
+	public static void onScreenshot(ScreenshotEvent event) {
+		Player player = Minecraft.getInstance().player;
+
+		if (PlayerUtils.isPlayerMountedOnCamera(player) && screenshotSoundCooldown <= 0) {
+			screenshotSoundCooldown = 7;
+			Minecraft.getInstance().level.playLocalSound(player.blockPosition(), SCSounds.CAMERASNAP.event, SoundSource.BLOCKS, 1.0F, 1.0F, true);
 		}
 	}
 
@@ -187,16 +199,15 @@ public class CameraController {
 		cam.zoomAmount = Math.min(cam.zoomAmount + 0.1F, 1.4F);
 	}
 
-	public static void emitRedstone(SecurityCamera cam) {
-		if (cam.redstoneCooldown == 0) {
-			cam.toggleRedstonePowerFromClient();
-			cam.redstoneCooldown = 30;
-		}
+	public static void toggleRedstone(SecurityCamera cam) {
+		BlockPos pos = cam.blockPosition();
+
+		if (((IModuleInventory) cam.level.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
+			SecurityCraft.CHANNEL.sendToServer(new SetCameraPowered(pos, !cam.level.getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
 	}
 
-	public static void giveNightVision(SecurityCamera cam) {
-		if (cam.toggleNightVisionCooldown == 0)
-			cam.toggleNightVisionFromClient();
+	public static void toggleNightVision(SecurityCamera cam) {
+		SecurityCraft.CHANNEL.sendToServer(new ToggleNightVision());
 	}
 
 	public static void setDefaultViewingDirection(SecurityCamera cam) {
