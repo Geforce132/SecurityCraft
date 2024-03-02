@@ -15,6 +15,7 @@ public class KeyBindings {
 	public static KeyBinding cameraZoomOut;
 	public static KeyBinding cameraEmitRedstone;
 	public static KeyBinding cameraActivateNightVision;
+	public static KeyBinding setDefaultViewingDirection;
 
 	private KeyBindings() {}
 
@@ -23,6 +24,7 @@ public class KeyBindings {
 		cameraZoomOut = register("cameraZoomOut", Keyboard.KEY_MINUS);
 		cameraEmitRedstone = register("cameraEmitRedstone", Keyboard.KEY_R);
 		cameraActivateNightVision = register("cameraActivateNightVision", Keyboard.KEY_N);
+		setDefaultViewingDirection = register("setDefaultViewingDirection", Keyboard.KEY_U);
 	}
 
 	private static KeyBinding register(String name, int defaultKey) {

@@ -29,6 +29,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 public class GuiUtils {
@@ -49,6 +50,8 @@ public class GuiUtils {
 	//@formatter:on
 	private static final ResourceLocation REDSTONE_TEXTURE = new ResourceLocation("textures/items/redstone_dust.png");
 	private static final ResourceLocation SUGAR_TEXTURE = new ResourceLocation("textures/items/sugar.png");
+	private static final TextComponentTranslation REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
+	private static final TextComponentTranslation SMART_MODULE_NOTE = Utils.localize("gui.securitycraft:camera.smartModuleNote");
 
 	private GuiUtils() {}
 
@@ -64,6 +67,7 @@ public class GuiUtils {
 		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		SecurityCameraBlockEntity te = (SecurityCameraBlockEntity) tile;
 		boolean hasRedstoneModule = te.isModuleEnabled(ModuleType.REDSTONE);
+		boolean hasSmartModule = te.isModuleEnabled(ModuleType.SMART);
 		GameSettings settings = Minecraft.getMinecraft().gameSettings;
 		IBlockState state = world.getBlockState(pos);
 		String lookAround = GameSettings.getKeyDisplayString(settings.keyBindForward.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindLeft.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindBack.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindRight.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.lookAround").getFormattedText();
@@ -87,7 +91,9 @@ public class GuiUtils {
 		font.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText()) - 8, resolution.getScaledHeight() - 60, 16777215);
 		font.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.activateNightVision").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.activateNightVision").getFormattedText()) - 8, resolution.getScaledHeight() - 50, 16777215);
 		font.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.toggleRedstone").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.toggleRedstone").getFormattedText()) - 8, resolution.getScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
-		font.drawStringWithShadow(Utils.localize("gui.securitycraft:camera.toggleRedstoneNote").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(Utils.localize("gui.securitycraft:camera.toggleRedstoneNote").getFormattedText()) - 8, resolution.getScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
+		font.drawStringWithShadow(REDSTONE_NOTE.getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(REDSTONE_NOTE.getFormattedText()) - 8, resolution.getScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
+		font.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.setDefaultViewingDirection.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.setDefaultViewingDirection").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.setDefaultViewingDirection.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.setDefaultViewingDirection").getFormattedText()) - 8, resolution.getScaledHeight() - 20, hasSmartModule ? 16777215 : 16724855);
+		font.drawStringWithShadow(SMART_MODULE_NOTE.getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(SMART_MODULE_NOTE.getFormattedText()) - 8, resolution.getScaledHeight() - 10, hasSmartModule ? 16777215 : 16724855);
 
 		mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

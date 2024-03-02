@@ -108,6 +108,7 @@ import net.geforcemods.securitycraft.network.server.RemovePositionFromSSS;
 import net.geforcemods.securitycraft.network.server.RemoveSentryFromSRAT;
 import net.geforcemods.securitycraft.network.server.SetBriefcasePasscodeAndOwner;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
+import net.geforcemods.securitycraft.network.server.SetDefaultCameraViewingDirection;
 import net.geforcemods.securitycraft.network.server.SetGhostSlot;
 import net.geforcemods.securitycraft.network.server.SetKeycardUses;
 import net.geforcemods.securitycraft.network.server.SetListModuleData;
@@ -598,6 +599,7 @@ public class RegistrationHandler {
 		network.registerMessage(SyncBlockReinforcer.Handler.class, SyncBlockReinforcer.class, 54, Side.SERVER);
 		network.registerMessage(OpenScreen.Handler.class, OpenScreen.class, 55, Side.CLIENT);
 		network.registerMessage(BlockPocketManagerFailedActivation.Handler.class, BlockPocketManagerFailedActivation.class, 56, Side.SERVER);
+		network.registerMessage(SetDefaultCameraViewingDirection.Handler.class, SetDefaultCameraViewingDirection.class, 57, Side.SERVER);
 	}
 
 	@SubscribeEvent

@@ -16,6 +16,7 @@
 - New: Reinforced Moss Stone can now be crafted with vines and their non-mossy counterpart
 - New: Option for the Claymore to set whether it only explodes for mobs, players, or both
 - New: The Security Camera can now have a Lens, making it possible to tint the camera view in a different color
+- New: The Security Camera now supports the Smart Module, allowing the owner to set a default viewing direction
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate

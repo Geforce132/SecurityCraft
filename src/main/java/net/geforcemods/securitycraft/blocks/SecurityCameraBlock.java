@@ -167,10 +167,9 @@ public class SecurityCameraBlock extends OwnableBlock {
 			Ticket ticket = ForgeChunkManager.requestTicket(SecurityCraft.instance, world, Type.ENTITY);
 
 			if (serverPlayer.getSpectatingEntity() instanceof SecurityCamera)
-				dummyEntity = new SecurityCamera(world, x, y, z, (SecurityCamera) serverPlayer.getSpectatingEntity());
-			else
-				dummyEntity = new SecurityCamera(world, x, y, z);
+				serverPlayer.getSpectatingEntity().setDead();
 
+			dummyEntity = new SecurityCamera(world, x, y, z);
 			ticket.bindEntity(dummyEntity);
 			dummyEntity.setChunkTicket(ticket);
 

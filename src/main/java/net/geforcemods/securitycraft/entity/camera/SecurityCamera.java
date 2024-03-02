@@ -16,7 +16,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -65,29 +64,7 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 			y += 0.25D;
 
 		setPosition(x, y, z);
-		setInitialPitchYaw();
-	}
-
-	public SecurityCamera(World world, double x, double y, double z, SecurityCamera oldCamera) {
-		this(world, x, y, z);
-		oldCamera.setDead();
-	}
-
-	private void setInitialPitchYaw() {
-		rotationPitch = 30F;
-
-		EnumFacing facing = world.getBlockState(new BlockPos(posX, posY, posZ)).getValue(SecurityCameraBlock.FACING);
-
-		if (facing == EnumFacing.NORTH)
-			rotationYaw = 180F;
-		else if (facing == EnumFacing.WEST)
-			rotationYaw = 90F;
-		else if (facing == EnumFacing.SOUTH)
-			rotationYaw = 0F;
-		else if (facing == EnumFacing.EAST)
-			rotationYaw = 270F;
-		else if (facing == EnumFacing.DOWN)
-			rotationPitch = 75F;
+		setRotation(cam.getInitialYRotation(), cam.getInitialXRotation());
 	}
 
 	@Override
