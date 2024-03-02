@@ -17,6 +17,7 @@
 - New: Option for the Claymore to set whether it only explodes for mobs, players, or both
 - New: The Security Camera can now have a Lens, making it possible to tint the camera view in a different color
 - New: The Security Camera now supports the Smart Module, allowing the owner to set a default viewing direction
+- New: Electrified Iron Fences and Electrified Iron Fence Gates can now be pushed by Reinforced Pistons
 - Change: Sentries now shoot half as frequently to match the shooting rate in newer Minecraft versions
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now
