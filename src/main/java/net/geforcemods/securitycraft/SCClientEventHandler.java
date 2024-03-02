@@ -2,10 +2,8 @@ package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
-import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.TaserItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
-import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
@@ -17,7 +15,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.MouseEvent;
@@ -25,7 +22,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -65,20 +61,6 @@ public class SCClientEventHandler {
 					GlStateManager.enableDepth();
 					GlStateManager.popMatrix();
 				}
-			}
-		}
-	}
-
-	@SubscribeEvent
-	public static void onScreenshot(ScreenshotEvent event) {
-		EntityPlayer player = Minecraft.getMinecraft().player;
-
-		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
-			SecurityCamera camera = (SecurityCamera) Minecraft.getMinecraft().getRenderViewEntity();
-
-			if (camera.getScreenshotSoundCooldown() == 0) {
-				camera.setScreenshotSoundCooldown(7);
-				Minecraft.getMinecraft().world.playSound(player.getPosition(), SCSounds.CAMERASNAP.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 			}
 		}
 	}
