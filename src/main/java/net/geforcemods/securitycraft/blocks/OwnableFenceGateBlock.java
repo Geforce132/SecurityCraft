@@ -65,17 +65,11 @@ public class OwnableFenceGateBlock extends BlockFenceGate implements ITileEntity
 		if (!world.isRemote) {
 			boolean isPoweredSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos);
 
-			if (isPoweredSCBlock || block.getDefaultState().canProvidePower()) {
-				if (isPoweredSCBlock && !state.getValue(OPEN) && !state.getValue(POWERED)) {
-					world.setBlockState(pos, state.withProperty(OPEN, true).withProperty(POWERED, true), 2);
-					world.playSound(null, pos, openSound, SoundCategory.BLOCKS, 1.0F, SecurityCraft.RANDOM.nextFloat() * 0.1F + 0.9F);
-				}
-				else if (!isPoweredSCBlock && state.getValue(OPEN) && state.getValue(POWERED)) {
-					world.setBlockState(pos, state.withProperty(OPEN, false).withProperty(POWERED, false), 2);
-					world.playSound(null, pos, closeSound, SoundCategory.BLOCKS, 1.0F, SecurityCraft.RANDOM.nextFloat() * 0.1F + 0.9F);
-				}
-				else if (isPoweredSCBlock != state.getValue(POWERED))
-					world.setBlockState(pos, state.withProperty(POWERED, isPoweredSCBlock), 2);
+			if (state.getValue(POWERED) != isPoweredSCBlock) {
+				world.setBlockState(pos, state.withProperty(POWERED, isPoweredSCBlock).withProperty(OPEN, isPoweredSCBlock), 2);
+
+				if (state.getValue(OPEN) != isPoweredSCBlock)
+					world.playSound(null, pos, isPoweredSCBlock ? openSound : closeSound, SoundCategory.BLOCKS, 1.0F, SecurityCraft.RANDOM.nextFloat() * 0.1F + 0.9F);
 			}
 		}
 	}
