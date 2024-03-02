@@ -11,6 +11,8 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
+import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceBlock;
+import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceGateBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.ReinforcedPistonBlockStructureHelper;
 import net.minecraft.block.Block;
@@ -170,8 +172,10 @@ public class ReinforcedPistonBlock extends BlockPistonBase implements IReinforce
 		if (block == Blocks.OBSIDIAN || block == SCContent.reinforcedObsidian || !world.getWorldBorder().contains(pos))
 			return false;
 		else if (pos.getY() >= 0 && (facing != EnumFacing.DOWN || pos.getY() != 0) && pos.getY() <= world.getHeight() - 1 && (facing != EnumFacing.UP || pos.getY() != world.getHeight() - 1)) {
+			boolean isPushableSCBlock = state.getBlock() instanceof IReinforcedBlock || state.getBlock() instanceof ElectrifiedIronFenceBlock || state.getBlock() instanceof ElectrifiedIronFenceGateBlock;
+
 			if (block != Blocks.PISTON && block != Blocks.STICKY_PISTON && block != SCContent.reinforcedPiston && block != SCContent.reinforcedStickyPiston) {
-				if (state.getBlock() instanceof IReinforcedBlock) {
+				if (isPushableSCBlock) {
 					if (!isSameOwner(pos, pistonPos, world))
 						return false;
 				}
@@ -192,7 +196,7 @@ public class ReinforcedPistonBlock extends BlockPistonBase implements IReinforce
 			else if (state.getValue(EXTENDED))
 				return false;
 
-			return !block.hasTileEntity(state) || state.getBlock() instanceof IReinforcedBlock;
+			return !block.hasTileEntity(state) || isPushableSCBlock;
 		}
 
 		return false;
