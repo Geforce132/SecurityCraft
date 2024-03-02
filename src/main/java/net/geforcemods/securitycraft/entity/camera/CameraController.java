@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.entity.camera;
 
+import java.util.function.Consumer;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -32,10 +34,14 @@ import net.minecraftforge.fml.relauncher.Side;
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Side.CLIENT)
 public class CameraController {
 	public static int previousCameraType;
-	private static boolean wasUpPressed;
-	private static boolean wasDownPressed;
-	private static boolean wasLeftPressed;
-	private static boolean wasRightPressed;
+	//@formatter:off
+	private static final ViewMovementKeyHandler[] MOVE_KEY_HANDLERS = {
+			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindForward, CameraController::moveViewUp),
+			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindBack, CameraController::moveViewDown),
+			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindLeft, cam -> moveViewHorizontally(cam, cam.rotationYaw - ConfigHandler.cameraSpeed * cam.zoomAmount)),
+			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindRight, cam -> moveViewHorizontally(cam, cam.rotationYaw + ConfigHandler.cameraSpeed * cam.zoomAmount))
+	};
+	//@formatter:on
 	private static int screenshotSoundCooldown = 0;
 
 	private CameraController() {}
@@ -46,27 +52,10 @@ public class CameraController {
 
 		if (renderViewEntity instanceof SecurityCamera) {
 			SecurityCamera cam = (SecurityCamera) renderViewEntity;
-			GameSettings options = Minecraft.getMinecraft().gameSettings;
 
 			if (event.phase == Phase.END) {
-				if (wasUpPressed) {
-					moveViewUp(cam);
-					KeyBinding.setKeyBindState(options.keyBindForward.getKeyCode(), true);
-				}
-
-				if (wasDownPressed) {
-					moveViewDown(cam);
-					KeyBinding.setKeyBindState(options.keyBindBack.getKeyCode(), true);
-				}
-
-				if (wasLeftPressed) {
-					moveViewHorizontally(cam, cam.rotationYaw - ConfigHandler.cameraSpeed * cam.zoomAmount);
-					KeyBinding.setKeyBindState(options.keyBindLeft.getKeyCode(), true);
-				}
-
-				if (wasRightPressed) {
-					moveViewHorizontally(cam, cam.rotationYaw + ConfigHandler.cameraSpeed * cam.zoomAmount);
-					KeyBinding.setKeyBindState(options.keyBindRight.getKeyCode(), true);
+				for (ViewMovementKeyHandler handler : MOVE_KEY_HANDLERS) {
+					handler.tickEnd(cam);
 				}
 
 				if (KeyBindings.cameraZoomIn.isKeyDown())
@@ -95,17 +84,9 @@ public class CameraController {
 	public static void handleKeybinds() {
 		GameSettings options = Minecraft.getMinecraft().gameSettings;
 
-		if (wasUpPressed = options.keyBindForward.isKeyDown())
-			KeyBinding.setKeyBindState(options.keyBindForward.getKeyCode(), false);
-
-		if (wasDownPressed = options.keyBindBack.isKeyDown())
-			KeyBinding.setKeyBindState(options.keyBindBack.getKeyCode(), false);
-
-		if (wasLeftPressed = options.keyBindLeft.isKeyDown())
-			KeyBinding.setKeyBindState(options.keyBindLeft.getKeyCode(), false);
-
-		if (wasRightPressed = options.keyBindRight.isKeyDown())
-			KeyBinding.setKeyBindState(options.keyBindRight.getKeyCode(), false);
+		for (ViewMovementKeyHandler handler : MOVE_KEY_HANDLERS) {
+			handler.tickStart();
+		}
 
 		if (options.keyBindSneak.isKeyDown()) {
 			dismount();
@@ -215,5 +196,30 @@ public class CameraController {
 
 	public static void setDefaultViewingDirection(SecurityCamera cam) {
 		SecurityCraft.network.sendToServer(new SetDefaultCameraViewingDirection(cam));
+	}
+
+	public static class ViewMovementKeyHandler {
+		private final KeyBinding key;
+		private final Consumer<SecurityCamera> action;
+		private boolean wasPressed;
+
+		public ViewMovementKeyHandler(KeyBinding key, Consumer<SecurityCamera> action) {
+			this.key = key;
+			this.action = action;
+		}
+
+		public void tickStart() {
+			wasPressed = key.isKeyDown();
+
+			if (wasPressed)
+				KeyBinding.setKeyBindState(key.getKeyCode(), false);
+		}
+
+		public void tickEnd(SecurityCamera cam) {
+			if (wasPressed) {
+				action.accept(cam);
+				KeyBinding.setKeyBindState(key.getKeyCode(), true);
+			}
+		}
 	}
 }
