@@ -46,7 +46,7 @@ public class EntityRendererMixin {
 	 * Renders the camera tint if a lens is installed. This cannot be done in a standard overlay, as the tint needs to exist even
 	 * when the GUI is hidden with F1
 	 */
-	@Inject(method = "updateCameraAndRender", at = @At(value = "FIELD", target = "hideGUI:Z", opcode = Opcodes.GETFIELD), locals = LocalCapture.CAPTURE_FAILSOFT)
+	@Inject(method = "updateCameraAndRender", at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;hideGUI:Z", opcode = Opcodes.GETFIELD), locals = LocalCapture.CAPTURE_FAILSOFT)
 	private void securitycraft$renderCameraTint(float partialTicks, long nanoTime, CallbackInfo ci, boolean flag, ScaledResolution scaledresolution, int i1, int j1, final int k1, final int l1, int i2, int j, long k, long l) {
 		if (mc.getRenderViewEntity() instanceof SecurityCamera) {
 			World level = mc.world;
