@@ -1,6 +1,8 @@
 package net.geforcemods.securitycraft.util;
 
 import java.util.Arrays;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.lwjgl.opengl.GL11;
 
@@ -52,6 +54,18 @@ public class GuiUtils {
 	private static final ResourceLocation SUGAR_TEXTURE = new ResourceLocation("textures/items/sugar.png");
 	private static final TextComponentTranslation REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 	private static final TextComponentTranslation SMART_MODULE_NOTE = Utils.localize("gui.securitycraft:camera.smartModuleNote");
+	//@formatter:off
+	private static final CameraKeyInfoEntry[] CAMERA_KEY_INFO_LIST = {
+			new CameraKeyInfoEntry(options -> Utils.localize("gui.securitycraft:camera.lookAround", options.keyBindForward.getDisplayName(), options.keyBindLeft.getDisplayName(), options.keyBindBack.getDisplayName(), options.keyBindRight.getDisplayName()), $ -> true),
+			new CameraKeyInfoEntry(options -> Utils.localize("gui.securitycraft:camera.exit", options.keyBindSneak.getDisplayName()), $ -> true),
+			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getDisplayName(), KeyBindings.cameraZoomOut.getDisplayName()), $ -> true),
+			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getDisplayName()), $ -> true),
+			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getDisplayName()), be -> be.isModuleEnabled(ModuleType.REDSTONE)),
+			new CameraKeyInfoEntry($ -> REDSTONE_NOTE, be -> be.isModuleEnabled(ModuleType.REDSTONE)),
+			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.setDefaultViewingDirection", KeyBindings.setDefaultViewingDirection.getDisplayName()), be -> be.isModuleEnabled(ModuleType.SMART)),
+			new CameraKeyInfoEntry($ -> SMART_MODULE_NOTE, be -> be.isModuleEnabled(ModuleType.SMART))
+	};
+	//@formatter:on
 
 	private GuiUtils() {}
 
@@ -64,13 +78,12 @@ public class GuiUtils {
 		if (!(tile instanceof SecurityCameraBlockEntity))
 			return;
 
+		int scaledWidth = resolution.getScaledWidth();
+		int scaledHeight = resolution.getScaledHeight();
 		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		SecurityCameraBlockEntity te = (SecurityCameraBlockEntity) tile;
-		boolean hasRedstoneModule = te.isModuleEnabled(ModuleType.REDSTONE);
-		boolean hasSmartModule = te.isModuleEnabled(ModuleType.SMART);
 		GameSettings settings = Minecraft.getMinecraft().gameSettings;
 		IBlockState state = world.getBlockState(pos);
-		String lookAround = GameSettings.getKeyDisplayString(settings.keyBindForward.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindLeft.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindBack.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindRight.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.lookAround").getFormattedText();
 		long worldTime = Minecraft.getMinecraft().world.provider.getWorldTime();
 		int hours24 = (int) ((float) worldTime / 1000L + 6L) % 24;
 		int hours = hours24 % 12;
@@ -81,24 +94,23 @@ public class GuiUtils {
 		if (te.hasCustomName()) {
 			String cameraName = te.getName();
 
-			font.drawStringWithShadow(cameraName, resolution.getScaledWidth() - font.getStringWidth(cameraName) - 8, 25, 16777215);
+			font.drawStringWithShadow(cameraName, scaledWidth - font.getStringWidth(cameraName) - 8, 25, 16777215);
 			timeY += 10;
 		}
 
-		font.drawStringWithShadow(time, resolution.getScaledWidth() - font.getStringWidth(time) - 4, timeY, 16777215);
-		font.drawStringWithShadow(lookAround, resolution.getScaledWidth() - font.getStringWidth(lookAround) - 8, resolution.getScaledHeight() - 80, 16777215);
-		font.drawStringWithShadow(GameSettings.getKeyDisplayString(settings.keyBindSneak.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.exit").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(settings.keyBindSneak.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.exit").getFormattedText()) - 8, resolution.getScaledHeight() - 70, 16777215);
-		font.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText()) - 8, resolution.getScaledHeight() - 60, 16777215);
-		font.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.activateNightVision").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.activateNightVision").getFormattedText()) - 8, resolution.getScaledHeight() - 50, 16777215);
-		font.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.toggleRedstone").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.toggleRedstone").getFormattedText()) - 8, resolution.getScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
-		font.drawStringWithShadow(REDSTONE_NOTE.getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(REDSTONE_NOTE.getFormattedText()) - 8, resolution.getScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
-		font.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.setDefaultViewingDirection.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.setDefaultViewingDirection").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.setDefaultViewingDirection.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.setDefaultViewingDirection").getFormattedText()) - 8, resolution.getScaledHeight() - 20, hasSmartModule ? 16777215 : 16724855);
-		font.drawStringWithShadow(SMART_MODULE_NOTE.getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(SMART_MODULE_NOTE.getFormattedText()) - 8, resolution.getScaledHeight() - 10, hasSmartModule ? 16777215 : 16724855);
+		font.drawStringWithShadow(time, scaledWidth - font.getStringWidth(time) - 4, timeY, 16777215);
+
+		int heightOffset = CAMERA_KEY_INFO_LIST.length * 10;
+
+		for (CameraKeyInfoEntry entry : CAMERA_KEY_INFO_LIST) {
+			entry.drawString(settings, font, scaledWidth, scaledHeight, heightOffset, te);
+			heightOffset -= 10;
+		}
 
 		mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.drawTexturedModalRect(5, 0, 0, 0, 90, 20);
-		gui.drawTexturedModalRect(resolution.getScaledWidth() - 70, 5, 190, 0, 65, 30);
+		gui.drawTexturedModalRect(scaledWidth - 70, 5, 190, 0, 65, 30);
 
 		if (player.getActivePotionEffect(Potion.getPotionFromResourceLocation("night_vision")) == null)
 			gui.drawTexturedModalRect(28, 4, 90, 12, 16, 11);
@@ -108,7 +120,7 @@ public class GuiUtils {
 		}
 
 		if (state.getWeakPower(world, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
-			if (!hasRedstoneModule)
+			if (!te.isModuleEnabled(ModuleType.REDSTONE))
 				CameraRedstoneModuleState.NOT_INSTALLED.render(gui, 12, 2);
 			else
 				CameraRedstoneModuleState.DEACTIVATED.render(gui, 12, 2);
@@ -172,5 +184,30 @@ public class GuiUtils {
 		bufferBuilder.pos(moduleRight, moduleTop, 0).tex(1, 0).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
 		bufferBuilder.pos(moduleLeft, moduleTop, 0).tex(0, 0).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
 		tess.draw();
+	}
+
+	public static final class CameraKeyInfoEntry {
+		private final Function<GameSettings, TextComponentTranslation> text;
+		private final Predicate<SecurityCameraBlockEntity> whiteText;
+
+		public CameraKeyInfoEntry(Function<GameSettings, TextComponentTranslation> text, Predicate<SecurityCameraBlockEntity> whiteText) {
+			this.text = text;
+			this.whiteText = whiteText;
+		}
+
+		public void drawString(GameSettings options, FontRenderer font, int scaledWidth, int scaledHeight, int heightOffset, SecurityCameraBlockEntity be) {
+			String text = text().apply(options).getFormattedText();
+			boolean whiteText = whiteText().test(be);
+
+			font.drawStringWithShadow(text, scaledWidth - font.getStringWidth(text) - 8, scaledHeight - heightOffset, whiteText ? 0xFFFFFF : 0xFF3377);
+		}
+
+		public Function<GameSettings, TextComponentTranslation> text() {
+			return text;
+		}
+
+		public Predicate<SecurityCameraBlockEntity> whiteText() {
+			return whiteText;
+		}
 	}
 }
