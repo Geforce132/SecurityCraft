@@ -2,8 +2,6 @@ package net.geforcemods.securitycraft.misc;
 
 import java.util.function.Consumer;
 
-import javax.swing.text.JTextComponent.KeyBinding;
-
 import org.lwjgl.glfw.GLFW;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -17,7 +15,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 /**
- * Custom {@link KeyBinding}s that SecurityCraft uses.
+ * Custom {@link KeyMapping}s that SecurityCraft uses.
  *
  * @author Geforce
  */

@@ -63,7 +63,7 @@ public class SecurityCamera extends Entity {
 	public void tick() {
 		Level level = level();
 
-		if (!level.isClientSide && level().getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get())
+		if (!level.isClientSide && level.getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get())
 			discard();
 	}
 	public float getZoomAmount() {
