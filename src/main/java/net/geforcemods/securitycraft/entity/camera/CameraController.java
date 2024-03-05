@@ -78,6 +78,7 @@ public class CameraController {
 				for (ViewMovementKeyHandler handler : MOVE_KEY_HANDLERS) {
 					handler.tickEnd(cam);
 				}
+
 				if (KeyBindings.cameraZoomIn.isDown())
 					zoomIn(cam);
 				else if (KeyBindings.cameraZoomOut.isDown())
