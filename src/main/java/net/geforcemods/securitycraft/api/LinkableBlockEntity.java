@@ -1,10 +1,10 @@
 package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
-import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -48,31 +48,23 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 
-		if (hasLevel() && !linkedBlocks.isEmpty()) {
+		if (!linkedBlocks.isEmpty()) {
 			ListTag tagList = new ListTag();
 
-			LevelUtils.addScheduledTask(level, () -> {
-				for (int i = linkedBlocks.size() - 1; i >= 0; i--) {
-					LinkedBlock block = linkedBlocks.get(i);
-					CompoundTag toAppend = new CompoundTag();
+			for (LinkedBlock block : linkedBlocks) {
+				CompoundTag toAppend = new CompoundTag();
 
-					if (block != null) {
-						if (level.isLoaded(block.getPos()) && !block.validate(level)) {
-							linkedBlocks.remove(i);
-							continue;
-						}
-
-						toAppend.putString("blockName", block.getBlockName());
-						toAppend.putInt("blockX", block.getX());
-						toAppend.putInt("blockY", block.getY());
-						toAppend.putInt("blockZ", block.getZ());
-					}
-
-					tagList.add(toAppend);
+				if (block != null) {
+					toAppend.putString("blockName", block.getBlockName());
+					toAppend.putInt("blockX", block.getX());
+					toAppend.putInt("blockY", block.getY());
+					toAppend.putInt("blockZ", block.getZ());
 				}
 
-				tag.put("linkedBlocks", tagList);
-			});
+				tagList.add(toAppend);
+			}
+
+			tag.put("linkedBlocks", tagList);
 		}
 	}
 
@@ -82,6 +74,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 			if (level.isLoaded(block.getPos()))
 				LinkableBlockEntity.unlink(block.asBlockEntity(level), this);
 		}
+
+		super.setRemoved();
 	}
 
 	@Override
@@ -98,12 +92,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 			int z = list.getCompound(i).getInt("blockZ");
 			LinkedBlock block = new LinkedBlock(name, new BlockPos(x, y, z));
 
-			if (hasLevel() && !block.validate(level)) {
-				list.remove(i);
-				continue;
-			}
-
-			if (!linkedBlocks.contains(block))
+			if (hasLevel() && level.isLoaded(block.getPos()) && block.validate(level) && !linkedBlocks.contains(block))
 				link(this, block.asBlockEntity(level));
 		}
 	}
@@ -169,19 +158,28 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	/**
-	 * Calls onLinkedBlockAction() for every block this block entity is linked to.
+	 * Calls onLinkedBlockAction() for every valid block this block entity is linked to, and removes invalid blocks from the
+	 * linked block list.
 	 *
 	 * @param action The action that occurred
 	 * @param excludedBEs LinkableBlockEntities that shouldn't have onLinkedBlockAction() called on them, prevents infinite
 	 *            loops. Always add your block entity to the list whenever using this method
 	 */
 	public void createLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
-		for (LinkedBlock block : linkedBlocks) {
-			if (!excludedBEs.contains(block.asBlockEntity(level))) {
-				BlockState state = level.getBlockState(block.getPos());
+		Iterator<LinkedBlock> linkedBlockIterator = linkedBlocks.iterator();
 
-				block.asBlockEntity(level).onLinkedBlockAction(action, excludedBEs);
-				level.sendBlockUpdated(block.getPos(), state, state, 3);
+		while (linkedBlockIterator.hasNext()) {
+			LinkedBlock block = linkedBlockIterator.next();
+
+			if (level.isLoaded(block.getPos()) && !excludedBEs.contains(block.asBlockEntity(level))) {
+				if (block.validate(level)) {
+					BlockState state = level.getBlockState(block.getPos());
+
+					block.asBlockEntity(level).onLinkedBlockAction(action, excludedBEs);
+					level.sendBlockUpdated(block.getPos(), state, state, 3);
+				}
+				else
+					linkedBlockIterator.remove();
 			}
 		}
 	}
