@@ -66,7 +66,7 @@ public class ModuleItem extends Item {
 				inv.insertModule(stack, false);
 
 				if (inv instanceof LinkableBlockEntity linkable)
-					linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), false), linkable);
+					linkable.propagate(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), false), linkable);
 
 				if (!ctx.getPlayer().isCreative())
 					stack.shrink(1);

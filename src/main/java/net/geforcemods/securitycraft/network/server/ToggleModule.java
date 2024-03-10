@@ -54,7 +54,7 @@ public class ToggleModule implements CustomPacketPayload {
 				moduleInv.removeModule(moduleType, true);
 
 				if (be instanceof LinkableBlockEntity linkable)
-					linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(moduleType, true), linkable);
+					linkable.propagate(new ILinkedAction.ModuleRemoved(moduleType, true), linkable);
 			}
 			else {
 				moduleInv.insertModule(moduleInv.getModule(moduleType), true);
@@ -62,7 +62,7 @@ public class ToggleModule implements CustomPacketPayload {
 				if (be instanceof LinkableBlockEntity linkable) {
 					ItemStack stack = moduleInv.getModule(moduleType);
 
-					linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), true), linkable);
+					linkable.propagate(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), true), linkable);
 				}
 			}
 

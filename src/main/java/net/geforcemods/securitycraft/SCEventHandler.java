@@ -412,7 +412,7 @@ public class SCEventHandler {
 						be.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
 
 						if (be instanceof LinkableBlockEntity lbe)
-							lbe.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), lbe);
+							lbe.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), lbe);
 
 						if (be instanceof SecurityCameraBlockEntity cam) {
 							BlockPos camPos = cam.getBlockPos();
