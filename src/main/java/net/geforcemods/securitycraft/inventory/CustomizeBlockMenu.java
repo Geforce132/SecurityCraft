@@ -123,7 +123,7 @@ public class CustomizeBlockMenu extends Container {
 				if (moduleInv instanceof LinkableBlockEntity) {
 					LinkableBlockEntity linkable = (LinkableBlockEntity) moduleInv;
 
-					linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) oldStack.getItem()).getModuleType(), false), linkable);
+					linkable.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) oldStack.getItem()).getModuleType(), false), linkable);
 				}
 
 				detectAndSendChanges();

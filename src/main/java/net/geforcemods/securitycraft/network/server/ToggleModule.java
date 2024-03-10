@@ -57,7 +57,7 @@ public class ToggleModule implements IMessage {
 						if (be instanceof LinkableBlockEntity) {
 							LinkableBlockEntity linkable = (LinkableBlockEntity) be;
 
-							linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(message.moduleType, true), linkable);
+							linkable.propagate(new ILinkedAction.ModuleRemoved(message.moduleType, true), linkable);
 						}
 					}
 					else {
@@ -67,7 +67,7 @@ public class ToggleModule implements IMessage {
 							LinkableBlockEntity linkable = (LinkableBlockEntity) be;
 							ItemStack stack = moduleInv.getModule(message.moduleType);
 
-							linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), true), linkable);
+							linkable.propagate(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), true), linkable);
 						}
 					}
 

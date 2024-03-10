@@ -111,7 +111,7 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay {
 									laser.setLastToggleTime(System.currentTimeMillis());
 									world.setBlockState(offsetPos, offsetState.cycleProperty(LaserBlock.POWERED));
 									BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.laserBlock);
-									laser.createLinkedBlockAction(new ILinkedAction.StateChanged<>(LaserBlock.POWERED, wasPowered, !wasPowered), laser);
+									laser.propagate(new ILinkedAction.StateChanged<>(LaserBlock.POWERED, wasPowered, !wasPowered), laser);
 
 									if (signalLength > 0)
 										world.scheduleUpdate(offsetPos, SCContent.laserBlock, signalLength);

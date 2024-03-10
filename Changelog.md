@@ -31,6 +31,7 @@
 - API: Refactored IPasscodeConvertible to account for the new Wire Cutters functionality
 - API: New method IOwnable#ignoresOwner to check whether the owner should be ignored by this block entity
 - API: IOwnable#isOwnedBy now takes any Entity instead of only players
+- API: LinkableBlockEntity#createLinkedBlockAction has been renamed to LinkableBlockEntity#propagate
 - Fix: The Floor Trap has incorrect sound
 - Fix: Duplication exploit involving keycards
 - Fix: The name of certain SecurityCraft blocks is displayed within brackets by WTHIT and similar mods

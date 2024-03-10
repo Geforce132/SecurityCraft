@@ -93,7 +93,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		createLinkedBlockAction(new ILinkedAction.OptionChanged<>(option), this);
+		propagate(new ILinkedAction.OptionChanged<>(option), this);
 	}
 
 	/**
@@ -138,16 +138,16 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 	/**
 	 * Calls onLinkedBlockAction() for every block this tile entity is linked to. <p> <b>NOTE:</b> Never use this method in
-	 * onLinkedBlockAction(), use createLinkedBlockAction(EnumLinkedAction, Object[], ArrayList[TileEntityLinkable] instead.
+	 * onLinkedBlockAction(), use propagate(EnumLinkedAction, Object[], ArrayList[TileEntityLinkable] instead.
 	 *
 	 * @param action The action that occurred
 	 * @param excludedTE The TileEntityLinkable which called this method, prevents infinite loops.
 	 */
-	public void createLinkedBlockAction(ILinkedAction action, LinkableBlockEntity excludedTE) {
+	public void propagate(ILinkedAction action, LinkableBlockEntity excludedTE) {
 		ArrayList<LinkableBlockEntity> list = new ArrayList<>();
 
 		list.add(excludedTE);
-		createLinkedBlockAction(action, list);
+		propagate(action, list);
 	}
 
 	/**
@@ -158,7 +158,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * @param excludedTEs TileEntityLinkables that shouldn't have onLinkedBlockAction() called on them, prevents infinite loops.
 	 *            Always add your tile entity to the list whenever using this method
 	 */
-	public void createLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedTEs) {
+	public void propagate(ILinkedAction action, List<LinkableBlockEntity> excludedTEs) {
 		Iterator<LinkedBlock> linkedBlockIterator = linkedBlocks.iterator();
 
 		while (linkedBlockIterator.hasNext()) {
@@ -184,7 +184,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 *
 	 * @param action The {@link ILinkedAction} that occurred
 	 * @param excludedTEs TileEntityLinkables that aren't going to have onLinkedBlockAction() called on them, always add your
-	 *            tile entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link multiple
+	 *            tile entity to the list if you're going to call propagate() in this method to chain-link multiple
 	 *            blocks (i.e: like Laser Blocks)
 	 */
 	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedTEs) {}
