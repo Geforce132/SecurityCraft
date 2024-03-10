@@ -44,6 +44,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
+		super.tick(level, pos, state);
 		checkView(level, pos);
 	}
 
