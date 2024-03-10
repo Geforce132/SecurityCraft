@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
@@ -41,31 +41,23 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
-		if (hasWorld() && !linkedBlocks.isEmpty()) {
+		if (!linkedBlocks.isEmpty()) {
 			NBTTagList tagList = new NBTTagList();
 
-			Utils.addScheduledTask(world, () -> {
-				for (int i = linkedBlocks.size() - 1; i >= 0; i--) {
-					LinkedBlock block = linkedBlocks.get(i);
-					NBTTagCompound toAppend = new NBTTagCompound();
+			for (LinkedBlock block : linkedBlocks) {
+				NBTTagCompound toAppend = new NBTTagCompound();
 
-					if (block != null) {
-						if (world.isBlockLoaded(block.getPos()) && !block.validate(world)) {
-							linkedBlocks.remove(i);
-							continue;
-						}
-
-						toAppend.setString("blockName", block.getBlockName());
-						toAppend.setInteger("blockX", block.getX());
-						toAppend.setInteger("blockY", block.getY());
-						toAppend.setInteger("blockZ", block.getZ());
-					}
-
-					tagList.appendTag(toAppend);
+				if (block != null) {
+					toAppend.setString("blockName", block.getBlockName());
+					toAppend.setInteger("blockX", block.getX());
+					toAppend.setInteger("blockY", block.getY());
+					toAppend.setInteger("blockZ", block.getZ());
 				}
 
-				tag.setTag("linkedBlocks", tagList);
-			});
+				tagList.appendTag(toAppend);
+			}
+
+			tag.setTag("linkedBlocks", tagList);
 		}
 
 		return tag;
@@ -84,7 +76,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 				continue;
 			}
 
-			if (!linkedBlocks.contains(block))
+			if (hasWorld() && world.isBlockLoaded(block.getPos()) && block.validate(world) && !linkedBlocks.contains(block))
 				link(this, block.asTileEntity(world));
 		}
 	}
@@ -95,6 +87,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 			if (world.isBlockLoaded(block.getPos()))
 				LinkableBlockEntity.unlink(block.asTileEntity(world), this);
 		}
+
+		super.invalidate();
 	}
 
 	@Override
@@ -157,21 +151,29 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	/**
-	 * Calls onLinkedBlockAction() for every block this tile entity is linked to.
+	 * Calls onLinkedBlockAction() for every valid block this block entity is linked to, and removes invalid blocks from the
+	 * linked block list.
 	 *
 	 * @param action The action that occurred
 	 * @param excludedTEs TileEntityLinkables that shouldn't have onLinkedBlockAction() called on them, prevents infinite loops.
 	 *            Always add your tile entity to the list whenever using this method
 	 */
 	public void createLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedTEs) {
-		for (LinkedBlock block : linkedBlocks) {
+		Iterator<LinkedBlock> linkedBlockIterator = linkedBlocks.iterator();
+
+		while (linkedBlockIterator.hasNext()) {
+			LinkedBlock block = linkedBlockIterator.next();
 			LinkableBlockEntity linkedTe = block.asTileEntity(world);
 
-			if (!excludedTEs.contains(linkedTe)) {
-				linkedTe.onLinkedBlockAction(action, excludedTEs);
+			if (world.isBlockLoaded(block.getPos()) && !excludedTEs.contains(linkedTe)) {
+				if (block.validate(world)) {
+					linkedTe.onLinkedBlockAction(action, excludedTEs);
 
-				if (!world.isRemote)
-					linkedTe.sync();
+					if (!world.isRemote)
+						linkedTe.sync();
+				}
+				else
+					linkedBlockIterator.remove();
 			}
 		}
 	}

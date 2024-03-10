@@ -75,6 +75,7 @@
 - Fix: The alarm can't play sounds added by resource packs
 - Fix: Leaving a singleplayer world while viewing a Security Camera does not properly save the viewing indicator
 - Fix: The Panic Button can't open reinforced doors/trapdoors/fence gates
+- Fix: Linkable blocks like laser blocks, keypad doors and scanner doors can sometimes lose their linkage and become desynchronized
 - Removed: "Is always active" option of Keypads and Key Panels. The same behavior can be achieved by setting the "Signal length" option to 0 and activating the block
 - Misc.: Small optimizations to certain network and client performance
 
