@@ -51,7 +51,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 			ListNBT tagList = new ListNBT();
 
 			for (LinkedBlock block : linkedBlocks) {
-					CompoundNBT toAppend = new CompoundNBT();
+				CompoundNBT toAppend = new CompoundNBT();
 
 				if (block != null) {
 					toAppend.putString("blockName", block.getBlockName());
