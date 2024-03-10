@@ -159,7 +159,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		}
 
 		excludedBEs.add(this);
-		createLinkedBlockAction(action, excludedBEs);
+		propagate(action, excludedBEs);
 	}
 
 	@Override
@@ -424,7 +424,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			for (ModuleType type : thatInsertedModules) {
 				bothInsertedModules.put(that.getModule(type).copy(), that.isModuleEnabled(type));
 				that.removeModule(type, false);
-				createLinkedBlockAction(new ILinkedAction.ModuleRemoved(type, false), that);
+				propagate(new ILinkedAction.ModuleRemoved(type, false), that);
 			}
 
 			readOptions(that.writeOptions(new CompoundTag()));
@@ -436,9 +436,9 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 				ModuleType type = item.getModuleType();
 
 				insertModule(entry.getKey(), false);
-				createLinkedBlockAction(new ILinkedAction.ModuleInserted(module, item, false), this);
+				propagate(new ILinkedAction.ModuleInserted(module, item, false), this);
 				toggleModuleState(type, entry.getValue());
-				createLinkedBlockAction(new ILinkedAction.ModuleInserted(module, item, true), this);
+				propagate(new ILinkedAction.ModuleInserted(module, item, true), this);
 			}
 		}
 

@@ -127,7 +127,7 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 				moduleInv.onModuleRemoved(oldStack, module.getModuleType(), false);
 
 				if (moduleInv instanceof LinkableBlockEntity lbe)
-					lbe.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) oldStack.getItem()).getModuleType(), false), lbe);
+					lbe.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) oldStack.getItem()).getModuleType(), false), lbe);
 
 				broadcastChanges();
 			}
