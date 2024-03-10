@@ -139,7 +139,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				continue;
 
 			if (be instanceof LinkableBlockEntity linkable)
-				linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), linkable);
+				linkable.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), linkable);
 
 			Block.popResource(level, pos, module);
 		}
@@ -176,7 +176,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 					onModuleRemoved(stack, module.getModuleType(), false);
 
 					if (getBlockEntity() instanceof LinkableBlockEntity be)
-						be.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), be);
+						be.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), be);
 				}
 
 				return getInventory().set(slot, ItemStack.EMPTY).copy();
@@ -209,7 +209,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 					onModuleInserted(stack, module.getModuleType(), false);
 
 					if (getBlockEntity() instanceof LinkableBlockEntity be)
-						be.createLinkedBlockAction(new ILinkedAction.ModuleInserted(copy, (ModuleItem) copy.getItem(), false), be);
+						be.propagate(new ILinkedAction.ModuleInserted(copy, (ModuleItem) copy.getItem(), false), be);
 				}
 			}
 
@@ -235,7 +235,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			onModuleRemoved(previous, ((ModuleItem) previous.getItem()).getModuleType(), false);
 
 			if (getBlockEntity() instanceof LinkableBlockEntity be)
-				be.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) previous.getItem()).getModuleType(), false), be);
+				be.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) previous.getItem()).getModuleType(), false), be);
 		}
 
 		getInventory().set(slot, stack);
@@ -244,7 +244,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			onModuleInserted(stack, module.getModuleType(), false);
 
 			if (getBlockEntity() instanceof LinkableBlockEntity be)
-				be.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), false), be);
+				be.propagate(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), false), be);
 		}
 	}
 
