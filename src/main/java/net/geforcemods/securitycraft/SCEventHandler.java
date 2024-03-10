@@ -403,7 +403,7 @@ public class SCEventHandler {
 							if (be instanceof LinkableBlockEntity) {
 								LinkableBlockEntity lbe = (LinkableBlockEntity) be;
 
-								lbe.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), lbe);
+								lbe.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), lbe);
 							}
 
 							if (be instanceof SecurityCameraBlockEntity) {

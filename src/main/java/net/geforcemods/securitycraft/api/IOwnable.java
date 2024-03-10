@@ -73,7 +73,7 @@ public interface IOwnable {
 		if (be instanceof LinkableBlockEntity) {
 			LinkableBlockEntity linkable = (LinkableBlockEntity) be;
 
-			linkable.createLinkedBlockAction(new ILinkedAction.OwnerChanged(getOwner()), linkable);
+			linkable.propagate(new ILinkedAction.OwnerChanged(getOwner()), linkable);
 		}
 
 		be.setChanged();

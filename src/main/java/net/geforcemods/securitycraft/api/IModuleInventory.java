@@ -140,7 +140,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				continue;
 
 			if (linkable != null)
-				linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), linkable);
+				linkable.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), linkable);
 
 			Block.popResource(level, pos, module);
 		}
@@ -181,7 +181,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 					if (te instanceof LinkableBlockEntity) {
 						LinkableBlockEntity be = (LinkableBlockEntity) te;
 
-						be.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), be);
+						be.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), be);
 					}
 				}
 
@@ -218,7 +218,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 					if (te instanceof LinkableBlockEntity) {
 						LinkableBlockEntity be = (LinkableBlockEntity) te;
 
-						be.createLinkedBlockAction(new ILinkedAction.ModuleInserted(copy, (ModuleItem) copy.getItem(), false), be);
+						be.propagate(new ILinkedAction.ModuleInserted(copy, (ModuleItem) copy.getItem(), false), be);
 					}
 				}
 			}
@@ -248,7 +248,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			if (te instanceof LinkableBlockEntity) {
 				LinkableBlockEntity be = (LinkableBlockEntity) te;
 
-				be.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(((ModuleItem) previous.getItem()).getModuleType(), false), be);
+				be.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) previous.getItem()).getModuleType(), false), be);
 			}
 		}
 
@@ -260,7 +260,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			if (te instanceof LinkableBlockEntity) {
 				LinkableBlockEntity be = (LinkableBlockEntity) te;
 
-				be.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), false), be);
+				be.propagate(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), false), be);
 			}
 		}
 	}

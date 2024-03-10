@@ -50,7 +50,7 @@ public class ToggleModule {
 				if (be instanceof LinkableBlockEntity) {
 					LinkableBlockEntity linkable = (LinkableBlockEntity) be;
 
-					linkable.createLinkedBlockAction(new ILinkedAction.ModuleRemoved(moduleType, true), linkable);
+					linkable.propagate(new ILinkedAction.ModuleRemoved(moduleType, true), linkable);
 				}
 			}
 			else {
@@ -60,7 +60,7 @@ public class ToggleModule {
 					LinkableBlockEntity linkable = (LinkableBlockEntity) be;
 					ItemStack stack = moduleInv.getModule(moduleType);
 
-					linkable.createLinkedBlockAction(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), true), linkable);
+					linkable.propagate(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), true), linkable);
 				}
 			}
 			if (be instanceof CustomizableBlockEntity)

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -82,7 +81,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		createLinkedBlockAction(new ILinkedAction.OptionChanged<>(option), this);
+		propagate(new ILinkedAction.OptionChanged<>(option), this);
 	}
 
 	private void readLinkedBlocks(ListNBT list) {
@@ -140,16 +139,16 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 	/**
 	 * Calls onLinkedBlockAction() for every block this tile entity is linked to. <p> <b>NOTE:</b> Never use this method in
-	 * onLinkedBlockAction(), use createLinkedBlockAction(EnumILinkedAction, Object[], ArrayList[LinkableTileEntity] instead.
+	 * onLinkedBlockAction(), use propagate(EnumILinkedAction, Object[], ArrayList[LinkableTileEntity] instead.
 	 *
 	 * @param action The action that occurred
 	 * @param excludedBE The LinkableTileEntity which called this method, prevents infinite loops.
 	 */
-	public void createLinkedBlockAction(ILinkedAction action, LinkableBlockEntity excludedBE) {
+	public void propagate(ILinkedAction action, LinkableBlockEntity excludedBE) {
 		List<LinkableBlockEntity> list = new ArrayList<>();
 
 		list.add(excludedBE);
-		createLinkedBlockAction(action, list);
+		propagate(action, list);
 	}
 
 	/**
@@ -157,10 +156,10 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * linked block list.
 	 *
 	 * @param action The action that occurred
-	 * @param excludedBEs LinkableTileEntities that shouldn't have onLinkedBlockAction() called on them, prevents infinite loops.
+	 * @param excludedBEs LinkableBlockEntities that shouldn't have onLinkedBlockAction() called on them, prevents infinite loops.
 	 *            Always add your tile entity to the list whenever using this method
 	 */
-	public void createLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
+	public void propagate(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
 		Iterator<LinkedBlock> linkedBlockIterator = linkedBlocks.iterator();
 
 		while (linkedBlockIterator.hasNext()) {
@@ -184,8 +183,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * descriptions. <p>
 	 *
 	 * @param action The {@link ILinkedAction} that occurred
-	 * @param excludedBEs LinkableTileEntities that aren't going to have onLinkedBlockAction() called on them, always add your
-	 *            tile entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link multiple
+	 * @param excludedBEs LinkableBlockEntities that aren't going to have onLinkedBlockAction() called on them, always add your
+	 *            tile entity to the list if you're going to call propagate() in this method to chain-link multiple
 	 *            blocks (i.e: like Laser Blocks)
 	 */
 	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {}
