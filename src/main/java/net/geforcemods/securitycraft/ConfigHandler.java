@@ -94,6 +94,7 @@ public class ConfigHandler {
 		public DoubleValue poweredTaserDamage;
 		public DoubleValue laserDamage;
 		public IntValue incorrectPasscodeDamage;
+		public IntValue sentryBulletDamage;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
 		private ConfigValue<List<? extends String>> taserEffectsValue;
@@ -210,6 +211,10 @@ public class ConfigHandler {
 					.comment("Defines the damage that a block requiring a passcode deals to the player, if the player enters an incorrect code. This only works if a harming module is installed.",
 							"Default is two hearts of damage.")
 					.defineInRange("incorrectPasscodeDamage", 4, 1, Integer.MAX_VALUE);
+
+			sentryBulletDamage = builder
+					.comment("Set the amount of damage the default Sentry bullet inflicts onto the mobs it hits. This will not affect other projectiles the Sentry can use, like arrows. Default is one heart.")
+					.defineInRange("sentry_bullet_damage", 2, 0, Integer.MAX_VALUE);
 
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
