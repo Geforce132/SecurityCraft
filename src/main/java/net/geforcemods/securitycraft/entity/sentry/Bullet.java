@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.google.common.collect.Sets;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
 import net.minecraft.nbt.CompoundTag;
@@ -93,7 +94,7 @@ public class Bullet extends AbstractArrow {
 		Entity target = raytraceResult.getEntity();
 
 		if (!(target instanceof Sentry) && !(target instanceof ItemFrame)) {
-			target.hurt(damageSources().arrow(this, getOwner()), Mth.ceil(getDeltaMovement().length()));
+			target.hurt(damageSources().arrow(this, getOwner()), ConfigHandler.SERVER.sentryBulletDamage.get());
 
 			if (target instanceof LivingEntity lEntity && !potionEffects.isEmpty()) {
 				for (MobEffectInstance effect : potionEffects) {
