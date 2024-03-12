@@ -128,6 +128,7 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.FAKE_WATER_BUCKET.get()));
 				output.accept(new ItemStack(SCContent.FAKE_LAVA_BUCKET.get()));
 				output.accept(new ItemStack(SCContent.ADMIN_TOOL.get()));
+				output.accept(new ItemStack(SCContent.SECURITY_SEA_RAFT_ITEM.get()));
 				output.acceptAll(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.TECHNICAL));
 			}).build());
 	//@formatter:off

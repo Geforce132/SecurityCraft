@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "securitycraft:keypad_chest"
+    },
+    {
+      "item": "minecraft:bamboo_raft"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:security_sea_raft"
+  }
+}

@@ -668,6 +668,11 @@ public class RecipeGenerator extends RecipeProvider {
 		.requires(SCContent.RETINAL_SCANNER.get())
 		.unlockedBy("has_reinforced_trapdoor", has(SCContent.REINFORCED_IRON_TRAPDOOR.get()))
 		.save(recipeOutput);
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, SCContent.SECURITY_SEA_RAFT_ITEM.get())
+		.requires(SCContent.KEYPAD_CHEST.get())
+		.requires(Items.BAMBOO_RAFT)
+		.unlockedBy("has_keypad_chest", has(SCContent.KEYPAD_CHEST.get()))
+		.save(recipeOutput);
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, SCContent.UNIVERSAL_OWNER_CHANGER.get())
 		.requires(SCContent.UNIVERSAL_BLOCK_MODIFIER.get())
 		.requires(Items.NAME_TAG)
