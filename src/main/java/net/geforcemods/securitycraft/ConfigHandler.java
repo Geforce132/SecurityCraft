@@ -177,6 +177,13 @@ public class ConfigHandler {
 		"Default is two hearts of damage."})
 	public static int incorrectPasscodeDamage = 4;
 
+	@Name("Sentry Bullet Damage")
+	@RangeInt(min = 0)
+	@Comment({
+			"Set the amount of damage the default Sentry bullet inflicts onto the mobs it hits. This will not affect other projectiles the Sentry can use, like arrows.",
+			"Default is one heart."})
+	public static int sentryBulletDamage = 2;
+
 	@Name("Sentry Attackable Entities Allowlist")
 	@Comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
 	public static String[] sentryAttackableEntitiesAllowlist = {};
