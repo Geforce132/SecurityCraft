@@ -12,15 +12,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.vehicle.Boat;
 
 public class SecuritySeaRaftRenderer extends BoatRenderer {
-    private final Pair<ResourceLocation, ListModel<Boat>> textureAndModel;
+	private final Pair<ResourceLocation, ListModel<Boat>> textureAndModel;
 
-    public SecuritySeaRaftRenderer(EntityRendererProvider.Context ctx) {
-        super(ctx, true);
-        textureAndModel = new Pair<>(new ResourceLocation(SecurityCraft.MODID, "textures/entity/security_sea_raft.png"), new ChestRaftModel(ctx.bakeLayer(ModelLayers.createChestBoatModelName(Boat.Type.BAMBOO))));
-    }
+	public SecuritySeaRaftRenderer(EntityRendererProvider.Context ctx) {
+		super(ctx, true);
+		textureAndModel = new Pair<>(new ResourceLocation(SecurityCraft.MODID, "textures/entity/security_sea_raft.png"), new ChestRaftModel(ctx.bakeLayer(ModelLayers.createChestBoatModelName(Boat.Type.BAMBOO))));
+	}
 
-    @Override
-    public Pair<ResourceLocation, ListModel<Boat>> getModelWithLocation(Boat boat) {
-        return textureAndModel;
-    }
+	@Override
+	public Pair<ResourceLocation, ListModel<Boat>> getModelWithLocation(Boat boat) {
+		return textureAndModel;
+	}
 }
