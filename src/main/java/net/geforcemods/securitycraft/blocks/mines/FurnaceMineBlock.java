@@ -62,7 +62,9 @@ public class FurnaceMineBlock extends BaseFullMineBlock {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]);
+		EnumFacing facing = EnumFacing.byIndex(meta);
+
+		return getDefaultState().withProperty(FACING, facing.getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : facing);
 	}
 
 	@Override
