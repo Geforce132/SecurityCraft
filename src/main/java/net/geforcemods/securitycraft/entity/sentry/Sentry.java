@@ -157,7 +157,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 			oHeadYTranslation = headYTranslation;
 
 			if (shouldHeadBeUp()) {
-				if (headYTranslation > UPWARDS_ANIMATION_LIMIT){
+				if (headYTranslation > UPWARDS_ANIMATION_LIMIT) {
 					setAnimateUpwards(true);
 					setAnimate(true);
 				}
