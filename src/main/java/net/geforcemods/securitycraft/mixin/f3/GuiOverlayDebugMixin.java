@@ -25,10 +25,10 @@ public class GuiOverlayDebugMixin {
 
 			return disguisedState != null ? disguisedState : originalState;
 		}
-		else if (originalBlock instanceof BaseFullMineBlock)
-			return ((BaseFullMineBlock) originalBlock).getBlockDisguisedAs().getDefaultState();
 		else if (originalBlock instanceof FurnaceMineBlock)
 			return Blocks.FURNACE.getDefaultState().withProperty(BlockFurnace.FACING, originalState.getValue(BlockFurnace.FACING));
+		else if (originalBlock instanceof BaseFullMineBlock)
+			return ((BaseFullMineBlock) originalBlock).getBlockDisguisedAs().getDefaultState();
 
 		return originalState;
 	}
