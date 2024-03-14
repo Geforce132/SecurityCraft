@@ -89,6 +89,7 @@
 - Fix: The Panic Button can't open reinforced doors/trapdoors/fence gates
 - Fix: Reinforced Piston Heads are pushable by Reinforced Pistons
 - Fix: Linkable blocks like laser blocks, keypad doors and scanner doors can sometimes lose their linkage and become desynchronized
+- Fix: The Furnace Mine does not get properly hidden in F3
 - Removed: Ability to change the subpage in the SecurityCraft Manual using the arrow keys. This is still possible by scrolling while holding down CTRL
 - Removed: "Is always active" option of Keypads and Key Panels. The same behavior can be achieved by setting the "Signal length" option to 0 and activating the block
 - Misc.: The minimum required NeoForge version is 20.2.88 (necessary to fix players getting kicked from the server when placing a Sentry)

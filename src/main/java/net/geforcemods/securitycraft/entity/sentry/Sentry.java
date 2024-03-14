@@ -137,7 +137,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			oHeadYTranslation = headYTranslation;
 
 			if (shouldHeadBeUp()) {
-				if (headYTranslation > UPWARDS_ANIMATION_LIMIT){
+				if (headYTranslation > UPWARDS_ANIMATION_LIMIT) {
 					setAnimateUpwards(true);
 					setAnimate(true);
 				}
@@ -428,7 +428,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			if (tag.contains("InstalledModule")) {
 				ItemStack module = ItemStack.of(tag.getCompound("InstalledModule"));
 
-				if (!module.isEmpty() && module.getItem() instanceof ModuleItem moduleItem && ModuleItem.getBlockAddon(module) != null) {
+				if (!module.isEmpty() && module.getItem() instanceof ModuleItem && ModuleItem.getBlockAddon(module) != null) {
 					be.insertModule(module, false);
 					level().setBlockAndUpdate(blockPosition(), level().getBlockState(blockPosition()).setValue(SometimesVisibleBlock.INVISIBLE, false));
 				}
