@@ -24,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+// TODO: Remove mentions of "block entity" and generalize
 /**
  * Implementing this interface designates a block entity as being passcode-protected. Implementing this allows you to use
  * {@link SetPasscodeScreen} and {@link CheckPasscodeScreen} to easily set your block's passcode. Extends
@@ -59,12 +60,17 @@ public interface IPasscodeProtected extends ICodebreakable {
 				return true;
 
 			if (ownable.isOwnedBy(player))
-				PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SET_PASSCODE, pos));
+				openSetPasscodeScreen((ServerPlayer) player, pos);
 			else
 				PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.notSetUp"), ChatFormatting.DARK_RED);
 		}
 
 		return false;
+	}
+
+	//TODO: Javadoc
+	default void openSetPasscodeScreen(ServerPlayer player, BlockPos pos) {
+		PacketDistributor.PLAYER.with(player).send(new OpenScreen(DataType.SET_PASSCODE, pos));
 	}
 
 	@Override

@@ -16,6 +16,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
@@ -25,6 +26,7 @@ public class OpenScreen implements CustomPacketPayload {
 	private DataType dataType;
 	private BlockPos pos;
 	private CompoundTag tag;
+	private int entityId;
 
 	public OpenScreen() {}
 
@@ -45,14 +47,20 @@ public class OpenScreen implements CustomPacketPayload {
 		this.tag = tag;
 	}
 
+	public OpenScreen(DataType dataType, int entityId) {
+		this.dataType = dataType;
+		this.entityId = entityId;
+	}
+
 	public OpenScreen(FriendlyByteBuf buf) {
 		dataType = buf.readEnum(DataType.class);
 
 		if (dataType.needsPosition)
 			pos = buf.readBlockPos();
-
-		if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
+		else if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
 			tag = buf.readNbt();
+		else if (dataType == DataType.SET_PASSCODE_FOR_ENTITY)
+			entityId = buf.readVarInt();
 	}
 
 	@Override
@@ -61,9 +69,10 @@ public class OpenScreen implements CustomPacketPayload {
 
 		if (dataType.needsPosition)
 			buf.writeBlockPos(pos);
-
-		if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
+		else if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
 			buf.writeNbt(tag);
+		else if (dataType == DataType.SET_PASSCODE_FOR_ENTITY)
+			buf.writeVarInt(entityId);
 	}
 
 	@Override
@@ -116,6 +125,11 @@ public class OpenScreen implements CustomPacketPayload {
 					ClientHandler.displaySetPasscodeScreen((BlockEntity) be);
 
 				break;
+			case SET_PASSCODE_FOR_ENTITY:
+				if (Minecraft.getInstance().level.getEntity(entityId) instanceof IPasscodeProtected be)
+					ClientHandler.displaySetPasscodeScreen((Entity) be);
+
+				break;
 			case SONIC_SECURITY_SYSTEM:
 				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss)
 					ClientHandler.displaySonicSecuritySystemScreen(sss);
@@ -139,6 +153,7 @@ public class OpenScreen implements CustomPacketPayload {
 		SENTRY_REMOTE_ACCESS_TOOL(false),
 		SET_BRIEFCASE_PASSCODE(false),
 		SET_PASSCODE(true),
+		SET_PASSCODE_FOR_ENTITY(false),
 		SONIC_SECURITY_SYSTEM(true),
 		UNIVERSAL_KEY_CHANGER(true);
 

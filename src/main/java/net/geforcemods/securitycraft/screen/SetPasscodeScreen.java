@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.screen;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.network.server.SetPasscode;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -12,6 +13,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -21,14 +23,14 @@ public class SetPasscodeScreen extends Screen {
 	private int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
-	private BlockEntity be;
+	private IPasscodeProtected passcodeProtected;
 	private Component setup;
 	private MutableComponent combined;
 	private EditBox keycodeTextbox;
 
-	public SetPasscodeScreen(BlockEntity be, Component title) {
+	public SetPasscodeScreen(IPasscodeProtected passcodeProtected, Component title) {
 		super(title);
-		this.be = be;
+		this.passcodeProtected = passcodeProtected;
 		setup = Utils.localize("gui.securitycraft:passcode.setup");
 		combined = title.plainCopy().append(Component.literal(" ")).append(setup);
 	}
@@ -85,7 +87,11 @@ public class SetPasscodeScreen extends Screen {
 	}
 
 	private void saveAndContinueButtonClicked(Button button) {
-		PacketDistributor.SERVER.noArg().send(new SetPasscode(be.getBlockPos(), keycodeTextbox.getValue()));
+		if (passcodeProtected instanceof BlockEntity be)
+			PacketDistributor.SERVER.noArg().send(new SetPasscode(be.getBlockPos(), keycodeTextbox.getValue()));
+		else if (passcodeProtected instanceof Entity entity)
+			PacketDistributor.SERVER.noArg().send(new SetPasscode(entity.getId(), keycodeTextbox.getValue()));
+
 		Minecraft.getInstance().player.closeContainer();
 	}
 }
