@@ -59,7 +59,7 @@ public class OpenScreen implements CustomPacketPayload {
 			pos = buf.readBlockPos();
 		else if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
 			tag = buf.readNbt();
-		else if (dataType == DataType.SET_PASSCODE_FOR_ENTITY)
+		else if (dataType == DataType.SET_PASSCODE_FOR_ENTITY || dataType == DataType.CHECK_PASSCODE_FOR_ENTITY)
 			entityId = buf.readVarInt();
 	}
 
@@ -71,7 +71,7 @@ public class OpenScreen implements CustomPacketPayload {
 			buf.writeBlockPos(pos);
 		else if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
 			buf.writeNbt(tag);
-		else if (dataType == DataType.SET_PASSCODE_FOR_ENTITY)
+		else if (dataType == DataType.SET_PASSCODE_FOR_ENTITY || dataType == DataType.CHECK_PASSCODE_FOR_ENTITY)
 			buf.writeVarInt(entityId);
 	}
 
@@ -97,6 +97,11 @@ public class OpenScreen implements CustomPacketPayload {
 
 				if (!briefcaseStack.isEmpty())
 					ClientHandler.displayBriefcasePasscodeScreen(briefcaseStack.getHoverName());
+
+				break;
+			case CHECK_PASSCODE_FOR_ENTITY:
+				if (Minecraft.getInstance().level.getEntity(entityId) instanceof IPasscodeProtected be)
+					ClientHandler.displayCheckPasscodeScreen((Entity) be);
 
 				break;
 			case RIFT_STABILIZER:
@@ -149,6 +154,7 @@ public class OpenScreen implements CustomPacketPayload {
 		ALARM(true),
 		CHECK_PASSCODE(true),
 		CHECK_PASSCODE_FOR_BRIEFCASE(false),
+		CHECK_PASSCODE_FOR_ENTITY(false),
 		RIFT_STABILIZER(true),
 		SENTRY_REMOTE_ACCESS_TOOL(false),
 		SET_PASSCODE(true),

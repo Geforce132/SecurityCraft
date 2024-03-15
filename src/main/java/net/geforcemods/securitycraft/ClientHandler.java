@@ -722,7 +722,11 @@ public class ClientHandler {
 	public static void displayCheckPasscodeScreen(BlockEntity be) {
 		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
-		Minecraft.getInstance().setScreen(new CheckPasscodeScreen(be, displayName));
+		Minecraft.getInstance().setScreen(new CheckPasscodeScreen((IPasscodeProtected) be, displayName));
+	}
+
+	public static void displayCheckPasscodeScreen(Entity entity) {
+		Minecraft.getInstance().setScreen(new CheckPasscodeScreen((IPasscodeProtected) entity, entity.getDisplayName()));
 	}
 
 	public static void displaySetPasscodeScreen(BlockEntity be) {

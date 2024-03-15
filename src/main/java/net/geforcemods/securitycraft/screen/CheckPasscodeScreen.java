@@ -15,10 +15,10 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -26,7 +26,7 @@ public class CheckPasscodeScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/check_passcode.png");
 	private static final Component COOLDOWN_TEXT_1 = Component.translatable("gui.securitycraft:passcode.cooldown1");
 	private int cooldownText1XPos;
-	private IPasscodeProtected be;
+	private IPasscodeProtected passcodeProtected;
 	private char[] allowedChars = {
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\u0008', '\u001B'
 	}; //0-9, backspace and escape
@@ -37,9 +37,9 @@ public class CheckPasscodeScreen extends Screen {
 	private CensoringEditBox keycodeTextbox;
 	private boolean wasOnCooldownLastRenderTick = false;
 
-	public CheckPasscodeScreen(BlockEntity be, Component title) {
+	public CheckPasscodeScreen(IPasscodeProtected passcodeProtected, Component title) {
 		super(title);
-		this.be = (IPasscodeProtected) be;
+		this.passcodeProtected = passcodeProtected;
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class CheckPasscodeScreen extends Screen {
 		keycodeTextbox.setMaxLength(Integer.MAX_VALUE);
 		keycodeTextbox.setFilter(s -> s.matches("\\d*\\**")); //allow any amount of digits and any amount of asterisks
 
-		if (be.isOnCooldown())
+		if (passcodeProtected.isOnCooldown())
 			toggleChildrenActive(false);
 		else
 			setInitialFocus(keycodeTextbox);
@@ -89,8 +89,8 @@ public class CheckPasscodeScreen extends Screen {
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
 		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752, false);
 
-		if (be.isOnCooldown()) {
-			long cooldownEnd = be.getCooldownEnd();
+		if (passcodeProtected.isOnCooldown()) {
+			long cooldownEnd = passcodeProtected.getCooldownEnd();
 			long secondsLeft = Math.max(cooldownEnd - System.currentTimeMillis(), 0) / 1000 + 1; //+1 so that the text doesn't say "0 seconds left" for a whole second
 			Component text = Component.translatable("gui.securitycraft:passcode.cooldown2", secondsLeft);
 
@@ -121,7 +121,7 @@ public class CheckPasscodeScreen extends Screen {
 			if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode)))
 				onClose();
 
-			if (!be.isOnCooldown() && (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER)) {
+			if (!passcodeProtected.isOnCooldown() && (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER)) {
 				minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.15F, 1.0F);
 				checkCode(keycodeTextbox.getValue());
 			}
@@ -137,7 +137,7 @@ public class CheckPasscodeScreen extends Screen {
 
 	@Override
 	public boolean charTyped(char typedChar, int keyCode) {
-		if (!be.isOnCooldown() && isValidChar(typedChar)) {
+		if (!passcodeProtected.isOnCooldown() && isValidChar(typedChar)) {
 			keycodeTextbox.charTyped(typedChar, keyCode);
 			minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.15F, 1.0F);
 		}
@@ -172,13 +172,15 @@ public class CheckPasscodeScreen extends Screen {
 	}
 
 	public void checkCode(String code) {
-		BlockPos pos = ((BlockEntity) be).getBlockPos();
-
-		if (be instanceof IModuleInventory moduleInv && moduleInv.isModuleEnabled(ModuleType.SMART))
+		if (passcodeProtected instanceof IModuleInventory moduleInv && moduleInv.isModuleEnabled(ModuleType.SMART))
 			toggleChildrenActive(false);
 
 		keycodeTextbox.setValue("");
-		PacketDistributor.SERVER.noArg().send(new CheckPasscode(pos, code));
+
+		if (passcodeProtected instanceof BlockEntity be)
+			PacketDistributor.SERVER.noArg().send(new CheckPasscode(be.getBlockPos(), code));
+		else if (passcodeProtected instanceof Entity entity)
+			PacketDistributor.SERVER.noArg().send(new CheckPasscode(entity.getId(), code));
 	}
 
 	public static class CensoringEditBox extends EditBox {

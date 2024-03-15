@@ -10,28 +10,50 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public class CheckPasscode implements CustomPacketPayload {
 	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "check_passcode");
+	private boolean isEntity;
 	private BlockPos pos;
+	private int entityId;
 	private String passcode;
 
 	public CheckPasscode() {}
 
 	public CheckPasscode(BlockPos pos, String passcode) {
+		this.isEntity = false;
 		this.pos = pos;
 		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
 	}
 
+	public CheckPasscode(int entityId, String passcode) {
+		this.isEntity = true;
+		this.entityId = entityId;
+		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
+	}
+
 	public CheckPasscode(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
+		isEntity = buf.readBoolean();
+
+		if (isEntity)
+			entityId = buf.readVarInt();
+		else
+			pos = buf.readBlockPos();
+
 		passcode = buf.readUtf(Integer.MAX_VALUE / 4);
 	}
 
 	@Override
 	public void write(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
+		buf.writeBoolean(isEntity);
+
+		if (isEntity)
+			buf.writeVarInt(entityId);
+		else
+			buf.writeBlockPos(pos);
+
 		buf.writeUtf(passcode);
 	}
 
@@ -42,19 +64,31 @@ public class CheckPasscode implements CustomPacketPayload {
 
 	public void handle(PlayPayloadContext ctx) {
 		Player player = ctx.player().orElseThrow();
+		IPasscodeProtected passcodeProtected = getPasscodeProtected(player.level());
 
-		if (player.level().getBlockEntity(pos) instanceof IPasscodeProtected be) {
-			if (be.isOnCooldown())
+		if (passcodeProtected != null) {
+			if (passcodeProtected.isOnCooldown())
 				return;
 
-			PasscodeUtils.hashPasscode(passcode, be.getSalt(), p -> {
-				if (Arrays.equals(be.getPasscode(), p)) {
+			PasscodeUtils.hashPasscode(passcode, passcodeProtected.getSalt(), p -> {
+				if (Arrays.equals(passcodeProtected.getPasscode(), p)) {
 					player.closeContainer();
-					be.activate(player);
+					passcodeProtected.activate(player);
 				}
 				else
-					be.onIncorrectPasscodeEntered(player, passcode);
+					passcodeProtected.onIncorrectPasscodeEntered(player, passcode);
 			});
 		}
+	}
+
+	private IPasscodeProtected getPasscodeProtected(Level level) {
+		if (isEntity) {
+			if (level.getEntity(entityId) instanceof IPasscodeProtected pp)
+				return pp;
+		}
+		else if (level.getBlockEntity(pos) instanceof IPasscodeProtected pp)
+			return pp;
+
+		return null;
 	}
 }

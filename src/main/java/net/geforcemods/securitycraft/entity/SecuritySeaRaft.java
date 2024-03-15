@@ -68,6 +68,12 @@ public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodePro
 	}
 
 	@Override
+	public void openPasscodeGUI(Level level, BlockPos pos, Player player) {
+		if (!level.isClientSide && getPasscode() != null)
+			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.CHECK_PASSCODE_FOR_ENTITY, getId()));
+	}
+
+	@Override
 	public void openSetPasscodeScreen(ServerPlayer player, BlockPos pos) {
 		PacketDistributor.PLAYER.with(player).send(new OpenScreen(DataType.SET_PASSCODE_FOR_ENTITY, getId()));
 	}
@@ -123,7 +129,10 @@ public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodePro
 	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {}
 
 	@Override
-	public void activate(Player player) {}
+	public void activate(Player player) {
+		//super is necessary here, because the override doesn't open the screen directly and instead opens the passcode screens
+		super.openCustomInventoryScreen(player);
+	}
 
 	@Override
 	public byte[] getPasscode() {
