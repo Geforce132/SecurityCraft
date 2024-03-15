@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.FakeLavaBlock;
 import net.geforcemods.securitycraft.blocks.FakeWaterBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.entity.SecuritySeaRaft;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -50,6 +51,7 @@ public final class JadeDataProvider extends WailaCompatConstants implements IWai
 
 		registration.registerBlockComponent(SECURITYCRAFT_INFO, Block.class);
 		registration.registerEntityComponent(SECURITYCRAFT_INFO, Sentry.class);
+		registration.registerEntityComponent(SECURITYCRAFT_INFO, SecuritySeaRaft.class);
 
 		registration.addBeforeRenderCallback((tooltip, rect, guiGraphics, accessor) -> ClientHandler.isPlayerMountedOnCamera());
 		registration.addRayTraceCallback((hit, accessor, original) -> {
@@ -121,11 +123,11 @@ public final class JadeDataProvider extends WailaCompatConstants implements IWai
 		public void appendTooltip(ITooltip tooltip, EntityAccessor data, IPluginConfig config) {
 			Entity entity = data.getEntity();
 
+			if (entity instanceof IOwnable ownable && config.get(SHOW_OWNER))
+				tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner())));
+
 			if (entity instanceof Sentry sentry) {
 				SentryMode mode = sentry.getMode();
-
-				if (config.get(SHOW_OWNER))
-					tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())));
 
 				if (config.get(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer()) && (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())) {
 					tooltip.add(EQUIPPED);

@@ -25,6 +25,7 @@ public class SecuritySeaRaftItem extends BoatItem {
 		if (level instanceof ServerLevel serverLevel)
 			EntityType.createDefaultStackConfig(serverLevel, stack, player).accept(raft);
 
+		raft.setOwner(player);
 		return raft;
 	}
 }

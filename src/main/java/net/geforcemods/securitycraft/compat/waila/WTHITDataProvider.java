@@ -52,7 +52,7 @@ public final class WTHITDataProvider extends WailaCompatConstants implements IWa
 		registrar.addComponent((IBlockComponentProvider) INSTANCE, TooltipPosition.BODY, IOwnable.class);
 		registrar.addComponent((IBlockComponentProvider) INSTANCE, TooltipPosition.TAIL, IOverlayDisplay.class);
 		registrar.addIcon((IBlockComponentProvider) INSTANCE, IOverlayDisplay.class);
-		registrar.addComponent((IEntityComponentProvider) INSTANCE, TooltipPosition.BODY, Sentry.class);
+		registrar.addComponent((IEntityComponentProvider) INSTANCE, TooltipPosition.BODY, IOwnable.class);
 	}
 
 	@Override
@@ -129,11 +129,11 @@ public final class WTHITDataProvider extends WailaCompatConstants implements IWa
 	public void appendBody(ITooltip tooltip, IEntityAccessor data, IPluginConfig config) {
 		Entity entity = data.getEntity();
 
+		if (entity instanceof IOwnable ownable && config.getBoolean(SHOW_OWNER))
+			tooltip.addLine(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner())));
+
 		if (entity instanceof Sentry sentry) {
 			SentryMode mode = sentry.getMode();
-
-			if (config.getBoolean(SHOW_OWNER))
-				tooltip.addLine(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())));
 
 			if (config.getBoolean(SHOW_MODULES) && sentry.isOwnedBy(data.getPlayer()) && (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())) {
 				tooltip.addLine(EQUIPPED);

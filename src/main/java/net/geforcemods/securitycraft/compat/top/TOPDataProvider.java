@@ -111,10 +111,11 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 
 			@Override
 			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, Entity entity, IProbeHitEntityData data) {
+				if (entity instanceof IOwnable ownable)
+					probeInfo.mcText(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner())).withStyle(ChatFormatting.GRAY));
+
 				if (entity instanceof Sentry sentry) {
 					SentryMode mode = sentry.getMode();
-
-					probeInfo.mcText(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())).withStyle(ChatFormatting.GRAY));
 
 					if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
 						probeInfo.mcText(EQUIPPED);
