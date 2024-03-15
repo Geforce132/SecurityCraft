@@ -87,16 +87,16 @@ public class OpenScreen implements CustomPacketPayload {
 					ClientHandler.displayAlarmScreen(be);
 
 				break;
-			case CHECK_BRIEFCASE_PASSCODE:
+			case CHECK_PASSCODE:
+				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+					ClientHandler.displayCheckPasscodeScreen((BlockEntity) be);
+
+				break;
+			case CHECK_PASSCODE_FOR_BRIEFCASE:
 				ItemStack briefcaseStack = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
 
 				if (!briefcaseStack.isEmpty())
 					ClientHandler.displayBriefcasePasscodeScreen(briefcaseStack.getHoverName());
-
-				break;
-			case CHECK_PASSCODE:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof IPasscodeProtected be)
-					ClientHandler.displayCheckPasscodeScreen((BlockEntity) be);
 
 				break;
 			case RIFT_STABILIZER:
@@ -113,16 +113,16 @@ public class OpenScreen implements CustomPacketPayload {
 				}
 
 				break;
-			case SET_BRIEFCASE_PASSCODE:
+			case SET_PASSCODE:
+				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+					ClientHandler.displaySetPasscodeScreen((BlockEntity) be);
+
+				break;
+			case SET_PASSCODE_FOR_BRIEFCASE:
 				ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
 
 				if (!briefcase.isEmpty())
 					ClientHandler.displayBriefcaseSetupScreen(briefcase.getHoverName().plainCopy().append(Component.literal(" ")).append(Utils.localize("gui.securitycraft:passcode.setup")));
-
-				break;
-			case SET_PASSCODE:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof IPasscodeProtected be)
-					ClientHandler.displaySetPasscodeScreen((BlockEntity) be);
 
 				break;
 			case SET_PASSCODE_FOR_ENTITY:
@@ -147,12 +147,12 @@ public class OpenScreen implements CustomPacketPayload {
 
 	public enum DataType {
 		ALARM(true),
-		CHECK_BRIEFCASE_PASSCODE(false),
 		CHECK_PASSCODE(true),
+		CHECK_PASSCODE_FOR_BRIEFCASE(false),
 		RIFT_STABILIZER(true),
 		SENTRY_REMOTE_ACCESS_TOOL(false),
-		SET_BRIEFCASE_PASSCODE(false),
 		SET_PASSCODE(true),
+		SET_PASSCODE_FOR_BRIEFCASE(false),
 		SET_PASSCODE_FOR_ENTITY(false),
 		SONIC_SECURITY_SYSTEM(true),
 		UNIVERSAL_KEY_CHANGER(true);
