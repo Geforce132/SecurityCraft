@@ -2536,7 +2536,7 @@ public class SCContent {
 	public static final RegistryObject<Item> ADMIN_TOOL = ITEMS.register("admin_tool", () -> new AdminToolItem(itemProp(1)));
 	public static final RegistryObject<Item> ANCIENT_DEBRIS_MINE_ITEM = ITEMS.register("ancient_debris_mine", () -> new BlockItem(SCContent.ANCIENT_DEBRIS_MINE.get(), itemProp().fireResistant()));
 	@HasManualPage
-	public static final RegistryObject<Item> BRIEFCASE = ITEMS.register("briefcase", () -> new BriefcaseItem(itemProp().stacksTo(1)));
+	public static final RegistryObject<Item> BRIEFCASE = ITEMS.register("briefcase", () -> new BriefcaseItem(itemProp(1)));
 	@HasManualPage
 	public static final RegistryObject<Item> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem(itemProp(1)));
 	@HasManualPage
@@ -2550,7 +2550,7 @@ public class SCContent {
 	public static final RegistryObject<Item> FAKE_WATER_BUCKET = ITEMS.register("bucket_f_water", () -> new FakeLiquidBucketItem(SCContent.FAKE_WATER, itemProp(1)));
 	public static final RegistryObject<Item> GLOW_DISPLAY_CASE_ITEM = ITEMS.register(GLOW_DISPLAY_CASE_PATH, () -> new DisplayCaseItem(SCContent.GLOW_DISPLAY_CASE.get(), itemProp(), true));
 	@HasManualPage
-	public static final RegistryObject<Item> KEYCARD_HOLDER = ITEMS.register("keycard_holder", () -> new KeycardHolderItem(itemProp().stacksTo(1)));
+	public static final RegistryObject<Item> KEYCARD_HOLDER = ITEMS.register("keycard_holder", () -> new KeycardHolderItem(itemProp(1)));
 	@HasManualPage(PageGroup.KEYCARDS)
 	public static final RegistryObject<Item> KEYCARD_LVL_1 = ITEMS.register("keycard_lv1", () -> new KeycardItem(itemProp(), 0));
 	@HasManualPage(PageGroup.KEYCARDS)
