@@ -23,6 +23,7 @@ import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.CPlayerPacket;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.SectionPos;
 import net.minecraftforge.api.distmarker.Dist;
@@ -36,14 +37,22 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class CameraController {
 	public static PointOfView previousCameraType;
 	private static ClientChunkProvider.ChunkArray cameraStorage;
-	//@formatter:off
-	private static final ViewMovementKeyHandler[] MOVE_KEY_HANDLERS = {
-			new ViewMovementKeyHandler(Minecraft.getInstance().options.keyUp, CameraController::moveViewUp),
-			new ViewMovementKeyHandler(Minecraft.getInstance().options.keyDown, CameraController::moveViewDown),
-			new ViewMovementKeyHandler(Minecraft.getInstance().options.keyLeft, cam -> moveViewHorizontally(cam, cam.yRot - (float) cam.cameraSpeed * cam.zoomAmount)),
-			new ViewMovementKeyHandler(Minecraft.getInstance().options.keyRight, cam -> moveViewHorizontally(cam, cam.yRot + (float) cam.cameraSpeed * cam.zoomAmount))
-	};
-	//@formatter:on
+	private static final ViewMovementKeyHandler[] MOVE_KEY_HANDLERS = Util.make(() -> {
+		Minecraft mc = Minecraft.getInstance();
+
+		if (mc != null) {
+			return new ViewMovementKeyHandler[] {
+				//@formatter:off
+				new ViewMovementKeyHandler(Minecraft.getInstance().options.keyUp, CameraController::moveViewUp),
+				new ViewMovementKeyHandler(Minecraft.getInstance().options.keyDown, CameraController::moveViewDown),
+				new ViewMovementKeyHandler(Minecraft.getInstance().options.keyLeft, cam -> moveViewHorizontally(cam, cam.yRot - (float) cam.cameraSpeed * cam.zoomAmount)),
+				new ViewMovementKeyHandler(Minecraft.getInstance().options.keyRight, cam -> moveViewHorizontally(cam, cam.yRot + (float) cam.cameraSpeed * cam.zoomAmount))
+				//@formatter:on
+			};
+		}
+		else
+			return new ViewMovementKeyHandler[0];
+	});
 	private static int screenshotSoundCooldown = 0;
 
 	private CameraController() {}
