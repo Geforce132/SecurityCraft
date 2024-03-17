@@ -69,14 +69,18 @@ public class BlockUtils {
 		return false;
 	}
 
-	public static boolean isAllowedToExtractFromProtectedBlock(EnumFacing side, TileEntity te) {
+	public static boolean isAllowedToExtractFromProtectedBlock(EnumFacing side, TileEntity be) {
 		if (side != null) {
-			BlockPos offsetPos = te.getPos().offset(side);
-			IBlockState offsetState = te.getWorld().getBlockState(offsetPos);
+			World level = be.getWorld();
 
-			for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
-				if (offsetState.getBlock() == extractionBlock.getBlock())
-					return extractionBlock.canExtract((IOwnable) te, te.getWorld(), offsetPos, offsetState);
+			if (level != null) {
+				BlockPos offsetPos = be.getPos().offset(side);
+				IBlockState offsetState = level.getBlockState(offsetPos);
+
+				for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
+					if (offsetState.getBlock() == extractionBlock.getBlock())
+						return extractionBlock.canExtract((IOwnable) be, level, offsetPos, offsetState);
+				}
 			}
 		}
 
