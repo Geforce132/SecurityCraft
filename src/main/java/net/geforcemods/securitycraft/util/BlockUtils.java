@@ -72,12 +72,16 @@ public class BlockUtils {
 
 	public static boolean isAllowedToExtractFromProtectedBlock(Direction side, TileEntity be) {
 		if (side != null) {
-			BlockPos offsetPos = be.getBlockPos().relative(side);
-			BlockState offsetState = be.getLevel().getBlockState(offsetPos);
+			World level = be.getLevel();
 
-			for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
-				if (offsetState.getBlock() == extractionBlock.getBlock())
-					return extractionBlock.canExtract((IOwnable) be, be.getLevel(), offsetPos, offsetState);
+			if (level != null) {
+				BlockPos offsetPos = be.getBlockPos().relative(side);
+				BlockState offsetState = level.getBlockState(offsetPos);
+
+				for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
+					if (offsetState.getBlock() == extractionBlock.getBlock())
+						return extractionBlock.canExtract((IOwnable) be, level, offsetPos, offsetState);
+				}
 			}
 		}
 
