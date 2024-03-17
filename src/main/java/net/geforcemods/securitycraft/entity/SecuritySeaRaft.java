@@ -18,6 +18,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -55,23 +56,34 @@ public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodePro
 	}
 
 	@Override
+	public InteractionResult interact(Player player, InteractionHand hand) {
+		if (player.isSecondaryUseActive()) {
+			ItemStack stack = player.getItemInHand(hand);
+
+			if (stack.is(SCContent.UNIVERSAL_OWNER_CHANGER.get()) && isOwnedBy(player)) {
+				if (!player.level().isClientSide) {
+					String newOwner = stack.getHoverName().getString();
+
+					setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), ChatFormatting.GREEN);
+					return InteractionResult.CONSUME;
+				}
+
+				return InteractionResult.SUCCESS;
+			}
+		}
+
+		return super.interact(player, hand);
+	}
+
+	@Override
 	public InteractionResult interactWithContainerVehicle(Player player) {
 		Level level = level();
 		BlockPos pos = blockPosition();
 
-		if (!level.isClientSide) {
-			ItemStack ownerChanger = PlayerUtils.getItemStackFromAnyHand(player, SCContent.UNIVERSAL_OWNER_CHANGER.get());
-
-			if (!ownerChanger.isEmpty() && isOwnedBy(player)) {
-				String newOwner = ownerChanger.getHoverName().getString();
-
-				setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), ChatFormatting.GREEN);
-			}
-			//TODO: Proper codebreaker support
-			else if (verifyPasscodeSet(level, pos, this, player) && !player.isHolding(SCContent.CODEBREAKER.get()))
-				openPasscodeGUI(level, pos, player);
-		}
+		//TODO: Proper codebreaker support
+		if (!level.isClientSide && verifyPasscodeSet(level, pos, this, player) && !player.isHolding(SCContent.CODEBREAKER.get()))
+			openPasscodeGUI(level, pos, player);
 
 		return !level.isClientSide ? InteractionResult.CONSUME : InteractionResult.SUCCESS;
 	}
