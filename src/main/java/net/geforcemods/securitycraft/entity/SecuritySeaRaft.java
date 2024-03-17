@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
@@ -100,6 +101,12 @@ public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodePro
 			return super.hurt(source, amount);
 		else
 			return false;
+	}
+
+	@Override
+	public void chestVehicleDestroyed(DamageSource damageSource, Level level, Entity entity) {
+		super.chestVehicleDestroyed(damageSource, level, entity);
+		SaltData.removeSalt(getSaltKey());
 	}
 
 	@Override
