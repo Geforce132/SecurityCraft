@@ -96,7 +96,7 @@ public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodePro
 	public boolean hurt(DamageSource source, float amount) {
 		Entity entity = source.getEntity();
 
-		if (!(entity instanceof Player player) || isOwnedBy(player))
+		if (!(entity instanceof Player player) || isOwnedBy(player) || player.isCreative())
 			return super.hurt(source, amount);
 		else
 			return false;
