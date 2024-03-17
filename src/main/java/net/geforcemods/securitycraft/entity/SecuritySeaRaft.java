@@ -10,6 +10,9 @@ import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -23,6 +26,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.ChestBoat;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -55,9 +59,19 @@ public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodePro
 		Level level = level();
 		BlockPos pos = blockPosition();
 
-		//TODO: Proper codebreaker support
-		if (!level.isClientSide && verifyPasscodeSet(level, pos, this, player) && !player.isHolding(SCContent.CODEBREAKER.get()))
-			openPasscodeGUI(level, pos, player);
+		if (!level.isClientSide) {
+			ItemStack ownerChanger = PlayerUtils.getItemStackFromAnyHand(player, SCContent.UNIVERSAL_OWNER_CHANGER.get());
+
+			if (!ownerChanger.isEmpty() && isOwnedBy(player)) {
+				String newOwner = ownerChanger.getHoverName().getString();
+
+				setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), ChatFormatting.GREEN);
+			}
+			//TODO: Proper codebreaker support
+			else if (verifyPasscodeSet(level, pos, this, player) && !player.isHolding(SCContent.CODEBREAKER.get()))
+				openPasscodeGUI(level, pos, player);
+		}
 
 		return !level.isClientSide ? InteractionResult.CONSUME : InteractionResult.SUCCESS;
 	}
