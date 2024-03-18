@@ -24,6 +24,7 @@
 - New: The Security Camera now supports the Smart Module, allowing the owner to set a default viewing direction
 - New: Electrified Iron Fences and Electrified Iron Fence Gates can now be pushed by Reinforced Pistons
 - New: The amount of damage dealt by a Sentry's bullet can now be changed in the server config file
+- New: The Admin Tool and Codebreaker can now be found in the "Operator Utilities" creative tab
 - Change: The Reinforced Hopper screen now shows "Reinforced Hopper" instead of "Item Hopper" as its default inventory title
 - Change: The hitbox of the Sentry has been changed, which means that only the base of Sentries can be interacted with now
 - Change: The recipe for the Electrified Iron Fence/Fence Gate now requires any wooden reinforced fence/fence gate
@@ -89,6 +90,7 @@
 - Fix: Reinforced Piston Heads are pushable by Reinforced Pistons
 - Fix: Linkable blocks like laser blocks, keypad doors and scanner doors can sometimes lose their linkage and become desynchronized
 - Fix: The Furnace Mine does not get properly hidden in F3
+- Fix: General crash fixes
 - Removed: Ability to change the subpage in the SecurityCraft Manual using the arrow keys. This is still possible by scrolling while holding down CTRL
 - Removed: "Is always active" option of Keypads and Key Panels. The same behavior can be achieved by setting the "Signal length" option to 0 and activating the block
 - Misc.: ProjectE support has been updated with previously missing EMC values
