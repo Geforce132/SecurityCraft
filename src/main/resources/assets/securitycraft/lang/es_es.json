@@ -1043,7 +1043,7 @@
 	"messages.securitycraft:ownable.ownerNotValidated": "Se ha cambiado el propietario de este bloque con un cambiador de propietarios universal y ,por lo tanto, debe validarse por el nuevo propietario para que vuelva a funcionar. Para validar un bloque, el nuevo propietario tiene que hacer clic derecho sobre él.",
 	"messages.securitycraft:ownable.validate": "El propietario de este bloque se ha validado con éxito.",
 	"messages.securitycraft:passcodeProtected.notSetUp": "Este bloque no tiene contraseña aún. No puedes interactuar con él.",
-	"messages.securitycraft:portableRadar.withName": "%1$s está cerca de tu radar portátil llamado %2$s.",
+	"messages.securitycraft:portableRadar.withName": "%1$s está cerca de tu radar portátil llamado %2$s en %3$s.",
 	"messages.securitycraft:portableRadar.withoutName": "%1$s está cerca de tu radar portátil en %2$s.",
 	"messages.securitycraft:portable_tune_player.no_tune": "No hay melodías disponibles.",
 	"messages.securitycraft:portable_tune_player.tune_saved": "Melodía guardada.",
