@@ -38,7 +38,7 @@ public class SCCommand extends CommandTreeBase {
 
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return "/securitycraft <bug|connect|help|owner>";
+		return "/securitycraft <bug|connect|convert|help|owner>";
 	}
 
 	@Override
