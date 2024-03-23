@@ -96,7 +96,7 @@
 - Removed: Ability to change the subpage in the SecurityCraft Manual using the arrow keys. This is still possible by scrolling while holding down CTRL
 - Removed: "Is always active" option of Keypads and Key Panels. The same behavior can be achieved by setting the "Signal length" option to 0 and activating the block
 - Misc.: Small optimizations to certain network and client performance
-- Misc.: The Italian translation has been largely updated (Thanks Cavallo Bianco!)
+- Misc.: The Italian translation has been updated (Thanks Cavallo Bianco!)
 - Misc.: The minimum required NeoForge version is 20.4.117-beta
 
 --------------------------Changelog for v1.9.8-beta2 of SecurityCraft--------------------------
