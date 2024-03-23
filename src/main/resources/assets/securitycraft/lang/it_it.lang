@@ -615,95 +615,95 @@ module.securitycraft:trophy_system.whitelistModule.description=Aggiungere un mod
 module.securitycraft:usernameLogger.disguiseModule.description=Aggiungere un modulo mascheramento a un autenticatore per nome utente cambia il modello e la texture con quelli del blocco nel modulo mascheramento.
 module.securitycraft:usernameLogger.whitelistModule.description=Aggiungere un modulo lista consentiti ad un autenticatore per nome utente permette ai giocatori in lista di essere autenticati senza passargli vicino.
 option.generic.disabled.description=Questo blocco dovrebbe essere disabilitato, rendendolo inutilizzabile fino alla sua attivazione?
-option.generic.disabled=Disabilitato: #
+option.generic.disabled=Disabilitato: %s
 option.generic.ignoreOwner.description=Questo blocco dovrebbe ignorare il suo proprietario, incluse le funzionalità correlate?
-option.generic.ignoreOwner=Ignora proprietario: #
+option.generic.ignoreOwner=Ignora proprietario: %s
 option.generic.sendAllowlistMessage.description=Questo blocco invia un messaggio al momento dell'attivazione quando il giocatore viene aggiunto alla lista consentiti?
-option.generic.sendAllowlistMessage=Messaggio lista consentiti: #
+option.generic.sendAllowlistMessage=Messaggio lista consentiti: %s
 option.generic.sendDenylistMessage.description=Questo blocco invia un messaggio al momento dell'attivazione quando il giocatore viene aggiunto alla lista negati?
-option.generic.sendDenylistMessage=Messaggio lista negati: #
+option.generic.sendDenylistMessage=Messaggio lista negati: %s
 option.generic.signalLength.description=Quanto dovrebbe durare il segnale di redstone dopo l'attivazione? (In tick, 20 tick = 1 secondo. Impostali a 0 per attivare/disattivare il segnale)
 option.generic.signalLength.description=Quanto dovrebbe durare un segnale di redstone dall'attivazione? (In tick, 20 tick = 1 secondo)
-option.generic.signalLength=Lunghezza segnale: #
+option.generic.signalLength=Lunghezza segnale: %s
 option.generic.smartModuleCooldown.description=Per quanto i giocatori non possono inserire un codice dopo averne inserito uno errato? (In tick, 20 tick = 1 secondo; richiede modulo intelligente)
-option.generic.smartModuleCooldown=Ricarica: #
+option.generic.smartModuleCooldown=Ricarica: %s
 option.generic.targetingMode.description=Quali entità possono far scattare questo blocco?
-option.generic.targetingMode=Modalità di puntamento: #
+option.generic.targetingMode=Modalità di puntamento: %s
 option.generic.viewActivated.maximumDistance.description=Da quanti blocchi di distanza è possibile attivare questo blocco?
-option.generic.viewActivated.maximumDistance=Distanza massima: #
+option.generic.viewActivated.maximumDistance=Distanza massima: %s
 option.securitycraft:alarm.range.description=Da quanti blocchi di distanza si può udire il suono dell'allarme?
-option.securitycraft:alarm.range=Raggio: #
+option.securitycraft:alarm.range=Raggio: %s
 option.securitycraft:alarm.resetCooldown.description=Il tempo di ricarica tra i suoi dell'allarme dovrebbe essere ripristinato quando l'allarme è accesso, permettendo che il suono venga sempre riprodotto immediatamente?
-option.securitycraft:alarm.resetCooldown=Ripristino tempo di recupero: #
+option.securitycraft:alarm.resetCooldown=Ripristino tempo di recupero: %s
 option.securitycraft:block_change_detector.range.description=Fino a che distanza il rilevatore dovrebbe funzionare?
-option.securitycraft:block_change_detector.range=Raggio rilevamento: #
+option.securitycraft:block_change_detector.range=Raggio rilevamento: %s
 option.securitycraft:block_change_detector.signalLength.description=Quanto dovrebbe durare il segnale di redstone dopo aver rilevato un cambio di blocco? (In tick, 20 tick = 1 secondo. Impostali a 0 per attivare/disattivare il segnale)
 option.securitycraft:block_change_detector.signalLength.description=Quanto dovrebbe durare il segnale di redstone dopo aver rilevato? (In tick, 20 tick = 1 secondo)
-option.securitycraft:block_change_detector.signalLength=Lunghezza segnale: #
+option.securitycraft:block_change_detector.signalLength=Lunghezza segnale: %s
 option.securitycraft:cageTrap.captureMobs.description=Questa gabbia trappola deve catturare anche i mob o solo i giocatori?
-option.securitycraft:cageTrap.captureMobs=Cattura mob: #
+option.securitycraft:cageTrap.captureMobs=Cattura mob: %s
 option.securitycraft:claymore.range.description=Da quanti blocchi può essere attivata una mina claymore?
-option.securitycraft:claymore.range=Raggio: #
+option.securitycraft:claymore.range=Raggio: %s
 option.securitycraft:floor_trap.disappearDelay.description=Quanti tick dovrebbero passare prima che il blocco scompaia (20 tick = 1 secondo)
-option.securitycraft:floor_trap.disappearDelay=Ritardo di scomparsa: #
+option.securitycraft:floor_trap.disappearDelay=Ritardo di scomparsa: %s
 option.securitycraft:floor_trap.disappearInstantlyInChains.description=Questa trappola dovrebbe sparire instantaneamente se ha un modulo intelligente e una trappola a fianco scompare?
-option.securitycraft:floor_trap.disappearInstantlyInChains=Scompare instantaneamente: #
+option.securitycraft:floor_trap.disappearInstantlyInChains=Scompare instantaneamente: %s
 option.securitycraft:floor_trap.reappearDelay.description=Quanti tick dovrebbero passare prima che il blocco riappaia (20 tick = 1 secondo)
-option.securitycraft:floor_trap.reappearDelay=Ritardo di ricomparsa: #
+option.securitycraft:floor_trap.reappearDelay=Ritardo di ricomparsa: %s
 option.securitycraft:ims.range.description=Da quanti blocchi di distanza può rilevare potenziali bersagli l'S.M.I.?
-option.securitycraft:ims.range=Raggio: #
+option.securitycraft:ims.range=Raggio: %s
 option.securitycraft:inventoryScanner.horizontal.description=I campi dello scanner dell'inventario creati da questo scanner dovrebbero essere orizzontali?
-option.securitycraft:inventoryScanner.horizontal=Orizzontali: #
+option.securitycraft:inventoryScanner.horizontal=Orizzontali: %s
 option.securitycraft:inventoryScanner.solidifyField.description=I campi dello scanner dell'inventario si dovrebbero solidificare quando viene rilevato un oggetto proibito?
-option.securitycraft:inventoryScanner.solidifyField=Solidifica campi: #
+option.securitycraft:inventoryScanner.solidifyField=Solidifica campi: %s
 option.securitycraft:keycard_lock.exactLevel.description=Questa serratura elettronica dovrebbe accettare solo tessere di livello esatto, o anche ogni livello superiore?
-option.securitycraft:keycard_lock.exactLevel=Livello esatto: #
+option.securitycraft:keycard_lock.exactLevel=Livello esatto: %s
 option.securitycraft:keypad_door.signalLength.description=Quanto dovrebbe stare aperta la porta? (In tick, 20 tick = 1 secondo. Imposta a 0 per far rimanere aperta la porta)
-option.securitycraft:keypad_door.signalLength=Lunghezza segnale: #
+option.securitycraft:keypad_door.signalLength=Lunghezza segnale: %s
 option.securitycraft:keypad_trapdoor.signalLength.description=Quanto dovrebbe rimanere aperta la botola? (In tick, 20 tick = 1 secondo. Impostali a 0 per mantenere la botola sempre aperta)
-option.securitycraft:keypad_trapdoor.signalLength=Lunghezza segnale: #
+option.securitycraft:keypad_trapdoor.signalLength=Lunghezza segnale: %s
 option.securitycraft:motionActivatedLight.searchRadius.description=La lampada rileva un'entità fino a quale distanza?
-option.securitycraft:motionActivatedLight.searchRadius=Raggio di ricerca: #
+option.securitycraft:motionActivatedLight.searchRadius=Raggio di ricerca: %s
 option.securitycraft:portableRadar.repeatMessage.description=Il radar deve ripetere il messaggio finché c'è qualcuno nel suo raggio?
-option.securitycraft:portableRadar.repeatMessage=Ripeti messaggio: #
+option.securitycraft:portableRadar.repeatMessage=Ripeti messaggio: %s
 option.securitycraft:portableRadar.searchDelay.description=Il ritardo di ricerca con cui cerca il radar.
-option.securitycraft:portableRadar.searchDelay=Ritardo di ricerca: # secondi
+option.securitycraft:portableRadar.searchDelay=Ritardo di ricerca: %s secondi
 option.securitycraft:portableRadar.searchRadius.description=Il raggio in cui il radar ricerca.
-option.securitycraft:portableRadar.searchRadius=Raggio di ricerca: #
+option.securitycraft:portableRadar.searchRadius=Raggio di ricerca: %s
 option.securitycraft:reinforced_cauldron.isPublic.description=Questo blocco dovrebbe permettere a ogni giocatore di interagirci?
-option.securitycraft:reinforced_cauldron.isPublic=Pubblico: #
+option.securitycraft:reinforced_cauldron.isPublic=Pubblico: %s
 option.securitycraft:retinalScanner.activatedByEntities.description=Questo scanner deve poter attivarsi quando lo guarda un NPC?
-option.securitycraft:retinalScanner.activatedByEntities=Attivato da NPC: #
+option.securitycraft:retinalScanner.activatedByEntities=Attivato da NPC: %s
 option.securitycraft:retinalScanner.sendMessage.description=Questo scanner manda un messaggio quando attivato?
-option.securitycraft:retinalScanner.sendMessage=Messaggio: #
+option.securitycraft:retinalScanner.sendMessage=Messaggio: %s
 option.securitycraft:rift_stabilizer.range.description=Quanto dovrebbe rilevare in lontananza lo stabilizzatore del terreno?
-option.securitycraft:rift_stabilizer.range=Raggio rilevamento: #
+option.securitycraft:rift_stabilizer.range=Raggio rilevamento: %s
 option.securitycraft:rift_stabilizer.signalLength.description=Quanto dovrebbe durare il segnale di redstone dopo aver rilevato un tentativo di teletrasporto? (In tick, 20 tick = 1 secondo. Impostali a 0 per attivare/disattivare il segnale)
 option.securitycraft:rift_stabilizer.signalLength.description=Quanto dovrebbe durare il segnale redstone emesso dopo un tentativo di teletrasporto? (In tick, 20 tick = 1 secondo)
-option.securitycraft:rift_stabilizer.signalLength=Lunghezza segnale: #
+option.securitycraft:rift_stabilizer.signalLength=Lunghezza segnale: %s
 option.securitycraft:scannerDoor.sendMessage.description=Questa porta scanner manda un messaggio quando attivata?
-option.securitycraft:scannerDoor.sendMessage=Messaggio: #
+option.securitycraft:scannerDoor.sendMessage=Messaggio: %s
 option.securitycraft:scannerDoor.signalLength.description=Quanto dovrebbe stare aperta la porta? (In tick, 20 tick = 1 secondo. Imposta a 0 per far rimanere aperta la porta)
-option.securitycraft:scannerDoor.signalLength=Tempo prima di chiudersi: #
+option.securitycraft:scannerDoor.signalLength=Tempo prima di chiudersi: %s
 option.securitycraft:scanner_trapdoor.sendMessage.description=Questa botola scanner invia un messaggio al momento dell'attivazione?
-option.securitycraft:scanner_trapdoor.sendMessage=Messaggio: #
+option.securitycraft:scanner_trapdoor.sendMessage=Messaggio: %s
 option.securitycraft:scanner_trapdoor.signalLength.description=Quanto dovrebbe stare aperta la botola? (In tick, 20 tick = 1 secondo. Impostali a 0 per mantenerla aperta)
-option.securitycraft:scanner_trapdoor.signalLength=Tempo prima della chiusura: #
+option.securitycraft:scanner_trapdoor.signalLength=Tempo prima della chiusura: %s
 option.securitycraft:secret_sign.isSecret.description=Il testo di questo cartello segreto dovrebbe essere visibile solo al proprietario e ai giocatori nella lista consentiti?
-option.securitycraft:secret_sign.isSecret=Segreto: #
+option.securitycraft:secret_sign.isSecret=Segreto: %s
 option.securitycraft:securityCamera.customRotation.description=Angolo statico, personalizzato
-option.securitycraft:securityCamera.customRotation=Rotazione: #
+option.securitycraft:securityCamera.customRotation=Rotazione: %s
 option.securitycraft:securityCamera.opacity.description=L'opacità del colore della lente.
-option.securitycraft:securityCamera.opacity=Opacità della lente: #
+option.securitycraft:securityCamera.opacity=Opacità della lente: %s
 option.securitycraft:securityCamera.rotationSpeed.description=La velocità con cui ruota la telecamera.
-option.securitycraft:securityCamera.rotationSpeed=Velocità di rotazione: #
+option.securitycraft:securityCamera.rotationSpeed=Velocità di rotazione: %s
 option.securitycraft:securityCamera.shouldRotate.description=La telecamera deve ruotare?
-option.securitycraft:securityCamera.shouldRotate=Rotazione sì/no: #
+option.securitycraft:securityCamera.shouldRotate=Rotazione sì/no: %s
 option.securitycraft:sonic_security_system.signalLength.description=Per quanto a lungo il sistema di sicurezza sonico dovrebbe sbloccare i blocchi/emettere un segnale di redstone dopo aver ascoltato la melodia corretta? (In tick, 20 tick = 1 secondo. Impostali a 0 per attivare/disattivare il segnale)
 option.securitycraft:sonic_security_system.signalLength.description=Quanto dovrebbe stare attivo il sistema di sicurezza soncico dopo aver sentito la melodia corretta? (In tick, 20 tick = 1 secondo)
-option.securitycraft:sonic_security_system.signalLength=Tempo di attività: #
+option.securitycraft:sonic_security_system.signalLength=Tempo di attività: %s
 option.securitycraft:usernameLogger.searchRadius.description=Il raggio in blocchi nel quale l'autenticatore per nome utente cerca i giocatori.
-option.securitycraft:usernameLogger.searchRadius=Raggio di ricerca: #
+option.securitycraft:usernameLogger.searchRadius=Raggio di ricerca: %s
 securitycraft.option.default=(Predefinito: %s)
 securitycraft.option.default_with_range=(Predefinito: %s, con una raggio da %s a %s)
 securitycraft.subtitle.alarm=L'allarme sta suonando

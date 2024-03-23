@@ -111,9 +111,9 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 
 					if (option instanceof ISlider && option.isSlider()) {
 						if (option instanceof DoubleOption)
-							optionButtons[i] = new Slider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, (ISlider) option);
+							optionButtons[i] = new Slider(Utils.localize(option.getKey(block), option.toString()).getFormattedText(), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, (ISlider) option);
 						else if (option instanceof IntOption)
-							optionButtons[i] = new Slider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, (ISlider) option);
+							optionButtons[i] = new Slider(Utils.localize(option.getKey(block), option.toString()).getFormattedText(), block, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, (ISlider) option);
 					}
 					else {
 						optionButtons[i] = new GuiButton(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option));
@@ -239,7 +239,7 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 	}
 
 	private String getOptionButtonTitle(Option<?> option) {
-		return (Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", getValueText(option));
+		return Utils.localize(option.getKey(block), getValueText(option)).getFormattedText();
 	}
 
 	private String getValueText(Option<?> option) {

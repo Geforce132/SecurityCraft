@@ -285,7 +285,7 @@ public abstract class Option<T> {
 				return;
 
 			setValue((int) slider.getValue());
-			slider.displayString = (Utils.localize(getKey(block)).getFormattedText() + " ").replace("#", toString());
+			slider.displayString = Utils.localize(getKey(block), toString()).getFormattedText();
 		}
 
 		@Override
@@ -381,7 +381,7 @@ public abstract class Option<T> {
 				return;
 
 			setValue(slider.getValue());
-			slider.displayString = (Utils.localize(getKey(block)).getFormattedText() + " ").replace("#", toString());
+			slider.displayString = Utils.localize(getKey(block), toString()).getFormattedText();
 		}
 
 		@Override
