@@ -21,7 +21,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 // TODO: Remove mentions of "block entity" and generalize
@@ -74,7 +73,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	}
 
 	@Override
-	default boolean shouldAttemptCodebreak(BlockState state, Player player) {
+	default boolean shouldAttemptCodebreak(Player player) {
 		if (getPasscode() == null) {
 			PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.notSetUp"), ChatFormatting.DARK_RED);
 			return false;
@@ -84,7 +83,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	}
 
 	@Override
-	public default void useCodebreaker(BlockState state, Player player) {
+	public default void useCodebreaker(Player player) {
 		activate(player);
 	}
 

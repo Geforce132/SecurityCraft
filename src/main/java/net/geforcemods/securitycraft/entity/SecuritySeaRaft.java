@@ -32,6 +32,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+// TODO: Change "This block doesn't have a passcode yet" message to not mention block
+// TODO: Change all other passcode-related lines to stop talking about blocks
 public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodeProtected {
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(SecuritySeaRaft.class, Owner.getSerializer());
 	private byte[] passcode;
@@ -81,9 +83,12 @@ public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodePro
 		Level level = level();
 		BlockPos pos = blockPosition();
 
-		//TODO: Proper codebreaker support
-		if (!level.isClientSide && verifyPasscodeSet(level, pos, this, player) && !player.isHolding(SCContent.CODEBREAKER.get()))
-			openPasscodeGUI(level, pos, player);
+		if (!level.isClientSide) {
+			if (player.isHolding(SCContent.CODEBREAKER.get()))
+				handleCodebreaking(player, player.getMainHandItem().is(SCContent.CODEBREAKER.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
+			else if (verifyPasscodeSet(level, pos, this, player))
+				openPasscodeGUI(level, pos, player);
+		}
 
 		return !level.isClientSide ? InteractionResult.CONSUME : InteractionResult.SUCCESS;
 	}
