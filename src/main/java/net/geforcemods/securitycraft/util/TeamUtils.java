@@ -6,12 +6,10 @@ import java.util.Objects;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.compat.ftbteams.FTBTeamsCompat;
 import net.minecraft.ChatFormatting;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.scores.PlayerTeam;
-import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public class TeamUtils {
@@ -27,9 +25,6 @@ public class TeamUtils {
 	public static boolean areOnSameTeam(Owner owner1, Owner owner2) {
 		if (owner1.equals(owner2))
 			return true;
-
-		if (ModList.get().isLoaded("ftbteams"))
-			return FTBTeamsCompat.areOnSameTeam(owner1, owner2);
 
 		PlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner1.getName());
 
@@ -58,9 +53,6 @@ public class TeamUtils {
 	 * @return The {@link TeamRepresentation} of the owner's team, {@code null} if they are not part of a team
 	 */
 	public static TeamRepresentation getTeamRepresentation(Owner owner) {
-		if (ModList.get().isLoaded("ftbteams"))
-			return FTBTeamsCompat.getTeamRepresentation(owner);
-
 		PlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
 
 		if (team != null) {
@@ -80,9 +72,6 @@ public class TeamUtils {
 	 * @return A list containing all online players who are in the same team as the owner
 	 */
 	public static Collection<ServerPlayer> getOnlinePlayersInTeam(MinecraftServer server, Owner owner) {
-		if (ModList.get().isLoaded("ftbteams"))
-			return FTBTeamsCompat.getOnlinePlayersInTeam(owner);
-
 		PlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
 
 		if (team != null)
