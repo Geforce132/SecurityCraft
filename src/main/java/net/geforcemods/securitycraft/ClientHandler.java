@@ -716,7 +716,11 @@ public class ClientHandler {
 	}
 
 	public static void displayUniversalKeyChangerScreen(BlockEntity be) {
-		Minecraft.getInstance().setScreen(new KeyChangerScreen(be));
+		Minecraft.getInstance().setScreen(new KeyChangerScreen((IPasscodeProtected) be));
+	}
+
+	public static void displayUniversalKeyChangerScreen(Entity entity) {
+		Minecraft.getInstance().setScreen(new KeyChangerScreen((IPasscodeProtected) entity));
 	}
 
 	public static void displayCheckPasscodeScreen(BlockEntity be) {

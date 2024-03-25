@@ -59,7 +59,7 @@ public class OpenScreen implements CustomPacketPayload {
 			pos = buf.readBlockPos();
 		else if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
 			tag = buf.readNbt();
-		else if (dataType == DataType.SET_PASSCODE_FOR_ENTITY || dataType == DataType.CHECK_PASSCODE_FOR_ENTITY)
+		else if (dataType == DataType.CHANGE_PASSCODE_FOR_ENTITY || dataType == DataType.CHECK_PASSCODE_FOR_ENTITY || dataType == DataType.SET_PASSCODE_FOR_ENTITY)
 			entityId = buf.readVarInt();
 	}
 
@@ -71,7 +71,7 @@ public class OpenScreen implements CustomPacketPayload {
 			buf.writeBlockPos(pos);
 		else if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
 			buf.writeNbt(tag);
-		else if (dataType == DataType.SET_PASSCODE_FOR_ENTITY || dataType == DataType.CHECK_PASSCODE_FOR_ENTITY)
+		else if (dataType == DataType.CHANGE_PASSCODE_FOR_ENTITY || dataType == DataType.CHECK_PASSCODE_FOR_ENTITY || dataType == DataType.SET_PASSCODE_FOR_ENTITY)
 			buf.writeVarInt(entityId);
 	}
 
@@ -85,6 +85,16 @@ public class OpenScreen implements CustomPacketPayload {
 			case ALARM:
 				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof AlarmBlockEntity be)
 					ClientHandler.displayAlarmScreen(be);
+
+				break;
+			case CHANGE_PASSCODE:
+				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+					ClientHandler.displayUniversalKeyChangerScreen((BlockEntity) be);
+
+				break;
+			case CHANGE_PASSCODE_FOR_ENTITY:
+				if (Minecraft.getInstance().level.getEntity(entityId) instanceof IPasscodeProtected be)
+					ClientHandler.displayUniversalKeyChangerScreen((Entity) be);
 
 				break;
 			case CHECK_PASSCODE:
@@ -140,11 +150,6 @@ public class OpenScreen implements CustomPacketPayload {
 					ClientHandler.displaySonicSecuritySystemScreen(sss);
 
 				break;
-			case UNIVERSAL_KEY_CHANGER:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof IPasscodeProtected passcodeProtected)
-					ClientHandler.displayUniversalKeyChangerScreen((BlockEntity) passcodeProtected);
-
-				break;
 			default:
 				throw new IllegalStateException("Unhandled data type: " + dataType.name());
 		}
@@ -152,6 +157,8 @@ public class OpenScreen implements CustomPacketPayload {
 
 	public enum DataType {
 		ALARM(true),
+		CHANGE_PASSCODE(true),
+		CHANGE_PASSCODE_FOR_ENTITY(false),
 		CHECK_PASSCODE(true),
 		CHECK_PASSCODE_FOR_BRIEFCASE(false),
 		CHECK_PASSCODE_FOR_ENTITY(false),
@@ -160,8 +167,7 @@ public class OpenScreen implements CustomPacketPayload {
 		SET_PASSCODE(true),
 		SET_PASSCODE_FOR_BRIEFCASE(false),
 		SET_PASSCODE_FOR_ENTITY(false),
-		SONIC_SECURITY_SYSTEM(true),
-		UNIVERSAL_KEY_CHANGER(true);
+		SONIC_SECURITY_SYSTEM(true);
 
 		public final boolean needsPosition;
 

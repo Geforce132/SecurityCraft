@@ -34,6 +34,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 // TODO: Change "This block doesn't have a passcode yet" message to not mention block
 // TODO: Change all other passcode-related lines to stop talking about blocks
+// TODO: Remove mention of "block" in messages.securitycraft:notOwned
 public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodeProtected {
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(SecuritySeaRaft.class, Owner.getSerializer());
 	private byte[] passcode;
@@ -86,6 +87,12 @@ public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodePro
 		if (!level.isClientSide) {
 			if (player.isHolding(SCContent.CODEBREAKER.get()))
 				handleCodebreaking(player, player.getMainHandItem().is(SCContent.CODEBREAKER.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
+			else if (player.isHolding(SCContent.UNIVERSAL_KEY_CHANGER.get())) {
+				if (isOwnedBy(player) || player.isCreative())
+					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.CHANGE_PASSCODE_FOR_ENTITY, getId()));
+				else
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(getOwner())), ChatFormatting.RED);
+			}
 			else if (verifyPasscodeSet(level, pos, this, player))
 				openPasscodeGUI(level, pos, player);
 		}
