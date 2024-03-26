@@ -62,25 +62,33 @@ public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodePro
 	public InteractionResult interact(Player player, InteractionHand hand) {
 		if (player.isSecondaryUseActive()) {
 			ItemStack stack = player.getItemInHand(hand);
+			Level level = player.level();
 
-			if (player.isHolding(SCContent.CODEBREAKER.get()))
-				handleCodebreaking(player, player.getMainHandItem().is(SCContent.CODEBREAKER.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
+			if (player.isHolding(SCContent.CODEBREAKER.get())) {
+				if (!level.isClientSide)
+					handleCodebreaking(player, player.getMainHandItem().is(SCContent.CODEBREAKER.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
+
+				return InteractionResult.sidedSuccess(level.isClientSide);
+			}
 			else if (player.isHolding(SCContent.UNIVERSAL_KEY_CHANGER.get())) {
-				if (isOwnedBy(player) || player.isCreative())
-					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.CHANGE_PASSCODE_FOR_ENTITY, getId()));
-				else
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(getOwner())), ChatFormatting.RED);
+				if (!level.isClientSide) {
+					if (isOwnedBy(player) || player.isCreative())
+						PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.CHANGE_PASSCODE_FOR_ENTITY, getId()));
+					else
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(getOwner())), ChatFormatting.RED);
+				}
+
+				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
 			else if (stack.is(SCContent.UNIVERSAL_OWNER_CHANGER.get()) && isOwnedBy(player)) {
-				if (!player.level().isClientSide) {
+				if (!level.isClientSide) {
 					String newOwner = stack.getHoverName().getString();
 
 					setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), ChatFormatting.GREEN);
-					return InteractionResult.CONSUME;
 				}
 
-				return InteractionResult.SUCCESS;
+				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
 		}
 
