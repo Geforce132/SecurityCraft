@@ -63,7 +63,15 @@ public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodePro
 		if (player.isSecondaryUseActive()) {
 			ItemStack stack = player.getItemInHand(hand);
 
-			if (stack.is(SCContent.UNIVERSAL_OWNER_CHANGER.get()) && isOwnedBy(player)) {
+			if (player.isHolding(SCContent.CODEBREAKER.get()))
+				handleCodebreaking(player, player.getMainHandItem().is(SCContent.CODEBREAKER.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
+			else if (player.isHolding(SCContent.UNIVERSAL_KEY_CHANGER.get())) {
+				if (isOwnedBy(player) || player.isCreative())
+					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.CHANGE_PASSCODE_FOR_ENTITY, getId()));
+				else
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(getOwner())), ChatFormatting.RED);
+			}
+			else if (stack.is(SCContent.UNIVERSAL_OWNER_CHANGER.get()) && isOwnedBy(player)) {
 				if (!player.level().isClientSide) {
 					String newOwner = stack.getHoverName().getString();
 
@@ -84,18 +92,8 @@ public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodePro
 		Level level = level();
 		BlockPos pos = blockPosition();
 
-		if (!level.isClientSide) {
-			if (player.isHolding(SCContent.CODEBREAKER.get()))
-				handleCodebreaking(player, player.getMainHandItem().is(SCContent.CODEBREAKER.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
-			else if (player.isHolding(SCContent.UNIVERSAL_KEY_CHANGER.get())) {
-				if (isOwnedBy(player) || player.isCreative())
-					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.CHANGE_PASSCODE_FOR_ENTITY, getId()));
-				else
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(getOwner())), ChatFormatting.RED);
-			}
-			else if (verifyPasscodeSet(level, pos, this, player))
-				openPasscodeGUI(level, pos, player);
-		}
+		if (!level.isClientSide && verifyPasscodeSet(level, pos, this, player))
+			openPasscodeGUI(level, pos, player);
 
 		return !level.isClientSide ? InteractionResult.CONSUME : InteractionResult.SUCCESS;
 	}
