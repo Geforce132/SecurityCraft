@@ -48,7 +48,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	/** Whether the ping sound should be emitted or not */
 	private boolean emitsPings = true;
 	private int pingCooldown = PING_DELAY;
-	private IntOption signalLength = new IntOption("signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption("signalLength", 60, 5, 400, 5); //20 seconds max
 	/** Used to control the number of ticks that Sonic Security Systems emit redstone power for */
 	private int powerCooldown = 0;
 	private float radarRotationDegrees = 0;

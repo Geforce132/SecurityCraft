@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class KeypadTrapdoorBlockEntity extends CustomizableBlockEntity implements IPasscodeProtected, ILockable {
 	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
 	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
-	private IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5); //20 seconds max
 	private DisabledOption disabled = new DisabledOption(false);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
 	private long cooldownEnd = 0;
