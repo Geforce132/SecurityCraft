@@ -47,6 +47,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	private boolean shutDown = false;
 	private float initialXRotation, initialYRotation;
 	private DoubleOption rotationSpeedOption = new DoubleOption("rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D, true);
+	private DoubleOption movementSpeedOption = new DoubleOption("movementSpeed", 2.0D, 0.0D, 20.0D, 0.1D, true);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
 	private DoubleOption customRotationOption = new DoubleOption("customRotation", getCameraRotation(), 1.55D, -1.55D, rotationSpeedOption.get(), true);
 	private DisabledOption disabled = new DisabledOption(false);
@@ -145,7 +146,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				rotationSpeedOption, shouldRotateOption, customRotationOption, disabled, opacity
+				rotationSpeedOption, shouldRotateOption, customRotationOption, disabled, opacity, movementSpeedOption
 		};
 	}
 
@@ -220,6 +221,10 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 	public int getOpacity() {
 		return opacity.get();
+	}
+
+	public double getMovementSpeed() {
+		return movementSpeedOption.get();
 	}
 
 	public void setDefaultViewingDirection(Direction facing) {

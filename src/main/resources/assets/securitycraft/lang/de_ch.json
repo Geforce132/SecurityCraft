@@ -1296,6 +1296,8 @@
 	"option.securitycraft.scanner_trapdoor.signalLength.description": "Wie lange soll die Falltür offen bleiben? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, damit sich die Falltür nicht schließt)",
 	"option.securitycraft.security_camera.customRotation": "Winkel: %s",
 	"option.securitycraft.security_camera.customRotation.description": "Benutzerdefinierter, fester Rotationswinkel",
+	"option.securitycraft.security_camera.movementSpeed": "Bewegungsgeschwindigkeit: %s",
+	"option.securitycraft.security_camera.movementSpeed.description": "Wie schnell sich das Blickfeld bewegt, wenn man eine Kamera anschaut.",
 	"option.securitycraft.security_camera.opacity": "Linsen-Deckkraft: %s",
 	"option.securitycraft.security_camera.opacity.description": "Die Deckkraft der Farbe der Linse.",
 	"option.securitycraft.security_camera.rotationSpeed": "Rotationsgeschwindigkeit: %s",
