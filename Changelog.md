@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
+
+- Fix: Trying to place a Panic Button on top of powdered snow crashes the game
+
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
 - New: Items in open Display Cases can now be picked using the "Pick Block" key
