@@ -48,7 +48,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	private static final ItemStack REINFORCED_CRYSTAL_QUARTZ_PILLAR = new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get());
 	private static final int CHISELED_NEEDED_OVERALL = 8;
 	private final TranslatableComponent youNeed = Utils.localize("gui.securitycraft:blockPocketManager.youNeed");
-	private final boolean storage;
+	private final boolean hasStorageModule;
 	private final boolean isOwner;
 	private final int[] materialCounts = new int[3];
 	public final BlockPocketManagerBlockEntity be;
@@ -76,12 +76,12 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		be = menu.be;
 		size = be.getSize();
 		isOwner = menu.isOwner;
-		storage = menu.storage;
+		hasStorageModule = menu.hasStorageModule;
 
-		if (storage)
+		if (hasStorageModule)
 			imageWidth = 256;
 
-		imageHeight = !storage ? 194 : 240;
+		imageHeight = !hasStorageModule ? 194 : 240;
 		previousColor = be.getColor();
 	}
 
@@ -89,18 +89,18 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	public void init() {
 		super.init();
 
-		int guiWidth = storage ? 123 : imageWidth;
-		int widgetWidth = storage ? 110 : 120;
+		int guiWidth = hasStorageModule ? 123 : imageWidth;
+		int widgetWidth = hasStorageModule ? 110 : 120;
 		int widgetOffset = widgetWidth / 2;
 		//@formatter:off
-		int[] yOffset = storage ? new int[] {-76, -100, -52, -28, -4} : new int[] {-40, -70, 23, 47, 71};
+		int[] yOffset = hasStorageModule ? new int[] {-76, -100, -52, -28, -4} : new int[] {-40, -70, 23, 47, 71};
 		//@formatter:on
 		int outlineY = topPos + imageHeight / 2 + yOffset[2];
 		Button colorChooserButton;
-		int colorChooserButtonX = leftPos + guiWidth / 2 - widgetOffset + (storage ? 0 : widgetWidth + 3);
-		int outlineButtonX = colorChooserButtonX + (storage ? 23 : -widgetWidth - 3);
-		int outlineButtonWidth = widgetWidth - (storage ? 23 : 0);
-		int colorChooserX = colorChooserButtonX + (storage ? -145 : 20);
+		int colorChooserButtonX = leftPos + guiWidth / 2 - widgetOffset + (hasStorageModule ? 0 : widgetWidth + 3);
+		int outlineButtonX = colorChooserButtonX + (hasStorageModule ? 23 : -widgetWidth - 3);
+		int outlineButtonWidth = widgetWidth - (hasStorageModule ? 23 : 0);
+		int colorChooserX = colorChooserButtonX + (hasStorageModule ? -145 : 20);
 		Button toggleButton, sizeButton;
 
 		toggleButton = addRenderableWidget(new ExtendedButton(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[0], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager." + (!be.isEnabled() ? "activate" : "deactivate")), this::toggleButtonClicked));
@@ -124,7 +124,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 			sizeButton.active = assembleButton.active = offsetSlider.active = !be.isEnabled();
 		}
 
-		if (!storage) {
+		if (!hasStorageModule) {
 			hoverCheckers[0] = new StackHoverChecker(BLOCK_POCKET_WALL, topPos + 93, topPos + 113, leftPos + 23, leftPos + 43);
 			hoverCheckers[1] = new StackHoverChecker(REINFORCED_CRYSTAL_QUARTZ_PILLAR, topPos + 93, topPos + 113, leftPos + 75, leftPos + 95);
 			hoverCheckers[2] = new StackHoverChecker(REINFORCED_CHISELED_CRYSTAL_QUARTZ, topPos + 93, topPos + 113, leftPos + 128, leftPos + 148);
@@ -141,13 +141,13 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 	@Override
 	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, title, (storage ? 123 : imageWidth) / 2 - font.width(title) / 2, 6, 4210752);
+		font.draw(pose, title, (hasStorageModule ? 123 : imageWidth) / 2 - font.width(title) / 2, 6, 4210752);
 
-		if (storage)
+		if (hasStorageModule)
 			font.draw(pose, playerInventoryTitle, 8, imageHeight - 94, 4210752);
 
 		if (!be.isEnabled() && isOwner) {
-			if (!storage) {
+			if (!hasStorageModule) {
 				font.draw(pose, youNeed, imageWidth / 2 - font.width(youNeed) / 2, 83, 4210752);
 
 				font.draw(pose, wallsNeededOverall + "", 42, 100, 4210752);
@@ -178,7 +178,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		super.render(pose, mouseX, mouseY, partialTicks);
 
-		if (storage)
+		if (hasStorageModule)
 			renderTooltip(pose, mouseX, mouseY);
 
 		if (!be.isEnabled() && isOwner) {
@@ -190,7 +190,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 			}
 
 			if (!assembleButton.active && assembleHoverChecker.checkHover(mouseX, mouseY)) {
-				if (!storage)
+				if (!hasStorageModule)
 					renderComponentTooltip(pose, assembleHoverChecker.getLines().subList(0, 1), mouseX, mouseY);
 				else
 					renderComponentTooltip(pose, assembleHoverChecker.getLines().subList(1, 2), mouseX, mouseY);
@@ -205,7 +205,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem._setShaderTexture(0, storage ? TEXTURE_STORAGE : TEXTURE);
+		RenderSystem._setShaderTexture(0, hasStorageModule ? TEXTURE_STORAGE : TEXTURE);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
@@ -295,7 +295,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		pillarsStillNeeded = pillarsNeededOverall - materialCounts[1];
 		chiseledStillNeeded = CHISELED_NEEDED_OVERALL - materialCounts[2];
 		//the assemble button should always be active when the player is in creative mode
-		assembleButton.active = isOwner && (minecraft.player.isCreative() || (!be.isEnabled() && storage && wallsStillNeeded <= 0 && pillarsStillNeeded <= 0 && chiseledStillNeeded <= 0));
+		assembleButton.active = isOwner && (minecraft.player.isCreative() || (!be.isEnabled() && hasStorageModule && wallsStillNeeded <= 0 && pillarsStillNeeded <= 0 && chiseledStillNeeded <= 0));
 	}
 
 	public void toggleButtonClicked(Button button) {

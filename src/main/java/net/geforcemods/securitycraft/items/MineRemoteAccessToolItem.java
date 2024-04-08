@@ -69,7 +69,7 @@ public class MineRemoteAccessToolItem extends Item {
 				return InteractionResult.SUCCESS;
 			}
 			else {
-				removeMine(stack, pos, player);
+				removeMine(stack, pos);
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.unbound", Utils.getFormattedCoordinates(pos)), ChatFormatting.RED);
 				return InteractionResult.SUCCESS;
 			}
@@ -105,7 +105,7 @@ public class MineRemoteAccessToolItem extends Item {
 		return false;
 	}
 
-	public static void removeMine(ItemStack stack, BlockPos pos, Player player) {
+	public static void removeMine(ItemStack stack, BlockPos pos) {
 		if (stack.getTag() == null)
 			return;
 
