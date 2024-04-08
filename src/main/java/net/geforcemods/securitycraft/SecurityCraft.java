@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
@@ -66,6 +69,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 @Mod(SecurityCraft.MODID)
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class SecurityCraft {
+	public static final Logger LOGGER = LogManager.getLogger();
 	public static final String MODID = "securitycraft";
 	public static final Random RANDOM = new Random();
 	public static final ItemGroup TECHNICAL_TAB = new SCTechnicalTab();
