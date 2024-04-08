@@ -19,4 +19,6 @@ public sealed class WailaCompatConstants permits JadeDataProvider, WTHITDataProv
 	protected static final MutableComponent ALLOWLIST_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.ALLOWLIST.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
 	protected static final MutableComponent DISGUISE_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.DISGUISE.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
 	protected static final MutableComponent SPEED_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.SPEED.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
+
+	protected WailaCompatConstants() {}
 }

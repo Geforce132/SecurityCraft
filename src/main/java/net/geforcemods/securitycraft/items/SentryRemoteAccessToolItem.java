@@ -79,7 +79,7 @@ public class SentryRemoteAccessToolItem extends Item {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.bound", sentryPos), ChatFormatting.GREEN);
 			}
 			else {
-				removeSentry(stack, sentryPos, player);
+				removeSentry(stack, sentryPos);
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.unbound", sentryPos), ChatFormatting.RED);
 			}
 
@@ -157,7 +157,7 @@ public class SentryRemoteAccessToolItem extends Item {
 		}
 	}
 
-	private void removeSentry(ItemStack stack, BlockPos pos, Player player) {
+	private void removeSentry(ItemStack stack, BlockPos pos) {
 		if (stack.getTag() == null)
 			return;
 

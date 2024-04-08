@@ -222,9 +222,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void toggle() {
-			return;
-		}
+		public void toggle() {}
 
 		@Override
 		public void load(CompoundTag tag) {
@@ -276,9 +274,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void toggle() {
-			return;
-		}
+		public void toggle() {}
 
 		@Override
 		public void load(CompoundTag tag) {
