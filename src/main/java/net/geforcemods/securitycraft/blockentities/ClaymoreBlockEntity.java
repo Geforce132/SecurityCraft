@@ -39,7 +39,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, MenuProvider, ContainerListener, SingleLensContainer {
-	private IntOption range = new IntOption("range", 5, 1, 10, 1, true);
+	private IntOption range = new IntOption("range", 5, 1, 10, 1);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS_AND_MOBS);
 	private LazyOptional<IItemHandler> insertOnlyHandler, lensHandler;
