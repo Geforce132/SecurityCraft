@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity implements ILockable {
-	protected IntOption signalLength = new IntOption("signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
+	protected IntOption signalLength = new IntOption("signalLength", defaultSignalLength(), 0, 400, 5); //20 seconds max
 	protected DisabledOption disabled = new DisabledOption(false);
 
 	protected SpecialDoorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {

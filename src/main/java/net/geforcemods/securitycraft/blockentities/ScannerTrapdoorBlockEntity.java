@@ -33,8 +33,8 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class ScannerTrapdoorBlockEntity extends CustomizableBlockEntity implements IViewActivated, ITickingBlockEntity, ILockable {
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	protected IntOption signalLength = new IntOption("signalLength", 0, 0, 400, 5, true); //20 seconds max
-	private DoubleOption maximumDistance = new DoubleOption("maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D, true) {
+	protected IntOption signalLength = new IntOption("signalLength", 0, 0, 400, 5); //20 seconds max
+	private DoubleOption maximumDistance = new DoubleOption("maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D) {
 		@Override
 		public String getKey(Block block) {
 			return "option.generic.viewActivated.maximumDistance";
