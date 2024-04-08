@@ -2,9 +2,11 @@ package net.geforcemods.securitycraft;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
@@ -140,17 +142,12 @@ public class SCCreativeModeTabs {
 				List<Item> vanillaOrderedItems = getVanillaOrderedItems();
 				List<ItemStack> mineGroupItems = new ArrayList<>(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES));
 
-				mineGroupItems.sort((a, b) -> {
-					//if a isn't an item that has a vanilla counterpart, it should appear at the front
-					if (!(a.getItem() instanceof BlockItem blockItemA && blockItemA.getBlock() instanceof BaseFullMineBlock blockMineA))
-						return -1;
-
-					//same for b
-					if (!(b.getItem() instanceof BlockItem blockItemB && blockItemB.getBlock() instanceof BaseFullMineBlock blockMineB))
-						return 1;
-
-					return Integer.compare(vanillaOrderedItems.indexOf(blockMineA.getBlockDisguisedAs().asItem()), vanillaOrderedItems.indexOf(blockMineB.getBlockDisguisedAs().asItem()));
-				});
+				mineGroupItems.sort(stackComparator(item -> {
+					if (item instanceof BlockItem blockItem && blockItem.getBlock() instanceof BaseFullMineBlock blockMine)
+						return blockMine;
+					else
+						return null;
+				}, blockMine -> vanillaOrderedItems.indexOf(blockMine.getBlockDisguisedAs().asItem())));
 				output.accept(SCContent.MINE_REMOTE_ACCESS_TOOL.get());
 				output.accept(SCContent.WIRE_CUTTERS.get());
 				output.accept(Items.FLINT_AND_STEEL);
@@ -171,30 +168,12 @@ public class SCCreativeModeTabs {
 				List<Item> vanillaOrderedItems = getVanillaOrderedItems();
 				List<ItemStack> decorationGroupItems = new ArrayList<>(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION));
 
-				decorationGroupItems.sort((a, b) -> {
-					//if a isn't an item that has a vanilla counterpart, it should appear at the back
-					if (!(a.getItem() instanceof BlockItem blockItemA && blockItemA.getBlock() instanceof IReinforcedBlock reinforcedBlockA))
-						return 1;
-
-					//same for b
-					if (!(b.getItem() instanceof BlockItem blockItemB && blockItemB.getBlock() instanceof IReinforcedBlock reinforcedBlockB))
-						return -1;
-
-					int indexA = vanillaOrderedItems.indexOf(reinforcedBlockA.getVanillaBlock().asItem());
-
-					//items that have no counterpart in any of the above vanilla tabs should appear at the end
-					if (indexA == -1)
-						return 1;
-
-					int indexB = vanillaOrderedItems.indexOf(reinforcedBlockB.getVanillaBlock().asItem());
-
-					//same here
-					if (indexB == -1)
-						return -1;
-
-					return Integer.compare(indexA, indexB);
-				});
-
+				decorationGroupItems.sort(stackComparator(item -> {
+					if (item instanceof BlockItem blockItem && blockItem.getBlock() instanceof IReinforcedBlock reinforcedBlock)
+						return reinforcedBlock;
+					else
+						return null;
+				}, reinforcedBlock -> vanillaOrderedItems.indexOf(reinforcedBlock.getVanillaBlock().asItem())));
 				output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
 				output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get());
 				output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get());
@@ -230,6 +209,31 @@ public class SCCreativeModeTabs {
 				output.accept(SCContent.DISPLAY_CASE.get());
 				output.accept(SCContent.GLOW_DISPLAY_CASE.get());
 			}).build());
+
+	private static <T> Comparator<ItemStack> stackComparator(Function<Item, T> blockInstanceGetter, Function<T, Integer> indexGetter) {
+		return (a, b) -> {
+			T blockA = blockInstanceGetter.apply(a.getItem());
+			T blockB = blockInstanceGetter.apply(b.getItem());
+			boolean blockAExists = blockA != null;
+			boolean blockBExists = blockB != null;
+
+			if (!blockAExists && !blockBExists)
+				return 0;
+			else if (blockAExists ^ blockBExists)
+				return blockAExists ? -1 : 1;
+			else if (blockA == blockB)
+				return 0;
+
+			int indexA = indexGetter.apply(blockA);
+			int indexB = indexGetter.apply(blockB);
+			boolean indexAExists = indexA != -1;
+
+			if (indexAExists ^ indexB != -1)
+				return indexAExists ? -1 : 1;
+
+			return Integer.compare(indexA, indexB);
+		};
+	}
 
 	private static List<Item> getVanillaOrderedItems() {
 		List<Item> vanillaOrderedItems = new ArrayList<>();
