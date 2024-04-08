@@ -27,7 +27,7 @@ import net.minecraftforge.common.util.Constants;
 
 public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IViewActivated {
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private DoubleOption maximumDistance = new DoubleOption(this::getBlockPos, "maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D, true) {
+	private DoubleOption maximumDistance = new DoubleOption(this::getBlockPos, "maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D) {
 		@Override
 		public String getKey(Block block) {
 			return "option.generic.viewActivated.maximumDistance";

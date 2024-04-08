@@ -229,36 +229,15 @@ public abstract class Option<T> {
 	 * A subclass of {@link Option} set up to handle integers.
 	 */
 	public static class IntOption extends Option<Integer> implements ISlider {
-		private boolean isSlider;
 		private Supplier<BlockPos> pos;
 
-		public IntOption(String optionName, Integer value, Integer min, Integer max, Integer increment) {
+		public IntOption(Supplier<BlockPos> pos, String optionName, Integer value, Integer min, Integer max, Integer increment) {
 			super(optionName, value, min, max, increment);
-		}
-
-		public IntOption(Supplier<BlockPos> pos, String optionName, Integer value, Integer min, Integer max, Integer increment, boolean isSlider) {
-			super(optionName, value, min, max, increment);
-			this.isSlider = isSlider;
 			this.pos = pos;
 		}
 
 		@Override
-		public void toggle() {
-			if (isSlider())
-				return;
-
-			if (get() >= getMax()) {
-				setValue(getMin());
-				return;
-			}
-
-			if ((get() + getIncrement()) >= getMax()) {
-				setValue(getMax());
-				return;
-			}
-
-			setValue(get() + getIncrement());
-		}
+		public void toggle() {}
 
 		@Override
 		public void load(CompoundNBT tag) {
@@ -275,12 +254,12 @@ public abstract class Option<T> {
 
 		@Override
 		public boolean isSlider() {
-			return isSlider;
+			return true;
 		}
 
 		@Override
 		public void onChangeSliderValue(Slider slider) {
-			if (!isSlider() || !(slider instanceof NamedSlider))
+			if (!(slider instanceof NamedSlider))
 				return;
 
 			setValue((int) slider.getValue());
@@ -291,7 +270,7 @@ public abstract class Option<T> {
 
 	public static class SmartModuleCooldownOption extends IntOption {
 		public SmartModuleCooldownOption(Supplier<BlockPos> pos) {
-			super(pos, "smartModuleCooldown", 100, 20, 400, 1, true);
+			super(pos, "smartModuleCooldown", 100, 20, 400, 1);
 		}
 
 		@Override
@@ -302,7 +281,7 @@ public abstract class Option<T> {
 
 	public static class SignalLengthOption extends IntOption {
 		public SignalLengthOption(Supplier<BlockPos> pos, int defaultLength) {
-			super(pos, "signalLength", defaultLength, 0, 400, 5, true); //20 seconds max
+			super(pos, "signalLength", defaultLength, 0, 400, 5); //20 seconds max
 		}
 
 		@Override
@@ -315,37 +294,15 @@ public abstract class Option<T> {
 	 * A subclass of {@link Option} set up to handle doubles.
 	 */
 	public static class DoubleOption extends Option<Double> implements ISlider {
-		private boolean isSlider;
 		private Supplier<BlockPos> pos;
 
-		public DoubleOption(String optionName, Double value, Double min, Double max, Double increment) {
+		public DoubleOption(Supplier<BlockPos> pos, String optionName, Double value, Double min, Double max, Double increment) {
 			super(optionName, value, min, max, increment);
-			isSlider = false;
-		}
-
-		public DoubleOption(Supplier<BlockPos> pos, String optionName, Double value, Double min, Double max, Double increment, boolean isSlider) {
-			super(optionName, value, min, max, increment);
-			this.isSlider = isSlider;
 			this.pos = pos;
 		}
 
 		@Override
-		public void toggle() {
-			if (isSlider())
-				return;
-
-			if (get() >= getMax()) {
-				setValue(getMin());
-				return;
-			}
-
-			if ((get() + getIncrement()) >= getMax()) {
-				setValue(getMax());
-				return;
-			}
-
-			setValue(get() + getIncrement());
-		}
+		public void toggle() {}
 
 		@Override
 		public void load(CompoundNBT tag) {
@@ -367,59 +324,17 @@ public abstract class Option<T> {
 
 		@Override
 		public boolean isSlider() {
-			return isSlider;
+			return true;
 		}
 
 		@Override
 		public void onChangeSliderValue(Slider slider) {
-			if (!isSlider() || !(slider instanceof NamedSlider))
+			if (!(slider instanceof NamedSlider))
 				return;
 
 			setValue(slider.getValue());
 			slider.setMessage(Utils.localize(getKey(((NamedSlider) slider).getBlock()), toString()));
 			SecurityCraft.channel.sendToServer(new UpdateSliderValue(pos.get(), this, get()));
-		}
-	}
-
-	/**
-	 * A subclass of {@link Option} set up to handle floats.
-	 */
-	public static class FloatOption extends Option<Float> {
-		public FloatOption(String optionName, Float value, Float min, Float max, Float increment) {
-			super(optionName, value, min, max, increment);
-		}
-
-		@Override
-		public void toggle() {
-			if (get() >= getMax()) {
-				setValue(getMin());
-				return;
-			}
-
-			if ((get() + getIncrement()) >= getMax()) {
-				setValue(getMax());
-				return;
-			}
-
-			setValue(get() + getIncrement());
-		}
-
-		@Override
-		public void load(CompoundNBT tag) {
-			if (tag.contains(getName()))
-				value = tag.getFloat(getName());
-			else
-				value = getDefaultValue();
-		}
-
-		@Override
-		public void save(CompoundNBT tag) {
-			tag.putFloat(getName(), value);
-		}
-
-		@Override
-		public String toString() {
-			return Float.toString(value).length() > 5 ? Float.toString(value).substring(0, 5) : Float.toString(value);
 		}
 	}
 

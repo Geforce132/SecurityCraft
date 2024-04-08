@@ -21,8 +21,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITickableTileEntity {
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private BooleanOption disappearInstantlyInChains = new BooleanOption("disappearInstantlyInChains", true);
-	private IntOption disappearDelay = new IntOption(this::getBlockPos, "disappearDelay", 5, 0, 200, 1, true);
-	private IntOption reappearDelay = new IntOption(this::getBlockPos, "reappearDelay", 20, 5, 200, 1, true);
+	private IntOption disappearDelay = new IntOption(this::getBlockPos, "disappearDelay", 5, 0, 200, 1);
+	private IntOption reappearDelay = new IntOption(this::getBlockPos, "reappearDelay", 20, 5, 200, 1);
 	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS);
 	private boolean shouldDisappear = false, shouldReappear = false;
 	private int ticksUntilDisappearing = -1, ticksUntilReappearing = -1;

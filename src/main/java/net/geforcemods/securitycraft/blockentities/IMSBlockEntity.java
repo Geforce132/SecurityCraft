@@ -25,7 +25,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class IMSBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity {
-	private IntOption range = new IntOption(this::getBlockPos, "range", 15, 1, 30, 1, true);
+	private IntOption range = new IntOption(this::getBlockPos, "range", 15, 1, 30, 1);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS_AND_MOBS);

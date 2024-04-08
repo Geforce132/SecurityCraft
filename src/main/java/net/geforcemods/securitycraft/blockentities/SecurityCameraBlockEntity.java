@@ -47,12 +47,12 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	private int playersViewing = 0;
 	private boolean shutDown = false;
 	private float initialXRotation, initialYRotation;
-	private DoubleOption rotationSpeedOption = new DoubleOption(this::getBlockPos, "rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D, true);
-	private DoubleOption movementSpeedOption = new DoubleOption(this::getBlockPos, "movementSpeed", 2.0D, 0.0D, 20.0D, 0.1D, true);
+	private DoubleOption rotationSpeedOption = new DoubleOption(this::getBlockPos, "rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D);
+	private DoubleOption movementSpeedOption = new DoubleOption(this::getBlockPos, "movementSpeed", 2.0D, 0.0D, 20.0D, 0.1D);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
-	private DoubleOption customRotationOption = new DoubleOption(this::getBlockPos, "customRotation", getCameraRotation(), 1.55D, -1.55D, rotationSpeedOption.get(), true);
+	private DoubleOption customRotationOption = new DoubleOption(this::getBlockPos, "customRotation", getCameraRotation(), 1.55D, -1.55D, rotationSpeedOption.get());
 	private DisabledOption disabled = new DisabledOption(false);
-	private IntOption opacity = new IntOption(this::getBlockPos, "opacity", 100, 0, 255, 1, true);
+	private IntOption opacity = new IntOption(this::getBlockPos, "opacity", 100, 0, 255, 1);
 	private LazyOptional<IItemHandler> insertOnlyHandler, lensHandler;
 	private LensContainer lens = new LensContainer(1);
 
