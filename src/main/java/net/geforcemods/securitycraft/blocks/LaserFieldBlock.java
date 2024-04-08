@@ -87,7 +87,7 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, IW
 						if (laser.isAllowed(entity))
 							return;
 
-						if (!(entity instanceof PlayerEntity && laser.isOwnedBy((PlayerEntity) entity) && laser.ignoresOwner())) {
+						if (!(entity instanceof PlayerEntity && laser.isOwnedBy(entity) && laser.ignoresOwner())) {
 							if (laser.allowsOwnableEntity(entity))
 								return;
 

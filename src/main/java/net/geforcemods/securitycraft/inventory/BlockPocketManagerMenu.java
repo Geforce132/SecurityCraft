@@ -16,7 +16,7 @@ import net.minecraftforge.items.SlotItemHandler;
 public class BlockPocketManagerMenu extends Container {
 	public final BlockPocketManagerBlockEntity be;
 	private final IWorldPosCallable worldPosCallable;
-	public final boolean storage;
+	public final boolean hasStorageModule;
 	public final boolean isOwner;
 
 	public BlockPocketManagerMenu(int windowId, World level, BlockPos pos, PlayerInventory inventory) {
@@ -25,9 +25,9 @@ public class BlockPocketManagerMenu extends Container {
 		be = (BlockPocketManagerBlockEntity) level.getBlockEntity(pos);
 		worldPosCallable = IWorldPosCallable.create(level, pos);
 		isOwner = be.isOwnedBy(inventory.player);
-		storage = be.isModuleEnabled(ModuleType.STORAGE) && isOwner;
+		hasStorageModule = be.isModuleEnabled(ModuleType.STORAGE) && isOwner;
 
-		if (storage) {
+		if (hasStorageModule) {
 			for (int y = 0; y < 3; y++) {
 				for (int x = 0; x < 9; ++x) {
 					addSlot(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18 + 74));

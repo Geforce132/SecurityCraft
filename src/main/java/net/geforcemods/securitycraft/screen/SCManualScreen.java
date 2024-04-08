@@ -506,19 +506,26 @@ public class SCManualScreen extends Screen {
 		if (item instanceof BlockItem) {
 			Block block = ((BlockItem) item).getBlock();
 
-			if (explosive = block instanceof IExplosive)
+			explosive = block instanceof IExplosive;
+
+			if (explosive)
 				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
 			if (block.hasTileEntity(block.defaultBlockState())) {
 				TileEntity be = block.createTileEntity(block.defaultBlockState(), Minecraft.getInstance().level);
 
-				if (ownable = be instanceof IOwnable)
+				ownable = be instanceof IOwnable;
+				passcodeProtected = be instanceof IPasscodeProtected;
+				viewActivated = be instanceof IViewActivated;
+				lockable = be instanceof ILockable;
+
+				if (ownable)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock")));
 
-				if (passcodeProtected = be instanceof IPasscodeProtected)
+				if (passcodeProtected)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passcodeProtectedBlock")));
 
-				if (viewActivated = be instanceof IViewActivated)
+				if (viewActivated)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
 				if (be instanceof ICustomizable) {
@@ -562,7 +569,7 @@ public class SCManualScreen extends Screen {
 					}
 				}
 
-				if (lockable = be instanceof ILockable)
+				if (lockable)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 189, startX + 189 + 16, Utils.localize("gui.securitycraft:scManual.lockable")));
 
 				if (customizable || moduleInventory)

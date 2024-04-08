@@ -61,7 +61,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 				if(sentryMode.attacksPlayers() && potentialTarget instanceof PlayerEntity
 						&& !potentialTarget.isSpectator()
 						&& !((PlayerEntity) potentialTarget).isCreative()
-						&& !((Sentry) mob).isOwnedBy(((PlayerEntity) potentialTarget))
+						&& !((Sentry) mob).isOwnedBy((potentialTarget))
 						&& !sentry.isTargetingAllowedPlayer(potentialTarget)) {
 					break;
 				}

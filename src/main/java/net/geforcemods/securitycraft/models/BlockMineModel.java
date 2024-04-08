@@ -12,9 +12,9 @@ import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.model.ItemOverrideList;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.MissingTextureSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.Direction;
 import net.minecraftforge.client.ForgeHooksClient;
 
@@ -67,7 +67,7 @@ public class BlockMineModel implements IBakedModel {
 
 	@Override
 	public TextureAtlasSprite getParticleIcon() {
-		return defaultModel == null ? Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(MissingTextureSprite.getLocation()) : defaultModel.getParticleIcon();
+		return defaultModel == null ? Minecraft.getInstance().getTextureAtlas(PlayerContainer.BLOCK_ATLAS).apply(MissingTextureSprite.getLocation()) : defaultModel.getParticleIcon();
 	}
 
 	@Override

@@ -59,7 +59,7 @@ public class CageTrapBlock extends DisguisableBlock {
 				EntitySelectionContext esc = (EntitySelectionContext) ctx;
 				Entity entity = esc.getEntity();
 
-				if (be.isDisabled() || entity instanceof PlayerEntity && ((be.isOwnedBy((PlayerEntity) entity) && be.ignoresOwner()) || be.isAllowed(entity)) || be.allowsOwnableEntity(entity))
+				if (be.isDisabled() || entity instanceof PlayerEntity && ((be.isOwnedBy(entity) && be.ignoresOwner()) || be.isAllowed(entity)) || be.allowsOwnableEntity(entity))
 					return getCorrectShape(state, level, pos, ctx, be);
 				if (entity instanceof MobEntity && !state.getValue(DEACTIVATED))
 					return be.capturesMobs() ? VoxelShapes.empty() : getCorrectShape(state, level, pos, ctx, be);
@@ -98,7 +98,7 @@ public class CageTrapBlock extends DisguisableBlock {
 				if (!getShape(state, level, pos, ISelectionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
 					return;
 
-				if ((isPlayer && cageTrap.isOwnedBy((PlayerEntity) entity)) && cageTrap.ignoresOwner() || cageTrap.allowsOwnableEntity(entity))
+				if ((isPlayer && cageTrap.isOwnedBy(entity)) && cageTrap.ignoresOwner() || cageTrap.allowsOwnableEntity(entity))
 					return;
 
 				if (state.getValue(DEACTIVATED))

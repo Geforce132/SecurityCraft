@@ -30,7 +30,7 @@ public class ReinforcedCobwebBlock extends BaseReinforcedBlock {
 		if (entity instanceof PlayerEntity) {
 			TileEntity te = level.getBlockEntity(pos);
 
-			if (te instanceof OwnableBlockEntity && ((OwnableBlockEntity) te).isOwnedBy((PlayerEntity) entity))
+			if (te instanceof OwnableBlockEntity && ((OwnableBlockEntity) te).isOwnedBy(entity))
 				return;
 		}
 
