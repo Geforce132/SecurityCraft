@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.slf4j.Logger;
-
-import com.mojang.logging.LogUtils;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -25,7 +22,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class ConfigHandler {
-	private static final Logger LOGGER = LogUtils.getLogger();
 	public static final ForgeConfigSpec CLIENT_SPEC;
 	public static final Client CLIENT;
 	public static final ForgeConfigSpec SERVER_SPEC;
@@ -245,7 +241,7 @@ public class ConfigHandler {
 					ResourceLocation effectLocation = new ResourceLocation(split[0]);
 
 					if (!ForgeRegistries.MOB_EFFECTS.containsKey(effectLocation)) {
-						LOGGER.warn("Effect \"{}\" does not exist, skipping", effectLocation);
+						SecurityCraft.LOGGER.warn("Effect \"{}\" does not exist, skipping", effectLocation);
 						continue;
 					}
 
@@ -254,13 +250,13 @@ public class ConfigHandler {
 				}
 			}
 			else
-				LOGGER.warn("Not enough information provided for effect \"{}\", skipping", entry);
+				SecurityCraft.LOGGER.warn("Not enough information provided for effect \"{}\", skipping", entry);
 		}
 	}
 
 	private static boolean validateValue(int value, String entry) {
 		if (value <= 0) {
-			LOGGER.warn("Value \"{}\" cannot be less than or equal to zero for entry \"{}\", skipping", value, entry);
+			SecurityCraft.LOGGER.warn("Value \"{}\" cannot be less than or equal to zero for entry \"{}\", skipping", value, entry);
 			return false;
 		}
 
@@ -273,7 +269,7 @@ public class ConfigHandler {
 		}
 		catch (Exception e) {
 			if (!FMLLoader.getLaunchHandler().isData()) {
-				LOGGER.warn("Error when getting config value with getOrDefault! Please report this.");
+				SecurityCraft.LOGGER.warn("Error when getting config value with getOrDefault! Please report this.");
 				e.printStackTrace();
 			}
 
