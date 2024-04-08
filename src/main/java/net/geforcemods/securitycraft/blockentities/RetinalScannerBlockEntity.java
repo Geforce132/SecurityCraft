@@ -4,9 +4,6 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
@@ -14,6 +11,7 @@ import com.mojang.authlib.properties.Property;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
@@ -46,7 +44,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements IViewActivated, ITickableTileEntity, ILockable {
-	private static final Logger LOGGER = LogManager.getLogger();
 	private static PlayerProfileCache profileCache;
 	private static MinecraftSessionService sessionService;
 	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
@@ -244,10 +241,10 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 							gameprofile = sessionService.fillProfileProperties(gameprofile, true);
 						}
 						catch (IllegalArgumentException e) { //this seems to only happen on offline servers. log the exception nonetheless, just in case
-							LOGGER.warn("========= WARNING =========");
-							LOGGER.warn("The following error is likely caused by using an offline server. If you are not using an offline server (online-mode=true in the server.properties), please reach out to the SecurityCraft devs in their Discord #help channel: https://discord.gg/U8DvBAW");
-							LOGGER.warn("To mitigate this error, you can set the configuration option \"retinalScannerFace\" to false, in order to disable rendering the owner's face on retinal scanners.");
-							LOGGER.error("The exception's stacktrace is as follows:", e);
+							SecurityCraft.LOGGER.warn("========= WARNING =========");
+							SecurityCraft.LOGGER.warn("The following error is likely caused by using an offline server. If you are not using an offline server (online-mode=true in the server.properties), please reach out to the SecurityCraft devs in their Discord #help channel: https://discord.gg/U8DvBAW");
+							SecurityCraft.LOGGER.warn("To mitigate this error, you can set the configuration option \"retinalScannerFace\" to false, in order to disable rendering the owner's face on retinal scanners.");
+							SecurityCraft.LOGGER.error("The exception's stacktrace is as follows:", e);
 						}
 					}
 					return gameprofile;

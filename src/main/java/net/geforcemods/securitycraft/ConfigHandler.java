@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Lists;
 
@@ -25,7 +23,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class ConfigHandler {
-	private static final Logger LOGGER = LogManager.getLogger();
 	public static final ForgeConfigSpec CLIENT_SPEC;
 	public static final Client CLIENT;
 	public static final ForgeConfigSpec SERVER_SPEC;
@@ -238,7 +235,7 @@ public class ConfigHandler {
 			String[] split = entry.split("\\|");
 
 			if (split.length != 3) {
-				LOGGER.warn("Not enough information provided for effect \"{}\", skipping", entry);
+				SecurityCraft.LOGGER.warn("Not enough information provided for effect \"{}\", skipping", entry);
 				continue;
 			}
 
@@ -251,7 +248,7 @@ public class ConfigHandler {
 			ResourceLocation effectLocation = new ResourceLocation(split[0]);
 
 			if (!ForgeRegistries.POTIONS.containsKey(effectLocation)) {
-				LOGGER.warn("Effect \"{}\" does not exist, skipping", effectLocation);
+				SecurityCraft.LOGGER.warn("Effect \"{}\" does not exist, skipping", effectLocation);
 				continue;
 			}
 
@@ -262,7 +259,7 @@ public class ConfigHandler {
 
 	private static boolean validateValue(int value, String entry) {
 		if (value <= 0) {
-			LOGGER.warn("Value \"{}\" cannot be less than or equal to zero for entry \"{}\", skipping", value, entry);
+			SecurityCraft.LOGGER.warn("Value \"{}\" cannot be less than or equal to zero for entry \"{}\", skipping", value, entry);
 			return false;
 		}
 

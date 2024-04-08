@@ -3,11 +3,9 @@ package net.geforcemods.securitycraft.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -16,7 +14,6 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.tileentity.TileEntity;
 
 public class BlockEntityRenderDelegate {
-	private static final Logger LOGGER = LogManager.getLogger();
 	private final Map<TileEntity, DelegateRendererInfo> renderDelegates = new HashMap<>();
 
 	public void putDelegateFor(TileEntity originalBlockEntity, BlockState delegateState) {
@@ -62,7 +59,7 @@ public class BlockEntityRenderDelegate {
 				copyPose.popPose();
 			}
 			catch (Exception e) {
-				LOGGER.warn("Error when delegate-rendering {}", delegateRendererInfo.delegateBlockEntity().getType().getRegistryName());
+				SecurityCraft.LOGGER.warn("Error when delegate-rendering {}", delegateRendererInfo.delegateBlockEntity().getType().getRegistryName());
 				e.printStackTrace();
 				removeDelegateOf(originalBlockEntity);
 			}
