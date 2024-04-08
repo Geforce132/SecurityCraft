@@ -22,7 +22,7 @@ import net.minecraft.world.phys.AABB;
 
 public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	private static final int TICKS_BETWEEN_ATTACKS = 5;
-	private DoubleOption searchRadiusOption = new DoubleOption("searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
+	private DoubleOption searchRadiusOption = new DoubleOption("searchRadius", 5.0D, 5.0D, 20.0D, 1.0D);
 	private DisabledOption disabled = new DisabledOption(false);
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 

@@ -30,7 +30,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	public static final int MAXIMUM_ALARM_SOUND_LENGTH = 3600; //one hour
-	private IntOption range = new IntOption("range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
+	private IntOption range = new IntOption("range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1);
 	private DisabledOption disabled = new DisabledOption(false);
 	private BooleanOption resetCooldown = new BooleanOption("resetCooldown", true);
 	private int cooldown = 0;
