@@ -38,7 +38,7 @@ public enum TargetingMode {
 		boolean isPlayer = entity instanceof Player;
 
 		if (isPlayer && allowsPlayers() || !isPlayer && allowsMobs()) {
-			return (!isPlayer || !(be.isOwnedBy((Player) entity) && be.ignoresOwner()) && !((Player) entity).isCreative()) //Player checks
+			return (!isPlayer || !(be.isOwnedBy(entity) && be.ignoresOwner()) && !((Player) entity).isCreative()) //Player checks
 					&& entity.canBeSeenByAnyone() && (!checkInvisibility || !Utils.isEntityInvisible(entity)) && !(entity instanceof OwnableEntity ownableEntity && be.allowsOwnableEntity(ownableEntity)); //checks for all entities
 		}
 		else

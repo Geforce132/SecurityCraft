@@ -7,6 +7,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.ToIntFunction;
 
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
@@ -210,7 +211,7 @@ public class SCCreativeModeTabs {
 				output.accept(SCContent.GLOW_DISPLAY_CASE.get());
 			}).build());
 
-	private static <T> Comparator<ItemStack> stackComparator(Function<Item, T> blockInstanceGetter, Function<T, Integer> indexGetter) {
+	private static <T> Comparator<ItemStack> stackComparator(Function<Item, T> blockInstanceGetter, ToIntFunction<T> indexGetter) {
 		return (a, b) -> {
 			T blockA = blockInstanceGetter.apply(a.getItem());
 			T blockB = blockInstanceGetter.apply(b.getItem());
@@ -224,8 +225,8 @@ public class SCCreativeModeTabs {
 			else if (blockA == blockB)
 				return 0;
 
-			int indexA = indexGetter.apply(blockA);
-			int indexB = indexGetter.apply(blockB);
+			int indexA = indexGetter.applyAsInt(blockA);
+			int indexB = indexGetter.applyAsInt(blockB);
 			boolean indexAExists = indexA != -1;
 
 			if (indexAExists ^ indexB != -1)

@@ -40,19 +40,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.fml.ModList;
 
 public final class WTHITDataProvider extends WailaCompatConstants implements IWailaPlugin, IBlockComponentProvider, IEntityComponentProvider, IEventListener {
-	public static final WTHITDataProvider INSTANCE = new WTHITDataProvider();
-
 	@Override
 	public void register(IRegistrar registrar) {
-		registrar.addEventListener(INSTANCE);
+		registrar.addEventListener(this);
 		registrar.addSyncedConfig(SHOW_OWNER, true, true);
 		registrar.addSyncedConfig(SHOW_MODULES, true, true);
 		registrar.addSyncedConfig(SHOW_CUSTOM_NAME, true, true);
-		registrar.addComponent((IBlockComponentProvider) INSTANCE, TooltipPosition.HEAD, IOverlayDisplay.class);
-		registrar.addComponent((IBlockComponentProvider) INSTANCE, TooltipPosition.BODY, IOwnable.class);
-		registrar.addComponent((IBlockComponentProvider) INSTANCE, TooltipPosition.TAIL, IOverlayDisplay.class);
-		registrar.addIcon((IBlockComponentProvider) INSTANCE, IOverlayDisplay.class);
-		registrar.addComponent((IEntityComponentProvider) INSTANCE, TooltipPosition.BODY, Sentry.class);
+		registrar.addComponent((IBlockComponentProvider) this, TooltipPosition.HEAD, IOverlayDisplay.class);
+		registrar.addComponent((IBlockComponentProvider) this, TooltipPosition.BODY, IOwnable.class);
+		registrar.addComponent((IBlockComponentProvider) this, TooltipPosition.TAIL, IOverlayDisplay.class);
+		registrar.addIcon((IBlockComponentProvider) this, IOverlayDisplay.class);
+		registrar.addComponent((IEntityComponentProvider) this, TooltipPosition.BODY, Sentry.class);
 	}
 
 	@Override

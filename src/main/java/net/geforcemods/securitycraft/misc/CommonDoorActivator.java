@@ -53,10 +53,12 @@ public class CommonDoorActivator implements IDoorActivator {
 						case X, Z:
 							if (attachFace != AttachFace.WALL || direction != facing)
 								return false;
+
 							break;
 						case Y:
 							if ((direction == Direction.UP && attachFace != AttachFace.FLOOR) || (direction == Direction.DOWN && attachFace != AttachFace.CEILING))
 								return false;
+
 							break;
 					}
 				}

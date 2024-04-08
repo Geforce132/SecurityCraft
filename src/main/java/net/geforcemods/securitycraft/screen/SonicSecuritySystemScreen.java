@@ -82,7 +82,6 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 
 		boolean isActive = be.isActive();
 		boolean hasNotes = be.getNumberOfNotes() > 0;
-		int leftPos = (width - xSize) / 2;
 		int buttonX = leftPos + xSize - 155;
 
 		powerButton = addRenderableWidget(new Button(buttonX, height / 2 - 59, 150, 20, getPowerString(be.isActive()), button -> {
