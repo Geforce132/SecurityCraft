@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.entity.camera;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
@@ -25,11 +24,11 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class SecurityCamera extends Entity {
 	private static final List<Player> DISMOUNTED_PLAYERS = new ArrayList<>();
-	protected final double cameraSpeed = ConfigHandler.CLIENT.cameraSpeed.get();
 	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
 	private int initialChunkLoadingDistance = 0;
 	private boolean hasSentChunks = false;
+	private SecurityCameraBlockEntity be;
 
 	public SecurityCamera(EntityType<SecurityCamera> type, Level level) {
 		super(SCContent.SECURITY_CAMERA_ENTITY.get(), level);
@@ -48,11 +47,13 @@ public class SecurityCamera extends Entity {
 		double y = pos.getY() + 0.5D;
 		double z = pos.getZ() + 0.5D;
 
-		if (cam.isDown())
+		be = cam;
+
+		if (be.isDown())
 			y += 0.25D;
 
 		setPos(x, y, z);
-		setRot(cam.getInitialYRotation(), cam.getInitialXRotation());
+		setRot(be.getInitialYRotation(), be.getInitialXRotation());
 	}
 
 	@Override
@@ -71,7 +72,7 @@ public class SecurityCamera extends Entity {
 	}
 
 	public boolean isCameraDown() {
-		return level.getBlockEntity(blockPosition()) instanceof SecurityCameraBlockEntity cam && cam.isDown();
+		return getBlockEntity() != null && !be.isRemoved() && be.isDown();
 	}
 
 	public void setRotation(float yaw, float pitch) {
@@ -118,8 +119,8 @@ public class SecurityCamera extends Entity {
 	@Deprecated
 	public void discardCamera() {
 		if (!level.isClientSide) {
-			if (level.getBlockEntity(blockPosition()) instanceof SecurityCameraBlockEntity camBe)
-				camBe.stopViewing();
+			if (getBlockEntity() != null && !be.isRemoved())
+				be.stopViewing();
 
 			SectionPos chunkPos = SectionPos.of(blockPosition());
 			int chunkLoadingDistance = initialChunkLoadingDistance <= 0 ? level.getServer().getPlayerList().getViewDistance() : initialChunkLoadingDistance;
@@ -149,5 +150,16 @@ public class SecurityCamera extends Entity {
 	@Override
 	public boolean isAlwaysTicking() {
 		return true;
+	}
+
+	public SecurityCameraBlockEntity getBlockEntity() {
+		if (be == null) {
+			if (level.getBlockEntity(blockPosition()) instanceof SecurityCameraBlockEntity camera)
+				be = camera;
+			else
+				SecurityCraft.LOGGER.warn("No security camera block entity was found at {}. Try breaking and replacing the block!", blockPosition());
+		}
+
+		return be;
 	}
 }

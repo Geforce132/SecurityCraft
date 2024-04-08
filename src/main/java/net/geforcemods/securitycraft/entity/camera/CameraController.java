@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -53,8 +54,8 @@ public class CameraController {
 				//@formatter:off
 				new ViewMovementKeyHandler(Minecraft.getInstance().options.keyUp, CameraController::moveViewUp),
 				new ViewMovementKeyHandler(Minecraft.getInstance().options.keyDown, CameraController::moveViewDown),
-				new ViewMovementKeyHandler(Minecraft.getInstance().options.keyLeft, cam -> moveViewHorizontally(cam, cam.getYRot() - (float) cam.cameraSpeed * cam.zoomAmount)),
-				new ViewMovementKeyHandler(Minecraft.getInstance().options.keyRight, cam -> moveViewHorizontally(cam, cam.getYRot() + (float) cam.cameraSpeed * cam.zoomAmount))
+				new ViewMovementKeyHandler(Minecraft.getInstance().options.keyLeft, cam -> moveViewHorizontally(cam, cam.getYRot() - getMovementSpeed(cam) * cam.zoomAmount)),
+				new ViewMovementKeyHandler(Minecraft.getInstance().options.keyRight, cam -> moveViewHorizontally(cam, cam.getYRot() + getMovementSpeed(cam) * cam.zoomAmount))
 				//@formatter:on
 			};
 		}
@@ -131,7 +132,7 @@ public class CameraController {
 	}
 
 	public static void moveViewUp(SecurityCamera cam) {
-		float next = cam.getXRot() - (float) cam.cameraSpeed * cam.zoomAmount;
+		float next = cam.getXRot() - getMovementSpeed(cam) * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
 			if (next > 40F)
@@ -142,7 +143,7 @@ public class CameraController {
 	}
 
 	public static void moveViewDown(SecurityCamera cam) {
-		float next = cam.getXRot() + (float) cam.cameraSpeed * cam.zoomAmount;
+		float next = cam.getXRot() + getMovementSpeed(cam) * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
 			if (next < 90F)
@@ -238,6 +239,15 @@ public class CameraController {
 
 		if (potionIconsElementEnabledPreviously)
 			OverlayRegistry.enableOverlay(ForgeIngameGui.POTION_ICONS_ELEMENT, true);
+	}
+
+	public static float getMovementSpeed(SecurityCamera cam) {
+		SecurityCameraBlockEntity be = cam.getBlockEntity();
+
+		if (be != null)
+			return (float) be.getMovementSpeed();
+
+		return 0.0F;
 	}
 
 	public static class ViewMovementKeyHandler {

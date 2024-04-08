@@ -44,7 +44,6 @@ public class ConfigHandler {
 
 	public static class Client {
 		public BooleanValue sayThanksMessage;
-		public DoubleValue cameraSpeed;
 		public BooleanValue reinforcedBlockTint;
 		public IntValue reinforcedBlockTintColor;
 
@@ -53,10 +52,6 @@ public class ConfigHandler {
 			sayThanksMessage = builder
 					.comment("Display a 'tip' message at spawn?")
 					.define("sayThanksMessage", true);
-
-			cameraSpeed = builder
-					.comment("How fast can you rotate when mounted to a camera and holding W-A-S-D?")
-					.defineInRange("cameraSpeed", 2.0D, 0.0D, Double.MAX_VALUE);
 
 			reinforcedBlockTint = builder
 					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? This setting can be overridden by servers.")
