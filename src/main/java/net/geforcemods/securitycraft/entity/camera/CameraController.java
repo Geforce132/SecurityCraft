@@ -2,9 +2,9 @@ package net.geforcemods.securitycraft.entity.camera;
 
 import java.util.function.Consumer;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -38,8 +38,8 @@ public class CameraController {
 	private static final ViewMovementKeyHandler[] MOVE_KEY_HANDLERS = {
 			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindForward, CameraController::moveViewUp),
 			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindBack, CameraController::moveViewDown),
-			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindLeft, cam -> moveViewHorizontally(cam, cam.rotationYaw - ConfigHandler.cameraSpeed * cam.zoomAmount)),
-			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindRight, cam -> moveViewHorizontally(cam, cam.rotationYaw + ConfigHandler.cameraSpeed * cam.zoomAmount))
+			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindLeft, cam -> moveViewHorizontally(cam, cam.rotationYaw - getMovementSpeed(cam) * cam.zoomAmount)),
+			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindRight, cam -> moveViewHorizontally(cam, cam.rotationYaw + getMovementSpeed(cam) * cam.zoomAmount))
 	};
 	//@formatter:on
 	private static int screenshotSoundCooldown = 0;
@@ -109,7 +109,7 @@ public class CameraController {
 	}
 
 	public static void moveViewUp(SecurityCamera cam) {
-		float next = cam.rotationPitch - ConfigHandler.cameraSpeed * cam.zoomAmount;
+		float next = cam.rotationPitch - getMovementSpeed(cam) * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
 			if (next > 40F)
@@ -120,7 +120,7 @@ public class CameraController {
 	}
 
 	public static void moveViewDown(SecurityCamera cam) {
-		float next = cam.rotationPitch + ConfigHandler.cameraSpeed * cam.zoomAmount;
+		float next = cam.rotationPitch + getMovementSpeed(cam) * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
 			if (next < 90F)
@@ -196,6 +196,15 @@ public class CameraController {
 
 	public static void setDefaultViewingDirection(SecurityCamera cam) {
 		SecurityCraft.network.sendToServer(new SetDefaultCameraViewingDirection(cam));
+	}
+
+	public static float getMovementSpeed(SecurityCamera cam) {
+		SecurityCameraBlockEntity be = cam.getBlockEntity();
+
+		if (be != null)
+			return (float) be.getMovementSpeed();
+
+		return 0.0F;
 	}
 
 	public static class ViewMovementKeyHandler {

@@ -3,6 +3,9 @@ package net.geforcemods.securitycraft;
 import java.lang.reflect.Field;
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
@@ -61,6 +64,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(modid = SecurityCraft.MODID, name = "SecurityCraft", dependencies = "required-after:forge@[14.23.5.2826,)", updateJSON = "https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json", acceptedMinecraftVersions = "[1.12.2]")
 public class SecurityCraft {
+	public static final Logger LOGGER = LogManager.getLogger();
 	public static final String MODID = "securitycraft";
 	public static final Random RANDOM = new Random();
 	public static final CreativeTabs TECHNICAL_TAB = new SCTechnicalTab();

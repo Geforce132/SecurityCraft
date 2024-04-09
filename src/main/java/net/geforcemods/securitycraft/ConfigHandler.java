@@ -102,11 +102,6 @@ public class ConfigHandler {
 	@LangKey("config.securitycraft:laserBlockRange")
 	public static int laserBlockRange = 5;
 
-	@Name("Camera Speed when not using LookingGlass:")
-	@LangKey("config.securitycraft:cameraSpeed")
-	@RequiresMcRestart
-	public static float cameraSpeed = 2.0F;
-
 	@Name("Inventory Scanner range:")
 	@LangKey("config.securitycraft:inventoryScannerRange")
 	public static int inventoryScannerRange = 2;

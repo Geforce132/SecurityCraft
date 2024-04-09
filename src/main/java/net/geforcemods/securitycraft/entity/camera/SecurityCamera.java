@@ -23,6 +23,7 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
 	private Ticket chunkTicket;
+	private SecurityCameraBlockEntity be;
 
 	public SecurityCamera(World world) {
 		super(world);
@@ -46,17 +47,16 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 			return;
 		}
 
-		SecurityCameraBlockEntity cam = (SecurityCameraBlockEntity) te;
-
+		be = (SecurityCameraBlockEntity) te;
 		x += 0.5D;
 		y += 0.5D;
 		z += 0.5D;
 
-		if (cam.isDown())
+		if (be.isDown())
 			y += 0.25D;
 
 		setPosition(x, y, z);
-		setRotation(cam.getInitialYRotation(), cam.getInitialXRotation());
+		setRotation(be.getInitialYRotation(), be.getInitialXRotation());
 	}
 
 	@Override
@@ -75,9 +75,7 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 	}
 
 	public boolean isCameraDown() {
-		BlockPos pos = new BlockPos(posX, posY, posZ);
-
-		return world.getTileEntity(pos) instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) world.getTileEntity(pos)).isDown();
+		return getBlockEntity() != null && !be.isInvalid() && be.isDown();
 	}
 
 	//here to make this method accessible to CameraController
@@ -135,10 +133,8 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 	@Deprecated
 	public void discardCamera() {
 		if (!world.isRemote) {
-			TileEntity te = world.getTileEntity(new BlockPos(posX, posY, posZ));
-
-			if (te instanceof SecurityCameraBlockEntity)
-				((SecurityCameraBlockEntity) te).stopViewing();
+			if (getBlockEntity() != null && !be.isInvalid())
+				be.stopViewing();
 
 			if (chunkTicket != null) {
 				ForgeChunkManager.releaseTicket(chunkTicket);
@@ -173,4 +169,17 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound tag) {}
+
+	public SecurityCameraBlockEntity getBlockEntity() {
+		if (be == null) {
+			TileEntity te = world.getTileEntity(getPosition().down());
+
+			if (te instanceof SecurityCameraBlockEntity)
+				be = (SecurityCameraBlockEntity) te;
+			else
+				SecurityCraft.LOGGER.warn("No security camera block entity was found at {}. Try breaking and replacing the block!", getPosition());
+		}
+
+		return be;
+	}
 }

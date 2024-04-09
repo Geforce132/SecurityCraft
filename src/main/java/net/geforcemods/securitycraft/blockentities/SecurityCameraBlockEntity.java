@@ -33,14 +33,14 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class SecurityCameraBlockEntity extends CustomizableBlockEntity implements IEMPAffectedBE, ITickable, IInventoryChangedListener, SingleLensContainer {
-	private static final double CAMERA_SPEED = 0.0180D;
 	private double cameraRotation = 0.0D;
 	private double oCameraRotation = 0.0D;
 	private boolean addToRotation = SecurityCraft.RANDOM.nextBoolean();
 	private boolean down = false, initialized = false;
 	private boolean shutDown = false;
 	private float initialXRotation, initialYRotation;
-	private DoubleOption rotationSpeedOption = new DoubleOption(this::getPos, "rotationSpeed", CAMERA_SPEED, 0.01D, 0.025D, 0.001D, true);
+	private DoubleOption rotationSpeedOption = new DoubleOption(this::getPos, "rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D, true);
+	private DoubleOption movementSpeedOption = new DoubleOption(this::getPos, "movementSpeed", 2.0D, 0.0D, 20.0D, 0.1D, true);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
 	private DoubleOption customRotationOption = new DoubleOption(this::getPos, "customRotation", getCameraRotation(), 1.55D, -1.55D, rotationSpeedOption.get(), true);
 	private DisabledOption disabled = new DisabledOption(false);
@@ -196,7 +196,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				rotationSpeedOption, shouldRotateOption, customRotationOption, disabled, opacity
+				rotationSpeedOption, shouldRotateOption, customRotationOption, disabled, opacity, movementSpeedOption
 		};
 	}
 
@@ -267,6 +267,10 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 	public int getOpacity() {
 		return opacity.get();
+	}
+
+	public double getMovementSpeed() {
+		return movementSpeedOption.get();
 	}
 
 	public void setDefaultViewingDirection(EnumFacing facing) {

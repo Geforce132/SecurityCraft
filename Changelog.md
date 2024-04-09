@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
+
+- Change: The cameraSpeed client side config setting has been moved to be a per-block option, accessible with the Universal Block Modifier
+
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
 - New: Items in open Display Cases can now be picked using the "Pick Block" key
