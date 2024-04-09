@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
@@ -25,9 +22,6 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 @Config(modid = SecurityCraft.MODID, category = "options")
 @EventBusSubscriber(modid = SecurityCraft.MODID)
 public class ConfigHandler {
-	@Ignore
-	private static final Logger LOGGER = LogManager.getLogger();
-
 	//@formatter:off
 	@Name("codebreaker_chance")
 	@RangeDouble(min = -1.0D, max = 1.0D)
@@ -242,7 +236,7 @@ public class ConfigHandler {
 			String[] split = entry.split("\\|");
 
 			if (split.length != 3) {
-				LOGGER.warn("Not enough information provided for effect \"{}\", skipping", entry);
+				SecurityCraft.LOGGER.warn("Not enough information provided for effect \"{}\", skipping", entry);
 				continue;
 			}
 
@@ -255,7 +249,7 @@ public class ConfigHandler {
 			ResourceLocation effectLocation = new ResourceLocation(split[0]);
 
 			if (!ForgeRegistries.POTIONS.containsKey(effectLocation)) {
-				LOGGER.warn("Effect \"{}\" does not exist, skipping", effectLocation);
+				SecurityCraft.LOGGER.warn("Effect \"{}\" does not exist, skipping", effectLocation);
 				continue;
 			}
 
@@ -266,7 +260,7 @@ public class ConfigHandler {
 
 	private static boolean validateValue(int value, String entry) {
 		if (value <= 0) {
-			LOGGER.warn("Value \"{}\" cannot be less than or equal to zero for entry \"{}\", skipping", value, entry);
+			SecurityCraft.LOGGER.warn("Value \"{}\" cannot be less than or equal to zero for entry \"{}\", skipping", value, entry);
 			return false;
 		}
 
