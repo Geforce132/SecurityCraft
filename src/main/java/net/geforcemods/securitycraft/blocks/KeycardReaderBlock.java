@@ -98,7 +98,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 				if (!isKeycardHolder && (!(item instanceof KeycardItem) || !stack.hasTagCompound() || !stack.getTagCompound().getBoolean("linked")) && !isCodebreaker)
 					noKeycardRightclick.accept(stack, be);
 				else if (item != SCContent.limitedUseKeycard) //limited use keycards are only crafting components now
-					return be.onRightClickWithActionItem(stack, hand, player, isCodebreaker, isKeycardHolder);
+					return be.onRightClickWithActionItem(stack, player, isCodebreaker, isKeycardHolder);
 			}
 		}
 

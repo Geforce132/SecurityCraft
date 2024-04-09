@@ -61,7 +61,7 @@ public class UniversalBlockReinforcerItem extends Item {
 				try {
 					convertedState = ((IReinforcedBlock) blockToConvert).convertToVanillaState(state);
 				}
-				catch (Exception e) {
+				catch (IllegalStateException e) {
 					e.printStackTrace();
 				}
 			}

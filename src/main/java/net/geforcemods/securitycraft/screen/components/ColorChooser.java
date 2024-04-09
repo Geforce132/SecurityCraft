@@ -5,13 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-
-import com.google.common.base.Predicate;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;

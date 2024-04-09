@@ -72,7 +72,7 @@ public class ElectrifiedIronFenceBlock extends OwnableFenceBlock {
 		else if (entity instanceof EntityItem) //so dropped items don't get destroyed
 			return;
 		else if (entity instanceof EntityPlayer) { //owner check
-			if (te.isOwnedBy((EntityPlayer) entity))
+			if (te.isOwnedBy(entity))
 				return;
 		}
 		else if (((OwnableBlockEntity) world.getTileEntity(pos)).allowsOwnableEntity(entity))

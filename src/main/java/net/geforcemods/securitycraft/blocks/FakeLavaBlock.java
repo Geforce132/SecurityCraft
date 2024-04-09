@@ -111,7 +111,7 @@ public class FakeLavaBlock extends BlockDynamicLiquid {
 		BlockPos downPos = pos.down();
 		IBlockState stateBelow = world.getBlockState(downPos);
 
-		if (canFlowInto(world, downPos, stateBelow)) {
+		if (canFlowInto(stateBelow)) {
 			if (material == Material.LAVA && world.getBlockState(downPos).getMaterial() == Material.WATER) {
 				world.setBlockState(downPos, ForgeEventFactory.fireFluidPlaceBlockEvent(world, downPos, pos, Blocks.STONE.getDefaultState()));
 				triggerMixEffects(world, downPos);
@@ -145,7 +145,7 @@ public class FakeLavaBlock extends BlockDynamicLiquid {
 	}
 
 	private void tryFlowInto(World world, BlockPos pos, IBlockState state, int level) {
-		if (canFlowInto(world, pos, state)) {
+		if (canFlowInto(state)) {
 			if (state.getBlock() != Blocks.AIR)
 				if (material == Material.LAVA)
 					triggerMixEffects(world, pos);
@@ -245,7 +245,7 @@ public class FakeLavaBlock extends BlockDynamicLiquid {
 		}
 	}
 
-	private boolean canFlowInto(World world, BlockPos pos, IBlockState state) {
+	private boolean canFlowInto(IBlockState state) {
 		Material material = state.getMaterial();
 
 		return material != this.material && material != Material.LAVA && !isBlocked(state);

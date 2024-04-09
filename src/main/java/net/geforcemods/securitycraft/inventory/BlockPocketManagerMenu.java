@@ -14,15 +14,15 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class BlockPocketManagerMenu extends Container {
 	private final BlockPocketManagerBlockEntity te;
-	public final boolean storage;
+	public final boolean hasStorageModule;
 	public final boolean isOwner;
 
 	public BlockPocketManagerMenu(InventoryPlayer inventory, BlockPocketManagerBlockEntity te) {
 		this.te = te;
 		isOwner = te != null && te.isOwnedBy(inventory.player);
-		storage = te != null && te.isModuleEnabled(ModuleType.STORAGE) && isOwner;
+		hasStorageModule = te != null && te.isModuleEnabled(ModuleType.STORAGE) && isOwner;
 
-		if (storage) {
+		if (hasStorageModule) {
 			for (int y = 0; y < 3; y++) {
 				for (int x = 0; x < 9; ++x) {
 					addSlotToContainer(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18 + 74));

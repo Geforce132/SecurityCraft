@@ -684,7 +684,7 @@ public class SCEventHandler {
 		tileEntities = tileEntities.stream().distinct().sorted(Comparator.comparingDouble(t -> Math.min(t.getPos().distanceSqToCenter(target.x, target.y, target.z), t.getPos().distanceSqToCenter(source.x, source.y, source.z)))).collect(Collectors.toList());
 
 		for (RiftStabilizerBlockEntity te : tileEntities) {
-			if (!te.isDisabled() && te.getFilter(type) && (!(entity instanceof EntityPlayer) || !(te.isOwnedBy(((EntityPlayer) entity)) && te.ignoresOwner()) && !te.isAllowed(entity))) {
+			if (!te.isDisabled() && te.getFilter(type) && (!(entity instanceof EntityPlayer) || !(te.isOwnedBy((entity)) && te.ignoresOwner()) && !te.isAllowed(entity))) {
 				riftStabilizer = te;
 				targetPosProhibited = te.getPos().distanceSqToCenter(target.x, target.y, target.z) < te.getPos().distanceSqToCenter(source.x, source.y, source.z);
 				break;

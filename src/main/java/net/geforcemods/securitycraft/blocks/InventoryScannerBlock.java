@@ -134,7 +134,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		}
 
 		if (player instanceof EntityPlayer) {
-			if (!connectedScanner.isOwnedBy((EntityPlayer) player))
+			if (!connectedScanner.isOwnedBy(player))
 				return;
 		}
 		else if (!connectedScanner.getOwner().owns(thisTe))

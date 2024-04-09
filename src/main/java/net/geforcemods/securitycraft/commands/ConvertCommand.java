@@ -198,7 +198,7 @@ public class ConvertCommand extends CommandTreeBase {
 				try {
 					level.setBlockState(pos, ((IReinforcedBlock) block).convertToVanillaState(state));
 				}
-				catch (Exception e) {
+				catch (IllegalStateException e) {
 					e.printStackTrace();
 				}
 

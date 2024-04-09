@@ -248,7 +248,7 @@ public class BlockReinforcerMenu extends Container {
 					try {
 						newStack = ((IReinforcedBlock) blockToConvert).convertToVanillaStack(stack);
 					}
-					catch (Exception e) {
+					catch (IllegalStateException e) {
 						e.printStackTrace();
 						return;
 					}

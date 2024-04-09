@@ -32,6 +32,8 @@ public class LinkingStateItemPropertyHandler {
 	public static final float EMPTY_STATE = 0.0F, UNKNOWN_STATE = 0.25F, NOT_LINKED_STATE = 0.5F, LINKED_STATE = 0.75F;
 	public static final ResourceLocation LINKING_STATE_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "linking_state");
 
+	private LinkingStateItemPropertyHandler() {}
+
 	public static float cameraMonitor(ItemStack stack, World world, EntityLivingBase entity) {
 		if (!(entity instanceof EntityPlayer))
 			return EMPTY_STATE;

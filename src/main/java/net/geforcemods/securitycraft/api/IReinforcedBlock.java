@@ -17,11 +17,11 @@ public interface IReinforcedBlock {
 		return ((Block) this).getStateFromMeta(state.getBlock().getMetaFromState(state));
 	}
 
-	public default IBlockState convertToVanillaState(IBlockState state) throws Exception {
+	public default IBlockState convertToVanillaState(IBlockState state) throws IllegalStateException {
 		List<Block> vanillaBlocks = getVanillaBlocks();
 
 		if (vanillaBlocks.size() > 1)
-			throw new Exception(state.getBlock().getRegistryName() + " has more than 1 vanilla counterpart, but does not override convertToVanillaState! Cannot determine vanilla state.");
+			throw new IllegalStateException(state.getBlock().getRegistryName() + " has more than 1 vanilla counterpart, but does not override convertToVanillaState! Cannot determine vanilla state.");
 
 		return vanillaBlocks.get(0).getStateFromMeta(state.getBlock().getMetaFromState(state));
 	}
@@ -30,11 +30,11 @@ public interface IReinforcedBlock {
 		return new ItemStack((Block) this, 1, stackToConvert.getMetadata());
 	}
 
-	public default ItemStack convertToVanillaStack(ItemStack stackToConvert) throws Exception {
+	public default ItemStack convertToVanillaStack(ItemStack stackToConvert) throws IllegalStateException {
 		List<Block> vanillaBlocks = getVanillaBlocks();
 
 		if (vanillaBlocks.size() > 1)
-			throw new Exception(stackToConvert.getItem().getRegistryName() + " has more than 1 vanilla counterpart, but does not override convertToVanillaStack! Cannot determine vanilla stack.");
+			throw new IllegalStateException(stackToConvert.getItem().getRegistryName() + " has more than 1 vanilla counterpart, but does not override convertToVanillaStack! Cannot determine vanilla stack.");
 
 		return new ItemStack(vanillaBlocks.get(0), 1, stackToConvert.getMetadata());
 	}

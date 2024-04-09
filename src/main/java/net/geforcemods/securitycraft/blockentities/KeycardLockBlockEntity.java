@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
 
 public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
@@ -17,7 +16,7 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 	private boolean setUp = false;
 
 	@Override
-	public boolean onRightClickWithActionItem(ItemStack stack, EnumHand hand, EntityPlayer player, boolean isCodebreaker, boolean isKeycardHolder) {
+	public boolean onRightClickWithActionItem(ItemStack stack, EntityPlayer player, boolean isCodebreaker, boolean isKeycardHolder) {
 		if (!isSetUp() && isOwnedBy(player)) {
 			if (stack.getItem() instanceof KeycardItem) {
 				KeycardItem item = (KeycardItem) stack.getItem();
@@ -53,7 +52,7 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 			}
 		}
 
-		return super.onRightClickWithActionItem(stack, hand, player, isCodebreaker, isKeycardHolder);
+		return super.onRightClickWithActionItem(stack, player, isCodebreaker, isKeycardHolder);
 	}
 
 	public boolean isSetUp() {

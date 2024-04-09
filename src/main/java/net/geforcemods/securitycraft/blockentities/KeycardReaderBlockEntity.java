@@ -27,7 +27,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
@@ -100,7 +99,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 			activate();
 	}
 
-	public boolean onRightClickWithActionItem(ItemStack stack, EnumHand hand, EntityPlayer player, boolean isCodebreaker, boolean isKeycardHolder) {
+	public boolean onRightClickWithActionItem(ItemStack stack, EntityPlayer player, boolean isCodebreaker, boolean isKeycardHolder) {
 		Block block = world.getBlockState(pos).getBlock();
 
 		if (isCodebreaker) {

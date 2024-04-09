@@ -124,11 +124,6 @@ public class DisplayCaseBlock extends OwnableBlock {
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
-		return super.canPlaceBlockOnSide(world, pos, side);
-	}
-
-	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		EnumFacing connectedDirection = getConnectedDirection(state);
 

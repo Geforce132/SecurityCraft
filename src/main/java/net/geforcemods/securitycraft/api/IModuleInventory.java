@@ -532,7 +532,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				//only deny players that are not the owner
 				if (entity instanceof EntityPlayer) {
 					//if the player IS the owner, fall back to the default handling (check if the name is on the list)
-					if (!((IOwnable) getTileEntity()).isOwnedBy((EntityPlayer) entity))
+					if (!((IOwnable) getTileEntity()).isOwnedBy(entity))
 						return true;
 				}
 				else

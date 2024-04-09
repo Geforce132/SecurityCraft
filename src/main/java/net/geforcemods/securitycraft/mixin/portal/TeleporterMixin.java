@@ -24,6 +24,6 @@ public class TeleporterMixin {
 		if (offsetState.getBlock() instanceof IReinforcedBlock)
 			return Blocks.AIR.getDefaultState(); //this causes the check to pass (because air's material is not solid) which results in a completely new portal position to be tried out
 		else
-			return offsetState; //block is not a reinforced block, proceed as normal;
+			return offsetState; //block is not a reinforced block, proceed as normal
 	}
 }

@@ -196,10 +196,10 @@ public class GuiUtils {
 		}
 
 		public void drawString(GameSettings options, FontRenderer font, int scaledWidth, int scaledHeight, int heightOffset, SecurityCameraBlockEntity be) {
-			String text = text().apply(options).getFormattedText();
-			boolean whiteText = whiteText().test(be);
+			String formattedText = text().apply(options).getFormattedText();
+			boolean shouldTextBeWhite = whiteText().test(be);
 
-			font.drawStringWithShadow(text, scaledWidth - font.getStringWidth(text) - 8, scaledHeight - heightOffset, whiteText ? 0xFFFFFF : 0xFF3377);
+			font.drawStringWithShadow(formattedText, scaledWidth - font.getStringWidth(formattedText) - 8, scaledHeight - heightOffset, shouldTextBeWhite ? 0xFFFFFF : 0xFF3377);
 		}
 
 		public Function<GameSettings, TextComponentTranslation> text() {

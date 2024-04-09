@@ -56,7 +56,7 @@ public class TargetNearestPlayerOrMobGoal extends EntityAINearestAttackableTarge
 					if(potentialTarget instanceof EntityPlayer
 							&& !((EntityPlayer) potentialTarget).isSpectator()
 							&& !((EntityPlayer) potentialTarget).isCreative()
-							&& !((Sentry) taskOwner).isOwnedBy(((EntityPlayer)potentialTarget))
+							&& !((Sentry) taskOwner).isOwnedBy((potentialTarget))
 							&& !sentry.isTargetingAllowedPlayer(potentialTarget)
 							&& !Utils.isEntityInvisible(potentialTarget)) {
 						break;

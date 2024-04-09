@@ -31,6 +31,7 @@ public class FakeLavaBaseBlock extends BlockStaticLiquid implements IOverlayDisp
 
 	private void updateLiquid(World world, BlockPos pos, IBlockState state) {
 		BlockDynamicLiquid liquid = getFlowingBlock(material);
+
 		world.setBlockState(pos, liquid.getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
 		world.scheduleUpdate(pos, liquid, tickRate(world));
 	}

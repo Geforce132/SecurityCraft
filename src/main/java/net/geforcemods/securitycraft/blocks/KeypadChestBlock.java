@@ -125,8 +125,6 @@ public class KeypadChestBlock extends OwnableBlock {
 				if (be.isDenied(player)) {
 					if (be.sendsDenylistMessage())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-
-					return true;
 				}
 				else if (be.isAllowed(player)) {
 					if (be.sendsAllowlistMessage())
