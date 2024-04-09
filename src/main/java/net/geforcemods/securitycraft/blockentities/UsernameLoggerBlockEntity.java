@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements ITickable, ILockable {
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
-	private IntOption searchRadius = new IntOption(this::getPos, "searchRadius", 3, 1, 20, 1, true);
+	private IntOption searchRadius = new IntOption(this::getPos, "searchRadius", 3, 1, 20, 1);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private String[] players = new String[100];

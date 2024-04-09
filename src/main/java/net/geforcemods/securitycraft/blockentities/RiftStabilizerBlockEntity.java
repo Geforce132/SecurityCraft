@@ -42,8 +42,8 @@ import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements ITickable, ILockable, IToggleableEntries<TeleportationType> {
-	private final IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 0, 400, 5, true); //20 seconds max
-	private final IntOption range = new IntOption(this::getPos, "range", 5, 1, 15, 1, true);
+	private final IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 0, 400, 5); //20 seconds max
+	private final IntOption range = new IntOption(this::getPos, "range", 5, 1, 15, 1);
 	private final DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private final Map<TeleportationType, Boolean> teleportationFilter = new EnumMap<>(TeleportationType.class);

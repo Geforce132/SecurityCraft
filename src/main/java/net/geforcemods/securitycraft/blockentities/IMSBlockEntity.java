@@ -29,7 +29,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable {
-	private IntOption range = new IntOption(this::getPos, "range", 15, 1, 30, 1, true);
+	private IntOption range = new IntOption(this::getPos, "range", 15, 1, 30, 1);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS_AND_MOBS);

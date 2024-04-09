@@ -31,8 +31,8 @@ import net.minecraft.util.text.TextFormatting;
 
 public class ScannerTrapdoorBlockEntity extends CustomizableBlockEntity implements IViewActivated, ITickable, ILockable {
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	protected IntOption signalLength = new IntOption(this::getPos, "signalLength", 0, 0, 400, 5, true); //20 seconds max
-	private DoubleOption maximumDistance = new DoubleOption(this::getPos, "maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D, true) {
+	protected IntOption signalLength = new IntOption(this::getPos, "signalLength", 0, 0, 400, 5); //20 seconds max
+	private DoubleOption maximumDistance = new DoubleOption(this::getPos, "maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D) {
 		@Override
 		public String getKey(Block block) {
 			return "option.generic.viewActivated.maximumDistance";

@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity implements ILockable {
-	protected IntOption signalLength = new IntOption(this::getPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
+	protected IntOption signalLength = new IntOption(this::getPos, "signalLength", defaultSignalLength(), 0, 400, 5); //20 seconds max
 	protected DisabledOption disabled = new DisabledOption(false);
 
 	@Override

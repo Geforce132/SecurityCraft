@@ -20,7 +20,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 
 public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity implements ITickable {
 	private static final int TICKS_BETWEEN_ATTACKS = 5;
-	private DoubleOption searchRadiusOption = new DoubleOption(this::getPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
+	private DoubleOption searchRadiusOption = new DoubleOption(this::getPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D);
 	private DisabledOption disabled = new DisabledOption(false);
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 

@@ -25,7 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class KeypadTrapdoorBlockEntity extends CustomizableBlockEntity implements IPasscodeProtected, ILockable {
 	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
 	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
-	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 0, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 0, 400, 5); //20 seconds max
 	private DisabledOption disabled = new DisabledOption(false);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
 	private long cooldownEnd = 0;

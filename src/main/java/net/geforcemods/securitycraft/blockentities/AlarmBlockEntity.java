@@ -25,7 +25,7 @@ import net.minecraftforge.common.util.Constants;
 
 public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickable {
 	public static final int MAXIMUM_ALARM_SOUND_LENGTH = 3600; //one hour
-	private IntOption range = new IntOption(this::getPos, "range", 17, 0, ConfigHandler.maxAlarmRange, 1, true);
+	private IntOption range = new IntOption(this::getPos, "range", 17, 0, ConfigHandler.maxAlarmRange, 1);
 	private DisabledOption disabled = new DisabledOption(false);
 	private BooleanOption resetCooldown = new BooleanOption("resetCooldown", true);
 	private int cooldown = 0;
