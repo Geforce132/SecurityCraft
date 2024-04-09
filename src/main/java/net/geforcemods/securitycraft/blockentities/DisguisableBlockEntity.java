@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class DisguisableBlockEntity extends CustomizableBlockEntity {
@@ -59,8 +60,12 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		else
 			ClientHandler.putDisguisedBeRenderer(be, stack);
 
-		if (newLight > 0)
-			level.getAuxLightManager(worldPosition).setLightAt(worldPosition, newLight);
+		if (newLight > 0) {
+			AuxiliaryLightManager lightManager = level.getAuxLightManager(worldPosition);
+
+			if (lightManager != null)
+				lightManager.setLightAt(worldPosition, newLight);
+		}
 	}
 
 	@Override
