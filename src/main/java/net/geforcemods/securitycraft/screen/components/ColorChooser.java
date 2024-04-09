@@ -113,9 +113,9 @@ public class ColorChooser extends GuiScreen {
 		gBox.setMaxStringLength(3);
 		bBox.setMaxStringLength(3);
 		getRgbHexBox().setMaxStringLength(6);
-		rBox.setValidator(boxFilter);
-		gBox.setValidator(boxFilter);
-		bBox.setValidator(boxFilter);
+		rBox.setValidator(boxFilter::test);
+		gBox.setValidator(boxFilter::test);
+		bBox.setValidator(boxFilter::test);
 		getRgbHexBox().setValidator(string -> string.matches("[0-9a-fA-F]*"));
 		rBox.setGuiResponder(boxResponder.apply(rBox));
 		gBox.setGuiResponder(boxResponder.apply(gBox));

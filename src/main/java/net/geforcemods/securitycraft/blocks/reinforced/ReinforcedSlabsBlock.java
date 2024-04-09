@@ -270,7 +270,7 @@ public class ReinforcedSlabsBlock extends BlockSlab implements ITileEntityProvid
 	}
 
 	@Override
-	public IBlockState convertToVanillaState(IBlockState state) throws Exception {
+	public IBlockState convertToVanillaState(IBlockState state) {
 		BlockStoneSlab.EnumType type = null;
 
 		switch (state.getValue(VARIANT)) {
@@ -334,7 +334,7 @@ public class ReinforcedSlabsBlock extends BlockSlab implements ITileEntityProvid
 	}
 
 	@Override
-	public ItemStack convertToVanillaStack(ItemStack stackToConvert) throws Exception {
+	public ItemStack convertToVanillaStack(ItemStack stackToConvert) {
 		switch (stackToConvert.getMetadata()) {
 			case 0:
 				return new ItemStack(this, 1, 0);

@@ -85,7 +85,7 @@ public class ReinforcedCauldronBlock extends BlockCauldron implements IReinforce
 	}
 
 	@Override
-	public ItemStack convertToVanillaStack(ItemStack stackToConvert) throws Exception {
+	public ItemStack convertToVanillaStack(ItemStack stackToConvert) {
 		return new ItemStack(Items.CAULDRON);
 	}
 

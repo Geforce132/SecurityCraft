@@ -142,7 +142,7 @@ public class TaserItem extends Item {
 		Entity rayTracedEntity = null;
 		Vec3d hitVec = null;
 
-		for (Entity entity : world.getEntitiesInAABBexcluding(shooter, boundingBox, filter)) {
+		for (Entity entity : world.getEntitiesInAABBexcluding(shooter, boundingBox, filter::test)) {
 			AxisAlignedBB boxToCheck = entity.getEntityBoundingBox().grow(entity.getCollisionBorderSize());
 			Optional<Vec3d> optional = rayTrace(boxToCheck, startVec, endVec);
 
