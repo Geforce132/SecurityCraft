@@ -4,6 +4,7 @@
 - API: Changed constructors for IntOption and DoubleOption, they are now always sliders by default
 - API: Removed FloatOption. Use DoubleOption instead
 - Fix: Trying to place a Panic Button on top of powdered snow crashes the game
+- Fix: Reinforced fence gates don't properly retain their owner when reloading the world
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
