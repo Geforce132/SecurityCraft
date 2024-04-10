@@ -3,6 +3,7 @@
 - Change: The cameraSpeed client side config setting has been moved to be a per-block option, accessible with the Universal Block Modifier
 - API: Changed constructors for IntOption and DoubleOption, they are now always sliders by default
 - API: Removed FloatOption. Use DoubleOption instead
+- Fix: Reinforced fence gates don't properly retain their owner when reloading the world
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 

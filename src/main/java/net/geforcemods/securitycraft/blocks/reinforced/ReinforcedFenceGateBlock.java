@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedFenceGateBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableFenceGateBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -73,7 +73,7 @@ public class ReinforcedFenceGateBlock extends OwnableFenceGateBlock implements I
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
-		return new AllowlistOnlyBlockEntity(SCContent.REINFORCED_FENCE_GATE_BLOCK_ENTITY.get());
+		return new ReinforcedFenceGateBlockEntity();
 	}
 
 	@Override
