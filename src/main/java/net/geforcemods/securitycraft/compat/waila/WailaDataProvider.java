@@ -58,7 +58,6 @@ import net.minecraftforge.registries.RegistryObject;
 
 @WailaPlugin(SecurityCraft.MODID)
 public final class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider {
-	public static final WailaDataProvider INSTANCE = new WailaDataProvider();
 	public static final ResourceLocation SHOW_OWNER = new ResourceLocation(SecurityCraft.MODID, "showowner");
 	public static final ResourceLocation SHOW_MODULES = new ResourceLocation(SecurityCraft.MODID, "showmodules");
 	public static final ResourceLocation SHOW_CUSTOM_NAME = new ResourceLocation(SecurityCraft.MODID, "showcustomname");
@@ -87,25 +86,25 @@ public final class WailaDataProvider implements IWailaPlugin, IComponentProvider
 			Block block = registryObject.get();
 
 			if (!(block instanceof OwnableBlock) && !block.getRegistryName().getPath().matches("(?!(reinforced_)).*?crystal_.*") && !(block instanceof ReinforcedCauldronBlock) && !(block instanceof ReinforcedPaneBlock))
-				registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, block.getClass());
+				registration.registerComponentProvider(this, TooltipPosition.BODY, block.getClass());
 
 			if (block instanceof IOverlayDisplay)
 				registration.usePickedResult(block);
 		}
 
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.HEAD, BaseFullMineBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.HEAD, FurnaceMineBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, OwnableBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, InventoryScannerFieldBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, LaserFieldBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, ReinforcedCauldronBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, ReinforcedPaneBlock.class);
-		registration.registerIconProvider(INSTANCE, DisguisableBlock.class);
-		registration.registerIconProvider(INSTANCE, BaseFullMineBlock.class);
-		registration.registerIconProvider(INSTANCE, FurnaceMineBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, Sentry.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.TAIL, BaseFullMineBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.TAIL, FurnaceMineBlock.class);
+		registration.registerComponentProvider(this, TooltipPosition.HEAD, BaseFullMineBlock.class);
+		registration.registerComponentProvider(this, TooltipPosition.HEAD, FurnaceMineBlock.class);
+		registration.registerComponentProvider(this, TooltipPosition.BODY, OwnableBlock.class);
+		registration.registerComponentProvider(this, TooltipPosition.BODY, InventoryScannerFieldBlock.class);
+		registration.registerComponentProvider(this, TooltipPosition.BODY, LaserFieldBlock.class);
+		registration.registerComponentProvider(this, TooltipPosition.BODY, ReinforcedCauldronBlock.class);
+		registration.registerComponentProvider(this, TooltipPosition.BODY, ReinforcedPaneBlock.class);
+		registration.registerIconProvider(this, DisguisableBlock.class);
+		registration.registerIconProvider(this, BaseFullMineBlock.class);
+		registration.registerIconProvider(this, FurnaceMineBlock.class);
+		registration.registerComponentProvider(this, TooltipPosition.BODY, Sentry.class);
+		registration.registerComponentProvider(this, TooltipPosition.TAIL, BaseFullMineBlock.class);
+		registration.registerComponentProvider(this, TooltipPosition.TAIL, FurnaceMineBlock.class);
 	}
 
 	@Override
