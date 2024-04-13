@@ -43,7 +43,6 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 
 @WailaPlugin(SecurityCraft.MODID)
 public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider {
-	public static final WailaDataProvider INSTANCE = new WailaDataProvider();
 	public static final ResourceLocation SHOW_OWNER = new ResourceLocation(SecurityCraft.MODID, "showowner");
 	public static final ResourceLocation SHOW_MODULES = new ResourceLocation(SecurityCraft.MODID, "showmodules");
 	public static final ResourceLocation SHOW_CUSTOM_NAME = new ResourceLocation(SecurityCraft.MODID, "showcustomname");
@@ -60,11 +59,11 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		registration.addSyncedConfig(SHOW_OWNER, true);
 		registration.addSyncedConfig(SHOW_MODULES, true);
 		registration.addSyncedConfig(SHOW_CUSTOM_NAME, true);
-		registration.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.HEAD, IOverlayDisplay.class);
-		registration.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.BODY, IOwnable.class);
-		registration.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.TAIL, IOverlayDisplay.class);
-		registration.registerStackProvider(INSTANCE, IOverlayDisplay.class);
-		registration.registerComponentProvider((IEntityComponentProvider) INSTANCE, TooltipPosition.BODY, Sentry.class);
+		registration.registerComponentProvider((IComponentProvider) this, TooltipPosition.HEAD, IOverlayDisplay.class);
+		registration.registerComponentProvider((IComponentProvider) this, TooltipPosition.BODY, IOwnable.class);
+		registration.registerComponentProvider((IComponentProvider) this, TooltipPosition.TAIL, IOverlayDisplay.class);
+		registration.registerStackProvider(this, IOverlayDisplay.class);
+		registration.registerComponentProvider((IEntityComponentProvider) this, TooltipPosition.BODY, Sentry.class);
 	}
 
 	@Override
