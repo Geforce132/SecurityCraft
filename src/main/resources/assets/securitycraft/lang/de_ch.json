@@ -1076,7 +1076,7 @@
 	"messages.securitycraft:tip.discord": "Hast du einen Vorschlag für SecurityCraft, oder einen Bug gefunden? Tritt dem offiziellen SecurityCraft Discord Server bei (nur Englisch)! Dort findest du auch wichtige Updates und Informationen über SecurityCraft.",
 	"messages.securitycraft:tip.outdated": "Deine SecurityCraft-Version ist veraltet! Update SecurityCraft für mehr Features und weniger Bugs.",
 	"messages.securitycraft:tip.patreon": "Falls du SecurityCraft magst, könntest du uns bei Patreon unterstützen! Als Unterstützer kannst du mit uns an einem Feature deiner Wahl arbeiten, welches wir SecurityCraft hinzufügen.",
-	"messages.securitycraft:tip.scHelp": "Verwende \"/sc help\", um das Rezept der SecurityCraft Anleitung zu bekommen. Diese beinhaltet hilfreiche Informationen zu SecurityCraft Blöcken und Items.",
+	"messages.securitycraft:tip.scHelp": "Verwende \"/sc help\", um das Rezept der SecurityCraft Anleitung zu bekommen. Diese beinhaltet hilfreiche Informationen zu den Blöcken und Items von SecurityCraft.",
 	"messages.securitycraft:tip.scserver": "Der offizielle SecurityCraft Minecraft-Server ist zurück! Tritt mit folgender IP bei: securitycraft.nodecraft.gg",
 	"messages.securitycraft:universalKeyChanger.briefcase.noPasscode": "Die Brieftasche hat kein Passwort, es kann nicht zurückgesetzt werden.",
 	"messages.securitycraft:universalKeyChanger.briefcase.notOwned": "Du besitzt diese Brieftasche nicht, also kannst du ihr Passwort auch nicht ändern.",
