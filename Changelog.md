@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
 
 - Change: The cameraSpeed client side config setting has been moved to be a per-block option, accessible with the Universal Block Modifier
+- Change: Some SecurityCraft tip messages have been reworded for clarity
 - API: Changed constructors for IntOption and DoubleOption, they are now always sliders by default
 - API: Removed FloatOption. Use DoubleOption instead
 - Fix: Trying to place a Panic Button on top of powdered snow crashes the game
