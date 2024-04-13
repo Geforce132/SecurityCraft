@@ -7,7 +7,9 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaEntityAccessor;
 import mcp.mobius.waila.api.IWailaEntityProvider;
+import mcp.mobius.waila.api.IWailaPlugin;
 import mcp.mobius.waila.api.IWailaRegistrar;
+import mcp.mobius.waila.api.WailaPlugin;
 import mcp.mobius.waila.api.event.WailaRenderEvent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -33,7 +35,8 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvider {
+@WailaPlugin(SecurityCraft.MODID)
+public class WailaDataProvider implements IWailaPlugin, IWailaDataProvider, IWailaEntityProvider {
 	private static final String SHOW_OWNER = "securitycraft.showowner";
 	private static final String SHOW_MODULES = "securitycraft.showmodules";
 	private static final String SHOW_CUSTOM_NAME = "securitycraft.showcustomname";
@@ -43,13 +46,14 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 			MinecraftForge.EVENT_BUS.register(WailaDataProvider.class);
 	}
 
-	public static void callbackRegister(IWailaRegistrar registrar) {
+	@Override
+	public void register(IWailaRegistrar registrar) {
 		registrar.addConfigRemote("SecurityCraft", SHOW_OWNER, Utils.localize("waila.securitycraft:displayOwner").getFormattedText());
 		registrar.addConfigRemote("SecurityCraft", SHOW_MODULES, Utils.localize("waila.securitycraft:showModules").getFormattedText());
 		registrar.addConfigRemote("SecurityCraft", SHOW_CUSTOM_NAME, Utils.localize("waila.securitycraft:showCustomName").getFormattedText());
-		registrar.registerBodyProvider((IWailaDataProvider) new WailaDataProvider(), IOwnable.class);
-		registrar.registerStackProvider(new WailaDataProvider(), IOverlayDisplay.class);
-		registrar.registerBodyProvider((IWailaEntityProvider) new WailaDataProvider(), Sentry.class);
+		registrar.registerBodyProvider((IWailaDataProvider) this, IOwnable.class);
+		registrar.registerStackProvider(this, IOverlayDisplay.class);
+		registrar.registerBodyProvider((IWailaEntityProvider) this, Sentry.class);
 	}
 
 	@Override
