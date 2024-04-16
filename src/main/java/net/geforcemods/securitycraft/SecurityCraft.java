@@ -40,11 +40,12 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.InterModComms;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.Mod.EventBusSubscriber;
 import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
@@ -78,10 +79,10 @@ public class SecurityCraft {
 		return modList.isLoaded("embeddium") || modList.isLoaded("rubidium") || modList.isLoaded("sodium");
 	});
 
-	public SecurityCraft(IEventBus modEventBus) {
+	public SecurityCraft(IEventBus modEventBus, Dist dist, ModContainer container) {
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ConfigHandler.SERVER_SPEC);
+		container.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
+		container.registerConfig(ModConfig.Type.SERVER, ConfigHandler.SERVER_SPEC);
 		SCContent.BLOCKS.register(modEventBus);
 		SCContent.BLOCK_ENTITY_TYPES.register(modEventBus);
 		SCContent.COMMAND_ARGUMENT_TYPES.register(modEventBus);

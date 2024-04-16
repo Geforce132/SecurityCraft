@@ -255,7 +255,7 @@ public class ConfigHandler {
 					}
 
 					//the amplifier is actually 0-indexed, but 1-indexed in the config for ease of use
-					effects.add(() -> new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.get(effectLocation), duration, amplifier - 1));
+					effects.add(() -> new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.getHolder(effectLocation).get(), duration, amplifier - 1));
 				}
 			}
 			else
