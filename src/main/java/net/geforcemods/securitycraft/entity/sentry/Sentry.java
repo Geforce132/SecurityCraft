@@ -104,15 +104,15 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(OWNER, new Owner());
-		entityData.define(ALLOWLIST, new CompoundTag());
-		entityData.define(HAS_SPEED_MODULE, false);
-		entityData.define(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
-		entityData.define(HAS_TARGET, false);
-		entityData.define(SHUT_DOWN, false);
-		entityData.define(HEAD_ROTATION, 0.0F);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(OWNER, new Owner());
+		builder.define(ALLOWLIST, new CompoundTag());
+		builder.define(HAS_SPEED_MODULE, false);
+		builder.define(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
+		builder.define(HAS_TARGET, false);
+		builder.define(SHUT_DOWN, false);
+		builder.define(HEAD_ROTATION, 0.0F);
 	}
 
 	@Override

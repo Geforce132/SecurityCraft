@@ -98,9 +98,9 @@ public class IMSBomb extends Fireball {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(OWNER, new Owner());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(OWNER, new Owner());
 	}
 
 	@Override
