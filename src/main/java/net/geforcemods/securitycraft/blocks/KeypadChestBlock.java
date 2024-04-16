@@ -23,7 +23,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.CompoundContainer;
 import net.minecraft.world.Container;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
@@ -96,7 +95,7 @@ public class KeypadChestBlock extends ChestBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!level.isClientSide && !isBlocked(level, pos)) {
 			KeypadChestBlockEntity be = (KeypadChestBlockEntity) level.getBlockEntity(pos);
 
@@ -111,8 +110,6 @@ public class KeypadChestBlock extends ChestBlock {
 
 					activate(state, level, pos, player);
 				}
-				else if (!player.getItemInHand(hand).is(SCContent.CODEBREAKER.get()))
-					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 

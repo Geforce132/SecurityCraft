@@ -16,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -47,7 +46,7 @@ public class KeypadBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		KeypadBlockEntity be = (KeypadBlockEntity) level.getBlockEntity(pos);
 
 		if (state.getValue(POWERED) && be.getSignalLength() > 0)
@@ -66,8 +65,6 @@ public class KeypadBlock extends DisguisableBlock {
 
 					activate(state, level, pos, be.getSignalLength());
 				}
-				else if (!player.getItemInHand(hand).is(SCContent.CODEBREAKER.get()))
-					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 

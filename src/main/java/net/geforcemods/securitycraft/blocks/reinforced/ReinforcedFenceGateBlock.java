@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.blocks.OwnableFenceGateBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -28,7 +27,7 @@ public class ReinforcedFenceGateBlock extends OwnableFenceGateBlock implements I
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		//only allow the owner or players on the allowlist to access a reinforced fence gate
 		if (level.getBlockEntity(pos) instanceof AllowlistOnlyBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player))) {
 			if (state.getValue(OPEN)) {

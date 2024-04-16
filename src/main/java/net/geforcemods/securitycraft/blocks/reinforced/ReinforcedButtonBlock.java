@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -32,9 +31,10 @@ public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTrace) {
+	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult rayTrace) {
 		if (isAllowedToPress((AllowlistOnlyBlockEntity) level.getBlockEntity(pos), player))
-			return super.use(state, level, pos, player, hand, rayTrace);
+			return super.useWithoutItem(state, level, pos, player, rayTrace);
+
 		return InteractionResult.FAIL;
 	}
 

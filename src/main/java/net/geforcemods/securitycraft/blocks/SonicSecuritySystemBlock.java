@@ -15,6 +15,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -98,17 +99,21 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (player.getItemInHand(hand).getItem() != SCContent.PORTABLE_TUNE_PLAYER.get()) {
-			SonicSecuritySystemBlockEntity be = (SonicSecuritySystemBlockEntity) level.getBlockEntity(pos);
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (stack.getItem() == SCContent.PORTABLE_TUNE_PLAYER.get())
+			return ItemInteractionResult.SUCCESS;
 
-			if (!level.isClientSide && (be.isOwnedBy(player) || be.isAllowed(player)))
-				PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SONIC_SECURITY_SYSTEM, pos));
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	}
 
-			return InteractionResult.SUCCESS;
-		}
-		else
-			return InteractionResult.PASS;
+	@Override
+	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+		SonicSecuritySystemBlockEntity be = (SonicSecuritySystemBlockEntity) level.getBlockEntity(pos);
+
+		if (!level.isClientSide && (be.isOwnedBy(player) || be.isAllowed(player)))
+			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SONIC_SECURITY_SYSTEM, pos));
+
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override

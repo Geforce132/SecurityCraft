@@ -15,7 +15,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -33,7 +32,7 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (state.getValue(OPEN))
 			return InteractionResult.PASS;
 		else if (!level.isClientSide) {
@@ -52,8 +51,6 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 
 					activate(state, level, pos, be.getSignalLength());
 				}
-				else if (!player.getItemInHand(hand).is(SCContent.CODEBREAKER.get()))
-					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 

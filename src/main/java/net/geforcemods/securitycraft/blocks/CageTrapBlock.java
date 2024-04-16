@@ -18,7 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.OwnableEntity;
@@ -97,7 +97,7 @@ public class CageTrapBlock extends DisguisableBlock {
 				if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
 					return;
 
-				if ((isPlayer && cageTrap.isOwnedBy((Player) entity)) && cageTrap.ignoresOwner() || entity instanceof OwnableEntity ownableEntity && cageTrap.allowsOwnableEntity(ownableEntity))
+				if ((isPlayer && cageTrap.isOwnedBy(entity)) && cageTrap.ignoresOwner() || entity instanceof OwnableEntity ownableEntity && cageTrap.allowsOwnableEntity(ownableEntity))
 					return;
 
 				if (state.getValue(DEACTIVATED))
@@ -136,9 +136,7 @@ public class CageTrapBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		ItemStack stack = player.getItemInHand(hand);
-
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (stack.getItem() == SCContent.WIRE_CUTTERS.get()) {
 			if (!state.getValue(DEACTIVATED)) {
 				level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
@@ -147,7 +145,7 @@ public class CageTrapBlock extends DisguisableBlock {
 					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
 				level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
-				return InteractionResult.SUCCESS;
+				return ItemInteractionResult.SUCCESS;
 			}
 		}
 		else if (stack.getItem() == Items.REDSTONE && state.getValue(DEACTIVATED)) {
@@ -157,10 +155,10 @@ public class CageTrapBlock extends DisguisableBlock {
 				stack.shrink(1);
 
 			level.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
-			return InteractionResult.SUCCESS;
+			return ItemInteractionResult.SUCCESS;
 		}
 
-		return InteractionResult.PASS;
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 
 	@Override

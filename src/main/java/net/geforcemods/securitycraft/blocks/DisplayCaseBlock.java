@@ -17,6 +17,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -111,10 +112,32 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (!level.isClientSide && level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be) {
-			ItemStack heldStack = player.getItemInHand(hand);
+	public ItemInteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (!level.isClientSide && !heldStack.isEmpty() && level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be && be.isOpen()) {
+			ItemStack displayedStack = be.getDisplayedStack();
 
+			if (displayedStack.isEmpty()) {
+				ItemStack toAdd;
+
+				if (player.isCreative()) {
+					toAdd = heldStack.copy();
+					toAdd.setCount(1);
+				}
+				else
+					toAdd = heldStack.split(1);
+
+				be.setDisplayedStack(toAdd);
+				level.playSound(null, pos, glowing ? SoundEvents.GLOW_ITEM_FRAME_ADD_ITEM : SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
+				return ItemInteractionResult.SUCCESS;
+			}
+		}
+
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	}
+
+	@Override
+	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+		if (!level.isClientSide && level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be) {
 			if (be.isLocked() && be.disableInteractionWhenLocked(level, pos, player)) {
 				MutableComponent blockName = Utils.localize(getDescriptionId());
 
@@ -125,23 +148,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 			if (be.isOpen()) {
 				ItemStack displayedStack = be.getDisplayedStack();
 
-				if (displayedStack.isEmpty()) {
-					if (!heldStack.isEmpty()) {
-						ItemStack toAdd;
-
-						if (player.isCreative()) {
-							toAdd = heldStack.copy();
-							toAdd.setCount(1);
-						}
-						else
-							toAdd = heldStack.split(1);
-
-						be.setDisplayedStack(toAdd);
-						level.playSound(null, pos, glowing ? SoundEvents.GLOW_ITEM_FRAME_ADD_ITEM : SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
-						return InteractionResult.SUCCESS;
-					}
-				}
-				else if (player.isShiftKeyDown()) {
+				if (!displayedStack.isEmpty() && player.isShiftKeyDown()) {
 					player.addItem(displayedStack);
 					level.playSound(null, pos, glowing ? SoundEvents.GLOW_ITEM_FRAME_REMOVE_ITEM : SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
 					be.setDisplayedStack(ItemStack.EMPTY);
@@ -164,8 +171,6 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 
 						activate(be);
 					}
-					else if (!player.getItemInHand(hand).is(SCContent.CODEBREAKER.get()))
-						be.openPasscodeGUI(level, pos, player);
 				}
 			}
 		}

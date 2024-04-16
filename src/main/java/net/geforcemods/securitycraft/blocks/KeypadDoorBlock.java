@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -28,7 +27,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!level.isClientSide) {
 			KeypadDoorBlockEntity be = (KeypadDoorBlockEntity) level.getBlockEntity(pos);
 
@@ -45,8 +44,6 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 
 					activate(state, level, pos, player, be.getSignalLength());
 				}
-				else if (!player.getItemInHand(hand).is(SCContent.CODEBREAKER.get()))
-					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 

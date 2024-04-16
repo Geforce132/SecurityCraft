@@ -21,6 +21,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -74,14 +75,21 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		KeypadBarrelBlockEntity be = (KeypadBarrelBlockEntity) level.getBlockEntity(pos);
+
+		if (stack.is(Items.FROG_SPAWN_EGG) && be.isOwnedBy(player)) {
+			level.setBlockAndUpdate(pos, state.cycle(FROG));
+			return ItemInteractionResult.SUCCESS;
+		}
+
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	}
+
+	@Override
+	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!level.isClientSide) {
 			KeypadBarrelBlockEntity be = (KeypadBarrelBlockEntity) level.getBlockEntity(pos);
-
-			if (player.getItemInHand(hand).is(Items.FROG_SPAWN_EGG) && be.isOwnedBy(player)) {
-				level.setBlockAndUpdate(pos, state.cycle(FROG));
-				return InteractionResult.SUCCESS;
-			}
 
 			if (be.verifyPasscodeSet(level, pos, be, player)) {
 				if (be.isDenied(player)) {
@@ -94,8 +102,6 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 
 					activate(state, level, pos, player);
 				}
-				else if (!player.getItemInHand(hand).is(SCContent.CODEBREAKER.get()))
-					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 

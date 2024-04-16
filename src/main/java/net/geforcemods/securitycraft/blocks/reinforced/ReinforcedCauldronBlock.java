@@ -17,7 +17,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -85,11 +85,11 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (level.getBlockEntity(pos) instanceof ReinforcedCauldronBlockEntity be && be.isAllowedToInteract(player))
-			return super.use(state, level, pos, player, hand, hit);
+			return super.useItemOn(stack, state, level, pos, player, hand, hit);
 
-		return InteractionResult.PASS;
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 			Block block = Block.byItem(stack.getItem());
 
 			if (!(block instanceof ShulkerBoxBlock))
-				return InteractionResult.PASS;
+				return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 			else {
 				if (!level.isClientSide) {
 					ItemStack shulker = new ItemStack(Blocks.SHULKER_BOX);
@@ -197,12 +197,12 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 					ReinforcedLayeredCauldronBlock.lowerFillLevel(state, level, pos);
 				}
 
-				return InteractionResult.sidedSuccess(level.isClientSide);
+				return ItemInteractionResult.sidedSuccess(level.isClientSide);
 			}
 		};
 		CauldronInteraction BANNER = (state, level, pos, player, hand, stack) -> {
 			if (BannerBlockEntity.getPatternCount(stack) <= 0)
-				return InteractionResult.PASS;
+				return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 			else {
 				if (!level.isClientSide) {
 					ItemStack banner = stack.copy();
@@ -224,17 +224,17 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 					ReinforcedLayeredCauldronBlock.lowerFillLevel(state, level, pos);
 				}
 
-				return InteractionResult.sidedSuccess(level.isClientSide);
+				return ItemInteractionResult.sidedSuccess(level.isClientSide);
 			}
 		};
 		CauldronInteraction DYED_ITEM = (state, level, pos, player, hand, stack) -> {
 			Item item = stack.getItem();
 
 			if (!(item instanceof DyeableLeatherItem leatherItem))
-				return InteractionResult.PASS;
+				return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 			else {
 				if (!leatherItem.hasCustomColor(stack))
-					return InteractionResult.PASS;
+					return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 				else {
 					if (!level.isClientSide) {
 						leatherItem.clearColor(stack);
@@ -242,7 +242,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 						ReinforcedLayeredCauldronBlock.lowerFillLevel(state, level, pos);
 					}
 
-					return InteractionResult.sidedSuccess(level.isClientSide);
+					return ItemInteractionResult.sidedSuccess(level.isClientSide);
 				}
 			}
 		};
@@ -257,7 +257,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 			addDefaultInteractions(emptyMap);
 			emptyMap.put(Items.POTION, (state, level, pos, player, hand, stack) -> {
 				if (PotionUtils.getPotion(stack) != Potions.WATER)
-					return InteractionResult.PASS;
+					return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 				else {
 					if (!level.isClientSide) {
 						Item item = stack.getItem();
@@ -273,7 +273,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 						level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
 					}
 
-					return InteractionResult.sidedSuccess(level.isClientSide);
+					return ItemInteractionResult.sidedSuccess(level.isClientSide);
 				}
 			});
 			addDefaultInteractions(waterMap);
@@ -290,7 +290,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 					level.gameEvent(null, GameEvent.FLUID_PICKUP, pos);
 				}
 
-				return InteractionResult.sidedSuccess(level.isClientSide);
+				return ItemInteractionResult.sidedSuccess(level.isClientSide);
 			});
 			waterMap.put(Items.POTION, (state, level, pos, player, hand, stack) -> {
 				if (state.getValue(LayeredCauldronBlock.LEVEL) != 3 && PotionUtils.getPotion(stack) == Potions.WATER) {
@@ -303,10 +303,10 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 						level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
 					}
 
-					return InteractionResult.sidedSuccess(level.isClientSide);
+					return ItemInteractionResult.sidedSuccess(level.isClientSide);
 				}
 				else
-					return InteractionResult.PASS;
+					return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 			});
 			waterMap.put(Items.LEATHER_BOOTS, DYED_ITEM);
 			waterMap.put(Items.LEATHER_LEGGINGS, DYED_ITEM);
@@ -363,9 +363,9 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 			interactions.put(Items.POWDER_SNOW_BUCKET, FILL_POWDER_SNOW);
 		}
 
-		static InteractionResult fillBucket(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack, ItemStack bucket, Predicate<BlockState> fillPredicate, SoundEvent sound) {
+		static ItemInteractionResult fillBucket(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack, ItemStack bucket, Predicate<BlockState> fillPredicate, SoundEvent sound) {
 			if (!fillPredicate.test(state))
-				return InteractionResult.PASS;
+				return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 			else {
 				if (!level.isClientSide) {
 					Item item = stack.getItem();
@@ -381,11 +381,11 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 					level.gameEvent(null, GameEvent.FLUID_PICKUP, pos);
 				}
 
-				return InteractionResult.sidedSuccess(level.isClientSide);
+				return ItemInteractionResult.sidedSuccess(level.isClientSide);
 			}
 		}
 
-		static InteractionResult emptyBucket(Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack, BlockState state, SoundEvent sound) {
+		static ItemInteractionResult emptyBucket(Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack, BlockState state, SoundEvent sound) {
 			if (!level.isClientSide) {
 				Item item = stack.getItem();
 				BlockEntity be = level.getBlockEntity(pos);
@@ -400,7 +400,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 				level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
 			}
 
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return ItemInteractionResult.sidedSuccess(level.isClientSide);
 		}
 	}
 }

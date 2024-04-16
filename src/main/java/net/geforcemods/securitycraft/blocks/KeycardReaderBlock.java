@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import org.joml.Vector3f;
 
@@ -18,7 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -47,15 +47,15 @@ public class KeycardReaderBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		return use(state, level, pos, player, hand, (stack, be) -> {
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		return useItemOn(stack, state, level, pos, player, hand, be -> {
 			//only allow the owner and players on the allowlist to open the gui
 			if (be.isOwnedBy(player) || be.isAllowed(player))
 				player.openMenu(be, pos);
 		});
 	}
 
-	public static <BE extends KeycardReaderBlockEntity> InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BiConsumer<ItemStack, BE> noKeycardRightclick) {
+	public static <BE extends KeycardReaderBlockEntity> ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, Consumer<BE> noKeycardRightclick) {
 		if (!level.isClientSide) {
 			BE be = (BE) level.getBlockEntity(pos);
 
@@ -66,20 +66,19 @@ public class KeycardReaderBlock extends DisguisableBlock {
 					PlayerUtils.sendMessageToPlayer(player, Component.translatable(state.getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 			}
 			else {
-				ItemStack stack = player.getItemInHand(hand);
 				Item item = stack.getItem();
 				boolean isCodebreaker = item == SCContent.CODEBREAKER.get();
 				boolean isKeycardHolder = item == SCContent.KEYCARD_HOLDER.get();
 
 				//either no keycard, or an unlinked keycard, or an admin tool
 				if (!isKeycardHolder && (!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker)
-					noKeycardRightclick.accept(stack, be);
+					noKeycardRightclick.accept(be);
 				else if (item != SCContent.LIMITED_USE_KEYCARD.get()) //limited use keycards are only crafting components now
 					return be.onRightClickWithActionItem(stack, hand, player, isCodebreaker, isKeycardHolder);
 			}
 		}
 
-		return InteractionResult.SUCCESS;
+		return ItemInteractionResult.SUCCESS;
 	}
 
 	@Override
