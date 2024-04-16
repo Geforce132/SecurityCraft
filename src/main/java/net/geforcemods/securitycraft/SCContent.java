@@ -2539,7 +2539,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<CameraMonitorItem> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem(itemProp(1)));
 	@HasManualPage
-	public static final DeferredItem<CodebreakerItem> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp().defaultDurability(5)));
+	public static final DeferredItem<CodebreakerItem> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp().durability(5)));
 	@HasManualPage
 	public static final DeferredItem<Item> CRYSTAL_QUARTZ_ITEM = ITEMS.registerSimpleItem("crystal_quartz_item");
 	public static final DeferredItem<DisplayCaseItem> DISPLAY_CASE_ITEM = ITEMS.register(DISPLAY_CASE_PATH, () -> new DisplayCaseItem(SCContent.DISPLAY_CASE.get(), itemProp(), false));
@@ -2631,24 +2631,24 @@ public class SCContent {
 	public static final DeferredItem<SentryItem> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp()));
 	public static final DeferredItem<SonicSecuritySystemItem> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(1)));
 	@HasManualPage
-	public static final DeferredItem<TaserItem> TASER = ITEMS.register("taser", () -> new TaserItem(itemProp().defaultDurability(151), false));
-	public static final DeferredItem<TaserItem> TASER_POWERED = ITEMS.register("taser_powered", () -> new TaserItem(itemProp().defaultDurability(151), true));
+	public static final DeferredItem<TaserItem> TASER = ITEMS.register("taser", () -> new TaserItem(itemProp().durability(151), false));
+	public static final DeferredItem<TaserItem> TASER_POWERED = ITEMS.register("taser_powered", () -> new TaserItem(itemProp().durability(151), true));
 	@HasManualPage
 	public static final DeferredItem<UniversalBlockModifierItem> UNIVERSAL_BLOCK_MODIFIER = ITEMS.register("universal_block_modifier", () -> new UniversalBlockModifierItem(itemProp(1)));
 	@HasManualPage(PageGroup.BLOCK_REINFORCERS)
-	public static final DeferredItem<UniversalBlockReinforcerItem> UNIVERSAL_BLOCK_REINFORCER_LVL_1 = ITEMS.register("universal_block_reinforcer_lvl1", () -> new UniversalBlockReinforcerItem(itemProp().defaultDurability(300)));
+	public static final DeferredItem<UniversalBlockReinforcerItem> UNIVERSAL_BLOCK_REINFORCER_LVL_1 = ITEMS.register("universal_block_reinforcer_lvl1", () -> new UniversalBlockReinforcerItem(itemProp().durability(300)));
 	@HasManualPage(PageGroup.BLOCK_REINFORCERS)
-	public static final DeferredItem<UniversalBlockReinforcerItem> UNIVERSAL_BLOCK_REINFORCER_LVL_2 = ITEMS.register("universal_block_reinforcer_lvl2", () -> new UniversalBlockReinforcerItem(itemProp().defaultDurability(2700)));
+	public static final DeferredItem<UniversalBlockReinforcerItem> UNIVERSAL_BLOCK_REINFORCER_LVL_2 = ITEMS.register("universal_block_reinforcer_lvl2", () -> new UniversalBlockReinforcerItem(itemProp().durability(2700)));
 	@HasManualPage(PageGroup.BLOCK_REINFORCERS)
 	public static final DeferredItem<UniversalBlockReinforcerItem> UNIVERSAL_BLOCK_REINFORCER_LVL_3 = ITEMS.register("universal_block_reinforcer_lvl3", () -> new UniversalBlockReinforcerItem(itemProp(1)));
 	@HasManualPage
-	public static final DeferredItem<UniversalBlockRemoverItem> UNIVERSAL_BLOCK_REMOVER = ITEMS.register("universal_block_remover", () -> new UniversalBlockRemoverItem(itemProp().defaultDurability(476)));
+	public static final DeferredItem<UniversalBlockRemoverItem> UNIVERSAL_BLOCK_REMOVER = ITEMS.register("universal_block_remover", () -> new UniversalBlockRemoverItem(itemProp().durability(476)));
 	@HasManualPage
 	public static final DeferredItem<UniversalKeyChangerItem> UNIVERSAL_KEY_CHANGER = ITEMS.register("universal_key_changer", () -> new UniversalKeyChangerItem(itemProp(1)));
 	@HasManualPage
-	public static final DeferredItem<UniversalOwnerChangerItem> UNIVERSAL_OWNER_CHANGER = ITEMS.register("universal_owner_changer", () -> new UniversalOwnerChangerItem(itemProp().defaultDurability(48)));
+	public static final DeferredItem<UniversalOwnerChangerItem> UNIVERSAL_OWNER_CHANGER = ITEMS.register("universal_owner_changer", () -> new UniversalOwnerChangerItem(itemProp().durability(48)));
 	@HasManualPage
-	public static final DeferredItem<Item> WIRE_CUTTERS = ITEMS.register("wire_cutters", () -> new WireCuttersItem(itemProp().defaultDurability(476)));
+	public static final DeferredItem<Item> WIRE_CUTTERS = ITEMS.register("wire_cutters", () -> new WireCuttersItem(itemProp().durability(476)));
 
 	//modules
 	@HasManualPage

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.misc;
 import java.util.Set;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -16,10 +17,9 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 public record BlockEntityNBTCondition(String key, boolean value) implements LootItemCondition {
-
 	//@formatter:off
-	public static final Codec<BlockEntityNBTCondition> CODEC = RecordCodecBuilder.create(
-		instance -> instance.group(
+	public static final MapCodec<BlockEntityNBTCondition> CODEC = RecordCodecBuilder.mapCodec(
+			instance -> instance.group(
 					Codec.STRING.fieldOf("key").forGetter(BlockEntityNBTCondition::key),
 					Codec.BOOL.fieldOf("value").forGetter(BlockEntityNBTCondition::value))
 			.apply(instance, BlockEntityNBTCondition::new));
