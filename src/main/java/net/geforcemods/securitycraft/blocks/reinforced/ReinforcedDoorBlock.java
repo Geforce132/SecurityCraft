@@ -108,7 +108,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
+	public boolean isPathfindable(BlockState state, PathComputationType type) {
 		return switch (type) {
 			case LAND -> state.getValue(OPEN);
 			case AIR -> state.getValue(OPEN);

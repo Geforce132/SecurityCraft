@@ -141,10 +141,10 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
+	public boolean isPathfindable(BlockState state, PathComputationType type) {
 		return switch (type) {
 			case LAND -> false;
-			case WATER -> level.getFluidState(pos).is(FluidTags.WATER);
+			case WATER -> state.getFluidState().is(FluidTags.WATER);
 			case AIR -> false;
 			default -> false;
 		};

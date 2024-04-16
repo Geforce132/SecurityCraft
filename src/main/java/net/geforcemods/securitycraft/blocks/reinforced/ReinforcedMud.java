@@ -33,7 +33,7 @@ public class ReinforcedMud extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType pathComputationType) {
+	public boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
 		return false;
 	}
 
