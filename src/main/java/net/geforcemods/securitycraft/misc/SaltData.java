@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -17,7 +18,7 @@ public class SaltData extends SavedData {
 	private SaltData() {}
 
 	public static void refreshLevel(ServerLevel level) {
-		instance = level.getDataStorage().computeIfAbsent(new SavedData.Factory<SaltData>(SaltData::new, SaltData::load, null), "securitycraft-salts");
+		instance = level.getDataStorage().computeIfAbsent(new SavedData.Factory<>(SaltData::new, SaltData::load), "securitycraft-salts");
 	}
 
 	public static boolean containsKey(UUID saltKey) {
@@ -51,7 +52,7 @@ public class SaltData extends SavedData {
 		}
 	}
 
-	public static SaltData load(CompoundTag tag) {
+	public static SaltData load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		SaltData saltData = new SaltData();
 		ListTag listtag = tag.getList("Salts", Tag.TAG_COMPOUND);
 
@@ -65,7 +66,7 @@ public class SaltData extends SavedData {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
+	public CompoundTag save(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		ListTag saltTable = new ListTag();
 
 		for (Map.Entry<UUID, byte[]> saltMapping : saltMap.entrySet()) {
