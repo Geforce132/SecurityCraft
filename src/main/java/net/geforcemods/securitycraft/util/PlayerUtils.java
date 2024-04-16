@@ -3,8 +3,6 @@ package net.geforcemods.securitycraft.util;
 import java.util.Iterator;
 import java.util.List;
 
-import com.mojang.authlib.GameProfile;
-
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.Owner;
@@ -13,9 +11,7 @@ import net.geforcemods.securitycraft.util.TeamUtils.TeamRepresentation;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -27,7 +23,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.PlayerHeadItem;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.util.thread.EffectiveSide;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -164,23 +160,16 @@ public class PlayerUtils {
 	public static Owner getSkullOwner(Player player) {
 		ItemStack stack = player.getItemBySlot(EquipmentSlot.HEAD);
 
-		if (stack.getItem() == Items.PLAYER_HEAD && stack.hasTag()) {
-			CompoundTag stackTag = stack.getTag();
+		if (stack.getItem() == Items.PLAYER_HEAD) {
+			ResolvableProfile profile = stack.get(DataComponents.PROFILE);
 
-			if (stackTag.contains(PlayerHeadItem.TAG_SKULL_OWNER, Tag.TAG_STRING))
-				return new Owner(stackTag.getString(PlayerHeadItem.TAG_SKULL_OWNER), "ownerUUID");
-			else if (stackTag.contains(PlayerHeadItem.TAG_SKULL_OWNER, Tag.TAG_COMPOUND)) {
-				GameProfile profile = NbtUtils.readGameProfile(stackTag.getCompound(PlayerHeadItem.TAG_SKULL_OWNER));
-				String name = "ownerName";
+			if (profile != null) {
 				String uuid = "ownerUUID";
 
-				if (profile.getName() != null)
-					name = profile.getName();
+				if (profile.id().isPresent())
+					uuid = profile.id().toString();
 
-				if (profile.getId() != null)
-					uuid = profile.getId().toString();
-
-				return new Owner(name, uuid);
+				return new Owner(profile.name().orElse("ownerName"), uuid);
 			}
 		}
 
