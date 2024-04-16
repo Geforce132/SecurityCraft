@@ -2,11 +2,11 @@ package net.geforcemods.securitycraft.renderers;
 
 import javax.annotation.Nullable;
 
-import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.PoseStack.Pose;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
@@ -71,24 +71,24 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 			pose.scale(-1.0F, -1.0F, 1.0F);
 
 			VertexConsumer vertexBuilder = buffer.getBuffer(RenderType.entityCutout(getSkinTexture(be.getPlayerProfile())));
-			Matrix4f positionMatrix = pose.last().pose();
-			Matrix3f normalMatrix = pose.last().normal();
+			Pose last = pose.last();
+			Matrix4f positionMatrix = last.pose();
 			Vec3i normalVector = direction.getNormal();
 			BlockPos offsetPos = be.getBlockPos().relative(direction);
 
 			combinedLight = LightTexture.pack(be.getLevel().getBrightness(LightLayer.BLOCK, offsetPos), be.getLevel().getBrightness(LightLayer.SKY, offsetPos));
 
 			// face
-			vertexBuilder.vertex(positionMatrix, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).uv(0.125F, 0.25F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
-			vertexBuilder.vertex(positionMatrix, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).color(255, 255, 255, 255).uv(0.125F, 0.125F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
-			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).color(255, 255, 255, 255).uv(0.25F, 0.125F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
-			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).uv(0.25F, 0.25F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
+			vertexBuilder.vertex(positionMatrix, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).uv(0.125F, 0.25F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(last, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
+			vertexBuilder.vertex(positionMatrix, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).color(255, 255, 255, 255).uv(0.125F, 0.125F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(last, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
+			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).color(255, 255, 255, 255).uv(0.25F, 0.125F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(last, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
+			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).uv(0.25F, 0.25F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(last, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
 
 			// helmet
-			vertexBuilder.vertex(positionMatrix, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).uv(0.625F, 0.25F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
-			vertexBuilder.vertex(positionMatrix, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).color(255, 255, 255, 255).uv(0.625F, 0.125F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
-			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).color(255, 255, 255, 255).uv(0.75F, 0.125F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
-			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).uv(0.75F, 0.25F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
+			vertexBuilder.vertex(positionMatrix, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).uv(0.625F, 0.25F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(last, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
+			vertexBuilder.vertex(positionMatrix, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).color(255, 255, 255, 255).uv(0.625F, 0.125F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(last, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
+			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).color(255, 255, 255, 255).uv(0.75F, 0.125F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(last, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
+			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).uv(0.75F, 0.25F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(last, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
 
 			pose.popPose();
 		}
