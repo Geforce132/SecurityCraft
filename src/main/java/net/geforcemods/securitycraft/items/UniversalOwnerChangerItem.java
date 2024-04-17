@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -68,7 +69,7 @@ public class UniversalOwnerChangerItem extends Item {
 			return InteractionResult.PASS;
 		}
 
-		if (!stack.hasCustomHoverName() && !isDefault) {
+		if (!stack.has(DataComponents.CUSTOM_NAME) && !isDefault) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.noName"), ChatFormatting.RED);
 			return InteractionResult.FAIL;
 		}
@@ -106,7 +107,7 @@ public class UniversalOwnerChangerItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack ownerChanger = player.getItemInHand(hand);
 
-		if (!ownerChanger.hasCustomHoverName()) {
+		if (!ownerChanger.has(DataComponents.CUSTOM_NAME)) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.noName"), ChatFormatting.RED);
 			return InteractionResultHolder.fail(ownerChanger);
 		}

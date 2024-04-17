@@ -31,7 +31,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
@@ -72,9 +71,6 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof Player player)
 			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
-
-		if (stack.hasCustomHoverName() && level.getBlockEntity(pos) instanceof BaseContainerBlockEntity baseContainer)
-			baseContainer.setCustomName(stack.getHoverName());
 	}
 
 	@Override

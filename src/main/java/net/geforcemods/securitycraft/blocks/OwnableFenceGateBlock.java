@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.function.BiConsumer;
 
-import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -40,9 +39,6 @@ public class OwnableFenceGateBlock extends FenceGateBlock implements EntityBlock
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof Player player)
 			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
-
-		if (stack.hasCustomHoverName() && level.getBlockEntity(pos) instanceof INameSetter nameable)
-			nameable.setCustomName(stack.getHoverName());
 	}
 
 	@Override

@@ -67,9 +67,6 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
-		if (stack.hasCustomHoverName() && level.getBlockEntity(pos) instanceof KeypadBarrelBlockEntity barrel)
-			barrel.setCustomName(stack.getHoverName());
-
 		if (entity instanceof Player player)
 			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}

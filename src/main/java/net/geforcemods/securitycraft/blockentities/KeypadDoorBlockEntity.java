@@ -4,8 +4,8 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
+import net.geforcemods.securitycraft.api.NamedBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
@@ -162,7 +162,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 		super.setCustomName(customName);
 
 		if (getBlockState().getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.LOWER)
-			((INameSetter) level.getBlockEntity(worldPosition.above())).setCustomName(customName);
+			((NamedBlockEntity) level.getBlockEntity(worldPosition.above())).setCustomName(customName);
 	}
 
 	public void runForOtherHalf(Consumer<KeypadDoorBlockEntity> action) {

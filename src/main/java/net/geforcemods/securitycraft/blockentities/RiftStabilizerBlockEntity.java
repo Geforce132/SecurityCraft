@@ -7,7 +7,7 @@ import java.util.function.ToIntFunction;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.INameSetter;
+import net.geforcemods.securitycraft.api.NamedBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -333,7 +333,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 		super.setCustomName(customName);
 
 		if (getBlockState().getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.LOWER)
-			((INameSetter) level.getBlockEntity(worldPosition.above())).setCustomName(customName);
+			((NamedBlockEntity) level.getBlockEntity(worldPosition.above())).setCustomName(customName);
 	}
 
 	public enum TeleportationType {
