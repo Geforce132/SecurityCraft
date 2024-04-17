@@ -111,6 +111,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		tag(ItemTags.BOOKSHELF_BOOKS).add(SCContent.SC_MANUAL.get());
 		tag(ItemTags.BUTTONS).addTag(SCTags.Items.REINFORCED_BUTTONS);
 		tag(ItemTags.DAMPENS_VIBRATIONS).addTag(SCTags.Items.REINFORCED_WOOL);
+		tag(ItemTags.DYEABLE).add(SCContent.BRIEFCASE.get(), SCContent.LENS.get());
 		tag(ItemTags.FENCE_GATES).add(SCContent.ELECTRIFIED_IRON_FENCE_GATE.get().asItem());
 		tag(ItemTags.FENCES).add(SCContent.ELECTRIFIED_IRON_FENCE.get().asItem());
 		tag(ItemTags.PIGLIN_LOVED).add(

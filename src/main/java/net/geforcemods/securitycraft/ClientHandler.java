@@ -114,6 +114,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -124,6 +125,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
@@ -272,7 +274,7 @@ public class ClientHandler {
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), translucent);
 		event.enqueueWork(() -> {
 			ItemProperties.register(SCContent.KEYCARD_HOLDER.get(), KeycardHolderItem.COUNT_PROPERTY, (stack, level, entity, id) -> KeycardHolderItem.getCardCount(stack) / (float) KeycardHolderMenu.CONTAINER_SIZE);
-			ItemProperties.register(SCContent.LENS.get(), LensItem.COLOR_PROPERTY, (stack, level, entity, id) -> ((DyeableLeatherItem) stack.getItem()).hasCustomColor(stack) ? 1.0F : 0.0F);
+			ItemProperties.register(SCContent.LENS.get(), LensItem.COLOR_PROPERTY, (stack, level, entity, id) -> stack.has(DataComponents.DYED_COLOR) ? 1.0F : 0.0F);
 			ItemProperties.register(SCContent.CAMERA_MONITOR.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
 				if (!(entity instanceof Player player))
 					return EMPTY_STATE;
@@ -598,28 +600,8 @@ public class ClientHandler {
 			else
 				return 0xFFFFFF;
 		}, item));
-		event.register((stack, tintIndex) -> {
-			if (tintIndex == 0) {
-				DyeableLeatherItem item = ((DyeableLeatherItem) stack.getItem());
-
-				if (item.hasCustomColor(stack))
-					return item.getColor(stack);
-				else
-					return 0x333333;
-			}
-			else
-				return -1;
-		}, SCContent.BRIEFCASE.get());
-		event.register((stack, tintIndex) -> {
-			if (tintIndex == 0) {
-				DyeableLeatherItem item = ((DyeableLeatherItem) stack.getItem());
-
-				if (item.hasCustomColor(stack))
-					return item.getColor(stack);
-			}
-
-			return -1;
-		}, SCContent.LENS.get());
+		event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : DyedItemColor.getOrDefault(stack, 0x333333), SCContent.BRIEFCASE.get());
+		event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : DyedItemColor.getOrDefault(stack, 0xFFFFFF), SCContent.LENS.get());
 		event.register((stack, tintIndex) -> {
 			if (tintIndex == 1) {
 				int grassTint = GrassColor.get(0.5D, 1.0D);

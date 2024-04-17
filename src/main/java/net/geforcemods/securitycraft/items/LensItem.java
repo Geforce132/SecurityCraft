@@ -1,12 +1,12 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public class LensItem extends Item implements DyeableLeatherItem {
+public class LensItem extends Item {
 	public static final ResourceLocation COLOR_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "colored");
 
 	public LensItem(Item.Properties properties) {
@@ -15,7 +15,7 @@ public class LensItem extends Item implements DyeableLeatherItem {
 
 	@Override
 	public String getDescriptionId(ItemStack stack) {
-		if (hasCustomColor(stack))
+		if (stack.has(DataComponents.DYED_COLOR))
 			return "item.securitycraft.colored_lens";
 		else
 			return super.getDescriptionId(stack);
