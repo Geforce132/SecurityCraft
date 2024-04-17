@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -47,8 +48,8 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.saveAdditional(tag, lookupProvider);
 
 		tag.putInt("width", projectionWidth);
 		tag.putInt("height", projectionHeight);
@@ -62,8 +63,8 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(tag, lookupProvider);
 
 		projectionWidth = tag.getInt("width");
 		projectionHeight = tag.getInt("height");

@@ -20,6 +20,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -90,8 +91,8 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.saveAdditional(tag, lookupProvider);
 		tag.putBoolean("shutDown", shutDown);
 		tag.put("lens", lens.createTag());
 		tag.putFloat("initial_x_rotation", initialXRotation);
@@ -99,8 +100,8 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(tag, lookupProvider);
 		shutDown = tag.getBoolean("shutDown");
 		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
 		initialXRotation = tag.getFloat("initial_x_rotation");

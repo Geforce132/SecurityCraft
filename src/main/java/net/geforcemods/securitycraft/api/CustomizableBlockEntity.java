@@ -5,6 +5,7 @@ import java.util.Map;
 
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -30,16 +31,16 @@ public abstract class CustomizableBlockEntity extends NamedBlockEntity implement
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(tag, lookupProvider);
 		modules = readModuleInventory(tag);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.saveAdditional(tag, lookupProvider);
 		writeModuleInventory(tag);
 		writeModuleStates(tag);
 		writeOptions(tag);

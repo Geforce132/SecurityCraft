@@ -21,6 +21,7 @@ import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -96,8 +97,8 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.saveAdditional(tag, lookupProvider);
 		CompoundTag lastPlayerTag = new CompoundTag();
 
 		tag.putBoolean("shouldSendNewMessage", shouldSendNewMessage);
@@ -106,8 +107,8 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(tag, lookupProvider);
 
 		shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
 		lastPlayer = Owner.fromCompound(tag.getCompound("lastPlayer"));

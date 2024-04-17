@@ -21,6 +21,7 @@ import net.geforcemods.securitycraft.network.server.SyncRiftStabilizer;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -119,8 +120,8 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.saveAdditional(tag, lookupProvider);
 
 		CompoundTag teleportationNBT = new CompoundTag();
 		int i = 0;
@@ -138,8 +139,8 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(tag, lookupProvider);
 
 		if (tag.contains("teleportationTypes", Tag.TAG_COMPOUND)) {
 			CompoundTag teleportationNBT = tag.getCompound("teleportationTypes");

@@ -28,6 +28,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.MutableComponent;
@@ -182,8 +183,8 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.saveAdditional(tag, lookupProvider);
 
 		if (!StringUtil.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner")) && ownerProfile != null) {
 			CompoundTag ownerProfileTag = new CompoundTag();
@@ -194,8 +195,8 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(tag, lookupProvider);
 
 		if (tag.contains("ownerProfile", 10))
 			setPlayerProfile(NbtUtils.readGameProfile(tag.getCompound("ownerProfile")));

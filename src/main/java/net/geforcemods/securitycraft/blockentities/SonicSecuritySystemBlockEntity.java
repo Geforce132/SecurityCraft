@@ -22,6 +22,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -175,8 +176,8 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.saveAdditional(tag, lookupProvider);
 
 		// If there are blocks to save but the tag doesn't have a CompoundNBT
 		// to store them in, create one (shouldn't be needed)
@@ -208,8 +209,8 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(tag, lookupProvider);
 
 		if (tag.contains("LinkedBlocks")) {
 			ListTag list = tag.getList("LinkedBlocks", Tag.TAG_COMPOUND);

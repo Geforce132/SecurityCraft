@@ -26,6 +26,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -625,7 +626,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		tag.putBoolean("BlockPocketEnabled", isEnabled());
 		tag.putBoolean("ShowOutline", showsOutline());
 		tag.putInt("Size", getSize());
@@ -645,14 +646,14 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			tag.putLong("FloorList" + i, floor.get(i).asLong());
 		}
 
-		super.saveAdditional(tag);
+		super.saveAdditional(tag, lookupProvider);
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		int i = 0;
 
-		super.load(tag);
+		super.loadAdditional(tag, lookupProvider);
 		setEnabled(tag.getBoolean("BlockPocketEnabled"));
 		setShowOutline(tag.getBoolean("ShowOutline"));
 		setSize(tag.getInt("Size"));

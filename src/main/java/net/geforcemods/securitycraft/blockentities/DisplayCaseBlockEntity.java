@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -97,10 +98,10 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		long cooldownLeft;
 
-		super.saveAdditional(tag);
+		super.saveAdditional(tag, lookupProvider);
 		tag.put("DisplayedStack", getDisplayedStack().save(new CompoundTag()));
 		tag.putBoolean("ShouldBeOpen", shouldBeOpen);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
@@ -114,12 +115,12 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		load(tag, true);
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		load(tag, true, lookupProvider);
 	}
 
-	public void load(CompoundTag tag, boolean forceOpenness) {
-		super.load(tag);
+	public void load(CompoundTag tag, boolean forceOpenness, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(tag, lookupProvider);
 		setDisplayedStack(ItemStack.of((CompoundTag) tag.get("DisplayedStack")));
 		shouldBeOpen = tag.getBoolean("ShouldBeOpen");
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");

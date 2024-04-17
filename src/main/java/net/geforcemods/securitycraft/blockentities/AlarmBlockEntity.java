@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.util.AlarmSoundHandler;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -66,8 +67,8 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.saveAdditional(tag, lookupProvider);
 		tag.putInt("cooldown", cooldown);
 		tag.putBoolean("isPowered", isPowered);
 		tag.putString("sound", sound.getLocation().toString());
@@ -76,8 +77,8 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(tag, lookupProvider);
 
 		cooldown = tag.getInt("cooldown");
 		isPowered = tag.getBoolean("isPowered");

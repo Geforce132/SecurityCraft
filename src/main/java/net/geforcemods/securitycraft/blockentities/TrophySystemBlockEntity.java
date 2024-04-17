@@ -29,6 +29,7 @@ import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.geforcemods.securitycraft.util.TeamUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -132,8 +133,8 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.saveAdditional(tag, lookupProvider);
 
 		CompoundTag projectilesNBT = new CompoundTag();
 		int i = 0;
@@ -148,8 +149,8 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(tag, lookupProvider);
 
 		if (tag.contains("projectiles", Tag.TAG_COMPOUND)) {
 			CompoundTag projectilesNBT = tag.getCompound("projectiles");

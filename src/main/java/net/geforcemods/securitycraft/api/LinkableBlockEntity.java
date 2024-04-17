@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -31,8 +32,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(tag, lookupProvider);
 
 		if (tag.contains("linkedBlocks")) {
 			if (!hasLevel()) {
@@ -45,8 +46,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.saveAdditional(tag, lookupProvider);
 
 		if (!linkedBlocks.isEmpty()) {
 			ListTag tagList = new ListTag();
@@ -190,8 +191,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 *
 	 * @param action The {@link ILinkedAction} that occurred
 	 * @param excludedBEs LinkableBlockEntities that aren't going to have onLinkedBlockAction() called on them, always add your
-	 *            block entity to the list if you're going to call propagate() in this method to chain-link
-	 *            multiple blocks (i.e: like Laser Blocks)
+	 *            block entity to the list if you're going to call propagate() in this method to chain-link multiple blocks (i.e:
+	 *            like Laser Blocks)
 	 */
 	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {}
 }

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.api;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Nameable;
@@ -21,16 +22,16 @@ public class NamedBlockEntity extends OwnableBlockEntity implements Nameable {
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.saveAdditional(tag, lookupProvider);
 
 		if (customName != null)
 			tag.putString("customName", customName.getString());
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(tag, lookupProvider);
 
 		if (tag.contains("customName")) {
 			String name = tag.getString("customName");

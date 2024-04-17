@@ -25,6 +25,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -87,10 +88,10 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		ListTag list = tag.getList("Items", 10);
 
-		super.load(tag);
+		super.loadAdditional(tag, lookupProvider);
 		inventoryContents = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); ++i) {
@@ -108,8 +109,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.saveAdditional(tag, lookupProvider);
 
 		ListTag list = new ListTag();
 

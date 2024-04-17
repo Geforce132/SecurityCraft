@@ -27,6 +27,7 @@ import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -61,10 +62,10 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		long cooldownLeft;
 
-		super.saveAdditional(tag);
+		super.saveAdditional(tag, lookupProvider);
 		writeModuleInventory(tag);
 		writeModuleStates(tag);
 		writeOptions(tag);
@@ -85,8 +86,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(tag, lookupProvider);
 
 		modules = readModuleInventory(tag);
 		moduleStates = readModuleStates(tag);

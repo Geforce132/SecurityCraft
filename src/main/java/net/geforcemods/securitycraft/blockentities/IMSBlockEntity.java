@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -120,16 +121,16 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.saveAdditional(tag, lookupProvider);
 
 		tag.putInt("bombsRemaining", bombsRemaining);
 		tag.putBoolean("updateBombCount", updateBombCount);
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(tag, lookupProvider);
 
 		bombsRemaining = tag.getInt("bombsRemaining");
 		updateBombCount = tag.getBoolean("updateBombCount");
