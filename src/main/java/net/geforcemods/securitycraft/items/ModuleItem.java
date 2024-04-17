@@ -174,7 +174,7 @@ public class ModuleItem extends Item {
 		PlayerTeam team = level.getScoreboard().getPlayersTeam(name);
 
 		//@formatter:off
-		return team != null && module.getOrCreateTag().getList("ListedTeams", Tag.TAG_STRING)
+		return team != null && Utils.getTag(module).getUnsafe().getList("ListedTeams", Tag.TAG_STRING)
 				.stream()
 				.filter(StringTag.class::isInstance)
 				.map(tag -> ((StringTag) tag).getAsString())

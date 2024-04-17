@@ -22,12 +22,14 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -240,34 +242,36 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	}
 
 	/**
-	 * Saves this block entity's notes to a tag
+	 * Saves this block entity's notes to a stack
 	 *
-	 * @param tag The tag to save the notes to
+	 * @param stack The stack to save the notes to
 	 */
-	public void saveNotes(CompoundTag tag) {
-		ListTag notes = new ListTag();
+	public void saveNotes(ItemStack stack) {
+		CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> {
+			ListTag notes = new ListTag();
 
-		for (NoteWrapper note : recordedNotes) {
-			CompoundTag noteNbt = new CompoundTag();
+			for (NoteWrapper note : recordedNotes) {
+				CompoundTag noteNbt = new CompoundTag();
 
-			noteNbt.putInt("noteID", note.noteID);
-			noteNbt.putString("instrument", note.instrumentName);
-			noteNbt.putString("customSoundId", note.customSoundId);
-			notes.add(noteNbt);
-		}
+				noteNbt.putInt("noteID", note.noteID);
+				noteNbt.putString("instrument", note.instrumentName);
+				noteNbt.putString("customSoundId", note.customSoundId);
+				notes.add(noteNbt);
+			}
 
-		tag.put("Notes", notes);
+			tag.put("Notes", notes);
+		});
 	}
 
 	/**
-	 * Loads notes saved on a tag to a collection
+	 * Loads notes saved on custom data to a collection
 	 *
-	 * @param tag The tag containing the notes
+	 * @param customData The data containing the notes
 	 * @param recordedNotes The collection to save the notes to
 	 */
-	public static <T extends Collection<NoteWrapper>> void loadNotes(CompoundTag tag, T recordedNotes) {
-		if (tag.contains("Notes")) {
-			ListTag list = tag.getList("Notes", Tag.TAG_COMPOUND);
+	public static <T extends Collection<NoteWrapper>> void loadNotes(CustomData customData, T recordedNotes) {
+		if (customData.contains("Notes")) {
+			ListTag list = customData.getUnsafe().getList("Notes", Tag.TAG_COMPOUND);
 
 			for (int i = 0; i < list.size(); i++) {
 				CompoundTag note = list.getCompound(i);

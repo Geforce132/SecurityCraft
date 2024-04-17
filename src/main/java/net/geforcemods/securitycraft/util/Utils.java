@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.util;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -13,7 +14,9 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.Block;
 
 public class Utils {
@@ -42,6 +45,15 @@ public class Utils {
 		}
 
 		return Component.translatable(key, params);
+	}
+
+	public static CustomData getTag(ItemStack stack) {
+		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+
+		if (customData == null)
+			return CustomData.EMPTY;
+		else
+			return customData;
 	}
 
 	public static ResourceLocation getRegistryName(Block block) {

@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -20,6 +20,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 
@@ -54,10 +55,11 @@ public class CodebreakerItem extends Item {
 								return InteractionResultHolder.pass(codebreaker);
 
 							boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
-							CompoundTag tag = codebreaker.getOrCreateTag();
 
-							tag.putLong(LAST_USED_TIME, System.currentTimeMillis());
-							tag.putBoolean(WAS_SUCCESSFUL, isSuccessful);
+							CustomData.update(DataComponents.CUSTOM_DATA, codebreaker, tag -> {
+								tag.putLong(LAST_USED_TIME, System.currentTimeMillis());
+								tag.putBoolean(WAS_SUCCESSFUL, isSuccessful);
+							});
 
 							if (isSuccessful) {
 								player.openMenu(new MenuProvider() {
@@ -86,7 +88,7 @@ public class CodebreakerItem extends Item {
 	}
 
 	public static boolean wasRecentlyUsed(ItemStack stack) {
-		long lastUsedTime = stack.getOrCreateTag().getLong(CodebreakerItem.LAST_USED_TIME);
+		long lastUsedTime = Utils.getTag(stack).getUnsafe().getLong(CodebreakerItem.LAST_USED_TIME);
 
 		return lastUsedTime != 0 && System.currentTimeMillis() - lastUsedTime < 3000L;
 	}

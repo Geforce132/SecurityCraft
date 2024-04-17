@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.util.TeamUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -15,6 +16,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 
 public class KeycardReaderMenu extends AbstractContainerMenu {
@@ -66,12 +68,12 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 		ItemStack keycard = keycardSlot.getItem();
 
 		if (!keycard.isEmpty()) {
-			CompoundTag tag = keycard.getOrCreateTag();
-
-			tag.putBoolean("linked", true);
-			tag.putInt("signature", be.getSignature());
-			tag.putString("ownerName", be.getOwner().getName());
-			tag.putString("ownerUUID", be.getOwner().getUUID());
+			CustomData.update(DataComponents.CUSTOM_DATA, keycard, tag -> {
+				tag.putBoolean("linked", true);
+				tag.putInt("signature", be.getSignature());
+				tag.putString("ownerName", be.getOwner().getName());
+				tag.putString("ownerUUID", be.getOwner().getUUID());
+			});
 		}
 	}
 
@@ -79,10 +81,10 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 		ItemStack keycard = keycardSlot.getItem();
 
 		if (!keycard.isEmpty()) {
-			CompoundTag tag = keycard.getOrCreateTag();
-
-			if (tag.getBoolean("limited"))
-				tag.putInt("uses", uses);
+			CustomData.update(DataComponents.CUSTOM_DATA, keycard, tag -> {
+				if (tag.getBoolean("limited"))
+					tag.putInt("uses", uses);
+			});
 		}
 	}
 

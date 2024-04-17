@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -53,7 +54,7 @@ public class KeycardHolderItem extends Item {
 
 	public static int getCardCount(ItemStack stack) {
 		int count = 0;
-		ListTag items = stack.getOrCreateTag().getList("ItemInventory", Tag.TAG_COMPOUND);
+		ListTag items = Utils.getTag(stack).getUnsafe().getList("ItemInventory", Tag.TAG_COMPOUND);
 
 		for (int i = 0; i < items.size(); i++) {
 			CompoundTag item = items.getCompound(i);

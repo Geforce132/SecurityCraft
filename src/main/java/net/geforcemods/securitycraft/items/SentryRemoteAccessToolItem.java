@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,6 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -68,13 +70,14 @@ public class SentryRemoteAccessToolItem extends Item {
 					return InteractionResult.FAIL;
 				}
 
-				stack.getOrCreateTag().putIntArray("sentry" + nextAvailableSlot, new int[] {
-						sentryPos.getX(), sentryPos.getY(), sentryPos.getZ()
+				CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> {
+					tag.putIntArray("sentry" + nextAvailableSlot, new int[] {
+							sentryPos.getX(), sentryPos.getY(), sentryPos.getZ()
+					});
+
+					if (sentry.hasCustomName())
+						tag.putString("sentry" + nextAvailableSlot + "_name", sentry.getCustomName().getString());
 				});
-
-				if (sentry.hasCustomName())
-					stack.getTag().putString("sentry" + nextAvailableSlot + "_name", sentry.getCustomName().getString());
-
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.bound", sentryPos), ChatFormatting.GREEN);
 			}
 			else {

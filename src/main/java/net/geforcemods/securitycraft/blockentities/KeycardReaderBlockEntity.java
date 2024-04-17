@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -34,6 +35,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -129,11 +131,12 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 					return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
 				boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
-				CompoundTag tag = stack.getOrCreateTag();
 
 				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
-				tag.putLong(CodebreakerItem.LAST_USED_TIME, System.currentTimeMillis());
-				tag.putBoolean(CodebreakerItem.WAS_SUCCESSFUL, isSuccessful);
+				CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> {
+					tag.putLong(CodebreakerItem.LAST_USED_TIME, System.currentTimeMillis());
+					tag.putBoolean(CodebreakerItem.WAS_SUCCESSFUL, isSuccessful);
+				});
 
 				if (isSuccessful)
 					activate();

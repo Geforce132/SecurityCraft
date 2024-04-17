@@ -26,6 +26,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -95,7 +96,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 	@Override
 	protected boolean updateCustomBlockEntityTag(BlockPos pos, Level level, Player player, ItemStack stack, BlockState state) {
-		if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.transferPositionsFromItem(stack.getOrCreateTag()))
+		if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.transferPositionsFromItem(Utils.getTag(stack).getUnsafe()))
 			return true;
 
 		return super.updateCustomBlockEntityTag(pos, level, player, stack, state);
@@ -143,14 +144,14 @@ public class SonicSecuritySystemItem extends BlockItem {
 	/**
 	 * Removes a position from a tag
 	 *
-	 * @param tag The tag to remove the position from
+	 * @param customData The data to remove the position from
 	 * @param pos The position to remove from the tag
 	 */
-	public static void removeLinkedBlock(CompoundTag tag, BlockPos pos) {
-		if (!tag.contains("LinkedBlocks"))
+	public static void removeLinkedBlock(CustomData customData, BlockPos pos) {
+		if (!customData.contains("LinkedBlocks"))
 			return;
 
-		ListTag list = tag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
+		ListTag list = customData.getUnsafe().getList("LinkedBlocks", Tag.TAG_COMPOUND);
 
 		// Starting from the end of the list to prevent skipping over entries
 		for (int i = list.size() - 1; i >= 0; i--) {

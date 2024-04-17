@@ -28,6 +28,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -36,6 +37,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.scores.PlayerTeam;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -121,7 +123,7 @@ public class EditModuleScreen extends Screen {
 	@Override
 	public void onClose() {
 		super.onClose();
-		PacketDistributor.SERVER.noArg().send(new SetListModuleData(module.getOrCreateTag()));
+		PacketDistributor.SERVER.noArg().send(new SetListModuleData(Utils.getTag(module).getUnsafe()));
 	}
 
 	@Override
@@ -244,20 +246,20 @@ public class EditModuleScreen extends Screen {
 	}
 
 	private void updateButtonStates(boolean cleared) {
-		CompoundTag tag = module.getOrCreateTag();
-		boolean tagIsConsideredEmpty = tag.isEmpty() || (tag.size() == 1 && tag.contains("affectEveryone"));
+		CustomData customData = Utils.getTag(module);
+		boolean tagIsConsideredEmpty = customData.isEmpty() || (customData.size() == 1 && customData.contains("affectEveryone"));
 
 		if (!cleared && tagIsConsideredEmpty) {
 			addPlayerButton.active = false;
 			removePlayerButton.active = false;
 		}
 		else {
-			addPlayerButton.active = !tag.contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getValue().isEmpty();
+			addPlayerButton.active = !customData.contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getValue().isEmpty();
 			removePlayerButton.active = !inputField.getValue().isEmpty();
 		}
 
-		copyButton.active = !tagIsConsideredEmpty && !tag.equals(savedModule);
-		pasteButton.active = savedModule != null && !savedModule.isEmpty() && !tag.equals(savedModule);
+		copyButton.active = !tagIsConsideredEmpty && !customData.equals(savedModule);
+		pasteButton.active = savedModule != null && !savedModule.isEmpty() && !customData.equals(savedModule);
 		clearButton.active = !tagIsConsideredEmpty;
 	}
 
@@ -471,7 +473,7 @@ public class EditModuleScreen extends Screen {
 				if (listed)
 					listedTeams.add(StringTag.valueOf(team.getName()));
 			});
-			module.getOrCreateTag().put("ListedTeams", listedTeams);
+			CustomData.update(DataComponents.CUSTOM_DATA, module, tag -> tag.put("ListedTeams", listedTeams));
 			updateButtonStates();
 		}
 

@@ -319,10 +319,12 @@ public class ClientHandler {
 				if (!(entity instanceof Player))
 					return EMPTY_STATE;
 
-				if (Minecraft.getInstance().crosshairPickEntity instanceof Sentry sentry) {
-					float linkingState = loop(12, (tag, i) -> Arrays.stream(tag.getIntArray("sentry" + i)).boxed().toArray(Integer[]::new), stack.getOrCreateTag(), sentry.blockPosition());
+				CompoundTag stackTag = Utils.getTag(stack).getUnsafe();
 
-					if (!SentryRemoteAccessToolItem.hasSentryAdded(stack.getTag())) {
+				if (Minecraft.getInstance().crosshairPickEntity instanceof Sentry sentry) {
+					float linkingState = loop(12, (tag, i) -> Arrays.stream(tag.getIntArray("sentry" + i)).boxed().toArray(Integer[]::new), stackTag, sentry.blockPosition());
+
+					if (!SentryRemoteAccessToolItem.hasSentryAdded(stackTag)) {
 						if (linkingState == NOT_LINKED_STATE)
 							return NOT_LINKED_STATE;
 						else
@@ -332,7 +334,7 @@ public class ClientHandler {
 						return linkingState;
 				}
 				else
-					return (SentryRemoteAccessToolItem.hasSentryAdded(stack.getTag()) ? UNKNOWN_STATE : EMPTY_STATE);
+					return (SentryRemoteAccessToolItem.hasSentryAdded(stackTag) ? UNKNOWN_STATE : EMPTY_STATE);
 			});
 			ItemProperties.register(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
 				if (!(entity instanceof Player player))
@@ -751,7 +753,7 @@ public class ClientHandler {
 	}
 
 	public static void putDisguisedBeRenderer(BlockEntity disguisableBlockEntity, ItemStack stack) {
-		DISGUISED_BLOCK_RENDER_DELEGATE.putDelegateFor(disguisableBlockEntity, NbtUtils.readBlockState(disguisableBlockEntity.getLevel().holderLookup(Registries.BLOCK), stack.getOrCreateTag().getCompound("SavedState")));
+		DISGUISED_BLOCK_RENDER_DELEGATE.putDelegateFor(disguisableBlockEntity, NbtUtils.readBlockState(disguisableBlockEntity.getLevel().holderLookup(Registries.BLOCK), Utils.getTag(stack).getUnsafe().getCompound("SavedState")));
 	}
 
 	public static void updateBlockColorAroundPosition(BlockPos pos) {
@@ -771,10 +773,12 @@ public class ClientHandler {
 			BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
 
 			if (hitResult != null && hitResult.getType() == Type.BLOCK && isValidHitResult.test(hitResult)) {
+				CompoundTag tag = Utils.getTag(stackInHand).getUnsafe();
+
 				if (loop)
-					return loop(tagSize, getCoords, stackInHand.getOrCreateTag(), hitResult.getBlockPos());
+					return loop(tagSize, getCoords, tag, hitResult.getBlockPos());
 				else
-					return useCheckmark.test(stackInHand.getOrCreateTag(), hitResult.getBlockPos()) ? LINKED_STATE : NOT_LINKED_STATE;
+					return useCheckmark.test(tag, hitResult.getBlockPos()) ? LINKED_STATE : NOT_LINKED_STATE;
 			}
 		}
 

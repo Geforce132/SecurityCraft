@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderGetter;
@@ -169,7 +170,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	public static Optional<BlockState> getDisguisedBlockStateFromStack(HolderGetter<Block> holderGetter, ItemStack module) {
 		if (!module.isEmpty()) {
-			BlockState disguisedState = NbtUtils.readBlockState(holderGetter, module.getOrCreateTag().getCompound("SavedState"));
+			BlockState disguisedState = NbtUtils.readBlockState(holderGetter, Utils.getTag(module).getUnsafe().getCompound("SavedState"));
 
 			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
 				return Optional.of(disguisedState);

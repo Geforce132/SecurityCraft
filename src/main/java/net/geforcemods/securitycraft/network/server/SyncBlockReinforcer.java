@@ -3,12 +3,14 @@ package net.geforcemods.securitycraft.network.server;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public class SyncBlockReinforcer implements CustomPacketPayload {
@@ -41,6 +43,6 @@ public class SyncBlockReinforcer implements CustomPacketPayload {
 		ItemStack reinforcer = inventory.getSelected().getItem() instanceof UniversalBlockReinforcerItem ? inventory.getSelected() : inventory.offhand.get(0);
 
 		if (!reinforcer.isEmpty() && !reinforcer.is(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()))
-			reinforcer.getOrCreateTag().putBoolean("is_unreinforcing", !isReinforcing);
+			CustomData.update(DataComponents.CUSTOM_DATA, reinforcer, tag -> tag.putBoolean("is_unreinforcing", !isReinforcing));
 	}
 }

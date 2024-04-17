@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.inventory;
 
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -17,7 +18,7 @@ public class ItemContainer implements Container {
 		this.containerStack = containerStack;
 		this.maxStackSize = maxStackSize;
 		inventory = NonNullList.<ItemStack>withSize(inventorySize, ItemStack.EMPTY);
-		load(containerStack.getOrCreateTag());
+		load(Utils.getTag(containerStack).getUnsafe());
 	}
 
 	public static ItemContainer briefcase(ItemStack briefcase) {

@@ -2,11 +2,13 @@ package net.geforcemods.securitycraft.misc;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.KeycardItem;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -28,7 +30,7 @@ public class LimitedUseKeycardRecipe extends CustomRecipe {
 
 			if (item instanceof KeycardItem) {
 				if (item != SCContent.LIMITED_USE_KEYCARD.get()) {
-					if (hasNormalKeycard || stack.getOrCreateTag().getBoolean("limited"))
+					if (hasNormalKeycard || Utils.getTag(stack).getUnsafe().getBoolean("limited"))
 						return false;
 
 					hasNormalKeycard = true;
@@ -64,10 +66,10 @@ public class LimitedUseKeycardRecipe extends CustomRecipe {
 		if (keycard.isEmpty())
 			return ItemStack.EMPTY;
 
-		CompoundTag tag = keycard.getOrCreateTag();
-
-		tag.putBoolean("limited", true);
-		tag.putInt("uses", 0);
+		CustomData.update(DataComponents.CUSTOM_DATA, keycard, tag -> {
+			tag.putBoolean("limited", true);
+			tag.putInt("uses", 0);
+		});
 		keycard.setCount(2);
 		return keycard;
 	}

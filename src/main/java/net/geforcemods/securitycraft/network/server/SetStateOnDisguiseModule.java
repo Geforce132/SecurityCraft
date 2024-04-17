@@ -4,13 +4,14 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 import net.neoforged.neoforge.registries.GameData;
@@ -48,17 +49,17 @@ public class SetStateOnDisguiseModule implements CustomPacketPayload {
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.DISGUISE_MODULE.get());
 
 		if (!stack.isEmpty()) {
-			CompoundTag tag = stack.getOrCreateTag();
-
-			if (state.isAir()) {
-				tag.remove("SavedState");
-				tag.remove("StandingOrWall");
-				tag.remove("ItemInventory");
-			}
-			else {
-				tag.put("SavedState", NbtUtils.writeBlockState(state));
-				tag.putInt("StandingOrWall", standingOrWall.ordinal());
-			}
+			CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> {
+				if (state.isAir()) {
+					tag.remove("SavedState");
+					tag.remove("StandingOrWall");
+					tag.remove("ItemInventory");
+				}
+				else {
+					tag.put("SavedState", NbtUtils.writeBlockState(state));
+					tag.putInt("StandingOrWall", standingOrWall.ordinal());
+				}
+			});
 		}
 	}
 }

@@ -53,7 +53,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -78,6 +78,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LecternBlock;
@@ -595,11 +596,12 @@ public class SCEventHandler {
 						return false;
 
 					boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
-					CompoundTag tag = codebreaker.getOrCreateTag();
 
 					codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
-					tag.putLong(CodebreakerItem.LAST_USED_TIME, System.currentTimeMillis());
-					tag.putBoolean(CodebreakerItem.WAS_SUCCESSFUL, isSuccessful);
+					CustomData.update(DataComponents.CUSTOM_DATA, codebreaker, tag -> {
+						tag.putLong(CodebreakerItem.LAST_USED_TIME, System.currentTimeMillis());
+						tag.putBoolean(CodebreakerItem.WAS_SUCCESSFUL, isSuccessful);
+					});
 
 					if (isSuccessful)
 						codebreakable.useCodebreaker(state, player);

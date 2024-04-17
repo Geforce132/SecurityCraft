@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -22,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
@@ -41,7 +41,7 @@ public class PortableTunePlayerItem extends Item {
 
 			if (be.isOwnedBy(player) || be.isAllowed(player)) {
 				if (be.getNumberOfNotes() > 0) {
-					be.saveNotes(ctx.getItemInHand().getOrCreateTag());
+					be.saveNotes(ctx.getItemInHand());
 					player.displayClientMessage(Utils.localize("messages.securitycraft:portable_tune_player.tune_saved"), true);
 				}
 				else
@@ -59,13 +59,13 @@ public class PortableTunePlayerItem extends Item {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (!level.isClientSide) {
-			CompoundTag tag = stack.getOrCreateTag();
+			CustomData customData = Utils.getTag(stack);
 			boolean isTunePlaying = SCEventHandler.PLAYING_TUNES.containsKey(player);
 
-			if (!isTunePlaying && tag.contains("Notes")) {
+			if (!isTunePlaying && customData.contains("Notes")) {
 				Deque<NoteWrapper> notes = new ArrayDeque<>();
 
-				SonicSecuritySystemBlockEntity.loadNotes(stack.getTag(), notes);
+				SonicSecuritySystemBlockEntity.loadNotes(customData, notes);
 				SCEventHandler.PLAYING_TUNES.put(player, MutablePair.of(0, notes));
 				return InteractionResultHolder.success(stack);
 			}

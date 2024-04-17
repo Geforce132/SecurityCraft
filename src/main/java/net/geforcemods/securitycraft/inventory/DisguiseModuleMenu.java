@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.entity.player.Inventory;
@@ -87,12 +88,12 @@ public class DisguiseModuleMenu extends StateSelectorAccessMenu {
 
 	@Override
 	public BlockState getSavedState() {
-		return NbtUtils.readBlockState(playerInventory.player.level().holderLookup(Registries.BLOCK), inventory.getModule().getOrCreateTag().getCompound("SavedState"));
+		return NbtUtils.readBlockState(playerInventory.player.level().holderLookup(Registries.BLOCK), Utils.getTag(inventory.getModule()).getUnsafe().getCompound("SavedState"));
 	}
 
 	@Override
 	public StandingOrWallType getStandingOrWallType() {
-		return StandingOrWallType.values()[inventory.getModule().getOrCreateTag().getInt("StandingOrWall")];
+		return StandingOrWallType.values()[Utils.getTag(inventory.getModule()).getUnsafe().getInt("StandingOrWall")];
 	}
 
 	public ModuleItemContainer getInventory() {

@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -42,7 +43,7 @@ public class CheckBriefcasePasscode implements CustomPacketPayload {
 		ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get());
 
 		if (!briefcase.isEmpty()) {
-			CompoundTag tag = briefcase.getOrCreateTag();
+			CompoundTag tag = Utils.getTag(briefcase).getUnsafe();
 			String tagCode = tag.getString("passcode");
 
 			if (tagCode.length() == 4) //If an old plaintext passcode is encountered, generate and check with the hashed variant
