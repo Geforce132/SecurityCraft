@@ -19,7 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
@@ -56,8 +56,8 @@ public class GameRendererMixin {
 
 			ItemStack lens = be.getLensContainer().getItem(0);
 
-			if (lens.getItem() instanceof DyeableLeatherItem item && item.hasCustomColor(lens))
-				guiGraphics.fill(0, 0, window.getGuiScaledWidth(), window.getGuiScaledHeight(), item.getColor(lens) + (be.getOpacity() << 24));
+			if (lens.has(DataComponents.DYED_COLOR))
+				guiGraphics.fill(0, 0, window.getGuiScaledWidth(), window.getGuiScaledHeight(), lens.get(DataComponents.DYED_COLOR).rgb() + (be.getOpacity() << 24));
 		}
 	}
 }

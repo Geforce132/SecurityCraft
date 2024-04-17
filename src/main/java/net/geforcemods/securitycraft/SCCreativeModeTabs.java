@@ -19,10 +19,10 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -108,7 +108,7 @@ public class SCCreativeModeTabs {
 					list.add(DyeItem.byColor(DyeColor.byId(SecurityCraft.RANDOM.nextInt(16))));
 				}
 
-				output.accept(DyeableLeatherItem.dyeArmor(new ItemStack(SCContent.LENS.get()), list));
+				output.accept(DyedItemColor.applyDyes(new ItemStack(SCContent.LENS.get()), list));
 				output.accept(new ItemStack(SCContent.ALLOWLIST_MODULE.get()));
 				output.accept(new ItemStack(SCContent.DENYLIST_MODULE.get()));
 				output.accept(new ItemStack(SCContent.DISGUISE_MODULE.get()));

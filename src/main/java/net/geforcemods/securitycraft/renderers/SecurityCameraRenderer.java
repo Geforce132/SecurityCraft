@@ -18,9 +18,9 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -72,8 +72,8 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 		ItemStack lens = be.getLensContainer().getItem(0);
 		float r = 0.4392156862745098F, g = 1.0F, b = 1.0F;
 
-		if (lens.getItem() instanceof DyeableLeatherItem item && item.hasCustomColor(lens)) {
-			int color = item.getColor(lens);
+		if (lens.has(DataComponents.DYED_COLOR)) {
+			int color = lens.get(DataComponents.DYED_COLOR).rgb();
 
 			r = ((color >> 0x10) & 0xFF) / 255.0F;
 			g = ((color >> 0x8) & 0xFF) / 255.0F;

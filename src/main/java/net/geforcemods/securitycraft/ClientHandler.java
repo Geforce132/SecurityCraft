@@ -123,7 +123,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.ClipContext;
@@ -554,8 +553,8 @@ public class ClientHandler {
 				if (level.getBlockState(mutablePos).is(SCContent.LASER_BLOCK.get()) && level.getBlockEntity(mutablePos) instanceof LaserBlockBlockEntity be) {
 					ItemStack stack = be.getLensContainer().getItem(direction.getOpposite().ordinal());
 
-					if (stack.getItem() instanceof DyeableLeatherItem lens)
-						return lens.getColor(stack);
+					if (stack.has(DataComponents.DYED_COLOR))
+						return stack.get(DataComponents.DYED_COLOR).rgb();
 
 					break;
 				}
@@ -573,8 +572,8 @@ public class ClientHandler {
 				if (level.getBlockState(mutablePos).is(SCContent.INVENTORY_SCANNER.get()) && level.getBlockEntity(mutablePos) instanceof InventoryScannerBlockEntity be) {
 					ItemStack stack = be.getLensContainer().getItem(0);
 
-					if (stack.getItem() instanceof DyeableLeatherItem lens)
-						return lens.getColor(stack);
+					if (stack.has(DataComponents.DYED_COLOR))
+						return stack.get(DataComponents.DYED_COLOR).rgb();
 
 					break;
 				}

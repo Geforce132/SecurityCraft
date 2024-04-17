@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
 
 public class ClaymoreRenderer implements BlockEntityRenderer<ClaymoreBlockEntity> {
@@ -45,8 +45,8 @@ public class ClaymoreRenderer implements BlockEntityRenderer<ClaymoreBlockEntity
 		ItemStack lens = be.getLensContainer().getItem(0);
 		int r = 255, g = 255, b = 255;
 
-		if (lens.getItem() instanceof DyeableLeatherItem item && item.hasCustomColor(lens)) {
-			int color = item.getColor(lens);
+		if (lens.has(DataComponents.DYED_COLOR)) {
+			int color = lens.get(DataComponents.DYED_COLOR).rgb();
 
 			r = (color >> 0x10) & 0xFF;
 			g = (color >> 0x8) & 0xFF;
