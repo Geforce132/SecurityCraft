@@ -103,12 +103,9 @@ public class SonicSecuritySystemItem extends BlockItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-		if (!stack.hasTag())
-			return;
-
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		// If this item is storing block positions, show the number of them in the tooltip
-		int numOfLinkedBlocks = stack.getTag().getList("LinkedBlocks", Tag.TAG_COMPOUND).size();
+		int numOfLinkedBlocks = Utils.getTag(stack).getUnsafe().getList("LinkedBlocks", Tag.TAG_COMPOUND).size();
 
 		if (numOfLinkedBlocks > 0)
 			tooltip.add(Utils.localize("tooltip.securitycraft:sonicSecuritySystem.linkedTo", numOfLinkedBlocks).withStyle(Utils.GRAY_STYLE));

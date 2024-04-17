@@ -112,7 +112,7 @@ public class ModuleItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level level, List<Component> list, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> list, TooltipFlag flag) {
 		if (containsCustomData || canBeCustomized())
 			list.add(MODIFIABLE);
 		else
@@ -129,10 +129,9 @@ public class ModuleItem extends Item {
 			boolean affectsEveryone = false;
 			int playerCount = 0;
 			int teamCount = 0;
+			CompoundTag tag = Utils.getTag(stack).getUnsafe();
 
-			if (stack.hasTag()) {
-				CompoundTag tag = stack.getTag();
-
+			if (tag != null && !tag.isEmpty()) {
 				affectsEveryone = tag.getBoolean("affectEveryone");
 
 				if (!affectsEveryone) {

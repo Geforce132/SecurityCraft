@@ -64,7 +64,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack briefcase, Level level, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack briefcase, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		String ownerName = getOwnerName(briefcase);
 
 		if (!ownerName.isEmpty())

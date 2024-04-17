@@ -89,11 +89,8 @@ public class CameraMonitorItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-		if (stack.getTag() == null)
-			return;
-
-		tooltip.add(Utils.localize("tooltip.securitycraft:cameraMonitor").append(Component.literal(" " + getNumberOfCamerasBound(stack.getTag()) + "/30")).setStyle(Utils.GRAY_STYLE));
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+		tooltip.add(Utils.localize("tooltip.securitycraft:cameraMonitor").append(Component.literal(" " + getNumberOfCamerasBound(Utils.getTag(stack).getUnsafe()) + "/30")).setStyle(Utils.GRAY_STYLE));
 	}
 
 	public static String getTagNameFromPosition(CompoundTag tag, GlobalPos view) {
@@ -152,7 +149,7 @@ public class CameraMonitorItem extends Item {
 	}
 
 	public static int getNumberOfCamerasBound(CompoundTag tag) {
-		if (tag == null)
+		if (tag == null || tag.isEmpty())
 			return 0;
 
 		int amount = 0;

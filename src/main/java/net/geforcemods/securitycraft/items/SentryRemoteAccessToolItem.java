@@ -96,32 +96,33 @@ public class SentryRemoteAccessToolItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-		if (stack.getTag() == null)
-			return;
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+		CompoundTag tag = Utils.getTag(stack).getUnsafe();
 
-		for (int i = 1; i <= 12; i++) {
-			int[] coords = stack.getTag().getIntArray("sentry" + i);
+		if (tag != null && !tag.isEmpty()) {
+			for (int i = 1; i <= 12; i++) {
+				int[] coords = tag.getIntArray("sentry" + i);
 
-			if (coords.length != 3)
-				tooltip.add(Component.literal(ChatFormatting.GRAY + "---"));
-			else {
-				BlockPos pos = new BlockPos(coords[0], coords[1], coords[2]);
-				String nameKey = "sentry" + i + "_name";
-				String nameToShow = null;
-
-				if (stack.getTag().contains(nameKey))
-					nameToShow = stack.getTag().getString(nameKey);
+				if (coords.length != 3)
+					tooltip.add(Component.literal(ChatFormatting.GRAY + "---"));
 				else {
-					List<Sentry> sentries = Minecraft.getInstance().player.level().getEntitiesOfClass(Sentry.class, new AABB(pos));
+					BlockPos pos = new BlockPos(coords[0], coords[1], coords[2]);
+					String nameKey = "sentry" + i + "_name";
+					String nameToShow = null;
 
-					if (!sentries.isEmpty() && sentries.get(0).hasCustomName())
-						nameToShow = sentries.get(0).getCustomName().getString();
-					else
-						nameToShow = Utils.localize("tooltip.securitycraft:sentry").getString() + " " + i;
+					if (tag.contains(nameKey))
+						nameToShow = tag.getString(nameKey);
+					else {
+						List<Sentry> sentries = Minecraft.getInstance().player.level().getEntitiesOfClass(Sentry.class, new AABB(pos));
+
+						if (!sentries.isEmpty() && sentries.get(0).hasCustomName())
+							nameToShow = sentries.get(0).getCustomName().getString();
+						else
+							nameToShow = Utils.localize("tooltip.securitycraft:sentry").getString() + " " + i;
+					}
+
+					tooltip.add(Component.literal(ChatFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos).getString()));
 				}
-
-				tooltip.add(Component.literal(ChatFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos).getString()));
 			}
 		}
 	}

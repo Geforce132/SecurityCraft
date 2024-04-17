@@ -78,17 +78,18 @@ public class MineRemoteAccessToolItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level level, List<Component> list, TooltipFlag flag) {
-		if (stack.getTag() == null)
-			return;
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> list, TooltipFlag flag) {
+		CompoundTag tag = Utils.getTag(stack).getUnsafe();
 
-		for (int i = 1; i <= 6; i++) {
-			int[] coords = stack.getTag().getIntArray("mine" + i);
+		if (tag != null && !tag.isEmpty()) {
+			for (int i = 1; i <= 6; i++) {
+				int[] coords = tag.getIntArray("mine" + i);
 
-			if (coords.length != 3)
-				list.add(Component.literal(ChatFormatting.GRAY + "---"));
-			else
-				list.add(Utils.localize("tooltip.securitycraft:mine").append(Component.literal(" " + i + ": ")).append(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
+				if (coords.length != 3)
+					list.add(Component.literal(ChatFormatting.GRAY + "---"));
+				else
+					list.add(Utils.localize("tooltip.securitycraft:mine").append(Component.literal(" " + i + ": ")).append(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
+			}
 		}
 	}
 

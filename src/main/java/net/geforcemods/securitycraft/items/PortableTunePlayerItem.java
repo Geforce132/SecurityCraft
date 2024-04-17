@@ -79,12 +79,9 @@ public class PortableTunePlayerItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-		if (!stack.hasTag())
-			return;
-
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		// If a tune is stored in this item, show the number of notes in this tune in the tooltip
-		int notesCount = stack.getTag().getList("Notes", Tag.TAG_COMPOUND).size();
+		int notesCount = Utils.getTag(stack).getUnsafe().getList("Notes", Tag.TAG_COMPOUND).size();
 
 		if (notesCount > 0)
 			tooltip.add(Utils.localize("tooltip.securitycraft:portableTunePlayer.noteCount", notesCount).withStyle(Utils.GRAY_STYLE));
