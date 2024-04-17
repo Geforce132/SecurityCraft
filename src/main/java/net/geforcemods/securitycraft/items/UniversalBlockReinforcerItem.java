@@ -1,13 +1,12 @@
 package net.geforcemods.securitycraft.items;
 
-import java.util.Map;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
@@ -19,9 +18,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -110,16 +108,18 @@ public class UniversalBlockReinforcerItem extends Item {
 	}
 
 	public static void maybeRemoveMending(ItemStack stack) {
-		Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
+		ItemEnchantments enchantments = stack.get(DataComponents.ENCHANTMENTS);
 
-		if (enchantments.containsKey(Enchantments.MENDING)) {
-			enchantments.remove(Enchantments.MENDING);
-			EnchantmentHelper.setEnchantments(enchantments, stack);
+		if (enchantments != null && enchantments.getLevel(Enchantments.MENDING) > 0) {
+			ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(enchantments);
+
+			mutable.set(Enchantments.MENDING, 0);
+			stack.set(DataComponents.ENCHANTMENTS, mutable.toImmutable());
 		}
 	}
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return !EnchantmentHelper.getEnchantments(book).containsKey(Enchantments.MENDING);
+		return stack.getEnchantmentLevel(Enchantments.MENDING) == 0;
 	}
 }
