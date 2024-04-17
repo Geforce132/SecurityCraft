@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -74,7 +75,7 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 			}
 
 			player.drop(reinforcingSlot.output, false);
-			blockReinforcer.hurtAndBreak(reinforcingSlot.output.getCount(), player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
+			blockReinforcer.hurtAndBreak(reinforcingSlot.output.getCount(), player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
 		}
 
 		if (!isLvl1 && !itemInventory.getItem(1).isEmpty()) {
@@ -86,7 +87,7 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 			}
 
 			player.drop(unreinforcingSlot.output, false);
-			blockReinforcer.hurtAndBreak(unreinforcingSlot.output.getCount(), player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
+			blockReinforcer.hurtAndBreak(unreinforcingSlot.output.getCount(), player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
 		}
 	}
 

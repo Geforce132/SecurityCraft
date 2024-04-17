@@ -31,6 +31,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -132,7 +133,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 
 				boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
 
-				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+				stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
 				CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> {
 					tag.putLong(CodebreakerItem.LAST_USED_TIME, System.currentTimeMillis());
 					tag.putBoolean(CodebreakerItem.WAS_SUCCESSFUL, isSuccessful);

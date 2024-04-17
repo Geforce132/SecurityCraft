@@ -194,7 +194,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 				kill();
 
 				if (!player.isCreative())
-					player.getMainHandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+					player.getMainHandItem().hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
 			}
 			else if (item == SCContent.DISGUISE_MODULE.get()) {
 				ItemStack module = getDisguiseModule();

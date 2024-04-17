@@ -65,7 +65,7 @@ public class BrushItemMixin {
 			boolean brushFinished = be.brush(level.getGameTime(), player, blockHitResult.getDirection());
 
 			if (brushFinished)
-				stack.hurtAndBreak(1, player, livingEntity -> livingEntity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+				stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
 
 			ci.cancel();
 		}

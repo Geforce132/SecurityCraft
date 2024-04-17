@@ -20,6 +20,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -142,7 +143,7 @@ public class CageTrapBlock extends DisguisableBlock {
 				level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
 
 				if (!player.isCreative())
-					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+					stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
 
 				level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
 				return ItemInteractionResult.SUCCESS;

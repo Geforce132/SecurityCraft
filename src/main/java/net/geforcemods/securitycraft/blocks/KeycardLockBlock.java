@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -66,7 +67,7 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 
 			if (stack.getItem() instanceof UniversalKeyChangerItem) {
 				if (be.isOwnedBy(player)) {
-					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+					stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
 					be.reset();
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.reset"), ChatFormatting.GREEN);
 				}

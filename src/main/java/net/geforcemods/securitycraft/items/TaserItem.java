@@ -114,11 +114,11 @@ public class TaserItem extends Item {
 				if (powered) {
 					ItemStack taser = new ItemStack(SCContent.TASER.get(), 1);
 
-					taser.hurtAndBreak(150, player, p -> p.broadcastBreakEvent(hand));
+					taser.hurtAndBreak(150, player, LivingEntity.getSlotForHand(hand));
 					player.setItemInHand(hand, taser);
 				}
 				else
-					stack.hurtAndBreak(150, player, p -> p.broadcastBreakEvent(hand));
+					stack.hurtAndBreak(150, player, LivingEntity.getSlotForHand(hand));
 			}
 
 			return InteractionResultHolder.consume(stack);

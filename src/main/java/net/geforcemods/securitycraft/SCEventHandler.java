@@ -597,7 +597,7 @@ public class SCEventHandler {
 
 					boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
 
-					codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
+					codebreaker.hurtAndBreak(1, player, LivingEntity.getSlotForHand(event.getHand()));
 					CustomData.update(DataComponents.CUSTOM_DATA, codebreaker, tag -> {
 						tag.putLong(CodebreakerItem.LAST_USED_TIME, System.currentTimeMillis());
 						tag.putBoolean(CodebreakerItem.WAS_SUCCESSFUL, isSuccessful);

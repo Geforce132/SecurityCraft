@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -48,7 +49,7 @@ public class CodebreakerItem extends Item {
 					if (chance < 0.0D)
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
 					else {
-						codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+						codebreaker.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
 
 						if (!level.isClientSide) {
 							if (wasRecentlyUsed(codebreaker))
