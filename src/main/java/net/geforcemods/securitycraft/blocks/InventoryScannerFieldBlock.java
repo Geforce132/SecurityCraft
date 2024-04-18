@@ -233,7 +233,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 	}
 
 	private static boolean areItemsEqual(ItemStack firstItemStack, ItemStack secondItemStack, boolean hasSmartModule) {
-		return (hasSmartModule && areItemStacksEqual(firstItemStack, secondItemStack) && ItemStack.isSameItemSameTags(firstItemStack, secondItemStack)) || (!hasSmartModule && firstItemStack.getItem() == secondItemStack.getItem());
+		return (hasSmartModule && areItemStacksEqual(firstItemStack, secondItemStack) && ItemStack.isSameItemSameComponents(firstItemStack, secondItemStack)) || (!hasSmartModule && firstItemStack.getItem() == secondItemStack.getItem());
 	}
 
 	private static void updateInventoryScannerPower(InventoryScannerBlockEntity be) {
