@@ -36,7 +36,7 @@ public class ReinforcedFallingBlock extends BaseReinforcedBlock implements Falla
 			BlockEntity be = level.getBlockEntity(pos);
 
 			FallingBlockEntity entity = FallingBlockEntity.fall(level, pos, level.getBlockState(pos));
-			entity.blockData = be.saveWithoutMetadata();
+			entity.blockData = be.saveWithoutMetadata(level.registryAccess());
 			level.addFreshEntity(entity);
 		}
 	}

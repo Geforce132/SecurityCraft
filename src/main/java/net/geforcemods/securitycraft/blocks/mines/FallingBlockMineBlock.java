@@ -38,7 +38,7 @@ public class FallingBlockMineBlock extends BaseFullMineBlock implements Fallable
 			BlockEntity be = level.getBlockEntity(pos);
 			FallingBlockEntity entity = FallingBlockEntity.fall(level, pos, level.getBlockState(pos));
 
-			entity.blockData = be.saveWithoutMetadata();
+			entity.blockData = be.saveWithoutMetadata(level.registryAccess());
 			level.addFreshEntity(entity);
 		}
 	}

@@ -75,7 +75,7 @@ public class UniversalBlockReinforcerItem extends Item {
 					return false;
 
 				if (be != null) {
-					tag = be.saveWithoutMetadata();
+					tag = be.saveWithoutMetadata(level.registryAccess());
 
 					if (be instanceof IModuleInventory inv)
 						inv.dropAllModules();
