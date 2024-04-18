@@ -79,7 +79,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		tag.put("sideConfig", saveSideConfig(sideConfig));
 
 		for (int i = 0; i < lenses.getContainerSize(); i++) {
-			tag.put("lens" + i, lenses.getItem(i).save(new CompoundTag()));
+			tag.put("lens" + i, lenses.getItem(i).save(lookupProvider));
 		}
 	}
 
@@ -96,7 +96,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		sideConfig = loadSideConfig(tag.getCompound("sideConfig"));
 
 		for (int i = 0; i < lenses.getContainerSize(); i++) {
-			lenses.setItemExclusively(i, ItemStack.of(tag.getCompound("lens" + i)));
+			lenses.setItemExclusively(i, ItemStack.parseOptional(lookupProvider, tag.getCompound("lens" + i)));
 		}
 
 		lenses.setChanged();

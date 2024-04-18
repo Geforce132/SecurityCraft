@@ -47,7 +47,7 @@ public class ReinforcedDispenserBlockEntity extends DispenserBlockEntity impleme
 		super.loadAdditional(tag, lookupProvider);
 
 		owner.load(tag);
-		modules = readModuleInventory(tag);
+		modules = readModuleInventory(tag, lookupProvider);
 		moduleStates = readModuleStates(tag);
 	}
 
@@ -58,7 +58,7 @@ public class ReinforcedDispenserBlockEntity extends DispenserBlockEntity impleme
 		if (owner != null)
 			owner.save(tag, needsValidation());
 
-		writeModuleInventory(tag);
+		writeModuleInventory(tag, lookupProvider);
 		writeModuleStates(tag);
 	}
 

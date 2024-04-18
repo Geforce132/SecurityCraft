@@ -63,7 +63,7 @@ public class Bullet extends AbstractArrow {
 			ListTag list = new ListTag();
 
 			for (MobEffectInstance effect : potionEffects) {
-				list.add(effect.save(new CompoundTag()));
+				list.add(effect.save());
 			}
 
 			tag.put("PotionEffects", list);

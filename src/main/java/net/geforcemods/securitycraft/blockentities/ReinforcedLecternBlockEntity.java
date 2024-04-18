@@ -40,7 +40,7 @@ public class ReinforcedLecternBlockEntity extends LecternBlockEntity implements 
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 		owner.load(tag);
-		modules = readModuleInventory(tag);
+		modules = readModuleInventory(tag, lookupProvider);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 	}
@@ -52,7 +52,7 @@ public class ReinforcedLecternBlockEntity extends LecternBlockEntity implements 
 		if (owner != null)
 			owner.save(tag, needsValidation());
 
-		writeModuleInventory(tag);
+		writeModuleInventory(tag, lookupProvider);
 		writeModuleStates(tag);
 		writeOptions(tag);
 	}

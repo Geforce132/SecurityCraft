@@ -102,7 +102,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		long cooldownLeft;
 
 		super.saveAdditional(tag, lookupProvider);
-		tag.put("DisplayedStack", getDisplayedStack().save(new CompoundTag()));
+		tag.put("DisplayedStack", getDisplayedStack().save(lookupProvider));
 		tag.putBoolean("ShouldBeOpen", shouldBeOpen);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
@@ -121,7 +121,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 
 	public void load(CompoundTag tag, boolean forceOpenness, HolderLookup.Provider lookupProvider) {
 		super.loadWithComponents(tag, lookupProvider);
-		setDisplayedStack(ItemStack.of((CompoundTag) tag.get("DisplayedStack")));
+		setDisplayedStack(ItemStack.parseOptional(lookupProvider, tag.getCompound("DisplayedStack")));
 		shouldBeOpen = tag.getBoolean("ShouldBeOpen");
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 		loadSaltKey(tag);

@@ -33,7 +33,7 @@ public abstract class CustomizableBlockEntity extends NamedBlockEntity implement
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
-		modules = readModuleInventory(tag);
+		modules = readModuleInventory(tag, lookupProvider);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 	}
@@ -41,7 +41,7 @@ public abstract class CustomizableBlockEntity extends NamedBlockEntity implement
 	@Override
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.saveAdditional(tag, lookupProvider);
-		writeModuleInventory(tag);
+		writeModuleInventory(tag, lookupProvider);
 		writeModuleStates(tag);
 		writeOptions(tag);
 	}

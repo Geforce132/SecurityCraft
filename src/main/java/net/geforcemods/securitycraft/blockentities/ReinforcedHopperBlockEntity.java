@@ -43,7 +43,7 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 		super.loadAdditional(tag, lookupProvider);
 
 		owner.load(tag);
-		modules = readModuleInventory(tag);
+		modules = readModuleInventory(tag, lookupProvider);
 		moduleStates = readModuleStates(tag);
 	}
 
@@ -54,7 +54,7 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 		if (owner != null)
 			owner.save(tag, needsValidation());
 
-		writeModuleInventory(tag);
+		writeModuleInventory(tag, lookupProvider);
 		writeModuleStates(tag);
 	}
 

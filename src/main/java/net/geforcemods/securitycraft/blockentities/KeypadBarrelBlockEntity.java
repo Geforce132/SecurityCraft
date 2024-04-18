@@ -103,7 +103,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		if (!trySaveLootTable(tag))
 			ContainerHelper.saveAllItems(tag, items);
 
-		writeModuleInventory(tag);
+		writeModuleInventory(tag, lookupProvider);
 		writeModuleStates(tag);
 		writeOptions(tag);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
@@ -131,7 +131,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		if (!tryLoadLootTable(tag))
 			ContainerHelper.loadAllItems(tag, items);
 
-		modules = readModuleInventory(tag);
+		modules = readModuleInventory(tag, lookupProvider);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");

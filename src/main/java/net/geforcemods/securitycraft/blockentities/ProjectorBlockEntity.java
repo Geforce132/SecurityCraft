@@ -58,7 +58,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 		tag.putBoolean("active", active);
 		tag.putBoolean("horizontal", horizontal);
 		tag.putBoolean("overriding_blocks", overridingBlocks);
-		tag.put("storedItem", projectedBlock.save(new CompoundTag()));
+		tag.put("storedItem", projectedBlock.save(lookupProvider));
 		tag.put("SavedState", NbtUtils.writeBlockState(projectedState));
 	}
 
@@ -74,7 +74,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 		active = tag.getBoolean("active");
 		horizontal = tag.getBoolean("horizontal");
 		overridingBlocks = tag.getBoolean("overriding_blocks");
-		projectedBlock = ItemStack.of(tag.getCompound("storedItem"));
+		projectedBlock = ItemStack.parseOptional(lookupProvider, tag.getCompound("storedItem"));
 
 		if (!tag.contains("SavedState"))
 			resetSavedState();

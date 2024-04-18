@@ -11,6 +11,8 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -390,9 +392,10 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * writeModuleInventory.
 	 *
 	 * @param tag The tag to read the inventory from
+	 * @param lookupProvider TODO
 	 * @return A NonNullList of ItemStacks that were read from the given tag
 	 */
-	public default NonNullList<ItemStack> readModuleInventory(CompoundTag tag) {
+	public default NonNullList<ItemStack> readModuleInventory(CompoundTag tag, Provider lookupProvider) {
 		ListTag list = tag.getList("Modules", Tag.TAG_COMPOUND);
 		NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
@@ -401,7 +404,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			byte slot = stackTag.getByte("ModuleSlot");
 
 			if (slot >= 0 && slot < modules.size())
-				modules.set(slot, ItemStack.of(stackTag));
+				modules.set(slot, ItemStack.parseOptional(lookupProvider, stackTag));
 		}
 
 		return modules;
@@ -439,9 +442,10 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * loadModuleInventory.
 	 *
 	 * @param tag The tag to write the inventory to
+	 * @param lookupProvider TODO
 	 * @return The modified tag
 	 */
-	public default CompoundTag writeModuleInventory(CompoundTag tag) {
+	public default CompoundTag writeModuleInventory(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		ListTag list = new ListTag();
 		NonNullList<ItemStack> modules = getInventory();
 
@@ -450,8 +454,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				CompoundTag stackTag = new CompoundTag();
 
 				stackTag.putByte("ModuleSlot", (byte) i);
-				modules.get(i).save(stackTag);
-				list.add(stackTag);
+				list.add(modules.get(i).save(lookupProvider, stackTag));
 			}
 		}
 

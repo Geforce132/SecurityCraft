@@ -65,7 +65,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		long cooldownLeft;
 
 		super.saveAdditional(tag, lookupProvider);
-		writeModuleInventory(tag);
+		writeModuleInventory(tag, lookupProvider);
 		writeModuleStates(tag);
 		writeOptions(tag);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
@@ -88,7 +88,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 
-		modules = readModuleInventory(tag);
+		modules = readModuleInventory(tag, lookupProvider);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");

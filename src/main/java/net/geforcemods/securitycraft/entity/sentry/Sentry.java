@@ -70,7 +70,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 
 public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffected, IOwnable { //needs to be a pathfinder mob so it can target a player, ai is also only given to living entities
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(Sentry.class, Owner.getSerializer());
-	private static final EntityDataAccessor<CompoundTag> ALLOWLIST = SynchedEntityData.<CompoundTag>defineId(Sentry.class, EntityDataSerializers.COMPOUND_TAG);
+	private static final EntityDataAccessor<ItemStack> ALLOWLIST = SynchedEntityData.<ItemStack>defineId(Sentry.class, EntityDataSerializers.ITEM_STACK);
 	private static final EntityDataAccessor<Boolean> HAS_SPEED_MODULE = SynchedEntityData.<Boolean>defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Integer> MODE = SynchedEntityData.<Integer>defineId(Sentry.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Boolean> HAS_TARGET = SynchedEntityData.<Boolean>defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
@@ -94,7 +94,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 	public void setUpSentry(Player player) {
 		entityData.set(OWNER, new Owner(player.getName().getString(), player.getGameProfile().getId().toString()));
-		entityData.set(ALLOWLIST, new CompoundTag());
+		entityData.set(ALLOWLIST, ItemStack.EMPTY);
 		entityData.set(HAS_SPEED_MODULE, false);
 		entityData.set(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
 		entityData.set(HAS_TARGET, false);
@@ -107,7 +107,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
 		builder.define(OWNER, new Owner());
-		builder.define(ALLOWLIST, new CompoundTag());
+		builder.define(ALLOWLIST, ItemStack.EMPTY);
 		builder.define(HAS_SPEED_MODULE, false);
 		builder.define(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
 		builder.define(HAS_TARGET, false);
@@ -236,7 +236,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 				getSentryDisguiseBlockEntity().ifPresent(be -> be.removeModule(ModuleType.DISGUISE, false));
 				level().setBlockAndUpdate(blockPosition(), level().getBlockState(blockPosition()).setValue(SometimesVisibleBlock.INVISIBLE, true));
-				entityData.set(ALLOWLIST, new CompoundTag());
+				entityData.set(ALLOWLIST, ItemStack.EMPTY);
 				entityData.set(HAS_SPEED_MODULE, false);
 			}
 			else if (item == SCContent.SENTRY_REMOTE_ACCESS_TOOL.get())
@@ -397,7 +397,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		tag.put("TileEntityData", getOwnerTag());
-		tag.put("InstalledWhitelist", getAllowlistModule().save(new CompoundTag()));
+		tag.put("InstalledWhitelist", getAllowlistModule().save(level().registryAccess()));
 		tag.putBoolean("HasSpeedModule", hasSpeedModule());
 		tag.putInt("SentryMode", entityData.get(MODE));
 		tag.putBoolean("HasTarget", hasTarget());
@@ -424,7 +424,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		getSentryDisguiseBlockEntity().ifPresent(be -> {
 			//put the old module, if it exists, into the new disguise block
 			if (tag.contains("InstalledModule")) {
-				ItemStack module = ItemStack.of(tag.getCompound("InstalledModule"));
+				ItemStack module = ItemStack.parseOptional(level().registryAccess(), tag.getCompound("InstalledModule"));
 
 				if (!module.isEmpty() && module.getItem() instanceof ModuleItem && ModuleItem.getBlockAddon(module) != null) {
 					be.insertModule(module, false);
@@ -432,7 +432,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 				}
 			}
 		});
-		entityData.set(ALLOWLIST, tag.getCompound("InstalledWhitelist"));
+		entityData.set(ALLOWLIST, ItemStack.parseOptional(level().registryAccess(), tag.getCompound("InstalledWhitelist")));
 		entityData.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
 		entityData.set(MODE, tag.getInt("SentryMode"));
 		entityData.set(HAS_TARGET, tag.getBoolean("HasTarget"));
@@ -494,7 +494,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	 * @param module The module to set
 	 */
 	public void setAllowlistModule(ItemStack module) {
-		entityData.set(ALLOWLIST, module.save(new CompoundTag()));
+		entityData.set(ALLOWLIST, module);
 	}
 
 	/**
@@ -522,12 +522,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	 * @return The allowlist module that is added to this sentry. ItemStack.EMPTY if none available
 	 */
 	public ItemStack getAllowlistModule() {
-		CompoundTag tag = entityData.get(ALLOWLIST);
-
-		if (tag == null || tag.isEmpty())
-			return ItemStack.EMPTY;
-		else
-			return ItemStack.of(tag);
+		return entityData.get(ALLOWLIST);
 	}
 
 	public boolean hasSpeedModule() {
