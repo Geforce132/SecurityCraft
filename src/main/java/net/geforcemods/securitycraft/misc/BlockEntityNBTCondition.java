@@ -33,7 +33,7 @@ public record BlockEntityNBTCondition(String key, boolean value) implements Loot
 	@Override
 	public boolean test(LootContext lootContext) {
 		BlockEntity be = lootContext.getLevel().getBlockEntity(BlockPos.containing(lootContext.getParamOrNull(LootContextParams.ORIGIN)));
-		CompoundTag nbt = be.saveWithFullMetadata();
+		CompoundTag nbt = be.saveWithFullMetadata(lootContext.getLevel().registryAccess());
 
 		return nbt.contains(key) && nbt.getBoolean(key) == value;
 	}
