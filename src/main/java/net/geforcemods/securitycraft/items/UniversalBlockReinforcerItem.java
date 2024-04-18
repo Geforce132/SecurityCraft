@@ -91,7 +91,7 @@ public class UniversalBlockReinforcerItem extends Item {
 
 				if (be != null) { //in case the converted block gets removed immediately after it's set
 					if (tag != null)
-						be.load(tag);
+						be.loadWithComponents(tag, level.registryAccess());
 
 					if (isReinforcing)
 						((IOwnable) be).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());

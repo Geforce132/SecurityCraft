@@ -220,11 +220,11 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 			else
 				((IModuleInventory) furnace).dropAllModules();
 
-			tag = furnace.saveWithFullMetadata();
+			tag = furnace.saveWithFullMetadata(level.registryAccess());
 			furnace.clearContent();
 			level.setBlockAndUpdate(pos, convertedState);
 			furnace = (AbstractFurnaceBlockEntity) level.getBlockEntity(pos);
-			furnace.load(tag);
+			furnace.loadWithComponents(tag, level.registryAccess());
 
 			if (protect && player != null)
 				((IOwnable) furnace).setOwner(player.getUUID().toString(), player.getName().getString());

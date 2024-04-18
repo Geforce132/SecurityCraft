@@ -119,9 +119,9 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 			if (be instanceof IModuleInventory moduleInv)
 				moduleInv.dropAllModules();
 
-			tag = be.saveWithFullMetadata();
+			tag = be.saveWithFullMetadata(level.registryAccess());
 			level.setBlockAndUpdate(pos, convertedBlock.defaultBlockState().setValue(FACING, facing).setValue(OPEN, false).setValue(HALF, half).setValue(POWERED, false).setValue(WATERLOGGED, waterlogged));
-			level.getBlockEntity(pos).load(tag);
+			level.getBlockEntity(pos).loadWithComponents(tag, level.registryAccess());
 			return true;
 		}
 	}

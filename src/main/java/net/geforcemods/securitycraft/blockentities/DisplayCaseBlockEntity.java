@@ -181,11 +181,6 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		return disabled.get();
 	}
 
-	@Override
-	public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		load(tag, false);
-	}
-
 	public void setDisplayedStack(ItemStack displayedStack) {
 		this.displayedStack = displayedStack;
 		sync();

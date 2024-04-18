@@ -195,7 +195,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 			KeypadBarrelBlockEntity keypadBarrel;
 
 			barrel.unpackLootTable(player); //generate loot (if any), so items don't spill out when converting and no additional loot table is generated
-			tag = barrel.saveWithFullMetadata();
+			tag = barrel.saveWithFullMetadata(level.registryAccess());
 			barrel.clearContent();
 			horizontalFacing = switch (generalFacing) {
 				case UP, DOWN -> player == null ? Direction.NORTH : player.getDirection().getOpposite();
@@ -203,7 +203,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 			};
 			level.setBlockAndUpdate(pos, SCContent.KEYPAD_BARREL.get().defaultBlockState().setValue(HORIZONTAL_FACING, horizontalFacing).setValue(LID_FACING, generalFacing).setValue(OPEN, false));
 			keypadBarrel = (KeypadBarrelBlockEntity) level.getBlockEntity(pos);
-			keypadBarrel.load(tag);
+			keypadBarrel.loadWithComponents(tag, level.registryAccess());
 			keypadBarrel.setPreviousBarrel(state.getBlock());
 
 			if (player != null)
@@ -231,11 +231,11 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 
 			keypadBarrel.dropAllModules();
 			keypadBarrel.unpackLootTable(player); //generate loot (if any), so items don't spill out when converting and no additional loot table is generated
-			tag = keypadBarrel.saveWithFullMetadata();
+			tag = keypadBarrel.saveWithFullMetadata(level.registryAccess());
 			keypadBarrel.clearContent();
 			level.setBlockAndUpdate(pos, convertedBlock.defaultBlockState().setValue(BarrelBlock.FACING, direction).setValue(OPEN, false));
 			barrel = (BarrelBlockEntity) level.getBlockEntity(pos);
-			barrel.load(tag);
+			barrel.loadWithComponents(tag, level.registryAccess());
 			return true;
 		}
 	}

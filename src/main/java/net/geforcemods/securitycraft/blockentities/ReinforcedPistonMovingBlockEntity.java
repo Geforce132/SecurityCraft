@@ -285,7 +285,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 					BlockEntity be = pushedState.hasBlockEntity() ? ((EntityBlock) pushedState.getBlock()).newBlockEntity(worldPosition, pushedState) : null;
 
 					if (be != null) {
-						be.load(movedBlockEntityTag);
+						be.loadWithComponents(movedBlockEntityTag, level.registryAccess());
 						level.setBlockEntity(be);
 
 						if (be instanceof IModuleInventory moduleInv) {
@@ -331,7 +331,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 							BlockEntity storedBe = pushedState.hasBlockEntity() ? ((EntityBlock) pushedState.getBlock()).newBlockEntity(be.worldPosition, pushedState) : null;
 
 							if (storedBe != null) {
-								storedBe.load(be.movedBlockEntityTag);
+								storedBe.loadWithComponents(be.movedBlockEntityTag, level.registryAccess());
 								level.setBlockEntity(storedBe);
 
 								if (storedBe instanceof IModuleInventory moduleInv) {
