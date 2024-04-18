@@ -94,7 +94,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.saveAdditional(tag, lookupProvider);
 		tag.putBoolean("shutDown", shutDown);
-		tag.put("lens", lens.createTag());
+		tag.put("lens", lens.createTag(lookupProvider));
 		tag.putFloat("initial_x_rotation", initialXRotation);
 		tag.putFloat("initial_y_rotation", initialYRotation);
 	}
@@ -103,7 +103,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 		shutDown = tag.getBoolean("shutDown");
-		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
+		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND), lookupProvider);
 		initialXRotation = tag.getFloat("initial_x_rotation");
 		initialYRotation = tag.getFloat("initial_y_rotation");
 	}

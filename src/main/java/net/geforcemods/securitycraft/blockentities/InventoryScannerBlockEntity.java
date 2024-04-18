@@ -104,7 +104,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		signalCooldown = tag.getInt("cooldown");
 		providePower = tag.getBoolean("is_providing_power");
-		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
+		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND), lookupProvider);
 		lens.setChanged();
 	}
 
@@ -127,7 +127,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		tag.put("Items", list);
 		tag.putInt("cooldown", signalCooldown);
 		tag.putBoolean("is_providing_power", providePower);
-		tag.put("lens", lens.createTag());
+		tag.put("lens", lens.createTag(lookupProvider));
 	}
 
 	@Override

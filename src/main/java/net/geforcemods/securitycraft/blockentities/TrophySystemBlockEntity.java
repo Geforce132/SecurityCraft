@@ -146,7 +146,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		}
 
 		tag.put("projectiles", projectilesNBT);
-		tag.put("lens", lens.createTag());
+		tag.put("lens", lens.createTag(lookupProvider));
 	}
 
 	@Override
@@ -163,7 +163,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 			}
 		}
 
-		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
+		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND), lookupProvider);
 	}
 
 	public static IItemHandler getCapability(TrophySystemBlockEntity be, Direction side) {

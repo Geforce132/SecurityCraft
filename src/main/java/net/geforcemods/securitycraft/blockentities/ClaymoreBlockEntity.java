@@ -83,14 +83,14 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.saveAdditional(tag, lookupProvider);
 		tag.putInt("cooldown", cooldown);
-		tag.put("lens", lens.createTag());
+		tag.put("lens", lens.createTag(lookupProvider));
 	}
 
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 		cooldown = tag.getInt("cooldown");
-		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND));
+		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND), lookupProvider);
 	}
 
 	public static IItemHandler getCapability(ClaymoreBlockEntity be, Direction side) {
