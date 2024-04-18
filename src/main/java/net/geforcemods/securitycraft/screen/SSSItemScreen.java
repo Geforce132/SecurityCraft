@@ -75,12 +75,12 @@ public class SSSItemScreen extends Screen implements ConnectionAccessor {
 
 	@Override
 	public Set<BlockPos> getPositions() {
-		return SonicSecuritySystemItem.stackTagToBlockPosSet(stack.getTag());
+		return SonicSecuritySystemItem.stackTagToBlockPosSet(Utils.getTag(stack).getUnsafe());
 	}
 
 	@Override
 	public void removePosition(BlockPos pos) {
-		SonicSecuritySystemItem.removeLinkedBlock(stack.getTag(), pos);
+		SonicSecuritySystemItem.removeLinkedBlock(stack, pos);
 		PacketDistributor.SERVER.noArg().send(new RemovePositionFromSSS(pos));
 		connectionList.refreshPositions();
 	}

@@ -4,10 +4,12 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public class RemoveCameraTag implements CustomPacketPayload {
@@ -38,6 +40,6 @@ public class RemoveCameraTag implements CustomPacketPayload {
 		ItemStack monitor = PlayerUtils.getItemStackFromAnyHand(ctx.player().orElseThrow(), SCContent.CAMERA_MONITOR.get());
 
 		if (!monitor.isEmpty())
-			monitor.getTag().remove(CameraMonitorItem.getTagNameFromPosition(monitor.getTag(), CameraMonitorItem.getCameraPositions(monitor.getTag()).get(camID - 1)));
+			CustomData.update(DataComponents.CUSTOM_DATA, monitor, tag -> tag.remove(CameraMonitorItem.getTagNameFromPosition(tag, CameraMonitorItem.getCameraPositions(tag).get(camID - 1))));
 	}
 }

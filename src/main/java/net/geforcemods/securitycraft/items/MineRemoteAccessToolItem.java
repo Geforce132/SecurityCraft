@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -19,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
@@ -58,17 +60,14 @@ public class MineRemoteAccessToolItem extends Item {
 					return InteractionResult.SUCCESS;
 				}
 
-				if (stack.getTag() == null)
-					stack.setTag(new CompoundTag());
-
-				stack.getTag().putIntArray(("mine" + nextSlot), new int[] {
+				CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.putIntArray(("mine" + nextSlot), new int[] {
 						pos.getX(), pos.getY(), pos.getZ()
-				});
+				}));
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
 				return InteractionResult.SUCCESS;
 			}
 			else {
-				removeMine(stack, pos, player);
+				removeMine(stack, pos);
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.unbound", Utils.getFormattedCoordinates(pos)), ChatFormatting.RED);
 				return InteractionResult.SUCCESS;
 			}
@@ -93,38 +92,38 @@ public class MineRemoteAccessToolItem extends Item {
 		}
 	}
 
-	public static boolean hasMineAdded(CompoundTag tag) {
-		if (tag == null)
-			return false;
+	public static boolean hasMineAdded(ItemStack stack) {
+		CustomData customData = Utils.getTag(stack);
 
-		for (int i = 1; i <= 6; i++) {
-			if (tag.contains("mine" + i))
-				return true;
+		if (customData != null) {
+			for (int i = 1; i <= 6; i++) {
+				if (customData.contains("mine" + i))
+					return true;
+			}
 		}
 
 		return false;
 	}
 
-	public static void removeMine(ItemStack stack, BlockPos pos, Player player) {
-		if (stack.getTag() == null)
-			return;
+	public static void removeMine(ItemStack stack, BlockPos pos) {
+		CompoundTag tag = Utils.getTag(stack).getUnsafe();
 
 		for (int i = 1; i <= 6; i++) {
-			int[] coords = stack.getTag().getIntArray("mine" + i);
+			int[] coords = tag.getIntArray("mine" + i);
 
 			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
-				stack.getTag().remove("mine" + i);
+				tag.remove("mine" + i);
+				CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
 				return;
 			}
 		}
 	}
 
 	public static boolean isMineAdded(ItemStack stack, BlockPos pos) {
-		if (stack.getTag() == null)
-			return false;
+		CompoundTag tag = Utils.getTag(stack).getUnsafe();
 
 		for (int i = 1; i <= 6; i++) {
-			int[] coords = stack.getTag().getIntArray("mine" + i);
+			int[] coords = tag.getIntArray("mine" + i);
 
 			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
 				return true;
@@ -134,11 +133,10 @@ public class MineRemoteAccessToolItem extends Item {
 	}
 
 	public static int getNextAvailableSlot(ItemStack stack) {
-		if (stack.getTag() == null)
-			return 1;
+		CompoundTag tag = Utils.getTag(stack).getUnsafe();
 
 		for (int i = 1; i <= 6; i++) {
-			if (stack.getTag().getIntArray("mine" + i).length != 3)
+			if (tag.getIntArray("mine" + i).length != 3)
 				return i;
 		}
 

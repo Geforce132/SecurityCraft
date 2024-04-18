@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
@@ -47,25 +49,23 @@ public class CameraMonitorItem extends Item {
 			}
 
 			ItemStack stack = ctx.getItemInHand();
-
-			if (stack.getTag() == null)
-				stack.setTag(new CompoundTag());
-
 			GlobalPos view = GlobalPos.of(player.level().dimension(), pos);
 
-			if (isCameraAdded(stack.getTag(), view)) {
-				stack.getTag().remove(getTagNameFromPosition(stack.getTag(), view));
+			if (isCameraAdded(stack, view)) {
+				CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.remove(getTagNameFromPosition(tag, view)));
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.unbound", Utils.getFormattedCoordinates(pos)), ChatFormatting.RED);
 				return InteractionResult.SUCCESS;
 			}
 
-			for (int i = 1; i <= 30; i++) {
-				if (!stack.getTag().contains("Camera" + i)) {
-					stack.getTag().putString("Camera" + i, LevelUtils.toNBTString(view));
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
-					break;
+			CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> {
+				for (int i = 1; i <= 30; i++) {
+					if (!tag.contains("Camera" + i)) {
+						tag.putString("Camera" + i, LevelUtils.toNBTString(view));
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
+						break;
+					}
 				}
-			}
+			});
 
 			return InteractionResult.SUCCESS;
 		}
@@ -77,13 +77,13 @@ public class CameraMonitorItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (!stack.hasTag() || !hasCameraAdded(stack.getTag())) {
+		if (!hasCameraAdded(stack)) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), ChatFormatting.RED);
 			return InteractionResultHolder.pass(stack);
 		}
 
 		if (level.isClientSide && stack.getItem() == SCContent.CAMERA_MONITOR.get())
-			ClientHandler.displayCameraMonitorScreen(player.getInventory(), (CameraMonitorItem) stack.getItem(), stack.getTag());
+			ClientHandler.displayCameraMonitorScreen(player.getInventory(), (CameraMonitorItem) stack.getItem(), Utils.getTag(stack).getUnsafe());
 
 		return InteractionResultHolder.consume(stack);
 	}
@@ -106,19 +106,22 @@ public class CameraMonitorItem extends Item {
 		return "";
 	}
 
-	public static boolean hasCameraAdded(CompoundTag tag) {
-		if (tag == null)
-			return false;
+	public static boolean hasCameraAdded(ItemStack stack) {
+		CustomData customData = Utils.getTag(stack);
 
-		for (int i = 1; i <= 30; i++) {
-			if (tag.contains("Camera" + i))
-				return true;
+		if (customData != null) {
+			for (int i = 1; i <= 30; i++) {
+				if (customData.contains("Camera" + i))
+					return true;
+			}
 		}
 
 		return false;
 	}
 
-	public static boolean isCameraAdded(CompoundTag tag, GlobalPos view) {
+	public static boolean isCameraAdded(ItemStack stack, GlobalPos view) {
+		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+
 		for (int i = 1; i <= 30; i++) {
 			if (tag.contains("Camera" + i)) {
 				String[] coords = tag.getString("Camera" + i).split(" ");

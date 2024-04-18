@@ -16,10 +16,13 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -193,8 +196,8 @@ public class MineRemoteAccessToolScreen extends Screen {
 	private BlockPos getMineCoordinates(int mine) {
 		mine++; //mines are stored starting by mine1 up to mine6
 
-		if (mrat.getItem() == SCContent.MINE_REMOTE_ACCESS_TOOL.get() && mrat.hasTag()) {
-			int[] coords = mrat.getTag().getIntArray("mine" + mine);
+		if (mrat.getItem() == SCContent.MINE_REMOTE_ACCESS_TOOL.get() && mrat.has(DataComponents.CUSTOM_DATA)) {
+			int[] coords = Utils.getTag(mrat).getUnsafe().getIntArray("mine" + mine);
 
 			if (coords.length == 3)
 				return new BlockPos(coords[0], coords[1], coords[2]);
@@ -204,16 +207,18 @@ public class MineRemoteAccessToolScreen extends Screen {
 	}
 
 	private void removeTagFromToolAndUpdate(ItemStack stack, BlockPos pos) {
-		if (stack.getTag() == null)
-			return;
+		if (stack.has(DataComponents.CUSTOM_DATA)) {
+			CompoundTag tag = Utils.getTag(stack).getUnsafe();
 
-		for (int i = 1; i <= 6; i++) {
-			int[] coords = stack.getTag().getIntArray("mine" + i);
+			for (int i = 1; i <= 6; i++) {
+				int[] coords = tag.getIntArray("mine" + i);
 
-			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
-				stack.getTag().remove("mine" + i);
-				PacketDistributor.SERVER.noArg().send(new RemoveMineFromMRAT(i));
-				return;
+				if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
+					tag.remove("mine" + i);
+					CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
+					PacketDistributor.SERVER.noArg().send(new RemoveMineFromMRAT(i));
+					return;
+				}
 			}
 		}
 	}

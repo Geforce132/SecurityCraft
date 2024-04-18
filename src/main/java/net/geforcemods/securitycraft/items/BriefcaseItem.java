@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -112,20 +113,21 @@ public class BriefcaseItem extends Item {
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, Player player) {
-		if (!briefcase.hasTag())
-			return true;
+		if (briefcase.has(DataComponents.CUSTOM_DATA)) {
+			String ownerName = getOwnerName(briefcase);
+			String ownerUUID = getOwnerUUID(briefcase);
 
-		String ownerName = getOwnerName(briefcase);
-		String ownerUUID = getOwnerUUID(briefcase);
+			return ownerName.isEmpty() || ownerUUID.equals(player.getUUID().toString()) || (ownerUUID.equals("ownerUUID") && ownerName.equals(player.getName().getString()));
+		}
 
-		return ownerName.isEmpty() || ownerUUID.equals(player.getUUID().toString()) || (ownerUUID.equals("ownerUUID") && ownerName.equals(player.getName().getString()));
+		return false;
 	}
 
 	public static String getOwnerName(ItemStack briefcase) {
-		return briefcase.hasTag() ? briefcase.getTag().getString("owner") : "";
+		return Utils.getTag(briefcase).getUnsafe().getString("owner");
 	}
 
 	public static String getOwnerUUID(ItemStack briefcase) {
-		return briefcase.hasTag() ? briefcase.getTag().getString("ownerUUID") : "";
+		return Utils.getTag(briefcase).getUnsafe().getString("ownerUUID");
 	}
 }

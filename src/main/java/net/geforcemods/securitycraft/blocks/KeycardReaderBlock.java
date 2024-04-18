@@ -71,7 +71,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 				boolean isKeycardHolder = item == SCContent.KEYCARD_HOLDER.get();
 
 				//either no keycard, or an unlinked keycard, or an admin tool
-				if (!isKeycardHolder && (!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker)
+				if (!isKeycardHolder && (!(item instanceof KeycardItem) || !Utils.getTag(stack).getUnsafe().getBoolean("linked")) && !isCodebreaker)
 					noKeycardRightclick.accept(be);
 				else if (item != SCContent.LIMITED_USE_KEYCARD.get()) //limited use keycards are only crafting components now
 					return be.onRightClickWithActionItem(stack, hand, player, isCodebreaker, isKeycardHolder);

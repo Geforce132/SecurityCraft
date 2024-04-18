@@ -184,10 +184,14 @@ public class ModuleItem extends Item {
 	public static List<String> getPlayersFromModule(ItemStack stack) {
 		List<String> list = new ArrayList<>();
 
-		if (stack.getItem() instanceof ModuleItem && stack.hasTag()) {
+		if (stack.getItem() instanceof ModuleItem) {
+			CompoundTag tag = Utils.getTag(stack).getUnsafe();
+
 			for (int i = 1; i <= MAX_PLAYERS; i++) {
-				if (stack.getTag().getString("Player" + i) != null && !stack.getTag().getString("Player" + i).isEmpty())
-					list.add(stack.getTag().getString("Player" + i).toLowerCase());
+				String player = tag.getString("Player" + i);
+
+				if (player != null && !player.isEmpty())
+					list.add(player.toLowerCase());
 			}
 		}
 

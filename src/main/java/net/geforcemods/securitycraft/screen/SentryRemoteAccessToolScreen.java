@@ -22,9 +22,12 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -105,9 +108,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				Level level = Minecraft.getInstance().player.level();
 				String nameKey = "sentry" + (i + 1) + "_name";
 				Component sentryName = null;
+				CompoundTag tag = Utils.getTag(srat).getUnsafe();
 
-				if (srat.hasTag() && srat.getTag().contains(nameKey))
-					sentryName = Component.literal(srat.getTag().getString(nameKey));
+				if (tag.contains(nameKey))
+					sentryName = Component.literal(tag.getString(nameKey));
 
 				lines[i] = Utils.getFormattedCoordinates(sentryPos);
 				guiButtons[i][UNBIND].active = true;
@@ -315,8 +319,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private BlockPos getSentryCoordinates(int sentry) {
 		sentry++; // sentries are stored starting by sentry1 up to sentry12
 
-		if (srat.getItem() == SCContent.SENTRY_REMOTE_ACCESS_TOOL.get() && srat.hasTag()) {
-			int[] coords = srat.getTag().getIntArray("sentry" + sentry);
+		if (srat.getItem() == SCContent.SENTRY_REMOTE_ACCESS_TOOL.get() && srat.has(DataComponents.CUSTOM_DATA)) {
+			int[] coords = Utils.getTag(srat).getUnsafe().getIntArray("sentry" + sentry);
 
 			if (coords.length == 3)
 				return new BlockPos(coords[0], coords[1], coords[2]);
@@ -326,16 +330,18 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	private void removeTagFromToolAndUpdate(ItemStack stack, BlockPos pos) {
-		if (stack.getTag() == null)
-			return;
+		if (stack.has(DataComponents.CUSTOM_DATA)) {
+			CompoundTag tag = Utils.getTag(stack).getUnsafe();
 
-		for (int i = 1; i <= 12; i++) {
-			int[] coords = stack.getTag().getIntArray("sentry" + i);
+			for (int i = 1; i <= 12; i++) {
+				int[] coords = tag.getIntArray("sentry" + i);
 
-			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
-				stack.getTag().remove("sentry" + i);
-				PacketDistributor.SERVER.noArg().send(new RemoveSentryFromSRAT(i));
-				return;
+				if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
+					tag.remove("sentry" + i);
+					CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
+					PacketDistributor.SERVER.noArg().send(new RemoveSentryFromSRAT(i));
+					return;
+				}
 			}
 		}
 	}

@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.util.TeamUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -51,10 +52,10 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 				if (!(stack.getItem() instanceof KeycardItem) || stack.getItem() == SCContent.LIMITED_USE_KEYCARD.get())
 					return false;
 
-				if (!stack.hasTag())
+				if (!stack.has(DataComponents.CUSTOM_DATA))
 					return true;
 
-				CompoundTag tag = stack.getTag();
+				CompoundTag tag = Utils.getTag(stack).getUnsafe();
 				Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
 				String keycardOwnerUUID = keycardOwner.getUUID();
 

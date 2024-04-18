@@ -154,7 +154,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 				for (int i = 0; i < holderInventory.getContainerSize(); i++) {
 					ItemStack keycardStack = holderInventory.getItem(i);
 
-					if (keycardStack.getItem() instanceof KeycardItem && keycardStack.hasTag()) {
+					if (keycardStack.getItem() instanceof KeycardItem && keycardStack.has(DataComponents.CUSTOM_DATA)) {
 						feedback = insertCard(keycardStack, player);
 
 						if (feedback == null)
@@ -179,7 +179,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	}
 
 	public MutableComponent insertCard(ItemStack stack, Player player) {
-		CompoundTag tag = stack.getTag();
+		CompoundTag tag = Utils.getTag(stack).getUnsafe();
 		Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
 
 		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
@@ -206,8 +206,10 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 				if (uses <= 0)
 					return Component.translatable("messages.securitycraft:keycardReader.noUses");
 
-				if (!player.isCreative())
+				if (!player.isCreative()) {
 					tag.putInt("uses", --uses);
+					CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
+				}
 			}
 
 			activate();

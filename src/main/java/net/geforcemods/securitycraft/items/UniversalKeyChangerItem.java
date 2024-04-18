@@ -75,7 +75,7 @@ public class UniversalKeyChangerItem extends Item {
 			ItemStack briefcase = player.getOffhandItem();
 
 			if (BriefcaseItem.isOwnedBy(briefcase, player) || player.isCreative()) {
-				CompoundTag tag = briefcase.getTag();
+				CompoundTag tag = Utils.getTag(briefcase).getUnsafe();
 
 				if (tag != null && tag.contains("passcode")) {
 					if (tag.contains("saltKey"))

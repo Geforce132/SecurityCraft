@@ -39,7 +39,7 @@ public class SentryRemoteAccessToolItem extends Item {
 
 		if (!level.isClientSide) {
 			updateTagWithNames(stack, level);
-			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, stack.getTag()));
+			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, Utils.getTag(stack).getUnsafe()));
 		}
 
 		return InteractionResultHolder.consume(stack);
@@ -89,7 +89,7 @@ public class SentryRemoteAccessToolItem extends Item {
 		}
 		else if (!level.isClientSide) {
 			updateTagWithNames(stack, level);
-			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, stack.getTag()));
+			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, Utils.getTag(stack).getUnsafe()));
 		}
 
 		return InteractionResult.SUCCESS;
@@ -128,10 +128,10 @@ public class SentryRemoteAccessToolItem extends Item {
 	}
 
 	private void updateTagWithNames(ItemStack stack, Level level) {
-		if (!stack.hasTag())
+		if (!stack.has(DataComponents.CUSTOM_DATA))
 			return;
 
-		CompoundTag tag = stack.getTag();
+		CompoundTag tag = Utils.getTag(stack).getUnsafe();
 
 		for (int i = 1; i <= 12; i++) {
 			int[] coords = tag.getIntArray("sentry" + i);
@@ -161,15 +161,17 @@ public class SentryRemoteAccessToolItem extends Item {
 	}
 
 	private void removeSentry(ItemStack stack, BlockPos pos, Player player) {
-		if (stack.getTag() == null)
-			return;
+		if (stack.has(DataComponents.CUSTOM_DATA)) {
+			CompoundTag tag = Utils.getTag(stack).getUnsafe();
 
-		for (int i = 1; i <= 12; i++) {
-			int[] coords = stack.getTag().getIntArray("sentry" + i);
+			for (int i = 1; i <= 12; i++) {
+				int[] coords = tag.getIntArray("sentry" + i);
 
-			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
-				stack.getTag().remove("sentry" + i);
-				return;
+				if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
+					tag.remove("sentry" + i);
+					CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
+					return;
+				}
 			}
 		}
 	}
@@ -187,11 +189,10 @@ public class SentryRemoteAccessToolItem extends Item {
 	}
 
 	public static boolean isSentryAdded(ItemStack stack, BlockPos pos) {
-		if (stack.getTag() == null)
-			return false;
+		CompoundTag tag = Utils.getTag(stack).getUnsafe();
 
 		for (int i = 1; i <= 12; i++) {
-			int[] coords = stack.getTag().getIntArray("sentry" + i);
+			int[] coords = tag.getIntArray("sentry" + i);
 
 			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
 				return true;
@@ -201,11 +202,10 @@ public class SentryRemoteAccessToolItem extends Item {
 	}
 
 	public static int getNextAvailableSlot(ItemStack stack) {
-		if (stack.getTag() == null)
-			return 1;
+		CompoundTag tag = Utils.getTag(stack).getUnsafe();
 
 		for (int i = 1; i <= 12; i++) {
-			if (stack.getTag().getIntArray("sentry" + i).length != 3)
+			if (tag.getIntArray("sentry" + i).length != 3)
 				return i;
 		}
 

@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -56,17 +57,14 @@ public class SonicSecuritySystemItem extends BlockItem {
 					}
 				}
 				else {
-					if (stack.getTag() == null)
-						stack.setTag(new CompoundTag());
-
 					// Remove a block from the tag if it was already linked to.
 					// If not, link to it
-					if (isAdded(stack.getTag(), pos)) {
-						removeLinkedBlock(stack.getTag(), pos);
+					if (isAdded(stack, pos)) {
+						removeLinkedBlock(stack, pos);
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
 						return InteractionResult.SUCCESS;
 					}
-					else if (addLinkedBlock(stack.getTag(), pos, player)) {
+					else if (addLinkedBlock(stack, pos, player)) {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
 						return InteractionResult.SUCCESS;
 					}
@@ -76,7 +74,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 		//don't place down the SSS if it has at least one linked block
 		//placing is handled by minecraft otherwise
-		if (!stack.hasTag() || !hasLinkedBlock(stack.getTag())) {
+		if (!stack.has(DataComponents.CUSTOM_DATA) || !hasLinkedBlock(stack)) {
 			if (!level.isClientSide)
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.notLinked"), ChatFormatting.DARK_RED);
 
@@ -112,18 +110,19 @@ public class SonicSecuritySystemItem extends BlockItem {
 	}
 
 	/**
-	 * Adds a position to a tag
+	 * Adds a position to a stack
 	 *
-	 * @param tag The tag to add the position to
-	 * @param pos The position to add to the tag
+	 * @param stack The stack to add the position to
+	 * @param pos The position to add to the stack
 	 * @param player The player who tries to link a block
 	 * @return true if the position was added, false otherwise
 	 */
-	public static boolean addLinkedBlock(CompoundTag tag, BlockPos pos, Player player) {
+	public static boolean addLinkedBlock(ItemStack stack, BlockPos pos, Player player) {
 		// If the position was already added, return
-		if (isAdded(tag, pos))
+		if (isAdded(stack, pos))
 			return false;
 
+		CompoundTag tag = Utils.getTag(stack).getUnsafe();
 		ListTag list = tag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
 
 		if (list.size() >= SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS) {
@@ -135,42 +134,49 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 		list.add(nbt);
 		tag.put("LinkedBlocks", list);
+		CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
 		return true;
 	}
 
 	/**
 	 * Removes a position from a tag
 	 *
-	 * @param customData The data to remove the position from
+	 * @param stack The stack to remove the position from
 	 * @param pos The position to remove from the tag
 	 */
-	public static void removeLinkedBlock(CustomData customData, BlockPos pos) {
+	public static void removeLinkedBlock(ItemStack stack, BlockPos pos) {
+		CustomData customData = Utils.getTag(stack);
+
 		if (!customData.contains("LinkedBlocks"))
 			return;
 
-		ListTag list = customData.getUnsafe().getList("LinkedBlocks", Tag.TAG_COMPOUND);
+		CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> {
+			ListTag list = tag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
 
-		// Starting from the end of the list to prevent skipping over entries
-		for (int i = list.size() - 1; i >= 0; i--) {
-			BlockPos posRead = NbtUtils.readBlockPos(list.getCompound(i));
+			// Starting from the end of the list to prevent skipping over entries
+			for (int i = list.size() - 1; i >= 0; i--) {
+				BlockPos posRead = NbtUtils.readBlockPos(list.getCompound(i));
 
-			if (pos.equals(posRead))
-				list.remove(i);
-		}
+				if (pos.equals(posRead))
+					list.remove(i);
+			}
+		});
 	}
 
 	/**
-	 * Checks whether a position is added to a tag
+	 * Checks whether a position is added to a stack
 	 *
-	 * @param tag The tag to check
+	 * @param stack The stack to check
 	 * @param pos The position to check
 	 * @return true if the position is added, false otherwise
 	 */
-	public static boolean isAdded(CompoundTag tag, BlockPos pos) {
-		if (!tag.contains("LinkedBlocks"))
+	public static boolean isAdded(ItemStack stack, BlockPos pos) {
+		CustomData customData = Utils.getTag(stack);
+
+		if (!customData.contains("LinkedBlocks"))
 			return false;
 
-		ListTag list = tag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
+		ListTag list = customData.getUnsafe().getList("LinkedBlocks", Tag.TAG_COMPOUND);
 
 		for (int i = 0; i < list.size(); i++) {
 			BlockPos posRead = NbtUtils.readBlockPos(list.getCompound(i));
@@ -185,11 +191,13 @@ public class SonicSecuritySystemItem extends BlockItem {
 	/**
 	 * @return true if the tag contains at least one position, false otherwise
 	 */
-	public static boolean hasLinkedBlock(CompoundTag tag) {
-		if (tag == null || !tag.contains("LinkedBlocks"))
+	public static boolean hasLinkedBlock(ItemStack stack) {
+		CustomData customData = Utils.getTag(stack);
+
+		if (!customData.contains("LinkedBlocks"))
 			return false;
 
-		return !tag.getList("LinkedBlocks", Tag.TAG_COMPOUND).isEmpty();
+		return !customData.getUnsafe().getList("LinkedBlocks", Tag.TAG_COMPOUND).isEmpty();
 	}
 
 	/**

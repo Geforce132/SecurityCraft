@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -495,7 +496,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 		ItemStack stack = getModule(ModuleType.ALLOWLIST);
 
-		if (stack.hasTag() && stack.getTag().getBoolean("affectEveryone"))
+		if (Utils.getTag(stack).getUnsafe().getBoolean("affectEveryone"))
 			return true;
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
@@ -514,7 +515,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 		ItemStack stack = getModule(ModuleType.DENYLIST);
 
-		if (stack.hasTag() && stack.getTag().getBoolean("affectEveryone")) {
+		if (Utils.getTag(stack).getUnsafe().getBoolean("affectEveryone")) {
 			if (getBlockEntity() instanceof IOwnable ownable) {
 				//only deny players that are not the owner
 				if (entity instanceof Player player) {

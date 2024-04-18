@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -22,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -124,11 +124,10 @@ public class UniversalOwnerChangerItem extends Item {
 		if (BriefcaseItem.isOwnedBy(briefcase, player)) {
 			String newOwner = ownerChanger.getHoverName().getString();
 
-			if (!briefcase.hasTag())
-				briefcase.setTag(new CompoundTag());
-
-			briefcase.getTag().putString("owner", newOwner);
-			briefcase.getTag().putString("ownerUUID", PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID");
+			CustomData.update(DataComponents.CUSTOM_DATA, briefcase, tag -> {
+				tag.putString("owner", newOwner);
+				tag.putString("ownerUUID", PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID");
+			});
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), ChatFormatting.GREEN);
 			return InteractionResultHolder.success(ownerChanger);
 		}

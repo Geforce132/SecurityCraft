@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,6 +19,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -158,14 +160,13 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-		CompoundTag blockTag = level.getBlockEntity(pos).getUpdateTag(lookupProvider);
+		CompoundTag blockTag = level.getBlockEntity(pos).getUpdateTag(level.registryAccess());
 		ItemStack stack = new ItemStack(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
 
 		if (!blockTag.contains("LinkedBlocks"))
 			return stack;
 
-		stack.setTag(new CompoundTag());
-		stack.getTag().put("LinkedBlocks", blockTag.getList("LinkedBlocks", Tag.TAG_COMPOUND));
+		CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.put("LinkedBlocks", blockTag.getList("LinkedBlocks", Tag.TAG_COMPOUND)));
 		return stack;
 	}
 

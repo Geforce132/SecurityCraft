@@ -23,6 +23,8 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -222,16 +224,17 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		ItemStack stack = menu.keycardSlot.getItem();
 		boolean isEmpty = stack.isEmpty();
 		boolean wasActive = usesTextField.active;
-		boolean hasTag = stack.hasTag();
-		boolean enabled = !isEmpty && hasTag && stack.getTag().getBoolean("limited");
-		int cardSignature = stack.hasTag() ? stack.getTag().getInt("signature") : -1;
+		boolean hasTag = stack.has(DataComponents.CUSTOM_DATA);
+		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+		boolean enabled = !isEmpty && hasTag && tag.getBoolean("limited");
+		int cardSignature = hasTag ? tag.getInt("signature") : -1;
 
 		usesTextField.setEditable(enabled);
 		usesTextField.active = enabled;
 
 		//set the text of the text field to the amount of uses on the keycard
 		if (!wasActive && enabled)
-			usesTextField.setValue("" + stack.getTag().getInt("uses"));
+			usesTextField.setValue("" + tag.getInt("uses"));
 		else if (wasActive && !enabled)
 			usesTextField.setValue("");
 
@@ -243,7 +246,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		}
 		else {
 			//set return button depending on whether a different amount of uses compared to the keycard in the slot can be set
-			setUsesButton.active = enabled && usesTextField.getValue() != null && !usesTextField.getValue().isEmpty() && !("" + stack.getTag().getInt("uses")).equals(usesTextField.getValue());
+			setUsesButton.active = enabled && usesTextField.getValue() != null && !usesTextField.getValue().isEmpty() && !("" + tag.getInt("uses")).equals(usesTextField.getValue());
 			linkButton.active = !isEmpty && cardSignature != signature;
 		}
 	}

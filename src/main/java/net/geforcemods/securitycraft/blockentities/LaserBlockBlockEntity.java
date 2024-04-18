@@ -5,7 +5,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
 import net.geforcemods.securitycraft.ConfigHandler;
@@ -375,7 +374,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			for (ModuleType type : thisInsertedModules) {
 				ItemStack thisModule = getModule(type);
 
-				if (thatInsertedModules.contains(type) && !Objects.equals(thisModule.getTag(), that.getModule(type).getTag()))
+				if (thatInsertedModules.contains(type) && !ItemStack.isSameItemSameComponents(thisModule, that.getModule(type)))
 					return type;
 
 				bothInsertedModules.put(thisModule.copy(), isModuleEnabled(type));

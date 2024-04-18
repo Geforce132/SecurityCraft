@@ -287,7 +287,7 @@ public class ClientHandler {
 					return Arrays.stream(camera.substring(0, camera.lastIndexOf(' ')).split(" ")).map(Integer::parseInt).toArray(Integer[]::new);
 				});
 
-				if (!CameraMonitorItem.hasCameraAdded(stack.getTag())) {
+				if (!CameraMonitorItem.hasCameraAdded(stack)) {
 					if (linkingState == NOT_LINKED_STATE)
 						return NOT_LINKED_STATE;
 					else
@@ -307,7 +307,7 @@ public class ClientHandler {
 						return null;
 				});
 
-				if (!MineRemoteAccessToolItem.hasMineAdded(stack.getTag())) {
+				if (!MineRemoteAccessToolItem.hasMineAdded(stack)) {
 					if (linkingState == NOT_LINKED_STATE)
 						return NOT_LINKED_STATE;
 					else
@@ -354,7 +354,7 @@ public class ClientHandler {
 					return true;
 				}, 0, null, false, SonicSecuritySystemItem::isAdded);
 
-				if (!SonicSecuritySystemItem.hasLinkedBlock(stack.getTag())) {
+				if (!SonicSecuritySystemItem.hasLinkedBlock(stack)) {
 					if (linkingState == NOT_LINKED_STATE)
 						return NOT_LINKED_STATE;
 					else
@@ -364,7 +364,7 @@ public class ClientHandler {
 					return linkingState;
 			});
 			ItemProperties.register(SCContent.CODEBREAKER.get(), CodebreakerItem.STATE_PROPERTY, (stack, level, entity, id) -> {
-				CompoundTag tag = stack.getTag();
+				CompoundTag tag = Utils.getTag(stack).getUnsafe();
 
 				if (CodebreakerItem.wasRecentlyUsed(stack))
 					return tag.getBoolean(CodebreakerItem.WAS_SUCCESSFUL) ? 0.75F : 0.5F;

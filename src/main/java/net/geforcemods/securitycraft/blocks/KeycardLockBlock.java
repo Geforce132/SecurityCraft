@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -50,12 +51,12 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 			}
 
 			if (stack.getItem() instanceof KeycardItem) {
-				boolean hasTag = stack.hasTag();
+				boolean hasTag = stack.has(DataComponents.CUSTOM_DATA);
+				CompoundTag tag = Utils.getTag(stack).getUnsafe();
 
-				if (!hasTag || !stack.getTag().getBoolean("linked"))
+				if (!hasTag || !tag.getBoolean("linked"))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.unlinked_keycard"), ChatFormatting.RED);
 				else if (hasTag) {
-					CompoundTag tag = stack.getTag();
 					Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
 
 					if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !TeamUtils.areOnSameTeam(be.getOwner(), keycardOwner)) || !be.getOwner().getUUID().equals(keycardOwner.getUUID()))
