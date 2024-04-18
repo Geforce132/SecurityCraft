@@ -65,8 +65,8 @@ import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -78,6 +78,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionBrewing;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
@@ -86,9 +88,9 @@ import net.neoforged.fml.common.Mod.EventBusSubscriber;
 import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
 import net.neoforged.neoforge.common.util.MutableHashedLinkedMap;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
@@ -393,29 +395,22 @@ public class RegistrationHandler {
 		}
 	}
 
-	public static void registerFakeLiquidRecipes() {
-		BrewingRecipeRegistry.addRecipe(Ingredient.of(Items.WATER_BUCKET), getPotionIngredient(Potions.HARMING, Potions.STRONG_HARMING), new ItemStack(SCContent.FAKE_WATER_BUCKET.get()));
-		BrewingRecipeRegistry.addRecipe(Ingredient.of(Items.LAVA_BUCKET), getPotionIngredient(Potions.HEALING, Potions.STRONG_HEALING), new ItemStack(SCContent.FAKE_LAVA_BUCKET.get()));
+	@SubscribeEvent
+	public static void onRegisterBrewingRecipes(RegisterBrewingRecipesEvent event) {
+		PotionBrewing.Builder builder = event.getBuilder();
+
+		builder.addRecipe(Ingredient.of(Items.WATER_BUCKET), getPotionIngredient(Potions.HARMING, Potions.STRONG_HARMING), new ItemStack(SCContent.FAKE_WATER_BUCKET.get()));
+		builder.addRecipe(Ingredient.of(Items.LAVA_BUCKET), getPotionIngredient(Potions.HEALING, Potions.STRONG_HEALING), new ItemStack(SCContent.FAKE_LAVA_BUCKET.get()));
 	}
 
-	private static Ingredient getPotionIngredient(Potion normalPotion, Potion strongPotion) {
-		ItemStack normalPotionStack = new ItemStack(Items.POTION);
-		ItemStack strongPotionStack = new ItemStack(Items.POTION);
-		ItemStack normalSplashPotionStack = new ItemStack(Items.SPLASH_POTION);
-		ItemStack strongSplashPotionStack = new ItemStack(Items.SPLASH_POTION);
-		ItemStack normalLingeringPotionStack = new ItemStack(Items.LINGERING_POTION);
-		ItemStack strongLingeringPotionStack = new ItemStack(Items.LINGERING_POTION);
-		CompoundTag normalNBT = new CompoundTag();
-		CompoundTag strongNBT = new CompoundTag();
+	private static Ingredient getPotionIngredient(Holder<Potion> normalPotion, Holder<Potion> strongPotion) {
+		ItemStack normalPotionStack = PotionContents.createItemStack(Items.POTION, normalPotion);
+		ItemStack strongPotionStack = PotionContents.createItemStack(Items.POTION, strongPotion);
+		ItemStack normalSplashPotionStack = PotionContents.createItemStack(Items.SPLASH_POTION, normalPotion);
+		ItemStack strongSplashPotionStack = PotionContents.createItemStack(Items.SPLASH_POTION, strongPotion);
+		ItemStack normalLingeringPotionStack = PotionContents.createItemStack(Items.LINGERING_POTION, normalPotion);
+		ItemStack strongLingeringPotionStack = PotionContents.createItemStack(Items.LINGERING_POTION, strongPotion);
 
-		normalNBT.putString("Potion", Utils.getRegistryName(normalPotion).toString());
-		strongNBT.putString("Potion", Utils.getRegistryName(strongPotion).toString());
-		normalPotionStack.setTag(normalNBT.copy());
-		strongPotionStack.setTag(strongNBT.copy());
-		normalSplashPotionStack.setTag(normalNBT.copy());
-		strongSplashPotionStack.setTag(strongNBT.copy());
-		normalLingeringPotionStack.setTag(normalNBT.copy());
-		strongLingeringPotionStack.setTag(strongNBT.copy());
 		return Ingredient.of(normalPotionStack, strongPotionStack, normalSplashPotionStack, strongSplashPotionStack, normalLingeringPotionStack, strongLingeringPotionStack);
 	}
 }
