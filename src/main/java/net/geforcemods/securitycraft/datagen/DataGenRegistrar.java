@@ -8,7 +8,7 @@ import java.util.concurrent.CompletableFuture;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.DetectedVersion;
-import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
@@ -33,14 +33,14 @@ public class DataGenRegistrar {
 	public static void onGatherData(GatherDataEvent event) {
 		DataGenerator generator = event.getGenerator();
 		PackOutput output = generator.getPackOutput();
-		CompletableFuture<Provider> lookupProvider = event.getLookupProvider();
+		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 		ExistingFileHelper existingFileHelper = new ExistingFileHelper(Collections.emptyList(), Collections.emptySet(), false, null, null);
 		BlockTagGenerator blockTagGenerator = new BlockTagGenerator(output, lookupProvider, existingFileHelper);
 
 		generator.addProvider(event.includeClient(), new BlockModelAndStateGenerator(output, existingFileHelper));
 		generator.addProvider(event.includeServer(), new DamageTypeTagGenerator(output, lookupProvider, existingFileHelper));
 		generator.addProvider(event.includeClient(), new ItemModelGenerator(output, existingFileHelper));
-		generator.addProvider(event.includeServer(), new LootTableProvider(output, Set.of(), List.of(new SubProviderEntry(BlockLootTableGenerator::new, LootContextParamSets.BLOCK))));
+		generator.addProvider(event.includeServer(), new LootTableProvider(output, Set.of(), List.of(new SubProviderEntry(BlockLootTableGenerator::new, LootContextParamSets.BLOCK)), lookupProvider));
 		generator.addProvider(event.includeServer(), blockTagGenerator);
 		generator.addProvider(event.includeServer(), new ItemTagGenerator(output, lookupProvider, blockTagGenerator.contentsGetter(), existingFileHelper));
 
@@ -53,6 +53,6 @@ public class DataGenRegistrar {
                         DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
                         Optional.of(new InclusiveRange<>(0, Integer.MAX_VALUE)))));
 		//@formatter:on
-		generator.addProvider(event.includeServer(), new RecipeGenerator(output));
+		generator.addProvider(event.includeServer(), new RecipeGenerator(output, lookupProvider));
 	}
 }

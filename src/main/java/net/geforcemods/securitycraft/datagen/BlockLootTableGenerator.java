@@ -13,8 +13,10 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.misc.BlockEntityNBTCondition;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.loot.LootTableSubProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -30,14 +32,13 @@ import net.minecraft.world.level.storage.loot.LootTable.Builder;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay;
+import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
 import net.minecraft.world.level.storage.loot.functions.CopyNameFunction.NameSource;
-import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -45,7 +46,7 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 	protected final Map<Supplier<? extends Block>, LootTable.Builder> lootTables = new HashMap<>();
 
 	@Override
-	public void generate(BiConsumer<ResourceLocation, Builder> consumer) {
+	public void generate(HolderLookup.Provider lookupProvider, BiConsumer<ResourceKey<LootTable>, Builder> consumer) {
 		for (DeferredHolder<Block, ? extends Block> obj : SCContent.BLOCKS.getEntries()) {
 			Block block = obj.get();
 
@@ -132,8 +133,8 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))
 						.add(LootItem.lootTableItem(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get())
-								.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
-										.copy("LinkedBlocks", "LinkedBlocks"))
+								.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+										.include(DataComponents.CUSTOM_DATA)) //TODO: Check if this works
 								.apply(CopyNameFunction.copyName(NameSource.BLOCK_ENTITY)))));
 		//@formatter:on
 
