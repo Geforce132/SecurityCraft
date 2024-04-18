@@ -15,7 +15,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -122,22 +121,6 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
 		return ClientboundBlockEntityDataPacket.create(this);
-	}
-
-	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-		super.onDataPacket(net, packet);
-		handleUpdateTag(packet.getTag());
-	}
-
-	@Override
-	public void handleUpdateTag(CompoundTag tag) {
-		load(tag);
-	}
-
-	@Override
-	public CompoundTag getUpdateTag() {
-		return saveWithoutMetadata();
 	}
 
 	@Override

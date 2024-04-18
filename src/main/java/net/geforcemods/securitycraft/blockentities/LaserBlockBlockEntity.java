@@ -228,8 +228,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	}
 
 	@Override
-	public void handleUpdateTag(CompoundTag tag) {
-		super.handleUpdateTag(tag);
+	public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.handleUpdateTag(tag, lookupProvider);
 		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 

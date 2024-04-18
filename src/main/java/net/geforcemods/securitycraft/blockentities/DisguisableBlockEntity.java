@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -91,8 +92,8 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	@Override
-	public void handleUpdateTag(CompoundTag tag) {
-		super.handleUpdateTag(tag);
+	public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.handleUpdateTag(tag, lookupProvider);
 		onHandleUpdateTag(this);
 	}
 

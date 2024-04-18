@@ -120,7 +120,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	}
 
 	public void load(CompoundTag tag, boolean forceOpenness, HolderLookup.Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
+		super.loadWithComponents(tag, lookupProvider);
 		setDisplayedStack(ItemStack.of((CompoundTag) tag.get("DisplayedStack")));
 		shouldBeOpen = tag.getBoolean("ShouldBeOpen");
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
@@ -182,7 +182,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	}
 
 	@Override
-	public void handleUpdateTag(CompoundTag tag) {
+	public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		load(tag, false);
 	}
 

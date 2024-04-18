@@ -141,7 +141,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 			BlockState movingPiston = SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(FACING, direction).setValue(MovingPistonBlock.TYPE, isSticky ? PistonType.STICKY : PistonType.DEFAULT);
 
 			level.setBlock(pos, movingPiston, 20);
-			level.setBlockEntity(ReinforcedMovingPistonBlock.newMovingBlockEntity(pos, movingPiston, defaultBlockState().setValue(FACING, Direction.from3DDataValue(param & 7)), be != null ? be.getUpdateTag() : null, direction, false, true));
+			level.setBlockEntity(ReinforcedMovingPistonBlock.newMovingBlockEntity(pos, movingPiston, defaultBlockState().setValue(FACING, Direction.from3DDataValue(param & 7)), be != null ? be.getUpdateTag(lookupProvider) : null, direction, false, true));
 			level.blockUpdated(pos, movingPiston.getBlock());
 			movingPiston.updateNeighbourShapes(level, pos, 2);
 
@@ -290,7 +290,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 
 				stateToPosMap.remove(frontPos);
 				level.setBlock(frontPos, movingPiston, 68);
-				level.setBlockEntity(ReinforcedMovingPistonBlock.newMovingBlockEntity(frontPos, movingPiston, pistonHead, headBe.getUpdateTag(), facing, true, true));
+				level.setBlockEntity(ReinforcedMovingPistonBlock.newMovingBlockEntity(frontPos, movingPiston, pistonHead, headBe.getUpdateTag(lookupProvider), facing, true, true));
 			}
 
 			BlockState air = Blocks.AIR.defaultBlockState();

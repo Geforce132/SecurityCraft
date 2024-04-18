@@ -16,7 +16,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -72,19 +71,8 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
-		return saveWithoutMetadata();
-	}
-
-	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-		super.onDataPacket(net, pkt);
-		handleUpdateTag(pkt.getTag());
-	}
-
-	@Override
-	public void handleUpdateTag(CompoundTag tag) {
-		load(tag);
+	public CompoundTag getUpdateTag(HolderLookup.Provider lookupProvider) {
+		return saveCustomOnly(lookupProvider);
 	}
 
 	@Override

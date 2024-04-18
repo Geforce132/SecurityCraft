@@ -163,8 +163,8 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
-		return PasscodeUtils.filterPasscodeAndSaltFromTag(saveWithoutMetadata());
+	public CompoundTag getUpdateTag(HolderLookup.Provider lookupProvider) {
+		return PasscodeUtils.filterPasscodeAndSaltFromTag(saveCustomOnly(lookupProvider));
 	}
 
 	@Override
@@ -173,14 +173,13 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-		super.onDataPacket(net, packet);
-		handleUpdateTag(packet.getTag());
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookupProvider) {
+		handleUpdateTag(packet.getTag(), lookupProvider);
 	}
 
 	@Override
-	public void handleUpdateTag(CompoundTag tag) {
-		super.handleUpdateTag(tag);
+	public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.handleUpdateTag(tag, lookupProvider);
 		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
