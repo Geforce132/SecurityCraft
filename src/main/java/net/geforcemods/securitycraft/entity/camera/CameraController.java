@@ -211,7 +211,7 @@ public class CameraController {
 	}
 
 	public static void setDefaultViewingDirection(SecurityCamera cam) {
-		PacketDistributor.SERVER.noArg().send(new SetDefaultCameraViewingDirection(cam));
+		PacketDistributor.SERVER.noArg().send(new SetDefaultCameraViewingDirection(cam.getId(), cam.getXRot(), cam.getYRot()));
 	}
 
 	public static ClientChunkCache.Storage getCameraStorage() {

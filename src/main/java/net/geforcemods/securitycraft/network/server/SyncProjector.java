@@ -39,6 +39,10 @@ public record SyncProjector(BlockPos pos, int data, DataType dataType) implement
 		}
 	};
 
+	public SyncProjector(BlockPos pos, BlockState state) {
+		this(pos, Block.getId(state), DataType.BLOCK_STATE);
+	}
+
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
