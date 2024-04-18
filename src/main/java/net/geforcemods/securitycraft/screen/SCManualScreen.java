@@ -46,6 +46,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.ClickEvent.Action;
 import net.minecraft.network.chat.Component;
@@ -351,7 +352,7 @@ public class SCManualScreen extends Screen {
 				if (recipeHolder.value() instanceof ShapedRecipe shapedRecipe) {
 					ItemStack resultItem = shapedRecipe.getResultItem(registryAccess);
 
-					if (resultItem.is(item) && !(resultItem.is(SCContent.LENS.get()) && SCContent.LENS.get().hasCustomColor(resultItem))) {
+					if (resultItem.is(item) && !(resultItem.is(SCContent.LENS.get()) && resultItem.has(DataComponents.DYED_COLOR))) {
 						NonNullList<Ingredient> ingredients = shapedRecipe.getIngredients();
 						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(9, Ingredient.EMPTY);
 

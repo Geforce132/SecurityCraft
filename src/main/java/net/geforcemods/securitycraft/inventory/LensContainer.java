@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.items.LensItem;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 
@@ -12,7 +12,7 @@ public class LensContainer extends SimpleContainer {
 
 	@Override
 	public boolean canAddItem(ItemStack stack) {
-		return stack.is(SCContent.LENS.get()) && ((LensItem) stack.getItem()).hasCustomColor(stack);
+		return stack.is(SCContent.LENS.get()) && stack.has(DataComponents.DYED_COLOR);
 	}
 
 	@Override
