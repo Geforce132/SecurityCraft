@@ -4,49 +4,28 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class UpdateLogger implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "update_logger");
-	private BlockPos pos;
-	private int index;
-	private String username;
-	private String uuid;
-	private long timestamp;
+public record UpdateLogger(BlockPos pos, int index, String username, String uuid, long timestamp) implements CustomPacketPayload {
 
-	public UpdateLogger() {}
-
-	public UpdateLogger(BlockPos pos, int index, String username, String uuid, long timestamp) {
-		this.pos = pos;
-		this.index = index;
-		this.username = username;
-		this.uuid = uuid;
-		this.timestamp = timestamp;
-	}
-
-	public UpdateLogger(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
-		index = buf.readInt();
-		username = buf.readUtf(Integer.MAX_VALUE / 4);
-		uuid = buf.readUtf(Integer.MAX_VALUE / 4);
-		timestamp = buf.readLong();
-	}
-
+	public static final Type<UpdateLogger> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "update_logger"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, UpdateLogger> STREAM_CODEC = StreamCodec.composite(
+			BlockPos.STREAM_CODEC, UpdateLogger::pos,
+			ByteBufCodecs.VAR_INT, UpdateLogger::index,
+			ByteBufCodecs.STRING_UTF8, UpdateLogger::username,
+			ByteBufCodecs.STRING_UTF8, UpdateLogger::uuid,
+			ByteBufCodecs.VAR_LONG, UpdateLogger::timestamp,
+			UpdateLogger::new);
+	//@formatter:on
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
-		buf.writeInt(index);
-		buf.writeUtf(username);
-		buf.writeUtf(uuid);
-		buf.writeLong(timestamp);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

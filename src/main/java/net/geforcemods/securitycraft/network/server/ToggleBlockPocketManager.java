@@ -8,43 +8,28 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class ToggleBlockPocketManager implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "toggle_block_pocket_manager");
-	private BlockPos pos;
-	private int size;
-	private boolean enabling;
+public record ToggleBlockPocketManager(BlockPos pos, int size, boolean enabling) implements CustomPacketPayload {
 
-	public ToggleBlockPocketManager() {}
-
-	public ToggleBlockPocketManager(BlockPocketManagerBlockEntity be, boolean enabling) {
-		pos = be.getBlockPos();
-		size = be.getSize();
-		this.enabling = enabling;
-	}
-
-	public ToggleBlockPocketManager(FriendlyByteBuf buf) {
-		pos = BlockPos.of(buf.readLong());
-		size = buf.readInt();
-		enabling = buf.readBoolean();
-	}
-
+	public static final Type<ToggleBlockPocketManager> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "toggle_block_pocket_manager"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, ToggleBlockPocketManager> STREAM_CODEC = StreamCodec.composite(
+			BlockPos.STREAM_CODEC, ToggleBlockPocketManager::pos,
+			ByteBufCodecs.VAR_INT, ToggleBlockPocketManager::size,
+			ByteBufCodecs.BOOL, ToggleBlockPocketManager::enabling,
+			ToggleBlockPocketManager::new);
+	//@formatter:on
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeLong(pos.asLong());
-		buf.writeInt(size);
-		buf.writeBoolean(enabling);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

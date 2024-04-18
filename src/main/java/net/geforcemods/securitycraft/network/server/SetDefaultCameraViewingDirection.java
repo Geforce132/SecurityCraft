@@ -5,41 +5,27 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class SetDefaultCameraViewingDirection implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "set_default_camera_viewing_direction");
-	private int id;
-	private float initialXRotation, initialYRotation;
+public record SetDefaultCameraViewingDirection(int id, float initialXRotation, float initialYRotation) implements CustomPacketPayload {
 
-	public SetDefaultCameraViewingDirection() {}
-
-	public SetDefaultCameraViewingDirection(SecurityCamera cam) {
-		id = cam.getId();
-		initialXRotation = cam.getXRot();
-		initialYRotation = cam.getYRot();
-	}
-
-	public SetDefaultCameraViewingDirection(FriendlyByteBuf buf) {
-		id = buf.readVarInt();
-		initialXRotation = buf.readFloat();
-		initialYRotation = buf.readFloat();
-	}
-
+	public static final Type<SetDefaultCameraViewingDirection> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_default_camera_viewing_direction"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, SetDefaultCameraViewingDirection> STREAM_CODEC = StreamCodec.composite(
+			ByteBufCodecs.VAR_INT, SetDefaultCameraViewingDirection::id,
+			ByteBufCodecs.FLOAT, SetDefaultCameraViewingDirection::initialXRotation,
+			ByteBufCodecs.FLOAT, SetDefaultCameraViewingDirection::initialYRotation,
+			SetDefaultCameraViewingDirection::new);
+	//@formatter:on
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeVarInt(id);
-		buf.writeFloat(initialXRotation);
-		buf.writeFloat(initialYRotation);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

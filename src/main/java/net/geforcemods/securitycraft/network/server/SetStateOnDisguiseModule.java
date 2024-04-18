@@ -1,47 +1,35 @@
 package net.geforcemods.securitycraft.network.server;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SCStreamCodecs;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
-import net.neoforged.neoforge.registries.GameData;
 
-public class SetStateOnDisguiseModule implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "set_state_on_disguise_module");
-	private BlockState state;
-	private StandingOrWallType standingOrWall;
-
-	public SetStateOnDisguiseModule() {}
-
-	public SetStateOnDisguiseModule(BlockState state, StandingOrWallType standingOrWall) {
-		this.state = state;
-		this.standingOrWall = standingOrWall;
-	}
-
-	public SetStateOnDisguiseModule(FriendlyByteBuf buf) {
-		state = GameData.getBlockStateIDMap().byId(buf.readInt());
-		standingOrWall = buf.readEnum(StandingOrWallType.class);
-	}
+public record SetStateOnDisguiseModule(BlockState state, StandingOrWallType standingOrWall) implements CustomPacketPayload {
+	public static final Type<SetStateOnDisguiseModule> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_state_on_disguise_module"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, SetStateOnDisguiseModule> STREAM_CODEC = StreamCodec.composite(
+			SCStreamCodecs.BLOCK_STATE, SetStateOnDisguiseModule::state,
+			NeoForgeStreamCodecs.enumCodec(StandingOrWallType.class), SetStateOnDisguiseModule::standingOrWall,
+			SetStateOnDisguiseModule::new);
+	//@formatter:on
 
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeInt(GameData.getBlockStateIDMap().getId(state));
-		buf.writeEnum(standingOrWall);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

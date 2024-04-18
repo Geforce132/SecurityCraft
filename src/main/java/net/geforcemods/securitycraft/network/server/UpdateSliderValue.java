@@ -8,43 +8,28 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class UpdateSliderValue implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "update_slider_value");
-	private BlockPos pos;
-	private String optionName;
-	private double value;
+public record UpdateSliderValue(BlockPos pos, String optionName, double value) implements CustomPacketPayload {
 
-	public UpdateSliderValue() {}
-
-	public UpdateSliderValue(BlockPos pos, Option<?> option, double v) {
-		this.pos = pos;
-		optionName = option.getName();
-		value = v;
-	}
-
-	public UpdateSliderValue(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
-		optionName = buf.readUtf();
-		value = buf.readDouble();
-	}
-
+	public static final Type<UpdateSliderValue> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "update_slider_value"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, UpdateSliderValue> STREAM_CODEC = StreamCodec.composite(
+			BlockPos.STREAM_CODEC, UpdateSliderValue::pos,
+			ByteBufCodecs.STRING_UTF8, UpdateSliderValue::optionName,
+			ByteBufCodecs.DOUBLE, UpdateSliderValue::value,
+			UpdateSliderValue::new);
+	//@formatter:on
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
-		buf.writeUtf(optionName);
-		buf.writeDouble(value);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

@@ -7,35 +7,26 @@ import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class CheckBriefcasePasscode implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "check_briefcase_passcode");
-	private String passcode;
-
-	public CheckBriefcasePasscode() {}
-
-	public CheckBriefcasePasscode(String passcode) {
-		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
-	}
-
-	public CheckBriefcasePasscode(FriendlyByteBuf buf) {
-		passcode = buf.readUtf();
-	}
+public record CheckBriefcasePasscode(String passcode) implements CustomPacketPayload {
+	public static final Type<CheckBriefcasePasscode> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "check_briefcase_passcode"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, CheckBriefcasePasscode> STREAM_CODEC = StreamCodec.composite(
+			ByteBufCodecs.STRING_UTF8, packet -> PasscodeUtils.hashPasscodeWithoutSalt(packet.passcode),
+			CheckBriefcasePasscode::new);
+	//@formatter:on
 
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeUtf(passcode);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

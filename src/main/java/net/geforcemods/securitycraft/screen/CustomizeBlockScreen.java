@@ -104,7 +104,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
 								doubleOption.setValue(slider.getValue());
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
-								PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, doubleOption.get()));
+								PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option.getName(), doubleOption.get()));
 							});
 						}
 						else if (option instanceof IntOption intOption) {
@@ -113,7 +113,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
 								intOption.setValue(slider.getValueInt());
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
-								PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, intOption.get()));
+								PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option.getName(), intOption.get()));
 							});
 						}
 

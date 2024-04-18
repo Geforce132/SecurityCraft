@@ -4,33 +4,23 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class BlockPocketManagerFailedActivation implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager_failed_activation");
-	private BlockPos pos;
-
-	public BlockPocketManagerFailedActivation() {}
-
-	public BlockPocketManagerFailedActivation(BlockPos pos) {
-		this.pos = pos;
-	}
-
-	public BlockPocketManagerFailedActivation(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
-	}
+public record BlockPocketManagerFailedActivation(BlockPos pos) implements CustomPacketPayload {
+	public static final Type<BlockPocketManagerFailedActivation> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager_failed_activation"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, BlockPocketManagerFailedActivation> STREAM_CODEC = StreamCodec.composite(
+			BlockPos.STREAM_CODEC, BlockPocketManagerFailedActivation::pos,
+			BlockPocketManagerFailedActivation::new);
+	//@formatter:on
 
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

@@ -4,44 +4,30 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class SyncRiftStabilizer implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "sync_rift_stabilizer");
-	private BlockPos pos;
-	private TeleportationType teleportationType;
-	private boolean allowed;
+public record SyncRiftStabilizer(BlockPos pos, TeleportationType teleportationType, boolean allowed) implements CustomPacketPayload {
 
-	public SyncRiftStabilizer() {}
-
-	public SyncRiftStabilizer(BlockPos pos, TeleportationType teleportationType, boolean allowed) {
-		this.pos = pos;
-		this.teleportationType = teleportationType;
-		this.allowed = allowed;
-	}
-
-	public SyncRiftStabilizer(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
-		teleportationType = buf.readEnum(TeleportationType.class);
-		allowed = buf.readBoolean();
-	}
-
+	public static final Type<SyncRiftStabilizer> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_rift_stabilizer"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, SyncRiftStabilizer> STREAM_CODEC = StreamCodec.composite(
+			BlockPos.STREAM_CODEC, SyncRiftStabilizer::pos,
+			NeoForgeStreamCodecs.enumCodec(TeleportationType.class), SyncRiftStabilizer::teleportationType,
+			ByteBufCodecs.BOOL, SyncRiftStabilizer::allowed,
+			SyncRiftStabilizer::new);
+	//@formatter:on
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
-		buf.writeEnum(teleportationType);
-		buf.writeBoolean(allowed);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

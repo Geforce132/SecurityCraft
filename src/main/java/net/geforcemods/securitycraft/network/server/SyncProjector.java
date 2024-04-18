@@ -3,7 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -12,50 +13,35 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class SyncProjector implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "sync_projector");
-	private BlockPos pos;
-	private int data;
-	private DataType dataType;
+public record SyncProjector(BlockPos pos, int data, DataType dataType) implements CustomPacketPayload {
 
-	public SyncProjector() {}
+	public static final Type<SyncProjector> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_projector"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, SyncProjector> STREAM_CODEC = new StreamCodec<>() {
+		public SyncProjector decode(RegistryFriendlyByteBuf buf) {
+			BlockPos pos = buf.readBlockPos();
+			DataType dataType = buf.readEnum(DataType.class);
 
-	public SyncProjector(BlockPos pos, int data, DataType dataType) {
-		this.pos = pos;
-		this.data = data;
-		this.dataType = dataType;
-	}
+			if (dataType.isBoolean)
+				return new SyncProjector(pos, buf.readBoolean() ? 1 : 0, dataType);
+			else
+				return new SyncProjector(pos, buf.readVarInt(), dataType);
+		}
 
-	public SyncProjector(BlockPos pos, BlockState state) {
-		this.pos = pos;
-		this.data = Block.getId(state);
-		this.dataType = DataType.BLOCK_STATE;
-	}
+		@Override
+		public void encode(RegistryFriendlyByteBuf buf, SyncProjector packet) {
+			buf.writeBlockPos(packet.pos);
+			buf.writeEnum(packet.dataType);
 
-	public SyncProjector(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
-		dataType = buf.readEnum(DataType.class);
-
-		if (dataType.isBoolean)
-			data = buf.readBoolean() ? 1 : 0;
-		else
-			data = buf.readVarInt();
-	}
+			if (packet.dataType.isBoolean)
+				buf.writeBoolean(packet.data == 1);
+			else
+				buf.writeVarInt(packet.data);
+		}
+	};
 
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
-		buf.writeEnum(dataType);
-
-		if (dataType.isBoolean)
-			buf.writeBoolean(data == 1);
-		else
-			buf.writeVarInt(data);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {
@@ -94,7 +80,6 @@ public class SyncProjector implements CustomPacketPayload {
 			level.sendBlockUpdated(pos, state, state, 2);
 		}
 	}
-
 	public enum DataType {
 		WIDTH,
 		HEIGHT,

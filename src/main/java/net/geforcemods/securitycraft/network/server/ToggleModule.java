@@ -9,40 +9,28 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class ToggleModule implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "toggle_module");
-	private BlockPos pos;
-	private ModuleType moduleType;
-
-	public ToggleModule() {}
-
-	public ToggleModule(BlockPos pos, ModuleType moduleType) {
-		this.pos = pos;
-		this.moduleType = moduleType;
-	}
-
-	public ToggleModule(FriendlyByteBuf buf) {
-		pos = BlockPos.of(buf.readLong());
-		moduleType = buf.readEnum(ModuleType.class);
-	}
+public record ToggleModule(BlockPos pos, ModuleType moduleType) implements CustomPacketPayload {
+	public static final Type<ToggleModule> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "toggle_module"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, ToggleModule> STREAM_CODEC = StreamCodec.composite(
+			BlockPos.STREAM_CODEC, ToggleModule::pos,
+			NeoForgeStreamCodecs.enumCodec(ModuleType.class), ToggleModule::moduleType,
+			ToggleModule::new);
+	//@formatter:on
 
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeLong(pos.asLong());
-		buf.writeEnum(moduleType);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

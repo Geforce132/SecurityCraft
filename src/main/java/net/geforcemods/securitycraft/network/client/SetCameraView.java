@@ -8,7 +8,9 @@ import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -16,28 +18,17 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class SetCameraView implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "set_camera_view");
-	private int id;
-
-	public SetCameraView() {}
-
-	public SetCameraView(Entity camera) {
-		id = camera.getId();
-	}
-
-	public SetCameraView(FriendlyByteBuf buf) {
-		id = buf.readVarInt();
-	}
+public record SetCameraView(int id) implements CustomPacketPayload {
+	public static final Type<SetCameraView> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_camera_view"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, SetCameraView> STREAM_CODEC = StreamCodec.composite(
+			ByteBufCodecs.VAR_INT, SetCameraView::id,
+			SetCameraView::new);
+	//@formatter:on
 
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeVarInt(id);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

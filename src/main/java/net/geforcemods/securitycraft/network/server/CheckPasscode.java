@@ -6,38 +6,26 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class CheckPasscode implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "check_passcode");
-	private BlockPos pos;
-	private String passcode;
-
-	public CheckPasscode() {}
-
-	public CheckPasscode(BlockPos pos, String passcode) {
-		this.pos = pos;
-		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
-	}
-
-	public CheckPasscode(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
-		passcode = buf.readUtf(Integer.MAX_VALUE / 4);
-	}
+public record CheckPasscode(BlockPos pos, String passcode) implements CustomPacketPayload {
+	public static final Type<CheckPasscode> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "check_passcode"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, CheckPasscode> STREAM_CODEC = StreamCodec.composite(
+			BlockPos.STREAM_CODEC, CheckPasscode::pos,
+			ByteBufCodecs.STRING_UTF8, packet -> PasscodeUtils.hashPasscodeWithoutSalt(packet.passcode),
+			CheckPasscode::new);
+	//@formatter:on
 
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
-		buf.writeUtf(passcode);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

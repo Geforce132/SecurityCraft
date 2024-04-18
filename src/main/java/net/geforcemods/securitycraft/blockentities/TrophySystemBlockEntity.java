@@ -27,6 +27,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.geforcemods.securitycraft.util.TeamUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -269,7 +270,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 			setChanged();
 
 			if (level.isClientSide)
-				PacketDistributor.SERVER.noArg().send(new SyncTrophySystem(worldPosition, projectileType, allowed));
+				PacketDistributor.SERVER.noArg().send(new SyncTrophySystem(worldPosition, Utils.getRegistryName(projectileType), allowed));
 		}
 	}
 

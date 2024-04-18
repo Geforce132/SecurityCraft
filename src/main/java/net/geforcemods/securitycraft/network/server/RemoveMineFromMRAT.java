@@ -4,7 +4,9 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -12,28 +14,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class RemoveMineFromMRAT implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "remove_mine_from_mrat");
-	private int mineIndex;
-
-	public RemoveMineFromMRAT() {}
-
-	public RemoveMineFromMRAT(int mineIndex) {
-		this.mineIndex = mineIndex;
-	}
-
-	public RemoveMineFromMRAT(FriendlyByteBuf buf) {
-		mineIndex = buf.readVarInt();
-	}
+public record RemoveMineFromMRAT(int mineIndex) implements CustomPacketPayload {
+	public static final Type<RemoveMineFromMRAT> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "remove_mine_from_mrat"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, RemoveMineFromMRAT> STREAM_CODEC = StreamCodec.composite(
+			ByteBufCodecs.VAR_INT, RemoveMineFromMRAT::mineIndex,
+			RemoveMineFromMRAT::new);
+	//@formatter:on
 
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeVarInt(mineIndex);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

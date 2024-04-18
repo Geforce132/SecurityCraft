@@ -6,47 +6,29 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class RefreshDisguisableModel implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "refresh_disguisable_model");
-	private BlockPos pos;
-	private boolean insert;
-	private ItemStack stack;
-	private boolean toggled;
+public record RefreshDisguisableModel(BlockPos pos, boolean insert, ItemStack stack, boolean toggled) implements CustomPacketPayload {
 
-	public RefreshDisguisableModel() {}
-
-	public RefreshDisguisableModel(BlockPos pos, boolean insert, ItemStack stack, boolean toggled) {
-		this.pos = pos;
-		this.insert = insert;
-		this.stack = stack;
-		this.toggled = toggled;
-	}
-
-	public RefreshDisguisableModel(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
-		insert = buf.readBoolean();
-		stack = buf.readItem();
-		toggled = buf.readBoolean();
-	}
-
+	public static final Type<RefreshDisguisableModel> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "refresh_disguisable_model"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, RefreshDisguisableModel> STREAM_CODEC = StreamCodec.composite(
+			BlockPos.STREAM_CODEC, RefreshDisguisableModel::pos,
+			ByteBufCodecs.BOOL, RefreshDisguisableModel::insert,
+			ItemStack.STREAM_CODEC, RefreshDisguisableModel::stack,
+			ByteBufCodecs.BOOL, RefreshDisguisableModel::toggled,
+			RefreshDisguisableModel::new);
+	//@formatter:on
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
-		buf.writeBoolean(insert);
-		buf.writeItem(stack);
-		buf.writeBoolean(toggled);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

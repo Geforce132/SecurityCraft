@@ -6,35 +6,25 @@ import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class RemovePositionFromSSS implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "remove_position_from_sss");
-	private BlockPos pos;
-
-	public RemovePositionFromSSS() {}
-
-	public RemovePositionFromSSS(BlockPos pos) {
-		this.pos = pos;
-	}
-
-	public RemovePositionFromSSS(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
-	}
+public record RemovePositionFromSSS(BlockPos pos) implements CustomPacketPayload {
+	public static final Type<RemovePositionFromSSS> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "remove_position_from_sss"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, RemovePositionFromSSS> STREAM_CODEC = StreamCodec.composite(
+			BlockPos.STREAM_CODEC, RemovePositionFromSSS::pos,
+			RemovePositionFromSSS::new);
+	//@formatter:on
 
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

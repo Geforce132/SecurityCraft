@@ -281,7 +281,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	public void toggleButtonClicked(Button button) {
 		be.setSize(size);
 		be.setEnabled(!be.isEnabled());
-		PacketDistributor.SERVER.noArg().send(new ToggleBlockPocketManager(be, be.isEnabled()));
+		PacketDistributor.SERVER.noArg().send(new ToggleBlockPocketManager(be.getBlockPos(), be.getSize(), be.isEnabled()));
 		Minecraft.getInstance().player.closeContainer();
 	}
 
@@ -315,7 +315,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 	public void assembleButtonClicked(Button button) {
 		be.setSize(size);
-		PacketDistributor.SERVER.noArg().send(new AssembleBlockPocket(be));
+		PacketDistributor.SERVER.noArg().send(new AssembleBlockPocket(be.getBlockPos(), be.getSize()));
 		Minecraft.getInstance().player.closeContainer();
 	}
 

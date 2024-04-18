@@ -3,7 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -11,7 +12,27 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public class SyncSSSSettingsOnServer implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "sync_sss_settings_on_server");
+	public static final Type<SyncSSSSettingsOnServer> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_sss_settings_on_server"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, SyncSSSSettingsOnServer> STREAM_CODEC = new StreamCodec<>() {
+		public SyncSSSSettingsOnServer decode(RegistryFriendlyByteBuf buf) {
+			BlockPos pos = buf.readBlockPos();
+			DataType dataType = buf.readEnum(DataType.class);
+
+			if (dataType == DataType.REMOVE_POS)
+				return new SyncSSSSettingsOnServer(pos, dataType, buf.readBlockPos());
+			else
+				return new SyncSSSSettingsOnServer(pos, dataType);
+		}
+
+		@Override
+		public void encode(RegistryFriendlyByteBuf buf, SyncSSSSettingsOnServer packet) {
+			buf.writeBlockPos(packet.pos);
+			buf.writeEnum(packet.dataType);
+
+			if (packet.dataType == DataType.REMOVE_POS)
+				buf.writeBlockPos(packet.posToRemove);
+		}
+	};
 	private BlockPos pos;
 	private DataType dataType;
 	private BlockPos posToRemove;
@@ -28,26 +49,9 @@ public class SyncSSSSettingsOnServer implements CustomPacketPayload {
 		this.posToRemove = posToRemove;
 	}
 
-	public SyncSSSSettingsOnServer(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
-		dataType = buf.readEnum(DataType.class);
-
-		if (dataType == DataType.REMOVE_POS)
-			posToRemove = buf.readBlockPos();
-	}
-
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
-		buf.writeEnum(dataType);
-
-		if (dataType == DataType.REMOVE_POS)
-			buf.writeBlockPos(posToRemove);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

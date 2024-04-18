@@ -1,11 +1,13 @@
 package net.geforcemods.securitycraft.network.server;
 
+import net.geforcemods.securitycraft.SCStreamCodecs;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -14,36 +16,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class SyncTrophySystem implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "sync_trophy_system");
-	private BlockPos pos;
-	private ResourceLocation projectileTypeLocation;
-	private boolean allowed;
+public record SyncTrophySystem(BlockPos pos, ResourceLocation projectileTypeLocation, boolean allowed) implements CustomPacketPayload {
 
-	public SyncTrophySystem() {}
-
-	public SyncTrophySystem(BlockPos pos, EntityType<?> projectileType, boolean allowed) {
-		this.pos = pos;
-		this.projectileTypeLocation = Utils.getRegistryName(projectileType);
-		this.allowed = allowed;
-	}
-
-	public SyncTrophySystem(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
-		projectileTypeLocation = buf.readResourceLocation();
-		allowed = buf.readBoolean();
-	}
-
+	public static final Type<SyncTrophySystem> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_trophy_system"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, SyncTrophySystem> STREAM_CODEC = StreamCodec.composite(
+			BlockPos.STREAM_CODEC, SyncTrophySystem::pos,
+			SCStreamCodecs.RESOURCE_LOCATION, SyncTrophySystem::projectileTypeLocation,
+			ByteBufCodecs.BOOL, SyncTrophySystem::allowed,
+			SyncTrophySystem::new);
+	//@formatter:on
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
-		buf.writeResourceLocation(projectileTypeLocation);
-		buf.writeBoolean(allowed);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

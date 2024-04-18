@@ -8,7 +8,9 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -16,28 +18,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class SetListModuleData implements CustomPacketPayload {
+public record SetListModuleData(CompoundTag clientTag) implements CustomPacketPayload {
 	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "set_list_module_data");
-	private CompoundTag clientTag;
-
-	public SetListModuleData() {}
-
-	public SetListModuleData(CompoundTag tag) {
-		this.clientTag = tag;
-	}
-
-	public SetListModuleData(FriendlyByteBuf buf) {
-		clientTag = buf.readNbt();
-	}
+	public static final Type<SetListModuleData> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_list_module_data"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, SetListModuleData> STREAM_CODEC = StreamCodec.composite(
+			ByteBufCodecs.COMPOUND_TAG, SetListModuleData::clientTag,
+			SetListModuleData::new);
+	//@formatter:on
 
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeNbt(clientTag);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

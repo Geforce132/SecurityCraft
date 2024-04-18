@@ -4,7 +4,9 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,28 +15,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class SyncBlockReinforcer implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "sync_block_reinforcer");
-	private boolean isReinforcing;
-
-	public SyncBlockReinforcer() {}
-
-	public SyncBlockReinforcer(boolean isReinforcing) {
-		this.isReinforcing = isReinforcing;
-	}
-
-	public SyncBlockReinforcer(FriendlyByteBuf buf) {
-		isReinforcing = buf.readBoolean();
-	}
+public record SyncBlockReinforcer(boolean isReinforcing) implements CustomPacketPayload {
+	public static final Type<SyncBlockReinforcer> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_block_reinforcer"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, SyncBlockReinforcer> STREAM_CODEC = StreamCodec.composite(
+			ByteBufCodecs.BOOL, SyncBlockReinforcer::isReinforcing,
+			SyncBlockReinforcer::new);
+	//@formatter:on
 
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeBoolean(isReinforcing);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

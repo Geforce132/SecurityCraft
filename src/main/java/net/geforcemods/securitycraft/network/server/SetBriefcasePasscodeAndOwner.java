@@ -6,7 +6,9 @@ import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -14,28 +16,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class SetBriefcasePasscodeAndOwner implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "set_briefcase_passcode_and_owner");
-	private String passcode;
-
-	public SetBriefcasePasscodeAndOwner() {}
-
-	public SetBriefcasePasscodeAndOwner(String passcode) {
-		this.passcode = passcode.isEmpty() ? passcode : PasscodeUtils.hashPasscodeWithoutSalt(passcode);
-	}
-
-	public SetBriefcasePasscodeAndOwner(FriendlyByteBuf buf) {
-		passcode = buf.readUtf();
-	}
+public record SetBriefcasePasscodeAndOwner(String passcode) implements CustomPacketPayload {
+	public static final Type<SetBriefcasePasscodeAndOwner> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_briefcase_passcode_and_owner"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, SetBriefcasePasscodeAndOwner> STREAM_CODEC = StreamCodec.composite(
+			ByteBufCodecs.STRING_UTF8, packet -> packet.passcode.isEmpty() ? packet.passcode : PasscodeUtils.hashPasscodeWithoutSalt(packet.passcode),
+			SetBriefcasePasscodeAndOwner::new);
+	//@formatter:on
 
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeUtf(passcode);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

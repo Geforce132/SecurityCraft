@@ -6,43 +6,24 @@ import java.util.List;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class UpdateLaserColors implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "update_laser_colors");
-	private List<BlockPos> positionsToUpdate;
-
-	public UpdateLaserColors() {}
-
-	public UpdateLaserColors(List<BlockPos> positionsToUpdate) {
-		this.positionsToUpdate = positionsToUpdate;
-	}
-
-	public UpdateLaserColors(FriendlyByteBuf buf) {
-		int size = buf.readVarInt();
-
-		positionsToUpdate = new ArrayList<>();
-
-		for (int i = 0; i < size; i++) {
-			positionsToUpdate.add(BlockPos.of(buf.readLong()));
-		}
-	}
+public record UpdateLaserColors(List<BlockPos> positionsToUpdate) implements CustomPacketPayload {
+	public static final Type<UpdateLaserColors> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "update_laser_colors"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, UpdateLaserColors> STREAM_CODEC = StreamCodec.composite(
+			ByteBufCodecs.collection(ArrayList::new, BlockPos.STREAM_CODEC), UpdateLaserColors::positionsToUpdate,
+			UpdateLaserColors::new);
+	//@formatter:on
 
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeVarInt(positionsToUpdate.size());
-
-		for (BlockPos pos : positionsToUpdate) {
-			buf.writeLong(pos.asLong());
-		}
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

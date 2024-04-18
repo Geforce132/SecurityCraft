@@ -7,7 +7,9 @@ import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadDoorBlockEntity;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -17,32 +19,18 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class SetPasscode implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "set_passcode");
-	private BlockPos pos;
-	private String passcode;
-
-	public SetPasscode() {}
-
-	public SetPasscode(BlockPos pos, String code) {
-		this.pos = pos;
-		passcode = PasscodeUtils.hashPasscodeWithoutSalt(code);
-	}
-
-	public SetPasscode(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
-		passcode = buf.readUtf(Integer.MAX_VALUE / 4);
-	}
+public record SetPasscode(BlockPos pos, String passcode) implements CustomPacketPayload {
+	public static final Type<SetPasscode> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_passcode"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, SetPasscode> STREAM_CODEC = StreamCodec.composite(
+			BlockPos.STREAM_CODEC, SetPasscode::pos,
+			ByteBufCodecs.STRING_UTF8, packet -> PasscodeUtils.hashPasscodeWithoutSalt(packet.passcode),
+			SetPasscode::new);
+	//@formatter:on
 
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
-		buf.writeUtf(passcode);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

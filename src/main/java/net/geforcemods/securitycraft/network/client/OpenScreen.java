@@ -12,8 +12,9 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +22,30 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public class OpenScreen implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "open_screen");
+	public static final Type<OpenScreen> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "open_screen"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, OpenScreen> STREAM_CODEC = new StreamCodec<>() {
+		public OpenScreen decode(RegistryFriendlyByteBuf buf) {
+			DataType dataType = buf.readEnum(DataType.class);
+
+			if (dataType.needsPosition)
+				return new OpenScreen(dataType, buf.readBlockPos());
+			else if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
+				return new OpenScreen(dataType, buf.readNbt());
+			else
+				return new OpenScreen(dataType);
+		}
+
+		@Override
+		public void encode(RegistryFriendlyByteBuf buf, OpenScreen packet) {
+			buf.writeEnum(packet.dataType);
+
+			if (packet.dataType.needsPosition)
+				buf.writeBlockPos(packet.pos);
+
+			if (packet.dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
+				buf.writeNbt(packet.tag);
+		}
+	};
 	private DataType dataType;
 	private BlockPos pos;
 	private CompoundTag tag;
@@ -45,30 +69,9 @@ public class OpenScreen implements CustomPacketPayload {
 		this.tag = tag;
 	}
 
-	public OpenScreen(FriendlyByteBuf buf) {
-		dataType = buf.readEnum(DataType.class);
-
-		if (dataType.needsPosition)
-			pos = buf.readBlockPos();
-
-		if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
-			tag = buf.readNbt();
-	}
-
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeEnum(dataType);
-
-		if (dataType.needsPosition)
-			buf.writeBlockPos(pos);
-
-		if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
-			buf.writeNbt(tag);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

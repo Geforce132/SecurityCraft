@@ -7,39 +7,27 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class AssembleBlockPocket implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "assemble_block_pocket");
-	private BlockPos pos;
-	private int size;
-
-	public AssembleBlockPocket() {}
-
-	public AssembleBlockPocket(BlockPocketManagerBlockEntity be) {
-		pos = be.getBlockPos();
-		size = be.getSize();
-	}
-
-	public AssembleBlockPocket(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
-		size = buf.readInt();
-	}
+public record AssembleBlockPocket(BlockPos pos, int size) implements CustomPacketPayload {
+	public static final Type<AssembleBlockPocket> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "assemble_block_pocket"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, AssembleBlockPocket> STREAM_CODEC = StreamCodec.composite(
+			BlockPos.STREAM_CODEC, AssembleBlockPocket::pos,
+			ByteBufCodecs.VAR_INT, AssembleBlockPocket::size,
+			AssembleBlockPocket::new);
+	//@formatter:on
 
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
-		buf.writeInt(size);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {

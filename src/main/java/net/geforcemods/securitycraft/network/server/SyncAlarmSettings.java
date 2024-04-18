@@ -1,48 +1,31 @@
 package net.geforcemods.securitycraft.network.server;
 
+import net.geforcemods.securitycraft.SCStreamCodecs;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class SyncAlarmSettings implements CustomPacketPayload {
-	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "sync_alarm_settings");
-	private BlockPos pos;
-	private ResourceLocation soundEvent;
-	private float pitch;
-	private int soundLength;
+public record SyncAlarmSettings(BlockPos pos, ResourceLocation soundEvent, float pitch, int soundLength) implements CustomPacketPayload {
 
-	public SyncAlarmSettings() {}
-
-	public SyncAlarmSettings(BlockPos pos, ResourceLocation soundEvent, float pitch, int soundLength) {
-		this.pos = pos;
-		this.soundEvent = soundEvent;
-		this.pitch = pitch;
-		this.soundLength = soundLength;
-	}
-
-	public SyncAlarmSettings(FriendlyByteBuf buf) {
-		pos = BlockPos.of(buf.readLong());
-		soundEvent = buf.readResourceLocation();
-		pitch = buf.readFloat();
-		soundLength = buf.readVarInt();
-	}
-
+	public static final Type<SyncAlarmSettings> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_alarm_settings"));
+	//@formatter:off
+	public static final StreamCodec<RegistryFriendlyByteBuf, SyncAlarmSettings> STREAM_CODEC = StreamCodec.composite(
+			BlockPos.STREAM_CODEC, SyncAlarmSettings::pos,
+			SCStreamCodecs.RESOURCE_LOCATION, SyncAlarmSettings::soundEvent,
+			ByteBufCodecs.FLOAT, SyncAlarmSettings::pitch,
+			ByteBufCodecs.VAR_INT, SyncAlarmSettings::soundLength,
+			SyncAlarmSettings::new);
+	//@formatter:on
 	@Override
-	public void write(FriendlyByteBuf buf) {
-		buf.writeLong(pos.asLong());
-		buf.writeResourceLocation(soundEvent);
-		buf.writeFloat(pitch);
-		buf.writeVarInt(soundLength);
-	}
-
-	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void handle(PlayPayloadContext ctx) {
