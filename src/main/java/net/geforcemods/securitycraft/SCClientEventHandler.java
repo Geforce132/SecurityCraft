@@ -43,7 +43,6 @@ import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent.Stage;
-import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class SCClientEventHandler {
@@ -118,7 +117,7 @@ public class SCClientEventHandler {
 		}
 	}
 
-	public static void cameraOverlay(ExtendedGui gui, GuiGraphics guiGraphics, float partialTicks, int width, int height) {
+	public static void cameraOverlay(GuiGraphics guiGraphics, float partialTicks) {
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
 		BlockPos pos = mc.cameraEntity.blockPosition();

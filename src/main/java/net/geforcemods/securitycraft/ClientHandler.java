@@ -39,7 +39,7 @@ import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.misc.FloorTrapCloudParticle;
-import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
+import net.geforcemods.securitycraft.misc.LayerToggleHandler;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.BulletModel;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
@@ -144,10 +144,9 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
-import net.neoforged.neoforge.client.gui.overlay.IGuiOverlay;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD, value = Dist.CLIENT)
@@ -162,7 +161,7 @@ public class ClientHandler {
 	public static final ModelLayerLocation SONIC_SECURITY_SYSTEM_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "sonic_security_system"), "main");
 	public static final BlockEntityRenderDelegate DISGUISED_BLOCK_RENDER_DELEGATE = new BlockEntityRenderDelegate();
 	public static final BlockEntityRenderDelegate PROJECTOR_RENDER_DELEGATE = new BlockEntityRenderDelegate();
-	public static IGuiOverlay cameraOverlay;
+	public static final ResourceLocation CAMERA_LAYER = new ResourceLocation(SecurityCraft.MODID, "camera_overlay");
 	private static Map<Block, Integer> blocksWithReinforcedTint = new HashMap<>();
 	private static Map<Block, Integer> blocksWithCustomTint = new HashMap<>();
 	//@formatter:off
@@ -404,10 +403,9 @@ public class ClientHandler {
 	}
 
 	@SubscribeEvent
-	public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
-		cameraOverlay = SCClientEventHandler::cameraOverlay;
-		event.registerAboveAll(new ResourceLocation(SecurityCraft.MODID, "camera_overlay"), cameraOverlay);
-		OverlayToggleHandler.disable(cameraOverlay);
+	public static void registerGuiLayers(RegisterGuiLayersEvent event) {
+		event.registerAboveAll(CAMERA_LAYER, SCClientEventHandler::cameraOverlay);
+		LayerToggleHandler.disable(CAMERA_LAYER);
 	}
 
 	@SubscribeEvent

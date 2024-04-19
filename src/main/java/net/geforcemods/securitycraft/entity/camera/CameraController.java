@@ -8,8 +8,8 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
+import net.geforcemods.securitycraft.misc.LayerToggleHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.DismountCamera;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
@@ -35,7 +35,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ScreenshotEvent;
-import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.TickEvent.ClientTickEvent;
 import net.neoforged.neoforge.event.TickEvent.Phase;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -116,10 +116,10 @@ public class CameraController {
 		}
 		else if (resetOverlaysAfterDismount) {
 			resetOverlaysAfterDismount = false;
-			OverlayToggleHandler.disable(ClientHandler.cameraOverlay);
-			OverlayToggleHandler.enable(VanillaGuiOverlay.JUMP_BAR);
-			OverlayToggleHandler.enable(VanillaGuiOverlay.EXPERIENCE_BAR);
-			OverlayToggleHandler.enable(VanillaGuiOverlay.POTION_ICONS);
+			LayerToggleHandler.disable(ClientHandler.CAMERA_LAYER);
+			LayerToggleHandler.enable(VanillaGuiLayers.JUMP_METER);
+			LayerToggleHandler.enable(VanillaGuiLayers.EXPERIENCE_BAR);
+			LayerToggleHandler.enable(VanillaGuiLayers.EFFECTS);
 		}
 	}
 
