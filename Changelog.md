@@ -6,6 +6,7 @@
 - API: Removed FloatOption. Use DoubleOption instead
 - Fix: Trying to place a Panic Button on top of powdered snow crashes the game
 - Fix: Reinforced fence gates don't properly retain their owner when reloading the world
+- Fix: The block pocket can be assembled without the necessary items
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
