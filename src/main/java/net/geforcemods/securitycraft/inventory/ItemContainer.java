@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.inventory;
 
-import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -18,7 +18,8 @@ public class ItemContainer implements Container {
 		this.containerStack = containerStack;
 		this.maxStackSize = maxStackSize;
 		inventory = NonNullList.<ItemStack>withSize(inventorySize, ItemStack.EMPTY);
-		load(Utils.getTag(containerStack).getUnsafe());
+		//TODO:
+		//load(Utils.getTag(containerStack).getUnsafe());
 	}
 
 	public static ItemContainer briefcase(ItemStack briefcase) {
@@ -39,7 +40,7 @@ public class ItemContainer implements Container {
 		return inventory.get(index);
 	}
 
-	public void load(CompoundTag tag) {
+	public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		ListTag items = tag.getList("ItemInventory", Tag.TAG_COMPOUND);
 
 		for (int i = 0; i < items.size(); i++) {
@@ -47,11 +48,11 @@ public class ItemContainer implements Container {
 			int slot = item.getInt("Slot");
 
 			if (slot < getContainerSize())
-				inventory.set(slot, ItemStack.of(item));
+				inventory.set(slot, ItemStack.parseOptional(lookupProvider, item));
 		}
 	}
 
-	public void save(CompoundTag tag) {
+	public void save(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		ListTag items = new ListTag();
 
 		for (int i = 0; i < getContainerSize(); i++) {
@@ -59,8 +60,7 @@ public class ItemContainer implements Container {
 				CompoundTag item = new CompoundTag();
 
 				item.putInt("Slot", i);
-				getItem(i).save(item);
-				items.add(item);
+				items.add(getItem(i).save(lookupProvider, items));
 			}
 		}
 
@@ -112,7 +112,8 @@ public class ItemContainer implements Container {
 				inventory.set(i, ItemStack.EMPTY);
 		}
 
-		save(containerStack.getTag());
+		//TODO:
+		//save(containerStack.getTag());
 	}
 
 	@Override

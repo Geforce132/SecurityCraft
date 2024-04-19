@@ -5,6 +5,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -54,6 +55,19 @@ public class Utils {
 			return CustomData.EMPTY;
 		else
 			return customData;
+	}
+
+	public static BlockPos readBlockPos(CompoundTag tag) {
+		return new BlockPos(tag.getInt("X"), tag.getInt("Y"), tag.getInt("Z"));
+	}
+
+	public static CompoundTag writeBlockPos(BlockPos pos) {
+		CompoundTag tag = new CompoundTag();
+
+		tag.putInt("X", pos.getX());
+		tag.putInt("Y", pos.getY());
+		tag.putInt("Z", pos.getZ());
+		return tag;
 	}
 
 	public static ResourceLocation getRegistryName(Block block) {

@@ -632,7 +632,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		tag.putInt("Size", getSize());
 		tag.putInt("AutoBuildOffset", getAutoBuildOffset());
 		tag.putInt("Color", color);
-		ContainerHelper.saveAllItems(tag, storage);
+		ContainerHelper.saveAllItems(tag, storage, lookupProvider);
 
 		for (int i = 0; i < blocks.size(); i++) {
 			tag.putLong("BlocksList" + i, blocks.get(i).asLong());
@@ -659,7 +659,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		setSize(tag.getInt("Size"));
 		setAutoBuildOffset(tag.getInt("AutoBuildOffset"));
 		setColor(tag.getInt("Color"));
-		ContainerHelper.loadAllItems(tag, storage);
+		ContainerHelper.loadAllItems(tag, storage, lookupProvider);
 
 		while (tag.contains("BlocksList" + i)) {
 			blocks.add(BlockPos.of(tag.getLong("BlocksList" + i)));

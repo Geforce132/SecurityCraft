@@ -22,7 +22,7 @@ public class PlayAlarmSound implements CustomPacketPayload {
 			PlayAlarmSound packet = new PlayAlarmSound();
 
 			packet.bePos = buf.readBlockPos();
-			packet.sound = buf.readById(BuiltInRegistries.SOUND_EVENT.asHolderIdMap(), SoundEvent::readFromNetwork);
+			packet.sound = buf.readById(BuiltInRegistries.SOUND_EVENT.asHolderIdMap()::byId);
 			packet.soundX = buf.readInt();
 			packet.soundY = buf.readInt();
 			packet.soundZ = buf.readInt();
@@ -34,7 +34,7 @@ public class PlayAlarmSound implements CustomPacketPayload {
 		@Override
 		public void encode(RegistryFriendlyByteBuf buf, PlayAlarmSound packet) {
 			buf.writeBlockPos(packet.bePos);
-			buf.writeId(BuiltInRegistries.SOUND_EVENT.asHolderIdMap(), packet.sound, (buffer, soundEvent) -> soundEvent.writeToNetwork(buffer));
+			buf.writeById(BuiltInRegistries.SOUND_EVENT.asHolderIdMap()::getId, packet.sound);
 			buf.writeInt(packet.soundX);
 			buf.writeInt(packet.soundY);
 			buf.writeInt(packet.soundZ);

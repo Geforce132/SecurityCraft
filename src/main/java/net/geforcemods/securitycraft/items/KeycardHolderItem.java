@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -52,7 +53,7 @@ public class KeycardHolderItem extends Item {
 		return !oldStack.is(newStack.getItem());
 	}
 
-	public static int getCardCount(ItemStack stack) {
+	public static int getCardCount(ItemStack stack, HolderLookup.Provider lookupProvider) {
 		int count = 0;
 		ListTag items = Utils.getTag(stack).getUnsafe().getList("ItemInventory", Tag.TAG_COMPOUND);
 
@@ -60,7 +61,7 @@ public class KeycardHolderItem extends Item {
 			CompoundTag item = items.getCompound(i);
 			int slot = item.getInt("Slot");
 
-			if (slot < KeycardHolderMenu.CONTAINER_SIZE && ItemStack.of(item).getItem() instanceof KeycardItem)
+			if (slot < KeycardHolderMenu.CONTAINER_SIZE && ItemStack.parseOptional(lookupProvider, item).getItem() instanceof KeycardItem)
 				count++;
 		}
 

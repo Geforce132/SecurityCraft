@@ -101,7 +101,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		super.saveAdditional(tag, lookupProvider);
 
 		if (!trySaveLootTable(tag))
-			ContainerHelper.saveAllItems(tag, items);
+			ContainerHelper.saveAllItems(tag, items, lookupProvider);
 
 		writeModuleInventory(tag, lookupProvider);
 		writeModuleStates(tag);
@@ -129,7 +129,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		items = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
 
 		if (!tryLoadLootTable(tag))
-			ContainerHelper.loadAllItems(tag, items);
+			ContainerHelper.loadAllItems(tag, items, lookupProvider);
 
 		modules = readModuleInventory(tag, lookupProvider);
 		moduleStates = readModuleStates(tag);

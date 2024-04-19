@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -41,7 +42,7 @@ public class PortableTunePlayerItem extends Item {
 
 			if (be.isOwnedBy(player) || be.isAllowed(player)) {
 				if (be.getNumberOfNotes() > 0) {
-					be.saveNotes(ctx.getItemInHand());
+					CustomData.update(DataComponents.CUSTOM_DATA, ctx.getItemInHand(), be::saveNotes);
 					player.displayClientMessage(Utils.localize("messages.securitycraft:portable_tune_player.tune_saved"), true);
 				}
 				else
@@ -65,7 +66,8 @@ public class PortableTunePlayerItem extends Item {
 			if (!isTunePlaying && customData.contains("Notes")) {
 				Deque<NoteWrapper> notes = new ArrayDeque<>();
 
-				SonicSecuritySystemBlockEntity.loadNotes(customData, notes);
+				SonicSecuritySystemBlockEntity.loadNotes(customData.getUnsafe(), notes);
+				CustomData.set(DataComponents.CUSTOM_DATA, stack, customData.getUnsafe());
 				SCEventHandler.PLAYING_TUNES.put(player, MutablePair.of(0, notes));
 				return InteractionResultHolder.success(stack);
 			}

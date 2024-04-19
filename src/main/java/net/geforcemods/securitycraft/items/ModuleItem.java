@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -25,7 +24,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -154,13 +152,14 @@ public class ModuleItem extends Item {
 	}
 
 	public static Block getBlockAddon(ItemStack stack) {
-		if (!stack.hasTag())
-			return null;
-
-		ListTag items = stack.getTag().getList("ItemInventory", Tag.TAG_COMPOUND);
-
-		if (items != null && !items.isEmpty() && ItemStack.of(items.getCompound(0)).getItem() instanceof BlockItem blockItem)
-			return blockItem.getBlock();
+		//TODO:
+		//		if (!stack.hasTag())
+		//			return null;
+		//
+		//		ListTag items = stack.getTag().getList("ItemInventory", Tag.TAG_COMPOUND);
+		//
+		//		if (items != null && !items.isEmpty() && ItemStack.of(items.getCompound(0)).getItem() instanceof BlockItem blockItem)
+		//			return blockItem.getBlock();
 
 		return null;
 	}

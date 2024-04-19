@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.items.ModuleItem;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -21,11 +22,8 @@ public class ModuleItemContainer implements Container {
 			return;
 
 		moduleInventory = NonNullList.withSize(1, ItemStack.EMPTY);
-
-		if (!module.hasTag())
-			module.setTag(new CompoundTag());
-
-		load(module.getTag());
+		//TODO:
+		//load(module.getTag());
 	}
 
 	@Override
@@ -38,7 +36,7 @@ public class ModuleItemContainer implements Container {
 		return moduleInventory.get(index);
 	}
 
-	public void load(CompoundTag tag) {
+	public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		ListTag items = tag.getList("ItemInventory", Tag.TAG_COMPOUND);
 
 		for (int i = 0; i < items.size(); i++) {
@@ -46,11 +44,11 @@ public class ModuleItemContainer implements Container {
 			int slot = item.getInt("Slot");
 
 			if (slot < getContainerSize())
-				moduleInventory.set(slot, ItemStack.of(item));
+				moduleInventory.set(slot, ItemStack.parseOptional(lookupProvider, item));
 		}
 	}
 
-	public void save(CompoundTag tag) {
+	public void save(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		ListTag items = new ListTag();
 
 		for (int i = 0; i < getContainerSize(); i++) {
@@ -58,8 +56,7 @@ public class ModuleItemContainer implements Container {
 				CompoundTag item = new CompoundTag();
 
 				item.putInt("Slot", i);
-				getItem(i).save(item);
-				items.add(item);
+				items.add(getItem(i).save(lookupProvider, items));
 			}
 		}
 
@@ -113,7 +110,8 @@ public class ModuleItemContainer implements Container {
 				moduleInventory.set(i, ItemStack.EMPTY);
 		}
 
-		save(module.getTag());
+		//TODO:
+		//save(module.getTag());
 
 		if (menu != null)
 			menu.slotsChanged(this);

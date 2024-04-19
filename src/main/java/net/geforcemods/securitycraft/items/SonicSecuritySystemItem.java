@@ -17,7 +17,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -59,7 +58,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 				else {
 					// Remove a block from the tag if it was already linked to.
 					// If not, link to it
-					if (isAdded(stack, pos)) {
+					if (isAdded(Utils.getTag(stack).getUnsafe(), pos)) {
 						removeLinkedBlock(stack, pos);
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
 						return InteractionResult.SUCCESS;
@@ -118,11 +117,12 @@ public class SonicSecuritySystemItem extends BlockItem {
 	 * @return true if the position was added, false otherwise
 	 */
 	public static boolean addLinkedBlock(ItemStack stack, BlockPos pos, Player player) {
+		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+
 		// If the position was already added, return
-		if (isAdded(stack, pos))
+		if (isAdded(tag, pos))
 			return false;
 
-		CompoundTag tag = Utils.getTag(stack).getUnsafe();
 		ListTag list = tag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
 
 		if (list.size() >= SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS) {
@@ -130,7 +130,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 			return false;
 		}
 
-		CompoundTag nbt = NbtUtils.writeBlockPos(pos);
+		CompoundTag nbt = Utils.writeBlockPos(pos);
 
 		list.add(nbt);
 		tag.put("LinkedBlocks", list);
@@ -155,7 +155,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 			// Starting from the end of the list to prevent skipping over entries
 			for (int i = list.size() - 1; i >= 0; i--) {
-				BlockPos posRead = NbtUtils.readBlockPos(list.getCompound(i));
+				BlockPos posRead = Utils.readBlockPos(list.getCompound(i));
 
 				if (pos.equals(posRead))
 					list.remove(i);
@@ -164,22 +164,20 @@ public class SonicSecuritySystemItem extends BlockItem {
 	}
 
 	/**
-	 * Checks whether a position is added to a stack
+	 * Checks whether a position is added to a tag
 	 *
-	 * @param stack The stack to check
+	 * @param tag The tag to check
 	 * @param pos The position to check
 	 * @return true if the position is added, false otherwise
 	 */
-	public static boolean isAdded(ItemStack stack, BlockPos pos) {
-		CustomData customData = Utils.getTag(stack);
-
-		if (!customData.contains("LinkedBlocks"))
+	public static boolean isAdded(CompoundTag tag, BlockPos pos) {
+		if (!tag.contains("LinkedBlocks"))
 			return false;
 
-		ListTag list = customData.getUnsafe().getList("LinkedBlocks", Tag.TAG_COMPOUND);
+		ListTag list = tag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
 
 		for (int i = 0; i < list.size(); i++) {
-			BlockPos posRead = NbtUtils.readBlockPos(list.getCompound(i));
+			BlockPos posRead = Utils.readBlockPos(list.getCompound(i));
 
 			if (pos.equals(posRead))
 				return true;
@@ -213,7 +211,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 		Set<BlockPos> positions = new HashSet<>();
 
 		for (int i = 0; i < blocks.size(); i++) {
-			positions.add(NbtUtils.readBlockPos(blocks.getCompound(i)));
+			positions.add(Utils.readBlockPos(blocks.getCompound(i)));
 		}
 
 		return positions;

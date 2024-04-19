@@ -20,17 +20,15 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -188,7 +186,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 		while (iterator.hasNext()) {
 			BlockPos blockToSave = iterator.next();
-			CompoundTag nbt = NbtUtils.writeBlockPos(blockToSave);
+			CompoundTag nbt = Utils.writeBlockPos(blockToSave);
 
 			tag.getList("LinkedBlocks", Tag.TAG_COMPOUND).add(nbt);
 
@@ -218,7 +216,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 			// Read each saved position and add it to the linkedBlocks list
 			for (int i = 0; i < list.size(); i++) {
 				CompoundTag linkedBlock = list.getCompound(i);
-				BlockPos linkedBlockPos = NbtUtils.readBlockPos(linkedBlock);
+				BlockPos linkedBlockPos = Utils.readBlockPos(linkedBlock);
 
 				linkedBlocks.add(linkedBlockPos);
 			}
@@ -243,36 +241,34 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	}
 
 	/**
-	 * Saves this block entity's notes to a stack
+	 * Saves this block entity's notes to a tag
 	 *
-	 * @param stack The stack to save the notes to
+	 * @param stack The tag to save the notes to
 	 */
-	public void saveNotes(ItemStack stack) {
-		CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> {
-			ListTag notes = new ListTag();
+	public void saveNotes(CompoundTag tag) {
+		ListTag notes = new ListTag();
 
-			for (NoteWrapper note : recordedNotes) {
-				CompoundTag noteNbt = new CompoundTag();
+		for (NoteWrapper note : recordedNotes) {
+			CompoundTag noteNbt = new CompoundTag();
 
-				noteNbt.putInt("noteID", note.noteID);
-				noteNbt.putString("instrument", note.instrumentName);
-				noteNbt.putString("customSoundId", note.customSoundId);
-				notes.add(noteNbt);
-			}
+			noteNbt.putInt("noteID", note.noteID);
+			noteNbt.putString("instrument", note.instrumentName);
+			noteNbt.putString("customSoundId", note.customSoundId);
+			notes.add(noteNbt);
+		}
 
-			tag.put("Notes", notes);
-		});
+		tag.put("Notes", notes);
 	}
 
 	/**
-	 * Loads notes saved on custom data to a collection
+	 * Loads notes saved on tag to a collection
 	 *
-	 * @param customData The data containing the notes
+	 * @param tag The tag containing the notes
 	 * @param recordedNotes The collection to save the notes to
 	 */
-	public static <T extends Collection<NoteWrapper>> void loadNotes(CustomData customData, T recordedNotes) {
-		if (customData.contains("Notes")) {
-			ListTag list = customData.getUnsafe().getList("Notes", Tag.TAG_COMPOUND);
+	public static <T extends Collection<NoteWrapper>> void loadNotes(CompoundTag tag, T recordedNotes) {
+		if (tag.contains("Notes")) {
+			ListTag list = tag.getList("Notes", Tag.TAG_COMPOUND);
 
 			for (int i = 0; i < list.size(); i++) {
 				CompoundTag note = list.getCompound(i);
