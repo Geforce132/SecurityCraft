@@ -395,8 +395,7 @@ public class RegistrationHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public static void onRegisterBrewingRecipes(RegisterBrewingRecipesEvent event) {
+	public static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
 		PotionBrewing.Builder builder = event.getBuilder();
 
 		builder.addRecipe(Ingredient.of(Items.WATER_BUCKET), getPotionIngredient(Potions.HARMING, Potions.STRONG_HARMING), new ItemStack(SCContent.FAKE_WATER_BUCKET.get()));

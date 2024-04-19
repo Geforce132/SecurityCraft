@@ -80,6 +80,7 @@ public class SecurityCraft {
 
 	public SecurityCraft(IEventBus modEventBus, Dist dist, ModContainer container) {
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
+		NeoForge.EVENT_BUS.addListener(RegistrationHandler::registerBrewingRecipes);
 		container.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
 		container.registerConfig(ModConfig.Type.SERVER, ConfigHandler.SERVER_SPEC);
 		SCContent.BLOCKS.register(modEventBus);
