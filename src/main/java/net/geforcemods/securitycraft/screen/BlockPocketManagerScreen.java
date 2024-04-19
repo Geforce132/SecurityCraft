@@ -118,7 +118,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active = offsetSlider.active = colorChooserButton.active = false;
 		else {
 			updateMaterialInformation(true);
-			sizeButton.active = assembleButton.active = offsetSlider.active = !be.isEnabled();
+			sizeButton.active = offsetSlider.active = !be.isEnabled();
 		}
 
 		if (!hasStorageModule) {
