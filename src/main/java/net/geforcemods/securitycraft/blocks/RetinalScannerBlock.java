@@ -12,6 +12,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -43,7 +44,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
 		if (entity instanceof Player player) {
 			if (level.getBlockEntity(pos) instanceof RetinalScannerBlockEntity be)
-				be.setPlayerProfile(player.getGameProfile());
+				be.setOwnerProfile(new ResolvableProfile(player.getGameProfile()));
 
 			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 		}

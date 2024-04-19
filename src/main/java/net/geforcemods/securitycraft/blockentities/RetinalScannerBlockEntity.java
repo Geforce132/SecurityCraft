@@ -1,12 +1,11 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import java.util.Optional;
-import java.util.concurrent.Executor;
-import java.util.function.Consumer;
-
 import javax.annotation.Nullable;
 
+import org.slf4j.Logger;
+
 import com.mojang.authlib.GameProfile;
+import com.mojang.logging.LogUtils;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -30,22 +29,21 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements IViewActivated, ITickingBlockEntity, ILockable {
-	private static Executor mainThreadExecutor;
+	private static final Logger LOGGER = LogUtils.getLogger();
 	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new SignalLengthOption(60);
@@ -56,7 +54,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 		}
 	};
 	private DisabledOption disabled = new DisabledOption(false);
-	private GameProfile ownerProfile;
+	private ResolvableProfile ownerProfile;
 	private int viewCooldown = 0;
 
 	public RetinalScannerBlockEntity(BlockPos pos, BlockState state) {
@@ -178,61 +176,34 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 		};
 	}
 
-	public static void setMainThreadExecutor(Executor mainThreadExecutor) {
-		RetinalScannerBlockEntity.mainThreadExecutor = mainThreadExecutor;
-	}
-
 	@Override
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.saveAdditional(tag, lookupProvider);
 
-		if (!StringUtil.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner")) && ownerProfile != null) {
-			CompoundTag ownerProfileTag = new CompoundTag();
-			NbtUtils.writeGameProfile(ownerProfileTag, ownerProfile);
-
-			tag.put("ownerProfile", ownerProfileTag);
-		}
+		if (!StringUtil.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner")) && ownerProfile != null)
+			tag.put("ownerProfile", ResolvableProfile.CODEC.encodeStart(NbtOps.INSTANCE, ownerProfile).getOrThrow());
 	}
 
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 
-		if (tag.contains("ownerProfile", 10))
-			setPlayerProfile(NbtUtils.readGameProfile(tag.getCompound("ownerProfile")));
+		if (tag.contains("ownerProfile"))
+			ResolvableProfile.CODEC.parse(NbtOps.INSTANCE, tag.get("ownerProfile")).resultOrPartial(name -> LOGGER.error("Failed to load profile from player head: {}", name)).ifPresent(this::setOwnerProfile);
 	}
 
 	@Override
 	public void onOwnerChanged(BlockState state, Level world, BlockPos pos, Player player) {
-		setPlayerProfile(new GameProfile(Util.NIL_UUID, getOwner().getName()));
+		setOwnerProfile(new ResolvableProfile(new GameProfile(Util.NIL_UUID, getOwner().getName())));
 		super.onOwnerChanged(state, world, pos, player);
 	}
 
+	public void setOwnerProfile(ResolvableProfile ownerProfile) {
+		this.ownerProfile = ownerProfile;
+	}
+
 	@Nullable
-	public GameProfile getPlayerProfile() {
+	public ResolvableProfile getPlayerProfile() {
 		return ownerProfile;
-	}
-
-	public void setPlayerProfile(@Nullable GameProfile profile) {
-		synchronized (this) {
-			ownerProfile = profile;
-		}
-
-		updatePlayerProfile();
-	}
-
-	public void updatePlayerProfile() {
-		if (ServerLifecycleHooks.getCurrentServer() != null && mainThreadExecutor == null)
-			setMainThreadExecutor(ServerLifecycleHooks.getCurrentServer());
-
-		updateGameProfile(ownerProfile, profile -> {
-			ownerProfile = profile.orElse(ownerProfile);
-			setChanged();
-		});
-	}
-
-	private void updateGameProfile(GameProfile input, Consumer<Optional<GameProfile>> onChanged) {
-		if (ConfigHandler.SERVER.retinalScannerFace.get() && input != null && !StringUtil.isNullOrEmpty(input.getName()) && !input.getProperties().containsKey("textures") && mainThreadExecutor != null)
-			SkullBlockEntity.fetchGameProfile(input.getName()).thenAcceptAsync(onChanged, mainThreadExecutor);
 	}
 }
