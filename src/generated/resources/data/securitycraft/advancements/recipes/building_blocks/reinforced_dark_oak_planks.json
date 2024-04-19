@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "securitycraft:reinforced/dark_oak_logs"
+            "items": "#securitycraft:reinforced/dark_oak_logs"
           }
         ]
       },

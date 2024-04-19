@@ -8,13 +8,9 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:copy_nbt",
-              "ops": [
-                {
-                  "op": "replace",
-                  "source": "LinkedBlocks",
-                  "target": "LinkedBlocks"
-                }
+              "function": "minecraft:copy_components",
+              "include": [
+                "minecraft:custom_data"
               ],
               "source": "block_entity"
             },

@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "securitycraft:reinforced_polished_blackstone_bricks"
   },
-  "result": "securitycraft:reinforced_cracked_polished_blackstone_bricks"
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_cracked_polished_blackstone_bricks"
+  }
 }

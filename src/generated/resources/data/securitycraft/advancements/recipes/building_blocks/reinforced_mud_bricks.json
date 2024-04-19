@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:reinforced_packed_mud"
-            ]
+            "items": "securitycraft:reinforced_packed_mud"
           }
         ]
       },

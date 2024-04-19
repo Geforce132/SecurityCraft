@@ -10,6 +10,7 @@
     }
   ],
   "result": {
-    "item": "securitycraft:scanner_door_item"
+    "count": 1,
+    "id": "securitycraft:scanner_door_item"
   }
 }

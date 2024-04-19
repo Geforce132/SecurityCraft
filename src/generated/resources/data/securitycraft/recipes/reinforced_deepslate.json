@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "securitycraft:reinforced_cobbled_deepslate"
   },
-  "result": "securitycraft:reinforced_deepslate"
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_deepslate"
+  }
 }

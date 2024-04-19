@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "securitycraft:reinforced/crimson_stems"
+            "items": "#securitycraft:reinforced/crimson_stems"
           }
         ]
       },

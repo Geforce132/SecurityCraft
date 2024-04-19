@@ -15,6 +15,7 @@
     "SSS"
   ],
   "result": {
-    "item": "securitycraft:limited_use_keycard"
+    "count": 1,
+    "id": "securitycraft:limited_use_keycard"
   }
 }

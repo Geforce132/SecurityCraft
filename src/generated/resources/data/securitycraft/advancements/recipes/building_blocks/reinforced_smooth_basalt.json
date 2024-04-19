@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:reinforced_basalt"
-            ]
+            "items": "securitycraft:reinforced_basalt"
           }
         ]
       },

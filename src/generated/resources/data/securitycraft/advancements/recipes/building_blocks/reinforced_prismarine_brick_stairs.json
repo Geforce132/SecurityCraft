@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:reinforced_prismarine_bricks"
-            ]
+            "items": "securitycraft:reinforced_prismarine_bricks"
           }
         ]
       },

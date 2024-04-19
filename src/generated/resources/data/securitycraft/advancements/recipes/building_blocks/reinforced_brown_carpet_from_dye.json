@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "securitycraft:reinforced/wool_carpets"
+            "items": "#securitycraft:reinforced/wool_carpets"
           }
         ]
       },

@@ -21,6 +21,7 @@
     "IIS"
   ],
   "result": {
-    "item": "securitycraft:security_camera"
+    "count": 1,
+    "id": "securitycraft:security_camera"
   }
 }

@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "securitycraft:reinforced/jungle_logs"
+            "items": "#securitycraft:reinforced/jungle_logs"
           }
         ]
       },

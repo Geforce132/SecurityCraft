@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "securitycraft:reinforced_light_blue_terracotta"
   },
-  "result": "securitycraft:reinforced_light_blue_glazed_terracotta"
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_light_blue_glazed_terracotta"
+  }
 }

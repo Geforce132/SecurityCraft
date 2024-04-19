@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:nether_stars"
+            "items": "#forge:nether_stars"
           }
         ]
       },

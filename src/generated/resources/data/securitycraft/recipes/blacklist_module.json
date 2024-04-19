@@ -19,6 +19,7 @@
     "ISI"
   ],
   "result": {
-    "item": "securitycraft:blacklist_module"
+    "count": 1,
+    "id": "securitycraft:blacklist_module"
   }
 }

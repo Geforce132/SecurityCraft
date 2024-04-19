@@ -15,6 +15,7 @@
     "SSS"
   ],
   "result": {
-    "item": "securitycraft:retinal_scanner"
+    "count": 1,
+    "id": "securitycraft:retinal_scanner"
   }
 }

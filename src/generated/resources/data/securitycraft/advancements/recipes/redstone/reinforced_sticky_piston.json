@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:slimeballs"
+            "items": "#forge:slimeballs"
           }
         ]
       },

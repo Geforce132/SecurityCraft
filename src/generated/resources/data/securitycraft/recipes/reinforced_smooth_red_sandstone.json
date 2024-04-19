@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "securitycraft:reinforced_red_sandstone"
   },
-  "result": "securitycraft:reinforced_smooth_red_sandstone"
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_smooth_red_sandstone"
+  }
 }

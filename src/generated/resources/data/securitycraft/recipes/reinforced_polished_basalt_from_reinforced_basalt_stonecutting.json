@@ -1,8 +1,10 @@
 {
   "type": "minecraft:stonecutting",
-  "count": 1,
   "ingredient": {
     "item": "securitycraft:reinforced_basalt"
   },
-  "result": "securitycraft:reinforced_polished_basalt"
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_polished_basalt"
+  }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:keycard_reader"
-            ]
+            "items": "securitycraft:keycard_reader"
           }
         ]
       },

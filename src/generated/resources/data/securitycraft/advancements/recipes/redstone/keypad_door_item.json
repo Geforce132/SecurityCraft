@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:door_indestructible_iron_item"
-            ]
+            "items": "securitycraft:door_indestructible_iron_item"
           }
         ]
       },

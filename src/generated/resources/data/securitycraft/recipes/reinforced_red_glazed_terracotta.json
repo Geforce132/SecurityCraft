@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "securitycraft:reinforced_red_terracotta"
   },
-  "result": "securitycraft:reinforced_red_glazed_terracotta"
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_red_glazed_terracotta"
+  }
 }

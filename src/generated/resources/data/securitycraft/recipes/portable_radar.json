@@ -18,6 +18,7 @@
     "IRI"
   ],
   "result": {
-    "item": "securitycraft:portable_radar"
+    "count": 1,
+    "id": "securitycraft:portable_radar"
   }
 }

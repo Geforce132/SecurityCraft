@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:reinforced_warped_stem"
-            ]
+            "items": "securitycraft:reinforced_warped_stem"
           }
         ]
       },

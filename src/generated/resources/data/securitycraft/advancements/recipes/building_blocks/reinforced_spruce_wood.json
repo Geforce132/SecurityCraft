@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:reinforced_spruce_log"
-            ]
+            "items": "securitycraft:reinforced_spruce_log"
           }
         ]
       },

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:reinforced_andesite"
-            ]
+            "items": "securitycraft:reinforced_andesite"
           }
         ]
       },

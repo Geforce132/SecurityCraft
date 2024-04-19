@@ -24,6 +24,7 @@
     "BBB"
   ],
   "result": {
-    "item": "securitycraft:sentry"
+    "count": 1,
+    "id": "securitycraft:sentry"
   }
 }

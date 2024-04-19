@@ -6,5 +6,8 @@
   "ingredient": {
     "tag": "securitycraft:reinforced/sand"
   },
-  "result": "securitycraft:reinforced_glass"
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_glass"
+  }
 }

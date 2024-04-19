@@ -15,6 +15,7 @@
     "BBB"
   ],
   "result": {
-    "item": "securitycraft:keypad_item"
+    "count": 1,
+    "id": "securitycraft:keypad_item"
   }
 }

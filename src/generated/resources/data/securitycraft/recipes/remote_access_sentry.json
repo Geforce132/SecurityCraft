@@ -21,6 +21,7 @@
     "ISI"
   ],
   "result": {
-    "item": "securitycraft:remote_access_sentry"
+    "count": 1,
+    "id": "securitycraft:remote_access_sentry"
   }
 }

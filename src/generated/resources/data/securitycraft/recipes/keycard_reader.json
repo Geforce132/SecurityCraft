@@ -29,6 +29,7 @@
     "SSS"
   ],
   "result": {
-    "item": "securitycraft:keycard_reader"
+    "count": 1,
+    "id": "securitycraft:keycard_reader"
   }
 }

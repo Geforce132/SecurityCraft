@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:reinforced_dark_prismarine"
-            ]
+            "items": "securitycraft:reinforced_dark_prismarine"
           }
         ]
       },

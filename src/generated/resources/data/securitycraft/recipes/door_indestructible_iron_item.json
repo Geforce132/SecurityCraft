@@ -15,6 +15,7 @@
     "III"
   ],
   "result": {
-    "item": "securitycraft:door_indestructible_iron_item"
+    "count": 1,
+    "id": "securitycraft:door_indestructible_iron_item"
   }
 }

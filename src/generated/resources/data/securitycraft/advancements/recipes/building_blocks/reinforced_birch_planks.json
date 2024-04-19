@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "securitycraft:reinforced/birch_logs"
+            "items": "#securitycraft:reinforced/birch_logs"
           }
         ]
       },

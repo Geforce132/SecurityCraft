@@ -15,6 +15,7 @@
     "III"
   ],
   "result": {
-    "item": "securitycraft:camera_monitor"
+    "count": 1,
+    "id": "securitycraft:camera_monitor"
   }
 }

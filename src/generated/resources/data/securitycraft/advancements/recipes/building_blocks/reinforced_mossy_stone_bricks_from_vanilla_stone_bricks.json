@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:reinforced_moss_block"
-            ]
+            "items": "securitycraft:reinforced_moss_block"
           }
         ]
       },

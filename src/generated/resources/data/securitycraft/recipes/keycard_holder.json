@@ -17,6 +17,7 @@
     "LIL"
   ],
   "result": {
-    "item": "securitycraft:keycard_holder"
+    "count": 1,
+    "id": "securitycraft:keycard_holder"
   }
 }

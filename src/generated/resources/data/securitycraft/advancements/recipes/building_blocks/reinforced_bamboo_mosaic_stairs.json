@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:reinforced_bamboo_mosaic"
-            ]
+            "items": "securitycraft:reinforced_bamboo_mosaic"
           }
         ]
       },

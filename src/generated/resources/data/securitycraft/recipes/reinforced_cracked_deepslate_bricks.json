@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "securitycraft:reinforced_deepslate_bricks"
   },
-  "result": "securitycraft:reinforced_cracked_deepslate_bricks"
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_cracked_deepslate_bricks"
+  }
 }

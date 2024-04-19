@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "securitycraft:reinforced/sand"
+            "items": "#securitycraft:reinforced/sand"
           }
         ]
       },

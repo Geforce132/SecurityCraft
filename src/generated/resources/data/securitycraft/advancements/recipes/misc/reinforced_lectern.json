@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:bookshelf"
-            ]
+            "items": "minecraft:bookshelf"
           }
         ]
       },

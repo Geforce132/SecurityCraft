@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:crystal_quartz"
-            ]
+            "items": "securitycraft:crystal_quartz"
           }
         ]
       },

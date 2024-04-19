@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "securitycraft:crystal_quartz"
   },
-  "result": "securitycraft:smooth_crystal_quartz"
+  "result": {
+    "count": 1,
+    "id": "securitycraft:smooth_crystal_quartz"
+  }
 }

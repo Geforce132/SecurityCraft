@@ -11,6 +11,7 @@
     }
   ],
   "result": {
-    "item": "securitycraft:cobblestone_mine"
+    "count": 1,
+    "id": "securitycraft:cobblestone_mine"
   }
 }

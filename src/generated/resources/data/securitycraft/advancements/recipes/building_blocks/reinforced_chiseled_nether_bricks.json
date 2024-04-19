@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:reinforced_nether_brick_slab"
-            ]
+            "items": "securitycraft:reinforced_nether_brick_slab"
           }
         ]
       },

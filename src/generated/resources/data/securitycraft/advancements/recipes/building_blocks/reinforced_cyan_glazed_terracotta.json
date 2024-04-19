@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:reinforced_cyan_terracotta"
-            ]
+            "items": "securitycraft:reinforced_cyan_terracotta"
           }
         ]
       },

@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "securitycraft:reinforced_quartz_block"
   },
-  "result": "securitycraft:reinforced_smooth_quartz"
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_smooth_quartz"
+  }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:name_tag"
-            ]
+            "items": "minecraft:name_tag"
           }
         ]
       },

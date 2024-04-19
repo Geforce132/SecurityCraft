@@ -18,6 +18,7 @@
     "SSS"
   ],
   "result": {
-    "item": "securitycraft:username_logger"
+    "count": 1,
+    "id": "securitycraft:username_logger"
   }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "securitycraft:reinforced_gravel"
-            ]
+            "items": "securitycraft:reinforced_gravel"
           }
         ]
       },

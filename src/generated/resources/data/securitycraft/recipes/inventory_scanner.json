@@ -18,6 +18,7 @@
     "SCS"
   ],
   "result": {
-    "item": "securitycraft:inventory_scanner"
+    "count": 1,
+    "id": "securitycraft:inventory_scanner"
   }
 }

@@ -11,6 +11,7 @@
     }
   ],
   "result": {
-    "item": "securitycraft:redstone_mine"
+    "count": 1,
+    "id": "securitycraft:redstone_mine"
   }
 }

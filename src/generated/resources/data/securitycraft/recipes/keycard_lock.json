@@ -26,6 +26,7 @@
     "SS"
   ],
   "result": {
-    "item": "securitycraft:keycard_lock"
+    "count": 1,
+    "id": "securitycraft:keycard_lock"
   }
 }
