@@ -252,6 +252,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 			NonNullList<ItemStack> storage = be.getStorage();
 
 			materialCounts[0] = materialCounts[1] = materialCounts[2] = 0;
+
 			for (int i = 0; i < storage.size(); i++) {
 				ItemStack stack = storage.get(i);
 

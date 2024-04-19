@@ -113,7 +113,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		ListTag list = new ListTag();
 
-		for (int i = 0; i < inventoryContents.size(); ++i)
+		for (int i = 0; i < inventoryContents.size(); ++i) {
 			if (!inventoryContents.get(i).isEmpty()) {
 				CompoundTag stackTag = new CompoundTag();
 
@@ -121,6 +121,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 				inventoryContents.get(i).save(stackTag);
 				list.add(stackTag);
 			}
+		}
 
 		tag.put("Items", list);
 		tag.putInt("cooldown", signalCooldown);
