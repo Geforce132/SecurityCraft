@@ -102,7 +102,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		long cooldownLeft;
 
 		super.saveAdditional(tag, lookupProvider);
-		tag.put("DisplayedStack", getDisplayedStack().save(lookupProvider));
+		tag.put("DisplayedStack", getDisplayedStack().saveOptional(lookupProvider));
 		tag.putBoolean("ShouldBeOpen", shouldBeOpen);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);

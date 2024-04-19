@@ -119,7 +119,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 				CompoundTag stackTag = new CompoundTag();
 
 				stackTag.putByte("Slot", (byte) i);
-				inventoryContents.get(i).save(lookupProvider);
+				inventoryContents.get(i).saveOptional(lookupProvider);
 				list.add(stackTag);
 			}
 		}

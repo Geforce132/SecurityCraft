@@ -398,7 +398,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		tag.put("TileEntityData", getOwnerTag());
-		tag.put("InstalledWhitelist", getAllowlistModule().save(level().registryAccess()));
+		tag.put("InstalledWhitelist", getAllowlistModule().saveOptional(level().registryAccess()));
 		tag.putBoolean("HasSpeedModule", hasSpeedModule());
 		tag.putInt("SentryMode", entityData.get(MODE));
 		tag.putBoolean("HasTarget", hasTarget());

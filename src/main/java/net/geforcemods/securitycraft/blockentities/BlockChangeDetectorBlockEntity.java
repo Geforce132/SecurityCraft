@@ -105,7 +105,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		entries.stream().map(ChangeEntry::save).forEach(entryList::add);
 		tag.putInt("mode", mode.ordinal());
 		tag.put("entries", entryList);
-		tag.put("filter", filter.save(lookupProvider));
+		tag.put("filter", filter.saveOptional(lookupProvider));
 		tag.putBoolean("ShowHighlights", showHighlights);
 		tag.putInt("Color", color);
 	}
