@@ -113,7 +113,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active = offsetSlider.active = colorChooserButton.active = false;
 		else {
 			updateMaterialInformation(true);
-			sizeButton.active = assembleButton.active = offsetSlider.active = !be.isEnabled();
+			sizeButton.active = offsetSlider.active = !be.isEnabled();
 		}
 
 		if (!hasStorageModule) {
@@ -252,6 +252,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 			NonNullList<ItemStack> storage = be.getStorage();
 
 			materialCounts[0] = materialCounts[1] = materialCounts[2] = 0;
+
 			for (int i = 0; i < storage.size(); i++) {
 				ItemStack stack = storage.get(i);
 

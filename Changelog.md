@@ -7,6 +7,8 @@
 - Fix: Trying to place a Panic Button on top of powdered snow crashes the game
 - Fix: Occasional crash when opening the inventory in creative mode in certain situations
 - Fix: Reinforced fence gates don't properly retain their owner when reloading the world
+- Fix: The debug world does not work with SecurityCraft installed
+- Fix: The block pocket can be assembled without the necessary items
 
 --------------------------Changelog for v1.9.9-beta2 of SecurityCraft--------------------------
 
