@@ -20,7 +20,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
@@ -97,11 +96,6 @@ public class CodebreakerItem extends Item {
 	@Override
 	public boolean isFoil(ItemStack stack) {
 		return true;
-	}
-
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return Rarity.RARE;
 	}
 
 	@Override

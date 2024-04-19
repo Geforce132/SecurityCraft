@@ -131,8 +131,8 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		pose.scale(-24.0F, -24.0F, -24.0F);
 		pose.translate(0.5F, 0.5F, 0.5F);
 		pose.mulPose(DEFAULT_ROTATION_1);
-		pose.mulPoseMatrix(DEFAULT_ROTATION_2);
-		pose.mulPoseMatrix(dragRotation);
+		pose.mulPose(DEFAULT_ROTATION_2);
+		pose.mulPose(dragRotation);
 		pose.translate(-0.5F, -0.5F, -0.5F);
 		renderBlockModel(state, pose, bufferSource);
 

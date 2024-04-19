@@ -111,7 +111,7 @@ public class Bullet extends AbstractArrow {
 	}
 
 	@Override
-	protected ItemStack getPickupItem() {
+	protected ItemStack getDefaultPickupItem() {
 		return ItemStack.EMPTY;
 	}
 

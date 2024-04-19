@@ -27,7 +27,7 @@ public class ElectrifiedIronFenceGateBlock extends OwnableFenceGateBlock {
 		if (state.getValue(OPEN))
 			return;
 
-		ElectrifiedIronFenceBlock.hurtOrConvertEntity(this, state, level, pos, entity);
+		ElectrifiedIronFenceBlock.hurtOrConvertEntity(this::getShape, state, level, pos, entity);
 	}
 
 	@Override

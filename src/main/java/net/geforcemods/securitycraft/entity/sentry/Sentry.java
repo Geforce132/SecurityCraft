@@ -36,7 +36,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -323,9 +322,10 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		return entityData.get(HAS_TARGET);
 	}
 
+	//TODO: does this work?
 	@Override
-	public float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) { //the sentry's eyes are higher so that it can see players even if it's inside a block when disguised - this also makes bullets spawn higher
-		return dimensions.height * 1.6F;
+	public float getEyeHeight(Pose pose) { //the sentry's eyes are higher so that it can see players even if it's inside a block when disguised - this also makes bullets spawn higher
+		return getDimensions(pose).height() * 1.6F;
 	}
 
 	@Override
@@ -364,7 +364,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 						ItemStack extracted = handler.extractItem(i, 1, false);
 
 						pdb = projectileDispenseBehavior;
-						throwableEntity = pdb.projectileItem.asProjectile(level, position().add(0.0D, 1.6D, 0.0D), stack, extracted);
+						throwableEntity = pdb.projectileItem.asProjectile(level, position().add(0.0D, 1.6D, 0.0D), extracted, getDirection());
 						throwableEntity.setOwner(this);
 						shootSound = null;
 						break;
@@ -427,7 +427,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			if (tag.contains("InstalledModule")) {
 				ItemStack module = ItemStack.parseOptional(level().registryAccess(), tag.getCompound("InstalledModule"));
 
-				if (!module.isEmpty() && module.getItem() instanceof ModuleItem && ModuleItem.getBlockAddon(module, be.getLevel().registryAccess()) != null) {
+				if (!module.isEmpty() && module.getItem() instanceof ModuleItem && ModuleItem.getBlockAddon(module) != null) {
 					be.insertModule(module, false);
 					level().setBlockAndUpdate(blockPosition(), level().getBlockState(blockPosition()).setValue(SometimesVisibleBlock.INVISIBLE, false));
 				}

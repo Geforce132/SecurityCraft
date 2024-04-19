@@ -118,7 +118,7 @@ public class KeypadChestBlock extends ChestBlock {
 
 	public void activate(BlockState state, Level level, BlockPos pos, Player player) {
 		if (!level.isClientSide) {
-			ChestBlock block = (ChestBlock) state.getBlock();
+			KeypadChestBlock block = (KeypadChestBlock) state.getBlock();
 			MenuProvider menuProvider = block.getMenuProvider(state, level, pos);
 
 			if (menuProvider != null) {

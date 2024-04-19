@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -46,11 +45,6 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 		}
 
 		return Shapes.block();
-	}
-
-	@Override
-	public boolean isValidSpawn(BlockState state, BlockGetter level, BlockPos pos, Type type, EntityType<?> entityType) {
-		return false;
 	}
 
 	@Override

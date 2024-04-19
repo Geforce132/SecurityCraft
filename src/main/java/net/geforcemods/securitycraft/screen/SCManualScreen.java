@@ -595,7 +595,7 @@ public class SCManualScreen extends Screen {
 		private final Component loadingText = Utils.localize("gui.securitycraft:scManual.patreon.loading");
 
 		public PatronList(Minecraft client, int width, int height, int top, int left) {
-			super(client, width, height, top, left, 4, 6, 0xC0BFBBB2, 0xD0BFBBB2, 0xFF8E8270, 0xFF807055, 0xFFD1BFA1);
+			super(client, width, height, top, left, 4, 6, 0xFF8E8270, 0xFF807055, 0xFFD1BFA1);
 
 			fetchErrorLines = font.split(Utils.localize("gui.securitycraft:scManual.patreon.error"), width);
 			noPatronsLines = font.split(Utils.localize("advancements.empty"), width - 10);
@@ -615,6 +615,8 @@ public class SCManualScreen extends Screen {
 		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 			if (currentPage == -1) {
 				if (patronsAvailable) {
+					//TODO: does drawing the background work and look the same as in 1.20.4?
+					drawGradientRect(guiGraphics, left, top, right, bottom, 0xC0BFBBB2, 0xD0BFBBB2);
 					super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 					//draw tooltip for long patron names

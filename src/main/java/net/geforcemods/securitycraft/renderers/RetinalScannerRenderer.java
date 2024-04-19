@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import org.joml.Matrix4f;
 
-import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.PoseStack.Pose;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -28,6 +27,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.LightLayer;
 
 public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScannerBlockEntity> {
@@ -94,9 +94,9 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 		}
 	}
 
-	private static ResourceLocation getSkinTexture(@Nullable GameProfile profile) {
+	private static ResourceLocation getSkinTexture(@Nullable ResolvableProfile profile) {
 		if (ConfigHandler.SERVER.retinalScannerFace.get() && profile != null)
-			return Minecraft.getInstance().getSkinManager().getInsecureSkin(profile).texture();
+			return Minecraft.getInstance().getSkinManager().getInsecureSkin(profile.gameProfile()).texture();
 		else
 			return DefaultPlayerSkin.getDefaultTexture();
 	}

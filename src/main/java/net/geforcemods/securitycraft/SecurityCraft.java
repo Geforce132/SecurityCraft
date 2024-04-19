@@ -50,7 +50,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.Mod.EventBusSubscriber;
 import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -95,11 +94,6 @@ public class SecurityCraft {
 		SCContent.PARTICLE_TYPES.register(modEventBus);
 		SCContent.RECIPE_SERIALIZERS.register(modEventBus);
 		SCCreativeModeTabs.CREATIVE_MODE_TABS.register(modEventBus);
-	}
-
-	@SubscribeEvent
-	public static void onFMLCommonSetup(FMLCommonSetupEvent event) { //stage 1
-		RegistrationHandler.registerFakeLiquidRecipes();
 	}
 
 	@SubscribeEvent

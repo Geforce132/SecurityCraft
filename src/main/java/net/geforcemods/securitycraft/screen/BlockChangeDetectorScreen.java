@@ -271,7 +271,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		private int contentHeight = 0;
 
 		public ChangeEntryList(Minecraft client, int width, int height, int top, int left) {
-			super(client, width, height, top, left, 4, 6, 0x00000000, 0x00000000);
+			super(client, width, height, top, left, 4, 6);
 		}
 
 		@Override

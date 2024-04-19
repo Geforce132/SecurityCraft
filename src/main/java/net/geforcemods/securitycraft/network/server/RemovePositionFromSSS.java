@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -32,6 +31,6 @@ public record RemovePositionFromSSS(BlockPos pos) implements CustomPacketPayload
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
 
 		if (!stack.isEmpty())
-			SonicSecuritySystemItem.removeLinkedBlock(Utils.getTag(stack), pos);
+			SonicSecuritySystemItem.removeLinkedBlock(stack, pos);
 	}
 }

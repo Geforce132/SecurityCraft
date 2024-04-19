@@ -57,7 +57,7 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 			}
 			else {
 				ItemStack dispenseStack = be.getItem(randomSlot);
-				DispenseItemBehavior dispenseBehavior = getDispenseMethod(dispenseStack);
+				DispenseItemBehavior dispenseBehavior = getDispenseMethod(level, dispenseStack);
 
 				if (dispenseBehavior != DispenseItemBehavior.NOOP)
 					be.setItem(randomSlot, dispenseBehavior.dispense(source, dispenseStack));

@@ -29,6 +29,7 @@ public class PlayAlarmSound implements CustomPacketPayload {
 			packet.volume = buf.readFloat();
 			packet.pitch = buf.readFloat();
 			packet.seed = buf.readLong();
+			return packet;
 		}
 
 		@Override

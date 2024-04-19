@@ -9,6 +9,7 @@ import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
@@ -26,7 +27,7 @@ public class ReinforcedDropperBlock extends ReinforcedDispenserBlock {
 	}
 
 	@Override
-	public DispenseItemBehavior getDispenseMethod(ItemStack stack) {
+	public DispenseItemBehavior getDispenseMethod(Level level, ItemStack stack) {
 		return DISPENSE_BEHAVIOUR;
 	}
 
