@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -63,9 +65,16 @@ public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock impleme
 	public static void lowerFillLevel(BlockState state, Level level, BlockPos pos) {
 		int fillLevel = state.getValue(LEVEL) - 1;
 		BlockState newState = fillLevel == 0 ? SCContent.REINFORCED_CAULDRON.get().defaultBlockState() : state.setValue(LEVEL, fillLevel);
+		Owner owner = null;
+
+		if (level.getBlockEntity(pos) instanceof IOwnable ownable)
+			owner = ownable.getOwner();
 
 		level.setBlockAndUpdate(pos, newState);
 		level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(newState));
+
+		if (owner != null && level.getBlockEntity(pos) instanceof IOwnable ownable)
+			ownable.setOwner(owner.getUUID(), owner.getName());
 	}
 
 	@Override
