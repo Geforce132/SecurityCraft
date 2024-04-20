@@ -13,10 +13,10 @@
       "item": "securitycraft:laser_block"
     },
     "R": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     },
     "S": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [

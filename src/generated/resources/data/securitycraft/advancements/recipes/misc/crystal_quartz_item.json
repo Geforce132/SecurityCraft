@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#forge:gems/prismarine"
+            "items": "#c:gems/prismarine"
           }
         ]
       },

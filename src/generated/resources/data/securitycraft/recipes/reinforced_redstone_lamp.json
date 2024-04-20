@@ -6,7 +6,7 @@
       "item": "securitycraft:reinforced_glowstone"
     },
     "R": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     }
   },
   "pattern": [

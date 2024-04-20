@@ -9,13 +9,13 @@
       "item": "securitycraft:reinforced_dispenser"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "P": {
       "item": "securitycraft:portable_radar"
     },
     "R": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     }
   },
   "pattern": [

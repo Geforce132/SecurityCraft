@@ -4,7 +4,7 @@
   "group": "securitycraft:reinforced_carpets",
   "ingredients": [
     {
-      "tag": "forge:dyes/orange"
+      "tag": "c:dyes/orange"
     },
     {
       "tag": "securitycraft:reinforced/wool_carpets"

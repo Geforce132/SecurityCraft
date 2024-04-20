@@ -6,7 +6,7 @@
       "item": "securitycraft:reinforced_cobblestone"
     },
     "Q": {
-      "tag": "forge:gems/quartz"
+      "tag": "c:gems/quartz"
     }
   },
   "pattern": [

@@ -6,10 +6,10 @@
       "item": "securitycraft:reinforced_stone_button"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "R": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     }
   },
   "pattern": [

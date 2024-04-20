@@ -3,7 +3,7 @@
   "category": "redstone",
   "key": {
     "C": {
-      "tag": "forge:chests/ender"
+      "tag": "c:chests/ender"
     },
     "L": {
       "item": "securitycraft:laser_block"

@@ -6,7 +6,7 @@
       "item": "securitycraft:reinforced_iron_block"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "L": {
       "item": "securitycraft:reinforced_redstone_lamp"

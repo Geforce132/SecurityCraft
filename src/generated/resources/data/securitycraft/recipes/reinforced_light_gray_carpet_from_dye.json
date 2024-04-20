@@ -4,7 +4,7 @@
   "group": "securitycraft:reinforced_carpets",
   "ingredients": [
     {
-      "tag": "forge:dyes/light_gray"
+      "tag": "c:dyes/light_gray"
     },
     {
       "tag": "securitycraft:reinforced/wool_carpets"

@@ -7,7 +7,7 @@
       "item": "securitycraft:reinforced_birch_planks"
     },
     "S": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [

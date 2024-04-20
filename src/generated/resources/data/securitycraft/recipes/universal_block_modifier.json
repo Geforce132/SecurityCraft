@@ -3,13 +3,13 @@
   "category": "equipment",
   "key": {
     "E": {
-      "tag": "forge:gems/emerald"
+      "tag": "c:gems/emerald"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "R": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     }
   },
   "pattern": [

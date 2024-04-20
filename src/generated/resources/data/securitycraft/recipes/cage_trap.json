@@ -6,13 +6,13 @@
       "item": "securitycraft:reinforced_iron_bars"
     },
     "G": {
-      "tag": "forge:ingots/gold"
+      "tag": "c:ingots/gold"
     },
     "I": {
       "item": "securitycraft:reinforced_iron_block"
     },
     "R": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     }
   },
   "pattern": [

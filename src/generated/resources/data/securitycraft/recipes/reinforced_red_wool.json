@@ -4,7 +4,7 @@
   "group": "securitycraft:reinforced_wool",
   "ingredients": [
     {
-      "tag": "forge:dyes/red"
+      "tag": "c:dyes/red"
     },
     {
       "tag": "securitycraft:reinforced/wool"

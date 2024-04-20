@@ -4,7 +4,7 @@
   "group": "securitycraft:reinforced_wool",
   "ingredients": [
     {
-      "tag": "forge:dyes/purple"
+      "tag": "c:dyes/purple"
     },
     {
       "tag": "securitycraft:reinforced/wool"

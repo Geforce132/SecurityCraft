@@ -10,13 +10,13 @@
       "item": "securitycraft:reinforced_pink_stained_glass"
     },
     "N": {
-      "tag": "forge:nether_stars"
+      "tag": "c:nether_stars"
     },
     "R": {
       "item": "securitycraft:reinforced_redstone_block"
     },
     "S": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [

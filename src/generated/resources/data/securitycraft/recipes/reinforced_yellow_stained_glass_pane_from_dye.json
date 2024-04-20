@@ -4,7 +4,7 @@
   "group": "securitycraft:reinforced_glass_panes",
   "key": {
     "D": {
-      "tag": "forge:dyes/yellow"
+      "tag": "c:dyes/yellow"
     },
     "G": {
       "item": "securitycraft:reinforced_glass_pane"

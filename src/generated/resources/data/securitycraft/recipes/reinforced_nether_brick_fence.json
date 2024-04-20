@@ -6,7 +6,7 @@
       "item": "securitycraft:reinforced_nether_bricks"
     },
     "S": {
-      "tag": "forge:ingots/nether_brick"
+      "tag": "c:bricks/nether"
     }
   },
   "pattern": [

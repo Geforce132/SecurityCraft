@@ -4,7 +4,7 @@
   "group": "securitycraft:modules",
   "key": {
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "P": {
       "item": "minecraft:paper"

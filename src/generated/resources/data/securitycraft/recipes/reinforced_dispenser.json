@@ -9,7 +9,7 @@
       "item": "securitycraft:reinforced_cobblestone"
     },
     "R": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     }
   },
   "pattern": [

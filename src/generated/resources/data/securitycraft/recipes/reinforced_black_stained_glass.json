@@ -4,7 +4,7 @@
   "group": "securitycraft:reinforced_glass",
   "key": {
     "D": {
-      "tag": "forge:dyes/black"
+      "tag": "c:dyes/black"
     },
     "G": {
       "item": "securitycraft:reinforced_glass"

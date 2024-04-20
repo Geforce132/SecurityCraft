@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#forge:rods/wooden"
+            "items": "#c:rods/wooden"
           }
         ]
       },

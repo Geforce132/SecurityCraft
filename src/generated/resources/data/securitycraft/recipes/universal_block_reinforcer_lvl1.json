@@ -4,19 +4,19 @@
   "group": "securitycraft:universal_block_reinforcer",
   "key": {
     "D": {
-      "tag": "forge:gems/diamond"
+      "tag": "c:gems/diamond"
     },
     "G": {
-      "tag": "forge:glass/colorless"
+      "tag": "c:glass_blocks/colorless"
     },
     "L": {
       "item": "securitycraft:laser_block"
     },
     "R": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     },
     "S": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [

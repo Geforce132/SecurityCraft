@@ -4,7 +4,7 @@
   "group": "securitycraft:reinforced_terracotta",
   "key": {
     "D": {
-      "tag": "forge:dyes/lime"
+      "tag": "c:dyes/lime"
     },
     "T": {
       "item": "securitycraft:reinforced_hardened_clay"

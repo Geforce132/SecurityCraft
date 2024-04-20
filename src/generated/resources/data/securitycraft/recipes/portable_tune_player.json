@@ -3,13 +3,13 @@
   "category": "misc",
   "key": {
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "N": {
       "item": "minecraft:note_block"
     },
     "R": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     }
   },
   "pattern": [

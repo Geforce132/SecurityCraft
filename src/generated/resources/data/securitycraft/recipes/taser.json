@@ -6,16 +6,16 @@
       "item": "minecraft:bow"
     },
     "G": {
-      "tag": "forge:ingots/gold"
+      "tag": "c:ingots/gold"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "R": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     },
     "S": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [

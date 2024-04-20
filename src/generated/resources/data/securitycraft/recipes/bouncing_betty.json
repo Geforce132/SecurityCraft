@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "G": {
-      "tag": "forge:gunpowder"
+      "tag": "c:gunpowder"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "P": {
       "item": "minecraft:heavy_weighted_pressure_plate"

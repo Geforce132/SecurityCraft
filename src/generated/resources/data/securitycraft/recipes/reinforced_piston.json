@@ -6,13 +6,13 @@
       "item": "securitycraft:reinforced_cobblestone"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "P": {
       "tag": "securitycraft:reinforced/planks"
     },
     "R": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     }
   },
   "pattern": [

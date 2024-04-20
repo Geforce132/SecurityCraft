@@ -6,7 +6,7 @@
       "item": "securitycraft:reinforced_iron_block"
     },
     "S": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     },
     "T": {
       "item": "securitycraft:sentry"

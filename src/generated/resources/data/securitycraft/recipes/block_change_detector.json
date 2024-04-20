@@ -3,7 +3,7 @@
   "category": "redstone",
   "key": {
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "L": {
       "item": "securitycraft:username_logger"

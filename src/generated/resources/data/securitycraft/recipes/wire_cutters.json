@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "S": {
       "item": "minecraft:shears"

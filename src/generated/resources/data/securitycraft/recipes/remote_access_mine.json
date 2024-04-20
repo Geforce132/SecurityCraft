@@ -3,13 +3,13 @@
   "category": "equipment",
   "key": {
     "D": {
-      "tag": "forge:gems/diamond"
+      "tag": "c:gems/diamond"
     },
     "G": {
-      "tag": "forge:ingots/gold"
+      "tag": "c:ingots/gold"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "T": {
       "item": "minecraft:redstone_torch"

@@ -12,7 +12,7 @@
       "item": "minecraft:ender_eye"
     },
     "G": {
-      "tag": "forge:ingots/gold"
+      "tag": "c:ingots/gold"
     },
     "I": {
       "item": "securitycraft:reinforced_iron_block"

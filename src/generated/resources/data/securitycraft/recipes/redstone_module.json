@@ -4,13 +4,13 @@
   "group": "securitycraft:modules",
   "key": {
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "P": {
       "item": "minecraft:paper"
     },
     "S": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     }
   },
   "pattern": [

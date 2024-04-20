@@ -3,19 +3,19 @@
   "category": "equipment",
   "key": {
     "D": {
-      "tag": "forge:gems/diamond"
+      "tag": "c:gems/diamond"
     },
     "E": {
-      "tag": "forge:gems/emerald"
+      "tag": "c:gems/emerald"
     },
     "G": {
-      "tag": "forge:ingots/gold"
+      "tag": "c:ingots/gold"
     },
     "R": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     },
     "S": {
-      "tag": "forge:nether_stars"
+      "tag": "c:nether_stars"
     },
     "T": {
       "item": "minecraft:redstone_torch"

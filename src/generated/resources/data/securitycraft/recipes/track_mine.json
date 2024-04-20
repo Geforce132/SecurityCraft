@@ -3,13 +3,13 @@
   "category": "misc",
   "key": {
     "G": {
-      "tag": "forge:gunpowder"
+      "tag": "c:gunpowder"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "S": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [

@@ -9,7 +9,7 @@
       "item": "minecraft:note_block"
     },
     "R": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     }
   },
   "pattern": [

@@ -71,7 +71,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("IGI")
 		.define('P', Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE)
 		.define('I', Tags.Items.INGOTS_IRON)
-		.define('G', Tags.Items.GUNPOWDER)
+		.define('G', Tags.Items.GUNPOWDERS)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(recipeOutput);
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.BRIEFCASE.get())
@@ -106,10 +106,10 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("SBS")
 		.pattern("RGR")
 		.define('H', Blocks.TRIPWIRE_HOOK)
-		.define('S', Tags.Items.STRING)
+		.define('S', Tags.Items.STRINGS)
 		.define('B', SCContent.BOUNCING_BETTY.get())
 		.define('R', Tags.Items.DUSTS_REDSTONE)
-		.define('G', Tags.Items.GUNPOWDER)
+		.define('G', Tags.Items.GUNPOWDERS)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(recipeOutput);
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, SCContent.CODEBREAKER.get())
@@ -205,7 +205,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("LIL")
 		.define('I', Tags.Items.INGOTS_IRON)
 		.define('H', SCContent.REINFORCED_HOPPER.get())
-		.define('L', Tags.Items.LEATHER)
+		.define('L', Tags.Items.LEATHERS)
 		.unlockedBy("has_stone", has(SCContent.KEYCARD_READER.get()))
 		.save(recipeOutput);
 		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.KEYCARD_LOCK.get())
@@ -274,7 +274,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern(" I ")
 		.pattern("IGI")
 		.define('I', Tags.Items.INGOTS_IRON)
-		.define('G', Tags.Items.GUNPOWDER)
+		.define('G', Tags.Items.GUNPOWDERS)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(recipeOutput);
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.MOTION_ACTIVATED_LIGHT.get())
@@ -358,7 +358,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("QC")
 		.define('C', SCContent.REINFORCED_COBBLESTONE.get())
 		.define('Q', Tags.Items.GEMS_QUARTZ)
-		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
+		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONES))
 		.save(recipeOutput);
 		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, SCContent.REINFORCED_DISPENSER.get())
 		.pattern("CCC")
@@ -511,7 +511,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("IGI")
 		.define('I', Tags.Items.INGOTS_IRON)
 		.define('S', Tags.Items.RODS_WOODEN)
-		.define('G', Tags.Items.GUNPOWDER)
+		.define('G', Tags.Items.GUNPOWDERS)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(recipeOutput);
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.TROPHY_SYSTEM.get())
@@ -537,7 +537,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern(" DG")
 		.pattern("RLD")
 		.pattern("SR ")
-		.define('G', Tags.Items.GLASS_COLORLESS)
+		.define('G', Tags.Items.GLASS_BLOCKS_COLORLESS)
 		.define('D', Tags.Items.GEMS_DIAMOND)
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.define('L', SCContent.LASER_BLOCK.get())
@@ -604,7 +604,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("GGG")
 		.pattern("GGG")
 		.define('G', SCContent.REINFORCED_GLASS.get())
-		.unlockedBy("has_glass", has(Tags.Items.GLASS))
+		.unlockedBy("has_glass", has(Tags.Items.GLASS_BLOCKS))
 		.save(recipeOutput);
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SCContent.SONIC_SECURITY_SYSTEM_ITEM.get())
 		.pattern(" RD")
@@ -635,17 +635,17 @@ public class RecipeGenerator extends RecipeProvider {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_ANDESITE.get(), 2)
 		.requires(SCContent.REINFORCED_DIORITE.get())
 		.requires(SCContent.REINFORCED_COBBLESTONE.get())
-		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
+		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONES))
 		.save(recipeOutput);
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_ANDESITE.get(), 2)
 		.requires(Blocks.DIORITE)
 		.requires(SCContent.REINFORCED_COBBLESTONE.get())
-		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
+		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONES))
 		.save(recipeOutput, "securitycraft:reinforced_andesite_with_vanilla_diorite");
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_ANDESITE.get(), 2)
 		.requires(SCContent.REINFORCED_DIORITE.get())
 		.requires(Blocks.COBBLESTONE)
-		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
+		.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONES))
 		.save(recipeOutput, "securitycraft:reinforced_andesite_with_vanilla_cobblestone");
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK.get())
 		.requires(SCContent.BLOCK_POCKET_WALL.get())
@@ -802,7 +802,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addFenceRecipe(recipeOutput, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.REINFORCED_BAMBOO_FENCE.get());
 		addFenceRecipe(recipeOutput, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_FENCE.get());
 		addFenceRecipe(recipeOutput, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_FENCE.get());
-		addFenceRecipe(recipeOutput, SCContent.REINFORCED_NETHER_BRICKS.get(), Tags.Items.INGOTS_NETHER_BRICK, SCContent.REINFORCED_NETHER_BRICK_FENCE.get(), 6, false);
+		addFenceRecipe(recipeOutput, SCContent.REINFORCED_NETHER_BRICKS.get(), Tags.Items.BRICKS_NETHER, SCContent.REINFORCED_NETHER_BRICK_FENCE.get(), 6, false);
 		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_FENCE_GATE.get());
 		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_FENCE_GATE.get());
 		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.REINFORCED_BIRCH_FENCE_GATE.get());
@@ -815,8 +815,8 @@ public class RecipeGenerator extends RecipeProvider {
 		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_FENCE_GATE.get());
 		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_FENCE_GATE.get());
 		addKeycardRecipe(recipeOutput, Tags.Items.INGOTS_GOLD, SCContent.KEYCARD_LVL_1.get());
-		addKeycardRecipe(recipeOutput, Tags.Items.INGOTS_BRICK, SCContent.KEYCARD_LVL_2.get());
-		addKeycardRecipe(recipeOutput, Tags.Items.INGOTS_NETHER_BRICK, SCContent.KEYCARD_LVL_3.get());
+		addKeycardRecipe(recipeOutput, Tags.Items.BRICKS, SCContent.KEYCARD_LVL_2.get());
+		addKeycardRecipe(recipeOutput, Tags.Items.BRICKS_NETHER, SCContent.KEYCARD_LVL_3.get());
 		addKeycardRecipe(recipeOutput, Tags.Items.DYES_MAGENTA, SCContent.KEYCARD_LVL_4.get());
 		addKeycardRecipe(recipeOutput, Tags.Items.DYES_PURPLE, SCContent.KEYCARD_LVL_5.get());
 		addKeycardRecipe(recipeOutput, Tags.Items.GEMS_LAPIS, SCContent.LIMITED_USE_KEYCARD.get());
@@ -1623,7 +1623,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("GGG")
 		.define('G', SCContent.REINFORCED_GLASS.get())
 		.define('D', dye)
-		.unlockedBy("has_glass", has(Tags.Items.GLASS))
+		.unlockedBy("has_glass", has(Tags.Items.GLASS_BLOCKS))
 		.save(recipeOutput);
 		//@formatter:on
 	}
@@ -1637,14 +1637,14 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("GGG")
 		.define('G', SCContent.REINFORCED_GLASS_PANE.get())
 		.define('D', dye)
-		.unlockedBy("has_glass", has(Tags.Items.GLASS))
+		.unlockedBy("has_glass", has(Tags.Items.GLASS_BLOCKS))
 		.save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, Utils.getRegistryName(result.asItem()).getPath() + "_from_dye"));
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 16)
 		.group("securitycraft:reinforced_glass_panes")
 		.pattern("GGG")
 		.pattern("GGG")
 		.define('G', stainedGlass)
-		.unlockedBy("has_glass", has(Tags.Items.GLASS))
+		.unlockedBy("has_glass", has(Tags.Items.GLASS_BLOCKS))
 		.save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, Utils.getRegistryName(result.asItem()).getPath() + "_from_glass"));
 		//@formatter:on
 	}

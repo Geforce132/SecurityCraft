@@ -6,13 +6,13 @@
       "item": "securitycraft:reinforced_glass"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "R": {
       "item": "securitycraft:reinforced_redstone_block"
     },
     "S": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [

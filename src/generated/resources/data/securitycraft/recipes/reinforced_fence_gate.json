@@ -6,7 +6,7 @@
       "tag": "securitycraft:reinforced/wooden_fence_gates"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     }
   },
   "pattern": [

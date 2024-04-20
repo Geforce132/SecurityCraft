@@ -4,10 +4,10 @@
   "group": "securitycraft:keycards",
   "key": {
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "S": {
-      "tag": "forge:ingots/gold"
+      "tag": "c:ingots/gold"
     }
   },
   "pattern": [

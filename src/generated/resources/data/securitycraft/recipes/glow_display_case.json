@@ -9,7 +9,7 @@
       "item": "securitycraft:reinforced_glass_pane"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     }
   },
   "pattern": [
