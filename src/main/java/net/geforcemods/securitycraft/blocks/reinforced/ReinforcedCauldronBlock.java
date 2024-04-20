@@ -6,14 +6,13 @@ import java.util.function.Predicate;
 import com.mojang.serialization.MapCodec;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
-import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -118,16 +117,12 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 				newCauldronState = SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get().defaultBlockState();
 
 			if (newCauldronState != null) {
-				Owner owner = null;
-
-				if (level.getBlockEntity(pos) instanceof IOwnable ownable)
-					owner = ownable.getOwner();
+				BlockEntity be = level.getBlockEntity(pos);
+				CompoundTag tag = be.saveCustomOnly(level.registryAccess());
 
 				level.setBlockAndUpdate(pos, newCauldronState);
 				level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
-
-				if (owner != null && level.getBlockEntity(pos) instanceof IOwnable ownable)
-					ownable.setOwner(owner.getUUID(), owner.getName());
+				level.getBlockEntity(pos).loadCustomOnly(tag, level.registryAccess());
 			}
 		}
 	}
@@ -152,17 +147,13 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 		}
 
 		if (newCauldronState != null) {
-			Owner owner = null;
-
-			if (level.getBlockEntity(pos) instanceof IOwnable ownable)
-				owner = ownable.getOwner();
+			BlockEntity be = level.getBlockEntity(pos);
+			CompoundTag tag = be.saveCustomOnly(level.registryAccess());
 
 			level.setBlockAndUpdate(pos, newCauldronState);
 			level.levelEvent(levelEvent, pos, 0);
 			level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(newCauldronState));
-
-			if (owner != null && level.getBlockEntity(pos) instanceof IOwnable ownable)
-				ownable.setOwner(owner.getUUID(), owner.getName());
+			level.getBlockEntity(pos).loadCustomOnly(tag, level.registryAccess());
 		}
 	}
 
@@ -263,10 +254,8 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 				if (potionContents != null && potionContents.is(Potions.WATER)) {
 					if (!level.isClientSide) {
 						Item item = stack.getItem();
-						Owner owner = null;
-
-						if (level.getBlockEntity(pos) instanceof IOwnable ownable)
-							owner = ownable.getOwner();
+						BlockEntity be = level.getBlockEntity(pos);
+						CompoundTag tag = be.saveCustomOnly(level.registryAccess());
 
 						player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
 						player.awardStat(Stats.USE_CAULDRON);
@@ -274,9 +263,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 						level.setBlockAndUpdate(pos, SCContent.REINFORCED_WATER_CAULDRON.get().defaultBlockState());
 						level.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
 						level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
-
-						if (owner != null && level.getBlockEntity(pos) instanceof IOwnable ownable)
-							ownable.setOwner(owner.getUUID(), owner.getName());
+						level.getBlockEntity(pos).loadCustomOnly(tag, level.registryAccess());
 					}
 
 					return ItemInteractionResult.sidedSuccess(level.isClientSide);
@@ -383,10 +370,8 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 			else {
 				if (!level.isClientSide) {
 					Item item = stack.getItem();
-					Owner owner = null;
-
-					if (level.getBlockEntity(pos) instanceof IOwnable ownable)
-						owner = ownable.getOwner();
+					BlockEntity be = level.getBlockEntity(pos);
+					CompoundTag tag = be.saveCustomOnly(level.registryAccess());
 
 					player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, bucket));
 					player.awardStat(Stats.USE_CAULDRON);
@@ -394,9 +379,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 					level.setBlockAndUpdate(pos, SCContent.REINFORCED_CAULDRON.get().defaultBlockState());
 					level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
 					level.gameEvent(null, GameEvent.FLUID_PICKUP, pos);
-
-					if (owner != null && level.getBlockEntity(pos) instanceof IOwnable ownable)
-						ownable.setOwner(owner.getUUID(), owner.getName());
+					level.getBlockEntity(pos).loadCustomOnly(tag, level.registryAccess());
 				}
 
 				return ItemInteractionResult.sidedSuccess(level.isClientSide);
@@ -406,10 +389,8 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 		static ItemInteractionResult emptyBucket(Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack, BlockState state, SoundEvent sound) {
 			if (!level.isClientSide) {
 				Item item = stack.getItem();
-				Owner owner = null;
-
-				if (level.getBlockEntity(pos) instanceof IOwnable ownable)
-					owner = ownable.getOwner();
+				BlockEntity be = level.getBlockEntity(pos);
+				CompoundTag tag = be.saveCustomOnly(level.registryAccess());
 
 				player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.BUCKET)));
 				player.awardStat(Stats.FILL_CAULDRON);
@@ -417,9 +398,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 				level.setBlockAndUpdate(pos, state);
 				level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
 				level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
-
-				if (owner != null && level.getBlockEntity(pos) instanceof IOwnable ownable)
-					ownable.setOwner(owner.getUUID(), owner.getName());
+				level.getBlockEntity(pos).loadCustomOnly(tag, level.registryAccess());
 			}
 
 			return ItemInteractionResult.sidedSuccess(level.isClientSide);
