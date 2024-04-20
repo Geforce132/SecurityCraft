@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -20,8 +21,12 @@ import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.FastColor;
+import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
@@ -773,6 +778,22 @@ public class RecipeGenerator extends RecipeProvider {
 		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_RED_SANDSTONE_SLAB.get(), SCContent.REINFORCED_CHISELED_RED_SANDSTONE.get());
 		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_SANDSTONE_SLAB.get(), SCContent.REINFORCED_CHISELED_SANDSTONE.get());
 		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_STONE_BRICK_SLAB.get(), SCContent.REINFORCED_CHISELED_STONE_BRICKS.get());
+		addColoredLensRecipe(recipeOutput, Items.BLACK_DYE, SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get());
+		addColoredLensRecipe(recipeOutput, Items.BLUE_DYE, SCContent.REINFORCED_BLUE_STAINED_GLASS_PANE.get());
+		addColoredLensRecipe(recipeOutput, Items.BROWN_DYE, SCContent.REINFORCED_BROWN_STAINED_GLASS_PANE.get());
+		addColoredLensRecipe(recipeOutput, Items.CYAN_DYE, SCContent.REINFORCED_CYAN_STAINED_GLASS_PANE.get());
+		addColoredLensRecipe(recipeOutput, Items.GRAY_DYE, SCContent.REINFORCED_GRAY_STAINED_GLASS_PANE.get());
+		addColoredLensRecipe(recipeOutput, Items.GREEN_DYE, SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE.get());
+		addColoredLensRecipe(recipeOutput, Items.LIGHT_BLUE_DYE, SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE.get());
+		addColoredLensRecipe(recipeOutput, Items.LIGHT_GRAY_DYE, SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE.get());
+		addColoredLensRecipe(recipeOutput, Items.LIME_DYE, SCContent.REINFORCED_LIME_STAINED_GLASS_PANE.get());
+		addColoredLensRecipe(recipeOutput, Items.MAGENTA_DYE, SCContent.REINFORCED_MAGENTA_STAINED_GLASS_PANE.get());
+		addColoredLensRecipe(recipeOutput, Items.ORANGE_DYE, SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE.get());
+		addColoredLensRecipe(recipeOutput, Items.PINK_DYE, SCContent.REINFORCED_PINK_STAINED_GLASS_PANE.get());
+		addColoredLensRecipe(recipeOutput, Items.PURPLE_DYE, SCContent.REINFORCED_PURPLE_STAINED_GLASS_PANE.get());
+		addColoredLensRecipe(recipeOutput, Items.RED_DYE, SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get());
+		addColoredLensRecipe(recipeOutput, Items.YELLOW_DYE, SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get());
+		addColoredLensRecipe(recipeOutput, Items.WHITE_DYE, SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get());
 		addColoredWoolRecipe(recipeOutput, Tags.Items.DYES_BLACK, SCContent.REINFORCED_BLACK_WOOL.get());
 		addColoredWoolRecipe(recipeOutput, Tags.Items.DYES_BLUE, SCContent.REINFORCED_BLUE_WOOL.get());
 		addColoredWoolRecipe(recipeOutput, Tags.Items.DYES_BROWN, SCContent.REINFORCED_BROWN_WOOL.get());
@@ -1341,8 +1362,7 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addBarkRecipe(RecipeOutput recipeOutput, ItemLike log, ItemLike result) //woof
-	{
+	protected final void addBarkRecipe(RecipeOutput recipeOutput, ItemLike log, ItemLike result) { //woof
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 3)
 		.group("securitycraft:bark")
@@ -1395,6 +1415,19 @@ public class RecipeGenerator extends RecipeProvider {
 		.requires(SCTags.Items.REINFORCED_WOOL_CARPETS)
 		.unlockedBy("has_wool_carpet", has(SCTags.Items.REINFORCED_WOOL_CARPETS))
 		.save(recipeOutput, new ResourceLocation(Utils.getRegistryName(carpet.asItem()).toString() + "_from_dye"));
+		//@formatter:on
+	}
+
+	protected final void addColoredLensRecipe(RecipeOutput recipeOutput, Item dye, ItemLike pane) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, applyDyes(new ItemStack(SCContent.LENS.get()), (DyeItem) dye))
+		.group("securitycraft:lens")
+		.pattern(" P")
+		.pattern("P ")
+		.pattern(" P")
+		.define('P', pane)
+		.unlockedBy("has_lens", has(SCContent.LENS))
+		.save(recipeOutput, new ResourceLocation(((DyeItem) dye).getDyeColor().getName() + "_lens"));
 		//@formatter:on
 	}
 
@@ -1723,5 +1756,54 @@ public class RecipeGenerator extends RecipeProvider {
 		.save(recipeOutput);
 		addStonecuttingRecipe(recipeOutput, block, result, 1);
 		//@formatter:on
+	}
+
+	//copy of DyedItemColor#applyDyes to remove the tag check
+	public static ItemStack applyDyes(ItemStack stack, DyeItem dye) {
+		ItemStack copy = stack.copyWithCount(1);
+		int i = 0;
+		int j = 0;
+		int k = 0;
+		int l = 0;
+		int i1 = 0;
+		DyedItemColor existingColor = copy.get(DataComponents.DYED_COLOR);
+
+		if (existingColor != null) {
+			int j1 = FastColor.ARGB32.red(existingColor.rgb());
+			int k1 = FastColor.ARGB32.green(existingColor.rgb());
+			int l1 = FastColor.ARGB32.blue(existingColor.rgb());
+			l += Math.max(j1, Math.max(k1, l1));
+			i += j1;
+			j += k1;
+			k += l1;
+			i1++;
+		}
+
+		float[] afloat = dye.getDyeColor().getTextureDiffuseColors();
+		int i2 = (int) (afloat[0] * 255.0F);
+		int j2 = (int) (afloat[1] * 255.0F);
+		int k2 = (int) (afloat[2] * 255.0F);
+
+		l += Math.max(i2, Math.max(j2, k2));
+		i += i2;
+		j += j2;
+		k += k2;
+		i1++;
+
+		int l2 = i / i1;
+		int i3 = j / i1;
+		int j3 = k / i1;
+		float f = (float) l / (float) i1;
+		float f1 = Math.max(l2, Math.max(i3, j3));
+
+		l2 = (int) (l2 * f / f1);
+		i3 = (int) (i3 * f / f1);
+		j3 = (int) (j3 * f / f1);
+
+		int k3 = FastColor.ARGB32.color(0, l2, i3, j3);
+		boolean flag = existingColor == null || existingColor.showInTooltip();
+
+		copy.set(DataComponents.DYED_COLOR, new DyedItemColor(k3, flag));
+		return copy;
 	}
 }

@@ -13,14 +13,12 @@
     " P"
   ],
   "result": {
-    "type": "forge:nbt",
-    "count": 6,
-    "item": "securitycraft:lens",
-    "nbt": {
-      "display": {
-        "color": 10329495
+    "components": {
+      "minecraft:dyed_color": {
+        "rgb": 10329495
       }
-    }
-  },
-  "show_notification": true
+    },
+    "count": 1,
+    "id": "securitycraft:lens"
+  }
 }
