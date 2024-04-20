@@ -197,7 +197,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 		mine++; //mines are stored starting by mine1 up to mine6
 
 		if (mrat.getItem() == SCContent.MINE_REMOTE_ACCESS_TOOL.get() && mrat.has(DataComponents.CUSTOM_DATA)) {
-			int[] coords = Utils.getTag(mrat).getUnsafe().getIntArray("mine" + mine);
+			int[] coords = Utils.getTag(mrat).getIntArray("mine" + mine);
 
 			if (coords.length == 3)
 				return new BlockPos(coords[0], coords[1], coords[2]);
@@ -208,7 +208,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 	private void removeTagFromToolAndUpdate(ItemStack stack, BlockPos pos) {
 		if (stack.has(DataComponents.CUSTOM_DATA)) {
-			CompoundTag tag = Utils.getTag(stack).getUnsafe();
+			CompoundTag tag = Utils.getTag(stack);
 
 			for (int i = 1; i <= 6; i++) {
 				int[] coords = tag.getIntArray("mine" + i);

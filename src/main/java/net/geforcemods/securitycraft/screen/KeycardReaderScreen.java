@@ -225,7 +225,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		boolean isEmpty = stack.isEmpty();
 		boolean wasActive = usesTextField.active;
 		boolean hasTag = stack.has(DataComponents.CUSTOM_DATA);
-		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+		CompoundTag tag = Utils.getTag(stack);
 		boolean enabled = !isEmpty && hasTag && tag.getBoolean("limited");
 		int cardSignature = hasTag ? tag.getInt("signature") : -1;
 

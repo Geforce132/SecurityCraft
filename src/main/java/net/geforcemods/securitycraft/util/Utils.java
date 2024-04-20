@@ -48,7 +48,16 @@ public class Utils {
 		return Component.translatable(key, params);
 	}
 
-	public static CustomData getTag(ItemStack stack) {
+	public static CompoundTag getTag(ItemStack stack) {
+		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+
+		if (customData == null)
+			return CustomData.EMPTY.copyTag();
+		else
+			return customData.getUnsafe();
+	}
+
+	public static CustomData getCustomData(ItemStack stack) {
 		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
 
 		if (customData == null)

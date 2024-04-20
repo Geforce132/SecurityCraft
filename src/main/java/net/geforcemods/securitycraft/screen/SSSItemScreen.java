@@ -75,7 +75,7 @@ public class SSSItemScreen extends Screen implements ConnectionAccessor {
 
 	@Override
 	public Set<BlockPos> getPositions() {
-		return SonicSecuritySystemItem.stackTagToBlockPosSet(Utils.getTag(stack).getUnsafe());
+		return SonicSecuritySystemItem.stackTagToBlockPosSet(Utils.getTag(stack));
 	}
 
 	@Override

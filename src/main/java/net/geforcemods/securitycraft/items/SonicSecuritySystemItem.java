@@ -58,7 +58,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 				else {
 					// Remove a block from the tag if it was already linked to.
 					// If not, link to it
-					if (isAdded(Utils.getTag(stack).getUnsafe(), pos)) {
+					if (isAdded(Utils.getTag(stack), pos)) {
 						removeLinkedBlock(stack, pos);
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
 						return InteractionResult.SUCCESS;
@@ -93,7 +93,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 	@Override
 	protected boolean updateCustomBlockEntityTag(BlockPos pos, Level level, Player player, ItemStack stack, BlockState state) {
-		if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.transferPositionsFromItem(Utils.getTag(stack).getUnsafe()))
+		if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.transferPositionsFromItem(Utils.getTag(stack)))
 			return true;
 
 		return super.updateCustomBlockEntityTag(pos, level, player, stack, state);
@@ -102,7 +102,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		// If this item is storing block positions, show the number of them in the tooltip
-		int numOfLinkedBlocks = Utils.getTag(stack).getUnsafe().getList("LinkedBlocks", Tag.TAG_COMPOUND).size();
+		int numOfLinkedBlocks = Utils.getTag(stack).getList("LinkedBlocks", Tag.TAG_COMPOUND).size();
 
 		if (numOfLinkedBlocks > 0)
 			tooltip.add(Utils.localize("tooltip.securitycraft:sonicSecuritySystem.linkedTo", numOfLinkedBlocks).withStyle(Utils.GRAY_STYLE));
@@ -117,7 +117,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 	 * @return true if the position was added, false otherwise
 	 */
 	public static boolean addLinkedBlock(ItemStack stack, BlockPos pos, Player player) {
-		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+		CompoundTag tag = Utils.getTag(stack);
 
 		// If the position was already added, return
 		if (isAdded(tag, pos))
@@ -145,7 +145,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 	 * @param pos The position to remove from the tag
 	 */
 	public static void removeLinkedBlock(ItemStack stack, BlockPos pos) {
-		CustomData customData = Utils.getTag(stack);
+		CustomData customData = Utils.getCustomData(stack);
 
 		if (!customData.contains("LinkedBlocks"))
 			return;
@@ -190,12 +190,12 @@ public class SonicSecuritySystemItem extends BlockItem {
 	 * @return true if the tag contains at least one position, false otherwise
 	 */
 	public static boolean hasLinkedBlock(ItemStack stack) {
-		CustomData customData = Utils.getTag(stack);
+		CompoundTag tag = Utils.getTag(stack);
 
-		if (!customData.contains("LinkedBlocks"))
+		if (!tag.contains("LinkedBlocks"))
 			return false;
 
-		return !customData.getUnsafe().getList("LinkedBlocks", Tag.TAG_COMPOUND).isEmpty();
+		return !tag.getList("LinkedBlocks", Tag.TAG_COMPOUND).isEmpty();
 	}
 
 	/**

@@ -55,7 +55,7 @@ public class KeycardHolderItem extends Item {
 
 	public static int getCardCount(ItemStack stack, HolderLookup.Provider lookupProvider) {
 		int count = 0;
-		ListTag items = Utils.getTag(stack).getUnsafe().getList("ItemInventory", Tag.TAG_COMPOUND);
+		ListTag items = Utils.getTag(stack).getList("ItemInventory", Tag.TAG_COMPOUND);
 
 		for (int i = 0; i < items.size(); i++) {
 			CompoundTag item = items.getCompound(i);

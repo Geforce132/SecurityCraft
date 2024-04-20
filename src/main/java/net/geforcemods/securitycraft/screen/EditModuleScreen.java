@@ -88,7 +88,7 @@ public class EditModuleScreen extends Screen {
 		clearButton = addRenderableWidget(new Button(controlsStartX, height / 2 + 57, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::clearButtonClicked, Button.DEFAULT_NARRATION));
 		playerList = addRenderableWidget(new PlayerList(minecraft, 110, 165, height / 2 - 88, guiLeft + 10));
 		teamList = addRenderableWidget(new TeamList(minecraft, editTeamsButton.getWidth(), 75, editTeamsButton.getY() + editTeamsButton.getHeight(), editTeamsButton.getX()));
-		affectEveryPlayerCheckbox = addRenderableWidget(new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, Utils.getTag(module).getUnsafe().getBoolean("affectEveryone"), newState -> CustomData.update(DataComponents.CUSTOM_DATA, module, tag -> tag.putBoolean("affectEveryone", newState)), 0x404040));
+		affectEveryPlayerCheckbox = addRenderableWidget(new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, Utils.getTag(module).getBoolean("affectEveryone"), newState -> CustomData.update(DataComponents.CUSTOM_DATA, module, tag -> tag.putBoolean("affectEveryone", newState)), 0x404040));
 
 		teamList.active = false;
 		editTeamsButton.active = !availableTeams.isEmpty();
@@ -100,7 +100,7 @@ public class EditModuleScreen extends Screen {
 			if (s.isEmpty())
 				addPlayerButton.active = false;
 			else {
-				CompoundTag tag = Utils.getTag(module).getUnsafe();
+				CompoundTag tag = Utils.getTag(module);
 
 				for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
 					if (s.equals(tag.getString("Player" + i))) {
@@ -123,7 +123,7 @@ public class EditModuleScreen extends Screen {
 	@Override
 	public void onClose() {
 		super.onClose();
-		PacketDistributor.SERVER.noArg().send(new SetListModuleData(Utils.getTag(module).getUnsafe()));
+		PacketDistributor.SERVER.noArg().send(new SetListModuleData(Utils.getTag(module)));
 	}
 
 	@Override
@@ -176,7 +176,7 @@ public class EditModuleScreen extends Screen {
 		if (inputField.getValue().isEmpty())
 			return;
 
-		CompoundTag tag = Utils.getTag(module).getUnsafe();
+		CompoundTag tag = Utils.getTag(module);
 
 		for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
 			if (tag.contains("Player" + i) && tag.getString("Player" + i).equals(inputField.getValue())) {
@@ -208,7 +208,7 @@ public class EditModuleScreen extends Screen {
 		if (inputField.getValue().isEmpty())
 			return;
 
-		CompoundTag tag = Utils.getTag(module).getUnsafe();
+		CompoundTag tag = Utils.getTag(module);
 
 		for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
 			if (tag.contains("Player" + i) && tag.getString("Player" + i).equals(inputField.getValue())) {
@@ -223,7 +223,7 @@ public class EditModuleScreen extends Screen {
 	}
 
 	private void copyButtonClicked(Button button) {
-		savedModule = Utils.getTag(module).copyTag();
+		savedModule = Utils.getCustomData(module).copyTag();
 		copyButton.active = false;
 		updateButtonStates();
 	}
@@ -246,7 +246,7 @@ public class EditModuleScreen extends Screen {
 	}
 
 	private void updateButtonStates(boolean cleared) {
-		CustomData customData = Utils.getTag(module);
+		CustomData customData = Utils.getCustomData(module);
 		boolean tagIsConsideredEmpty = customData.isEmpty() || (customData.size() == 1 && customData.contains("affectEveryone"));
 
 		if (!cleared && tagIsConsideredEmpty) {
@@ -271,7 +271,7 @@ public class EditModuleScreen extends Screen {
 			affectEveryPlayerCheckbox.setSelected(false);
 		}
 		else {
-			CompoundTag tag = Utils.getTag(module).getUnsafe();
+			CompoundTag tag = Utils.getTag(module);
 			//@formatter:off
 			List<String> teamNames = tag.getList("ListedTeams", Tag.TAG_STRING)
 					.stream()
@@ -333,7 +333,7 @@ public class EditModuleScreen extends Screen {
 		public boolean mouseClicked(double mouseX, double mouseY, int button) {
 			if (isMouseOver(mouseX, mouseY) && mouseX < left + width - 6) {
 				int clickedIndex = ((int) (mouseY - top + scrollDistance - border)) / SLOT_HEIGHT;
-				CompoundTag tag = Utils.getTag(module).getUnsafe();
+				CompoundTag tag = Utils.getTag(module);
 
 				if (tag.contains("Player" + (clickedIndex + 1))) {
 					selectedIndex = clickedIndex;
@@ -347,7 +347,7 @@ public class EditModuleScreen extends Screen {
 		@Override
 		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY) {
 			if (module.has(DataComponents.CUSTOM_DATA)) {
-				CompoundTag tag = Utils.getTag(module).getUnsafe();
+				CompoundTag tag = Utils.getTag(module);
 				int baseY = top + border - (int) scrollDistance;
 				int mouseListY = (int) (mouseY - top + scrollDistance - border);
 				int slotIndex = mouseListY / SLOT_HEIGHT;

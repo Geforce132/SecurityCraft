@@ -39,7 +39,7 @@ public class SentryRemoteAccessToolItem extends Item {
 
 		if (!level.isClientSide) {
 			updateTagWithNames(stack, level);
-			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, Utils.getTag(stack).getUnsafe()));
+			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, Utils.getTag(stack)));
 		}
 
 		return InteractionResultHolder.consume(stack);
@@ -89,7 +89,7 @@ public class SentryRemoteAccessToolItem extends Item {
 		}
 		else if (!level.isClientSide) {
 			updateTagWithNames(stack, level);
-			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, Utils.getTag(stack).getUnsafe()));
+			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, Utils.getTag(stack)));
 		}
 
 		return InteractionResult.SUCCESS;
@@ -97,7 +97,7 @@ public class SentryRemoteAccessToolItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
-		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+		CompoundTag tag = Utils.getTag(stack);
 
 		if (tag != null && !tag.isEmpty()) {
 			for (int i = 1; i <= 12; i++) {
@@ -131,7 +131,7 @@ public class SentryRemoteAccessToolItem extends Item {
 		if (!stack.has(DataComponents.CUSTOM_DATA))
 			return;
 
-		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+		CompoundTag tag = Utils.getTag(stack);
 
 		for (int i = 1; i <= 12; i++) {
 			int[] coords = tag.getIntArray("sentry" + i);
@@ -162,7 +162,7 @@ public class SentryRemoteAccessToolItem extends Item {
 
 	private void removeSentry(ItemStack stack, BlockPos pos, Player player) {
 		if (stack.has(DataComponents.CUSTOM_DATA)) {
-			CompoundTag tag = Utils.getTag(stack).getUnsafe();
+			CompoundTag tag = Utils.getTag(stack);
 
 			for (int i = 1; i <= 12; i++) {
 				int[] coords = tag.getIntArray("sentry" + i);
@@ -189,7 +189,7 @@ public class SentryRemoteAccessToolItem extends Item {
 	}
 
 	public static boolean isSentryAdded(ItemStack stack, BlockPos pos) {
-		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+		CompoundTag tag = Utils.getTag(stack);
 
 		for (int i = 1; i <= 12; i++) {
 			int[] coords = tag.getIntArray("sentry" + i);
@@ -202,7 +202,7 @@ public class SentryRemoteAccessToolItem extends Item {
 	}
 
 	public static int getNextAvailableSlot(ItemStack stack) {
-		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+		CompoundTag tag = Utils.getTag(stack);
 
 		for (int i = 1; i <= 12; i++) {
 			if (tag.getIntArray("sentry" + i).length != 3)

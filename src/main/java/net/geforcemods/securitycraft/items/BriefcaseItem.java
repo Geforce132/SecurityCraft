@@ -124,10 +124,10 @@ public class BriefcaseItem extends Item {
 	}
 
 	public static String getOwnerName(ItemStack briefcase) {
-		return Utils.getTag(briefcase).getUnsafe().getString("owner");
+		return Utils.getTag(briefcase).getString("owner");
 	}
 
 	public static String getOwnerUUID(ItemStack briefcase) {
-		return Utils.getTag(briefcase).getUnsafe().getString("ownerUUID");
+		return Utils.getTag(briefcase).getString("ownerUUID");
 	}
 }

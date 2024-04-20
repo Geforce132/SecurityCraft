@@ -30,7 +30,7 @@ public class LimitedUseKeycardRecipe extends CustomRecipe {
 
 			if (item instanceof KeycardItem) {
 				if (item != SCContent.LIMITED_USE_KEYCARD.get()) {
-					if (hasNormalKeycard || Utils.getTag(stack).getUnsafe().getBoolean("limited"))
+					if (hasNormalKeycard || Utils.getTag(stack).getBoolean("limited"))
 						return false;
 
 					hasNormalKeycard = true;

@@ -578,7 +578,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		if (potentialTarget != null) {
 			ItemStack allowlistModule = getAllowlistModule();
 
-			if (Utils.getTag(allowlistModule).getUnsafe().getBoolean("affectEveryone"))
+			if (Utils.getTag(allowlistModule).getBoolean("affectEveryone"))
 				return true;
 
 			List<String> players = ModuleItem.getPlayersFromModule(allowlistModule);

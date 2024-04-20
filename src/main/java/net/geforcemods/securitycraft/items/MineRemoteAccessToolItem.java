@@ -78,7 +78,7 @@ public class MineRemoteAccessToolItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> list, TooltipFlag flag) {
-		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+		CompoundTag tag = Utils.getTag(stack);
 
 		if (tag != null && !tag.isEmpty()) {
 			for (int i = 1; i <= 6; i++) {
@@ -93,7 +93,7 @@ public class MineRemoteAccessToolItem extends Item {
 	}
 
 	public static boolean hasMineAdded(ItemStack stack) {
-		CustomData customData = Utils.getTag(stack);
+		CustomData customData = Utils.getCustomData(stack);
 
 		if (customData != null) {
 			for (int i = 1; i <= 6; i++) {
@@ -106,7 +106,7 @@ public class MineRemoteAccessToolItem extends Item {
 	}
 
 	public static void removeMine(ItemStack stack, BlockPos pos) {
-		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+		CompoundTag tag = Utils.getTag(stack);
 
 		for (int i = 1; i <= 6; i++) {
 			int[] coords = tag.getIntArray("mine" + i);
@@ -120,7 +120,7 @@ public class MineRemoteAccessToolItem extends Item {
 	}
 
 	public static boolean isMineAdded(ItemStack stack, BlockPos pos) {
-		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+		CompoundTag tag = Utils.getTag(stack);
 
 		for (int i = 1; i <= 6; i++) {
 			int[] coords = tag.getIntArray("mine" + i);
@@ -133,7 +133,7 @@ public class MineRemoteAccessToolItem extends Item {
 	}
 
 	public static int getNextAvailableSlot(ItemStack stack) {
-		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+		CompoundTag tag = Utils.getTag(stack);
 
 		for (int i = 1; i <= 6; i++) {
 			if (tag.getIntArray("mine" + i).length != 3)

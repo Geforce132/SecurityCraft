@@ -88,7 +88,7 @@ public class CodebreakerItem extends Item {
 	}
 
 	public static boolean wasRecentlyUsed(ItemStack stack) {
-		long lastUsedTime = Utils.getTag(stack).getUnsafe().getLong(CodebreakerItem.LAST_USED_TIME);
+		long lastUsedTime = Utils.getTag(stack).getLong(CodebreakerItem.LAST_USED_TIME);
 
 		return lastUsedTime != 0 && System.currentTimeMillis() - lastUsedTime < 3000L;
 	}

@@ -52,7 +52,7 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 
 			if (stack.getItem() instanceof KeycardItem) {
 				boolean hasTag = stack.has(DataComponents.CUSTOM_DATA);
-				CompoundTag tag = Utils.getTag(stack).getUnsafe();
+				CompoundTag tag = Utils.getTag(stack);
 
 				if (!hasTag || !tag.getBoolean("linked"))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.unlinked_keycard"), ChatFormatting.RED);

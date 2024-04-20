@@ -34,7 +34,7 @@ public record CheckBriefcasePasscode(String passcode) implements CustomPacketPay
 		ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get());
 
 		if (!briefcase.isEmpty()) {
-			CompoundTag tag = Utils.getTag(briefcase).getUnsafe();
+			CompoundTag tag = Utils.getTag(briefcase);
 			String tagCode = tag.getString("passcode");
 
 			if (tagCode.length() == 4) //If an old plaintext passcode is encountered, generate and check with the hashed variant

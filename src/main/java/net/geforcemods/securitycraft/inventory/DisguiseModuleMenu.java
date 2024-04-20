@@ -88,12 +88,12 @@ public class DisguiseModuleMenu extends StateSelectorAccessMenu {
 
 	@Override
 	public BlockState getSavedState() {
-		return NbtUtils.readBlockState(playerInventory.player.level().holderLookup(Registries.BLOCK), Utils.getTag(inventory.getModule()).getUnsafe().getCompound("SavedState"));
+		return NbtUtils.readBlockState(playerInventory.player.level().holderLookup(Registries.BLOCK), Utils.getTag(inventory.getModule()).getCompound("SavedState"));
 	}
 
 	@Override
 	public StandingOrWallType getStandingOrWallType() {
-		return StandingOrWallType.values()[Utils.getTag(inventory.getModule()).getUnsafe().getInt("StandingOrWall")];
+		return StandingOrWallType.values()[Utils.getTag(inventory.getModule()).getInt("StandingOrWall")];
 	}
 
 	public ModuleItemContainer getInventory() {

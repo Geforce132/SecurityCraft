@@ -179,7 +179,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	}
 
 	public MutableComponent insertCard(ItemStack stack, Player player) {
-		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+		CompoundTag tag = Utils.getTag(stack);
 		Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
 
 		//owner of this keycard reader and the keycard reader the keycard got linked to do not match

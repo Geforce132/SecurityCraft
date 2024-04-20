@@ -48,7 +48,7 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 
 				setUp = true;
 				setAcceptedLevels(levels);
-				setSignature(Utils.getTag(stack).getUnsafe().getInt("signature"));
+				setSignature(Utils.getTag(stack).getInt("signature"));
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.setup_successful." + keySuffix, item.getLevel() + 1), ChatFormatting.GREEN);
 				return ItemInteractionResult.SUCCESS;
 			}

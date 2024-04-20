@@ -499,7 +499,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 		ItemStack stack = getModule(ModuleType.ALLOWLIST);
 
-		if (Utils.getTag(stack).getUnsafe().getBoolean("affectEveryone"))
+		if (Utils.getTag(stack).getBoolean("affectEveryone"))
 			return true;
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
@@ -518,7 +518,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 		ItemStack stack = getModule(ModuleType.DENYLIST);
 
-		if (Utils.getTag(stack).getUnsafe().getBoolean("affectEveryone")) {
+		if (Utils.getTag(stack).getBoolean("affectEveryone")) {
 			if (getBlockEntity() instanceof IOwnable ownable) {
 				//only deny players that are not the owner
 				if (entity instanceof Player player) {

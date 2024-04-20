@@ -106,7 +106,7 @@ public class UniversalBlockReinforcerItem extends Item {
 	}
 
 	public static boolean isReinforcing(ItemStack stack) {
-		return stack.is(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()) || !Utils.getTag(stack).getUnsafe().getBoolean("is_unreinforcing");
+		return stack.is(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()) || !Utils.getTag(stack).getBoolean("is_unreinforcing");
 	}
 
 	public static void maybeRemoveMending(ItemStack stack) {

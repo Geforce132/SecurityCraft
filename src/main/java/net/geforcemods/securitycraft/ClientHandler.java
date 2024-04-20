@@ -319,7 +319,7 @@ public class ClientHandler {
 				if (!(entity instanceof Player))
 					return EMPTY_STATE;
 
-				CompoundTag stackTag = Utils.getTag(stack).getUnsafe();
+				CompoundTag stackTag = Utils.getTag(stack);
 
 				if (Minecraft.getInstance().crosshairPickEntity instanceof Sentry sentry) {
 					float linkingState = loop(12, (tag, i) -> Arrays.stream(tag.getIntArray("sentry" + i)).boxed().toArray(Integer[]::new), stackTag, sentry.blockPosition());
@@ -363,7 +363,7 @@ public class ClientHandler {
 					return linkingState;
 			});
 			ItemProperties.register(SCContent.CODEBREAKER.get(), CodebreakerItem.STATE_PROPERTY, (stack, level, entity, id) -> {
-				CompoundTag tag = Utils.getTag(stack).getUnsafe();
+				CompoundTag tag = Utils.getTag(stack);
 
 				if (CodebreakerItem.wasRecentlyUsed(stack))
 					return tag.getBoolean(CodebreakerItem.WAS_SUCCESSFUL) ? 0.75F : 0.5F;
@@ -732,7 +732,7 @@ public class ClientHandler {
 	}
 
 	public static void putDisguisedBeRenderer(BlockEntity disguisableBlockEntity, ItemStack stack) {
-		DISGUISED_BLOCK_RENDER_DELEGATE.putDelegateFor(disguisableBlockEntity, NbtUtils.readBlockState(disguisableBlockEntity.getLevel().holderLookup(Registries.BLOCK), Utils.getTag(stack).getUnsafe().getCompound("SavedState")));
+		DISGUISED_BLOCK_RENDER_DELEGATE.putDelegateFor(disguisableBlockEntity, NbtUtils.readBlockState(disguisableBlockEntity.getLevel().holderLookup(Registries.BLOCK), Utils.getTag(stack).getCompound("SavedState")));
 	}
 
 	public static void updateBlockColorAroundPosition(BlockPos pos) {
@@ -752,7 +752,7 @@ public class ClientHandler {
 			BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
 
 			if (hitResult != null && hitResult.getType() == Type.BLOCK && isValidHitResult.test(hitResult)) {
-				CompoundTag tag = Utils.getTag(stackInHand).getUnsafe();
+				CompoundTag tag = Utils.getTag(stackInHand);
 
 				if (loop)
 					return loop(tagSize, getCoords, tag, hitResult.getBlockPos());

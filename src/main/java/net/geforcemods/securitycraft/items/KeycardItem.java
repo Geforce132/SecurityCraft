@@ -34,7 +34,7 @@ public class KeycardItem extends Item {
 		if (this == SCContent.LIMITED_USE_KEYCARD.get())
 			return;
 
-		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+		CompoundTag tag = Utils.getTag(stack);
 
 		if (tag.getBoolean("linked")) {
 			list.add(Component.translatable("tooltip.securitycraft:keycard.signature", StringUtils.leftPad("" + tag.getInt("signature"), 5, "0")).setStyle(Utils.GRAY_STYLE));

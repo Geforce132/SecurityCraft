@@ -60,7 +60,7 @@ public class PortableTunePlayerItem extends Item {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (!level.isClientSide) {
-			CustomData customData = Utils.getTag(stack);
+			CustomData customData = Utils.getCustomData(stack);
 			boolean isTunePlaying = SCEventHandler.PLAYING_TUNES.containsKey(player);
 
 			if (!isTunePlaying && customData.contains("Notes")) {
@@ -83,7 +83,7 @@ public class PortableTunePlayerItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		// If a tune is stored in this item, show the number of notes in this tune in the tooltip
-		int notesCount = Utils.getTag(stack).getUnsafe().getList("Notes", Tag.TAG_COMPOUND).size();
+		int notesCount = Utils.getTag(stack).getList("Notes", Tag.TAG_COMPOUND).size();
 
 		if (notesCount > 0)
 			tooltip.add(Utils.localize("tooltip.securitycraft:portableTunePlayer.noteCount", notesCount).withStyle(Utils.GRAY_STYLE));

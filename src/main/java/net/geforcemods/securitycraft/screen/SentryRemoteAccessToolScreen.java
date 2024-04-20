@@ -108,7 +108,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				Level level = Minecraft.getInstance().player.level();
 				String nameKey = "sentry" + (i + 1) + "_name";
 				Component sentryName = null;
-				CompoundTag tag = Utils.getTag(srat).getUnsafe();
+				CompoundTag tag = Utils.getTag(srat);
 
 				if (tag.contains(nameKey))
 					sentryName = Component.literal(tag.getString(nameKey));
@@ -320,7 +320,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		sentry++; // sentries are stored starting by sentry1 up to sentry12
 
 		if (srat.getItem() == SCContent.SENTRY_REMOTE_ACCESS_TOOL.get() && srat.has(DataComponents.CUSTOM_DATA)) {
-			int[] coords = Utils.getTag(srat).getUnsafe().getIntArray("sentry" + sentry);
+			int[] coords = Utils.getTag(srat).getIntArray("sentry" + sentry);
 
 			if (coords.length == 3)
 				return new BlockPos(coords[0], coords[1], coords[2]);
@@ -331,7 +331,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 	private void removeTagFromToolAndUpdate(ItemStack stack, BlockPos pos) {
 		if (stack.has(DataComponents.CUSTOM_DATA)) {
-			CompoundTag tag = Utils.getTag(stack).getUnsafe();
+			CompoundTag tag = Utils.getTag(stack);
 
 			for (int i = 1; i <= 12; i++) {
 				int[] coords = tag.getIntArray("sentry" + i);

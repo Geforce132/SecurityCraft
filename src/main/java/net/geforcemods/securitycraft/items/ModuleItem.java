@@ -127,7 +127,7 @@ public class ModuleItem extends Item {
 			boolean affectsEveryone = false;
 			int playerCount = 0;
 			int teamCount = 0;
-			CompoundTag tag = Utils.getTag(stack).getUnsafe();
+			CompoundTag tag = Utils.getTag(stack);
 
 			if (tag != null && !tag.isEmpty()) {
 				affectsEveryone = tag.getBoolean("affectEveryone");
@@ -172,7 +172,7 @@ public class ModuleItem extends Item {
 		PlayerTeam team = level.getScoreboard().getPlayersTeam(name);
 
 		//@formatter:off
-		return team != null && Utils.getTag(module).getUnsafe().getList("ListedTeams", Tag.TAG_STRING)
+		return team != null && Utils.getTag(module).getList("ListedTeams", Tag.TAG_STRING)
 				.stream()
 				.filter(StringTag.class::isInstance)
 				.map(tag -> ((StringTag) tag).getAsString())
@@ -184,7 +184,7 @@ public class ModuleItem extends Item {
 		List<String> list = new ArrayList<>();
 
 		if (stack.getItem() instanceof ModuleItem) {
-			CompoundTag tag = Utils.getTag(stack).getUnsafe();
+			CompoundTag tag = Utils.getTag(stack);
 
 			for (int i = 1; i <= MAX_PLAYERS; i++) {
 				String player = tag.getString("Player" + i);

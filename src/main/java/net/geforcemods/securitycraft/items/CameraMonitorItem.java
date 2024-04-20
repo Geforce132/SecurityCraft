@@ -83,14 +83,14 @@ public class CameraMonitorItem extends Item {
 		}
 
 		if (level.isClientSide && stack.getItem() == SCContent.CAMERA_MONITOR.get())
-			ClientHandler.displayCameraMonitorScreen(player.getInventory(), (CameraMonitorItem) stack.getItem(), Utils.getTag(stack).getUnsafe());
+			ClientHandler.displayCameraMonitorScreen(player.getInventory(), (CameraMonitorItem) stack.getItem(), Utils.getTag(stack));
 
 		return InteractionResultHolder.consume(stack);
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(Utils.localize("tooltip.securitycraft:cameraMonitor").append(Component.literal(" " + getNumberOfCamerasBound(Utils.getTag(stack).getUnsafe()) + "/30")).setStyle(Utils.GRAY_STYLE));
+		tooltip.add(Utils.localize("tooltip.securitycraft:cameraMonitor").append(Component.literal(" " + getNumberOfCamerasBound(Utils.getTag(stack)) + "/30")).setStyle(Utils.GRAY_STYLE));
 	}
 
 	public static String getTagNameFromPosition(CompoundTag tag, GlobalPos view) {
@@ -107,7 +107,7 @@ public class CameraMonitorItem extends Item {
 	}
 
 	public static boolean hasCameraAdded(ItemStack stack) {
-		CustomData customData = Utils.getTag(stack);
+		CustomData customData = Utils.getCustomData(stack);
 
 		if (customData != null) {
 			for (int i = 1; i <= 30; i++) {
@@ -120,7 +120,7 @@ public class CameraMonitorItem extends Item {
 	}
 
 	public static boolean isCameraAdded(ItemStack stack, GlobalPos view) {
-		CompoundTag tag = Utils.getTag(stack).getUnsafe();
+		CompoundTag tag = Utils.getTag(stack);
 
 		for (int i = 1; i <= 30; i++) {
 			if (tag.contains("Camera" + i)) {

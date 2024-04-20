@@ -55,7 +55,7 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 				if (!stack.has(DataComponents.CUSTOM_DATA))
 					return true;
 
-				CompoundTag tag = Utils.getTag(stack).getUnsafe();
+				CompoundTag tag = Utils.getTag(stack);
 				Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
 				String keycardOwnerUUID = keycardOwner.getUUID();
 
