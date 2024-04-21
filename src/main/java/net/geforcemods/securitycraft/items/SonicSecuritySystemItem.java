@@ -43,7 +43,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 		Player player = ctx.getPlayer();
 
 		// If the player is not sneaking, add/remove positions from the item when right-clicking a lockable block
-		if (!level.isClientSide && !player.isShiftKeyDown()) {
+		if (!player.isShiftKeyDown()) {
 			BlockPos pos = ctx.getClickedPos();
 			BlockEntity be = level.getBlockEntity(pos);
 
@@ -74,9 +74,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 		//don't place down the SSS if it has at least one linked block
 		//placing is handled by minecraft otherwise
 		if (!stack.has(DataComponents.CUSTOM_DATA) || !hasLinkedBlock(stack)) {
-			if (!level.isClientSide)
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.notLinked"), ChatFormatting.DARK_RED);
-
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.notLinked"), ChatFormatting.DARK_RED);
 			return InteractionResult.FAIL;
 		}
 
