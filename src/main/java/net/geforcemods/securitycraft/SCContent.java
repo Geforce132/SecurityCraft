@@ -305,6 +305,7 @@ public class SCContent {
 	public static final String KEYPAD_CHEST_PATH = "keypad_chest";
 	public static final String DISPLAY_CASE_PATH = "display_case";
 	public static final String GLOW_DISPLAY_CASE_PATH = "glow_display_case";
+	public static final int CRYSTAL_QUARTZ_TINT = 0xFF15B3A2;
 
 	//command argument types
 	public static final DeferredHolder<ArgumentTypeInfo<?, ?>, SingletonArgumentInfo<SingleGameProfileArgument>> SINGLE_GAME_PROFILE_COMMAND_ARGUMENT_TYPE = COMMAND_ARGUMENT_TYPES.register("single_game_profile", () -> ArgumentTypeInfos.registerByClass(SingleGameProfileArgument.class, SingletonArgumentInfo.contextFree(SingleGameProfileArgument::singleGameProfile)));
@@ -2493,31 +2494,31 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final DeferredBlock<SlabBlock> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("smooth_crystal_quartz_slab", () -> new SlabBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_crystal_quartz_slab", () -> new ReinforcedSlabBlock(prop(MapColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_SLAB));
 	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_smooth_crystal_quartz", () -> new BaseReinforcedBlock(prop(MapColor.COLOR_CYAN), SCContent.SMOOTH_CRYSTAL_QUARTZ));
 	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<BlockPocketBlock> REINFORCED_CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_chiseled_crystal_quartz_block", () -> new BlockPocketBlock(prop(MapColor.COLOR_CYAN), SCContent.CHISELED_CRYSTAL_QUARTZ));
 	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<BlockPocketBlock> REINFORCED_CRYSTAL_QUARTZ_BLOCK = BLOCKS.register("reinforced_crystal_quartz_block", () -> new BlockPocketBlock(prop(MapColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRYSTAL_QUARTZ_BRICKS = BLOCKS.register("reinforced_crystal_quartz_bricks", () -> new BaseReinforcedBlock(prop(MapColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_BRICKS));
 	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<ReinforcedRotatedCrystalQuartzPillar> REINFORCED_CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("reinforced_crystal_quartz_pillar", () -> new ReinforcedRotatedCrystalQuartzPillar(prop(MapColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_PILLAR));
 	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(prop(MapColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_STAIRS));
 	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_smooth_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(prop(MapColor.COLOR_CYAN), SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS));
 	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
+	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_smooth_crystal_quartz_slab", () -> new ReinforcedSlabBlock(prop(MapColor.COLOR_CYAN), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE

@@ -120,6 +120,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -473,7 +474,7 @@ public class ClientHandler {
 
 					if (field.getAnnotation(Reinforced.class).hasReinforcedTint())
 						blocksWithReinforcedTint.put(block, customTint);
-					else if (customTint != 0xFFFFFF)
+					else if (customTint != 0xFFFFFFFF)
 						blocksWithCustomTint.put(block, customTint);
 				}
 				catch (IllegalArgumentException | IllegalAccessException e) {
@@ -482,19 +483,17 @@ public class ClientHandler {
 			}
 		}
 
-		int crystalQuartzTint = 0x15B3A2;
-
-		blocksWithReinforcedTint.put(SCContent.BLOCK_POCKET_MANAGER.get(), crystalQuartzTint);
-		blocksWithReinforcedTint.put(SCContent.BLOCK_POCKET_WALL.get(), crystalQuartzTint);
-		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
-		blocksWithCustomTint.put(SCContent.SMOOTH_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
-		blocksWithCustomTint.put(SCContent.CHISELED_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
-		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_BLOCK.get(), crystalQuartzTint);
-		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_BRICKS.get(), crystalQuartzTint);
-		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), crystalQuartzTint);
-		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_STAIRS.get(), crystalQuartzTint);
-		blocksWithCustomTint.put(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
-		blocksWithCustomTint.put(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), crystalQuartzTint);
+		blocksWithReinforcedTint.put(SCContent.BLOCK_POCKET_MANAGER.get(), SCContent.CRYSTAL_QUARTZ_TINT);
+		blocksWithReinforcedTint.put(SCContent.BLOCK_POCKET_WALL.get(), SCContent.CRYSTAL_QUARTZ_TINT);
+		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), SCContent.CRYSTAL_QUARTZ_TINT);
+		blocksWithCustomTint.put(SCContent.SMOOTH_CRYSTAL_QUARTZ.get(), SCContent.CRYSTAL_QUARTZ_TINT);
+		blocksWithCustomTint.put(SCContent.CHISELED_CRYSTAL_QUARTZ.get(), SCContent.CRYSTAL_QUARTZ_TINT);
+		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_BLOCK.get(), SCContent.CRYSTAL_QUARTZ_TINT);
+		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_BRICKS.get(), SCContent.CRYSTAL_QUARTZ_TINT);
+		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), SCContent.CRYSTAL_QUARTZ_TINT);
+		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_STAIRS.get(), SCContent.CRYSTAL_QUARTZ_TINT);
+		blocksWithCustomTint.put(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get(), SCContent.CRYSTAL_QUARTZ_TINT);
+		blocksWithCustomTint.put(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), SCContent.CRYSTAL_QUARTZ_TINT);
 	}
 
 	@SubscribeEvent
@@ -504,13 +503,13 @@ public class ClientHandler {
 			if (tintIndex == 0)
 				return mixWithReinforcedTintIfEnabled(tint);
 			else
-				return 0xFFFFFF;
+				return 0xFFFFFFFF;
 		}, block));
 		blocksWithCustomTint.forEach((block, tint) -> event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 0)
 				return tint;
 			else
-				return 0xFFFFFF;
+				return 0xFFFFFFFF;
 		}, block));
 		event.register((state, level, pos, tintIndex) -> {
 			Block block = state.getBlock();
@@ -524,9 +523,9 @@ public class ClientHandler {
 			}
 
 			if (block == SCContent.REINFORCED_OBSERVER.get())
-				return mixWithReinforcedTintIfEnabled(0xFFFFFF);
+				return mixWithReinforcedTintIfEnabled(0xFFFFFFFF);
 			else
-				return 0xFFFFFF;
+				return 0xFFFFFFFF;
 		}, disguisableBlocks.get());
 		event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.getValue(SnowyDirtBlock.SNOWY)) {
@@ -589,13 +588,13 @@ public class ClientHandler {
 			if (tintIndex == 0)
 				return mixWithReinforcedTintIfEnabled(tint);
 			else
-				return 0xFFFFFF;
+				return 0xFFFFFFFF;
 		}, item));
 		blocksWithCustomTint.forEach((item, tint) -> event.register((stack, tintIndex) -> {
 			if (tintIndex == 0)
 				return tint;
 			else
-				return 0xFFFFFF;
+				return 0xFFFFFFFF;
 		}, item));
 		event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : DyedItemColor.getOrDefault(stack, 0xFF333333), SCContent.BRIEFCASE.get());
 		event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : DyedItemColor.getOrDefault(stack, 0xFFFFFFFF), SCContent.LENS.get());
@@ -632,7 +631,7 @@ public class ClientHandler {
 		green *= (float) (tint2 >> 0x8 & 0xFF) / 0xFF;
 		blue *= (float) (tint2 & 0xFF) / 0xFF;
 
-		return ((red << 8) + green << 8) + blue;
+		return FastColor.ARGB32.color(0xFF, red, green, blue);
 	}
 
 	public static Player getClientPlayer() {

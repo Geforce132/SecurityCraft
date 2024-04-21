@@ -22,7 +22,7 @@ public @interface Reinforced {
 	/**
 	 * @return The custom tint of this block which is mixed with the reinforcing tint. 0xFFFFFF (no custom tint) by default
 	 */
-	int customTint() default 0xFFFFFF;
+	int customTint() default 0xFFFFFFFF;
 
 	/**
 	 * @return true if a BlockItem should be automatically registered for this block, false if not
