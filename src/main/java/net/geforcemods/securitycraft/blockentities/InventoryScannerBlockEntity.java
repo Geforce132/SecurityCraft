@@ -98,8 +98,10 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			CompoundTag stackTag = list.getCompound(i);
 			int slot = stackTag.getByte("Slot") & 255;
 
-			if (slot >= 0 && slot < inventoryContents.size())
+			if (slot >= 0 && slot < inventoryContents.size()) {
+				stackTag.remove("Slot");
 				inventoryContents.set(slot, ItemStack.parseOptional(lookupProvider, stackTag));
+			}
 		}
 
 		signalCooldown = tag.getInt("cooldown");
