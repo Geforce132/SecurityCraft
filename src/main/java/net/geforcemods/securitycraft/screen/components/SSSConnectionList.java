@@ -74,6 +74,11 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 	}
 
 	@Override
+	protected void drawBackground(GuiGraphics guiGraphics, Tesselator tess, float partialTick) {
+		drawGradientRect(guiGraphics, left, top, right, bottom, 0xC0101010, 0xD0101010);
+	}
+
+	@Override
 	protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
 		int baseY = top + border - (int) scrollDistance;
 		int slotBuffer = SLOT_HEIGHT - 4;

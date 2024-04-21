@@ -199,6 +199,11 @@ public class AlarmScreen extends Screen {
 		}
 
 		@Override
+		protected void drawBackground(GuiGraphics guiGraphics, Tesselator tess, float partialTick) {
+			drawGradientRect(guiGraphics, left, top, right, bottom, 0xC0101010, 0xD0101010);
+		}
+
+		@Override
 		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 			super.render(guiGraphics, mouseX, mouseY, partialTick);
 

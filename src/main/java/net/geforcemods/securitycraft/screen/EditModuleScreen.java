@@ -345,6 +345,11 @@ public class EditModuleScreen extends Screen {
 		}
 
 		@Override
+		protected void drawBackground(GuiGraphics guiGraphics, Tesselator tess, float partialTick) {
+			drawGradientRect(guiGraphics, left, top, right, bottom, 0xC0101010, 0xD0101010);
+		}
+
+		@Override
 		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY) {
 			if (module.has(DataComponents.CUSTOM_DATA)) {
 				CompoundTag tag = Utils.getTag(module);
@@ -426,6 +431,11 @@ public class EditModuleScreen extends Screen {
 			}
 
 			return false;
+		}
+
+		@Override
+		protected void drawBackground(GuiGraphics guiGraphics, Tesselator tess, float partialTick) {
+			drawGradientRect(guiGraphics, left, top, right, bottom, 0xC0101010, 0xD0101010);
 		}
 
 		@Override
