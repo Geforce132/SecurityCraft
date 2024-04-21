@@ -116,18 +116,14 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		load(tag, true, lookupProvider);
-	}
-
-	public void load(CompoundTag tag, boolean forceOpenness, HolderLookup.Provider lookupProvider) {
-		super.loadWithComponents(tag, lookupProvider);
+		super.loadAdditional(tag, lookupProvider);
 		setDisplayedStack(ItemStack.parseOptional(lookupProvider, tag.getCompound("DisplayedStack")));
 		shouldBeOpen = tag.getBoolean("ShouldBeOpen");
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 		loadSaltKey(tag);
 		loadPasscode(tag);
 
-		if (forceOpenness)
+		if (level != null && !level.isClientSide)
 			forceOpen(shouldBeOpen);
 
 		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
