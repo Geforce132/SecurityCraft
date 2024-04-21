@@ -99,6 +99,8 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 
 					activate(state, level, pos, player);
 				}
+				else
+					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 

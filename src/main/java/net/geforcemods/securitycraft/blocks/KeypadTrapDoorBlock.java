@@ -51,6 +51,8 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 
 					activate(state, level, pos, be.getSignalLength());
 				}
+				else
+					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 

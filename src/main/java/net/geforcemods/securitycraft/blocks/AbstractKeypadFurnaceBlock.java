@@ -140,6 +140,8 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 
 					activate(be, level, pos, player);
 				}
+				else
+					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 

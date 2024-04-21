@@ -65,6 +65,8 @@ public class KeypadBlock extends DisguisableBlock {
 
 					activate(state, level, pos, be.getSignalLength());
 				}
+				else
+					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 

@@ -52,6 +52,8 @@ public class KeyPanelBlock extends AbstractPanelBlock {
 
 					activate(state, level, pos, be.getSignalLength());
 				}
+				else
+					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 

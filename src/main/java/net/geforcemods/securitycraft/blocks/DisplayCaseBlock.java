@@ -171,6 +171,8 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 
 						activate(be);
 					}
+					else
+						be.openPasscodeGUI(level, pos, player);
 				}
 			}
 		}

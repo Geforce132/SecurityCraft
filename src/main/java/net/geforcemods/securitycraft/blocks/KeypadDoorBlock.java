@@ -44,6 +44,8 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 
 					activate(state, level, pos, player, be.getSignalLength());
 				}
+				else
+					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 

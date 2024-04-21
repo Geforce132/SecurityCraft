@@ -110,6 +110,8 @@ public class KeypadChestBlock extends ChestBlock {
 
 					activate(state, level, pos, player);
 				}
+				else
+					be.openPasscodeGUI(level, pos, player);
 			}
 		}
 
