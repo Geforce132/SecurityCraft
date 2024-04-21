@@ -4,7 +4,9 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedChiseledBookshelfBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +24,14 @@ import net.neoforged.neoforge.common.NeoForge;
 public class ReinforcedChiseledBookshelfBlock extends ChiseledBookShelfBlock implements IReinforcedBlock {
 	public ReinforcedChiseledBookshelfBlock(BlockBehaviour.Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (level.getBlockEntity(pos) instanceof ReinforcedChiseledBookshelfBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)))
+			return super.useItemOn(stack, state, level, pos, player, hand, hit);
+
+		return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
 	}
 
 	@Override

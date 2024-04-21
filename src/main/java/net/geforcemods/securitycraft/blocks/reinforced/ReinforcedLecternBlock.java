@@ -5,7 +5,9 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedLecternBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -30,6 +32,15 @@ public class ReinforcedLecternBlock extends LecternBlock implements IReinforcedB
 			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 
 		super.setPlacedBy(level, pos, state, placer, stack);
+	}
+
+	@Override
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		//only allow the owner or players on the allowlist to access a reinforced lectern
+		if (level.getBlockEntity(pos) instanceof ReinforcedLecternBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)))
+			return super.useItemOn(stack, state, level, pos, player, hand, hit);
+
+		return ItemInteractionResult.SUCCESS;
 	}
 
 	@Override
