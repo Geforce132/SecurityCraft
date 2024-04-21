@@ -2,14 +2,13 @@ package net.geforcemods.securitycraft.network.client;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record UpdateLogger(BlockPos pos, int index, String username, String uuid, long timestamp) implements CustomPacketPayload {
 
@@ -28,8 +27,8 @@ public record UpdateLogger(BlockPos pos, int index, String username, String uuid
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) Minecraft.getInstance().player.level().getBlockEntity(pos);
+	public void handle(IPayloadContext ctx) {
+		UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) ctx.player().level().getBlockEntity(pos);
 
 		if (be != null) {
 			be.getPlayers()[index] = username;

@@ -11,7 +11,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record ToggleOption(BlockPos pos, int optionId) implements CustomPacketPayload {
 	public static final Type<ToggleOption> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "toggle_option"));
@@ -27,8 +27,8 @@ public record ToggleOption(BlockPos pos, int optionId) implements CustomPacketPa
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 		BlockEntity be = player.level().getBlockEntity(pos);
 
 		if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {

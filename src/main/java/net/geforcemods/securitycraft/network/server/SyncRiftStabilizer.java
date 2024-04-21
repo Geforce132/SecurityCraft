@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SyncRiftStabilizer(BlockPos pos, TeleportationType teleportationType, boolean allowed) implements CustomPacketPayload {
 
@@ -30,9 +30,9 @@ public record SyncRiftStabilizer(BlockPos pos, TeleportationType teleportationTy
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
+	public void handle(IPayloadContext ctx) {
 		if (teleportationType != null) {
-			Player player = ctx.player().orElseThrow();
+			Player player = ctx.player();
 			Level level = player.level();
 
 			if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be && be.isOwnedBy(player)) {

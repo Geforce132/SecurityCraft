@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetCameraView(int id) implements CustomPacketPayload {
 	public static final Type<SetCameraView> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_camera_view"));
@@ -31,7 +31,7 @@ public record SetCameraView(int id) implements CustomPacketPayload {
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
+	public void handle(IPayloadContext ctx) {
 		Minecraft mc = Minecraft.getInstance();
 		Entity entity = mc.level.getEntity(id);
 		boolean isMountingCamera = entity instanceof SecurityCamera;

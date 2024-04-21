@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.network.client;
 
-import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -13,7 +12,7 @@ import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class PlayAlarmSound implements CustomPacketPayload {
 	public static final Type<PlayAlarmSound> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "play_alarm_sound"));
@@ -80,8 +79,8 @@ public class PlayAlarmSound implements CustomPacketPayload {
 		return soundZ / ClientboundSoundPacket.LOCATION_ACCURACY;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Level level = ClientHandler.getClientLevel();
+	public void handle(IPayloadContext ctx) {
+		Level level = ctx.player().level();
 
 		if (level.getBlockEntity(bePos) instanceof AlarmBlockEntity be)
 			be.playSound(level, getX(), getY(), getZ(), sound, volume, pitch, seed);

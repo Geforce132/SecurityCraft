@@ -15,7 +15,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record UpdateSliderValue(BlockPos pos, String optionName, double value) implements CustomPacketPayload {
 
@@ -32,8 +32,8 @@ public record UpdateSliderValue(BlockPos pos, String optionName, double value) i
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 		BlockEntity be = player.level().getBlockEntity(pos);
 
 		if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {

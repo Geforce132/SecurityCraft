@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetListModuleData(CompoundTag clientTag) implements CustomPacketPayload {
 	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "set_list_module_data");
@@ -32,8 +32,8 @@ public record SetListModuleData(CompoundTag clientTag) implements CustomPacketPa
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.ALLOWLIST_MODULE.get());
 
 		if (stack.isEmpty())

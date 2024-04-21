@@ -14,7 +14,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record AssembleBlockPocket(BlockPos pos, int size) implements CustomPacketPayload {
 	public static final Type<AssembleBlockPocket> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "assemble_block_pocket"));
@@ -30,8 +30,8 @@ public record AssembleBlockPocket(BlockPos pos, int size) implements CustomPacke
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 
 		if (player.level().getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && be.isOwnedBy(player)) {
 			MutableComponent feedback;

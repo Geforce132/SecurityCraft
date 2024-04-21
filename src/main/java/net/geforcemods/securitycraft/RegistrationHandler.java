@@ -92,9 +92,9 @@ import net.neoforged.neoforge.common.util.MutableHashedLinkedMap;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
-import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
@@ -150,8 +150,8 @@ public class RegistrationHandler {
 	}
 
 	@SubscribeEvent
-	public static void registerPackets(RegisterPayloadHandlerEvent event) {
-		IPayloadRegistrar registrar = event.registrar(SecurityCraft.MODID).versioned(SecurityCraft.getVersion());
+	public static void registerPackets(RegisterPayloadHandlersEvent event) {
+		PayloadRegistrar registrar = event.registrar(SecurityCraft.MODID).versioned(SecurityCraft.getVersion());
 
 		clientPacket(registrar, BlockPocketManagerFailedActivation.TYPE, BlockPocketManagerFailedActivation.STREAM_CODEC, BlockPocketManagerFailedActivation::handle);
 		clientPacket(registrar, OpenScreen.TYPE, OpenScreen.STREAM_CODEC, OpenScreen::handle);
@@ -199,12 +199,12 @@ public class RegistrationHandler {
 		serverPacket(registrar, UpdateSliderValue.TYPE, UpdateSliderValue.STREAM_CODEC, UpdateSliderValue::handle);
 	}
 
-	private static final <T extends CustomPacketPayload> void clientPacket(IPayloadRegistrar registrar, CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, BiConsumer<T, PlayPayloadContext> handler) {
-		registrar.play(type, codec, handlers -> handlers.client((packet, ctx) -> ctx.workHandler().submitAsync(() -> handler.accept(packet, ctx))));
+	private static final <T extends CustomPacketPayload> void clientPacket(PayloadRegistrar registrar, CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, BiConsumer<T, IPayloadContext> handler) {
+		registrar.playToClient(type, codec, (packet, ctx) -> ctx.enqueueWork(() -> handler.accept(packet, ctx)));
 	}
 
-	private static final <T extends CustomPacketPayload> void serverPacket(IPayloadRegistrar registrar, CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, BiConsumer<T, PlayPayloadContext> handler) {
-		registrar.play(type, codec, handlers -> handlers.server((packet, ctx) -> ctx.workHandler().submitAsync(() -> handler.accept(packet, ctx))));
+	private static final <T extends CustomPacketPayload> void serverPacket(PayloadRegistrar registrar, CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, BiConsumer<T, IPayloadContext> handler) {
+		registrar.playToServer(type, codec, (packet, ctx) -> ctx.enqueueWork(() -> handler.accept(packet, ctx)));
 	}
 
 	@SubscribeEvent

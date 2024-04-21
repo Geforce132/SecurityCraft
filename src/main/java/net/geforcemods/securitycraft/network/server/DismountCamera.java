@@ -8,7 +8,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record DismountCamera() implements CustomPacketPayload {
 	public static final Type<DismountCamera> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "dismount_camera"));
@@ -19,8 +19,8 @@ public record DismountCamera() implements CustomPacketPayload {
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 
 		if (player instanceof ServerPlayer serverPlayer && serverPlayer.getCamera() instanceof SecurityCamera cam)
 			cam.stopViewing(serverPlayer);

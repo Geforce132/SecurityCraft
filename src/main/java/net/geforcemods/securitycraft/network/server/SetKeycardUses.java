@@ -10,7 +10,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetKeycardUses(BlockPos pos, int uses) implements CustomPacketPayload {
 	public static final Type<SetKeycardUses> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_keycard_uses"));
@@ -26,8 +26,8 @@ public record SetKeycardUses(BlockPos pos, int uses) implements CustomPacketPayl
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 
 		if (player.level().getBlockEntity(pos) instanceof KeycardReaderBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)) && player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
 			keycardReaderContainer.setKeycardUses(uses);

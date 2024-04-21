@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record RemoveMineFromMRAT(int mineIndex) implements CustomPacketPayload {
 	public static final Type<RemoveMineFromMRAT> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "remove_mine_from_mrat"));
@@ -27,8 +27,8 @@ public record RemoveMineFromMRAT(int mineIndex) implements CustomPacketPayload {
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.MINE_REMOTE_ACCESS_TOOL.get());
 
 		if (!stack.isEmpty()) {

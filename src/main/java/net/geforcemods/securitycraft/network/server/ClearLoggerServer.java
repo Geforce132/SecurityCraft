@@ -8,7 +8,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record ClearLoggerServer(BlockPos pos) implements CustomPacketPayload {
 	public static final Type<ClearLoggerServer> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "clear_logger_server"));
@@ -23,8 +23,8 @@ public record ClearLoggerServer(BlockPos pos) implements CustomPacketPayload {
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 
 		if (player.level().getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be && be.isOwnedBy(player)) {
 			be.setPlayers(new String[100]);

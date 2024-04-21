@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record MountCamera(BlockPos pos) implements CustomPacketPayload {
 	public static final Type<MountCamera> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "mount_camera"));
@@ -30,8 +30,8 @@ public record MountCamera(BlockPos pos) implements CustomPacketPayload {
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 		Level level = player.level();
 		BlockState state = level.getBlockState(pos);
 

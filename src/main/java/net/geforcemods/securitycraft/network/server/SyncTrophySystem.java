@@ -14,7 +14,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SyncTrophySystem(BlockPos pos, ResourceLocation projectileTypeLocation, boolean allowed) implements CustomPacketPayload {
 
@@ -31,11 +31,11 @@ public record SyncTrophySystem(BlockPos pos, ResourceLocation projectileTypeLoca
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
+	public void handle(IPayloadContext ctx) {
 		EntityType<?> projectileType = BuiltInRegistries.ENTITY_TYPE.get(projectileTypeLocation);
 
 		if (projectileType != null) {
-			Player player = ctx.player().orElseThrow();
+			Player player = ctx.player();
 			Level level = player.level();
 
 			if (level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be && be.isOwnedBy(player)) {

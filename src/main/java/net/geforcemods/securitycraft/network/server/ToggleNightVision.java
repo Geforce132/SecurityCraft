@@ -9,7 +9,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record ToggleNightVision() implements CustomPacketPayload {
 	public static final Type<ToggleNightVision> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "toggle_night_vision"));
@@ -20,8 +20,8 @@ public record ToggleNightVision() implements CustomPacketPayload {
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			if (player.hasEffect(MobEffects.NIGHT_VISION)) {

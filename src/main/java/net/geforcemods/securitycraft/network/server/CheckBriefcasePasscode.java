@@ -14,7 +14,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record CheckBriefcasePasscode(String passcode) implements CustomPacketPayload {
 	public static final Type<CheckBriefcasePasscode> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "check_briefcase_passcode"));
@@ -29,8 +29,8 @@ public record CheckBriefcasePasscode(String passcode) implements CustomPacketPay
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 		ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get());
 
 		if (!briefcase.isEmpty()) {

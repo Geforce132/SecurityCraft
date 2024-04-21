@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetSentryMode(List<Info> sentriesToUpdate) implements CustomPacketPayload {
 	public static final Type<SetSentryMode> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_sentry_mode"));
@@ -33,8 +33,8 @@ public record SetSentryMode(List<Info> sentriesToUpdate) implements CustomPacket
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 		Level level = player.level();
 
 		for (Info info : sentriesToUpdate) {

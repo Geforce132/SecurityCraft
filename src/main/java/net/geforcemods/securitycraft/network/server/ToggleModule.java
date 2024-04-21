@@ -17,7 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record ToggleModule(BlockPos pos, ModuleType moduleType) implements CustomPacketPayload {
 	public static final Type<ToggleModule> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "toggle_module"));
@@ -33,8 +33,8 @@ public record ToggleModule(BlockPos pos, ModuleType moduleType) implements Custo
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 		BlockEntity be = player.level().getBlockEntity(pos);
 
 		if (be instanceof IModuleInventory moduleInv && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {

@@ -11,7 +11,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetTrophySystemTarget(BlockPos pos, int targetID) implements CustomPacketPayload {
 	public static final Type<SetTrophySystemTarget> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_trophy_system_target"));
@@ -27,8 +27,8 @@ public record SetTrophySystemTarget(BlockPos pos, int targetID) implements Custo
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(pos);
+	public void handle(IPayloadContext ctx) {
+		BlockEntity blockEntity = ctx.player().level().getBlockEntity(pos);
 
 		if (blockEntity instanceof TrophySystemBlockEntity be && Minecraft.getInstance().level.getEntity(targetID) instanceof Projectile projectile)
 			be.setTarget(projectile);

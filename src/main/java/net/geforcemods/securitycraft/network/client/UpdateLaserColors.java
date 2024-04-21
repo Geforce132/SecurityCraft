@@ -11,7 +11,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record UpdateLaserColors(List<BlockPos> positionsToUpdate) implements CustomPacketPayload {
 	public static final Type<UpdateLaserColors> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "update_laser_colors"));
@@ -26,7 +26,7 @@ public record UpdateLaserColors(List<BlockPos> positionsToUpdate) implements Cus
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
+	public void handle(IPayloadContext ctx) {
 		for (BlockPos pos : positionsToUpdate) {
 			ClientHandler.updateBlockColorAroundPosition(pos);
 		}

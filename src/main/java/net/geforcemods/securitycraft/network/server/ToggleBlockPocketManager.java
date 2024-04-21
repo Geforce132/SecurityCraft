@@ -15,7 +15,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record ToggleBlockPocketManager(BlockPos pos, int size, boolean enabling) implements CustomPacketPayload {
 
@@ -32,8 +32,8 @@ public record ToggleBlockPocketManager(BlockPos pos, int size, boolean enabling)
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 
 		if (player.level().getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && be.isOwnedBy(player)) {
 			MutableComponent feedback;
@@ -47,7 +47,7 @@ public record ToggleBlockPocketManager(BlockPos pos, int size, boolean enabling)
 
 			if (feedback != null) {
 				if (enabling && !be.isEnabled())
-					ctx.replyHandler().send(new BlockPocketManagerFailedActivation(pos));
+					ctx.reply(new BlockPocketManagerFailedActivation(pos));
 
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), feedback, ChatFormatting.DARK_AQUA, false);
 			}

@@ -8,7 +8,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record ClearChangeDetectorServer(BlockPos pos) implements CustomPacketPayload {
 	public static final Type<ClearChangeDetectorServer> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "clear_change_detector_server"));
@@ -23,8 +23,8 @@ public record ClearChangeDetectorServer(BlockPos pos) implements CustomPacketPay
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 
 		if (player.level().getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(player)) {
 			be.getEntries().clear();

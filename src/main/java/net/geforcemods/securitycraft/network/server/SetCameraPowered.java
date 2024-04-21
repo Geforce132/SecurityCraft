@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetCameraPowered(BlockPos pos, boolean powered) implements CustomPacketPayload {
 	public static final Type<SetCameraPowered> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_camera_powered"));
@@ -30,8 +30,8 @@ public record SetCameraPowered(BlockPos pos, boolean powered) implements CustomP
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 		Level level = player.level();
 		BlockEntity be = level.getBlockEntity(pos);
 

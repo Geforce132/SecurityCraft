@@ -11,7 +11,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetDefaultCameraViewingDirection(int id, float initialXRotation, float initialYRotation) implements CustomPacketPayload {
 
@@ -28,8 +28,8 @@ public record SetDefaultCameraViewingDirection(int id, float initialXRotation, f
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		ServerPlayer player = (ServerPlayer) ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		ServerPlayer player = (ServerPlayer) ctx.player();
 
 		if (player.getCamera() instanceof SecurityCamera camera && camera.getId() == id && camera.level().getBlockEntity(camera.blockPosition()) instanceof SecurityCameraBlockEntity be) {
 			if (!be.isOwnedBy(player)) {

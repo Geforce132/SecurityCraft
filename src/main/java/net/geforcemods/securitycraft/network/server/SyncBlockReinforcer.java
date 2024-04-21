@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SyncBlockReinforcer(boolean isReinforcing) implements CustomPacketPayload {
 	public static final Type<SyncBlockReinforcer> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_block_reinforcer"));
@@ -28,8 +28,8 @@ public record SyncBlockReinforcer(boolean isReinforcing) implements CustomPacket
 		return TYPE;
 	}
 
-	public void handle(PlayPayloadContext ctx) {
-		Player player = ctx.player().orElseThrow();
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
 		Inventory inventory = player.getInventory();
 		ItemStack reinforcer = inventory.getSelected().getItem() instanceof UniversalBlockReinforcerItem ? inventory.getSelected() : inventory.offhand.get(0);
 
