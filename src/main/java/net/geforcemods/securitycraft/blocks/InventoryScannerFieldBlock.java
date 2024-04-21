@@ -43,7 +43,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlayDisplay, SimpleWaterloggedBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	public static final BooleanProperty HORIZONTAL = BooleanProperty.create("horizontal");
+	public static final BooleanProperty HORIZONTAL = InventoryScannerBlock.HORIZONTAL;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final VoxelShape SHAPE_EW = Block.box(0, 0, 6, 16, 16, 10);
 	private static final VoxelShape SHAPE_NS = Block.box(6, 0, 0, 10, 16, 16);
