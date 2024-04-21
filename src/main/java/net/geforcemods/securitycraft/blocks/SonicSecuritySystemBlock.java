@@ -103,7 +103,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 	@Override
 	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (stack.getItem() == SCContent.PORTABLE_TUNE_PLAYER.get())
-			return ItemInteractionResult.SUCCESS;
+			return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
 
 		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}

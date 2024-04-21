@@ -69,7 +69,7 @@ public class SecurityCameraBlock extends OwnableBlock implements SimpleWaterlogg
 	@Override
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (stack.is(SCContent.CAMERA_MONITOR.get()))
-			return ItemInteractionResult.SUCCESS;
+			return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
 
 		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
