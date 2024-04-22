@@ -21,6 +21,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -31,6 +32,7 @@ public class Bullet extends AbstractArrow {
 
 	public Bullet(EntityType<Bullet> type, Level level) {
 		super(SCContent.BULLET_ENTITY.get(), level, ItemStack.EMPTY);
+		pickup = Pickup.DISALLOWED;
 	}
 
 	public Bullet(Level level, Sentry shooter) {
@@ -40,6 +42,7 @@ public class Bullet extends AbstractArrow {
 
 		potionEffects = shooter.getActiveEffects();
 		entityData.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
+		pickup = Pickup.DISALLOWED;
 	}
 
 	/**
@@ -112,7 +115,8 @@ public class Bullet extends AbstractArrow {
 
 	@Override
 	protected ItemStack getDefaultPickupItem() {
-		return ItemStack.EMPTY;
+		//can't encode an empty stack; pickup is disallowed
+		return new ItemStack(Items.STICK);
 	}
 
 	@Override
