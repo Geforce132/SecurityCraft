@@ -340,6 +340,12 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		SoundEvent shootSound = SoundEvents.ARROW_SHOOT;
 		ProjectileDispenseBehavior pdb = null;
 		IItemHandler handler = null;
+		double baseY = target.getY() + target.getEyeHeight() - 1.100000023841858D;
+		double x = target.getX() - getX();
+		double projectileY = getEyeHeight() - 0.1F;
+		double y = baseY - (getY() + projectileY);
+		double z = target.getZ() - getZ();
+		float yOffset = Mth.sqrt((float) (x * x + z * z)) * 0.2F;
 
 		if (blockEntity instanceof ISentryBulletContainer be)
 			handler = be.getHandlerForSentry(this);
@@ -357,7 +363,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 						ItemStack extracted = handler.extractItem(i, 1, false);
 
 						pdb = projectileDispenseBehavior;
-						throwableEntity = pdb.projectileItem.asProjectile(level, position().add(0.0D, getEyeHeight() - 0.1F, 0.0D), extracted, getDirection());
+						throwableEntity = pdb.projectileItem.asProjectile(level, position().add(0.0D, projectileY, 0.0D), extracted, Direction.getNearest(x, y, z));
 						throwableEntity.setOwner(this);
 						shootSound = null;
 						break;
@@ -368,12 +374,6 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 		if (throwableEntity == null)
 			throwableEntity = new Bullet(level, this);
-
-		double baseY = target.getY() + target.getEyeHeight() - 1.100000023841858D;
-		double x = target.getX() - getX();
-		double y = baseY - throwableEntity.getY();
-		double z = target.getZ() - getZ();
-		float yOffset = Mth.sqrt((float) (x * x + z * z)) * 0.2F;
 
 		entityData.set(HEAD_ROTATION, (float) (Mth.atan2(x, -z) * (180D / Math.PI)));
 		throwableEntity.shoot(x, y + yOffset, z, 1.6F, 0.0F); //no inaccuracy for sentries!
