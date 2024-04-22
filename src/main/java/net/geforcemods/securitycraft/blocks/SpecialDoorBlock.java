@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.misc.SaltData;
@@ -38,14 +37,16 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock 
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, placer, stack);
 
-		if (level.getBlockEntity(pos) instanceof IOwnable lowerBe && level.getBlockEntity(pos.above()) instanceof IOwnable upperBe) {
+		if (level.getBlockEntity(pos) instanceof LinkableBlockEntity lowerBe && level.getBlockEntity(pos.above()) instanceof LinkableBlockEntity upperBe) {
 			if (placer instanceof Player player) {
 				lowerBe.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 				upperBe.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 			}
 
-			if (lowerBe instanceof LinkableBlockEntity linkable1 && upperBe instanceof LinkableBlockEntity linkable2)
-				LinkableBlockEntity.link(linkable1, linkable2);
+			LinkableBlockEntity.link(lowerBe, upperBe);
+
+			if (lowerBe.hasCustomName())
+				upperBe.setCustomName(lowerBe.getCustomName());
 		}
 	}
 
