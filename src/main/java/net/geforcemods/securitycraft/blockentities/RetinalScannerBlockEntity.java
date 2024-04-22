@@ -188,8 +188,15 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 
-		if (tag.contains("ownerProfile"))
-			ResolvableProfile.CODEC.parse(NbtOps.INSTANCE, tag.get("ownerProfile")).resultOrPartial(name -> LOGGER.error("Failed to load profile from player head: {}", name)).ifPresent(this::setOwnerProfile);
+		if (tag.contains("ownerProfile")) {
+			CompoundTag ownerProfileTag = tag.getCompound("ownerProfile");
+
+			//for upgrading pre-1.20.5 scanners
+			if (ownerProfileTag.contains("Name"))
+				ownerProfileTag.putString("name", ownerProfileTag.getString("Name"));
+
+			ResolvableProfile.CODEC.parse(NbtOps.INSTANCE, ownerProfileTag).resultOrPartial(name -> LOGGER.error("Failed to load profile from player head: {}", name)).ifPresent(this::setOwnerProfile);
+		}
 	}
 
 	@Override
@@ -200,7 +207,6 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 
 	public void setOwnerProfile(ResolvableProfile ownerProfile) {
 		this.ownerProfile = ownerProfile;
-
 		updateOwnerProfile();
 	}
 
