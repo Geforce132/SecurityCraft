@@ -4,9 +4,12 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Nameable;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -26,19 +29,15 @@ public class NamedBlockEntity extends OwnableBlockEntity implements Nameable {
 		super.saveAdditional(tag, lookupProvider);
 
 		if (customName != null)
-			tag.putString("customName", customName.getString());
+			tag.putString("customName", Component.Serializer.toJson(customName, lookupProvider));
 	}
 
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 
-		if (tag.contains("customName")) {
-			String name = tag.getString("customName");
-
-			if (!name.isEmpty() && !name.equals("name"))
-				customName = Component.literal(name);
-		}
+		if (tag.contains("customName"))
+			customName = Component.Serializer.fromJson(tag.getString("customName"), lookupProvider);
 	}
 
 	@Override
@@ -66,5 +65,22 @@ public class NamedBlockEntity extends OwnableBlockEntity implements Nameable {
 
 	public Component getDefaultName() {
 		return Utils.localize(getBlockState().getBlock().getDescriptionId());
+	}
+
+	@Override
+	protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
+		super.applyImplicitComponents(input);
+		customName = input.get(DataComponents.CUSTOM_NAME);
+	}
+
+	@Override
+	protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+		super.collectImplicitComponents(builder);
+		builder.set(DataComponents.CUSTOM_NAME, customName);
+	}
+
+	@Override
+	public void removeComponentsFromTag(CompoundTag tag) {
+		tag.remove("customName");
 	}
 }
