@@ -1,11 +1,5 @@
 {
   "type": "minecraft:block",
-  "functions": [
-    {
-      "function": "minecraft:copy_name",
-      "source": "block_entity"
-    }
-  ],
   "pools": [
     {
       "bonus_rolls": 0.0,
@@ -22,6 +16,12 @@
             },
             {
               "condition": "minecraft:survives_explosion"
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
             }
           ],
           "name": "securitycraft:rift_stabilizer"

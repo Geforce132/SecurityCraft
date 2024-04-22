@@ -18,6 +18,12 @@
               "condition": "minecraft:survives_explosion"
             }
           ],
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            }
+          ],
           "name": "securitycraft:scanner_door_item"
         }
       ],

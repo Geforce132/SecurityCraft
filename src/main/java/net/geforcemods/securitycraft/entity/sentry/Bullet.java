@@ -115,7 +115,7 @@ public class Bullet extends AbstractArrow {
 
 	@Override
 	protected ItemStack getDefaultPickupItem() {
-		//can't encode an empty stack; pickup is disallowed
+		//can't encode an empty stack; pickup is disallowed just in case
 		return new ItemStack(Items.STICK);
 	}
 

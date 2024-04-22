@@ -102,10 +102,10 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 						.add(LootItem.lootTableItem(SCContent.REINFORCED_IRON_BARS.get())
 								.when(BlockEntityNBTCondition.nbt("canDrop", true)))
 						.when(ExplosionCondition.survivesExplosion())));
-		putStandardBlockLootTable(SCContent.REINFORCED_LAVA_CAULDRON, SCContent.REINFORCED_CAULDRON.get());
-		putStandardBlockLootTable(SCContent.REINFORCED_POWDER_SNOW_CAULDRON, SCContent.REINFORCED_CAULDRON.get());
-		putStandardBlockLootTable(SCContent.REINFORCED_WATER_CAULDRON, SCContent.REINFORCED_CAULDRON.get());
-		lootTables.put(SCContent.RIFT_STABILIZER, createTwoHighBlockLootTable(SCContent.RIFT_STABILIZER, SCContent.RIFT_STABILIZER_ITEM).apply(CopyNameFunction.copyName(NameSource.BLOCK_ENTITY)));
+		lootTables.put(SCContent.REINFORCED_LAVA_CAULDRON, createStandardBlockLootTable(SCContent.REINFORCED_CAULDRON.get()).apply(CopyNameFunction.copyName(NameSource.BLOCK_ENTITY)));
+		lootTables.put(SCContent.REINFORCED_POWDER_SNOW_CAULDRON, createStandardBlockLootTable(SCContent.REINFORCED_CAULDRON.get()).apply(CopyNameFunction.copyName(NameSource.BLOCK_ENTITY)));
+		lootTables.put(SCContent.REINFORCED_WATER_CAULDRON, createStandardBlockLootTable(SCContent.REINFORCED_CAULDRON.get()).apply(CopyNameFunction.copyName(NameSource.BLOCK_ENTITY)));
+		putTwoHighBlockLootTable(SCContent.RIFT_STABILIZER, SCContent.RIFT_STABILIZER_ITEM);
 		putTwoHighBlockLootTable(SCContent.SCANNER_DOOR, SCContent.SCANNER_DOOR_ITEM);
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_WALL_SIGN);
@@ -168,7 +168,8 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 								.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(door.get())
 										.setProperties(StatePropertiesPredicate.Builder.properties()
 												.hasProperty(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER)))
-								.when(ExplosionCondition.survivesExplosion())));
+								.when(ExplosionCondition.survivesExplosion())
+								.apply(CopyNameFunction.copyName(NameSource.BLOCK_ENTITY))));
 		//@formatter:on
 	}
 
