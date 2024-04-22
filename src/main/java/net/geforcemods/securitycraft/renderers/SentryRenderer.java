@@ -30,8 +30,10 @@ public class SentryRenderer extends EntityRenderer<Sentry> {
 	@Override
 	public void render(Sentry entity, float entityYaw, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight) {
 		VertexConsumer builder = buffer.getBuffer(RenderType.entitySolid(getTextureLocation(entity)));
+		float scale = entity.getScale();
 
 		pose.pushPose();
+		pose.scale(scale, scale, scale);
 		pose.translate(0.0D, 1.5D, 0.0D);
 		pose.scale(-1, -1, 1); //rotate model rightside up
 		RenderSystem._setShaderTexture(0, getTextureLocation(entity));

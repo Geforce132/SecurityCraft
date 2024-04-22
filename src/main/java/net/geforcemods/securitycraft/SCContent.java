@@ -2911,6 +2911,7 @@ public class SCContent {
 			.setTrackingRange(256)
 			.setUpdateInterval(1)
 			.setShouldReceiveVelocityUpdates(true)
+			.eyeHeight(1.6F)
 			.build(SecurityCraft.MODID + ":sentry"));
 	public static final DeferredHolder<EntityType<?>, EntityType<Bullet>> BULLET_ENTITY = ENTITY_TYPES.register("bullet",
 			() -> EntityType.Builder.<Bullet>of(Bullet::new, MobCategory.MISC)
