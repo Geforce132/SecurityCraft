@@ -42,7 +42,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -322,12 +321,6 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		return entityData.get(HAS_TARGET);
 	}
 
-	//TODO: does this work?
-	@Override
-	public float getEyeHeight(Pose pose) { //the sentry's eyes are higher so that it can see players even if it's inside a block when disguised - this also makes bullets spawn higher
-		return getDimensions(pose).height() * 1.6F;
-	}
-
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		//don't shoot if somehow a non player is a target, or if the player is in spectator or creative mode
@@ -364,7 +357,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 						ItemStack extracted = handler.extractItem(i, 1, false);
 
 						pdb = projectileDispenseBehavior;
-						throwableEntity = pdb.projectileItem.asProjectile(level, position().add(0.0D, 1.6D, 0.0D), extracted, getDirection());
+						throwableEntity = pdb.projectileItem.asProjectile(level, position().add(0.0D, getEyeHeight() - 0.1F, 0.0D), extracted, getDirection());
 						throwableEntity.setOwner(this);
 						shootSound = null;
 						break;
