@@ -93,12 +93,15 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		BlockPos posAbove = pos.above();
 
-		level.setBlock(posAbove, DoublePlantBlock.copyWaterloggedFrom(level, posAbove, defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER)), 3);
+		level.setBlockAndUpdate(posAbove, DoublePlantBlock.copyWaterloggedFrom(level, posAbove, defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER)));
 
 		if (placer instanceof Player player)
 			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, posAbove, player));
 
 		super.setPlacedBy(level, pos, state, placer, stack);
+
+		if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity bottom && bottom.hasCustomName() && level.getBlockEntity(posAbove) instanceof RiftStabilizerBlockEntity above)
+			above.setCustomName(bottom.getCustomName());
 	}
 
 	@Override
