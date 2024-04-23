@@ -1,21 +1,12 @@
 package net.geforcemods.securitycraft;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.EventBusSubscriber.Bus;
-import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
@@ -23,7 +14,6 @@ import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
-@EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class ConfigHandler {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	public static final ModConfigSpec CLIENT_SPEC;
@@ -98,10 +88,6 @@ public class ConfigHandler {
 		public IntValue sentryBulletDamage;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
-		private ConfigValue<List<? extends String>> taserEffectsValue;
-		private ConfigValue<List<? extends String>> poweredTaserEffectsValue;
-		public final List<Supplier<MobEffectInstance>> taserEffects = new ArrayList<>();
-		public final List<Supplier<MobEffectInstance>> poweredTaserEffects = new ArrayList<>();
 
 		Server(ModConfigSpec.Builder builder) {
 			//@formatter:off
@@ -192,18 +178,6 @@ public class ConfigHandler {
 					.comment("Set the amount of damage the powered taser inflicts onto the mobs it hits. Default is one heart.")
 					.defineInRange("powered_taser_damage", 2.0D, 0.0D, Double.MAX_VALUE);
 
-			taserEffectsValue = builder
-					.comment("Add effects to this list that you want the taser to inflict onto the mobs it hits. One entry corresponds to one effect, and is formatted like this:",
-							"effect_namespace:effect_path|duration|amplifier",
-							"Example: The entry \"minecraft:slowness|20|1\" defines slowness 1 for 1 second (20 ticks = 1 second).")
-					.defineList("taser_effects", List.of("minecraft:weakness|200|2", "minecraft:nausea|200|2", "minecraft:slowness|200|2"), String.class::isInstance);
-
-			poweredTaserEffectsValue = builder
-					.comment("Add effects to this list that you want the powered taser to inflict onto the mobs it hits. One entry corresponds to one effect, and is formatted like this:",
-							"effect_namespace:effect_path|duration|amplifier",
-							"Example: The entry \"minecraft:slowness|20|1\" defines slowness 1 for 1 second (20 ticks = 1 second).")
-					.defineList("powered_taser_effects", List.of("minecraft:weakness|400|5", "minecraft:nausea|400|5", "minecraft:slowness|400|5"), String.class::isInstance);
-
 			laserDamage = builder
 					.comment("Defines the damage inflicted to an entity if it passes through a laser with installed harming module. This is given in health points, meaning 2 health points = 1 heart")
 					.defineInRange("laser_damage", 10.0, 0.0D, Double.MAX_VALUE);
@@ -226,50 +200,6 @@ public class ConfigHandler {
 					.defineList("sentry_attackable_entities_denylist", List.of(), String.class::isInstance);
 			//@formatter:on
 		}
-	}
-
-	@SubscribeEvent
-	public static void onModConfig(ModConfigEvent event) {
-		if (event.getConfig().getSpec() == SERVER_SPEC && SERVER_SPEC.isLoaded()) {
-			loadEffects(SERVER.taserEffectsValue, SERVER.taserEffects);
-			loadEffects(SERVER.poweredTaserEffectsValue, SERVER.poweredTaserEffects);
-		}
-	}
-
-	private static void loadEffects(ConfigValue<List<? extends String>> effectsValue, List<Supplier<MobEffectInstance>> effects) {
-		effects.clear();
-
-		for (String entry : effectsValue.get()) {
-			String[] split = entry.split("\\|");
-
-			if (split.length == 3) {
-				int duration = Integer.parseInt(split[1]);
-				int amplifier = Integer.parseInt(split[2]);
-
-				if (validateValue(duration, entry) && validateValue(amplifier, entry)) {
-					ResourceLocation effectLocation = new ResourceLocation(split[0]);
-
-					if (!BuiltInRegistries.MOB_EFFECT.containsKey(effectLocation)) {
-						LOGGER.warn("Effect \"{}\" does not exist, skipping", effectLocation);
-						continue;
-					}
-
-					//the amplifier is actually 0-indexed, but 1-indexed in the config for ease of use
-					effects.add(() -> new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.getHolder(effectLocation).get(), duration, amplifier - 1));
-				}
-			}
-			else
-				LOGGER.warn("Not enough information provided for effect \"{}\", skipping", entry);
-		}
-	}
-
-	private static boolean validateValue(int value, String entry) {
-		if (value <= 0) {
-			LOGGER.warn("Value \"{}\" cannot be less than or equal to zero for entry \"{}\", skipping", value, entry);
-			return false;
-		}
-
-		return true;
 	}
 
 	public static <T> T getOrDefault(ConfigValue<T> value) {
