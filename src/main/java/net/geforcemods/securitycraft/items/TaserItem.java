@@ -153,9 +153,9 @@ public class TaserItem extends Item {
 	public static PotionContents getDefaultPoweredEffects() {
 		PotionContents effects = new PotionContents(Potions.WATER);
 
-		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.WEAKNESS, 500, 4));
-		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.CONFUSION, 500, 4));
-		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 500, 4));
+		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.WEAKNESS, 400, 4));
+		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.CONFUSION, 400, 4));
+		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400, 4));
 		return effects;
 	}
 
