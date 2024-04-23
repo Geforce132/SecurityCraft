@@ -32,6 +32,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -93,17 +94,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		super.loadAdditional(tag, lookupProvider);
 		inventoryContents = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);
-
-		for (int i = 0; i < list.size(); ++i) {
-			CompoundTag stackTag = list.getCompound(i);
-			int slot = stackTag.getByte("Slot") & 255;
-
-			if (slot >= 0 && slot < inventoryContents.size()) {
-				stackTag.remove("Slot");
-				inventoryContents.set(slot, ItemStack.parseOptional(lookupProvider, stackTag));
-			}
-		}
-
+		ContainerHelper.loadAllItems(tag, inventoryContents, lookupProvider);
 		signalCooldown = tag.getInt("cooldown");
 		providePower = tag.getBoolean("is_providing_power");
 		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND), lookupProvider);
@@ -114,16 +105,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.saveAdditional(tag, lookupProvider);
 
-		ListTag list = new ListTag();
-
-		for (int i = 0; i < inventoryContents.size(); ++i) {
-			if (!inventoryContents.get(i).isEmpty() && inventoryContents.get(i).saveOptional(lookupProvider) instanceof CompoundTag stackTag) {
-				stackTag.putByte("Slot", (byte) i);
-				list.add(stackTag);
-			}
-		}
-
-		tag.put("Items", list);
+		ContainerHelper.saveAllItems(tag, inventoryContents, lookupProvider);
 		tag.putInt("cooldown", signalCooldown);
 		tag.putBoolean("is_providing_power", providePower);
 		tag.put("lens", lens.createTag(lookupProvider));
