@@ -135,7 +135,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 	@Override
 	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+		renderTransparentBackground(guiGraphics);
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, xSize, ySize);
 	}
 
