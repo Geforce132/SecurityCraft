@@ -23,7 +23,7 @@ public class ItemContainer implements Container {
 	}
 
 	public static ItemContainer briefcase(ItemStack briefcase) {
-		return new ItemContainer(briefcase, BriefcaseMenu.CONTAINER_SIZE, 64);
+		return new ItemContainer(briefcase, BriefcaseMenu.CONTAINER_SIZE, 99);
 	}
 
 	public static ItemContainer keycardHolder(ItemStack keycardHolder) {

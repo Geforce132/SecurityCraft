@@ -99,11 +99,6 @@ public class ModuleItemContainer implements Container {
 	}
 
 	@Override
-	public int getMaxStackSize() {
-		return 64;
-	}
-
-	@Override
 	public void setChanged() {
 		for (int i = 0; i < getContainerSize(); i++) {
 			if (!getItem(i).isEmpty() && getItem(i).getCount() == 0)

@@ -278,11 +278,6 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public int getMaxStackSize() {
-		return 64;
-	}
-
-	@Override
 	public boolean stillValid(Player player) {
 		return true;
 	}
