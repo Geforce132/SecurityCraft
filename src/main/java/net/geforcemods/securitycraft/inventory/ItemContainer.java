@@ -7,6 +7,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemContainer implements Container {
@@ -23,7 +24,7 @@ public class ItemContainer implements Container {
 	}
 
 	public static ItemContainer briefcase(ItemStack briefcase) {
-		return new ItemContainer(briefcase, BriefcaseMenu.CONTAINER_SIZE, 99);
+		return new ItemContainer(briefcase, BriefcaseMenu.CONTAINER_SIZE, Item.ABSOLUTE_MAX_STACK_SIZE);
 	}
 
 	public static ItemContainer keycardHolder(ItemStack keycardHolder) {
