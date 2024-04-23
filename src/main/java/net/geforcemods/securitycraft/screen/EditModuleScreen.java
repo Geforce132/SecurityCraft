@@ -123,7 +123,7 @@ public class EditModuleScreen extends Screen {
 	@Override
 	public void onClose() {
 		super.onClose();
-		PacketDistributor.SERVER.noArg().send(new SetListModuleData(Utils.getTag(module)));
+		PacketDistributor.sendToServer(new SetListModuleData(Utils.getTag(module)));
 	}
 
 	@Override

@@ -91,11 +91,11 @@ public class BriefcasePasscodeScreen extends Screen {
 			String passcode = digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3];
 
 			if (isSetup) {
-				PacketDistributor.SERVER.noArg().send(new SetBriefcasePasscodeAndOwner(passcode));
+				PacketDistributor.sendToServer(new SetBriefcasePasscodeAndOwner(passcode));
 				ClientHandler.displayBriefcasePasscodeScreen(briefcase.getHoverName());
 			}
 			else
-				PacketDistributor.SERVER.noArg().send(new CheckBriefcasePasscode(passcode));
+				PacketDistributor.sendToServer(new CheckBriefcasePasscode(passcode));
 		}
 	}
 

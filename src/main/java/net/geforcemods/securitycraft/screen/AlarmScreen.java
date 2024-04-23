@@ -131,7 +131,7 @@ public class AlarmScreen extends Screen {
 		}
 
 		if (changed)
-			PacketDistributor.SERVER.noArg().send(new SyncAlarmSettings(be.getBlockPos(), selectedSoundEvent, pitch, soundLength));
+			PacketDistributor.sendToServer(new SyncAlarmSettings(be.getBlockPos(), selectedSoundEvent, pitch, soundLength));
 	}
 
 	@Override

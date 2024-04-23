@@ -85,7 +85,7 @@ public class SetPasscodeScreen extends Screen {
 	}
 
 	private void saveAndContinueButtonClicked(Button button) {
-		PacketDistributor.SERVER.noArg().send(new SetPasscode(be.getBlockPos(), keycodeTextbox.getValue()));
+		PacketDistributor.sendToServer(new SetPasscode(be.getBlockPos(), keycodeTextbox.getValue()));
 		Minecraft.getInstance().player.closeContainer();
 	}
 }

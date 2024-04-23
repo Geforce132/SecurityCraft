@@ -104,7 +104,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
 								doubleOption.setValue(slider.getValue());
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
-								PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option.getName(), doubleOption.get()));
+								PacketDistributor.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option.getName(), doubleOption.get()));
 							});
 						}
 						else if (option instanceof IntOption intOption) {
@@ -113,7 +113,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
 								intOption.setValue(slider.getValueInt());
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
-								PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option.getName(), intOption.get()));
+								PacketDistributor.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option.getName(), intOption.get()));
 							});
 						}
 
@@ -201,7 +201,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			moduleInv.insertModule(moduleInv.getModule(moduleType), true);
 		}
 
-		PacketDistributor.SERVER.noArg().send(new ToggleModule(moduleInv.getBlockEntity().getBlockPos(), moduleType));
+		PacketDistributor.sendToServer(new ToggleModule(moduleInv.getBlockEntity().getBlockPos(), moduleType));
 	}
 
 	private void optionButtonClicked(Button button) {
@@ -215,7 +215,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 			button.setMessage(getOptionButtonTitle(tempOption));
 			optionButtons[i].setTooltip(Tooltip.create(getOptionDescription(i)));
-			PacketDistributor.SERVER.noArg().send(new ToggleOption(moduleInv.getBlockEntity().getBlockPos(), i));
+			PacketDistributor.sendToServer(new ToggleOption(moduleInv.getBlockEntity().getBlockPos(), i));
 			return;
 		}
 	}

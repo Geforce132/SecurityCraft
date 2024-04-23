@@ -67,7 +67,7 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.ALARM, pos));
+					PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.ALARM, pos));
 			}
 
 			return InteractionResult.SUCCESS;

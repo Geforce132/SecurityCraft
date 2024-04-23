@@ -12,7 +12,9 @@ import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -47,7 +49,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		int newLight = DisguisableBlock.getDisguisedBlockStateFromStack(level, stack).map(s -> s.getLightEmission(level, worldPosition)).orElse(0);
 
 		if (!level.isClientSide) {
-			PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(worldPosition)).send(new RefreshDisguisableModel(worldPosition, true, stack, toggled));
+			PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, new ChunkPos(worldPosition), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
 
 			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
 				level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
@@ -75,7 +77,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		BlockPos worldPosition = be.getBlockPos();
 
 		if (!level.isClientSide) {
-			PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(worldPosition)).send(new RefreshDisguisableModel(worldPosition, false, stack, toggled));
+			PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, new ChunkPos(worldPosition), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
 
 			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
 				level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));

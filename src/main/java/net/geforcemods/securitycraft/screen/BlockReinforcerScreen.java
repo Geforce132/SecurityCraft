@@ -84,6 +84,6 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	@Override
 	public void onClose() {
 		super.onClose();
-		PacketDistributor.SERVER.noArg().send(new SyncBlockReinforcer(!unreinforceCheckbox.selected()));
+		PacketDistributor.sendToServer(new SyncBlockReinforcer(!unreinforceCheckbox.selected()));
 	}
 }

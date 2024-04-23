@@ -110,7 +110,7 @@ public class SecurityCamera extends Entity {
 		if (!level().isClientSide) {
 			discard();
 			player.camera = player;
-			PacketDistributor.PLAYER.with(player).send(new SetCameraView(player.getId()));
+			PacketDistributor.sendToPlayer(player, new SetCameraView(player.getId()));
 			DISMOUNTED_PLAYERS.add(player);
 
 			if (player.getEffect(MobEffects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)

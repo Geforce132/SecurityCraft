@@ -147,7 +147,7 @@ public class CameraMonitorScreen extends Screen {
 			return;
 		}
 
-		PacketDistributor.SERVER.noArg().send(new MountCamera(cameraPos));
+		PacketDistributor.sendToServer(new MountCamera(cameraPos));
 		Minecraft.getInstance().player.closeContainer();
 	}
 
@@ -156,7 +156,7 @@ public class CameraMonitorScreen extends Screen {
 		int i = (camID - 1) % 10;
 		Button cameraButton = cameraButtons[i];
 
-		PacketDistributor.SERVER.noArg().send(new RemoveCameraTag(camID));
+		PacketDistributor.sendToServer(new RemoveCameraTag(camID));
 		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1)));
 		button.active = false;
 		cameraButton.active = false;

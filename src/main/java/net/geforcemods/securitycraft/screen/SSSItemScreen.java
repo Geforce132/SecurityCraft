@@ -81,7 +81,7 @@ public class SSSItemScreen extends Screen implements ConnectionAccessor {
 	@Override
 	public void removePosition(BlockPos pos) {
 		SonicSecuritySystemItem.removeLinkedBlock(stack, pos);
-		PacketDistributor.SERVER.noArg().send(new RemovePositionFromSSS(pos));
+		PacketDistributor.sendToServer(new RemovePositionFromSSS(pos));
 		connectionList.refreshPositions();
 	}
 }

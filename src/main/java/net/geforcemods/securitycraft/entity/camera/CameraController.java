@@ -134,7 +134,7 @@ public class CameraController {
 	}
 
 	private static void dismount() {
-		PacketDistributor.SERVER.noArg().send(new DismountCamera());
+		PacketDistributor.sendToServer(new DismountCamera());
 	}
 
 	public static void moveViewUp(SecurityCamera cam) {
@@ -203,15 +203,15 @@ public class CameraController {
 		Level level = cam.level();
 
 		if (((IModuleInventory) level.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
-			PacketDistributor.SERVER.noArg().send(new SetCameraPowered(pos, !level.getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
+			PacketDistributor.sendToServer(new SetCameraPowered(pos, !level.getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
 	}
 
 	public static void toggleNightVision(SecurityCamera cam) {
-		PacketDistributor.SERVER.noArg().send(new ToggleNightVision());
+		PacketDistributor.sendToServer(new ToggleNightVision());
 	}
 
 	public static void setDefaultViewingDirection(SecurityCamera cam) {
-		PacketDistributor.SERVER.noArg().send(new SetDefaultCameraViewingDirection(cam.getId(), cam.getXRot(), cam.getYRot()));
+		PacketDistributor.sendToServer(new SetDefaultCameraViewingDirection(cam.getId(), cam.getXRot(), cam.getYRot()));
 	}
 
 	public static ClientChunkCache.Storage getCameraStorage() {

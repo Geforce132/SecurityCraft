@@ -177,7 +177,7 @@ public class SecurityCameraBlock extends OwnableBlock implements SimpleWaterlogg
 
 			//can't use ServerPlayer#setCamera here because it also teleports the player
 			serverPlayer.camera = dummyEntity;
-			PacketDistributor.PLAYER.with(serverPlayer).send(new SetCameraView(dummyEntity.getId()));
+			PacketDistributor.sendToPlayer(serverPlayer, new SetCameraView(dummyEntity.getId()));
 
 			if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity cam)
 				cam.startViewing();

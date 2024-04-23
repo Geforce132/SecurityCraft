@@ -178,7 +178,7 @@ public class CheckPasscodeScreen extends Screen {
 			toggleChildrenActive(false);
 
 		keycodeTextbox.setValue("");
-		PacketDistributor.SERVER.noArg().send(new CheckPasscode(pos, code));
+		PacketDistributor.sendToServer(new CheckPasscode(pos, code));
 	}
 
 	public static class CensoringEditBox extends EditBox {

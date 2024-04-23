@@ -64,17 +64,10 @@ repositories {
 			includeGroup "curse.maven"
 		}
 	}
-	maven {
-        name 'Maven for PR #794' // https://github.com/neoforged/NeoForge/pull/794
-        url 'https://prmaven.neoforged.net/NeoForge/pr794'
-        content {
-            includeModule('net.neoforged', 'neoforge')
-        }
-    }
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:20.5.0-alpha.1.20.5-rc1.20240421.201604'
+	implementation 'net.neoforged:neoforge:20.5.0-beta'
 
 //	implementation "curse.maven:architectury-api-419699:5173990" //ftb teams dependency
 //	implementation "curse.maven:ftb-library-forge-404465:5205161" //ftb teams dependency

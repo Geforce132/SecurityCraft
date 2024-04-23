@@ -51,7 +51,7 @@ public class UsernameLoggerScreen extends Screen {
 
 		Button clearButton = addRenderableWidget(new SmallXButton(leftPos + 4, topPos + 4, b -> {
 			be.setPlayers(new String[100]);
-			PacketDistributor.SERVER.noArg().send(new ClearLoggerServer(be.getBlockPos()));
+			PacketDistributor.sendToServer(new ClearLoggerServer(be.getBlockPos()));
 		}));
 
 		clearButton.active = be.isOwnedBy(minecraft.player);

@@ -310,7 +310,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	private void sendUpdates(List<SetSentryMode.Info> sentriesToUpdate) {
-		PacketDistributor.SERVER.noArg().send(new SetSentryMode(sentriesToUpdate));
+		PacketDistributor.sendToServer(new SetSentryMode(sentriesToUpdate));
 	}
 
 	/**
@@ -339,7 +339,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
 					tag.remove("sentry" + i);
 					CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
-					PacketDistributor.SERVER.noArg().send(new RemoveSentryFromSRAT(i));
+					PacketDistributor.sendToServer(new RemoveSentryFromSRAT(i));
 					return;
 				}
 			}

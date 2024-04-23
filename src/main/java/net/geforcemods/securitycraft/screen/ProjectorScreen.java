@@ -76,14 +76,14 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 			projectionRangeSlider.setMaxValue(projectionRangeSlider.getMaxValue() - (horizontal ? 16 : -16));
 			projectionRangeSlider.setValue(projectionRangeSlider.getValue() - (horizontal ? 16 : -16));
 			applySliderValue(projectionRangeSlider);
-			PacketDistributor.SERVER.noArg().send(new SyncProjector(be.getBlockPos(), be.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
+			PacketDistributor.sendToServer(new SyncProjector(be.getBlockPos(), be.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
 		}, new ResourceLocation(SecurityCraft.MODID, "projector/vertical"), new ResourceLocation(SecurityCraft.MODID, "projector/horizontal")));
 		horizontalToggleButton.setCurrentIndex(be.isHorizontal() ? 1 : 0);
 		updateHorizontalToggleButtonTooltip();
 
 		overrideCheckbox = addRenderableWidget(new CallbackCheckbox(left + sliderWidth - 41, topPos + 36, 20, 20, Component.empty(), be.isOverridingBlocks(), newValue -> {
 			be.setOverridingBlocks(newValue);
-			PacketDistributor.SERVER.noArg().send(new SyncProjector(be.getBlockPos(), be.isOverridingBlocks() ? 1 : 0, DataType.OVERRIDING_BLOCKS));
+			PacketDistributor.sendToServer(new SyncProjector(be.getBlockPos(), be.isOverridingBlocks() ? 1 : 0, DataType.OVERRIDING_BLOCKS));
 			updateOverrideCheckboxTooltip();
 		}, 0));
 		updateOverrideCheckboxTooltip();
@@ -144,7 +144,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 
 		if (stateSelector.getState() != null) {
 			be.setProjectedState(stateSelector.getState());
-			PacketDistributor.SERVER.noArg().send(new SyncProjector(be.getBlockPos(), stateSelector.getState()));
+			PacketDistributor.sendToServer(new SyncProjector(be.getBlockPos(), stateSelector.getState()));
 		}
 	}
 
@@ -177,6 +177,6 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 			dataType = DataType.OFFSET;
 		}
 
-		PacketDistributor.SERVER.noArg().send(new SyncProjector(be.getBlockPos(), data, dataType));
+		PacketDistributor.sendToServer(new SyncProjector(be.getBlockPos(), data, dataType));
 	}
 }

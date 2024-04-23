@@ -34,6 +34,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.MenuProvider;
@@ -50,6 +51,7 @@ import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.state.BlockState;
@@ -197,7 +199,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		setChanged();
 
 		if (!level.isClientSide)
-			PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(worldPosition)).send(new SetTrophySystemTarget(worldPosition, target.getId()));
+			PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, new ChunkPos(worldPosition), new SetTrophySystemTarget(worldPosition, target.getId()));
 	}
 
 	/**
@@ -272,7 +274,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 			setChanged();
 
 			if (level.isClientSide)
-				PacketDistributor.SERVER.noArg().send(new SyncTrophySystem(worldPosition, Utils.getRegistryName(projectileType), allowed));
+				PacketDistributor.sendToServer(new SyncTrophySystem(worldPosition, Utils.getRegistryName(projectileType), allowed));
 		}
 	}
 

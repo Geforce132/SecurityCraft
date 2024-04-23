@@ -113,7 +113,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 		SonicSecuritySystemBlockEntity be = (SonicSecuritySystemBlockEntity) level.getBlockEntity(pos);
 
 		if (!level.isClientSide && (be.isOwnedBy(player) || be.isAllowed(player)))
-			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SONIC_SECURITY_SYSTEM, pos));
+			PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.SONIC_SECURITY_SYSTEM, pos));
 
 		return InteractionResult.SUCCESS;
 	}

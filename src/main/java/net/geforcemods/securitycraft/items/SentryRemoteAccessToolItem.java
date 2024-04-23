@@ -39,7 +39,7 @@ public class SentryRemoteAccessToolItem extends Item {
 
 		if (!level.isClientSide) {
 			updateTagWithNames(stack, level);
-			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, Utils.getTag(stack)));
+			PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, Utils.getTag(stack)));
 		}
 
 		return InteractionResultHolder.consume(stack);
@@ -89,7 +89,7 @@ public class SentryRemoteAccessToolItem extends Item {
 		}
 		else if (!level.isClientSide) {
 			updateTagWithNames(stack, level);
-			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, Utils.getTag(stack)));
+			PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, Utils.getTag(stack)));
 		}
 
 		return InteractionResult.SUCCESS;

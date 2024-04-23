@@ -85,7 +85,7 @@ public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModule
 			moduleTag.put("SavedState", NbtUtils.writeBlockState(finalState));
 			moduleTag.putInt("StandingOrWall", finalStandingOrWall.ordinal());
 		});
-		PacketDistributor.SERVER.noArg().send(new SetStateOnDisguiseModule(state, standingOrWall));
+		PacketDistributor.sendToServer(new SetStateOnDisguiseModule(state, standingOrWall));
 	}
 
 	@Override

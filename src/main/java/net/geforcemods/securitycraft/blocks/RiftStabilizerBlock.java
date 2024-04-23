@@ -72,7 +72,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.RIFT_STABILIZER, pos));
+					PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.RIFT_STABILIZER, pos));
 			}
 
 			return InteractionResult.SUCCESS;

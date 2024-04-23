@@ -74,7 +74,7 @@ public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 
 	public void onChangeValue(Direction dir, boolean newValue) {
 		sideConfig.put(dir, newValue);
-		PacketDistributor.SERVER.noArg().send(new SyncLaserSideConfig(be.getBlockPos(), LaserBlockBlockEntity.saveSideConfig(sideConfig)));
+		PacketDistributor.sendToServer(new SyncLaserSideConfig(be.getBlockPos(), LaserBlockBlockEntity.saveSideConfig(sideConfig)));
 	}
 
 	@Override

@@ -33,6 +33,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.MenuProvider;
@@ -217,7 +218,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 				otherLaser.getLensContainer().setItemExclusively(direction.getOpposite().ordinal(), lenses.getItem(direction.ordinal()));
 
 				if (!level.isClientSide)
-					PacketDistributor.DIMENSION.with(level.dimension()).send(new UpdateLaserColors(positionsToUpdate));
+					PacketDistributor.sendToPlayersInDimension((ServerLevel) level, new UpdateLaserColors(positionsToUpdate));
 
 				level.sendBlockUpdated(modifiedPos, stateAtModifiedPos, stateAtModifiedPos, 2);
 			}

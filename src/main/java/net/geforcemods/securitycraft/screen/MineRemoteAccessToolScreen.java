@@ -146,20 +146,20 @@ public class MineRemoteAccessToolScreen extends Screen {
 			switch (action) {
 				case DEFUSE:
 					((IExplosive) Minecraft.getInstance().player.level().getBlockState(pos).getBlock()).defuseMine(Minecraft.getInstance().player.level(), pos);
-					PacketDistributor.SERVER.noArg().send(new RemoteControlMine(pos, Action.DEFUSE));
+					PacketDistributor.sendToServer(new RemoteControlMine(pos, Action.DEFUSE));
 					guiButtons[mine][DEFUSE].active = false;
 					guiButtons[mine][ACTIVATE].active = true;
 					guiButtons[mine][DETONATE].active = false;
 					break;
 				case ACTIVATE:
 					((IExplosive) Minecraft.getInstance().player.level().getBlockState(pos).getBlock()).activateMine(Minecraft.getInstance().player.level(), pos);
-					PacketDistributor.SERVER.noArg().send(new RemoteControlMine(pos, Action.ACTIVATE));
+					PacketDistributor.sendToServer(new RemoteControlMine(pos, Action.ACTIVATE));
 					guiButtons[mine][DEFUSE].active = true;
 					guiButtons[mine][ACTIVATE].active = false;
 					guiButtons[mine][DETONATE].active = true;
 					break;
 				case DETONATE:
-					PacketDistributor.SERVER.noArg().send(new RemoteControlMine(pos, Action.DETONATE));
+					PacketDistributor.sendToServer(new RemoteControlMine(pos, Action.DETONATE));
 					removeTagFromToolAndUpdate(mrat, pos);
 
 					for (int i = 0; i < 4; i++) {
@@ -207,7 +207,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 				if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
 					tag.remove("mine" + i);
 					CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
-					PacketDistributor.SERVER.noArg().send(new RemoveMineFromMRAT(i));
+					PacketDistributor.sendToServer(new RemoveMineFromMRAT(i));
 					return;
 				}
 			}

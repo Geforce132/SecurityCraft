@@ -147,14 +147,14 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		linkButton = addRenderableWidget(new Button(leftPos + 8, topPos + 126, 70, 20, linkText, b -> {
 			previousSignature = signature;
 			changeSignature(signature);
-			PacketDistributor.SERVER.noArg().send(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, true));
+			PacketDistributor.sendToServer(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, true));
 
 			if (menu.keycardSlot.getItem().getHoverName().getString().equalsIgnoreCase("Zelda"))
 				minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SCSounds.GET_ITEM.event, 1.0F, 1.25F));
 		}, Button.DEFAULT_NARRATION));
 		linkButton.active = false;
 		//button for saving the amount of limited uses onto the keycard
-		setUsesButton = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 62, topPos + 106, 16, 17, RETURN_SPRITE, RETURN_INACTIVE_SPRITE, 2, 2, 14, 14, b -> PacketDistributor.SERVER.noArg().send(new SetKeycardUses(be.getBlockPos(), Integer.parseInt(usesTextField.getValue())))));
+		setUsesButton = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 62, topPos + 106, 16, 17, RETURN_SPRITE, RETURN_INACTIVE_SPRITE, 2, 2, 14, 14, b -> PacketDistributor.sendToServer(new SetKeycardUses(be.getBlockPos(), Integer.parseInt(usesTextField.getValue())))));
 		setUsesButton.active = false;
 		//text field for setting amount of limited uses
 		usesTextField = addRenderableWidget(new EditBox(font, leftPos + 28, topPos + 107, 30, 15, Component.empty()));
@@ -296,7 +296,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			//write new data to client te and send that data to the server, which verifies and updates it on its side
 			be.setAcceptedLevels(acceptedLevels);
 			be.setSignature(signature);
-			PacketDistributor.SERVER.noArg().send(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, false));
+			PacketDistributor.sendToServer(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, false));
 		}
 	}
 

@@ -41,7 +41,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 */
 	public default void openPasscodeGUI(Level level, BlockPos pos, Player player) {
 		if (!level.isClientSide && getPasscode() != null)
-			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.CHECK_PASSCODE, pos));
+			PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.CHECK_PASSCODE, pos));
 	}
 
 	/**
@@ -59,7 +59,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 				return true;
 
 			if (ownable.isOwnedBy(player))
-				PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.SET_PASSCODE, pos));
+				PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.SET_PASSCODE, pos));
 			else
 				PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.notSetUp"), ChatFormatting.DARK_RED);
 		}

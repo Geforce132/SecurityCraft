@@ -88,7 +88,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 			setChanged();
 
 			if (level.isClientSide)
-				PacketDistributor.SERVER.noArg().send(new SyncRiftStabilizer(worldPosition, teleportationType, allowed));
+				PacketDistributor.sendToServer(new SyncRiftStabilizer(worldPosition, teleportationType, allowed));
 
 			RiftStabilizerBlockEntity connectedBlockEntity = RiftStabilizerBlock.getConnectedBlockEntity(level, worldPosition);
 

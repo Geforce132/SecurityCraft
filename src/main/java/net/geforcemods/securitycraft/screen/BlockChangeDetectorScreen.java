@@ -77,7 +77,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			changeEntryList.filteredEntries.clear();
 			be.getEntries().clear();
 			be.setChanged();
-			PacketDistributor.SERVER.noArg().send(new ClearChangeDetectorServer(be.getBlockPos()));
+			PacketDistributor.sendToServer(new ClearChangeDetectorServer(be.getBlockPos()));
 		}));
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
 		boolean isOwner = be.isOwnedBy(minecraft.player);
@@ -239,7 +239,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		int currentColor = be.getColor();
 
 		if (previousMode != currentMode || wasShowingHighlights != isShowingHighlights || previousColor != currentColor)
-			PacketDistributor.SERVER.noArg().send(new SyncBlockChangeDetector(be.getBlockPos(), currentMode, isShowingHighlights, currentColor));
+			PacketDistributor.sendToServer(new SyncBlockChangeDetector(be.getBlockPos(), currentMode, isShowingHighlights, currentColor));
 
 		be.updateFilteredEntries();
 	}
