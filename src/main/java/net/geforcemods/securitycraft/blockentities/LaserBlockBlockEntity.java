@@ -117,40 +117,40 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 
 	@Override
 	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
-		if (action instanceof ILinkedAction.OptionChanged<?> optionChanged) {
-			Option<?> option = optionChanged.option();
+		switch (action) {
+			case ILinkedAction.OptionChanged<?> optionChanged -> {
+				Option<?> option = optionChanged.option();
 
-			if (option.getName().equals("disabled")) {
-				disabled.copy(option);
-				setLasersAccordingToDisabledOption();
+				if (option.getName().equals("disabled")) {
+					disabled.copy(option);
+					setLasersAccordingToDisabledOption();
+				}
+				else if (option.getName().equals("ignoreOwner"))
+					ignoreOwner.copy(option);
+				else if (option.getName().equals("signalLength")) {
+					signalLength.copy(option);
+					turnOffRedstoneOutput();
+				}
 			}
-			else if (option.getName().equals("ignoreOwner"))
-				ignoreOwner.copy(option);
-			else if (option.getName().equals("signalLength")) {
-				signalLength.copy(option);
-				turnOffRedstoneOutput();
+			case ILinkedAction.ModuleInserted moduleInserted -> insertModule(moduleInserted.stack(), moduleInserted.wasModuleToggled());
+			case ILinkedAction.ModuleRemoved moduleRemoved -> removeModule(moduleRemoved.moduleType(), moduleRemoved.wasModuleToggled());
+			case ILinkedAction.OwnerChanged ownerChanged -> {
+				Owner owner = ownerChanged.newOwner();
+
+				setOwner(owner.getUUID(), owner.getName());
 			}
-		}
-		else if (action instanceof ILinkedAction.ModuleInserted moduleInserted)
-			insertModule(moduleInserted.stack(), moduleInserted.wasModuleToggled());
-		else if (action instanceof ILinkedAction.ModuleRemoved moduleRemoved)
-			removeModule(moduleRemoved.moduleType(), moduleRemoved.wasModuleToggled());
-		else if (action instanceof ILinkedAction.OwnerChanged ownerChanged) {
-			Owner owner = ownerChanged.newOwner();
+			case ILinkedAction.StateChanged<?> stateChanged -> {
+				BlockState state = getBlockState();
 
-			setOwner(owner.getUUID(), owner.getName());
-		}
-		else if (action instanceof ILinkedAction.StateChanged<?> stateChanged) {
-			BlockState state = getBlockState();
+				if (stateChanged.property() == LaserBlock.POWERED) {
+					int signalLength = getSignalLength();
 
-			if (stateChanged.property() == LaserBlock.POWERED) {
-				int signalLength = getSignalLength();
+					level.setBlockAndUpdate(worldPosition, state.cycle(LaserBlock.POWERED));
+					BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
 
-				level.setBlockAndUpdate(worldPosition, state.cycle(LaserBlock.POWERED));
-				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
-
-				if (signalLength > 0)
-					level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength);
+					if (signalLength > 0)
+						level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength);
+				}
 			}
 		}
 

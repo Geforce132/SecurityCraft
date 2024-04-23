@@ -251,14 +251,16 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	}
 
 	private boolean filterSCProjectiles(Projectile projectile) {
-		Owner owner = null;
-
-		if (projectile instanceof Bullet bullet)
-			owner = bullet.getSCOwner();
-		else if (projectile instanceof IMSBomb imsBomb)
-			owner = imsBomb.getSCOwner();
-		else if (projectile.getOwner() instanceof Sentry sentry)
-			owner = sentry.getOwner();
+		Owner owner = switch (projectile) {
+			case Bullet bullet -> bullet.getSCOwner();
+			case IMSBomb imsBomb -> imsBomb.getSCOwner();
+			default -> {
+				if (projectile.getOwner() instanceof Sentry sentry)
+					yield sentry.getOwner();
+				else
+					yield null;
+			}
+		};
 
 		return owner == null || (!owner.owns(this) && !isAllowed(owner.getName()));
 	}

@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
-import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -73,14 +72,11 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock, Simple
 
 		level.setBlockAndUpdate(pos, state.setValue(POWERED, newPowered));
 		playSound(player, level, pos, newPowered);
-
-		if (state.getValue(FACE) == AttachFace.WALL)
-			notifyNeighbors(level, pos, state.getValue(FACING));
-		else if (state.getValue(FACE) == AttachFace.CEILING)
-			notifyNeighbors(level, pos, Direction.DOWN);
-		else if (state.getValue(FACE) == AttachFace.FLOOR)
-			notifyNeighbors(level, pos, Direction.UP);
-
+		notifyNeighbors(level, pos, switch (state.getValue(FACE)) {
+			case WALL -> state.getValue(FACING);
+			case CEILING -> Direction.DOWN;
+			case FLOOR -> Direction.UP;
+		});
 		return InteractionResult.SUCCESS;
 	}
 

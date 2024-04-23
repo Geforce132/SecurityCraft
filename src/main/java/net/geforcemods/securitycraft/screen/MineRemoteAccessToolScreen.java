@@ -68,20 +68,11 @@ public class MineRemoteAccessToolScreen extends Screen {
 				id++;
 
 				switch (j) {
-					case DEFUSE:
-						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, new ItemStack(SCContent.WIRE_CUTTERS.get()), b -> buttonClicked(mine, action));
-						break;
-					case ACTIVATE:
-						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, new ItemStack(Items.FLINT_AND_STEEL), b -> buttonClicked(mine, action));
-						break;
-					case DETONATE:
-						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, EXPLOSIVE_SPRITE, 0, 1, 18, 18, b -> buttonClicked(mine, action));
-						break;
-					case UNBIND:
-						guiButtons[i][j] = new Button(btnX, btnY, 20, 20, Component.literal("X"), b -> buttonClicked(mine, action), Button.DEFAULT_NARRATION);
-						break;
-					default:
-						throw new IllegalArgumentException("Mine actions can only range from 0-3 (inclusive)");
+					case DEFUSE -> guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, new ItemStack(SCContent.WIRE_CUTTERS.get()), b -> buttonClicked(mine, action));
+					case ACTIVATE -> guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, new ItemStack(Items.FLINT_AND_STEEL), b -> buttonClicked(mine, action));
+					case DETONATE -> guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, EXPLOSIVE_SPRITE, 0, 1, 18, 18, b -> buttonClicked(mine, action));
+					case UNBIND -> guiButtons[i][j] = new Button(btnX, btnY, 20, 20, Component.literal("X"), b -> buttonClicked(mine, action), Button.DEFAULT_NARRATION);
+					default -> throw new IllegalArgumentException("Mine actions can only range from 0-3 (inclusive)");
 				}
 
 				guiButtons[i][j].active = false;

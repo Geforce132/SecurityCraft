@@ -40,22 +40,24 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 
 	@Override
 	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
-		if (action instanceof ILinkedAction.OptionChanged<?> optionChanged) {
-			Option<?> option = optionChanged.option();
+		switch (action) {
+			case ILinkedAction.OptionChanged<?> optionChanged -> {
+				Option<?> option = optionChanged.option();
 
-			for (Option<?> customOption : customOptions()) {
-				if (customOption.getName().equals(option.getName())) {
-					customOption.copy(option);
-					break;
+				for (Option<?> customOption : customOptions()) {
+					if (customOption.getName().equals(option.getName())) {
+						customOption.copy(option);
+						break;
+					}
 				}
-			}
 
-			setChanged();
+				setChanged();
+			}
+			case ILinkedAction.ModuleInserted moduleInserted -> insertModule(moduleInserted.stack(), moduleInserted.wasModuleToggled());
+			case ILinkedAction.ModuleRemoved moduleRemoved -> removeModule(moduleRemoved.moduleType(), moduleRemoved.wasModuleToggled());
+			default -> {
+			}
 		}
-		else if (action instanceof ILinkedAction.ModuleInserted moduleInserted)
-			insertModule(moduleInserted.stack(), moduleInserted.wasModuleToggled());
-		else if (action instanceof ILinkedAction.ModuleRemoved moduleRemoved)
-			removeModule(moduleRemoved.moduleType(), moduleRemoved.wasModuleToggled());
 	}
 
 	public int getSignalLength() {

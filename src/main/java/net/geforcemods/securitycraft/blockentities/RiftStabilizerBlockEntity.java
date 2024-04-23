@@ -351,22 +351,16 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 		}
 
 		public static TeleportationType getTypeFromEvent(EntityTeleportEvent event) {
-			if (event instanceof ChorusFruit)
-				return CHORUS_FRUIT;
-			else if (event instanceof EnderPearl)
-				return ENDER_PEARL;
-			else if (event instanceof EnderEntity enderEntityEvent) {
-				if (enderEntityEvent.getEntityLiving() instanceof EnderMan)
-					return ENDERMAN;
-				else if (enderEntityEvent.getEntityLiving() instanceof Shulker)
-					return SHULKER;
-
-				return MODDED;
-			}
-			else if (event instanceof TeleportCommand || event instanceof SpreadPlayersCommand)
-				return null;
-
-			return MODDED;
+			return switch (event) {
+				case ChorusFruit fruit -> CHORUS_FRUIT;
+				case EnderPearl pearl -> ENDER_PEARL;
+				case EnderEntity ender when ender.getEntityLiving() instanceof EnderMan -> ENDERMAN;
+				case EnderEntity ender when ender.getEntityLiving() instanceof Shulker -> SHULKER;
+				case EnderEntity ender -> MODDED;
+				case TeleportCommand teleport -> null;
+				case SpreadPlayersCommand spreadPlayers -> null;
+				default -> MODDED;
+			};
 		}
 
 		@Override

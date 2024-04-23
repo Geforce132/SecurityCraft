@@ -56,29 +56,14 @@ public record SyncProjector(BlockPos pos, int data, DataType dataType) implement
 			BlockState state = level.getBlockState(pos);
 
 			switch (dataType) {
-				case WIDTH:
-					be.setProjectionWidth(data);
-					break;
-				case HEIGHT:
-					be.setProjectionHeight(data);
-					break;
-				case RANGE:
-					be.setProjectionRange(data);
-					break;
-				case OFFSET:
-					be.setProjectionOffset(data);
-					break;
-				case HORIZONTAL:
-					be.setHorizontal(data == 1);
-					break;
-				case OVERRIDING_BLOCKS:
-					be.setOverridingBlocks(data == 1);
-					break;
-				case BLOCK_STATE:
-					be.setProjectedState(Block.stateById(data));
-					break;
-				case INVALID:
-					break;
+				case WIDTH -> be.setProjectionWidth(data);
+				case HEIGHT -> be.setProjectionHeight(data);
+				case RANGE -> be.setProjectionRange(data);
+				case OFFSET -> be.setProjectionOffset(data);
+				case HORIZONTAL -> be.setHorizontal(data == 1);
+				case OVERRIDING_BLOCKS -> be.setOverridingBlocks(data == 1);
+				case BLOCK_STATE -> be.setProjectedState(Block.stateById(data));
+				case INVALID -> throw new UnsupportedOperationException("Invalid sync projector payload received!");
 			}
 
 			level.sendBlockUpdated(pos, state, state, 2);

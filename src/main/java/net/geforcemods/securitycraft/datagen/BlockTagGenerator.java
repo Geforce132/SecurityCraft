@@ -543,12 +543,13 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				witherImmune.add(ro.getKey());
 			}
 
-			if (block instanceof ReinforcedSlabBlock && !woodenSlabs.contains(block))
-				tag(SCTags.Blocks.REINFORCED_SLABS).add(block);
-			else if (block instanceof ReinforcedStairsBlock && !woodenStairs.contains(block))
-				tag(SCTags.Blocks.REINFORCED_STAIRS).add(block);
-			else if (block instanceof ReinforcedWallBlock)
-				tag(BlockTags.WALLS).add(block);
+			switch (block) {
+				case ReinforcedSlabBlock slab when !woodenSlabs.contains(block) -> tag(SCTags.Blocks.REINFORCED_SLABS).add(block);
+				case ReinforcedStairsBlock stairs when !woodenStairs.contains(block) -> tag(SCTags.Blocks.REINFORCED_STAIRS).add(block);
+				case ReinforcedWallBlock wall -> tag(BlockTags.WALLS).add(block);
+				default -> {
+				}
+			}
 		}
 	}
 

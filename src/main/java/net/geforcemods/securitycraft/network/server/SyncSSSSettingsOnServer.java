@@ -60,35 +60,20 @@ public class SyncSSSSettingsOnServer implements CustomPacketPayload {
 
 		if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.isOwnedBy(player)) {
 			switch (dataType) {
-				case POWER_ON:
-					sss.setActive(true);
-					break;
-				case POWER_OFF:
+				case POWER_ON -> sss.setActive(true);
+				case POWER_OFF -> {
 					sss.setActive(false);
 
 					if (sss.isRecording())
 						sss.setRecording(false);
-					break;
-				case SOUND_ON:
-					sss.setPings(true);
-					break;
-				case SOUND_OFF:
-					sss.setPings(false);
-					break;
-				case RECORDING_ON:
-					sss.setRecording(true);
-					break;
-				case RECORDING_OFF:
-					sss.setRecording(false);
-					break;
-				case CLEAR_NOTES:
-					sss.clearNotes();
-					break;
-				case REMOVE_POS:
-					sss.delink(posToRemove, false);
-					break;
-				case INVERT_FUNCTIONALITY:
-					sss.setDisableBlocksWhenTuneIsPlayed(!sss.disablesBlocksWhenTuneIsPlayed());
+				}
+				case SOUND_ON -> sss.setPings(true);
+				case SOUND_OFF -> sss.setPings(false);
+				case RECORDING_ON -> sss.setRecording(true);
+				case RECORDING_OFF -> sss.setRecording(false);
+				case CLEAR_NOTES -> sss.clearNotes();
+				case REMOVE_POS -> sss.delink(posToRemove, false);
+				case INVERT_FUNCTIONALITY -> sss.setDisableBlocksWhenTuneIsPlayed(!sss.disablesBlocksWhenTuneIsPlayed());
 			}
 		}
 	}

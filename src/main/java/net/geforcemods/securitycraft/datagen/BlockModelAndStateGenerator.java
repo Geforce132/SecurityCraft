@@ -73,18 +73,16 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 			Item item = block.asItem();
 
 			if (decorationTabItems.contains(item)) {
-				if (block instanceof ReinforcedSlabBlock)
-					reinforcedSlabBlock(block);
-				else if (block instanceof ReinforcedStainedGlassBlock)
-					simpleBlockWithRenderType(block, "translucent");
-				else if (block instanceof ReinforcedStainedGlassPaneBlock)
-					reinforcedPaneBlock((IronBarsBlock) block, "translucent");
-				else if (block instanceof ReinforcedStairsBlock)
-					reinforcedStairsBlock(block);
-				else if (block instanceof ReinforcedWallBlock)
-					reinforcedWallBlock(block);
-				else if (block instanceof ReinforcedCarpetBlock)
-					reinforcedCarpetBlock(block);
+				switch (block) {
+					case ReinforcedSlabBlock slab -> reinforcedSlabBlock(block);
+					case ReinforcedStainedGlassBlock glass -> simpleBlockWithRenderType(block, "translucent");
+					case ReinforcedStainedGlassPaneBlock pane -> reinforcedPaneBlock((IronBarsBlock) block, "translucent");
+					case ReinforcedStairsBlock stairs -> reinforcedStairsBlock(block);
+					case ReinforcedWallBlock wall -> reinforcedWallBlock(block);
+					case ReinforcedCarpetBlock carpet -> reinforcedCarpetBlock(block);
+					default -> {
+					}
+				}
 			}
 			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock || mine instanceof BrushableMineBlock))
 				blockMine(mine.getBlockDisguisedAs(), block);
