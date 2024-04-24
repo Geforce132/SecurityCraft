@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.components;
 
 import java.util.function.Consumer;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -41,6 +43,7 @@ public record KeycardData(boolean linked, int signature, boolean limited, int us
 	@Override
 	public void addToTooltip(TooltipContext ctx, Consumer<Component> list, TooltipFlag flag) {
 		if (linked) {
+			list.accept(Component.translatable("tooltip.securitycraft:keycard.signature", StringUtils.leftPad("" + signature, 5, "0")).setStyle(Utils.GRAY_STYLE));
 			list.accept(Component.translatable("tooltip.securitycraft:keycard.reader_owner", ownerName).setStyle(Utils.GRAY_STYLE));
 		}
 		else
