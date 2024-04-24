@@ -2658,7 +2658,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<ModuleItem> DENYLIST_MODULE = ITEMS.register("blacklist_module", () -> new ModuleItem(itemProp(1), ModuleType.DENYLIST, true, true));
 	@HasManualPage
-	public static final DeferredItem<ModuleItem> DISGUISE_MODULE = ITEMS.register("disguise_module", () -> new ModuleItem(itemProp(1), ModuleType.DISGUISE, false, true));
+	public static final DeferredItem<ModuleItem> DISGUISE_MODULE = ITEMS.register("disguise_module", () -> new ModuleItem(itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY), ModuleType.DISGUISE, false, true));
 	@HasManualPage
 	public static final DeferredItem<ModuleItem> HARMING_MODULE = ITEMS.register("harming_module", () -> new ModuleItem(itemProp(1), ModuleType.HARMING, false));
 	@HasManualPage
