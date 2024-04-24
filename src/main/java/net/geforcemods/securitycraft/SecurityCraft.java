@@ -86,6 +86,7 @@ public class SecurityCraft {
 		SCContent.BLOCKS.register(modEventBus);
 		SCContent.BLOCK_ENTITY_TYPES.register(modEventBus);
 		SCContent.COMMAND_ARGUMENT_TYPES.register(modEventBus);
+		SCContent.DATA_COMPONENTS.register(modEventBus);
 		SCContent.DATA_SERIALIZERS.register(modEventBus);
 		SCContent.ENTITY_TYPES.register(modEventBus);
 		SCContent.FLUIDS.register(modEventBus);

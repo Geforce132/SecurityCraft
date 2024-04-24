@@ -4,8 +4,10 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
+import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -23,8 +25,6 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -224,17 +224,17 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		ItemStack stack = menu.keycardSlot.getItem();
 		boolean isEmpty = stack.isEmpty();
 		boolean wasActive = usesTextField.active;
-		boolean hasTag = stack.has(DataComponents.CUSTOM_DATA);
-		CompoundTag tag = Utils.getTag(stack);
-		boolean enabled = !isEmpty && hasTag && tag.getBoolean("limited");
-		int cardSignature = hasTag ? tag.getInt("signature") : -1;
+		KeycardData keycardData = stack.get(SCContent.KEYCARD_DATA);
+		boolean hasData = keycardData != null;
+		boolean enabled = !isEmpty && hasData && keycardData.limited();
+		int cardSignature = hasData ? keycardData.signature() : -1;
 
 		usesTextField.setEditable(enabled);
 		usesTextField.active = enabled;
 
 		//set the text of the text field to the amount of uses on the keycard
 		if (!wasActive && enabled)
-			usesTextField.setValue("" + tag.getInt("uses"));
+			usesTextField.setValue("" + keycardData.usesLeft());
 		else if (wasActive && !enabled)
 			usesTextField.setValue("");
 
@@ -246,7 +246,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		}
 		else {
 			//set return button depending on whether a different amount of uses compared to the keycard in the slot can be set
-			setUsesButton.active = enabled && usesTextField.getValue() != null && !usesTextField.getValue().isEmpty() && !("" + tag.getInt("uses")).equals(usesTextField.getValue());
+			setUsesButton.active = enabled && usesTextField.getValue() != null && !usesTextField.getValue().isEmpty() && !("" + keycardData.usesLeft()).equals(usesTextField.getValue());
 			linkButton.active = !isEmpty && cardSignature != signature;
 		}
 	}

@@ -1,8 +1,10 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeycardLockBlockEntity;
+import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -10,8 +12,6 @@ import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -51,13 +51,13 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 			}
 
 			if (stack.getItem() instanceof KeycardItem) {
-				boolean hasTag = stack.has(DataComponents.CUSTOM_DATA);
-				CompoundTag tag = Utils.getTag(stack);
+				KeycardData keycardData = stack.get(SCContent.KEYCARD_DATA);
+				boolean hasData = keycardData != null;
 
-				if (!hasTag || !tag.getBoolean("linked"))
+				if (!hasData || !keycardData.linked())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.unlinked_keycard"), ChatFormatting.RED);
-				else if (hasTag) {
-					Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
+				else if (hasData) {
+					Owner keycardOwner = new Owner(keycardData.ownerName(), keycardData.ownerUUID());
 
 					if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !TeamUtils.areOnSameTeam(be.getOwner(), keycardOwner)) || !be.getOwner().getUUID().equals(keycardOwner.getUUID()))
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.different_owner"), ChatFormatting.RED);

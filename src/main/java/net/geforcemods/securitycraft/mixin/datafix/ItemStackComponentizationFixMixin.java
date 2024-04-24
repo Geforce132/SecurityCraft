@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.serialization.Dynamic;
 
+import net.geforcemods.securitycraft.components.KeycardData;
 import net.minecraft.util.datafix.fixes.ItemStackComponentizationFix;
 
 /**
@@ -20,9 +21,10 @@ import net.minecraft.util.datafix.fixes.ItemStackComponentizationFix;
 public class ItemStackComponentizationFixMixin {
 	@Unique
 	private static final Set<String> BRIEFCASE_OR_KEYCARD_HOLDER_OR_DISGUISE_MODULE = Set.of("securitycraft:briefcase", "securitycraft:keycard_holder", "securitycraft:disguise_module");
+	private static final Set<String> KEYCARDS = Set.of("securitycraft:keycard_lv1", "securitycraft:keycard_lv2", "securitycraft:keycard_lv3", "securitycraft:keycard_lv4", "securitycraft:keycard_lv5");
 
 	@Inject(method = "fixItemStack", at = @At("TAIL"))
-	private static void securitycraft$fixItemStack(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic, CallbackInfo ci) {
+	private static void securitycraft$fixItemStacks(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic, CallbackInfo ci) {
 		if (itemStackData.is(BRIEFCASE_OR_KEYCARD_HOLDER_OR_DISGUISE_MODULE)) {
 			//@formatter:off
 			List<Dynamic<?>> list = dynamic.get("ItemInventory")
@@ -36,5 +38,28 @@ public class ItemStackComponentizationFixMixin {
 
 			itemStackData.removeTag("ItemInventory");
 		}
+
+		if (itemStackData.is(KEYCARDS))
+			fixKeycard(itemStackData, dynamic);
+	}
+
+	@Unique
+	private static void fixKeycard(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
+		boolean linked = itemStackData.removeTag("linked").asBoolean(KeycardData.DEFAULT.linked());
+		int signature = itemStackData.removeTag("signature").asInt(KeycardData.DEFAULT.signature());
+		boolean limited = itemStackData.removeTag("limited").asBoolean(KeycardData.DEFAULT.limited());
+		int usesLeft = itemStackData.removeTag("uses").asInt(KeycardData.DEFAULT.usesLeft());
+		String ownerName = itemStackData.removeTag("ownerName").asString(KeycardData.DEFAULT.ownerName());
+		String ownerUUID = itemStackData.removeTag("ownerUUID").asString(KeycardData.DEFAULT.ownerUUID());
+
+		//@formatter:off
+		itemStackData.setComponent("securitycraft:keycard_data", dynamic.emptyMap()
+				.set("linked", dynamic.createBoolean(linked))
+				.set("signature", dynamic.createInt(signature))
+				.set("limited", dynamic.createBoolean(limited))
+				.set("uses_left", dynamic.createInt(usesLeft))
+				.set("owner_name", dynamic.createString(ownerName))
+				.set("owner_uuid", dynamic.createString(ownerUUID)));
+		//@formatter:on
 	}
 }

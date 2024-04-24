@@ -175,6 +175,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedTintedGlassBloc
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.commands.LowercasedEnumArgument;
 import net.geforcemods.securitycraft.commands.SingleGameProfileArgument;
+import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -243,6 +244,7 @@ import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -296,6 +298,7 @@ public class SCContent {
 	public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(SecurityCraft.MODID);
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, SecurityCraft.MODID);
 	public static final DeferredRegister<ArgumentTypeInfo<?, ?>> COMMAND_ARGUMENT_TYPES = DeferredRegister.create(Registries.COMMAND_ARGUMENT_TYPE, SecurityCraft.MODID);
+	public static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(SecurityCraft.MODID);
 	public static final DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(Keys.ENTITY_DATA_SERIALIZERS, SecurityCraft.MODID);
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, SecurityCraft.MODID);
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, SecurityCraft.MODID);
@@ -316,6 +319,9 @@ public class SCContent {
 
 	//loot item condition types
 	public static final DeferredHolder<LootItemConditionType, LootItemConditionType> BLOCK_ENTITY_NBT = LOOT_ITEM_CONDITION_TYPES.register("tile_entity_nbt", () -> new LootItemConditionType(BlockEntityNBTCondition.CODEC));
+
+	//data components
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<KeycardData>> KEYCARD_DATA = DATA_COMPONENTS.registerComponentType("keycard_data", builder -> builder.persistent(KeycardData.CODEC).networkSynchronized(KeycardData.STREAM_CODEC));
 
 	//recipe serializers
 	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<LimitedUseKeycardRecipe>> LIMITED_USE_KEYCARD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("limited_use_keycard_recipe", () -> new SimpleCraftingRecipeSerializer<>(LimitedUseKeycardRecipe::new));
@@ -2555,15 +2561,15 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<KeycardHolderItem> KEYCARD_HOLDER = ITEMS.register("keycard_holder", () -> new KeycardHolderItem(itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY)));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final DeferredItem<KeycardItem> KEYCARD_LVL_1 = ITEMS.register("keycard_lv1", () -> new KeycardItem(itemProp(), 0));
+	public static final DeferredItem<KeycardItem> KEYCARD_LVL_1 = ITEMS.register("keycard_lv1", () -> new KeycardItem(itemProp().component(KEYCARD_DATA, KeycardData.DEFAULT), 0));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final DeferredItem<KeycardItem> KEYCARD_LVL_2 = ITEMS.register("keycard_lv2", () -> new KeycardItem(itemProp(), 1));
+	public static final DeferredItem<KeycardItem> KEYCARD_LVL_2 = ITEMS.register("keycard_lv2", () -> new KeycardItem(itemProp().component(KEYCARD_DATA, KeycardData.DEFAULT), 1));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final DeferredItem<KeycardItem> KEYCARD_LVL_3 = ITEMS.register("keycard_lv3", () -> new KeycardItem(itemProp(), 2));
+	public static final DeferredItem<KeycardItem> KEYCARD_LVL_3 = ITEMS.register("keycard_lv3", () -> new KeycardItem(itemProp().component(KEYCARD_DATA, KeycardData.DEFAULT), 2));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final DeferredItem<KeycardItem> KEYCARD_LVL_4 = ITEMS.register("keycard_lv4", () -> new KeycardItem(itemProp(), 3));
+	public static final DeferredItem<KeycardItem> KEYCARD_LVL_4 = ITEMS.register("keycard_lv4", () -> new KeycardItem(itemProp().component(KEYCARD_DATA, KeycardData.DEFAULT), 3));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final DeferredItem<KeycardItem> KEYCARD_LVL_5 = ITEMS.register("keycard_lv5", () -> new KeycardItem(itemProp(), 4));
+	public static final DeferredItem<KeycardItem> KEYCARD_LVL_5 = ITEMS.register("keycard_lv5", () -> new KeycardItem(itemProp().component(KEYCARD_DATA, KeycardData.DEFAULT), 4));
 	@HasManualPage
 	public static final DeferredItem<KeyPanelItem> KEY_PANEL = ITEMS.register("keypad_item", () -> new KeyPanelItem(itemProp()));
 	public static final DeferredItem<KeypadChestItem> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestItem(SCContent.KEYPAD_CHEST.get(), itemProp()));

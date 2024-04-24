@@ -6,6 +6,7 @@ import org.joml.Vector3f;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
+import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -71,7 +72,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 				boolean isKeycardHolder = item == SCContent.KEYCARD_HOLDER.get();
 
 				//either no keycard, or an unlinked keycard, or an admin tool
-				if (!isKeycardHolder && (!(item instanceof KeycardItem) || !Utils.getTag(stack).getBoolean("linked")) && !isCodebreaker)
+				if (!isKeycardHolder && (!(item instanceof KeycardItem) || !stack.getOrDefault(SCContent.KEYCARD_DATA, KeycardData.DEFAULT).linked()) && !isCodebreaker)
 					noKeycardRightclick.accept(be);
 				else if (item != SCContent.LIMITED_USE_KEYCARD.get()) //limited use keycards are only crafting components now
 					return be.onRightClickWithActionItem(stack, hand, player, isCodebreaker, isKeycardHolder);

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blockentities;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -48,7 +49,7 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 
 				setUp = true;
 				setAcceptedLevels(levels);
-				setSignature(Utils.getTag(stack).getInt("signature"));
+				setSignature(stack.getOrDefault(SCContent.KEYCARD_DATA, KeycardData.DEFAULT).signature());
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.setup_successful." + keySuffix, item.getLevel() + 1), ChatFormatting.GREEN);
 				return ItemInteractionResult.SUCCESS;
 			}

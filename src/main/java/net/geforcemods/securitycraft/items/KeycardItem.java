@@ -2,19 +2,14 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.nbt.CompoundTag;
+import net.geforcemods.securitycraft.components.KeycardData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
 public class KeycardItem extends Item {
-	private static final Component LINK_INFO = Component.translatable("tooltip.securitycraft:keycard.link_info").setStyle(Utils.GRAY_STYLE);
-	public static final Component LIMITED_INFO = Component.translatable("tooltip.securitycraft:keycard.limited_info").setStyle(Utils.GRAY_STYLE);
 	private final int level; //0-indexed
 
 	public KeycardItem(Item.Properties properties, int level) {
@@ -31,21 +26,11 @@ public class KeycardItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> list, TooltipFlag flag) {
-		if (this == SCContent.LIMITED_USE_KEYCARD.get())
-			return;
+		if (this != SCContent.LIMITED_USE_KEYCARD.get()) {
+			KeycardData data = stack.get(SCContent.KEYCARD_DATA);
 
-		CompoundTag tag = Utils.getTag(stack);
-
-		if (tag.getBoolean("linked")) {
-			list.add(Component.translatable("tooltip.securitycraft:keycard.signature", StringUtils.leftPad("" + tag.getInt("signature"), 5, "0")).setStyle(Utils.GRAY_STYLE));
-			list.add(Component.translatable("tooltip.securitycraft:keycard.reader_owner", tag.getString("ownerName")).setStyle(Utils.GRAY_STYLE));
+			if (data != null)
+				data.addToTooltip(ctx, list::add, flag);
 		}
-		else
-			list.add(LINK_INFO);
-
-		if (tag.getBoolean("limited"))
-			list.add(Component.translatable("tooltip.securitycraft:keycard.uses", tag.getInt("uses")).setStyle(Utils.GRAY_STYLE));
-		else
-			list.add(LIMITED_INFO);
 	}
 }

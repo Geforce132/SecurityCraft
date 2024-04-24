@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
@@ -179,15 +180,15 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	}
 
 	public MutableComponent insertCard(ItemStack stack, Player player) {
-		CompoundTag tag = Utils.getTag(stack);
-		Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
+		KeycardData keycardData = stack.getOrDefault(SCContent.KEYCARD_DATA, KeycardData.DEFAULT);
+		Owner keycardOwner = new Owner(keycardData.ownerName(), keycardData.ownerUUID());
 
 		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
 		if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !TeamUtils.areOnSameTeam(getOwner(), keycardOwner)) || !getOwner().getUUID().equals(keycardOwner.getUUID()))
 			return Component.translatable("messages.securitycraft:keycardReader.differentOwner");
 
 		//the keycard's signature does not match this keycard reader's
-		if (getSignature() != tag.getInt("signature"))
+		if (getSignature() != keycardData.signature())
 			return Component.translatable("messages.securitycraft:keycardReader.wrongSignature");
 
 		int keycardLevel = ((KeycardItem) stack.getItem()).getLevel();
@@ -200,16 +201,14 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		boolean powered = level.getBlockState(worldPosition).getValue(BlockStateProperties.POWERED) && getSignalLength() > 0;
 
 		if (!powered) {
-			if (tag.getBoolean("limited")) {
-				int uses = tag.getInt("uses");
+			if (keycardData.limited()) {
+				int usesLeft = keycardData.usesLeft();
 
-				if (uses <= 0)
+				if (usesLeft <= 0)
 					return Component.translatable("messages.securitycraft:keycardReader.noUses");
 
-				if (!player.isCreative()) {
-					tag.putInt("uses", --uses);
-					CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
-				}
+				if (!player.isCreative())
+					stack.set(SCContent.KEYCARD_DATA, keycardData.setUsesLeft(--usesLeft));
 			}
 
 			activate();

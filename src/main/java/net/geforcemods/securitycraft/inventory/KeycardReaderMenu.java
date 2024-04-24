@@ -4,12 +4,10 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
+import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.util.TeamUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -17,7 +15,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 
 public class KeycardReaderMenu extends AbstractContainerMenu {
@@ -52,11 +49,11 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 				if (!(stack.getItem() instanceof KeycardItem) || stack.getItem() == SCContent.LIMITED_USE_KEYCARD.get())
 					return false;
 
-				if (!stack.has(DataComponents.CUSTOM_DATA))
+				if (!stack.has(SCContent.KEYCARD_DATA))
 					return true;
 
-				CompoundTag tag = Utils.getTag(stack);
-				Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
+				KeycardData keycardData = stack.get(SCContent.KEYCARD_DATA);
+				Owner keycardOwner = new Owner(keycardData.ownerName(), keycardData.ownerUUID());
 				String keycardOwnerUUID = keycardOwner.getUUID();
 
 				//only allow keycards that have been linked to a keycard reader with the same owner as this keycard reader
@@ -69,23 +66,20 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 		ItemStack keycard = keycardSlot.getItem();
 
 		if (!keycard.isEmpty()) {
-			CustomData.update(DataComponents.CUSTOM_DATA, keycard, tag -> {
-				tag.putBoolean("linked", true);
-				tag.putInt("signature", be.getSignature());
-				tag.putString("ownerName", be.getOwner().getName());
-				tag.putString("ownerUUID", be.getOwner().getUUID());
-			});
+			Owner owner = be.getOwner();
+
+			keycard.update(SCContent.KEYCARD_DATA, KeycardData.DEFAULT, oldData -> new KeycardData(true, be.getSignature(), oldData.limited(), oldData.usesLeft(), owner.getName(), owner.getUUID()));
 		}
 	}
 
-	public void setKeycardUses(int uses) {
+	public void setKeycardUsesLeft(int usesLeft) {
 		ItemStack keycard = keycardSlot.getItem();
 
 		if (!keycard.isEmpty()) {
-			CustomData.update(DataComponents.CUSTOM_DATA, keycard, tag -> {
-				if (tag.getBoolean("limited"))
-					tag.putInt("uses", uses);
-			});
+			KeycardData keycardData = keycard.getOrDefault(SCContent.KEYCARD_DATA, KeycardData.DEFAULT);
+
+			if (keycardData.limited())
+				keycard.set(SCContent.KEYCARD_DATA, keycardData.setUsesLeft(usesLeft));
 		}
 	}
 
