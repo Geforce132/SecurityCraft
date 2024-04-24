@@ -45,21 +45,21 @@ public class ItemStackComponentizationFixMixin {
 
 	@Unique
 	private static void fixKeycard(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
-		boolean linked = itemStackData.removeTag("linked").asBoolean(KeycardData.DEFAULT.linked());
-		int signature = itemStackData.removeTag("signature").asInt(KeycardData.DEFAULT.signature());
-		boolean limited = itemStackData.removeTag("limited").asBoolean(KeycardData.DEFAULT.limited());
-		int usesLeft = itemStackData.removeTag("uses").asInt(KeycardData.DEFAULT.usesLeft());
-		String ownerName = itemStackData.removeTag("ownerName").asString(KeycardData.DEFAULT.ownerName());
-		String ownerUUID = itemStackData.removeTag("ownerUUID").asString(KeycardData.DEFAULT.ownerUUID());
+		if (itemStackData.removeTag("linked").asBoolean(false)) {
+			int signature = itemStackData.removeTag("signature").asInt(KeycardData.DEFAULT.signature());
+			boolean limited = itemStackData.removeTag("limited").asBoolean(KeycardData.DEFAULT.limited());
+			int usesLeft = itemStackData.removeTag("uses").asInt(KeycardData.DEFAULT.usesLeft());
+			String ownerName = itemStackData.removeTag("ownerName").asString(KeycardData.DEFAULT.ownerName());
+			String ownerUUID = itemStackData.removeTag("ownerUUID").asString(KeycardData.DEFAULT.ownerUUID());
 
-		//@formatter:off
-		itemStackData.setComponent("securitycraft:keycard_data", dynamic.emptyMap()
-				.set("linked", dynamic.createBoolean(linked))
-				.set("signature", dynamic.createInt(signature))
-				.set("limited", dynamic.createBoolean(limited))
-				.set("uses_left", dynamic.createInt(usesLeft))
-				.set("owner_name", dynamic.createString(ownerName))
-				.set("owner_uuid", dynamic.createString(ownerUUID)));
-		//@formatter:on
+			//@formatter:off
+			itemStackData.setComponent("securitycraft:keycard_data", dynamic.emptyMap()
+					.set("signature", dynamic.createInt(signature))
+					.set("limited", dynamic.createBoolean(limited))
+					.set("uses_left", dynamic.createInt(usesLeft))
+					.set("owner_name", dynamic.createString(ownerName))
+					.set("owner_uuid", dynamic.createString(ownerUUID)));
+			//@formatter:on
+		}
 	}
 }

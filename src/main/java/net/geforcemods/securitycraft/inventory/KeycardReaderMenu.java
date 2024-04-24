@@ -65,11 +65,8 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 	public void link() {
 		ItemStack keycard = keycardSlot.getItem();
 
-		if (!keycard.isEmpty()) {
-			Owner owner = be.getOwner();
-
-			keycard.update(SCContent.KEYCARD_DATA, KeycardData.DEFAULT, oldData -> new KeycardData(true, be.getSignature(), oldData.limited(), oldData.usesLeft(), owner.getName(), owner.getUUID()));
-		}
+		if (!keycard.isEmpty())
+			keycard.update(SCContent.KEYCARD_DATA, KeycardData.DEFAULT, oldData -> oldData.setSignature(be.getSignature()));
 	}
 
 	public void setKeycardUsesLeft(int usesLeft) {

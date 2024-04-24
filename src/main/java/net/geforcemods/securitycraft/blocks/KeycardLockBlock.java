@@ -52,11 +52,10 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 
 			if (stack.getItem() instanceof KeycardItem) {
 				KeycardData keycardData = stack.get(SCContent.KEYCARD_DATA);
-				boolean hasData = keycardData != null;
 
-				if (!hasData || !keycardData.linked())
+				if (keycardData == null)
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.unlinked_keycard"), ChatFormatting.RED);
-				else if (hasData) {
+				else {
 					Owner keycardOwner = new Owner(keycardData.ownerName(), keycardData.ownerUUID());
 
 					if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !TeamUtils.areOnSameTeam(be.getOwner(), keycardOwner)) || !be.getOwner().getUUID().equals(keycardOwner.getUUID()))

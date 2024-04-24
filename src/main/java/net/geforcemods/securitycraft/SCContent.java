@@ -2561,15 +2561,15 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<KeycardHolderItem> KEYCARD_HOLDER = ITEMS.register("keycard_holder", () -> new KeycardHolderItem(itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY)));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final DeferredItem<KeycardItem> KEYCARD_LVL_1 = ITEMS.register("keycard_lv1", () -> new KeycardItem(itemProp().component(KEYCARD_DATA, KeycardData.DEFAULT), 0));
+	public static final DeferredItem<KeycardItem> KEYCARD_LVL_1 = ITEMS.register("keycard_lv1", () -> new KeycardItem(itemProp(), 0));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final DeferredItem<KeycardItem> KEYCARD_LVL_2 = ITEMS.register("keycard_lv2", () -> new KeycardItem(itemProp().component(KEYCARD_DATA, KeycardData.DEFAULT), 1));
+	public static final DeferredItem<KeycardItem> KEYCARD_LVL_2 = ITEMS.register("keycard_lv2", () -> new KeycardItem(itemProp(), 1));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final DeferredItem<KeycardItem> KEYCARD_LVL_3 = ITEMS.register("keycard_lv3", () -> new KeycardItem(itemProp().component(KEYCARD_DATA, KeycardData.DEFAULT), 2));
+	public static final DeferredItem<KeycardItem> KEYCARD_LVL_3 = ITEMS.register("keycard_lv3", () -> new KeycardItem(itemProp(), 2));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final DeferredItem<KeycardItem> KEYCARD_LVL_4 = ITEMS.register("keycard_lv4", () -> new KeycardItem(itemProp().component(KEYCARD_DATA, KeycardData.DEFAULT), 3));
+	public static final DeferredItem<KeycardItem> KEYCARD_LVL_4 = ITEMS.register("keycard_lv4", () -> new KeycardItem(itemProp(), 3));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final DeferredItem<KeycardItem> KEYCARD_LVL_5 = ITEMS.register("keycard_lv5", () -> new KeycardItem(itemProp().component(KEYCARD_DATA, KeycardData.DEFAULT), 4));
+	public static final DeferredItem<KeycardItem> KEYCARD_LVL_5 = ITEMS.register("keycard_lv5", () -> new KeycardItem(itemProp(), 4));
 	@HasManualPage
 	public static final DeferredItem<KeyPanelItem> KEY_PANEL = ITEMS.register("keypad_item", () -> new KeyPanelItem(itemProp()));
 	public static final DeferredItem<KeypadChestItem> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestItem(SCContent.KEYPAD_CHEST.get(), itemProp()));
