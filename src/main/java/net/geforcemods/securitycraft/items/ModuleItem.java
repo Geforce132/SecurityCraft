@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
@@ -24,6 +25,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -151,15 +153,14 @@ public class ModuleItem extends Item {
 		return module;
 	}
 
-	public static Block getBlockAddon(ItemStack stack) {
-		//TODO:
-		//		if (!stack.hasTag())
-		//			return null;
-		//
-		//		ListTag items = stack.getTag().getList("ItemInventory", Tag.TAG_COMPOUND);
-		//
-		//		if (items != null && !items.isEmpty() && ItemStack.of(items.getCompound(0)).getItem() instanceof BlockItem blockItem)
-		//			return blockItem.getBlock();
+	public static Block getBlockAddon(ItemStack moduleStack) {
+		if (!moduleStack.has(DataComponents.CONTAINER))
+			return null;
+
+		List<ItemStack> stacks = moduleStack.get(DataComponents.CONTAINER).nonEmptyStream().toList();
+
+		if (!stacks.isEmpty() && stacks.getFirst().getItem() instanceof BlockItem blockItem)
+			return blockItem.getBlock();
 
 		return null;
 	}

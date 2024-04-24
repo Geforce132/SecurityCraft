@@ -3,11 +3,7 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
-import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -53,18 +49,7 @@ public class KeycardHolderItem extends Item {
 		return !oldStack.is(newStack.getItem());
 	}
 
-	public static int getCardCount(ItemStack stack, HolderLookup.Provider lookupProvider) {
-		int count = 0;
-		ListTag items = Utils.getTag(stack).getList("ItemInventory", Tag.TAG_COMPOUND);
-
-		for (int i = 0; i < items.size(); i++) {
-			CompoundTag item = items.getCompound(i);
-			int slot = item.getInt("Slot");
-
-			if (slot < KeycardHolderMenu.CONTAINER_SIZE && ItemStack.parseOptional(lookupProvider, item).getItem() instanceof KeycardItem)
-				count++;
-		}
-
-		return count;
+	public static int getCardCount(ItemStack stack) {
+		return (int) stack.get(DataComponents.CONTAINER).stream().filter(item -> item.getItem() instanceof KeycardItem).count();
 	}
 }

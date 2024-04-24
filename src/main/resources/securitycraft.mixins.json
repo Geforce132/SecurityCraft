@@ -17,6 +17,7 @@
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",
 		"camera.TrackedEntityMixin",
+		"datafix.ItemStackComponentizationFixMixin",
 		"datafix.V1460Mixin",
 		"portal.PortalForcerMixin",
 		"potion.BrewingStandMenuMixin",

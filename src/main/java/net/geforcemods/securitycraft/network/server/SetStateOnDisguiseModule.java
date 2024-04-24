@@ -41,7 +41,6 @@ public record SetStateOnDisguiseModule(BlockState state, StandingOrWallType stan
 				if (state.isAir()) {
 					tag.remove("SavedState");
 					tag.remove("StandingOrWall");
-					tag.remove("ItemInventory");
 				}
 				else {
 					tag.put("SavedState", NbtUtils.writeBlockState(state));

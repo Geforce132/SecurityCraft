@@ -100,6 +100,11 @@ public class DisguiseModuleMenu extends StateSelectorAccessMenu {
 		return inventory;
 	}
 
+	@Override
+	public void removed(Player player) {
+		inventory.stopOpen(player);
+	}
+
 	public static class AddonSlot extends Slot {
 		public AddonSlot(ModuleItemContainer inventory, int index, int xPos, int yPos) {
 			super(inventory, index, xPos, yPos);

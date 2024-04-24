@@ -12,9 +12,12 @@ import net.minecraft.world.item.ItemStack;
 
 public class KeycardHolderMenu extends AbstractContainerMenu {
 	public static final int CONTAINER_SIZE = 5;
+	private final ItemContainer keycardHolderInv;
 
 	public KeycardHolderMenu(int id, Inventory playerInventory, ItemContainer keycardHolderInv) {
 		super(SCContent.KEYCARD_HOLDER_MENU.get(), id);
+
+		this.keycardHolderInv = keycardHolderInv;
 
 		for (int i = 0; i < CONTAINER_SIZE; i++) {
 			addSlot(new Slot(keycardHolderInv, i, 44 + (i * 18), 20) {
@@ -77,5 +80,10 @@ public class KeycardHolderMenu extends AbstractContainerMenu {
 	@Override
 	public boolean stillValid(Player player) {
 		return true;
+	}
+
+	@Override
+	public void removed(Player player) {
+		keycardHolderInv.stopOpen(player);
 	}
 }

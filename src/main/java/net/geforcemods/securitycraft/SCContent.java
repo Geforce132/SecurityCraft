@@ -259,6 +259,7 @@ import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SignItem;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.BlockGetter;
@@ -2538,7 +2539,7 @@ public class SCContent {
 	public static final DeferredItem<AdminToolItem> ADMIN_TOOL = ITEMS.register("admin_tool", () -> new AdminToolItem(itemProp(1)));
 	public static final DeferredItem<BlockItem> ANCIENT_DEBRIS_MINE_ITEM = ITEMS.registerSimpleBlockItem(SCContent.ANCIENT_DEBRIS_MINE, itemProp().fireResistant());
 	@HasManualPage
-	public static final DeferredItem<BriefcaseItem> BRIEFCASE = ITEMS.register("briefcase", () -> new BriefcaseItem(itemProp(1)));
+	public static final DeferredItem<BriefcaseItem> BRIEFCASE = ITEMS.register("briefcase", () -> new BriefcaseItem(itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY)));
 	@HasManualPage
 	public static final DeferredItem<CameraMonitorItem> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem(itemProp(1)));
 	@HasManualPage
@@ -2552,7 +2553,7 @@ public class SCContent {
 	public static final DeferredItem<FakeLiquidBucketItem> FAKE_WATER_BUCKET = ITEMS.register("bucket_f_water", () -> new FakeLiquidBucketItem(SCContent.FAKE_WATER, itemProp(1)));
 	public static final DeferredItem<DisplayCaseItem> GLOW_DISPLAY_CASE_ITEM = ITEMS.register(GLOW_DISPLAY_CASE_PATH, () -> new DisplayCaseItem(SCContent.GLOW_DISPLAY_CASE.get(), itemProp(), true));
 	@HasManualPage
-	public static final DeferredItem<KeycardHolderItem> KEYCARD_HOLDER = ITEMS.register("keycard_holder", () -> new KeycardHolderItem(itemProp(1)));
+	public static final DeferredItem<KeycardHolderItem> KEYCARD_HOLDER = ITEMS.register("keycard_holder", () -> new KeycardHolderItem(itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY)));
 	@HasManualPage(PageGroup.KEYCARDS)
 	public static final DeferredItem<KeycardItem> KEYCARD_LVL_1 = ITEMS.register("keycard_lv1", () -> new KeycardItem(itemProp(), 0));
 	@HasManualPage(PageGroup.KEYCARDS)
