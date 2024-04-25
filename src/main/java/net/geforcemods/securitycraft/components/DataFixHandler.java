@@ -62,6 +62,14 @@ public class DataFixHandler {
 		registerSingleItem(schema, map, "securitycraft:glow_display_case", "DisplayedStack");
 	}
 
+	public static void registerSentry(Schema schema, Map<String, Supplier<TypeTemplate>> map) {
+		//@formatter:off
+		schema.register(map, "securitycraft:sentry", () -> DSL.optionalFields(
+				"InstalledWhitelist", References.ITEM_STACK.in(schema),
+				"InstalledModule", References.ITEM_STACK.in(schema)));
+		//@formatter:on
+	}
+
 	private static void fixItemInventory(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
 		//@formatter:off
 		List<Dynamic<?>> list = dynamic.get("ItemInventory")
