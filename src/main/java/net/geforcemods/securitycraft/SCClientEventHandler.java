@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntit
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -43,6 +44,7 @@ import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent.Stage;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class SCClientEventHandler {
@@ -115,6 +117,14 @@ public class SCClientEventHandler {
 			event.setCanceled(true);
 			event.setSwingHand(false);
 		}
+	}
+
+	@SubscribeEvent
+	public static void onItemTooltip(ItemTooltipEvent event) {
+		OwnerData ownerData = event.getItemStack().get(SCContent.OWNER_DATA);
+
+		if (ownerData != null)
+			ownerData.addToTooltip(event.getContext(), line -> event.getToolTip().add(1, line), event.getFlags()); //add after item name
 	}
 
 	public static void cameraOverlay(GuiGraphics guiGraphics, float partialTicks) {

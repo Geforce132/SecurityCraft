@@ -997,7 +997,7 @@
 	"securitycraft.subtitle.lock": "컨테이너 잠금",
 	"securitycraft.subtitle.ping": "소닉 보안 시스템이 탱하는 소리가 납니다.",
 	"securitycraft.subtitle.taserfire": "테이저 발사",
-	"tooltip.securitycraft:briefcase.owner": "소유자: %s",
+	"tooltip.securitycraft.component.owner": "소유자: %s",
 	"tooltip.securitycraft:camera": "카메라",
 	"tooltip.securitycraft:cameraMonitor": "바인딩된 카메라 #:",
 	"tooltip.securitycraft:keycard.limited_info": "이 카드를 제작대에 있는 제한사용 키카드와 결합하면 사용 빈도를 제어할 수 있습니다.",

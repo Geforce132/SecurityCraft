@@ -1318,7 +1318,7 @@
 	"securitycraft.subtitle.lock": "Behälter wird verschlossen",
 	"securitycraft.subtitle.ping": "Schallsicherheitssystem pingt",
 	"securitycraft.subtitle.taserfire": "Taser wird gefeuert",
-	"tooltip.securitycraft:briefcase.owner": "Besitzer: %s",
+	"tooltip.securitycraft.component.owner": "Besitzer: %s",
 	"tooltip.securitycraft:camera": "Kamera",
 	"tooltip.securitycraft:cameraMonitor": "Anzahl an Kameras:",
 	"tooltip.securitycraft:keycard.limited_info": "Verbinde diese Karte in einer Werkbank mit einer begrenzt nutzbaren Schlüsselkarte, um zu kontrollieren, wie oft sie verwendet werden darf.",

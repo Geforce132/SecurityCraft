@@ -1322,7 +1322,7 @@
 	"securitycraft.subtitle.lock": "コンテナロック",
 	"securitycraft.subtitle.ping": "音波セキュリティシステムPings",
 	"securitycraft.subtitle.taserfire": "テーザー銃射撃",
-	"tooltip.securitycraft:briefcase.owner": "オーナー：%s",
+	"tooltip.securitycraft.component.owner": "オーナー：%s",
 	"tooltip.securitycraft:camera": "カメラ",
 	"tooltip.securitycraft:cameraMonitor": "バインドされたカメラ数：",
 	"tooltip.securitycraft:keycard.limited_info": "このカードと限定使用キーカードを作業台で組み合わせて、使用頻度を制御します。",

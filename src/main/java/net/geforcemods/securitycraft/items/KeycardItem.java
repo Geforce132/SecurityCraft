@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.components.KeycardData;
+import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -30,10 +31,14 @@ public class KeycardItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> list, TooltipFlag flag) {
 		if (this != SCContent.LIMITED_USE_KEYCARD.get()) {
-			KeycardData data = stack.get(SCContent.KEYCARD_DATA);
+			OwnerData ownerData = stack.getOrDefault(SCContent.OWNER_DATA, OwnerData.DEFAULT);
+			KeycardData keycardData = stack.get(SCContent.KEYCARD_DATA);
 
-			if (data != null)
-				data.addToTooltip(ctx, list::add, flag);
+			if (ownerData != null && !ownerData.showInTooltip())
+				list.add(Component.translatable("tooltip.securitycraft:keycard.reader_owner", ownerData.name()).setStyle(Utils.GRAY_STYLE));
+
+			if (keycardData != null)
+				keycardData.addToTooltip(ctx, list::add, flag);
 			else {
 				list.add(LINK_INFO);
 				list.add(LIMITED_INFO);

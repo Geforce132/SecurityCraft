@@ -1319,7 +1319,7 @@
 	"securitycraft.subtitle.lock": "Verrouillage du conteneur",
 	"securitycraft.subtitle.ping": "Ping du système de sécurité sonique",
 	"securitycraft.subtitle.taserfire": "Tir de taser",
-	"tooltip.securitycraft:briefcase.owner": "Propriétaire : %s",
+	"tooltip.securitycraft.component.owner": "Propriétaire : %s",
 	"tooltip.securitycraft:camera": "Caméra",
 	"tooltip.securitycraft:cameraMonitor": "# des caméras liées :",
 	"tooltip.securitycraft:keycard.limited_info": "Combinez cette carte avec une carte d'accès à utilisations limitées dans un établi pour contrôler la fréquence de ses utilisations.",

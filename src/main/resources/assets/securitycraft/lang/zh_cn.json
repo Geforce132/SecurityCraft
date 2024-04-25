@@ -1327,7 +1327,7 @@
 	"securitycraft.subtitle.lock": "容器：上锁",
 	"securitycraft.subtitle.ping": "声波安全系统：Ping",
 	"securitycraft.subtitle.taserfire": "泰瑟枪：开火",
-	"tooltip.securitycraft:briefcase.owner": "所属玩家：%s",
+	"tooltip.securitycraft.component.owner": "所属玩家：%s",
 	"tooltip.securitycraft:camera": "摄像头",
 	"tooltip.securitycraft:cameraMonitor": "绑定的摄像头：",
 	"tooltip.securitycraft:keycard.limited_info": "将这张卡和使用限制安全卡在工作台中合成，以限制其使用次数。",

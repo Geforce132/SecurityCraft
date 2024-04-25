@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.components.KeycardData;
+import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
@@ -180,12 +181,13 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	}
 
 	public MutableComponent insertCard(ItemStack stack, Player player) {
-		KeycardData keycardData = stack.getOrDefault(SCContent.KEYCARD_DATA, KeycardData.DEFAULT);
-		Owner keycardOwner = new Owner(keycardData.ownerName(), keycardData.ownerUUID());
+		Owner keycardOwner = stack.getOrDefault(SCContent.OWNER_DATA, OwnerData.DEFAULT).toOwner();
 
 		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
 		if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !TeamUtils.areOnSameTeam(getOwner(), keycardOwner)) || !getOwner().getUUID().equals(keycardOwner.getUUID()))
 			return Component.translatable("messages.securitycraft:keycardReader.differentOwner");
+
+		KeycardData keycardData = stack.getOrDefault(SCContent.KEYCARD_DATA, KeycardData.DEFAULT);
 
 		//the keycard's signature does not match this keycard reader's
 		if (getSignature() != keycardData.signature())

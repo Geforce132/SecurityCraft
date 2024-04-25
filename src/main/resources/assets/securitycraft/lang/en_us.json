@@ -1327,7 +1327,7 @@
 	"securitycraft.subtitle.lock": "Container locking",
 	"securitycraft.subtitle.ping": "Sonic Security System pings",
 	"securitycraft.subtitle.taserfire": "Taser firing",
-	"tooltip.securitycraft:briefcase.owner": "Owner: %s",
+	"tooltip.securitycraft.component.owner": "Owner: %s",
 	"tooltip.securitycraft:camera": "Camera",
 	"tooltip.securitycraft:cameraMonitor": "# of cameras bound:",
 	"tooltip.securitycraft:keycard.limited_info": "Combine this card with a Limited Use Keycard in a crafting table to control how often it can be used.",

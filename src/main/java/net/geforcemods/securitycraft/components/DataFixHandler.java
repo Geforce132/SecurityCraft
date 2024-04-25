@@ -89,16 +89,18 @@ public class DataFixHandler {
 			int signature = itemStackData.removeTag("signature").asInt(KeycardData.DEFAULT.signature());
 			boolean limited = itemStackData.removeTag("limited").asBoolean(KeycardData.DEFAULT.limited());
 			int usesLeft = itemStackData.removeTag("uses").asInt(KeycardData.DEFAULT.usesLeft());
-			String ownerName = itemStackData.removeTag("ownerName").asString(KeycardData.DEFAULT.ownerName());
-			String ownerUUID = itemStackData.removeTag("ownerUUID").asString(KeycardData.DEFAULT.ownerUUID());
+			String ownerName = itemStackData.removeTag("ownerName").asString(OwnerData.DEFAULT.name());
+			String ownerUUID = itemStackData.removeTag("ownerUUID").asString(OwnerData.DEFAULT.uuid());
 
 			//@formatter:off
 			itemStackData.setComponent("securitycraft:keycard_data", dynamic.emptyMap()
 					.set("signature", dynamic.createInt(signature))
 					.set("limited", dynamic.createBoolean(limited))
-					.set("uses_left", dynamic.createInt(usesLeft))
-					.set("owner_name", dynamic.createString(ownerName))
-					.set("owner_uuid", dynamic.createString(ownerUUID)));
+					.set("uses_left", dynamic.createInt(usesLeft)));
+			itemStackData.setComponent("securitycraft:owner", dynamic.emptyMap()
+					.set("name", dynamic.createString(ownerName))
+					.set("uuid", dynamic.createString(ownerUUID))
+					.set("show_in_tooltip", dynamic.createBoolean(false)));
 			//@formatter:on
 		}
 	}

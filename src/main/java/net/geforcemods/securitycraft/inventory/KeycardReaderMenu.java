@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.components.KeycardData;
+import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.util.TeamUtils;
 import net.minecraft.core.BlockPos;
@@ -49,11 +50,10 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 				if (!(stack.getItem() instanceof KeycardItem) || stack.getItem() == SCContent.LIMITED_USE_KEYCARD.get())
 					return false;
 
-				if (!stack.has(SCContent.KEYCARD_DATA))
+				if (!stack.has(SCContent.KEYCARD_DATA) || !stack.has(SCContent.OWNER_DATA))
 					return true;
 
-				KeycardData keycardData = stack.get(SCContent.KEYCARD_DATA);
-				Owner keycardOwner = new Owner(keycardData.ownerName(), keycardData.ownerUUID());
+				Owner keycardOwner = stack.getOrDefault(SCContent.OWNER_DATA, OwnerData.DEFAULT).toOwner();
 				String keycardOwnerUUID = keycardOwner.getUUID();
 
 				//only allow keycards that have been linked to a keycard reader with the same owner as this keycard reader
@@ -65,8 +65,10 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 	public void link() {
 		ItemStack keycard = keycardSlot.getItem();
 
-		if (!keycard.isEmpty())
+		if (!keycard.isEmpty()) {
 			keycard.update(SCContent.KEYCARD_DATA, KeycardData.DEFAULT, oldData -> oldData.setSignature(be.getSignature()));
+			keycard.set(SCContent.OWNER_DATA, OwnerData.fromOwner(be.getOwner(), false));
+		}
 	}
 
 	public void setKeycardUsesLeft(int usesLeft) {

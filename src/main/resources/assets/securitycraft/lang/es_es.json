@@ -1320,7 +1320,7 @@
 	"securitycraft.subtitle.lock": "Contenedor cerrándose",
 	"securitycraft.subtitle.ping": "Sistema de seguridad sónico suena",
 	"securitycraft.subtitle.taserfire": "Disparo de táser",
-	"tooltip.securitycraft:briefcase.owner": "Propietario: %s",
+	"tooltip.securitycraft.component.owner": "Propietario: %s",
 	"tooltip.securitycraft:camera": "Cámara",
 	"tooltip.securitycraft:cameraMonitor": "# cámaras vinculadas:",
 	"tooltip.securitycraft:keycard.limited_info": "Combine esta tarjeta con una tarjeta de acceso de uso limitado en una mesa de trabajo para controlar la frecuencia con la que se puede usar.",

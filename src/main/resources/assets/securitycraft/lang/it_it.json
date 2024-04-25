@@ -1319,7 +1319,7 @@
 	"securitycraft.subtitle.lock": "Il contenitore si sta bloccando",
 	"securitycraft.subtitle.ping": "Ping del sistema di sicurezza sonico",
 	"securitycraft.subtitle.taserfire": "Lo storditore sta sparando",
-	"tooltip.securitycraft:briefcase.owner": "Proprietario: %s",
+	"tooltip.securitycraft.component.owner": "Proprietario: %s",
 	"tooltip.securitycraft:camera": "Telecamera",
 	"tooltip.securitycraft:cameraMonitor": "# di telecamere collegate:",
 	"tooltip.securitycraft:keycard.limited_info": "Combina questa tessera a una con usi limitati in un banco da lavoro per controllare quanto spesso può essere usata.",
