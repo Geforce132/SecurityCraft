@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
+import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -130,8 +131,9 @@ public class AdminToolItem extends Item {
 		if (hand == InteractionHand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get()) {
 			ItemStack briefcase = player.getOffhandItem();
 			MutableComponent adminToolName = Utils.localize(getDescriptionId());
-			String ownerName = BriefcaseItem.getOwnerName(briefcase);
-			String ownerUUID = BriefcaseItem.getOwnerUUID(briefcase);
+			OwnerData ownerData = briefcase.getOrDefault(SCContent.OWNER_DATA, OwnerData.DEFAULT);
+			String ownerName = ownerData.name();
+			String ownerUUID = ownerData.uuid();
 
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.name", ownerName.isEmpty() ? "????" : ownerName), ChatFormatting.DARK_PURPLE);
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.uuid", ownerUUID.isEmpty() ? "????" : ownerUUID), ChatFormatting.DARK_PURPLE);

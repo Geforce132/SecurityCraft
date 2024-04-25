@@ -177,6 +177,7 @@ import net.geforcemods.securitycraft.commands.LowercasedEnumArgument;
 import net.geforcemods.securitycraft.commands.SingleGameProfileArgument;
 import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.components.OwnerData;
+import net.geforcemods.securitycraft.components.PasscodeData;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -322,8 +323,9 @@ public class SCContent {
 	public static final DeferredHolder<LootItemConditionType, LootItemConditionType> BLOCK_ENTITY_NBT = LOOT_ITEM_CONDITION_TYPES.register("tile_entity_nbt", () -> new LootItemConditionType(BlockEntityNBTCondition.CODEC));
 
 	//data components
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<KeycardData>> KEYCARD_DATA = DATA_COMPONENTS.registerComponentType("keycard_data", builder -> builder.persistent(KeycardData.CODEC).networkSynchronized(KeycardData.STREAM_CODEC));
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<OwnerData>> OWNER_DATA = DATA_COMPONENTS.registerComponentType("owner", builder -> builder.persistent(OwnerData.CODEC).networkSynchronized(OwnerData.STREAM_CODEC));
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<KeycardData>> KEYCARD_DATA = DATA_COMPONENTS.registerComponentType("keycard_data", builder -> builder.persistent(KeycardData.CODEC).networkSynchronized(KeycardData.STREAM_CODEC).cacheEncoding());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<OwnerData>> OWNER_DATA = DATA_COMPONENTS.registerComponentType("owner", builder -> builder.persistent(OwnerData.CODEC).networkSynchronized(OwnerData.STREAM_CODEC).cacheEncoding());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<PasscodeData>> PASSCODE_DATA = DATA_COMPONENTS.registerComponentType("passcode_data", builder -> builder.persistent(PasscodeData.CODEC).cacheEncoding());
 
 	//recipe serializers
 	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<LimitedUseKeycardRecipe>> LIMITED_USE_KEYCARD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("limited_use_keycard_recipe", () -> new SimpleCraftingRecipeSerializer<>(LimitedUseKeycardRecipe::new));

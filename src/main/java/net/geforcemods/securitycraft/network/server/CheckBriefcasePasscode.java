@@ -2,11 +2,10 @@ package net.geforcemods.securitycraft.network.server;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.components.PasscodeData;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -32,15 +31,15 @@ public record CheckBriefcasePasscode(String passcode) implements CustomPacketPay
 	public void handle(IPayloadContext ctx) {
 		Player player = ctx.player();
 		ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get());
+		PasscodeData passcodeData = briefcase.get(SCContent.PASSCODE_DATA);
 
-		if (!briefcase.isEmpty()) {
-			CompoundTag tag = Utils.getTag(briefcase);
-			String tagCode = tag.getString("passcode");
+		if (passcodeData != null) {
+			String dataCode = passcodeData.passcode();
 
-			if (tagCode.length() == 4) //If an old plaintext passcode is encountered, generate and check with the hashed variant
-				BriefcaseItem.hashAndSetPasscode(tag, PasscodeUtils.hashPasscodeWithoutSalt(tagCode), p -> BriefcaseItem.checkPasscode(player, briefcase, passcode, PasscodeUtils.bytesToString(p), tag));
+			if (dataCode.length() == 4) //If an old plaintext passcode is encountered, generate and check with the hashed variant
+				BriefcaseItem.hashAndSetPasscode(briefcase, PasscodeUtils.hashPasscodeWithoutSalt(dataCode), p -> BriefcaseItem.checkPasscode(player, briefcase, passcode, PasscodeUtils.bytesToString(p), briefcase.get(SCContent.PASSCODE_DATA)));
 			else
-				BriefcaseItem.checkPasscode(player, briefcase, passcode, tagCode, tag);
+				BriefcaseItem.checkPasscode(player, briefcase, passcode, dataCode, passcodeData);
 		}
 	}
 }

@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
@@ -51,5 +52,9 @@ public record OwnerData(String name, String uuid, boolean showInTooltip) impleme
 
 	public static OwnerData fromOwner(Owner owner, boolean showInTooltip) {
 		return new OwnerData(owner.getName(), owner.getUUID(), showInTooltip);
+	}
+
+	public static OwnerData fromPlayer(Player player, boolean showInTooltip) {
+		return new OwnerData(player.getName().getString(), player.getUUID().toString(), showInTooltip);
 	}
 }

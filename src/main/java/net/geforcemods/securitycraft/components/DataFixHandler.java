@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 
 import com.mojang.datafixers.DSL;
 import com.mojang.datafixers.schemas.Schema;
@@ -14,13 +15,16 @@ import net.minecraft.util.datafix.fixes.ItemStackComponentizationFix;
 import net.minecraft.util.datafix.fixes.References;
 
 public class DataFixHandler {
-	private static final Set<String> BRIEFCASE_OR_KEYCARD_HOLDER_OR_DISGUISE_MODULE = Set.of("securitycraft:briefcase", "securitycraft:keycard_holder", "securitycraft:disguise_module");
+	private static final Set<String> KEYCARD_HOLDER_OR_DISGUISE_MODULE = Set.of("securitycraft:keycard_holder", "securitycraft:disguise_module");
 	private static final Set<String> KEYCARDS = Set.of("securitycraft:keycard_lv1", "securitycraft:keycard_lv2", "securitycraft:keycard_lv3", "securitycraft:keycard_lv4", "securitycraft:keycard_lv5");
 
 	private DataFixHandler() {}
 
 	public static void fix(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
-		if (itemStackData.is(BRIEFCASE_OR_KEYCARD_HOLDER_OR_DISGUISE_MODULE))
+		if (itemStackData.is("securitycraft:briefcase"))
+			fixBriefcase(itemStackData, dynamic);
+
+		if (itemStackData.is(KEYCARD_HOLDER_OR_DISGUISE_MODULE))
 			fixItemInventory(itemStackData, dynamic);
 
 		if (itemStackData.is(KEYCARDS))
@@ -70,6 +74,22 @@ public class DataFixHandler {
 		//@formatter:on
 	}
 
+	private static void fixBriefcase(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
+		String passcode = itemStackData.removeTag("passcode").asString("");
+		IntStream saltKey = itemStackData.removeTag("saltKey").asIntStream();
+
+		if (!passcode.isEmpty()) {
+			//@formatter:off
+			itemStackData.setComponent("securitycraft:passcode_data", dynamic.emptyMap()
+					.set("passcode", dynamic.createString(passcode))
+					.set("salt_key", dynamic.createIntList(saltKey)));
+			//@formatter:on
+		}
+
+		fixOwner(itemStackData, dynamic, "owner", true);
+		fixItemInventory(itemStackData, dynamic);
+	}
+
 	private static void fixItemInventory(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
 		//@formatter:off
 		List<Dynamic<?>> list = dynamic.get("ItemInventory")
@@ -89,20 +109,27 @@ public class DataFixHandler {
 			int signature = itemStackData.removeTag("signature").asInt(KeycardData.DEFAULT.signature());
 			boolean limited = itemStackData.removeTag("limited").asBoolean(KeycardData.DEFAULT.limited());
 			int usesLeft = itemStackData.removeTag("uses").asInt(KeycardData.DEFAULT.usesLeft());
-			String ownerName = itemStackData.removeTag("ownerName").asString(OwnerData.DEFAULT.name());
-			String ownerUUID = itemStackData.removeTag("ownerUUID").asString(OwnerData.DEFAULT.uuid());
 
 			//@formatter:off
 			itemStackData.setComponent("securitycraft:keycard_data", dynamic.emptyMap()
 					.set("signature", dynamic.createInt(signature))
 					.set("limited", dynamic.createBoolean(limited))
 					.set("uses_left", dynamic.createInt(usesLeft)));
-			itemStackData.setComponent("securitycraft:owner", dynamic.emptyMap()
-					.set("name", dynamic.createString(ownerName))
-					.set("uuid", dynamic.createString(ownerUUID))
-					.set("show_in_tooltip", dynamic.createBoolean(false)));
 			//@formatter:on
+			fixOwner(itemStackData, dynamic, "ownerName", false);
 		}
+	}
+
+	private static void fixOwner(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic, String ownerKey, boolean showInTooltip) {
+		String ownerName = itemStackData.removeTag(ownerKey).asString(OwnerData.DEFAULT.name());
+		String ownerUUID = itemStackData.removeTag("ownerUUID").asString(OwnerData.DEFAULT.uuid());
+
+		//@formatter:off
+		itemStackData.setComponent("securitycraft:owner", dynamic.emptyMap()
+				.set("name", dynamic.createString(ownerName))
+				.set("uuid", dynamic.createString(ownerUUID))
+				.set("show_in_tooltip", dynamic.createBoolean(showInTooltip)));
+		//@formatter:on
 	}
 
 	private static void registerSingleItem(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType, String itemKey) {

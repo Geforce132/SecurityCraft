@@ -5,15 +5,14 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.components.PasscodeData;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
-import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -75,13 +74,11 @@ public class UniversalKeyChangerItem extends Item {
 			ItemStack briefcase = player.getOffhandItem();
 
 			if (BriefcaseItem.isOwnedBy(briefcase, player) || player.isCreative()) {
-				CompoundTag tag = Utils.getTag(briefcase);
+				PasscodeData passcodeData = briefcase.get(SCContent.PASSCODE_DATA);
 
-				if (tag != null && tag.contains("passcode")) {
-					if (tag.contains("saltKey"))
-						SaltData.removeSalt(tag.getUUID("saltKey"));
-
-					PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
+				if (passcodeData != null) {
+					SaltData.removeSalt(passcodeData.saltKey());
+					briefcase.remove(SCContent.PASSCODE_DATA);
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), ChatFormatting.GREEN);
 					return InteractionResultHolder.success(keyChanger);
 				}

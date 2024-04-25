@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.network.server;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -13,7 +13,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetBriefcasePasscodeAndOwner(String passcode) implements CustomPacketPayload {
@@ -34,15 +33,11 @@ public record SetBriefcasePasscodeAndOwner(String passcode) implements CustomPac
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get());
 
 		if (!stack.isEmpty()) {
-			CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> {
-				if (!tag.contains("owner")) {
-					tag.putString("owner", player.getName().getString());
-					tag.putString("ownerUUID", player.getUUID().toString());
-				}
+			if (!stack.has(SCContent.OWNER_DATA))
+				stack.set(SCContent.OWNER_DATA, OwnerData.fromPlayer(player, true));
 
-				if (!passcode.isEmpty() && !tag.contains("passcode"))
-					BriefcaseItem.hashAndSetPasscode(tag, passcode, p -> {});
-			});
+			if (!passcode.isEmpty() && !stack.has(SCContent.PASSCODE_DATA))
+				BriefcaseItem.hashAndSetPasscode(stack, passcode, p -> {});
 		}
 	}
 }
