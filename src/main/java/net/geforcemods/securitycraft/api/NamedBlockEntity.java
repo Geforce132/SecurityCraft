@@ -29,15 +29,17 @@ public class NamedBlockEntity extends OwnableBlockEntity implements Nameable {
 		super.saveAdditional(tag, lookupProvider);
 
 		if (customName != null)
-			tag.putString("customName", Component.Serializer.toJson(customName, lookupProvider));
+			tag.putString("CustomName", Component.Serializer.toJson(customName, lookupProvider));
 	}
 
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 
-		if (tag.contains("customName"))
-			customName = Component.Serializer.fromJson(tag.getString("customName"), lookupProvider);
+		if (tag.contains("CustomName"))
+			customName = Component.Serializer.fromJson(tag.getString("CustomName"), lookupProvider);
+		else if (tag.contains("customName")) //Conversion of old string literal names
+			customName = Component.literal(tag.getString("customName"));
 	}
 
 	@Override
