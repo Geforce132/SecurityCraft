@@ -111,6 +111,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		tag(ItemTags.BOOKSHELF_BOOKS).add(SCContent.SC_MANUAL.get());
 		tag(ItemTags.BUTTONS).addTag(SCTags.Items.REINFORCED_BUTTONS);
 		tag(ItemTags.DAMPENS_VIBRATIONS).addTag(SCTags.Items.REINFORCED_WOOL);
+		tag(ItemTags.DURABILITY_ENCHANTABLE).add(SCContent.WIRE_CUTTERS.get(), SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get(), SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get(), SCContent.UNIVERSAL_BLOCK_REMOVER.get(), SCContent.UNIVERSAL_OWNER_CHANGER.get());
 		tag(ItemTags.DYEABLE).add(SCContent.BRIEFCASE.get(), SCContent.LENS.get());
 		tag(ItemTags.FENCE_GATES).add(SCContent.ELECTRIFIED_IRON_FENCE_GATE.get().asItem());
 		tag(ItemTags.FENCES).add(SCContent.ELECTRIFIED_IRON_FENCE.get().asItem());
@@ -128,6 +129,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		tag(ItemTags.SIGNS).addTag(SCTags.Items.SECRET_SIGNS);
 		tag(ItemTags.TERRACOTTA).addTag(SCTags.Items.REINFORCED_TERRACOTTA);
 		tag(ItemTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get().asItem(), SCContent.KEYPAD_TRAPDOOR.get().asItem(), SCContent.SCANNER_TRAPDOOR.get().asItem());
+		tag(ItemTags.VANISHING_ENCHANTABLE).add(SCContent.WIRE_CUTTERS.get(), SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get(), SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get(), SCContent.UNIVERSAL_BLOCK_REMOVER.get(), SCContent.UNIVERSAL_OWNER_CHANGER.get());
 		tag(ItemTags.WOODEN_FENCES).addTag(SCTags.Items.REINFORCED_WOODEN_FENCES);
 		tag(ItemTags.WOOL_CARPETS).addTag(SCTags.Items.REINFORCED_WOOL_CARPETS);
 

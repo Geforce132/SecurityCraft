@@ -122,6 +122,6 @@ public class UniversalBlockReinforcerItem extends Item {
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return stack.getEnchantmentLevel(Enchantments.MENDING) == 0;
+		return book.get(DataComponents.STORED_ENCHANTMENTS).getLevel(Enchantments.MENDING) == 0;
 	}
 }
