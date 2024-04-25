@@ -62,7 +62,7 @@ public class DataFixHandler {
 		registerSingleItem(schema, map, "securitycraft:glow_display_case", "DisplayedStack");
 	}
 
-	private static void fixKeycard(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
+	private static void fixItemInventory(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
 		//@formatter:off
 		List<Dynamic<?>> list = dynamic.get("ItemInventory")
 				.asList(d -> d.emptyMap()
@@ -76,7 +76,7 @@ public class DataFixHandler {
 		itemStackData.removeTag("ItemInventory");
 	}
 
-	private static void fixItemInventory(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
+	private static void fixKeycard(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
 		if (itemStackData.removeTag("linked").asBoolean(false)) {
 			int signature = itemStackData.removeTag("signature").asInt(KeycardData.DEFAULT.signature());
 			boolean limited = itemStackData.removeTag("limited").asBoolean(KeycardData.DEFAULT.limited());
