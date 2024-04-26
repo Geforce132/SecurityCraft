@@ -533,6 +533,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
 		//automatic
 		TagAppender<Block> dragonImmune = tag(BlockTags.DRAGON_IMMUNE);
+		TagAppender<Block> noRelocation = tag(Tags.Blocks.RELOCATION_NOT_SUPPORTED);
 		TagAppender<Block> witherImmune = tag(BlockTags.WITHER_IMMUNE);
 
 		for (DeferredHolder<Block, ? extends Block> ro : SCContent.BLOCKS.getEntries()) {
@@ -541,6 +542,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 			if (block != SCContent.CHISELED_CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ_BLOCK.get() && block != SCContent.CRYSTAL_QUARTZ_PILLAR.get() && block != SCContent.CRYSTAL_QUARTZ_SLAB.get() && block != SCContent.CRYSTAL_QUARTZ_STAIRS.get() && block != SCContent.CRYSTAL_QUARTZ_BRICKS.get() && block != SCContent.SMOOTH_CRYSTAL_QUARTZ.get() && block != SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get() && block != SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get()) {
 				dragonImmune.add(ro.getKey());
 				witherImmune.add(ro.getKey());
+				noRelocation.add(ro.getKey());
 			}
 
 			switch (block) {

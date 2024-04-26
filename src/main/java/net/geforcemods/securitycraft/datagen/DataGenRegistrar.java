@@ -39,6 +39,8 @@ public class DataGenRegistrar {
 
 		generator.addProvider(event.includeClient(), new BlockModelAndStateGenerator(output, existingFileHelper));
 		generator.addProvider(event.includeServer(), new DamageTypeTagGenerator(output, lookupProvider, existingFileHelper));
+		generator.addProvider(event.includeServer(), new EntityTypeTagGenerator(output, lookupProvider, existingFileHelper));
+		generator.addProvider(event.includeServer(), new FluidTagGenerator(output, lookupProvider, existingFileHelper));
 		generator.addProvider(event.includeClient(), new ItemModelGenerator(output, existingFileHelper));
 		generator.addProvider(event.includeServer(), new LootTableProvider(output, Set.of(), List.of(new SubProviderEntry(BlockLootTableGenerator::new, LootContextParamSets.BLOCK)), lookupProvider));
 		generator.addProvider(event.includeServer(), blockTagGenerator);
