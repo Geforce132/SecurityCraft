@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.components.PasscodeData;
+import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -36,9 +37,9 @@ public record CheckBriefcasePasscode(String passcode) implements CustomPacketPay
 			String dataCode = passcodeData.passcode();
 
 			if (dataCode.length() == 4) //If an old plaintext passcode is encountered, generate and check with the hashed variant
-				PasscodeData.hashAndSetPasscode(briefcase, PasscodeUtils.hashPasscodeWithoutSalt(dataCode), newPasscodeData -> newPasscodeData.checkPasscode(briefcase, passcode, () -> {}));
+				PasscodeData.hashAndSetPasscode(briefcase, PasscodeUtils.hashPasscodeWithoutSalt(dataCode), newPasscodeData -> BriefcaseItem.checkPasscode(player, briefcase, passcode, newPasscodeData));
 			else
-				passcodeData.checkPasscode(briefcase, passcode, () -> {});
+				BriefcaseItem.checkPasscode(player, briefcase, passcode, passcodeData);
 		}
 	}
 }
