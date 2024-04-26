@@ -404,7 +404,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			byte slot = stackTag.getByte("ModuleSlot");
 
 			if (slot >= 0 && slot < modules.size())
-				modules.set(slot, ItemStack.parseOptional(lookupProvider, stackTag));
+				modules.set(slot, Utils.parseOptional(lookupProvider, stackTag));
 		}
 
 		return modules;

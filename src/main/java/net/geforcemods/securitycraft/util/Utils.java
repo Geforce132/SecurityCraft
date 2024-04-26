@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.util;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -64,6 +65,10 @@ public class Utils {
 			return CustomData.EMPTY;
 		else
 			return customData;
+	}
+
+	public static ItemStack parseOptional(HolderLookup.Provider provider, CompoundTag tag) {
+		return tag.getInt("count") == 0 ? ItemStack.EMPTY : ItemStack.parse(provider, tag).orElse(ItemStack.EMPTY);
 	}
 
 	public static BlockPos readBlockPos(CompoundTag tag) {

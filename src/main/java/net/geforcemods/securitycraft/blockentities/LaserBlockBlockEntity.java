@@ -26,6 +26,7 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -80,7 +81,10 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		tag.put("sideConfig", saveSideConfig(sideConfig));
 
 		for (int i = 0; i < lenses.getContainerSize(); i++) {
-			tag.put("lens" + i, lenses.getItem(i).saveOptional(lookupProvider));
+			ItemStack lens = lenses.getItem(i);
+
+			if (!lens.isEmpty())
+				tag.put("lens" + i, lens.saveOptional(lookupProvider));
 		}
 	}
 
@@ -97,7 +101,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		sideConfig = loadSideConfig(tag.getCompound("sideConfig"));
 
 		for (int i = 0; i < lenses.getContainerSize(); i++) {
-			lenses.setItemExclusively(i, ItemStack.parseOptional(lookupProvider, tag.getCompound("lens" + i)));
+			lenses.setItemExclusively(i, Utils.parseOptional(lookupProvider, tag.getCompound("lens" + i)));
 		}
 
 		lenses.setChanged();

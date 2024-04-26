@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -58,7 +59,10 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 		tag.putBoolean("active", active);
 		tag.putBoolean("horizontal", horizontal);
 		tag.putBoolean("overriding_blocks", overridingBlocks);
-		tag.put("storedItem", projectedBlock.saveOptional(lookupProvider));
+
+		if (!projectedBlock.isEmpty())
+			tag.put("storedItem", projectedBlock.saveOptional(lookupProvider));
+
 		tag.put("SavedState", NbtUtils.writeBlockState(projectedState));
 	}
 
@@ -74,7 +78,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 		active = tag.getBoolean("active");
 		horizontal = tag.getBoolean("horizontal");
 		overridingBlocks = tag.getBoolean("overriding_blocks");
-		projectedBlock = ItemStack.parseOptional(lookupProvider, tag.getCompound("storedItem"));
+		projectedBlock = Utils.parseOptional(lookupProvider, tag.getCompound("storedItem"));
 
 		if (!tag.contains("SavedState"))
 			resetSavedState();

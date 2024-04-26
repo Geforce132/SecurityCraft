@@ -390,8 +390,13 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
+		ItemStack allowlistModule = getAllowlistModule();
+
 		tag.put("TileEntityData", getOwnerTag());
-		tag.put("InstalledWhitelist", getAllowlistModule().saveOptional(level().registryAccess()));
+
+		if (!allowlistModule.isEmpty())
+			tag.put("InstalledWhitelist", allowlistModule.saveOptional(level().registryAccess()));
+
 		tag.putBoolean("HasSpeedModule", hasSpeedModule());
 		tag.putInt("SentryMode", entityData.get(MODE));
 		tag.putBoolean("HasTarget", hasTarget());
@@ -418,7 +423,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		getSentryDisguiseBlockEntity().ifPresent(be -> {
 			//put the old module, if it exists, into the new disguise block
 			if (tag.contains("InstalledModule")) {
-				ItemStack module = ItemStack.parseOptional(level().registryAccess(), tag.getCompound("InstalledModule"));
+				ItemStack module = Utils.parseOptional(level().registryAccess(), tag.getCompound("InstalledModule"));
 
 				if (!module.isEmpty() && module.getItem() instanceof ModuleItem && ModuleItem.getBlockAddon(module) != null) {
 					be.insertModule(module, false);
@@ -426,7 +431,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 				}
 			}
 		});
-		entityData.set(ALLOWLIST, ItemStack.parseOptional(level().registryAccess(), tag.getCompound("InstalledWhitelist")));
+		entityData.set(ALLOWLIST, Utils.parseOptional(level().registryAccess(), tag.getCompound("InstalledWhitelist")));
 		entityData.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
 		entityData.set(MODE, tag.getInt("SentryMode"));
 		entityData.set(HAS_TARGET, tag.getBoolean("HasTarget"));
