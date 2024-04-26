@@ -175,8 +175,8 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedTintedGlassBloc
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.commands.LowercasedEnumArgument;
 import net.geforcemods.securitycraft.commands.SingleGameProfileArgument;
-import net.geforcemods.securitycraft.components.Cameras;
 import net.geforcemods.securitycraft.components.CodebreakerData;
+import net.geforcemods.securitycraft.components.IndexedPositions;
 import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.components.PasscodeData;
@@ -329,7 +329,7 @@ public class SCContent {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<OwnerData>> OWNER_DATA = DATA_COMPONENTS.registerComponentType("owner", builder -> builder.persistent(OwnerData.CODEC).networkSynchronized(OwnerData.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<PasscodeData>> PASSCODE_DATA = DATA_COMPONENTS.registerComponentType("passcode_data", builder -> builder.persistent(PasscodeData.CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<CodebreakerData>> CODEBREAKER_DATA = DATA_COMPONENTS.registerComponentType("codebreaker_data", builder -> builder.persistent(CodebreakerData.CODEC).networkSynchronized(CodebreakerData.STREAM_CODEC).cacheEncoding());
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Cameras>> CAMERAS = DATA_COMPONENTS.registerComponentType("cameras", builder -> builder.persistent(Cameras.CODEC).networkSynchronized(Cameras.STREAM_CODEC).cacheEncoding());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<IndexedPositions>> INDEXED_POSITIONS = DATA_COMPONENTS.registerComponentType("indexed_positions", builder -> builder.persistent(IndexedPositions.CODEC).networkSynchronized(IndexedPositions.STREAM_CODEC).cacheEncoding());
 
 	//recipe serializers
 	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<LimitedUseKeycardRecipe>> LIMITED_USE_KEYCARD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("limited_use_keycard_recipe", () -> new SimpleCraftingRecipeSerializer<>(LimitedUseKeycardRecipe::new));
@@ -2555,7 +2555,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<BriefcaseItem> BRIEFCASE = ITEMS.register("briefcase", () -> new BriefcaseItem(itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY)));
 	@HasManualPage
-	public static final DeferredItem<CameraMonitorItem> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem(itemProp(1).component(CAMERAS, Cameras.EMPTY)));
+	public static final DeferredItem<CameraMonitorItem> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem(itemProp(1).component(INDEXED_POSITIONS, IndexedPositions.EMPTY)));
 	@HasManualPage
 	public static final DeferredItem<CodebreakerItem> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp().durability(5).rarity(Rarity.RARE).component(CODEBREAKER_DATA, CodebreakerData.DEFAULT)));
 	@HasManualPage

@@ -152,9 +152,9 @@ public class DataFixHandler {
 	}
 
 	private static void fixCameraMonitor(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
-		List<Dynamic<?>> cameras = new ArrayList<>();
+		List<Dynamic<?>> positions = new ArrayList<>();
 
-		for (int i = 1; i <= Cameras.MAX_CAMERAS; i++) {
+		for (int i = 1; i <= IndexedPositions.MAX_CAMERAS; i++) {
 			Optional<? extends Dynamic<?>> camera = itemStackData.removeTag("Camera" + i).result();
 
 			if (camera.isPresent()) {
@@ -177,7 +177,7 @@ public class DataFixHandler {
 							.set("dimension", dynamic.createString(dimension))
 							.set("pos", dynamic.createIntList(IntStream.of(x, y, z)));
 
-					cameras.add(dynamic.emptyMap()
+					positions.add(dynamic.emptyMap()
 							.set("index", dynamic.createInt(i))
 							.set("global_pos", globalPos));
 					//@formatter:on
@@ -185,8 +185,8 @@ public class DataFixHandler {
 			}
 		}
 
-		if (!cameras.isEmpty())
-			itemStackData.setComponent("securitycraft:cameras", dynamic.emptyMap().set("cameras", dynamic.createList(cameras.stream())));
+		if (!positions.isEmpty())
+			itemStackData.setComponent("securitycraft:indexed_positions", dynamic.emptyMap().set("positions", dynamic.createList(positions.stream())));
 	}
 
 	private static void registerSingleItem(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType, String itemKey) {

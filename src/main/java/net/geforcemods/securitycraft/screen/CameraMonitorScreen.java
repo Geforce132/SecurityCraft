@@ -7,8 +7,8 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.components.Cameras;
-import net.geforcemods.securitycraft.components.Cameras.Camera;
+import net.geforcemods.securitycraft.components.IndexedPositions;
+import net.geforcemods.securitycraft.components.IndexedPositions.Entry;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.MountCamera;
@@ -60,8 +60,8 @@ public class CameraMonitorScreen extends Screen {
 
 		Button prevPageButton = addRenderableWidget(new Button(width / 2 - 25, height / 2 + 57, 20, 20, Component.literal("<"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, page - 1)), Button.DEFAULT_NARRATION));
 		Button nextPageButton = addRenderableWidget(new Button(width / 2 + 5, height / 2 + 57, 20, 20, Component.literal(">"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, page + 1)), Button.DEFAULT_NARRATION));
-		Cameras cameras = cameraMonitor.getOrDefault(SCContent.CAMERAS, Cameras.EMPTY);
-		List<Camera> views = cameras.filledOrderedList();
+		IndexedPositions cameras = cameraMonitor.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY);
+		List<Entry> views = cameras.filledOrderedList();
 		Level level = Minecraft.getInstance().level;
 
 		for (int i = 0; i < 10; i++) {
@@ -69,7 +69,7 @@ public class CameraMonitorScreen extends Screen {
 			int camID = buttonId + (page - 1) * 10;
 			int x = leftPos + 18 + (i % 5) * 30;
 			int y = topPos + 30 + (i / 5) * 55;
-			Camera camera = views.get(camID - 1);
+			Entry camera = views.get(camID - 1);
 			GlobalPos view = camera == null ? null : camera.globalPos();
 			Button cameraButton = addRenderableWidget(new Button(x, y, 20, 20, Component.empty(), button -> cameraButtonClicked(button, camera), Button.DEFAULT_NARRATION));
 			Button unbindButton = addRenderableWidget(new SmallXButton(x + 19, y - 8, button -> unbindButtonClicked(button, camera)));
@@ -132,7 +132,7 @@ public class CameraMonitorScreen extends Screen {
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, xSize, ySize);
 	}
 
-	private void cameraButtonClicked(Button button, Camera camera) {
+	private void cameraButtonClicked(Button button, Entry camera) {
 		if (camera != null) {
 			BlockPos cameraPos = camera.globalPos().pos();
 
@@ -146,14 +146,14 @@ public class CameraMonitorScreen extends Screen {
 		}
 	}
 
-	private void unbindButtonClicked(Button button, Camera camera) {
+	private void unbindButtonClicked(Button button, Entry camera) {
 		if (camera != null) {
 			int camID = camera.index();
 			int i = (camID - 1) % 10;
 			Button cameraButton = cameraButtons[i];
 
 			PacketDistributor.sendToServer(new RemoveCameraTag(camera.globalPos()));
-			Cameras.remove(cameraMonitor, cameraMonitor.get(SCContent.CAMERAS), camera.globalPos());
+			IndexedPositions.remove(cameraMonitor, cameraMonitor.get(SCContent.INDEXED_POSITIONS), camera.globalPos());
 			button.active = false;
 			cameraButton.active = false;
 			cameraButton.setTooltip(null);

@@ -28,9 +28,9 @@ import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
-import net.geforcemods.securitycraft.components.Cameras;
-import net.geforcemods.securitycraft.components.Cameras.Camera;
 import net.geforcemods.securitycraft.components.CodebreakerData;
+import net.geforcemods.securitycraft.components.IndexedPositions;
+import net.geforcemods.securitycraft.components.IndexedPositions.Entry;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
@@ -116,7 +116,6 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -281,9 +280,9 @@ public class ClientHandler {
 				if (!(entity instanceof Player player))
 					return EMPTY_STATE;
 
-				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, Cameras.MAX_CAMERAS, SCContent.CAMERAS.get(), (component, i) -> {
-					if (component != null && component.hasCameraAdded()) {
-						for (Camera camera : component.cameras()) {
+				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, IndexedPositions.MAX_CAMERAS, (positions, i) -> {
+					if (positions != null && positions.hasPositionAdded()) {
+						for (Entry camera : positions.positions()) {
 							if (camera.index() == i)
 								return camera.globalPos().pos();
 						}
@@ -292,7 +291,7 @@ public class ClientHandler {
 					return null;
 				});
 
-				if (!stack.getOrDefault(SCContent.CAMERAS, Cameras.EMPTY).hasCameraAdded()) {
+				if (!stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).hasPositionAdded()) {
 					if (linkingState == NOT_LINKED_STATE)
 						return NOT_LINKED_STATE;
 					else
@@ -377,7 +376,7 @@ public class ClientHandler {
 
 				if (!(entity instanceof Player player))
 					return 0.0F;
-				float state = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof ICodebreakable, 0, null, null, false, (_component, pos) -> true);
+				float state = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof ICodebreakable, 0, null, false, (_positions, pos) -> true);
 
 				if (state == LINKED_STATE || state == NOT_LINKED_STATE)
 					return 0.25F;
@@ -743,11 +742,11 @@ public class ClientHandler {
 		Minecraft.getInstance().levelRenderer.blockChanged(Minecraft.getInstance().level, pos, null, null, 0);
 	}
 
-	private static <T> float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, DataComponentType<T> componentType, BiFunction<T, Integer, BlockPos> getCoords) {
-		return getLinkingState(level, player, stackInHand, isValidHitResult, tagSize, componentType, getCoords, true, null);
+	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<IndexedPositions, Integer, BlockPos> getCoords) {
+		return getLinkingState(level, player, stackInHand, isValidHitResult, tagSize, getCoords, true, null);
 	}
 
-	protected static <T> float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, DataComponentType<T> componentType, BiFunction<T, Integer, BlockPos> getCoords, boolean loop, BiPredicate<T, BlockPos> useCheckmark) {
+	protected static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<IndexedPositions, Integer, BlockPos> getCoords, boolean loop, BiPredicate<IndexedPositions, BlockPos> useCheckmark) {
 		double reachDistance = player.blockInteractionRange();
 		double eyeHeight = player.getEyeHeight();
 		Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
@@ -756,21 +755,21 @@ public class ClientHandler {
 			BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
 
 			if (hitResult != null && hitResult.getType() == Type.BLOCK && isValidHitResult.test(hitResult)) {
-				T component = componentType == null ? null : stackInHand.get(componentType);
+				IndexedPositions positions = stackInHand.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY);
 
 				if (loop)
-					return loop(tagSize, getCoords, component, hitResult.getBlockPos());
+					return loop(tagSize, getCoords, positions, hitResult.getBlockPos());
 				else
-					return useCheckmark.test(component, hitResult.getBlockPos()) ? LINKED_STATE : NOT_LINKED_STATE;
+					return useCheckmark.test(positions, hitResult.getBlockPos()) ? LINKED_STATE : NOT_LINKED_STATE;
 			}
 		}
 
 		return UNKNOWN_STATE;
 	}
 
-	private static <T> float loop(int tagSize, BiFunction<T, Integer, BlockPos> getCoords, T component, BlockPos pos) {
+	private static float loop(int tagSize, BiFunction<IndexedPositions, Integer, BlockPos> getCoords, IndexedPositions positions, BlockPos pos) {
 		for (int i = 1; i <= tagSize; i++) {
-			BlockPos coords = getCoords.apply(component, i);
+			BlockPos coords = getCoords.apply(positions, i);
 
 			if (coords != null && coords.equals(pos))
 				return LINKED_STATE;
