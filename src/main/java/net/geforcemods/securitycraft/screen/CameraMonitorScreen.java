@@ -7,7 +7,8 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.items.CameraMonitorItem;
+import net.geforcemods.securitycraft.components.Cameras;
+import net.geforcemods.securitycraft.components.Cameras.Camera;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.MountCamera;
@@ -21,10 +22,10 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -33,23 +34,21 @@ public class CameraMonitorScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final Component selectCameras = Utils.localize("gui.securitycraft:monitor.selectCameras");
 	private Inventory playerInventory;
-	private CameraMonitorItem cameraMonitor;
-	private CompoundTag nbtTag;
+	private ItemStack cameraMonitor;
 	private Button[] cameraButtons = new Button[10];
 	private Button[] unbindButtons = new Button[10];
 	private CameraRedstoneModuleState[] redstoneModuleStates = new CameraRedstoneModuleState[10];
 	private int xSize = 176, ySize = 166, leftPos, topPos;
 	private int page = 1;
 
-	public CameraMonitorScreen(Inventory inventory, CameraMonitorItem item, CompoundTag itemNBTTag) {
+	public CameraMonitorScreen(Inventory inventory, ItemStack stack) {
 		super(Component.translatable(SCContent.CAMERA_MONITOR.get().getDescriptionId()));
 		playerInventory = inventory;
-		cameraMonitor = item;
-		nbtTag = itemNBTTag;
+		cameraMonitor = stack;
 	}
 
-	public CameraMonitorScreen(Inventory inventory, CameraMonitorItem item, CompoundTag itemNBTTag, int page) {
-		this(inventory, item, itemNBTTag);
+	public CameraMonitorScreen(Inventory inventory, ItemStack stack, int page) {
+		this(inventory, stack);
 		this.page = page;
 	}
 
@@ -59,9 +58,10 @@ public class CameraMonitorScreen extends Screen {
 		leftPos = (width - xSize) / 2;
 		topPos = (height - ySize) / 2;
 
-		Button prevPageButton = addRenderableWidget(new Button(width / 2 - 25, height / 2 + 57, 20, 20, Component.literal("<"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1)), Button.DEFAULT_NARRATION));
-		Button nextPageButton = addRenderableWidget(new Button(width / 2 + 5, height / 2 + 57, 20, 20, Component.literal(">"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1)), Button.DEFAULT_NARRATION));
-		List<GlobalPos> views = CameraMonitorItem.getCameraPositions(nbtTag);
+		Button prevPageButton = addRenderableWidget(new Button(width / 2 - 25, height / 2 + 57, 20, 20, Component.literal("<"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, page - 1)), Button.DEFAULT_NARRATION));
+		Button nextPageButton = addRenderableWidget(new Button(width / 2 + 5, height / 2 + 57, 20, 20, Component.literal(">"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, page + 1)), Button.DEFAULT_NARRATION));
+		Cameras cameras = cameraMonitor.getOrDefault(SCContent.CAMERAS, Cameras.EMPTY);
+		List<Camera> views = cameras.filledOrderedList();
 		Level level = Minecraft.getInstance().level;
 
 		for (int i = 0; i < 10; i++) {
@@ -69,16 +69,17 @@ public class CameraMonitorScreen extends Screen {
 			int camID = buttonId + (page - 1) * 10;
 			int x = leftPos + 18 + (i % 5) * 30;
 			int y = topPos + 30 + (i / 5) * 55;
-			Button cameraButton = addRenderableWidget(new Button(x, y, 20, 20, Component.empty(), button -> cameraButtonClicked(button, buttonId), Button.DEFAULT_NARRATION));
-			Button unbindButton = addRenderableWidget(new SmallXButton(x + 19, y - 8, button -> unbindButtonClicked(button, buttonId)));
-			GlobalPos view = views.get(camID - 1);
+			Camera camera = views.get(camID - 1);
+			GlobalPos view = camera == null ? null : camera.globalPos();
+			Button cameraButton = addRenderableWidget(new Button(x, y, 20, 20, Component.empty(), button -> cameraButtonClicked(button, camera), Button.DEFAULT_NARRATION));
+			Button unbindButton = addRenderableWidget(new SmallXButton(x + 19, y - 8, button -> unbindButtonClicked(button, camera)));
 
 			cameraButtons[i] = cameraButton;
 			unbindButtons[i] = unbindButton;
 			cameraButton.setMessage(cameraButton.getMessage().plainCopy().append(Component.literal("" + camID)));
 
 			if (view != null) {
-				SecurityCameraBlockEntity cameraBe = level.getBlockEntity(view.pos()) instanceof SecurityCameraBlockEntity camera ? camera : null;
+				SecurityCameraBlockEntity cameraBe = level.getBlockEntity(view.pos()) instanceof SecurityCameraBlockEntity cameraEntity ? cameraEntity : null;
 
 				if (cameraBe != null) {
 					BlockState state = level.getBlockState(view.pos());
@@ -106,15 +107,8 @@ public class CameraMonitorScreen extends Screen {
 			}
 		}
 
-		if (page == 1)
-			prevPageButton.active = false;
-
-		if (page == 3 || CameraMonitorItem.getCameraPositions(nbtTag).size() < (page * 10) + 1)
-			nextPageButton.active = false;
-
-		for (int i = CameraMonitorItem.getCameraPositions(nbtTag).size() + 1; i <= (page * 10); i++) {
-			cameraButtons[(i - 1) - ((page - 1) * 10)].active = false;
-		}
+		prevPageButton.active = page != 1;
+		nextPageButton.active = page != 3;
 	}
 
 	@Override
@@ -138,30 +132,33 @@ public class CameraMonitorScreen extends Screen {
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, xSize, ySize);
 	}
 
-	private void cameraButtonClicked(Button button, int buttonId) {
-		int camID = buttonId + (page - 1) * 10;
-		BlockPos cameraPos = CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1).pos();
+	private void cameraButtonClicked(Button button, Camera camera) {
+		if (camera != null) {
+			BlockPos cameraPos = camera.globalPos().pos();
 
-		if (minecraft.level.getBlockEntity(cameraPos) instanceof SecurityCameraBlockEntity camera && camera.isDisabled()) {
-			button.active = false;
-			return;
+			if (minecraft.level.getBlockEntity(cameraPos) instanceof SecurityCameraBlockEntity cameraEntity && cameraEntity.isDisabled()) {
+				button.active = false;
+				return;
+			}
+
+			PacketDistributor.sendToServer(new MountCamera(cameraPos));
+			Minecraft.getInstance().player.closeContainer();
 		}
-
-		PacketDistributor.sendToServer(new MountCamera(cameraPos));
-		Minecraft.getInstance().player.closeContainer();
 	}
 
-	private void unbindButtonClicked(Button button, int buttonId) {
-		int camID = buttonId + (page - 1) * 10;
-		int i = (camID - 1) % 10;
-		Button cameraButton = cameraButtons[i];
+	private void unbindButtonClicked(Button button, Camera camera) {
+		if (camera != null) {
+			int camID = camera.index();
+			int i = (camID - 1) % 10;
+			Button cameraButton = cameraButtons[i];
 
-		PacketDistributor.sendToServer(new RemoveCameraTag(camID));
-		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1)));
-		button.active = false;
-		cameraButton.active = false;
-		cameraButton.setTooltip(null);
-		redstoneModuleStates[i] = null;
+			PacketDistributor.sendToServer(new RemoveCameraTag(camera.globalPos()));
+			Cameras.remove(cameraMonitor, cameraMonitor.get(SCContent.CAMERAS), camera.globalPos());
+			button.active = false;
+			cameraButton.active = false;
+			cameraButton.setTooltip(null);
+			redstoneModuleStates[i] = null;
+		}
 	}
 
 	@Override

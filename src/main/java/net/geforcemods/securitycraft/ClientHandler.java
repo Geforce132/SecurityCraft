@@ -28,11 +28,12 @@ import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
+import net.geforcemods.securitycraft.components.Cameras;
+import net.geforcemods.securitycraft.components.Cameras.Camera;
 import net.geforcemods.securitycraft.components.CodebreakerData;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
-import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.LensItem;
@@ -115,6 +116,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -279,16 +281,18 @@ public class ClientHandler {
 				if (!(entity instanceof Player player))
 					return EMPTY_STATE;
 
-				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, 30, (tag, i) -> {
-					if (!tag.contains("Camera" + i))
-						return null;
+				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, Cameras.MAX_CAMERAS, SCContent.CAMERAS.get(), (component, i) -> {
+					if (component != null && component.hasCameraAdded()) {
+						for (Camera camera : component.cameras()) {
+							if (camera.index() == i)
+								return camera.globalPos().pos();
+						}
+					}
 
-					String camera = tag.getString("Camera" + i);
-
-					return Arrays.stream(camera.substring(0, camera.lastIndexOf(' ')).split(" ")).map(Integer::parseInt).toArray(Integer[]::new);
+					return null;
 				});
 
-				if (!CameraMonitorItem.hasCameraAdded(stack)) {
+				if (!stack.getOrDefault(SCContent.CAMERAS, Cameras.EMPTY).hasCameraAdded()) {
 					if (linkingState == NOT_LINKED_STATE)
 						return NOT_LINKED_STATE;
 					else
@@ -297,6 +301,7 @@ public class ClientHandler {
 				else
 					return linkingState;
 			});
+			//TODO: Fix when componentizing these items
 			ItemProperties.register(SCContent.MINE_REMOTE_ACCESS_TOOL.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
 				if (!(entity instanceof Player player))
 					return EMPTY_STATE;
@@ -372,8 +377,7 @@ public class ClientHandler {
 
 				if (!(entity instanceof Player player))
 					return 0.0F;
-
-				float state = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof ICodebreakable, 0, null, false, (_tag, pos) -> true);
+				float state = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof ICodebreakable, 0, null, null, false, (_component, pos) -> true);
 
 				if (state == LINKED_STATE || state == NOT_LINKED_STATE)
 					return 0.25F;
@@ -655,8 +659,8 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new EditModuleScreen(stack));
 	}
 
-	public static void displayCameraMonitorScreen(Inventory inv, CameraMonitorItem item, CompoundTag stackTag) {
-		Minecraft.getInstance().setScreen(new CameraMonitorScreen(inv, item, stackTag));
+	public static void displayCameraMonitorScreen(Inventory inv, ItemStack stack) {
+		Minecraft.getInstance().setScreen(new CameraMonitorScreen(inv, stack));
 	}
 
 	public static void displaySCManualScreen() {
@@ -739,11 +743,11 @@ public class ClientHandler {
 		Minecraft.getInstance().levelRenderer.blockChanged(Minecraft.getInstance().level, pos, null, null, 0);
 	}
 
-	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords) {
-		return getLinkingState(level, player, stackInHand, isValidHitResult, tagSize, getCoords, true, null);
+	private static <T> float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, DataComponentType<T> componentType, BiFunction<T, Integer, BlockPos> getCoords) {
+		return getLinkingState(level, player, stackInHand, isValidHitResult, tagSize, componentType, getCoords, true, null);
 	}
 
-	protected static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords, boolean loop, BiPredicate<CompoundTag, BlockPos> useCheckmark) {
+	protected static <T> float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, DataComponentType<T> componentType, BiFunction<T, Integer, BlockPos> getCoords, boolean loop, BiPredicate<T, BlockPos> useCheckmark) {
 		double reachDistance = player.blockInteractionRange();
 		double eyeHeight = player.getEyeHeight();
 		Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
@@ -752,23 +756,23 @@ public class ClientHandler {
 			BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
 
 			if (hitResult != null && hitResult.getType() == Type.BLOCK && isValidHitResult.test(hitResult)) {
-				CompoundTag tag = Utils.getTag(stackInHand);
+				T component = componentType == null ? null : stackInHand.get(componentType);
 
 				if (loop)
-					return loop(tagSize, getCoords, tag, hitResult.getBlockPos());
+					return loop(tagSize, getCoords, component, hitResult.getBlockPos());
 				else
-					return useCheckmark.test(tag, hitResult.getBlockPos()) ? LINKED_STATE : NOT_LINKED_STATE;
+					return useCheckmark.test(component, hitResult.getBlockPos()) ? LINKED_STATE : NOT_LINKED_STATE;
 			}
 		}
 
 		return UNKNOWN_STATE;
 	}
 
-	private static float loop(int tagSize, BiFunction<CompoundTag, Integer, Integer[]> getCoords, CompoundTag tag, BlockPos pos) {
+	private static <T> float loop(int tagSize, BiFunction<T, Integer, BlockPos> getCoords, T component, BlockPos pos) {
 		for (int i = 1; i <= tagSize; i++) {
-			Integer[] coords = getCoords.apply(tag, i);
+			BlockPos coords = getCoords.apply(component, i);
 
-			if (coords != null && coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
+			if (coords != null && coords.equals(pos))
 				return LINKED_STATE;
 		}
 

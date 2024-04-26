@@ -1320,7 +1320,7 @@
 	"securitycraft.subtitle.taserfire": "Taser wird gefeuert",
 	"tooltip.securitycraft.component.owner": "Besitzer: %s",
 	"tooltip.securitycraft:camera": "Kamera",
-	"tooltip.securitycraft:cameraMonitor": "Anzahl an Kameras:",
+	"tooltip.securitycraft:cameraMonitor": "Anzahl an Kameras: %s",
 	"tooltip.securitycraft:keycard.limited_info": "Verbinde diese Karte in einer Werkbank mit einer begrenzt nutzbaren Schlüsselkarte, um zu kontrollieren, wie oft sie verwendet werden darf.",
 	"tooltip.securitycraft:keycard.link_info": "Lege diese Karte in einen Schlüsselkartenleser um sie damit zu verbinden.",
 	"tooltip.securitycraft:keycard.reader_owner": "Funktioniert bei Schlüsselkartenlesern von: %s",

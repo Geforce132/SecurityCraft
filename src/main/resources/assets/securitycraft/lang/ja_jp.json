@@ -1324,7 +1324,7 @@
 	"securitycraft.subtitle.taserfire": "テーザー銃射撃",
 	"tooltip.securitycraft.component.owner": "オーナー：%s",
 	"tooltip.securitycraft:camera": "カメラ",
-	"tooltip.securitycraft:cameraMonitor": "バインドされたカメラ数：",
+	"tooltip.securitycraft:cameraMonitor": "バインドされたカメラ数：%s",
 	"tooltip.securitycraft:keycard.limited_info": "このカードと限定使用キーカードを作業台で組み合わせて、使用頻度を制御します。",
 	"tooltip.securitycraft:keycard.link_info": "このカードをキーカードリーダーに挿入してリンクします。",
 	"tooltip.securitycraft:keycard.reader_owner": "キーカードリーダーが動作するオーナー：%s",

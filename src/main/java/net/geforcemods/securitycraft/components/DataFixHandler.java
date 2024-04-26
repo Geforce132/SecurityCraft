@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.components;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
@@ -32,6 +34,9 @@ public class DataFixHandler {
 
 		if (itemStackData.is("securitycraft:codebreaker"))
 			fixCodebreaker(itemStackData, dynamic);
+
+		if (itemStackData.is("securitycraft:camera_monitor"))
+			fixCameraMonitor(itemStackData, dynamic);
 	}
 
 	public static void registerBlockEntities(Schema schema, Map<String, Supplier<TypeTemplate>> map) {
@@ -144,6 +149,44 @@ public class DataFixHandler {
 				.set("last_used_time", dynamic.createLong(lastUsedTime))
 				.set("was_successful", dynamic.createBoolean(wasSuccessful)));
 		//@formatter:on
+	}
+
+	private static void fixCameraMonitor(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
+		List<Dynamic<?>> cameras = new ArrayList<>();
+
+		for (int i = 1; i <= Cameras.MAX_CAMERAS; i++) {
+			Optional<? extends Dynamic<?>> camera = itemStackData.removeTag("Camera" + i).result();
+
+			if (camera.isPresent()) {
+				String[] data = camera.get().asString("").split(" ");
+				int x, y, z;
+				String dimension;
+
+				if (data.length >= 3) {
+					x = Integer.parseInt(data[0]);
+					y = Integer.parseInt(data[1]);
+					z = Integer.parseInt(data[2]);
+
+					if (data.length == 4)
+						dimension = data[3];
+					else
+						dimension = "minecraft:overworld";
+
+					//@formatter:off
+					Dynamic<?> globalPos = dynamic.emptyMap()
+							.set("dimension", dynamic.createString(dimension))
+							.set("pos", dynamic.createIntList(IntStream.of(x, y, z)));
+
+					cameras.add(dynamic.emptyMap()
+							.set("index", dynamic.createInt(i))
+							.set("global_pos", globalPos));
+					//@formatter:on
+				}
+			}
+		}
+
+		if (!cameras.isEmpty())
+			itemStackData.setComponent("securitycraft:cameras", dynamic.emptyMap().set("cameras", dynamic.createList(cameras.stream())));
 	}
 
 	private static void registerSingleItem(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType, String itemKey) {

@@ -1322,7 +1322,7 @@
 	"securitycraft.subtitle.taserfire": "Disparo de táser",
 	"tooltip.securitycraft.component.owner": "Propietario: %s",
 	"tooltip.securitycraft:camera": "Cámara",
-	"tooltip.securitycraft:cameraMonitor": "# cámaras vinculadas:",
+	"tooltip.securitycraft:cameraMonitor": "# cámaras vinculadas: %s",
 	"tooltip.securitycraft:keycard.limited_info": "Combine esta tarjeta con una tarjeta de acceso de uso limitado en una mesa de trabajo para controlar la frecuencia con la que se puede usar.",
 	"tooltip.securitycraft:keycard.link_info": "Coloque esta tarjeta en un lector de tarjetas para vincularla.",
 	"tooltip.securitycraft:keycard.reader_owner": "Funciona en lectores de tarjetas del propietario: %s",

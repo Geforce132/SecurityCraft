@@ -999,7 +999,7 @@
 	"securitycraft.subtitle.taserfire": "테이저 발사",
 	"tooltip.securitycraft.component.owner": "소유자: %s",
 	"tooltip.securitycraft:camera": "카메라",
-	"tooltip.securitycraft:cameraMonitor": "바인딩된 카메라 #:",
+	"tooltip.securitycraft:cameraMonitor": "바인딩된 카메라 #: %s",
 	"tooltip.securitycraft:keycard.limited_info": "이 카드를 제작대에 있는 제한사용 키카드와 결합하면 사용 빈도를 제어할 수 있습니다.",
 	"tooltip.securitycraft:keycard.link_info": "이 카드를 키카드 판독기에 꽂아 연결합니다.",
 	"tooltip.securitycraft:keycard.reader_owner": "다음 소유의 키카드 판독기에 대한 작업: %s",

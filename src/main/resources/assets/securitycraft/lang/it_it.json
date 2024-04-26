@@ -1321,7 +1321,7 @@
 	"securitycraft.subtitle.taserfire": "Lo storditore sta sparando",
 	"tooltip.securitycraft.component.owner": "Proprietario: %s",
 	"tooltip.securitycraft:camera": "Telecamera",
-	"tooltip.securitycraft:cameraMonitor": "# di telecamere collegate:",
+	"tooltip.securitycraft:cameraMonitor": "# di telecamere collegate: %s",
 	"tooltip.securitycraft:keycard.limited_info": "Combina questa tessera a una con usi limitati in un banco da lavoro per controllare quanto spesso può essere usata.",
 	"tooltip.securitycraft:keycard.link_info": "Inserisci questa tessera in un lettore per collegarla.",
 	"tooltip.securitycraft:keycard.reader_owner": "Funziona sui lettori di: %s",
