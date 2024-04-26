@@ -28,6 +28,7 @@ import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
+import net.geforcemods.securitycraft.components.CodebreakerData;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
@@ -364,10 +365,10 @@ public class ClientHandler {
 					return linkingState;
 			});
 			ItemProperties.register(SCContent.CODEBREAKER.get(), CodebreakerItem.STATE_PROPERTY, (stack, level, entity, id) -> {
-				CompoundTag tag = Utils.getTag(stack);
+				CodebreakerData codebreakerData = stack.getOrDefault(SCContent.CODEBREAKER_DATA, CodebreakerData.DEFAULT);
 
-				if (CodebreakerItem.wasRecentlyUsed(stack))
-					return tag.getBoolean(CodebreakerItem.WAS_SUCCESSFUL) ? 0.75F : 0.5F;
+				if (codebreakerData.wasRecentlyUsed())
+					return codebreakerData.wasSuccessful() ? 0.75F : 0.5F;
 
 				if (!(entity instanceof Player player))
 					return 0.0F;

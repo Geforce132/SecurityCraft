@@ -29,6 +29,9 @@ public class DataFixHandler {
 
 		if (itemStackData.is(KEYCARDS))
 			fixKeycard(itemStackData, dynamic);
+
+		if (itemStackData.is("securitycraft:codebreaker"))
+			fixCodebreaker(itemStackData, dynamic);
 	}
 
 	public static void registerBlockEntities(Schema schema, Map<String, Supplier<TypeTemplate>> map) {
@@ -129,6 +132,17 @@ public class DataFixHandler {
 				.set("name", dynamic.createString(ownerName))
 				.set("uuid", dynamic.createString(ownerUUID))
 				.set("show_in_tooltip", dynamic.createBoolean(showInTooltip)));
+		//@formatter:on
+	}
+
+	private static void fixCodebreaker(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
+		long lastUsedTime = itemStackData.removeTag("last_used_time").asLong(CodebreakerData.DEFAULT.lastUsedTime());
+		boolean wasSuccessful = itemStackData.removeTag("was_successful").asBoolean(CodebreakerData.DEFAULT.wasSuccessful());
+
+		//@formatter:off
+		itemStackData.setComponent("securitycraft:codebreaker_data", dynamic.emptyMap()
+				.set("last_used_time", dynamic.createLong(lastUsedTime))
+				.set("was_successful", dynamic.createBoolean(wasSuccessful)));
 		//@formatter:on
 	}
 

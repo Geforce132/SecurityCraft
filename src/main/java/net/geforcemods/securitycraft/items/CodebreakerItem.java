@@ -3,12 +3,12 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.components.CodebreakerData;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -20,13 +20,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 
 public class CodebreakerItem extends Item {
 	public static final ResourceLocation STATE_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "codebreaker_state");
-	public static final String WORKING = "working", LAST_USED_TIME = "last_used_time", WAS_SUCCESSFUL = "was_successful";
 
 	public CodebreakerItem(Item.Properties properties) {
 		super(properties);
@@ -51,15 +49,12 @@ public class CodebreakerItem extends Item {
 						codebreaker.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
 
 						if (!level.isClientSide) {
-							if (wasRecentlyUsed(codebreaker))
+							if (codebreaker.getOrDefault(SCContent.CODEBREAKER_DATA, CodebreakerData.DEFAULT).wasRecentlyUsed())
 								return InteractionResultHolder.pass(codebreaker);
 
 							boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
 
-							CustomData.update(DataComponents.CUSTOM_DATA, codebreaker, tag -> {
-								tag.putLong(LAST_USED_TIME, System.currentTimeMillis());
-								tag.putBoolean(WAS_SUCCESSFUL, isSuccessful);
-							});
+							codebreaker.set(SCContent.CODEBREAKER_DATA, new CodebreakerData(System.currentTimeMillis(), isSuccessful));
 
 							if (isSuccessful) {
 								player.openMenu(new MenuProvider() {
@@ -85,12 +80,6 @@ public class CodebreakerItem extends Item {
 		}
 
 		return InteractionResultHolder.pass(codebreaker);
-	}
-
-	public static boolean wasRecentlyUsed(ItemStack stack) {
-		long lastUsedTime = Utils.getTag(stack).getLong(CodebreakerItem.LAST_USED_TIME);
-
-		return lastUsedTime != 0 && System.currentTimeMillis() - lastUsedTime < 3000L;
 	}
 
 	@Override

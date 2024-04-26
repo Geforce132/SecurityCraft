@@ -12,11 +12,11 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.components.CodebreakerData;
 import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
-import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -39,7 +39,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -131,16 +130,13 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 			if (chance < 0.0D)
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
 			else {
-				if (isOwnedBy(player) || CodebreakerItem.wasRecentlyUsed(stack))
+				if (isOwnedBy(player) || stack.getOrDefault(SCContent.CODEBREAKER_DATA, CodebreakerData.DEFAULT).wasRecentlyUsed())
 					return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
 				boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
 
 				stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
-				CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> {
-					tag.putLong(CodebreakerItem.LAST_USED_TIME, System.currentTimeMillis());
-					tag.putBoolean(CodebreakerItem.WAS_SUCCESSFUL, isSuccessful);
-				});
+				stack.set(SCContent.CODEBREAKER_DATA, new CodebreakerData(System.currentTimeMillis(), isSuccessful));
 
 				if (isSuccessful)
 					activate();
