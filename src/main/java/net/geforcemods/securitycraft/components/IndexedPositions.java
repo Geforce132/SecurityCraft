@@ -16,6 +16,8 @@ import net.minecraft.world.item.ItemStack;
 
 public record IndexedPositions(List<Entry> positions) {
 	public static final int MAX_CAMERAS = 30;
+	public static final int MAX_MINES = 6;
+	public static final int MAX_SENTRIES = 12;
 	public static final IndexedPositions EMPTY = new IndexedPositions(List.of());
 	//@formatter:off
 	public static final Codec<IndexedPositions> CODEC = RecordCodecBuilder.create(

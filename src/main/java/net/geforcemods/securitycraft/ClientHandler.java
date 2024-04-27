@@ -1,10 +1,8 @@
 package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -30,7 +28,6 @@ import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.components.CodebreakerData;
 import net.geforcemods.securitycraft.components.IndexedPositions;
-import net.geforcemods.securitycraft.components.IndexedPositions.Entry;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
@@ -116,9 +113,9 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -280,16 +277,7 @@ public class ClientHandler {
 				if (!(entity instanceof Player player))
 					return EMPTY_STATE;
 
-				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, IndexedPositions.MAX_CAMERAS, (positions, i) -> {
-					if (positions != null && positions.hasPositionAdded()) {
-						for (Entry camera : positions.positions()) {
-							if (camera.index() == i)
-								return camera.globalPos().pos();
-						}
-					}
-
-					return null;
-				});
+				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, IndexedPositions.MAX_CAMERAS);
 
 				if (!stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).hasPositionAdded()) {
 					if (linkingState == NOT_LINKED_STATE)
@@ -305,12 +293,7 @@ public class ClientHandler {
 				if (!(entity instanceof Player player))
 					return EMPTY_STATE;
 
-				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive, 30, (tag, i) -> {
-					if (tag.getIntArray("mine" + i).length > 0)
-						return Arrays.stream(tag.getIntArray("mine" + i)).boxed().toArray(Integer[]::new);
-					else
-						return null;
-				});
+				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive, IndexedPositions.MAX_MINES);
 
 				if (!MineRemoteAccessToolItem.hasMineAdded(stack)) {
 					if (linkingState == NOT_LINKED_STATE)
@@ -325,10 +308,8 @@ public class ClientHandler {
 				if (!(entity instanceof Player))
 					return EMPTY_STATE;
 
-				CompoundTag stackTag = Utils.getTag(stack);
-
 				if (Minecraft.getInstance().crosshairPickEntity instanceof Sentry sentry) {
-					float linkingState = loop(12, (tag, i) -> Arrays.stream(tag.getIntArray("sentry" + i)).boxed().toArray(Integer[]::new), stackTag, sentry.blockPosition());
+					float linkingState = loop(IndexedPositions.MAX_SENTRIES, stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY), level, sentry.blockPosition());
 
 					if (!SentryRemoteAccessToolItem.hasSentryAdded(stackTag)) {
 						if (linkingState == NOT_LINKED_STATE)
@@ -357,7 +338,7 @@ public class ClientHandler {
 					}
 
 					return true;
-				}, 0, null, false, SonicSecuritySystemItem::isAdded);
+				}, 0, false, SonicSecuritySystemItem::isAdded);
 
 				if (!SonicSecuritySystemItem.hasLinkedBlock(stack)) {
 					if (linkingState == NOT_LINKED_STATE)
@@ -376,7 +357,7 @@ public class ClientHandler {
 
 				if (!(entity instanceof Player player))
 					return 0.0F;
-				float state = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof ICodebreakable, 0, null, false, (_positions, pos) -> true);
+				float state = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof ICodebreakable, 0, false, (_positions, pos) -> true);
 
 				if (state == LINKED_STATE || state == NOT_LINKED_STATE)
 					return 0.25F;
@@ -742,11 +723,11 @@ public class ClientHandler {
 		Minecraft.getInstance().levelRenderer.blockChanged(Minecraft.getInstance().level, pos, null, null, 0);
 	}
 
-	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<IndexedPositions, Integer, BlockPos> getCoords) {
-		return getLinkingState(level, player, stackInHand, isValidHitResult, tagSize, getCoords, true, null);
+	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int maximumEntries) {
+		return getLinkingState(level, player, stackInHand, isValidHitResult, maximumEntries, true, null);
 	}
 
-	protected static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int tagSize, BiFunction<IndexedPositions, Integer, BlockPos> getCoords, boolean loop, BiPredicate<IndexedPositions, BlockPos> useCheckmark) {
+	protected static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int maximumEntries, boolean loop, BiPredicate<IndexedPositions, BlockPos> useCheckmark) {
 		double reachDistance = player.blockInteractionRange();
 		double eyeHeight = player.getEyeHeight();
 		Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
@@ -758,7 +739,7 @@ public class ClientHandler {
 				IndexedPositions positions = stackInHand.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY);
 
 				if (loop)
-					return loop(tagSize, getCoords, positions, hitResult.getBlockPos());
+					return loop(maximumEntries, positions, level, hitResult.getBlockPos());
 				else
 					return useCheckmark.test(positions, hitResult.getBlockPos()) ? LINKED_STATE : NOT_LINKED_STATE;
 			}
@@ -767,12 +748,20 @@ public class ClientHandler {
 		return UNKNOWN_STATE;
 	}
 
-	private static float loop(int tagSize, BiFunction<IndexedPositions, Integer, BlockPos> getCoords, IndexedPositions positions, BlockPos pos) {
-		for (int i = 1; i <= tagSize; i++) {
-			BlockPos coords = getCoords.apply(positions, i);
+	private static float loop(int maximumEntries, IndexedPositions positions, Level level, BlockPos pos) {
+		if (positions != null && positions.hasPositionAdded()) {
+			GlobalPos globalPos = new GlobalPos(level.dimension(), pos);
 
-			if (coords != null && coords.equals(pos))
-				return LINKED_STATE;
+			for (int i = 1; i <= maximumEntries; i++) {
+				for (IndexedPositions.Entry entry : positions.positions()) {
+					if (entry.index() == i) {
+						GlobalPos toCheck = entry.globalPos();
+
+						if (toCheck != null && toCheck.equals(globalPos))
+							return LINKED_STATE;
+					}
+				}
+			}
 		}
 
 		return NOT_LINKED_STATE;
