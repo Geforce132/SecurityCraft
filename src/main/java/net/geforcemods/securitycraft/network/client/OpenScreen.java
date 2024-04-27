@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -19,7 +18,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -107,10 +105,8 @@ public class OpenScreen implements CustomPacketPayload {
 			case SENTRY_REMOTE_ACCESS_TOOL:
 				ItemStack srat = PlayerUtils.getItemStackFromAnyHand(player, SCContent.SENTRY_REMOTE_ACCESS_TOOL.get());
 
-				if (!srat.isEmpty()) {
-					CustomData.set(DataComponents.CUSTOM_DATA, srat, tag);
+				if (!srat.isEmpty())
 					ClientHandler.displaySRATScreen(srat);
-				}
 
 				break;
 			case SET_BRIEFCASE_PASSCODE:

@@ -26,7 +26,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -152,7 +151,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 				for (int i = 0; i < holderInventory.getContainerSize(); i++) {
 					ItemStack keycardStack = holderInventory.getItem(i);
 
-					if (keycardStack.getItem() instanceof KeycardItem && keycardStack.has(DataComponents.CUSTOM_DATA)) {
+					if (keycardStack.getItem() instanceof KeycardItem && keycardStack.has(SCContent.KEYCARD_DATA)) {
 						feedback = insertCard(keycardStack, player);
 
 						if (feedback == null)
