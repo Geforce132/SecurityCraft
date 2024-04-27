@@ -10,7 +10,7 @@
             {
               "function": "minecraft:copy_components",
               "include": [
-                "minecraft:custom_data"
+                "securitycraft:indexed_positions"
               ],
               "source": "block_entity"
             },

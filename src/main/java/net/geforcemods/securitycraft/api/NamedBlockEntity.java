@@ -83,6 +83,7 @@ public class NamedBlockEntity extends OwnableBlockEntity implements Nameable {
 
 	@Override
 	public void removeComponentsFromTag(CompoundTag tag) {
+		tag.remove("CustomName");
 		tag.remove("customName");
 	}
 }

@@ -2,31 +2,39 @@ package net.geforcemods.securitycraft.blockentities;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IEMPAffectedBE;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
-import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
+import net.geforcemods.securitycraft.components.IndexedPositions;
+import net.geforcemods.securitycraft.components.IndexedPositions.Entry;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
+import net.geforcemods.securitycraft.util.IncreasingInteger;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap.Builder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -44,8 +52,6 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	private static final int LISTEN_DELAY = 60;
 	/** The listening and recording range of Sonic Security Systems (perhaps a config option?) */
 	public static final int MAX_RANGE = 30;
-	/** The maximum number of blocks that a Sonic Security System can be linked to at once (perhaps a config option?) */
-	public static final int MAX_LINKED_BLOCKS = 30;
 	/** Whether the ping sound should be emitted or not */
 	private boolean emitsPings = true;
 	private int pingCooldown = PING_DELAY;
@@ -55,7 +61,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	private float radarRotationDegrees = 0;
 	private float oRadarRotationDegrees = 0;
 	/** A list containing all of the blocks that this SSS is linked to */
-	private Set<BlockPos> linkedBlocks = new HashSet<>();
+	private List<GlobalPos> linkedBlocks = new ArrayList<>();
 	/** Whether or not this Sonic Security System is on or off */
 	private boolean isActive = true;
 	/** Whether or not this Sonic Security System is currently recording a new note combination */
@@ -113,24 +119,24 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 			// If this SSS isn't linked to any blocks, return as no sound should
 			// be emitted and no blocks need to be removed
-			if (!isLinkedToBlock())
+			if (linkedBlocks.isEmpty())
 				return;
 
 			if (pingCooldown > 0)
 				pingCooldown--;
 			else {
-				ArrayList<BlockPos> blocksToRemove = new ArrayList<>();
-				Iterator<BlockPos> iterator = linkedBlocks.iterator();
+				ArrayList<GlobalPos> blocksToRemove = new ArrayList<>();
+				Iterator<GlobalPos> iterator = linkedBlocks.iterator();
 
 				while (iterator.hasNext()) {
-					BlockPos blockPos = iterator.next();
+					GlobalPos globalPos = iterator.next();
 
-					if (!(level.getBlockEntity(blockPos) instanceof ILockable))
-						blocksToRemove.add(blockPos);
+					if (!(level.getBlockEntity(globalPos.pos()) instanceof ILockable))
+						blocksToRemove.add(globalPos);
 				}
 
 				// This delinking part is in a separate loop to prevent a ConcurrentModificationException
-				for (BlockPos posToRemove : blocksToRemove) {
+				for (GlobalPos posToRemove : blocksToRemove) {
 					delink(posToRemove, false);
 					sync();
 				}
@@ -177,23 +183,13 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.saveAdditional(tag, lookupProvider);
 
-		// If there are blocks to save but the tag doesn't have a CompoundNBT
-		// to store them in, create one (shouldn't be needed)
-		if (!linkedBlocks.isEmpty() && !tag.contains("LinkedBlocks"))
-			tag.put("LinkedBlocks", new ListTag());
+		ListTag list = new ListTag();
 
-		Iterator<BlockPos> iterator = linkedBlocks.iterator();
-
-		while (iterator.hasNext()) {
-			BlockPos blockToSave = iterator.next();
-			CompoundTag nbt = Utils.writeBlockPos(blockToSave);
-
-			tag.getList("LinkedBlocks", Tag.TAG_COMPOUND).add(nbt);
-
-			if (!linkedBlocks.contains(blockToSave))
-				linkedBlocks.add(blockToSave);
+		for (GlobalPos blockToSave : linkedBlocks) {
+			list.add(GlobalPos.CODEC.encodeStart(lookupProvider.createSerializationContext(NbtOps.INSTANCE), blockToSave).getOrThrow());
 		}
 
+		tag.put("linked_blocks", list);
 		saveNotes(tag);
 		tag.putBoolean("emitsPings", emitsPings);
 		tag.putBoolean("isActive", isActive);
@@ -210,15 +206,27 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 
-		if (tag.contains("LinkedBlocks")) {
+		if (tag.contains("linked_blocks")) {
+			ListTag list = tag.getList("linked_blocks", Tag.TAG_COMPOUND);
+
+			for (Tag entry : list) {
+				try {
+					linkedBlocks.add(GlobalPos.CODEC.decode(NbtOps.INSTANCE, entry).result().get().getFirst());
+				}
+				catch (Exception exception) {
+					SecurityCraft.LOGGER.error("Failed to load global pos in Sonic Security System at position {}: {}", worldPosition, entry, exception);
+				}
+			}
+		}
+		//legacy
+		else if (tag.contains("LinkedBlocks")) {
 			ListTag list = tag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
 
-			// Read each saved position and add it to the linkedBlocks list
 			for (int i = 0; i < list.size(); i++) {
 				CompoundTag linkedBlock = list.getCompound(i);
 				BlockPos linkedBlockPos = Utils.readBlockPos(linkedBlock);
 
-				linkedBlocks.add(linkedBlockPos);
+				linkedBlocks.add(new GlobalPos(level != null ? level.dimension() : ResourceKey.create(Registries.DIMENSION, new ResourceLocation("overworld")), linkedBlockPos));
 			}
 		}
 
@@ -279,73 +287,30 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	}
 
 	/**
-	 * Copies the positions over from the SSS item's tag into this block entity.
-	 *
-	 * @param itemTag The CompoundTag of the Sonic Security System item to transfer over
-	 */
-	public boolean transferPositionsFromItem(CompoundTag itemTag) {
-		Set<BlockPos> positions = SonicSecuritySystemItem.stackTagToBlockPosSet(itemTag);
-
-		// If the block has already been linked with, don't add it to the list
-		positions.removeIf(this::isLinkedToBlock);
-		linkedBlocks.addAll(positions);
-
-		if (!linkedBlocks.isEmpty())
-			sync();
-
-		return true;
-	}
-
-	/**
-	 * @return If this Sonic Security System is linked to another block
-	 */
-	public boolean isLinkedToBlock() {
-		return !linkedBlocks.isEmpty();
-	}
-
-	/**
+	 * @param linkedPos the position of the block to check
 	 * @return If this Sonic Security System is linked to a block at a specific position
-	 * @param linkedBlockPos the position of the block to check
 	 */
-	public boolean isLinkedToBlock(BlockPos linkedBlockPos) {
-		if (linkedBlocks.isEmpty())
-			return false;
-
-		return linkedBlocks.contains(linkedBlockPos);
+	public boolean isLinkedToBlock(BlockPos linkedPos) {
+		return !linkedBlocks.isEmpty() && linkedBlocks.stream().map(GlobalPos::pos).anyMatch(linkedPos::equals);
 	}
 
 	/**
 	 * Delinks this Sonic Security System from the given block
 	 */
-	public void delink(BlockPos linkedBlockPos, boolean shouldSync) {
+	public void delink(GlobalPos linkedGlobalPos, boolean shouldSync) {
 		if (linkedBlocks.isEmpty())
 			return;
 
-		linkedBlocks.remove(linkedBlockPos);
+		linkedBlocks.remove(linkedGlobalPos);
 
 		if (shouldSync)
 			sync();
 	}
 
 	/**
-	 * Delinks this Sonic Security System from all other blocks
-	 */
-	public void delinkAll() {
-		linkedBlocks.clear();
-		sync();
-	}
-
-	/**
-	 * @return Returns the number of blocks that this Sonic Security System is linked to
-	 */
-	public int getNumberOfLinkedBlocks() {
-		return linkedBlocks.size();
-	}
-
-	/**
 	 * @return Returns the block positions that this Sonic Security System is linked to
 	 */
-	public Set<BlockPos> getLinkedBlocks() {
+	public List<GlobalPos> getLinkedBlocks() {
 		return linkedBlocks;
 	}
 
@@ -537,6 +502,33 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		return new Option[] {
 				signalLength
 		};
+	}
+
+	public ItemStack getItem() {
+		ItemStack stack = new ItemStack(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
+
+		stack.applyComponents(collectComponents());
+		return stack;
+	}
+
+	@Override
+	protected void applyImplicitComponents(DataComponentInput input) {
+		super.applyImplicitComponents(input);
+		linkedBlocks = input.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).positions().stream().map(Entry::globalPos).collect(Collectors.toList()); //needs to be modifiable
+	}
+
+	@Override
+	protected void collectImplicitComponents(Builder builder) {
+		IncreasingInteger counter = new IncreasingInteger(1);
+
+		super.collectImplicitComponents(builder);
+		builder.set(SCContent.INDEXED_POSITIONS, new IndexedPositions(linkedBlocks.stream().map(pos -> new Entry(counter.get(), pos)).toList()));
+	}
+
+	@Override
+	public void removeComponentsFromTag(CompoundTag tag) {
+		super.removeComponentsFromTag(tag);
+		tag.remove("linked_blocks");
 	}
 
 	public boolean wasCorrectTunePlayed() {

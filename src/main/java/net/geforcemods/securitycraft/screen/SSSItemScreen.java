@@ -1,10 +1,12 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.Set;
+import java.util.List;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.components.IndexedPositions;
+import net.geforcemods.securitycraft.components.IndexedPositions.Entry;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.network.server.RemovePositionFromSSS;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList;
@@ -12,7 +14,7 @@ import net.geforcemods.securitycraft.screen.components.SSSConnectionList.Connect
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -74,14 +76,14 @@ public class SSSItemScreen extends Screen implements ConnectionAccessor {
 	}
 
 	@Override
-	public Set<BlockPos> getPositions() {
-		return SonicSecuritySystemItem.stackTagToBlockPosSet(Utils.getTag(stack));
+	public List<GlobalPos> getPositions() {
+		return stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).positions().stream().map(Entry::globalPos).toList();
 	}
 
 	@Override
-	public void removePosition(BlockPos pos) {
-		SonicSecuritySystemItem.removeLinkedBlock(stack, pos);
-		PacketDistributor.sendToServer(new RemovePositionFromSSS(pos));
+	public void removePosition(GlobalPos globalPos) {
+		stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).remove(stack, globalPos);
+		PacketDistributor.sendToServer(new RemovePositionFromSSS(globalPos));
 		connectionList.refreshPositions();
 	}
 }

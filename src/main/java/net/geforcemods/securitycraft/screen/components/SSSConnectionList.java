@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.screen.components;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -20,7 +19,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -48,8 +47,8 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 
 		connectionInfo.clear();
 
-		for (BlockPos pos : parent.getPositions()) {
-			BlockEntity be = level.getBlockEntity(pos);
+		for (GlobalPos globalPos : parent.getPositions()) {
+			BlockEntity be = level.getBlockEntity(globalPos.pos());
 			Component blockName;
 
 			if (be instanceof Nameable nameable)
@@ -59,7 +58,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			else
 				blockName = Component.literal("????");
 
-			connectionInfo.add(new ConnectionInfo(pos, blockName));
+			connectionInfo.add(new ConnectionInfo(globalPos, blockName));
 		}
 	}
 
@@ -134,7 +133,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			if (length + 13 >= width - 6) //6 = barWidth
 				guiGraphics.renderTooltip(font, List.of(blockName), Optional.empty(), left + 1, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT));
 
-			guiGraphics.drawString(font, Utils.getFormattedCoordinates(connectionInfo.get(slotIndex).pos), left + 13, top + height + 5, 4210752, false);
+			guiGraphics.drawString(font, Utils.getFormattedCoordinates(connectionInfo.get(slotIndex).globalPos.pos()), left + 13, top + height + 5, 4210752, false);
 		}
 	}
 
@@ -147,7 +146,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			double relativeMouseY = mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight();
 
 			if (relativeMouseY >= top && relativeMouseY <= bottom && mouseX < 13) {
-				parent.removePosition(connectionInfo.get(slotIndex).pos);
+				parent.removePosition(connectionInfo.get(slotIndex).globalPos);
 				Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 				return true;
 			}
@@ -165,10 +164,10 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 	public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 
 	public interface ConnectionAccessor {
-		public Set<BlockPos> getPositions();
+		public List<GlobalPos> getPositions();
 
-		public void removePosition(BlockPos pos);
+		public void removePosition(GlobalPos globalPos);
 	}
 
-	private record ConnectionInfo(BlockPos pos, Component blockName) {}
+	private record ConnectionInfo(GlobalPos globalPos, Component blockName) {}
 }

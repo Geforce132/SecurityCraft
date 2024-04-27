@@ -13,6 +13,7 @@ import com.mojang.datafixers.schemas.Schema;
 import com.mojang.datafixers.types.templates.TypeTemplate;
 import com.mojang.serialization.Dynamic;
 
+import net.geforcemods.securitycraft.util.IncreasingInteger;
 import net.minecraft.util.datafix.fixes.ItemStackComponentizationFix;
 import net.minecraft.util.datafix.fixes.References;
 
@@ -43,6 +44,9 @@ public class DataFixHandler {
 
 		if (itemStackData.is("securitycraft:remote_access_sentry"))
 			fixSentryRemoteAccessTool(itemStackData, dynamic);
+
+		if (itemStackData.is("securitycraft:sonic_security_system"))
+			fixSonicSecuritySystem(itemStackData, dynamic);
 	}
 
 	public static void registerBlockEntities(Schema schema, Map<String, Supplier<TypeTemplate>> map) {
@@ -227,7 +231,7 @@ public class DataFixHandler {
 			if (sentry.isPresent()) {
 				//@formatter:off
 				Dynamic<?> globalPos = dynamic.emptyMap()
-						.set("dimension", dynamic.createString("minecraft:overworld")) //mines did not save the dimension beforehand, so this is the most correct assumption
+						.set("dimension", dynamic.createString("minecraft:overworld")) //sentries did not save the dimension beforehand, so this is the most correct assumption
 						.set("pos", sentry.get());
 				Dynamic<?> positionEntry = dynamic.emptyMap()
 						.set("index", dynamic.createInt(i))
@@ -242,6 +246,23 @@ public class DataFixHandler {
 
 		if (!positions.isEmpty())
 			itemStackData.setComponent("securitycraft:sentry_positions", dynamic.emptyMap().set("positions", dynamic.createList(positions.stream())));
+	}
+
+	private static void fixSonicSecuritySystem(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
+		IncreasingInteger counter = new IncreasingInteger(1);
+		//@formatter:off
+		List<Dynamic<?>> linkedBlocks = dynamic.get("LinkedBlocks")
+				.asList(d -> d.emptyMap()
+						.set("index", dynamic.createInt(counter.get()))
+						.set("global_pos", d.emptyMap()
+								.set("dimension", d.createString("minecraft:overworld")) //sonic security systems did not save the dimension beforehand, so this is the most correct assumption
+								.set("pos", d.createIntList(IntStream.of(d.get("X").asInt(0), d.get("Y").asInt(0), d.get("Z").asInt(0))))));
+		//@formatter:on
+
+		if (!linkedBlocks.isEmpty())
+			itemStackData.setComponent("securitycraft:indexed_positions", dynamic.emptyMap().set("positions", dynamic.createList(linkedBlocks.stream())));
+
+		itemStackData.removeTag("LinkedBlocks");
 	}
 
 	private static void registerSingleItem(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType, String itemKey) {

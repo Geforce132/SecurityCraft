@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 public record IndexedPositions(List<Entry> positions) implements PositionComponent<Entry, Void> {
 	public static final int MAX_CAMERAS = 30;
 	public static final int MAX_MINES = 6;
+	public static final int MAX_SSS_LINKED_BLOCKS = 30;
 	public static final IndexedPositions EMPTY = new IndexedPositions(List.of());
 	//@formatter:off
 	public static final Codec<IndexedPositions> CODEC = RecordCodecBuilder.create(

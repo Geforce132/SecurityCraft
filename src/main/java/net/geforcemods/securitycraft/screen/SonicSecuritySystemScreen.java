@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.Set;
+import java.util.List;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
@@ -17,7 +17,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -180,18 +180,18 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 	}
 
 	@Override
-	public Set<BlockPos> getPositions() {
+	public List<GlobalPos> getPositions() {
 		if (isOwner)
 			return be.getLinkedBlocks();
 		else
-			return Set.of();
+			return List.of();
 	}
 
 	@Override
-	public void removePosition(BlockPos pos) {
-		be.delink(pos, true);
+	public void removePosition(GlobalPos globalPos) {
+		be.delink(globalPos, true);
 		connectionList.refreshPositions();
-		PacketDistributor.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.REMOVE_POS, pos));
+		PacketDistributor.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), SyncSSSSettingsOnServer.DataType.REMOVE_POS, globalPos));
 	}
 
 	private Component getRecordingString(boolean recording) {

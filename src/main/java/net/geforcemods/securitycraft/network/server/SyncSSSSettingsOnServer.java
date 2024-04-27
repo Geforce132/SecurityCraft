@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -19,7 +20,7 @@ public class SyncSSSSettingsOnServer implements CustomPacketPayload {
 			DataType dataType = buf.readEnum(DataType.class);
 
 			if (dataType == DataType.REMOVE_POS)
-				return new SyncSSSSettingsOnServer(pos, dataType, buf.readBlockPos());
+				return new SyncSSSSettingsOnServer(pos, dataType, buf.readGlobalPos());
 			else
 				return new SyncSSSSettingsOnServer(pos, dataType);
 		}
@@ -30,12 +31,12 @@ public class SyncSSSSettingsOnServer implements CustomPacketPayload {
 			buf.writeEnum(packet.dataType);
 
 			if (packet.dataType == DataType.REMOVE_POS)
-				buf.writeBlockPos(packet.posToRemove);
+				buf.writeGlobalPos(packet.posToRemove);
 		}
 	};
 	private BlockPos pos;
 	private DataType dataType;
-	private BlockPos posToRemove;
+	private GlobalPos posToRemove;
 
 	public SyncSSSSettingsOnServer() {}
 
@@ -43,7 +44,7 @@ public class SyncSSSSettingsOnServer implements CustomPacketPayload {
 		this(pos, dataType, null);
 	}
 
-	public SyncSSSSettingsOnServer(BlockPos pos, DataType dataType, BlockPos posToRemove) {
+	public SyncSSSSettingsOnServer(BlockPos pos, DataType dataType, GlobalPos posToRemove) {
 		this.pos = pos;
 		this.dataType = dataType;
 		this.posToRemove = posToRemove;
