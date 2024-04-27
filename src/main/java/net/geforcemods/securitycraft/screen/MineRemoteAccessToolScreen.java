@@ -86,7 +86,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 				guiButtons[i][UNBIND].active = true;
 				lines[i] = Utils.localize("gui.securitycraft:mrat.mineLocations", minePos);
 
-				if (Minecraft.getInstance().player.level().isLoaded(minePos)) {
+				if (globalPos.dimension().equals(minecraft.level.dimension()) && minecraft.level.isLoaded(minePos)) {
 					Block block = minecraft.level.getBlockState(minePos).getBlock();
 
 					if (block instanceof IExplosive explosive) {
@@ -194,7 +194,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 			if (positions != null) {
 				for (IndexedPositions.Entry entry : positions.positions()) {
-					if (entry.index() == mine && entry.globalPos().dimension().equals(minecraft.level.dimension()))
+					if (entry.index() == mine)
 						return entry.globalPos();
 				}
 			}
