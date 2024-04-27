@@ -45,9 +45,9 @@ public class CameraMonitorItem extends Item {
 			GlobalPos view = GlobalPos.of(player.level().dimension(), pos);
 			IndexedPositions cameras = stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY);
 
-			if (IndexedPositions.remove(stack, cameras, view))
+			if (cameras.remove(stack, view))
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.unbound", Utils.getFormattedCoordinates(pos)), ChatFormatting.RED);
-			else if (IndexedPositions.add(stack, cameras, view, IndexedPositions.MAX_CAMERAS))
+			else if (cameras.add(stack, view, IndexedPositions.MAX_CAMERAS))
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
 
 			return InteractionResult.SUCCESS;
@@ -61,7 +61,7 @@ public class CameraMonitorItem extends Item {
 		ItemStack stack = player.getItemInHand(hand);
 		IndexedPositions cameras = stack.get(SCContent.INDEXED_POSITIONS);
 
-		if (cameras != null && !cameras.hasPositionAdded()) {
+		if (cameras != null && cameras.isEmpty()) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), ChatFormatting.RED);
 			return InteractionResultHolder.pass(stack);
 		}

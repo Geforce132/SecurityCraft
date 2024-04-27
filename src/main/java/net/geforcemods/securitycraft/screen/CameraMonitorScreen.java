@@ -61,7 +61,7 @@ public class CameraMonitorScreen extends Screen {
 		Button prevPageButton = addRenderableWidget(new Button(width / 2 - 25, height / 2 + 57, 20, 20, Component.literal("<"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, page - 1)), Button.DEFAULT_NARRATION));
 		Button nextPageButton = addRenderableWidget(new Button(width / 2 + 5, height / 2 + 57, 20, 20, Component.literal(">"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, page + 1)), Button.DEFAULT_NARRATION));
 		IndexedPositions cameras = cameraMonitor.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY);
-		List<Entry> views = cameras.filledOrderedList();
+		List<Entry> views = cameras.filledOrderedList(IndexedPositions.MAX_CAMERAS);
 		Level level = Minecraft.getInstance().level;
 
 		for (int i = 0; i < 10; i++) {
@@ -153,7 +153,7 @@ public class CameraMonitorScreen extends Screen {
 			Button cameraButton = cameraButtons[i];
 
 			PacketDistributor.sendToServer(new RemoveCameraTag(camera.globalPos()));
-			IndexedPositions.remove(cameraMonitor, cameraMonitor.get(SCContent.INDEXED_POSITIONS), camera.globalPos());
+			cameraMonitor.get(SCContent.INDEXED_POSITIONS).remove(cameraMonitor, camera.globalPos());
 			button.active = false;
 			cameraButton.active = false;
 			cameraButton.setTooltip(null);

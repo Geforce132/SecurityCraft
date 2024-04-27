@@ -204,7 +204,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 	}
 
 	private void removeTagFromToolAndUpdate(ItemStack stack, GlobalPos pos) {
-		IndexedPositions.remove(stack, stack.get(SCContent.INDEXED_POSITIONS), pos);
+		stack.get(SCContent.INDEXED_POSITIONS).remove(stack, pos);
 		PacketDistributor.sendToServer(new RemoveMineFromMRAT(pos));
 	}
 

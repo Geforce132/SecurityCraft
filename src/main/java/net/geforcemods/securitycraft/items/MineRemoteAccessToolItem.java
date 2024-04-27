@@ -56,9 +56,9 @@ public class MineRemoteAccessToolItem extends Item {
 			if (positions != null && positions.size() < IndexedPositions.MAX_MINES) {
 				GlobalPos globalPos = new GlobalPos(level.dimension(), pos);
 
-				if (IndexedPositions.remove(stack, positions, globalPos))
+				if (positions.remove(stack, globalPos))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.unbound", Utils.getFormattedCoordinates(pos)), ChatFormatting.RED);
-				else if (IndexedPositions.add(stack, positions, globalPos, IndexedPositions.MAX_MINES))
+				else if (positions.add(stack, globalPos, IndexedPositions.MAX_MINES))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
 				else {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.noSlots"), ChatFormatting.RED);
@@ -76,16 +76,14 @@ public class MineRemoteAccessToolItem extends Item {
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> list, TooltipFlag flag) {
 		IndexedPositions positions = stack.get(SCContent.INDEXED_POSITIONS);
 
-		if (positions != null && positions.hasPositionAdded()) {
-			List<IndexedPositions.Entry> sorted = positions.filledOrderedList();
+		if (positions != null && !positions.isEmpty()) {
+			List<IndexedPositions.Entry> sortedEntries = positions.filledOrderedList(IndexedPositions.MAX_MINES);
 
-			for (int i = 1; i <= IndexedPositions.MAX_MINES; i++) {
-				IndexedPositions.Entry entry = sorted.get(i - 1);
-
+			for (IndexedPositions.Entry entry : sortedEntries) {
 				if (entry == null)
 					list.add(Component.literal(ChatFormatting.GRAY + "---"));
 				else
-					list.add(Utils.localize("tooltip.securitycraft:mine", i, Utils.getFormattedCoordinates(entry.globalPos().pos())).setStyle(Utils.GRAY_STYLE));
+					list.add(Utils.localize("tooltip.securitycraft:mine", entry.index(), Utils.getFormattedCoordinates(entry.globalPos().pos())).setStyle(Utils.GRAY_STYLE));
 			}
 		}
 	}

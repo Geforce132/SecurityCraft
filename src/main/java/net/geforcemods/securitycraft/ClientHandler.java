@@ -28,13 +28,15 @@ import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.components.CodebreakerData;
 import net.geforcemods.securitycraft.components.IndexedPositions;
+import net.geforcemods.securitycraft.components.PositionComponent;
+import net.geforcemods.securitycraft.components.PositionEntry;
+import net.geforcemods.securitycraft.components.SentryPositions;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.LensItem;
-import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.misc.FloorTrapCloudParticle;
 import net.geforcemods.securitycraft.misc.LayerToggleHandler;
@@ -113,6 +115,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.NbtUtils;
@@ -276,9 +279,9 @@ public class ClientHandler {
 				if (!(entity instanceof Player player))
 					return EMPTY_STATE;
 
-				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, IndexedPositions.MAX_CAMERAS);
+				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, IndexedPositions.MAX_CAMERAS, SCContent.INDEXED_POSITIONS.get());
 
-				if (!stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).hasPositionAdded()) {
+				if (stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).isEmpty()) {
 					if (linkingState == NOT_LINKED_STATE)
 						return NOT_LINKED_STATE;
 					else
@@ -291,9 +294,9 @@ public class ClientHandler {
 				if (!(entity instanceof Player player))
 					return EMPTY_STATE;
 
-				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive, IndexedPositions.MAX_MINES);
+				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive, IndexedPositions.MAX_MINES, SCContent.INDEXED_POSITIONS.get());
 
-				if (!stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).hasPositionAdded()) {
+				if (stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).isEmpty()) {
 					if (linkingState == NOT_LINKED_STATE)
 						return NOT_LINKED_STATE;
 					else
@@ -302,15 +305,16 @@ public class ClientHandler {
 				else
 					return linkingState;
 			});
-			//TODO: Fix when componentizing these items
 			ItemProperties.register(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
 				if (!(entity instanceof Player))
 					return EMPTY_STATE;
 
-				if (Minecraft.getInstance().crosshairPickEntity instanceof Sentry sentry) {
-					float linkingState = loop(IndexedPositions.MAX_SENTRIES, stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY), level, sentry.blockPosition());
+				SentryPositions positions = stack.getOrDefault(SCContent.SENTRY_POSITIONS, SentryPositions.EMPTY);
 
-					if (!SentryRemoteAccessToolItem.hasSentryAdded(stackTag)) {
+				if (Minecraft.getInstance().crosshairPickEntity instanceof Sentry sentry) {
+					float linkingState = loop(SentryPositions.MAX_SENTRIES, positions, level, sentry.blockPosition());
+
+					if (positions.isEmpty()) {
 						if (linkingState == NOT_LINKED_STATE)
 							return NOT_LINKED_STATE;
 						else
@@ -320,8 +324,9 @@ public class ClientHandler {
 						return linkingState;
 				}
 				else
-					return (SentryRemoteAccessToolItem.hasSentryAdded(stackTag) ? UNKNOWN_STATE : EMPTY_STATE);
+					return (!positions.isEmpty() ? UNKNOWN_STATE : EMPTY_STATE);
 			});
+			//TODO: Fix when componentizing this items
 			ItemProperties.register(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
 				if (!(entity instanceof Player player))
 					return EMPTY_STATE;
@@ -356,7 +361,7 @@ public class ClientHandler {
 
 				if (!(entity instanceof Player player))
 					return 0.0F;
-				float state = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof ICodebreakable, 0, false, (_positions, pos) -> true);
+				float state = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof ICodebreakable, 0, false, null, (_positions, pos) -> true);
 
 				if (state == LINKED_STATE || state == NOT_LINKED_STATE)
 					return 0.25F;
@@ -722,11 +727,11 @@ public class ClientHandler {
 		Minecraft.getInstance().levelRenderer.blockChanged(Minecraft.getInstance().level, pos, null, null, 0);
 	}
 
-	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int maximumEntries) {
-		return getLinkingState(level, player, stackInHand, isValidHitResult, maximumEntries, true, null);
+	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int maximumEntries, DataComponentType<? extends PositionComponent<?, ?>> positionComponent) {
+		return getLinkingState(level, player, stackInHand, isValidHitResult, maximumEntries, true, positionComponent, null);
 	}
 
-	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int maximumEntries, boolean loop, BiPredicate<IndexedPositions, BlockPos> useCheckmark) {
+	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int maximumEntries, boolean loop, DataComponentType<? extends PositionComponent<?, ?>> positionComponent, BiPredicate<PositionComponent<?, ?>, BlockPos> useCheckmark) {
 		double reachDistance = player.blockInteractionRange();
 		double eyeHeight = player.getEyeHeight();
 		Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
@@ -735,7 +740,7 @@ public class ClientHandler {
 			BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
 
 			if (hitResult != null && hitResult.getType() == Type.BLOCK && isValidHitResult.test(hitResult)) {
-				IndexedPositions positions = stackInHand.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY);
+				PositionComponent<?, ?> positions = positionComponent == null ? null : stackInHand.get(positionComponent);
 
 				if (loop)
 					return loop(maximumEntries, positions, level, hitResult.getBlockPos());
@@ -747,12 +752,12 @@ public class ClientHandler {
 		return UNKNOWN_STATE;
 	}
 
-	private static float loop(int maximumEntries, IndexedPositions positions, Level level, BlockPos pos) {
-		if (positions != null && positions.hasPositionAdded()) {
+	private static float loop(int maximumEntries, PositionComponent<?, ?> positions, Level level, BlockPos pos) {
+		if (positions != null && !positions.isEmpty()) {
 			GlobalPos globalPos = new GlobalPos(level.dimension(), pos);
 
 			for (int i = 1; i <= maximumEntries; i++) {
-				for (IndexedPositions.Entry entry : positions.positions()) {
+				for (PositionEntry entry : positions.positions()) {
 					if (entry.index() == i) {
 						GlobalPos toCheck = entry.globalPos();
 

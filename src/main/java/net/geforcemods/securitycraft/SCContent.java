@@ -180,6 +180,7 @@ import net.geforcemods.securitycraft.components.IndexedPositions;
 import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.components.PasscodeData;
+import net.geforcemods.securitycraft.components.SentryPositions;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -330,6 +331,7 @@ public class SCContent {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<PasscodeData>> PASSCODE_DATA = DATA_COMPONENTS.registerComponentType("passcode_data", builder -> builder.persistent(PasscodeData.CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<CodebreakerData>> CODEBREAKER_DATA = DATA_COMPONENTS.registerComponentType("codebreaker_data", builder -> builder.persistent(CodebreakerData.CODEC).networkSynchronized(CodebreakerData.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<IndexedPositions>> INDEXED_POSITIONS = DATA_COMPONENTS.registerComponentType("indexed_positions", builder -> builder.persistent(IndexedPositions.CODEC).networkSynchronized(IndexedPositions.STREAM_CODEC).cacheEncoding());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<SentryPositions>> SENTRY_POSITIONS = DATA_COMPONENTS.registerComponentType("sentry_positions", builder -> builder.persistent(SentryPositions.CODEC).networkSynchronized(SentryPositions.STREAM_CODEC).cacheEncoding());
 
 	//recipe serializers
 	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<LimitedUseKeycardRecipe>> LIMITED_USE_KEYCARD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("limited_use_keycard_recipe", () -> new SimpleCraftingRecipeSerializer<>(LimitedUseKeycardRecipe::new));
@@ -2594,7 +2596,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<MineRemoteAccessToolItem> MINE_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(1).component(INDEXED_POSITIONS, IndexedPositions.EMPTY)));
 	@HasManualPage
-	public static final DeferredItem<SentryRemoteAccessToolItem> SENTRY_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(1)));
+	public static final DeferredItem<SentryRemoteAccessToolItem> SENTRY_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(1).component(SENTRY_POSITIONS, SentryPositions.EMPTY)));
 	@HasManualPage
 	public static final DeferredItem<DoubleHighBlockItem> RIFT_STABILIZER_ITEM = ITEMS.register("rift_stabilizer", () -> new DoubleHighBlockItem(RIFT_STABILIZER.get(), itemProp()));
 	@HasManualPage

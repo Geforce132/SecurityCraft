@@ -40,6 +40,9 @@ public class DataFixHandler {
 
 		if (itemStackData.is("securitycraft:remote_access_mine"))
 			fixMineRemoteAccessTool(itemStackData, dynamic);
+
+		if (itemStackData.is("securitycraft:remote_access_sentry"))
+			fixSentryRemoteAccessTool(itemStackData, dynamic);
 	}
 
 	public static void registerBlockEntities(Schema schema, Map<String, Supplier<TypeTemplate>> map) {
@@ -213,6 +216,32 @@ public class DataFixHandler {
 
 		if (!positions.isEmpty())
 			itemStackData.setComponent("securitycraft:indexed_positions", dynamic.emptyMap().set("positions", dynamic.createList(positions.stream())));
+	}
+
+	private static void fixSentryRemoteAccessTool(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
+		List<Dynamic<?>> positions = new ArrayList<>();
+
+		for (int i = 1; i <= SentryPositions.MAX_SENTRIES; i++) {
+			Optional<? extends Dynamic<?>> sentry = itemStackData.removeTag("sentry" + i).result();
+
+			if (sentry.isPresent()) {
+				//@formatter:off
+				Dynamic<?> globalPos = dynamic.emptyMap()
+						.set("dimension", dynamic.createString("minecraft:overworld")) //mines did not save the dimension beforehand, so this is the most correct assumption
+						.set("pos", sentry.get());
+				Dynamic<?> positionEntry = dynamic.emptyMap()
+						.set("index", dynamic.createInt(i))
+						.set("global_pos", globalPos);
+				//@formatter:on
+				Optional<? extends Dynamic<?>> sentryName = itemStackData.removeTag("sentry" + i + "_name").result();
+
+				positionEntry = positionEntry.set("name", sentryName.isPresent() ? sentryName.get() : dynamic.createString(""));
+				positions.add(positionEntry);
+			}
+		}
+
+		if (!positions.isEmpty())
+			itemStackData.setComponent("securitycraft:sentry_positions", dynamic.emptyMap().set("positions", dynamic.createList(positions.stream())));
 	}
 
 	private static void registerSingleItem(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType, String itemKey) {

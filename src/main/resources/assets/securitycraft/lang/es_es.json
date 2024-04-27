@@ -1337,7 +1337,7 @@
 	"tooltip.securitycraft:module.notModifiable": "¡Módulo no modificable!",
 	"tooltip.securitycraft:portableTunePlayer.noteCount": "Melodía con %s nota(s) guardada.",
 	"tooltip.securitycraft:projector": "Proyecta bloques falsos en el mundo.",
-	"tooltip.securitycraft:sentry": "Torreta",
+	"tooltip.securitycraft:sentry": "Torreta %s",
 	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "Enlazado al/los %s bloque(s).",
 	"waila.securitycraft:customName": "Nombre personalizado: %s",
 	"waila.securitycraft:equipped": "Equipado con:",

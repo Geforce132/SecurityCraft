@@ -1344,7 +1344,7 @@
 	"tooltip.securitycraft:module.notModifiable": "模块不可自定义！",
 	"tooltip.securitycraft:portableTunePlayer.noteCount": "含%s个音符的曲调已保存。",
 	"tooltip.securitycraft:projector": "将假方块投影到世界中。",
-	"tooltip.securitycraft:sentry": "战斗哨石",
+	"tooltip.securitycraft:sentry": "战斗哨石%s",
 	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "已连接到%s个方块。",
 	"waila.securitycraft:customName": "自定义名称：%s",
 	"waila.securitycraft:equipped": "装备有：",

@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.components;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import com.mojang.serialization.Codec;
@@ -9,15 +7,15 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.components.IndexedPositions.Entry;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 
-public record IndexedPositions(List<Entry> positions) {
+public record IndexedPositions(List<Entry> positions) implements PositionComponent<Entry, Void> {
 	public static final int MAX_CAMERAS = 30;
 	public static final int MAX_MINES = 6;
-	public static final int MAX_SENTRIES = 12;
 	public static final IndexedPositions EMPTY = new IndexedPositions(List.of());
 	//@formatter:off
 	public static final Codec<IndexedPositions> CODEC = RecordCodecBuilder.create(
@@ -28,85 +26,21 @@ public record IndexedPositions(List<Entry> positions) {
 			IndexedPositions::new);
 	//@formatter:on
 
-	public int size() {
-		return positions.size();
+	@Override
+	public Entry createEntry(int index, GlobalPos globalPos, Void extra) {
+		return new Entry(index, globalPos);
 	}
 
-	public boolean hasPositionAdded() {
-		return !positions.isEmpty();
+	@Override
+	public void setOnStack(ItemStack stack, List<Entry> newPositionList) {
+		stack.set(SCContent.INDEXED_POSITIONS, new IndexedPositions(newPositionList));
 	}
 
-	public boolean isPositionAdded(GlobalPos pos) {
-		return positions.stream().map(Entry::globalPos).anyMatch(pos::equals);
+	public boolean add(ItemStack stack, GlobalPos globalPos, int maximum) {
+		return add(stack, globalPos, maximum, null);
 	}
 
-	public List<Entry> filledOrderedList() {
-		List<Entry> sortedPositions = new ArrayList<>(positions);
-		List<Entry> toReturn = new ArrayList<>();
-		int indexToCheck = 0;
-
-		sortedPositions.sort(Comparator.comparing(c -> c.index));
-
-		for (int i = 1; i <= 30; i++) {
-			if (indexToCheck >= sortedPositions.size())
-				toReturn.add(null);
-			else {
-				Entry existingPosition = sortedPositions.get(indexToCheck);
-
-				if (existingPosition.index() != i)
-					toReturn.add(null);
-				else {
-					toReturn.add(existingPosition);
-					indexToCheck++;
-				}
-			}
-		}
-
-		return toReturn;
-	}
-
-	public static boolean add(ItemStack stack, IndexedPositions positions, GlobalPos view, int maximum) {
-		if (positions != null && positions.positions.size() < maximum) {
-			List<Entry> sortedPositions = positions.positions.stream().sorted(Comparator.comparing(c -> c.index)).toList();
-			int nextFreeIndex = 0;
-
-			for (int i = 1; i <= maximum; i++) {
-				if (i > sortedPositions.size() || sortedPositions.get(i - 1).index != i) {
-					nextFreeIndex = i;
-					break;
-				}
-			}
-
-			if (nextFreeIndex > 0) {
-				List<Entry> newPositionList = new ArrayList<>(positions.positions);
-				IndexedPositions newPositions;
-
-				newPositionList.add(new Entry(nextFreeIndex, view));
-				newPositions = new IndexedPositions(newPositionList);
-				stack.set(SCContent.INDEXED_POSITIONS, newPositions);
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public static boolean remove(ItemStack stack, IndexedPositions positions, GlobalPos pos) {
-		if (positions != null && positions.hasPositionAdded()) {
-			List<Entry> newPositionList = new ArrayList<>(positions.positions);
-
-			newPositionList.removeIf(position -> position.globalPos.equals(pos));
-
-			if (newPositionList.size() != positions.positions.size()) {
-				stack.set(SCContent.INDEXED_POSITIONS, new IndexedPositions(newPositionList));
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public record Entry(int index, GlobalPos globalPos) {
+	public record Entry(int index, GlobalPos globalPos) implements PositionEntry {
 		//@formatter:off
 		public static final Codec<Entry> CODEC = RecordCodecBuilder.create(
 				instance -> instance.group(

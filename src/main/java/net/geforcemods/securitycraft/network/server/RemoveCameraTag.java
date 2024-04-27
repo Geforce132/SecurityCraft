@@ -29,6 +29,6 @@ public record RemoveCameraTag(GlobalPos globalPos) implements CustomPacketPayloa
 		ItemStack monitor = PlayerUtils.getItemStackFromAnyHand(ctx.player(), SCContent.CAMERA_MONITOR.get());
 
 		if (!monitor.isEmpty())
-			IndexedPositions.remove(monitor, monitor.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY), globalPos);
+			monitor.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).remove(monitor, globalPos);
 	}
 }

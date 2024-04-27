@@ -1344,7 +1344,7 @@
 	"tooltip.securitycraft:module.notModifiable": "Module is not modifiable!",
 	"tooltip.securitycraft:portableTunePlayer.noteCount": "Tune with %s note(s) saved.",
 	"tooltip.securitycraft:projector": "Projects fake blocks into the world.",
-	"tooltip.securitycraft:sentry": "Sentry",
+	"tooltip.securitycraft:sentry": "Sentry %s",
 	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "Linked to %s block(s).",
 	"waila.securitycraft:customName": "Custom name: %s",
 	"waila.securitycraft:equipped": "Equipped with:",

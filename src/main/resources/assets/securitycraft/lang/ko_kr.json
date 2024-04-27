@@ -1011,7 +1011,7 @@
 	"tooltip.securitycraft:module.notModifiable": "모듈을 수정할 수 없습니다!",
 	"tooltip.securitycraft:portableTunePlayer.noteCount": "%s 소리를 가진 음정이 저장되었습니다.",
 	"tooltip.securitycraft:projector": "가짜 블록을 세상에 투사합니다.",
-	"tooltip.securitycraft:sentry": "센트리 건",
+	"tooltip.securitycraft:sentry": "센트리 건 %s",
 	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "%s 블록에 연결되었습니다.",
 	"waila.securitycraft:customName": "사용자 지정 이름: %s",
 	"waila.securitycraft:equipped": "장착:",

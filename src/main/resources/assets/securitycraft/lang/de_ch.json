@@ -1335,7 +1335,7 @@
 	"tooltip.securitycraft:module.notModifiable": "Modul ist nicht modifizierbar!",
 	"tooltip.securitycraft:portableTunePlayer.noteCount": "Melodie mit %s Note(n) gespeichert.",
 	"tooltip.securitycraft:projector": "Projiziert falsche Blöcke in die Welt.",
-	"tooltip.securitycraft:sentry": "Geschütz",
+	"tooltip.securitycraft:sentry": "Geschütz %s",
 	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "Anzahl an verbundenen Blöcken: %s",
 	"waila.securitycraft:customName": "Benutzerdefinierter Name: %s",
 	"waila.securitycraft:equipped": "Installierte Module:",

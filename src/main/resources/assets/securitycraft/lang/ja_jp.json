@@ -1339,7 +1339,7 @@
 	"tooltip.securitycraft:module.notModifiable": "モジュールは変更不可能です！",
 	"tooltip.securitycraft:portableTunePlayer.noteCount": "%sノートで音楽を保存しました。",
 	"tooltip.securitycraft:projector": "偽のブロックをワールドに投影します。",
-	"tooltip.securitycraft:sentry": "セントリー",
+	"tooltip.securitycraft:sentry": "セントリー%s",
 	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "%sブロックへリンクしました。",
 	"waila.securitycraft:customName": "カスタム名：%s",
 	"waila.securitycraft:equipped": "装備：",
