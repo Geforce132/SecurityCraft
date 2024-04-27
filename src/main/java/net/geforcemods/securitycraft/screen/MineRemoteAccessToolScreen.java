@@ -5,6 +5,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.components.IndexedPositions;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine.Action;
 import net.geforcemods.securitycraft.network.server.RemoveMineFromMRAT;
@@ -16,13 +17,11 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -79,9 +78,11 @@ public class MineRemoteAccessToolScreen extends Screen {
 				addRenderableWidget(guiButtons[i][j]);
 			}
 
-			BlockPos minePos = getMineCoordinates(i);
+			GlobalPos globalPos = getMineCoordinates(i);
 
-			if (minePos != null) {
+			if (globalPos != null) {
+				BlockPos minePos = globalPos.pos();
+
 				guiButtons[i][UNBIND].active = true;
 				lines[i] = Utils.localize("gui.securitycraft:mrat.mineLocations", minePos);
 
@@ -101,7 +102,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 						guiButtons[i][UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:mrat.unbind")));
 					}
 					else {
-						removeTagFromToolAndUpdate(mrat, minePos);
+						removeTagFromToolAndUpdate(mrat, globalPos);
 
 						for (int j = 0; j < 4; j++) {
 							guiButtons[i][j].active = false;
@@ -140,7 +141,8 @@ public class MineRemoteAccessToolScreen extends Screen {
 	}
 
 	private void buttonClicked(int mine, int action) {
-		BlockPos pos = getMineCoordinates(mine);
+		GlobalPos globalPos = getMineCoordinates(mine);
+		BlockPos pos = globalPos.pos();
 
 		if (pos != null) {
 			switch (action) {
@@ -160,7 +162,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 					break;
 				case DETONATE:
 					PacketDistributor.sendToServer(new RemoteControlMine(pos, Action.DETONATE));
-					removeTagFromToolAndUpdate(mrat, pos);
+					removeTagFromToolAndUpdate(mrat, globalPos);
 
 					for (int i = 0; i < 4; i++) {
 						guiButtons[mine][i].active = false;
@@ -168,7 +170,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 					break;
 				case UNBIND:
-					removeTagFromToolAndUpdate(mrat, pos);
+					removeTagFromToolAndUpdate(mrat, globalPos);
 
 					for (int i = 0; i < 4; i++) {
 						guiButtons[mine][i].active = false;
@@ -184,34 +186,26 @@ public class MineRemoteAccessToolScreen extends Screen {
 	/**
 	 * @param mine 0 based
 	 */
-	private BlockPos getMineCoordinates(int mine) {
+	private GlobalPos getMineCoordinates(int mine) {
 		mine++; //mines are stored starting by mine1 up to mine6
 
-		if (mrat.getItem() == SCContent.MINE_REMOTE_ACCESS_TOOL.get() && mrat.has(DataComponents.CUSTOM_DATA)) {
-			int[] coords = Utils.getTag(mrat).getIntArray("mine" + mine);
+		if (mrat.getItem() == SCContent.MINE_REMOTE_ACCESS_TOOL.get()) {
+			IndexedPositions positions = mrat.get(SCContent.INDEXED_POSITIONS);
 
-			if (coords.length == 3)
-				return new BlockPos(coords[0], coords[1], coords[2]);
+			if (positions != null) {
+				for (IndexedPositions.Entry entry : positions.positions()) {
+					if (entry.index() == mine && entry.globalPos().dimension().equals(minecraft.level.dimension()))
+						return entry.globalPos();
+				}
+			}
 		}
 
 		return null;
 	}
 
-	private void removeTagFromToolAndUpdate(ItemStack stack, BlockPos pos) {
-		if (stack.has(DataComponents.CUSTOM_DATA)) {
-			CompoundTag tag = Utils.getTag(stack);
-
-			for (int i = 1; i <= 6; i++) {
-				int[] coords = tag.getIntArray("mine" + i);
-
-				if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
-					tag.remove("mine" + i);
-					CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
-					PacketDistributor.sendToServer(new RemoveMineFromMRAT(i));
-					return;
-				}
-			}
-		}
+	private void removeTagFromToolAndUpdate(ItemStack stack, GlobalPos pos) {
+		IndexedPositions.remove(stack, stack.get(SCContent.INDEXED_POSITIONS), pos);
+		PacketDistributor.sendToServer(new RemoveMineFromMRAT(pos));
 	}
 
 	@Override

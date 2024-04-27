@@ -2592,7 +2592,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<DoubleHighBlockItem> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new DoubleHighBlockItem(REINFORCED_DOOR.get(), itemProp()));
 	@HasManualPage
-	public static final DeferredItem<MineRemoteAccessToolItem> MINE_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(1)));
+	public static final DeferredItem<MineRemoteAccessToolItem> MINE_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(1).component(INDEXED_POSITIONS, IndexedPositions.EMPTY)));
 	@HasManualPage
 	public static final DeferredItem<SentryRemoteAccessToolItem> SENTRY_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(1)));
 	@HasManualPage

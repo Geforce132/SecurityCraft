@@ -1328,7 +1328,7 @@
 	"tooltip.securitycraft:keycard.reader_owner": "Funciona en lectores de tarjetas del propietario: %s",
 	"tooltip.securitycraft:keycard.signature": "Firma: %s",
 	"tooltip.securitycraft:keycard.uses": "Usos restantes: %s",
-	"tooltip.securitycraft:mine": "Mina",
+	"tooltip.securitycraft:mine": "Mina %s : %s",
 	"tooltip.securitycraft:module.added_players": "Jugadores añadidos: %s",
 	"tooltip.securitycraft:module.added_teams": "Equipos añadidos: %s",
 	"tooltip.securitycraft:module.affects_everyone": "Afecta a todos los jugadores.",

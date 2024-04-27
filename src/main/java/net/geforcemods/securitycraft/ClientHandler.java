@@ -34,7 +34,6 @@ import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.LensItem;
-import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.misc.FloorTrapCloudParticle;
@@ -288,14 +287,13 @@ public class ClientHandler {
 				else
 					return linkingState;
 			});
-			//TODO: Fix when componentizing these items
 			ItemProperties.register(SCContent.MINE_REMOTE_ACCESS_TOOL.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
 				if (!(entity instanceof Player player))
 					return EMPTY_STATE;
 
 				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive, IndexedPositions.MAX_MINES);
 
-				if (!MineRemoteAccessToolItem.hasMineAdded(stack)) {
+				if (!stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).hasPositionAdded()) {
 					if (linkingState == NOT_LINKED_STATE)
 						return NOT_LINKED_STATE;
 					else
@@ -304,6 +302,7 @@ public class ClientHandler {
 				else
 					return linkingState;
 			});
+			//TODO: Fix when componentizing these items
 			ItemProperties.register(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
 				if (!(entity instanceof Player))
 					return EMPTY_STATE;
@@ -727,7 +726,7 @@ public class ClientHandler {
 		return getLinkingState(level, player, stackInHand, isValidHitResult, maximumEntries, true, null);
 	}
 
-	protected static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int maximumEntries, boolean loop, BiPredicate<IndexedPositions, BlockPos> useCheckmark) {
+	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, int maximumEntries, boolean loop, BiPredicate<IndexedPositions, BlockPos> useCheckmark) {
 		double reachDistance = player.blockInteractionRange();
 		double eyeHeight = player.getEyeHeight();
 		Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);

@@ -37,6 +37,9 @@ public class DataFixHandler {
 
 		if (itemStackData.is("securitycraft:camera_monitor"))
 			fixCameraMonitor(itemStackData, dynamic);
+
+		if (itemStackData.is("securitycraft:remote_access_mine"))
+			fixMineRemoteAccessTool(itemStackData, dynamic);
 	}
 
 	public static void registerBlockEntities(Schema schema, Map<String, Supplier<TypeTemplate>> map) {
@@ -182,6 +185,29 @@ public class DataFixHandler {
 							.set("global_pos", globalPos));
 					//@formatter:on
 				}
+			}
+		}
+
+		if (!positions.isEmpty())
+			itemStackData.setComponent("securitycraft:indexed_positions", dynamic.emptyMap().set("positions", dynamic.createList(positions.stream())));
+	}
+
+	private static void fixMineRemoteAccessTool(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
+		List<Dynamic<?>> positions = new ArrayList<>();
+
+		for (int i = 1; i <= IndexedPositions.MAX_MINES; i++) {
+			Optional<? extends Dynamic<?>> mine = itemStackData.removeTag("mine" + i).result();
+
+			if (mine.isPresent()) {
+				//@formatter:off
+				Dynamic<?> globalPos = dynamic.emptyMap()
+						.set("dimension", dynamic.createString("minecraft:overworld")) //mines did not save the dimension beforehand, so this is the most correct assumption
+						.set("pos", mine.get());
+
+				positions.add(dynamic.emptyMap()
+						.set("index", dynamic.createInt(i))
+						.set("global_pos", globalPos));
+				//@formatter:on
 			}
 		}
 

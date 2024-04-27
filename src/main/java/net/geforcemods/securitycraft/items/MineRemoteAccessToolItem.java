@@ -6,12 +6,12 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.components.IndexedPositions;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -20,7 +20,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
@@ -45,30 +44,27 @@ public class MineRemoteAccessToolItem extends Item {
 		if (level.getBlockState(pos).getBlock() instanceof IExplosive) {
 			Player player = ctx.getPlayer();
 
-			if (!isMineAdded(stack, pos)) {
-				int nextSlot = getNextAvailableSlot(stack);
+			if (level.getBlockEntity(pos) instanceof IOwnable ownable && !ownable.isOwnedBy(player)) {
+				if (level.isClientSide)
+					ClientHandler.displayMRATScreen(stack);
 
-				if (nextSlot == 0) {
+				return InteractionResult.SUCCESS;
+			}
+
+			IndexedPositions positions = stack.get(SCContent.INDEXED_POSITIONS);
+
+			if (positions != null && positions.size() < IndexedPositions.MAX_MINES) {
+				GlobalPos globalPos = new GlobalPos(level.dimension(), pos);
+
+				if (IndexedPositions.remove(stack, positions, globalPos))
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.unbound", Utils.getFormattedCoordinates(pos)), ChatFormatting.RED);
+				else if (IndexedPositions.add(stack, positions, globalPos, IndexedPositions.MAX_MINES))
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
+				else {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.noSlots"), ChatFormatting.RED);
 					return InteractionResult.FAIL;
 				}
 
-				if (level.getBlockEntity(pos) instanceof IOwnable ownable && !ownable.isOwnedBy(player)) {
-					if (level.isClientSide)
-						ClientHandler.displayMRATScreen(stack);
-
-					return InteractionResult.SUCCESS;
-				}
-
-				CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.putIntArray(("mine" + nextSlot), new int[] {
-						pos.getX(), pos.getY(), pos.getZ()
-				}));
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
-				return InteractionResult.SUCCESS;
-			}
-			else {
-				removeMine(stack, pos);
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.unbound", Utils.getFormattedCoordinates(pos)), ChatFormatting.RED);
 				return InteractionResult.SUCCESS;
 			}
 		}
@@ -78,68 +74,19 @@ public class MineRemoteAccessToolItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> list, TooltipFlag flag) {
-		CompoundTag tag = Utils.getTag(stack);
+		IndexedPositions positions = stack.get(SCContent.INDEXED_POSITIONS);
 
-		if (tag != null && !tag.isEmpty()) {
-			for (int i = 1; i <= 6; i++) {
-				int[] coords = tag.getIntArray("mine" + i);
+		if (positions != null && positions.hasPositionAdded()) {
+			List<IndexedPositions.Entry> sorted = positions.filledOrderedList();
 
-				if (coords.length != 3)
+			for (int i = 1; i <= IndexedPositions.MAX_MINES; i++) {
+				IndexedPositions.Entry entry = sorted.get(i - 1);
+
+				if (entry == null)
 					list.add(Component.literal(ChatFormatting.GRAY + "---"));
 				else
-					list.add(Utils.localize("tooltip.securitycraft:mine").append(Component.literal(" " + i + ": ")).append(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
+					list.add(Utils.localize("tooltip.securitycraft:mine", i, Utils.getFormattedCoordinates(entry.globalPos().pos())).setStyle(Utils.GRAY_STYLE));
 			}
 		}
-	}
-
-	public static boolean hasMineAdded(ItemStack stack) {
-		CustomData customData = Utils.getCustomData(stack);
-
-		if (customData != null) {
-			for (int i = 1; i <= 6; i++) {
-				if (customData.contains("mine" + i))
-					return true;
-			}
-		}
-
-		return false;
-	}
-
-	public static void removeMine(ItemStack stack, BlockPos pos) {
-		CompoundTag tag = Utils.getTag(stack);
-
-		for (int i = 1; i <= 6; i++) {
-			int[] coords = tag.getIntArray("mine" + i);
-
-			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
-				tag.remove("mine" + i);
-				CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
-				return;
-			}
-		}
-	}
-
-	public static boolean isMineAdded(ItemStack stack, BlockPos pos) {
-		CompoundTag tag = Utils.getTag(stack);
-
-		for (int i = 1; i <= 6; i++) {
-			int[] coords = tag.getIntArray("mine" + i);
-
-			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
-				return true;
-		}
-
-		return false;
-	}
-
-	public static int getNextAvailableSlot(ItemStack stack) {
-		CompoundTag tag = Utils.getTag(stack);
-
-		for (int i = 1; i <= 6; i++) {
-			if (tag.getIntArray("mine" + i).length != 3)
-				return i;
-		}
-
-		return 0;
 	}
 }
