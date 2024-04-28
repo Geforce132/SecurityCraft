@@ -21,6 +21,7 @@ public class DataFixHandler {
 	private static final Set<String> KEYCARD_HOLDER_OR_DISGUISE_MODULE = Set.of("securitycraft:keycard_holder", "securitycraft:disguise_module");
 	private static final Set<String> KEYCARDS = Set.of("securitycraft:keycard_lv1", "securitycraft:keycard_lv2", "securitycraft:keycard_lv3", "securitycraft:keycard_lv4", "securitycraft:keycard_lv5");
 	private static final Set<String> REINFORCERS = Set.of("securitycraft:universal_block_reinforcer_lvl2", "securitycraft:universal_block_reinforcer_lvl3");
+	private static final Set<String> LIST_MODULES = Set.of("securitycraft:blacklist_module", "securitycraft:whitelist_module");
 
 	private DataFixHandler() {}
 
@@ -54,6 +55,9 @@ public class DataFixHandler {
 
 		if (itemStackData.is(REINFORCERS))
 			fixReinforcers(itemStackData, dynamic);
+
+		if (itemStackData.is(LIST_MODULES))
+			fixListModule(itemStackData, dynamic);
 	}
 
 	public static void registerBlockEntities(Schema schema, Map<String, Supplier<TypeTemplate>> map) {
@@ -292,6 +296,28 @@ public class DataFixHandler {
 
 		if (isUnreinforcing.isPresent())
 			itemStackData.setComponent("securitycraft:unreinforcing", dynamic.emptyMap());
+	}
+
+	private static void fixListModule(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
+		List<Dynamic<?>> players = new ArrayList<>();
+		List<Dynamic<?>> teams = itemStackData.removeTag("ListedTeams").asList(d -> d);
+		boolean affectEveryone = itemStackData.removeTag("affectEveryone").asBoolean(false);
+
+		for (int i = 1; i <= ListModuleData.MAX_PLAYERS; i++) {
+			Optional<? extends Dynamic<?>> player = itemStackData.removeTag("Player" + i).result();
+
+			if (player.isPresent())
+				players.add(player.get());
+		}
+
+		if (!players.isEmpty() || !teams.isEmpty() || affectEveryone) {
+			//@formatter:off
+			itemStackData.setComponent("securitycraft:list_module_data", dynamic.emptyMap()
+					.set("players", dynamic.createList(players.stream()))
+					.set("teams", dynamic.createList(teams.stream()))
+					.set("affect_everyone", dynamic.createBoolean(affectEveryone)));
+			//@formatter:on
+		}
 	}
 
 	private static void registerSingleItem(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType, String itemKey) {

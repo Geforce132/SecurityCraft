@@ -1,13 +1,12 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.IntFunction;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -16,7 +15,8 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
-import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.components.ListModuleData;
 import net.geforcemods.securitycraft.network.server.SetListModuleData;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
@@ -28,22 +28,16 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.scores.PlayerTeam;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class EditModuleScreen extends Screen {
-	private static CompoundTag savedModule;
+	private static ListModuleData savedData;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/edit_module.png");
 	private static final ResourceLocation CONFIRM_SPRITE = new ResourceLocation("container/beacon/confirm");
 	private static final ResourceLocation CANCEL_SPRITE = new ResourceLocation("container/beacon/cancel");
@@ -88,11 +82,11 @@ public class EditModuleScreen extends Screen {
 		clearButton = addRenderableWidget(new Button(controlsStartX, height / 2 + 57, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::clearButtonClicked, Button.DEFAULT_NARRATION));
 		playerList = addRenderableWidget(new PlayerList(minecraft, 110, 165, height / 2 - 88, guiLeft + 10));
 		teamList = addRenderableWidget(new TeamList(minecraft, editTeamsButton.getWidth(), 75, editTeamsButton.getY() + editTeamsButton.getHeight(), editTeamsButton.getX()));
-		affectEveryPlayerCheckbox = addRenderableWidget(new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, Utils.getTag(module).getBoolean("affectEveryone"), newState -> CustomData.update(DataComponents.CUSTOM_DATA, module, tag -> tag.putBoolean("affectEveryone", newState)), 0x404040));
+		affectEveryPlayerCheckbox = addRenderableWidget(new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.get(SCContent.LIST_MODULE_DATA).affectEveryone(), newState -> module.get(SCContent.LIST_MODULE_DATA).updateAffectEveryone(module, newState), 0x404040));
 
 		teamList.active = false;
 		editTeamsButton.active = !availableTeams.isEmpty();
-		refreshFromNbt();
+		refreshFromComponent();
 		updateButtonStates();
 		inputField.setMaxLength(16);
 		inputField.setFilter(s -> !s.contains(" "));
@@ -100,15 +94,14 @@ public class EditModuleScreen extends Screen {
 			if (s.isEmpty())
 				addPlayerButton.active = false;
 			else {
-				CompoundTag tag = Utils.getTag(module);
+				ListModuleData listModuleData = module.get(SCContent.LIST_MODULE_DATA);
 
-				for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
-					if (s.equals(tag.getString("Player" + i))) {
-						addPlayerButton.active = false;
-						removePlayerButton.active = true;
-						playerList.setSelectedIndex(i - 1);
-						return;
-					}
+				if (listModuleData != null && listModuleData.isPlayerOnList(s)) {
+					System.out.println(listModuleData.players().indexOf(s));
+					addPlayerButton.active = false;
+					removePlayerButton.active = true;
+					playerList.setSelectedIndex(listModuleData.players().indexOf(s));
+					return;
 				}
 
 				addPlayerButton.active = true;
@@ -123,7 +116,7 @@ public class EditModuleScreen extends Screen {
 	@Override
 	public void onClose() {
 		super.onClose();
-		PacketDistributor.sendToServer(new SetListModuleData(Utils.getTag(module)));
+		PacketDistributor.sendToServer(new SetListModuleData(module.get(SCContent.LIST_MODULE_DATA)));
 	}
 
 	@Override
@@ -176,21 +169,11 @@ public class EditModuleScreen extends Screen {
 		if (inputField.getValue().isEmpty())
 			return;
 
-		CompoundTag tag = Utils.getTag(module);
+		ListModuleData listModuleData = module.getOrDefault(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY);
 
-		for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
-			if (tag.contains("Player" + i) && tag.getString("Player" + i).equals(inputField.getValue())) {
-				if (i == 9)
-					addPlayerButton.active = false;
+		listModuleData = listModuleData.addPlayer(module, inputField.getValue());
 
-				return;
-			}
-		}
-
-		tag.putString("Player" + getNextFreeSlot(tag), inputField.getValue());
-		CustomData.set(DataComponents.CUSTOM_DATA, module, tag);
-
-		if (tag.contains("Player" + ModuleItem.MAX_PLAYERS))
+		if (listModuleData.players().size() == ListModuleData.MAX_PLAYERS)
 			addPlayerButton.active = false;
 
 		inputField.setValue("");
@@ -208,37 +191,30 @@ public class EditModuleScreen extends Screen {
 		if (inputField.getValue().isEmpty())
 			return;
 
-		CompoundTag tag = Utils.getTag(module);
-
-		for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
-			if (tag.contains("Player" + i) && tag.getString("Player" + i).equals(inputField.getValue())) {
-				tag.remove("Player" + i);
-				defragmentTag(tag);
-			}
-		}
-
-		CustomData.set(DataComponents.CUSTOM_DATA, module, tag);
+		module.getOrDefault(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY).removePlayer(module, inputField.getValue());
 		inputField.setValue("");
 		updateButtonStates();
 	}
 
 	private void copyButtonClicked(Button button) {
-		savedModule = Utils.getCustomData(module).copyTag();
+		savedData = module.get(SCContent.LIST_MODULE_DATA);
 		copyButton.active = false;
 		updateButtonStates();
 	}
 
 	private void pasteButtonClicked(Button button) {
-		CustomData.set(DataComponents.CUSTOM_DATA, module, savedModule.copy());
-		updateButtonStates();
-		refreshFromNbt();
+		if (savedData != null) {
+			module.set(SCContent.LIST_MODULE_DATA, new ListModuleData(ImmutableList.copyOf(savedData.players()), ImmutableList.copyOf(savedData.teams()), savedData.affectEveryone()));
+			updateButtonStates();
+			refreshFromComponent();
+		}
 	}
 
 	private void clearButtonClicked(Button button) {
-		CustomData.set(DataComponents.CUSTOM_DATA, module, CustomData.EMPTY.copyTag());
+		module.set(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY);
 		inputField.setValue("");
 		updateButtonStates(true);
-		refreshFromNbt();
+		refreshFromComponent();
 	}
 
 	private void updateButtonStates() {
@@ -246,73 +222,40 @@ public class EditModuleScreen extends Screen {
 	}
 
 	private void updateButtonStates(boolean cleared) {
-		CustomData customData = Utils.getCustomData(module);
-		boolean tagIsConsideredEmpty = customData.isEmpty() || (customData.size() == 1 && customData.contains("affectEveryone"));
+		ListModuleData listModuleData = module.getOrDefault(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY);
+		boolean hasNoData = listModuleData.equals(ListModuleData.EMPTY) || (listModuleData.affectEveryone() && listModuleData.players().isEmpty() && listModuleData.teams().isEmpty());
 
-		if (!cleared && tagIsConsideredEmpty) {
+		if (!cleared && hasNoData) {
 			addPlayerButton.active = false;
 			removePlayerButton.active = false;
 		}
 		else {
-			addPlayerButton.active = !customData.contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getValue().isEmpty();
+			addPlayerButton.active = listModuleData.players().size() < ListModuleData.MAX_PLAYERS && !inputField.getValue().isEmpty();
 			removePlayerButton.active = !inputField.getValue().isEmpty();
 		}
 
-		boolean isSameTag = customData.getUnsafe().equals(savedModule);
+		boolean isSameTag = !hasNoData && listModuleData.equals(savedData);
 
-		copyButton.active = !tagIsConsideredEmpty && !isSameTag;
-		pasteButton.active = savedModule != null && !savedModule.isEmpty() && !isSameTag;
-		clearButton.active = !tagIsConsideredEmpty;
+		copyButton.active = !isSameTag;
+		pasteButton.active = savedData != null && !savedData.equals(ListModuleData.EMPTY) && !isSameTag;
+		clearButton.active = !hasNoData;
 	}
 
-	private void refreshFromNbt() {
-		if (!module.has(DataComponents.CUSTOM_DATA)) {
+	private void refreshFromComponent() {
+		ListModuleData listModuleData = module.get(SCContent.LIST_MODULE_DATA);
+
+		if (listModuleData == null || listModuleData.equals(ListModuleData.EMPTY)) {
 			availableTeams.forEach(team -> teamsListedStatus.put(team, false));
 			affectEveryPlayerCheckbox.setSelected(false);
 		}
 		else {
-			CompoundTag tag = Utils.getTag(module);
-			//@formatter:off
-			List<String> teamNames = tag.getList("ListedTeams", Tag.TAG_STRING)
-					.stream()
-					.filter(StringTag.class::isInstance)
-					.map(e -> ((StringTag) e).getAsString())
-					.toList();
-			//@formatter:on
-
-			availableTeams.forEach(team -> teamsListedStatus.put(team, teamNames.contains(team.getName())));
-			affectEveryPlayerCheckbox.setSelected(tag.getBoolean("affectEveryone"));
-		}
-	}
-
-	private int getNextFreeSlot(CompoundTag tag) {
-		for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
-			if (!tag.contains("Player" + i) || tag.getString("Player" + i).isEmpty())
-				return i;
-		}
-
-		return 0;
-	}
-
-	private void defragmentTag(CompoundTag tag) {
-		Deque<Integer> freeIndices = new ArrayDeque<>();
-
-		for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
-			if (!tag.contains("Player" + i) || tag.getString("Player" + i).isEmpty())
-				freeIndices.add(i);
-			else if (!freeIndices.isEmpty()) {
-				String player = tag.getString("Player" + i);
-				int nextFreeIndex = freeIndices.poll();
-
-				tag.putString("Player" + nextFreeIndex, player);
-				tag.remove("Player" + i);
-				freeIndices.add(i);
-			}
+			availableTeams.forEach(team -> teamsListedStatus.put(team, listModuleData.teams().contains(team.getName())));
+			affectEveryPlayerCheckbox.setSelected(listModuleData.affectEveryone());
 		}
 	}
 
 	class PlayerList extends ScrollPanel {
-		private static final int SLOT_HEIGHT = 12, LIST_LENGTH = ModuleItem.MAX_PLAYERS;
+		private static final int SLOT_HEIGHT = 12, LIST_LENGTH = ListModuleData.MAX_PLAYERS;
 		private int selectedIndex = -1;
 
 		public PlayerList(Minecraft client, int width, int height, int top, int left) {
@@ -333,11 +276,11 @@ public class EditModuleScreen extends Screen {
 		public boolean mouseClicked(double mouseX, double mouseY, int button) {
 			if (isMouseOver(mouseX, mouseY) && mouseX < left + width - 6) {
 				int clickedIndex = ((int) (mouseY - top + scrollDistance - border)) / SLOT_HEIGHT;
-				CompoundTag tag = Utils.getTag(module);
+				ListModuleData listModuleData = module.getOrDefault(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY);
 
-				if (tag.contains("Player" + (clickedIndex + 1))) {
+				if (clickedIndex < listModuleData.players().size()) {
 					selectedIndex = clickedIndex;
-					inputField.setValue(tag.getString("Player" + (clickedIndex + 1)));
+					inputField.setValue(listModuleData.players().get(clickedIndex));
 				}
 			}
 
@@ -351,15 +294,17 @@ public class EditModuleScreen extends Screen {
 
 		@Override
 		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY) {
-			if (module.has(DataComponents.CUSTOM_DATA)) {
-				CompoundTag tag = Utils.getTag(module);
+			ListModuleData listModuleData = module.get(SCContent.LIST_MODULE_DATA);
+
+			if (listModuleData != null) {
 				int baseY = top + border - (int) scrollDistance;
 				int mouseListY = (int) (mouseY - top + scrollDistance - border);
 				int slotIndex = mouseListY / SLOT_HEIGHT;
+				List<String> players = listModuleData.players();
 
 				//highlight hovered slot
 				if (slotIndex != selectedIndex && mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < LIST_LENGTH && mouseY >= top && mouseY <= bottom) {
-					if (tag.contains("Player" + (slotIndex + 1)) && !tag.getString("Player" + (slotIndex + 1)).isEmpty())
+					if (slotIndex < players.size() && !players.get(slotIndex).isBlank())
 						renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + slotIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0x80);
 				}
 
@@ -367,13 +312,11 @@ public class EditModuleScreen extends Screen {
 					renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + selectedIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0xFF);
 
 				//draw entry strings
-				for (int i = 0; i < ModuleItem.MAX_PLAYERS; i++) {
-					if (tag.contains("Player" + (i + 1))) {
-						String name = tag.getString("Player" + (i + 1));
+				for (int i = 0; i < players.size(); i++) {
+					String name = players.get(i);
 
-						if (!name.isEmpty())
-							guiGraphics.drawString(font, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (SLOT_HEIGHT * i), 0xC6C6C6, false);
-					}
+					if (!name.isEmpty())
+						guiGraphics.drawString(font, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (SLOT_HEIGHT * i), 0xC6C6C6, false);
 				}
 			}
 		}
@@ -478,15 +421,9 @@ public class EditModuleScreen extends Screen {
 			}
 		}
 
-		private void toggleTeam(PlayerTeam teamToAdd) {
-			ListTag listedTeams = new ListTag();
-
-			teamsListedStatus.put(teamToAdd, !teamsListedStatus.get(teamToAdd));
-			teamsListedStatus.forEach((team, listed) -> {
-				if (listed)
-					listedTeams.add(StringTag.valueOf(team.getName()));
-			});
-			CustomData.update(DataComponents.CUSTOM_DATA, module, tag -> tag.put("ListedTeams", listedTeams));
+		private void toggleTeam(PlayerTeam teamToToggle) {
+			teamsListedStatus.put(teamToToggle, !teamsListedStatus.get(teamToToggle));
+			module.getOrDefault(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY).toggleTeam(module, teamToToggle.getName());
 			updateButtonStates();
 		}
 

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.components.ListModuleData;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.Utils;
@@ -497,13 +499,9 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		if (!isModuleEnabled(ModuleType.ALLOWLIST))
 			return false;
 
-		ItemStack stack = getModule(ModuleType.ALLOWLIST);
+		ListModuleData listModuleData = getModule(ModuleType.ALLOWLIST).get(SCContent.LIST_MODULE_DATA);
 
-		if (Utils.getTag(stack).getBoolean("affectEveryone"))
-			return true;
-
-		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
-		return ModuleItem.doesModuleHaveTeamOf(stack, name, getBlockEntity().getLevel()) || ModuleItem.getPlayersFromModule(stack).contains(name.toLowerCase());
+		return listModuleData != null && (listModuleData.affectEveryone() || listModuleData.isTeamOfPlayerOnList(getBlockEntity().getLevel(), name) || listModuleData.isPlayerOnList(name));
 	}
 
 	/**
@@ -516,27 +514,30 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		if (!isModuleEnabled(ModuleType.DENYLIST))
 			return false;
 
-		ItemStack stack = getModule(ModuleType.DENYLIST);
+		ListModuleData listModuleData = getModule(ModuleType.ALLOWLIST).get(SCContent.LIST_MODULE_DATA);
 
-		if (Utils.getTag(stack).getBoolean("affectEveryone")) {
-			if (getBlockEntity() instanceof IOwnable ownable) {
-				//only deny players that are not the owner
-				if (entity instanceof Player player) {
-					//if the player IS the owner, fall back to the default handling (check if the name is on the list)
-					if (!ownable.isOwnedBy(player))
+		if (listModuleData != null) {
+			if (listModuleData.affectEveryone()) {
+				if (getBlockEntity() instanceof IOwnable ownable) {
+					//only deny players that are not the owner
+					if (entity instanceof Player player) {
+						//if the player IS the owner, fall back to the default handling (check if the name is on the list)
+						if (!ownable.isOwnedBy(player))
+							return true;
+					}
+					else
 						return true;
 				}
 				else
 					return true;
 			}
-			else
-				return true;
+
+			String name = entity.getName().getString();
+
+			return listModuleData.isTeamOfPlayerOnList(getBlockEntity().getLevel(), name) || listModuleData.isPlayerOnList(name);
 		}
 
-		String name = entity.getName().getString();
-
-		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
-		return ModuleItem.doesModuleHaveTeamOf(stack, name, getBlockEntity().getLevel()) || ModuleItem.getPlayersFromModule(stack).contains(name.toLowerCase());
+		return false;
 	}
 
 	/**

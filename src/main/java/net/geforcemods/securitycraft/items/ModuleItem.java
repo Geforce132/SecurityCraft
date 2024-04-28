@@ -1,21 +1,19 @@
 package net.geforcemods.securitycraft.items;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
+import net.geforcemods.securitycraft.components.ListModuleData;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
@@ -32,12 +30,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.scores.PlayerTeam;
 
 public class ModuleItem extends Item {
 	private static final MutableComponent MODIFIABLE = Component.translatable("tooltip.securitycraft:module.modifiable").setStyle(Utils.GRAY_STYLE);
 	private static final MutableComponent NOT_MODIFIABLE = Component.translatable("tooltip.securitycraft:module.notModifiable").setStyle(Utils.GRAY_STYLE);
-	public static final int MAX_PLAYERS = 50;
 	private final ModuleType module;
 	private final boolean containsCustomData;
 	private final boolean canBeCustomized;
@@ -126,26 +122,10 @@ public class ModuleItem extends Item {
 		}
 
 		if (containsCustomData) {
-			boolean affectsEveryone = false;
-			int playerCount = 0;
-			int teamCount = 0;
-			CompoundTag tag = Utils.getTag(stack);
+			ListModuleData listModuleData = stack.get(SCContent.LIST_MODULE_DATA);
 
-			if (tag != null && !tag.isEmpty()) {
-				affectsEveryone = tag.getBoolean("affectEveryone");
-
-				if (!affectsEveryone) {
-					playerCount = ModuleItem.getPlayersFromModule(stack).size();
-					teamCount = tag.getList("ListedTeams", Tag.TAG_STRING).size();
-				}
-			}
-
-			if (affectsEveryone)
-				list.add(Utils.localize("tooltip.securitycraft:module.affects_everyone").setStyle(Utils.GRAY_STYLE));
-			else {
-				list.add(Utils.localize("tooltip.securitycraft:module.added_players", playerCount).setStyle(Utils.GRAY_STYLE));
-				list.add(Utils.localize("tooltip.securitycraft:module.added_teams", teamCount).setStyle(Utils.GRAY_STYLE));
-			}
+			if (listModuleData != null)
+				listModuleData.addToTooltip(ctx, list::add, flag);
 		}
 	}
 
@@ -167,34 +147,5 @@ public class ModuleItem extends Item {
 
 	public boolean canBeCustomized() {
 		return canBeCustomized;
-	}
-
-	public static boolean doesModuleHaveTeamOf(ItemStack module, String name, Level level) {
-		PlayerTeam team = level.getScoreboard().getPlayersTeam(name);
-
-		//@formatter:off
-		return team != null && Utils.getTag(module).getList("ListedTeams", Tag.TAG_STRING)
-				.stream()
-				.filter(StringTag.class::isInstance)
-				.map(tag -> ((StringTag) tag).getAsString())
-				.anyMatch(team.getName()::equals);
-		//@formatter:on
-	}
-
-	public static List<String> getPlayersFromModule(ItemStack stack) {
-		List<String> list = new ArrayList<>();
-
-		if (stack.getItem() instanceof ModuleItem) {
-			CompoundTag tag = Utils.getTag(stack);
-
-			for (int i = 1; i <= MAX_PLAYERS; i++) {
-				String player = tag.getString("Player" + i);
-
-				if (player != null && !player.isEmpty())
-					list.add(player.toLowerCase());
-			}
-		}
-
-		return list;
 	}
 }

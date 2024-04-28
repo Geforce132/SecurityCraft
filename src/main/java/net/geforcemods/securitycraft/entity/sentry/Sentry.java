@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
+import net.geforcemods.securitycraft.components.ListModuleData;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
@@ -574,19 +575,10 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 	public boolean isTargetingAllowedPlayer(LivingEntity potentialTarget) {
 		if (potentialTarget != null) {
-			ItemStack allowlistModule = getAllowlistModule();
+			ListModuleData listModuleData = getAllowlistModule().get(SCContent.LIST_MODULE_DATA);
+			String targetName = potentialTarget.getName().getString();
 
-			if (Utils.getTag(allowlistModule).getBoolean("affectEveryone"))
-				return true;
-
-			List<String> players = ModuleItem.getPlayersFromModule(allowlistModule);
-
-			for (String s : players) {
-				if (potentialTarget.getName().getString().equalsIgnoreCase(s))
-					return true;
-			}
-
-			return ModuleItem.doesModuleHaveTeamOf(allowlistModule, potentialTarget.getName().getString(), level());
+			return listModuleData != null && (listModuleData.affectEveryone() || listModuleData.isPlayerOnList(targetName) || listModuleData.isTeamOfPlayerOnList(level(), targetName));
 		}
 
 		return false;

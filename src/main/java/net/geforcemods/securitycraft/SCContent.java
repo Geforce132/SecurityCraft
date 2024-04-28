@@ -178,6 +178,7 @@ import net.geforcemods.securitycraft.commands.SingleGameProfileArgument;
 import net.geforcemods.securitycraft.components.CodebreakerData;
 import net.geforcemods.securitycraft.components.IndexedPositions;
 import net.geforcemods.securitycraft.components.KeycardData;
+import net.geforcemods.securitycraft.components.ListModuleData;
 import net.geforcemods.securitycraft.components.Notes;
 import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.components.PasscodeData;
@@ -336,6 +337,7 @@ public class SCContent {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<SentryPositions>> SENTRY_POSITIONS = DATA_COMPONENTS.registerComponentType("sentry_positions", builder -> builder.persistent(SentryPositions.CODEC).networkSynchronized(SentryPositions.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Notes>> NOTES = DATA_COMPONENTS.registerComponentType("notes", builder -> builder.persistent(Notes.CODEC).networkSynchronized(Notes.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unreinforcing>> UNREINFORCING = DATA_COMPONENTS.registerComponentType("unreinforcing", builder -> builder.persistent(Unreinforcing.CODEC));
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ListModuleData>> LIST_MODULE_DATA = DATA_COMPONENTS.registerComponentType("list_module_data", builder -> builder.persistent(ListModuleData.CODEC).networkSynchronized(ListModuleData.STREAM_CODEC).cacheEncoding());
 
 	//recipe serializers
 	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<LimitedUseKeycardRecipe>> LIMITED_USE_KEYCARD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("limited_use_keycard_recipe", () -> new SimpleCraftingRecipeSerializer<>(LimitedUseKeycardRecipe::new));
@@ -2676,7 +2678,7 @@ public class SCContent {
 
 	//modules
 	@HasManualPage
-	public static final DeferredItem<ModuleItem> DENYLIST_MODULE = ITEMS.register("blacklist_module", () -> new ModuleItem(itemProp(1), ModuleType.DENYLIST, true, true));
+	public static final DeferredItem<ModuleItem> DENYLIST_MODULE = ITEMS.register("blacklist_module", () -> new ModuleItem(itemProp(1).component(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY), ModuleType.DENYLIST, true, true));
 	@HasManualPage
 	public static final DeferredItem<ModuleItem> DISGUISE_MODULE = ITEMS.register("disguise_module", () -> new ModuleItem(itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY), ModuleType.DISGUISE, false, true));
 	@HasManualPage
@@ -2688,7 +2690,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<ModuleItem> STORAGE_MODULE = ITEMS.register("storage_module", () -> new ModuleItem(itemProp(1), ModuleType.STORAGE, false));
 	@HasManualPage
-	public static final DeferredItem<ModuleItem> ALLOWLIST_MODULE = ITEMS.register("whitelist_module", () -> new ModuleItem(itemProp(1), ModuleType.ALLOWLIST, true, true));
+	public static final DeferredItem<ModuleItem> ALLOWLIST_MODULE = ITEMS.register("whitelist_module", () -> new ModuleItem(itemProp(1).component(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY), ModuleType.ALLOWLIST, true, true));
 	@HasManualPage
 	public static final DeferredItem<ModuleItem> SPEED_MODULE = ITEMS.register("speed_module", () -> new ModuleItem(itemProp(1), ModuleType.SPEED, false));
 
