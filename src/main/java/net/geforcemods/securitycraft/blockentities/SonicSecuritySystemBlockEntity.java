@@ -207,6 +207,8 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 
+		linkedBlocks = new ArrayList<>();
+
 		if (tag.contains("linked_blocks")) {
 			ListTag list = tag.getList("linked_blocks", Tag.TAG_COMPOUND);
 
