@@ -2651,7 +2651,7 @@ public class SCContent {
 	public static final DeferredItem<HangingSignItem> SECRET_WARPED_HANGING_SIGN_ITEM = ITEMS.register("secret_warped_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_WARPED_HANGING_SIGN.get(), SCContent.SECRET_WARPED_WALL_HANGING_SIGN.get(), itemProp(16)));
 	@HasManualPage(designedBy = "Henzoid")
 	public static final DeferredItem<SentryItem> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp()));
-	public static final DeferredItem<SonicSecuritySystemItem> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(1)));
+	public static final DeferredItem<SonicSecuritySystemItem> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(1).component(INDEXED_POSITIONS, IndexedPositions.EMPTY)));
 	@HasManualPage
 	public static final DeferredItem<TaserItem> TASER = ITEMS.register("taser", () -> new TaserItem(itemProp().durability(151).component(DataComponents.POTION_CONTENTS, TaserItem.getDefaultEffects()), false));
 	public static final DeferredItem<TaserItem> TASER_POWERED = ITEMS.register("taser_powered", () -> new TaserItem(itemProp().durability(151).component(DataComponents.POTION_CONTENTS, TaserItem.getDefaultPoweredEffects()), true));
