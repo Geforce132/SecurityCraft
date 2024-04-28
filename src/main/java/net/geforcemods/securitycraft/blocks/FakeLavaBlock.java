@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -19,7 +17,7 @@ import net.minecraft.world.level.material.FlowingFluid;
 public class FakeLavaBlock extends LiquidBlock {
 	private static final MobEffectInstance SHORT_FIRE_RESISTANCE = new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 1);
 
-	public FakeLavaBlock(BlockBehaviour.Properties properties, Supplier<? extends FlowingFluid> fluid) {
+	public FakeLavaBlock(BlockBehaviour.Properties properties, FlowingFluid fluid) {
 		super(fluid, properties);
 	}
 

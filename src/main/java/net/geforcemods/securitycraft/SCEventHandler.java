@@ -91,8 +91,6 @@ import net.neoforged.bus.api.Event.Result;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.TickEvent.Phase;
-import net.neoforged.neoforge.event.TickEvent.ServerTickEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
@@ -110,6 +108,7 @@ import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.level.NoteBlockEvent;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID)
 public class SCEventHandler {
@@ -119,8 +118,8 @@ public class SCEventHandler {
 	private SCEventHandler() {}
 
 	@SubscribeEvent
-	public static void onServerTick(ServerTickEvent event) {
-		if (event.phase == Phase.START && (!event.getServer().tickRateManager().isFrozen() || event.getServer().tickRateManager().isSteppingForward())) {
+	public static void onServerTickPre(ServerTickEvent.Pre event) {
+		if (!event.getServer().tickRateManager().isFrozen() || event.getServer().tickRateManager().isSteppingForward()) {
 			PLAYING_TUNES.forEach((player, pair) -> {
 				int ticksRemaining = pair.getLeft();
 

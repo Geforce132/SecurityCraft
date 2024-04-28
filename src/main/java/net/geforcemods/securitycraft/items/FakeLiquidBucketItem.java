@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.items;
 
-import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
@@ -14,8 +12,8 @@ import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.material.Fluid;
 
 public class FakeLiquidBucketItem extends BucketItem {
-	public FakeLiquidBucketItem(Supplier<? extends Fluid> supplier, Properties builder) {
-		super(supplier, builder);
+	public FakeLiquidBucketItem(Fluid fluid, Properties builder) {
+		super(fluid, builder);
 
 		DispenserBlock.registerBehavior(this, new DefaultDispenseItemBehavior() {
 			private final DefaultDispenseItemBehavior instance = new DefaultDispenseItemBehavior();
