@@ -10,7 +10,8 @@
             {
               "function": "minecraft:copy_components",
               "include": [
-                "securitycraft:indexed_positions"
+                "securitycraft:indexed_positions",
+                "securitycraft:notes"
               ],
               "source": "block_entity"
             },

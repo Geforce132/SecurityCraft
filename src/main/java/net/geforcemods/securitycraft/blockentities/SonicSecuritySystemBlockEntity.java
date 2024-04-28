@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +15,8 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.components.IndexedPositions;
 import net.geforcemods.securitycraft.components.IndexedPositions.Entry;
+import net.geforcemods.securitycraft.components.Notes;
+import net.geforcemods.securitycraft.components.Notes.NoteWrapper;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -66,7 +67,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	private boolean isActive = true;
 	/** Whether or not this Sonic Security System is currently recording a new note combination */
 	private boolean isRecording = false;
-	private ArrayList<NoteWrapper> recordedNotes = new ArrayList<>();
+	private List<NoteWrapper> recordedNotes = new ArrayList<>();
 	private boolean wasCorrectTunePlayed = false;
 	/** Whether or not this Sonic Security System is currently listening to notes */
 	private boolean isListening = false;
@@ -190,7 +191,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		}
 
 		tag.put("linked_blocks", list);
-		saveNotes(tag);
+		saveNotes(tag, lookupProvider);
 		tag.putBoolean("emitsPings", emitsPings);
 		tag.putBoolean("isActive", isActive);
 		tag.putBoolean("isRecording", isRecording);
@@ -218,7 +219,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 				}
 			}
 		}
-		//legacy
+		//TODO: datafix this?
 		else if (tag.contains("LinkedBlocks")) {
 			ListTag list = tag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
 
@@ -231,7 +232,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		}
 
 		recordedNotes.clear();
-		loadNotes(tag, recordedNotes);
+		loadNotes(tag);
 
 		if (tag.contains("emitsPings"))
 			emitsPings = tag.getBoolean("emitsPings");
@@ -252,30 +253,30 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 * Saves this block entity's notes to a tag
 	 *
 	 * @param stack The tag to save the notes to
+	 * @param TODO
 	 */
-	public void saveNotes(CompoundTag tag) {
-		ListTag notes = new ListTag();
+	public void saveNotes(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		ListTag list = new ListTag();
 
 		for (NoteWrapper note : recordedNotes) {
-			CompoundTag noteNbt = new CompoundTag();
-
-			noteNbt.putInt("noteID", note.noteID);
-			noteNbt.putString("instrument", note.instrumentName);
-			noteNbt.putString("customSoundId", note.customSoundId);
-			notes.add(noteNbt);
+			list.add(NoteWrapper.CODEC.encodeStart(lookupProvider.createSerializationContext(NbtOps.INSTANCE), note).getOrThrow());
 		}
 
-		tag.put("Notes", notes);
+		tag.put("notes", list);
 	}
 
 	/**
 	 * Loads notes saved on tag to a collection
 	 *
 	 * @param tag The tag containing the notes
-	 * @param recordedNotes The collection to save the notes to
 	 */
-	public static <T extends Collection<NoteWrapper>> void loadNotes(CompoundTag tag, T recordedNotes) {
-		if (tag.contains("Notes")) {
+	public void loadNotes(CompoundTag tag) {
+		recordedNotes = new ArrayList<>();
+
+		if (tag.contains("notes"))
+			recordedNotes.addAll(Notes.CODEC.decode(NbtOps.INSTANCE, tag).result().get().getFirst().notes());
+		//TODO: datafix this?
+		else if (tag.contains("Notes")) {
 			ListTag list = tag.getList("Notes", Tag.TAG_COMPOUND);
 
 			for (int i = 0; i < list.size(); i++) {
@@ -515,6 +516,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	protected void applyImplicitComponents(DataComponentInput input) {
 		super.applyImplicitComponents(input);
 		linkedBlocks = input.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).positions().stream().map(Entry::globalPos).collect(Collectors.toList()); //needs to be modifiable
+		recordedNotes = new ArrayList<>(input.getOrDefault(SCContent.NOTES, Notes.EMPTY).notes());
 	}
 
 	@Override
@@ -523,12 +525,14 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 		super.collectImplicitComponents(builder);
 		builder.set(SCContent.INDEXED_POSITIONS, new IndexedPositions(linkedBlocks.stream().map(pos -> new Entry(counter.get(), pos)).toList()));
+		builder.set(SCContent.NOTES, new Notes(new ArrayList<>(recordedNotes)));
 	}
 
 	@Override
 	public void removeComponentsFromTag(CompoundTag tag) {
 		super.removeComponentsFromTag(tag);
 		tag.remove("linked_blocks");
+		tag.remove("notes");
 	}
 
 	public boolean wasCorrectTunePlayed() {
@@ -541,21 +545,5 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 	public float getRadarRotationDegrees() {
 		return radarRotationDegrees;
-	}
-
-	/**
-	 * A simple wrapper that makes it slightly easier to store and compare notes with
-	 */
-	public static record NoteWrapper(int noteID, String instrumentName, String customSoundId) {
-		/**
-		 * Checks to see if a passed note ID and instrument matches the info of this note
-		 *
-		 * @param note the note ID to check
-		 * @param instrument the instrument to check
-		 * @param customSoundId the id of a potentially played custom sound
-		 */
-		public boolean isSameNote(int note, NoteBlockInstrument instrument, String customSoundId) {
-			return instrumentName.equals(instrument.getSerializedName()) && (!instrument.isTunable() || noteID == note) && (this.customSoundId.isEmpty() || this.customSoundId.equals(customSoundId));
-		}
 	}
 }

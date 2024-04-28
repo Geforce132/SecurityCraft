@@ -133,7 +133,8 @@ public class BlockLootTableGenerator implements LootTableSubProvider {
 						.setRolls(ConstantValue.exactly(1))
 						.add(LootItem.lootTableItem(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get())
 								.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
-										.include(SCContent.INDEXED_POSITIONS.get())) //TODO: Check if this works
+										.include(SCContent.INDEXED_POSITIONS.get())
+										.include(SCContent.NOTES.get()))
 								.apply(CopyNameFunction.copyName(NameSource.BLOCK_ENTITY)))));
 		//@formatter:on
 

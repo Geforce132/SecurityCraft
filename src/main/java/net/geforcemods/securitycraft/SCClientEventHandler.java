@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft;
 
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -13,12 +14,12 @@ import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntit
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.IncreasingInteger;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -27,12 +28,16 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipProvider;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,6 +50,7 @@ import net.neoforged.neoforge.client.event.RenderHandEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent.Stage;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class SCClientEventHandler {
@@ -69,6 +75,7 @@ public class SCClientEventHandler {
 			new CameraKeyInfoEntry($ -> SMART_MODULE_NOTE, be -> be.isModuleEnabled(ModuleType.SMART))
 	};
 	//@formatter:on
+	private static final List<DeferredHolder<DataComponentType<?>, ? extends DataComponentType<? extends TooltipProvider>>> COMPONENTS_WITH_GLOBAL_TOOLTIP = List.of(SCContent.OWNER_DATA, SCContent.NOTES);
 
 	private SCClientEventHandler() {}
 
@@ -121,10 +128,18 @@ public class SCClientEventHandler {
 
 	@SubscribeEvent
 	public static void onItemTooltip(ItemTooltipEvent event) {
-		OwnerData ownerData = event.getItemStack().get(SCContent.OWNER_DATA);
+		ItemStack stack = event.getItemStack();
+		TooltipContext ctx = event.getContext();
+		List<Component> tooltip = event.getToolTip();
+		TooltipFlag flag = event.getFlags();
+		IncreasingInteger lineIndex = new IncreasingInteger(1);
 
-		if (ownerData != null)
-			ownerData.addToTooltip(event.getContext(), line -> event.getToolTip().add(1, line), event.getFlags()); //add after item name
+		for (var component : COMPONENTS_WITH_GLOBAL_TOOLTIP) {
+			TooltipProvider tooltipProvider = stack.get(component);
+
+			if (tooltipProvider != null)
+				tooltipProvider.addToTooltip(ctx, line -> tooltip.add(lineIndex.get(), line), flag); //add after item name
+		}
 	}
 
 	public static void cameraOverlay(GuiGraphics guiGraphics, float partialTicks) {

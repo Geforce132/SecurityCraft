@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -29,12 +28,12 @@ import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
-import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.components.CodebreakerData;
+import net.geforcemods.securitycraft.components.Notes.NoteWrapper;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -113,7 +112,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 @EventBusSubscriber(modid = SecurityCraft.MODID)
 public class SCEventHandler {
 	private static final Integer NOTE_DELAY = 9;
-	public static final Map<Player, MutablePair<Integer, Deque<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
+	public static final Map<Player, MutablePair<Integer, List<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
 
 	private SCEventHandler() {}
 
@@ -129,20 +128,23 @@ public class SCEventHandler {
 						return;
 					}
 
-					NoteWrapper note = pair.getRight().poll();
+					if (!pair.getRight().isEmpty()) {
+						NoteWrapper note = pair.getRight().removeFirst();
 
-					if (note != null) {
-						NoteBlockInstrument instrument = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase());
-						SoundEvent sound = instrument.hasCustomSound() && !note.customSoundId().isEmpty() ? SoundEvent.createVariableRangeEvent(new ResourceLocation(note.customSoundId())) : instrument.getSoundEvent().value();
-						float pitch = instrument.isTunable() ? (float) Math.pow(2.0D, (note.noteID() - 12) / 12.0D) : 1.0F;
+						if (note != null) {
+							NoteBlockInstrument instrument = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase());
+							SoundEvent sound = instrument.hasCustomSound() && !note.customSound().isEmpty() ? SoundEvent.createVariableRangeEvent(new ResourceLocation(note.customSound())) : instrument.getSoundEvent().value();
+							float pitch = instrument.isTunable() ? (float) Math.pow(2.0D, (note.id() - 12) / 12.0D) : 1.0F;
 
-						player.level().playSound(null, player.blockPosition(), sound, SoundSource.RECORDS, 3.0F, pitch);
-						handlePlayedNote(player.level(), player.blockPosition(), note.noteID(), instrument, note.customSoundId());
-						player.gameEvent(GameEvent.NOTE_BLOCK_PLAY);
-						pair.setLeft(NOTE_DELAY);
+							player.level().playSound(null, player.blockPosition(), sound, SoundSource.RECORDS, 3.0F, pitch);
+							handlePlayedNote(player.level(), player.blockPosition(), note.id(), instrument, note.customSound());
+							player.gameEvent(GameEvent.NOTE_BLOCK_PLAY);
+							pair.setLeft(NOTE_DELAY);
+							return;
+						}
 					}
-					else
-						pair.setLeft(-1);
+
+					pair.setLeft(-1);
 				}
 				else
 					pair.setLeft(ticksRemaining - 1);
@@ -150,7 +152,7 @@ public class SCEventHandler {
 
 			//remove finished tunes
 			if (PLAYING_TUNES.size() > 0) {
-				Iterator<Entry<Player, MutablePair<Integer, Deque<NoteWrapper>>>> entries = PLAYING_TUNES.entrySet().iterator();
+				Iterator<Entry<Player, MutablePair<Integer, List<NoteWrapper>>>> entries = PLAYING_TUNES.entrySet().iterator();
 
 				while (entries.hasNext()) {
 					if (entries.next().getValue().left == -1)

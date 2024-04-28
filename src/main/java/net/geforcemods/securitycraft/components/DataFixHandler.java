@@ -47,6 +47,9 @@ public class DataFixHandler {
 
 		if (itemStackData.is("securitycraft:sonic_security_system"))
 			fixSonicSecuritySystem(itemStackData, dynamic);
+
+		if (itemStackData.is("securitycraft:portable_tune_player"))
+			fixPortableTunePlayer(itemStackData, dynamic);
 	}
 
 	public static void registerBlockEntities(Schema schema, Map<String, Supplier<TypeTemplate>> map) {
@@ -263,6 +266,21 @@ public class DataFixHandler {
 			itemStackData.setComponent("securitycraft:indexed_positions", dynamic.emptyMap().set("positions", dynamic.createList(linkedBlocks.stream())));
 
 		itemStackData.removeTag("LinkedBlocks");
+	}
+
+	private static void fixPortableTunePlayer(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
+		//@formatter:off
+		List<Dynamic<?>> notes = dynamic.get("Notes")
+				.asList(d -> d.emptyMap()
+						.set("id", d.createInt(d.get("noteID").asInt(0)))
+						.set("instrument", d.createString(d.get("instrument").asString("")))
+						.set("custom_sound", d.createString(d.get("customSoundId").asString(""))));
+		//@formatter:on
+
+		if (!notes.isEmpty())
+			itemStackData.setComponent("securitycraft:notes", dynamic.emptyMap().set("notes", dynamic.createList(notes.stream())));
+
+		itemStackData.removeTag("Notes");
 	}
 
 	private static void registerSingleItem(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType, String itemKey) {
