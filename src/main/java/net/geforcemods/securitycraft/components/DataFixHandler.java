@@ -20,6 +20,7 @@ import net.minecraft.util.datafix.fixes.References;
 public class DataFixHandler {
 	private static final Set<String> KEYCARD_HOLDER_OR_DISGUISE_MODULE = Set.of("securitycraft:keycard_holder", "securitycraft:disguise_module");
 	private static final Set<String> KEYCARDS = Set.of("securitycraft:keycard_lv1", "securitycraft:keycard_lv2", "securitycraft:keycard_lv3", "securitycraft:keycard_lv4", "securitycraft:keycard_lv5");
+	private static final Set<String> REINFORCERS = Set.of("securitycraft:universal_block_reinforcer_lvl2", "securitycraft:universal_block_reinforcer_lvl3");
 
 	private DataFixHandler() {}
 
@@ -50,6 +51,9 @@ public class DataFixHandler {
 
 		if (itemStackData.is("securitycraft:portable_tune_player"))
 			fixPortableTunePlayer(itemStackData, dynamic);
+
+		if (itemStackData.is(REINFORCERS))
+			fixReinforcers(itemStackData, dynamic);
 	}
 
 	public static void registerBlockEntities(Schema schema, Map<String, Supplier<TypeTemplate>> map) {
@@ -281,6 +285,13 @@ public class DataFixHandler {
 			itemStackData.setComponent("securitycraft:notes", dynamic.emptyMap().set("notes", dynamic.createList(notes.stream())));
 
 		itemStackData.removeTag("Notes");
+	}
+
+	private static void fixReinforcers(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
+		Optional<? extends Dynamic<?>> isUnreinforcing = itemStackData.removeTag("is_unreinforcing").result();
+
+		if (isUnreinforcing.isPresent())
+			itemStackData.setComponent("securitycraft:unreinforcing", dynamic.emptyMap());
 	}
 
 	private static void registerSingleItem(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType, String itemKey) {

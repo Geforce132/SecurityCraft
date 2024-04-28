@@ -182,6 +182,7 @@ import net.geforcemods.securitycraft.components.Notes;
 import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.components.PasscodeData;
 import net.geforcemods.securitycraft.components.SentryPositions;
+import net.geforcemods.securitycraft.components.Unreinforcing;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -334,6 +335,7 @@ public class SCContent {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<IndexedPositions>> INDEXED_POSITIONS = DATA_COMPONENTS.registerComponentType("indexed_positions", builder -> builder.persistent(IndexedPositions.CODEC).networkSynchronized(IndexedPositions.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<SentryPositions>> SENTRY_POSITIONS = DATA_COMPONENTS.registerComponentType("sentry_positions", builder -> builder.persistent(SentryPositions.CODEC).networkSynchronized(SentryPositions.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Notes>> NOTES = DATA_COMPONENTS.registerComponentType("notes", builder -> builder.persistent(Notes.CODEC).networkSynchronized(Notes.STREAM_CODEC).cacheEncoding());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unreinforcing>> UNREINFORCING = DATA_COMPONENTS.registerComponentType("unreinforcing", builder -> builder.persistent(Unreinforcing.CODEC));
 
 	//recipe serializers
 	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<LimitedUseKeycardRecipe>> LIMITED_USE_KEYCARD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("limited_use_keycard_recipe", () -> new SimpleCraftingRecipeSerializer<>(LimitedUseKeycardRecipe::new));

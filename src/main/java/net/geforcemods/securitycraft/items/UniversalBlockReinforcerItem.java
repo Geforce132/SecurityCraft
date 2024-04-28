@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -106,7 +105,7 @@ public class UniversalBlockReinforcerItem extends Item {
 	}
 
 	public static boolean isReinforcing(ItemStack stack) {
-		return stack.is(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()) || !Utils.getTag(stack).getBoolean("is_unreinforcing");
+		return stack.is(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()) || !stack.has(SCContent.UNREINFORCING);
 	}
 
 	public static void maybeRemoveMending(ItemStack stack) {
