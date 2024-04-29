@@ -97,7 +97,6 @@ public class EditModuleScreen extends Screen {
 				ListModuleData listModuleData = module.get(SCContent.LIST_MODULE_DATA);
 
 				if (listModuleData != null && listModuleData.isPlayerOnList(s)) {
-					System.out.println(listModuleData.players().indexOf(s));
 					addPlayerButton.active = false;
 					removePlayerButton.active = true;
 					playerList.setSelectedIndex(listModuleData.players().indexOf(s));

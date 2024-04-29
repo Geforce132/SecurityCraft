@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
@@ -30,8 +29,6 @@ public class OpenScreen implements CustomPacketPayload {
 
 			if (dataType.needsPosition)
 				return new OpenScreen(dataType, buf.readBlockPos());
-			else if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
-				return new OpenScreen(dataType, buf.readNbt());
 			else
 				return new OpenScreen(dataType);
 		}
@@ -42,14 +39,10 @@ public class OpenScreen implements CustomPacketPayload {
 
 			if (packet.dataType.needsPosition)
 				buf.writeBlockPos(packet.pos);
-
-			if (packet.dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
-				buf.writeNbt(packet.tag);
 		}
 	};
 	private DataType dataType;
 	private BlockPos pos;
-	private CompoundTag tag;
 
 	public OpenScreen() {}
 
@@ -63,11 +56,6 @@ public class OpenScreen implements CustomPacketPayload {
 	public OpenScreen(DataType dataType, BlockPos pos) {
 		this.dataType = dataType;
 		this.pos = pos;
-	}
-
-	public OpenScreen(DataType dataType, CompoundTag tag) {
-		this.dataType = dataType;
-		this.tag = tag;
 	}
 
 	@Override
