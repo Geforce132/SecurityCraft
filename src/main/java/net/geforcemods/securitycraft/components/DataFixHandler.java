@@ -65,26 +65,63 @@ public class DataFixHandler {
 	}
 
 	public static void registerBlockEntities(Schema schema, Map<String, Supplier<TypeTemplate>> map) {
-		registerInventory(schema, map, "securitycraft:keypad_chest");
-		registerInventory(schema, map, "securitycraft:keypad_furnace");
-		registerInventory(schema, map, "securitycraft:keypad_blast_furnace");
-		registerInventory(schema, map, "securitycraft:keypad_smoker");
-		registerInventory(schema, map, "securitycraft:keypad_barrel");
+		//@formatter:off
+		String[] hasOnlyModules = {
+				"securitycraft:alarm",
+				"securitycraft:reinforced_pressure_plate",
+				"securitycraft:abstract",
+				"securitycraft:disguisable",
+				"securitycraft:cage_trap",
+				"securitycraft:floor_trap",
+				"securitycraft:keycard_reader",
+				"securitycraft:keycard_lock",
+				"securitycraft:keypad",
+				"securitycraft:protecto",
+				"securitycraft:ownable",
+				"securitycraft:retinal_scanner",
+				"securitycraft:rift_stabilizer",
+				"securitycraft:username_logger",
+				"securitycraft:ims",
+				"securitycraft:keypad_trapdoor",
+				"securitycraft:key_panel",
+				"securitycraft:keypad_door",
+				"securitycraft:scanner_door",
+				"securitycraft:motion_light",
+				"securitycraft:portable_radar",
+				"securitycraft:reinforced_cauldron",
+				"securitycraft:scanner_trapdoor",
+				"securitycraft:sonic_security_system",
+				"securitycraft:secret_hanging_sign",
+				"securitycraft:secret_sign"
+		};
+		//@formatter:on
+
+		for (String blockEntityType : hasOnlyModules) {
+			registerModules(schema, map, blockEntityType);
+		}
+
+		registerInventoryAndModules(schema, map, "securitycraft:keypad_chest");
+		registerInventoryAndModules(schema, map, "securitycraft:keypad_furnace");
+		registerInventoryAndModules(schema, map, "securitycraft:keypad_blast_furnace");
+		registerInventoryAndModules(schema, map, "securitycraft:keypad_smoker");
+		registerInventoryAndModules(schema, map, "securitycraft:keypad_barrel");
 		//@formatter:off
 		schema.register(map, "securitycraft:inventory_scanner", () -> DSL.optionalFields(
+				"Modules", DSL.list(References.ITEM_STACK.in(schema)),
 				"Items", DSL.list(References.ITEM_STACK.in(schema)),
 				"lens", DSL.list(References.ITEM_STACK.in(schema))));
 		//@formatter:on
-		registerInventory(schema, map, "securitycraft:block_pocket_manager");
-		registerInventory(schema, map, "securitycraft:reinforced_hopper");
-		registerInventory(schema, map, "securitycraft:reinforced_dropper");
-		registerInventory(schema, map, "securitycraft:reinforced_dispenser");
-		registerSingleItem(schema, map, "securitycraft:reinforced_lectern", "Book");
-		registerInventory(schema, map, "securitycraft:reinforced_chiseled_bookshelf");
-		registerSingleItem(schema, map, "securitycraft:block_change_detector", "filter");
-		registerSingleItem(schema, map, "securitycraft:projector", "storedItem");
+		registerInventoryAndModules(schema, map, "securitycraft:block_pocket_manager");
+		registerInventoryAndModules(schema, map, "securitycraft:reinforced_hopper");
+		registerInventoryAndModules(schema, map, "securitycraft:reinforced_dropper");
+		registerInventoryAndModules(schema, map, "securitycraft:reinforced_dispenser");
+		registerSingleItemAndModules(schema, map, "securitycraft:reinforced_lectern", "Book");
+		registerInventoryAndModules(schema, map, "securitycraft:reinforced_chiseled_bookshelf");
+		registerSingleItemAndModules(schema, map, "securitycraft:block_change_detector", "filter");
+		registerSingleItemAndModules(schema, map, "securitycraft:projector", "storedItem");
 		//@formatter:off
 		schema.register(map, "securitycraft:laser_block", () -> DSL.allWithRemainder(
+				DSL.optional(DSL.field("Modules", DSL.list(References.ITEM_STACK.in(schema)))),
 				DSL.optional(DSL.field("lens0", References.ITEM_STACK.in(schema))),
 				DSL.optional(DSL.field("lens1", References.ITEM_STACK.in(schema))),
 				DSL.optional(DSL.field("lens2", References.ITEM_STACK.in(schema))),
@@ -92,11 +129,11 @@ public class DataFixHandler {
 				DSL.optional(DSL.field("lens4", References.ITEM_STACK.in(schema))),
 				DSL.optional(DSL.field("lens5", References.ITEM_STACK.in(schema)))));
 		//@formatter:on
-		registerInventory(schema, map, "securitycraft:security_camera", "lens");
-		registerInventory(schema, map, "securitycraft:trophy_system", "lens");
-		registerInventory(schema, map, "securitycraft:claymore", "lens");
-		registerSingleItem(schema, map, "securitycraft:display_case", "DisplayedStack");
-		registerSingleItem(schema, map, "securitycraft:glow_display_case", "DisplayedStack");
+		registerInventoryAndModules(schema, map, "securitycraft:security_camera", "lens");
+		registerInventoryAndModules(schema, map, "securitycraft:trophy_system", "lens");
+		registerInventoryAndModules(schema, map, "securitycraft:claymore", "lens");
+		registerSingleItemAndModules(schema, map, "securitycraft:display_case", "DisplayedStack");
+		registerSingleItemAndModules(schema, map, "securitycraft:glow_display_case", "DisplayedStack");
 	}
 
 	public static void registerSentry(Schema schema, Map<String, Supplier<TypeTemplate>> map) {
@@ -338,15 +375,27 @@ public class DataFixHandler {
 		}
 	}
 
-	private static void registerSingleItem(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType, String itemKey) {
-		schema.register(map, blockEntityType, name -> DSL.optionalFields(itemKey, References.ITEM_STACK.in(schema)));
+	private static void registerModules(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType) {
+		schema.register(map, blockEntityType, () -> DSL.optionalFields("Modules", DSL.list(References.ITEM_STACK.in(schema))));
 	}
 
-	private static void registerInventory(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType) {
-		registerInventory(schema, map, blockEntityType, "Items");
+	private static void registerSingleItemAndModules(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType, String itemKey) {
+		//@formatter:off
+		schema.register(map, blockEntityType, name -> DSL.optionalFields(
+				itemKey, References.ITEM_STACK.in(schema),
+				"Modules", DSL.list(References.ITEM_STACK.in(schema))));
+		//@formatter:on
 	}
 
-	private static void registerInventory(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType, String key) {
-		schema.register(map, blockEntityType, () -> DSL.optionalFields(key, DSL.list(References.ITEM_STACK.in(schema))));
+	private static void registerInventoryAndModules(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType) {
+		registerInventoryAndModules(schema, map, blockEntityType, "Items");
+	}
+
+	private static void registerInventoryAndModules(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType, String key) {
+		//@formatter:off
+		schema.register(map, blockEntityType, () -> DSL.optionalFields(
+				key, DSL.list(References.ITEM_STACK.in(schema)),
+				"Modules", DSL.list(References.ITEM_STACK.in(schema))));
+		//@formatter:on
 	}
 }
