@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import net.geforcemods.securitycraft.SCStreamCodecs;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -22,7 +21,7 @@ public record SyncTrophySystem(BlockPos pos, ResourceLocation projectileTypeLoca
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncTrophySystem> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, SyncTrophySystem::pos,
-			SCStreamCodecs.RESOURCE_LOCATION, SyncTrophySystem::projectileTypeLocation,
+			ResourceLocation.STREAM_CODEC, SyncTrophySystem::projectileTypeLocation,
 			ByteBufCodecs.BOOL, SyncTrophySystem::allowed,
 			SyncTrophySystem::new);
 	//@formatter:on

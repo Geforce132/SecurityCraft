@@ -1,34 +1,14 @@
 package net.geforcemods.securitycraft;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.GameData;
 
 public class SCStreamCodecs {
-	public static final StreamCodec<FriendlyByteBuf, BlockState> BLOCK_STATE = new StreamCodec<>() {
-		@Override
-		public BlockState decode(FriendlyByteBuf buf) {
-			return GameData.getBlockStateIDMap().byId(buf.readInt());
-		}
-
-		@Override
-		public void encode(FriendlyByteBuf buf, BlockState state) {
-			buf.writeInt(GameData.getBlockStateIDMap().getId(state));
-		}
-	};
-	public static final StreamCodec<FriendlyByteBuf, ResourceLocation> RESOURCE_LOCATION = new StreamCodec<>() {
-		@Override
-		public ResourceLocation decode(FriendlyByteBuf buf) {
-			return buf.readResourceLocation();
-		}
-
-		@Override
-		public void encode(FriendlyByteBuf buf, ResourceLocation resourceLocation) {
-			buf.writeResourceLocation(resourceLocation);
-		}
-	};
+	public static final StreamCodec<ByteBuf, BlockState> BLOCK_STATE = ByteBufCodecs.VAR_INT.map(GameData.getBlockStateIDMap()::byId, GameData.getBlockStateIDMap()::getId);
 	public static final StreamCodec<FriendlyByteBuf, boolean[]> BOOLEAN_ARRAY = new StreamCodec<>() {
 		@Override
 		public boolean[] decode(FriendlyByteBuf buf) {

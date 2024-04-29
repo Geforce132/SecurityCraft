@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.network.server;
 
-import net.geforcemods.securitycraft.SCStreamCodecs;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -18,7 +17,7 @@ public record SyncAlarmSettings(BlockPos pos, ResourceLocation soundEvent, float
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncAlarmSettings> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, SyncAlarmSettings::pos,
-			SCStreamCodecs.RESOURCE_LOCATION, SyncAlarmSettings::soundEvent,
+			ResourceLocation.STREAM_CODEC, SyncAlarmSettings::soundEvent,
 			ByteBufCodecs.FLOAT, SyncAlarmSettings::pitch,
 			ByteBufCodecs.VAR_INT, SyncAlarmSettings::soundLength,
 			SyncAlarmSettings::new);
