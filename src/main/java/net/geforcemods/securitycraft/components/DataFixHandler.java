@@ -14,6 +14,7 @@ import com.mojang.datafixers.types.templates.TypeTemplate;
 import com.mojang.serialization.Dynamic;
 
 import net.geforcemods.securitycraft.util.IncreasingInteger;
+import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.util.datafix.fixes.ItemStackComponentizationFix;
 import net.minecraft.util.datafix.fixes.References;
 
@@ -58,6 +59,9 @@ public class DataFixHandler {
 
 		if (itemStackData.is(LIST_MODULES))
 			fixListModule(itemStackData, dynamic);
+
+		if (itemStackData.is("securitycraft:disguise_module"))
+			fixDisguiseModule(itemStackData, dynamic);
 	}
 
 	public static void registerBlockEntities(Schema schema, Map<String, Supplier<TypeTemplate>> map) {
@@ -316,6 +320,20 @@ public class DataFixHandler {
 					.set("players", dynamic.createList(players.stream()))
 					.set("teams", dynamic.createList(teams.stream()))
 					.set("affect_everyone", dynamic.createBoolean(affectEveryone)));
+			//@formatter:on
+		}
+	}
+
+	private static void fixDisguiseModule(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
+		Optional<?> state = itemStackData.removeTag("SavedState").result();
+
+		if (state.isPresent()) {
+			int standingOrWall = Math.min(itemStackData.removeTag("StandingOrWall").asInt(0), StandingOrWallType.values().length - 1);
+
+			//@formatter:off
+			itemStackData.setComponent("securitycraft:saved_block_state", dynamic.emptyMap()
+					.set("state", (Dynamic<?>) state.get())
+					.set("standing_or_wall_type", dynamic.createString(StandingOrWallType.values()[standingOrWall].getSerializedName())));
 			//@formatter:on
 		}
 	}

@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -18,7 +17,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.Block;
 
 public class Utils {
@@ -47,24 +45,6 @@ public class Utils {
 		}
 
 		return Component.translatable(key, params);
-	}
-
-	public static CompoundTag getTag(ItemStack stack) {
-		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
-
-		if (customData == null)
-			return CustomData.EMPTY.copyTag();
-		else
-			return customData.getUnsafe();
-	}
-
-	public static CustomData getCustomData(ItemStack stack) {
-		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
-
-		if (customData == null)
-			return CustomData.EMPTY;
-		else
-			return customData;
 	}
 
 	public static ItemStack parseOptional(HolderLookup.Provider provider, CompoundTag tag) {

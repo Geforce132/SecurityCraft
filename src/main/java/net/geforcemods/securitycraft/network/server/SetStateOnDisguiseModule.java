@@ -3,17 +3,15 @@ package net.geforcemods.securitycraft.network.server;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCStreamCodecs;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.components.SavedBlockState;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -37,16 +35,10 @@ public record SetStateOnDisguiseModule(BlockState state, StandingOrWallType stan
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.DISGUISE_MODULE.get());
 
 		if (!stack.isEmpty()) {
-			CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> {
-				if (state.isAir()) {
-					tag.remove("SavedState");
-					tag.remove("StandingOrWall");
-				}
-				else {
-					tag.put("SavedState", NbtUtils.writeBlockState(state));
-					tag.putInt("StandingOrWall", standingOrWall.ordinal());
-				}
-			});
+			if (state.isAir())
+				stack.set(SCContent.SAVED_BLOCK_STATE, SavedBlockState.EMPTY);
+			else
+				stack.set(SCContent.SAVED_BLOCK_STATE, new SavedBlockState(state, standingOrWall));
 		}
 	}
 }

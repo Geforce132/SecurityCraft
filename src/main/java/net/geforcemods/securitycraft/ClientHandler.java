@@ -115,8 +115,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
@@ -717,7 +715,7 @@ public class ClientHandler {
 	}
 
 	public static void putDisguisedBeRenderer(BlockEntity disguisableBlockEntity, ItemStack stack) {
-		DISGUISED_BLOCK_RENDER_DELEGATE.putDelegateFor(disguisableBlockEntity, NbtUtils.readBlockState(disguisableBlockEntity.getLevel().holderLookup(Registries.BLOCK), Utils.getTag(stack).getCompound("SavedState")));
+		DISGUISED_BLOCK_RENDER_DELEGATE.putDelegateFor(disguisableBlockEntity, stack.get(SCContent.SAVED_BLOCK_STATE).state());
 	}
 
 	public static void updateBlockColorAroundPosition(BlockPos pos) {

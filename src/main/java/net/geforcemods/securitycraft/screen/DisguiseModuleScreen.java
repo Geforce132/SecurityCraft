@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.screen;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.components.SavedBlockState;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.network.server.SetStateOnDisguiseModule;
 import net.geforcemods.securitycraft.screen.components.StateSelector;
@@ -12,13 +13,10 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -78,13 +76,7 @@ public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModule
 			standingOrWall = stateSelector.getStandingOrWallType();
 		}
 
-		final BlockState finalState = state;
-		final StandingOrWallType finalStandingOrWall = standingOrWall;
-
-		CustomData.update(DataComponents.CUSTOM_DATA, module, moduleTag -> {
-			moduleTag.put("SavedState", NbtUtils.writeBlockState(finalState));
-			moduleTag.putInt("StandingOrWall", finalStandingOrWall.ordinal());
-		});
+		module.set(SCContent.SAVED_BLOCK_STATE, new SavedBlockState(state, standingOrWall));
 		PacketDistributor.sendToServer(new SetStateOnDisguiseModule(state, standingOrWall));
 	}
 
