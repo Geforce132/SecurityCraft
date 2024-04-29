@@ -221,7 +221,6 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 				}
 			}
 		}
-		//TODO: datafix this?
 		else if (tag.contains("LinkedBlocks")) {
 			ListTag list = tag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
 
@@ -255,7 +254,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 * Saves this block entity's notes to a tag
 	 *
 	 * @param stack The tag to save the notes to
-	 * @param TODO
+	 * @param lookupProvider lookup for registry entries
 	 */
 	public void saveNotes(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		ListTag list = new ListTag();
@@ -277,7 +276,6 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 		if (tag.contains("notes"))
 			recordedNotes.addAll(Notes.CODEC.decode(NbtOps.INSTANCE, tag).result().get().getFirst().notes());
-		//TODO: datafix this?
 		else if (tag.contains("Notes")) {
 			ListTag list = tag.getList("Notes", Tag.TAG_COMPOUND);
 

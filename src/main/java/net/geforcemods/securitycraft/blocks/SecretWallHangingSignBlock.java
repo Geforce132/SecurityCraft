@@ -47,10 +47,6 @@ public class SecretWallHangingSignBlock extends WallHangingSignBlock {
 
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-		//TODO: Is this necessary?
-		//		if (!level.isClientSide && player.getItemInHand(hand).is(SCContent.ADMIN_TOOL.get()))
-		//			return SCContent.ADMIN_TOOL.get().useOn(new UseOnContext(player, hand, hit));
-
 		if (level.getBlockEntity(pos) instanceof SecretHangingSignBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)))
 			return super.useWithoutItem(state, level, pos, player, hit);
 

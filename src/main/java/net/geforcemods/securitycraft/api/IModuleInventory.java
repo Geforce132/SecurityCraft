@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -394,10 +393,10 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * writeModuleInventory.
 	 *
 	 * @param tag The tag to read the inventory from
-	 * @param lookupProvider TODO
+	 * @param lookupProvider lookup for registry entries
 	 * @return A NonNullList of ItemStacks that were read from the given tag
 	 */
-	public default NonNullList<ItemStack> readModuleInventory(CompoundTag tag, Provider lookupProvider) {
+	public default NonNullList<ItemStack> readModuleInventory(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		ListTag list = tag.getList("Modules", Tag.TAG_COMPOUND);
 		NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
@@ -444,7 +443,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * loadModuleInventory.
 	 *
 	 * @param tag The tag to write the inventory to
-	 * @param lookupProvider TODO
+	 * @param lookupProvider lookup for registry entries
 	 * @return The modified tag
 	 */
 	public default CompoundTag writeModuleInventory(CompoundTag tag, HolderLookup.Provider lookupProvider) {
