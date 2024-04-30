@@ -2,13 +2,13 @@ package net.geforcemods.securitycraft.network.server;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.components.Unreinforcing;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -36,7 +36,7 @@ public record SyncBlockReinforcer(boolean isReinforcing) implements CustomPacket
 			if (isReinforcing)
 				reinforcer.remove(SCContent.UNREINFORCING);
 			else
-				reinforcer.set(SCContent.UNREINFORCING, new Unreinforcing());
+				reinforcer.set(SCContent.UNREINFORCING, Unit.INSTANCE);
 		}
 	}
 }

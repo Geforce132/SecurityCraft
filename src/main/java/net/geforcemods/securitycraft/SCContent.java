@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.base.Predicates;
+import com.mojang.serialization.Codec;
 
 import net.geforcemods.securitycraft.api.NamedBlockEntity;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
@@ -184,7 +185,6 @@ import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.components.PasscodeData;
 import net.geforcemods.securitycraft.components.SavedBlockState;
 import net.geforcemods.securitycraft.components.SentryPositions;
-import net.geforcemods.securitycraft.components.Unreinforcing;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -259,6 +259,7 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.flag.FeatureFlag;
@@ -337,7 +338,7 @@ public class SCContent {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<IndexedPositions>> INDEXED_POSITIONS = DATA_COMPONENTS.registerComponentType("indexed_positions", builder -> builder.persistent(IndexedPositions.CODEC).networkSynchronized(IndexedPositions.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<SentryPositions>> SENTRY_POSITIONS = DATA_COMPONENTS.registerComponentType("sentry_positions", builder -> builder.persistent(SentryPositions.CODEC).networkSynchronized(SentryPositions.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Notes>> NOTES = DATA_COMPONENTS.registerComponentType("notes", builder -> builder.persistent(Notes.CODEC).networkSynchronized(Notes.STREAM_CODEC).cacheEncoding());
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unreinforcing>> UNREINFORCING = DATA_COMPONENTS.registerComponentType("unreinforcing", builder -> builder.persistent(Unreinforcing.CODEC));
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> UNREINFORCING = DATA_COMPONENTS.registerComponentType("unreinforcing", builder -> builder.persistent(Codec.unit(Unit.INSTANCE)));
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ListModuleData>> LIST_MODULE_DATA = DATA_COMPONENTS.registerComponentType("list_module_data", builder -> builder.persistent(ListModuleData.CODEC).networkSynchronized(ListModuleData.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<SavedBlockState>> SAVED_BLOCK_STATE = DATA_COMPONENTS.registerComponentType("saved_block_state", builder -> builder.persistent(SavedBlockState.CODEC).networkSynchronized(SavedBlockState.STREAM_CODEC).cacheEncoding());
 
