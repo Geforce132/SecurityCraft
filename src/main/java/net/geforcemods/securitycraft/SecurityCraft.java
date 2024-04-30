@@ -44,7 +44,6 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.InterModComms;
@@ -83,7 +82,7 @@ public class SecurityCraft {
 		return modList.isLoaded("embeddium") || modList.isLoaded("rubidium") || modList.isLoaded("sodium");
 	});
 
-	public SecurityCraft(IEventBus modEventBus, Dist dist, ModContainer container) {
+	public SecurityCraft(IEventBus modEventBus, ModContainer container) {
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
 		NeoForge.EVENT_BUS.addListener(RegistrationHandler::registerBrewingRecipes);
 		container.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
