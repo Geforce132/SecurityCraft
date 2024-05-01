@@ -1,50 +1,64 @@
 package net.geforcemods.securitycraft.components;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Supplier;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.components.SentryPositions.Entry;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 
-public record SentryPositions(List<Entry> positions) implements PositionComponent<Entry, String> {
+public record SentryPositions(List<Entry> positions) implements PositionComponent<SentryPositions, Entry, String> {
 	public static final int MAX_SENTRIES = 12;
-	public static final SentryPositions EMPTY = new SentryPositions(List.of());
 	//@formatter:off
 	public static final Codec<SentryPositions> CODEC = RecordCodecBuilder.create(
-			instance -> instance.group(Entry.CODEC.sizeLimitedListOf(256).fieldOf("positions").forGetter(SentryPositions::positions))
+			instance -> instance.group(PositionComponent.nullableSizedCodec(Entry.CODEC, MAX_SENTRIES).fieldOf("positions").forGetter(SentryPositions::positions))
 			.apply(instance, SentryPositions::new));
 	public static final StreamCodec<ByteBuf, SentryPositions> STREAM_CODEC = StreamCodec.composite(
-			Entry.STREAM_CODEC.apply(ByteBufCodecs.list(256)), SentryPositions::positions,
+			PositionComponent.nullableSizedStreamCodec(Entry.STREAM_CODEC, MAX_SENTRIES, new Entry(DUMMY_GLOBAL_POS, "")), SentryPositions::positions,
 			SentryPositions::new);
 	//@formatter:on
 
-	@Override
-	public Entry createEntry(int index, GlobalPos globalPos, String sentryName) {
-		return new Entry(index, globalPos, sentryName);
+	public static SentryPositions sized(int size) {
+		return new SentryPositions(Arrays.asList(new Entry[size]));
 	}
 
 	@Override
-	public void setOnStack(ItemStack stack, List<Entry> newPositionList) {
-		stack.set(SCContent.SENTRY_POSITIONS, new SentryPositions(newPositionList));
+	public boolean isPositionAdded(GlobalPos pos) {
+		return positions().stream().filter(Objects::nonNull).map(Entry::globalPos).anyMatch(pos::equals);
 	}
 
-	public record Entry(int index, GlobalPos globalPos, String name) implements PositionEntry {
+	@Override
+	public GlobalPos getGlobalPos(Entry entry) {
+		return entry == null ? null : entry.globalPos;
+	}
+
+	@Override
+	public Entry createEntry(GlobalPos globalPos, String sentryName) {
+		return new Entry(globalPos, sentryName);
+	}
+
+	@Override
+	public void setOnStack(Supplier<DataComponentType<SentryPositions>> dataComponentType, ItemStack stack, List<Entry> newPositionList) {
+		stack.set(dataComponentType, new SentryPositions(newPositionList));
+	}
+
+	public record Entry(GlobalPos globalPos, String name) {
 		//@formatter:off
 		public static final Codec<Entry> CODEC = RecordCodecBuilder.create(
 				instance -> instance.group(
-						Codec.INT.fieldOf("index").forGetter(Entry::index),
 						GlobalPos.CODEC.fieldOf("global_pos").forGetter(Entry::globalPos),
 						Codec.STRING.fieldOf("name").forGetter(Entry::name))
 				.apply(instance, Entry::new));
 		public static final StreamCodec<ByteBuf, Entry> STREAM_CODEC = StreamCodec.composite(
-				ByteBufCodecs.VAR_INT, Entry::index,
 				GlobalPos.STREAM_CODEC, Entry::globalPos,
 				ByteBufCodecs.STRING_UTF8, Entry::name,
 				Entry::new);

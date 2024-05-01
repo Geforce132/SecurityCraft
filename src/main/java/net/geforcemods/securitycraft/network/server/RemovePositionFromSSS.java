@@ -30,7 +30,11 @@ public record RemovePositionFromSSS(GlobalPos globalPos) implements CustomPacket
 		Player player = ctx.player();
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
 
-		if (!stack.isEmpty())
-			stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).remove(stack, globalPos);
+		if (!stack.isEmpty()) {
+			IndexedPositions sssLinkedBlocks = stack.get(SCContent.SSS_LINKED_BLOCKS);
+
+			if (sssLinkedBlocks != null)
+				sssLinkedBlocks.remove(SCContent.SSS_LINKED_BLOCKS, stack, globalPos);
+		}
 	}
 }

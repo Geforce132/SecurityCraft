@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import java.util.List;
+import java.util.Objects;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -23,6 +24,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
 public class CameraMonitorItem extends Item {
+	public static final int MAX_CAMERAS = 30;
+
 	public CameraMonitorItem(Item.Properties properties) {
 		super(properties);
 	}
@@ -43,14 +46,16 @@ public class CameraMonitorItem extends Item {
 
 			ItemStack stack = ctx.getItemInHand();
 			GlobalPos view = GlobalPos.of(player.level().dimension(), pos);
-			IndexedPositions cameras = stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY);
+			IndexedPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
 
-			if (cameras.remove(stack, view))
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.unbound", Utils.getFormattedCoordinates(pos)), ChatFormatting.RED);
-			else if (cameras.add(stack, view, IndexedPositions.MAX_CAMERAS))
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
+			if (cameras != null) {
+				if (cameras.remove(SCContent.BOUND_CAMERAS, stack, view))
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.unbound", Utils.getFormattedCoordinates(pos)), ChatFormatting.RED);
+				else if (cameras.add(SCContent.BOUND_CAMERAS, stack, view))
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
 
-			return InteractionResult.SUCCESS;
+				return InteractionResult.SUCCESS;
+			}
 		}
 
 		return InteractionResult.PASS;
@@ -59,7 +64,7 @@ public class CameraMonitorItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
-		IndexedPositions cameras = stack.get(SCContent.INDEXED_POSITIONS);
+		IndexedPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
 
 		if (cameras != null && cameras.isEmpty()) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), ChatFormatting.RED);
@@ -74,9 +79,9 @@ public class CameraMonitorItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
-		IndexedPositions cameras = stack.get(SCContent.INDEXED_POSITIONS);
+		IndexedPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
 
 		if (cameras != null)
-			tooltip.add(Utils.localize("tooltip.securitycraft:cameraMonitor", cameras.size() + "/" + IndexedPositions.MAX_CAMERAS).setStyle(Utils.GRAY_STYLE));
+			tooltip.add(Utils.localize("tooltip.securitycraft:cameraMonitor", cameras.positions().stream().filter(Objects::nonNull).count() + "/" + MAX_CAMERAS).setStyle(Utils.GRAY_STYLE));
 	}
 }

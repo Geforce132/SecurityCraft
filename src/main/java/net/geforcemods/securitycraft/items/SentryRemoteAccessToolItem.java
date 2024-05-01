@@ -62,14 +62,14 @@ public class SentryRemoteAccessToolItem extends Item {
 				return InteractionResult.FAIL;
 			}
 
-			SentryPositions positions = stack.get(SCContent.SENTRY_POSITIONS);
+			SentryPositions positions = stack.get(SCContent.BOUND_SENTRIES);
 
-			if (positions != null && positions.size() < SentryPositions.MAX_SENTRIES) {
+			if (positions != null) {
 				GlobalPos globalPos = new GlobalPos(level.dimension(), pos);
 
-				if (positions.remove(stack, globalPos))
+				if (positions.remove(SCContent.BOUND_SENTRIES, stack, globalPos))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.unbound", sentryPos), ChatFormatting.RED);
-				else if (positions.add(stack, globalPos, SentryPositions.MAX_SENTRIES, sentry.hasCustomName() ? sentry.getCustomName().getString() : ""))
+				else if (positions.add(SCContent.BOUND_SENTRIES, stack, globalPos, sentry.hasCustomName() ? sentry.getCustomName().getString() : ""))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.bound", sentryPos), ChatFormatting.GREEN);
 				else {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.noSlots"), ChatFormatting.RED);
@@ -89,12 +89,14 @@ public class SentryRemoteAccessToolItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
-		SentryPositions positions = stack.get(SCContent.SENTRY_POSITIONS);
+		SentryPositions positions = stack.get(SCContent.BOUND_SENTRIES);
 
 		if (positions != null && !positions.isEmpty()) {
-			List<SentryPositions.Entry> sortedEntries = positions.filledOrderedList(SentryPositions.MAX_SENTRIES);
+			List<SentryPositions.Entry> entries = positions.positions();
 
-			for (SentryPositions.Entry entry : sortedEntries) {
+			for (int i = 0; i < SentryPositions.MAX_SENTRIES; i++) {
+				SentryPositions.Entry entry = entries.get(i);
+
 				if (entry == null)
 					tooltip.add(Component.literal(ChatFormatting.GRAY + "---"));
 				else {
@@ -109,7 +111,7 @@ public class SentryRemoteAccessToolItem extends Item {
 						if (!sentries.isEmpty() && sentries.get(0).hasCustomName())
 							nameToShow = sentries.get(0).getCustomName().getString();
 						else
-							nameToShow = Utils.localize("tooltip.securitycraft:sentry", entry.index()).getString();
+							nameToShow = Utils.localize("tooltip.securitycraft:sentry", i).getString();
 					}
 
 					tooltip.add(Component.literal(ChatFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos).getString()));
@@ -119,7 +121,7 @@ public class SentryRemoteAccessToolItem extends Item {
 	}
 
 	private void updateTagWithNames(ItemStack stack, Level level) {
-		SentryPositions positions = stack.get(SCContent.SENTRY_POSITIONS);
+		SentryPositions positions = stack.get(SCContent.BOUND_SENTRIES);
 
 		if (positions != null && !positions.isEmpty()) {
 			List<SentryPositions.Entry> newEntries = new ArrayList<>(positions.positions());
@@ -127,30 +129,33 @@ public class SentryRemoteAccessToolItem extends Item {
 
 			for (int i = 0; i < newEntries.size(); i++) {
 				SentryPositions.Entry entry = newEntries.get(i);
-				GlobalPos globalPos = entry.globalPos();
 
-				if (level.dimension().equals(globalPos.dimension()) && level.isLoaded(globalPos.pos())) {
-					List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(globalPos.pos()));
+				if (entry != null) {
+					GlobalPos globalPos = entry.globalPos();
 
-					if (!sentries.isEmpty()) {
-						Sentry sentry = sentries.get(0);
+					if (level.dimension().equals(globalPos.dimension()) && level.isLoaded(globalPos.pos())) {
+						List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(globalPos.pos()));
 
-						if (sentry.hasCustomName()) {
-							newEntries.set(i, new SentryPositions.Entry(entry.index(), globalPos, sentry.getCustomName().getString()));
-							changed = true;
-							continue;
+						if (!sentries.isEmpty()) {
+							Sentry sentry = sentries.get(0);
+
+							if (sentry.hasCustomName()) {
+								newEntries.set(i, new SentryPositions.Entry(globalPos, sentry.getCustomName().getString()));
+								changed = true;
+								continue;
+							}
 						}
 					}
-				}
-				else
-					continue;
+					else
+						continue;
 
-				newEntries.set(i, new SentryPositions.Entry(entry.index(), globalPos, ""));
-				changed = true;
+					newEntries.set(i, new SentryPositions.Entry(globalPos, ""));
+					changed = true;
+				}
 			}
 
 			if (changed)
-				stack.set(SCContent.SENTRY_POSITIONS, new SentryPositions(newEntries));
+				stack.set(SCContent.BOUND_SENTRIES, new SentryPositions(newEntries));
 		}
 	}
 }

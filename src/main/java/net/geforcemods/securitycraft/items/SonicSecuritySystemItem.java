@@ -1,11 +1,13 @@
 package net.geforcemods.securitycraft.items;
 
 import java.util.List;
+import java.util.Objects;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.components.IndexedPositions;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -49,19 +51,19 @@ public class SonicSecuritySystemItem extends BlockItem {
 					}
 				}
 				else {
-					IndexedPositions positions = stack.get(SCContent.INDEXED_POSITIONS);
+					IndexedPositions positions = stack.get(SCContent.SSS_LINKED_BLOCKS);
 
 					if (positions != null) {
-						if (positions.size() < IndexedPositions.MAX_SSS_LINKED_BLOCKS) {
-							GlobalPos globalPos = new GlobalPos(level.dimension(), pos);
+						GlobalPos globalPos = new GlobalPos(level.dimension(), pos);
 
-							if (positions.remove(stack, globalPos))
-								PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
-							else if (positions.add(stack, globalPos, IndexedPositions.MAX_SSS_LINKED_BLOCKS))
-								PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
+						if (positions.remove(SCContent.SSS_LINKED_BLOCKS, stack, globalPos))
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
+						else if (positions.add(SCContent.SSS_LINKED_BLOCKS, stack, globalPos))
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
+						else {
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.linkMaxReached", SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS), ChatFormatting.DARK_RED);
+							return InteractionResult.FAIL;
 						}
-						else
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.linkMaxReached", IndexedPositions.MAX_SSS_LINKED_BLOCKS), ChatFormatting.DARK_RED);
 
 						return InteractionResult.SUCCESS;
 					}
@@ -71,7 +73,9 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 		//don't place down the SSS if it has at least one linked block
 		//placing is handled by minecraft otherwise
-		if (stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).isEmpty()) {
+		IndexedPositions sssLinkedBlocks = stack.get(SCContent.SSS_LINKED_BLOCKS);
+
+		if (sssLinkedBlocks != null && sssLinkedBlocks.isEmpty()) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.notLinked"), ChatFormatting.DARK_RED);
 			return InteractionResult.FAIL;
 		}
@@ -89,10 +93,14 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
-		// If this item is storing block positions, show the number of them in the tooltip
-		int numOfLinkedBlocks = stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).size();
+		IndexedPositions sssLinkedBlocks = stack.get(SCContent.SSS_LINKED_BLOCKS);
 
-		if (numOfLinkedBlocks > 0)
-			tooltip.add(Utils.localize("tooltip.securitycraft:sonicSecuritySystem.linkedTo", numOfLinkedBlocks).withStyle(Utils.GRAY_STYLE));
+		if (sssLinkedBlocks != null) {
+			// If this item is storing block positions, show the number of them in the tooltip
+			long numOfLinkedBlocks = sssLinkedBlocks.positions().stream().filter(Objects::nonNull).count();
+
+			if (numOfLinkedBlocks > 0)
+				tooltip.add(Utils.localize("tooltip.securitycraft:sonicSecuritySystem.linkedTo", numOfLinkedBlocks).withStyle(Utils.GRAY_STYLE));
+		}
 	}
 }

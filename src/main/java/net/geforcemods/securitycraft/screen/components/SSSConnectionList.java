@@ -48,6 +48,9 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 		connectionInfo.clear();
 
 		for (GlobalPos globalPos : parent.getPositions()) {
+			if (globalPos == null)
+				continue;
+
 			BlockEntity be = level.getBlockEntity(globalPos.pos());
 			Component blockName;
 

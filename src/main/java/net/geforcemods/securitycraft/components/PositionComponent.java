@@ -1,96 +1,105 @@
 package net.geforcemods.securitycraft.components;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Supplier;
 
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
+
+import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.util.NullableListCodec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public interface PositionComponent<T extends PositionEntry, E> {
+public interface PositionComponent<C, T, E> {
+	public static final GlobalPos DUMMY_GLOBAL_POS = new GlobalPos(ResourceKey.create(Registries.DIMENSION, new ResourceLocation(SecurityCraft.MODID, "dummy")), BlockPos.ZERO);
+
+	public static <A> Codec<List<A>> nullableSizedCodec(Codec<A> baseCodec, int size) {
+		return new NullableListCodec<>(new Codec<>() {
+			@Override
+			public <R> DataResult<Pair<A, R>> decode(DynamicOps<R> ops, R input) {
+				return input.equals(ops.emptyMap()) ? DataResult.success(Pair.of(null, input)) : baseCodec.decode(ops, input);
+			}
+
+			@Override
+			public <R> DataResult<R> encode(A input, DynamicOps<R> ops, R prefix) {
+				return input == null ? DataResult.success(ops.emptyMap()) : baseCodec.encode(input, ops, prefix);
+			}
+		}, size, size);
+	}
+
+	public static <A> StreamCodec<ByteBuf, List<A>> nullableSizedStreamCodec(StreamCodec<ByteBuf, A> baseStreamCodec, int size, A dummy) {
+		//@formatter:off
+		return baseStreamCodec.map(
+				globalPos -> globalPos.equals(dummy) ? null : globalPos, //decode
+				globalPos -> globalPos == null ? dummy : globalPos) //encode
+				.apply(ByteBufCodecs.list(size));
+		//@formatter:on
+	}
+
 	public List<T> positions();
 
-	public T createEntry(int index, GlobalPos globalPos, E extra);
+	public boolean isPositionAdded(GlobalPos globalPos);
 
-	public void setOnStack(ItemStack stack, List<T> newPositionList);
+	public GlobalPos getGlobalPos(T t);
+
+	public T createEntry(GlobalPos globalPos, E extra);
+
+	public void setOnStack(Supplier<DataComponentType<C>> dataComponentType, ItemStack stack, List<T> newPositionList);
 
 	public default int size() {
 		return positions().size();
 	}
 
 	public default boolean isEmpty() {
-		return positions().isEmpty();
+		return positions().stream().allMatch(Objects::isNull);
 	}
 
-	public default boolean isPositionAdded(GlobalPos pos) {
-		return positions().stream().map(T::globalPos).anyMatch(pos::equals);
-	}
+	public default boolean add(Supplier<DataComponentType<C>> dataComponentType, ItemStack stack, GlobalPos globalPos, E extra) {
+		if (!isPositionAdded(globalPos)) {
+			List<T> newPositionsList = new ArrayList<>(positions());
 
-	public default boolean add(ItemStack stack, GlobalPos globalPos, int maximum, E extra) {
-		List<T> positions = positions();
+			for (int i = 0; i < newPositionsList.size(); i++) {
+				T t = newPositionsList.get(i);
 
-		if (positions.size() < maximum) {
-			List<T> sortedPositions = positions.stream().sorted(Comparator.comparing(c -> c.index())).toList();
-			int nextFreeIndex = 0;
-
-			for (int i = 1; i <= maximum; i++) {
-				if (i > sortedPositions.size() || sortedPositions.get(i - 1).index() != i) {
-					nextFreeIndex = i;
-					break;
+				if (t == null) {
+					newPositionsList.set(i, createEntry(globalPos, extra));
+					setOnStack(dataComponentType, stack, newPositionsList);
+					return true;
 				}
-			}
-
-			if (nextFreeIndex > 0) {
-				List<T> newPositionsList = new ArrayList<>(positions);
-
-				newPositionsList.add(createEntry(nextFreeIndex, globalPos, extra));
-				setOnStack(stack, newPositionsList);
-				return true;
 			}
 		}
 
 		return false;
 	}
 
-	public default boolean remove(ItemStack stack, GlobalPos pos) {
-		List<T> positions = positions();
+	public default boolean remove(Supplier<DataComponentType<C>> dataComponentType, ItemStack stack, GlobalPos globalPos) {
+		if (globalPos != null && !isEmpty()) {
+			List<T> newPositionsList = new ArrayList<>(positions());
 
-		if (!positions.isEmpty()) {
-			List<T> newPositionsList = new ArrayList<>(positions);
+			for (int i = 0; i < newPositionsList.size(); i++) {
+				T t = newPositionsList.get(i);
 
-			newPositionsList.removeIf(position -> position.globalPos().equals(pos));
-
-			if (newPositionsList.size() != positions.size()) {
-				setOnStack(stack, newPositionsList);
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public default List<T> filledOrderedList(int maximumEntries) {
-		List<T> sortedPositions = new ArrayList<>(positions());
-		List<T> toReturn = new ArrayList<>();
-		int indexToCheck = 0;
-
-		sortedPositions.sort(Comparator.comparing(c -> c.index()));
-
-		for (int i = 1; i <= maximumEntries; i++) {
-			if (indexToCheck >= sortedPositions.size())
-				toReturn.add(null);
-			else {
-				T existingPosition = sortedPositions.get(indexToCheck);
-
-				if (existingPosition.index() != i)
-					toReturn.add(null);
-				else {
-					toReturn.add(existingPosition);
-					indexToCheck++;
+				if (globalPos.equals(getGlobalPos(t))) {
+					newPositionsList.set(i, null);
+					setOnStack(dataComponentType, stack, newPositionsList);
+					return true;
 				}
 			}
 		}
 
-		return toReturn;
+		return false;
 	}
 }

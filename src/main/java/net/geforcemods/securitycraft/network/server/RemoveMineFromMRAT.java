@@ -28,7 +28,11 @@ public record RemoveMineFromMRAT(GlobalPos globalPos) implements CustomPacketPay
 	public void handle(IPayloadContext ctx) {
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(ctx.player(), SCContent.MINE_REMOTE_ACCESS_TOOL.get());
 
-		if (!stack.isEmpty())
-			stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).remove(stack, globalPos);
+		if (!stack.isEmpty()) {
+			IndexedPositions mines = stack.get(SCContent.BOUND_MINES);
+
+			if (mines != null)
+				mines.remove(SCContent.BOUND_MINES, stack, globalPos);
+		}
 	}
 }

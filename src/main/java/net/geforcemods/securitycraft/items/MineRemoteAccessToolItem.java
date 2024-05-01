@@ -24,6 +24,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
 public class MineRemoteAccessToolItem extends Item {
+	public static final int MAX_MINES = 6;
+
 	public MineRemoteAccessToolItem(Item.Properties properties) {
 		super(properties);
 	}
@@ -51,14 +53,14 @@ public class MineRemoteAccessToolItem extends Item {
 				return InteractionResult.SUCCESS;
 			}
 
-			IndexedPositions positions = stack.get(SCContent.INDEXED_POSITIONS);
+			IndexedPositions positions = stack.get(SCContent.BOUND_MINES);
 
-			if (positions != null && positions.size() < IndexedPositions.MAX_MINES) {
+			if (positions != null) {
 				GlobalPos globalPos = new GlobalPos(level.dimension(), pos);
 
-				if (positions.remove(stack, globalPos))
+				if (positions.remove(SCContent.BOUND_MINES, stack, globalPos))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.unbound", Utils.getFormattedCoordinates(pos)), ChatFormatting.RED);
-				else if (positions.add(stack, globalPos, IndexedPositions.MAX_MINES))
+				else if (positions.add(SCContent.BOUND_MINES, stack, globalPos))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
 				else {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.noSlots"), ChatFormatting.RED);
@@ -74,16 +76,18 @@ public class MineRemoteAccessToolItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> list, TooltipFlag flag) {
-		IndexedPositions positions = stack.get(SCContent.INDEXED_POSITIONS);
+		IndexedPositions positions = stack.get(SCContent.BOUND_MINES);
 
 		if (positions != null && !positions.isEmpty()) {
-			List<IndexedPositions.Entry> sortedEntries = positions.filledOrderedList(IndexedPositions.MAX_MINES);
+			List<GlobalPos> globalPositions = positions.positions();
 
-			for (IndexedPositions.Entry entry : sortedEntries) {
-				if (entry == null)
+			for (int i = 0; i < globalPositions.size(); i++) {
+				GlobalPos globalPos = globalPositions.get(i);
+
+				if (globalPos == null)
 					list.add(Component.literal(ChatFormatting.GRAY + "---"));
 				else
-					list.add(Utils.localize("tooltip.securitycraft:mine", entry.index(), Utils.getFormattedCoordinates(entry.globalPos().pos())).setStyle(Utils.GRAY_STYLE));
+					list.add(Utils.localize("tooltip.securitycraft:mine", i, Utils.getFormattedCoordinates(globalPos.pos())).setStyle(Utils.GRAY_STYLE));
 			}
 		}
 	}

@@ -335,8 +335,10 @@ public class SCContent {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<OwnerData>> OWNER_DATA = DATA_COMPONENTS.registerComponentType("owner", builder -> builder.persistent(OwnerData.CODEC).networkSynchronized(OwnerData.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<PasscodeData>> PASSCODE_DATA = DATA_COMPONENTS.registerComponentType("passcode_data", builder -> builder.persistent(PasscodeData.CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<CodebreakerData>> CODEBREAKER_DATA = DATA_COMPONENTS.registerComponentType("codebreaker_data", builder -> builder.persistent(CodebreakerData.CODEC).networkSynchronized(CodebreakerData.STREAM_CODEC).cacheEncoding());
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<IndexedPositions>> INDEXED_POSITIONS = DATA_COMPONENTS.registerComponentType("indexed_positions", builder -> builder.persistent(IndexedPositions.CODEC).networkSynchronized(IndexedPositions.STREAM_CODEC).cacheEncoding());
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<SentryPositions>> SENTRY_POSITIONS = DATA_COMPONENTS.registerComponentType("sentry_positions", builder -> builder.persistent(SentryPositions.CODEC).networkSynchronized(SentryPositions.STREAM_CODEC).cacheEncoding());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<IndexedPositions>> BOUND_CAMERAS = DATA_COMPONENTS.registerComponentType("bound_cameras", builder -> builder.persistent(IndexedPositions.codec(CameraMonitorItem.MAX_CAMERAS)).networkSynchronized(IndexedPositions.streamCodec(CameraMonitorItem.MAX_CAMERAS)).cacheEncoding());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<IndexedPositions>> BOUND_MINES = DATA_COMPONENTS.registerComponentType("bound_mines", builder -> builder.persistent(IndexedPositions.codec(MineRemoteAccessToolItem.MAX_MINES)).networkSynchronized(IndexedPositions.streamCodec(MineRemoteAccessToolItem.MAX_MINES)).cacheEncoding());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<IndexedPositions>> SSS_LINKED_BLOCKS = DATA_COMPONENTS.registerComponentType("sss_linked_blocks", builder -> builder.persistent(IndexedPositions.codec(SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS)).networkSynchronized(IndexedPositions.streamCodec(SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS)).cacheEncoding());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<SentryPositions>> BOUND_SENTRIES = DATA_COMPONENTS.registerComponentType("bound_sentries", builder -> builder.persistent(SentryPositions.CODEC).networkSynchronized(SentryPositions.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Notes>> NOTES = DATA_COMPONENTS.registerComponentType("notes", builder -> builder.persistent(Notes.CODEC).networkSynchronized(Notes.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> UNREINFORCING = DATA_COMPONENTS.registerComponentType("unreinforcing", builder -> builder.persistent(Codec.unit(Unit.INSTANCE)));
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ListModuleData>> LIST_MODULE_DATA = DATA_COMPONENTS.registerComponentType("list_module_data", builder -> builder.persistent(ListModuleData.CODEC).networkSynchronized(ListModuleData.STREAM_CODEC).cacheEncoding());
@@ -2566,7 +2568,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<BriefcaseItem> BRIEFCASE = ITEMS.register("briefcase", () -> new BriefcaseItem(itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY)));
 	@HasManualPage
-	public static final DeferredItem<CameraMonitorItem> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem(itemProp(1).component(INDEXED_POSITIONS, IndexedPositions.EMPTY)));
+	public static final DeferredItem<CameraMonitorItem> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem(itemProp(1).component(BOUND_CAMERAS, IndexedPositions.sized(CameraMonitorItem.MAX_CAMERAS))));
 	@HasManualPage
 	public static final DeferredItem<CodebreakerItem> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp().durability(5).rarity(Rarity.RARE).component(CODEBREAKER_DATA, CodebreakerData.DEFAULT)));
 	@HasManualPage
@@ -2603,9 +2605,9 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<DoubleHighBlockItem> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new DoubleHighBlockItem(REINFORCED_DOOR.get(), itemProp()));
 	@HasManualPage
-	public static final DeferredItem<MineRemoteAccessToolItem> MINE_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(1).component(INDEXED_POSITIONS, IndexedPositions.EMPTY)));
+	public static final DeferredItem<MineRemoteAccessToolItem> MINE_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(1).component(BOUND_MINES, IndexedPositions.sized(MineRemoteAccessToolItem.MAX_MINES))));
 	@HasManualPage
-	public static final DeferredItem<SentryRemoteAccessToolItem> SENTRY_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(1).component(SENTRY_POSITIONS, SentryPositions.EMPTY)));
+	public static final DeferredItem<SentryRemoteAccessToolItem> SENTRY_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(1).component(BOUND_SENTRIES, SentryPositions.sized(SentryPositions.MAX_SENTRIES))));
 	@HasManualPage
 	public static final DeferredItem<DoubleHighBlockItem> RIFT_STABILIZER_ITEM = ITEMS.register("rift_stabilizer", () -> new DoubleHighBlockItem(RIFT_STABILIZER.get(), itemProp()));
 	@HasManualPage
@@ -2658,7 +2660,7 @@ public class SCContent {
 	public static final DeferredItem<HangingSignItem> SECRET_WARPED_HANGING_SIGN_ITEM = ITEMS.register("secret_warped_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_WARPED_HANGING_SIGN.get(), SCContent.SECRET_WARPED_WALL_HANGING_SIGN.get(), itemProp(16)));
 	@HasManualPage(designedBy = "Henzoid")
 	public static final DeferredItem<SentryItem> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp()));
-	public static final DeferredItem<SonicSecuritySystemItem> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(1).component(INDEXED_POSITIONS, IndexedPositions.EMPTY)));
+	public static final DeferredItem<SonicSecuritySystemItem> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(1).component(SSS_LINKED_BLOCKS, IndexedPositions.sized(SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS))));
 	@HasManualPage
 	public static final DeferredItem<TaserItem> TASER = ITEMS.register("taser", () -> new TaserItem(itemProp().durability(151).component(DataComponents.POTION_CONTENTS, TaserItem.getDefaultEffects()), false));
 	public static final DeferredItem<TaserItem> TASER_POWERED = ITEMS.register("taser_powered", () -> new TaserItem(itemProp().durability(151).component(DataComponents.POTION_CONTENTS, TaserItem.getDefaultPoweredEffects()), true));

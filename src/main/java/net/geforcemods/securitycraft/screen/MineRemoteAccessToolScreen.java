@@ -142,9 +142,10 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 	private void buttonClicked(int mine, int action) {
 		GlobalPos globalPos = getMineCoordinates(mine);
-		BlockPos pos = globalPos.pos();
 
-		if (pos != null) {
+		if (globalPos != null) {
+			BlockPos pos = globalPos.pos();
+
 			switch (action) {
 				case DEFUSE:
 					((IExplosive) Minecraft.getInstance().player.level().getBlockState(pos).getBlock()).defuseMine(Minecraft.getInstance().player.level(), pos);
@@ -187,24 +188,18 @@ public class MineRemoteAccessToolScreen extends Screen {
 	 * @param mine 0 based
 	 */
 	private GlobalPos getMineCoordinates(int mine) {
-		mine++; //mines are stored starting by mine1 up to mine6
-
 		if (mrat.getItem() == SCContent.MINE_REMOTE_ACCESS_TOOL.get()) {
-			IndexedPositions positions = mrat.get(SCContent.INDEXED_POSITIONS);
+			IndexedPositions positions = mrat.get(SCContent.BOUND_MINES);
 
-			if (positions != null) {
-				for (IndexedPositions.Entry entry : positions.positions()) {
-					if (entry.index() == mine)
-						return entry.globalPos();
-				}
-			}
+			if (positions != null && mine >= 0 && mine < positions.size())
+				return positions.positions().get(mine);
 		}
 
 		return null;
 	}
 
 	private void removeTagFromToolAndUpdate(ItemStack stack, GlobalPos pos) {
-		stack.get(SCContent.INDEXED_POSITIONS).remove(stack, pos);
+		stack.get(SCContent.BOUND_MINES).remove(SCContent.BOUND_MINES, stack, pos);
 		PacketDistributor.sendToServer(new RemoveMineFromMRAT(pos));
 	}
 

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blockentities;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -14,7 +15,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.components.IndexedPositions;
-import net.geforcemods.securitycraft.components.IndexedPositions.Entry;
 import net.geforcemods.securitycraft.components.Notes;
 import net.geforcemods.securitycraft.components.Notes.NoteWrapper;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -22,7 +22,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
-import net.geforcemods.securitycraft.util.IncreasingInteger;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -53,6 +52,8 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	private static final int LISTEN_DELAY = 60;
 	/** The listening and recording range of Sonic Security Systems (perhaps a config option?) */
 	public static final int MAX_RANGE = 30;
+	/** The maximum number of blocks that a Sonic Security System can be linked to at once (perhaps a config option?) */
+	public static final int MAX_LINKED_BLOCKS = 30;
 	/** Whether the ping sound should be emitted or not */
 	private boolean emitsPings = true;
 	private int pingCooldown = PING_DELAY;
@@ -118,21 +119,21 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 					stopListening();
 			}
 
-			// If this SSS isn't linked to any blocks, return as no sound should
-			// be emitted and no blocks need to be removed
-			if (linkedBlocks.isEmpty())
-				return;
-
 			if (pingCooldown > 0)
 				pingCooldown--;
 			else {
+				// If this SSS isn't linked to any blocks, return as no sound should
+				// be emitted and no blocks need to be removed
+				if (linkedBlocks.stream().allMatch(Objects::isNull))
+					return;
+
 				ArrayList<GlobalPos> blocksToRemove = new ArrayList<>();
 				Iterator<GlobalPos> iterator = linkedBlocks.iterator();
 
 				while (iterator.hasNext()) {
 					GlobalPos globalPos = iterator.next();
 
-					if (!(level.getBlockEntity(globalPos.pos()) instanceof ILockable))
+					if (globalPos != null && !(level.getBlockEntity(globalPos.pos()) instanceof ILockable))
 						blocksToRemove.add(globalPos);
 				}
 
@@ -187,7 +188,10 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		ListTag list = new ListTag();
 
 		for (GlobalPos blockToSave : linkedBlocks) {
-			list.add(GlobalPos.CODEC.encodeStart(lookupProvider.createSerializationContext(NbtOps.INSTANCE), blockToSave).getOrThrow());
+			if (blockToSave == null)
+				list.add(new CompoundTag());
+			else
+				list.add(GlobalPos.CODEC.encodeStart(lookupProvider.createSerializationContext(NbtOps.INSTANCE), blockToSave).getOrThrow());
 		}
 
 		tag.put("linked_blocks", list);
@@ -214,7 +218,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 			for (Tag entry : list) {
 				try {
-					linkedBlocks.add(GlobalPos.CODEC.decode(NbtOps.INSTANCE, entry).result().get().getFirst());
+					GlobalPos.CODEC.decode(NbtOps.INSTANCE, entry).result().ifPresentOrElse(pair -> linkedBlocks.add(pair.getFirst()), () -> linkedBlocks.add(null));
 				}
 				catch (Exception exception) {
 					SecurityCraft.LOGGER.error("Failed to load global pos in Sonic Security System at position {}: {}", worldPosition, entry, exception);
@@ -292,7 +296,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 * @return If this Sonic Security System is linked to a block at a specific position
 	 */
 	public boolean isLinkedToBlock(BlockPos linkedPos) {
-		return !linkedBlocks.isEmpty() && linkedBlocks.stream().map(GlobalPos::pos).anyMatch(linkedPos::equals);
+		return !linkedBlocks.isEmpty() && linkedBlocks.stream().filter(Objects::nonNull).map(GlobalPos::pos).anyMatch(linkedPos::equals);
 	}
 
 	/**
@@ -515,16 +519,32 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	@Override
 	protected void applyImplicitComponents(DataComponentInput input) {
 		super.applyImplicitComponents(input);
-		linkedBlocks = input.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).positions().stream().map(Entry::globalPos).collect(Collectors.toList()); //needs to be modifiable
+
+		IndexedPositions sssLinkedBlocks = input.get(SCContent.SSS_LINKED_BLOCKS);
+
+		if (sssLinkedBlocks != null)
+			linkedBlocks = sssLinkedBlocks.positions().stream().collect(Collectors.toList()); //needs to be modifiable
+		else
+			linkedBlocks = new ArrayList<>();
+
 		recordedNotes = new ArrayList<>(input.getOrDefault(SCContent.NOTES, Notes.EMPTY).notes());
 	}
 
 	@Override
 	protected void collectImplicitComponents(Builder builder) {
-		IncreasingInteger counter = new IncreasingInteger(1);
-
 		super.collectImplicitComponents(builder);
-		builder.set(SCContent.INDEXED_POSITIONS, new IndexedPositions(linkedBlocks.stream().map(pos -> new Entry(counter.get(), pos)).toList()));
+
+		int linkedBlocksCount = linkedBlocks.size();
+
+		if (linkedBlocksCount < MAX_LINKED_BLOCKS) {
+			for (int i = linkedBlocksCount; i < MAX_LINKED_BLOCKS; i++) {
+				linkedBlocks.add(null);
+			}
+		}
+		else if (linkedBlocksCount > MAX_LINKED_BLOCKS)
+			linkedBlocks = new ArrayList<>(linkedBlocks.subList(0, MAX_LINKED_BLOCKS));
+
+		builder.set(SCContent.SSS_LINKED_BLOCKS, new IndexedPositions(List.copyOf(linkedBlocks)));
 		builder.set(SCContent.NOTES, new Notes(new ArrayList<>(recordedNotes)));
 	}
 

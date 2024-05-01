@@ -13,7 +13,9 @@ import com.mojang.datafixers.schemas.Schema;
 import com.mojang.datafixers.types.templates.TypeTemplate;
 import com.mojang.serialization.Dynamic;
 
-import net.geforcemods.securitycraft.util.IncreasingInteger;
+import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
+import net.geforcemods.securitycraft.items.CameraMonitorItem;
+import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.util.datafix.fixes.ItemStackComponentizationFix;
 import net.minecraft.util.datafix.fixes.References;
@@ -216,7 +218,7 @@ public class DataFixHandler {
 	private static void fixCameraMonitor(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
 		List<Dynamic<?>> positions = new ArrayList<>();
 
-		for (int i = 1; i <= IndexedPositions.MAX_CAMERAS; i++) {
+		for (int i = 1; i <= CameraMonitorItem.MAX_CAMERAS; i++) {
 			Optional<? extends Dynamic<?>> camera = itemStackData.removeTag("Camera" + i).result();
 
 			if (camera.isPresent()) {
@@ -235,43 +237,40 @@ public class DataFixHandler {
 						dimension = "minecraft:overworld";
 
 					//@formatter:off
-					Dynamic<?> globalPos = dynamic.emptyMap()
-							.set("dimension", dynamic.createString(dimension))
-							.set("pos", dynamic.createIntList(IntStream.of(x, y, z)));
-
 					positions.add(dynamic.emptyMap()
-							.set("index", dynamic.createInt(i))
-							.set("global_pos", globalPos));
+							.set("dimension", dynamic.createString(dimension))
+							.set("pos", dynamic.createIntList(IntStream.of(x, y, z))));
 					//@formatter:on
+					continue;
 				}
 			}
+
+			positions.add(dynamic.emptyMap());
 		}
 
 		if (!positions.isEmpty())
-			itemStackData.setComponent("securitycraft:indexed_positions", dynamic.emptyMap().set("positions", dynamic.createList(positions.stream())));
+			itemStackData.setComponent("securitycraft:bound_cameras", dynamic.emptyMap().set("positions", dynamic.createList(positions.stream())));
 	}
 
 	private static void fixMineRemoteAccessTool(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
 		List<Dynamic<?>> positions = new ArrayList<>();
 
-		for (int i = 1; i <= IndexedPositions.MAX_MINES; i++) {
+		for (int i = 1; i <= MineRemoteAccessToolItem.MAX_MINES; i++) {
 			Optional<? extends Dynamic<?>> mine = itemStackData.removeTag("mine" + i).result();
 
 			if (mine.isPresent()) {
 				//@formatter:off
-				Dynamic<?> globalPos = dynamic.emptyMap()
-						.set("dimension", dynamic.createString("minecraft:overworld")) //mines did not save the dimension beforehand, so this is the most correct assumption
-						.set("pos", mine.get());
-
 				positions.add(dynamic.emptyMap()
-						.set("index", dynamic.createInt(i))
-						.set("global_pos", globalPos));
+						.set("dimension", dynamic.createString("minecraft:overworld")) //mines did not save the dimension beforehand, so this is the most correct assumption
+						.set("pos", mine.get()));
 				//@formatter:on
 			}
+			else
+				positions.add(dynamic.emptyMap());
 		}
 
 		if (!positions.isEmpty())
-			itemStackData.setComponent("securitycraft:indexed_positions", dynamic.emptyMap().set("positions", dynamic.createList(positions.stream())));
+			itemStackData.setComponent("securitycraft:bound_mines", dynamic.emptyMap().set("positions", dynamic.createList(positions.stream())));
 	}
 
 	private static void fixSentryRemoteAccessTool(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
@@ -281,38 +280,44 @@ public class DataFixHandler {
 			Optional<? extends Dynamic<?>> sentry = itemStackData.removeTag("sentry" + i).result();
 
 			if (sentry.isPresent()) {
-				//@formatter:off
-				Dynamic<?> globalPos = dynamic.emptyMap()
-						.set("dimension", dynamic.createString("minecraft:overworld")) //sentries did not save the dimension beforehand, so this is the most correct assumption
-						.set("pos", sentry.get());
-				Dynamic<?> positionEntry = dynamic.emptyMap()
-						.set("index", dynamic.createInt(i))
-						.set("global_pos", globalPos);
-				//@formatter:on
 				Optional<? extends Dynamic<?>> sentryName = itemStackData.removeTag("sentry" + i + "_name").result();
 
-				positionEntry = positionEntry.set("name", sentryName.isPresent() ? sentryName.get() : dynamic.createString(""));
-				positions.add(positionEntry);
+				//@formatter:off
+				positions.add(dynamic.emptyMap()
+						.set("global_pos", dynamic.emptyMap()
+								.set("dimension", dynamic.createString("minecraft:overworld")) //sentries did not save the dimension beforehand, so this is the most correct assumption
+								.set("pos", sentry.get()))
+						.set("name", sentryName.isPresent() ? sentryName.get() : dynamic.createString("")));
+				//@formatter:on
 			}
+			else
+				positions.add(dynamic.emptyMap());
 		}
 
 		if (!positions.isEmpty())
-			itemStackData.setComponent("securitycraft:sentry_positions", dynamic.emptyMap().set("positions", dynamic.createList(positions.stream())));
+			itemStackData.setComponent("securitycraft:bound_sentries", dynamic.emptyMap().set("positions", dynamic.createList(positions.stream())));
 	}
 
 	private static void fixSonicSecuritySystem(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
-		IncreasingInteger counter = new IncreasingInteger(1);
 		//@formatter:off
 		List<Dynamic<?>> linkedBlocks = dynamic.get("LinkedBlocks")
 				.asList(d -> d.emptyMap()
-						.set("index", dynamic.createInt(counter.get()))
-						.set("global_pos", d.emptyMap()
-								.set("dimension", d.createString("minecraft:overworld")) //sonic security systems did not save the dimension beforehand, so this is the most correct assumption
-								.set("pos", d.createIntList(IntStream.of(d.get("X").asInt(0), d.get("Y").asInt(0), d.get("Z").asInt(0))))));
+						.set("dimension", d.createString("minecraft:overworld")) //sonic security systems did not save the dimension beforehand, so this is the most correct assumption
+						.set("pos", d.createIntList(IntStream.of(d.get("X").asInt(0), d.get("Y").asInt(0), d.get("Z").asInt(0)))));
 		//@formatter:on
+		int linkedBlocksCount = linkedBlocks.size();
+		final int maxCount = SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS;
+
+		if (linkedBlocksCount < maxCount) {
+			for (int i = linkedBlocksCount; i < maxCount; i++) {
+				linkedBlocks.add(dynamic.emptyMap());
+			}
+		}
+		else if (linkedBlocksCount > maxCount)
+			linkedBlocks = new ArrayList<>(linkedBlocks.subList(0, maxCount));
 
 		if (!linkedBlocks.isEmpty())
-			itemStackData.setComponent("securitycraft:indexed_positions", dynamic.emptyMap().set("positions", dynamic.createList(linkedBlocks.stream())));
+			itemStackData.setComponent("securitycraft:sss_linked_blocks", dynamic.emptyMap().set("positions", dynamic.createList(linkedBlocks.stream())));
 
 		itemStackData.removeTag("LinkedBlocks");
 	}

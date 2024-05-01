@@ -5,8 +5,8 @@ import java.util.List;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.components.IndexedPositions;
-import net.geforcemods.securitycraft.components.IndexedPositions.Entry;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.network.server.RemovePositionFromSSS;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList;
@@ -77,12 +77,16 @@ public class SSSItemScreen extends Screen implements ConnectionAccessor {
 
 	@Override
 	public List<GlobalPos> getPositions() {
-		return stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).positions().stream().map(Entry::globalPos).toList();
+		return stack.getOrDefault(SCContent.SSS_LINKED_BLOCKS, IndexedPositions.sized(SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS)).positions().stream().toList();
 	}
 
 	@Override
 	public void removePosition(GlobalPos globalPos) {
-		stack.getOrDefault(SCContent.INDEXED_POSITIONS, IndexedPositions.EMPTY).remove(stack, globalPos);
+		IndexedPositions sssLinkedBlocks = stack.get(SCContent.SSS_LINKED_BLOCKS);
+
+		if (sssLinkedBlocks != null)
+			sssLinkedBlocks.remove(SCContent.SSS_LINKED_BLOCKS, stack, globalPos);
+
 		PacketDistributor.sendToServer(new RemovePositionFromSSS(globalPos));
 		connectionList.refreshPositions();
 	}

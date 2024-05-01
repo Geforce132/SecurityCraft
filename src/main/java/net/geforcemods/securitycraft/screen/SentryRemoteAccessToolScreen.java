@@ -212,7 +212,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			List<Sentry> sentries = Minecraft.getInstance().player.level().getEntitiesOfClass(Sentry.class, new AABB(entry.globalPos().pos()));
 
 			if (!sentries.isEmpty()) {
-				int resultingMode = Math.max(0, Math.min(targets + mode * 3, 6)); //bind between 0 and 6
+				int resultingMode = Math.clamp(targets + mode * 3, 0, 6);
 
 				guiButtons[sentry][TARGETS].active = SentryMode.values()[resultingMode] != SentryMode.IDLE;
 				sentries.get(0).toggleMode(Minecraft.getInstance().player, resultingMode, false);
@@ -317,24 +317,18 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	 * @param sentry 0 based
 	 */
 	private SentryPositions.Entry getSentryEntry(int sentry) {
-		sentry++; // sentries are stored starting by sentry1 up to sentry12
-
 		if (srat.getItem() == SCContent.SENTRY_REMOTE_ACCESS_TOOL.get()) {
-			SentryPositions positions = srat.get(SCContent.SENTRY_POSITIONS);
+			SentryPositions positions = srat.get(SCContent.BOUND_SENTRIES);
 
-			if (positions != null) {
-				for (SentryPositions.Entry entry : positions.positions()) {
-					if (entry.index() == sentry)
-						return entry;
-				}
-			}
+			if (positions != null && sentry >= 0 && sentry < SentryPositions.MAX_SENTRIES)
+				return positions.positions().get(sentry);
 		}
 
 		return null;
 	}
 
 	private void removeTagFromToolAndUpdate(ItemStack stack, GlobalPos pos) {
-		stack.get(SCContent.SENTRY_POSITIONS).remove(stack, pos);
+		stack.get(SCContent.BOUND_SENTRIES).remove(SCContent.BOUND_SENTRIES, stack, pos);
 		PacketDistributor.sendToServer(new RemoveSentryFromSRAT(pos));
 	}
 
