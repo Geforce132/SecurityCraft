@@ -9,7 +9,7 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
-import net.geforcemods.securitycraft.components.IndexedPositions;
+import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -51,7 +51,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 					}
 				}
 				else {
-					IndexedPositions positions = stack.get(SCContent.SSS_LINKED_BLOCKS);
+					GlobalPositions positions = stack.get(SCContent.SSS_LINKED_BLOCKS);
 
 					if (positions != null) {
 						GlobalPos globalPos = new GlobalPos(level.dimension(), pos);
@@ -73,7 +73,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 		//don't place down the SSS if it has at least one linked block
 		//placing is handled by minecraft otherwise
-		IndexedPositions sssLinkedBlocks = stack.get(SCContent.SSS_LINKED_BLOCKS);
+		GlobalPositions sssLinkedBlocks = stack.get(SCContent.SSS_LINKED_BLOCKS);
 
 		if (sssLinkedBlocks != null && sssLinkedBlocks.isEmpty()) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.notLinked"), ChatFormatting.DARK_RED);
@@ -93,7 +93,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
-		IndexedPositions sssLinkedBlocks = stack.get(SCContent.SSS_LINKED_BLOCKS);
+		GlobalPositions sssLinkedBlocks = stack.get(SCContent.SSS_LINKED_BLOCKS);
 
 		if (sssLinkedBlocks != null) {
 			// If this item is storing block positions, show the number of them in the tooltip

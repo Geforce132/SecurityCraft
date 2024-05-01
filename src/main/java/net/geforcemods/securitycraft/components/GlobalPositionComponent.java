@@ -23,7 +23,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public interface PositionComponent<C, T, E> {
+public interface GlobalPositionComponent<C, T, E> {
 	public static final GlobalPos DUMMY_GLOBAL_POS = new GlobalPos(ResourceKey.create(Registries.DIMENSION, new ResourceLocation(SecurityCraft.MODID, "dummy")), BlockPos.ZERO);
 
 	public static <A> Codec<List<A>> nullableSizedCodec(Codec<A> baseCodec, int size) {

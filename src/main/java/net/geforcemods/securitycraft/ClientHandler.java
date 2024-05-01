@@ -27,8 +27,8 @@ import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.components.CodebreakerData;
-import net.geforcemods.securitycraft.components.IndexedPositions;
-import net.geforcemods.securitycraft.components.PositionComponent;
+import net.geforcemods.securitycraft.components.GlobalPositions;
+import net.geforcemods.securitycraft.components.GlobalPositionComponent;
 import net.geforcemods.securitycraft.components.SentryPositions;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -276,7 +276,7 @@ public class ClientHandler {
 					return EMPTY_STATE;
 
 				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, SCContent.BOUND_CAMERAS.get());
-				IndexedPositions positions = stack.get(SCContent.BOUND_CAMERAS);
+				GlobalPositions positions = stack.get(SCContent.BOUND_CAMERAS);
 
 				if (positions != null && positions.isEmpty()) {
 					if (linkingState == NOT_LINKED_STATE)
@@ -292,7 +292,7 @@ public class ClientHandler {
 					return EMPTY_STATE;
 
 				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive, SCContent.BOUND_MINES.get());
-				IndexedPositions positions = stack.get(SCContent.BOUND_MINES);
+				GlobalPositions positions = stack.get(SCContent.BOUND_MINES);
 
 				if (positions != null && positions.isEmpty()) {
 					if (linkingState == NOT_LINKED_STATE)
@@ -339,8 +339,8 @@ public class ClientHandler {
 					}
 
 					return true;
-				}, SCContent.SSS_LINKED_BLOCKS.get(), PositionComponent::isPositionAdded);
-				IndexedPositions positions = stack.get(SCContent.SSS_LINKED_BLOCKS);
+				}, SCContent.SSS_LINKED_BLOCKS.get(), GlobalPositionComponent::isPositionAdded);
+				GlobalPositions positions = stack.get(SCContent.SSS_LINKED_BLOCKS);
 
 				if (positions != null && positions.isEmpty()) {
 					if (linkingState == NOT_LINKED_STATE)
@@ -729,11 +729,11 @@ public class ClientHandler {
 		return getLinkingState(level, player, stackInHand, isValidHitResult, null, (u1, u2) -> true);
 	}
 
-	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, DataComponentType<? extends PositionComponent<?, ?, ?>> positionComponent) {
-		return getLinkingState(level, player, stackInHand, isValidHitResult, positionComponent, PositionComponent::isPositionAdded);
+	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, DataComponentType<? extends GlobalPositionComponent<?, ?, ?>> positionComponent) {
+		return getLinkingState(level, player, stackInHand, isValidHitResult, positionComponent, GlobalPositionComponent::isPositionAdded);
 	}
 
-	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, DataComponentType<? extends PositionComponent<?, ?, ?>> positionComponent, BiPredicate<PositionComponent<?, ?, ?>, GlobalPos> isLinked) {
+	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, DataComponentType<? extends GlobalPositionComponent<?, ?, ?>> positionComponent, BiPredicate<GlobalPositionComponent<?, ?, ?>, GlobalPos> isLinked) {
 		double reachDistance = player.blockInteractionRange();
 		double eyeHeight = player.getEyeHeight();
 		Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
@@ -742,7 +742,7 @@ public class ClientHandler {
 			BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
 
 			if (hitResult != null && hitResult.getType() == Type.BLOCK && isValidHitResult.test(hitResult)) {
-				PositionComponent<?, ?, ?> positions = positionComponent == null ? null : stackInHand.get(positionComponent);
+				GlobalPositionComponent<?, ?, ?> positions = positionComponent == null ? null : stackInHand.get(positionComponent);
 				GlobalPos globalPos = new GlobalPos(level.dimension(), hitResult.getBlockPos());
 
 				return isLinked.test(positions, globalPos) ? LINKED_STATE : NOT_LINKED_STATE;

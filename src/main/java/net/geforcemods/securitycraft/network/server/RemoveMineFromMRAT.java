@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.components.IndexedPositions;
+import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -29,7 +29,7 @@ public record RemoveMineFromMRAT(GlobalPos globalPos) implements CustomPacketPay
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(ctx.player(), SCContent.MINE_REMOTE_ACCESS_TOOL.get());
 
 		if (!stack.isEmpty()) {
-			IndexedPositions mines = stack.get(SCContent.BOUND_MINES);
+			GlobalPositions mines = stack.get(SCContent.BOUND_MINES);
 
 			if (mines != null)
 				mines.remove(SCContent.BOUND_MINES, stack, globalPos);

@@ -16,14 +16,14 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 
-public record SentryPositions(List<Entry> positions) implements PositionComponent<SentryPositions, Entry, String> {
+public record SentryPositions(List<Entry> positions) implements GlobalPositionComponent<SentryPositions, Entry, String> {
 	public static final int MAX_SENTRIES = 12;
 	//@formatter:off
 	public static final Codec<SentryPositions> CODEC = RecordCodecBuilder.create(
-			instance -> instance.group(PositionComponent.nullableSizedCodec(Entry.CODEC, MAX_SENTRIES).fieldOf("positions").forGetter(SentryPositions::positions))
+			instance -> instance.group(GlobalPositionComponent.nullableSizedCodec(Entry.CODEC, MAX_SENTRIES).fieldOf("positions").forGetter(SentryPositions::positions))
 			.apply(instance, SentryPositions::new));
 	public static final StreamCodec<ByteBuf, SentryPositions> STREAM_CODEC = StreamCodec.composite(
-			PositionComponent.nullableSizedStreamCodec(Entry.STREAM_CODEC, MAX_SENTRIES, new Entry(DUMMY_GLOBAL_POS, "")), SentryPositions::positions,
+			GlobalPositionComponent.nullableSizedStreamCodec(Entry.STREAM_CODEC, MAX_SENTRIES, new Entry(DUMMY_GLOBAL_POS, "")), SentryPositions::positions,
 			SentryPositions::new);
 	//@formatter:on
 

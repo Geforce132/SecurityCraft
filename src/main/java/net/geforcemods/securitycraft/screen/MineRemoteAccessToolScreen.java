@@ -5,7 +5,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
-import net.geforcemods.securitycraft.components.IndexedPositions;
+import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine.Action;
 import net.geforcemods.securitycraft.network.server.RemoveMineFromMRAT;
@@ -189,7 +189,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 	 */
 	private GlobalPos getMineCoordinates(int mine) {
 		if (mrat.getItem() == SCContent.MINE_REMOTE_ACCESS_TOOL.get()) {
-			IndexedPositions positions = mrat.get(SCContent.BOUND_MINES);
+			GlobalPositions positions = mrat.get(SCContent.BOUND_MINES);
 
 			if (positions != null && mine >= 0 && mine < positions.size())
 				return positions.positions().get(mine);

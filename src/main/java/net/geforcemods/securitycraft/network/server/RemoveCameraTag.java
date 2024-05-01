@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.components.IndexedPositions;
+import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -29,7 +29,7 @@ public record RemoveCameraTag(GlobalPos globalPos) implements CustomPacketPayloa
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(ctx.player(), SCContent.CAMERA_MONITOR.get());
 
 		if (!stack.isEmpty()) {
-			IndexedPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
+			GlobalPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
 
 			if (cameras != null)
 				cameras.remove(SCContent.BOUND_CAMERAS, stack, globalPos);

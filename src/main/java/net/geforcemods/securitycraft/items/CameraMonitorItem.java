@@ -6,7 +6,7 @@ import java.util.Objects;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
-import net.geforcemods.securitycraft.components.IndexedPositions;
+import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -46,7 +46,7 @@ public class CameraMonitorItem extends Item {
 
 			ItemStack stack = ctx.getItemInHand();
 			GlobalPos view = GlobalPos.of(player.level().dimension(), pos);
-			IndexedPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
+			GlobalPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
 
 			if (cameras != null) {
 				if (cameras.remove(SCContent.BOUND_CAMERAS, stack, view))
@@ -64,7 +64,7 @@ public class CameraMonitorItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
-		IndexedPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
+		GlobalPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
 
 		if (cameras != null && cameras.isEmpty()) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), ChatFormatting.RED);
@@ -79,7 +79,7 @@ public class CameraMonitorItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
-		IndexedPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
+		GlobalPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
 
 		if (cameras != null)
 			tooltip.add(Utils.localize("tooltip.securitycraft:cameraMonitor", cameras.positions().stream().filter(Objects::nonNull).count() + "/" + MAX_CAMERAS).setStyle(Utils.GRAY_STYLE));

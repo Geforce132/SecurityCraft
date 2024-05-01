@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.components.IndexedPositions;
+import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -31,7 +31,7 @@ public record RemovePositionFromSSS(GlobalPos globalPos) implements CustomPacket
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
 
 		if (!stack.isEmpty()) {
-			IndexedPositions sssLinkedBlocks = stack.get(SCContent.SSS_LINKED_BLOCKS);
+			GlobalPositions sssLinkedBlocks = stack.get(SCContent.SSS_LINKED_BLOCKS);
 
 			if (sssLinkedBlocks != null)
 				sssLinkedBlocks.remove(SCContent.SSS_LINKED_BLOCKS, stack, globalPos);

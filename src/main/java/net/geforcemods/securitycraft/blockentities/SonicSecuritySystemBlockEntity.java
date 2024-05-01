@@ -14,7 +14,7 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
-import net.geforcemods.securitycraft.components.IndexedPositions;
+import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.components.Notes;
 import net.geforcemods.securitycraft.components.Notes.NoteWrapper;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -520,7 +520,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	protected void applyImplicitComponents(DataComponentInput input) {
 		super.applyImplicitComponents(input);
 
-		IndexedPositions sssLinkedBlocks = input.get(SCContent.SSS_LINKED_BLOCKS);
+		GlobalPositions sssLinkedBlocks = input.get(SCContent.SSS_LINKED_BLOCKS);
 
 		if (sssLinkedBlocks != null)
 			linkedBlocks = sssLinkedBlocks.positions().stream().collect(Collectors.toList()); //needs to be modifiable
@@ -544,7 +544,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		else if (linkedBlocksCount > MAX_LINKED_BLOCKS)
 			linkedBlocks = new ArrayList<>(linkedBlocks.subList(0, MAX_LINKED_BLOCKS));
 
-		builder.set(SCContent.SSS_LINKED_BLOCKS, new IndexedPositions(List.copyOf(linkedBlocks)));
+		builder.set(SCContent.SSS_LINKED_BLOCKS, new GlobalPositions(List.copyOf(linkedBlocks)));
 		builder.set(SCContent.NOTES, new Notes(new ArrayList<>(recordedNotes)));
 	}
 

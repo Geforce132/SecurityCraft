@@ -7,7 +7,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.components.IndexedPositions;
+import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -60,7 +60,7 @@ public class CameraMonitorScreen extends Screen {
 
 		Button prevPageButton = addRenderableWidget(new Button(width / 2 - 25, height / 2 + 57, 20, 20, Component.literal("<"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, page - 1)), Button.DEFAULT_NARRATION));
 		Button nextPageButton = addRenderableWidget(new Button(width / 2 + 5, height / 2 + 57, 20, 20, Component.literal(">"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, page + 1)), Button.DEFAULT_NARRATION));
-		IndexedPositions cameras = cameraMonitor.getOrDefault(SCContent.BOUND_CAMERAS, IndexedPositions.sized(CameraMonitorItem.MAX_CAMERAS));
+		GlobalPositions cameras = cameraMonitor.getOrDefault(SCContent.BOUND_CAMERAS, GlobalPositions.sized(CameraMonitorItem.MAX_CAMERAS));
 		List<GlobalPos> views = cameras.positions();
 		Level level = Minecraft.getInstance().level;
 

@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.components.IndexedPositions;
+import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -53,7 +53,7 @@ public class MineRemoteAccessToolItem extends Item {
 				return InteractionResult.SUCCESS;
 			}
 
-			IndexedPositions positions = stack.get(SCContent.BOUND_MINES);
+			GlobalPositions positions = stack.get(SCContent.BOUND_MINES);
 
 			if (positions != null) {
 				GlobalPos globalPos = new GlobalPos(level.dimension(), pos);
@@ -76,7 +76,7 @@ public class MineRemoteAccessToolItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> list, TooltipFlag flag) {
-		IndexedPositions positions = stack.get(SCContent.BOUND_MINES);
+		GlobalPositions positions = stack.get(SCContent.BOUND_MINES);
 
 		if (positions != null && !positions.isEmpty()) {
 			List<GlobalPos> globalPositions = positions.positions();
