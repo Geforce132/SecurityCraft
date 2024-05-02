@@ -533,10 +533,9 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	@Override
 	protected void collectImplicitComponents(Builder builder) {
 		super.collectImplicitComponents(builder);
+		linkedBlocks = new ArrayList<>(linkedBlocks);
 
 		int linkedBlocksCount = linkedBlocks.size();
-
-		linkedBlocks = new ArrayList<>(linkedBlocks);
 
 		if (linkedBlocksCount < MAX_LINKED_BLOCKS) {
 			for (int i = linkedBlocksCount; i < MAX_LINKED_BLOCKS; i++) {
@@ -546,7 +545,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		else if (linkedBlocksCount > MAX_LINKED_BLOCKS)
 			linkedBlocks = new ArrayList<>(linkedBlocks.subList(0, MAX_LINKED_BLOCKS));
 
-		builder.set(SCContent.SSS_LINKED_BLOCKS, new GlobalPositions(List.copyOf(linkedBlocks)));
+		builder.set(SCContent.SSS_LINKED_BLOCKS, new GlobalPositions(new ArrayList<>(linkedBlocks)));
 		builder.set(SCContent.NOTES, new Notes(new ArrayList<>(recordedNotes)));
 	}
 
