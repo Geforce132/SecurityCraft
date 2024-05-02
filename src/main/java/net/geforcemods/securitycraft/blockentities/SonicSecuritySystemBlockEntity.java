@@ -536,6 +536,8 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 		int linkedBlocksCount = linkedBlocks.size();
 
+		linkedBlocks = new ArrayList<>(linkedBlocks);
+
 		if (linkedBlocksCount < MAX_LINKED_BLOCKS) {
 			for (int i = linkedBlocksCount; i < MAX_LINKED_BLOCKS; i++) {
 				linkedBlocks.add(null);
