@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.components;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.mojang.serialization.Codec;
@@ -16,14 +17,14 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 
-public record SentryPositions(List<Entry> positions) implements GlobalPositionComponent<SentryPositions, Entry, String> {
+public record SentryPositions(List<Entry> positions) implements GlobalPositionComponent<SentryPositions, Entry, Optional<String>> {
 	public static final int MAX_SENTRIES = 12;
 	//@formatter:off
 	public static final Codec<SentryPositions> CODEC = RecordCodecBuilder.create(
 			instance -> instance.group(GlobalPositionComponent.nullableSizedCodec(Entry.CODEC, MAX_SENTRIES).fieldOf("positions").forGetter(SentryPositions::positions))
 			.apply(instance, SentryPositions::new));
 	public static final StreamCodec<ByteBuf, SentryPositions> STREAM_CODEC = StreamCodec.composite(
-			GlobalPositionComponent.nullableSizedStreamCodec(Entry.STREAM_CODEC, MAX_SENTRIES, new Entry(DUMMY_GLOBAL_POS, "")), SentryPositions::positions,
+			GlobalPositionComponent.nullableSizedStreamCodec(Entry.STREAM_CODEC, MAX_SENTRIES, new Entry(DUMMY_GLOBAL_POS, Optional.empty())), SentryPositions::positions,
 			SentryPositions::new);
 	//@formatter:on
 
@@ -42,7 +43,7 @@ public record SentryPositions(List<Entry> positions) implements GlobalPositionCo
 	}
 
 	@Override
-	public Entry createEntry(GlobalPos globalPos, String sentryName) {
+	public Entry createEntry(GlobalPos globalPos, Optional<String> sentryName) {
 		return new Entry(globalPos, sentryName);
 	}
 
@@ -51,16 +52,16 @@ public record SentryPositions(List<Entry> positions) implements GlobalPositionCo
 		stack.set(dataComponentType, new SentryPositions(newPositionList));
 	}
 
-	public record Entry(GlobalPos globalPos, String name) {
+	public record Entry(GlobalPos globalPos, Optional<String> name) {
 		//@formatter:off
 		public static final Codec<Entry> CODEC = RecordCodecBuilder.create(
 				instance -> instance.group(
 						GlobalPos.CODEC.fieldOf("global_pos").forGetter(Entry::globalPos),
-						Codec.STRING.fieldOf("name").forGetter(Entry::name))
+						Codec.STRING.optionalFieldOf("name").forGetter(Entry::name))
 				.apply(instance, Entry::new));
 		public static final StreamCodec<ByteBuf, Entry> STREAM_CODEC = StreamCodec.composite(
 				GlobalPos.STREAM_CODEC, Entry::globalPos,
-				ByteBufCodecs.STRING_UTF8, Entry::name,
+				ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs::optional), Entry::name,
 				Entry::new);
 		//@formatter:on
 	}

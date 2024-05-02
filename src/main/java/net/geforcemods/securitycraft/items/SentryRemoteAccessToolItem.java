@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.components.SentryPositions;
@@ -69,7 +70,7 @@ public class SentryRemoteAccessToolItem extends Item {
 
 				if (positions.remove(SCContent.BOUND_SENTRIES, stack, globalPos))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.unbound", sentryPos), ChatFormatting.RED);
-				else if (positions.add(SCContent.BOUND_SENTRIES, stack, globalPos, sentry.hasCustomName() ? sentry.getCustomName().getString() : ""))
+				else if (positions.add(SCContent.BOUND_SENTRIES, stack, globalPos, sentry.hasCustomName() ? Optional.of(sentry.getCustomName().getString()) : Optional.empty()))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.bound", sentryPos), ChatFormatting.GREEN);
 				else {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.noSlots"), ChatFormatting.RED);
@@ -103,8 +104,8 @@ public class SentryRemoteAccessToolItem extends Item {
 					BlockPos pos = entry.globalPos().pos();
 					String nameToShow = null;
 
-					if (!entry.name().isEmpty())
-						nameToShow = entry.name();
+					if (entry.name().isPresent())
+						nameToShow = entry.name().get();
 					else {
 						List<Sentry> sentries = Minecraft.getInstance().player.level().getEntitiesOfClass(Sentry.class, new AABB(pos));
 
@@ -140,7 +141,7 @@ public class SentryRemoteAccessToolItem extends Item {
 							Sentry sentry = sentries.get(0);
 
 							if (sentry.hasCustomName()) {
-								newEntries.set(i, new SentryPositions.Entry(globalPos, sentry.getCustomName().getString()));
+								newEntries.set(i, new SentryPositions.Entry(globalPos, Optional.of(sentry.getCustomName().getString())));
 								changed = true;
 								continue;
 							}
@@ -149,7 +150,7 @@ public class SentryRemoteAccessToolItem extends Item {
 					else
 						continue;
 
-					newEntries.set(i, new SentryPositions.Entry(globalPos, ""));
+					newEntries.set(i, new SentryPositions.Entry(globalPos, Optional.empty()));
 					changed = true;
 				}
 			}

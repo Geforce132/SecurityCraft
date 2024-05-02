@@ -280,15 +280,18 @@ public class DataFixHandler {
 			Optional<? extends Dynamic<?>> sentry = itemStackData.removeTag("sentry" + i).result();
 
 			if (sentry.isPresent()) {
-				Optional<? extends Dynamic<?>> sentryName = itemStackData.removeTag("sentry" + i + "_name").result();
-
 				//@formatter:off
-				positions.add(dynamic.emptyMap()
+				Dynamic<?> entry = dynamic.emptyMap()
 						.set("global_pos", dynamic.emptyMap()
 								.set("dimension", dynamic.createString("minecraft:overworld")) //sentries did not save the dimension beforehand, so this is the most correct assumption
-								.set("pos", sentry.get()))
-						.set("name", sentryName.isPresent() ? sentryName.get() : dynamic.createString("")));
+								.set("pos", sentry.get()));
 				//@formatter:on
+				Optional<? extends Dynamic<?>> sentryName = itemStackData.removeTag("sentry" + i + "_name").result();
+
+				if (sentryName.isPresent())
+					entry = entry.set("name", sentryName.get());
+
+				positions.add(entry);
 			}
 			else
 				positions.add(dynamic.emptyMap());

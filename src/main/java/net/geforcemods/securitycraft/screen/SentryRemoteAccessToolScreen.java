@@ -110,8 +110,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				Level level = Minecraft.getInstance().player.level();
 				Component sentryName = null;
 
-				if (!entry.name().isEmpty())
-					sentryName = Component.literal(entry.name());
+				if (entry.name().isPresent())
+					sentryName = Component.literal(entry.name().get());
 
 				lines[i] = Utils.getFormattedCoordinates(sentryPos);
 				guiButtons[i][UNBIND].active = true;
