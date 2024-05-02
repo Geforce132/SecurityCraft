@@ -7,12 +7,12 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
-import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
+import net.neoforged.neoforge.data.loading.DatagenModLoader;
 
 public class ConfigHandler {
 	private static final Logger LOGGER = LogUtils.getLogger();
@@ -207,7 +207,7 @@ public class ConfigHandler {
 			return value.get();
 		}
 		catch (Exception e) {
-			if (!FMLLoader.getLaunchHandler().isData()) {
+			if (!DatagenModLoader.isRunningDataGen()) {
 				LOGGER.warn("Error when getting config value with getOrDefault! Please report this.");
 				e.printStackTrace();
 			}
