@@ -303,10 +303,10 @@ public class DataFixHandler {
 
 	private static void fixSonicSecuritySystem(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
 		//@formatter:off
-		List<Dynamic<?>> linkedBlocks = dynamic.get("LinkedBlocks")
+		List<Dynamic<?>> linkedBlocks = new ArrayList<>(dynamic.get("LinkedBlocks")
 				.asList(d -> d.emptyMap()
 						.set("dimension", d.createString("minecraft:overworld")) //sonic security systems did not save the dimension beforehand, so this is the most correct assumption
-						.set("pos", d.createIntList(IntStream.of(d.get("X").asInt(0), d.get("Y").asInt(0), d.get("Z").asInt(0)))));
+						.set("pos", d.createIntList(IntStream.of(d.get("X").asInt(0), d.get("Y").asInt(0), d.get("Z").asInt(0))))));
 		//@formatter:on
 		int linkedBlocksCount = linkedBlocks.size();
 		final int maxCount = SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS;
