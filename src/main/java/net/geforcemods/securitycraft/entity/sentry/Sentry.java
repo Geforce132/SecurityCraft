@@ -342,7 +342,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		if (isShutDown())
 			return;
 
-		BlockEntity blockEntity = level().getBlockEntity(blockPosition().below());
+		Level level = level();
+		BlockEntity blockEntity = level.getBlockEntity(blockPosition().below());
 		Projectile throwableEntity = null;
 		SoundEvent shootSound = SoundEvents.ARROW_SHOOT;
 		AbstractProjectileDispenseBehavior pdb = null;
@@ -366,7 +367,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 						ItemStack extracted = handler.extractItem(i, 1, false);
 
 						pdb = projectileDispenseBehavior;
-						throwableEntity = pdb.getProjectile(level(), position().add(0.0D, 1.6D, 0.0D), extracted);
+						throwableEntity = pdb.getProjectile(level, position().add(0.0D, 1.6D, 0.0D), extracted);
 						throwableEntity.setOwner(this);
 						shootSound = null;
 						break;
@@ -376,7 +377,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		}
 
 		if (throwableEntity == null)
-			throwableEntity = new Bullet(level(), this);
+			throwableEntity = new Bullet(level, this);
 
 		double baseY = target.getY() + target.getEyeHeight() - 1.100000023841858D;
 		double x = target.getX() - getX();
@@ -388,13 +389,13 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		throwableEntity.shoot(x, y + yOffset, z, 1.6F, 0.0F); //no inaccuracy for sentries!
 
 		if (shootSound == null) {
-			if (!level().isClientSide && pdb != null)
-				pdb.playSound(new BlockSourceImpl((ServerLevel) level(), blockPosition()));
+			if (!level.isClientSide && pdb != null)
+				pdb.playSound(new BlockSourceImpl((ServerLevel) level, blockPosition()));
 		}
 		else
 			playSound(shootSound, 1.0F, 1.0F / (getRandom().nextFloat() * 0.4F + 0.8F));
 
-		level().addFreshEntity(throwableEntity);
+		level.addFreshEntity(throwableEntity);
 	}
 
 	@Override
