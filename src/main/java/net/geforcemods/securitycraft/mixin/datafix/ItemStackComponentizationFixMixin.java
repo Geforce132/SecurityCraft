@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.components.DataFixHandler;
 import net.minecraft.util.datafix.fixes.ItemStackComponentizationFix;
 
 /**
- * Makes sure SecurityCraft's briefcase, keycard holder, and disguise module get inserted items converted properly
+ * Makes sure SecurityCraft's items get inserted items converted, as well as their NBT data converted to components properly
  */
 @Mixin(ItemStackComponentizationFix.class)
 public class ItemStackComponentizationFixMixin {
