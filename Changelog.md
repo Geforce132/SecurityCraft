@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.9-beta2 of SecurityCraft--------------------------
+
+- Fix: The block display in disguise modules and projectors is rendered too dark
+
 --------------------------Changelog for v1.9.9-beta1 of SecurityCraft--------------------------
 
 - Change: The "taser_effects" and "powered_taser_effects" config settings have been moved to the item component "minecraft:potion_contents" on the taser
