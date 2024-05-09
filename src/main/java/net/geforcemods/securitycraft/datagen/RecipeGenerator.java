@@ -1124,8 +1124,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addStonecuttingRecipe(consumer, SCContent.SMOOTH_CRYSTAL_QUARTZ.get(), SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), 1);
 	}
 
-	protected final void addBarkRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider log, IItemProvider result) //woof
-	{
+	protected final void addBarkRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider log, IItemProvider result) { //woof
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(result, 3)
 		.group("securitycraft:bark")
