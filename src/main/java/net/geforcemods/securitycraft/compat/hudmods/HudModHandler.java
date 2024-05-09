@@ -53,31 +53,26 @@ public class HudModHandler {
 			}
 		}
 
-		if (block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(level, state, pos))
+		if (be == null || disguised || block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(level, state, pos))
 			return;
 
-		if (be != null) {
-			if (configGetter.test(SHOW_OWNER) && be instanceof IOwnable ownable)
-				lineAdder.accept(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner())).withStyle(ChatFormatting.GRAY));
+		if (configGetter.test(SHOW_OWNER) && be instanceof IOwnable ownable)
+			lineAdder.accept(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner())).withStyle(ChatFormatting.GRAY));
 
-			if (disguised)
-				return;
+		//if the te is ownable, show modules only when it's owned, otherwise always show
+		if (configGetter.test(SHOW_MODULES) && be instanceof IModuleInventory inv && !inv.getInsertedModules().isEmpty() && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+			lineAdder.accept(EQUIPPED);
 
-			//if the te is ownable, show modules only when it's owned, otherwise always show
-			if (configGetter.test(SHOW_MODULES) && be instanceof IModuleInventory inv && !inv.getInsertedModules().isEmpty() && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
-				lineAdder.accept(EQUIPPED);
-
-				for (ModuleType module : inv.getInsertedModules()) {
-					lineAdder.accept(Component.literal("- ").append(Component.translatable(module.getTranslationKey())).withStyle(ChatFormatting.GRAY));
-				}
+			for (ModuleType module : inv.getInsertedModules()) {
+				lineAdder.accept(Component.literal("- ").append(Component.translatable(module.getTranslationKey())).withStyle(ChatFormatting.GRAY));
 			}
+		}
 
-			if (configGetter.test(SHOW_CUSTOM_NAME) && be instanceof Nameable nameable && nameable.hasCustomName()) {
-				Component text = nameable.getCustomName();
-				Component name = text == null ? Component.empty() : text;
+		if (configGetter.test(SHOW_CUSTOM_NAME) && be instanceof Nameable nameable && nameable.hasCustomName()) {
+			Component text = nameable.getCustomName();
+			Component name = text == null ? Component.empty() : text;
 
-				lineAdder.accept(Utils.localize("waila.securitycraft:customName", name).withStyle(ChatFormatting.GRAY));
-			}
+			lineAdder.accept(Utils.localize("waila.securitycraft:customName", name).withStyle(ChatFormatting.GRAY));
 		}
 	}
 
