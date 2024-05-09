@@ -198,7 +198,9 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public boolean shouldShowSCInfo(Level level, BlockState state, BlockPos pos) {
-		return getDisguisedStack(level, pos).getItem() == asItem();
+		var x = getDisguisedStack(level, pos).getItem();
+		System.out.println(x);
+		return x == asItem();
 	}
 
 	@Override

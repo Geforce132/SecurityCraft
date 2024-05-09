@@ -25,7 +25,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
-import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
+import net.geforcemods.securitycraft.compat.hudmods.TOPDataProvider;
 import net.geforcemods.securitycraft.itemgroups.SCDecorationTab;
 import net.geforcemods.securitycraft.itemgroups.SCExplosivesTab;
 import net.geforcemods.securitycraft.itemgroups.SCTechnicalTab;
