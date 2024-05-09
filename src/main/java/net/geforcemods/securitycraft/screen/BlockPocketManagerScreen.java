@@ -121,7 +121,7 @@ public class BlockPocketManagerScreen extends GuiContainer implements ISlider, I
 			sizeButton.enabled = toggleButton.enabled = assembleButton.enabled = outlineButton.enabled = offsetSlider.enabled = colorChooserButton.enabled = false;
 		else {
 			updateMaterialInformation(true);
-			sizeButton.enabled = assembleButton.enabled = offsetSlider.enabled = !te.isEnabled();
+			sizeButton.enabled = offsetSlider.enabled = !te.isEnabled();
 		}
 
 		if (!hasStorageModule) {
