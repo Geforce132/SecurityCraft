@@ -60,6 +60,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTab.TabVisibility;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -191,8 +192,9 @@ public class RegistrationHandler {
 	@SubscribeEvent
 	public static void onCreativeModeTabBuildContents(CreativeModeTabEvent.BuildContents event) {
 		MutableHashedLinkedMap<ItemStack, TabVisibility> entries = event.getEntries();
+		CreativeModeTab tab = event.getTab();
 
-		if (event.getTab() == CreativeModeTabs.REDSTONE_BLOCKS) {
+		if (tab == CreativeModeTabs.REDSTONE_BLOCKS) {
 			entries.putAfter(new ItemStack(Items.LEVER), new ItemStack(SCContent.REINFORCED_LEVER.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			entries.putAfter(new ItemStack(Items.STONE_BUTTON), new ItemStack(SCContent.REINFORCED_OAK_BUTTON.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			entries.putAfter(new ItemStack(SCContent.REINFORCED_OAK_BUTTON.get()), new ItemStack(SCContent.REINFORCED_STONE_BUTTON.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
@@ -206,7 +208,7 @@ public class RegistrationHandler {
 			entries.putAfter(new ItemStack(Items.HOPPER), new ItemStack(SCContent.REINFORCED_HOPPER.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			entries.putAfter(new ItemStack(Items.LECTERN), new ItemStack(SCContent.REINFORCED_LECTERN.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 		}
-		else if (event.getTab() == CreativeModeTabs.COLORED_BLOCKS) {
+		else if (tab == CreativeModeTabs.COLORED_BLOCKS) {
 			//@formatter:off
 			event.acceptAll(List.of(
 					new ItemStack(SCContent.REINFORCED_WHITE_WOOL.get()),
@@ -327,7 +329,7 @@ public class RegistrationHandler {
 					new ItemStack(SCContent.REINFORCED_PINK_STAINED_GLASS_PANE.get())));
 			//@formatter:on
 		}
-		else if (event.getTab() == SecurityCraft.decorationTab) {
+		else if (tab == SecurityCraft.decorationTab) {
 			entries.putAfter(new ItemStack(SCContent.REINFORCED_CHISELED_BOOKSHELF.get()), new ItemStack(SCContent.SECRET_OAK_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			entries.putAfter(new ItemStack(SCContent.SECRET_OAK_SIGN_ITEM.get()), new ItemStack(SCContent.SECRET_OAK_HANGING_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			entries.putAfter(new ItemStack(SCContent.SECRET_OAK_HANGING_SIGN_ITEM.get()), new ItemStack(SCContent.SECRET_SPRUCE_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
@@ -351,7 +353,7 @@ public class RegistrationHandler {
 			entries.putAfter(new ItemStack(SCContent.SECRET_CRIMSON_HANGING_SIGN_ITEM.get()), new ItemStack(SCContent.SECRET_WARPED_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			entries.putAfter(new ItemStack(SCContent.SECRET_WARPED_SIGN_ITEM.get()), new ItemStack(SCContent.SECRET_WARPED_HANGING_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 		}
-		else if (event.getTab() == CreativeModeTabs.OP_BLOCKS) {
+		else if (tab == CreativeModeTabs.OP_BLOCKS) {
 			entries.put(new ItemStack(SCContent.ADMIN_TOOL.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			entries.put(new ItemStack(SCContent.CODEBREAKER.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 		}
