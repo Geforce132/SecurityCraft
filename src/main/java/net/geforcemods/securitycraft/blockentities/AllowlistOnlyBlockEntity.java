@@ -35,8 +35,6 @@ public class AllowlistOnlyBlockEntity extends CustomizableBlockEntity {
 			return super.getModuleDescriptionId("generic.reinforced_pressure_plate", module);
 		else if (blockName.contains("button"))
 			return super.getModuleDescriptionId("generic.reinforced_button", module);
-		else if (blockName.contains("fence_gate"))
-			return super.getModuleDescriptionId("generic.reinforced_fence_gate", module);
 		else
 			return super.getModuleDescriptionId(blockName, module);
 	}

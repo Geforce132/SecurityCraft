@@ -46,6 +46,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity
 import net.geforcemods.securitycraft.blockentities.ReinforcedChiseledBookshelfBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedDispenserBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedDropperBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedFenceGateBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedLecternBlockEntity;
@@ -2898,7 +2899,7 @@ public class SCContent {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ScannerTrapdoorBlockEntity>> SCANNER_TRAPDOOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("scanner_trapdoor", () -> BlockEntityType.Builder.of(ScannerTrapdoorBlockEntity::new, SCContent.SCANNER_TRAPDOOR.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedDispenserBlockEntity>> REINFORCED_DISPENSER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_dispenser", () -> BlockEntityType.Builder.of(ReinforcedDispenserBlockEntity::new, SCContent.REINFORCED_DISPENSER.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedDropperBlockEntity>> REINFORCED_DROPPER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_dropper", () -> BlockEntityType.Builder.of(ReinforcedDropperBlockEntity::new, SCContent.REINFORCED_DROPPER.get()).build(null));
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AllowlistOnlyBlockEntity>> REINFORCED_FENCE_GATE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_fence_gate", () -> BlockEntityType.Builder.of(AllowlistOnlyBlockEntity::new,
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedFenceGateBlockEntity>> REINFORCED_FENCE_GATE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_fence_gate", () -> BlockEntityType.Builder.of(ReinforcedFenceGateBlockEntity::new,
 			SCContent.REINFORCED_OAK_FENCE_GATE.get(),
 			SCContent.REINFORCED_SPRUCE_FENCE_GATE.get(),
 			SCContent.REINFORCED_BIRCH_FENCE_GATE.get(),
