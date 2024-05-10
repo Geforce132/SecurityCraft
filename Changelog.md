@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
+
+- Fix: Trying to place a Panic Button on top of powdered snow crashes the game
+
 --------------------------Changelog for v1.9.9-beta2 of SecurityCraft--------------------------
 
 - Fix: The block display in disguise modules and projectors is rendered too dark

@@ -57,7 +57,12 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock, Simple
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return super.getStateForPlacement(ctx).setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER);
+		BlockState superState = super.getStateForPlacement(ctx);
+
+		if (superState != null)
+			return superState.setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER);
+
+		return null;
 	}
 
 	@Override
