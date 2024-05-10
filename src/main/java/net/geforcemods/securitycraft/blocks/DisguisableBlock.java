@@ -221,4 +221,9 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		return getDisguisedStack(level, pos);
 	}
+
+	@Override
+	public boolean hasDynamicLightEmission(BlockState state) {
+		return true;
+	}
 }
