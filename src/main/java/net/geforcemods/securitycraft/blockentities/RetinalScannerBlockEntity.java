@@ -2,13 +2,11 @@ package net.geforcemods.securitycraft.blockentities;
 
 import java.util.Optional;
 
-import org.slf4j.Logger;
-
 import com.mojang.authlib.properties.PropertyMap;
-import com.mojang.logging.LogUtils;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
@@ -43,7 +41,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements IViewActivated, ITickingBlockEntity, ILockable {
-	private static final Logger LOGGER = LogUtils.getLogger();
 	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new SignalLengthOption(60);
@@ -195,7 +192,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 			if (ownerProfileTag.contains("Name"))
 				ownerProfileTag.putString("name", ownerProfileTag.getString("Name"));
 
-			ResolvableProfile.CODEC.parse(NbtOps.INSTANCE, ownerProfileTag).resultOrPartial(name -> LOGGER.error("Failed to load profile from player head: {}", name)).ifPresent(this::setOwnerProfile);
+			ResolvableProfile.CODEC.parse(NbtOps.INSTANCE, ownerProfileTag).resultOrPartial(name -> SecurityCraft.LOGGER.error("Failed to load profile from player head: {}", name)).ifPresent(this::setOwnerProfile);
 		}
 	}
 

@@ -3,9 +3,6 @@ package net.geforcemods.securitycraft;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.slf4j.Logger;
-
-import com.mojang.logging.LogUtils;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
@@ -15,7 +12,6 @@ import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.data.loading.DatagenModLoader;
 
 public class ConfigHandler {
-	private static final Logger LOGGER = LogUtils.getLogger();
 	public static final ModConfigSpec CLIENT_SPEC;
 	public static final Client CLIENT;
 	public static final ModConfigSpec SERVER_SPEC;
@@ -203,7 +199,7 @@ public class ConfigHandler {
 		}
 		catch (Exception e) {
 			if (!DatagenModLoader.isRunningDataGen()) {
-				LOGGER.warn("Error when getting config value with getOrDefault! Please report this.");
+				SecurityCraft.LOGGER.warn("Error when getting config value with getOrDefault! Please report this.");
 				e.printStackTrace();
 			}
 
